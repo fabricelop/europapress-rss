@@ -28,13 +28,36 @@ jobs:
 
       - name: Recorrer Europa Press y actualizar archivo
         run: python generate_feed.py
+      - name: Crear JSON reciente para TTiTTulares
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("latest.json").read_text(encoding="utf-8"))
+          items = data.get("items", [])[:200]
+
+          recent = {
+              "source": data.get("source"),
+              "generated_at": data.get("generated_at"),
+              "count": len(items),
+              "items": items,
+          }
+
+          Path("recent.json").write_text(
+              json.dumps(recent, ensure_ascii=False, separators=(",", ":")) + "\n",
+              encoding="utf-8",
+          )
+
+          print(f"recent.json creado con {len(items)} noticias")
+          PY
         
       - name: Guardar cambios
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add feed.xml latest.json state.json archive/
+          git add feed.xml latest.json recent.json state.json archive/
 
           if git diff --cached --quiet; then
             echo "No hay cambios."
