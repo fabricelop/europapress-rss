@@ -1,0 +1,170 @@
+name: Leer órdenes de Telegram
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-telegram-input
+  cancel-in-progress: false
+
+jobs:
+  telegram-input:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Leer botones y mensajes de Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python3 <<'PY'
+          import datetime as dt
+          import json
+          import os
+          import re
+          import urllib.parse
+          import urllib.request
+          from pathlib import Path
+
+          token = os.environ["TELEGRAM_BOT_TOKEN"]
+          allowed_chat = str(os.environ["TELEGRAM_CHAT_ID"])
+          base = f"https://api.telegram.org/bot{token}"
+
+          state_path = Path("telegram/telegram-state.json")
+          requests_path = Path("telegram/requests.json")
+
+          state = json.loads(state_path.read_text(encoding="utf-8"))
+          queue = json.loads(requests_path.read_text(encoding="utf-8"))
+          queue.setdefault("requests", [])
+
+          def api(method, payload=None):
+              data = None
+              headers = {}
+              if payload is not None:
+                  data = json.dumps(payload).encode("utf-8")
+                  headers["Content-Type"] = "application/json"
+              req = urllib.request.Request(f"{base}/{method}", data=data, headers=headers)
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  result = json.loads(r.read().decode("utf-8"))
+              if not result.get("ok"):
+                  raise RuntimeError(result)
+              return result.get("result")
+
+          offset = int(state.get("offset", 0) or 0)
+          params = urllib.parse.urlencode({
+              "offset": offset,
+              "timeout": 0,
+              "allowed_updates": json.dumps(["message", "callback_query"])
+          })
+          with urllib.request.urlopen(f"{base}/getUpdates?{params}", timeout=30) as r:
+              updates_result = json.loads(r.read().decode("utf-8"))
+          if not updates_result.get("ok"):
+              raise RuntimeError(updates_result)
+          updates = updates_result.get("result", [])
+
+          # Primera ejecución: fijamos el punto de partida para no procesar mensajes antiguos.
+          if not state.get("initialized", False):
+              if updates:
+                  state["offset"] = max(u["update_id"] for u in updates) + 1
+              state["initialized"] = True
+              state_path.write_text(json.dumps(state, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+              print("Telegram inicializado; mensajes antiguos ignorados.")
+              raise SystemExit(0)
+
+          now = dt.datetime.now(dt.timezone.utc).isoformat()
+          added = 0
+
+          def add_request(kind, text, update_id):
+              global added
+              queue["requests"].append({
+                  "update_id": update_id,
+                  "created_at": now,
+                  "type": kind,
+                  "text": text
+              })
+              # Evita crecimiento ilimitado; conserva las 100 últimas órdenes.
+              queue["requests"] = queue["requests"][-100:]
+              added += 1
+
+          for update in updates:
+              update_id = update["update_id"]
+
+              if "callback_query" in update:
+                  cq = update["callback_query"]
+                  msg = cq.get("message") or {}
+                  chat_id = str((msg.get("chat") or {}).get("id", ""))
+                  if chat_id != allowed_chat:
+                      continue
+
+                  data = cq.get("data", "")
+                  if data.startswith("prepare:"):
+                      original = msg.get("text", "")
+                      match = re.search(r"(?m)^N\d+\.\s*(.+)$", original)
+                      headline = match.group(1).strip() if match else original.strip()
+                      if headline:
+                          add_request("prepare", f"Prepara la noticia: {headline}", update_id)
+                          api("answerCallbackQuery", {
+                              "callback_query_id": cq["id"],
+                              "text": "Añadida para preparar en el próximo boletín."
+                          })
+                      else:
+                          api("answerCallbackQuery", {
+                              "callback_query_id": cq["id"],
+                              "text": "No he podido recuperar el texto de la noticia."
+                          })
+                  elif data == "run:bulletin":
+                      add_request("run", "Ejecuta ahora un boletín manual de TTiTTulares.", update_id)
+                      api("answerCallbackQuery", {
+                          "callback_query_id": cq["id"],
+                          "text": "Solicitud de boletín registrada."
+                      })
+                  continue
+
+              message = update.get("message") or {}
+              chat_id = str((message.get("chat") or {}).get("id", ""))
+              if chat_id != allowed_chat:
+                  continue
+              text = (message.get("text") or "").strip()
+              if not text:
+                  continue
+
+              if text.split()[0].lower() == "/boletin":
+                  add_request("run", "Ejecuta ahora un boletín manual de TTiTTulares.", update_id)
+                  api("sendMessage", {
+                      "chat_id": allowed_chat,
+                      "text": "▶️ Solicitud de boletín registrada."
+                  })
+              elif not text.startswith("/"):
+                  add_request("instruction", text, update_id)
+                  api("sendMessage", {
+                      "chat_id": allowed_chat,
+                      "text": "📝 Instrucción guardada para la próxima ejecución."
+                  })
+
+          if updates:
+              state["offset"] = max(u["update_id"] for u in updates) + 1
+
+          state_path.write_text(json.dumps(state, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+          if added:
+              requests_path.write_text(json.dumps(queue, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+          print(f"Órdenes nuevas: {added}")
+          PY
+
+      - name: Guardar órdenes y estado
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add telegram/requests.json telegram/telegram-state.json
+          if git diff --cached --quiet; then
+            echo "Sin cambios."
+            exit 0
+          fi
+          git commit -m "Procesar órdenes de Telegram"
+          git pull --rebase origin main
+          git push
