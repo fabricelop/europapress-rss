@@ -104,6 +104,15 @@ jobs:
               added += 1
               return True
 
+          def delete_message(msg):
+              message_id = msg.get("message_id")
+              if not message_id:
+                  return
+              safe_api("deleteMessage", {
+                  "chat_id": allowed_chat,
+                  "message_id": message_id
+              })
+
           for update in updates:
               update_id = update["update_id"]
               state["offset"] = max(int(state.get("offset", 0) or 0), update_id + 1)
@@ -128,14 +137,22 @@ jobs:
                           persist()
                           safe_api("answerCallbackQuery", {
                               "callback_query_id": cq["id"],
-                              "text": "✅ Añadida para preparar en el próximo boletín."
+                              "text": "✅ Añadida para preparar."
                           })
+                          delete_message(msg)
                       else:
                           persist()
                           safe_api("answerCallbackQuery", {
                               "callback_query_id": cq["id"],
                               "text": "No he podido recuperar el texto de la noticia."
                           })
+                  elif data == "delete:message":
+                      persist()
+                      safe_api("answerCallbackQuery", {
+                          "callback_query_id": cq["id"],
+                          "text": "🗑️ Quitado."
+                      })
+                      delete_message(msg)
                   elif data == "run:bulletin":
                       add_request("run", "Ejecuta ahora un boletín manual de TTiTTulares.", update_id, dedupe_text=True)
                       persist()
