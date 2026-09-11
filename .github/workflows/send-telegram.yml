@@ -41,19 +41,19 @@ jobs:
                   "disable_web_page_preview": True
               }
 
-              buttons = msg.get("buttons", [])
-              if buttons:
-                  keyboard = []
-                  for b in buttons:
-                      button = {"text": b["label"]}
-                      if b.get("url"):
-                          button["url"] = b["url"]
-                      elif b.get("callback_data"):
-                          button["callback_data"] = b["callback_data"]
-                      else:
-                          raise ValueError(f"Botón sin url ni callback_data: {b}")
-                      keyboard.append([button])
-                  payload["reply_markup"] = {"inline_keyboard": keyboard}
+              buttons = list(msg.get("buttons", []))
+              buttons.append({"label": "🗑️ Quitar", "callback_data": "delete:message"})
+              keyboard = []
+              for b in buttons:
+                  button = {"text": b["label"]}
+                  if b.get("url"):
+                      button["url"] = b["url"]
+                  elif b.get("callback_data"):
+                      button["callback_data"] = b["callback_data"]
+                  else:
+                      raise ValueError(f"Botón sin url ni callback_data: {b}")
+                  keyboard.append([button])
+              payload["reply_markup"] = {"inline_keyboard": keyboard}
 
               req = urllib.request.Request(
                   api,
