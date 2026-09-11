@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/telegram-input.yml"
 
 permissions:
   contents: write
@@ -68,27 +72,19 @@ jobs:
               raise RuntimeError(updates_result)
           updates = updates_result.get("result", [])
 
-          # Primera ejecución: fijamos el punto de partida para no procesar mensajes antiguos.
-          if not state.get("initialized", False):
-              if updates:
-                  state["offset"] = max(u["update_id"] for u in updates) + 1
-              state["initialized"] = True
-              state_path.write_text(json.dumps(state, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
-              print("Telegram inicializado; mensajes antiguos ignorados.")
-              raise SystemExit(0)
-
           now = dt.datetime.now(dt.timezone.utc).isoformat()
           added = 0
 
           def add_request(kind, text, update_id):
               global added
+              if any(r.get("update_id") == update_id for r in queue["requests"]):
+                  return
               queue["requests"].append({
                   "update_id": update_id,
                   "created_at": now,
                   "type": kind,
                   "text": text
               })
-              # Evita crecimiento ilimitado; conserva las 100 últimas órdenes.
               queue["requests"] = queue["requests"][-100:]
               added += 1
 
@@ -111,7 +107,7 @@ jobs:
                           add_request("prepare", f"Prepara la noticia: {headline}", update_id)
                           api("answerCallbackQuery", {
                               "callback_query_id": cq["id"],
-                              "text": "Añadida para preparar en el próximo boletín."
+                              "text": "✅ Añadida para preparar en el próximo boletín."
                           })
                       else:
                           api("answerCallbackQuery", {
@@ -122,7 +118,7 @@ jobs:
                       add_request("run", "Ejecuta ahora un boletín manual de TTiTTulares.", update_id)
                       api("answerCallbackQuery", {
                           "callback_query_id": cq["id"],
-                          "text": "Solicitud de boletín registrada."
+                          "text": "▶️ Solicitud de boletín registrada."
                       })
                   continue
 
@@ -149,6 +145,7 @@ jobs:
 
           if updates:
               state["offset"] = max(u["update_id"] for u in updates) + 1
+          state["initialized"] = True
 
           state_path.write_text(json.dumps(state, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
           if added:
