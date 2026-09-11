@@ -2,7 +2,8 @@ name: Leer órdenes de Telegram
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    # Cada 5 minutos, desplazado del minuto 00 para reducir retrasos de GitHub Actions.
+    - cron: "2-59/5 * * * *"
   workflow_dispatch:
   push:
     branches: [main]
@@ -13,14 +14,17 @@ permissions:
   contents: write
 
 concurrency:
-  group: ttittulares-telegram-input
+  group: ttittulares-repo-write
   cancel-in-progress: false
 
 jobs:
   telegram-input:
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Leer botones y mensajes de Telegram
         env:
@@ -108,10 +112,11 @@ jobs:
               message_id = msg.get("message_id")
               if not message_id:
                   return
-              safe_api("deleteMessage", {
+              result = safe_api("deleteMessage", {
                   "chat_id": allowed_chat,
                   "message_id": message_id
               })
+              print(f"deleteMessage message_id={message_id}: {'OK' if result else 'SIN CONFIRMAR'}")
 
           for update in updates:
               update_id = update["update_id"]
@@ -198,19 +203,33 @@ jobs:
                   persist()
 
           persist()
-          print(f"Órdenes nuevas: {added}")
+          print(f"Updates recibidos: {len(updates)}; órdenes nuevas: {added}; nuevo offset: {state.get('offset', 0)}")
           PY
 
-      - name: Guardar órdenes y estado
+      - name: Guardar órdenes y estado sin pisar otros procesos
         run: |
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add telegram/requests.json telegram/telegram-state.json
+
           if git diff --cached --quiet; then
             echo "Sin cambios."
             exit 0
           fi
+
           git commit -m "Procesar órdenes de Telegram"
-          git fetch origin main
-          git rebase origin/main
-          git push
+
+          for intento in 1 2 3 4; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              echo "Órdenes guardadas correctamente (intento $intento)."
+              exit 0
+            fi
+            echo "Push concurrente detectado; reintentando ($intento/4)..."
+            sleep $((intento * 2))
+          done
+
+          echo "ERROR: no se pudieron guardar las órdenes tras 4 intentos."
+          exit 1
