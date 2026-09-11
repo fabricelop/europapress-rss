@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: europapress-rss
+  group: ttittulares-repo-write
   cancel-in-progress: false
 
 jobs:
@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Preparar Python
         uses: actions/setup-python@v5
@@ -28,6 +30,7 @@ jobs:
 
       - name: Recorrer Europa Press y actualizar archivo
         run: python generate_feed.py
+
       - name: Crear JSON reciente para TTiTTulares
         run: |
           python - <<'PY'
@@ -51,9 +54,10 @@ jobs:
 
           print(f"recent.json creado con {len(items)} noticias")
           PY
-        
-      - name: Guardar cambios
+
+      - name: Guardar cambios sin pisar otros procesos
         run: |
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -65,4 +69,20 @@ jobs:
           fi
 
           git commit -m "Actualizar archivo Europa Press"
-          git push
+
+          # Otro proceso (Telegram o TTiTTulares) puede haber escrito en main
+          # mientras se recorría Europa Press. Rebasamos antes de publicar y,
+          # si hubiera una carrera excepcional, reintentamos varias veces.
+          for intento in 1 2 3 4; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              echo "Cambios guardados correctamente (intento $intento)."
+              exit 0
+            fi
+            echo "Push concurrente detectado; reintentando ($intento/4)..."
+            sleep $((intento * 2))
+          done
+
+          echo "ERROR: no se pudo guardar tras 4 intentos."
+          exit 1
