@@ -86,9 +86,12 @@ jobs:
               state_path.write_text(json.dumps(state, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
               requests_path.write_text(json.dumps(queue, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
 
-          def add_request(kind, text, update_id):
+          def add_request(kind, text, update_id, dedupe_text=False):
               global added
               if update_id in existing_ids:
+                  return False
+              if dedupe_text and any(r.get("type") == kind and r.get("text") == text for r in queue["requests"]):
+                  existing_ids.add(update_id)
                   return False
               queue["requests"].append({
                   "update_id": update_id,
@@ -120,7 +123,8 @@ jobs:
                       match = re.search(r"(?m)^N\d+\.\s*(.+)$", original)
                       headline = match.group(1).strip() if match else original.strip()
                       if headline:
-                          add_request("prepare", f"Prepara la noticia: {headline}", update_id)
+                          request_text = f"Prepara la noticia: {headline}"
+                          add_request("prepare", request_text, update_id, dedupe_text=True)
                           persist()
                           safe_api("answerCallbackQuery", {
                               "callback_query_id": cq["id"],
@@ -133,7 +137,7 @@ jobs:
                               "text": "No he podido recuperar el texto de la noticia."
                           })
                   elif data == "run:bulletin":
-                      add_request("run", "Ejecuta ahora un boletín manual de TTiTTulares.", update_id)
+                      add_request("run", "Ejecuta ahora un boletín manual de TTiTTulares.", update_id, dedupe_text=True)
                       persist()
                       safe_api("answerCallbackQuery", {
                           "callback_query_id": cq["id"],
@@ -153,15 +157,21 @@ jobs:
                   persist()
                   continue
 
+              reply = message.get("reply_to_message") or {}
+              reply_text = (reply.get("text") or reply.get("caption") or "").strip()
+
               if text.split()[0].lower() == "/boletin":
-                  if add_request("run", "Ejecuta ahora un boletín manual de TTiTTulares.", update_id):
+                  if add_request("run", "Ejecuta ahora un boletín manual de TTiTTulares.", update_id, dedupe_text=True):
                       persist()
                       safe_api("sendMessage", {
                           "chat_id": allowed_chat,
                           "text": "▶️ Solicitud de boletín registrada."
                       })
               elif not text.startswith("/"):
-                  if add_request("instruction", text, update_id):
+                  stored_text = text
+                  if reply_text:
+                      stored_text = f"Instrucción: {text}\nMensaje al que responde:\n{reply_text}"
+                  if add_request("instruction", stored_text, update_id):
                       persist()
                       safe_api("sendMessage", {
                           "chat_id": allowed_chat,
