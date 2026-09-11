@@ -42,12 +42,17 @@ jobs:
 
               buttons = msg.get("buttons", [])
               if buttons:
-                  payload["reply_markup"] = {
-                      "inline_keyboard": [
-                          [{"text": b["label"], "url": b["url"]}]
-                          for b in buttons
-                      ]
-                  }
+                  keyboard = []
+                  for b in buttons:
+                      button = {"text": b["label"]}
+                      if b.get("url"):
+                          button["url"] = b["url"]
+                      elif b.get("callback_data"):
+                          button["callback_data"] = b["callback_data"]
+                      else:
+                          raise ValueError(f"Botón sin url ni callback_data: {b}")
+                      keyboard.append([button])
+                  payload["reply_markup"] = {"inline_keyboard": keyboard}
 
               req = urllib.request.Request(
                   api,
