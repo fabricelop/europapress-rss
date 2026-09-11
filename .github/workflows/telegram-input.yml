@@ -42,10 +42,10 @@ jobs:
 
           state_path = Path("telegram/telegram-state.json")
           requests_path = Path("telegram/requests.json")
-
           state = json.loads(state_path.read_text(encoding="utf-8"))
           queue = json.loads(requests_path.read_text(encoding="utf-8"))
           queue.setdefault("requests", [])
+          existing_ids = {r.get("update_id") for r in queue["requests"]}
 
           def api(method, payload=None):
               data = None
@@ -59,6 +59,13 @@ jobs:
               if not result.get("ok"):
                   raise RuntimeError(result)
               return result.get("result")
+
+          def safe_api(method, payload=None):
+              try:
+                  return api(method, payload)
+              except Exception as e:
+                  print(f"Aviso Telegram {method}: {e}")
+                  return None
 
           offset = int(state.get("offset", 0) or 0)
           params = urllib.parse.urlencode({
@@ -75,10 +82,14 @@ jobs:
           now = dt.datetime.now(dt.timezone.utc).isoformat()
           added = 0
 
+          def persist():
+              state_path.write_text(json.dumps(state, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+              requests_path.write_text(json.dumps(queue, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+
           def add_request(kind, text, update_id):
               global added
-              if any(r.get("update_id") == update_id for r in queue["requests"]):
-                  return
+              if update_id in existing_ids:
+                  return False
               queue["requests"].append({
                   "update_id": update_id,
                   "created_at": now,
@@ -86,16 +97,21 @@ jobs:
                   "text": text
               })
               queue["requests"] = queue["requests"][-100:]
+              existing_ids.add(update_id)
               added += 1
+              return True
 
           for update in updates:
               update_id = update["update_id"]
+              state["offset"] = max(int(state.get("offset", 0) or 0), update_id + 1)
+              state["initialized"] = True
 
               if "callback_query" in update:
                   cq = update["callback_query"]
                   msg = cq.get("message") or {}
                   chat_id = str((msg.get("chat") or {}).get("id", ""))
                   if chat_id != allowed_chat:
+                      persist()
                       continue
 
                   data = cq.get("data", "")
@@ -105,51 +121,56 @@ jobs:
                       headline = match.group(1).strip() if match else original.strip()
                       if headline:
                           add_request("prepare", f"Prepara la noticia: {headline}", update_id)
-                          api("answerCallbackQuery", {
+                          persist()
+                          safe_api("answerCallbackQuery", {
                               "callback_query_id": cq["id"],
                               "text": "✅ Añadida para preparar en el próximo boletín."
                           })
                       else:
-                          api("answerCallbackQuery", {
+                          persist()
+                          safe_api("answerCallbackQuery", {
                               "callback_query_id": cq["id"],
                               "text": "No he podido recuperar el texto de la noticia."
                           })
                   elif data == "run:bulletin":
                       add_request("run", "Ejecuta ahora un boletín manual de TTiTTulares.", update_id)
-                      api("answerCallbackQuery", {
+                      persist()
+                      safe_api("answerCallbackQuery", {
                           "callback_query_id": cq["id"],
-                          "text": "▶️ Solicitud de boletín registrada."
+                          "text": "✅ Solicitud de boletín registrada."
                       })
+                  else:
+                      persist()
                   continue
 
               message = update.get("message") or {}
               chat_id = str((message.get("chat") or {}).get("id", ""))
               if chat_id != allowed_chat:
+                  persist()
                   continue
               text = (message.get("text") or "").strip()
               if not text:
+                  persist()
                   continue
 
               if text.split()[0].lower() == "/boletin":
-                  add_request("run", "Ejecuta ahora un boletín manual de TTiTTulares.", update_id)
-                  api("sendMessage", {
-                      "chat_id": allowed_chat,
-                      "text": "▶️ Solicitud de boletín registrada."
-                  })
+                  if add_request("run", "Ejecuta ahora un boletín manual de TTiTTulares.", update_id):
+                      persist()
+                      safe_api("sendMessage", {
+                          "chat_id": allowed_chat,
+                          "text": "▶️ Solicitud de boletín registrada."
+                      })
               elif not text.startswith("/"):
-                  add_request("instruction", text, update_id)
-                  api("sendMessage", {
-                      "chat_id": allowed_chat,
-                      "text": "📝 Instrucción guardada para la próxima ejecución."
-                  })
+                  if add_request("instruction", text, update_id):
+                      persist()
+                      safe_api("sendMessage", {
+                          "chat_id": allowed_chat,
+                          "text": "📝 Instrucción guardada para la próxima ejecución."
+                      })
+              else:
+                  persist()
 
-          if updates:
-              state["offset"] = max(u["update_id"] for u in updates) + 1
-          state["initialized"] = True
-
-          state_path.write_text(json.dumps(state, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
-          if added:
-              requests_path.write_text(json.dumps(queue, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+          persist()
           print(f"Órdenes nuevas: {added}")
           PY
 
@@ -163,5 +184,6 @@ jobs:
             exit 0
           fi
           git commit -m "Procesar órdenes de Telegram"
-          git pull --rebase origin main
+          git fetch origin main
+          git rebase origin/main
           git push
