@@ -46,8 +46,27 @@ jobs:
               except Exception:
                   return None
 
+          def remate_only(tweet_text):
+              if not tweet_text:
+                  return None
+              pos = tweet_text.find("🌶️")
+              return tweet_text[pos:].strip() if pos >= 0 else tweet_text.strip()
+
           for msg in data.get("messages", []):
-              payload = {"chat_id": chat_id, "text": msg["text"], "disable_web_page_preview": True}
+              # Mostrar las alternativas en el propio mensaje de Telegram.
+              alt_texts = []
+              for b in msg.get("buttons", []):
+                  label = str(b.get("label", "")).lower()
+                  if "alt." in label and b.get("url"):
+                      t = remate_only(tweet_text_from_url(b["url"]))
+                      if t:
+                          alt_texts.append(t)
+
+              visible_text = msg["text"]
+              if alt_texts:
+                  visible_text += "\n\nAlternativas:\n" + "\n".join(f"{i}) {t}" for i, t in enumerate(alt_texts, 1))
+
+              payload = {"chat_id": chat_id, "text": visible_text, "disable_web_page_preview": True}
               keyboard = []
               for b in msg.get("buttons", []):
                   button = {"text": b["label"]}
