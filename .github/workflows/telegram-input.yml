@@ -1,9 +1,8 @@
 name: Leer órdenes de Telegram
 
 on:
-  schedule:
-    # Cada 5 minutos, desplazado del minuto 00 para reducir retrasos de GitHub Actions.
-    - cron: "2-59/5 * * * *"
+  # El polling automático queda desactivado: Telegram entra ahora por webhook en Vercel.
+  # Se mantiene ejecución manual solo para diagnóstico de emergencia.
   workflow_dispatch:
   push:
     branches: [main]
