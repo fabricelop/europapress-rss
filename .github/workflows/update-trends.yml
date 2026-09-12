@@ -8,7 +8,7 @@ on:
       - ".github/workflows/update-trends.yml"
       - "trends/update_trends.py"
   schedule:
-    - cron: "52 * * * *"
+    - cron: "2,12,22,32,42,52 * * * *"
 
 permissions:
   contents: write
