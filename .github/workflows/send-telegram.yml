@@ -25,6 +25,7 @@ jobs:
           python3 <<'PY'
           import json
           import os
+          import urllib.parse
           import urllib.request
 
           with open("telegram/latest.json", encoding="utf-8") as f:
@@ -34,6 +35,17 @@ jobs:
           chat_id = os.environ["TELEGRAM_CHAT_ID"]
           api = f"https://api.telegram.org/bot{token}/sendMessage"
 
+          def tweet_text_from_url(url):
+              try:
+                  parsed = urllib.parse.urlparse(url)
+                  if parsed.netloc not in {"twitter.com", "www.twitter.com", "x.com", "www.x.com"}:
+                      return None
+                  qs = urllib.parse.parse_qs(parsed.query)
+                  values = qs.get("text")
+                  return values[0] if values else None
+              except Exception:
+                  return None
+
           for msg in data.get("messages", []):
               payload = {
                   "chat_id": chat_id,
@@ -41,18 +53,39 @@ jobs:
                   "disable_web_page_preview": True
               }
 
-              buttons = list(msg.get("buttons", []))
-              buttons.append({"label": "🗑️ Quitar", "callback_data": "delete:message"})
               keyboard = []
-              for b in buttons:
+              for b in msg.get("buttons", []):
                   button = {"text": b["label"]}
                   if b.get("url"):
                       button["url"] = b["url"]
+                      tweet_text = tweet_text_from_url(b["url"])
+                      if tweet_text and "abrir" in b["label"].lower() and "x" in b["label"].lower():
+                          keyboard.append([
+                              button,
+                              {"text": "📋 Copia", "copy_text": {"text": tweet_text}}
+                          ])
+                      else:
+                          keyboard.append([button])
                   elif b.get("callback_data"):
                       button["callback_data"] = b["callback_data"]
+                      keyboard.append([button])
+                  elif b.get("copy_text"):
+                      button["copy_text"] = {"text": b["copy_text"]}
+                      keyboard.append([button])
                   else:
-                      raise ValueError(f"Botón sin url ni callback_data: {b}")
-                  keyboard.append([button])
+                      raise ValueError(f"Botón sin url, callback_data ni copy_text: {b}")
+
+              search_terms = [str(x).strip() for x in msg.get("search_terms", []) if str(x).strip()][:3]
+              if search_terms:
+                  query = " OR ".join(search_terms)
+                  search_url = "https://x.com/search?" + urllib.parse.urlencode({
+                      "q": query,
+                      "src": "typed_query",
+                      "f": "live"
+                  })
+                  keyboard.append([{"text": "🔎 Buscar en X", "url": search_url}])
+
+              keyboard.append([{"text": "🗑️ Quitar", "callback_data": "delete:message"}])
               payload["reply_markup"] = {"inline_keyboard": keyboard}
 
               req = urllib.request.Request(
