@@ -30,9 +30,7 @@ def unique(values):
     for value in values:
         value = clean(value)
         key = value.casefold()
-        if not value or key in seen:
-            continue
-        if len(value) > 100:
+        if not value or key in seen or len(value) > 100:
             continue
         seen.add(key)
         out.append(value)
@@ -42,7 +40,9 @@ def unique(values):
 def get(url):
     r = requests.get(url, headers=HEADERS, timeout=30, params={"_": int(datetime.now().timestamp())})
     r.raise_for_status()
-    return r.text
+    # Estas páginas son UTF-8 aunque alguna no declare bien el charset y requests
+    # pueda interpretar los bytes como latin-1, provocando AlavÃ©s/IÃ±igo.
+    return r.content.decode("utf-8", errors="replace")
 
 
 def parse_trends24(html):
@@ -51,7 +51,6 @@ def parse_trends24(html):
         vals = unique(a.get_text(" ", strip=True) for a in soup.select(selector))
         if len(vals) >= 10:
             return vals[:20]
-    # Fallback: first timeline block only.
     card = soup.select_one(".trend-card")
     if card:
         vals = unique(a.get_text(" ", strip=True) for a in card.find_all("a"))
@@ -62,7 +61,6 @@ def parse_trends24(html):
 
 def parse_getdaytrends(html):
     soup = BeautifulSoup(html, "html.parser")
-    candidates = []
     for table in soup.find_all("table"):
         rows = []
         for tr in table.find_all("tr"):
@@ -75,9 +73,8 @@ def parse_getdaytrends(html):
                 if name:
                     rows.append(name)
         if len(rows) >= 10:
-            candidates = rows
-            break
-    return unique(candidates)[:20]
+            return unique(rows)[:20]
+    return []
 
 
 def parse_tweets24(html):
@@ -86,7 +83,6 @@ def parse_tweets24(html):
     marker = "Live Twitter Trending Topics in Spain"
     if marker in text:
         text = text.split(marker, 1)[1]
-    # Their public page renders entries as: 1 #Trend Explore why ... 2 NextTrend ...
     parts = re.split(r"\s+(?=\d{1,2}\s+)", text)
     vals = []
     for part in parts:
@@ -98,13 +94,8 @@ def parse_tweets24(html):
 
 def fetch_source(name):
     try:
-        html = get(SOURCES[name])
-        parser = {
-            "trends24": parse_trends24,
-            "getdaytrends": parse_getdaytrends,
-            "tweets24": parse_tweets24,
-        }[name]
-        trends = parser(html)
+        parser = {"trends24": parse_trends24, "getdaytrends": parse_getdaytrends, "tweets24": parse_tweets24}[name]
+        trends = parser(get(SOURCES[name]))
         return {"ok": len(trends) >= 10, "trends": trends, "error": None}
     except Exception as e:
         return {"ok": False, "trends": [], "error": f"{type(e).__name__}: {e}"}
@@ -120,33 +111,23 @@ def previous_top10():
 def main():
     now = datetime.now(ZoneInfo("Europe/Madrid"))
     previous = previous_top10()
-
     primary = fetch_source("trends24")
     secondary = fetch_source("getdaytrends")
-
     chosen_name = "trends24" if primary["ok"] else "getdaytrends"
     chosen = primary if primary["ok"] else secondary
+    third = None
     if not chosen["ok"]:
         third = fetch_source("tweets24")
         chosen_name, chosen = "tweets24", third
-    else:
-        third = None
-
     top10 = chosen["trends"][:10]
     unchanged = [x.casefold() for x in top10] == [x.casefold() for x in previous]
     if unchanged and third is None:
         third = fetch_source("tweets24")
-
     if len(top10) < 10:
         raise RuntimeError("No se pudo obtener un Top 10 fiable de ninguna fuente")
-
-    source_data = {
-        "trends24": primary,
-        "getdaytrends": secondary,
-    }
+    source_data = {"trends24": primary, "getdaytrends": secondary}
     if third is not None:
         source_data["tweets24"] = third
-
     payload = {
         "project": "TTendencias",
         "country": "ES",
