@@ -131,8 +131,10 @@ export default async function handler(req, res) {
     const text = (message.text || "").trim();
     if (!text) return res.status(200).json({ ok: true });
 
+    const normalized = text.toLocaleLowerCase("es-ES").replace(/[.!]+$/g, "").trim();
     const first = text.split(/\s+/)[0].toLowerCase();
-    if (first === "/boletin") {
+    const isRunCommand = first === "/boletin" || normalized === "ejecuta" || normalized === "ejecutar" || normalized === "ejecuta boletín" || normalized === "ejecuta boletin";
+    if (isRunCommand) {
       const added = await appendRequest(requestObj(update, "run", "Ejecuta ahora un boletín manual de TTiTTulares.", true));
       if (added) await safeTelegram("sendMessage", { chat_id: allowedChat, text: "▶️ Solicitud de boletín registrada." });
     } else if (!text.startsWith("/")) {
