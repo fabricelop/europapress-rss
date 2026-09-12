@@ -1,21 +1,15 @@
 const REPO = process.env.GITHUB_REPO || "fabricelop/europapress-rss";
 const BRANCH = process.env.GITHUB_BRANCH || "main";
-const QUEUE_PATH = "telegram/requests.json";
+const NEWS_QUEUE = "telegram/requests.json";
+const TRENDS_QUEUE = "trends/requests.json";
 
-function b64decode(s) {
-  return Buffer.from((s || "").replace(/\n/g, ""), "base64").toString("utf8");
-}
-
-function b64encode(s) {
-  return Buffer.from(s, "utf8").toString("base64");
-}
+function b64decode(s) { return Buffer.from((s || "").replace(/\n/g, ""), "base64").toString("utf8"); }
+function b64encode(s) { return Buffer.from(s, "utf8").toString("base64"); }
 
 async function telegram(method, payload = {}) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const r = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(payload),
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload),
   });
   const data = await r.json();
   if (!data.ok) throw new Error(`Telegram ${method}: ${JSON.stringify(data)}`);
@@ -36,29 +30,24 @@ async function gh(path, options = {}) {
   });
 }
 
-async function appendRequest(request) {
+async function appendRequest(request, queuePath = NEWS_QUEUE) {
   for (let attempt = 1; attempt <= 5; attempt++) {
-    const get = await gh(`contents/${QUEUE_PATH}?ref=${encodeURIComponent(BRANCH)}`);
-    if (!get.ok) throw new Error(`GitHub GET queue: ${get.status} ${await get.text()}`);
+    const get = await gh(`contents/${queuePath}?ref=${encodeURIComponent(BRANCH)}`);
+    if (!get.ok) throw new Error(`GitHub GET queue ${queuePath}: ${get.status} ${await get.text()}`);
     const file = await get.json();
     const queue = JSON.parse(b64decode(file.content) || '{"requests":[]}');
     queue.requests ||= [];
     if (queue.requests.some((r) => r.update_id === request.update_id)) return false;
     if (request.dedupe_text && queue.requests.some((r) => r.type === request.type && r.text === request.text)) return false;
-
     const stored = { ...request };
     delete stored.dedupe_text;
     queue.requests.push(stored);
     queue.requests = queue.requests.slice(-100);
-
-    const put = await gh(`contents/${QUEUE_PATH}`, {
-      method: "PUT",
-      headers: { "content-type": "application/json" },
+    const put = await gh(`contents/${queuePath}`, {
+      method: "PUT", headers: { "content-type": "application/json" },
       body: JSON.stringify({
-        message: "Procesar orden de Telegram por webhook",
-        content: b64encode(JSON.stringify(queue) + "\n"),
-        sha: file.sha,
-        branch: BRANCH,
+        message: queuePath === TRENDS_QUEUE ? "Procesar orden TTendencias por webhook" : "Procesar orden de Telegram por webhook",
+        content: b64encode(JSON.stringify(queue) + "\n"), sha: file.sha, branch: BRANCH,
       }),
     });
     if (put.ok) return true;
@@ -74,23 +63,19 @@ async function safeTelegram(method, payload) {
 }
 
 function requestObj(update, type, text, dedupe_text = false) {
-  return {
-    update_id: update.update_id,
-    created_at: new Date().toISOString(),
-    type,
-    text,
-    dedupe_text,
-  };
+  return { update_id: update.update_id, created_at: new Date().toISOString(), type, text, dedupe_text };
+}
+
+function isTrendMessage(text) {
+  return /\bTTENDENCIA\b/i.test(text || "") || /^[🔵🟢🟣🟠🔴🟡🟤⚪]\s*T\d+\b/u.test(text || "");
 }
 
 export default async function handler(req, res) {
   if (req.method === "GET") return res.status(200).json({ ok: true, service: "ttittulares-telegram-webhook" });
   if (req.method !== "POST") return res.status(405).json({ ok: false });
-
   const expected = process.env.TELEGRAM_WEBHOOK_SECRET;
   const received = req.headers["x-telegram-bot-api-secret-token"];
   if (!expected || received !== expected) return res.status(401).json({ ok: false });
-
   const update = req.body || {};
   const allowedChat = String(process.env.TELEGRAM_CHAT_ID || "");
 
@@ -101,7 +86,6 @@ export default async function handler(req, res) {
       const chatId = String((msg.chat || {}).id || "");
       if (chatId !== allowedChat) return res.status(200).json({ ok: true });
       const data = cq.data || "";
-
       if (data === "delete:message") {
         await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "🗑️ Quitado." });
         await telegram("deleteMessage", { chat_id: allowedChat, message_id: msg.message_id });
@@ -110,15 +94,16 @@ export default async function handler(req, res) {
         const match = original.match(/^N\d+\.\s*(.+)$/m);
         const headline = (match ? match[1] : original).trim();
         if (headline) {
-          await appendRequest(requestObj(update, "prepare", `Prepara la noticia: ${headline}`, true));
+          await appendRequest(requestObj(update, "prepare", `Prepara la noticia: ${headline}`, true), NEWS_QUEUE);
           await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "✅ Añadida para preparar." });
           await safeTelegram("deleteMessage", { chat_id: allowedChat, message_id: msg.message_id });
-        } else {
-          await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "No he podido recuperar el texto de la noticia." });
         }
       } else if (data === "run:bulletin") {
-        await appendRequest(requestObj(update, "run", "Ejecuta ahora un boletín manual de TTiTTulares.", true));
+        await appendRequest(requestObj(update, "run", "Ejecuta ahora un boletín manual de TTiTTulares.", true), NEWS_QUEUE);
         await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "✅ Solicitud de boletín registrada." });
+      } else if (data === "run:trends") {
+        await appendRequest(requestObj(update, "run", "Ejecuta ahora TTendencias.", true), TRENDS_QUEUE);
+        await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "✅ Solicitud TTendencias registrada." });
       } else {
         await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id });
       }
@@ -130,21 +115,27 @@ export default async function handler(req, res) {
     if (chatId !== allowedChat) return res.status(200).json({ ok: true });
     const text = (message.text || "").trim();
     if (!text) return res.status(200).json({ ok: true });
-
     const normalized = text.toLocaleLowerCase("es-ES").replace(/[.!]+$/g, "").trim();
     const first = text.split(/\s+/)[0].toLowerCase();
-    const isRunCommand = first === "/boletin" || normalized === "ejecuta" || normalized === "ejecutar" || normalized === "ejecuta boletín" || normalized === "ejecuta boletin";
-    if (isRunCommand) {
-      const added = await appendRequest(requestObj(update, "run", "Ejecuta ahora un boletín manual de TTiTTulares.", true));
+    const isNewsRun = first === "/boletin" || normalized === "ejecuta" || normalized === "ejecutar" || normalized === "ejecuta boletín" || normalized === "ejecuta boletin";
+    const isTrendsRun = first === "/tendencias" || normalized === "ejecuta tendencias" || normalized === "ejecuta ttendencias";
+    if (isTrendsRun) {
+      const added = await appendRequest(requestObj(update, "run", "Ejecuta ahora TTendencias.", true), TRENDS_QUEUE);
+      if (added) await safeTelegram("sendMessage", { chat_id: allowedChat, text: "▶️ Solicitud TTendencias registrada." });
+    } else if (isNewsRun) {
+      const added = await appendRequest(requestObj(update, "run", "Ejecuta ahora un boletín manual de TTiTTulares.", true), NEWS_QUEUE);
       if (added) await safeTelegram("sendMessage", { chat_id: allowedChat, text: "▶️ Solicitud de boletín registrada." });
     } else if (!text.startsWith("/")) {
       const reply = message.reply_to_message || {};
       const replyText = (reply.text || reply.caption || "").trim();
       const storedText = replyText ? `Instrucción: ${text}\nMensaje al que responde:\n${replyText}` : text;
-      const added = await appendRequest(requestObj(update, "instruction", storedText));
-      if (added) await safeTelegram("sendMessage", { chat_id: allowedChat, text: "📝 Instrucción guardada para la próxima ejecución." });
+      const queuePath = replyText && isTrendMessage(replyText) ? TRENDS_QUEUE : NEWS_QUEUE;
+      const added = await appendRequest(requestObj(update, "instruction", storedText), queuePath);
+      if (added) await safeTelegram("sendMessage", {
+        chat_id: allowedChat,
+        text: queuePath === TRENDS_QUEUE ? "🟣 Instrucción TTendencias guardada." : "📝 Instrucción guardada para la próxima ejecución.",
+      });
     }
-
     return res.status(200).json({ ok: true });
   } catch (e) {
     console.error(e);
