@@ -26,7 +26,7 @@ jobs:
         run: |
           HOUR=$(TZ=Europe/Madrid date +%H)
           echo "hour=$HOUR" >> "$GITHUB_OUTPUT"
-          if [ "$HOUR" -ge 6 ] && [ "$HOUR" -le 23 ]; then
+          if { [ "$HOUR" -ge 6 ] && [ "$HOUR" -le 23 ]; } || [ "$HOUR" -eq 0 ] || [ "$HOUR" -eq 1 ]; then
             echo "run=yes" >> "$GITHUB_OUTPUT"
           else
             echo "run=no" >> "$GITHUB_OUTPUT"
