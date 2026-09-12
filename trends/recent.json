@@ -1,18 +1,18 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-12T19:05:30+02:00",
+  "captured_at": "2026-09-12T19:48:01+02:00",
   "primary_source": "trends24",
   "top10": [
     "Mikel Landa",
     "Landa",
     "#VueltaRTVE12s",
-    "#Landismo",
+    "Landismo",
+    "#MafinHastaElFinal",
     "#rcde",
-    "#LaVuelta26",
     "Osasuna",
     "Enric Mas",
-    "#MafinHastaElFinal",
+    "#LaVuelta26",
     "Catena"
   ],
   "items": [
@@ -30,15 +30,15 @@
     },
     {
       "rank": 4,
-      "name": "#Landismo"
+      "name": "Landismo"
     },
     {
       "rank": 5,
-      "name": "#rcde"
+      "name": "#MafinHastaElFinal"
     },
     {
       "rank": 6,
-      "name": "#LaVuelta26"
+      "name": "#rcde"
     },
     {
       "rank": 7,
@@ -50,7 +50,7 @@
     },
     {
       "rank": 9,
-      "name": "#MafinHastaElFinal"
+      "name": "#LaVuelta26"
     },
     {
       "rank": 10,
@@ -65,46 +65,30 @@
         "Mikel Landa",
         "Landa",
         "#VueltaRTVE12s",
-        "#Landismo",
+        "Landismo",
+        "#MafinHastaElFinal",
         "#rcde",
-        "#LaVuelta26",
         "Osasuna",
         "Enric Mas",
-        "#MafinHastaElFinal",
+        "#LaVuelta26",
         "Catena",
-        "Kuss",
-        "Fulham",
         "Celades",
+        "Kuss",
+        "Fran Sol",
+        "#AthleticElche",
         "Roberto Fernández",
-        "Collado del Alguacil",
-        "Zabiri",
-        "Jueces",
+        "Fulham",
+        "Madring",
         "El Sadar",
-        "Ontiveros",
-        "Fran Sol"
+        "Zabiri",
+        "Blizzcon"
       ],
       "error": null
     },
     "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "Mikel Landa",
-        "Landa",
-        "#VueltaRTVE12s",
-        "#landismo",
-        "#rcde",
-        "#MafinHastaElFinal",
-        "Osasuna",
-        "#LaVuelta26",
-        "Enric Mas",
-        "Catena",
-        "Kuss",
-        "Fran Sol",
-        "Roberto Fernández",
-        "Celades",
-        "Fulham"
-      ],
-      "error": null
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1789235282"
     }
   }
 }
