@@ -25,6 +25,7 @@ jobs:
           python3 <<'PY'
           import json
           import os
+          import re
           import urllib.parse
           import urllib.request
 
@@ -52,8 +53,31 @@ jobs:
               pos = tweet_text.find("🌶️")
               return tweet_text[pos:].strip() if pos >= 0 else tweet_text.strip()
 
-          for msg in data.get("messages", []):
-              # Mostrar las alternativas en el propio mensaje de Telegram.
+          def expand_messages(messages):
+              """Convierte un bloque legacy N1/N2/... en un mensaje independiente por noticia."""
+              for msg in messages:
+                  text = str(msg.get("text", ""))
+                  prepare_buttons = {
+                      str(b.get("callback_data", "")).split(":", 1)[1]: b
+                      for b in msg.get("buttons", [])
+                      if str(b.get("callback_data", "")).startswith("prepare:")
+                      and ":" in str(b.get("callback_data", ""))
+                  }
+                  news_lines = re.findall(r"(?m)^(N\d+)\.\s*(.+)$", text)
+                  if len(news_lines) > 1 and prepare_buttons:
+                      for news_id, headline in news_lines:
+                          button = prepare_buttons.get(news_id)
+                          if not button:
+                              continue
+                          yield {
+                              "text": f"🗂️ {news_id}. {headline.strip()}",
+                              "buttons": [button],
+                              "search_terms": msg.get("search_terms", []),
+                          }
+                  else:
+                      yield msg
+
+          for msg in expand_messages(data.get("messages", [])):
               alt_texts = []
               for b in msg.get("buttons", []):
                   label = str(b.get("label", "")).lower()
