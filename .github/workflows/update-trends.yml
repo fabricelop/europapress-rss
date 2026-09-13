@@ -8,18 +8,23 @@ on:
       - ".github/workflows/update-trends.yml"
       - "trends/update_trends.py"
   schedule:
-    - cron: "2,12,22,32,42,52 * * * *"
+    # Captura frecuente para que la ejecución de TTendencias a :25 disponga
+    # siempre de un snapshot reciente incluso si GitHub retrasa un cron.
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
 
+# Independiente del capturador de Europa Press. Los pushes se protegen con
+# fetch/rebase/reintentos, por lo que no necesitamos bloquear ambas colas.
 concurrency:
-  group: ttittulares-repo-write
-  cancel-in-progress: false
+  group: ttendencias-update
+  cancel-in-progress: true
 
 jobs:
   update-trends:
     runs-on: ubuntu-latest
+    timeout-minutes: 6
     steps:
       - name: Comprobar franja horaria Madrid
         id: timecheck
@@ -49,9 +54,37 @@ jobs:
         if: steps.timecheck.outputs.run == 'yes'
         run: pip install -r requirements.txt
 
-      - name: Capturar Top 10 España
+      - name: Capturar Top 10 España con reintentos
         if: steps.timecheck.outputs.run == 'yes'
-        run: python trends/update_trends.py
+        run: |
+          set -e
+          for intento in 1 2 3; do
+            if python trends/update_trends.py; then
+              exit 0
+            fi
+            echo "Captura fallida; reintentando ($intento/3)..."
+            sleep $((intento * 5))
+          done
+          echo "ERROR: no se pudo obtener un Top 10 fiable tras 3 intentos."
+          exit 1
+
+      - name: Validar frescura del snapshot
+        if: steps.timecheck.outputs.run == 'yes'
+        run: |
+          python3 <<'PY'
+          import json
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          p = json.load(open('trends/recent.json', encoding='utf-8'))
+          captured = datetime.fromisoformat(p['captured_at'])
+          now = datetime.now(ZoneInfo('Europe/Madrid'))
+          age = (now - captured).total_seconds()
+          if age < 0 or age > 600:
+              raise SystemExit(f"Snapshot no fresco: {age:.0f}s")
+          if len(p.get('top10', [])) != 10:
+              raise SystemExit('Top 10 incompleto')
+          print(f"Snapshot válido: {age:.0f}s de antigüedad")
+          PY
 
       - name: Guardar captura sin pisar otros procesos
         if: steps.timecheck.outputs.run == 'yes'
@@ -65,13 +98,14 @@ jobs:
             exit 0
           fi
           git commit -m "Actualizar TTendencias España"
-          for intento in 1 2 3 4; do
+          for intento in 1 2 3 4 5; do
             git fetch origin main
             git rebase origin/main
             if git push origin HEAD:main; then
               echo "Tendencias guardadas (intento $intento)."
               exit 0
             fi
+            echo "Push concurrente detectado; reintentando ($intento/5)..."
             sleep $((intento * 2))
           done
           echo "ERROR: no se pudieron guardar tendencias."
