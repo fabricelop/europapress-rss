@@ -70,6 +70,17 @@ function isTrendMessage(text) {
   return /\bTTENDENCIA\b/i.test(text || "") || /^[🔵🟢🟣🟠🔴🟡🟤⚪]\s*T\d+\b/u.test(text || "");
 }
 
+function extractPreparedHeadline(original, data) {
+  const requestedId = String(data || "").split(":", 2)[1] || "";
+  if (requestedId) {
+    const escaped = requestedId.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const exact = original.match(new RegExp(`^${escaped}\\.\\s*(.+)$`, "m"));
+    if (exact) return exact[1].trim();
+  }
+  const fallback = original.match(/^N\d+\.\s*(.+)$/m);
+  return (fallback ? fallback[1] : original).trim();
+}
+
 export default async function handler(req, res) {
   if (req.method === "GET") return res.status(200).json({ ok: true, service: "ttittulares-telegram-webhook" });
   if (req.method !== "POST") return res.status(405).json({ ok: false });
@@ -91,12 +102,14 @@ export default async function handler(req, res) {
         await telegram("deleteMessage", { chat_id: allowedChat, message_id: msg.message_id });
       } else if (data.startsWith("prepare:")) {
         const original = msg.text || "";
-        const match = original.match(/^N\d+\.\s*(.+)$/m);
-        const headline = (match ? match[1] : original).trim();
+        const headline = extractPreparedHeadline(original, data);
         if (headline) {
           await appendRequest(requestObj(update, "prepare", `Prepara la noticia: ${headline}`, true), NEWS_QUEUE);
           await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "✅ Añadida para preparar." });
-          await safeTelegram("deleteMessage", { chat_id: allowedChat, message_id: msg.message_id });
+          const valuationCount = (original.match(/^N\d+\.\s+/gm) || []).length;
+          if (valuationCount <= 1) {
+            await safeTelegram("deleteMessage", { chat_id: allowedChat, message_id: msg.message_id });
+          }
         }
       } else if (data === "run:bulletin") {
         await appendRequest(requestObj(update, "run", "Ejecuta ahora un boletín manual de TTiTTulares.", true), NEWS_QUEUE);
