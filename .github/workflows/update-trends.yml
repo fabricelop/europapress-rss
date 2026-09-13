@@ -8,18 +8,17 @@ on:
       - ".github/workflows/update-trends.yml"
       - "trends/update_trends.py"
   schedule:
-    # Captura frecuente para que la ejecución de TTendencias a :25 disponga
-    # siempre de un snapshot reciente incluso si GitHub retrasa un cron.
-    - cron: "2-59/5 * * * *"
+    # Refresco frecuente para que TTendencias use siempre un snapshot reciente.
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
 
-# Independiente del capturador de Europa Press. Los pushes se protegen con
-# fetch/rebase/reintentos, por lo que no necesitamos bloquear ambas colas.
+# No cancelar una captura ya iniciada si llega otra ejecución; una cancelación
+# podía dejar recent.json sin refrescar durante demasiado tiempo.
 concurrency:
   group: ttendencias-update
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   update-trends:
@@ -31,7 +30,7 @@ jobs:
         run: |
           HOUR=$(TZ=Europe/Madrid date +%H)
           echo "hour=$HOUR" >> "$GITHUB_OUTPUT"
-          if { [ "$HOUR" -ge 6 ] && [ "$HOUR" -le 23 ]; } || [ "$HOUR" -eq 0 ] || [ "$HOUR" -eq 1 ]; then
+          if [ "$HOUR" -ge 6 ] && [ "$HOUR" -le 23 ]; then
             echo "run=yes" >> "$GITHUB_OUTPUT"
           else
             echo "run=no" >> "$GITHUB_OUTPUT"
