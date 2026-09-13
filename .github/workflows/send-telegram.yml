@@ -70,7 +70,7 @@ jobs:
                           if not button:
                               continue
                           yield {
-                              "text": f"🗂️ {news_id}. {headline.strip()}",
+                              "text": f"🗂️ NOTICIA PARA VALORAR\n{news_id}. {headline.strip()}",
                               "buttons": [button],
                               "search_terms": msg.get("search_terms", []),
                           }
