@@ -7,17 +7,45 @@ const { chromium } = require('playwright');
   const outDir = 'selorecordamos/debug';
   fs.mkdirSync(outDir, { recursive: true });
 
+  const authToken = process.env.X_AUTH_TOKEN || '';
+  const ct0 = process.env.X_CT0 || '';
+
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
     locale: 'es-ES',
     timezoneId: 'Europe/Madrid',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
   });
+
+  if (authToken && ct0) {
+    await context.addCookies([
+      {
+        name: 'auth_token',
+        value: authToken,
+        domain: '.x.com',
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None'
+      },
+      {
+        name: 'ct0',
+        value: ct0,
+        domain: '.x.com',
+        path: '/',
+        httpOnly: false,
+        secure: true,
+        sameSite: 'Lax'
+      }
+    ]);
+  }
+
   const page = await context.newPage();
   const result = {
     query,
     search_url: url,
     fetched_at: new Date().toISOString(),
+    authenticated_cookie_pair_present: Boolean(authToken && ct0),
     final_url: null,
     title: null,
     tweets: [],
@@ -27,7 +55,7 @@ const { chromium } = require('playwright');
 
   try {
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-    await page.waitForTimeout(8000);
+    await page.waitForTimeout(10000);
     result.final_url = page.url();
     result.title = await page.title();
 
@@ -44,18 +72,22 @@ const { chromium } = require('playwright');
       const m = statusPath.match(/^\/([^/]+)\/status\/(\d+)/);
       if (!m) continue;
       const [, user, id] = m;
+      if (result.tweets.some(t => t.id === id)) continue;
       result.tweets.push({ id, user: `@${user}`, text, url: `https://x.com/${user}/status/${id}` });
     }
 
     if (result.tweets.length) {
       result.status = 'ok';
-      result.note = `Extraídos ${result.tweets.length} tuits sin autenticación.`;
+      result.note = `Extraídos ${result.tweets.length} tuits de la búsqueda.`;
+    } else if (!authToken || !ct0) {
+      result.status = 'missing_secrets';
+      result.note = 'Faltan X_AUTH_TOKEN y/o X_CT0 en GitHub Actions Secrets.';
     } else if (loginVisible || /login|i\/flow\/login/.test(result.final_url || '')) {
       result.status = 'auth_required';
-      result.note = 'X exige sesión autenticada para mostrar los resultados de búsqueda.';
+      result.note = 'Las cookies no han autenticado la sesión de X o han caducado.';
     } else {
       result.status = 'no_results';
-      result.note = 'La página cargó, pero no se encontraron artículos de tuit. Puede ser bloqueo, challenge o cambio de interfaz.';
+      result.note = 'La página cargó pero no devolvió tuits. Puede ser challenge/bloqueo o cambio de interfaz.';
     }
 
     await page.screenshot({ path: `${outDir}/search.png`, fullPage: true });
