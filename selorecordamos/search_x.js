@@ -59,29 +59,36 @@ const { chromium } = require('playwright');
     note: null
   };
 
-  const rejectReason = (text) => {
-    const t = text.toLocaleLowerCase('es-ES').replace(/\s+/g, ' ').trim();
+  const normalize = (text) => text
+    .toLocaleLowerCase('es-ES')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 
-    if (/\b(si|cuando)\s+(mañana\s+)?(desaparezco|muero|fallezco|palmo)\b/.test(t)) {
+  const rejectReason = (text) => {
+    const t = normalize(text);
+
+    if (/\b(si|cuando)\s+(manana\s+)?(desaparezco|muero|fallezco|palmo)\b/.test(t)) {
       return 'memorial/no es una petición de recordatorio';
     }
-    if (/\brecordadme\s+como\s+(el|la|los|las|quien|quién)\b/.test(t)) {
+    if (/\brecordadme\s+como\s+(el|la|los|las|quien)\b/.test(t)) {
       return '“recordadme como…” no es una petición de recordatorio';
     }
 
-    const interrogativeAfterRemember = [
-      /\brecordadme[,:]?\s+(quién|quien|cuál|cual|dónde|donde|cómo|como|por qué|porque)\b/,
-      /\brecordadme[,:]?\s+en\s+(qué|que|cuál|cual)\b/,
-      /\brecordadme[,:]?\s+en\s+est[áa]\b/,
-      /\bque alguien me recuerde\s+(quién|quien|cuál|cual|dónde|donde|cómo|como|por qué|porque)\b/,
-      /\bque alguien me recuerde\s+de\s+(dónde|donde|qué|que|cuál|cual)\b/,
+    const consultationPatterns = [
+      /\brecordadme[,:]?\s+(quien|cual|donde|como|por que|porque)\b/,
+      /\brecordadme[,:]?\s+en\s+(que|cual)\b/,
+      /\brecordadme[,:]?\s+en\s+esta\b/,
+      /\bque alguien me recuerde\s+(quien|cual|donde|como|por que|porque)\b/,
+      /\bque alguien me recuerde\s+de\s+(donde|que|cual)\b/,
       /\bque alguien me recuerde\s+(una|un)\s+sol[ao]\b/
     ];
-    if (interrogativeAfterRemember.some(r => r.test(t))) {
+    if (consultationPatterns.some(r => r.test(t))) {
       return 'pregunta/consulta, no recordatorio futuro';
     }
 
-    if (/\brecordadme[,:]?\s+que\s+(quién|quien|qué|que|cuál|cual|dónde|donde|cómo|como)\b/.test(t)) {
+    if (/\brecordadme[,:]?\s+que\s+(quien|que|cual|donde|como)\b/.test(t)) {
       return 'pregunta/consulta, no recordatorio futuro';
     }
 
