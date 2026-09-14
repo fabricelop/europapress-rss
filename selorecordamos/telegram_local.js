@@ -3,6 +3,7 @@ const path = require('path');
 const cp = require('child_process');
 
 const baseDir = __dirname;
+const repoDir = path.join(baseDir, '..');
 const outboxFile = path.join(baseDir, 'telegram-outbox.json');
 const candidatesDir = path.join(baseDir, 'candidates');
 const runtimeDir = path.join(baseDir, 'runtime');
@@ -107,15 +108,33 @@ async function sendOutbox() {
   if (changed) writeJson(path.join(runtimeDir, 'telegram-sent.json'), sent);
 }
 
+function runGit(args, options = {}) {
+  return cp.execFileSync('git', args, {
+    cwd: repoDir,
+    encoding: 'utf8',
+    stdio: options.stdio || 'pipe'
+  });
+}
+
 function gitPushRequest() {
   try {
-    cp.execFileSync('git', ['add', 'selorecordamos/requests.json'], { cwd: path.join(baseDir, '..'), stdio: 'ignore' });
-    const diff = cp.spawnSync('git', ['diff', '--cached', '--quiet'], { cwd: path.join(baseDir, '..') });
-    if (diff.status === 0) return;
-    cp.execFileSync('git', ['commit', '-m', 'Queue SeLoRecordamos evaluation'], { cwd: path.join(baseDir, '..'), stdio: 'ignore' });
-    cp.execFileSync('git', ['push', 'origin', 'main'], { cwd: path.join(baseDir, '..'), stdio: 'ignore' });
+    runGit(['add', 'selorecordamos/requests.json']);
+    const diff = cp.spawnSync('git', ['diff', '--cached', '--quiet'], { cwd: repoDir });
+    if (diff.status !== 0) {
+      runGit(['commit', '-m', 'Queue SeLoRecordamos evaluation']);
+    }
+
+    try {
+      runGit(['push', 'origin', 'main']);
+    } catch (_) {
+      console.log('GitHub avanzó mientras se evaluaba; sincronizando y reintentando...');
+      runGit(['pull', '--rebase', 'origin', 'main']);
+      runGit(['push', 'origin', 'main']);
+    }
+    console.log('Solicitud de evaluación subida a GitHub.');
   } catch (e) {
-    console.error('No se pudo subir requests.json a GitHub:', e.message);
+    const detail = String(e && e.stderr ? e.stderr : (e && e.message ? e.message : e)).trim();
+    console.error('No se pudo subir requests.json a GitHub:', detail);
   }
 }
 
