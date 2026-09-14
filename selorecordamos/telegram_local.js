@@ -10,6 +10,7 @@ const runtimeDir = path.join(baseDir, 'runtime');
 const stateFile = path.join(runtimeDir, 'telegram-state.json');
 const requestsFile = path.join(baseDir, 'requests.json');
 const assistantSentFile = path.join(runtimeDir, 'assistant-output-sent.json');
+const outputGroupsFile = path.join(runtimeDir, 'assistant-output-groups.json');
 const assistantOutputUrl = 'https://raw.githubusercontent.com/fabricelop/europapress-rss/main/selorecordamos/assistant-output.json';
 fs.mkdirSync(runtimeDir, { recursive: true });
 
@@ -24,6 +25,7 @@ async function safeDeleteMessage(messageId) { try { await telegram('deleteMessag
 function readJson(file,fallback){try{return JSON.parse(fs.readFileSync(file,'utf8'));}catch(_){return fallback;}}
 function writeJson(file,data){fs.writeFileSync(file,JSON.stringify(data,null,2)+'\n','utf8');}
 function localTime(value){if(!value)return'hora desconocida';const d=new Date(value);if(Number.isNaN(d.getTime()))return value;return new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(',','');}
+function shortKey(key){let h=0;for(const ch of String(key)){h=((h<<5)-h)+ch.charCodeAt(0);h|=0;}return Math.abs(h).toString(36);}
 
 async function sendOutbox(){ const data=readJson(outboxFile,{candidates:[]}); const sent=readJson(path.join(runtimeDir,'telegram-sent.json'),{}); let changed=false,index=1; for(const c of data.candidates||[]){const id=String(c.id||'');if(!id||sent[id])continue;const visible=`🧠 SELORECORDAMOS · SR${index}\n${c.user||''} · ${localTime(c.datetime)}\n\n${String(c.text||'').trim()}`; await telegram('sendMessage',{chat_id:chatId,text:visible,disable_web_page_preview:true,reply_markup:{inline_keyboard:[[{text:'🔗 Abrir original en X',url:c.url}],[{text:'🧠 Evaluar',callback_data:`sr:evaluate:${id}`},{text:'🗑️ Borrar',callback_data:`sr:delete:${id}`}]]}}); sent[id]={sent_at:new Date().toISOString()};changed=true;index++;} if(changed)writeJson(path.join(runtimeDir,'telegram-sent.json'),sent); }
 
@@ -42,45 +44,43 @@ function findOriginalUrl(item){
   if(id){const q=readJson(requestsFile,{requests:[]});const req=(q.requests||[]).find(x=>String(x.tweet_id||'')===id);if(req&&req.url)return String(req.url);}
   return '';
 }
-function visibleAssistantText(item){
-  let text=String(item.telegram_text||item.content||'').trim();
-  return text.replace(/\n*https:\/\/x\.com\/[^\s]+\/status\/\d+\s*$/i,'').trim();
+function evaluationHeader(item){
+  const text=String(item.telegram_text||item.content||'').trim().replace(/\n*https:\/\/x\.com\/[^\s]+\/status\/\d+\s*$/i,'').trim();
+  const p=text.search(/\n\nPropuestas para CITAR en X:/i);
+  if(p>=0)return text.slice(0,p).trim();
+  const a=text.search(/\n\nA\)\s+/);
+  if(a>=0)return text.slice(0,a).trim();
+  return text;
 }
 async function sendAssistantOutputs(){
   let data;
   try { const r=await fetch(`${assistantOutputUrl}?t=${Date.now()}`,{headers:{'cache-control':'no-cache'}}); if(!r.ok){if(r.status===404)return;throw new Error(`assistant-output HTTP ${r.status}`);} data=await r.json(); }
   catch(e){console.error('No se pudo leer assistant-output.json:',e.message||e);return;}
-  const sent=readJson(assistantSentFile,{});let changed=false;
+  const sent=readJson(assistantSentFile,{});const groups=readJson(outputGroupsFile,{});let changed=false,groupsChanged=false;
   for(const item of data.outputs||[]){
     const key=String(item.request_key||item.id||'');
     if(!key||sent[key]||item.send_to_telegram===false)continue;
-    const text=visibleAssistantText(item);if(!text)continue;
-    const alternatives=parseAlternatives(item);
-    const originalUrl=findOriginalUrl(item);
-    const keyboard=[];
-    alternatives.forEach((alt,i)=>{
-      if(alt.length<=256) keyboard.push([{text:`📋 Copiar ${String.fromCharCode(65+i)}`,copy_text:{text:alt}}]);
-      else console.error(`Alternativa ${String.fromCharCode(65+i)} supera 256 caracteres (${alt.length}).`);
-    });
-    if(originalUrl)keyboard.push([{text:'🔗 Abrir original en X',url:originalUrl}]);
-    const deleteId=key.replace(/[^A-Za-z0-9_-]/g,'_').slice(-40)||'output';
-    keyboard.push([{text:'🗑️ Borrar',callback_data:`sr:outdelete:${deleteId}`}]);
-    const chunks=[];let rest=text;
-    while(rest.length>3900){let cut=rest.lastIndexOf('\n',3900);if(cut<2500)cut=3900;chunks.push(rest.slice(0,cut));rest=rest.slice(cut).replace(/^\n+/,'');}
-    if(rest)chunks.push(rest);
-    for(let i=0;i<chunks.length;i++){
-      const payload={chat_id:chatId,text:chunks[i],disable_web_page_preview:true};
-      if(i===chunks.length-1&&keyboard.length)payload.reply_markup={inline_keyboard:keyboard};
-      await telegram('sendMessage',payload);
+    const alternatives=parseAlternatives(item);const originalUrl=findOriginalUrl(item);const header=evaluationHeader(item);if(!header)continue;
+    const groupId=shortKey(key);const messageIds=[];
+    const headMsg=await telegram('sendMessage',{chat_id:chatId,text:header,disable_web_page_preview:true});messageIds.push(headMsg.message_id);
+    for(let i=0;i<alternatives.length;i++){
+      const alt=alternatives[i];const letter=String.fromCharCode(65+i);
+      const keyboard=[];
+      if(alt.length<=256)keyboard.push([{text:`📋 Copiar ${letter}`,copy_text:{text:alt}}]);
+      else console.error(`Alternativa ${letter} supera 256 caracteres (${alt.length}).`);
+      const m=await telegram('sendMessage',{chat_id:chatId,text:`${letter}) ${alt}`,disable_web_page_preview:true,reply_markup:keyboard.length?{inline_keyboard:keyboard}:undefined});messageIds.push(m.message_id);
     }
+    const footer=[];if(originalUrl)footer.push([{text:'🔗 Abrir original en X',url:originalUrl}]);footer.push([{text:'🗑️ Borrar',callback_data:`sr:outdelete:${groupId}`}]);
+    const footMsg=await telegram('sendMessage',{chat_id:chatId,text:'Acciones:',disable_web_page_preview:true,reply_markup:{inline_keyboard:footer}});messageIds.push(footMsg.message_id);
+    groups[groupId]={key,message_ids:messageIds};groupsChanged=true;
     sent[key]={sent_at:new Date().toISOString()};changed=true;
   }
-  if(changed)writeJson(assistantSentFile,sent);
+  if(changed)writeJson(assistantSentFile,sent);if(groupsChanged)writeJson(outputGroupsFile,groups);
 }
 
 function runGit(args){return cp.execFileSync('git',args,{cwd:repoDir,encoding:'utf8',stdio:'pipe'});}
 function gitPushRequest(){try{runGit(['add','selorecordamos/requests.json']);const diff=cp.spawnSync('git',['diff','--cached','--quiet'],{cwd:repoDir});if(diff.status!==0)runGit(['commit','-m','Queue SeLoRecordamos request']);try{runGit(['push','origin','main']);}catch(_){runGit(['pull','--rebase','--autostash','origin','main']);runGit(['push','origin','main']);}console.log('Solicitud subida a GitHub.');}catch(e){console.error('No se pudo subir requests.json a GitHub:',String(e.stderr||e.message||e).trim());}}
 function candidateFromTelegramMessage(msg){ const text=String(msg&&msg.text||''); const urlMatch=text.match(/https:\/\/x\.com\/([^\s/]+)\/status\/(\d+)/i); if(urlMatch)return {id:urlMatch[2],user:'@'+urlMatch[1],url:urlMatch[0],text:''}; const header=text.match(/SELORECORDAMOS\s*·\s*SR\d+\s*\n([^\s·]+)[^\n]*\n\n([\s\S]*)/i); if(!header)return null; const user=header[1]; const original=header[2].trim(); const files=fs.existsSync(candidatesDir)?fs.readdirSync(candidatesDir).filter(x=>x.endsWith('.json')):[]; for(const file of files){const c=readJson(path.join(candidatesDir,file),null);if(c&&String(c.user||'')===user&&String(c.text||'').trim()===original)return {id:String(c.id),user:c.user,text:c.text,url:c.url};} return {id:'',user,text:original,url:''}; }
-async function pollOnce(){ const state=readJson(stateFile,{offset:0}); const url=new URL(api('getUpdates'));url.searchParams.set('offset',String(state.offset||0));url.searchParams.set('timeout','25');url.searchParams.set('allowed_updates',JSON.stringify(['callback_query','message'])); const r=await fetch(url);const data=await r.json();if(!data.ok)throw new Error(JSON.stringify(data));const queue=readJson(requestsFile,{requests:[]});queue.requests||=[];let changed=false; for(const update of data.result||[]){state.offset=Math.max(Number(state.offset||0),Number(update.update_id)+1);writeJson(stateFile,state); if(update.callback_query){const cq=update.callback_query,msg=cq.message||{};if(String((msg.chat||{}).id||'')!==chatId)continue;const parts=String(cq.data||'').split(':');if(parts[0]!=='sr'||parts.length<3)continue;const action=parts[1],id=parts[2]; if(action==='delete'){await safeAnswerCallbackQuery(cq.id,'🗑️ Candidato quitado.');await safeDeleteMessage(msg.message_id);continue;} if(action==='outdelete'){await safeAnswerCallbackQuery(cq.id,'🗑️ Evaluación borrada.');await safeDeleteMessage(msg.message_id);continue;} if(action==='evaluate'){const c=readJson(path.join(candidatesDir,`${id}.json`),null);if(!c){await safeAnswerCallbackQuery(cq.id,'No encuentro este candidato.');continue;}if(!queue.requests.some(x=>x.type==='evaluate'&&x.tweet_id===id)){queue.requests.push({created_at:new Date().toISOString(),type:'evaluate',tweet_id:id,user:c.user,text:c.text,url:c.url});queue.requests=queue.requests.slice(-100);changed=true;}await safeAnswerCallbackQuery(cq.id,'🧠 Candidato enviado para evaluar.');await safeDeleteMessage(msg.message_id);} continue;} const msg=update.message;if(!msg||String((msg.chat||{}).id||'')!==chatId||!msg.reply_to_message||!String(msg.text||'').trim())continue; const c=candidateFromTelegramMessage(msg.reply_to_message);if(!c)continue; const key=String(update.update_id);if(!queue.requests.some(x=>x.type==='telegram_instruction'&&String(x.telegram_update_id)===key)){ queue.requests.push({created_at:new Date().toISOString(),type:'telegram_instruction',telegram_update_id:update.update_id,telegram_message_id:msg.message_id,tweet_id:c.id||null,user:c.user||null,text:c.text||null,url:c.url||null,instruction:String(msg.text).trim()});queue.requests=queue.requests.slice(-100);changed=true; await telegram('sendMessage',{chat_id:chatId,text:'✅ Instrucciones enviadas.',reply_to_message_id:msg.message_id,allow_sending_without_reply:true}); } } if(changed){writeJson(requestsFile,queue);gitPushRequest();} await sendAssistantOutputs(); }
+async function pollOnce(){ const state=readJson(stateFile,{offset:0}); const url=new URL(api('getUpdates'));url.searchParams.set('offset',String(state.offset||0));url.searchParams.set('timeout','25');url.searchParams.set('allowed_updates',JSON.stringify(['callback_query','message'])); const r=await fetch(url);const data=await r.json();if(!data.ok)throw new Error(JSON.stringify(data));const queue=readJson(requestsFile,{requests:[]});queue.requests||=[];let changed=false; for(const update of data.result||[]){state.offset=Math.max(Number(state.offset||0),Number(update.update_id)+1);writeJson(stateFile,state); if(update.callback_query){const cq=update.callback_query,msg=cq.message||{};if(String((msg.chat||{}).id||'')!==chatId)continue;const parts=String(cq.data||'').split(':');if(parts[0]!=='sr'||parts.length<3)continue;const action=parts[1],id=parts[2]; if(action==='delete'){await safeAnswerCallbackQuery(cq.id,'🗑️ Candidato quitado.');await safeDeleteMessage(msg.message_id);continue;} if(action==='msgdelete'){await safeAnswerCallbackQuery(cq.id,'🗑️ Mensaje borrado.');await safeDeleteMessage(msg.message_id);continue;} if(action==='outdelete'){await safeAnswerCallbackQuery(cq.id,'🗑️ Evaluación borrada.');const groups=readJson(outputGroupsFile,{});const g=groups[id];if(g&&Array.isArray(g.message_ids)){for(const mid of g.message_ids)await safeDeleteMessage(mid);delete groups[id];writeJson(outputGroupsFile,groups);}else await safeDeleteMessage(msg.message_id);continue;} if(action==='evaluate'){const c=readJson(path.join(candidatesDir,`${id}.json`),null);if(!c){await safeAnswerCallbackQuery(cq.id,'No encuentro este candidato.');continue;}if(!queue.requests.some(x=>x.type==='evaluate'&&x.tweet_id===id)){queue.requests.push({created_at:new Date().toISOString(),type:'evaluate',tweet_id:id,user:c.user,text:c.text,url:c.url});queue.requests=queue.requests.slice(-100);changed=true;}await safeAnswerCallbackQuery(cq.id,'🧠 Candidato enviado para evaluar.');await safeDeleteMessage(msg.message_id);} continue;} const msg=update.message;if(!msg||String((msg.chat||{}).id||'')!==chatId||!msg.reply_to_message||!String(msg.text||'').trim())continue; const c=candidateFromTelegramMessage(msg.reply_to_message);if(!c)continue; const key=String(update.update_id);if(!queue.requests.some(x=>x.type==='telegram_instruction'&&String(x.telegram_update_id)===key)){ queue.requests.push({created_at:new Date().toISOString(),type:'telegram_instruction',telegram_update_id:update.update_id,telegram_message_id:msg.message_id,tweet_id:c.id||null,user:c.user||null,text:c.text||null,url:c.url||null,instruction:String(msg.text).trim()});queue.requests=queue.requests.slice(-100);changed=true; const confirm=await telegram('sendMessage',{chat_id:chatId,text:'✅ Instrucciones enviadas.',reply_to_message_id:msg.message_id,allow_sending_without_reply:true,reply_markup:{inline_keyboard:[[{text:'🗑️ Borrar',callback_data:`sr:msgdelete:${update.update_id}`}]]}}); } } if(changed){writeJson(requestsFile,queue);gitPushRequest();} await sendAssistantOutputs(); }
 async function pollForever(){console.log('SeLoRecordamos Telegram activo. Escuchando botones, instrucciones y salidas...');while(true){try{await pollOnce();}catch(e){console.error('Error escuchando Telegram:',e.message||e);await new Promise(r=>setTimeout(r,3000));}}}
 (async()=>{const mode=process.argv[2]||'all';if(mode==='send'||mode==='all')await sendOutbox();if(mode==='poll'||mode==='all')await pollForever();})().catch(e=>{console.error(e.stack||e);process.exit(1);});
