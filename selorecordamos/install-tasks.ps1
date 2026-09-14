@@ -1,17 +1,16 @@
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
-$listenerScript = Join-Path $PSScriptRoot 'run-telegram-listener.ps1'
+$listenerHidden = Join-Path $PSScriptRoot 'run-telegram-hidden.vbs'
 $searchHidden = Join-Path $PSScriptRoot 'run-search-hidden.vbs'
 
-if (-not (Test-Path $listenerScript)) { throw "No existe $listenerScript" }
+if (-not (Test-Path $listenerHidden)) { throw "No existe $listenerHidden" }
 if (-not (Test-Path $searchHidden)) { throw "No existe $searchHidden" }
 
 $listenerTask = 'SeLoRecordamos-Telegram'
 $searchTask = 'SeLoRecordamos-Search'
-$ps = "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe"
 $wscript = "$env:SystemRoot\System32\wscript.exe"
 
-$listenerCmd = '"' + $ps + '" -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + $listenerScript + '"'
+$listenerCmd = '"' + $wscript + '" "' + $listenerHidden + '"'
 $searchCmd = '"' + $wscript + '" "' + $searchHidden + '"'
 
 Write-Host 'Creando tarea del listener de Telegram...'
