@@ -27,6 +27,9 @@ jobs:
           npx playwright install --with-deps chromium
 
       - name: Run X search test
+        env:
+          X_AUTH_TOKEN: ${{ secrets.X_AUTH_TOKEN }}
+          X_CT0: ${{ secrets.X_CT0 }}
         run: node selorecordamos/search_x.js
 
       - name: Upload debug artifact
