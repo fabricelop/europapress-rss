@@ -1,0 +1,92 @@
+name: Enviar SeLoRecordamos a Telegram
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "selorecordamos/telegram-outbox.json"
+      - "selorecordamos/candidates/*.json"
+
+concurrency:
+  group: selorecordamos-telegram-send
+  cancel-in-progress: false
+
+jobs:
+  telegram:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enviar candidatos SeLoRecordamos
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python3 <<'PY'
+          import json
+          import os
+          import urllib.request
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from pathlib import Path
+
+          outbox = Path("selorecordamos/telegram-outbox.json")
+          if not outbox.exists():
+              print("Sin outbox de SeLoRecordamos.")
+              raise SystemExit(0)
+
+          data = json.loads(outbox.read_text(encoding="utf-8"))
+          candidates = data.get("candidates", [])
+          if not candidates:
+              print("Sin candidatos nuevos.")
+              raise SystemExit(0)
+
+          token = os.environ["TELEGRAM_BOT_TOKEN"]
+          chat_id = os.environ["TELEGRAM_CHAT_ID"]
+          api = f"https://api.telegram.org/bot{token}/sendMessage"
+
+          def local_time(value):
+              if not value:
+                  return "hora desconocida"
+              try:
+                  d = datetime.fromisoformat(value.replace("Z", "+00:00"))
+                  d = d.astimezone(ZoneInfo("Europe/Madrid"))
+                  return d.strftime("%d/%m/%Y %H:%M")
+              except Exception:
+                  return value
+
+          for index, c in enumerate(candidates, 1):
+              tweet_id = str(c.get("id", "")).strip()
+              user = str(c.get("user", "")).strip()
+              text = str(c.get("text", "")).strip()
+              url = str(c.get("url", "")).strip()
+              when = local_time(c.get("datetime"))
+              if not tweet_id or not text or not url:
+                  continue
+
+              visible = f"🧠 SELORECORDAMOS · SR{index}\n{user} · {when}\n\n{text}"
+              keyboard = [
+                  [{"text": "🔗 Abrir original en X", "url": url}],
+                  [
+                      {"text": "🧠 Evaluar", "callback_data": f"sr:evaluate:{tweet_id}"},
+                      {"text": "🗑️ Borrar", "callback_data": f"sr:delete:{tweet_id}"}
+                  ]
+              ]
+              payload = {
+                  "chat_id": chat_id,
+                  "text": visible,
+                  "disable_web_page_preview": True,
+                  "reply_markup": {"inline_keyboard": keyboard}
+              }
+              req = urllib.request.Request(
+                  api,
+                  data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type": "application/json"}
+              )
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  result = json.loads(r.read().decode("utf-8"))
+                  if not result.get("ok"):
+                      raise RuntimeError(result)
+              print(f"Enviado SeLoRecordamos {tweet_id}")
+          PY
