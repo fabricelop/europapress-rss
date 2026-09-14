@@ -2,26 +2,29 @@ name: Actualizar TTendencias España
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Actualizar RSS Europa Press"]
+    types: [completed]
   push:
     branches: [main]
     paths:
       - ".github/workflows/update-trends.yml"
       - "trends/update_trends.py"
   schedule:
-    # Refresco frecuente para que TTendencias use siempre un snapshot reciente.
+    # GitHub puede retrasar cron; mantenemos 5 min y añadimos workflow_run como respaldo.
     - cron: "*/5 * * * *"
 
 permissions:
   contents: write
 
-# No cancelar una captura ya iniciada si llega otra ejecución; una cancelación
-# podía dejar recent.json sin refrescar durante demasiado tiempo.
 concurrency:
   group: ttendencias-update
   cancel-in-progress: false
 
 jobs:
   update-trends:
+    # Si viene del RSS, solo refrescar cuando ese workflow haya terminado correctamente.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
