@@ -27,7 +27,54 @@ function localTime(value){if(!value)return'hora desconocida';const d=new Date(va
 
 async function sendOutbox(){ const data=readJson(outboxFile,{candidates:[]}); const sent=readJson(path.join(runtimeDir,'telegram-sent.json'),{}); let changed=false,index=1; for(const c of data.candidates||[]){const id=String(c.id||'');if(!id||sent[id])continue;const visible=`🧠 SELORECORDAMOS · SR${index}\n${c.user||''} · ${localTime(c.datetime)}\n\n${String(c.text||'').trim()}`; await telegram('sendMessage',{chat_id:chatId,text:visible,disable_web_page_preview:true,reply_markup:{inline_keyboard:[[{text:'🔗 Abrir original en X',url:c.url}],[{text:'🧠 Evaluar',callback_data:`sr:evaluate:${id}`},{text:'🗑️ Borrar',callback_data:`sr:delete:${id}`}]]}}); sent[id]={sent_at:new Date().toISOString()};changed=true;index++;} if(changed)writeJson(path.join(runtimeDir,'telegram-sent.json'),sent); }
 
-async function sendAssistantOutputs(){ let data; try { const r=await fetch(`${assistantOutputUrl}?t=${Date.now()}`,{headers:{'cache-control':'no-cache'}}); if(!r.ok){if(r.status===404)return;throw new Error(`assistant-output HTTP ${r.status}`);} data=await r.json(); } catch(e){console.error('No se pudo leer assistant-output.json:',e.message||e);return;} const sent=readJson(assistantSentFile,{});let changed=false; for(const item of data.outputs||[]){ const key=String(item.request_key||item.id||''); if(!key||sent[key]||item.send_to_telegram===false)continue; const text=String(item.telegram_text||item.content||'').trim(); if(!text)continue; const chunks=[];let rest=text; while(rest.length>3900){let cut=rest.lastIndexOf('\n',3900);if(cut<2500)cut=3900;chunks.push(rest.slice(0,cut));rest=rest.slice(cut).replace(/^\n+/,'');} if(rest)chunks.push(rest); for(const chunk of chunks)await telegram('sendMessage',{chat_id:chatId,text:chunk,disable_web_page_preview:true}); sent[key]={sent_at:new Date().toISOString()};changed=true; } if(changed)writeJson(assistantSentFile,sent); }
+function parseAlternatives(item){
+  if(Array.isArray(item.alternatives)) return item.alternatives.map(x=>String(x||'').trim()).filter(Boolean).slice(0,4);
+  const text=String(item.telegram_text||item.content||'');
+  const matches=[...text.matchAll(/(?:^|\n)([A-D])\)\s*([\s\S]*?)(?=\n\n[A-D]\)|\n\nhttps?:\/\/|$)/g)];
+  return matches.map(m=>m[2].trim()).slice(0,4);
+}
+function findOriginalUrl(item){
+  if(item.original_url)return String(item.original_url);
+  const text=String(item.telegram_text||item.content||'');
+  const m=text.match(/https:\/\/x\.com\/[^\s]+\/status\/\d+/i);
+  if(m)return m[0];
+  const id=String(item.request_key||'').match(/^evaluate:(\d+)(?::.*)?$/)?.[1];
+  if(id){const q=readJson(requestsFile,{requests:[]});const req=(q.requests||[]).find(x=>String(x.tweet_id||'')===id);if(req&&req.url)return String(req.url);}
+  return '';
+}
+function visibleAssistantText(item){
+  let text=String(item.telegram_text||item.content||'').trim();
+  return text.replace(/\n*https:\/\/x\.com\/[^\s]+\/status\/\d+\s*$/i,'').trim();
+}
+async function sendAssistantOutputs(){
+  let data;
+  try { const r=await fetch(`${assistantOutputUrl}?t=${Date.now()}`,{headers:{'cache-control':'no-cache'}}); if(!r.ok){if(r.status===404)return;throw new Error(`assistant-output HTTP ${r.status}`);} data=await r.json(); }
+  catch(e){console.error('No se pudo leer assistant-output.json:',e.message||e);return;}
+  const sent=readJson(assistantSentFile,{});let changed=false;
+  for(const item of data.outputs||[]){
+    const key=String(item.request_key||item.id||'');
+    if(!key||sent[key]||item.send_to_telegram===false)continue;
+    const text=visibleAssistantText(item);if(!text)continue;
+    const alternatives=parseAlternatives(item);
+    const originalUrl=findOriginalUrl(item);
+    const keyboard=[];
+    alternatives.forEach((alt,i)=>{
+      if(alt.length<=256) keyboard.push([{text:`📋 Copiar ${String.fromCharCode(65+i)}`,copy_text:{text:alt}}]);
+      else console.error(`Alternativa ${String.fromCharCode(65+i)} supera 256 caracteres (${alt.length}).`);
+    });
+    if(originalUrl)keyboard.push([{text:'🔗 Abrir original en X',url:originalUrl}]);
+    const chunks=[];let rest=text;
+    while(rest.length>3900){let cut=rest.lastIndexOf('\n',3900);if(cut<2500)cut=3900;chunks.push(rest.slice(0,cut));rest=rest.slice(cut).replace(/^\n+/,'');}
+    if(rest)chunks.push(rest);
+    for(let i=0;i<chunks.length;i++){
+      const payload={chat_id:chatId,text:chunks[i],disable_web_page_preview:true};
+      if(i===chunks.length-1&&keyboard.length)payload.reply_markup={inline_keyboard:keyboard};
+      await telegram('sendMessage',payload);
+    }
+    sent[key]={sent_at:new Date().toISOString()};changed=true;
+  }
+  if(changed)writeJson(assistantSentFile,sent);
+}
 
 function runGit(args){return cp.execFileSync('git',args,{cwd:repoDir,encoding:'utf8',stdio:'pipe'});}
 function gitPushRequest(){try{runGit(['add','selorecordamos/requests.json']);const diff=cp.spawnSync('git',['diff','--cached','--quiet'],{cwd:repoDir});if(diff.status!==0)runGit(['commit','-m','Queue SeLoRecordamos request']);try{runGit(['push','origin','main']);}catch(_){runGit(['pull','--rebase','--autostash','origin','main']);runGit(['push','origin','main']);}console.log('Solicitud subida a GitHub.');}catch(e){console.error('No se pudo subir requests.json a GitHub:',String(e.stderr||e.message||e).trim());}}
