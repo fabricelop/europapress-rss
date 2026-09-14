@@ -137,7 +137,7 @@ const { chromium } = require('playwright');
         result.rejected.push({ ...tweet, reason });
         continue;
       }
-      if (result.candidates.length < 10) result.candidates.push(tweet);
+      result.candidates.push(tweet);
     }
 
     fs.writeFileSync(seenFile, JSON.stringify(seen, null, 2), 'utf8');
