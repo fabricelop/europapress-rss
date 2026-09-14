@@ -72,6 +72,7 @@ const { chromium } = require('playwright');
     const interrogativeAfterRemember = [
       /\brecordadme[,:]?\s+(quién|quien|cuál|cual|dónde|donde|cómo|como|por qué|porque)\b/,
       /\brecordadme[,:]?\s+en\s+(qué|que|cuál|cual)\b/,
+      /\brecordadme[,:]?\s+en\s+est[áa]\b/,
       /\bque alguien me recuerde\s+(quién|quien|cuál|cual|dónde|donde|cómo|como|por qué|porque)\b/,
       /\bque alguien me recuerde\s+de\s+(dónde|donde|qué|que|cuál|cual)\b/,
       /\bque alguien me recuerde\s+(una|un)\s+sol[ao]\b/
