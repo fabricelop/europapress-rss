@@ -93,11 +93,11 @@ function gitPushRequest() {
   }
 }
 
-async function pollCallbacks() {
+async function pollCallbacksOnce() {
   const state = readJson(stateFile, { offset: 0 });
   const url = new URL(api('getUpdates'));
   url.searchParams.set('offset', String(state.offset || 0));
-  url.searchParams.set('timeout', '0');
+  url.searchParams.set('timeout', '25');
   url.searchParams.set('allowed_updates', JSON.stringify(['callback_query']));
   const r = await fetch(url);
   const data = await r.json();
@@ -122,6 +122,7 @@ async function pollCallbacks() {
     if (action === 'delete') {
       await telegram('answerCallbackQuery', { callback_query_id: cq.id, text: '🗑️ Candidato quitado.' });
       await telegram('deleteMessage', { chat_id: chatId, message_id: msg.message_id });
+      console.log(`Borrado ${id}`);
       continue;
     }
 
@@ -146,6 +147,7 @@ async function pollCallbacks() {
       }
       await telegram('answerCallbackQuery', { callback_query_id: cq.id, text: '🧠 Candidato enviado para evaluar.' });
       await telegram('deleteMessage', { chat_id: chatId, message_id: msg.message_id });
+      console.log(`Evaluar ${id}`);
     }
   }
 
@@ -156,10 +158,22 @@ async function pollCallbacks() {
   }
 }
 
+async function pollForever() {
+  console.log('SeLoRecordamos Telegram activo. Escuchando botones...');
+  while (true) {
+    try {
+      await pollCallbacksOnce();
+    } catch (e) {
+      console.error('Error escuchando Telegram:', e.message || e);
+      await new Promise(resolve => setTimeout(resolve, 3000));
+    }
+  }
+}
+
 (async () => {
   const mode = process.argv[2] || 'all';
   if (mode === 'send' || mode === 'all') await sendOutbox();
-  if (mode === 'poll' || mode === 'all') await pollCallbacks();
+  if (mode === 'poll' || mode === 'all') await pollForever();
 })().catch(e => {
   console.error(e.stack || e);
   process.exit(1);
