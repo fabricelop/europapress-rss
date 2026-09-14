@@ -61,10 +61,29 @@ const { chromium } = require('playwright');
 
   const rejectReason = (text) => {
     const t = text.toLocaleLowerCase('es-ES').replace(/\s+/g, ' ').trim();
-    if (/\b(si|cuando)\s+(mañana\s+)?(desaparezco|muero|fallezco|palmo)\b/.test(t)) return 'memorial/no es una petición de recordatorio';
-    if (/\brecordadme\s+como\b/.test(t)) return '“recordadme como…” no es una petición de recordatorio';
-    if (/\brecordadme[,:]?\s+(quién|quien|qué|que|cuál|cual|dónde|donde|cómo|como)\b/.test(t)) return 'pregunta/consulta, no recordatorio futuro';
-    if (/\bque alguien me recuerde\s+(quién|quien|qué|que|cuál|cual|dónde|donde|cómo|como)\b/.test(t)) return 'pregunta/consulta, no recordatorio futuro';
+
+    if (/\b(si|cuando)\s+(mañana\s+)?(desaparezco|muero|fallezco|palmo)\b/.test(t)) {
+      return 'memorial/no es una petición de recordatorio';
+    }
+    if (/\brecordadme\s+como\s+(el|la|los|las|quien|quién)\b/.test(t)) {
+      return '“recordadme como…” no es una petición de recordatorio';
+    }
+
+    const interrogativeAfterRemember = [
+      /\brecordadme[,:]?\s+(quién|quien|cuál|cual|dónde|donde|cómo|como|por qué|porque)\b/,
+      /\brecordadme[,:]?\s+en\s+(qué|que|cuál|cual)\b/,
+      /\bque alguien me recuerde\s+(quién|quien|cuál|cual|dónde|donde|cómo|como|por qué|porque)\b/,
+      /\bque alguien me recuerde\s+de\s+(dónde|donde|qué|que|cuál|cual)\b/,
+      /\bque alguien me recuerde\s+(una|un)\s+sol[ao]\b/
+    ];
+    if (interrogativeAfterRemember.some(r => r.test(t))) {
+      return 'pregunta/consulta, no recordatorio futuro';
+    }
+
+    if (/\brecordadme[,:]?\s+que\s+(quién|quien|qué|que|cuál|cual|dónde|donde|cómo|como)\b/.test(t)) {
+      return 'pregunta/consulta, no recordatorio futuro';
+    }
+
     return null;
   };
 
