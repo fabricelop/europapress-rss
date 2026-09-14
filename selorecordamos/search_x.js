@@ -8,9 +8,12 @@ const { chromium } = require('playwright');
   const baseDir = path.join(__dirname);
   const outDir = path.join(baseDir, 'debug');
   const stateDir = path.join(baseDir, 'runtime');
+  const candidatesDir = path.join(baseDir, 'candidates');
+  const outboxFile = path.join(baseDir, 'telegram-outbox.json');
   const seenFile = path.join(stateDir, 'seen.json');
   fs.mkdirSync(outDir, { recursive: true });
   fs.mkdirSync(stateDir, { recursive: true });
+  fs.mkdirSync(candidatesDir, { recursive: true });
 
   const authToken = process.env.X_AUTH_TOKEN || '';
   const ct0 = process.env.X_CT0 || '';
@@ -137,10 +140,24 @@ const { chromium } = require('playwright');
         result.rejected.push({ ...tweet, reason });
         continue;
       }
-      result.candidates.push(tweet);
+      const candidate = {
+        ...tweet,
+        first_seen_at: result.fetched_at,
+        status: 'pending'
+      };
+      result.candidates.push(candidate);
+      fs.writeFileSync(
+        path.join(candidatesDir, `${tweet.id}.json`),
+        JSON.stringify(candidate, null, 2),
+        'utf8'
+      );
     }
 
     fs.writeFileSync(seenFile, JSON.stringify(seen, null, 2), 'utf8');
+    fs.writeFileSync(outboxFile, JSON.stringify({
+      generated_at: result.fetched_at,
+      candidates: result.candidates
+    }, null, 2), 'utf8');
 
     if (result.candidates.length) {
       result.status = 'ok';
