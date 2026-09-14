@@ -126,6 +126,7 @@ export default async function handler(req, res) {
           ].join("\n");
           await appendRequest(requestObj(update, "evaluate", requestText, true), SR_QUEUE);
           await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "🧠 Candidato enviado para evaluar." });
+          await safeTelegram("deleteMessage", { chat_id: allowedChat, message_id: msg.message_id });
         }
       } else if (data.startsWith("sr:delete:")) {
         await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "🗑️ Candidato quitado." });
