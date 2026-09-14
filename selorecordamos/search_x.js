@@ -76,11 +76,15 @@ const { chromium } = require('playwright');
   const rejectReason = (text) => {
     const t = normalize(text);
 
-    if (/\b(si|cuando)\s+(manana\s+)?(desaparezco|muero|fallezco|palmo)\b/.test(t)) {
+    // Peticiones para ser recordado uno mismo (memorial/recuerdo de la persona), no para recordar algo.
+    if (/\b(si|cuando)\s+(manana\s+)?(me\s+)?(desaparezco|muero|fallezco|palmo)\b/.test(t) || /\bcuando\s+me\s+muera\b/.test(t)) {
       return 'memorial/no es una petición de recordatorio';
     }
-    if (/\brecordadme\s+como\s+(el|la|los|las|quien)\b/.test(t)) {
-      return '“recordadme como…” no es una petición de recordatorio';
+    if (/\brecordadme\s+(asi|como\s+(el|la|los|las|quien))\b/.test(t)) {
+      return '“recordadme así/como…” se refiere a recordar a la persona';
+    }
+    if (/\brecordadme\s*[,;:]?\s+y\s+(yo\s+)?os\s+recordare\b/.test(t)) {
+      return 'uso de “recordadme” como recordar a una persona, no como servicio de recordatorio';
     }
     // "Que alguien me recuerde" usado como "que se acuerden de mí" no pide recordar algo concreto.
     if (/\bque alguien me recuerde\s*[.!?…]*$/.test(t)) {
