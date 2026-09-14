@@ -55,6 +55,7 @@ const { chromium } = require('playwright');
     final_url: null,
     title: null,
     extracted: 0,
+    scroll_rounds: 0,
     already_seen: 0,
     rejected: [],
     candidates: [],
@@ -98,19 +99,13 @@ const { chromium } = require('playwright');
     return null;
   };
 
-  try {
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-    await page.waitForTimeout(10000);
-    result.final_url = page.url();
-    result.title = await page.title();
+  const readVisibleTweets = async () => {
+    const articles = page.locator('article[data-testid="tweet"]');
+    const count = await articles.count();
+    const tweets = [];
 
-    const loginVisible = await page.locator('text=Inicia sesión').first().isVisible().catch(() => false);
-    const tweetArticles = page.locator('article[data-testid="tweet"]');
-    const count = await tweetArticles.count();
-    const extracted = [];
-
-    for (let i = 0; i < Math.min(count, 30); i++) {
-      const article = tweetArticles.nth(i);
+    for (let i = 0; i < count; i++) {
+      const article = articles.nth(i);
       const text = await article.locator('[data-testid="tweetText"]').innerText().catch(() => '');
       const timeEl = article.locator('time').first();
       const datetime = await timeEl.getAttribute('datetime').catch(() => null);
@@ -123,10 +118,47 @@ const { chromium } = require('playwright');
       const m = statusPath.match(/^\/([^/]+)\/status\/(\d+)/);
       if (!m) continue;
       const [, user, id] = m;
-      if (extracted.some(t => t.id === id)) continue;
-      extracted.push({ id, user: `@${user}`, text, datetime, url: `https://x.com/${user}/status/${id}` });
+      tweets.push({ id, user: `@${user}`, text, datetime, url: `https://x.com/${user}/status/${id}` });
     }
 
+    return tweets;
+  };
+
+  try {
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.waitForTimeout(10000);
+    result.final_url = page.url();
+    result.title = await page.title();
+
+    const loginVisible = await page.locator('text=Inicia sesión').first().isVisible().catch(() => false);
+    const extractedMap = new Map();
+    let stableRounds = 0;
+    let seenBoundaryRounds = 0;
+    const maxScrollRounds = 20;
+
+    for (let round = 0; round < maxScrollRounds; round++) {
+      const visible = await readVisibleTweets();
+      const before = extractedMap.size;
+      for (const tweet of visible) extractedMap.set(tweet.id, tweet);
+      const added = extractedMap.size - before;
+      result.scroll_rounds = round + 1;
+
+      const visibleIds = visible.map(t => t.id);
+      const reachedSeenBoundary = visibleIds.length > 0 && visibleIds.some(id => Boolean(seen[id]));
+      if (reachedSeenBoundary) seenBoundaryRounds++;
+      else seenBoundaryRounds = 0;
+
+      if (added === 0) stableRounds++;
+      else stableRounds = 0;
+
+      if (seenBoundaryRounds >= 2 && stableRounds >= 1) break;
+      if (stableRounds >= 3) break;
+
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await page.waitForTimeout(1800);
+    }
+
+    const extracted = Array.from(extractedMap.values());
     result.extracted = extracted.length;
 
     for (const tweet of extracted) {
