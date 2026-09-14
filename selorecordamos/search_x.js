@@ -82,6 +82,10 @@ const { chromium } = require('playwright');
     if (/\brecordadme\s+como\s+(el|la|los|las|quien)\b/.test(t)) {
       return '“recordadme como…” no es una petición de recordatorio';
     }
+    // "Que alguien me recuerde" usado como "que se acuerden de mí" no pide recordar algo concreto.
+    if (/\bque alguien me recuerde\s*[.!?…]*$/.test(t)) {
+      return '“que alguien me recuerde” se refiere a la propia persona, no a un recordatorio concreto';
+    }
 
     const consultationPatterns = [
       /\brecordadme[,:]?\s+(quien|cual|donde|como|por que|porque)\b/,
