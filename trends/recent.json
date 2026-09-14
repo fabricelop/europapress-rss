@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-14T11:51:45+02:00",
+  "captured_at": "2026-09-14T11:52:17+02:00",
   "primary_source": "trends24",
   "top10": [
     "#ConexiónHonduras1",
@@ -86,25 +86,9 @@
       "error": null
     },
     "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "#ConexiónHonduras1",
-        "#FelizLunes",
-        "Suecia",
-        "Madring",
-        "Braulio",
-        "Monaco",
-        "Levante",
-        "Jordi",
-        "Fórmula 1",
-        "#lahora14s",
-        "Exaltación de la Santa Cruz",
-        "#VueltaRTVE13S",
-        "Salvajada",
-        "#FelizDomingo",
-        "Sainz"
-      ],
-      "error": null
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1789379538"
     },
     "tweets24": {
       "ok": true,
