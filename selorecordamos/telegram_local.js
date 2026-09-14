@@ -44,6 +44,19 @@ async function safeAnswerCallbackQuery(callbackQueryId, text) {
   }
 }
 
+async function safeDeleteMessage(messageId) {
+  try {
+    await telegram('deleteMessage', { chat_id: chatId, message_id: messageId });
+  } catch (e) {
+    const m = String(e && e.message ? e.message : e);
+    if (/message to delete not found|message can't be deleted|message identifier is not specified/i.test(m)) {
+      console.log('Mensaje ya eliminado; se continúa.');
+      return;
+    }
+    throw e;
+  }
+}
+
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); }
   catch (_) { return fallback; }
@@ -122,6 +135,8 @@ async function pollCallbacksOnce() {
 
   for (const update of data.result || []) {
     state.offset = Math.max(Number(state.offset || 0), Number(update.update_id) + 1);
+    writeJson(stateFile, state);
+
     const cq = update.callback_query;
     if (!cq) continue;
     const msg = cq.message || {};
@@ -134,7 +149,7 @@ async function pollCallbacksOnce() {
 
     if (action === 'delete') {
       await safeAnswerCallbackQuery(cq.id, '🗑️ Candidato quitado.');
-      await telegram('deleteMessage', { chat_id: chatId, message_id: msg.message_id });
+      await safeDeleteMessage(msg.message_id);
       console.log(`Borrado ${id}`);
       continue;
     }
@@ -159,12 +174,11 @@ async function pollCallbacksOnce() {
         queueChanged = true;
       }
       await safeAnswerCallbackQuery(cq.id, '🧠 Candidato enviado para evaluar.');
-      await telegram('deleteMessage', { chat_id: chatId, message_id: msg.message_id });
+      await safeDeleteMessage(msg.message_id);
       console.log(`Evaluar ${id}`);
     }
   }
 
-  writeJson(stateFile, state);
   if (queueChanged) {
     writeJson(requestsFile, queue);
     gitPushRequest();
