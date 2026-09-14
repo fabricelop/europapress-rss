@@ -2,6 +2,7 @@ const REPO = process.env.GITHUB_REPO || "fabricelop/europapress-rss";
 const BRANCH = process.env.GITHUB_BRANCH || "main";
 const NEWS_QUEUE = "telegram/requests.json";
 const TRENDS_QUEUE = "trends/requests.json";
+const SR_QUEUE = "selorecordamos/requests.json";
 
 function b64decode(s) { return Buffer.from((s || "").replace(/\n/g, ""), "base64").toString("utf8"); }
 function b64encode(s) { return Buffer.from(s, "utf8").toString("base64"); }
@@ -46,7 +47,11 @@ async function appendRequest(request, queuePath = NEWS_QUEUE) {
     const put = await gh(`contents/${queuePath}`, {
       method: "PUT", headers: { "content-type": "application/json" },
       body: JSON.stringify({
-        message: queuePath === TRENDS_QUEUE ? "Procesar orden TTendencias por webhook" : "Procesar orden de Telegram por webhook",
+        message: queuePath === TRENDS_QUEUE
+          ? "Procesar orden TTendencias por webhook"
+          : queuePath === SR_QUEUE
+            ? "Procesar orden SeLoRecordamos por webhook"
+            : "Procesar orden de Telegram por webhook",
         content: b64encode(JSON.stringify(queue) + "\n"), sha: file.sha, branch: BRANCH,
       }),
     });
@@ -55,6 +60,14 @@ async function appendRequest(request, queuePath = NEWS_QUEUE) {
     await new Promise((resolve) => setTimeout(resolve, attempt * 150));
   }
   throw new Error("No se pudo guardar la orden de Telegram tras varios reintentos");
+}
+
+async function fetchCandidate(id) {
+  if (!/^\d+$/.test(String(id || ""))) return null;
+  const get = await gh(`contents/selorecordamos/candidates/${id}.json?ref=${encodeURIComponent(BRANCH)}`);
+  if (!get.ok) return null;
+  const file = await get.json();
+  return JSON.parse(b64decode(file.content));
 }
 
 async function safeTelegram(method, payload) {
@@ -97,7 +110,27 @@ export default async function handler(req, res) {
       const chatId = String((msg.chat || {}).id || "");
       if (chatId !== allowedChat) return res.status(200).json({ ok: true });
       const data = cq.data || "";
-      if (data === "delete:message") {
+
+      if (data.startsWith("sr:evaluate:")) {
+        const tweetId = data.split(":")[2] || "";
+        const candidate = await fetchCandidate(tweetId);
+        if (!candidate) {
+          await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "No encuentro este candidato." });
+        } else {
+          const requestText = [
+            "Evalúa este candidato de SeLoRecordamos y propón respuestas fieles al estilo histórico de la cuenta.",
+            `Tweet ID: ${candidate.id}`,
+            `Usuario: ${candidate.user}`,
+            `Texto: ${candidate.text}`,
+            `URL: ${candidate.url}`
+          ].join("\n");
+          await appendRequest(requestObj(update, "evaluate", requestText, true), SR_QUEUE);
+          await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "🧠 Candidato enviado para evaluar." });
+        }
+      } else if (data.startsWith("sr:delete:")) {
+        await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "🗑️ Candidato quitado." });
+        await telegram("deleteMessage", { chat_id: allowedChat, message_id: msg.message_id });
+      } else if (data === "delete:message") {
         await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "🗑️ Quitado." });
         await telegram("deleteMessage", { chat_id: allowedChat, message_id: msg.message_id });
       } else if (data.startsWith("prepare:")) {
