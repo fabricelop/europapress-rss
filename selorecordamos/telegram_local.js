@@ -31,6 +31,19 @@ async function telegram(method, payload = {}) {
   return data.result;
 }
 
+async function safeAnswerCallbackQuery(callbackQueryId, text) {
+  try {
+    await telegram('answerCallbackQuery', { callback_query_id: callbackQueryId, text });
+  } catch (e) {
+    const m = String(e && e.message ? e.message : e);
+    if (/query is too old|query ID is invalid|response timeout expired/i.test(m)) {
+      console.log('Callback antiguo descartado.');
+      return;
+    }
+    throw e;
+  }
+}
+
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); }
   catch (_) { return fallback; }
@@ -120,7 +133,7 @@ async function pollCallbacksOnce() {
     const id = parts[2];
 
     if (action === 'delete') {
-      await telegram('answerCallbackQuery', { callback_query_id: cq.id, text: '🗑️ Candidato quitado.' });
+      await safeAnswerCallbackQuery(cq.id, '🗑️ Candidato quitado.');
       await telegram('deleteMessage', { chat_id: chatId, message_id: msg.message_id });
       console.log(`Borrado ${id}`);
       continue;
@@ -130,7 +143,7 @@ async function pollCallbacksOnce() {
       const candidateFile = path.join(candidatesDir, `${id}.json`);
       const candidate = readJson(candidateFile, null);
       if (!candidate) {
-        await telegram('answerCallbackQuery', { callback_query_id: cq.id, text: 'No encuentro este candidato.' });
+        await safeAnswerCallbackQuery(cq.id, 'No encuentro este candidato.');
         continue;
       }
       if (!queue.requests.some(x => x.type === 'evaluate' && x.tweet_id === id)) {
@@ -145,7 +158,7 @@ async function pollCallbacksOnce() {
         queue.requests = queue.requests.slice(-100);
         queueChanged = true;
       }
-      await telegram('answerCallbackQuery', { callback_query_id: cq.id, text: '🧠 Candidato enviado para evaluar.' });
+      await safeAnswerCallbackQuery(cq.id, '🧠 Candidato enviado para evaluar.');
       await telegram('deleteMessage', { chat_id: chatId, message_id: msg.message_id });
       console.log(`Evaluar ${id}`);
     }
