@@ -9,6 +9,8 @@ const candidatesDir = path.join(baseDir, 'candidates');
 const runtimeDir = path.join(baseDir, 'runtime');
 const stateFile = path.join(runtimeDir, 'telegram-state.json');
 const requestsFile = path.join(baseDir, 'requests.json');
+const assistantSentFile = path.join(runtimeDir, 'assistant-output-sent.json');
+const assistantOutputUrl = 'https://raw.githubusercontent.com/fabricelop/europapress-rss/main/selorecordamos/assistant-output.json';
 fs.mkdirSync(runtimeDir, { recursive: true });
 
 const token = process.env.SR_TELEGRAM_BOT_TOKEN || '';
@@ -35,6 +37,29 @@ async function sendOutbox(){
     sent[id]={sent_at:new Date().toISOString()};changed=true;index++;}
   if(changed)writeJson(path.join(runtimeDir,'telegram-sent.json'),sent);
 }
+
+async function sendAssistantOutputs(){
+  let data;
+  try {
+    const r=await fetch(`${assistantOutputUrl}?t=${Date.now()}`,{headers:{'cache-control':'no-cache'}});
+    if(!r.ok){if(r.status===404)return;throw new Error(`assistant-output HTTP ${r.status}`);}
+    data=await r.json();
+  } catch(e){console.error('No se pudo leer assistant-output.json:',e.message||e);return;}
+  const sent=readJson(assistantSentFile,{});let changed=false;
+  for(const item of data.outputs||[]){
+    const key=String(item.request_key||item.id||'');
+    if(!key||sent[key])continue;
+    const text=String(item.telegram_text||item.content||'').trim();
+    if(!text)continue;
+    const chunks=[];let rest=text;
+    while(rest.length>3900){let cut=rest.lastIndexOf('\n',3900);if(cut<2500)cut=3900;chunks.push(rest.slice(0,cut));rest=rest.slice(cut).replace(/^\n+/,'');}
+    if(rest)chunks.push(rest);
+    for(const chunk of chunks)await telegram('sendMessage',{chat_id:chatId,text:chunk,disable_web_page_preview:true});
+    sent[key]={sent_at:new Date().toISOString()};changed=true;
+  }
+  if(changed)writeJson(assistantSentFile,sent);
+}
+
 function runGit(args){return cp.execFileSync('git',args,{cwd:repoDir,encoding:'utf8',stdio:'pipe'});}
 function gitPushRequest(){try{runGit(['add','selorecordamos/requests.json']);const diff=cp.spawnSync('git',['diff','--cached','--quiet'],{cwd:repoDir});if(diff.status!==0)runGit(['commit','-m','Queue SeLoRecordamos request']);try{runGit(['push','origin','main']);}catch(_){runGit(['pull','--rebase','--autostash','origin','main']);runGit(['push','origin','main']);}console.log('Solicitud subida a GitHub.');}catch(e){console.error('No se pudo subir requests.json a GitHub:',String(e.stderr||e.message||e).trim());}}
 function candidateFromTelegramMessage(msg){
@@ -65,6 +90,7 @@ async function pollOnce(){
     }
   }
   if(changed){writeJson(requestsFile,queue);gitPushRequest();}
+  await sendAssistantOutputs();
 }
-async function pollForever(){console.log('SeLoRecordamos Telegram activo. Escuchando botones e instrucciones...');while(true){try{await pollOnce();}catch(e){console.error('Error escuchando Telegram:',e.message||e);await new Promise(r=>setTimeout(r,3000));}}}
+async function pollForever(){console.log('SeLoRecordamos Telegram activo. Escuchando botones, instrucciones y salidas...');while(true){try{await pollOnce();}catch(e){console.error('Error escuchando Telegram:',e.message||e);await new Promise(r=>setTimeout(r,3000));}}}
 (async()=>{const mode=process.argv[2]||'all';if(mode==='send'||mode==='all')await sendOutbox();if(mode==='poll'||mode==='all')await pollForever();})().catch(e=>{console.error(e.stack||e);process.exit(1);});
