@@ -21,6 +21,8 @@ const { chromium } = require('playwright');
     ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
     : '');
   const headless = process.env.SR_HEADLESS === '1';
+  const backfillDays = Math.max(0, Number(process.env.SR_BACKFILL_DAYS || '0') || 0);
+  const backfillCutoff = backfillDays > 0 ? Date.now() - backfillDays * 86400000 : null;
 
   let seen = {};
   try {
@@ -52,6 +54,7 @@ const { chromium } = require('playwright');
     search_url: url,
     fetched_at: new Date().toISOString(),
     authenticated_cookie_pair_present: Boolean(authToken && ct0),
+    mode: backfillDays > 0 ? `backfill_${backfillDays}d` : 'incremental',
     final_url: null,
     title: null,
     extracted: 0,
@@ -126,7 +129,7 @@ const { chromium } = require('playwright');
 
   try {
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-    await page.waitForTimeout(10000);
+    await page.waitForTimeout(7000);
     result.final_url = page.url();
     result.title = await page.title();
 
@@ -134,7 +137,7 @@ const { chromium } = require('playwright');
     const extractedMap = new Map();
     let stableRounds = 0;
     let seenBoundaryRounds = 0;
-    const maxScrollRounds = 20;
+    const maxScrollRounds = backfillDays > 0 ? 80 : 12;
 
     for (let round = 0; round < maxScrollRounds; round++) {
       const visible = await readVisibleTweets();
@@ -143,22 +146,33 @@ const { chromium } = require('playwright');
       const added = extractedMap.size - before;
       result.scroll_rounds = round + 1;
 
-      const visibleIds = visible.map(t => t.id);
-      const reachedSeenBoundary = visibleIds.length > 0 && visibleIds.some(id => Boolean(seen[id]));
-      if (reachedSeenBoundary) seenBoundaryRounds++;
-      else seenBoundaryRounds = 0;
-
       if (added === 0) stableRounds++;
       else stableRounds = 0;
 
-      if (seenBoundaryRounds >= 2 && stableRounds >= 1) break;
-      if (stableRounds >= 3) break;
+      if (backfillDays > 0) {
+        const dated = visible
+          .map(t => t.datetime ? Date.parse(t.datetime) : NaN)
+          .filter(Number.isFinite);
+        if (dated.length && Math.min(...dated) <= backfillCutoff) break;
+        if (stableRounds >= 4) break;
+      } else {
+        const visibleIds = visible.map(t => t.id);
+        const reachedSeenBoundary = visibleIds.some(id => Boolean(seen[id]));
+        if (reachedSeenBoundary) seenBoundaryRounds++;
+        else seenBoundaryRounds = 0;
+
+        if (seenBoundaryRounds >= 2) break;
+        if (stableRounds >= 3) break;
+      }
 
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-      await page.waitForTimeout(1800);
+      await page.waitForTimeout(1400);
     }
 
-    const extracted = Array.from(extractedMap.values());
+    let extracted = Array.from(extractedMap.values());
+    if (backfillDays > 0) {
+      extracted = extracted.filter(t => !t.datetime || Date.parse(t.datetime) >= backfillCutoff);
+    }
     result.extracted = extracted.length;
 
     for (const tweet of extracted) {
@@ -167,7 +181,7 @@ const { chromium } = require('playwright');
         continue;
       }
       const reason = rejectReason(tweet.text);
-      seen[tweet.id] = { first_seen_at: result.fetched_at, url: tweet.url, rejected: Boolean(reason) };
+      seen[tweet.id] = { first_seen_at: result.fetched_at, url: tweet.url, rejected: Boolean(reason), datetime: tweet.datetime || null };
       if (reason) {
         result.rejected.push({ ...tweet, reason });
         continue;
