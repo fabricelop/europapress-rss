@@ -9,269 +9,62 @@ const candidatesDir = path.join(baseDir, 'candidates');
 const runtimeDir = path.join(baseDir, 'runtime');
 const stateFile = path.join(runtimeDir, 'telegram-state.json');
 const requestsFile = path.join(baseDir, 'requests.json');
-
 fs.mkdirSync(runtimeDir, { recursive: true });
 
 const token = process.env.SR_TELEGRAM_BOT_TOKEN || '';
 const chatId = String(process.env.SR_TELEGRAM_CHAT_ID || '');
-if (!token || !chatId) {
-  console.error('Faltan SR_TELEGRAM_BOT_TOKEN y/o SR_TELEGRAM_CHAT_ID.');
-  process.exit(2);
-}
-
-const api = (method) => `https://api.telegram.org/bot${token}/${method}`;
+if (!token || !chatId) { console.error('Faltan SR_TELEGRAM_BOT_TOKEN y/o SR_TELEGRAM_CHAT_ID.'); process.exit(2); }
+const api = method => `https://api.telegram.org/bot${token}/${method}`;
 
 async function telegram(method, payload = {}) {
-  const r = await fetch(api(method), {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
+  const r = await fetch(api(method), { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(payload) });
   const data = await r.json();
   if (!data.ok) throw new Error(`Telegram ${method}: ${JSON.stringify(data)}`);
   return data.result;
 }
+async function safeAnswerCallbackQuery(id, text) { try { await telegram('answerCallbackQuery',{callback_query_id:id,text}); } catch(e) { if (!/query is too old|query ID is invalid|response timeout expired/i.test(String(e.message||e))) throw e; } }
+async function safeDeleteMessage(messageId) { try { await telegram('deleteMessage',{chat_id:chatId,message_id:messageId}); } catch(e) { if (!/message to delete not found|message can't be deleted|message identifier is not specified/i.test(String(e.message||e))) throw e; } }
+function readJson(file,fallback){try{return JSON.parse(fs.readFileSync(file,'utf8'));}catch(_){return fallback;}}
+function writeJson(file,data){fs.writeFileSync(file,JSON.stringify(data,null,2)+'\n','utf8');}
+function localTime(value){if(!value)return'hora desconocida';const d=new Date(value);if(Number.isNaN(d.getTime()))return value;return new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(',','');}
 
-async function safeAnswerCallbackQuery(callbackQueryId, text) {
-  try {
-    await telegram('answerCallbackQuery', { callback_query_id: callbackQueryId, text });
-  } catch (e) {
-    const m = String(e && e.message ? e.message : e);
-    if (/query is too old|query ID is invalid|response timeout expired/i.test(m)) {
-      console.log('Callback antiguo descartado.');
-      return;
-    }
-    throw e;
-  }
+async function sendOutbox(){
+  const data=readJson(outboxFile,{candidates:[]}); const sent=readJson(path.join(runtimeDir,'telegram-sent.json'),{}); let changed=false,index=1;
+  for(const c of data.candidates||[]){const id=String(c.id||'');if(!id||sent[id])continue;const visible=`🧠 SELORECORDAMOS · SR${index}\n${c.user||''} · ${localTime(c.datetime)}\n\n${String(c.text||'').trim()}`;
+    await telegram('sendMessage',{chat_id:chatId,text:visible,disable_web_page_preview:true,reply_markup:{inline_keyboard:[[{text:'🔗 Abrir original en X',url:c.url}],[{text:'🧠 Evaluar',callback_data:`sr:evaluate:${id}`},{text:'🗑️ Borrar',callback_data:`sr:delete:${id}`}]]}});
+    sent[id]={sent_at:new Date().toISOString()};changed=true;index++;}
+  if(changed)writeJson(path.join(runtimeDir,'telegram-sent.json'),sent);
 }
-
-async function safeDeleteMessage(messageId) {
-  try {
-    await telegram('deleteMessage', { chat_id: chatId, message_id: messageId });
-  } catch (e) {
-    const m = String(e && e.message ? e.message : e);
-    if (/message to delete not found|message can't be deleted|message identifier is not specified/i.test(m)) {
-      console.log('Mensaje ya eliminado; se continúa.');
-      return;
-    }
-    throw e;
-  }
+function runGit(args){return cp.execFileSync('git',args,{cwd:repoDir,encoding:'utf8',stdio:'pipe'});}
+function gitPushRequest(){try{runGit(['add','selorecordamos/requests.json']);const diff=cp.spawnSync('git',['diff','--cached','--quiet'],{cwd:repoDir});if(diff.status!==0)runGit(['commit','-m','Queue SeLoRecordamos request']);try{runGit(['push','origin','main']);}catch(_){runGit(['pull','--rebase','--autostash','origin','main']);runGit(['push','origin','main']);}console.log('Solicitud subida a GitHub.');}catch(e){console.error('No se pudo subir requests.json a GitHub:',String(e.stderr||e.message||e).trim());}}
+function candidateFromTelegramMessage(msg){
+  const text=String(msg&&msg.text||'');
+  const urlMatch=text.match(/https:\/\/x\.com\/([^\s/]+)\/status\/(\d+)/i);
+  if(urlMatch)return {id:urlMatch[2],user:'@'+urlMatch[1],url:urlMatch[0],text:''};
+  const header=text.match(/SELORECORDAMOS\s*·\s*SR\d+\s*\n([^\s·]+)[^\n]*\n\n([\s\S]*)/i);
+  if(!header)return null;
+  const user=header[1]; const original=header[2].trim();
+  const files=fs.existsSync(candidatesDir)?fs.readdirSync(candidatesDir).filter(x=>x.endsWith('.json')):[];
+  for(const file of files){const c=readJson(path.join(candidatesDir,file),null);if(c&&String(c.user||'')===user&&String(c.text||'').trim()===original)return {id:String(c.id),user:c.user,text:c.text,url:c.url};}
+  return {id:'',user,text:original,url:''};
 }
-
-function readJson(file, fallback) {
-  try { return JSON.parse(fs.readFileSync(file, 'utf8')); }
-  catch (_) { return fallback; }
-}
-
-function writeJson(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2) + '\n', 'utf8');
-}
-
-function localTime(value) {
-  if (!value) return 'hora desconocida';
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return value;
-  return new Intl.DateTimeFormat('es-ES', {
-    timeZone: 'Europe/Madrid', day: '2-digit', month: '2-digit', year: 'numeric',
-    hour: '2-digit', minute: '2-digit', hour12: false
-  }).format(d).replace(',', '');
-}
-
-async function sendOutbox() {
-  const data = readJson(outboxFile, { candidates: [] });
-  const sent = readJson(path.join(runtimeDir, 'telegram-sent.json'), {});
-  let changed = false;
-  let index = 1;
-
-  for (const c of data.candidates || []) {
-    const id = String(c.id || '');
-    if (!id || sent[id]) continue;
-    const visible = `🧠 SELORECORDAMOS · SR${index}\n${c.user || ''} · ${localTime(c.datetime)}\n\n${String(c.text || '').trim()}`;
-    await telegram('sendMessage', {
-      chat_id: chatId,
-      text: visible,
-      disable_web_page_preview: true,
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: '🔗 Abrir original en X', url: c.url }],
-          [
-            { text: '🧠 Evaluar', callback_data: `sr:evaluate:${id}` },
-            { text: '🗑️ Borrar', callback_data: `sr:delete:${id}` }
-          ]
-        ]
-      }
-    });
-    sent[id] = { sent_at: new Date().toISOString() };
-    changed = true;
-    index++;
-  }
-  if (changed) writeJson(path.join(runtimeDir, 'telegram-sent.json'), sent);
-}
-
-function runGit(args, options = {}) {
-  return cp.execFileSync('git', args, {
-    cwd: repoDir,
-    encoding: 'utf8',
-    stdio: options.stdio || 'pipe'
-  });
-}
-
-function gitPushRequest() {
-  try {
-    runGit(['add', 'selorecordamos/requests.json']);
-    const diff = cp.spawnSync('git', ['diff', '--cached', '--quiet'], { cwd: repoDir });
-    if (diff.status !== 0) {
-      runGit(['commit', '-m', 'Queue SeLoRecordamos request']);
-    }
-
-    try {
-      runGit(['push', 'origin', 'main']);
-    } catch (_) {
-      console.log('GitHub avanzó mientras se procesaba Telegram; sincronizando y reintentando...');
-      runGit(['pull', '--rebase', '--autostash', 'origin', 'main']);
-      runGit(['push', 'origin', 'main']);
-    }
-    console.log('Solicitud subida a GitHub.');
-  } catch (e) {
-    const detail = String(e && e.stderr ? e.stderr : (e && e.message ? e.message : e)).trim();
-    console.error('No se pudo subir requests.json a GitHub:', detail);
-  }
-}
-
-function candidateIdFromReply(message) {
-  const rows = (((message || {}).reply_markup || {}).inline_keyboard) || [];
-  for (const row of rows) {
-    for (const button of row || []) {
-      const cb = String((button || {}).callback_data || '');
-      const match = cb.match(/^sr:(?:evaluate|delete):(\d+)$/);
-      if (match) return match[1];
-    }
-  }
-  return '';
-}
-
-function addTelegramInstruction(queue, update, message) {
-  if (String(((message || {}).chat || {}).id || '') !== chatId) return false;
-  const instruction = String(message.text || message.caption || '').trim();
-  const replied = message.reply_to_message;
-  if (!instruction || !replied) return false;
-
-  const id = candidateIdFromReply(replied);
-  if (!id) return false;
-
-  const updateId = Number(update.update_id);
-  if (queue.requests.some(x => Number(x.telegram_update_id) === updateId)) return false;
-
-  const candidate = readJson(path.join(candidatesDir, `${id}.json`), null);
-  if (!candidate) {
-    console.log(`Instrucción recibida para candidato no disponible: ${id}`);
-    return false;
-  }
-
-  queue.requests.push({
-    created_at: new Date().toISOString(),
-    type: 'telegram_instruction',
-    telegram_update_id: updateId,
-    telegram_message_id: message.message_id,
-    tweet_id: id,
-    user: candidate.user,
-    text: candidate.text,
-    url: candidate.url,
-    instruction
-  });
-  queue.requests = queue.requests.slice(-100);
-  console.log(`Instrucción Telegram ${id}: ${instruction}`);
-  return true;
-}
-
-async function pollUpdatesOnce() {
-  const state = readJson(stateFile, { offset: 0 });
-  const url = new URL(api('getUpdates'));
-  url.searchParams.set('offset', String(state.offset || 0));
-  url.searchParams.set('timeout', '25');
-  url.searchParams.set('allowed_updates', JSON.stringify(['callback_query', 'message']));
-  const r = await fetch(url);
-  const data = await r.json();
-  if (!data.ok) throw new Error(JSON.stringify(data));
-
-  const queue = readJson(requestsFile, { requests: [] });
-  queue.requests ||= [];
-  let queueChanged = false;
-
-  for (const update of data.result || []) {
-    state.offset = Math.max(Number(state.offset || 0), Number(update.update_id) + 1);
-    writeJson(stateFile, state);
-
-    if (update.message) {
-      if (addTelegramInstruction(queue, update, update.message)) queueChanged = true;
+async function pollOnce(){
+  const state=readJson(stateFile,{offset:0}); const url=new URL(api('getUpdates'));url.searchParams.set('offset',String(state.offset||0));url.searchParams.set('timeout','25');url.searchParams.set('allowed_updates',JSON.stringify(['callback_query','message']));
+  const r=await fetch(url);const data=await r.json();if(!data.ok)throw new Error(JSON.stringify(data));const queue=readJson(requestsFile,{requests:[]});queue.requests||=[];let changed=false;
+  for(const update of data.result||[]){state.offset=Math.max(Number(state.offset||0),Number(update.update_id)+1);writeJson(stateFile,state);
+    if(update.callback_query){const cq=update.callback_query,msg=cq.message||{};if(String((msg.chat||{}).id||'')!==chatId)continue;const parts=String(cq.data||'').split(':');if(parts[0]!=='sr'||parts.length<3)continue;const action=parts[1],id=parts[2];
+      if(action==='delete'){await safeAnswerCallbackQuery(cq.id,'🗑️ Candidato quitado.');await safeDeleteMessage(msg.message_id);continue;}
+      if(action==='evaluate'){const c=readJson(path.join(candidatesDir,`${id}.json`),null);if(!c){await safeAnswerCallbackQuery(cq.id,'No encuentro este candidato.');continue;}if(!queue.requests.some(x=>x.type==='evaluate'&&x.tweet_id===id)){queue.requests.push({created_at:new Date().toISOString(),type:'evaluate',tweet_id:id,user:c.user,text:c.text,url:c.url});queue.requests=queue.requests.slice(-100);changed=true;}await safeAnswerCallbackQuery(cq.id,'🧠 Candidato enviado para evaluar.');await safeDeleteMessage(msg.message_id);}
       continue;
     }
-
-    const cq = update.callback_query;
-    if (!cq) continue;
-    const msg = cq.message || {};
-    if (String((msg.chat || {}).id || '') !== chatId) continue;
-    const cb = String(cq.data || '');
-    const parts = cb.split(':');
-    if (parts[0] !== 'sr' || parts.length < 3) continue;
-    const action = parts[1];
-    const id = parts[2];
-
-    if (action === 'delete') {
-      await safeAnswerCallbackQuery(cq.id, '🗑️ Candidato quitado.');
-      await safeDeleteMessage(msg.message_id);
-      console.log(`Borrado ${id}`);
-      continue;
-    }
-
-    if (action === 'evaluate') {
-      const candidateFile = path.join(candidatesDir, `${id}.json`);
-      const candidate = readJson(candidateFile, null);
-      if (!candidate) {
-        await safeAnswerCallbackQuery(cq.id, 'No encuentro este candidato.');
-        continue;
-      }
-      if (!queue.requests.some(x => x.type === 'evaluate' && x.tweet_id === id)) {
-        queue.requests.push({
-          created_at: new Date().toISOString(),
-          type: 'evaluate',
-          tweet_id: id,
-          user: candidate.user,
-          text: candidate.text,
-          url: candidate.url
-        });
-        queue.requests = queue.requests.slice(-100);
-        queueChanged = true;
-      }
-      await safeAnswerCallbackQuery(cq.id, '🧠 Candidato enviado para evaluar.');
-      await safeDeleteMessage(msg.message_id);
-      console.log(`Evaluar ${id}`);
+    const msg=update.message;if(!msg||String((msg.chat||{}).id||'')!==chatId||!msg.reply_to_message||!String(msg.text||'').trim())continue;
+    const c=candidateFromTelegramMessage(msg.reply_to_message);if(!c)continue;
+    const key=String(update.update_id);if(!queue.requests.some(x=>x.type==='telegram_instruction'&&String(x.telegram_update_id)===key)){
+      queue.requests.push({created_at:new Date().toISOString(),type:'telegram_instruction',telegram_update_id:update.update_id,telegram_message_id:msg.message_id,tweet_id:c.id||null,user:c.user||null,text:c.text||null,url:c.url||null,instruction:String(msg.text).trim()});queue.requests=queue.requests.slice(-100);changed=true;
+      await telegram('sendMessage',{chat_id:chatId,text:'✅ Instrucciones enviadas.',reply_to_message_id:msg.message_id,allow_sending_without_reply:true});
     }
   }
-
-  if (queueChanged) {
-    writeJson(requestsFile, queue);
-    gitPushRequest();
-  }
+  if(changed){writeJson(requestsFile,queue);gitPushRequest();}
 }
-
-async function pollForever() {
-  console.log('SeLoRecordamos Telegram activo. Escuchando botones e instrucciones...');
-  while (true) {
-    try {
-      await pollUpdatesOnce();
-    } catch (e) {
-      console.error('Error escuchando Telegram:', e.message || e);
-      await new Promise(resolve => setTimeout(resolve, 3000));
-    }
-  }
-}
-
-(async () => {
-  const mode = process.argv[2] || 'all';
-  if (mode === 'send' || mode === 'all') await sendOutbox();
-  if (mode === 'poll' || mode === 'all') await pollForever();
-})().catch(e => {
-  console.error(e.stack || e);
-  process.exit(1);
-});
+async function pollForever(){console.log('SeLoRecordamos Telegram activo. Escuchando botones e instrucciones...');while(true){try{await pollOnce();}catch(e){console.error('Error escuchando Telegram:',e.message||e);await new Promise(r=>setTimeout(r,3000));}}}
+(async()=>{const mode=process.argv[2]||'all';if(mode==='send'||mode==='all')await sendOutbox();if(mode==='poll'||mode==='all')await pollForever();})().catch(e=>{console.error(e.stack||e);process.exit(1);});
