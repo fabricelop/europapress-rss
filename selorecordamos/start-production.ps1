@@ -43,6 +43,13 @@ if ($LASTEXITCODE -ne 0) { throw "telegram_local.js send termino con codigo $LAS
 
 Remove-Item Env:SR_BACKFILL_SINCE -ErrorAction SilentlyContinue
 
+$state = [ordered]@{
+    launched = $true
+    initial_since = '2026-09-01T00:00:00+02:00'
+    launched_at = (Get-Date).ToString('o')
+}
+$state | ConvertTo-Json | Set-Content -Path $productionState -Encoding UTF8
+
 Write-Host 'Arrancando listener SLR...' -ForegroundColor Cyan
 schtasks /Run /TN 'SeLoRecordamos-Telegram' | Out-Null
 
