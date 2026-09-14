@@ -1,6 +1,18 @@
+param([switch]$Force)
+
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
 Set-Location $repo
+
+$productionState = Join-Path $PSScriptRoot 'production-state.json'
+if ((Test-Path $productionState) -and -not $Force) {
+    try { $state = Get-Content $productionState -Raw | ConvertFrom-Json } catch { $state = $null }
+    if ($state -and $state.launched) {
+        Write-Host 'SLR ya esta en produccion. No se repetira la carga inicial.' -ForegroundColor Yellow
+        Write-Host 'Para una ejecucion normal usa la tarea SeLoRecordamos-Search. Para reiniciar deliberadamente desde cero usa este script con -Force.' -ForegroundColor Yellow
+        exit 0
+    }
+}
 
 $env:X_AUTH_TOKEN = [Environment]::GetEnvironmentVariable('X_AUTH_TOKEN', 'User')
 $env:X_CT0 = [Environment]::GetEnvironmentVariable('X_CT0', 'User')
