@@ -20,6 +20,11 @@ function Add-LogLine([string]$text) {
     [System.IO.File]::AppendAllText($log, $text + [Environment]::NewLine, $utf8)
 }
 
+function Quote-Arg([string]$arg) {
+    if ($null -eq $arg) { return '""' }
+    return '"' + ($arg -replace '"', '\"') + '"'
+}
+
 function Run-NodeToLog([string[]]$arguments) {
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = 'node.exe'
@@ -28,14 +33,20 @@ function Run-NodeToLog([string[]]$arguments) {
     $psi.RedirectStandardOutput = $true
     $psi.RedirectStandardError = $true
     $psi.CreateNoWindow = $true
-    foreach ($arg in $arguments) { [void]$psi.ArgumentList.Add($arg) }
-    $p = [System.Diagnostics.Process]::Start($psi)
+    $psi.Arguments = (($arguments | ForEach-Object { Quote-Arg $_ }) -join ' ')
+
+    $p = New-Object System.Diagnostics.Process
+    $p.StartInfo = $psi
+    [void]$p.Start()
     $stdout = $p.StandardOutput.ReadToEnd()
     $stderr = $p.StandardError.ReadToEnd()
     $p.WaitForExit()
+    $exitCode = $p.ExitCode
+    $p.Dispose()
+
     if ($stdout) { [System.IO.File]::AppendAllText($log, $stdout, $utf8) }
     if ($stderr) { [System.IO.File]::AppendAllText($log, $stderr, $utf8) }
-    return $p.ExitCode
+    return $exitCode
 }
 
 try {
