@@ -128,7 +128,7 @@ function gitPushRequest() {
       runGit(['push', 'origin', 'main']);
     } catch (_) {
       console.log('GitHub avanzó mientras se evaluaba; sincronizando y reintentando...');
-      runGit(['pull', '--rebase', 'origin', 'main']);
+      runGit(['pull', '--rebase', '--autostash', 'origin', 'main']);
       runGit(['push', 'origin', 'main']);
     }
     console.log('Solicitud de evaluación subida a GitHub.');
