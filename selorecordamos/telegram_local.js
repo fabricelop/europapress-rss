@@ -121,29 +121,75 @@ function gitPushRequest() {
     runGit(['add', 'selorecordamos/requests.json']);
     const diff = cp.spawnSync('git', ['diff', '--cached', '--quiet'], { cwd: repoDir });
     if (diff.status !== 0) {
-      runGit(['commit', '-m', 'Queue SeLoRecordamos evaluation']);
+      runGit(['commit', '-m', 'Queue SeLoRecordamos request']);
     }
 
     try {
       runGit(['push', 'origin', 'main']);
     } catch (_) {
-      console.log('GitHub avanzó mientras se evaluaba; sincronizando y reintentando...');
+      console.log('GitHub avanzó mientras se procesaba Telegram; sincronizando y reintentando...');
       runGit(['pull', '--rebase', '--autostash', 'origin', 'main']);
       runGit(['push', 'origin', 'main']);
     }
-    console.log('Solicitud de evaluación subida a GitHub.');
+    console.log('Solicitud subida a GitHub.');
   } catch (e) {
     const detail = String(e && e.stderr ? e.stderr : (e && e.message ? e.message : e)).trim();
     console.error('No se pudo subir requests.json a GitHub:', detail);
   }
 }
 
-async function pollCallbacksOnce() {
+function candidateIdFromReply(message) {
+  const rows = (((message || {}).reply_markup || {}).inline_keyboard) || [];
+  for (const row of rows) {
+    for (const button of row || []) {
+      const cb = String((button || {}).callback_data || '');
+      const match = cb.match(/^sr:(?:evaluate|delete):(\d+)$/);
+      if (match) return match[1];
+    }
+  }
+  return '';
+}
+
+function addTelegramInstruction(queue, update, message) {
+  if (String(((message || {}).chat || {}).id || '') !== chatId) return false;
+  const instruction = String(message.text || message.caption || '').trim();
+  const replied = message.reply_to_message;
+  if (!instruction || !replied) return false;
+
+  const id = candidateIdFromReply(replied);
+  if (!id) return false;
+
+  const updateId = Number(update.update_id);
+  if (queue.requests.some(x => Number(x.telegram_update_id) === updateId)) return false;
+
+  const candidate = readJson(path.join(candidatesDir, `${id}.json`), null);
+  if (!candidate) {
+    console.log(`Instrucción recibida para candidato no disponible: ${id}`);
+    return false;
+  }
+
+  queue.requests.push({
+    created_at: new Date().toISOString(),
+    type: 'telegram_instruction',
+    telegram_update_id: updateId,
+    telegram_message_id: message.message_id,
+    tweet_id: id,
+    user: candidate.user,
+    text: candidate.text,
+    url: candidate.url,
+    instruction
+  });
+  queue.requests = queue.requests.slice(-100);
+  console.log(`Instrucción Telegram ${id}: ${instruction}`);
+  return true;
+}
+
+async function pollUpdatesOnce() {
   const state = readJson(stateFile, { offset: 0 });
   const url = new URL(api('getUpdates'));
   url.searchParams.set('offset', String(state.offset || 0));
   url.searchParams.set('timeout', '25');
-  url.searchParams.set('allowed_updates', JSON.stringify(['callback_query']));
+  url.searchParams.set('allowed_updates', JSON.stringify(['callback_query', 'message']));
   const r = await fetch(url);
   const data = await r.json();
   if (!data.ok) throw new Error(JSON.stringify(data));
@@ -155,6 +201,11 @@ async function pollCallbacksOnce() {
   for (const update of data.result || []) {
     state.offset = Math.max(Number(state.offset || 0), Number(update.update_id) + 1);
     writeJson(stateFile, state);
+
+    if (update.message) {
+      if (addTelegramInstruction(queue, update, update.message)) queueChanged = true;
+      continue;
+    }
 
     const cq = update.callback_query;
     if (!cq) continue;
@@ -205,10 +256,10 @@ async function pollCallbacksOnce() {
 }
 
 async function pollForever() {
-  console.log('SeLoRecordamos Telegram activo. Escuchando botones...');
+  console.log('SeLoRecordamos Telegram activo. Escuchando botones e instrucciones...');
   while (true) {
     try {
-      await pollCallbacksOnce();
+      await pollUpdatesOnce();
     } catch (e) {
       console.error('Error escuchando Telegram:', e.message || e);
       await new Promise(resolve => setTimeout(resolve, 3000));
