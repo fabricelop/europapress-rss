@@ -23,22 +23,35 @@ const { chromium } = require('playwright');
   const url='https://x.com/SeLoRecordamos/with_replies';
   const found=new Map();let stable=0;
   try{
-    await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});await page.waitForTimeout(7000);
+    await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});
+    await page.waitForTimeout(7000);
     for(let round=0;round<120;round++){
-      const articles=page.locator('article[data-testid="tweet"]');const count=await articles.count();const before=found.size;let oldest=Date.now();
+      const articles=page.locator('article[data-testid="tweet"]');
+      const count=await articles.count();
+      const before=found.size;
+      let oldest=Date.now();
       for(let i=0;i<count;i++){
-        const a=articles.nth(i);const time=a.locator('time').first();const datetime=await time.getAttribute('datetime').catch(()=>null);const href=await time.locator('xpath=..').getAttribute('href').catch(()=>null);const text=await a.locator('[data-testid="tweetText"]').innerText().catch(()=>'');
-        if(!href||!text)continue;
-        const m=href.match(/^\/([^/]+)\/status\/(\d+)/);if(!m)continue;
-        const author=m[1].replace(/^@/,'').toLowerCase();if(author!=='selorecordamos')continue;
-        const ts=datetime?Date.parse(datetime):NaN;if(Number.isFinite(ts))oldest=Math.min(oldest,ts);
-        const quotedLinks=await a.locator('a[href*="/status/"]').evaluateAll(els=>els.map(e=>e.getAttribute('href')).filter(Boolean)).catch(()=>[]);
-        const quoted=quotedLinks.map(h=>{const q=h&&h.match(/^\/([^/]+)\/status\/(\d+)/);return q?`https://x.com/${q[1]}/status/${q[2]}`:null;}).find(u=>u&&!u.includes(`/SeLoRecordamos/status/${m[2]}`))||null;
-        found.set(m[2],{id:m[2],datetime:datetime||null,text:text.trim(),url:`https://x.com/SeLoRecordamos/status/${m[2]}`,quoted_url:quoted});
+        const a=articles.nth(i);
+        const links=await a.locator('a[href*="/status/"]').evaluateAll(els=>els.map(e=>e.getAttribute('href')).filter(Boolean)).catch(()=>[]);
+        const ownPath=links.find(h=>/^\/SeLoRecordamos\/status\/\d+/i.test(String(h||'')));
+        if(!ownPath)continue;
+        const m=String(ownPath).match(/^\/SeLoRecordamos\/status\/(\d+)/i);
+        if(!m)continue;
+        const id=m[1];
+        const text=await a.locator('[data-testid="tweetText"]').first().innerText().catch(()=>'');
+        if(!text)continue;
+        const timeEl=a.locator(`a[href="${ownPath}"] time`).first();
+        let datetime=await timeEl.getAttribute('datetime').catch(()=>null);
+        if(!datetime)datetime=await a.locator('time').first().getAttribute('datetime').catch(()=>null);
+        const ts=datetime?Date.parse(datetime):NaN;
+        if(Number.isFinite(ts))oldest=Math.min(oldest,ts);
+        const quoted=links.map(h=>{const q=String(h||'').match(/^\/([^/]+)\/status\/(\d+)/);return q?`https://x.com/${q[1]}/status/${q[2]}`:null;}).find(u=>u&&u.toLowerCase()!==`https://x.com/selorecordamos/status/${id}`.toLowerCase())||null;
+        found.set(id,{id,datetime:datetime||null,text:text.trim(),url:`https://x.com/SeLoRecordamos/status/${id}`,quoted_url:quoted});
       }
       if(found.size===before)stable++;else stable=0;
       if(oldest<=since||stable>=6)break;
-      await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));await page.waitForTimeout(1600);
+      await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));
+      await page.waitForTimeout(1600);
     }
   }finally{await browser.close();}
   const posts=Array.from(found.values()).filter(x=>!x.datetime||Date.parse(x.datetime)>=since).sort((a,b)=>Date.parse(a.datetime||0)-Date.parse(b.datetime||0));
