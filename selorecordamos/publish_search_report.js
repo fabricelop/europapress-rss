@@ -17,6 +17,11 @@ if (!fs.existsSync(sourceFile)) {
   process.exit(0);
 }
 
+// Ajustes editoriales posteriores al filtro base: promociones muy acotadas y
+// recuperaciones puntuales. Se ejecuta antes de publicar el informe y antes
+// de que run-search.ps1 envíe el outbox a Telegram.
+cp.execFileSync(process.execPath, [path.join(baseDir, 'postprocess_search.js')], { cwd: repoDir, stdio: 'inherit' });
+
 const source = JSON.parse(fs.readFileSync(sourceFile, 'utf8'));
 const report = {
   generated_at: new Date().toISOString(),
