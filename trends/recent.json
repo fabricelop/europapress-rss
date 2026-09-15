@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-15T20:01:57+02:00",
+  "captured_at": "2026-09-15T20:02:23+02:00",
   "primary_source": "trends24",
   "top10": [
     "#TEM15S",
@@ -86,25 +86,9 @@
       "error": null
     },
     "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "#rcde",
-        "Judías",
-        "Moscardo",
-        "Bauza",
-        "JJ Gabriel",
-        "Mayol",
-        "Álvaro García",
-        "#TEM15S",
-        "Hartman",
-        "Uefa",
-        "Butarque",
-        "#RayoEspanyol",
-        "bárcenas",
-        "Pedrosa",
-        "Alex Saab"
-      ],
-      "error": null
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1789495344"
     },
     "tweets24": {
       "ok": true,
