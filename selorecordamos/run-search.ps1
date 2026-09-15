@@ -74,6 +74,9 @@ try {
     $code = Run-NodeToLog @((Join-Path $PSScriptRoot 'search_x.js'))
     if ($code -ne 0) { throw "search_x.js termino con codigo $code" }
 
+    $code = Run-NodeToLog @((Join-Path $PSScriptRoot 'publish_search_report.js'))
+    if ($code -ne 0) { throw "publish_search_report.js termino con codigo $code" }
+
     $code = Run-NodeToLog @((Join-Path $PSScriptRoot 'telegram_local.js'), 'send')
     if ($code -ne 0) { throw "telegram_local.js send termino con codigo $code" }
 
