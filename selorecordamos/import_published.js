@@ -20,17 +20,25 @@ const { chromium } = require('playwright');
   const context=await browser.newContext({locale:'es-ES',timezoneId:'Europe/Madrid',userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36'});
   await context.addCookies([{name:'auth_token',value:authToken,domain:'.x.com',path:'/',httpOnly:true,secure:true,sameSite:'None'},{name:'ct0',value:ct0,domain:'.x.com',path:'/',httpOnly:false,secure:true,sameSite:'Lax'}]);
   const page=await context.newPage();
-  const url='https://x.com/SeLoRecordamos';
+  const url='https://x.com/SeLoRecordamos/with_replies';
   const found=new Map();let stable=0;
   try{
     await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});await page.waitForTimeout(7000);
-    for(let round=0;round<100;round++){
+    for(let round=0;round<120;round++){
       const articles=page.locator('article[data-testid="tweet"]');const count=await articles.count();const before=found.size;let oldest=Date.now();
       for(let i=0;i<count;i++){
         const a=articles.nth(i);const time=a.locator('time').first();const datetime=await time.getAttribute('datetime').catch(()=>null);const href=await time.locator('xpath=..').getAttribute('href').catch(()=>null);const text=await a.locator('[data-testid="tweetText"]').innerText().catch(()=>'');
-        if(!href||!text)continue;const m=href.match(/^\/([^/]+)\/status\/(\d+)/);if(!m||m[1].toLowerCase()!=='selorecordamos')continue;const ts=datetime?Date.parse(datetime):NaN;if(Number.isFinite(ts))oldest=Math.min(oldest,ts);found.set(m[2],{id:m[2],datetime:datetime||null,text:text.trim(),url:`https://x.com/SeLoRecordamos/status/${m[2]}`});
+        if(!href||!text)continue;
+        const m=href.match(/^\/([^/]+)\/status\/(\d+)/);if(!m)continue;
+        const author=m[1].replace(/^@/,'').toLowerCase();if(author!=='selorecordamos')continue;
+        const ts=datetime?Date.parse(datetime):NaN;if(Number.isFinite(ts))oldest=Math.min(oldest,ts);
+        const quotedLinks=await a.locator('a[href*="/status/"]').evaluateAll(els=>els.map(e=>e.getAttribute('href')).filter(Boolean)).catch(()=>[]);
+        const quoted=quotedLinks.map(h=>{const q=h&&h.match(/^\/([^/]+)\/status\/(\d+)/);return q?`https://x.com/${q[1]}/status/${q[2]}`:null;}).find(u=>u&&!u.includes(`/SeLoRecordamos/status/${m[2]}`))||null;
+        found.set(m[2],{id:m[2],datetime:datetime||null,text:text.trim(),url:`https://x.com/SeLoRecordamos/status/${m[2]}`,quoted_url:quoted});
       }
-      if(found.size===before)stable++;else stable=0;if(oldest<=since||stable>=5)break;await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));await page.waitForTimeout(1400);
+      if(found.size===before)stable++;else stable=0;
+      if(oldest<=since||stable>=6)break;
+      await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));await page.waitForTimeout(1600);
     }
   }finally{await browser.close();}
   const posts=Array.from(found.values()).filter(x=>!x.datetime||Date.parse(x.datetime)>=since).sort((a,b)=>Date.parse(a.datetime||0)-Date.parse(b.datetime||0));
@@ -38,10 +46,16 @@ const { chromium } = require('playwright');
   const merged=new Map((existing.posts||[]).map(x=>[String(x.id),x]));for(const p of posts)merged.set(String(p.id),p);
   const all=Array.from(merged.values()).sort((a,b)=>Date.parse(a.datetime||0)-Date.parse(b.datetime||0));
   fs.writeFileSync(outputFile,JSON.stringify({updated_at:new Date().toISOString(),posts:all},null,2)+'\n','utf8');
-  console.log(JSON.stringify({since:new Date(since).toISOString(),found_now:posts.length,total_history:all.length,posts},null,2));
+  console.log(JSON.stringify({since:new Date(since).toISOString(),source:url,found_now:posts.length,total_history:all.length,posts},null,2));
   if(process.env.SR_PUBLISHED_PUSH==='1'){
     cp.execFileSync('git',['add','selorecordamos/published-replies.json'],{cwd:repoDir,stdio:'inherit'});
     const d=cp.spawnSync('git',['diff','--cached','--quiet'],{cwd:repoDir});
-    if(d.status!==0){cp.execFileSync('git',['commit','-m','Update SeLoRecordamos published history'],{cwd:repoDir,stdio:'inherit'});try{cp.execFileSync('git',['push','origin','main'],{cwd:repoDir,stdio:'inherit'});}catch(_){cp.execFileSync('git',['pull','--rebase','--autostash','origin','main'],{cwd:repoDir,stdio:'inherit'});cp.execFileSync('git',['push','origin','main'],{cwd:repoDir,stdio:'inherit'});}}
+    if(d.status!==0){
+      cp.execFileSync('git',['commit','-m','Update SeLoRecordamos published history'],{cwd:repoDir,stdio:'inherit'});
+      try{cp.execFileSync('git',['push','origin','main'],{cwd:repoDir,stdio:'inherit'});}catch(_){
+        cp.execFileSync('git',['pull','--rebase','--autostash','origin','main'],{cwd:repoDir,stdio:'inherit'});
+        cp.execFileSync('git',['push','origin','main'],{cwd:repoDir,stdio:'inherit'});
+      }
+    }
   }
 })().catch(e=>{console.error(e.stack||e);process.exit(1);});
