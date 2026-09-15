@@ -49,7 +49,6 @@ const { chromium } = require('playwright');
     if(consultationPatterns.some(r=>r.test(t))) return 'pregunta/consulta, no recordatorio futuro';
     if(/\brecordadme[,:]?\s+que\s+(quien|que|cual|donde|como)\b/.test(t)) return 'pregunta/consulta, no recordatorio futuro';
 
-    // Agradecimientos o referencias a un recordatorio ya ocurrido: no son nuevas solicitudes.
     if (/\bgracias\s+por\s+(recordarmelo|recordarselo|recordarle|recordar(?:me|se|le))\b/.test(t)) return 'agradece un recordatorio ya realizado';
     if (/\b(google fotos|facebook|instagram|x)\b.{0,40}\b(recordarmelo|recordarselo|recordarle)\b/.test(t)) return 'una plataforma le está recordando algo; no solicita un nuevo recordatorio';
     if (/\b(me|nos)\s+(recordo|recordaba|recordaron)\b/.test(t)) return 'habla de un recordatorio pasado';
@@ -58,9 +57,13 @@ const { chromium } = require('playwright');
     const hasMention=/@selorecordamos\b/.test(t);
     const hasSelfVariant=/\brecordarmelo\b/.test(t);
     const hasThirdVariant=/\b(recordarle|recordarselo|recuerdele|recuerdenle)\b/.test(t);
+    const hasAnySearchTerm=hasDirectCore||hasMention||hasSelfVariant||hasThirdVariant;
     const requestCue=/\b(por favor|puedes|puede|podrias|podria|podriais|alguien|que alguien|cuando|manana|luego|despues|esta noche|el lunes|el martes|el miercoles|el jueves|el viernes|el sabado|el domingo|a las\s+\d{1,2})\b/.test(t);
     const imperativeThird=/^(?:@\w+\s+)?(?:por favor\s+)?(?:recuerdele|recuerdenle)\b/.test(t);
 
+    // X puede devolver respuestas/hilos porque el término aparece en el contexto del artículo,
+    // aunque no esté en el texto real del tuit. No convertir ese contexto en candidato.
+    if (!hasAnySearchTerm) return 'coincidencia solo por contexto/hilo; el texto del tuit no contiene ningún término de búsqueda';
     if (hasMention && !hasDirectCore && !hasSelfVariant && !hasThirdVariant && !requestCue) return 'mención a @SeLoRecordamos sin petición de recordatorio';
     if (hasThirdVariant && !hasDirectCore && !hasMention && !requestCue && !imperativeThird) return 'uso narrativo/opinativo de “recordarle/recordárselo”, sin petición clara';
     if (hasSelfVariant && !hasDirectCore && !hasMention && !requestCue && !/\b(no se me olvide|acordarme|necesito|quiero que me)\b/.test(t)) return '“recordármelo” sin señal de solicitud futura';
