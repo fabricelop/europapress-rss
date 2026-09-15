@@ -3,7 +3,7 @@ const path = require('path');
 const { chromium } = require('playwright');
 
 (async () => {
-  const query = '"recordadme" OR "que alguien me recuerde"';
+  const query = '"recordadme" OR "que alguien me recuerde" OR "recordarle" OR "recordármelo" OR "recordarmelo" OR "recordárselo" OR "recordarselo" OR "recuérdele" OR "recuerdele" OR "recuérdenle" OR "recuerdenle" OR "@SeLoRecordamos"';
   const url = `https://x.com/search?q=${encodeURIComponent(query)}&src=typed_query&f=live`;
   const baseDir = path.join(__dirname);
   const outDir = path.join(baseDir, 'debug');
@@ -44,9 +44,27 @@ const { chromium } = require('playwright');
     if (/\brecordadme\s*[,;:]?\s+y\s+(yo\s+)?os\s+recordare\b/.test(t)) return 'uso de “recordadme” como recordar a una persona, no como servicio de recordatorio';
     if (/\brecordadme\s*[.!?…]*$/.test(t)) return '“recordadme” sin objeto ni acción no contiene una petición concreta';
     if (/\bque alguien me recuerde\s*[.!?…]*$/.test(t)) return '“que alguien me recuerde” se refiere a la propia persona, no a un recordatorio concreto';
+
     const consultationPatterns=[/\brecordadme[,:]?\s+(quien|cual|donde|como|por que|porque)\b/,/\brecordadme[,:]?\s+en\s+(que|cual)\b/,/\brecordadme[,:]?\s+en\s+esta\b/,/\bque alguien me recuerde\s+(quien|cual|donde|como|por que|porque)\b/,/\bque alguien me recuerde\s+de\s+(donde|que|cual)\b/,/\bque alguien me recuerde\s+(una|un)\s+sol[ao]\b/];
     if(consultationPatterns.some(r=>r.test(t))) return 'pregunta/consulta, no recordatorio futuro';
     if(/\brecordadme[,:]?\s+que\s+(quien|que|cual|donde|como)\b/.test(t)) return 'pregunta/consulta, no recordatorio futuro';
+
+    // Agradecimientos o referencias a un recordatorio ya ocurrido: no son nuevas solicitudes.
+    if (/\bgracias\s+por\s+(recordarmelo|recordarselo|recordarle|recordar(?:me|se|le))\b/.test(t)) return 'agradece un recordatorio ya realizado';
+    if (/\b(google fotos|facebook|instagram|x)\b.{0,40}\b(recordarmelo|recordarselo|recordarle)\b/.test(t)) return 'una plataforma le está recordando algo; no solicita un nuevo recordatorio';
+    if (/\b(me|nos)\s+(recordo|recordaba|recordaron)\b/.test(t)) return 'habla de un recordatorio pasado';
+
+    const hasDirectCore=/\brecordadme\b|\bque alguien me recuerde\b/.test(t);
+    const hasMention=/@selorecordamos\b/.test(t);
+    const hasSelfVariant=/\brecordarmelo\b/.test(t);
+    const hasThirdVariant=/\b(recordarle|recordarselo|recuerdele|recuerdenle)\b/.test(t);
+    const requestCue=/\b(por favor|puedes|puede|podrias|podria|podriais|alguien|que alguien|cuando|manana|luego|despues|esta noche|el lunes|el martes|el miercoles|el jueves|el viernes|el sabado|el domingo|a las\s+\d{1,2})\b/.test(t);
+    const imperativeThird=/^(?:@\w+\s+)?(?:por favor\s+)?(?:recuerdele|recuerdenle)\b/.test(t);
+
+    if (hasMention && !hasDirectCore && !hasSelfVariant && !hasThirdVariant && !requestCue) return 'mención a @SeLoRecordamos sin petición de recordatorio';
+    if (hasThirdVariant && !hasDirectCore && !hasMention && !requestCue && !imperativeThird) return 'uso narrativo/opinativo de “recordarle/recordárselo”, sin petición clara';
+    if (hasSelfVariant && !hasDirectCore && !hasMention && !requestCue && !/\b(no se me olvide|acordarme|necesito|quiero que me)\b/.test(t)) return '“recordármelo” sin señal de solicitud futura';
+
     return null;
   };
   const readVisibleTweets=async()=>{const articles=page.locator('article[data-testid="tweet"]');const count=await articles.count();const tweets=[];for(let i=0;i<count;i++){const article=articles.nth(i);const text=await article.locator('[data-testid="tweetText"]').innerText().catch(()=>'');const timeEl=article.locator('time').first();const datetime=await timeEl.getAttribute('datetime').catch(()=>null);const timeHref=await timeEl.locator('xpath=..').getAttribute('href').catch(()=>null);const links=await article.locator('a[href*="/status/"]').evaluateAll(els=>els.map(a=>a.getAttribute('href')).filter(Boolean)).catch(()=>[]);const statusPath=(timeHref&&/^\/[^/]+\/status\/\d+/.test(timeHref))?timeHref:links.find(h=>/^\/[^/]+\/status\/\d+/.test(h));if(!text||!statusPath)continue;const m=statusPath.match(/^\/([^/]+)\/status\/(\d+)/);if(!m)continue;const[,user,id]=m;tweets.push({id,user:`@${user}`,text,datetime,url:`https://x.com/${user}/status/${id}`});}return tweets;};
