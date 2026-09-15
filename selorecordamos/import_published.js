@@ -6,7 +6,10 @@ const { chromium } = require('playwright');
 (async()=>{
   const baseDir=__dirname;
   const repoDir=path.join(baseDir,'..');
+  const runtimeDir=path.join(baseDir,'runtime');
   const outputFile=path.join(baseDir,'published-replies.json');
+  const diagnosticFile=path.join(runtimeDir,'published-import-diagnostic.json');
+  fs.mkdirSync(runtimeDir,{recursive:true});
   const authToken=process.env.X_AUTH_TOKEN||'';
   const ct0=process.env.X_CT0||'';
   const chromePath=process.env.SR_CHROME_PATH||(process.platform==='win32'?'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe':'');
@@ -22,44 +25,62 @@ const { chromium } = require('playwright');
   const page=await context.newPage();
   const url='https://x.com/SeLoRecordamos/with_replies';
   const found=new Map();let stable=0;
+  const diagnostics={source:url,final_url:null,title:null,articles_seen:0,sample_articles:[]};
   try{
     await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});
     await page.waitForTimeout(7000);
+    diagnostics.final_url=page.url();
+    diagnostics.title=await page.title();
     for(let round=0;round<120;round++){
       const articles=page.locator('article[data-testid="tweet"]');
       const count=await articles.count();
+      diagnostics.articles_seen=Math.max(diagnostics.articles_seen,count);
       const before=found.size;
       let oldest=Date.now();
       for(let i=0;i<count;i++){
         const a=articles.nth(i);
         const links=await a.locator('a[href*="/status/"]').evaluateAll(els=>els.map(e=>e.getAttribute('href')).filter(Boolean)).catch(()=>[]);
-        const ownPath=links.find(h=>/^\/SeLoRecordamos\/status\/\d+/i.test(String(h||'')));
+        const allText=await a.innerText().catch(()=>'');
+        const tweetTexts=await a.locator('[data-testid="tweetText"]').allInnerTexts().catch(()=>[]);
+        if(diagnostics.sample_articles.length<20){
+          diagnostics.sample_articles.push({round,index:i,links:links.slice(0,12),tweetTexts:tweetTexts.slice(0,5),preview:String(allText||'').slice(0,500)});
+        }
+        let ownPath=links.find(h=>/^\/SeLoRecordamos\/status\/\d+/i.test(String(h||'')));
+        if(!ownPath){
+          const anyOwn=links.find(h=>/\/SeLoRecordamos\/status\/\d+/i.test(String(h||'')));
+          if(anyOwn)ownPath=String(anyOwn).replace(/^https?:\/\/x\.com/i,'');
+        }
         if(!ownPath)continue;
-        const m=String(ownPath).match(/^\/SeLoRecordamos\/status\/(\d+)/i);
+        const m=String(ownPath).match(/\/SeLoRecordamos\/status\/(\d+)/i);
         if(!m)continue;
         const id=m[1];
-        const text=await a.locator('[data-testid="tweetText"]').first().innerText().catch(()=>'');
+        let text=tweetTexts[0]||'';
+        if(!text)text=allText;
         if(!text)continue;
-        const timeEl=a.locator(`a[href="${ownPath}"] time`).first();
-        let datetime=await timeEl.getAttribute('datetime').catch(()=>null);
-        if(!datetime)datetime=await a.locator('time').first().getAttribute('datetime').catch(()=>null);
+        const timeCandidates=await a.locator('time').evaluateAll(els=>els.map(e=>e.getAttribute('datetime')).filter(Boolean)).catch(()=>[]);
+        const ownAnchor=a.locator(`a[href*="/SeLoRecordamos/status/${id}"]`).first();
+        let datetime=await ownAnchor.locator('time').getAttribute('datetime').catch(()=>null);
+        if(!datetime)datetime=timeCandidates[timeCandidates.length-1]||timeCandidates[0]||null;
         const ts=datetime?Date.parse(datetime):NaN;
         if(Number.isFinite(ts))oldest=Math.min(oldest,ts);
-        const quoted=links.map(h=>{const q=String(h||'').match(/^\/([^/]+)\/status\/(\d+)/);return q?`https://x.com/${q[1]}/status/${q[2]}`:null;}).find(u=>u&&u.toLowerCase()!==`https://x.com/selorecordamos/status/${id}`.toLowerCase())||null;
-        found.set(id,{id,datetime:datetime||null,text:text.trim(),url:`https://x.com/SeLoRecordamos/status/${id}`,quoted_url:quoted});
+        const quoted=links.map(h=>{const q=String(h||'').match(/\/([^/]+)\/status\/(\d+)/);return q?`https://x.com/${q[1]}/status/${q[2]}`:null;}).find(u=>u&&u.toLowerCase()!==`https://x.com/selorecordamos/status/${id}`.toLowerCase())||null;
+        found.set(id,{id,datetime:datetime||null,text:String(text).trim(),url:`https://x.com/SeLoRecordamos/status/${id}`,quoted_url:quoted});
       }
       if(found.size===before)stable++;else stable=0;
       if(oldest<=since||stable>=6)break;
       await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));
       await page.waitForTimeout(1600);
     }
-  }finally{await browser.close();}
+  }finally{
+    fs.writeFileSync(diagnosticFile,JSON.stringify(diagnostics,null,2)+'\n','utf8');
+    await browser.close();
+  }
   const posts=Array.from(found.values()).filter(x=>!x.datetime||Date.parse(x.datetime)>=since).sort((a,b)=>Date.parse(a.datetime||0)-Date.parse(b.datetime||0));
   const existing=(()=>{try{return JSON.parse(fs.readFileSync(outputFile,'utf8'));}catch(_){return{posts:[]};}})();
   const merged=new Map((existing.posts||[]).map(x=>[String(x.id),x]));for(const p of posts)merged.set(String(p.id),p);
   const all=Array.from(merged.values()).sort((a,b)=>Date.parse(a.datetime||0)-Date.parse(b.datetime||0));
   fs.writeFileSync(outputFile,JSON.stringify({updated_at:new Date().toISOString(),posts:all},null,2)+'\n','utf8');
-  console.log(JSON.stringify({since:new Date(since).toISOString(),source:url,found_now:posts.length,total_history:all.length,posts},null,2));
+  console.log(JSON.stringify({since:new Date(since).toISOString(),source:url,final_url:diagnostics.final_url,title:diagnostics.title,articles_seen:diagnostics.articles_seen,diagnostic_file:diagnosticFile,found_now:posts.length,total_history:all.length,posts},null,2));
   if(process.env.SR_PUBLISHED_PUSH==='1'){
     cp.execFileSync('git',['add','selorecordamos/published-replies.json'],{cwd:repoDir,stdio:'inherit'});
     const d=cp.spawnSync('git',['diff','--cached','--quiet'],{cwd:repoDir});
