@@ -3,7 +3,7 @@ const path = require('path');
 const { chromium } = require('playwright');
 
 (async () => {
-  const query = '"recordadme" OR "que alguien me recuerde" OR "recordarle" OR "recordármelo" OR "recordarmelo" OR "recordárselo" OR "recordarselo" OR "recuérdele" OR "recuerdele" OR "recuérdenle" OR "recuerdenle" OR "@SeLoRecordamos"';
+  const query = '"recordadme" OR "que alguien me recuerde" OR "alguien que me recuerde" OR "alguien me recuerde" OR "que me recuerden" OR "recordarle" OR "recordármelo" OR "recordarmelo" OR "recordárselo" OR "recordarselo" OR "recuérdele" OR "recuerdele" OR "recuérdenle" OR "recuerdenle" OR "@SeLoRecordamos"';
   const url = `https://x.com/search?q=${encodeURIComponent(query)}&src=typed_query&f=live`;
   const baseDir = path.join(__dirname);
   const outDir = path.join(baseDir, 'debug');
@@ -40,12 +40,13 @@ const { chromium } = require('playwright');
     if (/\b(si|cuando)\s+(manana\s+)?(me\s+)?(desaparezco|muero|fallezco|palmo)\b/.test(t)||/\bcuando\s+me\s+muera\b/.test(t)) return 'memorial/no es una petición de recordatorio';
     if (/\brecordadme\s+(asi|como\s+(el|la|los|las|quien))\b/.test(t)) return '“recordadme así/como…” se refiere a recordar a la persona';
     if (/\brecordadme\s+(con\s+)?(carino|amor|afecto|ternura|orgullo)\b/.test(t)) return '“recordadme con cariño/afecto/orgullo…” se refiere a recordar a la persona';
-    if (/\b(que alguien me recuerde|recordadme)\s+con\s+(la\s+)?(cancion|musica|tema)\b/.test(t)) return '“recordarme con una canción/música” se refiere a recordar a la persona';
+    if (/\b(que alguien me recuerde|alguien que me recuerde|alguien me recuerde|que me recuerden|recordadme)\s+con\s+(la\s+)?(cancion|musica|tema)\b/.test(t)) return '“recordarme con una canción/música” se refiere a recordar a la persona';
     if (/\brecordadme\s*[,;:]?\s+y\s+(yo\s+)?os\s+recordare\b/.test(t)) return 'uso de “recordadme” como recordar a una persona, no como servicio de recordatorio';
     if (/\brecordadme\s*[.!?…]*$/.test(t)) return '“recordadme” sin objeto ni acción no contiene una petición concreta';
-    if (/\bque alguien me recuerde\s*[.!?…]*$/.test(t)) return '“que alguien me recuerde” se refiere a la propia persona, no a un recordatorio concreto';
+    if (/\b(que alguien me recuerde|alguien que me recuerde|alguien me recuerde|que me recuerden)\s*[.!?…]*$/.test(t)) return 'petición sin objeto ni acción concreta';
 
-    const consultationPatterns=[/\brecordadme[,:]?\s+(quien|cual|donde|como|por que|porque)\b/,/\brecordadme[,:]?\s+en\s+(que|cual)\b/,/\brecordadme[,:]?\s+en\s+esta\b/,/\bque alguien me recuerde\s+(quien|cual|donde|como|por que|porque)\b/,/\bque alguien me recuerde\s+de\s+(donde|que|cual)\b/,/\bque alguien me recuerde\s+(una|un)\s+sol[ao]\b/];
+    const directPhrase='(?:que alguien me recuerde|alguien que me recuerde|alguien me recuerde|que me recuerden)';
+    const consultationPatterns=[/\brecordadme[,:]?\s+(quien|cual|donde|como|por que|porque)\b/,/\brecordadme[,:]?\s+en\s+(que|cual)\b/,/\brecordadme[,:]?\s+en\s+esta\b/,new RegExp(`\\b${directPhrase}\\s+(quien|cual|donde|como|por que|porque)\\b`),new RegExp(`\\b${directPhrase}\\s+de\\s+(donde|que|cual)\\b`),new RegExp(`\\b${directPhrase}\\s+(una|un)\\s+sol[ao]\\b`)];
     if(consultationPatterns.some(r=>r.test(t))) return 'pregunta/consulta, no recordatorio futuro';
     if(/\brecordadme[,:]?\s+que\s+(quien|que|cual|donde|como)\b/.test(t)) return 'pregunta/consulta, no recordatorio futuro';
 
@@ -53,7 +54,7 @@ const { chromium } = require('playwright');
     if (/\b(google fotos|facebook|instagram|x)\b.{0,40}\b(recordarmelo|recordarselo|recordarle)\b/.test(t)) return 'una plataforma le está recordando algo; no solicita un nuevo recordatorio';
     if (/\b(me|nos)\s+(recordo|recordaba|recordaron)\b/.test(t)) return 'habla de un recordatorio pasado';
 
-    const hasDirectCore=/\brecordadme\b|\bque alguien me recuerde\b/.test(t);
+    const hasDirectCore=/\brecordadme\b|\b(que alguien me recuerde|alguien que me recuerde|alguien me recuerde|que me recuerden)\b/.test(t);
     const hasMention=/@selorecordamos\b/.test(t);
     const hasSelfVariant=/\brecordarmelo\b/.test(t);
     const hasThirdVariant=/\b(recordarle|recordarselo|recuerdele|recuerdenle)\b/.test(t);
