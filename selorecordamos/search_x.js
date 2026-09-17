@@ -18,7 +18,10 @@ const { chromium } = require('playwright');
   const authToken = process.env.X_AUTH_TOKEN || '';
   const ct0 = process.env.X_CT0 || '';
   const chromePath = process.env.SR_CHROME_PATH || (process.platform === 'win32' ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' : '');
-  const headless = process.env.SR_HEADLESS === '1';
+  // En el PC Windows se mantiene el navegador visible por defecto. En GitHub Actions/CI
+  // no hay servidor gráfico, así que Playwright debe arrancar automáticamente en headless.
+  // SR_HEADLESS=1/0 sigue permitiendo forzar explícitamente el comportamiento.
+  const headless = process.env.SR_HEADLESS === '1' || (process.env.SR_HEADLESS !== '0' && (process.env.CI === 'true' || process.platform !== 'win32'));
   const backfillSinceRaw = String(process.env.SR_BACKFILL_SINCE || '').trim();
   const parsedSince = backfillSinceRaw ? Date.parse(backfillSinceRaw) : NaN;
   const backfillDays = Math.max(0, Number(process.env.SR_BACKFILL_DAYS || '0') || 0);
