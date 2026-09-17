@@ -48,6 +48,8 @@ const { chromium } = require('playwright');
     if (/\brecordadme\s*[.!?…]*$/.test(t)) return '“recordadme” sin objeto ni acción no contiene una petición concreta';
     if (/\b(que alguien me recuerde|alguien que me recuerde|alguien me recuerde|que me recuerden)\s*[.!?…]*$/.test(t)) return 'petición sin objeto ni acción concreta';
 
+    if (/\bque me recuerden en\s+(?:el|la|los|las|@\w+)\b.{0,100}\b(es|seria|fue|ha sido|alegria|orgullo|honor)\b/.test(t)) return '“que me recuerden en…” expresa recuerdo o reconocimiento, no solicita un recordatorio';
+
     const directPhrase='(?:que alguien me recuerde|alguien que me recuerde|alguien me recuerde|que me recuerden)';
     const consultationPatterns=[/\brecordadme[,:]?\s+(quien|cual|donde|como|por que|porque)\b/,/\brecordadme[,:]?\s+en\s+(que|cual)\b/,/\brecordadme[,:]?\s+en\s+esta\b/,new RegExp(`\\b${directPhrase}\\s+(quien|cual|donde|como|por que|porque)\\b`),new RegExp(`\\b${directPhrase}\\s+de\\s+(donde|que|cual)\\b`),new RegExp(`\\b${directPhrase}\\s+(una|un)\\s+sol[ao]\\b`)];
     if(consultationPatterns.some(r=>r.test(t))) return 'pregunta/consulta, no recordatorio futuro';
