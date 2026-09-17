@@ -97,7 +97,7 @@ jobs:
                   if b.get("url"):
                       button["url"] = b["url"]
                       tweet_text = tweet_text_from_url(b["url"])
-                      if tweet_text and "abrir" in b["label"].lower() and "x" in b["label"].lower():
+                      if tweet_text:
                           keyboard.append([button, {"text": "📋 Copia", "copy_text": {"text": tweet_text}}])
                       else:
                           keyboard.append([button])
