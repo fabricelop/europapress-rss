@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-17T10:50:09+02:00",
+  "captured_at": "2026-09-17T10:51:51+02:00",
   "primary_source": "trends24",
   "top10": [
     "#FelizJueves",
@@ -86,25 +86,9 @@
       "error": null
     },
     "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "#felizjueves",
-        "Vivas",
-        "#LaIslaDeLasTentaciones4",
-        "Vinicius",
-        "Adeyemi",
-        "#LaHora17S",
-        "Cancelo",
-        "elche",
-        "ES-Alert",
-        "Racing",
-        "AEMET",
-        "Montse",
-        "#LaVidaEnRosaConLidl",
-        "Ed Sheeran",
-        "DANA"
-      ],
-      "error": null
+      "ok": false,
+      "trends": [],
+      "error": "ConnectionError: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
     },
     "tweets24": {
       "ok": true,
