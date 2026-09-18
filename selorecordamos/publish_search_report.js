@@ -12,6 +12,45 @@ function runGit(args) {
   return cp.execFileSync('git', args, { cwd: repoDir, encoding: 'utf8', stdio: 'pipe' });
 }
 
+function gitStatus(args) {
+  return cp.spawnSync('git', args, { cwd: repoDir, encoding: 'utf8', stdio: 'pipe' });
+}
+
+function ensureCleanRebaseState() {
+  const gitDir = runGit(['rev-parse', '--git-dir']).trim();
+  const absGitDir = path.resolve(repoDir, gitDir);
+  const rebaseMerge = path.join(absGitDir, 'rebase-merge');
+  const rebaseApply = path.join(absGitDir, 'rebase-apply');
+
+  if (!fs.existsSync(rebaseMerge) && !fs.existsSync(rebaseApply)) return;
+
+  const abort = gitStatus(['rebase', '--abort']);
+  if (abort.status === 0) {
+    console.log('Rebase Git incompleto detectado y abortado antes de publicar el informe.');
+    return;
+  }
+
+  const quit = gitStatus(['rebase', '--quit']);
+  if (quit.status === 0) {
+    console.log('Estado residual de rebase limpiado antes de publicar el informe.');
+    return;
+  }
+
+  throw new Error('Hay un rebase Git incompleto y no se pudo limpiar automaticamente.');
+}
+
+function ensureMainBranch() {
+  const branch = gitStatus(['symbolic-ref', '--short', '-q', 'HEAD']);
+  const current = branch.status === 0 ? branch.stdout.trim() : '';
+  if (current === 'main') return;
+
+  const sw = gitStatus(['switch', 'main']);
+  if (sw.status !== 0) {
+    throw new Error('El repositorio local no esta en main y no se pudo cambiar automaticamente a main: ' + (sw.stderr || sw.stdout || '').trim());
+  }
+  console.log('Repositorio local cambiado automaticamente a main antes de publicar el informe.');
+}
+
 if (!fs.existsSync(sourceFile)) {
   console.log('No hay debug/results.json; no se publica informe de búsqueda.');
   process.exit(0);
@@ -41,19 +80,29 @@ const report = {
 fs.writeFileSync(reportFile, JSON.stringify(report, null, 2) + '\n', 'utf8');
 
 try {
+  // Robustez: un rebase antiguo o detached HEAD no debe bloquear para siempre
+  // las ejecuciones horarias de SeLoRecordamos.
+  ensureCleanRebaseState();
+  ensureMainBranch();
+
   runGit(['add', reportRepoPath]);
   const diff = cp.spawnSync('git', ['diff', '--cached', '--quiet', '--', reportRepoPath], { cwd: repoDir });
   if (diff.status === 0) {
     console.log('Informe de búsqueda sin cambios.');
     process.exit(0);
   }
+
   runGit(['commit', '-m', 'Update SeLoRecordamos search report', '--', reportRepoPath]);
+
   try {
     runGit(['push', 'origin', 'main']);
   } catch (_) {
+    // Si main avanzo en remoto, sincronizamos y reintentamos. Si hubiera
+    // quedado otro rebase residual, la siguiente ejecucion lo limpiara.
     runGit(['pull', '--rebase', '--autostash', 'origin', 'main']);
     runGit(['push', 'origin', 'main']);
   }
+
   console.log('Informe de búsqueda SeLoRecordamos subido a GitHub.');
 } catch (e) {
   console.error('No se pudo publicar el informe de búsqueda:', String(e.stderr || e.message || e).trim());
