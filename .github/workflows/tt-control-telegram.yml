@@ -1,0 +1,92 @@
+name: TT Control Telegram pager
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+
+concurrency:
+  group: tt-control-telegram-pager
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  pager:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Notify new TT Control drafts
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_WEBHOOK_SECRET: ${{ secrets.TELEGRAM_WEBHOOK_SECRET }}
+        run: |
+          python3 <<'PY'
+          import json, os, urllib.request, urllib.parse, hashlib, hmac
+          from pathlib import Path
+
+          state_path=Path("telegram/tt-control-state.json")
+          state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+          old_sha=state.get("last_sha","")
+          old_message=state.get("message_id")
+          api="https://api.github.com/repos/fabricelop/tt-control"
+          def get(url):
+              with urllib.request.urlopen(url) as r: return json.loads(r.read().decode())
+          head=get(api+"/commits/main")["sha"]
+          if old_sha==head:
+              print("No TT Control changes.")
+              raise SystemExit
+
+          files=[]
+          if old_sha:
+              try:
+                  cmp=get(api+"/compare/"+old_sha+"..."+head)
+                  files=[f["filename"] for f in cmp.get("files",[]) if f["filename"].startswith("bridge/results/") and f["filename"].endswith(".json")]
+              except Exception as e:
+                  print("Compare failed:",e)
+          if not old_sha:
+              state["last_sha"]=head
+              state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
+              raise SystemExit
+
+          state["last_sha"]=head
+          if not files:
+              state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
+              raise SystemExit
+
+          token=os.environ["TELEGRAM_BOT_TOKEN"]; chat=os.environ["TELEGRAM_CHAT_ID"]; secret=os.environ["TELEGRAM_WEBHOOK_SECRET"]
+          def post(method,payload):
+              req=urllib.request.Request("https://api.telegram.org/bot"+token+"/"+method,data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
+              with urllib.request.urlopen(req) as r: return json.loads(r.read().decode())
+
+          if old_message:
+              try: post("deleteMessage",{"chat_id":chat,"message_id":old_message})
+              except Exception: pass
+
+          n=len(set(files))
+          sent=post("sendMessage",{"chat_id":chat,"text":f"📰 TT Control · {n} noticia{'s' if n!=1 else ''} lista{'s' if n!=1 else ''} para revisar","disable_web_page_preview":True})
+          mid=sent["result"]["message_id"]
+          hook=post("getWebhookInfo",{}).get("result",{}).get("url","")
+          base=hook.rsplit("/api/",1)[0] if "/api/" in hook else ""
+          sig=hmac.new(secret.encode(),str(mid).encode(),hashlib.sha256).hexdigest()
+          open_url=(base+"/api/tt-control-open?"+urllib.parse.urlencode({"m":mid,"s":sig})) if base else "https://tt-control.fabricelop.workers.dev/?view=READY"
+          kb={"inline_keyboard":[[{"text":"ABRIR TT CONTROL","url":open_url}],[{"text":"🗑️ Borrar","callback_data":"delete:message"}]]}
+          post("editMessageReplyMarkup",{"chat_id":chat,"message_id":mid,"reply_markup":kb})
+          state["message_id"]=mid
+          state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
+          print("TT Control alert sent:",n)
+          PY
+
+      - name: Save pager state
+        run: |
+          git config user.name "tt-control-telegram"
+          git config user.email "actions@users.noreply.github.com"
+          git add telegram/tt-control-state.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Update TT Control Telegram pager state [skip ci]"
+          git push
