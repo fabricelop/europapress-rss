@@ -37,31 +37,21 @@ jobs:
 
           state_path=Path("telegram/tt-control-state.json")
           state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
-          old_sha=state.get("last_sha","")
-          old_message=state.get("message_id")
-          api="https://api.github.com/repos/fabricelop/tt-control"
-          def get(url):
-              with urllib.request.urlopen(url) as r: return json.loads(r.read().decode())
-          head=get(api+"/commits/main")["sha"]
-          if old_sha==head:
-              print("No TT Control changes.")
-              raise SystemExit
-
+          import subprocess, tempfile, hashlib
+          tmp=tempfile.mkdtemp(prefix="ttcontrol-")
+          subprocess.run(["git","clone","--depth","1","https://github.com/fabricelop/tt-control.git",tmp],check=True,stdout=subprocess.DEVNULL)
+          result_dir=Path(tmp)/"bridge"/"results"
+          seen=state.get("seen_results",{})
+          current={}
           files=[]
-          if old_sha:
-              try:
-                  cmp=get(api+"/compare/"+old_sha+"..."+head)
-                  files=[f["filename"] for f in cmp.get("files",[]) if f["filename"].startswith("bridge/results/") and f["filename"].endswith(".json")]
-              except Exception as e:
-                  print("Compare failed:",e)
-          if not old_sha:
-              state["last_sha"]=head
-              state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
-              raise SystemExit
-
-          state["last_sha"]=head
+          for fp in result_dir.glob("*.json"):
+              digest=hashlib.sha256(fp.read_bytes()).hexdigest()
+              current[fp.name]=digest
+              if seen.get(fp.name)!=digest: files.append(fp.name)
+          state["seen_results"]=current
           if not files:
               state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
+              print("No new TT Control results.")
               raise SystemExit
 
           token=os.environ["TELEGRAM_BOT_TOKEN"]; chat=os.environ["TELEGRAM_CHAT_ID"]; secret=os.environ["TELEGRAM_WEBHOOK_SECRET"]
