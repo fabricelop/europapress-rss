@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/tt-control-telegram.yml'
+      - 'telegram/tt-control-trigger.txt'
   schedule:
     - cron: '*/5 * * * *'
 
