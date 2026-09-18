@@ -75,10 +75,8 @@ jobs:
           n=len(set(files))
           sent=post("sendMessage",{"chat_id":chat,"text":f"📰 TT Control · {n} noticia{'s' if n!=1 else ''} lista{'s' if n!=1 else ''} para revisar","disable_web_page_preview":True})
           mid=sent["result"]["message_id"]
-          hook=post("getWebhookInfo",{}).get("result",{}).get("url","")
-          base=hook.rsplit("/api/",1)[0] if "/api/" in hook else ""
           sig=hmac.new(secret.encode(),str(mid).encode(),hashlib.sha256).hexdigest()
-          open_url=(base+"/api/tt-control-open?"+urllib.parse.urlencode({"m":mid,"s":sig})) if base else "https://tt-control.fabricelop.workers.dev/?view=READY"
+          open_url="https://ttittulares-espana.vercel.app/api/tt-control-open?"+urllib.parse.urlencode({"m":mid,"s":sig})
           kb={"inline_keyboard":[[{"text":"ABRIR TT CONTROL","url":open_url}],[{"text":"🗑️ Borrar","callback_data":"delete:message"}]]}
           post("editMessageReplyMarkup",{"chat_id":chat,"message_id":mid,"reply_markup":kb})
           state["message_id"]=mid
