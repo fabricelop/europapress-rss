@@ -38,6 +38,7 @@ jobs:
           state_path=Path("telegram/tt-control-state.json")
           state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
           import subprocess, tempfile, hashlib
+          old_message=state.get("message_id")
           tmp=tempfile.mkdtemp(prefix="ttcontrol-")
           subprocess.run(["git","clone","--depth","1","https://github.com/fabricelop/tt-control.git",tmp],check=True,stdout=subprocess.DEVNULL)
           result_dir=Path(tmp)/"bridge"/"results"
