@@ -37,22 +37,28 @@ jobs:
 
           state_path=Path("telegram/tt-control-state.json")
           state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
-          import subprocess, tempfile, hashlib
+          import subprocess, tempfile
           old_message=state.get("message_id")
           tmp=tempfile.mkdtemp(prefix="ttcontrol-")
           subprocess.run(["git","clone","--depth","1","https://github.com/fabricelop/tt-control.git",tmp],check=True,stdout=subprocess.DEVNULL)
           result_dir=Path(tmp)/"bridge"/"results"
-          seen=state.get("seen_results",{})
-          current={}
-          files=[]
-          for fp in result_dir.glob("*.json"):
-              digest=hashlib.sha256(fp.read_bytes()).hexdigest()
-              current[fp.name]=digest
-              if seen.get(fp.name)!=digest: files.append(fp.name)
-          state["seen_results"]=current
-          if not files:
+          delivered_ids=sorted({int(fp.stem) for fp in result_dir.glob("*.json") if fp.stem.isdigit()})
+          previous=set(state.get("ready_ids",[]))
+          ready_ids=[]
+          # Count what TT Control actually exposes in READY, not historical result files.
+          try:
+              req=urllib.request.Request("https://tt-control.fabricelop.workers.dev/api/news?status=READY")
+              with urllib.request.urlopen(req) as r:
+                  payload=json.loads(r.read().decode())
+              ready_ids=sorted(int(x["id"]) for x in payload.get("news",[]))
+          except Exception as e:
+              print("READY query failed:",e)
+              raise SystemExit(1)
+          state["ready_ids"]=ready_ids
+          new_ready=set(ready_ids)-previous
+          if not new_ready:
               state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
-              print("No new TT Control results.")
+              print("No newly READY TT Control news.")
               raise SystemExit
 
           token=os.environ["TELEGRAM_BOT_TOKEN"]; chat=os.environ["TELEGRAM_CHAT_ID"]; secret=os.environ["TELEGRAM_WEBHOOK_SECRET"]
@@ -64,7 +70,7 @@ jobs:
               try: post("deleteMessage",{"chat_id":chat,"message_id":old_message})
               except Exception: pass
 
-          n=len(set(files))
+          n=len(ready_ids)
           sent=post("sendMessage",{"chat_id":chat,"text":f"📰 TT Control · {n} noticia{'s' if n!=1 else ''} lista{'s' if n!=1 else ''} para revisar","disable_web_page_preview":True})
           mid=sent["result"]["message_id"]
           sig=hmac.new(secret.encode(),str(mid).encode(),hashlib.sha256).hexdigest()
