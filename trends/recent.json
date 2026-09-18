@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-18T18:32:01+02:00",
+  "captured_at": "2026-09-18T18:32:41+02:00",
   "primary_source": "trends24",
   "top10": [
     "#SVGala2",
@@ -86,25 +86,9 @@
       "error": null
     },
     "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "#SVGala2",
-        "#TEM18S",
-        "Vivas",
-        "Madina",
-        "Josep Martínez",
-        "Luis de la Fuente",
-        "Barça",
-        "#Mañaneros18S",
-        "Bonares",
-        "puerto de Ceuta",
-        "Roberto Fernández",
-        "Real Madrid",
-        "Alvaro Valles",
-        "ES-Alert",
-        "Pirri"
-      ],
-      "error": null
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1789749162"
     },
     "tweets24": {
       "ok": true,
