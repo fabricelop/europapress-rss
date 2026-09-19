@@ -99,6 +99,14 @@ jobs:
                   print("Latest TT Control delivery did not succeed; do not notify."); raise SystemExit
               commit=get_json(api+"/commits/"+latest_sha)
               changed=[x for x in commit.get("files",[]) if x.get("filename","").startswith("bridge/results/") and x.get("filename","").endswith(".json")]
+              prepared=[]
+              for x in changed:
+                  try:
+                      rid=Path(x["filename"]).stem
+                      raw=urllib.request.urlopen(urllib.request.Request("https://raw.githubusercontent.com/fabricelop/tt-control/main/"+x["filename"],headers={"User-Agent":"tt-control-telegram-pager"}),timeout=10).read().decode()
+                      obj=json.loads(raw); nid=str(obj.get("id") or rid); title=str(obj.get("title") or "").strip()
+                      prepared.append({"id":nid,"title":title})
+                  except Exception: pass
               new_count=max(1,len(changed))
           except SystemExit: raise
           except Exception as e:
@@ -109,9 +117,14 @@ jobs:
               except Exception: pass
 
           n=new_count
-          sent=post("sendMessage",{"chat_id":chat,"text":f"📰 TT Control · {n} noticia{'s' if n!=1 else ''} preparada{'s' if n!=1 else ''} en Listas","disable_web_page_preview":True})
+          if len(prepared)==1:
+              p=prepared[0]; txt="📰 TT Control · noticia preparada"+(("\\n"+p["title"]) if p["title"] else "")
+              open_url="https://tt-control.fabricelop.workers.dev/?view=READY&id="+urllib.parse.quote(p["id"])
+          else:
+              txt=f"📰 TT Control · {n} noticias preparadas en Listas"
+              open_url="https://tt-control.fabricelop.workers.dev/?view=READY"
+          sent=post("sendMessage",{"chat_id":chat,"text":txt,"disable_web_page_preview":True})
           mid=sent["result"]["message_id"]
-          open_url="https://tt-control.fabricelop.workers.dev/?view=READY"
           kb={"inline_keyboard":[[{"text":"ABRIR TT CONTROL","url":open_url}],[{"text":"🗑️ Borrar","callback_data":"delete:message"}]]}
           post("editMessageReplyMarkup",{"chat_id":chat,"message_id":mid,"reply_markup":kb})
           state["message_id"]=mid
