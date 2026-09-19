@@ -65,7 +65,8 @@ jobs:
                   with urllib.request.urlopen(req,timeout=15) as r: cand=json.loads(r.read().decode()).get("candidate")
                   if cand:
                       aid=str(cand.get("id")); count=int(cand.get("source_count") or 1)
-                      txt="🚨 TT Control · Radar de medios · "+str(count)+"/9\n\n"+str(cand.get("title") or "")
+                      ts=str(cand.get("last_seen") or "")[:16].replace("T"," ")
+                      txt="🚨 TT Control · RADAR · "+str(count)+"/9"+(" · "+ts if ts else "")+"\n\n"+str(cand.get("title") or "")
                       kb={"inline_keyboard":[[{"text":"PREPARAR","callback_data":"media:PREPARE:"+aid},{"text":"INTERESANTE","callback_data":"media:INTERESTING:"+aid},{"text":"DESCARTAR","callback_data":"media:DISMISS:"+aid}]]}
                       post("sendMessage",{"chat_id":chat,"text":txt,"reply_markup":kb,"disable_web_page_preview":True})
                       print("Forced REAL radar candidate sent:",aid,count)
@@ -87,7 +88,8 @@ jobs:
                   if aid in seen_media: continue
                   sources=", ".join(json.loads(a.get("sources_json") or "[]"))
                   count=int(a.get("source_count") or 1)
-                  txt="🚨 TT Control · Radar de medios  ·  "+str(count)+"/9\n\n"+a.get("title","")
+                  ts=str(a.get("last_seen") or "")[:16].replace("T"," ")
+                  txt="🚨 TT Control · RADAR · "+str(count)+"/9"+(" · "+ts if ts else "")+"\n\n"+a.get("title","")
                   if sources: txt+="\n\nFuentes: "+sources
                   if a.get("reason"): txt+="\nMotivo: "+a.get("reason","")
                   kb={"inline_keyboard":[[{"text":"PREPARAR","callback_data":"media:PREPARE:"+aid},{"text":"INTERESANTE","callback_data":"media:INTERESTING:"+aid},{"text":"DESCARTAR","callback_data":"media:DISMISS:"+aid}],[{"text":"ABRIR FUENTE","url":a.get("url","https://tt-control.fabricelop.workers.dev/")}]]}
