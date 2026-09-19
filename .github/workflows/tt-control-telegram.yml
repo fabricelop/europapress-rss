@@ -47,9 +47,23 @@ jobs:
               print("READY count query failed:",e)
               raise SystemExit(1)
           state["ready_count"]=ready_count
-          if previous_count is not None and ready_count<=int(previous_count):
+          # Keep the single live Telegram pager synchronized with the real READY total.
+          # A simple "only when count increases" rule misses cases where READY items are
+          # published/deleted and new drafts arrive while the total stays equal or lower.
+          if previous_count is not None and ready_count==int(previous_count):
               state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
-              print("No increase in READY TT Control news.")
+              print("READY count unchanged.")
+              raise SystemExit
+          if ready_count==0:
+              if old_message:
+                  try:
+                      post_token=os.environ["TELEGRAM_BOT_TOKEN"]; post_chat=os.environ["TELEGRAM_CHAT_ID"]
+                      req=urllib.request.Request("https://api.telegram.org/bot"+post_token+"/deleteMessage",data=json.dumps({"chat_id":post_chat,"message_id":old_message}).encode(),headers={"Content-Type":"application/json"})
+                      urllib.request.urlopen(req).read()
+                  except Exception: pass
+              state.pop("message_id",None)
+              state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
+              print("READY empty; pager cleared.")
               raise SystemExit
 
           token=os.environ["TELEGRAM_BOT_TOKEN"]; chat=os.environ["TELEGRAM_CHAT_ID"]; secret=os.environ["TELEGRAM_WEBHOOK_SECRET"]
