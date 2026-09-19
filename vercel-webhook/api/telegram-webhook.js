@@ -113,7 +113,7 @@ export default async function handler(req, res) {
 
       if (data.startsWith("media:")) {
         const parts=data.split(":"); const action=parts[1]||""; const id=parts[2]||"";
-        if (!/^(PREPARE|INTERESTING|DISMISS)$/.test(action) || !/^\\d+$/.test(id)) {
+        if (!/^(PREPARE|INTERESTING|DISMISS)$/.test(action) || !/^\d+$/.test(id)) {
           await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"Acción no válida."});
         } else {
           const actionUrl="https://tt-control.fabricelop.workers.dev/api/media-alert/action";
