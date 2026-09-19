@@ -38,7 +38,8 @@ jobs:
           from pathlib import Path
 
           state_path=Path("telegram/tt-control-state.json")
-          state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+          raw_state=state_path.read_text(encoding="utf-8").strip().replace("\\n","")
+state=json.loads(raw_state) if state_path.exists() else {}
           old_message=state.get("message_id")
           previous_sha=state.get("result_commit_sha")
           media_baselined="media_alert_ids" in state
