@@ -78,7 +78,20 @@ jobs:
           try:
               req=urllib.request.Request("https://tt-control.fabricelop.workers.dev/api/public/ready-feed",headers={"User-Agent":"tt-control-telegram-pager/1.0"})
               with urllib.request.urlopen(req,timeout=15) as r: ready=json.loads(r.read().decode()).get("ready",[])
+              ready_baselined=bool(state.get("ready_baselined",False))
               seen_ready=set(str(x) for x in state.get("ready_ids",[]))
+              if not ready_baselined:
+                  from datetime import datetime, timezone, timedelta
+                  cutoff=datetime.now(timezone.utc)-timedelta(hours=3)
+                  recent=[]
+                  for p in ready:
+                      try:
+                          ts=str(p.get("updated_at") or "").replace(" ","T")+"Z"
+                          if datetime.fromisoformat(ts.replace("Z","+00:00"))>=cutoff: recent.append(p)
+                      except Exception: pass
+                  ready=recent
+                  state["ready_baselined"]=True
+                  print("Ready backup initialized with last 3 hours:",len(ready))
               for p in reversed(ready):
                   pid=str(p.get("id"))
                   if pid in seen_ready: continue
