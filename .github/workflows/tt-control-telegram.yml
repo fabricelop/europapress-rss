@@ -51,6 +51,10 @@ jobs:
               if not commits:
                   print("No TT Control result commits yet."); raise SystemExit
               latest_sha=commits[0]["sha"]
+              if previous_sha is None:
+                  state["result_commit_sha"]=latest_sha
+                  state_path.write_text(json.dumps(state,indent=2)+"\\n",encoding="utf-8")
+                  print("Telegram pager baseline initialized; no historical alert."); raise SystemExit
               if previous_sha==latest_sha:
                   print("No new TT Control result commit."); raise SystemExit
               runs=get_json(api+"/actions/runs?head_sha="+urllib.parse.quote(latest_sha)+"&per_page=10").get("workflow_runs",[])
