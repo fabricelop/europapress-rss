@@ -46,6 +46,14 @@ jobs:
           seen_media=set(state.get("media_alert_ids",[]))
 
           token=os.environ["TELEGRAM_BOT_TOKEN"]; chat=os.environ["TELEGRAM_CHAT_ID"]
+          webhook_url="https://tt-control.fabricelop.workers.dev/api/telegram-webhook"
+          wh_secret=os.environ.get("TELEGRAM_WEBHOOK_SECRET","").strip()
+          wh={"url":webhook_url,"allowed_updates":["callback_query"]}
+          if wh_secret: wh["secret_token"]=wh_secret
+          try:
+              req=urllib.request.Request("https://api.telegram.org/bot"+token+"/setWebhook",data=json.dumps(wh).encode(),headers={"Content-Type":"application/json"})
+              with urllib.request.urlopen(req,timeout=15) as rr: print("Webhook:",rr.read().decode())
+          except Exception as e: print("Webhook update failed:",e)
           def post(method,payload):
               req=urllib.request.Request("https://api.telegram.org/bot"+token+"/"+method,data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
               with urllib.request.urlopen(req) as r: return json.loads(r.read().decode())
