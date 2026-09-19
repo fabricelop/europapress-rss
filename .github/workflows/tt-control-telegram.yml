@@ -58,6 +58,20 @@ jobs:
               state_path.write_text(json.dumps(state,indent=2)+"\\n",encoding="utf-8")
               print("Forced new-alert test sent.")
 
+          # Forced end-to-end test: take a REAL media_radar candidate even if it is below alert threshold.
+          if state.pop("force_real_radar_test",False):
+              try:
+                  req=urllib.request.Request("https://tt-control.fabricelop.workers.dev/api/public/media-test-candidate",headers={"User-Agent":"tt-control-telegram-pager/1.0"})
+                  with urllib.request.urlopen(req,timeout=15) as r: cand=json.loads(r.read().decode()).get("candidate")
+                  if cand:
+                      aid=str(cand.get("id")); count=int(cand.get("source_count") or 1)
+                      txt="🚨 TT Control · Radar de medios · "+str(count)+"/9\n\n"+str(cand.get("title") or "")
+                      kb={"inline_keyboard":[[{"text":"PREPARAR","callback_data":"media:PREPARE:"+aid},{"text":"INTERESANTE","callback_data":"media:INTERESTING:"+aid},{"text":"DESCARTAR","callback_data":"media:DISMISS:"+aid}]]}
+                      post("sendMessage",{"chat_id":chat,"text":txt,"reply_markup":kb,"disable_web_page_preview":True})
+                      print("Forced REAL radar candidate sent:",aid,count)
+              except Exception as e: print("Forced real radar test skipped:",e)
+              state_path.write_text(json.dumps(state,indent=2)+"\\n",encoding="utf-8")
+
           # Independent high-importance media radar alerts. One Telegram message per event.
           try:
               req=urllib.request.Request("https://tt-control.fabricelop.workers.dev/api/public/media-alerts-feed",headers={"User-Agent":"tt-control-telegram-pager/1.0"})
