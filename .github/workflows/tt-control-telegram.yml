@@ -38,38 +38,35 @@ jobs:
           state_path=Path("telegram/tt-control-state.json")
           state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
           old_message=state.get("message_id")
-          previous_count=state.get("ready_count")
-          previous_signature=state.get("ready_signature")
-          try:
-              req=urllib.request.Request("https://tt-control.fabricelop.workers.dev/api/public/ready-count")
-              with urllib.request.urlopen(req) as r:
-                  payload=json.loads(r.read().decode())
-                  ready_count=int(payload.get("ready",0))
-                  ready_signature=str(payload.get("signature",""))
-          except Exception as e:
-              print("READY count query failed:",e)
-              raise SystemExit(1)
-          state["ready_count"]=ready_count
-          state["ready_signature"]=ready_signature
-          # Notify whenever the actual READY set changes and remains non-empty. Comparing
-          # only the count missed a new draft when another READY item was published/deleted.
-          if previous_signature is not None and ready_signature==str(previous_signature):
-              state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
-              print("READY set unchanged; no Telegram notification.")
-              raise SystemExit
-          if ready_count==0:
-              if old_message:
-                  try:
-                      post_token=os.environ["TELEGRAM_BOT_TOKEN"]; post_chat=os.environ["TELEGRAM_CHAT_ID"]
-                      req=urllib.request.Request("https://api.telegram.org/bot"+post_token+"/deleteMessage",data=json.dumps({"chat_id":post_chat,"message_id":old_message}).encode(),headers={"Content-Type":"application/json"})
-                      urllib.request.urlopen(req).read()
-                  except Exception: pass
-              state.pop("message_id",None)
-              state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
-              print("READY empty; pager cleared.")
-              raise SystemExit
+          previous_sha=state.get("result_commit_sha")
 
-          token=os.environ["TELEGRAM_BOT_TOKEN"]; chat=os.environ["TELEGRAM_CHAT_ID"]; secret=os.environ["TELEGRAM_WEBHOOK_SECRET"]
+          # GitHub is the reliable bridge here: direct calls from GitHub Actions to the
+          # Cloudflare Worker can be blocked by Cloudflare before reaching the Worker.
+          api="https://api.github.com/repos/fabricelop/tt-control"
+          def get_json(url):
+              req=urllib.request.Request(url,headers={"User-Agent":"tt-control-telegram-pager","Accept":"application/vnd.github+json"})
+              with urllib.request.urlopen(req) as r: return json.loads(r.read().decode())
+          try:
+              commits=get_json(api+"/commits?path=bridge/results&per_page=1")
+              if not commits:
+                  print("No TT Control result commits yet."); raise SystemExit
+              latest_sha=commits[0]["sha"]
+              if previous_sha==latest_sha:
+                  print("No new TT Control result commit."); raise SystemExit
+              runs=get_json(api+"/actions/runs?head_sha="+urllib.parse.quote(latest_sha)+"&per_page=10").get("workflow_runs",[])
+              bridge=[x for x in runs if x.get("name")=="TT Control bridge"]
+              if not bridge or bridge[0].get("status")!="completed":
+                  print("Latest TT Control delivery still pending; retry next cycle."); raise SystemExit
+              if bridge[0].get("conclusion")!="success":
+                  print("Latest TT Control delivery did not succeed; do not notify."); raise SystemExit
+              commit=get_json(api+"/commits/"+latest_sha)
+              changed=[x for x in commit.get("files",[]) if x.get("filename","").startswith("bridge/results/") and x.get("filename","").endswith(".json")]
+              new_count=max(1,len(changed))
+          except SystemExit: raise
+          except Exception as e:
+              print("TT Control GitHub status query failed:",e); raise SystemExit(1)
+
+          token=os.environ["TELEGRAM_BOT_TOKEN"]; chat=os.environ["TELEGRAM_CHAT_ID"]
           def post(method,payload):
               req=urllib.request.Request("https://api.telegram.org/bot"+token+"/"+method,data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
               with urllib.request.urlopen(req) as r: return json.loads(r.read().decode())
@@ -78,14 +75,14 @@ jobs:
               try: post("deleteMessage",{"chat_id":chat,"message_id":old_message})
               except Exception: pass
 
-          n=ready_count
-          sent=post("sendMessage",{"chat_id":chat,"text":f"📰 TT Control · {n} noticia{'s' if n!=1 else ''} lista{'s' if n!=1 else ''} para revisar","disable_web_page_preview":True})
+          n=new_count
+          sent=post("sendMessage",{"chat_id":chat,"text":f"📰 TT Control · {n} noticia{'s' if n!=1 else ''} nueva{'s' if n!=1 else ''} en Listas","disable_web_page_preview":True})
           mid=sent["result"]["message_id"]
-          sig=hmac.new(secret.encode(),str(mid).encode(),hashlib.sha256).hexdigest()
           open_url="https://tt-control.fabricelop.workers.dev/?view=READY"
           kb={"inline_keyboard":[[{"text":"ABRIR TT CONTROL","url":open_url}],[{"text":"🗑️ Borrar","callback_data":"delete:message"}]]}
           post("editMessageReplyMarkup",{"chat_id":chat,"message_id":mid,"reply_markup":kb})
           state["message_id"]=mid
+          state["result_commit_sha"]=latest_sha
           state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
           print("TT Control alert sent:",n)
           PY
