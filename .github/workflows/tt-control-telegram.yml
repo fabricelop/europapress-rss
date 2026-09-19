@@ -74,6 +74,31 @@ jobs:
               print("Media radar notification skipped:",e)
 
 
+          # Backup publishing channel: send the complete prepared copy to Telegram.
+          try:
+              req=urllib.request.Request("https://tt-control.fabricelop.workers.dev/api/public/ready-feed",headers={"User-Agent":"tt-control-telegram-pager/1.0"})
+              with urllib.request.urlopen(req,timeout=15) as r: ready=json.loads(r.read().decode()).get("ready",[])
+              seen_ready=set(str(x) for x in state.get("ready_ids",[]))
+              for p in reversed(ready):
+                  pid=str(p.get("id"))
+                  if pid in seen_ready: continue
+                  title=str(p.get("title") or "")
+                  base=str(p.get("base_text") or "").strip()
+                  variants=[("A",p.get("remate_a")),("B",p.get("remate_b")),("C",p.get("remate_c"))]
+                  lines=["📰 TT Control · LISTA",title,"","BASE",base]
+                  for label,rem in variants:
+                      rem=str(rem or "").strip()
+                      if rem: lines += ["",label+" · "+base+" 🌶️ "+rem]
+                  txt="\\n".join(lines)
+                  if len(txt)>3900: txt=txt[:3890]+"…"
+                  kb={"inline_keyboard":[[{"text":"ABRIR TT CONTROL","url":"https://tt-control.fabricelop.workers.dev/?view=READY&id="+urllib.parse.quote(pid)}],[{"text":"🗑️ Borrar","callback_data":"delete:message"}]]}
+                  post("sendMessage",{"chat_id":chat,"text":txt,"reply_markup":kb,"disable_web_page_preview":True})
+                  seen_ready.add(pid)
+              state["ready_ids"]=list(seen_ready)[-200:]
+              state_path.write_text(json.dumps(state,indent=2)+"\\n",encoding="utf-8")
+          except Exception as e:
+              print("Ready backup notification skipped:",e)
+
           # GitHub is the reliable bridge here: direct calls from GitHub Actions to the
           # Cloudflare Worker can be blocked by Cloudflare before reaching the Worker.
           api="https://api.github.com/repos/fabricelop/tt-control"
