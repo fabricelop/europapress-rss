@@ -1,6 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- api/ vercel.json",
+  "git": {
+    "deploymentEnabled": false
+  },
   "functions": {
     "api/telegram-webhook.js": {
       "maxDuration": 10
