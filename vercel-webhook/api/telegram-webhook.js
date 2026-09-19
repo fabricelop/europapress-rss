@@ -116,13 +116,16 @@ export default async function handler(req, res) {
         if (!/^(PREPARE|INTERESTING|DISMISS)$/.test(action) || !/^\\d+$/.test(id)) {
           await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"Acción no válida."});
         } else {
-          const url="https://tt-control.fabricelop.workers.dev/media-action?action="+encodeURIComponent(action)+"&id="+encodeURIComponent(id);
-          const r=await fetch(url,{redirect:"manual",headers:{cookie:"tt_session="+encodeURIComponent(process.env.TT_CONTROL_SESSION||"")}});
-          if (r.status>=200 && r.status<400) {
+          const actionUrl="https://tt-control.fabricelop.workers.dev/api/media-alert/action";
+          const r=await fetch(actionUrl,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+process.env.TT_CONTROL_BRIDGE_TOKEN},body:JSON.stringify({id:Number(id),action})});
+          if (r.ok) {
             await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:action==="PREPARE"?"Preparación solicitada.":action==="INTERESTING"?"Marcada como interesante.":"Descartada."});
-            if(action==="PREPARE") await appendRequest(requestObj(update,"instruction","TT Control: procesa inmediatamente todas las noticias que estén en Elaborando/PROCESSING, incluida la seleccionada desde el Radar de medios, y entrégalas a Listas.",false),NEWS_QUEUE);
+            if(action==="PREPARE"){
+              const dispatch=await fetch("https://api.github.com/repos/fabricelop/tt-control/actions/workflows/tt-control-bridge.yml/dispatches",{method:"POST",headers:{accept:"application/vnd.github+json",authorization:"Bearer "+process.env.GITHUB_TOKEN,"x-github-api-version":"2022-11-28","user-agent":"tt-control-telegram-webhook"},body:JSON.stringify({ref:"main"})});
+              if(!dispatch.ok) console.error("TT Control immediate dispatch failed",dispatch.status,await dispatch.text());
+            }
             await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
-          } else await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"No se pudo aplicar la acción."});
+          } else { console.error("TT Control media action failed",r.status,await r.text()); await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"No se pudo aplicar la acción."}); }
         }
       } else if (data.startsWith("sr:evaluate:")) {
         const tweetId = data.split(":")[2] || "";
