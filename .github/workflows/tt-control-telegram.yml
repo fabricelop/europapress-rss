@@ -50,9 +50,9 @@ jobs:
           # Keep the single live Telegram pager synchronized with the real READY total.
           # A simple "only when count increases" rule misses cases where READY items are
           # published/deleted and new drafts arrive while the total stays equal or lower.
-          if previous_count is not None and ready_count==int(previous_count):
+          if previous_count is not None and ready_count<=int(previous_count):
               state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
-              print("READY count unchanged.")
+              print("READY did not increase; no Telegram notification.")
               raise SystemExit
           if ready_count==0:
               if old_message:
