@@ -47,6 +47,7 @@ jobs:
 
           token=os.environ["TELEGRAM_BOT_TOKEN"]; chat=os.environ["TELEGRAM_CHAT_ID"]
           webhook_url="https://tt-control.fabricelop.workers.dev/api/telegram-webhook"
+          # Re-registering on each pager run also lets us capture Telegram's current delivery error below.
           wh_secret=os.environ.get("TELEGRAM_WEBHOOK_SECRET","").strip()
           wh={"url":webhook_url,"allowed_updates":["callback_query"]}
           if wh_secret: wh["secret_token"]=wh_secret
