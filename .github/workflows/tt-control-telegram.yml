@@ -98,11 +98,12 @@ jobs:
                   title=str(p.get("title") or "")
                   base=str(p.get("base_text") or "").strip()
                   variants=[("A",p.get("remate_a")),("B",p.get("remate_b")),("C",p.get("remate_c"))]
-                  lines=["📰 TT Control · LISTA",title,"","BASE",base]
+                  # Telegram is the mobile publishing surface: compact, readable and copy-friendly.
+                  lines=["📰 TT Control · LISTA",title,"",base]
                   for label,rem in variants:
                       rem=str(rem or "").strip()
-                      if rem: lines += ["",label+" · "+base+" 🌶️ "+rem]
-                  txt="\\n".join(lines)
+                      if rem: lines += ["",label+"  🌶️ "+rem]
+                  txt="\n".join(lines)
                   if len(txt)>3900: txt=txt[:3890]+"…"
                   kb={"inline_keyboard":[[{"text":"ABRIR TT CONTROL","url":"https://tt-control.fabricelop.workers.dev/?view=READY&id="+urllib.parse.quote(pid)}],[{"text":"🗑️ Borrar","callback_data":"delete:message"}]]}
                   post("sendMessage",{"chat_id":chat,"text":txt,"reply_markup":kb,"disable_web_page_preview":True})
