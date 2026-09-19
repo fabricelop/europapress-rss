@@ -111,7 +111,20 @@ export default async function handler(req, res) {
       if (chatId !== allowedChat) return res.status(200).json({ ok: true });
       const data = cq.data || "";
 
-      if (data.startsWith("sr:evaluate:")) {
+      if (data.startsWith("media:")) {
+        const parts=data.split(":"); const action=parts[1]||""; const id=parts[2]||"";
+        if (!/^(PREPARE|INTERESTING|DISMISS)$/.test(action) || !/^\\d+$/.test(id)) {
+          await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"Acción no válida."});
+        } else {
+          const url="https://tt-control.fabricelop.workers.dev/media-action?action="+encodeURIComponent(action)+"&id="+encodeURIComponent(id);
+          const r=await fetch(url,{redirect:"manual",headers:{cookie:"tt_session="+encodeURIComponent(process.env.TT_CONTROL_SESSION||"")}});
+          if (r.status>=200 && r.status<400) {
+            await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:action==="PREPARE"?"Preparación solicitada.":action==="INTERESTING"?"Marcada como interesante.":"Descartada."});
+            if(action==="PREPARE") await appendRequest(requestObj(update,"instruction","TT Control: procesa inmediatamente todas las noticias que estén en Elaborando/PROCESSING, incluida la seleccionada desde el Radar de medios, y entrégalas a Listas.",false),NEWS_QUEUE);
+            await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
+          } else await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"No se pudo aplicar la acción."});
+        }
+      } else if (data.startsWith("sr:evaluate:")) {
         const tweetId = data.split(":")[2] || "";
         const candidate = await fetchCandidate(tweetId);
         if (!candidate) {
