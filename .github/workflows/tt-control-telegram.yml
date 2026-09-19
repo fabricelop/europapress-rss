@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/tt-control-telegram.yml'
       - 'telegram/tt-control-trigger.txt'
+      - 'telegram/tt-control-state.json'
   schedule:
     - cron: '*/5 * * * *'
 
