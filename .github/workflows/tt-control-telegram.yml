@@ -41,6 +41,7 @@ jobs:
           state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
           old_message=state.get("message_id")
           previous_sha=state.get("result_commit_sha")
+          media_baselined="media_alert_ids" in state
           seen_media=set(state.get("media_alert_ids",[]))
 
           token=os.environ["TELEGRAM_BOT_TOKEN"]; chat=os.environ["TELEGRAM_CHAT_ID"]
@@ -52,6 +53,12 @@ jobs:
           try:
               req=urllib.request.Request("https://tt-control.fabricelop.workers.dev/api/public/media-alerts-feed",headers={"User-Agent":"tt-control-telegram-pager/1.0"})
               with urllib.request.urlopen(req,timeout=15) as r: media=json.loads(r.read().decode()).get("alerts",[])
+              if not media_baselined:
+                  seen_media.update(str(a.get("id")) for a in media)
+                  state["media_alert_ids"]=list(seen_media)[-200:]
+                  state_path.write_text(json.dumps(state,indent=2)+"\\n",encoding="utf-8")
+                  print("Media radar baseline initialized; no historical alerts.")
+                  media=[]
               for a in reversed(media):
                   aid=str(a.get("id"))
                   if aid in seen_media: continue
