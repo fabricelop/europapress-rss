@@ -82,7 +82,7 @@ jobs:
               seen_ready=set(str(x) for x in state.get("ready_ids",[]))
               if not ready_baselined:
                   from datetime import datetime, timezone, timedelta
-                  cutoff=datetime.now(timezone.utc)-timedelta(hours=3)
+                  cutoff=datetime.now(timezone.utc)-timedelta(hours=12)
                   recent=[]
                   for p in ready:
                       try:
@@ -91,7 +91,7 @@ jobs:
                       except Exception: pass
                   ready=recent
                   state["ready_baselined"]=True
-                  print("Ready backup initialized with last 3 hours:",len(ready))
+                  print("Ready backup initialized with last 12 hours:",len(ready))
               for p in reversed(ready):
                   pid=str(p.get("id"))
                   if pid in seen_ready: continue
