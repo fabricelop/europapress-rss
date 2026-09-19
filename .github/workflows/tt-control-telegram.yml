@@ -39,20 +39,23 @@ jobs:
           state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
           old_message=state.get("message_id")
           previous_count=state.get("ready_count")
+          previous_signature=state.get("ready_signature")
           try:
               req=urllib.request.Request("https://tt-control.fabricelop.workers.dev/api/public/ready-count")
               with urllib.request.urlopen(req) as r:
-                  ready_count=int(json.loads(r.read().decode()).get("ready",0))
+                  payload=json.loads(r.read().decode())
+                  ready_count=int(payload.get("ready",0))
+                  ready_signature=str(payload.get("signature",""))
           except Exception as e:
               print("READY count query failed:",e)
               raise SystemExit(1)
           state["ready_count"]=ready_count
-          # Keep the single live Telegram pager synchronized with the real READY total.
-          # A simple "only when count increases" rule misses cases where READY items are
-          # published/deleted and new drafts arrive while the total stays equal or lower.
-          if previous_count is not None and ready_count<=int(previous_count):
+          state["ready_signature"]=ready_signature
+          # Notify whenever the actual READY set changes and remains non-empty. Comparing
+          # only the count missed a new draft when another READY item was published/deleted.
+          if previous_signature is not None and ready_signature==str(previous_signature):
               state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
-              print("READY did not increase; no Telegram notification.")
+              print("READY set unchanged; no Telegram notification.")
               raise SystemExit
           if ready_count==0:
               if old_message:
