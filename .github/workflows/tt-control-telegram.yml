@@ -38,8 +38,8 @@ jobs:
           from pathlib import Path
 
           state_path=Path("telegram/tt-control-state.json")
-          raw_state=state_path.read_text(encoding="utf-8").strip().replace("\\n","")
-state=json.loads(raw_state) if state_path.exists() else {}
+          raw_state=state_path.read_text(encoding="utf-8").strip().replace("\\n","") if state_path.exists() else "{}"
+          state=json.loads(raw_state)
           old_message=state.get("message_id")
           previous_sha=state.get("result_commit_sha")
           media_baselined="media_alert_ids" in state
@@ -109,7 +109,7 @@ state=json.loads(raw_state) if state_path.exists() else {}
               except Exception: pass
 
           n=new_count
-          sent=post("sendMessage",{"chat_id":chat,"text":f"📰 TT Control · {n} noticia{'s' if n!=1 else ''} nueva{'s' if n!=1 else ''} en Listas","disable_web_page_preview":True})
+          sent=post("sendMessage",{"chat_id":chat,"text":f"📰 TT Control · {n} noticia{'s' if n!=1 else ''} preparada{'s' if n!=1 else ''} en Listas","disable_web_page_preview":True})
           mid=sent["result"]["message_id"]
           open_url="https://tt-control.fabricelop.workers.dev/?view=READY"
           kb={"inline_keyboard":[[{"text":"ABRIR TT CONTROL","url":open_url}],[{"text":"🗑️ Borrar","callback_data":"delete:message"}]]}
