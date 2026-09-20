@@ -1,13 +1,53 @@
 {
   "messages": [
     {
-      "id": "delete-test-v8",
-      "text": "🧪 PRUEBA BORRAR · 8\n\nCallback aislado completamente de D1 y validaciones. Pulsa 🗑️ BORRAR.",
+      "id": "group-test-1-original",
+      "group": "group-test-1",
+      "text": "🧪 PRUEBA BLOQUE FINAL\n20/09/2026 · prueba\n3/9 · Fuentes de prueba\n\nTexto original de prueba.",
       "buttons": [
         [
           {
-            "text": "🗑️ BORRAR",
-            "callback_data": "delete:message"
+            "text": "PUBLICAR ORIGINAL",
+            "url": "https://twitter.com/intent/tweet?text=Prueba%20original"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "group-test-1-a",
+      "group": "group-test-1",
+      "text": "🌶️ A) Remate A de prueba.",
+      "buttons": [
+        [
+          {
+            "text": "PUBLICAR A",
+            "url": "https://twitter.com/intent/tweet?text=Prueba%20A"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "group-test-1-b",
+      "group": "group-test-1",
+      "text": "🌶️ B) Remate B de prueba.",
+      "buttons": [
+        [
+          {
+            "text": "PUBLICAR B",
+            "url": "https://twitter.com/intent/tweet?text=Prueba%20B"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "group-test-1-c",
+      "group": "group-test-1",
+      "text": "🌶️ C) Remate C de prueba.",
+      "buttons": [
+        [
+          {
+            "text": "PUBLICAR C",
+            "url": "https://twitter.com/intent/tweet?text=Prueba%20C"
           }
         ]
       ]
