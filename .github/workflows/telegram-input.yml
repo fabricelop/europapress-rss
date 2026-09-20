@@ -59,7 +59,9 @@ jobs:
               if not out.get("ok"): raise RuntimeError(out)
               return out.get("result")
           off=int(state.get("offset",0) or 0)
-          # Long polling: al arrancar el job espera hasta 50 s por el callback en vez de hacer una foto instantánea.\n          params=urllib.parse.urlencode({"offset":off,"timeout":50,"allowed_updates":json.dumps(["callback_query"])})\n          with urllib.request.urlopen(f"{base}/getUpdates?{params}",timeout=60) as r: ups=json.loads(r.read().decode()).get("result",[])
+          # Long polling: al arrancar el job espera hasta 50 s por el callback en vez de hacer una foto instantánea.
+          params=urllib.parse.urlencode({"offset":off,"timeout":50,"allowed_updates":json.dumps(["callback_query"])})
+          with urllib.request.urlopen(f"{base}/getUpdates?{params}",timeout=60) as r: ups=json.loads(r.read().decode()).get("result",[])
           now=dt.datetime.now(dt.timezone.utc).isoformat()
           for u in ups:
               uid=u["update_id"]; state["offset"]=max(int(state.get("offset",0) or 0),uid+1)
@@ -113,10 +115,14 @@ jobs:
                       try: api("deleteMessage",{"chat_id":allowed,"message_id":mid})
                       except Exception as e: print("delete:",e)
           q["requests"]=q["requests"][-200:]
-          state_path.write_text(json.dumps(state,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
-          req_path.write_text(json.dumps(q,ensure_ascii=False,separators=(",",":"))+"\\n",encoding="utf-8")
-          events_path.write_text(json.dumps(events_doc,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
-          proc_path.write_text(json.dumps(proc,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+          state_path.write_text(json.dumps(state,ensure_ascii=False,separators=(",",":"))+"
+",encoding="utf-8")
+          req_path.write_text(json.dumps(q,ensure_ascii=False,separators=(",",":"))+"\
+",encoding="utf-8")
+          events_path.write_text(json.dumps(events_doc,ensure_ascii=False,indent=2)+"\
+",encoding="utf-8")
+          proc_path.write_text(json.dumps(proc,ensure_ascii=False,indent=2)+"\
+",encoding="utf-8")
           print("Callbacks:",len(ups),"offset:",state.get("offset",0))
           PY
 
