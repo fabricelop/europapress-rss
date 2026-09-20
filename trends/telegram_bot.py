@@ -104,13 +104,26 @@ def current():
 
 
 def panel_text():
-    data, items = current()
+    data, _ = current()
+    lines = ["📊 TTENDENCIAS · ESPAÑA"]
+    captured = data.get("captured_at")
+    if captured:
+        try:
+            dt = datetime.fromisoformat(captured).astimezone(MADRID)
+            lines.append(f'Actualizado {dt.strftime("%H:%M")}')
+        except Exception:
+            pass
+    return "\n".join(lines)
+
+
+def panel_keyboard():
+    _, items = current()
     explained = known_explained()
     reqs = load(REQUESTS, {"requests": []}).get("requests", [])
     preparing = {norm(x.get("name")) for x in reqs if x.get("status") in {"preparing", "ready"}}
     updates = {norm(x.get("name")) for x in reqs if x.get("status") == "update"}
 
-    lines = ["📊 TTENDENCIAS · ESPAÑA", ""]
+    rows = []
     for item in items:
         rank = int(item["rank"])
         name = str(item["name"])
@@ -123,34 +136,13 @@ def panel_text():
             mark = "🟢"
         else:
             mark = "🔴"
-        lines.append(f"{mark} {rank}. {name}")
 
-    captured = data.get("captured_at")
-    if captured:
-        try:
-            dt = datetime.fromisoformat(captured).astimezone(MADRID)
-            lines += ["", f'Actualizado {dt.strftime("%H:%M")}']
-        except Exception:
-            pass
-    return "\n".join(lines)
-
-
-def panel_keyboard():
-    _, items = current()
-    rows = []
-    row = []
-    for item in items:
-        rank = int(item["rank"])
-        row.append({
-            "text": str(rank),
-            "callback_data": f"trend:{rank}"
-        })
-        if len(row) == 5:
-            rows.append(row)
-            row = []
-    if row:
-        rows.append(row)
-    rows.append([{"text": "🔄 Actualizar", "callback_data": "panel:refresh"}])
+        callback = f"trend:{rank}"
+        rows.append([
+            {"text": mark, "callback_data": callback},
+            {"text": str(rank), "callback_data": callback},
+            {"text": name[:45], "callback_data": callback},
+        ])
     return {"inline_keyboard": rows}
 
 
