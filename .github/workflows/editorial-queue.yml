@@ -1,0 +1,37 @@
+name: Cola editorial Telegram
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 5-22 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'telegram/editorial-processing.json'
+      - '.github/workflows/editorial-queue.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  expose-queue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar cola PROCESSING
+        run: |
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("telegram/editorial-processing.json")
+          if not p.exists():
+              print("Sin cola editorial todavía.")
+              raise SystemExit
+          d=json.loads(p.read_text(encoding="utf-8"))
+          news=[x for x in d.get("news",[]) if x.get("status")=="PROCESSING"]
+          for x in news:
+              missing=[k for k in ("event_id","title","url","sources","source_count") if k not in x]
+              if missing: raise SystemExit("Entrada incompleta "+str(x.get("event_id"))+": "+",".join(missing))
+          print("PROCESSING:",len(news))
+          for x in news: print(x["event_id"],x["source_count"],x["title"])
+          PY
