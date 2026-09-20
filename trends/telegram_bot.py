@@ -2,6 +2,7 @@
 import hashlib
 import json
 import os
+import subprocess
 import sys
 import time
 import urllib.parse
@@ -86,18 +87,18 @@ def panel_text():
     data, items = current()
     explained = known_explained()
     reqs = load(REQUESTS, {"requests": []}).get("requests", [])
-    preparing = {norm(x.get("name")) for x in reqs if x.get("status") == "preparing"}
-    ready = {norm(x.get("name")) for x in reqs if x.get("status") == "ready"}
+    preparing = {norm(x.get("name")) for x in reqs if x.get("status") in {"preparing", "ready"}}
+    updates = {norm(x.get("name")) for x in reqs if x.get("status") == "update"}
     lines = ["📊 TTENDENCIAS · ESPAÑA", ""]
     for item in items:
         name = str(item["name"])
         key = norm(name)
-        if key in explained:
-            mark = "🟢"
-        elif key in ready:
+        if key in updates:
             mark = "🟡"
         elif key in preparing:
             mark = "🔵"
+        elif key in explained:
+            mark = "🟢"
         else:
             mark = "🔴"
         lines.append(f'{mark} {int(item["rank"]):>2}. {name}')
@@ -145,6 +146,14 @@ def sync_panel(force_new=False):
     msg = call("sendMessage", payload)
     state["panel_message_id"] = msg["message_id"]
     save(STATE, state)
+    try:
+        call("pinChatMessage", {
+            "chat_id": chat_id,
+            "message_id": msg["message_id"],
+            "disable_notification": True,
+        })
+    except Exception as e:
+        print("No se pudo fijar el panel:", e, flush=True)
     return True
 
 
@@ -166,37 +175,27 @@ def select_trend(callback):
     term = str(item["name"])
     key = hashlib.sha256(term.encode("utf-8")).hexdigest()[:12]
     requests = load(REQUESTS, {"requests": []})
-    existing = next((x for x in requests.get("requests", []) if norm(x.get("name")) == norm(term) and x.get("status") in {"preparing", "ready"}), None)
-    if not existing and norm(term) not in known_explained():
+    existing = next(
+        (x for x in requests.get("requests", [])
+         if norm(x.get("name")) == norm(term) and x.get("status") in {"preparing", "ready"}),
+        None
+    )
+    if not existing:
         requests.setdefault("requests", []).append({
             "id": key,
             "name": term,
             "rank": rank,
             "status": "preparing",
             "requested_at": datetime.now(MADRID).isoformat(timespec="seconds"),
-            "revision": 0
+            "revision": 0,
+            "reexplain": norm(term) in known_explained(),
         })
         save(REQUESTS, requests)
-    status = "🟢 Ya explicada" if norm(term) in known_explained() else ("🟡 Preparada" if existing and existing.get("status") == "ready" else "🔵 En preparación")
-    msg = call("sendMessage", {
-        "chat_id": callback["message"]["chat"]["id"],
-        "text": f"TT {rank} · {term}\n{status}",
-        "disable_web_page_preview": True,
-        "reply_markup": {"inline_keyboard": [
-            [{"text": "🔎 Buscar en X", "url": search_url(term)}],
-            [{"text": "✅ EXPLICADA", "callback_data": f"explained:{key}"}],
-            [{"text": "✖ Cerrar", "callback_data": f"close:{key}"}],
-        ]},
-    })
-    state.setdefault("pending", {})[key] = {
-        "name": term,
-        "rank": rank,
-        "message_id": msg["message_id"],
-        "chat_id": callback["message"]["chat"]["id"],
-    }
-    save(STATE, state)
     sync_panel()
-    call("answerCallbackQuery", {"callback_query_id": callback["id"]})
+    call("answerCallbackQuery", {
+        "callback_query_id": callback["id"],
+        "text": "🔵 Enviada a preparación."
+    })
 
 
 def mark_explained(callback):
@@ -224,7 +223,7 @@ def mark_explained(callback):
     save(STATE, state)
     requests = load(REQUESTS, {"requests": []})
     for req in requests.get("requests", []):
-        if norm(req.get("name")) == norm(item["name"]) and req.get("status") in {"preparing", "ready"}:
+        if norm(req.get("name")) == norm(item["name"]) and req.get("status") in {"preparing", "ready", "update"}:
             req["status"] = "explained"
             req["explained_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
     save(REQUESTS, requests)
@@ -278,6 +277,7 @@ def poll(seconds=3300):
     while time.time() - started < seconds:
         if time.time() - last_sync > 900:
             try:
+                subprocess.run(["python3", str(ROOT / "update_trends.py")], check=False)
                 sync_panel()
             except Exception as e:
                 print("sync error:", e, flush=True)
