@@ -137,5 +137,27 @@ jobs:
           git add telegram/emergency-sent.json
           git diff --cached --quiet && exit 0
           git commit -m "Guardar IDs Telegram enviados"
-          git pull --rebase origin main
+          if git push origin HEAD:main; then
+            exit 0
+          fi
+          cp telegram/emergency-sent.json /tmp/emergency-sent.json
+          git fetch origin main
+          git reset --hard origin/main
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+          cur=Path("telegram/emergency-sent.json")
+          incoming=Path("/tmp/emergency-sent.json")
+          def load(p):
+              try:return json.loads(p.read_text(encoding="utf-8"))
+              except Exception:return {"messages":[]}
+          a=load(cur); b=load(incoming)
+          merged={}
+          for x in (a.get("messages",[])+b.get("messages",[])):
+              k=str(x.get("id") or "")
+              if k: merged[k]=x
+          cur.write_text(json.dumps({"messages":list(merged.values())[-1000:]},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          PY
+          git add telegram/emergency-sent.json
+          git commit -m "Guardar IDs Telegram enviados" || true
           git push origin HEAD:main
