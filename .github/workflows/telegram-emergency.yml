@@ -1,0 +1,40 @@
+name: Telegram emergencia sin D1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "telegram/emergency.json"
+
+concurrency:
+  group: telegram-emergency
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enviar alertas de emergencia
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python3 <<'PY'
+          import json, os, urllib.request
+          with open("telegram/emergency.json", encoding="utf-8") as f:
+              data=json.load(f)
+          token=os.environ["TELEGRAM_BOT_TOKEN"]
+          chat=os.environ["TELEGRAM_CHAT_ID"]
+          api=f"https://api.telegram.org/bot{token}/sendMessage"
+          for m in data.get("messages", []):
+              text=str(m.get("text","")).strip()
+              if not text: continue
+              payload={"chat_id":chat,"text":text,"disable_web_page_preview":True}
+              req=urllib.request.Request(api,data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
+              with urllib.request.urlopen(req,timeout=20) as r:
+                  out=json.loads(r.read().decode())
+                  if not out.get("ok"): raise RuntimeError(out)
+              print("Alerta de emergencia enviada")
+          PY
