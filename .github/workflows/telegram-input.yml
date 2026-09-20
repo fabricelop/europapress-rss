@@ -119,13 +119,14 @@ jobs:
 
           def delete_message(msg):
               message_id = msg.get("message_id")
+              chat_id = str((msg.get("chat") or {}).get("id") or allowed_chat)
               if not message_id:
                   return
               result = safe_api("deleteMessage", {
-                  "chat_id": allowed_chat,
+                  "chat_id": chat_id,
                   "message_id": message_id
               })
-              print(f"deleteMessage message_id={message_id}: {'OK' if result else 'SIN CONFIRMAR'}")
+              print(f"deleteMessage chat_id={chat_id} message_id={message_id}: {'OK' if result else 'SIN CONFIRMAR'}")
 
           for update in updates:
               update_id = update["update_id"]
@@ -234,17 +235,13 @@ jobs:
           fi
 
           git commit -m "Procesar órdenes de Telegram"
-
-          for intento in 1 2 3 4; do
+          # Requests/state may be updated concurrently by other cloud workflows.
+          # Prefer the just-collected Telegram batch and retry from current main.
+          if ! git push origin HEAD:main; then
             git fetch origin main
-            git rebase origin/main
-            if git push origin HEAD:main; then
-              echo "Órdenes guardadas correctamente (intento $intento)."
-              exit 0
-            fi
-            echo "Push concurrente detectado; reintentando ($intento/4)..."
-            sleep $((intento * 2))
-          done
-
-          echo "ERROR: no se pudieron guardar las órdenes tras 4 intentos."
-          exit 1
+            git rebase --abort 2>/dev/null || true
+            git reset --soft origin/main
+            git add telegram/requests.json telegram/telegram-state.json
+            git commit -m "Procesar órdenes de Telegram" || true
+            git push origin HEAD:main
+          fi
