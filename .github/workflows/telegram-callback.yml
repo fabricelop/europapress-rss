@@ -1,0 +1,61 @@
+name: Ejecutar callback Telegram
+
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: Callback Telegram codificado
+        required: true
+        type: string
+
+jobs:
+  callback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Aplicar acción Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PAYLOAD: ${{ inputs.payload }}
+        run: |
+          python3 <<'PY'
+          import base64, json, os, urllib.request, urllib.error
+          token=os.environ["TELEGRAM_BOT_TOKEN"]; allowed=str(os.environ["TELEGRAM_CHAT_ID"])
+          p=json.loads(base64.b64decode(os.environ["PAYLOAD"]).decode())
+          cqid=str(p.get("callback_query_id") or ""); data=str(p.get("data") or "")
+          chat=str(p.get("chat_id") or ""); current=int(p.get("message_id") or 0)
+          if chat!=allowed: raise SystemExit("CHAT_NOT_ALLOWED")
+          base=f"https://api.telegram.org/bot{token}"
+          def api(method,payload):
+              req=urllib.request.Request(base+"/"+method,data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
+              try:
+                  with urllib.request.urlopen(req,timeout=20) as r:
+                      return json.loads(r.read().decode())
+              except urllib.error.HTTPError as e:
+                  body=e.read().decode()
+                  print(method,"HTTP",e.code,body)
+                  return {"ok":False,"description":body}
+          mids=[]; text="Confirmado."
+          if data=="delete:message":
+              mids=[current]; text="🗑️ Mensaje borrado."
+          elif data.startswith("dg:"):
+              mids=[int(x) for x in data[3:].split(",") if x.isdigit()]
+              if current and current not in mids:mids.append(current)
+              text=f"🗑️ Borrando {len(mids)} mensajes."
+          elif data.startswith("emergency:"):
+              parts=data.split(":"); action=parts[1] if len(parts)>1 else ""
+              if action=="prepare": text="🧠 Enviada a Elaborando."; mids=[current]
+              elif action=="dismiss": text="🗑️ Desestimada."; mids=[current]
+          elif data.startswith("prepare:"):
+              text="✅ Añadida para preparar."; mids=[current]
+          elif data.startswith("dismiss:"):
+              text="🗑️ Descartada."; mids=[current]
+          if cqid: api("answerCallbackQuery",{"callback_query_id":cqid,"text":text})
+          deleted=0
+          for mid in mids:
+              if mid:
+                  r=api("deleteMessage",{"chat_id":allowed,"message_id":mid})
+                  if r.get("ok"): deleted+=1
+          print("CALLBACK_OK",data,"deleted",deleted)
+          PY
