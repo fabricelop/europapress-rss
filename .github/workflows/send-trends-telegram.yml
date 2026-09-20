@@ -7,8 +7,11 @@ on:
     paths:
       - "trends/latest.json"
 
+permissions:
+  contents: write
+
 concurrency:
-  group: telegram-send-serialized
+  group: ttendencias-telegram-send
   cancel-in-progress: false
 
 jobs:
@@ -16,24 +19,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Enviar mensajes TTendencias a Telegram
+      - name: Enviar mensajes TTendencias al bot propio
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
         run: |
           python3 <<'PY'
+          import hashlib
           import json
           import os
+          import re
           import urllib.parse
           import urllib.request
+          from pathlib import Path
 
-          with open("trends/latest.json", encoding="utf-8") as f:
-              data = json.load(f)
+          root = Path("trends")
+          data = json.loads((root / "latest.json").read_text(encoding="utf-8"))
+          state_path = root / "telegram-bot-state.json"
+          requests_path = root / "requests.json"
 
-          token = os.environ["TELEGRAM_BOT_TOKEN"]
-          chat_id = os.environ["TELEGRAM_CHAT_ID"]
+          state = json.loads(state_path.read_text(encoding="utf-8"))
+          requests_doc = json.loads(requests_path.read_text(encoding="utf-8"))
+          chat_id = state.get("chat_id")
+          if not chat_id:
+              raise SystemExit("TTendencias no está enlazado todavía: abre el bot y pulsa /start.")
+
+          token = os.environ["TTENDENCIAS_BOT_TOKEN"]
           api = f"https://api.telegram.org/bot{token}/sendMessage"
+
+          def norm(s):
+              return " ".join(str(s or "").split()).casefold()
 
           def tweet_text_from_url(url):
               try:
@@ -51,9 +68,14 @@ jobs:
               pos = tweet_text.find("🌶️")
               return tweet_text[pos:].strip() if pos >= 0 else tweet_text.strip()
 
+          def trend_name(msg, visible_text):
+              explicit = str(msg.get("trend_name") or "").strip()
+              if explicit:
+                  return explicit
+              m = re.search(r"\bT\d+\s*·\s*([^\n]+)", visible_text)
+              return m.group(1).strip() if m else ""
+
           for msg in data.get("messages", []):
-              # Las alternativas deben verse en el propio mensaje de Telegram,
-              # no quedar ocultas detrás de los botones.
               alt_texts = []
               for b in msg.get("buttons", []):
                   label = str(b.get("label", "")).lower()
@@ -61,11 +83,21 @@ jobs:
                       t = remate_only(tweet_text_from_url(b["url"]))
                       if t:
                           alt_texts.append(t)
+
               visible_text = msg["text"]
               if alt_texts:
-                  visible_text += "\n\nAlternativas:\n" + "\n".join(f"{i}) {t}" for i, t in enumerate(alt_texts, 1))
+                  visible_text += "\n\nAlternativas:\n" + "\n".join(
+                      f"{i}) {t}" for i, t in enumerate(alt_texts, 1)
+                  )
 
-              payload = {"chat_id": chat_id, "text": visible_text, "disable_web_page_preview": True}
+              name = trend_name(msg, visible_text)
+              key = hashlib.sha256(name.encode("utf-8")).hexdigest()[:12] if name else ""
+
+              payload = {
+                  "chat_id": chat_id,
+                  "text": visible_text,
+                  "disable_web_page_preview": True,
+              }
               keyboard = []
               for b in msg.get("buttons", []):
                   button = {"text": b["label"]}
@@ -73,30 +105,76 @@ jobs:
                       button["url"] = b["url"]
                       tweet_text = tweet_text_from_url(b["url"])
                       if tweet_text and "abrir" in b["label"].lower() and "x" in b["label"].lower():
-                          keyboard.append([button, {"text": "📋 Copia", "copy_text": {"text": tweet_text}}])
+                          keyboard.append([
+                              button,
+                              {"text": "📋 Copia", "copy_text": {"text": tweet_text}},
+                          ])
                       else:
                           keyboard.append([button])
-                  elif b.get("callback_data"):
-                      button["callback_data"] = b["callback_data"]
-                      keyboard.append([button])
                   elif b.get("copy_text"):
                       button["copy_text"] = {"text": b["copy_text"]}
                       keyboard.append([button])
-                  else:
-                      raise ValueError(f"Botón inválido: {b}")
 
-              search_terms = [str(x).strip() for x in msg.get("search_terms", []) if str(x).strip()][:3]
+              search_terms = [
+                  str(x).strip() for x in msg.get("search_terms", [])
+                  if str(x).strip()
+              ][:3]
               if search_terms:
                   query = " OR ".join(search_terms)
-                  search_url = "https://x.com/search?" + urllib.parse.urlencode({"q": query, "src": "typed_query", "f": "live"})
+                  search_url = "https://x.com/search?" + urllib.parse.urlencode({
+                      "q": query, "src": "typed_query", "f": "live"
+                  })
                   keyboard.append([{"text": "🔎 Buscar en X", "url": search_url}])
 
-              keyboard.append([{"text": "🗑️ Quitar", "callback_data": "delete:message"}])
+              if key:
+                  keyboard.append([
+                      {"text": "✅ EXPLICADA", "callback_data": f"explained:{key}"},
+                      {"text": "✖ Cerrar", "callback_data": f"close:{key}"},
+                  ])
+
               payload["reply_markup"] = {"inline_keyboard": keyboard}
-              req = urllib.request.Request(api, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"})
+              req = urllib.request.Request(
+                  api,
+                  data=json.dumps(payload).encode("utf-8"),
+                  headers={"Content-Type": "application/json"},
+              )
               with urllib.request.urlopen(req) as r:
                   result = json.loads(r.read().decode("utf-8"))
                   if not result.get("ok"):
                       raise RuntimeError(result)
-              print("TTendencia enviada.")
+
+              sent = result["result"]
+              if key:
+                  state.setdefault("pending", {})[key] = {
+                      "name": name,
+                      "message_id": sent["message_id"],
+                      "chat_id": chat_id,
+                  }
+                  for item in requests_doc.get("requests", []):
+                      if norm(item.get("name")) == norm(name) and item.get("status") == "preparing":
+                          item["status"] = "ready"
+                          item["telegram_message_id"] = sent["message_id"]
+
+              print("TTendencia enviada:", name or "(sin nombre)")
+
+          state_path.write_text(
+              json.dumps(state, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          requests_path.write_text(
+              json.dumps(requests_doc, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
           PY
+
+      - name: Guardar estado del bot TTendencias
+        run: |
+          git config user.name "ttendencias-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add trends/telegram-bot-state.json trends/requests.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Registrar mensajes editoriales TTendencias"
+          git pull --rebase --autostash origin main
+          git push origin HEAD:main
