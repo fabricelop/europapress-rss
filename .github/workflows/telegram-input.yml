@@ -150,6 +150,12 @@ jobs:
                               "callback_query_id": cq["id"],
                               "text": "No he podido recuperar el texto de la noticia."
                           })
+                  elif data.startswith("dismiss:"):
+                      item_id = data.split(":", 1)[1]
+                      add_request("dismiss", item_id, update_id, dedupe_text=True)
+                      persist()
+                      safe_api("answerCallbackQuery", {"callback_query_id": cq["id"], "text": "🗑️ Descartada."})
+                      delete_message(msg)
                   elif data == "delete:message":
                       persist()
                       safe_api("answerCallbackQuery", {
