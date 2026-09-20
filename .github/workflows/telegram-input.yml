@@ -101,9 +101,9 @@ jobs:
                       except Exception as e: print("delete:",e)
           q["requests"]=q["requests"][-200:]
           state_path.write_text(json.dumps(state,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
-          req_path.write_text(json.dumps(q,ensure_ascii=False,separators=(",",":"))+"\\n",encoding="utf-8")
-          events_path.write_text(json.dumps(events_doc,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
-          proc_path.write_text(json.dumps(proc,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+          req_path.write_text(json.dumps(q,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
+          events_path.write_text(json.dumps(events_doc,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          proc_path.write_text(json.dumps(proc,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
           print("Callbacks:",len(ups),"offset:",state.get("offset",0))
           PY
 
