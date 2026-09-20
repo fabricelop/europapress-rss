@@ -6,6 +6,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
+import urllib.error
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -14,7 +15,8 @@ ROOT = Path(__file__).resolve().parent
 RECENT = ROOT / "recent.json"
 EXPLAINED = ROOT / "explained.json"
 STATE = ROOT / "telegram-bot-state.json"
-MANUAL = ROOT / "telegram-manual-explained.json"\nREQUESTS = ROOT / "requests.json"
+MANUAL = ROOT / "telegram-manual-explained.json"
+REQUESTS = ROOT / "requests.json"
 
 TOKEN = os.environ["TTENDENCIAS_BOT_TOKEN"]
 API = f"https://api.telegram.org/bot{TOKEN}/"
