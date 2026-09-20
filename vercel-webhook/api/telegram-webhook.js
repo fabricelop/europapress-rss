@@ -114,9 +114,22 @@ export default async function handler(req, res) {
 
       if (data.startsWith("emergency:")) {
         const parts=data.split(":"); const action=parts[1]||""; const id=parts.slice(2).join(":")||"";
+        if(action==="prepare"){
+          const original=msg.text||"";
+          const headline=extractPreparedHeadline(original,data);
+          const links=((msg.entities||[]).filter(e=>e.type==="text_link"&&e.url).map(e=>e.url));
+          const url=links[0]||"";
+          const rr=await fetch("https://tt-control.fabricelop.workers.dev/api/agent/enqueue",{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+process.env.TT_CONTROL_BRIDGE_TOKEN},body:JSON.stringify({event_id:id,title:headline||("Radar "+id),url,source:"Telegram/Radar"})});
+          const body=await rr.text();
+          if(!rr.ok) throw new Error("TT Control enqueue "+rr.status+": "+body);
+          await appendRequest(requestObj(update,"emergency_action",action+"|"+id),EMERGENCY_QUEUE);
+          await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"Enviada a Elaborando."});
+          await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
+          return res.status(200).json({ok:true,queued:true});
+        }
         const stored=await appendRequest(requestObj(update,"emergency_action",action+"|"+id),EMERGENCY_QUEUE);
-        await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:action==="prepare"?"Preparar registrado.":action==="dismiss"?"Descartada.":"Confirmado."});
-        if (action==="prepare" || action==="dismiss") await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
+        await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:action==="dismiss"?"Descartada.":"Confirmado."});
+        if(action==="dismiss") await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
         return res.status(200).json({ok:true,stored});
       } else if (data.startsWith("media:")) {
         const parts=data.split(":"); const action=parts[1]||""; const id=parts[2]||"";
