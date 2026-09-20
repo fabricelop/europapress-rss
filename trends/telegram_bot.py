@@ -324,5 +324,8 @@ if __name__ == "__main__":
         poll(int(os.environ.get("TTENDENCIAS_LISTEN_SECONDS", "3300")))
     elif mode == "sync":
         sync_panel()
+    elif mode == "force":
+        sync_panel(force_new=True)
+        persist_git("Recrear panel TTendencias")
     else:
-        raise SystemExit("Uso: telegram_bot.py [sync|listen]")
+        raise SystemExit("Uso: telegram_bot.py [sync|listen|force]")
