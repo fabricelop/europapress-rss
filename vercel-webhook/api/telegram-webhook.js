@@ -119,12 +119,12 @@ export default async function handler(req, res) {
           const actionUrl="https://tt-control.fabricelop.workers.dev/api/media-alert/action";
           const r=await fetch(actionUrl,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+process.env.TT_CONTROL_BRIDGE_TOKEN},body:JSON.stringify({id:Number(id),action})});
           if (r.ok) {
-            await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:action==="PREPARE"?"Preparación solicitada.":action==="INTERESTING"?"Marcada como interesante.":"Descartada."});
+            await telegram("answerCallbackQuery",{callback_query_id:cq.id,text:action==="PREPARE"?"Enviada a Elaborando.":action==="INTERESTING"?"Marcada como interesante.":"Descartada."});
             if(action==="PREPARE"){
               const dispatch=await fetch("https://api.github.com/repos/fabricelop/tt-control/actions/workflows/tt-control-bridge.yml/dispatches",{method:"POST",headers:{accept:"application/vnd.github+json",authorization:"Bearer "+process.env.GITHUB_TOKEN,"x-github-api-version":"2022-11-28","user-agent":"tt-control-telegram-webhook"},body:JSON.stringify({ref:"main"})});
               if(!dispatch.ok) console.error("TT Control immediate dispatch failed",dispatch.status,await dispatch.text());
             }
-            await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
+            await telegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
           } else { console.error("TT Control media action failed",r.status,await r.text()); await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"No se pudo aplicar la acción."}); }
         }
       } else if (data.startsWith("sr:evaluate:")) {
@@ -178,6 +178,26 @@ export default async function handler(req, res) {
     if (chatId !== allowedChat) return res.status(200).json({ ok: true });
     const text = (message.text || "").trim();
     if (!text) return res.status(200).json({ ok: true });
+    const reply = message.reply_to_message || {};
+    const replyText = (reply.text || reply.caption || "").trim();
+    const mediaMatch = replyText.match(/^🚨 TT Control · RADAR ·/m);
+    const controlMatch = text.match(/^CONTROL\\b\\s*[:\\-]?\\s*(.*)$/is);
+    if (controlMatch) {
+      const instruction=(controlMatch[1]||"").trim();
+      if(!instruction) { await safeTelegram("sendMessage",{chat_id:allowedChat,text:"Escribe la consigna después de CONTROL."}); return res.status(200).json({ok:true}); }
+      const contextual=replyText ? instruction+"\\n\\nContexto del mensaje respondido:\\n"+replyText : instruction;
+      const rr=await fetch("https://tt-control.fabricelop.workers.dev/api/control",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({text:contextual})});
+      if(rr.ok) await safeTelegram("sendMessage",{chat_id:allowedChat,text:replyText?"📝 Consigna CONTROL guardada para esta noticia.":"📝 Consigna CONTROL general guardada."});
+      else await safeTelegram("sendMessage",{chat_id:allowedChat,text:"No se pudo guardar la consigna CONTROL."});
+      return res.status(200).json({ok:true});
+    }
+    if (replyText && mediaMatch && !text.startsWith("/")) {
+      const contextual=text+"\\n\\nContexto del mensaje respondido:\\n"+replyText;
+      const rr=await fetch("https://tt-control.fabricelop.workers.dev/api/control",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({text:contextual})});
+      if(rr.ok) await safeTelegram("sendMessage",{chat_id:allowedChat,text:"📝 Instrucción guardada para esta noticia."});
+      else await safeTelegram("sendMessage",{chat_id:allowedChat,text:"No se pudo guardar la instrucción."});
+      return res.status(200).json({ok:true});
+    }
     const normalized = text.toLocaleLowerCase("es-ES").replace(/[.!]+$/g, "").trim();
     const first = text.split(/\s+/)[0].toLowerCase();
     const isNewsRun = first === "/boletin" || normalized === "ejecuta" || normalized === "ejecutar" || normalized === "ejecuta boletín" || normalized === "ejecuta boletin";
@@ -189,8 +209,6 @@ export default async function handler(req, res) {
       const added = await appendRequest(requestObj(update, "run", "Ejecuta ahora un boletín manual de TTiTTulares.", true), NEWS_QUEUE);
       if (added) await safeTelegram("sendMessage", { chat_id: allowedChat, text: "▶️ Solicitud de boletín registrada." });
     } else if (!text.startsWith("/")) {
-      const reply = message.reply_to_message || {};
-      const replyText = (reply.text || reply.caption || "").trim();
       const storedText = replyText ? `Instrucción: ${text}\nMensaje al que responde:\n${replyText}` : text;
       const queuePath = replyText && isTrendMessage(replyText) ? TRENDS_QUEUE : NEWS_QUEUE;
       const added = await appendRequest(requestObj(update, "instruction", storedText), queuePath);
