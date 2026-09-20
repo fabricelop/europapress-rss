@@ -1,9 +1,4 @@
 name: TTendencias Telegram continuo
-# listener-message-id-primary
-# listener-restart-clean-1
-# listener-restart-1
-# refresh-panel-trigger-a
-# manual-refresh-trigger
 
 on:
   workflow_dispatch:
@@ -13,7 +8,6 @@ on:
     branches: [main]
     paths:
       - "trends/telegram_bot.py"
-      - "trends/update_trends.py"
       - ".github/workflows/ttendencias-listener.yml"
 
 permissions:
@@ -40,89 +34,13 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
-      - name: Limpieza editorial única
+      - name: Sincronizar panel sin persistir
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
-        run: |
-          python3 <<'PY'
-          import json, os, urllib.request
-          from pathlib import Path
-
-          root = Path("trends")
-          cfg_path = root / "cleanup-editorial.json"
-          if not cfg_path.exists():
-              raise SystemExit(0)
-          cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
-          if cfg.get("done"):
-              raise SystemExit(0)
-
-          state_path = root / "telegram-bot-state.json"
-          requests_path = root / "requests.json"
-          state = json.loads(state_path.read_text(encoding="utf-8"))
-          requests = json.loads(requests_path.read_text(encoding="utf-8"))
-          chat_id = state.get("chat_id")
-          token = os.environ["TTENDENCIAS_BOT_TOKEN"]
-
-          def call(method, payload):
-              req = urllib.request.Request(
-                  f"https://api.telegram.org/bot{token}/{method}",
-                  data=json.dumps(payload).encode("utf-8"),
-                  headers={"Content-Type":"application/json"},
-              )
-              try:
-                  with urllib.request.urlopen(req, timeout=30) as r:
-                      return json.loads(r.read().decode("utf-8"))
-              except Exception as e:
-                  print("cleanup:", method, payload, e)
-
-          panel_id = int(state.get("panel_message_id") or 0)
-          for mid in cfg.get("message_ids", []):
-              mid = int(mid)
-              if mid and mid != panel_id:
-                  call("deleteMessage", {"chat_id": chat_id, "message_id": mid})
-
-          state["pending"] = {}
-          for req in requests.get("requests", []):
-              if req.get("status") == "ready":
-                  req["status"] = "preparing"
-                  req.pop("telegram_message_id", None)
-
-          cfg["done"] = True
-          state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
-          requests_path.write_text(json.dumps(requests, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
-          cfg_path.write_text(json.dumps(cfg, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
-          PY
-
-      - name: Sincronizar panel al arrancar
-        env:
-          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
-        run: |
-          python3 trends/update_trends.py
-          python3 trends/telegram_bot.py sync
-          git config user.name "ttendencias-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add trends/recent.json trends/checkpoint.json trends/requests.json trends/telegram-bot-state.json trends/telegram-manual-explained.json trends/cleanup-editorial.json
-          if ! git diff --cached --quiet; then
-            git commit -m "Sincronizar panel TTendencias"
-            git pull --rebase --autostash origin main
-            git push origin HEAD:main
-          fi
+        run: python3 trends/telegram_bot.py sync
 
       - name: Escuchar bot TTendencias
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
           TTENDENCIAS_LISTEN_SECONDS: "14400"
         run: python3 trends/telegram_bot.py listen
-
-      - name: Guardar estado final
-        if: always()
-        run: |
-          git config user.name "ttendencias-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add trends/recent.json trends/checkpoint.json trends/requests.json trends/telegram-bot-state.json trends/telegram-manual-explained.json
-          if git diff --cached --quiet; then
-            exit 0
-          fi
-          git commit -m "Actualizar estado final TTendencias"
-          git pull --rebase --autostash origin main
-          git push origin HEAD:main
