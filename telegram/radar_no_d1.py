@@ -59,18 +59,18 @@ rows,healthy_sources=items()
 active_den=max(1,len(set(healthy_sources)))
 print("SOURCES_OK",active_den,sorted(set(healthy_sources)))
 for src,title,url in rows:
-best=None;bs=0
- for e in ev:
-  s=score(title,e["title"])
-  if s>bs:bs=s;best=e
- # Strict lexical anchor first; ambiguous 0.30-.49 remains separate rather than risky overmerge.
- if best and bs>=.50:
-  if src not in best["sources"]:best["sources"].append(src)
-  best["last_seen"]=now.isoformat().replace("+00:00","Z")
-  best["source_count"]=len(best["sources"])
- else:
-  key=hashlib.sha1((" ".join(sorted(fp(title)))+url.split("?")[0]).encode()).hexdigest()[:12]
-  ev.append({"id":key,"title":title,"url":url,"sources":[src],"source_count":1,"first_seen":now.isoformat().replace("+00:00","Z"),"last_seen":now.isoformat().replace("+00:00","Z"),"status":"NEW","notified":False})
+ best=None;bs=0
+  for e in ev:
+   s=score(title,e["title"])
+   if s>bs:bs=s;best=e
+  # Strict lexical anchor first; ambiguous 0.30-.49 remains separate rather than risky overmerge.
+  if best and bs>=.50:
+   if src not in best["sources"]:best["sources"].append(src)
+   best["last_seen"]=now.isoformat().replace("+00:00","Z")
+   best["source_count"]=len(best["sources"])
+  else:
+   key=hashlib.sha1((" ".join(sorted(fp(title)))+url.split("?")[0]).encode()).hexdigest()[:12]
+   ev.append({"id":key,"title":title,"url":url,"sources":[src],"source_count":1,"first_seen":now.isoformat().replace("+00:00","Z"),"last_seen":now.isoformat().replace("+00:00","Z"),"status":"NEW","notified":False})
 token=os.environ.get("TELEGRAM_BOT_TOKEN");chat=os.environ.get("TELEGRAM_CHAT_ID")
 def send(e,status):
  txt=("📰 TT Control · "+("PREPARAR" if status=="PREPARED" else "PARA VALORAR")+" · "+str(e["source_count"])+"/"+str(active_den)\n\n"+e["title"]+"\n\nFuentes: "+", ".join(e["sources"]))
