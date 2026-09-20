@@ -1,5 +1,5 @@
 import datetime as dt
-import json, os, subprocess, time, urllib.parse, urllib.request, urllib.error
+import json, os, re, subprocess, time, urllib.parse, urllib.request, urllib.error
 from pathlib import Path
 
 TOKEN=os.environ["TELEGRAM_BOT_TOKEN"]
@@ -11,6 +11,7 @@ REQ=Path("telegram/emergency-requests.json")
 EVENTS=Path("telegram/events.json")
 PROC=Path("telegram/editorial-processing.json")
 PROCESSED=Path("telegram/processed-events.json")
+SENT=Path("telegram/emergency-sent.json")
 TARGET_MINUTES={10,25,40,55}
 END=time.time()+85*60
 
@@ -104,6 +105,59 @@ def persist_callback(update):
     commit_paths([str(STATE),str(REQ),str(EVENTS),str(PROC)],"Procesar botón Telegram")
     return state["offset"]
 
+
+def persist_message(update):
+    sync_repo()
+    state=load_json(STATE,{})
+    proc=load_json(PROC,{"items":[]}); proc.setdefault("items",[])
+    events_doc=load_json(EVENTS,{"events":[]})
+    events=events_doc.get("events",[]) if isinstance(events_doc,dict) else events_doc
+    sent=load_json(SENT,{"messages":[]})
+    uid=int(update["update_id"])
+    msg=update.get("message") or {}
+    mid=msg.get("message_id")
+    text=str(msg.get("text") or "").strip()
+    reply=msg.get("reply_to_message") or {}
+    reply_mid=reply.get("message_id")
+    state["offset"]=max(int(state.get("offset",0) or 0),uid+1)
+
+    matched=None
+    if reply_mid and text:
+        matched=next((x for x in sent.get("messages",[]) if int(x.get("message_id") or -1)==int(reply_mid)),None)
+    if not matched:
+        write_json(STATE,state)
+        commit_paths([str(STATE)],"Avanzar offset Telegram")
+        return state["offset"]
+
+    group=str(matched.get("group") or "")
+    m=re.match(r"^editorial-(.+?)(?:-rewrite-\\d+)?$",group)
+    if not m:
+        write_json(STATE,state)
+        commit_paths([str(STATE)],"Avanzar offset Telegram")
+        return state["offset"]
+    event_id=m.group(1)
+    now=dt.datetime.now(dt.timezone.utc).isoformat()
+    item=next((x for x in reversed(proc["items"]) if str(x.get("event_id"))==event_id),None)
+    if item is None:
+        ev=next((e for e in events if str(e.get("id"))==event_id),None)
+        item={"event_id":event_id,"title":(ev or {}).get("canonical_title") or (ev or {}).get("title",""),
+              "url":(ev or {}).get("url",""),"sources":(ev or {}).get("sources",[]),
+              "source_count":(ev or {}).get("source_count",len((ev or {}).get("sources",[]))),
+              "selected_at":now,"status":"PROCESSING"}
+        proc["items"].append(item)
+    item["previous_status"]=item.get("status")
+    item["status"]="PROCESSING"
+    item["selection_mode"]="REWRITE"
+    item["rewrite_request"]=text
+    item["rewrite_requested_at"]=now
+    item["rewrite_version"]=int(item.get("rewrite_version",0) or 0)+1
+    item["rewrite_reply_to_message_id"]=int(reply_mid)
+    item.pop("delivered_at",None)
+    write_json(STATE,state); write_json(PROC,proc)
+    commit_paths([str(STATE),str(PROC)],"Registrar comentario editorial de Telegram")
+    api("sendMessage",{"chat_id":CHAT,"text":"📝 Cambio recibido. Reescribiré esta noticia en la próxima redacción.","reply_to_message_id":mid})
+    return state["offset"]
+
 def run_radar(slot):
     print("RADAR_START",slot,flush=True)
     sync_repo()
@@ -127,15 +181,19 @@ while time.time()<END:
     slot=now.strftime("%Y%m%d%H%M")
     if now.minute in TARGET_MINUTES and slot!=last_slot:
         run_radar(slot); last_slot=slot
-    params=urllib.parse.urlencode({"offset":offset,"timeout":20,"allowed_updates":json.dumps(["callback_query"])})
+    params=urllib.parse.urlencode({"offset":offset,"timeout":20,"allowed_updates":json.dumps(["callback_query","message"])})
     try:
         with urllib.request.urlopen(f"{BASE}/getUpdates?{params}",timeout=25) as r:
             updates=json.loads(r.read().decode()).get("result",[])
     except Exception as e:
         print("GETUPDATES_ERROR",e,flush=True); time.sleep(2); continue
     for u in updates:
-        cq=u.get("callback_query") or {}; msg=cq.get("message") or {}
+        cq=u.get("callback_query") or {}
+        msg=(cq.get("message") or {}) if cq else (u.get("message") or {})
         if str((msg.get("chat") or {}).get("id",""))!=CHAT:
             offset=max(offset,int(u["update_id"])+1); continue
-        offset=persist_callback(u)
+        if cq:
+            offset=persist_callback(u)
+        else:
+            offset=persist_message(u)
 print("TT_CONTROL_LISTENER_RESTART",flush=True)
