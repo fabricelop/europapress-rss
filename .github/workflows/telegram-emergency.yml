@@ -35,9 +35,13 @@ jobs:
           edit_api=f"https://api.telegram.org/bot{token}/editMessageReplyMarkup"
           state_file="telegram/emergency-sent.json"
           try:
-              with open(state_file,encoding="utf-8") as f: old=json.load(f)
+              raw=open(state_file,encoding="utf-8").read().strip()
+              old=json.loads(raw) if raw else {"messages":[]}
           except Exception:
-              old={"messages":[]}
+              try:
+                  old,_=json.JSONDecoder().raw_decode(raw)
+              except Exception:
+                  old={"messages":[]}
           sent_map={str(x.get("id")):x for x in old.get("messages",[]) if x.get("id")}
           seen=set()
           groups={}
