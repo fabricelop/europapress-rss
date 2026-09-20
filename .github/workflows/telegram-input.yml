@@ -3,7 +3,7 @@ name: Leer órdenes de Telegram
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '* * * * *'
   push:
     branches: [main]
     paths:
@@ -59,8 +59,7 @@ jobs:
               if not out.get("ok"): raise RuntimeError(out)
               return out.get("result")
           off=int(state.get("offset",0) or 0)
-          params=urllib.parse.urlencode({"offset":off,"timeout":0,"allowed_updates":json.dumps(["callback_query"])})
-          with urllib.request.urlopen(f"{base}/getUpdates?{params}",timeout=30) as r: ups=json.loads(r.read().decode()).get("result",[])
+          # Long polling: al arrancar el job espera hasta 50 s por el callback en vez de hacer una foto instantánea.\n          params=urllib.parse.urlencode({"offset":off,"timeout":50,"allowed_updates":json.dumps(["callback_query"])})\n          with urllib.request.urlopen(f"{base}/getUpdates?{params}",timeout=60) as r: ups=json.loads(r.read().decode()).get("result",[])
           now=dt.datetime.now(dt.timezone.utc).isoformat()
           for u in ups:
               uid=u["update_id"]; state["offset"]=max(int(state.get("offset",0) or 0),uid+1)
