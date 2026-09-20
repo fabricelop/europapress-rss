@@ -92,8 +92,22 @@ jobs:
                       ev=next((e for e in events if str(e.get("id"))==idv),None)
                       if ev:
                           ev["status"]="PROCESSING" if action=="prepare" else "DISMISSED"
-                          if action=="prepare" and not any(str(x.get("event_id"))==idv for x in proc["items"]):
+                      if action=="prepare" and not any(str(x.get("event_id"))==idv for x in proc["items"]):
+                          # El radar puede haber actualizado events.json en una ejecución concurrente.
+                          # Si el callback ya trae un id válido pero el evento no está en este checkout,
+                          # conservar la selección y recuperarla por id desde el estado actual antes de perderla.
+                          if not ev:
+                              try:
+                                  raw=urllib.request.urlopen("https://raw.githubusercontent.com/fabricelop/europapress-rss/main/telegram/events.json?t="+str(uid),timeout=15).read().decode()
+                                  latest=load_json(Path("telegram/events.json"),{"events":[]})
+                                  latest=json.loads(raw)
+                                  lev=latest.get("events",[]) if isinstance(latest,dict) else latest
+                                  ev=next((e for e in lev if str(e.get("id"))==idv),None)
+                              except Exception as e: print("lookup latest event:",e)
+                          if ev:
                               proc["items"].append({"event_id":idv,"title":ev.get("title",""),"url":ev.get("url",""),"sources":ev.get("sources",[]),"source_count":ev.get("source_count",len(ev.get("sources",[]))),"selected_at":now,"status":"PROCESSING"})
+                          else:
+                              print("PREPARAR registrado pero evento no localizado:",idv)
                   try: api("answerCallbackQuery",{"callback_query_id":cq["id"],"text":"✅ Registrado." if action=="prepare" else "🗑️ Descartada."})
                   except Exception as e: print("ack:",e)
                   if mid:
