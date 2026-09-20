@@ -7,7 +7,7 @@ on:
     paths:
       - 'telegram/radar-trigger.txt'
   schedule:
-    - cron: '*/15 4-21 * * *'
+    - cron: '55 4-21 * * *'
 
 permissions:
   contents: write
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Ejecutar radar 9 medios
+      - name: Ejecutar barrido TTiTTulares
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
