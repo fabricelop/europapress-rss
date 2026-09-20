@@ -90,13 +90,25 @@ def send(e,status):
  payload={"chat_id":chat,"text":txt,"disable_web_page_preview":True,"reply_markup":{"inline_keyboard":buttons}}
  req=urllib.request.Request("https://api.telegram.org/bot"+token+"/sendMessage",data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
  urllib.request.urlopen(req,timeout=15).read(); sent_count+=1
+handled=[x for x in ev if x.get("notified") or x.get("status") in ("PROCESSING","READY","PREPARED","PUBLISHED","DISMISSED")]
 for e in ev:
  n=len(set(e["sources"]));e["source_count"]=n
  target="PREPARED" if n>=5 else ("EVALUATE" if n>=3 else "NEW")
  if e.get("status")=="NEW" and target!="NEW":
+  # No volver a notificar el mismo asunto por un simple cambio de titular/fuente.
+  # Compara contra noticias ya notificadas o ya decididas por el usuario.
+  dup=None;dup_score=0
+  for h in handled:
+   if h is e: continue
+   sc=score(e.get("title",""),h.get("title",""))
+   if sc>dup_score: dup_score=sc;dup=h
+  if dup and dup_score>=.32:
+   e["status"]="DUPLICATE";e["duplicate_of"]=dup.get("id");e["notified"]=True
+   print("DUPLICATE_SUPPRESSED",e.get("id"),"->",dup.get("id"),round(dup_score,2),e.get("title",""))
+   continue
   e["status"]=target
   if not e.get("notified"):
-   send(e,target);e["notified"]=True
+   send(e,target);e["notified"]=True;handled.append(e)
 state["events"]=ev[-500:];state["last_run"]=now.isoformat().replace("+00:00","Z")
 statep.write_text(json.dumps(state,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 print("items/events",len(ev),"sent",sent_count)
