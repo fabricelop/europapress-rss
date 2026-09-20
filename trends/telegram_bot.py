@@ -43,10 +43,18 @@ def call(method, payload=None):
         data = json.dumps(payload).encode("utf-8")
         headers["Content-Type"] = "application/json"
     req = urllib.request.Request(API + method, data=data, headers=headers)
-    with urllib.request.urlopen(req, timeout=45) as r:
-        out = json.loads(r.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=45) as r:
+            out = json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="replace")
+        try:
+            out = json.loads(body)
+            raise RuntimeError(out.get("description") or out)
+        except json.JSONDecodeError:
+            raise RuntimeError(body or str(e))
     if not out.get("ok"):
-        raise RuntimeError(out)
+        raise RuntimeError(out.get("description") or out)
     return out.get("result")
 
 
@@ -117,8 +125,10 @@ def sync_panel(force_new=False):
         try:
             call("editMessageText", {**payload, "message_id": mid})
             return True
-        except Exception:
-            pass
+        except Exception as e:
+            if "message is not modified" in str(e).lower():
+                return True
+            print("No se pudo editar el panel existente:", e, flush=True)
     msg = call("sendMessage", payload)
     state["panel_message_id"] = msg["message_id"]
     save(STATE, state)
