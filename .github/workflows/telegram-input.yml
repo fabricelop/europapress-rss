@@ -49,10 +49,30 @@ jobs:
 
           state_path = Path("telegram/telegram-state.json")
           requests_path = Path("telegram/requests.json")
+          emergency_path = Path("telegram/emergency-requests.json")
           state = json.loads(state_path.read_text(encoding="utf-8"))
           queue = json.loads(requests_path.read_text(encoding="utf-8"))
+          emergency = json.loads(emergency_path.read_text(encoding="utf-8")) if emergency_path.exists() else {"requests":[]}
           queue.setdefault("requests", [])
           existing_ids = {r.get("update_id") for r in queue["requests"]}
+
+          # Decisions are written instantly by the webhook. The :14 turn consumes them.
+          processed_emergency = set(state.get("processed_emergency", []))
+          for er in emergency.get("requests", []):
+              ek = f"{er.get('action')}:{er.get('id')}:{er.get('message_id')}"
+              if ek in processed_emergency:
+                  continue
+              action = er.get("action")
+              item_id = str(er.get("id") or "")
+              if action in ("prepare", "dismiss") and item_id:
+                  queue["requests"].append({
+                      "update_id": "webhook:" + ek,
+                      "created_at": er.get("at") or dt.datetime.now(dt.timezone.utc).isoformat(),
+                      "type": action,
+                      "text": item_id
+                  })
+              processed_emergency.add(ek)
+          state["processed_emergency"] = list(processed_emergency)[-500:]
 
           def api(method, payload=None):
               data = None
@@ -221,7 +241,7 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add telegram/requests.json telegram/telegram-state.json
+          git add telegram/requests.json telegram/telegram-state.json telegram/emergency-requests.json
 
           if git diff --cached --quiet; then
             echo "Sin cambios."
