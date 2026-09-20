@@ -34,6 +34,27 @@ def load(path, default):
 def save(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+
+def load_remote_json(repo_path, default):
+    """Lee la versión más reciente del fichero desde origin/main sin hacer checkout/pull."""
+    try:
+        subprocess.run(
+            ["git", "fetch", "origin", "main"],
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        out = subprocess.run(
+            ["git", "show", f"origin/main:{repo_path}"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return json.loads(out.stdout)
+    except Exception as e:
+        print(f"No se pudo leer estado remoto {repo_path}: {e}", flush=True)
+        return default
+
 def persist_git(message="Actualizar estado inmediato TTendencias"):
     paths = [
         "trends/recent.json",
@@ -291,8 +312,24 @@ def mark_explained(callback):
     state = load(STATE, {"pending": {}})
     pending = state.get("pending", {})
     item = pending.get(key)
+
+    # El sender editorial puede haber añadido el bloque desde otro workflow
+    # mientras este listener sigue vivo con una copia local antigua.
     if not item:
-        call("answerCallbackQuery", {"callback_query_id": callback["id"], "text": "Este bloque ya no está activo."})
+        remote_state = load_remote_json("trends/telegram-bot-state.json", {"pending": {}})
+        remote_pending = remote_state.get("pending", {})
+        item = remote_pending.get(key)
+        if item:
+            # Fusionamos el estado remoto para no perder otros bloques pendientes.
+            state["pending"] = remote_pending
+            pending = state["pending"]
+            save(STATE, state)
+
+    if not item:
+        call("answerCallbackQuery", {
+            "callback_query_id": callback["id"],
+            "text": "Este bloque ya no está activo."
+        })
         return
     manual = load(MANUAL, {"project": "TTendencias", "items": []})
     related_trends = [
