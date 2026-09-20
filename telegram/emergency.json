@@ -1,8 +1,14 @@
 {
   "messages": [
     {
-      "text": "PRUEBA TT Control — canal de emergencia Telegram operativo sin D1. No requiere ninguna acción."
+      "text": "PRUEBA IDA/VUELTA · TT Control emergencia\nCanal independiente de D1. Pulsa CONFIRMAR para comprobar la interacción móvil.",
+      "buttons": [
+        {
+          "label": "CONFIRMAR",
+          "callback_data": "emergency:confirm:test"
+        }
+      ]
     }
   ],
-  "note": "Prueba técnica del canal de emergencia independiente de D1."
+  "note": "Prueba ida/vuelta. El botón aún usa el webhook Telegram registrado; no altera datos editoriales."
 }
