@@ -17,7 +17,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python3 <<'PY'
-          import json, os, urllib.request, urllib.error
+          import json, os, urllib.request, urllib.error, time
           token=os.environ["TELEGRAM_BOT_TOKEN"]; chat=os.environ["TELEGRAM_CHAT_ID"]
           base=f"https://api.telegram.org/bot{token}"
           def post(url,payload):
@@ -30,6 +30,7 @@ jobs:
           print("sent",mid)
           st,body=post("https://tt-control.fabricelop.workers.dev/api/telegram-webhook",{"callback_query":{"id":"technical-test","data":"dg:"+str(mid),"message":{"message_id":mid,"chat":{"id":int(chat)}}}})
           print("worker",st,body)
+          time.sleep(18)
           st2,body2=post(base+"/deleteMessage",{"chat_id":chat,"message_id":mid})
           print("second_delete",st2,body2)
           if st!=200: raise SystemExit("Worker webhook failed")
