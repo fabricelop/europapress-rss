@@ -359,7 +359,10 @@ def mark_explained(callback):
     pending.pop(key, None)
     state["pending"] = pending
     save(STATE, state)
-    requests = load(REQUESTS, {"requests": []})
+    requests = load_remote_json(
+        "trends/requests.json",
+        load(REQUESTS, {"requests": []})
+    )
     related_norm = {norm(x) for x in related_trends}
     for req in requests.get("requests", []):
         if norm(req.get("name")) in related_norm and req.get("status") in {"preparing", "ready", "update"}:
