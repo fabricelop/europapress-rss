@@ -3,7 +3,7 @@ name: Leer órdenes de Telegram
 on:
   workflow_dispatch:
   schedule:
-    - cron: '14 5-22 * * *'
+    - cron: '*/5 * * * *'
   push:
     branches: [main]
     paths:
@@ -32,100 +32,48 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python3 <<'PY'
-          import datetime as dt
-          import json
-          import os
-          import re
-          import urllib.parse
-          import urllib.request
+          import datetime as dt, json, os, urllib.parse, urllib.request
           from pathlib import Path
-
-          token = os.environ["TELEGRAM_BOT_TOKEN"]
-
-          # Same direct Telegram API mechanism used by the established Telegram flows.
-          # This scheduled turn reads queued decisions; it must never disable the webhook.
-          allowed_chat = str(os.environ["TELEGRAM_CHAT_ID"])
-          base = f"https://api.telegram.org/bot{token}"
-
-          state_path = Path("telegram/telegram-state.json")
-          processing_path = Path("telegram/editorial-processing.json")
-          requests_path = Path("telegram/requests.json")
-          emergency_path = Path("telegram/emergency-requests.json")
-          events_path = Path("telegram/events.json")
-          state = json.loads(state_path.read_text(encoding="utf-8"))
-          queue = json.loads(requests_path.read_text(encoding="utf-8"))
-          processing = json.loads(processing_path.read_text(encoding="utf-8")) if processing_path.exists() else {"news":[]}
-          processing.setdefault("news", [])
-          emergency = json.loads(emergency_path.read_text(encoding="utf-8")) if emergency_path.exists() else {"requests":[]}
-          events_doc = json.loads(events_path.read_text(encoding="utf-8")) if events_path.exists() else {"events":[]}
-          events_by_id = {str(e.get("id")): e for e in events_doc.get("events", [])}
-          queue.setdefault("requests", [])
-          existing_ids = {r.get("update_id") for r in queue["requests"]}
-
-          # Decisions are written instantly by the webhook. The :14 turn consumes them.
-          processed_emergency = set(state.get("processed_emergency", []))
-          for er in emergency.get("requests", []):
-              ek = f"{er.get('action')}:{er.get('id')}:{er.get('message_id')}"
-              if ek in processed_emergency:
-                  continue
-              action = er.get("action")
-              item_id = str(er.get("id") or "")
-              if action in ("prepare", "dismiss") and item_id:
-                  event = events_by_id.get(item_id, {})
-                  req = {
-                      "update_id": "webhook:" + ek,
-                      "created_at": er.get("at") or dt.datetime.now(dt.timezone.utc).isoformat(),
-                      "type": action,
-                      "event_id": item_id,
-                      "text": event.get("title") or item_id
-                  }
-                  if event:
-                      req.update({
-                          "title": event.get("title"),
-                          "url": event.get("url"),
-                          "sources": event.get("sources", []),
-                          "source_count": event.get("source_count", len(event.get("sources", [])))
-                      })
-                  queue["requests"].append(req)
-                  if action == "prepare" and event and not any(str(x.get("event_id")) == item_id for x in processing["news"]):
-                      processing["news"].append({
-                          "event_id": item_id,
-                          "title": event.get("title"),
-                          "url": event.get("url"),
-                          "sources": event.get("sources", []),
-                          "source_count": event.get("source_count", len(event.get("sources", []))),
-                          "selected_at": er.get("at") or dt.datetime.now(dt.timezone.utc).isoformat(),
-                          "status": "PROCESSING"
-                      })
-              processed_emergency.add(ek)
-          state["processed_emergency"] = list(processed_emergency)[-500:]
-
-          def api(method, payload=None):
-              data = None
-              headers = {}
-              if payload is not None:
-                  data = json.dumps(payload).encode("utf-8")
-                  headers["Content-Type"] = "application/json"
-              req = urllib.request.Request(f"{base}/{method}", data=data, headers=headers)
-              with urllib.request.urlopen(req, timeout=30) as r:
-                  result = json.loads(r.read().decode("utf-8"))
-              if not result.get("ok"):
-                  raise RuntimeError(result)
-              return result.get("result")
-
-          def safe_api(method, payload=None):
-              try:
-                  return api(method, payload)
-              except Exception as e:
-                  print(f"Aviso Telegram {method}: {e}")
-                  return None
-
-          # Webhook stays active permanently. The :14 turn only persists
-          # decisions already copied from emergency-requests.json above.
-          state_path.write_text(json.dumps(state, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
-          requests_path.write_text(json.dumps(queue, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
-          processing_path.write_text(json.dumps(processing, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-          print(f"Turno editorial: cola webhook consumida; órdenes totales: {len(queue.get('requests', []))}")
+          token=os.environ["TELEGRAM_BOT_TOKEN"]; allowed=str(os.environ["TELEGRAM_CHAT_ID"]); base=f"https://api.telegram.org/bot{token}"
+          state_path=Path("telegram/telegram-state.json"); req_path=Path("telegram/emergency-requests.json")
+          state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+          q=json.loads(req_path.read_text(encoding="utf-8")) if req_path.exists() else {"requests":[]}; q.setdefault("requests",[])
+          def api(method,payload=None):
+              data=json.dumps(payload).encode() if payload is not None else None
+              h={"Content-Type":"application/json"} if data else {}
+              with urllib.request.urlopen(urllib.request.Request(f"{base}/{method}",data=data,headers=h),timeout=30) as r:
+                  out=json.loads(r.read().decode())
+              if not out.get("ok"): raise RuntimeError(out)
+              return out.get("result")
+          # Fallback probado: desactivar webhook, consumir updates y restaurarlo el pager.
+          try: api("deleteWebhook",{"drop_pending_updates":False})
+          except Exception as e: print("deleteWebhook:",e)
+          off=int(state.get("offset",0) or 0)
+          params=urllib.parse.urlencode({"offset":off,"timeout":0,"allowed_updates":json.dumps(["callback_query"])})
+          with urllib.request.urlopen(f"{base}/getUpdates?{params}",timeout=30) as r: ups=json.loads(r.read().decode()).get("result",[])
+          now=dt.datetime.now(dt.timezone.utc).isoformat()
+          for u in ups:
+              uid=u["update_id"]; state["offset"]=max(int(state.get("offset",0) or 0),uid+1)
+              cq=u.get("callback_query") or {}; msg=cq.get("message") or {}; chat=str((msg.get("chat") or {}).get("id","")); data=str(cq.get("data") or "")
+              if chat!=allowed: continue
+              action=idv=""
+              if data.startswith("emergency:"):
+                  p=data.split(":"); action=p[1] if len(p)>1 else ""; idv=":".join(p[2:])
+              elif data.startswith("prepare:"):
+                  action="prepare"; idv=data.split(":",1)[1]
+              if action in ("prepare","dismiss") and idv:
+                  mid=msg.get("message_id")
+                  if not any(x.get("update_id")==uid for x in q["requests"]):
+                      q["requests"].append({"update_id":uid,"action":action,"id":idv,"at":now,"chat":chat,"message_id":mid})
+                  try: api("answerCallbackQuery",{"callback_query_id":cq["id"],"text":"✅ Registrado." if action=="prepare" else "🗑️ Descartada."})
+                  except Exception as e: print("ack:",e)
+                  if mid:
+                      try: api("deleteMessage",{"chat_id":allowed,"message_id":mid})
+                      except Exception as e: print("delete:",e)
+          q["requests"]=q["requests"][-200:]
+          state_path.write_text(json.dumps(state,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
+          req_path.write_text(json.dumps(q,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
+          print("Callbacks:",len(ups),"offset:",state.get("offset",0))
           PY
 
       - name: Guardar órdenes y estado sin pisar otros procesos
@@ -133,7 +81,7 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add telegram/requests.json telegram/telegram-state.json telegram/emergency-requests.json telegram/editorial-processing.json telegram/editorial-processing.json
+          git add telegram/emergency-requests.json telegram/telegram-state.json telegram/emergency-requests.json telegram/editorial-processing.json telegram/editorial-processing.json
 
           if git diff --cached --quiet; then
             echo "Sin cambios."
