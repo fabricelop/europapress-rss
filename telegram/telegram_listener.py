@@ -10,6 +10,7 @@ STATE=Path("telegram/telegram-state.json")
 REQ=Path("telegram/emergency-requests.json")
 EVENTS=Path("telegram/events.json")
 PROC=Path("telegram/editorial-processing.json")
+PROCESSED=Path("telegram/processed-events.json")
 TARGET_MINUTES={10,25,40,55}
 END=time.time()+85*60
 
@@ -110,7 +111,7 @@ def run_radar(slot):
     print(p.stdout,flush=True)
     if p.stderr: print(p.stderr,flush=True)
     if p.returncode==0:
-        commit_paths([str(EVENTS)],"Actualizar estado radar editorial")
+        commit_paths([str(EVENTS),str(PROCESSED),str(PROC)],"Actualizar estado radar editorial")
         print("RADAR_OK",slot,flush=True)
     else:
         print("RADAR_ERROR",slot,p.returncode,flush=True)
