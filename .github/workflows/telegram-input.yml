@@ -50,9 +50,12 @@ jobs:
           state_path = Path("telegram/telegram-state.json")
           requests_path = Path("telegram/requests.json")
           emergency_path = Path("telegram/emergency-requests.json")
+          events_path = Path("telegram/events.json")
           state = json.loads(state_path.read_text(encoding="utf-8"))
           queue = json.loads(requests_path.read_text(encoding="utf-8"))
           emergency = json.loads(emergency_path.read_text(encoding="utf-8")) if emergency_path.exists() else {"requests":[]}
+          events_doc = json.loads(events_path.read_text(encoding="utf-8")) if events_path.exists() else {"events":[]}
+          events_by_id = {str(e.get("id")): e for e in events_doc.get("events", [])}
           queue.setdefault("requests", [])
           existing_ids = {r.get("update_id") for r in queue["requests"]}
 
@@ -65,12 +68,22 @@ jobs:
               action = er.get("action")
               item_id = str(er.get("id") or "")
               if action in ("prepare", "dismiss") and item_id:
-                  queue["requests"].append({
+                  event = events_by_id.get(item_id, {})
+                  req = {
                       "update_id": "webhook:" + ek,
                       "created_at": er.get("at") or dt.datetime.now(dt.timezone.utc).isoformat(),
                       "type": action,
-                      "text": item_id
-                  })
+                      "event_id": item_id,
+                      "text": event.get("title") or item_id
+                  }
+                  if event:
+                      req.update({
+                          "title": event.get("title"),
+                          "url": event.get("url"),
+                          "sources": event.get("sources", []),
+                          "source_count": event.get("source_count", len(event.get("sources", [])))
+                      })
+                  queue["requests"].append(req)
               processed_emergency.add(ek)
           state["processed_emergency"] = list(processed_emergency)[-500:]
 
