@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "telegram/emergency.json"
+      - "telegram/emergency-trigger.txt"
 
 concurrency:
   group: telegram-emergency
@@ -32,6 +33,13 @@ jobs:
               text=str(m.get("text","")).strip()
               if not text: continue
               payload={"chat_id":chat,"text":text,"disable_web_page_preview":True}
+              keyboard=[]
+              for b in m.get("buttons", []):
+                  btn={"text":str(b.get("label","Acción"))}
+                  if b.get("url"): btn["url"]=b["url"]
+                  elif b.get("callback_data"): btn["callback_data"]=b["callback_data"]
+                  if len(btn)>1: keyboard.append([btn])
+              if keyboard: payload["reply_markup"]={"inline_keyboard":keyboard}
               req=urllib.request.Request(api,data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
               with urllib.request.urlopen(req,timeout=20) as r:
                   out=json.loads(r.read().decode())
