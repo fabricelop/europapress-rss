@@ -1,4 +1,4 @@
-import json,re,unicodedata,urllib.request,urllib.parse,html,os,hashlib
+import json,re,unicodedata,urllib.request,urllib.parse,html,os,hashlib,concurrent.futures
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
 
@@ -18,6 +18,21 @@ SOURCES=[
 ("Público","https://www.publico.es/","html"),
 ("El Mundo","https://www.elmundo.es/ultimas-noticias.html","html")
 ]
+SPORT_SOURCES=[
+("AS","https://as.com/ultimas-noticias/","html"),
+("MARCA","https://www.marca.com/","html"),
+("Mundo Deportivo","https://www.mundodeportivo.com/","html"),
+("SPORT","https://www.sport.es/es/","html"),
+("EFE Deportes","https://efe.com/deportes/","html")
+]
+SOURCE_FALLBACKS={
+ "EFE":["https://efe.com/espana/","https://efe.com/"],
+ "AS":["https://as.com/ultimas-noticias/","https://as.com/"],
+ "MARCA":["https://www.marca.com/","https://www.marca.com/futbol.html"],
+ "Mundo Deportivo":["https://www.mundodeportivo.com/","https://www.mundodeportivo.com/futbol"],
+ "SPORT":["https://www.sport.es/es/","https://www.sport.es/es/futbol/"]
+}
+
 TOTAL_SOURCES=len(SOURCES)
 REVIEW_MIN=4
 AUTO_MIN=5
@@ -43,7 +58,12 @@ def load(path,default):
  except:return default
 def save(path,obj): path.write_text(json.dumps(obj,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 def get(url):
- r=urllib.request.Request(url,headers={"User-Agent":"TTiTTulares-Radar/3.0"})
+ headers={
+  "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36",
+  "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "Accept-Language":"es-ES,es;q=0.9,en;q=0.7"
+ }
+ r=urllib.request.Request(url,headers=headers)
  return urllib.request.urlopen(r,timeout=20).read().decode("utf-8","ignore")
 def clean(s): return re.sub(r"\s+"," ",html.unescape(re.sub("<[^>]+>"," ",str(s)))).strip()
 def norm(s):
@@ -58,34 +78,75 @@ def score(a,b):
 def make_id(title):
  return hashlib.sha1(" ".join(sorted(fp(title))).encode()).hexdigest()[:12]
 
-def fetch_items():
- out=[];healthy=[]
- for src,url,kind in SOURCES:
+SPORT_IMPORTANT=[
+ "mundial","eurocopa","champions","europa league","conference league","laliga","liga de campeones",
+ "copa del rey","supercopa","seleccion espanola","espana","real madrid","barcelona","atletico de madrid",
+ "alcaraz","sinner","djokovic","nadal","wimbledon","roland garros","us open","australian open","masters 1000",
+ "formula 1","f1","motogp","marquez","alonso","sainz","ciclismo","tour de france","giro","vuelta a espana",
+ "pogacar","vingegaard","evenepoel","juegos olimpicos","olimpicos","mundial de atletismo","record mundial",
+ "nba","euroliga","acb","real madrid baloncesto","barcelona baloncesto","copa davis","billie jean king",
+ "fallece","muere","lesion grave","retirada","sancion","dopaje","record","campeon","campeona","titulo mundial"
+]
+SPORT_MINOR=[
+ "segunda division","laliga hypertmotion","primera rfef","segunda rfef","tercera rfef","juvenil","cadete",
+ "grupo 1","grupo 2","grupo 3","grupo 4","grupo 5","resultados, partidos y clasificacion","resultados y clasificacion"
+]
+def sport_important(title):
+ n=" ".join(norm(title))
+ if any(x in n for x in SPORT_MINOR): return False
+ return any(x in n for x in SPORT_IMPORTANT)
+
+def parse_source(src,url,kind,sport=False):
+ urls=[url]+[u for u in SOURCE_FALLBACKS.get(src,[]) if u!=url]
+ last=None
+ for candidate in urls:
   try:
-   body=get(url);healthy.append(src)
+   body=get(candidate); out=[]
    if kind=="json":
     j=json.loads(body);rows=j if isinstance(j,list) else j.get("items",[])
     for x in rows[:120]:
      t=str(x.get("title") or x.get("titulo") or "").strip();u=str(x.get("url") or x.get("link") or "")
-     if t and u:out.append({"source":src,"title":t,"url":u})
+     if t and u and (not sport or sport_important(t)):out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"})
    elif kind=="xml":
-    for b in re.findall(r"<(?:item|entry)\b[\s\S]*?</(?:item|entry)>",body,re.I)[:80]:
-     tm=re.search(r"<title[^>]*>([\s\S]*?)</title>",b,re.I)
-     lm=re.search(r"<link[^>]*href=[\"']([^\"']+)",b,re.I) or re.search(r"<link[^>]*>([\s\S]*?)</link>",b,re.I)
+    for b in re.findall(r"<(?:item|entry)\\b[\\s\\S]*?</(?:item|entry)>",body,re.I)[:100]:
+     tm=re.search(r"<title[^>]*>([\\s\\S]*?)</title>",b,re.I)
+     lm=re.search(r"<link[^>]*href=[\"']([^\"']+)",b,re.I) or re.search(r"<link[^>]*>([\\s\\S]*?)</link>",b,re.I)
      if tm and lm:
       t=clean(tm.group(1));u=clean(lm.group(1))
-      if t and u:out.append({"source":src,"title":t,"url":u})
+      if t and u and (not sport or sport_important(t)):out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"})
    else:
     n=0
-    for u,t in re.findall(r"<a[^>]+href=[\"']([^\"']+)[\"'][^>]*>([\s\S]*?)</a>",body,re.I):
+    for u,t in re.findall(r"<a[^>]+href=[\"']([^\"']+)[\"'][^>]*>([\\s\\S]*?)</a>",body,re.I):
      t=clean(t)
      if 35<=len(t)<=240:
-      if u.startswith("/"):u=urllib.parse.urljoin(url,u)
-      if u.startswith("http"):
-       out.append({"source":src,"title":t,"url":u});n+=1
-      if n>=60:break
-  except Exception as e:print("SOURCE_FAIL",src,str(e))
- return out,healthy
+      if u.startswith("/"):u=urllib.parse.urljoin(candidate,u)
+      if u.startswith("http") and (not sport or sport_important(t)):
+       out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"});n+=1
+      if n>=80:break
+   return src,out,candidate,None
+  except Exception as e:last=str(e)
+ return src,[],None,last
+
+def fetch_items():
+ out=[];healthy=[];sport_healthy=[];failures=[]
+ jobs=[]
+ with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
+  for spec in SOURCES: jobs.append((False,ex.submit(parse_source,*spec,False)))
+  for spec in SPORT_SOURCES: jobs.append((True,ex.submit(parse_source,*spec,True)))
+  for is_sport,fut in jobs:
+   try:
+    src,rows,used,err=fut.result()
+    if used:
+     (sport_healthy if is_sport else healthy).append(src)
+     out.extend(rows)
+     if used!=next((u for n,u,k in (SPORT_SOURCES if is_sport else SOURCES) if n==src),used):
+      print("SOURCE_RECOVERED",src,used)
+    else:
+     failures.append({"source":src,"type":"sport" if is_sport else "general","error":err})
+     print("SOURCE_FAIL",src,err)
+   except Exception as e:
+    print("SOURCE_FAIL_WORKER",str(e))
+ return out,healthy,sport_healthy,failures
 
 def best_match(title,events,threshold=.50):
  best=None;bs=0
@@ -99,13 +160,16 @@ def best_match(title,events,threshold=.50):
 def add_appearance(e,row,now):
  apps=e.setdefault("appearances",[])
  src=row["source"]
+ source_type=row.get("source_type","general")
  same=next((a for a in apps if a.get("source")==src),None)
  if same:
   same.update({"title":row["title"],"url":row["url"],"last_seen":iso(now)})
  else:
-  apps.append({"source":src,"title":row["title"],"url":row["url"],"first_seen":iso(now),"last_seen":iso(now)})
- e["sources"]=sorted({a["source"] for a in apps})
+  apps.append({"source":src,"source_type":source_type,"title":row["title"],"url":row["url"],"first_seen":iso(now),"last_seen":iso(now)})
+ e["sources"]=sorted({a["source"] for a in apps if a.get("source_type","general")!="sport"})
+ e["sport_sources"]=sorted({a["source"] for a in apps if a.get("source_type")=="sport"})
  e["source_count"]=len(e["sources"])
+ e["sport_source_count"]=len(e["sport_sources"])
  e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCES,1)
  e["last_seen"]=iso(now)
  if not e.get("url"):e["url"]=row["url"]
@@ -167,8 +231,9 @@ for e in events:
 cutoff=now-timedelta(hours=WAIT_HOURS)
 events=[e for e in events if e.get("status")!="WAITING" or dtv(e.get("first_seen"))>=cutoff]
 
-rows,healthy=fetch_items()
+rows,healthy,sport_healthy,source_failures=fetch_items()
 print("SOURCES_OK",len(set(healthy)),sorted(set(healthy)))
+print("SPORT_SOURCES_OK",len(set(sport_healthy)),sorted(set(sport_healthy)))
 print("SOURCES_CONFIGURED",TOTAL_SOURCES)
 
 # Index de procesadas como eventos sintéticos para reconocer ecos posteriores.
@@ -255,7 +320,7 @@ for p in new_processed:
 processed=processed[-MAX_PROCESSED:]
 
 events_doc={"version":3,"configured_sources":TOTAL_SOURCES,"review_min_sources":REVIEW_MIN,"auto_min_sources":AUTO_MIN,"urgent_window_minutes":URGENT_WINDOW_MINUTES,
-            "waiting_ttl_hours":WAIT_HOURS,"last_run":iso(now),"healthy_sources":sorted(set(healthy)),"events":events}
+            "waiting_ttl_hours":WAIT_HOURS,"last_run":iso(now),"healthy_sources":sorted(set(healthy)),"healthy_sport_sources":sorted(set(sport_healthy)),"source_failures":source_failures,"events":events}
 processed_doc={"version":1,"updated_at":iso(now),"events":processed}
 save(EVENTS,events_doc);save(PROCESSED,processed_doc);save(EDITORIAL,editorial)
 print("RESULT rows",len(rows),"active_events",len(events),"review_sent",sent,"auto_queued",auto,"expired",expired)
