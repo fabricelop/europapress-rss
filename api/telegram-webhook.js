@@ -123,6 +123,11 @@ export default async function handler(req, res) {
         } else {
           await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "No he podido recuperar el texto de la noticia." });
         }
+      } else if (data.startsWith("dismiss:")) {
+        const id = data.slice("dismiss:".length);
+        await appendRequest(requestObj(update, "dismiss", id, true));
+        await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "🗑️ Descartada." });
+        await safeTelegram("deleteMessage", { chat_id: allowedChat, message_id: msg.message_id });
       } else if (data === "run:bulletin") {
         await appendRequest(requestObj(update, "run", "Ejecuta ahora un boletín manual de TTiTTulares.", true));
         await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "✅ Solicitud de boletín registrada." });
