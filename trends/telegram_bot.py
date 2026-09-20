@@ -257,7 +257,20 @@ def select_trend(callback):
             "reexplain": norm(term) in known_explained(),
         })
         save(REQUESTS, requests)
-    sync_panel()
+    # Refresco visual inmediato del mismo panel pulsado.
+    try:
+        call("editMessageText", {
+            "chat_id": callback["message"]["chat"]["id"],
+            "message_id": callback["message"]["message_id"],
+            "text": panel_text(),
+            "reply_markup": panel_keyboard(),
+            "disable_web_page_preview": True,
+        })
+    except Exception as e:
+        if "message is not modified" not in str(e).lower():
+            print("No se pudo refrescar inmediatamente la fila:", e, flush=True)
+            sync_panel()
+
     call("answerCallbackQuery", {
         "callback_query_id": callback["id"],
         "text": "🔵 Enviada a preparación."
