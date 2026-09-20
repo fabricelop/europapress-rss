@@ -56,15 +56,19 @@ jobs:
                       state["credential_sync_ok"]=True
               except Exception as e:
                   state["credential_sync_ok"]=False; state["credential_sync_error"]=str(e); print("Telegram credentials sync failed:",e)
-          # TTiTTulares usa un único consumidor getUpdates (telegram-input.yml), igual que el patrón estable de SLR.
-          # Asegurar que Telegram no entrega callbacks a un webhook competidor.
+          # Los botones interactivos se atienden por webhook para responder al instante.
+          # El polling de telegram-input.yml queda solo como respaldo y no debe desactivar el webhook.
           try:
-              req=urllib.request.Request("https://api.telegram.org/bot"+token+"/deleteWebhook",data=json.dumps({"drop_pending_updates":False}).encode(),headers={"Content-Type":"application/json"})
-              with urllib.request.urlopen(req,timeout=15) as rr: print("Webhook disabled for polling:",rr.read().decode())
+              webhook_url="https://tt-control.fabricelop.workers.dev/api/telegram-webhook"
+              secret=os.environ.get("TELEGRAM_WEBHOOK_SECRET","").strip()
+              payload={"url":webhook_url,"drop_pending_updates":False,"allowed_updates":["callback_query","message"]}
+              if secret: payload["secret_token"]=secret
+              req=urllib.request.Request("https://api.telegram.org/bot"+token+"/setWebhook",data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
+              with urllib.request.urlopen(req,timeout=15) as rr: print("Webhook enabled:",rr.read().decode())
               req2=urllib.request.Request("https://api.telegram.org/bot"+token+"/getWebhookInfo")
               with urllib.request.urlopen(req2,timeout=15) as rr:
                   wi=json.loads(rr.read().decode()); result=wi.get("result",{}); state["webhook_diagnostic"]={"url":result.get("url"),"pending_update_count":result.get("pending_update_count"),"last_error_date":result.get("last_error_date"),"last_error_message":result.get("last_error_message"),"checked":True}; print("WebhookInfo:",json.dumps(state["webhook_diagnostic"]))
-          except Exception as e: print("Webhook disable failed:",e)
+          except Exception as e: print("Webhook setup failed:",e)
           def post(method,payload):
               req=urllib.request.Request("https://api.telegram.org/bot"+token+"/"+method,data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
               with urllib.request.urlopen(req) as r: return json.loads(r.read().decode())
