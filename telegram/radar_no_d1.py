@@ -6,9 +6,9 @@ SOURCES=[
 ("Europa Press","https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json","json"),
 ("EL PAÍS","https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/ultimas-noticias/portada","xml"),
 ("La Vanguardia","https://www.lavanguardia.com/rss/home.xml","xml"),
-("Cadena SER","https://cadenaser.com/ultimas-noticias/","html"),("RTVE","https://www.rtve.es/noticias/","html"),
-("El HuffPost","https://www.huffingtonpost.es/ultimas-noticias","html"),("20minutos","https://www.20minutos.es/ultima-hora/","html"),
-("ABC","https://www.abc.es/ultima-hora/","html"),("COPE","https://www.cope.es/ultima-hora","html")]
+("Cadena SER","https://cadenaser.com/rss/","xml"),("RTVE","https://www.rtve.es/noticias/","html"),
+("El HuffPost","https://www.huffingtonpost.es/feeds/index.xml","xml"),("20minutos","https://www.20minutos.es/ultima-hora/","html"),
+("ABC","https://www.abc.es/ultima-hora/","html"),("COPE","https://www.cope.es/rss/home.xml","xml")]
 STOP=set("a al algo ante bajo con contra de del desde el ella en entre era es esta este esto ha hay la las lo los mas muy no o para pero por que se sin sobre su sus un una y ya".split())
 def get(url):
  r=urllib.request.Request(url,headers={"User-Agent":"TT-Control-Radar/2.0"});return urllib.request.urlopen(r,timeout=20).read().decode("utf-8","ignore")
