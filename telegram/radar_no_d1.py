@@ -6,9 +6,18 @@ SOURCES=[
 ("Europa Press","https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json","json"),
 ("EL PAÍS","https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/ultimas-noticias/portada","xml"),
 ("La Vanguardia","https://www.lavanguardia.com/rss/home.xml","xml"),
-("Cadena SER","https://cadenaser.com/rss/","xml"),("RTVE","https://www.rtve.es/noticias/","html"),
-("El HuffPost","https://www.huffingtonpost.es/feeds/index.xml","xml"),("20minutos","https://www.20minutos.es/ultima-hora/","html"),
-("ABC","https://www.abc.es/ultima-hora/","html"),("COPE","https://www.cope.es/rss/home.xml","xml")]
+("Cadena SER","https://cadenaser.com/nacional/","html"),
+("RTVE","https://www.rtve.es/noticias/","html"),
+("El HuffPost","https://www.huffingtonpost.es/feeds/index.xml","xml"),
+("20minutos","https://www.20minutos.es/ultima-hora/","html"),
+("ABC","https://www.abc.es/ultima-hora/","html"),
+("COPE","https://www.cope.es/rss/home.xml","xml"),
+("EFE","https://efe.com/ultimas-noticias/","html"),
+("Servimedia","https://www.servimedia.es/noticias","html"),
+("elDiario.es","https://www.eldiario.es/ultima-hora/","html"),
+("Público","https://www.publico.es/","html"),
+("El Mundo","https://www.elmundo.es/ultimas-noticias.html","html")
+]
 STOP=set("a al algo ante bajo con contra de del desde el ella en entre era es esta este esto ha hay la las lo los mas muy no o para pero por que se sin sobre su sus un una y ya".split())
 def get(url):
  r=urllib.request.Request(url,headers={"User-Agent":"TT-Control-Radar/2.0"});return urllib.request.urlopen(r,timeout=20).read().decode("utf-8","ignore")
@@ -72,13 +81,15 @@ for src,title,url in rows:
   key=hashlib.sha1((" ".join(sorted(fp(title)))+url.split("?")[0]).encode()).hexdigest()[:12]
   ev.append({"id":key,"title":title,"url":url,"sources":[src],"source_count":1,"first_seen":now.isoformat().replace("+00:00","Z"),"last_seen":now.isoformat().replace("+00:00","Z"),"status":"NEW","notified":False})
 token=os.environ.get("TELEGRAM_BOT_TOKEN");chat=os.environ.get("TELEGRAM_CHAT_ID")
+sent_count=0
 def send(e,status):
+ global sent_count
  txt=("📰 TT Control · "+("PREPARAR" if status=="PREPARED" else "PARA VALORAR")+" · "+str(e["source_count"])+"/"+str(active_den)+"\n\n"+e["title"]+"\n\nFuentes: "+", ".join(e["sources"]))
  buttons=[[{"text":"PREPARAR","callback_data":"emergency:prepare:"+e["id"]},{"text":"DESESTIMAR","callback_data":"emergency:dismiss:"+e["id"]}]]
  buttons.append([{"text":"ABRIR FUENTE","url":e["url"]}])
  payload={"chat_id":chat,"text":txt,"disable_web_page_preview":True,"reply_markup":{"inline_keyboard":buttons}}
  req=urllib.request.Request("https://api.telegram.org/bot"+token+"/sendMessage",data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
- urllib.request.urlopen(req,timeout=15).read()
+ urllib.request.urlopen(req,timeout=15).read(); sent_count+=1
 for e in ev:
  n=len(set(e["sources"]));e["source_count"]=n
  target="PREPARED" if n>=5 else ("EVALUATE" if n>=3 else "NEW")
@@ -88,4 +99,4 @@ for e in ev:
    send(e,target);e["notified"]=True
 state["events"]=ev[-500:];state["last_run"]=now.isoformat().replace("+00:00","Z")
 statep.write_text(json.dumps(state,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-print("items/events",len(ev))
+print("items/events",len(ev),"sent",sent_count)
