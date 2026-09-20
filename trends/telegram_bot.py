@@ -34,6 +34,26 @@ def load(path, default):
 def save(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+def persist_git(message="Actualizar estado inmediato TTendencias"):
+    paths = [
+        "trends/recent.json",
+        "trends/checkpoint.json",
+        "trends/requests.json",
+        "trends/telegram-bot-state.json",
+        "trends/telegram-manual-explained.json",
+    ]
+    subprocess.run(["git","add",*paths], check=False)
+    if subprocess.run(["git","diff","--cached","--quiet"], check=False).returncode == 0:
+        return
+    subprocess.run(["git","config","user.name","ttendencias-bot"], check=False)
+    subprocess.run(["git","config","user.email","actions@users.noreply.github.com"], check=False)
+    subprocess.run(["git","commit","-m",message], check=False)
+    pushed = subprocess.run(["git","push","origin","HEAD:main"], check=False).returncode == 0
+    if not pushed:
+        subprocess.run(["git","pull","--rebase","--autostash","origin","main"], check=False)
+        subprocess.run(["git","push","origin","HEAD:main"], check=False)
+
+
 
 def norm(s):
     return " ".join(str(s or "").split()).casefold()
@@ -253,6 +273,7 @@ def handle(update):
             state["chat_id"] = message["chat"]["id"]
             save(STATE, state)
             sync_panel()
+            persist_git("Enlazar chat del bot TTendencias")
             return
     cb = update.get("callback_query")
     if not cb:
@@ -279,6 +300,7 @@ def poll(seconds=3300):
             try:
                 subprocess.run(["python3", str(ROOT / "update_trends.py")], check=False)
                 sync_panel()
+                persist_git("Refrescar panel TTendencias")
             except Exception as e:
                 print("sync error:", e, flush=True)
             last_sync = time.time()
@@ -290,6 +312,7 @@ def poll(seconds=3300):
                 state = load(STATE, state)
                 state["last_update_id"] = int(upd["update_id"])
                 save(STATE, state)
+                persist_git()
         except Exception as e:
             print("poll error:", e, flush=True)
             time.sleep(3)
