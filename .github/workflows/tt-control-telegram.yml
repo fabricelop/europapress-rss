@@ -141,28 +141,11 @@ jobs:
                   ready=recent
                   state["ready_baselined"]=True
                   print("Ready backup initialized with last 12 hours:",len(ready))
+              # READY delivery is handled directly by the editorial Telegram path.
+              # Do not send the obsolete "ABRIR TT CONTROL" notification here.
               for p in reversed(ready):
-                  pid=str(p.get("id"))
-                  if pid in seen_ready: continue
-                  title=str(p.get("title") or "")
-                  base=str(p.get("base_text") or "").strip()
-                  variants=[("A",p.get("remate_a")),("B",p.get("remate_b")),("C",p.get("remate_c"))]
-                  # Telegram is the mobile publishing surface: compact, readable and copy-friendly.
-                  lines=["📰 TT Control · LISTA",title,"",base]
-                  for label,rem in variants:
-                      rem=str(rem or "").strip()
-                      if rem: lines += ["",label+"  🌶️ "+rem]
-                  txt="\n".join(lines)
-                  if len(txt)>3900: txt=txt[:3890]+"…"
-                  tweet=lambda rem: base+(" 🌶️ "+rem if rem else "")
-                  rows=[]
-                  for label,rem in variants:
-                      rem=str(rem or "").strip()
-                      if rem:
-                          rows.append([{"text":"PUBLICAR "+label+" EN X","url":"https://twitter.com/intent/tweet?text="+urllib.parse.quote(tweet(rem))}])
-                  rows += [[{"text":"ABRIR TT CONTROL","url":"https://tt-control.fabricelop.workers.dev/?view=READY&id="+urllib.parse.quote(pid)}],[{"text":"🗑️ Borrar","callback_data":"delete:message"}]]
-                  kb={"inline_keyboard":rows}
-                  post("sendMessage",{"chat_id":chat,"text":txt,"reply_markup":kb,"disable_web_page_preview":True})
+                  pid=str(p.get("id",""))
+                  if not pid or pid in seen_ready: continue
                   seen_ready.add(pid)
               state["ready_ids"]=list(seen_ready)[-200:]
               state_path.write_text(json.dumps(state,indent=2)+"\\n",encoding="utf-8")
@@ -213,14 +196,9 @@ jobs:
 
           n=new_count
           if len(prepared)==1:
-              p=prepared[0]; txt="📰 TT Control · noticia preparada"+(("\\n"+p["title"]) if p["title"] else "")
-              open_url="https://tt-control.fabricelop.workers.dev/?view=READY&id="+urllib.parse.quote(p["id"])
-          else:
-              txt=f"📰 TT Control · {n} noticias preparadas en Listas"
-              open_url="https://tt-control.fabricelop.workers.dev/?view=READY"
-          sent=post("sendMessage",{"chat_id":chat,"text":txt,"disable_web_page_preview":True})
-          mid=sent["result"]["message_id"]
-          kb={"inline_keyboard":[[{"text":"ABRIR TT CONTROL","url":open_url}],[{"text":"🗑️ Borrar","callback_data":"delete:message"}]]}
+              # Obsolete READY card disabled: prepared stories are delivered directly to Telegram
+          # with X publication buttons and a delete button.
+          raise SystemExit(0)
           post("editMessageReplyMarkup",{"chat_id":chat,"message_id":mid,"reply_markup":kb})
           state["message_id"]=mid
           state["result_commit_sha"]=latest_sha
