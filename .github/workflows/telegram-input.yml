@@ -65,10 +65,23 @@ jobs:
                   p=data.split(":"); action=p[1] if len(p)>1 else ""; idv=":".join(p[2:])
               elif data.startswith("prepare:"):
                   action="prepare"; idv=data.split(":",1)[1]
-              if data.startswith("dg:"):\n                  mids=[int(x) for x in data[3:].split(",") if x.isdigit()]\n                  try: api("answerCallbackQuery",{"callback_query_id":cq["id"],"text":"🗑️ Borrado."})\n                  except Exception as e: print("ack delete:",e)\n                  for mid in mids:\n                      try: api("deleteMessage",{"chat_id":allowed,"message_id":mid})\n                      except Exception as e: print("delete",mid,e)\n                  continue\n              if action in ("prepare","dismiss") and idv:
+              if data.startswith("dg:"):
+                  mids=[int(x) for x in data[3:].split(",") if x.isdigit()]
+                  try: api("answerCallbackQuery",{"callback_query_id":cq["id"],"text":"🗑️ Borrado."})
+                  except Exception as e: print("ack delete:",e)
+                  for mid in mids:
+                      try: api("deleteMessage",{"chat_id":allowed,"message_id":mid})
+                      except Exception as e: print("delete",mid,e)
+                  continue
+              if action in ("prepare","dismiss") and idv:
                   mid=msg.get("message_id")
                   if not any(x.get("update_id")==uid for x in q["requests"]):
-                      q["requests"].append({"update_id":uid,"action":action,"id":idv,"at":now,"chat":chat,"message_id":mid})\n                      ev=next((e for e in events if str(e.get("id"))==idv),None)\n                      if ev:\n                          ev["status"]="PROCESSING" if action=="prepare" else "DISMISSED"\n                          if action=="prepare" and not any(str(x.get("event_id"))==idv for x in proc["items"]):\n                              proc["items"].append({"event_id":idv,"title":ev.get("title",""),"url":ev.get("url",""),"sources":ev.get("sources",[]),"source_count":ev.get("source_count",len(ev.get("sources",[]))),"selected_at":now,"status":"PROCESSING"})
+                      q["requests"].append({"update_id":uid,"action":action,"id":idv,"at":now,"chat":chat,"message_id":mid})
+                      ev=next((e for e in events if str(e.get("id"))==idv),None)
+                      if ev:
+                          ev["status"]="PROCESSING" if action=="prepare" else "DISMISSED"
+                          if action=="prepare" and not any(str(x.get("event_id"))==idv for x in proc["items"]):
+                              proc["items"].append({"event_id":idv,"title":ev.get("title",""),"url":ev.get("url",""),"sources":ev.get("sources",[]),"source_count":ev.get("source_count",len(ev.get("sources",[]))),"selected_at":now,"status":"PROCESSING"})
                   try: api("answerCallbackQuery",{"callback_query_id":cq["id"],"text":"✅ Registrado." if action=="prepare" else "🗑️ Descartada."})
                   except Exception as e: print("ack:",e)
                   if mid:
@@ -76,7 +89,9 @@ jobs:
                       except Exception as e: print("delete:",e)
           q["requests"]=q["requests"][-200:]
           state_path.write_text(json.dumps(state,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
-          req_path.write_text(json.dumps(q,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")\n          events_path.write_text(json.dumps(events_doc,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")\n          proc_path.write_text(json.dumps(proc,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          req_path.write_text(json.dumps(q,ensure_ascii=False,separators=(",",":"))+"\\n",encoding="utf-8")
+          events_path.write_text(json.dumps(events_doc,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+          proc_path.write_text(json.dumps(proc,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
           print("Callbacks:",len(ups),"offset:",state.get("offset",0))
           PY
 
