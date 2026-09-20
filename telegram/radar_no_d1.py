@@ -74,7 +74,7 @@ for src,title,url in rows:
 token=os.environ.get("TELEGRAM_BOT_TOKEN");chat=os.environ.get("TELEGRAM_CHAT_ID")
 def send(e,status):
  txt=("📰 TT Control · "+("PREPARAR" if status=="PREPARED" else "PARA VALORAR")+" · "+str(e["source_count"])+"/"+str(active_den)+"\n\n"+e["title"]+"\n\nFuentes: "+", ".join(e["sources"]))
- buttons=[[{"text":"PREPARAR","callback_data":"emergency:prepare:"+e["id"]},{"text":"DESCARTAR","callback_data":"emergency:dismiss:"+e["id"]}]]
+ buttons=[[{"text":"PREPARAR","callback_data":"emergency:prepare:"+e["id"]},{"text":"🗑️ BORRAR","callback_data":"delete:message"}]]
  buttons.append([{"text":"ABRIR FUENTE","url":e["url"]}])
  payload={"chat_id":chat,"text":txt,"disable_web_page_preview":True,"reply_markup":{"inline_keyboard":buttons}}
  req=urllib.request.Request("https://api.telegram.org/bot"+token+"/sendMessage",data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
