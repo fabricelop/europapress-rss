@@ -1,14 +1,18 @@
 {
   "messages": [
     {
-      "text": "PRUEBA IDA/VUELTA · TT Control emergencia\nCanal independiente de D1. Pulsa CONFIRMAR para comprobar la interacción móvil.",
+      "text": "PRUEBA TT · circuito unificado\nPulsa PREPARAR. Debe quedar registrada la orden en telegram/requests.json.",
       "buttons": [
         {
-          "label": "CONFIRMAR",
-          "callback_data": "emergency:confirm:test"
+          "label": "PREPARAR",
+          "callback_data": "prepare:test-unificado"
+        },
+        {
+          "label": "DESCARTAR",
+          "callback_data": "dismiss:test-unificado"
         }
       ]
     }
   ],
-  "note": "Prueba ida/vuelta. El botón aún usa el webhook Telegram registrado; no altera datos editoriales."
+  "note": "Prueba del circuito unificado PREPARAR/DESCARTAR."
 }
