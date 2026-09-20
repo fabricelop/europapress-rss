@@ -190,20 +190,11 @@ jobs:
           except Exception as e:
               print("TT Control GitHub status query failed:",e); raise SystemExit(1)
 
-          if old_message:
-              try: post("deleteMessage",{"chat_id":chat,"message_id":old_message})
-              except Exception: pass
-
-          n=new_count
-          if len(prepared)==1:
-              # Obsolete READY card disabled: prepared stories are delivered directly to Telegram
-          # with X publication buttons and a delete button.
-          raise SystemExit(0)
-          post("editMessageReplyMarkup",{"chat_id":chat,"message_id":mid,"reply_markup":kb})
-          state["message_id"]=mid
+          # READY notifications are delivered by the editorial Telegram workflow.
+          # Keep only the webhook/radar pager responsibilities here.
           state["result_commit_sha"]=latest_sha
-          state_path.write_text(json.dumps(state,indent=2)+"\n",encoding="utf-8")
-          print("TT Control alert sent:",n)
+          state_path.write_text(json.dumps(state,indent=2)+"\\n",encoding="utf-8")
+          print("READY legacy notification disabled:",new_count)
           PY
 
       - name: Pager state is ephemeral
