@@ -30,6 +30,7 @@ jobs:
           chat=os.environ["TELEGRAM_CHAT_ID"]
           api=f"https://api.telegram.org/bot{token}/sendMessage"
           seen=set()
+          sent=[]
           for m in data.get("messages", []):
               key=str(m.get("id") or m.get("text",""))
               if key in seen: continue
@@ -60,5 +61,21 @@ jobs:
               with urllib.request.urlopen(req,timeout=20) as r:
                   out=json.loads(r.read().decode())
                   if not out.get("ok"): raise RuntimeError(out)
-              print("Alerta de emergencia enviada", out.get("result",{}).get("message_id"))
+              mid=out.get("result",{}).get("message_id")
+              sent.append({"id":key,"message_id":mid})
+              print("Alerta de emergencia enviada", mid)
+          with open("telegram/emergency-sent.json","w",encoding="utf-8") as f:
+              json.dump({"messages":sent},f,ensure_ascii=False,indent=2)
+              f.write("\\n")
           PY
+
+      - name: Guardar IDs enviados
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add telegram/emergency-sent.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Guardar IDs Telegram enviados"
+          git pull --rebase origin main
+          git push origin HEAD:main
