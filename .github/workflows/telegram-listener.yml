@@ -37,7 +37,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python3 telegram/radar_no_d1.py
-          git add telegram/events.json
+          git add telegram/events.json telegram/processed-events.json telegram/editorial-processing.json
           if ! git diff --cached --quiet; then
             git commit -m "Actualizar estado radar editorial"
             git pull --rebase origin main
