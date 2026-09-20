@@ -53,8 +53,8 @@ jobs:
                   print("Ya enviado, se omite",key)
                   continue
               text=str(m.get("text","")).replace("\\\\n","\\n").strip()
-              # Cinturón de seguridad visual: todo remate A/B/C debe llevar 🌶️,
-              # tanto en Telegram como dentro del texto que se abre en X.
+              # Cinturón de seguridad visual: A/B/C son etiquetas SOLO de Telegram.
+              # El texto que se abre en X debe conservar 🌶️ pero nunca A), B) o C).
               remate_label=None
               normalized=text
               if normalized.startswith("🌶️"):
@@ -73,11 +73,14 @@ jobs:
                       if "twitter.com/intent/tweet?text=" in u or "x.com/intent/post?text=" in u:
                           parts=urllib.parse.urlsplit(u); qs=urllib.parse.parse_qs(parts.query)
                           tw=(qs.get("text") or [""])[0]
-                          if remate_label and ("🌶️ "+remate_label) not in tw:
-                              if (" "+remate_label) in tw:
-                                  tw=tw.replace(" "+remate_label," 🌶️ "+remate_label,1)
-                              elif tw.startswith(remate_label):
-                                  tw="🌶️ "+tw
+                          if remate_label:
+                              # Limpiar defensivamente cualquier etiqueta visual que haya llegado al intent.
+                              tw=tw.replace("🌶️ "+remate_label+" ","🌶️ ",1)
+                              tw=tw.replace(" "+remate_label+" "," ",1)
+                              if tw.startswith(remate_label+" "):
+                                  tw=tw[len(remate_label)+1:]
+                              elif tw.startswith("🌶️ "+remate_label):
+                                  tw="🌶️ "+tw[len("🌶️ "+remate_label):].lstrip()
                               b["url"]=urllib.parse.urlunsplit((parts.scheme,parts.netloc,parts.path,urllib.parse.urlencode({"text":tw}),parts.fragment))
                           if len(tw)>280:
                               tw=tw[:279].rstrip()+"…"
