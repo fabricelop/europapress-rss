@@ -29,7 +29,11 @@ jobs:
           token=os.environ["TELEGRAM_BOT_TOKEN"]
           chat=os.environ["TELEGRAM_CHAT_ID"]
           api=f"https://api.telegram.org/bot{token}/sendMessage"
-          seen=set()\n          for m in data.get("messages", []):\n              key=str(m.get("id") or m.get("text",""))\n              if key in seen: continue\n              seen.add(key)
+          seen=set()
+          for m in data.get("messages", []):
+              key=str(m.get("id") or m.get("text",""))
+              if key in seen: continue
+              seen.add(key)
               text=str(m.get("text","")).strip()
               if not text: continue
               payload={"chat_id":chat,"text":text,"disable_web_page_preview":True}
