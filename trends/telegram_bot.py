@@ -295,13 +295,20 @@ def mark_explained(callback):
         call("answerCallbackQuery", {"callback_query_id": callback["id"], "text": "Este bloque ya no está activo."})
         return
     manual = load(MANUAL, {"project": "TTendencias", "items": []})
-    if norm(item["name"]) not in {norm(x.get("name")) for x in manual.get("items", [])}:
-        manual.setdefault("items", []).append({
-            "name": item["name"],
-            "explained_at": datetime.now(MADRID).isoformat(timespec="seconds"),
-            "source": "telegram_button",
-        })
-        save(MANUAL, manual)
+    related_trends = [
+        str(x).strip() for x in item.get("related_trends", [])
+        if str(x).strip()
+    ] or [item["name"]]
+    existing_manual = {norm(x.get("name")) for x in manual.get("items", [])}
+    for trend_name in related_trends:
+        if norm(trend_name) not in existing_manual:
+            manual.setdefault("items", []).append({
+                "name": trend_name,
+                "explained_at": datetime.now(MADRID).isoformat(timespec="seconds"),
+                "source": "telegram_button",
+            })
+            existing_manual.add(norm(trend_name))
+    save(MANUAL, manual)
     try:
         call("deleteMessage", {"chat_id": item["chat_id"], "message_id": item["message_id"]})
     except Exception:
@@ -310,8 +317,9 @@ def mark_explained(callback):
     state["pending"] = pending
     save(STATE, state)
     requests = load(REQUESTS, {"requests": []})
+    related_norm = {norm(x) for x in related_trends}
     for req in requests.get("requests", []):
-        if norm(req.get("name")) == norm(item["name"]) and req.get("status") in {"preparing", "ready", "update"}:
+        if norm(req.get("name")) in related_norm and req.get("status") in {"preparing", "ready", "update"}:
             req["status"] = "explained"
             req["explained_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
     save(REQUESTS, requests)
