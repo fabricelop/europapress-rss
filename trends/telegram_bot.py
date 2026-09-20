@@ -297,8 +297,10 @@ def handle(update):
     elif data.startswith("close:"):
         close_block(cb)
     elif data == "panel:refresh":
+        subprocess.run(["python3", str(ROOT / "update_trends.py")], check=False)
         sync_panel()
-        call("answerCallbackQuery", {"callback_query_id": cb["id"], "text": "Tabla actualizada"})
+        persist_git("Actualizar manualmente Top 10 TTendencias")
+        call("answerCallbackQuery", {"callback_query_id": cb["id"], "text": "Top 10 actualizado"})
 
 
 def poll(seconds=3300):
