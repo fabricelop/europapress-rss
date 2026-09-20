@@ -134,36 +134,98 @@ def panel_text():
     return "\n".join(lines)
 
 
-def panel_keyboard():
+def trend_statuses():
     _, items = current()
     explained = known_explained()
     reqs = load(REQUESTS, {"requests": []}).get("requests", [])
     preparing = {norm(x.get("name")) for x in reqs if x.get("status") in {"preparing", "ready"}}
     updates = {norm(x.get("name")) for x in reqs if x.get("status") == "update"}
 
-    rows = []
+    out = []
     for item in items:
         rank = int(item["rank"])
         name = str(item["name"])
         k = norm(name)
         if k in updates:
             mark = "🟡"
+            status = "yellow"
         elif k in preparing:
             mark = "🔵"
+            status = "blue"
         elif k in explained:
             mark = "🟢"
+            status = "green"
         else:
             mark = "🔴"
+            status = "red"
+        out.append({
+            "rank": rank,
+            "name": name,
+            "key": k,
+            "mark": mark,
+            "status": status,
+        })
+    return out
 
-        # Una sola celda por fila: visualmente mantiene estado | nº | tendencia,
-        # pero Telegram cede todo el ancho restante al nombre.
-        label = f"{mark}  {rank:>2}   {name}"
+
+def panel_keyboard():
+    rows = []
+    for item in trend_statuses():
+        label = f'{item["mark"]}  {item["rank"]:>2}   {item["name"]}'
         rows.append([{
             "text": label[:64],
-            "callback_data": f"trend:{rank}",
+            "callback_data": f'trend:{item["rank"]}',
         }])
     rows.append([{"text": "🔄 Actualizar ahora", "callback_data": "panel:refresh"}])
     return {"inline_keyboard": rows}
+
+
+def send_new_status_alerts(state):
+    chat_id = state.get("chat_id")
+    if not chat_id:
+        return
+
+    current_items = trend_statuses()
+    previous = state.get("alert_status_snapshot")
+
+    # Primera ejecución tras activar la función: fijamos una línea base para
+    # no enviar de golpe alertas por tendencias que ya estaban en la tabla.
+    if previous is None:
+        state["alert_status_snapshot"] = {
+            item["key"]: item["status"] for item in current_items
+        }
+        return
+
+    for item in current_items:
+        prev_status = previous.get(item["key"])
+        status = item["status"]
+
+        should_alert = (
+            (status == "red" and prev_status is None)
+            or (status == "yellow" and prev_status != "yellow")
+        )
+        if not should_alert:
+            continue
+
+        text = f'T{item["rank"]} · {item["name"]}'
+        try:
+            call("sendMessage", {
+                "chat_id": chat_id,
+                "text": text,
+                "reply_markup": {
+                    "inline_keyboard": [[{
+                        "text": "🗑️ Borrar",
+                        "callback_data": "alert:delete",
+                    }]]
+                },
+                "disable_web_page_preview": True,
+            })
+        except Exception as e:
+            print("No se pudo enviar alerta TTendencias:", e, flush=True)
+
+    state["alert_status_snapshot"] = {
+        item["key"]: item["status"] for item in current_items
+    }
 
 
 def unpin_panels(chat_id):
@@ -225,11 +287,13 @@ def sync_panel(force_new=False):
         try:
             call("editMessageText", {**payload, "message_id": int(mid)})
             state["panel_message_ids"] = [int(mid)]
+            send_new_status_alerts(state)
             save(STATE, state)
             return True
         except Exception as e:
             if "message is not modified" in str(e).lower():
                 state["panel_message_ids"] = [int(mid)]
+                send_new_status_alerts(state)
                 save(STATE, state)
                 return True
             print("No se pudo editar el panel existente:", e, flush=True)
@@ -240,6 +304,7 @@ def sync_panel(force_new=False):
     new_mid = int(msg["message_id"])
     state["panel_message_id"] = new_mid
     state["panel_message_ids"] = [new_mid]
+    send_new_status_alerts(state)
     save(STATE, state)
 
     return True
@@ -466,6 +531,18 @@ def handle(update):
         mark_explained(cb)
     elif data.startswith("close:"):
         close_block(cb)
+    elif data == "alert:delete":
+        try:
+            call("deleteMessage", {
+                "chat_id": cb["message"]["chat"]["id"],
+                "message_id": cb["message"]["message_id"],
+            })
+        except Exception as e:
+            print("No se pudo borrar alerta TTendencias:", e, flush=True)
+        try:
+            call("answerCallbackQuery", {"callback_query_id": cb["id"]})
+        except Exception:
+            pass
     elif data == "panel:refresh":
         subprocess.run(["python3", str(ROOT / "update_trends.py")], check=False)
         sync_panel()
