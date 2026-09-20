@@ -230,14 +230,17 @@ def search_url(term):
 
 
 def select_trend(callback):
-    state = load(STATE, {"chat_id": None, "panel_message_id": None, "last_update_id": 0, "pending": {}})
     _, items = current()
     try:
         rank = int(callback["data"].split(":", 1)[1])
         item = next(x for x in items if int(x["rank"]) == rank)
     except Exception:
-        call("answerCallbackQuery", {"callback_query_id": callback["id"], "text": "La tabla cambió. Pulsa Actualizar."})
+        call("answerCallbackQuery", {
+            "callback_query_id": callback["id"],
+            "text": "La tabla cambió; vuelve a pulsar la tendencia."
+        })
         return
+
     term = str(item["name"])
     key = hashlib.sha256(term.encode("utf-8")).hexdigest()[:12]
     requests = load(REQUESTS, {"requests": []})
@@ -246,6 +249,7 @@ def select_trend(callback):
          if norm(x.get("name")) == norm(term) and x.get("status") in {"preparing", "ready"}),
         None
     )
+
     if not existing:
         requests.setdefault("requests", []).append({
             "id": key,
@@ -258,9 +262,16 @@ def select_trend(callback):
         })
         save(REQUESTS, requests)
 
-    # Confirmamos el clic primero para que Telegram quite el spinner al instante.
+    # 1) Quitar inmediatamente el spinner del botón.
+    try:
+        call("answerCallbackQuery", {
+            "callback_query_id": callback["id"],
+            "text": "🔵 En preparación"
+        })
+    except Exception as e:
+        print("No se pudo confirmar callback:", e, flush=True)
 
-    # Refresco visual inmediato del mismo panel pulsado.
+    # 2) Editar directamente el mismo mensaje: no esperamos a GitHub.
     try:
         call("editMessageText", {
             "chat_id": callback["message"]["chat"]["id"],
@@ -272,12 +283,6 @@ def select_trend(callback):
     except Exception as e:
         if "message is not modified" not in str(e).lower():
             print("No se pudo refrescar inmediatamente la fila:", e, flush=True)
-            sync_panel()
-
-    call("answerCallbackQuery", {
-        "callback_query_id": callback["id"],
-        "text": "🔵 Enviada a preparación."
-    })
 
 
 def mark_explained(callback):
