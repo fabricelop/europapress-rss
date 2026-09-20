@@ -265,7 +265,10 @@ def select_trend(callback):
 
     term = str(item["name"])
     key = hashlib.sha256(term.encode("utf-8")).hexdigest()[:12]
-    requests = load(REQUESTS, {"requests": []})
+    requests = load_remote_json(
+        "trends/requests.json",
+        load(REQUESTS, {"requests": []})
+    )
     existing = next(
         (x for x in requests.get("requests", [])
          if norm(x.get("name")) == norm(term) and x.get("status") in {"preparing", "ready"}),
@@ -331,7 +334,10 @@ def mark_explained(callback):
             "text": "Este bloque ya no está activo."
         })
         return
-    manual = load(MANUAL, {"project": "TTendencias", "items": []})
+    manual = load_remote_json(
+        "trends/telegram-manual-explained.json",
+        load(MANUAL, {"project": "TTendencias", "items": []})
+    )
     related_trends = [
         str(x).strip() for x in item.get("related_trends", [])
         if str(x).strip()
