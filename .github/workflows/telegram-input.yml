@@ -1,8 +1,6 @@
 name: Leer órdenes de Telegram
 
 on:
-  schedule:
-    - cron: '*/5 4-21 * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -44,12 +42,6 @@ jobs:
 
           # This emergency path owns Telegram updates directly, without Cloudflare/D1.
           # Telegram getUpdates is incompatible with an active webhook, so remove it first.
-          try:
-              req = urllib.request.Request(f"https://api.telegram.org/bot{token}/deleteWebhook", data=json.dumps({"drop_pending_updates": False}).encode("utf-8"), headers={"Content-Type":"application/json"})
-              with urllib.request.urlopen(req, timeout=30) as rr:
-                  print("deleteWebhook:", rr.read().decode("utf-8"))
-          except Exception as e:
-              print("Aviso deleteWebhook:", e)
           allowed_chat = str(os.environ["TELEGRAM_CHAT_ID"])
           base = f"https://api.telegram.org/bot{token}"
 
