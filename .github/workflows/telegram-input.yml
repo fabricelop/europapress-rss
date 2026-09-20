@@ -2,8 +2,6 @@ name: Leer órdenes de Telegram
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/5 * * * *'
   push:
     branches: [main]
     paths:
@@ -58,9 +56,6 @@ jobs:
                   out=json.loads(r.read().decode())
               if not out.get("ok"): raise RuntimeError(out)
               return out.get("result")
-          # Fallback probado: desactivar webhook, consumir updates y restaurarlo el pager.
-          try: api("deleteWebhook",{"drop_pending_updates":False})
-          except Exception as e: print("deleteWebhook:",e)
           off=int(state.get("offset",0) or 0)
           params=urllib.parse.urlencode({"offset":off,"timeout":0,"allowed_updates":json.dumps(["callback_query"])})
           with urllib.request.urlopen(f"{base}/getUpdates?{params}",timeout=30) as r: ups=json.loads(r.read().decode()).get("result",[])
