@@ -1,53 +1,18 @@
-name: TTendencias Telegram Listener
+name: TTendencias Telegram Listener (retirado)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 * * * *"
-
-permissions:
-  contents: write
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ttendencias-telegram-bot.yml"
 
 concurrency:
   group: ttendencias-telegram-listener
   cancel-in-progress: true
 
 jobs:
-  listener:
+  retired:
     runs-on: ubuntu-latest
-    timeout-minutes: 59
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Configurar Git
-        run: |
-          git config user.name "ttendencias-bot"
-          git config user.email "actions@users.noreply.github.com"
-
-      - name: Escuchar botones y mantener panel
-        env:
-          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
-          TTENDENCIAS_LISTEN_SECONDS: "3300"
-        run: python3 trends/telegram_bot.py listen
-
-      - name: Guardar estado del bot
-        if: always()
-        run: |
-          set -e
-          git add trends/telegram-bot-state.json trends/telegram-manual-explained.json trends/requests.json
-          if git diff --cached --quiet; then
-            echo "Sin cambios de estado."
-            exit 0
-          fi
-          git commit -m "Actualizar estado bot TTendencias"
-          for intento in 1 2 3 4; do
-            git fetch origin main
-            git rebase origin/main
-            if git push origin HEAD:main; then
-              exit 0
-            fi
-            sleep $((intento * 2))
-          done
-          exit 1
+      - run: echo "Listener antiguo retirado; usa ttendencias-listener.yml"
