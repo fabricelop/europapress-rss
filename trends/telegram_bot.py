@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parent
 RECENT = ROOT / "recent.json"
 EXPLAINED = ROOT / "explained.json"
 STATE = ROOT / "telegram-bot-state.json"
-MANUAL = ROOT / "telegram-manual-explained.json"
+MANUAL = ROOT / "telegram-manual-explained.json"\nREQUESTS = ROOT / "requests.json"
 
 TOKEN = os.environ["TTENDENCIAS_BOT_TOKEN"]
 API = f"https://api.telegram.org/bot{TOKEN}/"
@@ -83,10 +83,21 @@ def current():
 def panel_text():
     data, items = current()
     explained = known_explained()
+    reqs = load(REQUESTS, {"requests": []}).get("requests", [])
+    preparing = {norm(x.get("name")) for x in reqs if x.get("status") == "preparing"}
+    ready = {norm(x.get("name")) for x in reqs if x.get("status") == "ready"}
     lines = ["📊 TTENDENCIAS · ESPAÑA", ""]
     for item in items:
         name = str(item["name"])
-        mark = "🟢" if norm(name) in explained else "🔴"
+        key = norm(name)
+        if key in explained:
+            mark = "🟢"
+        elif key in ready:
+            mark = "🟡"
+        elif key in preparing:
+            mark = "🔵"
+        else:
+            mark = "🔴"
         lines.append(f'{mark} {int(item["rank"]):>2}. {name}')
     captured = data.get("captured_at")
     if captured:
@@ -152,7 +163,19 @@ def select_trend(callback):
         return
     term = str(item["name"])
     key = hashlib.sha256(term.encode("utf-8")).hexdigest()[:12]
-    status = "🟢 Ya explicada" if norm(term) in known_explained() else "🔴 Pendiente de explicar"
+    requests = load(REQUESTS, {"requests": []})
+    existing = next((x for x in requests.get("requests", []) if norm(x.get("name")) == norm(term) and x.get("status") in {"preparing", "ready"}), None)
+    if not existing and norm(term) not in known_explained():
+        requests.setdefault("requests", []).append({
+            "id": key,
+            "name": term,
+            "rank": rank,
+            "status": "preparing",
+            "requested_at": datetime.now(MADRID).isoformat(timespec="seconds"),
+            "revision": 0
+        })
+        save(REQUESTS, requests)
+    status = "🟢 Ya explicada" if norm(term) in known_explained() else ("🟡 Preparada" if existing and existing.get("status") == "ready" else "🔵 En preparación")
     msg = call("sendMessage", {
         "chat_id": callback["message"]["chat"]["id"],
         "text": f"TT {rank} · {term}\n{status}",
@@ -170,6 +193,7 @@ def select_trend(callback):
         "chat_id": callback["message"]["chat"]["id"],
     }
     save(STATE, state)
+    sync_panel()
     call("answerCallbackQuery", {"callback_query_id": callback["id"]})
 
 
@@ -196,6 +220,12 @@ def mark_explained(callback):
     pending.pop(key, None)
     state["pending"] = pending
     save(STATE, state)
+    requests = load(REQUESTS, {"requests": []})
+    for req in requests.get("requests", []):
+        if norm(req.get("name")) == norm(item["name"]) and req.get("status") in {"preparing", "ready"}:
+            req["status"] = "explained"
+            req["explained_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+    save(REQUESTS, requests)
     sync_panel()
     call("answerCallbackQuery", {"callback_query_id": callback["id"], "text": "Marcada como explicada"})
 
