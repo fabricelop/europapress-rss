@@ -45,7 +45,14 @@ def items():
       if n>=35:break
   except Exception as e: print("SOURCE_FAIL",src,str(e))
  return out
-statep=Path("telegram/events.json"); state=json.loads(statep.read_text(encoding="utf-8")); ev=state.get("events",[])
+statep=Path("telegram/events.json")
+raw=statep.read_text(encoding="utf-8").strip()
+try:
+ state=json.loads(raw)
+except json.JSONDecodeError:
+ state,_=json.JSONDecoder().raw_decode(raw)
+ print("STATE_REPAIRED trailing JSON data ignored")
+ev=state.get("events",[])
 now=datetime.now(timezone.utc); cutoff=now-timedelta(hours=24)
 ev=[e for e in ev if e.get("status") in ("PREPARED","EVALUATE","PUBLISHED","DISMISSED") or datetime.fromisoformat(e["last_seen"].replace("Z","+00:00"))>=cutoff]
 for src,title,url in items():
