@@ -312,76 +312,119 @@ def select_trend(callback):
 
 def mark_explained(callback):
     key = callback["data"].split(":", 1)[1]
-    state = load(STATE, {"pending": {}})
+    callback_message = callback.get("message") or {}
+    callback_mid = callback_message.get("message_id")
+    callback_chat_id = (callback_message.get("chat") or {}).get("id")
+
+    # Fuente de verdad: el propio mensaje de Telegram pulsado.
+    # No dependemos de que state.pending siga sincronizado.
+    state = load_remote_json(
+        "trends/telegram-bot-state.json",
+        load(STATE, {"pending": {}})
+    )
     pending = state.get("pending", {})
-    item = pending.get(key)
 
-    # El sender editorial puede haber añadido el bloque desde otro workflow
-    # mientras este listener sigue vivo con una copia local antigua.
-    if not item:
-        remote_state = load_remote_json("trends/telegram-bot-state.json", {"pending": {}})
-        remote_pending = remote_state.get("pending", {})
-        item = remote_pending.get(key)
+    item = None
+    resolved_key = key
 
-        # Fallback robusto: si el callback conserva un key antiguo,
-        # identifica el bloque por el propio message_id de Telegram.
-        if not item:
-            callback_mid = ((callback.get("message") or {}).get("message_id"))
-            if callback_mid:
-                for remote_key, remote_item in remote_pending.items():
-                    if int(remote_item.get("message_id") or 0) == int(callback_mid):
-                        key = remote_key
-                        item = remote_item
-                        break
+    if callback_mid:
+        for remote_key, remote_item in pending.items():
+            if int(remote_item.get("message_id") or 0) == int(callback_mid):
+                resolved_key = remote_key
+                item = remote_item
+                break
 
-        if item:
-            state["pending"] = remote_pending
-            pending = state["pending"]
-            save(STATE, state)
+    # Si pending perdió la entrada, reconstruimos el bloque desde requests.json
+    # usando telegram_message_id, que es persistente por tendencia enviada.
+    requests = load_remote_json(
+        "trends/requests.json",
+        load(REQUESTS, {"requests": []})
+    )
 
-    if not item:
+    related_trends = []
+    if callback_mid:
+        related_trends = [
+            str(req.get("name")).strip()
+            for req in requests.get("requests", [])
+            if int(req.get("telegram_message_id") or 0) == int(callback_mid)
+            and str(req.get("name") or "").strip()
+        ]
+
+    if item and not related_trends:
+        related_trends = [
+            str(x).strip() for x in item.get("related_trends", [])
+            if str(x).strip()
+        ] or [str(item.get("name") or "").strip()]
+
+    related_trends = [x for x in related_trends if x]
+
+    if not related_trends:
         call("answerCallbackQuery", {
             "callback_query_id": callback["id"],
             "text": "Este bloque ya no está activo."
         })
         return
+
     manual = load_remote_json(
         "trends/telegram-manual-explained.json",
         load(MANUAL, {"project": "TTendencias", "items": []})
     )
-    related_trends = [
-        str(x).strip() for x in item.get("related_trends", [])
-        if str(x).strip()
-    ] or [item["name"]]
     existing_manual = {norm(x.get("name")) for x in manual.get("items", [])}
+    now = datetime.now(MADRID).isoformat(timespec="seconds")
+
     for trend_name in related_trends:
         if norm(trend_name) not in existing_manual:
             manual.setdefault("items", []).append({
                 "name": trend_name,
-                "explained_at": datetime.now(MADRID).isoformat(timespec="seconds"),
+                "explained_at": now,
                 "source": "telegram_button",
             })
             existing_manual.add(norm(trend_name))
     save(MANUAL, manual)
-    try:
-        call("deleteMessage", {"chat_id": item["chat_id"], "message_id": item["message_id"]})
-    except Exception:
-        pass
-    pending.pop(key, None)
-    state["pending"] = pending
-    save(STATE, state)
-    requests = load_remote_json(
-        "trends/requests.json",
-        load(REQUESTS, {"requests": []})
-    )
+
+    # Marcamos todas las tendencias ligadas al mismo mensaje editorial.
     related_norm = {norm(x) for x in related_trends}
     for req in requests.get("requests", []):
-        if norm(req.get("name")) in related_norm and req.get("status") in {"preparing", "ready", "update"}:
+        same_message = callback_mid and int(req.get("telegram_message_id") or 0) == int(callback_mid)
+        same_name = norm(req.get("name")) in related_norm
+        if (same_message or same_name) and req.get("status") in {"preparing", "ready", "update"}:
             req["status"] = "explained"
-            req["explained_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+            req["explained_at"] = now
     save(REQUESTS, requests)
+
+    # Borramos exactamente el mensaje que contiene el botón pulsado.
+    try:
+        if callback_chat_id and callback_mid:
+            call("deleteMessage", {
+                "chat_id": callback_chat_id,
+                "message_id": int(callback_mid),
+            })
+        elif item:
+            call("deleteMessage", {
+                "chat_id": item["chat_id"],
+                "message_id": item["message_id"],
+            })
+    except Exception as e:
+        print("No se pudo borrar el bloque explicado:", e, flush=True)
+
+    # Limpieza best-effort del índice pending.
+    for pending_key, pending_item in list(pending.items()):
+        same_mid = callback_mid and int(pending_item.get("message_id") or 0) == int(callback_mid)
+        if same_mid or pending_key == resolved_key:
+            pending.pop(pending_key, None)
+    state["pending"] = pending
+    save(STATE, state)
+
+    persist_git("Marcar bloque TTendencias como explicado")
     sync_panel()
-    call("answerCallbackQuery", {"callback_query_id": callback["id"], "text": "Marcada como explicada"})
+
+    try:
+        call("answerCallbackQuery", {
+            "callback_query_id": callback["id"],
+            "text": "Marcada como explicada"
+        })
+    except Exception:
+        pass
 
 
 def close_block(callback):
