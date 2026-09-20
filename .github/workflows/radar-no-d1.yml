@@ -2,6 +2,10 @@ name: Radar editorial sin D1
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'telegram/radar-trigger.txt'
   schedule:
     - cron: '*/15 5-21 * * *'
 
