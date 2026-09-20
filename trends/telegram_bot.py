@@ -104,29 +104,13 @@ def current():
 
 
 def panel_text():
-    data, items = current()
-    explained = known_explained()
-    reqs = load(REQUESTS, {"requests": []}).get("requests", [])
-    preparing = {norm(x.get("name")) for x in reqs if x.get("status") in {"preparing", "ready"}}
-    updates = {norm(x.get("name")) for x in reqs if x.get("status") == "update"}
-    lines = ["📊 TTENDENCIAS · ESPAÑA", ""]
-    for item in items:
-        name = str(item["name"])
-        key = norm(name)
-        if key in updates:
-            mark = "🟡"
-        elif key in preparing:
-            mark = "🔵"
-        elif key in explained:
-            mark = "🟢"
-        else:
-            mark = "🔴"
-        lines.append(f'{mark} {int(item["rank"])}. {name}')
+    data, _ = current()
+    lines = ["📊 TTENDENCIAS · ESPAÑA"]
     captured = data.get("captured_at")
     if captured:
         try:
             dt = datetime.fromisoformat(captured).astimezone(MADRID)
-            lines += ["", f'Actualizado {dt.strftime("%H:%M")}']
+            lines.append(f'Actualizado {dt.strftime("%H:%M")}')
         except Exception:
             pass
     return "\n".join(lines)
@@ -134,11 +118,27 @@ def panel_text():
 
 def panel_keyboard():
     _, items = current()
+    explained = known_explained()
+    reqs = load(REQUESTS, {"requests": []}).get("requests", [])
+    preparing = {norm(x.get("name")) for x in reqs if x.get("status") in {"preparing", "ready"}}
+    updates = {norm(x.get("name")) for x in reqs if x.get("status") == "update"}
     rows = []
     for item in items:
         rank = int(item["rank"])
         name = str(item["name"])
-        rows.append([{"text": f"{rank} · {name}"[:60], "callback_data": f"trend:{rank}"}])
+        k = norm(name)
+        if k in updates:
+            mark = "🟡"
+        elif k in preparing:
+            mark = "🔵"
+        elif k in explained:
+            mark = "🟢"
+        else:
+            mark = "🔴"
+        rows.append([{
+            "text": f"{mark} {rank}. {name}"[:60],
+            "callback_data": f"trend:{rank}"
+        }])
     rows.append([{"text": "🔄 Actualizar", "callback_data": "panel:refresh"}])
     return {"inline_keyboard": rows}
 
