@@ -42,15 +42,9 @@ jobs:
 
           token = os.environ["TELEGRAM_BOT_TOKEN"]
 
-          # This emergency path owns Telegram updates directly, without Cloudflare/D1.
-          # Telegram getUpdates is incompatible with an active webhook, so remove it first.
+          # Same direct Telegram API mechanism used by the established Telegram flows.
+          # This scheduled turn reads queued decisions; it must never disable the webhook.
           allowed_chat = str(os.environ["TELEGRAM_CHAT_ID"])
-          # Evaluation turn owns Telegram briefly: switch from webhook to getUpdates.
-          try:
-              req=urllib.request.Request(f"https://api.telegram.org/bot{token}/deleteWebhook",data=json.dumps({"drop_pending_updates":False}).encode(),headers={"Content-Type":"application/json"})
-              urllib.request.urlopen(req,timeout=15).read()
-          except Exception as e:
-              print("Aviso deleteWebhook:",e)
           base = f"https://api.telegram.org/bot{token}"
 
           state_path = Path("telegram/telegram-state.json")
