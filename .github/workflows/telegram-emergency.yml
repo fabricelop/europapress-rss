@@ -53,6 +53,10 @@ jobs:
                   print("Ya enviado, se omite",key)
                   continue
               text=str(m.get("text","")).replace("\\\\n","\\n").strip()
+              # Cinturón de seguridad visual: todo mensaje de remate A/B/C debe llevar 🌶️.
+              mm=re.match(r"^(?:🌶️\\s*)?([ABC]\\))\\s*(.*)$",text)
+              if mm:
+                  text="🌶️ "+mm.group(1)+" "+mm.group(2).strip()
               # Los botones PUBLICAR deben llevar siempre un tuit completo <= 280.
               # Si una variante excede el límite, recorta solo el texto del intent, nunca el mensaje editorial.
               for row in m.get("buttons", []):
