@@ -120,7 +120,7 @@ jobs:
             git fetch origin main
             git rebase --abort 2>/dev/null || true
             git reset --soft origin/main
-            git add telegram/requests.json telegram/telegram-state.json
+            git add telegram/requests.json telegram/telegram-state.json telegram/emergency-requests.json
             git commit -m "Procesar órdenes de Telegram" || true
             git push origin HEAD:main
           fi
