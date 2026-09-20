@@ -26,7 +26,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python3 <<'PY'
-          import json, os, urllib.parse, urllib.request
+          import json, os, re, urllib.parse, urllib.request
           with open("telegram/emergency.json", encoding="utf-8") as f:
               data=json.load(f)
           token=os.environ["TELEGRAM_BOT_TOKEN"]
