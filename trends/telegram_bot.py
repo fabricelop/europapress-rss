@@ -322,8 +322,19 @@ def mark_explained(callback):
         remote_state = load_remote_json("trends/telegram-bot-state.json", {"pending": {}})
         remote_pending = remote_state.get("pending", {})
         item = remote_pending.get(key)
+
+        # Fallback robusto: si el callback conserva un key antiguo,
+        # identifica el bloque por el propio message_id de Telegram.
+        if not item:
+            callback_mid = ((callback.get("message") or {}).get("message_id"))
+            if callback_mid:
+                for remote_key, remote_item in remote_pending.items():
+                    if int(remote_item.get("message_id") or 0) == int(callback_mid):
+                        key = remote_key
+                        item = remote_item
+                        break
+
         if item:
-            # Fusionamos el estado remoto para no perder otros bloques pendientes.
             state["pending"] = remote_pending
             pending = state["pending"]
             save(STATE, state)
