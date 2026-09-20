@@ -37,7 +37,11 @@ jobs:
           token=os.environ["TELEGRAM_BOT_TOKEN"]; allowed=str(os.environ["TELEGRAM_CHAT_ID"]); base=f"https://api.telegram.org/bot{token}"
           state_path=Path("telegram/telegram-state.json"); req_path=Path("telegram/emergency-requests.json"); events_path=Path("telegram/events.json"); proc_path=Path("telegram/editorial-processing.json")
           state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
-          q=json.loads(req_path.read_text(encoding="utf-8")) if req_path.exists() else {"requests":[]}; q.setdefault("requests",[])\n          events_doc=json.loads(events_path.read_text(encoding="utf-8")) if events_path.exists() else {"events":[]}\n          events=events_doc.get("events",[]) if isinstance(events_doc,dict) else events_doc\n          proc=json.loads(proc_path.read_text(encoding="utf-8")) if proc_path.exists() else {"items":[]}\n          proc.setdefault("items",[])
+          q=json.loads(req_path.read_text(encoding="utf-8")) if req_path.exists() else {"requests":[]}; q.setdefault("requests",[])
+          events_doc=json.loads(events_path.read_text(encoding="utf-8")) if events_path.exists() else {"events":[]}
+          events=events_doc.get("events",[]) if isinstance(events_doc,dict) else events_doc
+          proc=json.loads(proc_path.read_text(encoding="utf-8")) if proc_path.exists() else {"items":[]}
+          proc.setdefault("items",[])
           def api(method,payload=None):
               data=json.dumps(payload).encode() if payload is not None else None
               h={"Content-Type":"application/json"} if data else {}
@@ -76,15 +80,22 @@ jobs:
               if action in ("prepare","dismiss") and idv:
                   mid=msg.get("message_id")
                   if not any(x.get("update_id")==uid for x in q["requests"]):
-                      q["requests"].append({"update_id":uid,"action":action,"id":idv,"at":now,"chat":chat,"message_id":mid})\n                      ev=next((e for e in events if str(e.get("id"))==idv),None)\n                      if ev:\n                          ev["status"]="PROCESSING" if action=="prepare" else "DISMISSED"\n                          if action=="prepare" and not any(str(x.get("event_id"))==idv for x in proc["items"]):\n                              proc["items"].append({"event_id":idv,"title":ev.get("title",""),"url":ev.get("url",""),"sources":ev.get("sources",[]),"source_count":ev.get("source_count",len(ev.get("sources",[]))),"selected_at":now,"status":"PROCESSING"})
+                      q["requests"].append({"update_id":uid,"action":action,"id":idv,"at":now,"chat":chat,"message_id":mid})
+                      ev=next((e for e in events if str(e.get("id"))==idv),None)
+                      if ev:
+                          ev["status"]="PROCESSING" if action=="prepare" else "DISMISSED"
+                          if action=="prepare" and not any(str(x.get("event_id"))==idv for x in proc["items"]):
+                              proc["items"].append({"event_id":idv,"title":ev.get("title",""),"url":ev.get("url",""),"sources":ev.get("sources",[]),"source_count":ev.get("source_count",len(ev.get("sources",[]))),"selected_at":now,"status":"PROCESSING"})
                   try: api("answerCallbackQuery",{"callback_query_id":cq["id"],"text":"✅ Registrado." if action=="prepare" else "🗑️ Descartada."})
                   except Exception as e: print("ack:",e)
                   if mid:
                       try: api("deleteMessage",{"chat_id":allowed,"message_id":mid})
                       except Exception as e: print("delete:",e)
           q["requests"]=q["requests"][-200:]
-          state_path.write_text(json.dumps(state,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
-          req_path.write_text(json.dumps(q,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
+          state_path.write_text(json.dumps(state,ensure_ascii=False,separators=(",",":"))+"
+",encoding="utf-8")
+          req_path.write_text(json.dumps(q,ensure_ascii=False,separators=(",",":"))+"
+",encoding="utf-8")
           print("Callbacks:",len(ups),"offset:",state.get("offset",0))
           PY
 
