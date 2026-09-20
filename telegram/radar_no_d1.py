@@ -19,9 +19,10 @@ SOURCES=[
 ("El Mundo","https://www.elmundo.es/ultimas-noticias.html","html")
 ]
 TOTAL_SOURCES=len(SOURCES)
-REVIEW_MIN=3
+REVIEW_MIN=4
 AUTO_MIN=5
 WAIT_HOURS=12
+URGENT_WINDOW_MINUTES=45
 MAX_PROCESSED=2000
 STOP=set("a al algo ante bajo con contra de del desde el ella en entre era es esta este esto ha hay la las lo los mas muy no o para pero por que se sin sobre su sus un una y ya".split())
 MATERIAL=set("muere muerto fallece fallecido dimite dimision detenido detencion sentencia condena absuelto absuelve gana ganador pierde derrota confirma confirmado acuerdo aprueba aprobado cancela cancelado rompe ruptura rescata rescatado desaparecido encontrado hospitalizado alta cesado cese nombrado nombramiento".split())
@@ -118,6 +119,15 @@ def processed_snapshot(e,kind,now,revision=None):
   "last_titles":[a.get("title","") for a in e.get("appearances",[])][-10:]
  }
 
+def send_urgent(e,token,chat):
+ txt=("🚨 TTiTTulares · ALERTA URGENTE · "+str(e["source_count"])+"/"+str(TOTAL_SOURCES)+
+      "\n\n"+e["canonical_title"]+
+      "\n\nHa alcanzado el umbral de preparación en menos de "+str(URGENT_WINDOW_MINUTES)+" minutos. La redacción automática seguirá en :15/:45.")
+ payload={"chat_id":chat,"text":txt,"disable_web_page_preview":True,
+          "reply_markup":{"inline_keyboard":[[{"text":"ABRIR FUENTE","url":e["url"]}]]}}
+ req=urllib.request.Request("https://api.telegram.org/bot"+token+"/sendMessage",data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
+ urllib.request.urlopen(req,timeout=15).read()
+
 def send_review(e,token,chat):
  txt=("📰 TTiTTulares · PARA VALORAR · "+str(e["source_count"])+"/"+str(TOTAL_SOURCES)+
       " ("+str(e["percentage"])+"%)\n\n"+e["canonical_title"]+"\n\nFuentes: "+", ".join(e["sources"]))
@@ -208,6 +218,11 @@ for e in list(events):
   if n>=AUTO_MIN:
    e["status"]="AUTO_PROCESSING";e["notified"]=True
    queue_editorial(e,editorial,"AUTO_SELECTED")
+   age_min=max(0,(now-dtv(e.get("first_seen"))).total_seconds()/60)
+   if age_min<=URGENT_WINDOW_MINUTES and not e.get("urgent_alert_sent"):
+    if token and chat: send_urgent(e,token,chat)
+    e["urgent_alert_sent"]=True
+    e["urgent_alert_at"]=iso(now)
    new_processed.append(processed_snapshot(e,"AUTO_SELECTED",now))
    auto+=1
   elif n>=REVIEW_MIN:
@@ -239,7 +254,7 @@ for p in new_processed:
  if k not in keys:processed.append(p);keys.add(k)
 processed=processed[-MAX_PROCESSED:]
 
-events_doc={"version":3,"configured_sources":TOTAL_SOURCES,"review_min_sources":REVIEW_MIN,"auto_min_sources":AUTO_MIN,
+events_doc={"version":3,"configured_sources":TOTAL_SOURCES,"review_min_sources":REVIEW_MIN,"auto_min_sources":AUTO_MIN,"urgent_window_minutes":URGENT_WINDOW_MINUTES,
             "waiting_ttl_hours":WAIT_HOURS,"last_run":iso(now),"healthy_sources":sorted(set(healthy)),"events":events}
 processed_doc={"version":1,"updated_at":iso(now),"events":processed}
 save(EVENTS,events_doc);save(PROCESSED,processed_doc);save(EDITORIAL,editorial)
