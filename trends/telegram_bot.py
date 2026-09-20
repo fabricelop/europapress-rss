@@ -121,12 +121,12 @@ def panel_text():
             mark = "🟢"
         else:
             mark = "🔴"
-        lines.append(f'{mark} {int(item["rank"]):>2}. {name}')
+        lines.append(f'{mark} {int(item["rank"])}. {name}')
     captured = data.get("captured_at")
     if captured:
         try:
             dt = datetime.fromisoformat(captured).astimezone(MADRID)
-            lines += ["", f'Actualizado {dt.strftime("%H:%M")} · toca una tendencia para abrirla']
+            lines += ["", f'Actualizado {dt.strftime("%H:%M")}']
         except Exception:
             pass
     return "\n".join(lines)
