@@ -5,13 +5,12 @@
   "auto_min_sources": 5,
   "urgent_window_minutes": 45,
   "waiting_ttl_hours": 12,
-  "last_run": "2026-09-20T22:55:14.207162Z",
+  "last_run": "2026-09-20T22:56:44.892306Z",
   "healthy_sources": [
     "20minutos",
     "ABC",
     "COPE",
     "Cadena SER",
-    "EFE",
     "EL PAÍS",
     "El HuffPost",
     "El Mundo",
@@ -23,13 +22,27 @@
     "elDiario.es"
   ],
   "healthy_sport_sources": [
-    "AS",
-    "EFE Deportes",
     "MARCA",
     "Mundo Deportivo",
     "SPORT"
   ],
-  "source_failures": [],
+  "source_failures": [
+    {
+      "source": "EFE",
+      "type": "general",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "source": "AS",
+      "type": "sport",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "source": "EFE Deportes",
+      "type": "sport",
+      "error": "HTTP Error 403: Forbidden"
+    }
+  ],
   "events": [
     {
       "id": "2ae60906535c",
@@ -41,7 +54,7 @@
           "title": "Combinación ganadora del sorteo de la Bonoloto celebrado este domingo",
           "url": "https://www.europapress.es/sociedad/noticia-combinacion-ganadora-sorteo-bonoloto-celebrado-domingo-20260920230531.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -50,7 +63,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -67,7 +80,7 @@
           "title": "Atlético de Madrid 2 - 1 Real Madrid | Resumen, goles y resultado del partido de hoy",
           "url": "https://www.europapress.es/deportes/estadisticas-deportivas/noticia-atletico-madrid-real-madrid-resumen-goles-resultado-partido-hoy-20260920181950.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "El Mundo",
@@ -92,7 +105,7 @@
       "source_count": 3,
       "percentage": 21.4,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "DISMISSED",
       "notified": true,
       "revision": 1,
@@ -109,7 +122,7 @@
           "title": "Muere ahogado un hombre de 38 años en Pájara (Fuerteventura)",
           "url": "https://www.europapress.es/islas-canarias/noticia-muere-ahogado-hombre-38-anos-pajara-fuerteventura-20260920225942.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -118,7 +131,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -135,7 +148,7 @@
           "title": "Al menos cinco civiles muertos en ataques rusos en la región ucraniana de Sumi",
           "url": "https://www.europapress.es/internacional/noticia-menos-cinco-civiles-muertos-ataques-rusos-region-ucraniana-sumi-20260920225841.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -144,7 +157,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -161,7 +174,7 @@
           "title": "La primera ministra danesa espera reunirse con Trump en Nueva York",
           "url": "https://www.europapress.es/internacional/noticia-primera-ministra-danesa-espera-reunirse-trump-nueva-york-20260920174418.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "EL PAÍS",
@@ -178,7 +191,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -195,7 +208,7 @@
           "title": "El Infoca da por controlado el incendio forestal de Ayamonte (Huelva) y avanza favorablemente para su extinción",
           "url": "https://www.europapress.es/andalucia/huelva-00354/noticia-infoca-da-controlado-incendio-forestal-ayamonte-huelva-avanza-favorablemente-extincion-20260920224453.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -204,7 +217,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -221,7 +234,7 @@
           "title": "Iván Fresneda, convocado por Luis de la Fuente para la Nations League",
           "url": "https://www.europapress.es/deportes/futbol/mundial-00639/noticia-ivan-fresneda-convocado-luis-fuente-nations-league-20260920223425.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -230,7 +243,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -247,7 +260,7 @@
           "title": "Herido grave un hombre de 30 años tras sufrir una agresión con arma blanca en Carabanchel",
           "url": "https://www.europapress.es/madrid/noticia-herido-grave-hombre-30-anos-sufrir-agresion-arma-blanca-carabanchel-20260920222958.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -256,7 +269,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -273,7 +286,7 @@
           "title": "Laprovittola: \"Estaba mucho más motivado de lo que Sekulic pensaba\"",
           "url": "https://www.europapress.es/deportes/baloncesto-00163/noticia-laprovittola-estaba-mucho-mas-motivado-sekulic-pensaba-20260920222903.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -282,7 +295,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -299,7 +312,7 @@
           "title": "Dani Miret: \"Conectar con la afición es más importante que haber ganado\"",
           "url": "https://www.europapress.es/deportes/baloncesto-00163/noticia-dani-miret-conectar-aficion-mas-importante-haber-ganado-20260920221834.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -308,7 +321,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -325,7 +338,7 @@
           "title": "España, campeona del mundo en balonmano en silla de ruedas por primera vez en su historia",
           "url": "https://www.europapress.es/deportes/balonmano-00167/noticia-espana-campeona-mundo-balonmano-silla-ruedas-primera-vez-historia-20260920221414.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -334,7 +347,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -351,7 +364,7 @@
           "title": "La Policía dispara al aire en Ceuta en una protesta contra la llegada de una asociación pamplonesa",
           "url": "https://www.europapress.es/nacional/noticia-policia-dispara-aire-ceuta-protesta-contra-llegada-asociacion-pamplonesa-20260920215934.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -360,7 +373,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -377,7 +390,7 @@
           "title": "Sekulic: \"Laprovittola jugó con motivación extra y era casi misión imposible\"",
           "url": "https://www.europapress.es/deportes/baloncesto-00163/noticia-sekulic-laprovittola-jugo-motivacion-extra-era-casi-mision-imposible-20260920214749.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -386,7 +399,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -403,7 +416,7 @@
           "title": "Fede Valverde sufre un traumatismo severo en el tobillo izquierdo",
           "url": "https://www.europapress.es/deportes/futbol-00162/noticia-fede-valverde-sufre-traumatismo-severo-tobillo-izquierdo-20260920214727.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -412,7 +425,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -429,7 +442,7 @@
           "title": "Laprovittola, un MVP de leyenda que destroza récords en su regreso al Joventut",
           "url": "https://www.europapress.es/deportes/baloncesto-00163/noticia-laprovittola-mvp-leyenda-destroza-records-regreso-joventut-20260920213931.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -438,7 +451,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -455,7 +468,7 @@
           "title": "La 'Penya' tumba la 'maldición del anfitrión' y agranda su leyenda",
           "url": "https://www.europapress.es/deportes/baloncesto-00163/noticia-penya-tumba-maldicion-anfitrion-agranda-leyenda-20260920213546.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -464,7 +477,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -481,7 +494,7 @@
           "title": "Remco Evenepoel y Marlen Reusser se llevan los oros de contrarreloj en el Mundial en ruta",
           "url": "https://www.europapress.es/deportes/ciclismo-00396/noticia-remco-evenepoel-marlen-reusser-llevan-oros-contrarreloj-mundial-ruta-20260920212959.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -490,7 +503,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -507,7 +520,7 @@
           "title": "El partido de Putin gana con claridad las elecciones al Parlamento ruso, según los primeros resultados oficiales",
           "url": "https://www.europapress.es/internacional/noticia-partido-putin-gana-claridad-elecciones-parlamento-ruso-primeros-resultados-oficiales-20260920212950.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "RTVE",
@@ -540,7 +553,7 @@
       "source_count": 4,
       "percentage": 28.6,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "PROCESSING",
       "notified": true,
       "revision": 1,
@@ -557,7 +570,7 @@
           "title": "Faena antológica de Guillermo Hermosa de Mendoza para abrir la puerta grande de 'La Ribera' en Logroño",
           "url": "https://www.europapress.es/la-rioja/noticia-faena-antologica-guillermo-hermosa-mendoza-abrir-puerta-grande-ribera-logrono-20260920212151.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -566,7 +579,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -583,7 +596,7 @@
           "title": "Rusia denuncia el mayor ataque ucraniano de la guerra durante el último día de votación de las legislativas",
           "url": "https://www.europapress.es/internacional/noticia-rusia-denuncia-mayor-ataque-ucraniano-guerra-ultimo-dia-votacion-legislativas-20260920210849.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -592,7 +605,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -609,7 +622,7 @@
           "title": "El Joventut arrolla al Barça en 'su' Supercopa Endesa",
           "url": "https://www.europapress.es/deportes/baloncesto-00163/noticia-asisa-joventut-conquista-supercopa-endesa-anular-nuevo-barca-20260920205922.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "La Vanguardia",
@@ -626,7 +639,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -643,7 +656,7 @@
           "title": "El Manchester City se asienta como líder de la Premier League y el Liverpool se acerca a la zona alta",
           "url": "https://www.europapress.es/deportes/futbol-00162/noticia-manchester-city-asienta-lider-premier-league-liverpool-acerca-zona-alta-20260920205719.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -652,7 +665,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -669,7 +682,7 @@
           "title": "Detenido un hombre por una presunta agresión sexual a una mujer en El Ejido (Almería)",
           "url": "https://www.europapress.es/andalucia/almeria-00350/noticia-detenido-hombre-presunta-agresion-sexual-mujer-ejido-almeria-20260920205259.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "El Mundo",
@@ -686,7 +699,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -703,7 +716,7 @@
           "title": "El MMVV cierra su 38ª edición con 170.000 asistentes, un 9% más que en 2025",
           "url": "https://www.europapress.es/catalunya/noticia-mmvv-cierra-38-edicion-170000-asistentes-mas-2025-20260920204124.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -712,7 +725,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -729,7 +742,7 @@
           "title": "El líder del SPD se plantea \"qué podemos mejorar\" tras la subida de AfD en las elecciones regionales",
           "url": "https://www.europapress.es/internacional/noticia-lider-spd-plantea-podemos-mejorar-subida-afd-elecciones-regionales-20260920203621.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -738,7 +751,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -755,7 +768,7 @@
           "title": "FC Barcelona y Real Madrid ganan en la Liga F Move antes de iniciar la Champions",
           "url": "https://www.europapress.es/deportes/futbol-00162/noticia-fc-barcelona-real-madrid-ganan-liga-move-antes-iniciar-champions-20260920203314.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "EL PAÍS",
@@ -772,7 +785,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -789,7 +802,7 @@
           "title": "Andalucía cierra el fin de semana con dos fallecidos en accidentes de tráfico en sus carreteras interurbanas",
           "url": "https://www.europapress.es/andalucia/noticia-andalucia-cierra-fin-semana-dos-fallecidos-accidentes-trafico-carreteras-interurbanas-20260920201706.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -798,7 +811,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -815,7 +828,7 @@
           "title": "AfD se reivindica como \"el partido del pueblo\" alemán y pide la dimisión del \"débil\" Merz",
           "url": "https://www.europapress.es/internacional/noticia-afd-reivindica-partido-pueblo-aleman-pide-dimision-debil-merz-20260920201451.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -824,7 +837,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -841,7 +854,7 @@
           "title": "La organista Montserrat Torrent interpreta su repertorio en el órgano renacentista de Garrovillas de Alconétar",
           "url": "https://www.europapress.es/extremadura/noticia-organista-montserrat-torrent-interpreta-repertorio-organo-renacentista-garrovillas-alconetar-20260920200513.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -850,7 +863,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -867,7 +880,7 @@
           "title": "El PP de Jaén felicita a El Tomillo por sus 50 años y lamenta que la asociación no le haya invitado a la celebración",
           "url": "https://www.europapress.es/andalucia/noticia-pp-jaen-felicita-tomillo-50-anos-lamenta-asociacion-no-le-haya-invitado-celebracion-20260920200137.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -876,7 +889,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -893,7 +906,7 @@
           "title": "El festival de ilusionismo 'Encantávila' atrae a 5.000 asistentes durante tres días en espacios patrimoniales de Ávila",
           "url": "https://www.europapress.es/castilla-y-leon/noticia-festival-ilusionismo-encantavila-atrae-5000-asistentes-tres-dias-espacios-patrimoniales-avila-20260920200048.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -902,7 +915,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -919,7 +932,7 @@
           "title": "Domingo de rescates en Picos de Europa: el SEPA traslada a Arriondas a otro escalador herido en el Urriellu",
           "url": "https://www.europapress.es/asturias/noticia-domingo-rescates-picos-europa-sepa-traslada-arriondas-escalador-herido-urriellu-20260920195927.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -928,7 +941,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -945,7 +958,7 @@
           "title": "Simeone: \"Por más que te llames Mourinho, Pellegrini o Flick, no hay que pasar la línea\"",
           "url": "https://www.europapress.es/deportes/futbol-00162/noticia-simeone-mas-te-llames-mourinho-pellegrini-flick-no-hay-pasar-linea-20260920195553.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "La Vanguardia",
@@ -962,7 +975,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -979,7 +992,7 @@
           "title": "'La bola negra', de Los Javis, recibe el premio del público en el Festival de Cine de Toronto",
           "url": "https://www.europapress.es/cultura/cine-00128/noticia-bola-negra-javis-recibe-premio-publico-festival-cine-toronto-20260920195256.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "EL PAÍS",
@@ -1036,7 +1049,7 @@
       "source_count": 7,
       "percentage": 50.0,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "AUTO_PROCESSING",
       "notified": true,
       "revision": 1,
@@ -1053,7 +1066,7 @@
           "title": "El PP de Jaén exige al alcalde que resuelva el conflicto del transporte público con el apoyo de la plantilla",
           "url": "https://www.europapress.es/andalucia/noticia-pp-jaen-exige-alcalde-resuelva-conflicto-transporte-publico-apoyo-plantilla-20260920194602.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1062,7 +1075,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1079,7 +1092,7 @@
           "title": "Pérez Gellida anuncia que Blacklladolid 2027 versará sobre literatura y pensamiento crítico",
           "url": "https://www.europapress.es/castilla-y-leon/noticia-perez-gellida-anuncia-blacklladolid-2027-versara-literatura-pensamiento-critico-20260920194302.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1088,7 +1101,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1105,7 +1118,7 @@
           "title": "Siete organizaciones de la oposición y rebeldes anuncian una alianza contra el Gobierno de Etiopía",
           "url": "https://www.europapress.es/internacional/noticia-siete-organizaciones-oposicion-rebeldes-anuncian-alianza-contra-gobierno-etiopia-20260920194228.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1114,7 +1127,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1131,7 +1144,7 @@
           "title": "El Día del Cine Español celebrará el 50 aniversario de 'El desencanto' de Chávarri y llevará seis películas a pueblos",
           "url": "https://www.europapress.es/cultura/cine-00128/noticia-dia-cine-espanol-celebrara-50-aniversario-desencanto-chavarri-llevara-seis-peliculas-pueblos-20260920193414.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1140,7 +1153,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1157,7 +1170,7 @@
           "title": "Kaitlin Quevedo - Nadia Podoroska, en directo hoy: sigue el partido de Sao Paulo Open",
           "url": "https://www.europapress.es/deportes/partidos-en-directo/noticia-kaitlin-quevedo-nadia-podoroska-directo-hoy-sigue-partido-sao-paulo-open-20260920193110.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1166,7 +1179,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1183,7 +1196,7 @@
           "title": "Amanda Kernell reivindica la cultura sami en 'Brace your heart', una película \"sanadora\" sobre el perdón",
           "url": "https://www.europapress.es/cultura/cine-00128/noticia-amanda-kernell-reivindica-cultura-sami-brace-your-heart-pelicula-sanadora-perdon-20260920192839.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1192,7 +1205,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1209,7 +1222,7 @@
           "title": "Pedro Martínez y Jaume Munar sacan el billete de España para la Final 8 de la Copa Davis",
           "url": "https://www.europapress.es/deportes/tenis-00166/noticia-pedro-martinez-jaume-munar-sacan-billete-espana-final-copa-davis-20260920192746.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "La Vanguardia",
@@ -1242,7 +1255,7 @@
       "source_count": 4,
       "percentage": 28.6,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "PROCESSING",
       "notified": true,
       "revision": 1,
@@ -1259,7 +1272,7 @@
           "title": "Un accidente múltiple en el Puente del Centenario de Sevilla obliga a cortar los carriles sentido Huelva y reversible",
           "url": "https://www.europapress.es/andalucia/noticia-accidente-multiple-puente-centenario-sevilla-obliga-cortar-carriles-sentido-huelva-reversible-20260920192735.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1268,7 +1281,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1285,7 +1298,7 @@
           "title": "Mariana Enríquez lleva sus fantasmas a San Sebastián y advierte: \"La realidad da más miedo\"",
           "url": "https://www.europapress.es/cultura/cine-00128/noticia-mariana-enriquez-lleva-fantasmas-san-sebastian-advierte-realidad-da-mas-miedo-20260920192707.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1294,7 +1307,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1311,7 +1324,7 @@
           "title": "Sabiñánigo realiza inversiones en la Escuela Municipal Cardelina para reducir el consumo de energía y emsiones de CO2",
           "url": "https://www.europapress.es/aragon/noticia-sabinanigo-realiza-inversiones-escuela-municipal-cardelina-reducir-consumo-energia-emsiones-co2-20260920191953.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "La Vanguardia",
@@ -1328,7 +1341,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1345,7 +1358,7 @@
           "title": "Cangas del Narcea, Degaña e Ibias, este lunes en riesgo 'muy alto' de incendio forestal",
           "url": "https://www.europapress.es/asturias/noticia-cangas-narcea-degana-ibias-lunes-riesgo-muy-alto-incendio-forestal-20260920191951.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1354,7 +1367,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1371,7 +1384,7 @@
           "title": "José Mourinho: \"Son dos rojas claras, mi enhorabuena al Comité Técnico de Árbitros\"",
           "url": "https://www.europapress.es/deportes/futbol-00162/noticia-jose-mourinho-son-dos-rojas-claras-enhorabuena-comite-tecnico-arbitros-20260920191220.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1380,7 +1393,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1397,7 +1410,7 @@
           "title": "El SportExtremadura B conquista su primera Copa Extremadura Femenina de fútbol en la tanda de penaltis",
           "url": "https://www.europapress.es/extremadura/noticia-sportextremadura-conquista-primera-copa-extremadura-femenina-futbol-tanda-penaltis-20260920190448.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1406,7 +1419,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1423,7 +1436,7 @@
           "title": "CyL destaca eventos como el Campeonato del Mundo de Trial para impulsar el turismo deportivo y dinamizar el medio rural",
           "url": "https://www.europapress.es/castilla-y-leon/noticia-cyl-destaca-eventos-campeonato-mundo-trial-impulsar-turismo-deportivo-dinamizar-medio-rural-20260920190210.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1432,7 +1445,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1449,7 +1462,7 @@
           "title": "Merz reconoce el \"desastre\" electoral de la CDU pero promete seguir las reformas",
           "url": "https://www.europapress.es/internacional/noticia-merz-reconoce-desastre-cdu-mecklemburgo-pomerania-occidental-promete-seguir-reformas-20260920185719.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "El Mundo",
@@ -1466,7 +1479,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1483,7 +1496,7 @@
           "title": "Día grande de San Mateo: Pisado de la Uva y Ofrenda del Primer Mosto, Maldita Nerea y II Concentración de Mateos",
           "url": "https://www.europapress.es/la-rioja/noticia-dia-grande-san-mateo-pisado-uva-ofrenda-primer-mosto-maldita-nerea-ii-concentracion-mateos-20260920185149.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1492,7 +1505,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1509,7 +1522,7 @@
           "title": "El presidente de la Diputación de Almería acompaña a los peregrinos del Cristo de la Luz de Dalías",
           "url": "https://www.europapress.es/andalucia/almeria-00350/noticia-presidente-diputacion-almeria-acompana-peregrinos-cristo-luz-dalias-20260920184351.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1518,7 +1531,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1535,7 +1548,7 @@
           "title": "El coronel La Legión destaca que Ceuta y Melilla \"representan a España\" y asegura estar preparados para cualquier misión",
           "url": "https://www.europapress.es/ceuta-y-melilla/noticia-coronel-legion-destaca-ceuta-melilla-representan-espana-asegura-estar-preparados-cualquier-mision-20260920184314.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1544,7 +1557,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1561,7 +1574,7 @@
           "title": "Declarado un incendio en una nave industrial alimentaria de Olmedo (Valladolid) sin registrar heridos",
           "url": "https://www.europapress.es/castilla-y-leon/noticia-declarado-incendio-nave-industrial-alimentaria-olmedo-valladolid-registrar-heridos-20260920184209.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1570,7 +1583,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1587,7 +1600,7 @@
           "title": "Miles de personas marchan en Palma e Eivissa contra las ampliaciones de los aeropuertos",
           "url": "https://www.europapress.es/illes-balears/noticia-cientos-personas-marchan-palma-contra-ampliacion-aeropuerto-politicas-promocion-govern-20260920183812.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "20minutos",
@@ -1604,7 +1617,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1621,7 +1634,7 @@
           "title": "La Fundación CB organiza un taller en Mérida para crear un videojuego y acercar la educación STEAM a los más jóvenes",
           "url": "https://www.europapress.es/extremadura/noticia-fundacion-cb-organiza-taller-merida-crear-videojuego-acercar-educacion-steam-mas-jovenes-20260920183648.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1630,7 +1643,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1647,7 +1660,7 @@
           "title": "Toni Bou y sus 40 Mundiales: \"Sentí mucho alivio, es difícil conseguir algo más\"",
           "url": "https://www.europapress.es/deportes/noticia-toni-bou-40-mundiales-senti-mucho-alivio-dificil-conseguir-algo-mas-20260920183643.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1656,7 +1669,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1673,7 +1686,7 @@
           "title": "Una joven resulta afectada por inhalación de humo tras un incendio en una vivienda de Valladolid",
           "url": "https://www.europapress.es/castilla-y-leon/noticia-joven-resulta-afectada-inhalacion-humo-incendio-vivienda-valladolid-20260920183317.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1682,7 +1695,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1699,7 +1712,7 @@
           "title": "AfD es primera fuerza en Mecklemburgo-Pomerania Occidental y La Izquierda gana en Berlín",
           "url": "https://www.europapress.es/internacional/noticia-afd-primera-fuerza-mecklemburgo-pomerania-occidental-izquierda-gana-berlin-20260920182946.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "Público",
@@ -1716,7 +1729,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1733,7 +1746,7 @@
           "title": "El alcalde de Ávila celebra el medio siglo del concurso subasta de raza Avileña, que acoge la ciudad hasta el miércoles",
           "url": "https://www.europapress.es/castilla-y-leon/noticia-alcalde-avila-celebra-medio-siglo-concurso-subasta-raza-avilena-acoge-ciudad-miercoles-20260920182449.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1742,7 +1755,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1759,7 +1772,7 @@
           "title": "Juventudes Socialistas de Euskadi reeligen a Gabriel Arrúe como su secretario general con el 97,8%",
           "url": "https://www.europapress.es/euskadi/noticia-juventudes-socialistas-euskadi-reeligen-gabriel-arrue-secretario-general-978-20260920182136.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1768,7 +1781,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1785,7 +1798,7 @@
           "title": "Güéjar cierra un fin de semana de ciclismo con la Copa de España y el Campeonato de Andalucía de Enduro MTB",
           "url": "https://www.europapress.es/andalucia/noticia-guejar-cierra-fin-semana-ciclismo-copa-espana-campeonato-andalucia-enduro-mtb-20260920182059.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1794,7 +1807,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1811,7 +1824,7 @@
           "title": "El derbi es rojiblanco",
           "url": "https://www.europapress.es/deportes/futbol-00162/noticia-derbi-rojiblanco-20260920182048.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "EL PAÍS",
@@ -1860,7 +1873,7 @@
       "source_count": 6,
       "percentage": 42.9,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "AUTO_PROCESSING",
       "notified": true,
       "revision": 1,
@@ -1877,7 +1890,7 @@
           "title": "La Plaza de Toros de La Ribera acogerá el Campeonato Nacional de Recortadores el viernes 25, dentro de San Mateo",
           "url": "https://www.europapress.es/la-rioja/noticia-plaza-toros-ribera-acogera-campeonato-nacional-recortadores-viernes-25-dentro-san-mateo-20260920181049.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1886,7 +1899,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1903,7 +1916,7 @@
           "title": "Fromago cierra una edición de \"éxito\" con \"decenas de miles de visitantes\" en Zamora",
           "url": "https://www.europapress.es/castilla-y-leon/noticia-fromago-cierra-edicion-exito-decenas-miles-visitantes-zamora-20260920180949.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1912,7 +1925,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1929,7 +1942,7 @@
           "title": "Rescatan en helicóptero a una senderista herida en un pie en el Lago Chao (León)",
           "url": "https://www.europapress.es/castilla-y-leon/noticia-rescatan-helicoptero-senderista-herida-pie-lago-chao-leon-20260920180722.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "EL PAÍS",
@@ -1954,7 +1967,7 @@
       "source_count": 3,
       "percentage": 21.4,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "DISMISSED",
       "notified": true,
       "revision": 1,
@@ -1971,7 +1984,7 @@
           "title": "El Patio de Armas de Almería acoge la parada militar por el 106 aniversario de la fundación de La Legión",
           "url": "https://www.europapress.es/andalucia/almeria-00350/noticia-patio-armas-almeria-acoge-parada-militar-pot-rl-106-aniversario-fundacion-legion-20260920180241.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -1980,7 +1993,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -1997,7 +2010,7 @@
           "title": "Condenado a casi 13 años de prisión por intentar asesinar a su exnovia que huyó saltando por el balcón en Torremolinos",
           "url": "https://www.europapress.es/andalucia/malaga-00356/noticia-condenado-casi-13-anos-prision-intentar-asesinar-exnovia-huyo-saltando-balcon-torremolinos-20260920180155.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "20minutos",
@@ -2014,7 +2027,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2031,7 +2044,7 @@
           "title": "Un proyecto favorece la integración de personas de origen extranjero en la Comarca de Sobrarbe",
           "url": "https://www.europapress.es/aragon/noticia-proyecto-favorece-integracion-personas-origen-extranjero-comarca-sobrarbe-20260920180150.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2040,7 +2053,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2057,7 +2070,7 @@
           "title": "El Festival B concluye con más de 35.000 asistentes tras actuar más de 40 artistas en 4 escenarios",
           "url": "https://www.europapress.es/catalunya/noticia-festival-concluye-mas-35000-asistentes-actuar-mas-40-artistas-escenarios-20260920175632.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2066,7 +2079,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2083,7 +2096,7 @@
           "title": "CSIF denuncia una agresión a dos funcionarios en la prisión de Mansilla (León)",
           "url": "https://www.europapress.es/castilla-y-leon/noticia-csif-denuncia-agresion-dos-funcionarios-prision-mansilla-leon-20260920175043.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2092,7 +2105,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2109,7 +2122,7 @@
           "title": "Rescatados dos senderistas que se sintieron indispuestos en la ruta de Horcada de Caín, en Picos de Europa",
           "url": "https://www.europapress.es/asturias/noticia-rescatados-dos-senderistas-sintieron-indispuestos-ruta-horcada-cain-picos-europa-20260920174927.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2118,7 +2131,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2135,7 +2148,7 @@
           "title": "Carlota Melendi se pronuncia sobre la polémica entre su padre y Dani Martín: \"Todos tenemos comentarios desafortunados\"",
           "url": "https://www.europapress.es/chance/gente/noticia-carlota-melendi-pronuncia-polemica-padre-dani-martin-todos-tenemos-comentarios-desafortunados-20260920174608.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2144,7 +2157,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2161,7 +2174,7 @@
           "title": "Aviso amarillo este lunes en Cádiz por oleaje y fuertes vientos de hasta 80 kilómetros por hora",
           "url": "https://www.europapress.es/andalucia/cadiz-00351/noticia-aviso-amarillo-lunes-cadiz-oleaje-fuertes-vientos-80-kilometros-hora-20260920174548.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2170,7 +2183,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2187,7 +2200,7 @@
           "title": "Estabilizados un incendio forestal en Enguera y otro de vegetación en Chiva",
           "url": "https://www.europapress.es/comunitat-valenciana/noticia-estabilizados-incendio-forestal-enguera-otro-vegetacion-chiva-20260920174528.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2196,7 +2209,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2213,7 +2226,7 @@
           "title": "Cientos de trabajadoras del comercio de alimentación de A Coruña reclaman unas condiciones laborales y salariales justas",
           "url": "https://www.europapress.es/galicia/noticia-cientos-trabajadoras-comercio-alimentacion-coruna-reclaman-condiciones-laborales-salariales-justas-20260920174407.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2222,7 +2235,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2239,7 +2252,7 @@
           "title": "Un accidente en la AP4 a la altura de Las Cabezas de San Juan (Sevilla) se salda con cuatro heridos",
           "url": "https://www.europapress.es/andalucia/sevilla-00357/noticia-accidente-ap4-altura-cabezas-san-juan-sevilla-salda-cuatro-heridos-20260920174337.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2248,7 +2261,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2265,7 +2278,7 @@
           "title": "Cielos poco nubosos y ligero ascenso de las temperaturas, este lunes en Euskadi",
           "url": "https://www.europapress.es/euskadi/noticia-cielos-poco-nubosos-ligero-ascenso-temperaturas-lunes-euskadi-20260920174108.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2274,7 +2287,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2291,7 +2304,7 @@
           "title": "Una investigación caracteriza el subsuelo de la cuenca media del Ebro para explorar su potencial energético",
           "url": "https://www.europapress.es/aragon/noticia-investigacion-caracteriza-subsuelo-cuenca-media-ebro-explorar-potencial-energetico-20260920173949.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2300,7 +2313,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2317,7 +2330,7 @@
           "title": "Rescatados en helicóptero dos hombres atrapados dentro del agua en la Cala del Cuervo, en Níjar (Almería)",
           "url": "https://www.europapress.es/andalucia/almeria-00350/noticia-rescatados-helicoptero-dos-hombres-atrapados-dentro-agua-cala-cuervo-nijar-almeria-20260920173543.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2326,7 +2339,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2343,7 +2356,7 @@
           "title": "Premios del Día de Alcalá de Guadaíra (Sevilla): Estos han sido los galardonados",
           "url": "https://www.europapress.es/andalucia/sevilla-00357/noticia-premios-dia-alcala-guadaira-sevilla-sido-galardonados-20260920173334.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2352,7 +2365,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2369,7 +2382,7 @@
           "title": "Los Javis: \"Estamos programados para sentirnos mal por quienes somos. Esa es la bola negra que tenemos dentro\"",
           "url": "https://www.europapress.es/cultura/cine-00128/noticia-javis-estamos-programados-sentirnos-mal-quienes-somos-bola-negra-tenemos-dentro-20260920173125.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "20minutos",
@@ -2386,7 +2399,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2403,7 +2416,7 @@
           "title": "Deportivo 1 - 1 Real Betis, en directo hoy: sigue el partido de LaLiga EA Sports minuto a minuto",
           "url": "https://www.europapress.es/deportes/partidos-en-directo/noticia-deportivo-real-betis-directo-hoy-sigue-partido-laliga-ea-sports-minuto-minuto-20260920173110.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2412,7 +2425,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2429,7 +2442,7 @@
           "title": "El Gobierno refuerza la Guardia Civil en Melilla ante los llamamientos a nuevas entradas masivas",
           "url": "https://www.europapress.es/ceuta-y-melilla/noticia-gobierno-refuerza-guardia-civil-melilla-llamamientos-nuevas-entradas-masivas-20260920173105.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2438,7 +2451,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2455,7 +2468,7 @@
           "title": "Piden cuatro años de prisión para un interno de Bonxe que intentó introducir droga en la cárcel tras un permiso",
           "url": "https://www.europapress.es/galicia/noticia-piden-cuatro-anos-prision-interno-bonxe-intento-introducir-droga-carcel-permiso-20260920172951.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2464,7 +2477,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2481,7 +2494,7 @@
           "title": "Las Hurdes viajará a finales de octubre al territorio de las ánimas con las jornadas 'Cuando los muertos vuelven'",
           "url": "https://www.europapress.es/extremadura/noticia-hurdes-viajara-finales-octubre-territorio-animas-jornadas-cuando-muertos-vuelven-20260920172448.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2490,7 +2503,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2507,7 +2520,7 @@
           "title": "La circulación por la avenida de Huelva en Badajoz hacia la Plaza de la Libertad se cortará desde este lunes",
           "url": "https://www.europapress.es/extremadura/noticia-circulacion-avenida-huelva-badajoz-plaza-libertad-cortara-lunes-20260920172048.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2516,7 +2529,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2533,7 +2546,7 @@
           "title": "El Centro Niemeyer acoge una nueva edición de sus talleres de robótica para niños de 6 a 13 años",
           "url": "https://www.europapress.es/asturias/noticia-centro-niemeyer-acoge-nueva-edicion-talleres-robotica-ninos-13-anos-20260920171449.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2542,7 +2555,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2559,7 +2572,7 @@
           "title": "Investigan la muerte por envenenamiento de diez leones en Tanzania",
           "url": "https://www.europapress.es/internacional/noticia-investigan-muerte-envenenamiento-diez-leones-tanzania-20260920171411.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "20minutos",
@@ -2576,7 +2589,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2593,7 +2606,7 @@
           "title": "Morillas (Con Málaga) exige un Plan de Movilidad Laboral Municipal para reducir la carga económica de los trabajadores",
           "url": "https://www.europapress.es/andalucia/malaga-00356/noticia-morillas-malaga-exige-plan-movilidad-laboral-municipal-reducir-carga-economica-trabajadores-20260920171150.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2602,7 +2615,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2619,7 +2632,7 @@
           "title": "La Xunta mantiene para este lunes la alerta roja por altas temperaturas en el interior de Pontevedra",
           "url": "https://www.europapress.es/galicia/noticia-xunta-mantiene-lunes-alerta-roja-altas-temperaturas-interior-pontevedra-20260920170715.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "La Vanguardia",
@@ -2644,7 +2657,7 @@
       "source_count": 3,
       "percentage": 21.4,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "DISMISSED",
       "notified": true,
       "revision": 1,
@@ -2661,7 +2674,7 @@
           "title": "Gimena Llamedo reivindica en Bruselas el \"vínculo profundo y duradero\" del Principado con su ciudadanía en el exterior",
           "url": "https://www.europapress.es/asturias/noticia-gimena-llamedo-reivindica-bruselas-vinculo-profundo-duradero-principado-ciudadania-exterior-20260920170425.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2670,7 +2683,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2687,7 +2700,7 @@
           "title": "Cremela se adentra en el concepto 'Bean to Bar' para elaborar su propio chocolate artesanal desde el origen",
           "url": "https://www.europapress.es/asturias/noticia-cremela-adentra-concepto-bean-to-bar-elaborar-propio-chocolate-artesanal-origen-20260920165957.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2696,7 +2709,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2713,7 +2726,7 @@
           "title": "Vicente Cervera protagoniza este lunes el recital XV aniversario de los 'Lunes Literarios' en su vuelta al Café Zalacaín",
           "url": "https://www.europapress.es/murcia/noticia-vicente-cervera-protagoniza-lunes-recital-xv-aniversario-lunes-literarios-vuelta-cafe-zalacain-20260920165954.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "La Vanguardia",
@@ -2730,7 +2743,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2747,7 +2760,7 @@
           "title": "La limitación a la entrada de vehículos en Menorca entra el martes en el Parlament",
           "url": "https://www.europapress.es/illes-balears/noticia-limitacion-entrada-vehiculos-menorca-entra-martes-parlament-20260920165951.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2756,7 +2769,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2773,7 +2786,7 @@
           "title": "Nuevo rescate en los Picos de Europa: evacúan al Hospital de Arriondas a un montañero herido en un pie",
           "url": "https://www.europapress.es/asturias/noticia-nuevo-rescate-picos-europa-evacuan-hospital-arriondas-montanero-herido-pie-20260920164946.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2782,7 +2795,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2799,7 +2812,7 @@
           "title": "Navarra retoma EmakumeOn y el Foro de Mujeres Políticas con los cuidados como eje de transformación social y política",
           "url": "https://www.europapress.es/navarra/noticia-navarra-retoma-emakumeon-foro-mujeres-politicas-cuidados-eje-transformacion-social-politica-20260920164451.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2808,7 +2821,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2825,7 +2838,7 @@
           "title": "Vivienda, educación y sanidad, la hoja de ruta de Morant y el PSPV en la carrera para recuperar la Generalitat en 2027",
           "url": "https://www.europapress.es/comunitat-valenciana/noticia-vivienda-educacion-sanidad-hoja-ruta-morant-pspv-carrera-recuperar-generalitat-2027-20260920164420.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2834,7 +2847,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2851,7 +2864,7 @@
           "title": "Valencia, Asturias y Palencia protagonizarán el II Festival de Música y Tradiciones de los Centros Regionales",
           "url": "https://www.europapress.es/cantabria/noticia-valencia-asturias-palencia-protagonizaran-ii-festival-musica-tradiciones-centros-regionales-20260920163211.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2860,7 +2873,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2877,7 +2890,7 @@
           "title": "La candidata asesinada en Perú había acusado a un mando policial de ordenar su homicidio",
           "url": "https://www.europapress.es/internacional/noticia-candidata-asesinada-peru-acusado-mando-policial-ordenar-homicidio-20260920163147.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2886,7 +2899,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2903,7 +2916,7 @@
           "title": "Las temperaturas subirán este lunes en el norte y podrán superar los 35ºC en el suroeste, Galicia y Cataluña",
           "url": "https://www.europapress.es/sociedad/noticia-temperaturas-subiran-lunes-norte-podran-superar-35c-suroeste-galicia-cataluna-20260920163049.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2912,7 +2925,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2929,7 +2942,7 @@
           "title": "Piden seis años de prisión para un hombre que agredió sexualmente a dos menores que jugaban al fútbol",
           "url": "https://www.europapress.es/galicia/noticia-piden-seis-anos-prision-hombre-agredio-sexualmente-dos-menores-jugaban-futbol-20260920162951.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2938,7 +2951,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2955,7 +2968,7 @@
           "title": "México se alza con la victoria en el World Paella Day 2026",
           "url": "https://www.europapress.es/comunitat-valenciana/noticia-mexico-alza-victoria-world-paella-day-2026-20260920162521.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         },
         {
           "source": "La Vanguardia",
@@ -2972,7 +2985,7 @@
       "source_count": 2,
       "percentage": 14.3,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -2989,7 +3002,7 @@
           "title": "Sirera (PP) rechaza los supermercados públicos de Collboni y apuesta por una bajada de los precios",
           "url": "https://www.europapress.es/catalunya/noticia-sirera-pp-rechaza-supermercados-publicos-collboni-apuesta-bajada-precios-20260920162223.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -2998,7 +3011,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -3015,7 +3028,7 @@
           "title": "Herido un hombre de 50 años tras ser atropellado en una vía de Arrecife (Lanzarote)",
           "url": "https://www.europapress.es/islas-canarias/noticia-herido-hombre-50-anos-ser-atropellado-via-arrecife-lanzarote-20260920162132.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -3024,7 +3037,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -3041,7 +3054,7 @@
           "title": "Hasta 550 almerienses corren por su salud cerebral en el Parque del Andarax",
           "url": "https://www.europapress.es/andalucia/almeria-00350/noticia-550-almerienses-corren-salud-cerebral-parque-andarax-20260920161951.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -3050,7 +3063,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -3067,7 +3080,7 @@
           "title": "Con Málaga exige ayudas para \"salvar la viticultura heroica de la Axarquía\"",
           "url": "https://www.europapress.es/andalucia/malaga-00356/noticia-malaga-exige-ayudas-salvar-viticultura-heroica-axarquia-20260920161147.html",
           "first_seen": "2026-09-20T21:18:54.320896Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -3076,7 +3089,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:18:54.320896Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -14249,7 +14262,7 @@
           "title": "Investigan la filtración de 15 millones de registros de clientes de Aeroméxico",
           "url": "https://www.europapress.es/internacional/noticia-investigan-filtracion-15-millones-registros-clientes-aeromexico-20260920231825.html",
           "first_seen": "2026-09-20T21:25:38.409055Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -14258,7 +14271,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:25:38.409055Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -14275,7 +14288,7 @@
           "title": "España gana en Ginebra y se afianza en la segunda plaza de la general de SailGP",
           "url": "https://www.europapress.es/deportes/noticia-espana-gana-ginebra-afianza-segunda-plaza-general-sailgp-20260920231237.html",
           "first_seen": "2026-09-20T21:25:38.409055Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -14284,7 +14297,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:25:38.409055Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -14373,7 +14386,7 @@
           "title": "La regata Rey Juan Carlos I El Cortes Inglés Máster corona a los campeones de su undécima edición",
           "url": "https://www.europapress.es/deportes/noticia-regata-rey-juan-carlos-cortes-ingles-master-corona-campeones-undecima-edicion-20260920232916.html",
           "first_seen": "2026-09-20T21:32:29.716630Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -14382,7 +14395,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:32:29.716630Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -14424,7 +14437,7 @@
           "title": "El Getafe gana a su estilo, el Villarreal se reafirma y el Valencia vuelve a las andadas",
           "url": "https://www.europapress.es/deportes/futbol-00162/noticia-getafe-gana-estilo-villarreal-reafirma-valencia-vuelve-andadas-20260920233358.html",
           "first_seen": "2026-09-20T21:48:12.651406Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -14433,7 +14446,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:48:12.651406Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -14451,7 +14464,7 @@
           "title": "Trasladados a EEUU 18 acusados de participar en el asesinato del presidente haitiano Jovenel Moïse",
           "url": "https://www.europapress.es/internacional/noticia-trasladados-eeuu-18-acusados-participar-asesinato-presidente-haitiano-jovenel-moise-20260920234752.html",
           "first_seen": "2026-09-20T21:53:21.462805Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -14460,7 +14473,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T21:53:21.462805Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -14478,7 +14491,7 @@
           "title": "Almería, Burgos, Sabadell y Leganés completan el pleno de victorias de los de arriba en LaLiga Hypermotion",
           "url": "https://www.europapress.es/deportes/futbol-00162/noticia-almeria-burgos-sabadell-leganes-completan-pleno-victorias-arriba-laliga-hypermotion-20260921000319.html",
           "first_seen": "2026-09-20T22:25:07.972987Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -14487,7 +14500,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T22:25:07.972987Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
@@ -14505,7 +14518,7 @@
           "title": "David Ferrer elogia a los jugadores jóvenes: \"Me he llevado una grata sorpresa\"",
           "url": "https://www.europapress.es/deportes/tenis-00166/noticia-david-ferrer-elogia-jugadores-jovenes-me-he-llevado-grata-sorpresa-20260921004948.html",
           "first_seen": "2026-09-20T22:53:09.793340Z",
-          "last_seen": "2026-09-20T22:55:14.207162Z"
+          "last_seen": "2026-09-20T22:56:44.892306Z"
         }
       ],
       "sources": [
@@ -14514,7 +14527,7 @@
       "source_count": 1,
       "percentage": 7.1,
       "first_seen": "2026-09-20T22:53:09.793340Z",
-      "last_seen": "2026-09-20T22:55:14.207162Z",
+      "last_seen": "2026-09-20T22:56:44.892306Z",
       "status": "WAITING",
       "notified": false,
       "revision": 1,
