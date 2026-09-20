@@ -26,7 +26,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python3 <<'PY'
-          import json, os, urllib.request
+          import json, os, urllib.parse, urllib.request
           with open("telegram/emergency.json", encoding="utf-8") as f:
               data=json.load(f)
           token=os.environ["TELEGRAM_BOT_TOKEN"]
@@ -49,6 +49,18 @@ jobs:
                   print("Ya enviado, se omite",key)
                   continue
               text=str(m.get("text","")).replace("\\\\n","\\n").strip()
+              # Los botones PUBLICAR deben llevar siempre un tuit completo <= 280.
+              # Si una variante excede el límite, recorta solo el texto del intent, nunca el mensaje editorial.
+              for row in m.get("buttons", []):
+                  items=row if isinstance(row,list) else [row]
+                  for b in items:
+                      u=str(b.get("url") or "")
+                      if "twitter.com/intent/tweet?text=" in u or "x.com/intent/post?text=" in u:
+                          parts=urllib.parse.urlsplit(u); qs=urllib.parse.parse_qs(parts.query)
+                          tw=(qs.get("text") or [""])[0]
+                          if len(tw)>280:
+                              tw=tw[:279].rstrip()+"…"
+                              b["url"]=urllib.parse.urlunsplit((parts.scheme,parts.netloc,parts.path,urllib.parse.urlencode({"text":tw}),parts.fragment))
               if not text: continue
               payload={"chat_id":chat,"text":text,"disable_web_page_preview":True}
               keyboard=[]
