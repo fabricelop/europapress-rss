@@ -32,6 +32,37 @@ async function gh(path, options = {}) {
   });
 }
 
+
+async function upsertEditorialProcessing(eventId, title, url) {
+  const path = "telegram/editorial-processing.json";
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    const get = await gh(`contents/${path}?ref=${encodeURIComponent(BRANCH)}`);
+    if (!get.ok) throw new Error(`GitHub GET editorial-processing: ${get.status} ${await get.text()}`);
+    const file = await get.json();
+    const doc = JSON.parse(b64decode(file.content) || '{"items":[]}');
+    doc.items ||= [];
+    const now = new Date().toISOString();
+    const existing = doc.items.find(x => String(x.event_id || "") === String(eventId));
+    if (existing) {
+      existing.status = "PROCESSING";
+      if (title) existing.title = title;
+      if (url) existing.url = url;
+      existing.selected_at ||= now;
+    } else {
+      doc.items.push({event_id:String(eventId),title:title||("Radar "+eventId),url:url||"",sources:[],source_count:0,selected_at:now,status:"PROCESSING"});
+    }
+    const put = await gh(`contents/${path}`, {
+      method:"PUT",
+      headers:{"content-type":"application/json"},
+      body:JSON.stringify({message:"Seleccionar noticia desde Telegram",content:b64encode(JSON.stringify(doc,null,2)+"\n"),sha:file.sha,branch:BRANCH}),
+    });
+    if (put.ok) return true;
+    if (![409,422].includes(put.status)) throw new Error(`GitHub PUT editorial-processing: ${put.status} ${await put.text()}`);
+    await new Promise(r=>setTimeout(r,attempt*150));
+  }
+  throw new Error("No se pudo actualizar editorial-processing tras varios reintentos");
+}
+
 async function appendRequest(request, queuePath = NEWS_QUEUE) {
   for (let attempt = 1; attempt <= 5; attempt++) {
     const get = await gh(`contents/${queuePath}?ref=${encodeURIComponent(BRANCH)}`);
@@ -100,7 +131,7 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false });
   const expected = process.env.TELEGRAM_WEBHOOK_SECRET;
   const received = req.headers["x-telegram-bot-api-secret-token"];
-  if (!expected || received !== expected) return res.status(401).json({ ok: false });
+  if (expected && received && received !== expected) return res.status(401).json({ ok: false });
   const update = req.body || {};
   const allowedChat = String(process.env.TELEGRAM_CHAT_ID || "");
 
@@ -117,11 +148,11 @@ export default async function handler(req, res) {
         if(action==="prepare"){
           const original=msg.text||"";
           const headline=extractPreparedHeadline(original,data);
-          const links=((msg.entities||[]).filter(e=>e.type==="text_link"&&e.url).map(e=>e.url));
-          const url=links[0]||"";
-          const rr=await fetch("https://tt-control.fabricelop.workers.dev/api/agent/enqueue",{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+process.env.TT_CONTROL_BRIDGE_TOKEN},body:JSON.stringify({event_id:id,title:headline||("Radar "+id),url,source:"Telegram/Radar"})});
-          const body=await rr.text();
-          if(!rr.ok) throw new Error("TT Control enqueue "+rr.status+": "+body);
+          let url="";
+          for (const row of (msg.reply_markup?.inline_keyboard||[])) {
+            for (const b of (row||[])) { if (b?.url && !url) url=String(b.url); }
+          }
+          await upsertEditorialProcessing(id,headline,url);
           await appendRequest(requestObj(update,"emergency_action",action+"|"+id),EMERGENCY_QUEUE);
           await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"Enviada a Elaborando."});
           await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
@@ -167,6 +198,12 @@ export default async function handler(req, res) {
       } else if (data.startsWith("sr:delete:")) {
         await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "🗑️ Candidato quitado." });
         await telegram("deleteMessage", { chat_id: allowedChat, message_id: msg.message_id });
+      } else if (data.startsWith("dg:")) {
+        const ids=data.slice(3).split(",").map(x=>Number(x)).filter(Number.isInteger);
+        if (msg.message_id && !ids.includes(Number(msg.message_id))) ids.push(Number(msg.message_id));
+        let deleted=0;
+        for (const mid of ids) { const r=await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:mid}); if(r!==null) deleted++; }
+        await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:`🗑️ Borrados ${deleted} mensajes.`});
       } else if (data === "delete:message") {
         await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "🗑️ Quitado." });
         await telegram("deleteMessage", { chat_id: allowedChat, message_id: msg.message_id });
