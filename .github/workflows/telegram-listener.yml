@@ -12,6 +12,10 @@ on:
       - "telegram/telegram_listener.py"
       - "trends/telegram_bot.py"
 
+concurrency:
+  group: tt-control-telegram-continuo
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
