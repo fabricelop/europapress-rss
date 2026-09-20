@@ -38,7 +38,10 @@ jobs:
                   btn={"text":str(b.get("label","Acción"))}
                   if b.get("url"): btn["url"]=b["url"]
                   elif b.get("callback_data"): btn["callback_data"]=b["callback_data"]
-                  if len(btn)>1: keyboard.append([btn])
+                  if len(btn)>1:
+                      row=int(b.get("row",len(keyboard)))
+                      if b.get("same_row") and keyboard: keyboard[-1].append(btn)
+                      else: keyboard.append([btn])
               if keyboard: payload["reply_markup"]={"inline_keyboard":keyboard}
               req=urllib.request.Request(api,data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
               with urllib.request.urlopen(req,timeout=20) as r:
