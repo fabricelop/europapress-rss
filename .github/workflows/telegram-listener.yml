@@ -26,6 +26,23 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Configurar Git
+        run: |
+          git config user.name "tt-control-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --rebase origin main
+      - name: Barrido inicial
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python3 telegram/radar_no_d1.py
+          git add telegram/events.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Actualizar estado radar editorial"
+            git pull --rebase origin main
+            git push origin main
+          fi
       - name: Escuchar Telegram y ejecutar barridos
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
