@@ -1,24 +1,19 @@
-name: TTendencias Telegram Bot
+name: TTendencias Telegram Listener
 
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 * * * *"
-  push:
-    branches: [main]
-    paths:
-      - "trends/recent.json"
-      - "trends/telegram-manual-explained.json"
 
 permissions:
   contents: write
 
 concurrency:
-  group: ttendencias-telegram-bot
-  cancel-in-progress: false
+  group: ttendencias-telegram-listener
+  cancel-in-progress: true
 
 jobs:
-  bot:
+  listener:
     runs-on: ubuntu-latest
     timeout-minutes: 59
     steps:
@@ -31,13 +26,7 @@ jobs:
           git config user.name "ttendencias-bot"
           git config user.email "actions@users.noreply.github.com"
 
-      - name: Sincronizar panel
-        env:
-          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
-        run: python3 trends/telegram_bot.py sync
-
-      - name: Escuchar botones
-        if: github.event_name != 'push'
+      - name: Escuchar botones y mantener panel
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
           TTENDENCIAS_LISTEN_SECONDS: "3300"
