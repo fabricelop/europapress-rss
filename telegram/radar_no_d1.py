@@ -60,20 +60,20 @@ active_den=max(1,len(set(healthy_sources)))
 print("SOURCES_OK",active_den,sorted(set(healthy_sources)))
 for src,title,url in rows:
  best=None;bs=0
-  for e in ev:
-   s=score(title,e["title"])
-   if s>bs:bs=s;best=e
-  # Strict lexical anchor first; ambiguous 0.30-.49 remains separate rather than risky overmerge.
-  if best and bs>=.50:
-   if src not in best["sources"]:best["sources"].append(src)
-   best["last_seen"]=now.isoformat().replace("+00:00","Z")
-   best["source_count"]=len(best["sources"])
-  else:
-   key=hashlib.sha1((" ".join(sorted(fp(title)))+url.split("?")[0]).encode()).hexdigest()[:12]
-   ev.append({"id":key,"title":title,"url":url,"sources":[src],"source_count":1,"first_seen":now.isoformat().replace("+00:00","Z"),"last_seen":now.isoformat().replace("+00:00","Z"),"status":"NEW","notified":False})
+ for e in ev:
+  s=score(title,e["title"])
+  if s>bs:bs=s;best=e
+ # Strict lexical anchor first; ambiguous 0.30-.49 remains separate rather than risky overmerge.
+ if best and bs>=.50:
+  if src not in best["sources"]:best["sources"].append(src)
+  best["last_seen"]=now.isoformat().replace("+00:00","Z")
+  best["source_count"]=len(best["sources"])
+ else:
+  key=hashlib.sha1((" ".join(sorted(fp(title)))+url.split("?")[0]).encode()).hexdigest()[:12]
+  ev.append({"id":key,"title":title,"url":url,"sources":[src],"source_count":1,"first_seen":now.isoformat().replace("+00:00","Z"),"last_seen":now.isoformat().replace("+00:00","Z"),"status":"NEW","notified":False})
 token=os.environ.get("TELEGRAM_BOT_TOKEN");chat=os.environ.get("TELEGRAM_CHAT_ID")
 def send(e,status):
- txt=("📰 TT Control · "+("PREPARAR" if status=="PREPARED" else "PARA VALORAR")+" · "+str(e["source_count"])+"/"+str(active_den)\n\n"+e["title"]+"\n\nFuentes: "+", ".join(e["sources"]))
+ txt=("📰 TT Control · "+("PREPARAR" if status=="PREPARED" else "PARA VALORAR")+" · "+str(e["source_count"])+"/"+str(active_den)+"\n\n"+e["title"]+"\n\nFuentes: "+", ".join(e["sources"]))
  buttons=[[{"text":"PREPARAR","callback_data":"emergency:prepare:"+e["id"]},{"text":"DESCARTAR","callback_data":"emergency:dismiss:"+e["id"]}]]
  buttons.append([{"text":"ABRIR FUENTE","url":e["url"]}])
  payload={"chat_id":chat,"text":txt,"disable_web_page_preview":True,"reply_markup":{"inline_keyboard":buttons}}
@@ -81,7 +81,7 @@ def send(e,status):
  urllib.request.urlopen(req,timeout=15).read()
 for e in ev:
  n=len(set(e["sources"]));e["source_count"]=n
- target="PREPARED" if n>=min(5,active_den) else ("EVALUATE" if n>=min(3,active_den) else "NEW")
+ target="PREPARED" if n>=5 else ("EVALUATE" if n>=3 else "NEW")
  if e.get("status")=="NEW" and target!="NEW":
   e["status"]=target
   if not e.get("notified"):
