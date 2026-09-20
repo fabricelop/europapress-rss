@@ -55,8 +55,11 @@ except json.JSONDecodeError:
 ev=state.get("events",[])
 now=datetime.now(timezone.utc); cutoff=now-timedelta(hours=24)
 ev=[e for e in ev if e.get("status") in ("PREPARED","EVALUATE","PUBLISHED","DISMISSED") or datetime.fromisoformat(e["last_seen"].replace("Z","+00:00"))>=cutoff]
-rows,healthy_sources=items()\nactive_den=max(1,len(set(healthy_sources)))\nprint("SOURCES_OK",active_den,sorted(set(healthy_sources)))\nfor src,title,url in rows:
- best=None;bs=0
+rows,healthy_sources=items()
+active_den=max(1,len(set(healthy_sources)))
+print("SOURCES_OK",active_den,sorted(set(healthy_sources)))
+for src,title,url in rows:
+best=None;bs=0
  for e in ev:
   s=score(title,e["title"])
   if s>bs:bs=s;best=e
@@ -70,7 +73,7 @@ rows,healthy_sources=items()\nactive_den=max(1,len(set(healthy_sources)))\nprint
   ev.append({"id":key,"title":title,"url":url,"sources":[src],"source_count":1,"first_seen":now.isoformat().replace("+00:00","Z"),"last_seen":now.isoformat().replace("+00:00","Z"),"status":"NEW","notified":False})
 token=os.environ.get("TELEGRAM_BOT_TOKEN");chat=os.environ.get("TELEGRAM_CHAT_ID")
 def send(e,status):
- txt=("📰 TT Control · "+("PREPARAR" if status=="PREPARED" else "PARA VALORAR")+" · "+str(e["source_count"])+"/9\n\n"+e["title"]+"\n\nFuentes: "+", ".join(e["sources"]))
+ txt=("📰 TT Control · "+("PREPARAR" if status=="PREPARED" else "PARA VALORAR")+" · "+str(e["source_count"])+"/"+str(active_den)\n\n"+e["title"]+"\n\nFuentes: "+", ".join(e["sources"]))
  buttons=[[{"text":"PREPARAR","callback_data":"emergency:prepare:"+e["id"]},{"text":"DESCARTAR","callback_data":"emergency:dismiss:"+e["id"]}]]
  buttons.append([{"text":"ABRIR FUENTE","url":e["url"]}])
  payload={"chat_id":chat,"text":txt,"disable_web_page_preview":True,"reply_markup":{"inline_keyboard":buttons}}
