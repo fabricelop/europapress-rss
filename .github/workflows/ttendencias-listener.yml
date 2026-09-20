@@ -26,14 +26,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: pip
-
-      - name: Instalar dependencias
-        run: pip install -r requirements.txt
-
       - name: Sincronizar panel sin persistir
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
