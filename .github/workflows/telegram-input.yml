@@ -48,11 +48,14 @@ jobs:
           base = f"https://api.telegram.org/bot{token}"
 
           state_path = Path("telegram/telegram-state.json")
+          processing_path = Path("telegram/editorial-processing.json")
           requests_path = Path("telegram/requests.json")
           emergency_path = Path("telegram/emergency-requests.json")
           events_path = Path("telegram/events.json")
           state = json.loads(state_path.read_text(encoding="utf-8"))
           queue = json.loads(requests_path.read_text(encoding="utf-8"))
+          processing = json.loads(processing_path.read_text(encoding="utf-8")) if processing_path.exists() else {"news":[]}
+          processing.setdefault("news", [])
           emergency = json.loads(emergency_path.read_text(encoding="utf-8")) if emergency_path.exists() else {"requests":[]}
           events_doc = json.loads(events_path.read_text(encoding="utf-8")) if events_path.exists() else {"events":[]}
           events_by_id = {str(e.get("id")): e for e in events_doc.get("events", [])}
@@ -84,6 +87,16 @@ jobs:
                           "source_count": event.get("source_count", len(event.get("sources", [])))
                       })
                   queue["requests"].append(req)
+                  if action == "prepare" and event and not any(str(x.get("event_id")) == item_id for x in processing["news"]):
+                      processing["news"].append({
+                          "event_id": item_id,
+                          "title": event.get("title"),
+                          "url": event.get("url"),
+                          "sources": event.get("sources", []),
+                          "source_count": event.get("source_count", len(event.get("sources", []))),
+                          "selected_at": er.get("at") or dt.datetime.now(dt.timezone.utc).isoformat(),
+                          "status": "PROCESSING"
+                      })
               processed_emergency.add(ek)
           state["processed_emergency"] = list(processed_emergency)[-500:]
 
@@ -111,6 +124,7 @@ jobs:
           # decisions already copied from emergency-requests.json above.
           state_path.write_text(json.dumps(state, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
           requests_path.write_text(json.dumps(queue, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+          processing_path.write_text(json.dumps(processing, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           print(f"Turno editorial: cola webhook consumida; órdenes totales: {len(queue.get('requests', []))}")
           PY
 
@@ -119,7 +133,7 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add telegram/requests.json telegram/telegram-state.json telegram/emergency-requests.json
+          git add telegram/requests.json telegram/telegram-state.json telegram/emergency-requests.json telegram/editorial-processing.json telegram/editorial-processing.json
 
           if git diff --cached --quiet; then
             echo "Sin cambios."
@@ -133,7 +147,7 @@ jobs:
             git fetch origin main
             git rebase --abort 2>/dev/null || true
             git reset --soft origin/main
-            git add telegram/requests.json telegram/telegram-state.json telegram/emergency-requests.json
+            git add telegram/requests.json telegram/telegram-state.json telegram/emergency-requests.json telegram/editorial-processing.json
             git commit -m "Procesar órdenes de Telegram" || true
             git push origin HEAD:main
           fi
