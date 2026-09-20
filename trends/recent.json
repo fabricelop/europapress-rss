@@ -1,15 +1,14 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-21T01:46:25+02:00",
+  "captured_at": "2026-09-21T01:47:37+02:00",
   "primary_source": "consensus",
   "sources_used": [
     "trends24",
-    "getdaytrends",
     "tweets24"
   ],
-  "source_count": 3,
-  "reliability": "high",
+  "source_count": 2,
+  "reliability": "medium",
   "top10": [
     "#ConexiónHonduras2",
     "#ElChiringuitoenCuatro",
@@ -93,25 +92,9 @@
       "error": null
     },
     "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "#ConexiónHonduras2",
-        "#ElChiringuitoenCuatro",
-        "Berlín",
-        "Mestalla",
-        "Mourinho",
-        "Mayol",
-        "Die Linke",
-        "#Gala4Bailamos",
-        "Aimar",
-        "Otorbi",
-        "Soler",
-        "Yola",
-        "Negreira",
-        "Madrid",
-        "Oyarzabal"
-      ],
-      "error": null
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1789948057"
     },
     "tweets24": {
       "ok": true,
