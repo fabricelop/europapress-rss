@@ -141,6 +141,7 @@ def panel_keyboard():
             "text": label[:64],
             "callback_data": f"trend:{rank}",
         }])
+    rows.append([{"text": "🔄 Actualizar ahora", "callback_data": "panel:refresh"}])
     return {"inline_keyboard": rows}
 
 
@@ -342,6 +343,11 @@ def handle(update):
             sync_panel()
             persist_git("Enlazar chat del bot TTendencias")
             return
+        if text in {"/actualizar", "/refresh"}:
+            subprocess.run(["python3", str(ROOT / "update_trends.py")], check=False)
+            sync_panel()
+            persist_git("Actualizar manualmente Top 10 TTendencias")
+            return
     cb = update.get("callback_query")
     if not cb:
         return
@@ -363,20 +369,10 @@ def poll(seconds=3300):
     started = time.time()
     state = load(STATE, {"chat_id": None, "panel_message_id": None, "last_update_id": 0, "pending": {}})
     offset = int(state.get("last_update_id") or 0) + 1
-    last_sync = 0
     last_persist = time.time()
     dirty = False
 
     while time.time() - started < seconds:
-        if time.time() - last_sync > 900:
-            try:
-                subprocess.run(["python3", str(ROOT / "update_trends.py")], check=False)
-                sync_panel()
-                dirty = True
-            except Exception as e:
-                print("sync error:", e, flush=True)
-            last_sync = time.time()
-
         try:
             updates = call("getUpdates", {
                 "offset": offset,
@@ -392,7 +388,6 @@ def poll(seconds=3300):
                 save(STATE, state)
                 dirty = True
 
-            # Persistencia desacoplada del clic: como máximo cada 10 s.
             if dirty and time.time() - last_persist >= 10:
                 persist_git("Actualizar estado TTendencias")
                 dirty = False
