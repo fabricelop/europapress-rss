@@ -36,7 +36,7 @@ jobs:
         if: always()
         run: |
           set -e
-          git add trends/telegram-bot-state.json trends/telegram-manual-explained.json
+          git add trends/telegram-bot-state.json trends/telegram-manual-explained.json trends/requests.json
           if git diff --cached --quiet; then
             echo "Sin cambios de estado."
             exit 0
