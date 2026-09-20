@@ -12,6 +12,9 @@ concurrency:
   group: telegram-emergency
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   send:
     runs-on: ubuntu-latest
