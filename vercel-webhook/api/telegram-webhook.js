@@ -3,6 +3,7 @@ const BRANCH = process.env.GITHUB_BRANCH || "main";
 const NEWS_QUEUE = "telegram/requests.json";
 const TRENDS_QUEUE = "trends/requests.json";
 const SR_QUEUE = "selorecordamos/requests.json";
+const EMERGENCY_QUEUE = "telegram/emergency-requests.json";
 
 function b64decode(s) { return Buffer.from((s || "").replace(/\n/g, ""), "base64").toString("utf8"); }
 function b64encode(s) { return Buffer.from(s, "utf8").toString("base64"); }
@@ -111,7 +112,13 @@ export default async function handler(req, res) {
       if (chatId !== allowedChat) return res.status(200).json({ ok: true });
       const data = cq.data || "";
 
-      if (data.startsWith("media:")) {
+      if (data.startsWith("emergency:")) {
+        const parts=data.split(":"); const action=parts[1]||""; const id=parts.slice(2).join(":")||"";
+        const stored=await appendRequest(requestObj(update,"emergency_action",action+"|"+id),EMERGENCY_QUEUE);
+        await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:action==="prepare"?"Preparar registrado.":action==="dismiss"?"Descartada.":"Confirmado."});
+        if (action==="prepare" || action==="dismiss") await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
+        return res.status(200).json({ok:true,stored});
+      } else if (data.startsWith("media:")) {
         const parts=data.split(":"); const action=parts[1]||""; const id=parts[2]||"";
         if (!/^(PREPARE|INTERESTING|DISMISS)$/.test(action) || !/^\d+$/.test(id)) {
           await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"Acción no válida."});
