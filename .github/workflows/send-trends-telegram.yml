@@ -91,7 +91,14 @@ jobs:
                   )
 
               name = trend_name(msg, visible_text)
-              key = hashlib.sha256(name.encode("utf-8")).hexdigest()[:12] if name else ""
+              related_trends = [
+                  str(x).strip() for x in msg.get("related_trends", [])
+                  if str(x).strip()
+              ]
+              if not related_trends and name:
+                  related_trends = [name]
+              key_basis = " | ".join(related_trends) if related_trends else name
+              key = hashlib.sha256(key_basis.encode("utf-8")).hexdigest()[:12] if key_basis else ""
 
               payload = {
                   "chat_id": chat_id,
@@ -147,11 +154,13 @@ jobs:
               if key:
                   state.setdefault("pending", {})[key] = {
                       "name": name,
+                      "related_trends": related_trends,
                       "message_id": sent["message_id"],
                       "chat_id": chat_id,
                   }
+                  related_norm = {norm(x) for x in related_trends}
                   for item in requests_doc.get("requests", []):
-                      if norm(item.get("name")) == norm(name) and item.get("status") == "preparing":
+                      if norm(item.get("name")) in related_norm and item.get("status") == "preparing":
                           item["status"] = "ready"
                           item["telegram_message_id"] = sent["message_id"]
 
