@@ -35,9 +35,9 @@ jobs:
           import datetime as dt, json, os, urllib.parse, urllib.request
           from pathlib import Path
           token=os.environ["TELEGRAM_BOT_TOKEN"]; allowed=str(os.environ["TELEGRAM_CHAT_ID"]); base=f"https://api.telegram.org/bot{token}"
-          state_path=Path("telegram/telegram-state.json"); req_path=Path("telegram/emergency-requests.json")
+          state_path=Path("telegram/telegram-state.json"); req_path=Path("telegram/emergency-requests.json"); events_path=Path("telegram/events.json"); proc_path=Path("telegram/editorial-processing.json")
           state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
-          q=json.loads(req_path.read_text(encoding="utf-8")) if req_path.exists() else {"requests":[]}; q.setdefault("requests",[])
+          q=json.loads(req_path.read_text(encoding="utf-8")) if req_path.exists() else {"requests":[]}; q.setdefault("requests",[])\n          events_doc=json.loads(events_path.read_text(encoding="utf-8")) if events_path.exists() else {"events":[]}\n          events=events_doc.get("events",[]) if isinstance(events_doc,dict) else events_doc\n          proc=json.loads(proc_path.read_text(encoding="utf-8")) if proc_path.exists() else {"items":[]}\n          proc.setdefault("items",[])
           def api(method,payload=None):
               data=json.dumps(payload).encode() if payload is not None else None
               h={"Content-Type":"application/json"} if data else {}
@@ -64,7 +64,7 @@ jobs:
               if action in ("prepare","dismiss") and idv:
                   mid=msg.get("message_id")
                   if not any(x.get("update_id")==uid for x in q["requests"]):
-                      q["requests"].append({"update_id":uid,"action":action,"id":idv,"at":now,"chat":chat,"message_id":mid})
+                      q["requests"].append({"update_id":uid,"action":action,"id":idv,"at":now,"chat":chat,"message_id":mid})\n                      ev=next((e for e in events if str(e.get("id"))==idv),None)\n                      if ev:\n                          ev["status"]="PROCESSING" if action=="prepare" else "DISMISSED"\n                          if action=="prepare" and not any(str(x.get("event_id"))==idv for x in proc["items"]):\n                              proc["items"].append({"event_id":idv,"title":ev.get("title",""),"url":ev.get("url",""),"sources":ev.get("sources",[]),"source_count":ev.get("source_count",len(ev.get("sources",[]))),"selected_at":now,"status":"PROCESSING"})
                   try: api("answerCallbackQuery",{"callback_query_id":cq["id"],"text":"✅ Registrado." if action=="prepare" else "🗑️ Descartada."})
                   except Exception as e: print("ack:",e)
                   if mid:
@@ -81,7 +81,7 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add telegram/emergency-requests.json telegram/telegram-state.json telegram/emergency-requests.json telegram/editorial-processing.json telegram/editorial-processing.json
+          git add telegram/emergency-requests.json telegram/telegram-state.json telegram/events.json telegram/editorial-processing.json
 
           if git diff --cached --quiet; then
             echo "Sin cambios."
@@ -95,7 +95,7 @@ jobs:
             git fetch origin main
             git rebase --abort 2>/dev/null || true
             git reset --soft origin/main
-            git add telegram/requests.json telegram/telegram-state.json telegram/emergency-requests.json telegram/editorial-processing.json
+            git add telegram/telegram-state.json telegram/emergency-requests.json telegram/events.json telegram/editorial-processing.json
             git commit -m "Procesar órdenes de Telegram" || true
             git push origin HEAD:main
           fi
