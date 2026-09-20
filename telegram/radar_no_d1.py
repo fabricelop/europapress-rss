@@ -26,11 +26,11 @@ SPORT_SOURCES=[
 ("EFE Deportes","https://efe.com/deportes/","html")
 ]
 SOURCE_FALLBACKS={
- "EFE":["https://efe.com/espana/","https://efe.com/"],
+ "EFE":["https://efe.com/espana/feed/","https://efe.com/espana/","https://efe.com/"],
  "AS":["https://as.com/ultimas-noticias/","https://as.com/"],
  "MARCA":["https://www.marca.com/","https://www.marca.com/futbol.html"],
  "Mundo Deportivo":["https://www.mundodeportivo.com/","https://www.mundodeportivo.com/futbol"],
- "SPORT":["https://www.sport.es/es/","https://www.sport.es/es/futbol/"]
+ "SPORT":["https://www.sport.es/es/","https://www.sport.es/es/futbol/"],\n "EFE Deportes":["https://efe.com/deportes/feed/","https://efe.com/deportes/"]
 }
 
 TOTAL_SOURCES=len(SOURCES)
@@ -102,12 +102,12 @@ def parse_source(src,url,kind,sport=False):
  for candidate in urls:
   try:
    body=get(candidate); out=[]
-   if kind=="json":
+   effective_kind="xml" if candidate.rstrip("/").endswith("/feed") or candidate.endswith("/feed/") else kind\n   if effective_kind=="json":
     j=json.loads(body);rows=j if isinstance(j,list) else j.get("items",[])
     for x in rows[:120]:
      t=str(x.get("title") or x.get("titulo") or "").strip();u=str(x.get("url") or x.get("link") or "")
      if t and u and (not sport or sport_important(t)):out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"})
-   elif kind=="xml":
+   elif effective_kind=="xml":
     for b in re.findall(r"<(?:item|entry)\\b[\\s\\S]*?</(?:item|entry)>",body,re.I)[:100]:
      tm=re.search(r"<title[^>]*>([\\s\\S]*?)</title>",b,re.I)
      lm=re.search(r"<link[^>]*href=[\"']([^\"']+)",b,re.I) or re.search(r"<link[^>]*>([\\s\\S]*?)</link>",b,re.I)
