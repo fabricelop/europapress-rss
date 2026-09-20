@@ -137,13 +137,21 @@ def panel_keyboard():
         else:
             mark = "🔴"
 
-        callback = f"trend:{rank}"
-        rows.append([
-            {"text": mark, "callback_data": callback},
-            {"text": str(rank), "callback_data": callback},
-            {"text": (name[:45] + "⠀⠀⠀⠀⠀⠀"), "callback_data": callback},
-        ])
+        # Una sola celda por fila: visualmente mantiene estado | nº | tendencia,
+        # pero Telegram cede todo el ancho restante al nombre.
+        label = f"{mark}  {rank:>2}   {name}"
+        rows.append([{
+            "text": label[:64],
+            "callback_data": f"trend:{rank}",
+        }])
     return {"inline_keyboard": rows}
+
+
+def unpin_panels(chat_id):
+    try:
+        call("unpinAllChatMessages", {"chat_id": chat_id})
+    except Exception as e:
+        print("No se pudieron desanclar mensajes:", e, flush=True)
 
 
 def delete_panel(chat_id, message_id):
@@ -184,6 +192,8 @@ def sync_panel(force_new=False):
     if not chat_id:
         return False
 
+    unpin_panels(chat_id)
+
     payload = {
         "chat_id": chat_id,
         "text": panel_text(),
@@ -212,15 +222,6 @@ def sync_panel(force_new=False):
     state["panel_message_id"] = new_mid
     state["panel_message_ids"] = [new_mid]
     save(STATE, state)
-
-    try:
-        call("pinChatMessage", {
-            "chat_id": chat_id,
-            "message_id": new_mid,
-            "disable_notification": True,
-        })
-    except Exception as e:
-        print("No se pudo fijar el panel:", e, flush=True)
 
     return True
 
