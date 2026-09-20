@@ -55,52 +55,20 @@ jobs:
           print(f"recent.json creado con {len(items)} noticias")
           PY
 
-      - name: Refrescar TTendencias España
-        run: |
-          set -e
-          HOUR=$(TZ=Europe/Madrid date +%H)
-          if [ "$HOUR" -lt 6 ] || [ "$HOUR" -gt 23 ]; then
-            echo "Fuera de la franja de TTendencias."
-            exit 0
-          fi
-          for intento in 1 2 3; do
-            if python trends/update_trends.py; then
-              python3 <<'PY'
-          import json
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-          p = json.load(open('trends/recent.json', encoding='utf-8'))
-          captured = datetime.fromisoformat(p['captured_at'])
-          now = datetime.now(ZoneInfo('Europe/Madrid'))
-          age = (now - captured).total_seconds()
-          if age < 0 or age > 600:
-              raise SystemExit(f"Snapshot TTendencias no fresco: {age:.0f}s")
-          if len(p.get('top10', [])) != 10:
-              raise SystemExit('Top 10 TTendencias incompleto')
-          print(f"TTendencias actualizado: {age:.0f}s de antigüedad")
-          PY
-              exit 0
-            fi
-            echo "Captura TTendencias fallida; reintentando ($intento/3)..."
-            sleep $((intento * 5))
-          done
-          echo "ERROR: no se pudo refrescar TTendencias."
-          exit 1
-
       - name: Guardar cambios sin pisar otros procesos
         run: |
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add feed.xml latest.json recent.json state.json archive/ trends/recent.json
+          git add feed.xml latest.json recent.json state.json archive/
 
           if git diff --cached --quiet; then
             echo "No hay cambios."
             exit 0
           fi
 
-          git commit -m "Actualizar archivo Europa Press y TTendencias"
+          git commit -m "Actualizar archivo Europa Press"
 
           # Otro proceso (Telegram, TTiTTulares o TTendencias) puede haber escrito en main
           # mientras se actualizaban los datos. Rebasamos antes de publicar y reintentamos.
