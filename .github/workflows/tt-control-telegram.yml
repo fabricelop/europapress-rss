@@ -51,8 +51,11 @@ jobs:
           if bridge_token:
               try:
                   reqs=urllib.request.Request("https://tt-control.fabricelop.workers.dev/api/telegram-credentials",data=json.dumps({"token":token,"chat_id":chat}).encode(),headers={"Content-Type":"application/json","Authorization":"Bearer "+bridge_token})
-                  with urllib.request.urlopen(reqs,timeout=15) as rr: print("Telegram credentials sync:",rr.read().decode())
-              except Exception as e: print("Telegram credentials sync failed:",e)
+                  with urllib.request.urlopen(reqs,timeout=15) as rr:
+                      sync_body=rr.read().decode(); print("Telegram credentials sync:",sync_body)
+                      state["credential_sync_ok"]=True
+              except Exception as e:
+                  state["credential_sync_ok"]=False; state["credential_sync_error"]=str(e); print("Telegram credentials sync failed:",e)
           webhook_url="https://tt-control.fabricelop.workers.dev/api/telegram-webhook"
           # Re-registering on each pager run also lets us capture Telegram's current delivery error below.
           wh_secret=os.environ.get("TELEGRAM_WEBHOOK_SECRET","").strip()
