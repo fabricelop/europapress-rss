@@ -9,7 +9,6 @@ on:
     paths:
       - ".github/workflows/telegram-input.yml"
       - "telegram/input-trigger.txt"
-      - "telegram/input-trigger-force.txt"
 
 permissions:
   contents: write
@@ -61,8 +60,7 @@ jobs:
               return out.get("result")
           off=int(state.get("offset",0) or 0)
           params=urllib.parse.urlencode({"offset":off,"timeout":0,"allowed_updates":json.dumps(["callback_query"])})
-          with urllib.request.urlopen(f"{base}/getUpdates?{params}",timeout=30) as r:
-              ups=json.loads(r.read().decode()).get("result",[])
+          with urllib.request.urlopen(f"{base}/getUpdates?{params}",timeout=30) as r: ups=json.loads(r.read().decode()).get("result",[])
           now=dt.datetime.now(dt.timezone.utc).isoformat()
           for u in ups:
               uid=u["update_id"]; state["offset"]=max(int(state.get("offset",0) or 0),uid+1)
@@ -94,36 +92,18 @@ jobs:
                       ev=next((e for e in events if str(e.get("id"))==idv),None)
                       if ev:
                           ev["status"]="PROCESSING" if action=="prepare" else "DISMISSED"
-                      if action=="prepare" and not any(str(x.get("event_id"))==idv for x in proc["items"]):
-                          # El radar puede haber actualizado events.json en una ejecución concurrente.
-                          # Si el callback ya trae un id válido pero el evento no está en este checkout,
-                          # conservar la selección y recuperarla por id desde el estado actual antes de perderla.
-                          if not ev:
-                              try:
-                                  raw=urllib.request.urlopen("https://raw.githubusercontent.com/fabricelop/europapress-rss/main/telegram/events.json?t="+str(uid),timeout=15).read().decode()
-                                  latest=load_json(Path("telegram/events.json"),{"events":[]})
-                                  latest=json.loads(raw)
-                                  lev=latest.get("events",[]) if isinstance(latest,dict) else latest
-                                  ev=next((e for e in lev if str(e.get("id"))==idv),None)
-                              except Exception as e: print("lookup latest event:",e)
-                          if ev:
+                          if action=="prepare" and not any(str(x.get("event_id"))==idv for x in proc["items"]):
                               proc["items"].append({"event_id":idv,"title":ev.get("title",""),"url":ev.get("url",""),"sources":ev.get("sources",[]),"source_count":ev.get("source_count",len(ev.get("sources",[]))),"selected_at":now,"status":"PROCESSING"})
-                          else:
-                              print("PREPARAR registrado pero evento no localizado:",idv)
                   try: api("answerCallbackQuery",{"callback_query_id":cq["id"],"text":"✅ Registrado." if action=="prepare" else "🗑️ Descartada."})
                   except Exception as e: print("ack:",e)
                   if mid:
                       try: api("deleteMessage",{"chat_id":allowed,"message_id":mid})
                       except Exception as e: print("delete:",e)
           q["requests"]=q["requests"][-200:]
-          state_path.write_text(json.dumps(state,ensure_ascii=False,separators=(",",":"))+"
-",encoding="utf-8")
-          req_path.write_text(json.dumps(q,ensure_ascii=False,separators=(",",":"))+"\
-",encoding="utf-8")
-          events_path.write_text(json.dumps(events_doc,ensure_ascii=False,indent=2)+"\
-",encoding="utf-8")
-          proc_path.write_text(json.dumps(proc,ensure_ascii=False,indent=2)+"\
-",encoding="utf-8")
+          state_path.write_text(json.dumps(state,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
+          req_path.write_text(json.dumps(q,ensure_ascii=False,separators=(",",":"))+"\\n",encoding="utf-8")
+          events_path.write_text(json.dumps(events_doc,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+          proc_path.write_text(json.dumps(proc,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
           print("Callbacks:",len(ups),"offset:",state.get("offset",0))
           PY
 
