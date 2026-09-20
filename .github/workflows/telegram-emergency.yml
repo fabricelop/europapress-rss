@@ -26,7 +26,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python3 <<'PY'
-          import json, os, re, urllib.parse, urllib.request
+          import json, os, urllib.parse, urllib.request
           with open("telegram/emergency.json", encoding="utf-8") as f:
               data=json.load(f)
           token=os.environ["TELEGRAM_BOT_TOKEN"]
@@ -53,10 +53,17 @@ jobs:
                   print("Ya enviado, se omite",key)
                   continue
               text=str(m.get("text","")).replace("\\\\n","\\n").strip()
-              # Cinturón de seguridad visual: todo mensaje de remate A/B/C debe llevar 🌶️.
-              mm=re.match(r"^(?:🌶️\\s*)?([ABC]\\))\\s*(.*)$",text)
-              if mm:
-                  text="🌶️ "+mm.group(1)+" "+mm.group(2).strip()
+              # Cinturón de seguridad visual: todo remate A/B/C debe llevar 🌶️,
+              # tanto en Telegram como dentro del texto que se abre en X.
+              remate_label=None
+              normalized=text
+              if normalized.startswith("🌶️"):
+                  normalized=normalized[len("🌶️"):].lstrip()
+              for candidate in ("A)","B)","C)"):
+                  if normalized.startswith(candidate):
+                      remate_label=candidate
+                      text="🌶️ "+normalized
+                      break
               # Los botones PUBLICAR deben llevar siempre un tuit completo <= 280.
               # Si una variante excede el límite, recorta solo el texto del intent, nunca el mensaje editorial.
               for row in m.get("buttons", []):
@@ -66,6 +73,12 @@ jobs:
                       if "twitter.com/intent/tweet?text=" in u or "x.com/intent/post?text=" in u:
                           parts=urllib.parse.urlsplit(u); qs=urllib.parse.parse_qs(parts.query)
                           tw=(qs.get("text") or [""])[0]
+                          if remate_label and ("🌶️ "+remate_label) not in tw:
+                              if (" "+remate_label) in tw:
+                                  tw=tw.replace(" "+remate_label," 🌶️ "+remate_label,1)
+                              elif tw.startswith(remate_label):
+                                  tw="🌶️ "+tw
+                              b["url"]=urllib.parse.urlunsplit((parts.scheme,parts.netloc,parts.path,urllib.parse.urlencode({"text":tw}),parts.fragment))
                           if len(tw)>280:
                               tw=tw[:279].rstrip()+"…"
                               b["url"]=urllib.parse.urlunsplit((parts.scheme,parts.netloc,parts.path,urllib.parse.urlencode({"text":tw}),parts.fragment))
