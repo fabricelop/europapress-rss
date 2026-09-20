@@ -25,7 +25,7 @@ def items():
  out=[]
  for src,url,kind in SOURCES:
   try:
-   body=get(url)
+   body=get(url); healthy.append(src)
    if kind=="json":
     j=json.loads(body); rows=j if isinstance(j,list) else j.get("items",[])
     for x in rows[:80]:
@@ -55,7 +55,7 @@ except json.JSONDecodeError:
 ev=state.get("events",[])
 now=datetime.now(timezone.utc); cutoff=now-timedelta(hours=24)
 ev=[e for e in ev if e.get("status") in ("PREPARED","EVALUATE","PUBLISHED","DISMISSED") or datetime.fromisoformat(e["last_seen"].replace("Z","+00:00"))>=cutoff]
-for src,title,url in items():
+rows,healthy_sources=items()\nactive_den=max(1,len(set(healthy_sources)))\nprint("SOURCES_OK",active_den,sorted(set(healthy_sources)))\nfor src,title,url in rows:
  best=None;bs=0
  for e in ev:
   s=score(title,e["title"])
@@ -78,7 +78,7 @@ def send(e,status):
  urllib.request.urlopen(req,timeout=15).read()
 for e in ev:
  n=len(set(e["sources"]));e["source_count"]=n
- target="PREPARED" if n>=5 else ("EVALUATE" if n>=3 else "NEW")
+ target="PREPARED" if n>=min(5,active_den) else ("EVALUATE" if n>=min(3,active_den) else "NEW")
  if e.get("status")=="NEW" and target!="NEW":
   e["status"]=target
   if not e.get("notified"):
