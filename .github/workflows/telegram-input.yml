@@ -61,6 +61,18 @@ jobs:
                   p=data.split(":"); action=p[1] if len(p)>1 else ""; idv=":".join(p[2:])
               elif data.startswith("prepare:"):
                   action="prepare"; idv=data.split(":",1)[1]
+              if data=="delete:message" or data.startswith("dg:"):
+                  mids=[]
+                  if data.startswith("dg:"):
+                      mids=[int(x) for x in data[3:].split(",") if x.isdigit()]
+                  elif msg.get("message_id"):
+                      mids=[int(msg["message_id"])]
+                  try: api("answerCallbackQuery",{"callback_query_id":cq["id"],"text":"🗑️ Borrado."})
+                  except Exception as e: print("ack delete:",e)
+                  for mid in mids:
+                      try: api("deleteMessage",{"chat_id":allowed,"message_id":mid})
+                      except Exception as e: print("delete",mid,e)
+                  continue
               if action in ("prepare","dismiss") and idv:
                   mid=msg.get("message_id")
                   if not any(x.get("update_id")==uid for x in q["requests"]):
