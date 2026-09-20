@@ -22,7 +22,7 @@ def score(a,b):
  if not A or not B:return 0
  inter=len(A&B); return max(inter/max(1,min(len(A),len(B))),inter/max(1,len(A|B)))
 def items():
- out=[]
+ out=[]; healthy=[]
  for src,url,kind in SOURCES:
   try:
    body=get(url); healthy.append(src)
@@ -44,7 +44,7 @@ def items():
       if u.startswith("http"):out.append((src,t,u));n+=1
       if n>=35:break
   except Exception as e: print("SOURCE_FAIL",src,str(e))
- return out
+ return out,healthy
 statep=Path("telegram/events.json")
 raw=statep.read_text(encoding="utf-8").strip()
 try:
