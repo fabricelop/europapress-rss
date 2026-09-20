@@ -209,13 +209,22 @@ export default async function handler(req, res) {
       const added = await appendRequest(requestObj(update, "run", "Ejecuta ahora un boletín manual de TTiTTulares.", true), NEWS_QUEUE);
       if (added) await safeTelegram("sendMessage", { chat_id: allowedChat, text: "▶️ Solicitud de boletín registrada." });
     } else if (!text.startsWith("/")) {
-      const storedText = replyText ? `Instrucción: ${text}\nMensaje al que responde:\n${replyText}` : text;
-      const queuePath = replyText && isTrendMessage(replyText) ? TRENDS_QUEUE : NEWS_QUEUE;
-      const added = await appendRequest(requestObj(update, "instruction", storedText), queuePath);
-      if (added) await safeTelegram("sendMessage", {
-        chat_id: allowedChat,
-        text: queuePath === TRENDS_QUEUE ? "🟣 Instrucción TTendencias guardada." : "📝 Instrucción guardada para la próxima ejecución.",
-      });
+      if (replyText && isTrendMessage(replyText)) {
+        const storedText=`Instrucción: ${text}\nMensaje al que responde:\n${replyText}`;
+        const added=await appendRequest(requestObj(update,"instruction",storedText),TRENDS_QUEUE);
+        if(added) await safeTelegram("sendMessage",{chat_id:allowedChat,text:"🟣 Instrucción TTendencias guardada."});
+      } else if (replyText) {
+        const contextual=text+"\n\nContexto del mensaje respondido:\n"+replyText;
+        const rr=await fetch("https://tt-control.fabricelop.workers.dev/api/control",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({text:contextual})});
+        if(rr.ok) await safeTelegram("sendMessage",{chat_id:allowedChat,text:"📝 Instrucción guardada para esta noticia."});
+      } else {
+        const rr=await fetch("https://tt-control.fabricelop.workers.dev/api/news/manual",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({title:text,url:""})});
+        if(rr.ok){
+          await safeTelegram("sendMessage",{chat_id:allowedChat,text:"✅ Noticia añadida a Elaborando."});
+          const dispatch=await fetch("https://api.github.com/repos/fabricelop/tt-control/actions/workflows/tt-control-bridge.yml/dispatches",{method:"POST",headers:{accept:"application/vnd.github+json",authorization:"Bearer "+process.env.GITHUB_TOKEN,"x-github-api-version":"2022-11-28","user-agent":"tt-control-telegram-webhook"},body:JSON.stringify({ref:"main"})});
+          if(!dispatch.ok) console.error("TT Control immediate dispatch failed",dispatch.status,await dispatch.text());
+        } else await safeTelegram("sendMessage",{chat_id:allowedChat,text:"No se pudo añadir la noticia a Elaborando."});
+      }
     }
     return res.status(200).json({ ok: true });
   } catch (e) {
