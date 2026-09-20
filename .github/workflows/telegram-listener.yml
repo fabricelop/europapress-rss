@@ -1,0 +1,33 @@
+name: TT Control Telegram continuo
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - "telegram/listener-trigger.txt"
+      - ".github/workflows/telegram-listener.yml"
+      - "telegram/telegram_listener.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tt-control-telegram-continuo
+  cancel-in-progress: true
+
+jobs:
+  listener:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Escuchar Telegram y ejecutar barridos
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python3 telegram/telegram_listener.py
