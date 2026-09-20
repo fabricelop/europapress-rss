@@ -37,10 +37,19 @@ jobs:
           token=os.environ["TELEGRAM_BOT_TOKEN"]; allowed=str(os.environ["TELEGRAM_CHAT_ID"]); base=f"https://api.telegram.org/bot{token}"
           state_path=Path("telegram/telegram-state.json"); req_path=Path("telegram/emergency-requests.json"); events_path=Path("telegram/events.json"); proc_path=Path("telegram/editorial-processing.json")
           state=json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
-          q=json.loads(req_path.read_text(encoding="utf-8")) if req_path.exists() else {"requests":[]}; q.setdefault("requests",[])
-          events_doc=json.loads(events_path.read_text(encoding="utf-8")) if events_path.exists() else {"events":[]}
+          def load_json(path, default):
+              if not path.exists(): return default
+              raw=path.read_text(encoding="utf-8").strip()
+              dec=json.JSONDecoder()
+              try: return json.loads(raw)
+              except json.JSONDecodeError:
+                  obj,_=dec.raw_decode(raw)
+                  print("Aviso: JSON con datos extra reparado:",path)
+                  return obj
+          q=load_json(req_path,{"requests":[]}); q.setdefault("requests",[])
+          events_doc=load_json(events_path,{"events":[]})
           events=events_doc.get("events",[]) if isinstance(events_doc,dict) else events_doc
-          proc=json.loads(proc_path.read_text(encoding="utf-8")) if proc_path.exists() else {"items":[]}
+          proc=load_json(proc_path,{"items":[]})
           proc.setdefault("items",[])
           def api(method,payload=None):
               data=json.dumps(payload).encode() if payload is not None else None
