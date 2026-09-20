@@ -75,12 +75,18 @@ jobs:
               elif data.startswith("prepare:"):
                   action="prepare"; idv=data.split(":",1)[1]
               if data.startswith("dg:"):
+                  # Igual que PREPARAR: el callback recibido por polling ejecuta
+                  # directamente deleteMessage sobre el mismo chat.
                   mids=[int(x) for x in data[3:].split(",") if x.isdigit()]
-                  try: api("answerCallbackQuery",{"callback_query_id":cq["id"],"text":"🗑️ Borrado."})
-                  except Exception as e: print("ack delete:",e)
+                  current=msg.get("message_id")
+                  if current and current not in mids: mids.append(int(current))
+                  deleted=0
                   for mid in mids:
-                      try: api("deleteMessage",{"chat_id":allowed,"message_id":mid})
+                      try:
+                          api("deleteMessage",{"chat_id":allowed,"message_id":mid}); deleted+=1
                       except Exception as e: print("delete",mid,e)
+                  try: api("answerCallbackQuery",{"callback_query_id":cq["id"],"text":f"🗑️ Borrados {deleted} mensajes."})
+                  except Exception as e: print("ack delete:",e)
                   continue
               if action in ("prepare","dismiss") and idv:
                   mid=msg.get("message_id")
