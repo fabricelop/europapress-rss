@@ -80,9 +80,19 @@ jobs:
           # Attach one BORRAR TODO button to the final message of each group,
           # now that all real Telegram message_ids are known.
           for group, entries in groups.items():
-              ids=[str(mid) for mid,_ in entries if mid]
-              if not ids: continue
-              mid,last=entries[-1]
+              # Include message_ids already persisted by previous partial runs,
+              # so retries can rebuild BORRAR TODO without resending messages.
+              current={str(m.get("id") or m.get("text","")):m for _,m in entries}
+              ordered=[]
+              for m in data.get("messages", []):
+                  if str(m.get("group") or "").strip()!=group: continue
+                  key=str(m.get("id") or m.get("text",""))
+                  old_item=sent_map.get(key,{})
+                  mid=old_item.get("message_id")
+                  if mid: ordered.append((mid,m))
+              if not ordered: continue
+              ids=[str(mid) for mid,_ in ordered if mid]
+              mid,last=ordered[-1]
               keyboard=[]
               for row_items in last.get("buttons", []):
                   items=row_items if isinstance(row_items,list) else [row_items]
