@@ -141,7 +141,7 @@ def panel_keyboard():
         rows.append([
             {"text": mark, "callback_data": callback},
             {"text": str(rank), "callback_data": callback},
-            {"text": name[:45], "callback_data": callback},
+            {"text": (name[:45] + "⠀⠀⠀⠀⠀⠀"), "callback_data": callback},
         ])
     return {"inline_keyboard": rows}
 
