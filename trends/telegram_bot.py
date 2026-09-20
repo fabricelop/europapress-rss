@@ -82,12 +82,9 @@ def call(method, payload=None):
 
 
 def known_explained():
+    # En el nuevo flujo de Telegram solo cuentan como explicadas
+    # las tendencias marcadas mediante este propio bot.
     names = set()
-    data = load(EXPLAINED, {})
-    for item in data.get("items", []):
-        value = item.get("display_name") or item.get("term_normalized")
-        if value:
-            names.add(norm(value))
     manual = load(MANUAL, {"items": []})
     for item in manual.get("items", []):
         if item.get("name"):
