@@ -30,13 +30,21 @@ jobs:
           chat=os.environ["TELEGRAM_CHAT_ID"]
           api=f"https://api.telegram.org/bot{token}/sendMessage"
           edit_api=f"https://api.telegram.org/bot{token}/editMessageReplyMarkup"
+          state_file="telegram/emergency-sent.json"
+          try:
+              with open(state_file,encoding="utf-8") as f: old=json.load(f)
+          except Exception:
+              old={"messages":[]}
+          sent_map={str(x.get("id")):x for x in old.get("messages",[]) if x.get("id")}
           seen=set()
-          sent=[]
           groups={}
           for m in data.get("messages", []):
               key=str(m.get("id") or m.get("text",""))
               if key in seen: continue
               seen.add(key)
+              if key in sent_map:
+                  print("Ya enviado, se omite",key)
+                  continue
               text=str(m.get("text","")).strip()
               if not text: continue
               payload={"chat_id":chat,"text":text,"disable_web_page_preview":True}
@@ -64,7 +72,7 @@ jobs:
                   out=json.loads(r.read().decode())
                   if not out.get("ok"): raise RuntimeError(out)
               mid=out.get("result",{}).get("message_id")
-              sent.append({"id":key,"message_id":mid})
+              sent_map[key]={"id":key,"message_id":mid,"group":str(m.get("group") or "").strip()}
               group=str(m.get("group") or "").strip()
               if group:
                   groups.setdefault(group,[]).append((mid,m))
@@ -92,7 +100,7 @@ jobs:
                   out=json.loads(rr.read().decode())
                   if not out.get("ok"): raise RuntimeError(out)
           with open("telegram/emergency-sent.json","w",encoding="utf-8") as f:
-              json.dump({"messages":sent},f,ensure_ascii=False,indent=2)
+              json.dump({"messages":list(sent_map.values())[-1000:]},f,ensure_ascii=False,indent=2)
               f.write("\\n")
           PY
 
