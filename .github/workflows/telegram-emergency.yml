@@ -34,8 +34,17 @@ jobs:
               if not text: continue
               payload={"chat_id":chat,"text":text,"disable_web_page_preview":True}
               keyboard=[]
-              for b in m.get("buttons", []):
-                  btn={"text":str(b.get("label","Acción"))}
+              for row_items in m.get("buttons", []):
+                  items=row_items if isinstance(row_items,list) else [row_items]
+                  row=[]
+                  for b in items:
+                      btn={"text":str(b.get("label") or b.get("text") or "Acción")}
+                      if b.get("url"): btn["url"]=b["url"]
+                      elif b.get("callback_data"): btn["callback_data"]=b["callback_data"]
+                      if len(btn)>1: row.append(btn)
+                  if row: keyboard.append(row)
+              for b in m.get("flat_buttons", []):
+                  btn={"text":str(b.get("label") or b.get("text") or "Acción")}
                   if b.get("url"): btn["url"]=b["url"]
                   elif b.get("callback_data"): btn["callback_data"]=b["callback_data"]
                   if len(btn)>1:
