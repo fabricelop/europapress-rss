@@ -257,6 +257,9 @@ def select_trend(callback):
             "reexplain": norm(term) in known_explained(),
         })
         save(REQUESTS, requests)
+
+    # Confirmamos el clic primero para que Telegram quite el spinner al instante.
+
     # Refresco visual inmediato del mismo panel pulsado.
     try:
         call("editMessageText", {
@@ -356,27 +359,46 @@ def poll(seconds=3300):
     state = load(STATE, {"chat_id": None, "panel_message_id": None, "last_update_id": 0, "pending": {}})
     offset = int(state.get("last_update_id") or 0) + 1
     last_sync = 0
+    last_persist = time.time()
+    dirty = False
+
     while time.time() - started < seconds:
         if time.time() - last_sync > 900:
             try:
                 subprocess.run(["python3", str(ROOT / "update_trends.py")], check=False)
                 sync_panel()
-                persist_git("Refrescar panel TTendencias")
+                dirty = True
             except Exception as e:
                 print("sync error:", e, flush=True)
             last_sync = time.time()
+
         try:
-            updates = call("getUpdates", {"offset": offset, "timeout": 25, "allowed_updates": ["message", "callback_query"]}) or []
+            updates = call("getUpdates", {
+                "offset": offset,
+                "timeout": 25,
+                "allowed_updates": ["message", "callback_query"],
+            }) or []
+
             for upd in updates:
                 offset = max(offset, int(upd["update_id"]) + 1)
                 handle(upd)
                 state = load(STATE, state)
                 state["last_update_id"] = int(upd["update_id"])
                 save(STATE, state)
-                persist_git()
+                dirty = True
+
+            # Persistencia desacoplada del clic: como máximo cada 10 s.
+            if dirty and time.time() - last_persist >= 10:
+                persist_git("Actualizar estado TTendencias")
+                dirty = False
+                last_persist = time.time()
+
         except Exception as e:
             print("poll error:", e, flush=True)
-            time.sleep(3)
+            time.sleep(2)
+
+    if dirty:
+        persist_git("Actualizar estado final TTendencias")
 
 
 if __name__ == "__main__":
