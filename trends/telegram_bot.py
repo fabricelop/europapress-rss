@@ -146,37 +146,82 @@ def panel_keyboard():
     return {"inline_keyboard": rows}
 
 
+def delete_panel(chat_id, message_id):
+    if not message_id:
+        return
+    try:
+        call("deleteMessage", {"chat_id": chat_id, "message_id": int(message_id)})
+    except Exception as e:
+        print(f"No se pudo borrar panel {message_id}:", e, flush=True)
+
+
+def cleanup_old_panels(state, keep=None):
+    chat_id = state.get("chat_id")
+    if not chat_id:
+        return
+    ids = set(state.get("panel_message_ids") or [])
+    current = state.get("panel_message_id")
+    if current:
+        ids.add(current)
+    # Paneles creados durante la puesta en marcha antes de guardar historial.
+    ids.update([4, 6, 8])
+    for mid in sorted(ids):
+        if keep is not None and int(mid) == int(keep):
+            continue
+        delete_panel(chat_id, mid)
+    state["panel_message_ids"] = [keep] if keep else []
+
+
 def sync_panel(force_new=False):
-    state = load(STATE, {"chat_id": None, "panel_message_id": None, "last_update_id": 0, "pending": {}})
+    state = load(STATE, {
+        "chat_id": None,
+        "panel_message_id": None,
+        "panel_message_ids": [],
+        "last_update_id": 0,
+        "pending": {}
+    })
     chat_id = state.get("chat_id")
     if not chat_id:
         return False
+
     payload = {
         "chat_id": chat_id,
         "text": panel_text(),
         "reply_markup": panel_keyboard(),
         "disable_web_page_preview": True,
     }
+
     mid = state.get("panel_message_id")
     if mid and not force_new:
         try:
-            call("editMessageText", {**payload, "message_id": mid})
+            call("editMessageText", {**payload, "message_id": int(mid)})
+            state["panel_message_ids"] = [int(mid)]
+            save(STATE, state)
             return True
         except Exception as e:
             if "message is not modified" in str(e).lower():
+                state["panel_message_ids"] = [int(mid)]
+                save(STATE, state)
                 return True
             print("No se pudo editar el panel existente:", e, flush=True)
+
+    # Si hay que crear uno nuevo, borramos primero todos los paneles anteriores.
+    cleanup_old_panels(state)
     msg = call("sendMessage", payload)
-    state["panel_message_id"] = msg["message_id"]
+    new_mid = int(msg["message_id"])
+    state["panel_message_id"] = new_mid
+    state["panel_message_ids"] = [new_mid]
     save(STATE, state)
+
     try:
         call("pinChatMessage", {
             "chat_id": chat_id,
-            "message_id": msg["message_id"],
+            "message_id": new_mid,
             "disable_notification": True,
         })
     except Exception as e:
         print("No se pudo fijar el panel:", e, flush=True)
+
     return True
 
 
