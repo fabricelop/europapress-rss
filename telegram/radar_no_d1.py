@@ -84,7 +84,6 @@ MATERIAL=set("muere muerto fallece fallecido dimite dimision detenido detencion 
 
 EVENTS=Path("telegram/events.json")
 PROCESSED=Path("telegram/processed-events.json")
-EDITORIAL=Path("telegram/editorial-processing.json")
 
 def utcnow(): return datetime.now(timezone.utc)
 def iso(d): return d.astimezone(timezone.utc).isoformat().replace("+00:00","Z")
@@ -264,23 +263,11 @@ def send_review(e,token,chat):
  req=urllib.request.Request("https://api.telegram.org/bot"+token+"/sendMessage",data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
  urllib.request.urlopen(req,timeout=15).read()
 
-def queue_editorial(e,editorial,kind):
- items=editorial.setdefault("items",[])
- existing=next((x for x in items if str(x.get("event_id"))==str(e["id"]) and x.get("status")=="PROCESSING"),None)
- if existing:return
- items.append({
-  "event_id":e["id"],"title":e["canonical_title"],"url":e["url"],"sources":e["sources"],
-  "source_count":e["source_count"],"selected_at":iso(utcnow()),"status":"PROCESSING",
-  "selection_mode":kind,"revision":int(e.get("revision",1)),
-  "update_context":e.get("update_context")
- })
-
 now=utcnow()
 events_doc=load(EVENTS,{"version":3,"events":[]})
 events=events_doc.get("events",[])
 processed_doc=load(PROCESSED,{"version":1,"events":[]})
 processed=processed_doc.get("events",[])
-editorial=load(EDITORIAL,{"news":[],"items":[]})
 
 # Migración suave de eventos antiguos.
 for e in events:
@@ -377,5 +364,5 @@ events_doc={"version":4,"configured_sources":TOTAL_SOURCES,"review_min_sources":
             "healthy_sport_sources":sorted(set(sport_healthy)),"source_failures":source_failures,
             "source_status":source_status,"source_recovery":source_recovery,"events":events}
 processed_doc={"version":1,"updated_at":iso(now),"events":processed}
-save(EVENTS,events_doc);save(PROCESSED,processed_doc);save(EDITORIAL,editorial)
+save(EVENTS,events_doc);save(PROCESSED,processed_doc)
 print("RESULT rows",len(rows),"active_events",len(events),"review_sent",sent,"auto_queued",0,"expired",expired)
