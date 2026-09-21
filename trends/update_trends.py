@@ -34,8 +34,8 @@ def clean(text):
 
 def clean_term(text):
     text = clean(text)
-    text = re.sub(r"\\s+N/?A$", "", text, flags=re.I)
-    text = re.sub(r"\\s+(?:Less than )?\\d+(?:[.,]\\d+)?[KMB]?\\s+(?:tweets|posts)$", "", text, flags=re.I)
+    text = re.sub(r"\s+N/?A$", "", text, flags=re.I)
+    text = re.sub(r"\s+(?:Less than )?\d+(?:[.,]\d+)?[KMB]?\s+(?:tweets|posts)$", "", text, flags=re.I)
     return text.strip()
 
 def term_key(text):
@@ -121,6 +121,31 @@ def page_update_hint(html):
             return clean(m.group(1))[:120]
     return None
 
+def hint_age_minutes(hint, now):
+    if not hint:
+        return None
+    m = re.search(r"(\d+)\s+(minutes?|hours?)\s+ago", hint, flags=re.I)
+    if m:
+        n = int(m.group(1))
+        return float(n if m.group(2).lower().startswith("minute") else n * 60)
+
+    value = re.sub(r"^(?:Last\s+)?Updated\s*:?\s*", "", hint, flags=re.I)
+    value = re.sub(r"^Trending now\s*", "", value, flags=re.I)
+    value = re.split(r"\s+#\s*Trend\b", value, maxsplit=1, flags=re.I)[0]
+    value = clean(value)
+    is_utc = bool(re.search(r"\bUTC\b", value, flags=re.I))
+    value = re.sub(r"\s+UTC\b", "", value, flags=re.I)
+    value = re.sub(r"\bat\b", "", value, flags=re.I)
+    value = clean(value)
+    for fmt in ("%B %d, %Y %I:%M %p", "%B %d, %Y %H:%M", "%b %d, %Y %H:%M"):
+        try:
+            tz = timezone.utc if is_utc else MADRID
+            dt = datetime.strptime(value, fmt).replace(tzinfo=tz).astimezone(MADRID)
+            return max(0.0, (now - dt).total_seconds() / 60)
+        except ValueError:
+            pass
+    return None
+
 def parse_ranked_table(html):
     soup = BeautifulSoup(html, "html.parser")
     candidates = []
@@ -178,7 +203,7 @@ def sane_trend_list(trends):
         return False
     bad = 0
     for item in trends[:20]:
-        if re.search(r"\\b(?:hour|hours|minute|minutes)\\s+ago\\b|\\bUTC\\b|^Updated\\b|^Last updated\\b", item, flags=re.I):
+        if re.search(r"\b(?:hour|hours|minute|minutes)\s+ago\b|\bUTC\b|^Updated\b|^Last updated\b", item, flags=re.I):
             bad += 1
     return bad < max(3, len(trends[:20]) // 3)
 
