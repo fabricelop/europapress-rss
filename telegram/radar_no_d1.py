@@ -115,7 +115,7 @@ def parse_source(src,url,kind,sport=False):
  for candidate in urls:
   try:
    body=get(candidate); out=[]
-   effective_kind="xml" if candidate.rstrip("/").endswith("/feed") or candidate.endswith("/feed/") else kind
+   effective_kind="xml" if (candidate.rstrip("/").endswith("/feed") or candidate.endswith("/feed/") or candidate.lower().endswith(".xml") or re.search(r"<(?:rss|feed)\\b",body[:1000],re.I)) else kind
    if effective_kind=="json":
     j=json.loads(body);rows=j if isinstance(j,list) else j.get("items",[])
     for x in rows[:120]:
