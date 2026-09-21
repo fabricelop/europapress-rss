@@ -285,7 +285,7 @@ def cleanup_old_panels(state, keep=None):
     if current:
         ids.add(current)
     # Paneles creados durante la puesta en marcha antes de guardar historial.
-    ids.update([4, 6, 8])
+    ids.update([4, 6, 8, 62])
     for mid in sorted(ids):
         if keep is not None and int(mid) == int(keep):
             continue
