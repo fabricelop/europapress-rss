@@ -36,22 +36,10 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-
           data = json.loads(Path("latest.json").read_text(encoding="utf-8"))
           items = data.get("items", [])[:200]
-
-          recent = {
-              "source": data.get("source"),
-              "generated_at": data.get("generated_at"),
-              "count": len(items),
-              "items": items,
-          }
-
-          Path("recent.json").write_text(
-              json.dumps(recent, ensure_ascii=False, separators=(",", ":")) + "\n",
-              encoding="utf-8",
-          )
-
+          recent = {"source": data.get("source"), "generated_at": data.get("generated_at"), "count": len(items), "items": items}
+          Path("recent.json").write_text(json.dumps(recent, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
           print(f"recent.json creado con {len(items)} noticias")
           PY
 
@@ -60,25 +48,22 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add feed.xml latest.json recent.json state.json archive/
-
           if ! git diff --cached --quiet; then
             git commit -m "Actualizar archivo Europa Press"
-
             for intento in 1 2 3 4; do
               git fetch origin main
-              git rebase origin/main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                echo "Conflicto concurrente en archivo Europa Press; reintentando desde main."
+                exit 1
+              fi
               if git push origin HEAD:main; then
                 echo "Cambios guardados correctamente (intento $intento)."
                 break
               fi
-              echo "Push concurrente detectado; reintentando ($intento/4)..."
               sleep $((intento * 2))
-              if [ "$intento" -eq 4 ]; then
-                echo "ERROR: no se pudo guardar tras 4 intentos."
-                exit 1
-              fi
+              if [ "$intento" -eq 4 ]; then exit 1; fi
             done
           else
             echo "No hay cambios de Europa Press."
@@ -90,34 +75,43 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
 
-      - name: Ejecutar barrido multifuente TTiTTulares
+      - name: Ejecutar y guardar barrido multifuente TTiTTulares
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python3 telegram/radar_no_d1.py
-
-      - name: Guardar estado editorial sin pisar otros procesos
         run: |
           set -e
-          git add telegram/events.json telegram/processed-events.json
-
-          if git diff --cached --quiet; then
-            echo "Barrido editorial sin cambios."
-            exit 0
-          fi
-
-          git commit -m "Actualizar barrido multifuente TTiTTulares"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           for intento in 1 2 3 4; do
+            # Siempre recalcular sobre el main más reciente. Así nunca se intenta
+            # fusionar dos snapshots completos de events/processed-events.
             git fetch origin main
-            git rebase origin/main
+            git reset --hard origin/main
+            python3 telegram/radar_no_d1.py
+            git add telegram/events.json telegram/processed-events.json telegram/editorial-processing.json
+
+            if git diff --cached --quiet; then
+              echo "Barrido editorial sin cambios."
+              exit 0
+            fi
+
+            git commit -m "Actualizar barrido multifuente TTiTTulares"
+            git fetch origin main
+            if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD^)" ]; then
+              echo "Estado concurrente detectado; recalculando barrido ($intento/4)..."
+              sleep $((intento * 2))
+              continue
+            fi
+
             if git push origin HEAD:main; then
               echo "Estado editorial guardado correctamente (intento $intento)."
               exit 0
             fi
-            echo "Push concurrente detectado al guardar radar; reintentando ($intento/4)..."
+            echo "Push concurrente; recalculando barrido ($intento/4)..."
             sleep $((intento * 2))
           done
 
-          echo "ERROR: no se pudo guardar el estado editorial tras 4 intentos."
+          echo "ERROR: no se pudo guardar el estado editorial tras 4 recálculos seguros."
           exit 1
