@@ -97,7 +97,17 @@ def persist_callback(update):
             if ev:
                 ev["status"]="PROCESSING" if action=="prepare" else "DISMISSED"
                 if action=="prepare" and not any(str(x.get("event_id"))==idv for x in proc["items"]):
-                    proc["items"].append({"event_id":idv,"title":ev.get("title",""),"url":ev.get("url",""),"sources":ev.get("sources",[]),"source_count":ev.get("source_count",len(ev.get("sources",[]))),"selected_at":now,"status":"PROCESSING"})
+                    proc["items"].append({
+                        "event_id":idv,
+                        "title":ev.get("canonical_title") or ev.get("title",""),
+                        "url":ev.get("url",""),
+                        "sources":ev.get("sources",[]),
+                        "sport_sources":ev.get("sport_sources",[]),
+                        "source_count":ev.get("source_count",len(ev.get("sources",[]))),
+                        "sport_source_count":ev.get("sport_source_count",len(ev.get("sport_sources",[]))),
+                        "selected_at":now,
+                        "status":"PROCESSING"
+                    })
             safe_ack(cq.get("id"),"🧠 Enviada a Elaborando." if action=="prepare" else "🗑️ Desestimada.")
             safe_delete(mid)
     q["requests"]=q["requests"][-200:]
