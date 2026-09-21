@@ -39,7 +39,7 @@ jobs:
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
           TTENDENCIAS_LISTEN_SECONDS: "3300"
-          TTENDENCIAS_REFRESH_SECONDS: "900"
+          TTENDENCIAS_REFRESH_SECONDS: "0"
         run: python3 trends/telegram_bot.py listen
 
       - name: Encadenar siguiente listener
