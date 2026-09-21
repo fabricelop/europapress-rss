@@ -2,11 +2,6 @@ name: Actualizar RSS Europa Press
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "telegram/radar-trigger.txt"
 
 permissions:
   contents: write
