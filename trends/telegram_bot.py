@@ -57,9 +57,9 @@ def load_remote_json(repo_path, default):
         return default
 
 def persist_git(message="Actualizar estado inmediato TTendencias", include_trends=False):
-    # Los callbacks de botones solo deben persistir su propio estado.
-    # recent/checkpoint los escribe el refresco de tendencias y mezclarlos aquí
-    # provoca conflictos y regresiones de color cuando hay workflows concurrentes.
+    # Persistencia con fusión semántica. Nunca hacemos rebase ciego de JSON:
+    # explained gana a ready/preparing y los estados internos del listener se
+    # fusionan sin pisar pending del emisor.
     paths = [
         "trends/requests.json",
         "trends/telegram-bot-state.json",
@@ -68,18 +68,54 @@ def persist_git(message="Actualizar estado inmediato TTendencias", include_trend
     ]
     if include_trends:
         paths = ["trends/recent.json", "trends/checkpoint.json", *paths]
-    subprocess.run(["git","add",*paths], check=False)
-    if subprocess.run(["git","diff","--cached","--quiet"], check=False).returncode == 0:
-        return
-    subprocess.run(["git","config","user.name","ttendencias-bot"], check=False)
-    subprocess.run(["git","config","user.email","actions@users.noreply.github.com"], check=False)
-    subprocess.run(["git","commit","-m",message], check=False)
-    pushed = subprocess.run(["git","push","origin","HEAD:main"], check=False).returncode == 0
-    if not pushed:
-        subprocess.run(["git","pull","--rebase","--autostash","origin","main"], check=False)
-        subprocess.run(["git","push","origin","HEAD:main"], check=False)
 
+    stamp = str(time.time_ns())
+    tmp = Path("/tmp") / f"ttendencias-{stamp}"
+    tmp.mkdir(parents=True, exist_ok=True)
 
+    local = {}
+    for rel in paths:
+        src = Path(rel)
+        if src.exists():
+            dst = tmp / src.name
+            dst.write_bytes(src.read_bytes())
+            local[rel] = dst
+
+    subprocess.run(["git", "config", "user.name", "ttendencias-bot"], check=False)
+    subprocess.run(["git", "config", "user.email", "actions@users.noreply.github.com"], check=False)
+
+    for attempt in range(3):
+        subprocess.run(["git", "fetch", "origin", "main"], check=False,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        if subprocess.run(["git", "reset", "--hard", "origin/main"], check=False).returncode != 0:
+            continue
+
+        if include_trends:
+            for rel in ("trends/recent.json", "trends/checkpoint.json"):
+                if rel in local:
+                    Path(rel).write_bytes(local[rel].read_bytes())
+
+        merge_cmd = ["python3", str(ROOT / "merge_runtime_state.py")]
+        if "trends/requests.json" in local:
+            merge_cmd += ["--local-requests", str(local["trends/requests.json"])]
+        if "trends/telegram-bot-state.json" in local:
+            merge_cmd += ["--local-state", str(local["trends/telegram-bot-state.json"])]
+        if "trends/telegram-listener-state.json" in local:
+            merge_cmd += ["--local-listener", str(local["trends/telegram-listener-state.json"])]
+        if "trends/telegram-manual-explained.json" in local:
+            merge_cmd += ["--local-manual", str(local["trends/telegram-manual-explained.json"])]
+        subprocess.run(merge_cmd, check=False)
+
+        subprocess.run(["git", "add", *paths], check=False)
+        if subprocess.run(["git", "diff", "--cached", "--quiet"], check=False).returncode == 0:
+            return True
+        if subprocess.run(["git", "commit", "-m", message], check=False).returncode != 0:
+            continue
+        if subprocess.run(["git", "push", "origin", "HEAD:main"], check=False).returncode == 0:
+            return True
+
+    print("No se pudo persistir estado TTendencias tras 3 intentos", flush=True)
+    return False
 
 def norm(s):
     return " ".join(str(s or "").split()).casefold()
