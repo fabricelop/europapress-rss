@@ -4,6 +4,11 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '8,38 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - "monitoring/build_status.py"
+      - ".github/workflows/project-status.yml"
 
 permissions:
   contents: write
