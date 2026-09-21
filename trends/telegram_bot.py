@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parent
 RECENT = ROOT / "recent.json"
 EXPLAINED = ROOT / "explained.json"
 STATE = ROOT / "telegram-bot-state.json"
+LISTENER_STATE = ROOT / "telegram-listener-state.json"
 MANUAL = ROOT / "telegram-manual-explained.json"
 REQUESTS = ROOT / "requests.json"
 
@@ -62,6 +63,7 @@ def persist_git(message="Actualizar estado inmediato TTendencias", include_trend
     paths = [
         "trends/requests.json",
         "trends/telegram-bot-state.json",
+        "trends/telegram-listener-state.json",
         "trends/telegram-manual-explained.json",
     ]
     if include_trends:
@@ -195,7 +197,7 @@ def trend_statuses():
 
 
 def panel_keyboard():
-    state = load(STATE, {})
+    state = load(LISTENER_STATE, {})
     selected = {int(x) for x in state.get("batch_selection", []) if str(x).isdigit()}
     rows = []
     for item in trend_statuses():
@@ -220,15 +222,17 @@ def send_new_status_alerts(state):
     if not chat_id:
         return
 
+    listener_state = load(LISTENER_STATE, {})
     current_items = trend_statuses()
-    previous = state.get("alert_status_snapshot")
+    previous = listener_state.get("alert_status_snapshot")
 
     # Primera ejecución tras activar la función: fijamos una línea base para
     # no enviar de golpe alertas por tendencias que ya estaban en la tabla.
     if previous is None:
-        state["alert_status_snapshot"] = {
+        listener_state["alert_status_snapshot"] = {
             item["key"]: item["status"] for item in current_items
         }
+        save(LISTENER_STATE, listener_state)
         return
 
     for item in current_items:
@@ -258,9 +262,10 @@ def send_new_status_alerts(state):
         except Exception as e:
             print("No se pudo enviar alerta TTendencias:", e, flush=True)
 
-    state["alert_status_snapshot"] = {
+    listener_state["alert_status_snapshot"] = {
         item["key"]: item["status"] for item in current_items
     }
+    save(LISTENER_STATE, listener_state)
 
 
 def unpin_panels(chat_id):
@@ -395,14 +400,14 @@ def toggle_trend(callback):
         })
         return
 
-    state = load(STATE, {})
+    state = load(LISTENER_STATE, {})
     selected = {int(x) for x in state.get("batch_selection", []) if str(x).isdigit()}
     if rank in selected:
         selected.remove(rank)
     else:
         selected.add(rank)
     state["batch_selection"] = sorted(selected)
-    save(STATE, state)
+    save(LISTENER_STATE, state)
     try:
         call("answerCallbackQuery", {"callback_query_id": callback["id"]})
     except Exception:
@@ -412,7 +417,7 @@ def toggle_trend(callback):
 
 def submit_batch(callback, with_image=False):
     _, items = current()
-    state = load(STATE, {})
+    state = load(LISTENER_STATE, {})
     selected = sorted({int(x) for x in state.get("batch_selection", []) if str(x).isdigit()})
     chosen = [x for x in items if int(x["rank"]) in selected]
     if not chosen:
@@ -463,7 +468,7 @@ def submit_batch(callback, with_image=False):
     requests["requests"] = list(by_id.values())
     save(REQUESTS, requests)
     state["batch_selection"] = []
-    save(STATE, state)
+    save(LISTENER_STATE, state)
     # Persistir inmediatamente la cola: si el listener termina o un workflow
     # hace checkout después, no se pierde ni el lote ni with_image.
     persist_git("Encolar lote TTendencias" + (" con imagen" if with_image else ""))
@@ -478,9 +483,9 @@ def submit_batch(callback, with_image=False):
 
 
 def cancel_batch(callback):
-    state = load(STATE, {})
+    state = load(LISTENER_STATE, {})
     state["batch_selection"] = []
-    save(STATE, state)
+    save(LISTENER_STATE, state)
     try:
         call("answerCallbackQuery", {"callback_query_id": callback["id"], "text": "Selección cancelada"})
     except Exception:
@@ -714,13 +719,13 @@ def handle(update):
 
 def poll(seconds=3300):
     started = time.time()
-    state = load(STATE, {"chat_id": None, "panel_message_id": None, "last_update_id": 0, "pending": {}})
-    offset = int(state.get("last_update_id") or 0) + 1
+    listener_state = load(LISTENER_STATE, {"last_update_id": 0, "batch_selection": []})
+    offset = int(listener_state.get("last_update_id") or 0) + 1
     last_persist = time.time()
     # El listener es también el reloj fiable del panel: refresca al arrancar
     # y después cada 15 minutos aunque el cron de GitHub se retrase o falle.
-    refresh_interval = int(os.environ.get("TTENDENCIAS_REFRESH_SECONDS", "900"))
-    next_refresh = 0.0
+    refresh_interval = int(os.environ.get("TTENDENCIAS_REFRESH_SECONDS", "0"))
+    next_refresh = (time.time() + refresh_interval) if refresh_interval > 0 else float("inf")
     dirty = False
 
     while time.time() - started < seconds:
@@ -745,9 +750,9 @@ def poll(seconds=3300):
             for upd in updates:
                 offset = max(offset, int(upd["update_id"]) + 1)
                 handle(upd)
-                state = load(STATE, state)
-                state["last_update_id"] = int(upd["update_id"])
-                save(STATE, state)
+                listener_state = load(LISTENER_STATE, listener_state)
+                listener_state["last_update_id"] = int(upd["update_id"])
+                save(LISTENER_STATE, listener_state)
                 dirty = True
 
             if dirty and time.time() - last_persist >= 10:
