@@ -1,25 +1,26 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-21T01:47:37+02:00",
+  "captured_at": "2026-09-21T03:33:31+02:00",
   "primary_source": "consensus",
   "sources_used": [
     "trends24",
+    "getdaytrends",
     "tweets24"
   ],
-  "source_count": 2,
-  "reliability": "medium",
+  "source_count": 3,
+  "reliability": "high",
   "top10": [
     "#ConexiónHonduras2",
     "#ElChiringuitoenCuatro",
+    "Asraf",
+    "Yola",
     "Berlín",
-    "Mestalla",
-    "Mourinho",
-    "Mayol",
     "Die Linke",
-    "Aimar",
+    "Ivana",
     "#Gala4Bailamos",
-    "Otorbi"
+    "Mestalla",
+    "Mourinho"
   ],
   "items": [
     {
@@ -32,93 +33,109 @@
     },
     {
       "rank": 3,
-      "name": "Berlín"
+      "name": "Asraf"
     },
     {
       "rank": 4,
-      "name": "Mestalla"
+      "name": "Yola"
     },
     {
       "rank": 5,
-      "name": "Mourinho"
+      "name": "Berlín"
     },
     {
       "rank": 6,
-      "name": "Mayol"
-    },
-    {
-      "rank": 7,
       "name": "Die Linke"
     },
     {
-      "rank": 8,
-      "name": "Aimar"
+      "rank": 7,
+      "name": "Ivana"
     },
     {
-      "rank": 9,
+      "rank": 8,
       "name": "#Gala4Bailamos"
     },
     {
+      "rank": 9,
+      "name": "Mestalla"
+    },
+    {
       "rank": 10,
-      "name": "Otorbi"
+      "name": "Mourinho"
     }
   ],
-  "unchanged_from_previous": true,
+  "unchanged_from_previous": false,
   "sources": {
     "trends24": {
       "ok": true,
       "trends": [
         "#ConexiónHonduras2",
         "#ElChiringuitoenCuatro",
+        "Asraf",
+        "Yola",
         "Berlín",
+        "Die Linke",
+        "Ivana",
+        "#Gala4Bailamos",
+        "Mayol",
         "Mestalla",
         "Mourinho",
-        "Mayol",
-        "Die Linke",
-        "Aimar",
-        "#Gala4Bailamos",
-        "Otorbi",
         "Soler",
-        "Yola",
-        "Negreira",
-        "Madrid",
-        "Oyarzabal",
-        "Florentino",
-        "#CuartoMilenio",
         "Valverde",
-        "Riquelme",
-        "Depor"
+        "Aimar",
+        "Otorbi",
+        "Negreira",
+        "Ximo",
+        "#CuartoMilenio",
+        "Florentino",
+        "#ElSecreto"
       ],
       "error": null
     },
     "getdaytrends": {
-      "ok": false,
-      "trends": [],
-      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1789948057"
+      "ok": true,
+      "trends": [
+        "#ConexiónHonduras2",
+        "Asraf",
+        "#ElChiringuitoenCuatro",
+        "Berlín",
+        "Yola",
+        "Die Linke",
+        "Ivana",
+        "#Gala4Bailamos",
+        "Mestalla",
+        "Mourinho",
+        "Soler",
+        "Valverde",
+        "Aimar",
+        "Otorbi",
+        "Negreira"
+      ],
+      "error": null
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "#ConexiónHonduras2",
         "#ElChiringuitoenCuatro",
+        "Asraf",
+        "Yola",
         "Berlín",
+        "Die Linke",
+        "Ivana",
+        "#Gala4Bailamos",
+        "Mayol",
         "Mestalla",
         "Mourinho",
-        "Mayol",
-        "Die Linke",
-        "Aimar",
-        "#Gala4Bailamos",
-        "Otorbi",
         "Soler",
-        "Yola",
-        "Negreira",
-        "Madrid",
-        "Oyarzabal",
-        "Florentino",
-        "#CuartoMilenio",
         "Valverde",
-        "Riquelme",
-        "Depor"
+        "Aimar",
+        "Otorbi",
+        "Negreira",
+        "Ximo",
+        "#CuartoMilenio",
+        "Florentino",
+        "#ElSecreto"
       ],
       "error": null
     }
