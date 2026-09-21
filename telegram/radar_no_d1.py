@@ -282,6 +282,28 @@ def add_appearance(e,row,now):
  e["last_seen"]=iso(now)
  if not e.get("url"):e["url"]=row["url"]
 
+def source_gather_minutes(e,count=None):
+ general=set(e.get("sources",[]))
+ seen={}
+ for a in e.get("appearances",[]):
+  if a.get("source") not in general or a.get("source_type","general")=="sport" or not a.get("first_seen"):continue
+  t=dtv(a.get("first_seen"))
+  src=a.get("source")
+  if src not in seen or t<seen[src]:seen[src]=t
+ if not seen:return None
+ times=sorted(seen.values())
+ need=count or len(times)
+ if len(times)<need:return None
+ return (times[need-1]-times[0]).total_seconds()/60
+
+def format_duration_minutes(mins):
+ if mins is None:return ""
+ mins=max(0,int(round(mins)))
+ if mins<60:return str(mins)+" min"
+ h,m=divmod(mins,60)
+ if m==0:return str(h)+" h"
+ return str(h)+" h "+str(m)+" min"
+
 def fast_track_minutes(e):
  general=set(e.get("sources",[]))
  seen={}
@@ -292,7 +314,7 @@ def fast_track_minutes(e):
   if src not in seen or t<seen[src]:seen[src]=t
  if len(seen)<FAST_TRACK_MIN:return None
  times=sorted(seen.values())
- return (times[FAST_TRACK_MIN-1]-times[0]).total_seconds()/60
+ return source_gather_minutes(e,FAST_TRACK_MIN)
 
 def processed_snapshot(e,kind,now,revision=None):
  return {
@@ -306,12 +328,14 @@ def processed_snapshot(e,kind,now,revision=None):
 def send_review(e,token,chat,fast=False):
  if fast:
   mins=fast_track_minutes(e)
-  speed=(" · "+str(round(mins,1))+" min") if mins is not None else ""
+  speed=(" · reunidas en "+format_duration_minutes(mins)) if mins is not None else ""
   txt=("⚡ TTiTTulares · ALERTA TEMPRANA · "+str(e["source_count"])+"/"+str(TOTAL_SOURCES)+speed+
        "\n\n"+e["canonical_title"]+"\n\nFuentes: "+", ".join(e["sources"]))
  else:
+  gathered=source_gather_minutes(e,e.get("source_count",0))
+  gathered_txt=(" · reunidas en "+format_duration_minutes(gathered)) if gathered is not None else ""
   txt=("📰 TTiTTulares · PARA VALORAR · "+str(e["source_count"])+"/"+str(TOTAL_SOURCES)+
-       " ("+str(e["percentage"])+"%)\n\n"+e["canonical_title"]+"\n\nFuentes: "+", ".join(e["sources"]))
+       " ("+str(e["percentage"])+"%)"+gathered_txt+"\n\n"+e["canonical_title"]+"\n\nFuentes: "+", ".join(e["sources"]))
  buttons=[[{"text":"PREPARAR","callback_data":"emergency:prepare:"+e["id"]},{"text":"DESESTIMAR","callback_data":"emergency:dismiss:"+e["id"]}],
           [{"text":"ABRIR FUENTE","url":e["url"]}]]
  payload={"chat_id":chat,"text":txt,"disable_web_page_preview":True,"reply_markup":{"inline_keyboard":buttons}}
