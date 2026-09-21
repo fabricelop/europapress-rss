@@ -330,7 +330,11 @@ def sync_panel(force_new=False):
                 return True
             print("No se pudo editar el panel existente:", e, flush=True)
 
-    # Si hay que crear uno nuevo, borramos primero todos los paneles anteriores.
+    # Si la referencia guardada ya no se puede editar, intentar borrar ese
+    # mensaje explícitamente antes de crear el sustituto. Así no dejamos
+    # tablas antiguas visibles cuando Telegram devuelve un error de edición.
+    if mid:
+        delete_panel(chat_id, mid)
     cleanup_old_panels(state)
     msg = call("sendMessage", payload)
     new_mid = int(msg["message_id"])
