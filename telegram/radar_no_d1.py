@@ -115,22 +115,22 @@ def parse_source(src,url,kind,sport=False):
  for candidate in urls:
   try:
    body=get(candidate); out=[]
-   effective_kind="xml" if (candidate.rstrip("/").endswith("/feed") or candidate.endswith("/feed/") or candidate.lower().endswith(".xml") or re.search(r"<(?:rss|feed)\\b",body[:1000],re.I)) else kind
+   effective_kind="xml" if (candidate.rstrip("/").endswith("/feed") or candidate.endswith("/feed/") or candidate.lower().endswith(".xml") or re.search(r"<(?:rss|feed)\b",body[:1000],re.I)) else kind
    if effective_kind=="json":
     j=json.loads(body);rows=j if isinstance(j,list) else j.get("items",[])
     for x in rows[:120]:
      t=str(x.get("title") or x.get("titulo") or "").strip();u=str(x.get("url") or x.get("link") or "")
      if t and u and (not sport or sport_important(t)):out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"})
    elif effective_kind=="xml":
-    for b in re.findall(r"<(?:item|entry)\\b[\\s\\S]*?</(?:item|entry)>",body,re.I)[:100]:
-     tm=re.search(r"<title[^>]*>([\\s\\S]*?)</title>",b,re.I)
-     lm=re.search(r"<link[^>]*href=[\"']([^\"']+)",b,re.I) or re.search(r"<link[^>]*>([\\s\\S]*?)</link>",b,re.I)
+    for b in re.findall(r"<(?:item|entry)\b[\s\S]*?</(?:item|entry)>",body,re.I)[:100]:
+     tm=re.search(r"<title[^>]*>([\s\S]*?)</title>",b,re.I)
+     lm=re.search(r"<link[^>]*href=[\"']([^\"']+)",b,re.I) or re.search(r"<link[^>]*>([\s\S]*?)</link>",b,re.I)
      if tm and lm:
       t=clean(tm.group(1));u=clean(lm.group(1))
       if t and u and (not sport or sport_important(t)):out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"})
    else:
     n=0
-    for u,t in re.findall(r"<a[^>]+href=[\"']([^\"']+)[\"'][^>]*>([\\s\\S]*?)</a>",body,re.I):
+    for u,t in re.findall(r"<a[^>]+href=[\"']([^\"']+)[\"'][^>]*>([\s\S]*?)</a>",body,re.I):
      t=clean(t)
      if 35<=len(t)<=240:
       if u.startswith("/"):u=urllib.parse.urljoin(candidate,u)
