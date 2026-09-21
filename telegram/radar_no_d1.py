@@ -26,7 +26,20 @@ SPORT_SOURCES=[
 ("EFE Deportes","https://efe.com/deportes/","html")
 ]
 SOURCE_FALLBACKS={
+ "Europa Press":["https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json"],
+ "EL PAÍS":["https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/ultimas-noticias/portada","https://elpais.com/ultimas-noticias/"],
+ "La Vanguardia":["https://www.lavanguardia.com/rss/home.xml","https://www.lavanguardia.com/"],
+ "Cadena SER":["https://cadenaser.com/","https://cadenaser.com/nacional/","https://cadenaser.com/autor/redaccion_ser/a/"],
+ "RTVE":["https://www.rtve.es/rss/temas_noticias.xml","https://www.rtve.es/noticias/"],
+ "El HuffPost":["https://www.huffingtonpost.es/feeds/index.xml","https://www.huffingtonpost.es/"],
+ "20minutos":["https://www.20minutos.es/ultima-hora/","https://www.20minutos.es/"],
+ "ABC":["https://www.abc.es/ultima-hora/","https://www.abc.es/"],
+ "COPE":["https://www.cope.es/rss/home.xml","https://www.cope.es/"],
  "EFE":["https://efe.com/espana/feed/","https://efe.com/espana/","https://efe.com/"],
+ "Servimedia":["https://www.servimedia.es/ultima-hora","https://www.servimedia.es/"],
+ "elDiario.es":["https://www.eldiario.es/ultimas-noticias/","https://www.eldiario.es/rss/","https://www.eldiario.es/"],
+ "Público":["https://www.publico.es/","https://www.publico.es/rss"],
+ "El Mundo":["https://www.elmundo.es/ultimas-noticias.html","https://www.elmundo.es/"],
  "AS":["https://as.com/ultimas-noticias/","https://as.com/"],
  "MARCA":["https://www.marca.com/","https://www.marca.com/futbol.html"],
  "Mundo Deportivo":["https://www.mundodeportivo.com/","https://www.mundodeportivo.com/futbol"],
@@ -36,9 +49,8 @@ SOURCE_FALLBACKS={
 
 TOTAL_SOURCES=len(SOURCES)
 REVIEW_MIN=4
-AUTO_MIN=5
-WAIT_HOURS=12
-URGENT_WINDOW_MINUTES=45
+WAIT_HOURS=24
+MIN_HEALTHY_SOURCES=10
 MAX_PROCESSED=2000
 STOP=set("a al algo ante bajo con contra de del desde el ella en entre era es esta este esto ha hay la las lo los mas muy no o para pero por que se sin sobre su sus un una y ya".split())
 MATERIAL=set("muere muerto fallece fallecido dimite dimision detenido detencion sentencia condena absuelto absuelve gana ganador pierde derrota confirma confirmado acuerdo aprueba aprobado cancela cancelado rompe ruptura rescata rescatado desaparecido encontrado hospitalizado alta cesado cese nombrado nombramiento".split())
@@ -125,12 +137,16 @@ def parse_source(src,url,kind,sport=False):
       if u.startswith("http") and (not sport or sport_important(t)):
        out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"});n+=1
       if n>=80:break
-   return src,out,candidate,None
+   if out:
+    return src,out,candidate,None
+   last="0 artículos extraídos en "+candidate
   except Exception as e:last=str(e)
  return src,[],None,last
 
 def fetch_items():
- out=[];healthy=[];sport_healthy=[];failures=[]
+ out=[];healthy=[];sport_healthy=[];failures=[];source_status=[]
+ specs={n:(u,k,False) for n,u,k in SOURCES}
+ specs.update({n:(u,k,True) for n,u,k in SPORT_SOURCES})
  jobs=[]
  with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
   for spec in SOURCES: jobs.append((False,ex.submit(parse_source,*spec,False)))
@@ -138,17 +154,42 @@ def fetch_items():
   for is_sport,fut in jobs:
    try:
     src,rows,used,err=fut.result()
-    if used:
+    if used and rows:
      (sport_healthy if is_sport else healthy).append(src)
      out.extend(rows)
+     source_status.append({"source":src,"type":"sport" if is_sport else "general","ok":True,"items":len(rows),"url":used,"error":None})
+     print("SOURCE_STATUS",src,"OK",len(rows),used)
      if used!=next((u for n,u,k in (SPORT_SOURCES if is_sport else SOURCES) if n==src),used):
       print("SOURCE_RECOVERED",src,used)
     else:
-     failures.append({"source":src,"type":"sport" if is_sport else "general","error":err})
-     print("SOURCE_FAIL",src,err)
+     failures.append({"source":src,"type":"sport" if is_sport else "general","error":err or "0 artículos extraídos"})
+     source_status.append({"source":src,"type":"sport" if is_sport else "general","ok":False,"items":0,"url":used,"error":err or "0 artículos extraídos"})
+     print("SOURCE_STATUS",src,"FAIL",err or "0 artículos extraídos")
    except Exception as e:
     print("SOURCE_FAIL_WORKER",str(e))
- return out,healthy,sport_healthy,failures
+
+ recovery={"triggered":False,"threshold":MIN_HEALTHY_SOURCES,"attempted":[],"recovered":[]}
+ if len(set(healthy))<MIN_HEALTHY_SOURCES:
+  recovery["triggered"]=True
+  failed_general=[x["source"] for x in source_status if x["type"]=="general" and not x["ok"]]
+  print("SOURCE_RECOVERY_TRIGGERED",len(set(healthy)),"/",TOTAL_SOURCES,failed_general)
+  for src in failed_general:
+   url,kind,_=specs[src]
+   recovery["attempted"].append(src)
+   try:
+    rsrc,rows,used,err=parse_source(src,url,kind,False)
+    if used and rows:
+     healthy.append(src);out.extend(rows);recovery["recovered"].append(src)
+     for st in source_status:
+      if st["source"]==src and st["type"]=="general":
+       st.update({"ok":True,"items":len(rows),"url":used,"error":None,"recovered":True})
+     failures=[x for x in failures if not (x["source"]==src and x["type"]=="general")]
+     print("SOURCE_RECOVERY_OK",src,len(rows),used)
+    else:
+     print("SOURCE_RECOVERY_FAIL",src,err)
+   except Exception as e:
+    print("SOURCE_RECOVERY_FAIL",src,str(e))
+ return out,sorted(set(healthy)),sorted(set(sport_healthy)),failures,source_status,recovery
 
 def best_match(title,events,threshold=.50):
  best=None;bs=0
@@ -184,15 +225,6 @@ def processed_snapshot(e,kind,now,revision=None):
   "percentage":e.get("percentage",0),"fact_tokens":sorted(fp(e["canonical_title"])),
   "last_titles":[a.get("title","") for a in e.get("appearances",[])][-10:]
  }
-
-def send_urgent(e,token,chat):
- txt=("🚨 TTiTTulares · ALERTA URGENTE · "+str(e["source_count"])+"/"+str(TOTAL_SOURCES)+
-      "\n\n"+e["canonical_title"]+
-      "\n\nHa alcanzado el umbral de preparación en menos de "+str(URGENT_WINDOW_MINUTES)+" minutos. La redacción automática seguirá en :15/:45.")
- payload={"chat_id":chat,"text":txt,"disable_web_page_preview":True,
-          "reply_markup":{"inline_keyboard":[[{"text":"ABRIR FUENTE","url":e["url"]}]]}}
- req=urllib.request.Request("https://api.telegram.org/bot"+token+"/sendMessage",data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
- urllib.request.urlopen(req,timeout=15).read()
 
 def send_review(e,token,chat):
  txt=("📰 TTiTTulares · PARA VALORAR · "+str(e["source_count"])+"/"+str(TOTAL_SOURCES)+
@@ -233,10 +265,13 @@ for e in events:
 cutoff=now-timedelta(hours=WAIT_HOURS)
 events=[e for e in events if e.get("status")!="WAITING" or dtv(e.get("first_seen"))>=cutoff]
 
-rows,healthy,sport_healthy,source_failures=fetch_items()
+rows,healthy,sport_healthy,source_failures,source_status,source_recovery=fetch_items()
 print("SOURCES_OK",len(set(healthy)),sorted(set(healthy)))
 print("SPORT_SOURCES_OK",len(set(sport_healthy)),sorted(set(sport_healthy)))
 print("SOURCES_CONFIGURED",TOTAL_SOURCES)
+print("SOURCE_HEALTH_SUMMARY",len(set(healthy)),"/",TOTAL_SOURCES,"general;",len(set(sport_healthy)),"/",len(SPORT_SOURCES),"sport")
+if len(set(healthy))<MIN_HEALTHY_SOURCES:
+ print("SOURCE_HEALTH_DEGRADED correction process attempted; remaining failures:",[x["source"] for x in source_status if x["type"]=="general" and not x["ok"]])
 
 # Index de procesadas como eventos sintéticos para reconocer ecos posteriores.
 proc_index=[]
@@ -275,36 +310,22 @@ for row in rows:
  add_appearance(e,row,now);events.append(e)
 
 token=os.environ.get("TELEGRAM_BOT_TOKEN");chat=os.environ.get("TELEGRAM_CHAT_ID")
-sent=0;auto=0;expired=0
+sent=0;expired=0
 new_processed=[]
 
 for e in list(events):
  n=e.get("source_count",0)
  status=e.get("status")
- if status=="WAITING":
-  if n>=AUTO_MIN:
-   e["status"]="AUTO_PROCESSING";e["notified"]=True
-   queue_editorial(e,editorial,"AUTO_SELECTED")
-   age_min=max(0,(now-dtv(e.get("first_seen"))).total_seconds()/60)
-   if age_min<=URGENT_WINDOW_MINUTES and not e.get("urgent_alert_sent"):
-    if token and chat: send_urgent(e,token,chat)
-    e["urgent_alert_sent"]=True
-    e["urgent_alert_at"]=iso(now)
-   new_processed.append(processed_snapshot(e,"AUTO_SELECTED",now))
-   auto+=1
-  elif n>=REVIEW_MIN:
-   if token and chat:send_review(e,token,chat)
-   e["status"]="SENT_REVIEW";e["notified"]=True
-   new_processed.append(processed_snapshot(e,"SENT_REVIEW",now))
-   sent+=1
- elif status=="UPDATE_WAITING":
-  # Una actualización nunca se publica automáticamente por heurística.
-  # Con 2 fuentes nuevas, pasa a redacción, que verificará si es material.
-  if n>=2:
-   e["status"]="UPDATE_VERIFY";e["notified"]=True
-   queue_editorial(e,editorial,"UPDATE_VERIFY")
-   new_processed.append(processed_snapshot(e,"UPDATE_VERIFY",now,e.get("revision",2)))
-   auto+=1
+ if status=="WAITING" and n>=REVIEW_MIN:
+  if token and chat:send_review(e,token,chat)
+  e["status"]="SENT_REVIEW";e["notified"]=True
+  new_processed.append(processed_snapshot(e,"SENT_REVIEW",now))
+  sent+=1
+ elif status=="UPDATE_WAITING" and n>=REVIEW_MIN:
+  if token and chat:send_review(e,token,chat)
+  e["status"]="SENT_REVIEW";e["notified"]=True
+  new_processed.append(processed_snapshot(e,"UPDATE_SENT_REVIEW",now,e.get("revision",2)))
+  sent+=1
 
 # Eliminar WAITING caducadas tras la evaluación.
 kept=[]
@@ -321,8 +342,11 @@ for p in new_processed:
  if k not in keys:processed.append(p);keys.add(k)
 processed=processed[-MAX_PROCESSED:]
 
-events_doc={"version":3,"configured_sources":TOTAL_SOURCES,"review_min_sources":REVIEW_MIN,"auto_min_sources":AUTO_MIN,"urgent_window_minutes":URGENT_WINDOW_MINUTES,
-            "waiting_ttl_hours":WAIT_HOURS,"last_run":iso(now),"healthy_sources":sorted(set(healthy)),"healthy_sport_sources":sorted(set(sport_healthy)),"source_failures":source_failures,"events":events}
+events_doc={"version":4,"configured_sources":TOTAL_SOURCES,"review_min_sources":REVIEW_MIN,"automatic_processing":False,
+            "waiting_ttl_hours":WAIT_HOURS,"min_healthy_sources":MIN_HEALTHY_SOURCES,"last_run":iso(now),
+            "healthy_sources":sorted(set(healthy)),"healthy_source_count":len(set(healthy)),
+            "healthy_sport_sources":sorted(set(sport_healthy)),"source_failures":source_failures,
+            "source_status":source_status,"source_recovery":source_recovery,"events":events}
 processed_doc={"version":1,"updated_at":iso(now),"events":processed}
 save(EVENTS,events_doc);save(PROCESSED,processed_doc);save(EDITORIAL,editorial)
-print("RESULT rows",len(rows),"active_events",len(events),"review_sent",sent,"auto_queued",auto,"expired",expired)
+print("RESULT rows",len(rows),"active_events",len(events),"review_sent",sent,"auto_queued",0,"expired",expired)
