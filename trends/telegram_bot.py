@@ -688,10 +688,25 @@ def poll(seconds=3300):
     state = load(STATE, {"chat_id": None, "panel_message_id": None, "last_update_id": 0, "pending": {}})
     offset = int(state.get("last_update_id") or 0) + 1
     last_persist = time.time()
+    # El listener es también el reloj fiable del panel: refresca al arrancar
+    # y después cada 15 minutos aunque el cron de GitHub se retrase o falle.
+    refresh_interval = int(os.environ.get("TTENDENCIAS_REFRESH_SECONDS", "900"))
+    next_refresh = 0.0
     dirty = False
 
     while time.time() - started < seconds:
         try:
+            now = time.time()
+            if now >= next_refresh:
+                ok, before, after = refresh_trends_now()
+                if ok:
+                    if sync_panel():
+                        persist_git("Actualizar automáticamente Top 10 TTendencias")
+                    print(f"auto refresh TTendencias: {before} -> {after}", flush=True)
+                else:
+                    print(f"auto refresh TTendencias sin cambio: {before} -> {after}", flush=True)
+                next_refresh = now + refresh_interval
+
             updates = call("getUpdates", {
                 "offset": offset,
                 "timeout": 25,
