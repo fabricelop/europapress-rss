@@ -95,7 +95,13 @@ def load(path,default):
   raw=path.read_text(encoding="utf-8").strip()
   return json.loads(raw) if raw else default
  except:return default
-def save(path,obj): path.write_text(json.dumps(obj,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+def save(path,obj):
+ data=json.dumps(obj,ensure_ascii=False,indent=2)+"\n"
+ if path==EVENTS and (not isinstance(obj,dict) or not isinstance(obj.get("events"),list)):
+  raise RuntimeError("Estado events.json inválido: no se escribirá")
+ tmp=path.with_suffix(path.suffix+".tmp")
+ tmp.write_text(data,encoding="utf-8")
+ tmp.replace(path)
 def get(url):
  headers={
   "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36",
@@ -295,6 +301,7 @@ def send_review(e,token,chat):
 now=utcnow()
 events_doc=load(EVENTS,{"version":3,"events":[]})
 events=events_doc.get("events",[])
+initial_event_count=len(events)
 processed_doc=load(PROCESSED,{"version":1,"events":[]})
 processed=processed_doc.get("events",[])
 
@@ -387,6 +394,8 @@ for p in new_processed:
  if k not in keys:processed.append(p);keys.add(k)
 processed=processed[-MAX_PROCESSED:]
 
+if initial_event_count>0 and len(events)==0:
+ raise RuntimeError("Protección de estado: el barrido intentó vaciar todos los eventos")
 events_doc={"version":4,"configured_sources":TOTAL_SOURCES,"review_min_sources":REVIEW_MIN,"automatic_processing":False,
             "waiting_ttl_hours":WAIT_HOURS,"min_healthy_sources":MIN_HEALTHY_SOURCES,"last_run":iso(now),
             "healthy_sources":sorted(set(healthy)),"healthy_source_count":len(set(healthy)),
