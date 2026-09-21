@@ -445,16 +445,22 @@ def mark_explained(callback):
     related_norm = {norm(x) for x in related_trends}
     now = datetime.now(MADRID).isoformat(timespec="seconds")
 
-    # EXPLICADA en el flujo actual significa: cerrar el bloque editorial
-    # y devolver la(s) tendencia(s) a rojo en la tabla.
+    # EXPLICADA: cerrar el bloque editorial y dejar todas las tendencias
+    # representadas en verde. Si después se vuelve a pulsar una verde,
+    # select_trend la pondrá azul para reexplicarla.
     manual = load_remote_json(
         "trends/telegram-manual-explained.json",
         load(MANUAL, {"project": "TTendencias", "items": []})
     )
-    manual["items"] = [
-        x for x in manual.get("items", [])
-        if norm(x.get("name")) not in related_norm
-    ]
+    existing_manual = {norm(x.get("name")) for x in manual.get("items", [])}
+    for trend_name in related_trends:
+        if norm(trend_name) not in existing_manual:
+            manual.setdefault("items", []).append({
+                "name": trend_name,
+                "explained_at": now,
+                "source": "telegram_button",
+            })
+            existing_manual.add(norm(trend_name))
     save(MANUAL, manual)
 
     for req in requests.get("requests", []):
