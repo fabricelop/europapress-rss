@@ -1,25 +1,12 @@
 export default async function handler(req, res) {
   const expected = process.env.TELEGRAM_WEBHOOK_SECRET;
   const supplied = req.headers["x-tt-admin-secret"];
-  const oneTime = String(req.query?.repair || "") === "repair-ttittulares-20260921-1148";
-  if (!expected || (supplied !== expected && !oneTime)) return res.status(401).json({ ok: false });
+  if (!expected || supplied !== expected) return res.status(401).json({ ok: false });
 
   const token = process.env.TELEGRAM_BOT_TOKEN;
   if (!token) return res.status(500).json({ ok: false, error: "TELEGRAM_BOT_TOKEN missing" });
 
   const base = `https://api.telegram.org/bot${token}`;
-  if (oneTime) {
-    const url = "https://europapress-rss.vercel.app/api/telegram-webhook";
-    const r = await fetch(base + "/setWebhook", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ url, secret_token: expected, allowed_updates: ["message", "callback_query"], drop_pending_updates: false })
-    });
-    const data = await r.json();
-    const i = await fetch(base + "/getWebhookInfo");
-    const info = await i.json();
-    return res.status(r.ok ? 200 : 502).json({ ...data, webhook_url: url, info: { url: info?.result?.url || "", pending_update_count: info?.result?.pending_update_count || 0, last_error_message: info?.result?.last_error_message || null } });
-  }
   if (req.method === "GET") {
     const r = await fetch(base + "/getWebhookInfo");
     const data = await r.json();
