@@ -153,26 +153,40 @@ jobs:
 
               payload["reply_markup"] = {"inline_keyboard": keyboard}
 
-              # La imagen editorial es opcional. Cuando existe, se envía únicamente
-              # a Telegram y antes del bloque de texto. Telegram acepta una URL HTTPS
-              # pública en el campo photo, por lo que latest.json no necesita guardar
-              # binarios ni el workflow tocar otros proyectos.
+              # Imagen editorial: debe ser la imagen generada para TTendencias.
+              # Nunca se sustituye silenciosamente por una foto de archivo.
+              image_path = str(msg.get("image_path") or "").strip()
               image_url = str(msg.get("image_url") or "").strip()
               image_message_id = None
-              if image_url:
-                  if not image_url.lower().startswith("https://"):
-                      raise ValueError(f"image_url debe ser HTTPS: {image_url}")
-                  photo_payload = {
-                      "chat_id": chat_id,
-                      "photo": image_url,
-                      "disable_notification": False,
-                  }
+              if image_path:
+                  import mimetypes, uuid
+                  photo_file = Path(image_path)
+                  if not photo_file.is_file():
+                      raise FileNotFoundError(f"Imagen editorial no encontrada: {image_path}")
+                  boundary = "----TTendencias" + uuid.uuid4().hex
+                  mime = mimetypes.guess_type(photo_file.name)[0] or "application/octet-stream"
+                  fields = {"chat_id": str(chat_id), "disable_notification": "false"}
                   image_alt = str(msg.get("image_alt") or "").strip()
                   if image_alt:
-                      # Caption breve y descriptivo; nunca duplica el tuit completo.
-                      photo_payload["caption"] = image_alt[:1024]
-                  photo_sent = telegram_json("sendPhoto", photo_payload)
-                  image_message_id = photo_sent["message_id"]
+                      fields["caption"] = image_alt[:1024]
+                  body = bytearray()
+                  for k, v in fields.items():
+                      body.extend(f'--{boundary}\\r\\nContent-Disposition: form-data; name="{k}"\\r\\n\\r\\n{v}\\r\\n'.encode())
+                  body.extend(f'--{boundary}\\r\\nContent-Disposition: form-data; name="photo"; filename="{photo_file.name}"\\r\\nContent-Type: {mime}\\r\\n\\r\\n'.encode())
+                  body.extend(photo_file.read_bytes())
+                  body.extend(f'\\r\\n--{boundary}--\\r\\n'.encode())
+                  req = urllib.request.Request(
+                      f"{api_base}/sendPhoto",
+                      data=bytes(body),
+                      headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
+                  )
+                  with urllib.request.urlopen(req) as r:
+                      result = json.loads(r.read().decode("utf-8"))
+                  if not result.get("ok"):
+                      raise RuntimeError(result)
+                  image_message_id = result["result"]["message_id"]
+              elif image_url:
+                  raise ValueError("No se permiten URLs/fotos de archivo como sustituto de una imagen editorial generada; usa image_path.")
 
               sent = telegram_json("sendMessage", payload)
               if key:
