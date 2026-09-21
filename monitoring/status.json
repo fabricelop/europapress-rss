@@ -1,0 +1,217 @@
+{
+  "generated_at": "2026-09-21T19:06:11.115549Z",
+  "repository": "fabricelop/europapress-rss",
+  "projects": {
+    "TTiTTulares": {
+      "status": "orange",
+      "anomalies": [
+        "Última ejecución terminó en failure"
+      ],
+      "modules": {
+        "radar_noticias": {
+          "label": "Radar de noticias",
+          "kind": "workflow",
+          "workflow": "telegram-listener.yml",
+          "status": "green",
+          "last_run": "2026-09-21T17:45:48Z",
+          "last_ok": "2026-09-21T17:45:48Z",
+          "last_error": "2026-09-21T10:04:36Z",
+          "last_conclusion": "success",
+          "age_minutes": 80.4,
+          "expected_minutes": 60,
+          "anomaly": null,
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35624717595"
+        },
+        "radar_manual": {
+          "label": "Barrido manual de radar",
+          "kind": "workflow",
+          "workflow": "radar-no-d1.yml",
+          "status": "orange",
+          "last_run": "2026-09-21T07:44:13Z",
+          "last_ok": "2026-09-21T07:41:02Z",
+          "last_error": "2026-09-21T07:44:13Z",
+          "last_conclusion": "failure",
+          "age_minutes": 685.2,
+          "expected_minutes": null,
+          "anomaly": "Última ejecución terminó en failure",
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35574220759"
+        },
+        "entrada_telegram": {
+          "label": "Listener / entrada Telegram",
+          "kind": "workflow",
+          "workflow": "telegram-listener.yml",
+          "status": "green",
+          "last_run": "2026-09-21T17:45:48Z",
+          "last_ok": "2026-09-21T17:45:48Z",
+          "last_error": "2026-09-21T10:04:36Z",
+          "last_conclusion": "success",
+          "age_minutes": 80.4,
+          "expected_minutes": 60,
+          "anomaly": null,
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35624717595"
+        },
+        "envio_candidatos": {
+          "label": "Envío de candidatos a Telegram",
+          "kind": "workflow",
+          "workflow": "send-telegram.yml",
+          "status": "green",
+          "last_run": "2026-09-18T21:57:27Z",
+          "last_ok": "2026-09-18T21:57:27Z",
+          "last_error": null,
+          "last_conclusion": "success",
+          "age_minutes": 4148.7,
+          "expected_minutes": null,
+          "anomaly": null,
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35399299156"
+        },
+        "redactor": {
+          "label": "Redactor / salida editorial",
+          "kind": "activity",
+          "path": "telegram/latest.json",
+          "status": "green",
+          "last_run": "2026-09-18T21:57:15Z",
+          "last_ok": "2026-09-18T21:57:15Z",
+          "last_error": null,
+          "age_minutes": 4148.9,
+          "expected_minutes": null,
+          "anomaly": null
+        },
+        "envio_redaccion": {
+          "label": "Envío de redacción a Telegram",
+          "kind": "workflow",
+          "workflow": "telegram-emergency.yml",
+          "status": "green",
+          "last_run": "2026-09-21T17:02:34Z",
+          "last_ok": "2026-09-21T17:02:34Z",
+          "last_error": "2026-09-20T21:54:19Z",
+          "last_conclusion": "success",
+          "age_minutes": 123.6,
+          "expected_minutes": null,
+          "anomaly": null,
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35629404914"
+        }
+      }
+    },
+    "TTendencias": {
+      "status": "red",
+      "anomalies": [
+        "Sin ejecución correcta desde hace 169.7 min",
+        "Última ejecución terminó en cancelled",
+        "Última ejecución terminó en failure"
+      ],
+      "modules": {
+        "captura_top10": {
+          "label": "Captura Top 10",
+          "kind": "workflow",
+          "workflow": "ttendencias-refresh.yml",
+          "status": "red",
+          "last_run": "2026-09-21T16:16:29Z",
+          "last_ok": "2026-09-21T16:16:29Z",
+          "last_error": null,
+          "last_conclusion": "success",
+          "age_minutes": 169.7,
+          "expected_minutes": 15,
+          "anomaly": "Sin ejecución correcta desde hace 169.7 min",
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35624466637"
+        },
+        "listener_panel": {
+          "label": "Listener / panel Telegram",
+          "kind": "workflow",
+          "workflow": "ttendencias-listener.yml",
+          "status": "orange",
+          "last_run": "2026-09-21T18:40:02Z",
+          "last_ok": "2026-09-21T18:12:45Z",
+          "last_error": "2026-09-21T18:40:02Z",
+          "last_conclusion": "cancelled",
+          "age_minutes": 53.4,
+          "expected_minutes": 30,
+          "anomaly": "Última ejecución terminó en cancelled",
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35637586235"
+        },
+        "redactor": {
+          "label": "Redactor de tendencias",
+          "kind": "activity",
+          "path": "trends/latest.json",
+          "status": "green",
+          "last_run": "2026-09-21T17:00:26Z",
+          "last_ok": "2026-09-21T17:00:26Z",
+          "last_error": null,
+          "age_minutes": 125.8,
+          "expected_minutes": null,
+          "anomaly": null
+        },
+        "envio_telegram": {
+          "label": "Envío de tendencias a Telegram",
+          "kind": "workflow",
+          "workflow": "send-trends-telegram.yml",
+          "status": "orange",
+          "last_run": "2026-09-21T17:00:55Z",
+          "last_ok": "2026-09-21T12:15:02Z",
+          "last_error": "2026-09-21T17:00:55Z",
+          "last_conclusion": "failure",
+          "age_minutes": 411.2,
+          "expected_minutes": null,
+          "anomaly": "Última ejecución terminó en failure",
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35629219923"
+        }
+      }
+    },
+    "SeLoRecordamos": {
+      "status": "orange",
+      "anomalies": [
+        "Estado reportado: no_new_candidates",
+        "Estado reportado: no_new_candidates"
+      ],
+      "modules": {
+        "busqueda_x": {
+          "label": "Recuperación / búsqueda en X",
+          "kind": "file",
+          "path": "selorecordamos/search-report.json",
+          "status": "orange",
+          "last_run": "2026-09-21T19:05:22.156000Z",
+          "last_ok": "2026-09-21T19:05:22.156000Z",
+          "last_error": null,
+          "age_minutes": 0.8,
+          "expected_minutes": 60,
+          "anomaly": "Estado reportado: no_new_candidates"
+        },
+        "postfiltro": {
+          "label": "Postfiltro / descartados",
+          "kind": "file",
+          "path": "selorecordamos/search-report.json",
+          "status": "orange",
+          "last_run": "2026-09-21T19:05:22.156000Z",
+          "last_ok": "2026-09-21T19:05:22.156000Z",
+          "last_error": null,
+          "age_minutes": 0.8,
+          "expected_minutes": 60,
+          "anomaly": "Estado reportado: no_new_candidates"
+        },
+        "evaluacion": {
+          "label": "Evaluación / redacción",
+          "kind": "activity",
+          "path": "selorecordamos/assistant-output.json",
+          "status": "green",
+          "last_run": "2026-09-21T18:11:55Z",
+          "last_ok": "2026-09-21T18:11:55Z",
+          "last_error": null,
+          "age_minutes": 54.3,
+          "expected_minutes": null,
+          "anomaly": null
+        },
+        "telegram_instrucciones": {
+          "label": "Telegram / instrucciones",
+          "kind": "activity",
+          "path": "selorecordamos/requests.json",
+          "status": "green",
+          "last_run": "2026-09-21T17:12:55Z",
+          "last_ok": "2026-09-21T17:12:55Z",
+          "last_error": null,
+          "age_minutes": 113.3,
+          "expected_minutes": null,
+          "anomaly": null
+        }
+      }
+    }
+  }
+}
