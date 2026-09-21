@@ -1,26 +1,29 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-21T22:48:14+02:00",
+  "captured_at": "2026-09-21T23:37:08+02:00",
   "primary_source": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
-    "tweets24"
+    "tweets24",
+    "snaplytics",
+    "fowtools",
+    "trendswe"
   ],
-  "source_count": 3,
+  "source_count": 6,
   "reliability": "high",
   "top10": [
     "Berlín",
     "Mourinho",
     "Begoña Gómez",
     "Cuti",
-    "Valverde",
     "Peinado",
-    "#ConexiónHonduras2",
-    "#TEM21S",
+    "Valverde",
     "Die Linke",
-    "Negreira"
+    "#TEM21S",
+    "#ConexiónHonduras2",
+    "#firstdates21s"
   ],
   "items": [
     {
@@ -41,15 +44,15 @@
     },
     {
       "rank": 5,
-      "name": "Valverde"
-    },
-    {
-      "rank": 6,
       "name": "Peinado"
     },
     {
+      "rank": 6,
+      "name": "Valverde"
+    },
+    {
       "rank": 7,
-      "name": "#ConexiónHonduras2"
+      "name": "Die Linke"
     },
     {
       "rank": 8,
@@ -57,11 +60,11 @@
     },
     {
       "rank": 9,
-      "name": "Die Linke"
+      "name": "#ConexiónHonduras2"
     },
     {
       "rank": 10,
-      "name": "Negreira"
+      "name": "#firstdates21s"
     }
   ],
   "unchanged_from_previous": false,
@@ -69,30 +72,123 @@
     "trends24": {
       "ok": true,
       "trends": [
+        "#FerranEH",
         "Berlín",
+        "#Horizonte",
         "Mourinho",
         "Begoña Gómez",
         "Cuti",
-        "Valverde",
         "Peinado",
-        "#ConexiónHonduras2",
+        "Valverde",
         "Die Linke",
         "#TEM21S",
+        "#ConexiónHonduras2",
+        "#firstdates21s",
+        "Negu Gorriak",
         "Negreira",
         "Bellingham",
-        "Negu Gorriak",
-        "#FelizLunes",
-        "#firstdates21s",
-        "Atleti",
         "Día Mundial del Alzheimer",
+        "Atleti",
         "Rusia",
         "Julia Ferreras",
-        "Huijsen",
-        "#elchiringuitoencuatro"
+        "Abascal"
       ],
-      "error": null
+      "error": null,
+      "update_hint": null,
+      "fetched_at": "2026-09-21T23:37:08+02:00"
     },
     "getdaytrends": {
+      "ok": true,
+      "trends": [
+        "#FerranEH",
+        "Berlín",
+        "#Horizonte",
+        "Begoña Gómez",
+        "Mourinho",
+        "Peinado",
+        "Cuti",
+        "#FirstDates21S",
+        "Valverde",
+        "Die Linke",
+        "#TEM21S",
+        "#ConexiónHonduras2",
+        "Negu Gorriak",
+        "Negreira",
+        "Bellingham"
+      ],
+      "error": null,
+      "update_hint": null,
+      "fetched_at": "2026-09-21T23:37:09+02:00"
+    },
+    "tweets24": {
+      "ok": true,
+      "trends": [
+        "#FerranEH",
+        "Berlín",
+        "#Horizonte",
+        "Mourinho",
+        "Begoña Gómez",
+        "Cuti",
+        "Peinado",
+        "Valverde",
+        "Die Linke",
+        "#TEM21S",
+        "#ConexiónHonduras2",
+        "#firstdates21s",
+        "Negu Gorriak",
+        "Negreira",
+        "Bellingham",
+        "Día Mundial del Alzheimer",
+        "Atleti",
+        "Rusia",
+        "Julia Ferreras",
+        "Abascal"
+      ],
+      "error": null,
+      "update_hint": "Updated 3 minutes ago Live Twitter Trending Topics in Spain 1 #FerranEH Explore why #Fer",
+      "fetched_at": "2026-09-21T23:37:10+02:00"
+    },
+    "superx": {
+      "ok": false,
+      "trends": [],
+      "error": null,
+      "update_hint": null,
+      "fetched_at": "2026-09-21T23:37:10+02:00"
+    },
+    "twtdata": {
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790026630"
+    },
+    "snaplytics": {
+      "ok": true,
+      "trends": [
+        "hour ago — Sep 21, 2026 20:00 UTC",
+        "hours ago — Sep 21, 2026 19:00 UTC",
+        "hours ago — Sep 21, 2026 18:00 UTC",
+        "hours ago — Sep 21, 2026 17:00 UTC",
+        "hours ago — Sep 21, 2026 16:00 UTC",
+        "hours ago — Sep 21, 2026 15:00 UTC",
+        "hours ago — Sep 21, 2026 14:00 UTC",
+        "hours ago — Sep 21, 2026 13:00 UTC",
+        "hours ago — Sep 21, 2026 12:00 UTC",
+        "hours ago — Sep 21, 2026 11:00 UTC",
+        "hours ago — Sep 21, 2026 10:00 UTC",
+        "hours ago — Sep 21, 2026 09:00 UTC",
+        "hours ago — Sep 21, 2026 08:00 UTC",
+        "hours ago — Sep 21, 2026 07:00 UTC",
+        "hours ago — Sep 21, 2026 06:00 UTC",
+        "hours ago — Sep 21, 2026 05:00 UTC",
+        "hours ago — Sep 21, 2026 04:00 UTC",
+        "hours ago — Sep 21, 2026 03:00 UTC",
+        "hours ago — Sep 21, 2026 02:00 UTC",
+        "hours ago — Sep 21, 2026 01:00 UTC"
+      ],
+      "error": null,
+      "update_hint": "updated hourly. Use Browse by day to jump to a specific date, or the country selector to",
+      "fetched_at": "2026-09-21T23:37:11+02:00"
+    },
+    "fowtools": {
       "ok": true,
       "trends": [
         "Berlín",
@@ -109,35 +205,63 @@
         "Negu Gorriak",
         "#FirstDates21S",
         "#FelizLunes",
-        "DÍA MUNDIAL DEL ALZHEIMER"
-      ],
-      "error": null
-    },
-    "tweets24": {
-      "ok": true,
-      "trends": [
-        "Mourinho",
-        "Berlín",
-        "Begoña Gómez",
-        "Cuti",
-        "Valverde",
-        "#TEM21S",
-        "#ConexiónHonduras2",
-        "Peinado",
-        "Die Linke",
-        "Bellingham",
-        "Negreira",
-        "#FelizLunes",
-        "Negu Gorriak",
+        "DÍA MUNDIAL DEL ALZHEIMER",
         "Atleti",
         "Rusia",
-        "Día Mundial del Alzheimer",
         "Julia Ferreras",
         "Huijsen",
-        "Héctor Álvarez",
-        "rojas"
+        "#ElChiringuitoenCuatro"
       ],
-      "error": null
+      "error": null,
+      "update_hint": "Updated: September 21, 2026 at 09:00 PM # Trend Type Actions 1 Berlín Topic 2 Mourinho To",
+      "fetched_at": "2026-09-21T23:37:12+02:00"
+    },
+    "cyberkendra": {
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790026632"
+    },
+    "globaltwittertrends": {
+      "ok": false,
+      "trends": [
+        "minutes ago"
+      ],
+      "error": null,
+      "update_hint": "updated 30 minutes ago . Follow @greatseotools",
+      "fetched_at": "2026-09-21T23:37:13+02:00"
+    },
+    "trendswe": {
+      "ok": true,
+      "trends": [
+        "#Berlín N/A",
+        "#Mourinho N/A",
+        "#Begoña Gómez N/A",
+        "#Cuti N/A",
+        "#Peinado N/A",
+        "#Valverde N/A",
+        "#ConexiónHonduras2 N/A",
+        "#Die Linke N/A",
+        "#TEM21S N/A",
+        "#Negreira N/A",
+        "#Bellingham N/A",
+        "#Negu Gorriak N/A",
+        "#FirstDates21S N/A",
+        "#FelizLunes N/A",
+        "#DÍA MUNDIAL DEL ALZHEIMER N/A",
+        "#Atleti N/A",
+        "#Rusia N/A",
+        "#Julia Ferreras N/A",
+        "#Huijsen N/A",
+        "#ElChiringuitoenCuatro N/A"
+      ],
+      "error": null,
+      "update_hint": null,
+      "fetched_at": "2026-09-21T23:37:15+02:00"
+    },
+    "twittertrending": {
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790026635"
     }
   }
 }
