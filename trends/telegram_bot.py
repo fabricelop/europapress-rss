@@ -662,9 +662,17 @@ def handle(update):
         except Exception:
             pass
     elif data == "panel:refresh":
+        # El propio callback es la referencia más fiable del panel visible.
+        # Guardarla evita confirmar una actualización si el estado persistido
+        # perdió chat_id/panel_message_id.
+        state = load(STATE, {})
+        state["chat_id"] = cb["message"]["chat"]["id"]
+        state["panel_message_id"] = cb["message"]["message_id"]
+        state["panel_message_ids"] = [cb["message"]["message_id"]]
+        save(STATE, state)
         ok, _, _ = refresh_trends_now()
-        if ok:
-            sync_panel()
+        synced = sync_panel() if ok else False
+        if ok and synced:
             persist_git("Actualizar manualmente Top 10 TTendencias")
             call("answerCallbackQuery", {"callback_query_id": cb["id"], "text": "Top 10 actualizado"})
         else:
