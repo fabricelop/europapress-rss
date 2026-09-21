@@ -28,11 +28,11 @@ def api(path):
     with urllib.request.urlopen(req,timeout=30) as r:
         return json.loads(r.read().decode("utf-8"))
 
-def workflow_state(filename, expected_minutes=None, warn_after=None, label=None):
+def workflow_state(filename, expected_minutes=None, warn_after=None, label=None, ignore_cancelled=False):
     data=api(f"/repos/{REPO}/actions/workflows/{filename}/runs?per_page=20")
     completed=[r for r in data.get("workflow_runs",[]) if r.get("status")=="completed"]
     successes=[r for r in completed if r.get("conclusion")=="success"]
-    failures=[r for r in completed if r.get("conclusion") not in ("success","skipped","neutral")]
+    neutral={"success","skipped","neutral"} | ({"cancelled"} if ignore_cancelled else set())\n    failures=[r for r in completed if r.get("conclusion") not in neutral]
     last=completed[0] if completed else None
     last_ok=successes[0] if successes else None
     last_err=failures[0] if failures else None
@@ -41,7 +41,7 @@ def workflow_state(filename, expected_minutes=None, warn_after=None, label=None)
     last_dt=parse_dt(last.get("updated_at")) if last else None
     stale_after=warn_after or (expected_minutes*2.5 if expected_minutes else None)
     status="green"; anomaly=None
-    if last and last.get("conclusion") not in ("success","skipped","neutral"):
+    if last and last.get("conclusion") not in neutral:
         status="orange" if ok_dt else "red"
         anomaly=f"Última ejecución terminó en {last.get('conclusion')}"
     if stale_after and ok_dt and age_minutes(ok_dt)>stale_after:
@@ -86,27 +86,37 @@ def json_timestamp(path, field, expected_minutes=None, label=None, ok_field=None
         "age_minutes":age_minutes(dt),"expected_minutes":expected_minutes,"anomaly":anomaly
     }
 
-def git_activity(path,label=None):
+def git_activity(path,label=None,expected_minutes=None,warn_after=None):
     dt=git_last(path)
+    status="green" if dt else "orange"
+    anomaly=None if dt else "Sin actividad verificable"
+    stale_after=warn_after or (expected_minutes*2.5 if expected_minutes else None)
+    if stale_after and dt and age_minutes(dt)>stale_after:
+        status="orange" if age_minutes(dt)<=stale_after*2 else "red"
+        anomaly=f"Sin actividad desde hace {age_minutes(dt)} min"
     return {
         "label":label or path,"kind":"activity","path":path,
-        "status":"green" if dt else "orange","last_run":iso(dt),"last_ok":iso(dt),
-        "last_error":None,"age_minutes":age_minutes(dt),"expected_minutes":None,
-        "anomaly":None if dt else "Sin actividad verificable"
+        "status":status,"last_run":iso(dt),"last_ok":iso(dt),
+        "last_error":None,"age_minutes":age_minutes(dt),"expected_minutes":expected_minutes,
+        "anomaly":anomaly
     }
+
+def non_blocking(module):
+    module["affects_project"]=False
+    return module
 
 projects={
  "TTiTTulares":{
    "radar_noticias":workflow_state("telegram-listener.yml",60,150,"Radar de noticias"),
-   "radar_manual":workflow_state("radar-no-d1.yml",None,None,"Barrido manual de radar"),
+   "radar_manual":non_blocking(workflow_state("radar-no-d1.yml",None,None,"Barrido manual de radar")),
    "entrada_telegram":workflow_state("telegram-listener.yml",60,150,"Listener / entrada Telegram"),
    "envio_candidatos":workflow_state("send-telegram.yml",None,None,"Envío de candidatos a Telegram"),
    "redactor":git_activity("telegram/latest.json","Redactor / salida editorial"),
    "envio_redaccion":workflow_state("telegram-emergency.yml",None,None,"Envío de redacción a Telegram")
  },
  "TTendencias":{
-   "captura_top10":workflow_state("ttendencias-refresh.yml",15,50,"Captura Top 10"),
-   "listener_panel":workflow_state("ttendencias-listener.yml",30,80,"Listener / panel Telegram"),
+   "captura_top10":git_activity("trends/recent.json","Captura Top 10",15,50),
+   "listener_panel":workflow_state("ttendencias-listener.yml",30,80,"Listener / panel Telegram",True),
    "redactor":git_activity("trends/latest.json","Redactor de tendencias"),
    "envio_telegram":workflow_state("send-trends-telegram.yml",None,None,"Envío de tendencias a Telegram")
  },
@@ -120,7 +130,7 @@ projects={
 rank={"green":0,"orange":1,"red":2}
 result={}
 for project,mods in projects.items():
-    worst=max((rank.get(m.get("status"),1) for m in mods.values()),default=1)
+    blocking=[m for m in mods.values() if m.get("affects_project",True)]\n    worst=max((rank.get(m.get("status"),1) for m in blocking),default=1)
     result[project]={
         "status":["green","orange","red"][worst],
         "anomalies":[m["anomaly"] for m in mods.values() if m.get("anomaly")],
