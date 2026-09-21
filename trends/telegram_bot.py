@@ -103,10 +103,13 @@ def call(method, payload=None):
 
 
 def known_explained():
-    # En el nuevo flujo de Telegram solo cuentan como explicadas
-    # las tendencias marcadas mediante este propio bot.
+    # Leer siempre la versión remota más reciente para que un listener
+    # de larga duración no conserve verdes obsoletos.
     names = set()
-    manual = load(MANUAL, {"items": []})
+    manual = load_remote_json(
+        "trends/telegram-manual-explained.json",
+        load(MANUAL, {"items": []})
+    )
     for item in manual.get("items", []):
         if item.get("name"):
             names.add(norm(item["name"]))
@@ -137,7 +140,27 @@ def panel_text():
 def trend_statuses():
     _, items = current()
     explained = known_explained()
-    reqs = load(REQUESTS, {"requests": []}).get("requests", [])
+
+    # Fusionar cola remota con selecciones locales aún no persistidas.
+    local_data = load(REQUESTS, {"requests": []})
+    remote_data = load_remote_json("trends/requests.json", {"requests": []})
+    by_id = {
+        str(x.get("id")): x
+        for x in remote_data.get("requests", [])
+        if x.get("id")
+    }
+    for local_item in local_data.get("requests", []):
+        lid = str(local_item.get("id") or "")
+        if not lid:
+            continue
+        remote_item = by_id.get(lid)
+        if (
+            remote_item is None
+            or local_item.get("status") in {"preparing", "ready", "update"}
+        ):
+            by_id[lid] = local_item
+
+    reqs = list(by_id.values())
     preparing = {norm(x.get("name")) for x in reqs if x.get("status") in {"preparing", "ready"}}
     updates = {norm(x.get("name")) for x in reqs if x.get("status") == "update"}
 
