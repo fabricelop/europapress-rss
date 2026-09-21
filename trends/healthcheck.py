@@ -53,7 +53,7 @@ def workflow_state(filename, max_age_minutes):
         age = (datetime.now(timezone.utc) - dt).total_seconds() / 60
     except Exception:
         pass
-    ok = status in {"queued", "in_progress"} or (conclusion == "success" and age <= max_age_minutes)
+    ok = status in {"pending", "queued", "in_progress"} or (conclusion == "success" and age <= max_age_minutes)
     return {
         "ok": ok, "status": status, "conclusion": conclusion, "age_minutes": round(age, 1),
         "run_id": run.get("id"), "reason": None if ok else f"{status}/{conclusion}, {age:.1f} min",
