@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-09-21T22:02:42.349249+00:00",
-  "ok": false,
+  "checked_at": "2026-09-21T22:05:48.946475+00:00",
+  "ok": true,
   "modules": {
     "recent_json": {
       "ok": true
     },
     "requests_json": {
-      "ok": false
+      "ok": true
     },
     "bot_state_json": {
       "ok": true
@@ -23,33 +23,37 @@
       "non_stale_sources": 4
     },
     "listener": {
-      "ok": true,
-      "status": "in_progress",
+      "ok": false,
+      "status": "pending",
       "conclusion": null,
       "age_minutes": 0.7,
-      "run_id": 35660486025,
-      "reason": null,
-      "repairable": true
+      "run_id": 35660799758,
+      "reason": "pending/None, 0.7 min",
+      "repairable": true,
+      "repair_started": true
     },
     "refresh": {
       "ok": true,
       "status": "completed",
       "conclusion": "success",
-      "age_minutes": 15.4,
+      "age_minutes": 18.5,
       "run_id": 35659087239,
       "reason": null,
       "repairable": true
     },
     "telegram_sender": {
-      "ok": false,
-      "outcome": "failure"
+      "ok": true,
+      "outcome": "success"
+    },
+    "request_queue": {
+      "ok": true,
+      "invalid_count": 0
     }
   },
-  "repairs_started": [],
-  "blocking": [
-    "requests_json: JSON inválido o ilegible",
-    "envío Telegram terminó en failure"
+  "repairs_started": [
+    "relanzado listener"
   ],
-  "alert_sent": true,
-  "last_alert_signature": "envío Telegram terminó en failure | requests_json: JSON inválido o ilegible"
+  "blocking": [],
+  "alert_sent": false,
+  "last_alert_signature": ""
 }
