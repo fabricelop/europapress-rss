@@ -113,14 +113,16 @@ jobs:
                   related_trends = [name]
 
               related_norm = {norm(x) for x in related_trends}
-              already_ready = [
+              already_done = [
                   item for item in requests_doc.get("requests", [])
                   if norm(item.get("name")) in related_norm
-                  and item.get("status") == "ready"
-                  and item.get("telegram_message_id")
+                  and (
+                      item.get("status") == "explained"
+                      or (item.get("status") == "ready" and item.get("telegram_message_id"))
+                  )
               ]
-              if related_trends and len(already_ready) >= len(related_norm):
-                  print("TTendencia ya enviada; se omite:", name or "(sin nombre)")
+              if related_trends and len(already_done) >= len(related_norm):
+                  print("TTendencia ya enviada/explicada; se omite:", name or "(sin nombre)")
                   continue
 
               key_basis = " | ".join(related_trends) if related_trends else name
