@@ -103,7 +103,7 @@ def get(url):
   "Accept-Language":"es-ES,es;q=0.9,en;q=0.7"
  }
  r=urllib.request.Request(url,headers=headers)
- return urllib.request.urlopen(r,timeout=20).read().decode("utf-8","ignore")
+ return urllib.request.urlopen(r,timeout=12).read().decode("utf-8","ignore")
 def clean(s): return re.sub(r"\s+"," ",html.unescape(re.sub("<[^>]+>"," ",str(s)))).strip()
 def norm(s):
  s=''.join(c for c in unicodedata.normalize("NFKD",str(s).lower()) if not unicodedata.combining(c))
@@ -139,10 +139,12 @@ def sport_important(title):
  if any(x in n for x in SPORT_MINOR): return False
  return any(x in n for x in SPORT_IMPORTANT)
 
-def parse_source(src,url,kind,sport=False):
- urls=[url]+[u for u in SOURCE_FALLBACKS.get(src,[]) if u!=url]
+def parse_source(src,url,kind,sport=False,recovery=False):
  gn=google_news_fallback(src)
- if gn and gn not in urls:urls.append(gn)
+ if recovery:
+  urls=[gn] if gn else []
+ else:
+  urls=[url]+[u for u in SOURCE_FALLBACKS.get(src,[]) if u!=url]
  last=None
  for candidate in urls:
   try:
@@ -183,8 +185,8 @@ def fetch_items():
  specs.update({n:(u,k,True) for n,u,k in SPORT_SOURCES})
  jobs=[]
  with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
-  for spec in SOURCES: jobs.append((False,ex.submit(parse_source,*spec,False)))
-  for spec in SPORT_SOURCES: jobs.append((True,ex.submit(parse_source,*spec,True)))
+  for spec in SOURCES: jobs.append((False,ex.submit(parse_source,*spec,False,False)))
+  for spec in SPORT_SOURCES: jobs.append((True,ex.submit(parse_source,*spec,True,False)))
   for is_sport,fut in jobs:
    try:
     src,rows,used,err=fut.result()
@@ -211,7 +213,7 @@ def fetch_items():
    url,kind,_=specs[src]
    recovery["attempted"].append(src)
    try:
-    rsrc,rows,used,err=parse_source(src,url,kind,False)
+    rsrc,rows,used,err=parse_source(src,url,kind,False,True)
     if used and rows:
      healthy.append(src);out.extend(rows);recovery["recovered"].append(src)
      for st in source_status:
@@ -223,6 +225,27 @@ def fetch_items():
      print("SOURCE_RECOVERY_FAIL",src,err)
    except Exception as e:
     print("SOURCE_RECOVERY_FAIL",src,str(e))
+
+ # Las fuentes deportivas se recuperan también, aunque no computan para el umbral de 10 generales.
+ failed_sport=[x["source"] for x in source_status if x["type"]=="sport" and not x["ok"]]
+ recovery["attempted_sport"]=[]
+ recovery["recovered_sport"]=[]
+ for src in failed_sport:
+  url,kind,_=specs[src]
+  recovery["attempted_sport"].append(src)
+  try:
+   rsrc,rows,used,err=parse_source(src,url,kind,True,True)
+   if used and rows:
+    sport_healthy.append(src);out.extend(rows);recovery["recovered_sport"].append(src)
+    for st in source_status:
+     if st["source"]==src and st["type"]=="sport":
+      st.update({"ok":True,"items":len(rows),"url":used,"error":None,"recovered":True})
+    failures=[x for x in failures if not (x["source"]==src and x["type"]=="sport")]
+    print("SPORT_SOURCE_RECOVERY_OK",src,len(rows),used)
+   else:
+    print("SPORT_SOURCE_RECOVERY_FAIL",src,err)
+  except Exception as e:
+   print("SPORT_SOURCE_RECOVERY_FAIL",src,str(e))
  return out,sorted(set(healthy)),sorted(set(sport_healthy)),failures,source_status,recovery
 
 def best_match(title,events,threshold=.50):
