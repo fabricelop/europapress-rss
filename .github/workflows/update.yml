@@ -63,25 +63,61 @@ jobs:
 
           git add feed.xml latest.json recent.json state.json archive/
 
+          if ! git diff --cached --quiet; then
+            git commit -m "Actualizar archivo Europa Press"
+
+            for intento in 1 2 3 4; do
+              git fetch origin main
+              git rebase origin/main
+              if git push origin HEAD:main; then
+                echo "Cambios guardados correctamente (intento $intento)."
+                break
+              fi
+              echo "Push concurrente detectado; reintentando ($intento/4)..."
+              sleep $((intento * 2))
+              if [ "$intento" -eq 4 ]; then
+                echo "ERROR: no se pudo guardar tras 4 intentos."
+                exit 1
+              fi
+            done
+          else
+            echo "No hay cambios de Europa Press."
+          fi
+
+      - name: Sincronizar main antes del barrido editorial
+        run: |
+          set -e
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Ejecutar barrido multifuente TTiTTulares
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python3 telegram/radar_no_d1.py
+
+      - name: Guardar estado editorial sin pisar otros procesos
+        run: |
+          set -e
+          git add telegram/events.json telegram/processed-events.json telegram/editorial-processing.json
+
           if git diff --cached --quiet; then
-            echo "No hay cambios."
+            echo "Barrido editorial sin cambios."
             exit 0
           fi
 
-          git commit -m "Actualizar archivo Europa Press"
+          git commit -m "Actualizar barrido multifuente TTiTTulares"
 
-          # Otro proceso (Telegram, TTiTTulares o TTendencias) puede haber escrito en main
-          # mientras se actualizaban los datos. Rebasamos antes de publicar y reintentamos.
           for intento in 1 2 3 4; do
             git fetch origin main
             git rebase origin/main
             if git push origin HEAD:main; then
-              echo "Cambios guardados correctamente (intento $intento)."
+              echo "Estado editorial guardado correctamente (intento $intento)."
               exit 0
             fi
-            echo "Push concurrente detectado; reintentando ($intento/4)..."
+            echo "Push concurrente detectado al guardar radar; reintentando ($intento/4)..."
             sleep $((intento * 2))
           done
 
-          echo "ERROR: no se pudo guardar tras 4 intentos."
+          echo "ERROR: no se pudo guardar el estado editorial tras 4 intentos."
           exit 1
