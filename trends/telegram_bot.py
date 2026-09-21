@@ -316,6 +316,17 @@ def search_url(term):
     })
 
 
+def refresh_trends_now():
+    before = load(RECENT, {}).get("captured_at")
+    result = subprocess.run(
+        ["python3", str(ROOT / "update_trends.py")],
+        check=False,
+    )
+    after = load(RECENT, {}).get("captured_at")
+    ok = result.returncode == 0 and after and after != before
+    return ok, before, after
+
+
 def select_trend(callback):
     _, items = current()
     try:
@@ -533,9 +544,13 @@ def handle(update):
             persist_git("Enlazar chat del bot TTendencias")
             return
         if text in {"/actualizar", "/refresh"}:
-            subprocess.run(["python3", str(ROOT / "update_trends.py")], check=False)
-            sync_panel()
-            persist_git("Actualizar manualmente Top 10 TTendencias")
+            ok, _, _ = refresh_trends_now()
+            if ok:
+                sync_panel()
+                persist_git("Actualizar manualmente Top 10 TTendencias")
+                call("sendMessage", {"chat_id": message["chat"]["id"], "text": "Top 10 actualizado"})
+            else:
+                call("sendMessage", {"chat_id": message["chat"]["id"], "text": "⚠️ No se pudo actualizar el Top 10"})
             return
     cb = update.get("callback_query")
     if not cb:
@@ -560,10 +575,17 @@ def handle(update):
         except Exception:
             pass
     elif data == "panel:refresh":
-        subprocess.run(["python3", str(ROOT / "update_trends.py")], check=False)
-        sync_panel()
-        persist_git("Actualizar manualmente Top 10 TTendencias")
-        call("answerCallbackQuery", {"callback_query_id": cb["id"], "text": "Top 10 actualizado"})
+        ok, _, _ = refresh_trends_now()
+        if ok:
+            sync_panel()
+            persist_git("Actualizar manualmente Top 10 TTendencias")
+            call("answerCallbackQuery", {"callback_query_id": cb["id"], "text": "Top 10 actualizado"})
+        else:
+            call("answerCallbackQuery", {
+                "callback_query_id": cb["id"],
+                "text": "⚠️ No se pudo actualizar el Top 10",
+                "show_alert": True,
+            })
 
 
 def poll(seconds=3300):
