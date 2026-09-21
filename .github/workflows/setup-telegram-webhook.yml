@@ -1,5 +1,5 @@
 name: Configurar webhook Telegram TTiTTulares
-# trigger 2026-09-21 09:58
+# trigger 2026-09-21 11:59
 
 on:
   workflow_dispatch:
@@ -8,10 +8,14 @@ on:
     paths:
       - '.github/workflows/setup-telegram-webhook.yml'
 
+permissions:
+  contents: write
+
 jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Registrar webhook TTiTTulares
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -20,7 +24,7 @@ jobs:
           test -n "$TELEGRAM_BOT_TOKEN"
           test -n "$TELEGRAM_WEBHOOK_SECRET"
           python3 <<'PY'
-          import json, os, urllib.request
+          import json, os, urllib.request, datetime
           token=os.environ["TELEGRAM_BOT_TOKEN"]
           secret=os.environ["TELEGRAM_WEBHOOK_SECRET"]
           base=f"https://api.telegram.org/bot{token}"
@@ -34,11 +38,26 @@ jobs:
           req=urllib.request.Request(base+"/setWebhook",data=data,headers={"Content-Type":"application/json"})
           with urllib.request.urlopen(req,timeout=30) as r:
               out=json.loads(r.read().decode())
-          print("setWebhook:",json.dumps(out,ensure_ascii=False))
           with urllib.request.urlopen(base+"/getWebhookInfo",timeout=30) as r:
               info=json.loads(r.read().decode())
-          print("getWebhookInfo:",json.dumps(info,ensure_ascii=False))
-          if not out.get("ok"): raise SystemExit(1)
           got=((info.get("result") or {}).get("url") or "")
+          status={
+            "checked_at":datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "set_ok":bool(out.get("ok")),
+            "url":got,
+            "pending_update_count":(info.get("result") or {}).get("pending_update_count",0),
+            "last_error_message":(info.get("result") or {}).get("last_error_message")
+          }
+          open("telegram/webhook-status.json","w",encoding="utf-8").write(json.dumps(status,ensure_ascii=False,indent=2)+"\n")
+          print(json.dumps(status,ensure_ascii=False))
+          if not out.get("ok"): raise SystemExit(1)
           if got!=webhook: raise SystemExit("Webhook no quedó configurado")
           PY
+      - name: Guardar prueba del webhook activo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add telegram/webhook-status.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Verificar webhook Telegram activo"
+          git push origin HEAD:main
