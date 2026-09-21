@@ -44,8 +44,7 @@ jobs:
           python3 trends/update_trends.py
           python3 trends/telegram_bot.py sync
 
-          date -u +"%Y-%m-%dT%H:%M:%SZ" > trends/deploy-marker.txt
-          git add trends/recent.json trends/checkpoint.json trends/telegram-bot-state.json trends/deploy-marker.txt
+          git add trends/recent.json trends/checkpoint.json trends/telegram-bot-state.json
           if git diff --cached --quiet; then
             exit 0
           fi
