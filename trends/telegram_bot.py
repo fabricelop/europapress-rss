@@ -195,10 +195,16 @@ def panel_keyboard():
     rows = []
     for item in trend_statuses():
         label = f'{item["mark"]}  {item["rank"]:>2}   {item["name"]}'
-        rows.append([{
-            "text": label[:64],
-            "callback_data": f'trend:{item["rank"]}',
-        }])
+        rows.append([
+            {
+                "text": label[:54],
+                "callback_data": f'trend:{item["rank"]}',
+            },
+            {
+                "text": "🖼️",
+                "callback_data": f'trendimg:{item["rank"]}',
+            },
+        ])
     rows.append([{"text": "🔄 Actualizar ahora", "callback_data": "panel:refresh"}])
     return {"inline_keyboard": rows}
 
@@ -350,7 +356,7 @@ def refresh_trends_now():
     return ok, before, after
 
 
-def select_trend(callback):
+def select_trend(callback, with_image=False):
     _, items = current()
     try:
         rank = int(callback["data"].split(":", 1)[1])
@@ -432,7 +438,12 @@ def select_trend(callback):
         None
     )
 
-    if not existing:
+    if existing:
+        # Si ya estaba en preparación, permitir elevar la petición a versión con imagen.
+        if with_image and not existing.get("with_image"):
+            existing["with_image"] = True
+            save(REQUESTS, requests)
+    else:
         requests.setdefault("requests", []).append({
             "id": key,
             "name": term,
@@ -441,6 +452,7 @@ def select_trend(callback):
             "requested_at": datetime.now(MADRID).isoformat(timespec="seconds"),
             "revision": 0,
             "reexplain": norm(term) in known_explained(),
+            "with_image": bool(with_image),
         })
         save(REQUESTS, requests)
 
@@ -448,7 +460,7 @@ def select_trend(callback):
     try:
         call("answerCallbackQuery", {
             "callback_query_id": callback["id"],
-            "text": "🔵 En preparación"
+            "text": "🔵 En preparación" + (" + imagen" if with_image else "")
         })
     except Exception as e:
         print("No se pudo confirmar callback:", e, flush=True)
@@ -621,8 +633,10 @@ def handle(update):
     if not cb:
         return
     data = cb.get("data", "")
-    if data.startswith("trend:"):
-        select_trend(cb)
+    if data.startswith("trendimg:"):
+        select_trend(cb, with_image=True)
+    elif data.startswith("trend:"):
+        select_trend(cb, with_image=False)
     elif data.startswith("explained:"):
         mark_explained(cb)
     elif data.startswith("close:"):
