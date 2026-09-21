@@ -516,6 +516,20 @@ def mark_explained(callback):
                 if str(x).strip()
             ] or [str(item.get("name") or "").strip()]
 
+    # Si el listener se reinició, pending puede haberse perdido aunque el
+    # botón editorial siga visible. Recuperar por id de solicitud.
+    if not related_trends:
+        req = next(
+            (x for x in requests.get("requests", [])
+             if str(x.get("id") or "") == str(key)),
+            None,
+        )
+        if req:
+            related_trends = [
+                str(x).strip() for x in req.get("requested_together", [])
+                if str(x).strip()
+            ] or [str(req.get("name") or "").strip()]
+
     related_trends = [x for x in related_trends if x]
     related_norm = {norm(x) for x in related_trends}
     now = datetime.now(MADRID).isoformat(timespec="seconds")
