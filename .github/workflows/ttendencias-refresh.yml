@@ -3,7 +3,7 @@ name: Actualizar Top 10 TTendencias
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0,15,30,45 * * * *'
+    - cron: '2,17,32,47 * * * *'
   push:
     branches: [main]
     paths:
