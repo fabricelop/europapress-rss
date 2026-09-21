@@ -47,7 +47,19 @@ jobs:
               raise SystemExit("TTendencias no está enlazado todavía: abre el bot y pulsa /start.")
 
           token = os.environ["TTENDENCIAS_BOT_TOKEN"]
-          api = f"https://api.telegram.org/bot{token}/sendMessage"
+          api_base = f"https://api.telegram.org/bot{token}"
+
+          def telegram_json(method, payload):
+              req = urllib.request.Request(
+                  f"{api_base}/{method}",
+                  data=json.dumps(payload).encode("utf-8"),
+                  headers={"Content-Type": "application/json"},
+              )
+              with urllib.request.urlopen(req) as r:
+                  result = json.loads(r.read().decode("utf-8"))
+              if not result.get("ok"):
+                  raise RuntimeError(result)
+              return result["result"]
 
           def norm(s):
               return " ".join(str(s or "").split()).casefold()
@@ -140,23 +152,36 @@ jobs:
                   ])
 
               payload["reply_markup"] = {"inline_keyboard": keyboard}
-              req = urllib.request.Request(
-                  api,
-                  data=json.dumps(payload).encode("utf-8"),
-                  headers={"Content-Type": "application/json"},
-              )
-              with urllib.request.urlopen(req) as r:
-                  result = json.loads(r.read().decode("utf-8"))
-                  if not result.get("ok"):
-                      raise RuntimeError(result)
 
-              sent = result["result"]
+              # La imagen editorial es opcional. Cuando existe, se envía únicamente
+              # a Telegram y antes del bloque de texto. Telegram acepta una URL HTTPS
+              # pública en el campo photo, por lo que latest.json no necesita guardar
+              # binarios ni el workflow tocar otros proyectos.
+              image_url = str(msg.get("image_url") or "").strip()
+              image_message_id = None
+              if image_url:
+                  if not image_url.lower().startswith("https://"):
+                      raise ValueError(f"image_url debe ser HTTPS: {image_url}")
+                  photo_payload = {
+                      "chat_id": chat_id,
+                      "photo": image_url,
+                      "disable_notification": False,
+                  }
+                  image_alt = str(msg.get("image_alt") or "").strip()
+                  if image_alt:
+                      # Caption breve y descriptivo; nunca duplica el tuit completo.
+                      photo_payload["caption"] = image_alt[:1024]
+                  photo_sent = telegram_json("sendPhoto", photo_payload)
+                  image_message_id = photo_sent["message_id"]
+
+              sent = telegram_json("sendMessage", payload)
               if key:
                   state.setdefault("pending", {})[key] = {
                       "name": name,
                       "related_trends": related_trends,
                       "message_id": sent["message_id"],
                       "chat_id": chat_id,
+                      "image_message_id": image_message_id,
                   }
                   related_norm = {norm(x) for x in related_trends}
                   for item in requests_doc.get("requests", []):
