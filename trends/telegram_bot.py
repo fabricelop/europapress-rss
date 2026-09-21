@@ -192,16 +192,25 @@ def trend_statuses():
 
 
 def panel_keyboard():
+    state = load(STATE, {})
+    selected = {int(x) for x in state.get("batch_selection", []) if str(x).isdigit()}
     rows = []
     for item in trend_statuses():
-        label = f'{item["mark"]}  {item["rank"]:>2}   {item["name"]}'
+        chosen = item["rank"] in selected
+        mark = "☑️" if chosen else item["mark"]
+        label = f'{mark}  {item["rank"]:>2}   {item["name"]}'
         rows.append([{
             "text": label[:64],
-            "callback_data": f'choose:{item["rank"]}',
+            "callback_data": f'toggle:{item["rank"]}',
         }])
+    if selected:
+        rows.append([
+            {"text": f"📝 Explicar ({len(selected)})", "callback_data": "batch:text"},
+            {"text": f"🖼️ Con imagen ({len(selected)})", "callback_data": "batch:image"},
+            {"text": "✖️", "callback_data": "batch:cancel"},
+        ])
     rows.append([{"text": "🔄 Actualizar ahora", "callback_data": "panel:refresh"}])
     return {"inline_keyboard": rows}
-
 
 def send_new_status_alerts(state):
     chat_id = state.get("chat_id")
@@ -350,129 +359,123 @@ def refresh_trends_now():
     return ok, before, after
 
 
-def choose_trend(callback):
-    _, items = current()
-    try:
-        rank = int(callback["data"].split(":", 1)[1])
-        item = next(x for x in items if int(x["rank"]) == rank)
-    except Exception:
-        call("answerCallbackQuery", {
-            "callback_query_id": callback["id"],
-            "text": "La tabla cambió; vuelve a pulsar la tendencia."
-        })
-        return
-
-    term = str(item["name"])
-    try:
-        call("answerCallbackQuery", {"callback_query_id": callback["id"]})
-    except Exception:
-        pass
-    call("sendMessage", {
-        "chat_id": callback["message"]["chat"]["id"],
-        "text": f"¿Cómo quieres preparar T{rank} · {term}?",
-        "reply_markup": {"inline_keyboard": [[
-            {"text": "📝 Explicar", "callback_data": f"trend:{rank}"},
-            {"text": "🖼️ Con imagen", "callback_data": f"trendimg:{rank}"},
-            {"text": "✖️", "callback_data": "choose:cancel"},
-        ]]},
-    })
-
-
-def select_trend(callback, with_image=False):
-    _, items = current()
-    try:
-        rank = int(callback["data"].split(":", 1)[1])
-        item = next(x for x in items if int(x["rank"]) == rank)
-    except Exception:
-        call("answerCallbackQuery", {
-            "callback_query_id": callback["id"],
-            "text": "La tabla cambió; vuelve a pulsar la tendencia."
-        })
-        return
-
-    term = str(item["name"])
-    key = hashlib.sha256(term.encode("utf-8")).hexdigest()[:12]
-
-    # Fusionar remoto + local para no perder selecciones hechas segundos antes
-    # que todavía no hayan llegado a GitHub.
-    local_requests = load(REQUESTS, {"requests": []})
-    requests = load_remote_json(
-        "trends/requests.json",
-        {"requests": []}
-    )
-
-    by_id = {
-        str(x.get("id")): x
-        for x in requests.get("requests", [])
-        if x.get("id")
-    }
-    for local_item in local_requests.get("requests", []):
-        lid = str(local_item.get("id") or "")
-        if not lid:
-            continue
-        remote_item = by_id.get(lid)
-        if (
-            remote_item is None
-            or local_item.get("status") in {"preparing", "ready", "update"}
-        ):
-            by_id[lid] = local_item
-
-    requests["requests"] = list(by_id.values())
-
-    existing = next(
-        (x for x in requests.get("requests", [])
-         if norm(x.get("name")) == norm(term) and x.get("status") in {"preparing", "ready"}),
-        None
-    )
-
-    if existing:
-        # Si ya estaba en preparación, permitir elevar la petición a versión con imagen.
-        if with_image and not existing.get("with_image"):
-            existing["with_image"] = True
-            save(REQUESTS, requests)
-    else:
-        requests.setdefault("requests", []).append({
-            "id": key,
-            "name": term,
-            "rank": rank,
-            "status": "preparing",
-            "requested_at": datetime.now(MADRID).isoformat(timespec="seconds"),
-            "revision": 0,
-            "reexplain": norm(term) in known_explained(),
-            "with_image": bool(with_image),
-        })
-        save(REQUESTS, requests)
-
-    # 1) Quitar inmediatamente el spinner del botón.
-    try:
-        call("answerCallbackQuery", {
-            "callback_query_id": callback["id"],
-            "text": "🔵 En preparación" + (" + imagen" if with_image else "")
-        })
-    except Exception as e:
-        print("No se pudo confirmar callback:", e, flush=True)
-
-    # Cerrar el pequeño menú de elección tras seleccionar una opción.
-    try:
-        call("deleteMessage", {
-            "chat_id": state.get("chat_id") or callback["message"]["chat"]["id"],
-            "message_id": state.get("panel_message_id"),
-        })
-    except Exception:
-        pass
-
-    # 2) Editar directamente el mismo mensaje: no esperamos a GitHub.
+def refresh_panel_message(callback):
+    state = load(STATE, {})
+    chat_id = state.get("chat_id") or callback["message"]["chat"]["id"]
+    mid = state.get("panel_message_id") or callback["message"]["message_id"]
     try:
         call("editMessageText", {
-            "chat_id": callback["message"]["chat"]["id"],
-            "message_id": callback["message"]["message_id"],
+            "chat_id": chat_id,
+            "message_id": int(mid),
             "text": panel_text(),
             "reply_markup": panel_keyboard(),
             "disable_web_page_preview": True,
         })
-    except Exception as e:
-        if "message is not modified" not in str(e).lower():
-            print("No se pudo refrescar inmediatamente la fila:", e, flush=True)
+    except Exception as exc:
+        if "message is not modified" not in str(exc).lower():
+            print("No se pudo refrescar el panel:", exc, flush=True)
+
+
+def toggle_trend(callback):
+    _, items = current()
+    try:
+        rank = int(callback["data"].split(":", 1)[1])
+        next(x for x in items if int(x["rank"]) == rank)
+    except Exception:
+        call("answerCallbackQuery", {
+            "callback_query_id": callback["id"],
+            "text": "La tabla cambió; vuelve a pulsar la tendencia."
+        })
+        return
+
+    state = load(STATE, {})
+    selected = {int(x) for x in state.get("batch_selection", []) if str(x).isdigit()}
+    if rank in selected:
+        selected.remove(rank)
+    else:
+        selected.add(rank)
+    state["batch_selection"] = sorted(selected)
+    save(STATE, state)
+    try:
+        call("answerCallbackQuery", {"callback_query_id": callback["id"]})
+    except Exception:
+        pass
+    refresh_panel_message(callback)
+
+
+def submit_batch(callback, with_image=False):
+    _, items = current()
+    state = load(STATE, {})
+    selected = sorted({int(x) for x in state.get("batch_selection", []) if str(x).isdigit()})
+    chosen = [x for x in items if int(x["rank"]) in selected]
+    if not chosen:
+        call("answerCallbackQuery", {
+            "callback_query_id": callback["id"],
+            "text": "No hay tendencias seleccionadas."
+        })
+        return
+
+    local_requests = load(REQUESTS, {"requests": []})
+    requests = load_remote_json("trends/requests.json", {"requests": []})
+    by_id = {str(x.get("id")): x for x in requests.get("requests", []) if x.get("id")}
+    for x in local_requests.get("requests", []):
+        xid = str(x.get("id") or "")
+        if xid and (xid not in by_id or x.get("status") in {"preparing", "ready", "update"}):
+            by_id[xid] = x
+
+    now = datetime.now(MADRID).isoformat(timespec="seconds")
+    names = [str(x["name"]) for x in chosen]
+    batch_basis = " | ".join(names) + " | " + now
+    batch_id = hashlib.sha256(batch_basis.encode("utf-8")).hexdigest()[:12]
+    explained = known_explained()
+
+    for item in chosen:
+        term = str(item["name"])
+        key = hashlib.sha256(term.encode("utf-8")).hexdigest()[:12]
+        existing = next((x for x in by_id.values()
+                         if norm(x.get("name")) == norm(term)
+                         and x.get("status") in {"preparing", "ready"}), None)
+        if existing:
+            existing["with_image"] = bool(with_image) or bool(existing.get("with_image"))
+            existing["batch_id"] = batch_id
+            existing["requested_together"] = names
+        else:
+            by_id[key] = {
+                "id": key,
+                "name": term,
+                "rank": int(item["rank"]),
+                "status": "preparing",
+                "requested_at": now,
+                "revision": 0,
+                "reexplain": norm(term) in explained,
+                "with_image": bool(with_image),
+                "batch_id": batch_id,
+                "requested_together": names,
+            }
+
+    requests["requests"] = list(by_id.values())
+    save(REQUESTS, requests)
+    state["batch_selection"] = []
+    save(STATE, state)
+    try:
+        call("answerCallbackQuery", {
+            "callback_query_id": callback["id"],
+            "text": ("🖼️ " if with_image else "📝 ") + f"{len(chosen)} tendencia(s) enviadas juntas"
+        })
+    except Exception:
+        pass
+    refresh_panel_message(callback)
+
+
+def cancel_batch(callback):
+    state = load(STATE, {})
+    state["batch_selection"] = []
+    save(STATE, state)
+    try:
+        call("answerCallbackQuery", {"callback_query_id": callback["id"], "text": "Selección cancelada"})
+    except Exception:
+        pass
+    refresh_panel_message(callback)
 
 
 def mark_explained(callback):
@@ -629,21 +632,14 @@ def handle(update):
     if not cb:
         return
     data = cb.get("data", "")
-    if data == "choose:cancel":
-        try:
-            call("deleteMessage", {
-                "chat_id": cb["message"]["chat"]["id"],
-                "message_id": cb["message"]["message_id"],
-            })
-            call("answerCallbackQuery", {"callback_query_id": cb["id"]})
-        except Exception:
-            pass
-    elif data.startswith("choose:"):
-        choose_trend(cb)
-    elif data.startswith("trendimg:"):
-        select_trend(cb, with_image=True)
-    elif data.startswith("trend:"):
-        select_trend(cb, with_image=False)
+    if data.startswith("toggle:"):
+        toggle_trend(cb)
+    elif data == "batch:text":
+        submit_batch(cb, with_image=False)
+    elif data == "batch:image":
+        submit_batch(cb, with_image=True)
+    elif data == "batch:cancel":
+        cancel_batch(cb)
     elif data.startswith("explained:"):
         mark_explained(cb)
     elif data.startswith("close:"):
