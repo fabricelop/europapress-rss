@@ -676,25 +676,35 @@ def handle(update):
         except Exception:
             pass
     elif data == "panel:refresh":
+        # Confirmar el clic inmediatamente para que Telegram no deje el botón
+        # parpadeando mientras se consultan las fuentes.
+        try:
+            call("answerCallbackQuery", {
+                "callback_query_id": cb["id"],
+                "text": "Actualizando Top 10…",
+            })
+        except Exception:
+            pass
+
         # El propio callback es la referencia más fiable del panel visible.
-        # Guardarla evita confirmar una actualización si el estado persistido
-        # perdió chat_id/panel_message_id.
         state = load(STATE, {})
         state["chat_id"] = cb["message"]["chat"]["id"]
         state["panel_message_id"] = cb["message"]["message_id"]
         state["panel_message_ids"] = [cb["message"]["message_id"]]
         save(STATE, state)
-        ok, _, _ = refresh_trends_now()
+        ok, before, after = refresh_trends_now()
         synced = sync_panel() if ok else False
         if ok and synced:
             persist_git("Actualizar manualmente Top 10 TTendencias")
-            call("answerCallbackQuery", {"callback_query_id": cb["id"], "text": "Top 10 actualizado"})
+            print(f"refresh manual TTendencias: {before} -> {after}", flush=True)
         else:
-            call("answerCallbackQuery", {
-                "callback_query_id": cb["id"],
-                "text": "⚠️ No se pudo actualizar el Top 10",
-                "show_alert": True,
-            })
+            try:
+                call("sendMessage", {
+                    "chat_id": cb["message"]["chat"]["id"],
+                    "text": "⚠️ No se pudo actualizar el Top 10",
+                })
+            except Exception:
+                pass
 
 
 def poll(seconds=3300):
