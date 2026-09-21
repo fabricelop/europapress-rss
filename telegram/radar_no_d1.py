@@ -25,6 +25,33 @@ SPORT_SOURCES=[
 ("SPORT","https://www.sport.es/es/","html"),
 ("EFE Deportes","https://efe.com/deportes/","html")
 ]
+SOURCE_DOMAINS={
+ "Europa Press":"europapress.es",
+ "EL PAÍS":"elpais.com",
+ "La Vanguardia":"lavanguardia.com",
+ "Cadena SER":"cadenaser.com",
+ "RTVE":"rtve.es",
+ "El HuffPost":"huffingtonpost.es",
+ "20minutos":"20minutos.es",
+ "ABC":"abc.es",
+ "COPE":"cope.es",
+ "EFE":"efe.com",
+ "Servimedia":"servimedia.es",
+ "elDiario.es":"eldiario.es",
+ "Público":"publico.es",
+ "El Mundo":"elmundo.es",
+ "AS":"as.com",
+ "MARCA":"marca.com",
+ "Mundo Deportivo":"mundodeportivo.com",
+ "SPORT":"sport.es",
+ "EFE Deportes":"efe.com"
+}
+def google_news_fallback(src):
+ domain=SOURCE_DOMAINS.get(src)
+ if not domain:return None
+ q=urllib.parse.quote("site:"+domain)
+ return "https://news.google.com/rss/search?q="+q+"&hl=es&gl=ES&ceid=ES:es"
+
 SOURCE_FALLBACKS={
  "Europa Press":["https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json"],
  "EL PAÍS":["https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/ultimas-noticias/portada","https://elpais.com/ultimas-noticias/"],
@@ -111,6 +138,8 @@ def sport_important(title):
 
 def parse_source(src,url,kind,sport=False):
  urls=[url]+[u for u in SOURCE_FALLBACKS.get(src,[]) if u!=url]
+ gn=google_news_fallback(src)
+ if gn and gn not in urls:urls.append(gn)
  last=None
  for candidate in urls:
   try:
