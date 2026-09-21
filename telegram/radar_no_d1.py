@@ -76,6 +76,8 @@ SOURCE_FALLBACKS={
 
 TOTAL_SOURCES=len(SOURCES)
 REVIEW_MIN=4
+FAST_TRACK_MIN=3
+FAST_TRACK_WINDOW_MIN=30
 WAIT_HOURS=24
 MIN_HEALTHY_SOURCES=10
 MAX_PROCESSED=2000
@@ -280,6 +282,18 @@ def add_appearance(e,row,now):
  e["last_seen"]=iso(now)
  if not e.get("url"):e["url"]=row["url"]
 
+def fast_track_minutes(e):
+ general=set(e.get("sources",[]))
+ seen={}
+ for a in e.get("appearances",[]):
+  if a.get("source") not in general or a.get("source_type","general")=="sport" or not a.get("first_seen"):continue
+  t=dtv(a.get("first_seen"))
+  src=a.get("source")
+  if src not in seen or t<seen[src]:seen[src]=t
+ if len(seen)<FAST_TRACK_MIN:return None
+ times=sorted(seen.values())
+ return (times[FAST_TRACK_MIN-1]-times[0]).total_seconds()/60
+
 def processed_snapshot(e,kind,now,revision=None):
  return {
   "event_id":e["id"],"canonical_title":e["canonical_title"],"first_seen":e["first_seen"],
@@ -289,9 +303,15 @@ def processed_snapshot(e,kind,now,revision=None):
   "last_titles":[a.get("title","") for a in e.get("appearances",[])][-10:]
  }
 
-def send_review(e,token,chat):
- txt=("📰 TTiTTulares · PARA VALORAR · "+str(e["source_count"])+"/"+str(TOTAL_SOURCES)+
-      " ("+str(e["percentage"])+"%)\n\n"+e["canonical_title"]+"\n\nFuentes: "+", ".join(e["sources"]))
+def send_review(e,token,chat,fast=False):
+ if fast:
+  mins=fast_track_minutes(e)
+  speed=(" · "+str(round(mins,1))+" min") if mins is not None else ""
+  txt=("⚡ TTiTTulares · ALERTA TEMPRANA · "+str(e["source_count"])+"/"+str(TOTAL_SOURCES)+speed+
+       "\n\n"+e["canonical_title"]+"\n\nFuentes: "+", ".join(e["sources"]))
+ else:
+  txt=("📰 TTiTTulares · PARA VALORAR · "+str(e["source_count"])+"/"+str(TOTAL_SOURCES)+
+       " ("+str(e["percentage"])+"%)\n\n"+e["canonical_title"]+"\n\nFuentes: "+", ".join(e["sources"]))
  buttons=[[{"text":"PREPARAR","callback_data":"emergency:prepare:"+e["id"]},{"text":"DESESTIMAR","callback_data":"emergency:dismiss:"+e["id"]}],
           [{"text":"ABRIR FUENTE","url":e["url"]}]]
  payload={"chat_id":chat,"text":txt,"disable_web_page_preview":True,"reply_markup":{"inline_keyboard":buttons}}
@@ -312,6 +332,14 @@ for e in events:
   e["appearances"]=[{"source":s,"title":e["canonical_title"],"url":e.get("url",""),"first_seen":e.get("first_seen"),"last_seen":e.get("last_seen")} for s in e.get("sources",[])]
  e["sources"]=sorted(set(e.get("sources",[])))
  e["source_count"]=len(e["sources"]);e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCES,1)
+
+# Activación segura: no enviar retroactivamente alertas rápidas de eventos que ya tenían 3+ fuentes.
+if not events_doc.get("fast_track_initialized"):
+ for e in events:
+  if e.get("status")=="WAITING" and e.get("source_count",0)>=FAST_TRACK_MIN:
+   e["fast_track_notified"]=True
+ events_doc["fast_track_initialized"]=True
+ events_doc["fast_track_initialized_at"]=iso(now)
 
 # Solo WAITING caduca; lo ya tratado queda en processed-events.json.
 cutoff=now-timedelta(hours=WAIT_HOURS)
@@ -369,10 +397,21 @@ for e in list(events):
  n=e.get("source_count",0)
  status=e.get("status")
  if status=="WAITING" and n>=REVIEW_MIN:
-  if token and chat:send_review(e,token,chat)
+  # Si ya se avisó a 3 fuentes por aceleración, no duplicar el aviso al llegar a 4.
+  if not e.get("fast_track_notified"):
+   if token and chat:send_review(e,token,chat)
+   sent+=1
   e["status"]="SENT_REVIEW";e["notified"]=True
   new_processed.append(processed_snapshot(e,"SENT_REVIEW",now))
-  sent+=1
+ elif status=="WAITING" and n==FAST_TRACK_MIN and not e.get("fast_track_notified"):
+  mins=fast_track_minutes(e)
+  if mins is not None and mins<=FAST_TRACK_WINDOW_MIN:
+   if token and chat:send_review(e,token,chat,True)
+   e["fast_track_notified"]=True
+   e["fast_track_notified_at"]=iso(now)
+   e["fast_track_minutes"]=round(mins,1)
+   new_processed.append(processed_snapshot(e,"FAST_TRACK_ALERT",now))
+   sent+=1
  elif status=="UPDATE_WAITING" and n>=REVIEW_MIN:
   if token and chat:send_review(e,token,chat)
   e["status"]="SENT_REVIEW";e["notified"]=True
@@ -396,8 +435,10 @@ processed=processed[-MAX_PROCESSED:]
 
 if initial_event_count>0 and len(events)==0:
  raise RuntimeError("Protección de estado: el barrido intentó vaciar todos los eventos")
-events_doc={"version":4,"configured_sources":TOTAL_SOURCES,"review_min_sources":REVIEW_MIN,"automatic_processing":False,
-            "waiting_ttl_hours":WAIT_HOURS,"min_healthy_sources":MIN_HEALTHY_SOURCES,"last_run":iso(now),
+events_doc={"version":5,"configured_sources":TOTAL_SOURCES,"review_min_sources":REVIEW_MIN,
+            "fast_track_min_sources":FAST_TRACK_MIN,"fast_track_window_minutes":FAST_TRACK_WINDOW_MIN,
+            "fast_track_initialized":True,"fast_track_initialized_at":events_doc.get("fast_track_initialized_at") or iso(now),
+            "automatic_processing":False,"waiting_ttl_hours":WAIT_HOURS,"min_healthy_sources":MIN_HEALTHY_SOURCES,"last_run":iso(now),
             "healthy_sources":sorted(set(healthy)),"healthy_source_count":len(set(healthy)),
             "healthy_sport_sources":sorted(set(sport_healthy)),"source_failures":source_failures,
             "source_status":source_status,"source_recovery":source_recovery,"events":events}
