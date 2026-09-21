@@ -170,7 +170,7 @@ def run_radar(slot):
     else:
         print("RADAR_ERROR",slot,p.returncode,flush=True)
 
-api("deleteWebhook",{"drop_pending_updates":False})
+# Webhook gestionado por Vercel; no borrarlo desde el listener legacy.
 state=load_json(STATE,{})
 offset=int(state.get("offset",0) or 0)
 last_slot=""
