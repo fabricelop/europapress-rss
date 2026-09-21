@@ -1,0 +1,43 @@
+name: Configurar webhook Telegram TTiTTulares
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/setup-telegram-webhook.yml'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Registrar webhook TTiTTulares
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_WEBHOOK_SECRET: ${{ secrets.TELEGRAM_WEBHOOK_SECRET }}
+        run: |
+          test -n "$TELEGRAM_BOT_TOKEN"
+          test -n "$TELEGRAM_WEBHOOK_SECRET"
+          python3 <<'PY'
+          import json, os, urllib.request
+          token=os.environ["TELEGRAM_BOT_TOKEN"]
+          secret=os.environ["TELEGRAM_WEBHOOK_SECRET"]
+          base=f"https://api.telegram.org/bot{token}"
+          webhook="https://europapress-rss.vercel.app/api/telegram-webhook"
+          data=json.dumps({
+            "url": webhook,
+            "secret_token": secret,
+            "allowed_updates": ["callback_query","message"],
+            "drop_pending_updates": False
+          }).encode()
+          req=urllib.request.Request(base+"/setWebhook",data=data,headers={"Content-Type":"application/json"})
+          with urllib.request.urlopen(req,timeout=30) as r:
+              out=json.loads(r.read().decode())
+          print("setWebhook:",json.dumps(out,ensure_ascii=False))
+          with urllib.request.urlopen(base+"/getWebhookInfo",timeout=30) as r:
+              info=json.loads(r.read().decode())
+          print("getWebhookInfo:",json.dumps(info,ensure_ascii=False))
+          if not out.get("ok"): raise SystemExit(1)
+          got=((info.get("result") or {}).get("url") or "")
+          if got!=webhook: raise SystemExit("Webhook no quedó configurado")
+          PY
