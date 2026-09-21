@@ -532,7 +532,7 @@
       ],
       "source_count": 4,
       "selected_at": "2026-09-21T19:31:42.681Z",
-      "status": "PROCESSING",
+      "status": "READY",
       "sport_sources": [
         "AS",
         "MARCA",
@@ -540,7 +540,15 @@
       ],
       "sport_source_count": 3,
       "repaired_at": "2026-09-21T20:40:27.084Z",
-      "repair_note": "Metadatos restaurados desde telegram/events.json; la noticia estaba en PROCESSING con contador 0 por alta incorrecta en el listener."
+      "repair_note": "Metadatos restaurados desde telegram/events.json; la noticia estaba en PROCESSING con contador 0 por alta incorrecta en el listener.",
+      "delivered_at": "2026-09-21T20:52:30.902Z",
+      "delivery_confirmation": "workflow_logs",
+      "delivery_run_id": 35653656493,
+      "delivery_message_ids": [
+        2118,
+        2119
+      ],
+      "delivery_note": "Entregado; el flujo antiguo duplicó el envío por doble disparador. Corregido después para disparar solo con emergency.json."
     }
   ]
 }
