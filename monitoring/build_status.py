@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Monitoring only: no production workflow logic is modified.
 import json, os, subprocess, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
