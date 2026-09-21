@@ -10,3 +10,9 @@
 - Todos los remates se muestran siempre precedidos por 🌶️.
 - Las etiquetas A), B), C) son solo visuales de Telegram; no deben formar parte del texto final publicado.
 - Cada variante completa debe caber en el límite de X.
+## Imágenes editoriales
+- La imagen NO debe repetir ni mostrar el texto factual/principal del tuit.
+- Si visualmente aporta valor, puede incluir el remate/humor elegido, preferentemente integrado en la propia imagen.
+- Si el remate no mejora la imagen, puede ir sin texto.
+- La imagen debe complementar el tuit, no duplicarlo.
+
