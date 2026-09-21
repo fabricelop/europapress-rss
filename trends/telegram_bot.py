@@ -461,7 +461,9 @@ def submit_batch(callback, with_image=False):
     save(REQUESTS, requests)
     state["batch_selection"] = []
     save(STATE, state)
-    # Persistir inmediatamente la cola: si el listener termina o el workflow\n    # hace checkout después, no se pierde ni el lote ni with_image.\n    persist_git("Encolar lote TTendencias" + (" con imagen" if with_image else ""))
+    # Persistir inmediatamente la cola: si el listener termina o un workflow
+    # hace checkout después, no se pierde ni el lote ni with_image.
+    persist_git("Encolar lote TTendencias" + (" con imagen" if with_image else ""))
     try:
         call("answerCallbackQuery", {
             "callback_query_id": callback["id"],
