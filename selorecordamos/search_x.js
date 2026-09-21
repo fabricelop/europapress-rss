@@ -3,7 +3,7 @@ const path = require('path');
 const { chromium } = require('playwright');
 
 (async () => {
-  const query = '"recordadme" OR "que alguien me recuerde" OR "alguien que me recuerde" OR "alguien me recuerde" OR "que me recuerden" OR "recordarle" OR "recordármelo" OR "recordarmelo" OR "recordárselo" OR "recordarselo" OR "recuérdele" OR "recuerdele" OR "recuérdenle" OR "recuerdenle" OR "@SeLoRecordamos"';
+  const query = '"recordadme" OR "que alguien me recuerde" OR "alguien que me recuerde" OR "alguien me recuerde" OR "que me recuerden" OR "@SeLoRecordamos"';
   const url = `https://x.com/search?q=${encodeURIComponent(query)}&src=typed_query&f=live`;
   const baseDir = path.join(__dirname);
   const outDir = path.join(baseDir, 'debug');
