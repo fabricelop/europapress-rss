@@ -195,16 +195,10 @@ def panel_keyboard():
     rows = []
     for item in trend_statuses():
         label = f'{item["mark"]}  {item["rank"]:>2}   {item["name"]}'
-        rows.append([
-            {
-                "text": label[:54],
-                "callback_data": f'trend:{item["rank"]}',
-            },
-            {
-                "text": "🖼️",
-                "callback_data": f'trendimg:{item["rank"]}',
-            },
-        ])
+        rows.append([{
+            "text": label[:64],
+            "callback_data": f'choose:{item["rank"]}',
+        }])
     rows.append([{"text": "🔄 Actualizar ahora", "callback_data": "panel:refresh"}])
     return {"inline_keyboard": rows}
 
@@ -356,6 +350,34 @@ def refresh_trends_now():
     return ok, before, after
 
 
+def choose_trend(callback):
+    _, items = current()
+    try:
+        rank = int(callback["data"].split(":", 1)[1])
+        item = next(x for x in items if int(x["rank"]) == rank)
+    except Exception:
+        call("answerCallbackQuery", {
+            "callback_query_id": callback["id"],
+            "text": "La tabla cambió; vuelve a pulsar la tendencia."
+        })
+        return
+
+    term = str(item["name"])
+    try:
+        call("answerCallbackQuery", {"callback_query_id": callback["id"]})
+    except Exception:
+        pass
+    call("sendMessage", {
+        "chat_id": callback["message"]["chat"]["id"],
+        "text": f"¿Cómo quieres preparar T{rank} · {term}?",
+        "reply_markup": {"inline_keyboard": [[
+            {"text": "📝 Explicar", "callback_data": f"trend:{rank}"},
+            {"text": "🖼️ Con imagen", "callback_data": f"trendimg:{rank}"},
+            {"text": "✖️", "callback_data": "choose:cancel"},
+        ]]},
+    })
+
+
 def select_trend(callback, with_image=False):
     _, items = current()
     try:
@@ -371,41 +393,6 @@ def select_trend(callback, with_image=False):
     term = str(item["name"])
     key = hashlib.sha256(term.encode("utf-8")).hexdigest()[:12]
 
-    # Protección contra pulsaciones accidentales en tendencias verdes:
-    # primer toque = aviso; segundo toque dentro de 5 s = reexplicar.
-    state = load(STATE, {
-        "chat_id": None,
-        "panel_message_id": None,
-        "last_update_id": 0,
-        "pending": {},
-    })
-    confirmations = state.setdefault("green_reconfirm", {})
-    now_ts = time.time()
-    # Limpiar confirmaciones caducadas.
-    confirmations = {
-        k: v for k, v in confirmations.items()
-        if now_ts - float(v or 0) <= 5
-    }
-    state["green_reconfirm"] = confirmations
-
-    explained_now = norm(term) in known_explained()
-    if explained_now:
-        previous_ts = confirmations.get(norm(term))
-        if previous_ts is None or now_ts - float(previous_ts) > 5:
-            confirmations[norm(term)] = now_ts
-            state["green_reconfirm"] = confirmations
-            save(STATE, state)
-            try:
-                call("answerCallbackQuery", {
-                    "callback_query_id": callback["id"],
-                    "text": "Pulsa de nuevo en 5 s para volver a explicar"
-                })
-            except Exception:
-                pass
-            return
-        confirmations.pop(norm(term), None)
-        state["green_reconfirm"] = confirmations
-        save(STATE, state)
     # Fusionar remoto + local para no perder selecciones hechas segundos antes
     # que todavía no hayan llegado a GitHub.
     local_requests = load(REQUESTS, {"requests": []})
@@ -464,6 +451,15 @@ def select_trend(callback, with_image=False):
         })
     except Exception as e:
         print("No se pudo confirmar callback:", e, flush=True)
+
+    # Cerrar el pequeño menú de elección tras seleccionar una opción.
+    try:
+        call("deleteMessage", {
+            "chat_id": state.get("chat_id") or callback["message"]["chat"]["id"],
+            "message_id": state.get("panel_message_id"),
+        })
+    except Exception:
+        pass
 
     # 2) Editar directamente el mismo mensaje: no esperamos a GitHub.
     try:
@@ -633,7 +629,18 @@ def handle(update):
     if not cb:
         return
     data = cb.get("data", "")
-    if data.startswith("trendimg:"):
+    if data == "choose:cancel":
+        try:
+            call("deleteMessage", {
+                "chat_id": cb["message"]["chat"]["id"],
+                "message_id": cb["message"]["message_id"],
+            })
+            call("answerCallbackQuery", {"callback_query_id": cb["id"]})
+        except Exception:
+            pass
+    elif data.startswith("choose:"):
+        choose_trend(cb)
+    elif data.startswith("trendimg:"):
         select_trend(cb, with_image=True)
     elif data.startswith("trend:"):
         select_trend(cb, with_image=False)
