@@ -364,6 +364,42 @@ def select_trend(callback):
 
     term = str(item["name"])
     key = hashlib.sha256(term.encode("utf-8")).hexdigest()[:12]
+
+    # Protección contra pulsaciones accidentales en tendencias verdes:
+    # primer toque = aviso; segundo toque dentro de 5 s = reexplicar.
+    state = load(STATE, {
+        "chat_id": None,
+        "panel_message_id": None,
+        "last_update_id": 0,
+        "pending": {},
+    })
+    confirmations = state.setdefault("green_reconfirm", {})
+    now_ts = time.time()
+    # Limpiar confirmaciones caducadas.
+    confirmations = {
+        k: v for k, v in confirmations.items()
+        if now_ts - float(v or 0) <= 5
+    }
+    state["green_reconfirm"] = confirmations
+
+    explained_now = norm(term) in known_explained()
+    if explained_now:
+        previous_ts = confirmations.get(norm(term))
+        if previous_ts is None or now_ts - float(previous_ts) > 5:
+            confirmations[norm(term)] = now_ts
+            state["green_reconfirm"] = confirmations
+            save(STATE, state)
+            try:
+                call("answerCallbackQuery", {
+                    "callback_query_id": callback["id"],
+                    "text": "Pulsa de nuevo en 5 s para volver a explicar"
+                })
+            except Exception:
+                pass
+            return
+        confirmations.pop(norm(term), None)
+        state["green_reconfirm"] = confirmations
+        save(STATE, state)
     # Fusionar remoto + local para no perder selecciones hechas segundos antes
     # que todavía no hayan llegado a GitHub.
     local_requests = load(REQUESTS, {"requests": []})
