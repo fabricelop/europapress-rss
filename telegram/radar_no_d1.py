@@ -113,7 +113,11 @@ def score(a,b):
  A,B=fp(a),fp(b)
  if not A or not B:return 0
  inter=len(A&B)
- return max(inter/max(1,min(len(A),len(B))),inter/max(1,len(A|B)))
+ if inter<2:return 0
+ overlap=inter/max(1,min(len(A),len(B)))
+ jaccard=inter/max(1,len(A|B))
+ if min(len(A),len(B))<=4 and overlap<0.60:return 0
+ return 0.55*overlap+0.45*jaccard
 def make_id(title):
  return hashlib.sha1(" ".join(sorted(fp(title))).encode()).hexdigest()[:12]
 
@@ -155,6 +159,8 @@ def parse_source(src,url,kind,sport=False):
      lm=re.search(r"<link[^>]*href=[\"']([^\"']+)",b,re.I) or re.search(r"<link[^>]*>([\s\S]*?)</link>",b,re.I)
      if tm and lm:
       t=clean(tm.group(1));u=clean(lm.group(1))
+      if "news.google.com" in candidate:
+       t=re.sub(r"\\s+-\\s+[^-]{2,80}$","",t).strip()
       if t and u and (not sport or sport_important(t)):out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"})
    else:
     n=0
