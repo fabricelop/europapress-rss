@@ -330,10 +330,32 @@ def select_trend(callback):
 
     term = str(item["name"])
     key = hashlib.sha256(term.encode("utf-8")).hexdigest()[:12]
+    # Fusionar remoto + local para no perder selecciones hechas segundos antes
+    # que todavía no hayan llegado a GitHub.
+    local_requests = load(REQUESTS, {"requests": []})
     requests = load_remote_json(
         "trends/requests.json",
-        load(REQUESTS, {"requests": []})
+        {"requests": []}
     )
+
+    by_id = {
+        str(x.get("id")): x
+        for x in requests.get("requests", [])
+        if x.get("id")
+    }
+    for local_item in local_requests.get("requests", []):
+        lid = str(local_item.get("id") or "")
+        if not lid:
+            continue
+        remote_item = by_id.get(lid)
+        if (
+            remote_item is None
+            or local_item.get("status") in {"preparing", "ready", "update"}
+        ):
+            by_id[lid] = local_item
+
+    requests["requests"] = list(by_id.values())
+
     existing = next(
         (x for x in requests.get("requests", [])
          if norm(x.get("name")) == norm(term) and x.get("status") in {"preparing", "ready"}),
