@@ -213,26 +213,33 @@ def fetch_items():
     print("SOURCE_FAIL_WORKER",str(e))
 
  recovery={"triggered":False,"threshold":MIN_HEALTHY_SOURCES,"attempted":[],"recovered":[]}
- if len(set(healthy))<MIN_HEALTHY_SOURCES:
+ failed_general=[x["source"] for x in source_status if x["type"]=="general" and not x["ok"]]
+ if failed_general:
   recovery["triggered"]=True
-  failed_general=[x["source"] for x in source_status if x["type"]=="general" and not x["ok"]]
+  recovery["below_threshold"]=len(set(healthy))<MIN_HEALTHY_SOURCES
   print("SOURCE_RECOVERY_TRIGGERED",len(set(healthy)),"/",TOTAL_SOURCES,failed_general)
-  for src in failed_general:
-   url,kind,_=specs[src]
-   recovery["attempted"].append(src)
-   try:
-    rsrc,rows,used,err=parse_source(src,url,kind,False,True)
-    if used and rows:
-     healthy.append(src);out.extend(rows);recovery["recovered"].append(src)
-     for st in source_status:
-      if st["source"]==src and st["type"]=="general":
-       st.update({"ok":True,"items":len(rows),"url":used,"error":None,"recovered":True})
-     failures=[x for x in failures if not (x["source"]==src and x["type"]=="general")]
-     print("SOURCE_RECOVERY_OK",src,len(rows),used)
-    else:
-     print("SOURCE_RECOVERY_FAIL",src,err)
-   except Exception as e:
-    print("SOURCE_RECOVERY_FAIL",src,str(e))
+  # Nunca detener ni degradar el barrido: se continúa con las fuentes sanas y
+  # se intenta recuperar cada fuente fallida en paralelo mediante fallback.
+  with concurrent.futures.ThreadPoolExecutor(max_workers=min(4,len(failed_general))) as rex:
+   futs={}
+   for src in failed_general:
+    url,kind,_=specs[src]
+    recovery["attempted"].append(src)
+    futs[rex.submit(parse_source,src,url,kind,False,True)]=src
+   for fut,src in list(futs.items()):
+    try:
+     rsrc,rows,used,err=fut.result()
+     if used and rows:
+      healthy.append(src);out.extend(rows);recovery["recovered"].append(src)
+      for st in source_status:
+       if st["source"]==src and st["type"]=="general":
+        st.update({"ok":True,"items":len(rows),"url":used,"error":None,"recovered":True})
+      failures=[x for x in failures if not (x["source"]==src and x["type"]=="general")]
+      print("SOURCE_RECOVERY_OK",src,len(rows),used)
+     else:
+      print("SOURCE_RECOVERY_FAIL",src,err)
+    except Exception as e:
+     print("SOURCE_RECOVERY_FAIL",src,str(e))
 
  # Las fuentes deportivas se recuperan también, aunque no computan para el umbral de 10 generales.
  failed_sport=[x["source"] for x in source_status if x["type"]=="sport" and not x["ok"]]
