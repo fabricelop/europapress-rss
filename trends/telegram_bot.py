@@ -381,26 +381,11 @@ def mark_explained(callback):
     callback_mid = callback_message.get("message_id")
     callback_chat_id = (callback_message.get("chat") or {}).get("id")
 
-    # Fuente de verdad: el propio mensaje de Telegram pulsado.
-    # No dependemos de que state.pending siga sincronizado.
     state = load_remote_json(
         "trends/telegram-bot-state.json",
         load(STATE, {"pending": {}})
     )
     pending = state.get("pending", {})
-
-    item = None
-    resolved_key = key
-
-    if callback_mid:
-        for remote_key, remote_item in pending.items():
-            if int(remote_item.get("message_id") or 0) == int(callback_mid):
-                resolved_key = remote_key
-                item = remote_item
-                break
-
-    # Si pending perdió la entrada, reconstruimos el bloque desde requests.json
-    # usando telegram_message_id, que es persistente por tendencia enviada.
     requests = load_remote_json(
         "trends/requests.json",
         load(REQUESTS, {"requests": []})
@@ -415,73 +400,56 @@ def mark_explained(callback):
             and str(req.get("name") or "").strip()
         ]
 
-    if item and not related_trends:
-        related_trends = [
-            str(x).strip() for x in item.get("related_trends", [])
-            if str(x).strip()
-        ] or [str(item.get("name") or "").strip()]
+    if not related_trends:
+        item = pending.get(key)
+        if item:
+            related_trends = [
+                str(x).strip() for x in item.get("related_trends", [])
+                if str(x).strip()
+            ] or [str(item.get("name") or "").strip()]
 
     related_trends = [x for x in related_trends if x]
+    related_norm = {norm(x) for x in related_trends}
+    now = datetime.now(MADRID).isoformat(timespec="seconds")
 
-    if not related_trends:
-        call("answerCallbackQuery", {
-            "callback_query_id": callback["id"],
-            "text": "Este bloque ya no está activo."
-        })
-        return
-
+    # EXPLICADA en el flujo actual significa: cerrar el bloque editorial
+    # y devolver la(s) tendencia(s) a rojo en la tabla.
     manual = load_remote_json(
         "trends/telegram-manual-explained.json",
         load(MANUAL, {"project": "TTendencias", "items": []})
     )
-    existing_manual = {norm(x.get("name")) for x in manual.get("items", [])}
-    now = datetime.now(MADRID).isoformat(timespec="seconds")
-
-    for trend_name in related_trends:
-        if norm(trend_name) not in existing_manual:
-            manual.setdefault("items", []).append({
-                "name": trend_name,
-                "explained_at": now,
-                "source": "telegram_button",
-            })
-            existing_manual.add(norm(trend_name))
+    manual["items"] = [
+        x for x in manual.get("items", [])
+        if norm(x.get("name")) not in related_norm
+    ]
     save(MANUAL, manual)
 
-    # Marcamos todas las tendencias ligadas al mismo mensaje editorial.
-    related_norm = {norm(x) for x in related_trends}
     for req in requests.get("requests", []):
         same_message = callback_mid and int(req.get("telegram_message_id") or 0) == int(callback_mid)
         same_name = norm(req.get("name")) in related_norm
-        if (same_message or same_name) and req.get("status") in {"preparing", "ready", "update"}:
+        if same_message or same_name:
             req["status"] = "explained"
             req["explained_at"] = now
+            req.pop("telegram_message_id", None)
     save(REQUESTS, requests)
 
-    # Borramos exactamente el mensaje que contiene el botón pulsado.
+    # Borrar exactamente el mensaje cuyo botón se ha pulsado.
     try:
         if callback_chat_id and callback_mid:
             call("deleteMessage", {
                 "chat_id": callback_chat_id,
                 "message_id": int(callback_mid),
             })
-        elif item:
-            call("deleteMessage", {
-                "chat_id": item["chat_id"],
-                "message_id": item["message_id"],
-            })
     except Exception as e:
         print("No se pudo borrar el bloque explicado:", e, flush=True)
 
-    # Limpieza best-effort del índice pending.
+    # Limpiar cualquier índice pendiente asociado al mismo mensaje o key.
     for pending_key, pending_item in list(pending.items()):
         same_mid = callback_mid and int(pending_item.get("message_id") or 0) == int(callback_mid)
-        if same_mid or pending_key == resolved_key:
+        if same_mid or pending_key == key:
             pending.pop(pending_key, None)
     state["pending"] = pending
     save(STATE, state)
-
-    persist_git("Marcar bloque TTendencias como explicado")
-    sync_panel()
 
     try:
         call("answerCallbackQuery", {
@@ -491,18 +459,44 @@ def mark_explained(callback):
     except Exception:
         pass
 
+    persist_git("Cerrar bloque TTendencias y devolver tendencia a rojo")
+    sync_panel()
+
 
 def close_block(callback):
     key = callback["data"].split(":", 1)[1]
-    state = load(STATE, {"pending": {}})
-    item = state.get("pending", {}).pop(key, None)
-    if item:
-        save(STATE, state)
-        try:
-            call("deleteMessage", {"chat_id": item["chat_id"], "message_id": item["message_id"]})
-        except Exception:
-            pass
-    call("answerCallbackQuery", {"callback_query_id": callback["id"]})
+    callback_message = callback.get("message") or {}
+    callback_mid = callback_message.get("message_id")
+    callback_chat_id = (callback_message.get("chat") or {}).get("id")
+
+    # CERRAR solo elimina el mensaje editorial. No cambia el estado de la tendencia.
+    try:
+        if callback_chat_id and callback_mid:
+            call("deleteMessage", {
+                "chat_id": callback_chat_id,
+                "message_id": int(callback_mid),
+            })
+    except Exception as e:
+        print("No se pudo cerrar el bloque TTendencias:", e, flush=True)
+
+    state = load_remote_json(
+        "trends/telegram-bot-state.json",
+        load(STATE, {"pending": {}})
+    )
+    pending = state.get("pending", {})
+    for pending_key, pending_item in list(pending.items()):
+        same_mid = callback_mid and int(pending_item.get("message_id") or 0) == int(callback_mid)
+        if same_mid or pending_key == key:
+            pending.pop(pending_key, None)
+    state["pending"] = pending
+    save(STATE, state)
+
+    try:
+        call("answerCallbackQuery", {"callback_query_id": callback["id"]})
+    except Exception:
+        pass
+
+    persist_git("Cerrar mensaje editorial TTendencias")
 
 
 def handle(update):
