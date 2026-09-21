@@ -3,7 +3,7 @@ name: TTendencias Telegram continuo
 on:
   workflow_dispatch:
   schedule:
-    - cron: '3 * * * *'
+    - cron: '7 */3 * * *'
   push:
     branches: [main]
     paths:
@@ -37,6 +37,6 @@ jobs:
       - name: Escuchar bot TTendencias
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
-          TTENDENCIAS_LISTEN_SECONDS: "3600"
+          TTENDENCIAS_LISTEN_SECONDS: "14400"
           TTENDENCIAS_REFRESH_SECONDS: "900"
         run: python3 trends/telegram_bot.py listen
