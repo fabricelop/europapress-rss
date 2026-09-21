@@ -55,14 +55,17 @@ def load_remote_json(repo_path, default):
         print(f"No se pudo leer estado remoto {repo_path}: {e}", flush=True)
         return default
 
-def persist_git(message="Actualizar estado inmediato TTendencias"):
+def persist_git(message="Actualizar estado inmediato TTendencias", include_trends=False):
+    # Los callbacks de botones solo deben persistir su propio estado.
+    # recent/checkpoint los escribe el refresco de tendencias y mezclarlos aquí
+    # provoca conflictos y regresiones de color cuando hay workflows concurrentes.
     paths = [
-        "trends/recent.json",
-        "trends/checkpoint.json",
         "trends/requests.json",
         "trends/telegram-bot-state.json",
         "trends/telegram-manual-explained.json",
     ]
+    if include_trends:
+        paths = ["trends/recent.json", "trends/checkpoint.json", *paths]
     subprocess.run(["git","add",*paths], check=False)
     if subprocess.run(["git","diff","--cached","--quiet"], check=False).returncode == 0:
         return
@@ -644,7 +647,7 @@ def handle(update):
             ok, _, _ = refresh_trends_now()
             if ok:
                 sync_panel()
-                persist_git("Actualizar manualmente Top 10 TTendencias")
+                persist_git("Actualizar manualmente Top 10 TTendencias", include_trends=True)
                 call("sendMessage", {"chat_id": message["chat"]["id"], "text": "Top 10 actualizado"})
             else:
                 call("sendMessage", {"chat_id": message["chat"]["id"], "text": "⚠️ No se pudo actualizar el Top 10"})
@@ -727,7 +730,7 @@ def poll(seconds=3300):
                 ok, before, after = refresh_trends_now()
                 if ok:
                     if sync_panel():
-                        persist_git("Actualizar automáticamente Top 10 TTendencias")
+                        persist_git("Actualizar automáticamente Top 10 TTendencias", include_trends=True)
                     print(f"auto refresh TTendencias: {before} -> {after}", flush=True)
                 else:
                     print(f"auto refresh TTendencias sin cambio: {before} -> {after}", flush=True)
