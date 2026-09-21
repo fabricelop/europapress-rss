@@ -1,6 +1,6 @@
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parent
 RECENT = ROOT / "recent.json"
+MADRID = ZoneInfo("Europe/Madrid")
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124 Safari/537.36",
     "Accept-Language": "es-ES,es;q=0.9,en;q=0.7",
@@ -31,10 +32,22 @@ SOURCES = {
 def clean(text):
     return re.sub(r"\s+", " ", (text or "")).strip()
 
+def clean_term(text):
+    text = clean(text)
+    text = re.sub(r"\\s+N/?A$", "", text, flags=re.I)
+    text = re.sub(r"\\s+(?:Less than )?\\d+(?:[.,]\\d+)?[KMB]?\\s+(?:tweets|posts)$", "", text, flags=re.I)
+    return text.strip()
+
+def term_key(text):
+    # Algunos agregadores anteponen # incluso a temas que no son hashtags.
+    # Ignoramos un # inicial solo para comparar fuentes; conservamos el nombre
+    # real de la fuente elegida para mostrarlo.
+    return clean_term(text).casefold().lstrip("#")
+
 def unique(values):
     out, seen = [], set()
     for value in values:
-        value = clean(value)
+        value = clean_term(value)
         key = value.casefold()
         if not value or key in seen or len(value) > 100:
             continue
@@ -70,7 +83,7 @@ def parse_getdaytrends(html):
                 continue
             first = clean(cells[0].get_text(" ", strip=True))
             if first.isdigit():
-                name = clean(cells[1].get_text(" ", strip=True))
+                name = clean_term(cells[1].get_text(" ", strip=True))
                 if name:
                     rows.append(name)
         if len(rows) >= 10:
@@ -147,7 +160,7 @@ def parse_ranked_text(html):
         rank = int(m.group(1))
         if not 1 <= rank <= 50:
             continue
-        name = clean(m.group(2))
+        name = clean_term(m.group(2))
         name = re.split(r"\s+(?:Explore why|Less than|N/A|Football|Politics|Video games|Open on X)\b", name, 1)[0]
         if name and len(name) <= 100:
             vals.append((rank, name))
@@ -160,7 +173,17 @@ def parse_generic_ranked(html):
         return vals
     return parse_ranked_text(html)
 
+def sane_trend_list(trends):
+    if len(trends) < 10:
+        return False
+    bad = 0
+    for item in trends[:20]:
+        if re.search(r"\\b(?:hour|hours|minute|minutes)\\s+ago\\b|\\bUTC\\b|^Updated\\b|^Last updated\\b", item, flags=re.I):
+            bad += 1
+    return bad < max(3, len(trends[:20]) // 3)
+
 def fetch_source(name):
+    fetched_at = datetime.now(MADRID)
     try:
         parsers = {
             "trends24": parse_trends24,
@@ -170,15 +193,36 @@ def fetch_source(name):
         html = get(SOURCES[name])
         parser = parsers.get(name, parse_generic_ranked)
         trends = parser(html)
+        hint = page_update_hint(html)
+        age = hint_age_minutes(hint, fetched_at)
+        ok = sane_trend_list(trends)
+        if age is None:
+            freshness = "unknown"
+        elif age <= 45:
+            freshness = "fresh"
+        elif age <= 90:
+            freshness = "aging"
+        else:
+            freshness = "stale"
         return {
-            "ok": len(trends) >= 10,
-            "trends": trends,
-            "error": None,
-            "update_hint": page_update_hint(html),
-            "fetched_at": datetime.now(ZoneInfo("Europe/Madrid")).isoformat(timespec="seconds"),
+            "ok": ok,
+            "trends": trends if ok else [],
+            "error": None if ok else f"Lista no válida ({len(trends)} elementos parseados)",
+            "update_hint": hint,
+            "age_minutes": round(age, 1) if age is not None else None,
+            "freshness": freshness if ok else "invalid",
+            "fetched_at": fetched_at.isoformat(timespec="seconds"),
         }
     except Exception as e:
-        return {"ok": False, "trends": [], "error": f"{type(e).__name__}: {e}"}
+        return {
+            "ok": False,
+            "trends": [],
+            "error": f"{type(e).__name__}: {e}",
+            "update_hint": None,
+            "age_minutes": None,
+            "freshness": "error",
+            "fetched_at": fetched_at.isoformat(timespec="seconds"),
+        }
 
 def previous_top10():
     try:
@@ -186,71 +230,77 @@ def previous_top10():
     except Exception:
         return []
 
-def consensus_top10(source_data):
-    good = {name: data["trends"] for name, data in source_data.items() if data.get("ok")}
-    if not good:
-        return [], [], "none"
+def overlap(a, b, limit=20):
+    aa = {term_key(x) for x in a[:limit]}
+    bb = {term_key(x) for x in b[:limit]}
+    return len(aa & bb) / max(1, len(aa | bb))
 
-    # Con una sola fuente disponible mantenemos servicio, pero lo dejamos
-    # explícitamente marcado como fallback. Con 2+ fuentes manda el consenso.
-    if len(good) == 1:
-        name, trends = next(iter(good.items()))
-        return trends[:10], [name], name
-
+def consensus_fallback(good):
     stats = {}
     for source, trends in good.items():
         for idx, term in enumerate(trends[:20], 1):
-            key = term.casefold()
-            row = stats.setdefault(key, {
-                "name": term,
-                "support": 0,
-                "score": 0,
-                "best_rank": 999,
-                "ranks": {},
-            })
+            key = term_key(term)
+            row = stats.setdefault(key, {"name": term, "support": 0, "score": 0, "best_rank": 999})
             row["support"] += 1
             row["score"] += max(1, 21 - idx)
             row["best_rank"] = min(row["best_rank"], idx)
-            row["ranks"][source] = idx
-
     ranked = sorted(
         stats.values(),
         key=lambda x: (-x["support"], -x["score"], x["best_rank"], x["name"].casefold()),
     )
+    return [x["name"] for x in ranked[:10]]
 
-    # Priorizamos coincidencias entre al menos dos fuentes. Si no bastan para
-    # completar 10, rellenamos con las señales más fuertes del conjunto.
-    agreed = [x for x in ranked if x["support"] >= 2]
-    rest = [x for x in ranked if x["support"] < 2]
-    picked = (agreed + rest)[:10]
-    return [x["name"] for x in picked], list(good), "consensus"
+def choose_top10(source_data):
+    good = {n: d for n, d in source_data.items() if d.get("ok")}
+    if not good:
+        return [], [], "none", "none"
 
+    fresh = {n: d for n, d in good.items() if d.get("freshness") == "fresh"}
+    if fresh:
+        # La frescura manda: elegimos la fuente fresca más corroborada por las demás.
+        def fresh_score(item):
+            name, data = item
+            return sum(overlap(data["trends"], other["trends"]) for oname, other in good.items() if oname != name)
+        anchor_name, anchor = max(fresh.items(), key=fresh_score)
+        supporters = [
+            name for name, data in good.items()
+            if name == anchor_name or overlap(anchor["trends"], data["trends"]) >= 0.35
+        ]
+        return anchor["trends"][:10], supporters, anchor_name, "fresh-anchor"
+
+    usable = {n: d["trends"] for n, d in good.items() if d.get("freshness") != "stale"}
+    if not usable:
+        usable = {n: d["trends"] for n, d in good.items()}
+    if len(usable) == 1:
+        name, trends = next(iter(usable.items()))
+        return trends[:10], [name], name, "fallback"
+    return consensus_fallback(usable), list(usable), "consensus", "consensus"
 
 def main():
-    now = datetime.now(ZoneInfo("Europe/Madrid"))
+    now = datetime.now(MADRID)
     previous = previous_top10()
-
-    # Se consultan todas las fuentes disponibles. Una caída no bloquea TTendencias:
-    # el ranking se recalcula con las que sigan operativas.
     source_data = {name: fetch_source(name) for name in SOURCES}
 
-    top10, sources_used, chosen_name = consensus_top10(source_data)
+    top10, sources_used, chosen_name, method = choose_top10(source_data)
     if len(top10) < 10:
         raise RuntimeError("No se pudo obtener un Top 10 fiable de las fuentes disponibles")
 
     unchanged = [x.casefold() for x in top10] == [x.casefold() for x in previous]
-    source_count = len(sources_used)
-    # No confundimos cantidad con frescura: muchas fuentes pueden estar replicando
-    # una misma instantánea antigua. Dejamos visibles sus pistas de actualización.
-    reliability = "high" if source_count >= 6 else ("medium" if source_count >= 3 else "fallback")
+    valid = [n for n, d in source_data.items() if d.get("ok")]
+    non_stale = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") != "stale"]
+    fresh = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") == "fresh"]
+    reliability = "high" if len(non_stale) >= 6 else ("medium" if len(non_stale) >= 3 else "fallback")
 
     payload = {
         "project": "TTendencias",
         "country": "ES",
         "captured_at": now.isoformat(timespec="seconds"),
         "primary_source": chosen_name,
+        "selection_method": method,
         "sources_used": sources_used,
-        "source_count": source_count,
+        "source_count": len(valid),
+        "non_stale_source_count": len(non_stale),
+        "fresh_sources": fresh,
         "reliability": reliability,
         "top10": top10,
         "items": [{"rank": i + 1, "name": name} for i, name in enumerate(top10)],
@@ -258,7 +308,11 @@ def main():
         "sources": source_data,
     }
     RECENT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"TTendencias: {chosen_name} ({source_count} fuentes, {reliability}); Top 10: {', '.join(top10)}")
+    print(
+        f"TTendencias: {chosen_name} via {method}; valid={len(valid)}/{len(SOURCES)}, "
+        f"non_stale={len(non_stale)}, fresh={len(fresh)}, reliability={reliability}; "
+        f"Top 10: {', '.join(top10)}"
+    )
 
 if __name__ == "__main__":
     main()
