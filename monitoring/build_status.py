@@ -75,8 +75,11 @@ def json_timestamp(path, field, expected_minutes=None, label=None, ok_field=None
         else:
             status="orange" if age_minutes(dt)<=expected_minutes*5 else "red"
             anomaly=f"Sin actualización desde hace {age_minutes(dt)} min"
-    if ok_field and obj.get(ok_field) not in (None,"ok","OK",True):
-        status="orange"; anomaly=f"Estado reportado: {obj.get(ok_field)}"
+    if ok_field:
+        reported=obj.get(ok_field)
+        successful={None,"ok","OK","no_new_candidates","success","SUCCESS",True}
+        if reported not in successful:
+            status="orange"; anomaly=f"Estado reportado: {reported}"
     return {
         "label":label or str(path),"kind":"file","path":str(path),"status":status,
         "last_run":iso(dt),"last_ok":iso(dt) if status!="red" else None,"last_error":None,
