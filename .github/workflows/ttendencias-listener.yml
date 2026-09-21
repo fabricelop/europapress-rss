@@ -52,5 +52,5 @@ jobs:
           printf '%s\n' "restart $(date -u +%Y-%m-%dT%H:%M:%SZ)" > trends/listener-heartbeat.txt
           git add trends/listener-heartbeat.txt
           git diff --cached --quiet && exit 0
-          git commit -m "Mantener listener TTendencias activo [skip ci]"
+          git commit -m "Mantener listener TTendencias activo"
           git push origin HEAD:main
