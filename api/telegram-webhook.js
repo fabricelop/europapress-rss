@@ -275,12 +275,10 @@ export default async function handler(req, res) {
         const rr=await fetch("https://tt-control.fabricelop.workers.dev/api/control",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({text:contextual})});
         if(rr.ok) await safeTelegram("sendMessage",{chat_id:allowedChat,text:"📝 Instrucción guardada para esta noticia."});
       } else {
-        const rr=await fetch("https://tt-control.fabricelop.workers.dev/api/news/manual",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({title:text,url:""})});
-        if(rr.ok){
-          await safeTelegram("sendMessage",{chat_id:allowedChat,text:"✅ Noticia añadida a Elaborando."});
-          const dispatch=await fetch("https://api.github.com/repos/fabricelop/tt-control/actions/workflows/tt-control-bridge.yml/dispatches",{method:"POST",headers:{accept:"application/vnd.github+json",authorization:"Bearer "+process.env.GITHUB_TOKEN,"x-github-api-version":"2022-11-28","user-agent":"tt-control-telegram-webhook"},body:JSON.stringify({ref:"main"})});
-          if(!dispatch.ok) console.error("TT Control immediate dispatch failed",dispatch.status,await dispatch.text());
-        } else await safeTelegram("sendMessage",{chat_id:allowedChat,text:"No se pudo añadir la noticia a Elaborando."});
+        const eventId="manual-"+String(update.update_id||message.message_id||Date.now());
+        await upsertEditorialProcessing(eventId,text,"");
+        await appendRequest(requestObj(update,"manual_headline",text),EMERGENCY_QUEUE);
+        await safeTelegram("sendMessage",{chat_id:allowedChat,text:"✅ Titular añadido a Elaborando."});
       }
     }
     return res.status(200).json({ ok: true });
