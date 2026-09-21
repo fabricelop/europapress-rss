@@ -32,7 +32,8 @@ def workflow_state(filename, expected_minutes=None, warn_after=None, label=None,
     data=api(f"/repos/{REPO}/actions/workflows/{filename}/runs?per_page=20")
     completed=[r for r in data.get("workflow_runs",[]) if r.get("status")=="completed"]
     successes=[r for r in completed if r.get("conclusion")=="success"]
-    neutral={"success","skipped","neutral"} | ({"cancelled"} if ignore_cancelled else set())\n    failures=[r for r in completed if r.get("conclusion") not in neutral]
+    neutral={"success","skipped","neutral"} | ({"cancelled"} if ignore_cancelled else set())
+    failures=[r for r in completed if r.get("conclusion") not in neutral]
     last=completed[0] if completed else None
     last_ok=successes[0] if successes else None
     last_err=failures[0] if failures else None
@@ -130,7 +131,8 @@ projects={
 rank={"green":0,"orange":1,"red":2}
 result={}
 for project,mods in projects.items():
-    blocking=[m for m in mods.values() if m.get("affects_project",True)]\n    worst=max((rank.get(m.get("status"),1) for m in blocking),default=1)
+    blocking=[m for m in mods.values() if m.get("affects_project",True)]
+    worst=max((rank.get(m.get("status"),1) for m in blocking),default=1)
     result[project]={
         "status":["green","orange","red"][worst],
         "anomalies":[m["anomaly"] for m in mods.values() if m.get("anomaly")],
