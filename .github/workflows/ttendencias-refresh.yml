@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: ttendencias-refresh-quarter-hour
@@ -50,4 +51,23 @@ jobs:
           fi
           git commit -m "Actualizar Top 10 TTendencias"
           git pull --rebase --autostash origin main
+          git push origin HEAD:main
+
+      - name: Comprobar salud TTendencias
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+        run: python3 trends/healthcheck.py
+
+      - name: Guardar estado de salud
+        if: always()
+        run: |
+          git config user.name "ttendencias-health"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --rebase --autostash origin main || true
+          git add trends/health-status.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Actualizar salud TTendencias"
+          git pull --rebase --autostash origin main || true
           git push origin HEAD:main
