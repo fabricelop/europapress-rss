@@ -122,7 +122,17 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig)
    }else detail="Pendiente de cola automática";
    return {rank:Number(item.rank),name:String(item.name),status,label,detail,ready,requested_at:req?.requested_at||null,internal_status:s};
  });
- return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,items,prepared:(prepared.items||[]),health,editorial_config:editorialConfig||{}};
+ const requestByName={};for(const req of requests)requestByName[nrm(req.name)]=req;
+ const preparedItems=(prepared.items||[]).filter(p=>{
+   const rel=((p.related_trends||[]).length?p.related_trends:[p.trend_name]).map(nrm);
+   return !rel.some(name=>{
+     const ls=local[name];
+     if(ls&&["explained","dismissed"].includes(String(ls.status||"")))return true;
+     const req=requestByName[name];
+     return req&&["explained","dismissed"].includes(String(req.status||""));
+   });
+ });
+ return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,items,prepared:preparedItems,health,editorial_config:editorialConfig||{}};
 }
 function render(){
  if(!model)return;
