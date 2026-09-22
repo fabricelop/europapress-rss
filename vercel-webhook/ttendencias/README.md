@@ -62,4 +62,12 @@ Desplegar la aplicación únicamente de forma controlada cuando haya una versió
 5. Verificar primero solo lectura, selección y filtros.
 6. Hacer una prueba real con una única tendencia nueva y comprobar que entra en `trends/requests.json`.
 7. Confirmar que la redacción llega a Telegram y que el estado pasa a `ready`.
-8. Solo después de validar la web, retirar el panel/listener continuo de Telegram para reducir consumo de GitHub Actions.
+8. Solo después de validar la web, cambiar `trends/control-mode.json` de `telegram` a `web`.
+9. Al activarse `web`, el listener deja de sincronizar el panel y deja de encadenarse; el healthcheck deja de exigirlo y el sender de Telegram elimina los botones de control.
+10. Telegram sigue recibiendo los bloques editoriales y sus enlaces de publicación, pero el estado se gestiona desde la web.
+
+## Cambio de modo seguro
+
+Mientras `mode=telegram`, todo el sistema actual sigue funcionando y la web puede probarse en paralelo.
+
+El cambio a `mode=web` está diseñado para ser reversible: volver a `telegram` restaura el requisito del listener. No se debe hacer el cambio hasta haber probado una solicitud completa desde la web (selección → cola → redacción → Telegram → marcada como explicada).
