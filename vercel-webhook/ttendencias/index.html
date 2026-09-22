@@ -201,11 +201,15 @@ function editorialTimingText(){
  const oldest=Math.min(...stamps);
  const age=Math.max(0,Math.floor((now-oldest)/60000));
  const d=new Date();
+ const schedule=((model?.editorial_config?.editorial?.schedule_minutes)||[0,30]).map(Number).filter(x=>Number.isFinite(x)&&x>=0&&x<60).sort((a,b)=>a-b);
  const minute=d.getMinutes();
- const lastMinute=minute<30?0:30;
- const last=new Date(d);last.setMinutes(lastMinute,0,0);
+ const previous=schedule.filter(x=>x<=minute);
+ const lastMinute=previous.length?previous[previous.length-1]:(schedule[schedule.length-1]??30);
+ const last=new Date(d);
+ if(previous.length)last.setMinutes(lastMinute,0,0);else{last.setHours(d.getHours()-1);last.setMinutes(lastMinute,0,0)}
+ const upcoming=schedule.find(x=>x>minute);
  const next=new Date(d);
- if(minute<30)next.setMinutes(30,0,0);else{next.setHours(d.getHours()+1);next.setMinutes(0,0,0)}
+ if(upcoming!==undefined)next.setMinutes(upcoming,0,0);else{next.setHours(d.getHours()+1);next.setMinutes(schedule[0]??0,0,0)}
  const eligibleAtLast=active.some(x=>new Date(x.requested_at).getTime()<=last.getTime());
  if(eligibleAtLast){
    const late=Math.max(0,Math.floor((now-last.getTime())/60000));
