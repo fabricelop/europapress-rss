@@ -1,75 +1,81 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-22T18:57:06+02:00",
-  "primary_source": "tweets24",
+  "captured_at": "2026-09-22T19:42:45+02:00",
+  "primary_source": "snaplytics",
   "selection_method": "fresh-anchor",
   "sources_used": [
-    "trends24",
     "getdaytrends",
-    "tweets24"
+    "snaplytics"
   ],
-  "source_count": 5,
-  "non_stale_source_count": 4,
+  "source_count": 7,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
+    "Begoña Gómez",
     "#TEM22S",
-    "Halo",
-    "Activision",
-    "Ninja Theory",
-    "Grado 3",
-    "Tebas",
+    "Juanma Castaño",
+    "Peinado",
+    "#LaIslaDeLasTentaciones5",
     "Gara",
-    "#ElSótano22S",
-    "taehyun",
-    "Vito Quiles"
+    "Vito Quiles",
+    "Tebas",
+    "#FelizMartes",
+    "Grado 3"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "#TEM22S"
+      "name": "Begoña Gómez"
     },
     {
       "rank": 2,
-      "name": "Halo"
+      "name": "#TEM22S"
     },
     {
       "rank": 3,
-      "name": "Activision"
+      "name": "Juanma Castaño"
     },
     {
       "rank": 4,
-      "name": "Ninja Theory"
+      "name": "Peinado"
     },
     {
       "rank": 5,
-      "name": "Grado 3"
+      "name": "#LaIslaDeLasTentaciones5"
     },
     {
       "rank": 6,
-      "name": "Tebas"
-    },
-    {
-      "rank": 7,
       "name": "Gara"
     },
     {
+      "rank": 7,
+      "name": "Vito Quiles"
+    },
+    {
       "rank": 8,
-      "name": "#ElSótano22S"
+      "name": "Tebas"
     },
     {
       "rank": 9,
-      "name": "taehyun"
+      "name": "#FelizMartes"
     },
     {
       "rank": 10,
-      "name": "Vito Quiles"
+      "name": "Grado 3"
     }
   ],
   "unchanged_from_previous": false,
+  "new_entries": [
+    "Begoña Gómez",
+    "Juanma Castaño",
+    "Peinado",
+    "#LaIslaDeLasTentaciones5",
+    "#FelizMartes"
+  ],
   "sources": {
     "trends24": {
       "ok": true,
@@ -77,54 +83,54 @@
         "#TEM22S",
         "Halo",
         "Activision",
-        "Ninja Theory",
-        "Grado 3",
         "Tebas",
+        "Juanma Castaño",
         "Gara",
-        "#ElSótano22S",
+        "Ninja Theory",
+        "Delcy",
+        "Grado 3",
+        "Taylor",
         "taehyun",
         "Vito Quiles",
-        "Juanma Castaño",
+        "#ElSótano22S",
+        "Jueces y Juezas",
         "Eurovisión",
         "El CGPJ",
+        "Ryanair",
+        "Asamblea de la ONU",
         "Bethesda",
-        "Jueces y Juezas",
-        "Esguince",
-        "Antonio Naranjo",
-        "Taylor",
-        "Turull",
-        "Pumpido"
-      ],
-      "error": null,
-      "update_hint": null,
-      "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-22T18:57:06+02:00"
-    },
-    "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "#TEM22S",
-        "Halo",
-        "Activision",
-        "Ninja Theory",
-        "Grado 3",
-        "Tebas",
-        "Gara",
-        "#ElSótano22S",
-        "Taehyun",
-        "Vito Quiles",
-        "Juanma Castaño",
-        "Eurovision",
-        "El CGPJ",
-        "Jueces y Juezas",
         "Esguince"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-22T18:57:07+02:00"
+      "fetched_at": "2026-09-22T19:42:45+02:00"
+    },
+    "getdaytrends": {
+      "ok": true,
+      "trends": [
+        "#TEM22S",
+        "Juanma Castaño",
+        "Halo",
+        "Activision",
+        "Tebas",
+        "Gara",
+        "Ninja Theory",
+        "Delcy",
+        "Grado 3",
+        "Taylor",
+        "Taehyun",
+        "Vito Quiles",
+        "#ElSótano22S",
+        "Jueces y Juezas",
+        "Eurovision"
+      ],
+      "error": null,
+      "update_hint": null,
+      "age_minutes": null,
+      "freshness": "unknown",
+      "fetched_at": "2026-09-22T19:42:46+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -151,37 +157,79 @@
         "Pumpido"
       ],
       "error": null,
-      "update_hint": "Updated 4 minutes ago Live Twitter Trending Topics in Spain 1 #TEM22S Explore why #TEM22",
-      "age_minutes": 4.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-22T18:57:08+02:00"
+      "update_hint": "Updated 49 minutes ago",
+      "age_minutes": 49.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-22T19:42:47+02:00"
     },
     "superx": {
-      "ok": false,
-      "trends": [],
-      "error": "Lista no válida (0 elementos parseados)",
+      "ok": true,
+      "trends": [
+        "Juanma Castaño",
+        "Gara",
+        "#TEM22S",
+        "Tebas",
+        "Halo",
+        "Activision",
+        "Delcy",
+        "Ninja Theory",
+        "Opus 5.5",
+        "Taylor",
+        "Grado 3",
+        "Vito Quiles",
+        "taehyun",
+        "Ryanair",
+        "#ElSótano22S",
+        "Judas",
+        "Jueces y Juezas",
+        "Lula",
+        "Bethesda",
+        "Asamblea de la ONU"
+      ],
+      "error": null,
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "invalid",
-      "fetched_at": "2026-09-22T18:57:09+02:00"
+      "freshness": "unknown",
+      "fetched_at": "2026-09-22T19:42:48+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790096229",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790098968",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-22T18:57:09+02:00"
+      "fetched_at": "2026-09-22T19:42:48+02:00"
     },
     "snaplytics": {
-      "ok": false,
-      "trends": [],
-      "error": "Lista no válida (16 elementos parseados)",
-      "update_hint": "updated hourly. Use Browse by day to jump to a specific date, or the country selector to",
-      "age_minutes": null,
-      "freshness": "invalid",
-      "fetched_at": "2026-09-22T18:57:09+02:00"
+      "ok": true,
+      "trends": [
+        "Begoña Gómez",
+        "#TEM22S",
+        "Juanma Castaño",
+        "Peinado",
+        "#LaIslaDeLasTentaciones5",
+        "Gara",
+        "Vito Quiles",
+        "Tebas",
+        "#FelizMartes",
+        "Grado 3",
+        "Halo",
+        "Activision",
+        "Valverde",
+        "Nueva York",
+        "Berlín",
+        "Biedma",
+        "Delcy",
+        "Ninja Theory",
+        "Madrid",
+        "Trump"
+      ],
+      "error": null,
+      "update_hint": "Trending now Sep 22, 2026 17:00 UTC",
+      "age_minutes": 42.8,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-22T19:42:48+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -209,66 +257,66 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 416.2,
+      "age_minutes": 461.8,
       "freshness": "stale",
-      "fetched_at": "2026-09-22T18:57:10+02:00"
+      "fetched_at": "2026-09-22T19:42:48+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790096231",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790098970",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-22T18:57:11+02:00"
+      "fetched_at": "2026-09-22T19:42:50+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
       "trends": [],
       "error": "Lista no válida (1 elementos parseados)",
-      "update_hint": "updated 30 minutes ago . Follow @greatseotools",
+      "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-22T18:57:14+02:00"
+      "fetched_at": "2026-09-22T19:42:51+02:00"
     },
     "trendswe": {
       "ok": true,
       "trends": [
         "#TEM22S",
-        "#Begoña Gómez",
-        "#Peinado",
-        "#LaIslaDeLasTentaciones5",
-        "#Grado 3",
-        "#FelizMartes",
         "#Halo",
-        "#Vito Quiles",
-        "#Ninja Theory",
-        "#Berlín",
-        "#Valverde",
-        "#Gara",
         "#Activision",
-        "#Biedma",
-        "#Nueva York",
-        "#Madrid",
+        "#Ninja Theory",
+        "#Grado 3",
+        "#Tebas",
+        "#Gara",
+        "#ElSótano22S",
         "#Taehyun",
-        "#FerranEH",
-        "#Die Linke",
-        "#Negu Gorriak"
+        "#Vito Quiles",
+        "#Juanma Castaño",
+        "#Eurovision",
+        "#El CGPJ",
+        "#Jueces y Juezas",
+        "#Esguince",
+        "#Antonio Naranjo",
+        "#Turull",
+        "#Taylor",
+        "#Pumpido",
+        "#Begoña"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-22T18:57:15+02:00"
+      "fetched_at": "2026-09-22T19:42:51+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790096237",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790098973",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-22T18:57:17+02:00"
+      "fetched_at": "2026-09-22T19:42:53+02:00"
     }
   }
 }
