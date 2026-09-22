@@ -68,8 +68,8 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
 </header>
 <main>
   <section class="summary">
-    <div><h1>Top 10 España</h1><div class="meta" id="stamp">Cargando…</div></div>
-    <div class="badge" id="quality">—</div>
+    <div><h1>Top 10 España</h1><div class="meta" id="stamp">Cargando…</div><div class="meta" id="freshness" style="margin-top:4px"></div></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><div class="badge" id="quality">—</div><button class="iconbtn" id="forceBtn" title="Forzar captura Top 10" style="height:36px;min-width:auto">Actualizar Top 10</button></div>
   </section>
   <div class="legend">
     <span><i class="dot new"></i>Nueva</span>
@@ -119,9 +119,20 @@ function fmtDate(v){
  const d=new Date(v); if(Number.isNaN(d.getTime()))return v;
  return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}).format(d);
 }
+function freshnessText(v){
+ if(!v)return "";
+ const d=new Date(v); if(Number.isNaN(d.getTime()))return "";
+ const mins=Math.max(0,Math.round((Date.now()-d.getTime())/60000));
+ if(mins<=20)return "● Actualizado hace "+mins+" min";
+ if(mins<=35)return "● Atención: "+mins+" min sin nueva captura";
+ return "● Desactualizado: "+mins+" min";
+}
 function render(){
  if(!model)return;
  $("stamp").textContent="Captura "+fmtDate(model.captured_at);
+ const fr=freshnessText(model.captured_at);$("freshness").textContent=fr;
+ const age=model.captured_at?Math.max(0,Math.round((Date.now()-new Date(model.captured_at).getTime())/60000)):0;
+ $("freshness").style.color=age<=20?"#63d99a":age<=35?"#f5c451":"#ff7f8b";
  $("quality").textContent=(model.non_stale_source_count||0)+" fuentes activas";
  const list=$("list");list.innerHTML="";
  for(const item of model.items||[]){
@@ -182,14 +193,15 @@ async function action(actionName,names=[]){
 }
 $("queueBtn").onclick=()=>action("queue",[...selected]);
 $("explainedBtn").onclick=()=>action("explained",[...selected]);
-$("refreshBtn").onclick=async()=>{await load(); if(ensureToken()) action("refresh")};
+$("refreshBtn").onclick=()=>load();
+$("forceBtn").onclick=()=>action("refresh");
 $("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("sheet").classList.add("show")};
 $("cancelToken").onclick=()=>$("sheet").classList.remove("show");
 $("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado")};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});
 load();
-setInterval(()=>{if(!document.hidden)load(true)},300000);
+setInterval(()=>{if(!document.hidden)load(true)},900000);
 </script>
 </body>
 </html>
