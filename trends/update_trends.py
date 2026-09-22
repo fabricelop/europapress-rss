@@ -1,5 +1,6 @@
 import json
 import re
+from urllib.parse import parse_qs, unquote, urlparse
 from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -126,14 +127,88 @@ def parse_tweets24(html):
     return unique(name for _, name in vals)[:20]
 
 
+def parse_x_search_links(html):
+    """Extrae tendencias de enlaces directos de búsqueda en X/Twitter.
+    Es más robusto que depender del texto visible, que suele mezclar rango,
+    categoría y volumen de publicaciones."""
+    soup = BeautifulSoup(html, "html.parser")
+    ranked = []
+    fallback = []
+    for a in soup.find_all("a", href=True):
+        href = str(a.get("href") or "")
+        if "x.com" not in href and "twitter.com" not in href:
+            continue
+        parsed = urlparse(href)
+        query = parse_qs(parsed.query)
+        q = unquote((query.get("q") or [""])[0]).strip()
+        label = clean(a.get_text(" ", strip=True))
+        rank_m = re.match(r"^#?(\d{1,2})\s*", label)
+        if q:
+            # Algunos enlaces añaden operadores de búsqueda. Para una tendencia
+            # queremos el término limpio mostrado por la propia página.
+            term = q
+            term = re.sub(r"\s+(?:filter:|lang:|since:|until:).*$", "", term, flags=re.I)
+            term = clean_term(term.strip('"'))
+            if term and len(term) <= 100:
+                if rank_m:
+                    ranked.append((int(rank_m.group(1)), term))
+                else:
+                    fallback.append(term)
+            continue
+
+        # SuperX suele llevar el rango pegado al texto del enlace (1Granada).
+        if rank_m:
+            term = clean_term(label[rank_m.end():])
+            if term and len(term) <= 100:
+                ranked.append((int(rank_m.group(1)), term))
+
+    if ranked:
+        ranked = [(r, n) for r, n in ranked if 1 <= r <= 100]
+        ranked.sort(key=lambda x: x[0])
+        vals = unique(name for _, name in ranked)
+        if len(vals) >= 10:
+            return vals[:20]
+    vals = unique(fallback)
+    return vals[:20] if len(vals) >= 10 else []
+
+
+def parse_superx(html):
+    return parse_x_search_links(html)
+
+
+def parse_snaplytics(html):
+    vals = parse_x_search_links(html)
+    if len(vals) >= 10:
+        return vals
+    # Fallback: la página expone filas como "#1 #SVGala2".
+    soup = BeautifulSoup(html, "html.parser")
+    rows = []
+    for line in soup.get_text("\n", strip=True).splitlines():
+        line = clean(line)
+        m = re.match(r"^#?(\d{1,2})\s+(.+)$", line)
+        if not m:
+            continue
+        rank = int(m.group(1))
+        if not 1 <= rank <= 100:
+            continue
+        name = clean_term(m.group(2))
+        name = re.split(r"\s*[·|]\s*(?:Politics|Football|Only on X|La Liga|NFL|Pop|Strategy games|Survival competition)\b", name, 1, flags=re.I)[0]
+        if name:
+            rows.append((rank, name))
+    rows.sort(key=lambda x: x[0])
+    return unique(name for _, name in rows)[:20]
+
+
 def page_update_hint(html):
     soup = BeautifulSoup(html, "html.parser")
     text = clean(soup.get_text(" ", strip=True))
     patterns = [
-        r"(Updated\s*:?\s*[^|•]{1,80})",
-        r"(Last updated\s*:?\s*[^|•]{1,80})",
-        r"(updated\s+\d+\s+(?:minutes?|hours?)\s+ago)",
+        # Preferir marcas temporales explícitas antes que textos genéricos
+        # del tipo "updated hourly", que no permiten calcular frescura.
         r"(Trending now\s+[A-Z][a-z]{2}\s+\d{1,2},\s+\d{4}\s+\d{1,2}:\d{2}\s+UTC)",
+        r"(updated\s+\d+\s+(?:minutes?|hours?)\s+ago)",
+        r"(Last updated\s*:?\s*[^|•]{1,80})",
+        r"(Updated\s*:?\s*[^|•]{1,80})",
         r"(\d{1,2}\s+[A-Z][a-z]+\s+\d{4},\s+\d{1,2}:\d{2}\s+[AP]M\s+[A-Z]{2,4})",
     ]
     for pattern in patterns:
@@ -240,6 +315,8 @@ def fetch_source(name):
             "trends24": parse_trends24,
             "getdaytrends": parse_getdaytrends,
             "tweets24": parse_tweets24,
+            "superx": parse_superx,
+            "snaplytics": parse_snaplytics,
         }
         html = get(SOURCES[name])
         parser = parsers.get(name, parse_generic_ranked)
@@ -337,6 +414,8 @@ def main():
         raise RuntimeError("No se pudo obtener un Top 10 fiable de las fuentes disponibles")
 
     unchanged = [x.casefold() for x in top10] == [x.casefold() for x in previous]
+    previous_keys = {term_key(x) for x in previous}
+    new_entries = [x for x in top10 if term_key(x) not in previous_keys]
     valid = [n for n, d in source_data.items() if d.get("ok")]
     non_stale = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") != "stale"]
     fresh = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") == "fresh"]
@@ -356,6 +435,7 @@ def main():
         "top10": top10,
         "items": [{"rank": i + 1, "name": name} for i, name in enumerate(top10)],
         "unchanged_from_previous": unchanged,
+        "new_entries": new_entries,
         "sources": source_data,
     }
     RECENT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
