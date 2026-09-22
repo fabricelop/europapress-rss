@@ -1,0 +1,35 @@
+{
+  "project": "TTiTTulares",
+  "radar": {
+    "minimum_sources": 4,
+    "near_threshold_sources": 3,
+    "schedule_minutes": [
+      10,
+      40
+    ],
+    "timezone": "Europe/Madrid"
+  },
+  "editorial": {
+    "schedule_minutes": [
+      15,
+      45
+    ],
+    "timezone": "Europe/Madrid",
+    "alternatives_target": 3,
+    "verify_before_draft": true
+  },
+  "updates": {
+    "material_change_creates_new_story": true,
+    "reopen_previous_story": false
+  },
+  "display": {
+    "sort_ready_by": "current_source_count_desc_then_prepared_at_desc",
+    "show_current_sources": true,
+    "source_label_format": "Redactada con {drafted} ({current})"
+  },
+  "delivery": {
+    "channel": "web",
+    "enabled": false,
+    "telegram_enabled_until_cutover": true
+  }
+}
