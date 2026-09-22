@@ -92,17 +92,38 @@ def parse_getdaytrends(html):
 
 def parse_tweets24(html):
     soup = BeautifulSoup(html, "html.parser")
+
+    # Tweets24 presenta cada tendencia como un enlace del tipo:
+    # "1 Berlín Explore why Berlín is trending — ...".
+    # Extraer cada fila desde su enlace evita que el texto auxiliar "Explore why"
+    # se interprete accidentalmente como una tendencia independiente.
+    ranked = []
+    for a in soup.find_all("a"):
+        label = clean(a.get_text(" ", strip=True))
+        m = re.match(r"^(\d{1,2})\s+(.+?)\s+Explore why\b", label, flags=re.I)
+        if not m:
+            continue
+        rank = int(m.group(1))
+        name = clean_term(m.group(2))
+        if 1 <= rank <= 50 and name:
+            ranked.append((rank, name))
+    if len(ranked) >= 10:
+        ranked.sort(key=lambda x: x[0])
+        return unique(name for _, name in ranked)[:20]
+
+    # Fallback defensivo para cambios menores de HTML.
     text = clean(soup.get_text(" ", strip=True))
     marker = "Live Twitter Trending Topics in Spain"
     if marker in text:
         text = text.split(marker, 1)[1]
-    parts = re.split(r"\s+(?=\d{1,2}\s+)", text)
     vals = []
-    for part in parts:
-        m = re.match(r"(\d{1,2})\s+(.+?)(?:\s+Explore why|\s+##|$)", part)
-        if m and 1 <= int(m.group(1)) <= 50:
-            vals.append(clean(m.group(2)))
-    return unique(vals)[:20]
+    for m in re.finditer(r"(?:^|\s)(\d{1,2})\s+(.+?)\s+Explore why\b", text, flags=re.I):
+        rank = int(m.group(1))
+        name = clean_term(m.group(2))
+        if 1 <= rank <= 50 and name:
+            vals.append((rank, name))
+    vals.sort(key=lambda x: x[0])
+    return unique(name for _, name in vals)[:20]
 
 
 def page_update_hint(html):
@@ -202,10 +223,15 @@ def sane_trend_list(trends):
     if len(trends) < 10:
         return False
     bad = 0
+    noise = re.compile(
+        r"\b(?:hour|hours|minute|minutes)\s+ago\b|\bUTC\b|^Updated\b|^Last updated\b"
+        r"|^Explore why\b|\bis trending\s+[—-]\s+latest viral tweets\b|\breal-time buzz from Twitter\b",
+        flags=re.I,
+    )
     for item in trends[:20]:
-        if re.search(r"\b(?:hour|hours|minute|minutes)\s+ago\b|\bUTC\b|^Updated\b|^Last updated\b", item, flags=re.I):
+        if noise.search(item):
             bad += 1
-    return bad < max(3, len(trends[:20]) // 3)
+    return bad == 0
 
 def fetch_source(name):
     fetched_at = datetime.now(MADRID)
