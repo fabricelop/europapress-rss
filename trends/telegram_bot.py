@@ -493,6 +493,7 @@ def submit_batch(callback, with_image=False):
                          and x.get("status") in {"preparing", "ready", "update"}), None)
         if existing:
             existing["with_image"] = bool(with_image) or bool(existing.get("with_image"))
+            existing["alternatives_target"] = 3
             existing["batch_id"] = batch_id
             existing["requested_together"] = names
             if existing.get("status") == "ready":
@@ -513,6 +514,7 @@ def submit_batch(callback, with_image=False):
                 "revision": int(previous.get("revision") or 0) + (1 if reexplain else 0),
                 "reexplain": reexplain,
                 "with_image": bool(with_image),
+                "alternatives_target": 3,
                 "batch_id": batch_id,
                 "requested_together": names,
             }
