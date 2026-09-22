@@ -33,7 +33,7 @@ main{max-width:980px;margin:0 auto;padding:18px 14px}
 .stats{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.stat{border:1px solid #2e3744;background:#111720;border-radius:10px;padding:8px 10px;font-size:12px;color:#aab5c5}.stat b{color:#f0f4fa}
 .historyRow{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid #232b36;padding:10px 2px}.historyRow:last-child{border-bottom:0}.historyName{font-weight:700}.healthOk{color:#63d99a}.healthWarn{color:#ffb760}.pendingWarn{color:#f5c451}.pendingLate{color:#ff7f8b}
 .dot{width:8px;height:8px;border-radius:50%}
-.dot.new{background:#ff5364}.dot.preparing{background:#4b91ff}.dot.ready{background:#f5c451}.dot.update{background:#b678ff}.dot.explained{background:#42c879}
+.dot.new{background:#ff5364}.dot.preparing,.dot.active,.dot.ready,.dot.update{background:#4b91ff}.dot.explained{background:#42c879}
 .list{display:grid;gap:10px}
 .card{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;background:#11161e;border:1px solid #262e3a;border-radius:15px;padding:13px 14px;min-height:72px;transition:.15s}
 .card.selected{border-color:#4b91ff;box-shadow:0 0 0 1px #4b91ff55;background:#121b29}
@@ -90,19 +90,18 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
 <header class="top">
   <div><div class="brand">TTendencias</div><div class="sub">Control editorial</div></div>
   <div class="spacer"></div>
-  <button class="iconbtn" id="refreshBtn" title="Actualizar datos">↻</button>
+  <button class="iconbtn" id="preparedBtn" title="Tuits listos" style="display:none">Tuits <b id="preparedCount">0</b></button>
+  <button class="iconbtn" id="refreshBtn" title="Recargar datos">↻</button>
   <button class="iconbtn" id="settingsBtn" title="Acceso">⚙</button>
 </header>
 <main>
   <section class="summary">
     <div><h1>Top 10 España</h1><div class="meta" id="stamp">Cargando…</div><div class="meta" id="freshness" style="margin-top:4px"></div></div>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><div class="badge" id="quality">—</div><button class="iconbtn" id="forceBtn" title="Forzar captura Top 10" style="height:36px;min-width:auto">Actualizar Top 10</button></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><div class="badge" id="quality">—</div></div>
   </section>
   <div class="legend">
     <span><i class="dot new"></i>Nueva</span>
-    <span><i class="dot preparing"></i>Elaborando</span>
-    <span><i class="dot ready"></i>Preparada</span>
-    <span><i class="dot update"></i>Actualizando</span>
+    <span><i class="dot preparing"></i>En curso</span>
     <span><i class="dot explained"></i>Explicada</span>
   </div>
   <div class="stats">
@@ -113,20 +112,12 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
     <div class="stat" id="modeStat">Control —</div>
   </div>
   <div class="filters" id="filters">
-    <button class="filter active" data-filter="all">Todas</button>
-    <button class="filter" data-filter="new">Nuevas</button>
-    <button class="filter" data-filter="preparing">Elaborando</button>
-    <button class="filter" data-filter="ready">Preparadas</button>
-    <button class="filter" data-filter="update">Actualizando</button>
-    <button class="filter" data-filter="active">Pendientes</button>
+    <button class="filter active" data-filter="new">Nuevas</button>
+    <button class="filter" data-filter="active">En curso</button>
     <button class="filter" data-filter="explained">Explicadas</button>
     <button class="filter" id="selectVisible" type="button">Seleccionar visibles</button>
   </div>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
-  <section id="pendingSection" style="display:none;margin-top:24px">
-    <div class="summary" style="margin-bottom:10px"><div><h1 style="font-size:18px">Pendientes de cerrar</h1><div class="meta">Elaborando, actualizando o preparadas sin cerrar</div></div><div class="badge" id="pendingCount">0</div></div>
-    <section class="list" id="pendingList"></section>
-  </section>
   <section style="margin-top:26px">
     <div class="summary" style="margin-bottom:8px"><div><h1 style="font-size:18px">Historial reciente</h1><div class="meta">Últimas tendencias marcadas como explicadas</div></div></div>
     <div class="card" style="display:block" id="historyList"><div class="empty">Cargando historial…</div></div>
@@ -136,8 +127,8 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
 <div class="bottom">
   <div class="bottom-inner">
     <div class="count"><b id="selectedCount">0</b> seleccionadas <button id="clearBtn" type="button" style="display:none;border:0;background:none;color:#79aefc;padding:0 0 0 6px;font:inherit">Limpiar</button></div>
-    <button class="secondary" id="explainedBtn" disabled>✓ Marcar explicadas</button>
-    <button class="primary" id="queueBtn" disabled>Elaborar</button>
+    <button class="secondary" id="explainedBtn" disabled>Confirmar explicadas</button>
+    <button class="primary" id="queueBtn" disabled>Enviar a elaborar</button>
   </div>
 </div>
 
@@ -160,7 +151,8 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
 const API="/api/ttendencias-control";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 let model=null, selected=new Set(JSON.parse(localStorage.getItem("ttendencias-selection")||"[]")), busy=false;
-let filter=localStorage.getItem("ttendencias-filter")||"all";
+let filter=localStorage.getItem("ttendencias-filter")||"new";
+if(!["new","active","explained"].includes(filter))filter="new";
 const $=id=>document.getElementById(id);
 function saveSelection(){localStorage.setItem("ttendencias-selection",JSON.stringify([...selected]))}
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -186,7 +178,9 @@ function render(){
  const age=model.captured_at?Math.max(0,Math.round((Date.now()-new Date(model.captured_at).getTime())/60000)):0;
  $("freshness").style.color=age<=20?"#63d99a":age<=35?"#f5c451":"#ff7f8b";
  const rel={high:"alta",medium:"media",fallback:"baja",none:"sin datos"}[model.reliability]||model.reliability||"—";
- $("quality").textContent=(model.non_stale_source_count||0)+" fuentes activas · fiabilidad "+rel;
+ $("quality").textContent=(model.source_count||0)+" válidas · "+(model.non_stale_source_count||0)+" actuales · fiabilidad "+rel;
+ const pc=(model.prepared||[]).length;
+ $("preparedCount").textContent=pc;$("preparedBtn").style.display=pc?"inline-block":"none";
  const allItems=model.items||[];
  $("statNew").textContent=allItems.filter(x=>x.status==="new").length;
  $("statActive").textContent=(model.pending||[]).length;
@@ -196,16 +190,10 @@ function render(){
  const healthFresh=healthAge<=35;
  sys.textContent=health.ok===true&&healthFresh?"Sistema OK":health.ok===false?"Sistema con avisos":health.checked_at?"Salud sin actualizar":"Sistema —";
  sys.className="stat "+(health.ok===true&&healthFresh?"healthOk":health.checked_at?"healthWarn":"");
- const ms=$("modeStat"), mode=model.control_mode||{};
- ms.textContent=mode.mode==="web"?"Control web":mode.mode==="telegram"?"Control Telegram":"Control —";
- ms.className="stat "+(mode.mode==="web"?"healthOk":"");
  const list=$("list");list.innerHTML="";
  for(const item of model.items||[]){
-   const isActive=["preparing","ready","update"].includes(item.status);
+   const isActive=item.status==="active";
    if(filter==="new"&&item.status!=="new")continue;
-   if(filter==="preparing"&&item.status!=="preparing")continue;
-   if(filter==="ready"&&item.status!=="ready")continue;
-   if(filter==="update"&&item.status!=="update")continue;
    if(filter==="active"&&!isActive)continue;
    if(filter==="explained"&&item.status!=="explained")continue;
    const card=document.createElement("label");
@@ -218,24 +206,6 @@ function render(){
    const cb=card.querySelector(".check");cb.checked=selected.has(item.name);
    cb.addEventListener("change",()=>{cb.checked?selected.add(item.name):selected.delete(item.name);saveSelection();render()});
    list.appendChild(card);
- }
- const pending=(model.pending||[]);
- $("pendingSection").style.display=pending.length?"block":"none";
- $("pendingCount").textContent=pending.length;
- $("pendingList").innerHTML="";
- for(const item of pending){
-   const card=document.createElement("div");card.className="card";
-   const label=item.status==="ready"?"Preparada · pendiente de cerrar":item.status==="update"?"Actualizando":"Elaborando";
-   card.innerHTML='<div class="rank">•</div><div><div class="name"></div><div class="state">'+stateDot(item.status)+'<span></span><button class="xlink pendingX" type="button">Buscar en X</button></div></div><div><div class="meta pendingTime"></div><button class="secondary pendingDone" type="button" style="min-height:34px;padding:7px 9px;margin-top:6px;font-size:12px">Marcar explicada</button></div>';
-   card.querySelector(".name").textContent=item.name;
-   card.querySelector(".state span").textContent=label;
-   const mins=item.requested_at?Math.max(0,Math.round((Date.now()-new Date(item.requested_at).getTime())/60000)):0;
-   const pt=card.querySelector(".pendingTime");
-   pt.textContent=fmtDate(item.requested_at)+(mins>=60?" · "+Math.floor(mins/60)+" h "+(mins%60)+" min":mins>=30?" · ⚠ "+mins+" min":mins>0?" · "+mins+" min":"");
-   if(mins>=60)pt.classList.add("pendingLate");else if(mins>=30)pt.classList.add("pendingWarn");
-   card.querySelector(".pendingX").onclick=()=>window.open("https://x.com/search?"+new URLSearchParams({q:item.name,src:"typed_query",f:"live"}).toString(),"_blank","noopener");
-   card.querySelector(".pendingDone").onclick=()=>{if(confirm("¿Marcar "+item.name+" como explicada?"))action("explained",[item.name])};
-   $("pendingList").appendChild(card);
  }
  const history=$("historyList");history.innerHTML="";
  for(const h of (model.history||[]).slice(0,12)){
@@ -254,28 +224,27 @@ function render(){
  $("explainedBtn").disabled=!n||busy;
  const selectedItems=(model.items||[]).filter(x=>selected.has(x.name));
  const explainedCount=selectedItems.filter(x=>x.status==="explained").length;
- $("queueBtn").textContent=n&&explainedCount===n?"Actualizar":n&&explainedCount>0?"Elaborar / actualizar":"Elaborar";
+ $("queueBtn").textContent=n&&explainedCount===n?"Reelaborar":"Enviar a elaborar";
 }
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
-function buildModel(recent,requestDoc,explained,health,controlMode){
+function buildModel(recent,requestDoc,explained,health,controlMode,prepared){
  const requests=Array.isArray(requestDoc.requests)?requestDoc.requests:[];
  const explainedSet=new Set((explained.items||[]).map(x=>nrm(x.name)));
  const latestFor=name=>[...requests].reverse().find(x=>nrm(x.name)===nrm(name));
  const items=(recent.items||[]).slice(0,10).map(item=>{
    const req=latestFor(item.name),s=String(req?.status||"");
-   let status="new",status_label="Nueva";
-   if(s==="preparing"){status="preparing";status_label="Elaborando"}
-   else if(s==="update"){status="update";status_label="Actualizando"}
-   else if(s==="ready"){status="ready";status_label="Preparada"}
+   let status="new",status_label="Nueva",ready=false;
+   if(s==="preparing"||s==="update"){status="active";status_label="Elaborando"}
+   else if(s==="ready"){status="active";status_label="Tuits listos";ready=true}
    else if(s==="explained"||explainedSet.has(nrm(item.name))){status="explained";status_label="Explicada"}
-   return {rank:Number(item.rank),name:String(item.name),status,status_label,requested_at:req?.requested_at||null,telegram_message_id:req?.telegram_message_id||null};
+   return {rank:Number(item.rank),name:String(item.name),status,status_label,ready,internal_status:s,requested_at:req?.requested_at||null};
  });
  const hist=[...(explained.items||[])].filter(x=>x?.name&&x?.explained_at).sort((a,b)=>String(b.explained_at).localeCompare(String(a.explained_at)));
  return {
    captured_at:recent.captured_at||null,reliability:recent.reliability||null,
    source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,
    items,
-   pending:requests.filter(x=>["preparing","update","ready"].includes(String(x.status||""))).map(x=>({id:x.id,name:x.name,rank:x.rank,status:x.status,requested_at:x.requested_at||null})),
+   prepared:(prepared?.items||[]),
    history:hist,
    health:{ok:health?.ok,checked_at:health?.checked_at||null,blocking:health?.blocking||[]},
    control_mode:controlMode||{}
@@ -285,13 +254,14 @@ async function load(silent=false){
  try{
    if(!silent)$("refreshBtn").disabled=true;
    const stamp=Date.now();
-   const urls=["trends/recent.json","trends/requests.json","trends/telegram-manual-explained.json","trends/health-status.json","trends/control-mode.json"].map(p=>RAW+p+"?t="+stamp);
+   const urls=["trends/recent.json","trends/requests.json","trends/telegram-manual-explained.json","trends/health-status.json","trends/control-mode.json","trends/prepared.json"].map(p=>RAW+p+"?t="+stamp);
    const rs=await Promise.all(urls.map(u=>fetch(u,{cache:"no-store"})));
    if(rs.slice(0,3).some(r=>!r.ok))throw new Error("No se pudieron leer los datos de TTendencias");
    const recent=await rs[0].json(),requestDoc=await rs[1].json(),explained=await rs[2].json();
    const health=rs[3].ok?await rs[3].json():{};
    const controlMode=rs[4].ok?await rs[4].json():{};
-   const d=buildModel(recent,requestDoc,explained,health,controlMode);
+   const prepared=rs[5].ok?await rs[5].json():{items:[]};
+   const d=buildModel(recent,requestDoc,explained,health,controlMode,prepared);
    model=d;
    try{localStorage.setItem("ttendencias-last-model",JSON.stringify(d))}catch(_){}
    const current=new Set((d.items||[]).map(x=>x.name));
@@ -324,13 +294,16 @@ async function action(actionName,names=[]){
    const d=await r.json();
    if(r.status===401){localStorage.removeItem("ttendencias-control-token");$("sheet").classList.add("show");throw new Error("Token incorrecto")}
    if(!r.ok)throw new Error(d.error||"No se pudo aplicar la acción");
-   if(actionName!=="refresh"){selected.clear();saveSelection()}
-   showToast(actionName==="queue"?"Enviadas a elaborar":actionName==="explained"?"Marcadas como explicadas":"Refresco solicitado · puede tardar unos segundos");
-   await load(true);
-   if(actionName==="refresh"){
-     setTimeout(()=>load(true),12000);
-     setTimeout(()=>load(true),26000);
+   if(actionName==="queue"){
+     for(const item of model?.items||[])if(names.includes(item.name)){item.status="active";item.status_label="Elaborando";item.ready=false}
+     showToast(names.length+" tendencia(s) enviadas a elaborar");
+   }else if(actionName==="explained"){
+     for(const item of model?.items||[])if(names.includes(item.name)){item.status="explained";item.status_label="Explicada";item.ready=false}
+     showToast(names.length+" tendencia(s) confirmadas como explicadas");
    }
+   selected.clear();saveSelection();render();
+   setTimeout(()=>load(true),1800);
+   setTimeout(()=>load(true),5000);
  }catch(e){showToast(String(e.message||e))}
  finally{busy=false;render()}
 }
@@ -338,8 +311,7 @@ $("filters").addEventListener("click",e=>{
  const b=e.target.closest(".filter");if(!b)return;
  if(b.id==="selectVisible"){
    for(const item of model?.items||[]){
-     const active=["preparing","ready","update"].includes(item.status);
-     const visible=filter==="all"||(filter==="new"&&item.status==="new")||(filter==="preparing"&&item.status==="preparing")||(filter==="ready"&&item.status==="ready")||(filter==="update"&&item.status==="update")||(filter==="active"&&active)||(filter==="explained"&&item.status==="explained");
+     const visible=(filter==="new"&&item.status==="new")||(filter==="active"&&item.status==="active")||(filter==="explained"&&item.status==="explained");
      if(visible)selected.add(item.name);
    }
    saveSelection();render();return;
@@ -347,20 +319,22 @@ $("filters").addEventListener("click",e=>{
  filter=b.dataset.filter;localStorage.setItem("ttendencias-filter",filter);render()
 });
 $("clearBtn").onclick=()=>{selected.clear();saveSelection();render()};
-$("queueBtn").onclick=()=>action("queue",[...selected]);
+$("queueBtn").onclick=()=>{
+ if(!selected.size)return;
+ const names=[...selected];
+ const re= (model.items||[]).filter(x=>selected.has(x.name)&&x.status==="explained").length;
+ const msg=re===names.length
+   ?"¿Enviar "+names.length+" tendencia(s) ya explicadas a reelaborar de nuevo?"
+   :"¿Enviar "+names.length+" tendencia(s) a elaborar?";
+ if(confirm(msg))action("queue",names);
+};
 $("explainedBtn").onclick=()=>{
  if(!selected.size)return;
- if(confirm("¿Marcar "+selected.size+" tendencia(s) como explicadas?"))action("explained",[...selected]);
+ const names=[...selected];
+ if(confirm("¿Confirmas que estas "+names.length+" tendencia(s) ya están explicadas/publicadas? Se cerrarán en la lista."))action("explained",names);
 };
-$("refreshBtn").onclick=()=>load();
-$("forceBtn").onclick=()=>{
- const last=Number(localStorage.getItem("ttendencias-force-refresh")||0);
- const left=60000-(Date.now()-last);
- if(left>0){showToast("Espera "+Math.ceil(left/1000)+" s antes de volver a forzar");return}
- if(!confirm("¿Forzar ahora una nueva captura del Top 10?"))return;
- localStorage.setItem("ttendencias-force-refresh",String(Date.now()));
- action("refresh");
-};
+$("preparedBtn").onclick=()=>location.href="/ttendencias/preparados/";
+$("refreshBtn").onclick=()=>{showToast("Recargando datos");load()};
 $("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado en este dispositivo":"Sin token guardado";$("sheet").classList.add("show")};
 $("cancelToken").onclick=()=>$("sheet").classList.remove("show");
 $("testToken").onclick=async()=>{
