@@ -19,6 +19,7 @@ STATE = ROOT / "telegram-bot-state.json"
 LISTENER_STATE = ROOT / "telegram-listener-state.json"
 MANUAL = ROOT / "telegram-manual-explained.json"
 REQUESTS = ROOT / "requests.json"
+PREPARED = ROOT / "prepared.json"
 
 TOKEN = os.environ["TTENDENCIAS_BOT_TOKEN"]
 API = f"https://api.telegram.org/bot{TOKEN}/"
@@ -65,6 +66,7 @@ def persist_git(message="Actualizar estado inmediato TTendencias", include_trend
         "trends/telegram-bot-state.json",
         "trends/telegram-listener-state.json",
         "trends/telegram-manual-explained.json",
+        "trends/prepared.json",
     ]
     if include_trends:
         paths = ["trends/recent.json", "trends/checkpoint.json", *paths]
@@ -104,6 +106,8 @@ def persist_git(message="Actualizar estado inmediato TTendencias", include_trend
             merge_cmd += ["--local-listener", str(local["trends/telegram-listener-state.json"])]
         if "trends/telegram-manual-explained.json" in local:
             merge_cmd += ["--local-manual", str(local["trends/telegram-manual-explained.json"])]
+        if "trends/prepared.json" in local:
+            merge_cmd += ["--local-prepared", str(local["trends/prepared.json"])]
         subprocess.run(merge_cmd, check=False)
 
         subprocess.run(["git", "add", *paths], check=False)
@@ -634,6 +638,21 @@ def mark_explained(callback):
             req["explained_at"] = now
             req.pop("telegram_message_id", None)
     save(REQUESTS, requests)
+
+    prepared = load_remote_json(
+        "trends/prepared.json",
+        load(PREPARED, {"project": "TTendencias", "items": []})
+    )
+    prepared["items"] = [
+        item for item in prepared.get("items", [])
+        if not any(
+            norm(x) in related_norm
+            for x in (item.get("related_trends") or [item.get("trend_name")])
+            if x
+        )
+    ]
+    prepared["updated_at"] = now
+    save(PREPARED, prepared)
 
     # Borrar exactamente el mensaje cuyo botón se ha pulsado.
     try:
