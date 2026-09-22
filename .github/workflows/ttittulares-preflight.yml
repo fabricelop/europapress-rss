@@ -23,7 +23,7 @@ jobs:
 
       - name: Validar Python
         run: |
-          python3 -m py_compile telegram/radar_no_d1.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py\n          python3 telegram/radar_no_d1.py --selftest-dedupe
+          python3 -m py_compile telegram/radar_no_d1.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py\n          python3 telegram/radar_no_d1.py --selftest-dedupe\n          python3 ttittulares/auto_queue.py --selftest
 
       - name: Validar JSON y reglas
         run: |
