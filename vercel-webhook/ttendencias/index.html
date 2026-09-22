@@ -31,7 +31,7 @@ main{max-width:980px;margin:0 auto;padding:18px 14px}
 .filter{white-space:nowrap;border:1px solid #303846;background:#121923;color:#aeb9c9;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:750}.filter.active{background:#e9eef7;color:#0c1017;border-color:#e9eef7}
 .xlink{border:0;background:none;color:#79aefc;font-size:12px;font-weight:750;padding:0;margin-left:8px}
 .stats{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.stat{border:1px solid #2e3744;background:#111720;border-radius:10px;padding:8px 10px;font-size:12px;color:#aab5c5}.stat b{color:#f0f4fa}
-.historyRow{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid #232b36;padding:10px 2px}.historyRow:last-child{border-bottom:0}.historyName{font-weight:700}.healthOk{color:#63d99a}.healthWarn{color:#ffb760}
+.historyRow{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid #232b36;padding:10px 2px}.historyRow:last-child{border-bottom:0}.historyName{font-weight:700}.healthOk{color:#63d99a}.healthWarn{color:#ffb760}.pendingWarn{color:#f5c451}.pendingLate{color:#ff7f8b}
 .dot{width:8px;height:8px;border-radius:50%}
 .dot.new{background:#ff5364}.dot.preparing{background:#4b91ff}.dot.ready{background:#f5c451}.dot.update{background:#b678ff}.dot.explained{background:#42c879}
 .list{display:grid;gap:10px}
@@ -220,7 +220,9 @@ function render(){
    card.querySelector(".name").textContent=item.name;
    card.querySelector(".state span").textContent=label;
    const mins=item.requested_at?Math.max(0,Math.round((Date.now()-new Date(item.requested_at).getTime())/60000)):0;
-   card.querySelector(".pendingTime").textContent=fmtDate(item.requested_at)+(mins>360?" · antigua":"");
+   const pt=card.querySelector(".pendingTime");
+   pt.textContent=fmtDate(item.requested_at)+(mins>=60?" · "+Math.floor(mins/60)+" h "+(mins%60)+" min":mins>=30?" · ⚠ "+mins+" min":mins>0?" · "+mins+" min":"");
+   if(mins>=60)pt.classList.add("pendingLate");else if(mins>=30)pt.classList.add("pendingWarn");
    card.querySelector(".pendingX").onclick=()=>window.open("https://x.com/search?"+new URLSearchParams({q:item.name,src:"typed_query",f:"live"}).toString(),"_blank","noopener");
    card.querySelector(".pendingDone").onclick=()=>{if(confirm("¿Marcar "+item.name+" como explicada?"))action("explained",[item.name])};
    $("pendingList").appendChild(card);
