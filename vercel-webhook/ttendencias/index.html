@@ -26,6 +26,9 @@ main{max-width:980px;margin:0 auto;padding:18px 14px}
 .badge{border:1px solid #343c4a;background:#131923;border-radius:999px;padding:7px 10px;font-size:12px;color:#c7d1df;white-space:nowrap}
 .legend{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
 .legend span{font-size:12px;color:#9ba7b8;display:inline-flex;gap:5px;align-items:center}
+.filters{display:flex;gap:8px;overflow:auto;padding-bottom:10px;margin-bottom:8px;scrollbar-width:none}.filters::-webkit-scrollbar{display:none}
+.filter{white-space:nowrap;border:1px solid #303846;background:#121923;color:#aeb9c9;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:750}.filter.active{background:#e9eef7;color:#0c1017;border-color:#e9eef7}
+.xlink{border:0;background:none;color:#79aefc;font-size:12px;font-weight:750;padding:0;margin-left:8px}
 .dot{width:8px;height:8px;border-radius:50%}
 .dot.new{background:#ff5364}.dot.preparing{background:#4b91ff}.dot.ready{background:#f5c451}.dot.update{background:#b678ff}.dot.explained{background:#42c879}
 .list{display:grid;gap:10px}
@@ -78,6 +81,12 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
     <span><i class="dot update"></i>Actualizando</span>
     <span><i class="dot explained"></i>Explicada</span>
   </div>
+  <div class="filters" id="filters">
+    <button class="filter active" data-filter="all">Todas</button>
+    <button class="filter" data-filter="new">Nuevas</button>
+    <button class="filter" data-filter="active">En curso</button>
+    <button class="filter" data-filter="explained">Explicadas</button>
+  </div>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
   <section id="pendingSection" style="display:none;margin-top:24px">
     <div class="summary" style="margin-bottom:10px"><div><h1 style="font-size:18px">En curso</h1><div class="meta">Solicitudes todavía activas</div></div><div class="badge" id="pendingCount">0</div></div>
@@ -109,6 +118,7 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
 <script>
 const API="/api/ttendencias-control";
 let model=null, selected=new Set(JSON.parse(localStorage.getItem("ttendencias-selection")||"[]")), busy=false;
+let filter=localStorage.getItem("ttendencias-filter")||"all";
 const $=id=>document.getElementById(id);
 function saveSelection(){localStorage.setItem("ttendencias-selection",JSON.stringify([...selected]))}
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -136,11 +146,17 @@ function render(){
  $("quality").textContent=(model.non_stale_source_count||0)+" fuentes activas";
  const list=$("list");list.innerHTML="";
  for(const item of model.items||[]){
+   const isActive=["preparing","ready","update"].includes(item.status);
+   if(filter==="new"&&item.status!=="new")continue;
+   if(filter==="active"&&!isActive)continue;
+   if(filter==="explained"&&item.status!=="explained")continue;
    const card=document.createElement("label");
    card.className="card"+(selected.has(item.name)?" selected":"");
-   card.innerHTML='<div class="rank">T'+item.rank+'</div><div><div class="name"></div><div class="state">'+stateDot(item.status)+'<span></span></div></div><input class="check" type="checkbox">';
+   card.innerHTML='<div class="rank">T'+item.rank+'</div><div><div class="name"></div><div class="state">'+stateDot(item.status)+'<span></span><button class="xlink" type="button">Buscar en X</button></div></div><input class="check" type="checkbox">';
    card.querySelector(".name").textContent=item.name;
    card.querySelector(".state span").textContent=item.status_label;
+   const xb=card.querySelector(".xlink");
+   xb.addEventListener("click",ev=>{ev.preventDefault();ev.stopPropagation();window.open("https://x.com/search?"+new URLSearchParams({q:item.name,src:"typed_query",f:"live"}).toString(),"_blank","noopener")});
    const cb=card.querySelector(".check");cb.checked=selected.has(item.name);
    cb.addEventListener("change",()=>{cb.checked?selected.add(item.name):selected.delete(item.name);saveSelection();render()});
    list.appendChild(card);
@@ -158,6 +174,7 @@ function render(){
    card.querySelector(".meta").textContent=fmtDate(item.requested_at);
    $("pendingList").appendChild(card);
  }
+ for(const b of document.querySelectorAll(".filter"))b.classList.toggle("active",b.dataset.filter===filter);
  const n=selected.size;$("selectedCount").textContent=n;$("queueBtn").disabled=!n||busy;$("explainedBtn").disabled=!n||busy;
 }
 async function load(silent=false){
@@ -191,6 +208,7 @@ async function action(actionName,names=[]){
  }catch(e){showToast(String(e.message||e))}
  finally{busy=false;render()}
 }
+$("filters").addEventListener("click",e=>{const b=e.target.closest(".filter");if(!b)return;filter=b.dataset.filter;localStorage.setItem("ttendencias-filter",filter);render()});
 $("queueBtn").onclick=()=>action("queue",[...selected]);
 $("explainedBtn").onclick=()=>action("explained",[...selected]);
 $("refreshBtn").onclick=()=>load();
