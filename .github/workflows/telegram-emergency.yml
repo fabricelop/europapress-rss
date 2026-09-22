@@ -52,7 +52,13 @@ jobs:
               if key in sent_map:
                   print("Ya enviado, se omite",key)
                   continue
-              text=str(m.get("text","")).replace("\\\\n","\\n").strip()
+              text=str(m.get("text",""))
+              # Normalizar saltos escapados una o varias veces: nunca mostrar \\n al usuario.
+              for _ in range(3):
+                  newer=text.replace("\\\\n","\\n").replace("\\n","\n")
+                  if newer==text: break
+                  text=newer
+              text=text.strip()
               # Cinturón de seguridad visual: A/B/C son etiquetas SOLO de Telegram.
               # El texto que se abre en X debe conservar 🌶️ pero nunca A), B) o C).
               remate_label=None
