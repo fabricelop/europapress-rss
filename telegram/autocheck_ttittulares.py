@@ -105,4 +105,6 @@ if remaining:
     if key!=last_key or now-last_at>timedelta(hours=2):
         telegram("🚨 TTiTTulares · fallo bloqueante tras auto-reparación\n"+", ".join(remaining))
         ALERT_STATE.write_text(json.dumps({"key":key,"sent_at":now.isoformat()},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    raise SystemExit(1)
+    # El autocheck informa del bloqueo, pero no aborta el barrido: abortarlo
+    # impedía persistir la poda/deduplicación y provocaba el reenvío de noticias.
+    print("AUTOCHECK_BLOCKING", ", ".join(remaining))
