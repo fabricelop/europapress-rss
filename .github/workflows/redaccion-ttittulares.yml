@@ -1,0 +1,26 @@
+name: Redaccion TTiTTulares programada
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15,45 * * * *'
+
+concurrency:
+  group: ttittulares-redaccion
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  editorial:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Solicitar redaccion de cola
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 telegram/editorial_scheduler.py
