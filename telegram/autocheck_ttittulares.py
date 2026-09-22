@@ -51,12 +51,12 @@ def inspect():
             if item.get("status")!="PROCESSING": continue
             try:
                 since=datetime.fromisoformat(str(item.get("selected_at","")).replace("Z","+00:00"))
-                if now-since > timedelta(minutes=35):
+                if now-since > timedelta(minutes=75):
                     stuck.append(str(item.get("event_id","?")))
             except Exception:
                 stuck.append(str(item.get("event_id","?")))
         if stuck:
-            problems.append("elaborando_atascado_"+str(len(stuck)))
+            problems.append("elaborando_bloqueado_"+str(len(stuck)))
     q=load(PROCESSED,{})
     if not isinstance(q,(dict,list)): problems.append("processed_events_invalido")
     return d,problems
@@ -76,9 +76,9 @@ if any(x.startswith("fuentes_sanas_") or x.startswith("fuentes_fallidas_") or x=
 
 after,remaining=inspect()
 
-# Un PROCESSING antiguo significa que la selección llegó a Elaborando pero no
-# existe un redactor/entregador activo que la consuma. No lo ocultamos como
-# saludable: lo dejamos explícitamente bloqueante para evitar colas silenciosas.
+# La redacción programada corre a :15 y :45. Un PROCESSING es normal mientras
+# espera su siguiente turno. Solo lo consideramos bloqueo tras 75 minutos:
+# eso implica que ha perdido al menos dos oportunidades razonables de redacción.
 
 report={
  "checked_at":datetime.now(timezone.utc).isoformat(),
@@ -108,3 +108,8 @@ if remaining:
     # El autocheck informa del bloqueo, pero no aborta el barrido: abortarlo
     # impedía persistir la poda/deduplicación y provocaba el reenvío de noticias.
     print("AUTOCHECK_BLOCKING", ", ".join(remaining))
+else:
+    # Si el servicio se recuperó, olvidar la alerta anterior para que una recaída
+    # real posterior se notifique inmediatamente.
+    if ALERT_STATE.exists():
+        ALERT_STATE.write_text(json.dumps({"key":"","cleared_at":datetime.now(timezone.utc).isoformat()},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
