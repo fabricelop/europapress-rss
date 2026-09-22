@@ -20,9 +20,14 @@ function authToken(req) {
   const h = String(req.headers.authorization || "");
   return h.startsWith("Bearer ") ? h.slice(7).trim() : "";
 }
+const CONTROL_TOKEN_HASH = "2663da5223c2313c3670a7843a0cdfabfd2dd7c8fad1ed168247866a3b1262e5";
 function authorized(req) {
+  const got = authToken(req);
+  if (!got) return false;
   const expected = process.env.TTENDENCIAS_CONTROL_TOKEN || "";
-  return !!expected && authToken(req) === expected;
+  if (expected) return got === expected;
+  const digest = crypto.createHash("sha256").update(got).digest("hex");
+  return crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(CONTROL_TOKEN_HASH));
 }
 async function gh(path, options = {}) {
   const token = process.env.GITHUB_TOKEN;
