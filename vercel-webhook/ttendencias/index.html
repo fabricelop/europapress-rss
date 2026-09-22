@@ -116,9 +116,9 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig)
    else if(s==="explained"||(!req&&explainedSet.has(nrm(item.name)))){status="explained";label="Explicada"}
    else if(s==="ready"){status="active";label="En curso";detail="Tuits listos";ready=true}
    else if(s==="preparing"||s==="update"){
-     const age=req?.requested_at?Math.floor((Date.now()-new Date(req.requested_at).getTime())/60000):0;
-     if(age>=30){status="problematic";label="Problemática";detail="Lleva "+age+" min en elaboración"}
-     else detail="Elaborando";
+     const age=req?.requested_at?Math.max(0,Math.floor((Date.now()-new Date(req.requested_at).getTime())/60000)):0;
+     status="active";label="En curso";
+     detail=age>=30?"Elaborando · retraso de "+age+" min":"Elaborando · "+age+" min";
    }else detail="Pendiente de cola automática";
    return {rank:Number(item.rank),name:String(item.name),status,label,detail,ready,requested_at:req?.requested_at||null,internal_status:s};
  });
