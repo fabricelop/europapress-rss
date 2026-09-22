@@ -43,13 +43,28 @@ def merge_requests(remote, local):
             cur = by_key[k]
             cur_status = cur.get("status")
             new_status = item.get("status")
-            if STATUS_ORDER.get(new_status, 0) >= STATUS_ORDER.get(cur_status, 0):
+            cur_revision = int(cur.get("revision") or 0)
+            new_revision = int(item.get("revision") or 0)
+
+            # Una reexplicación explícita abre una revisión nueva. Esa revisión
+            # debe ganar incluso frente a un "explained" antiguo que siga vivo
+            # en un listener concurrente. Dentro de la misma revisión sí
+            # mantenemos la progresión preparing/update -> ready -> explained.
+            if new_revision > cur_revision:
+                merged = dict(cur)
+                merged.update(item)
+                by_key[k] = merged
+            elif new_revision < cur_revision:
+                merged = dict(item)
+                merged.update(cur)
+                by_key[k] = merged
+            elif STATUS_ORDER.get(new_status, 0) >= STATUS_ORDER.get(cur_status, 0):
                 merged = dict(cur)
                 merged.update(item)
                 by_key[k] = merged
             else:
                 # Preserve useful metadata from the lower-priority writer without
-                # allowing a state regression.
+                # allowing a state regression within the same revision.
                 merged = dict(item)
                 merged.update(cur)
                 by_key[k] = merged
