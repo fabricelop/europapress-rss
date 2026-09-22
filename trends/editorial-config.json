@@ -12,7 +12,12 @@
     "schedule_timezone": "Europe/Madrid"
   },
   "delivery": {
-    "channel": "telegram",
-    "telegram_is_control_surface": true
+    "channel": "web",
+    "telegram_is_control_surface": false
+  },
+  "notifications": {
+    "channel": "app",
+    "badge_enabled": true,
+    "telegram_enabled": false
   }
 }
