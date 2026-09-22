@@ -62,15 +62,24 @@ jobs:
               ids.add(eid)
               assert int(item.get("drafted_source_count") or 0) >= 4, f"{eid}: redactada con <4 fuentes"
               variants=item.get("variants") or []
-              assert variants, f"{eid}: sin variantes"
+              assert [str(v.get("label") or "") for v in variants] == ["Principal","A","B","C"], f"{eid}: deben existir Principal+A+B+C"
+              principal=str(variants[0].get("text") or "")
+              assert principal, f"{eid}: principal vacío"
               for v in variants:
                   text=str(v.get("text") or "")
-                  assert len(text) <= 280, f"{eid}: tuit >280"
+                  label=str(v.get("label") or "")
+                  assert len(text) <= 280, f"{eid}/{label}: tuit >280"
+                  if label=="Principal":
+                      assert str(v.get("remate") or "")=="", f"{eid}: Principal no debe tener remate"
+                  else:
+                      remate=str(v.get("remate") or "")
+                      assert remate, f"{eid}/{label}: remate vacío"
+                      assert text == principal+"\n\n"+remate, f"{eid}/{label}: el tuit debe ser Principal + remate"
                   url=str(v.get("url") or "")
                   if url:
                       q=urllib.parse.urlparse(url)
                       got=urllib.parse.parse_qs(q.query).get("text",[""])[0]
-                      assert got == text, f"{eid}: enlace X no coincide con el texto"
+                      assert got == text, f"{eid}/{label}: enlace X no coincide con el texto"
 
           healthy=status.get("healthy_source_count")
           total=status.get("configured_sources")
