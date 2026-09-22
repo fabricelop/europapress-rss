@@ -226,7 +226,7 @@ jobs:
                   }
                   related_norm = {norm(x) for x in related_trends}
                   for item in requests_doc.get("requests", []):
-                      if norm(item.get("name")) in related_norm and item.get("status") == "preparing":
+                      if norm(item.get("name")) in related_norm and item.get("status") in {"preparing", "update"}:
                           item["status"] = "ready"
                           item["telegram_message_id"] = sent["message_id"]
 
