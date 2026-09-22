@@ -53,10 +53,20 @@ def merge_requests(remote, local):
             if new_revision > cur_revision:
                 merged = dict(cur)
                 merged.update(item)
+                # Una revisión nueva no hereda referencias de entrega/cierre
+                # de la versión anterior.
+                if "telegram_message_id" not in item:
+                    merged.pop("telegram_message_id", None)
+                if "explained_at" not in item:
+                    merged.pop("explained_at", None)
                 by_key[k] = merged
             elif new_revision < cur_revision:
                 merged = dict(item)
                 merged.update(cur)
+                if "telegram_message_id" not in cur:
+                    merged.pop("telegram_message_id", None)
+                if "explained_at" not in cur:
+                    merged.pop("explained_at", None)
                 by_key[k] = merged
             elif STATUS_ORDER.get(new_status, 0) >= STATUS_ORDER.get(cur_status, 0):
                 merged = dict(cur)
