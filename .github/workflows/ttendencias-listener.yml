@@ -32,7 +32,7 @@ jobs:
         id: control_mode
         run: |
           python3 - <<'PY'
-          import json
+          import json, os
           from pathlib import Path
           p=Path("trends/control-mode.json")
           mode="telegram"
@@ -41,7 +41,7 @@ jobs:
                   mode=str(json.loads(p.read_text(encoding="utf-8")).get("mode") or "telegram").strip().lower()
               except Exception:
                   pass
-          with open("$GITHUB_OUTPUT","a",encoding="utf-8") as fh:
+          with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as fh:
               fh.write(f"mode={mode}\n")
           print(f"Modo TTendencias: {mode}")
           PY
