@@ -82,6 +82,14 @@ jobs:
               pos = tweet_text.find("🌶️")
               return tweet_text[pos:].strip() if pos >= 0 else tweet_text.strip()
 
+          def stable_x_compose_url(url):
+              """Normaliza los enlaces de composición al Web Intent clásico,
+              que conserva mejor la sesión/app que x.com/intent/post."""
+              tweet_text = tweet_text_from_url(url)
+              if not tweet_text:
+                  return url
+              return "https://twitter.com/intent/tweet?" + urllib.parse.urlencode({"text": tweet_text})
+
           def trend_name(msg, visible_text):
               explicit = str(msg.get("trend_name") or "").strip()
               if explicit:
@@ -137,8 +145,9 @@ jobs:
               for b in msg.get("buttons", []):
                   button = {"text": b["label"]}
                   if b.get("url"):
-                      button["url"] = b["url"]
-                      tweet_text = tweet_text_from_url(b["url"])
+                      normalized_url = stable_x_compose_url(b["url"]) if ("abrir" in b["label"].lower() or "publicar" in b["label"].lower()) and "x" in b["label"].lower() else b["url"]
+                      button["url"] = normalized_url
+                      tweet_text = tweet_text_from_url(normalized_url)
                       if tweet_text and len(tweet_text) <= 256 and "abrir" in b["label"].lower() and "x" in b["label"].lower():
                           keyboard.append([
                               button,
