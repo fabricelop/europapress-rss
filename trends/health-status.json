@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-09-22T18:19:07.719109+00:00",
-  "ok": false,
+  "checked_at": "2026-09-22T18:19:54.333890+00:00",
+  "ok": true,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -35,18 +35,17 @@
       "ok": true
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
       "non_stale_sources": 6,
-      "captured_age_minutes": 36.3,
-      "noise_count": 0,
-      "repair_started": true
+      "captured_age_minutes": 0.3,
+      "noise_count": 0
     },
     "listener": {
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 10.5,
+      "age_minutes": 11.3,
       "run_id": 35765219984,
       "reason": null,
       "repairable": true,
@@ -54,17 +53,17 @@
     },
     "refresh": {
       "ok": true,
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.0,
+      "age_minutes": 0.7,
       "run_id": 35766355235,
       "reason": null,
       "repairable": true,
       "require_active": false
     },
     "telegram_sender": {
-      "ok": false,
-      "outcome": "failure"
+      "ok": true,
+      "outcome": "no-aplica"
     },
     "request_queue": {
       "ok": true,
@@ -72,12 +71,8 @@
       "noise_count": 0
     }
   },
-  "repairs_started": [
-    "relanzado refresco Top 10"
-  ],
-  "blocking": [
-    "envío Telegram terminó en failure"
-  ],
-  "alert_sent": true,
-  "last_alert_signature": "envío Telegram terminó en failure"
+  "repairs_started": [],
+  "blocking": [],
+  "alert_sent": false,
+  "last_alert_signature": ""
 }
