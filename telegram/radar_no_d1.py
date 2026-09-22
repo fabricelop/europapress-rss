@@ -222,16 +222,18 @@ def fetch_items():
    except Exception as e:
     print("SOURCE_FAIL_WORKER",str(e))
 
+ recovered_names=[x["source"] for x in source_status if x.get("recovered")]
+ failed_names=[x["source"] for x in source_status if not x.get("ok")]
  recovery={
-  "triggered": bool(failures),
+  "triggered": bool(recovered_names or failed_names),
   "threshold": MIN_HEALTHY_SOURCES,
-  "attempted": [],
-  "recovered": [x["source"] for x in source_status if x.get("recovered")],
+  "attempted": sorted(set(recovered_names+failed_names)),
+  "recovered": recovered_names,
+  "remaining_failed": failed_names,
   "mode": "inline_parallel_fallback",
  }
- # No hay una segunda fase bloqueante de reparación. Cada fuente ya ha probado
- # sus alternativas dentro de su worker concurrente; si aun falla, el barrido
- # continúa con las demás y registra el fallo para el siguiente ciclo.
+ # No hay una segunda fase bloqueante de reparación. Cada fuente prueba sus
+ # alternativas dentro de su worker concurrente; el resto del radar sigue.
  return out,sorted(set(healthy)),sorted(set(sport_healthy)),failures,source_status,recovery
 
 def best_match(title,events,threshold=.50):
