@@ -117,6 +117,7 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
 
 <script>
 const API="/api/ttendencias-control";
+const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 let model=null, selected=new Set(JSON.parse(localStorage.getItem("ttendencias-selection")||"[]")), busy=false;
 let filter=localStorage.getItem("ttendencias-filter")||"all";
 const $=id=>document.getElementById(id);
@@ -184,11 +185,36 @@ function render(){
  const explainedCount=selectedItems.filter(x=>x.status==="explained").length;
  $("queueBtn").textContent=n&&explainedCount===n?"Actualizar":n&&explainedCount>0?"Elaborar / actualizar":"Elaborar";
 }
+function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
+function buildModel(recent,requestDoc,explained){
+ const requests=Array.isArray(requestDoc.requests)?requestDoc.requests:[];
+ const explainedSet=new Set((explained.items||[]).map(x=>nrm(x.name)));
+ const latestFor=name=>[...requests].reverse().find(x=>nrm(x.name)===nrm(name));
+ const items=(recent.items||[]).slice(0,10).map(item=>{
+   const req=latestFor(item.name),s=String(req?.status||"");
+   let status="new",status_label="Nueva";
+   if(s==="preparing"){status="preparing";status_label="Elaborando"}
+   else if(s==="update"){status="update";status_label="Actualizando"}
+   else if(s==="ready"){status="ready";status_label="Preparada"}
+   else if(s==="explained"||explainedSet.has(nrm(item.name))){status="explained";status_label="Explicada"}
+   return {rank:Number(item.rank),name:String(item.name),status,status_label,requested_at:req?.requested_at||null,telegram_message_id:req?.telegram_message_id||null};
+ });
+ return {
+   captured_at:recent.captured_at||null,reliability:recent.reliability||null,
+   source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,
+   items,
+   pending:requests.filter(x=>["preparing","update","ready"].includes(String(x.status||""))).map(x=>({id:x.id,name:x.name,rank:x.rank,status:x.status,requested_at:x.requested_at||null}))
+ };
+}
 async function load(silent=false){
  try{
    if(!silent)$("refreshBtn").disabled=true;
-   const r=await fetch(API+"?t="+Date.now(),{cache:"no-store"});
-   const d=await r.json();if(!r.ok)throw new Error(d.error||"No se pudo cargar");
+   const stamp=Date.now();
+   const urls=["trends/recent.json","trends/requests.json","trends/telegram-manual-explained.json"].map(p=>RAW+p+"?t="+stamp);
+   const rs=await Promise.all(urls.map(u=>fetch(u,{cache:"no-store"})));
+   if(rs.some(r=>!r.ok))throw new Error("No se pudieron leer los datos de TTendencias");
+   const [recent,requestDoc,explained]=await Promise.all(rs.map(r=>r.json()));
+   const d=buildModel(recent,requestDoc,explained);
    model=d;
    const current=new Set((d.items||[]).map(x=>x.name));
    selected=new Set([...selected].filter(x=>current.has(x)));
