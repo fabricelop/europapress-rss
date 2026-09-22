@@ -9,7 +9,15 @@
       30
     ],
     "daytime_max_wait_minutes": 30,
-    "schedule_timezone": "Europe/Madrid"
+    "schedule_timezone": "Europe/Madrid",
+    "detection_schedule_minutes": [
+      10,
+      25,
+      40,
+      55
+    ],
+    "problematic_after_minutes": 30,
+    "auto_queue_new_trends": true
   },
   "delivery": {
     "channel": "web",
