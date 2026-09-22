@@ -4,6 +4,7 @@ from pathlib import Path
 
 PATH = Path("telegram/events.json")
 TTL_HOURS = 24
+MAX_ACTIVE_EVENTS = 700
 
 def parse_dt(value):
     try:
@@ -36,8 +37,15 @@ def event_dt(e):
     parsed = [v for v in parsed if v != datetime.min.replace(tzinfo=timezone.utc)]
     return max(parsed) if parsed else datetime.min.replace(tzinfo=timezone.utc)
 
-doc["events"] = [e for e in events if event_dt(e) >= cutoff]
+active = [e for e in events if event_dt(e) >= cutoff]
+# events.json es estado operativo, no archivo histórico. Incluso con mucha
+# actividad en 24 h debe mantenerse acotado para no bloquear Git/Actions.
+# Conservamos los eventos más recientes; el histórico ya vive en archivos
+# separados y processed-events.json.
+active.sort(key=event_dt, reverse=True)
+doc["events"] = active[:MAX_ACTIVE_EVENTS]
 doc["active_retention_hours"] = TTL_HOURS
+doc["active_event_cap"] = MAX_ACTIVE_EVENTS
 doc["pruned_at"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 tmp = PATH.with_suffix(".json.tmp")
