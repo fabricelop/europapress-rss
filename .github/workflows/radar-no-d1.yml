@@ -24,11 +24,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python3 telegram/radar_no_d1.py
+          python3 ttittulares/auto_queue.py
+          python3 ttittulares/build_status.py
       - name: Guardar estado
         run: |
           git config user.name "tt-control-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add telegram/events.json telegram/processed-events.json
+          git add telegram/events.json telegram/processed-events.json telegram/editorial-processing.json ttittulares/status.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Actualizar estado radar editorial"
           for intento in 1 2 3 4; do
