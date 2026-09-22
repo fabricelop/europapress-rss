@@ -1,7 +1,16 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111827"><title>TTiTTulares</title><link rel="manifest" href="./manifest.webmanifest"><link rel="stylesheet" href="./style.css"></head>
 <body><header><div><h1>TTiTTulares</h1><p id="stamp">Cargando…</p></div><button id="refresh">Actualizar</button></header>
-<main><section class="stats"><div><b id="ready">–</b><span>Listas</span></div><div><b id="processing">–</b><span>En elaboración</span></div><div><b id="three">–</b><span>Con 3 fuentes</span></div></section><section id="health" class="health"></section><section id="list" class="list"></section></main>
+<main>
+<section class="stats">
+<button class="stat active" data-view="ready"><b id="ready">–</b><span>Listas</span></button>
+<button class="stat" data-view="processing"><b id="processing">–</b><span>En elaboración</span></button>
+<button class="stat" data-view="three"><b id="three">–</b><span>Con 3 fuentes</span></button>
+</section>
+<section id="health" class="health"></section>
+<section class="viewhead"><h2 id="viewTitle">Noticias listas</h2><p id="viewHelp"></p></section>
+<section id="list" class="list"></section>
+</main>
 <template id="card"><article class="card"><button class="summary"><span class="title"></span><span class="meta"></span></button><div class="detail"><p class="facts"></p><div class="variants"></div><div class="actions"><button data-act="published">Ya publicada</button><button data-act="rewrite">Rehacer</button><button data-act="dismissed">Desestimar</button></div></div></article></template>
 <dialog id="rewriteDlg"><form method="dialog"><h2>Rehacer noticia</h2><textarea id="rewriteText" rows="5" placeholder="Instrucciones para la nueva redacción"></textarea><div><button value="cancel">Cancelar</button><button id="rewriteOk" value="default">Enviar a elaborar</button></div></form></dialog>
 <script src="./app.js"></script></body></html>
