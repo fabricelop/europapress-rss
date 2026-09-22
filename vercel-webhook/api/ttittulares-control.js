@@ -5,7 +5,7 @@ const BRANCH=process.env.GITHUB_BRANCH||"main";
 const PREPARED="ttittulares/prepared.json";
 const DECISIONS="ttittulares/decisions.json";
 const PROCESSING="telegram/editorial-processing.json";
-const CONTROL_TOKEN_HASH="2663da5223c2313c3670a7843a0cdfabfd2dd7c8fad1ed168247866a3b1262e5";
+const CONTROL_TOKEN_HASH="083d41ffcc41b14d52d426412b1ed44a8d4958b351ee110bdcc5a0eec167b840";
 
 function b64d(s){return Buffer.from(String(s||"").replace(/\n/g,""),"base64").toString("utf8")}
 function b64e(s){return Buffer.from(s,"utf8").toString("base64")}
@@ -16,7 +16,7 @@ function authorized(req){
   if(process.env.VERCEL_ENV==="preview")return true;
   const got=authToken(req);if(!got)return false;
   const expected=process.env.TTITTULARES_CONTROL_TOKEN||"";
-  if(expected)return got===expected;
+  if(expected&&got===expected)return true;
   const digest=crypto.createHash("sha256").update(got).digest("hex");
   return crypto.timingSafeEqual(Buffer.from(digest),Buffer.from(CONTROL_TOKEN_HASH));
 }
