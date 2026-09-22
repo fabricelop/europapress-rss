@@ -120,6 +120,14 @@ def persist_git(message="Actualizar estado inmediato TTendencias", include_trend
 def norm(s):
     return " ".join(str(s or "").split()).casefold()
 
+def noise_name(s):
+    v = norm(s)
+    return (
+        v.startswith("explore why ")
+        or (" is trending " in (" " + v + " ") and "latest viral tweets" in v)
+        or "real-time buzz from twitter" in v
+    )
+
 
 def call(method, payload=None):
     data = None
@@ -152,7 +160,7 @@ def known_explained():
         load(MANUAL, {"items": []})
     )
     for item in manual.get("items", []):
-        if item.get("name"):
+        if item.get("name") and not noise_name(item.get("name")):
             names.add(norm(item["name"]))
     return names
 
@@ -482,20 +490,22 @@ def submit_batch(callback, with_image=False):
         key = hashlib.sha256(term.encode("utf-8")).hexdigest()[:12]
         existing = next((x for x in by_id.values()
                          if norm(x.get("name")) == norm(term)
-                         and x.get("status") in {"preparing", "ready"}), None)
+                         and x.get("status") in {"preparing", "ready", "update"}), None)
         if existing:
             existing["with_image"] = bool(with_image) or bool(existing.get("with_image"))
             existing["batch_id"] = batch_id
             existing["requested_together"] = names
         else:
+            reexplain = norm(term) in explained
+            previous = by_id.get(key) or {}
             by_id[key] = {
                 "id": key,
                 "name": term,
                 "rank": int(item["rank"]),
-                "status": "preparing",
+                "status": "update" if reexplain else "preparing",
                 "requested_at": now,
-                "revision": 0,
-                "reexplain": norm(term) in explained,
+                "revision": int(previous.get("revision") or 0) + (1 if reexplain else 0),
+                "reexplain": reexplain,
                 "with_image": bool(with_image),
                 "batch_id": batch_id,
                 "requested_together": names,
