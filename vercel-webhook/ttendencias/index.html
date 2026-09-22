@@ -30,7 +30,7 @@ main{max-width:980px;margin:0 auto;padding:18px 14px}
 .filters{display:flex;gap:8px;overflow:auto;padding-bottom:10px;margin-bottom:8px;scrollbar-width:none}.filters::-webkit-scrollbar{display:none}
 .filter{white-space:nowrap;border:1px solid #303846;background:#121923;color:#aeb9c9;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:750}.filter.active{background:#e9eef7;color:#0c1017;border-color:#e9eef7}
 .xlink{border:0;background:none;color:#79aefc;font-size:12px;font-weight:750;padding:0;margin-left:8px}
-.stats{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.stat{border:1px solid #2e3744;background:#111720;border-radius:10px;padding:8px 10px;font-size:12px;color:#aab5c5}.stat b{color:#f0f4fa}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.stat{border:1px solid #2e3744;background:#111720;border-radius:10px;padding:8px 10px;font-size:12px;color:#aab5c5}.stat b{color:#f0f4fa}.timing{display:none;border:1px solid #334055;background:#101722;border-radius:11px;padding:9px 11px;margin:0 0 12px;font-size:12px;color:#c1ccda}.timing.warn{display:block;border-color:#725b2a;color:#f5c451}.timing.late{display:block;border-color:#743944;color:#ff8d99}.timing.ok{display:block;color:#9fb9dc}
 .historyRow{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid #232b36;padding:10px 2px}.historyRow:last-child{border-bottom:0}.historyName{font-weight:700}.healthOk{color:#63d99a}.healthWarn{color:#ffb760}.pendingWarn{color:#f5c451}.pendingLate{color:#ff7f8b}
 .dot{width:8px;height:8px;border-radius:50%}
 .dot.new{background:#ff5364}.dot.preparing,.dot.active,.dot.ready,.dot.update{background:#4b91ff}.dot.explained{background:#42c879}
@@ -110,6 +110,7 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
     <div class="stat">Explicadas <b id="statExplained">0</b></div>
     <div class="stat" id="systemStat">Sistema —</div>
   </div>
+  <div class="timing" id="editorialTiming"></div>
   <div class="filters" id="filters">
     <button class="filter active" data-filter="all">Todas</button>
     <button class="filter" data-filter="new">Nuevas</button>
@@ -152,6 +153,29 @@ if(!["all","new","active","explained"].includes(filter))filter="all";
 const $=id=>document.getElementById(id);
 function saveSelection(){localStorage.setItem("ttendencias-selection",JSON.stringify([...selected]))}
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
+function localExplained(){
+ let m={};try{m=JSON.parse(localStorage.getItem("ttendencias-local-explained")||"{}")}catch(_){}
+ const cutoff=Date.now()-2*60*60*1000;
+ for(const [k,v] of Object.entries(m))if(Number(v)<cutoff)delete m[k];
+ localStorage.setItem("ttendencias-local-explained",JSON.stringify(m));
+ return m;
+}
+function forgetLocalExplained(names){
+ const m=localExplained();for(const name of names||[])delete m[nrm(name)];
+ localStorage.setItem("ttendencias-local-explained",JSON.stringify(m));
+}
+async function updateAppBadge(){
+ if(!model)return;
+ const newCount=(model.items||[]).filter(x=>x.status==="new").length;
+ const readyCount=(model.prepared||[]).length;
+ const total=newCount+readyCount;
+ try{
+   if("setAppBadge" in navigator){
+     if(total>0)await navigator.setAppBadge(total);else if("clearAppBadge" in navigator)await navigator.clearAppBadge();
+   }
+ }catch(_){}
+ document.title=total?"("+total+") TTendencias Control":"TTendencias Control";
+}
 function showToast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove("show"),2600)}
 function stateDot(s){return '<i class="dot '+s+'"></i>'}
 function fmtDate(v){
@@ -163,20 +187,48 @@ function freshnessText(v){
  if(!v)return "";
  const d=new Date(v); if(Number.isNaN(d.getTime()))return "";
  const mins=Math.max(0,Math.round((Date.now()-d.getTime())/60000));
- if(mins<=20)return "● Actualizado hace "+mins+" min";
- if(mins<=35)return "● Atención: "+mins+" min sin nueva captura";
+ if(mins<=18)return "● Actualizado hace "+mins+" min";
+ if(mins<=30)return "● Atención: "+mins+" min sin nueva captura";
  return "● Desactualizado: "+mins+" min";
+}
+function editorialTimingText(){
+ const active=(model?.items||[]).filter(x=>x.status==="active"&&!x.ready&&x.requested_at);
+ const box=$("editorialTiming");
+ if(!active.length){box.className="timing";box.textContent="";return}
+ const now=Date.now();
+ const stamps=active.map(x=>new Date(x.requested_at).getTime()).filter(Number.isFinite);
+ if(!stamps.length){box.className="timing";box.textContent="";return}
+ const oldest=Math.min(...stamps);
+ const age=Math.max(0,Math.floor((now-oldest)/60000));
+ const d=new Date();
+ const minute=d.getMinutes();
+ const lastMinute=minute<30?0:30;
+ const last=new Date(d);last.setMinutes(lastMinute,0,0);
+ const next=new Date(d);
+ if(minute<30)next.setMinutes(30,0,0);else{next.setHours(d.getHours()+1);next.setMinutes(0,0,0)}
+ const eligibleAtLast=active.some(x=>new Date(x.requested_at).getTime()<=last.getTime());
+ if(eligibleAtLast){
+   const late=Math.max(0,Math.floor((now-last.getTime())/60000));
+   box.className="timing "+(age>=30?"late":"warn");
+   box.textContent="⚠ "+active.length+" en elaboración · el pase de las "+last.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})+" ya pasó hace "+late+" min · la más antigua lleva "+age+" min";
+ }else{
+   const left=Math.max(0,Math.ceil((next.getTime()-now)/60000));
+   box.className="timing "+(age>=25?"warn":"ok");
+   box.textContent=active.length+" en elaboración · próximo pase "+next.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})+" · faltan "+left+" min · la más antigua lleva "+age+" min";
+ }
 }
 function render(){
  if(!model)return;
  $("stamp").textContent=(model.cached?"Sin conexión · última lectura ":"Captura ")+fmtDate(model.captured_at);
  const fr=freshnessText(model.captured_at);$("freshness").textContent=fr;
  const age=model.captured_at?Math.max(0,Math.round((Date.now()-new Date(model.captured_at).getTime())/60000)):0;
- $("freshness").style.color=age<=20?"#63d99a":age<=35?"#f5c451":"#ff7f8b";
+ $("freshness").style.color=age<=18?"#63d99a":age<=30?"#f5c451":"#ff7f8b";
  const rel={high:"alta",medium:"media",fallback:"baja",none:"sin datos"}[model.reliability]||model.reliability||"—";
  $("quality").textContent=(model.source_count||0)+" válidas · "+(model.non_stale_source_count||0)+" actuales · fiabilidad "+rel;
  const pc=(model.prepared||[]).length;
  $("preparedCount").textContent=pc;$("preparedBtn").style.display=pc?"inline-block":"none";
+ editorialTimingText();
+ updateAppBadge();
  const allItems=model.items||[];
  $("statNew").textContent=allItems.filter(x=>x.status==="new").length;
  $("statActive").textContent=allItems.filter(x=>x.status==="active").length;
@@ -222,24 +274,32 @@ function render(){
  $("queueBtn").textContent=n&&explainedCount===n?"Reelaborar":"Enviar a elaborar";
 }
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
-function buildModel(recent,requestDoc,explained,health,controlMode,prepared){
+function buildModel(recent,requestDoc,explained,health,controlMode,prepared,editorialConfig){
  const requests=Array.isArray(requestDoc.requests)?requestDoc.requests:[];
+ const localMap=localExplained();
  const explainedSet=new Set((explained.items||[]).map(x=>nrm(x.name)));
  const latestFor=name=>[...requests].reverse().find(x=>nrm(x.name)===nrm(name));
  const items=(recent.items||[]).slice(0,10).map(item=>{
    const req=latestFor(item.name),s=String(req?.status||"");
+   const localTs=Number(localMap[nrm(item.name)]||0),reqTs=req?.requested_at?new Date(req.requested_at).getTime():0;
+   const locallyDone=localTs>0&&localTs>=reqTs;
    let status="new",status_label="Nueva",ready=false;
-   if(s==="preparing"||s==="update"){status="active";status_label="Elaborando"}
+   if(locallyDone||s==="explained"||explainedSet.has(nrm(item.name))){status="explained";status_label="Explicada"}
+   else if(s==="preparing"||s==="update"){status="active";status_label="Elaborando"}
    else if(s==="ready"){status="active";status_label="Tuits listos";ready=true}
-   else if(s==="explained"||explainedSet.has(nrm(item.name))){status="explained";status_label="Explicada"}
    return {rank:Number(item.rank),name:String(item.name),status,status_label,ready,internal_status:s,requested_at:req?.requested_at||null};
+ });
+ const preparedItems=(prepared?.items||[]).filter(x=>{
+   const rr=((x.related_trends||[]).length?x.related_trends:[x.trend_name]).map(nrm);
+   return !rr.some(name=>Number(localMap[name]||0)>0);
  });
  const hist=[...(explained.items||[])].filter(x=>x?.name&&x?.explained_at).sort((a,b)=>String(b.explained_at).localeCompare(String(a.explained_at)));
  return {
    captured_at:recent.captured_at||null,reliability:recent.reliability||null,
    source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,
    items,
-   prepared:(prepared?.items||[]),
+   prepared:preparedItems,
+   editorial_config:editorialConfig||{},
    history:hist,
    health:{ok:health?.ok,checked_at:health?.checked_at||null,blocking:health?.blocking||[]},
    control_mode:controlMode||{}
@@ -249,14 +309,15 @@ async function load(silent=false){
  try{
    if(!silent)$("refreshBtn").disabled=true;
    const stamp=Date.now();
-   const urls=["trends/recent.json","trends/requests.json","trends/telegram-manual-explained.json","trends/health-status.json","trends/control-mode.json","trends/prepared.json"].map(p=>RAW+p+"?t="+stamp);
+   const urls=["trends/recent.json","trends/requests.json","trends/telegram-manual-explained.json","trends/health-status.json","trends/control-mode.json","trends/prepared.json","trends/editorial-config.json"].map(p=>RAW+p+"?t="+stamp);
    const rs=await Promise.all(urls.map(u=>fetch(u,{cache:"no-store"})));
    if(rs.slice(0,3).some(r=>!r.ok))throw new Error("No se pudieron leer los datos de TTendencias");
    const recent=await rs[0].json(),requestDoc=await rs[1].json(),explained=await rs[2].json();
    const health=rs[3].ok?await rs[3].json():{};
    const controlMode=rs[4].ok?await rs[4].json():{};
    const prepared=rs[5].ok?await rs[5].json():{items:[]};
-   const d=buildModel(recent,requestDoc,explained,health,controlMode,prepared);
+   const editorialConfig=rs[6].ok?await rs[6].json():{};
+   const d=buildModel(recent,requestDoc,explained,health,controlMode,prepared,editorialConfig);
    model=d;
    try{localStorage.setItem("ttendencias-last-model",JSON.stringify(d))}catch(_){}
    const current=new Set((d.items||[]).map(x=>x.name));
@@ -290,7 +351,8 @@ async function action(actionName,names=[]){
    if(r.status===401){localStorage.removeItem("ttendencias-control-token");$("sheet").classList.add("show");throw new Error("Token incorrecto")}
    if(!r.ok)throw new Error(d.error||"No se pudo aplicar la acción");
    if(actionName==="queue"){
-     for(const item of model?.items||[])if(names.includes(item.name)){item.status="active";item.status_label="Elaborando";item.ready=false}
+     forgetLocalExplained(names);
+     for(const item of model?.items||[])if(names.includes(item.name)){item.status="active";item.status_label="Elaborando";item.ready=false;item.requested_at=new Date().toISOString()}
      showToast(names.length+" tendencia(s) enviadas a elaborar");
    }else if(actionName==="explained"){
      for(const item of model?.items||[])if(names.includes(item.name)){item.status="explained";item.status_label="Explicada";item.ready=false}
@@ -360,9 +422,11 @@ $("testToken").onclick=async()=>{
 $("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado")};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});
+window.addEventListener("pageshow",()=>load(true));
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttendencias/sw.js").catch(()=>{});
 load();
 setInterval(()=>{if(!document.hidden)load(true)},900000);
+setInterval(()=>{if(!document.hidden&&model)editorialTimingText()},30000);
 </script>
 </body>
 </html>
