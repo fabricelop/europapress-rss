@@ -56,7 +56,10 @@ const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttittulares-control";
 const $=id=>document.getElementById(id);
 let model={prepared:[],status:{},config:{}},reworkItem=null,view="ready";
-const token=()=>localStorage.getItem("ttittulares-control-token")||"";
+const ACCESS_KEY="ttittulares-control-token";
+const bootAccess=new URLSearchParams(location.search).get("access");
+if(bootAccess){localStorage.setItem(ACCESS_KEY,bootAccess);const u=new URL(location.href);u.searchParams.delete("access");history.replaceState(null,"",u.pathname+u.search+u.hash)}
+const token=()=>localStorage.getItem(ACCESS_KEY)||"";
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2400)}
 function fmt(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?v:new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}).format(d)}
 function hhmm(d){return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit"}).format(d)}
@@ -81,7 +84,7 @@ async function api(action,extra={}){
  const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
  const r=await fetch(API,{method:"POST",headers,body:JSON.stringify({action,...extra})});
  let d={};try{d=await r.json()}catch(_){}
- if(r.status===401){$("settingsSheet").classList.add("show");throw new Error("Este entorno requiere token de control")}
+ if(r.status===401)throw new Error("Acceso no autorizado. Abre de nuevo la URL de instalación.")
  if(!r.ok)throw new Error(d.error||"No se pudo aplicar la acción");return d
 }
 async function badge(){const n=(model.prepared||[]).length;try{if("setAppBadge" in navigator){if(n)await navigator.setAppBadge(n);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}}
