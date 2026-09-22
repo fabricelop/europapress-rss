@@ -1,30 +1,31 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-22T18:34:22+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-22T18:57:06+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
-    "tweets24",
-    "trendswe"
+    "tweets24"
   ],
   "source_count": 5,
   "non_stale_source_count": 4,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "tweets24"
+  ],
   "reliability": "medium",
   "top10": [
     "#TEM22S",
     "Halo",
-    "Grado 3",
-    "Ninja Theory",
     "Activision",
-    "Vito Quiles",
+    "Ninja Theory",
+    "Grado 3",
+    "Tebas",
     "Gara",
+    "#ElSótano22S",
     "taehyun",
-    "Begoña Gómez",
-    "Peinado"
+    "Vito Quiles"
   ],
   "items": [
     {
@@ -37,7 +38,7 @@
     },
     {
       "rank": 3,
-      "name": "Grado 3"
+      "name": "Activision"
     },
     {
       "rank": 4,
@@ -45,11 +46,11 @@
     },
     {
       "rank": 5,
-      "name": "Activision"
+      "name": "Grado 3"
     },
     {
       "rank": 6,
-      "name": "Vito Quiles"
+      "name": "Tebas"
     },
     {
       "rank": 7,
@@ -57,15 +58,15 @@
     },
     {
       "rank": 8,
-      "name": "taehyun"
+      "name": "#ElSótano22S"
     },
     {
       "rank": 9,
-      "name": "Begoña Gómez"
+      "name": "taehyun"
     },
     {
       "rank": 10,
-      "name": "Peinado"
+      "name": "Vito Quiles"
     }
   ],
   "unchanged_from_previous": false,
@@ -98,7 +99,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-22T18:34:22+02:00"
+      "fetched_at": "2026-09-22T18:57:06+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -123,37 +124,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-22T18:34:23+02:00"
+      "fetched_at": "2026-09-22T18:57:07+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "#TEM22S",
-        "Begoña Gómez",
-        "Peinado",
-        "#LaIslaDeLasTentaciones5",
-        "Grado 3",
-        "#FelizMartes",
         "Halo",
-        "Ninja Theory",
-        "Vito Quiles",
-        "Berlín",
-        "Valverde",
-        "Gara",
         "Activision",
-        "Biedma",
-        "Nueva York",
-        "Madrid",
+        "Ninja Theory",
+        "Grado 3",
+        "Tebas",
+        "Gara",
+        "#ElSótano22S",
         "taehyun",
-        "Die Linke",
-        "#FerranEH",
-        "Negu Gorriak"
+        "Vito Quiles",
+        "Juanma Castaño",
+        "Eurovisión",
+        "El CGPJ",
+        "Bethesda",
+        "Jueces y Juezas",
+        "Esguince",
+        "Antonio Naranjo",
+        "Taylor",
+        "Turull",
+        "Pumpido"
       ],
       "error": null,
-      "update_hint": "Updated 1 hour ago Live Twitter Trending Topics in Spain 1 #TEM22S Explore why #TEM22S i",
-      "age_minutes": 60.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-22T18:34:24+02:00"
+      "update_hint": "Updated 4 minutes ago Live Twitter Trending Topics in Spain 1 #TEM22S Explore why #TEM22",
+      "age_minutes": 4.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-22T18:57:08+02:00"
     },
     "superx": {
       "ok": false,
@@ -162,16 +163,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "invalid",
-      "fetched_at": "2026-09-22T18:34:24+02:00"
+      "fetched_at": "2026-09-22T18:57:09+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790094865",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790096229",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-22T18:34:25+02:00"
+      "fetched_at": "2026-09-22T18:57:09+02:00"
     },
     "snaplytics": {
       "ok": false,
@@ -180,7 +181,7 @@
       "update_hint": "updated hourly. Use Browse by day to jump to a specific date, or the country selector to",
       "age_minutes": null,
       "freshness": "invalid",
-      "fetched_at": "2026-09-22T18:34:25+02:00"
+      "fetched_at": "2026-09-22T18:57:09+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -208,18 +209,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 393.4,
+      "age_minutes": 416.2,
       "freshness": "stale",
-      "fetched_at": "2026-09-22T18:34:26+02:00"
+      "fetched_at": "2026-09-22T18:57:10+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790094867",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790096231",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-22T18:34:27+02:00"
+      "fetched_at": "2026-09-22T18:57:11+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -228,7 +229,7 @@
       "update_hint": "updated 30 minutes ago . Follow @greatseotools",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-22T18:34:28+02:00"
+      "fetched_at": "2026-09-22T18:57:14+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -258,16 +259,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-22T18:34:28+02:00"
+      "fetched_at": "2026-09-22T18:57:15+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790094870",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790096237",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-22T18:34:30+02:00"
+      "fetched_at": "2026-09-22T18:57:17+02:00"
     }
   }
 }
