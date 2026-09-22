@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   group: ttendencias-telegram-continuo
-  cancel-in-progress: false
+  queue: max
 
 jobs:
   listener:
