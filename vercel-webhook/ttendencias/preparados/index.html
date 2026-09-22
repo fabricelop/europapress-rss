@@ -29,6 +29,16 @@ const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
 const $=id=>document.getElementById(id);let model={items:[]},reworkItem=null;const locallyClosed=new Set();
 function token(){return localStorage.getItem("ttendencias-control-token")||""}
+function rememberExplained(names){
+ let m={};try{m=JSON.parse(localStorage.getItem("ttendencias-local-explained")||"{}")}catch(_){}
+ const now=Date.now();for(const name of names||[])m[String(name||"").trim().toLowerCase()]=now;
+ localStorage.setItem("ttendencias-local-explained",JSON.stringify(m));
+}
+function forgetExplained(names){
+ let m={};try{m=JSON.parse(localStorage.getItem("ttendencias-local-explained")||"{}")}catch(_){}
+ for(const name of names||[])delete m[String(name||"").trim().toLowerCase()];
+ localStorage.setItem("ttendencias-local-explained",JSON.stringify(m));
+}
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2400)}
 function compose(text){return "https://twitter.com/intent/tweet?"+new URLSearchParams({text:text||""}).toString()}
 function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
@@ -77,13 +87,14 @@ function render(){
     render();toast("Cerrando como explicada…");
     try{
       await api("explained",rel);
+      rememberExplained(rel);
       toast("Marcada como explicada");
     }catch(e){
       keys.forEach(x=>locallyClosed.delete(x));
       model.items=originalItems;render();toast(e.message);
     }
   };
-  card.querySelector(".discard").onclick=async()=>{if(!confirm("¿Descartar este bloque sin publicarlo? Se quitará de la bandeja."))return;try{await api("discard",rel);toast("Bloque descartado");await load()}catch(e){toast(e.message)}};
+  card.querySelector(".discard").onclick=async()=>{if(!confirm("¿Descartar este bloque sin publicarlo? Se quitará de la bandeja."))return;try{await api("discard",rel);rememberExplained(rel);toast("Bloque descartado");await load()}catch(e){toast(e.message)}};
   card.querySelector(".rework").onclick=()=>{reworkItem=item;$("reworkName").textContent=rel.join(" / ");$("instruction").value="";$("sheet").classList.add("show");$("instruction").focus()};
   $("list").appendChild(card);
  }
@@ -101,7 +112,7 @@ async function load(){
  }catch(e){$("list").innerHTML='<div class="empty">'+escapeHtml(e.message)+'</div>'}
 }
 $("cancel").onclick=()=>{$("sheet").classList.remove("show");reworkItem=null};
-$("sendRework").onclick=async()=>{if(!reworkItem)return;const instruction=$("instruction").value.trim();if(!instruction){toast("Escribe primero qué quieres cambiar");return}const rel=(reworkItem.related_trends||[]).length?reworkItem.related_trends:[reworkItem.trend_name];if(!confirm("¿Enviar "+rel.join(", ")+" a reelaborar con estas instrucciones?"))return;try{await api("rework",rel,{instruction});$("sheet").classList.remove("show");toast("Enviada a reelaborar");await load()}catch(e){toast(e.message)}};
+$("sendRework").onclick=async()=>{if(!reworkItem)return;const instruction=$("instruction").value.trim();if(!instruction){toast("Escribe primero qué quieres cambiar");return}const rel=(reworkItem.related_trends||[]).length?reworkItem.related_trends:[reworkItem.trend_name];if(!confirm("¿Enviar "+rel.join(", ")+" a reelaborar con estas instrucciones?"))return;try{forgetExplained(rel);await api("rework",rel,{instruction});$("sheet").classList.remove("show");toast("Enviada a reelaborar");await load()}catch(e){toast(e.message)}};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
 load();document.addEventListener("visibilitychange",()=>{if(!document.hidden)load()});
 </script>
