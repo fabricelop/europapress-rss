@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-22T15:01:47.042564+00:00",
+  "checked_at": "2026-09-22T15:02:35.831691+00:00",
   "ok": true,
   "modules": {
     "control_mode": {
@@ -30,41 +30,38 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 4,
-      "captured_age_minutes": 9.1
+      "captured_age_minutes": 0.3
     },
     "listener": {
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 9.7,
+      "age_minutes": 10.6,
       "run_id": 35743288699,
       "reason": null,
       "repairable": true,
       "require_active": true
     },
     "refresh": {
-      "ok": false,
-      "status": "completed",
-      "conclusion": "success",
-      "age_minutes": 62.8,
-      "run_id": 35736969681,
-      "reason": "completed/success, 62.8 min",
+      "ok": true,
+      "status": "in_progress",
+      "conclusion": null,
+      "age_minutes": 0.7,
+      "run_id": 35744448883,
+      "reason": null,
       "repairable": true,
-      "require_active": false,
-      "repair_started": true
+      "require_active": false
     },
     "telegram_sender": {
       "ok": true,
-      "outcome": "success"
+      "outcome": "no-aplica"
     },
     "request_queue": {
       "ok": true,
       "invalid_count": 0
     }
   },
-  "repairs_started": [
-    "relanzado refresh"
-  ],
+  "repairs_started": [],
   "blocking": [],
   "alert_sent": false,
   "last_alert_signature": ""
