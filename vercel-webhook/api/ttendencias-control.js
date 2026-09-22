@@ -126,11 +126,15 @@ async function markExplained(names) {
   await mutateJson(EXPLAINED, "Marcar TTendencias explicadas desde web", doc => {
     doc.project ||= "TTendencias";
     doc.items ||= [];
-    const known = new Set(doc.items.map(x => norm(x.name)));
+    const byName = new Map(doc.items.map((x, i) => [norm(x.name), i]));
     for (const name of unique) {
-      if (!known.has(norm(name))) {
+      const key = norm(name);
+      if (byName.has(key)) {
+        const i = byName.get(key);
+        doc.items[i] = { ...doc.items[i], name, explained_at: now, source: "web_control" };
+      } else {
         doc.items.push({ name, explained_at: now, source: "web_control" });
-        known.add(norm(name));
+        byName.set(key, doc.items.length - 1);
       }
     }
     return doc;
