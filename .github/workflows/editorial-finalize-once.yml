@@ -28,7 +28,7 @@ jobs:
           from pathlib import Path
           p=Path('telegram/editorial-processing.json')
           d=json.loads(p.read_text(encoding='utf-8'))
-          ids={'fee6a846c287','c816bad78fdd'}
+          ids={'fee6a846c287','c816bad78fdd','4aa083068039'}
           now=datetime.now(timezone.utc).isoformat().replace('+00:00','Z')
           changed=[]
           for x in d.get('items',[]):
