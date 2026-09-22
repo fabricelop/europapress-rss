@@ -1,0 +1,92 @@
+name: Preflight TTiTTulares web
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ttittulares-preflight.yml"
+      - "ttittulares/**"
+      - "vercel-webhook/ttittulares/**"
+      - "vercel-webhook/api/ttittulares-control.js"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validar Python
+        run: |
+          python3 -m py_compile telegram/radar_no_d1.py ttittulares/auto_queue.py ttittulares/build_status.py
+
+      - name: Validar JSON y reglas
+        run: |
+          python3 - <<'PY'
+          import json, urllib.parse
+          from pathlib import Path
+
+          def load(p):
+              return json.loads(Path(p).read_text(encoding="utf-8"))
+
+          cfg=load("ttittulares/config.json")
+          mode=load("ttittulares/control-mode.json")
+          prepared=load("ttittulares/prepared.json")
+          status=load("ttittulares/status.json")
+          manifest=load("vercel-webhook/ttittulares/manifest.webmanifest")
+          vercel=load("vercel-webhook/vercel.json")
+          html=Path("vercel-webhook/ttittulares/index.html").read_text(encoding="utf-8")
+
+          assert cfg["radar"]["minimum_sources"] == 4
+          assert cfg["radar"]["waiting_ttl_hours"] == 24
+          assert mode["mode"] == "telegram", "No cambiar a web antes del despliegue validado"
+          assert vercel["git"]["deploymentEnabled"]["main"] is False, "main no debe autodesplegar"
+          assert "Con 3 fuentes" not in html and "threeCount" not in html
+          assert "fuentes funcionando" in html
+          assert "En elaboración" in html and "Listas" in html
+          assert manifest["start_url"] == "/ttittulares/"
+
+          ids=set()
+          for item in prepared.get("items",[]):
+              eid=str(item.get("event_id") or "")
+              assert eid and eid not in ids, f"event_id duplicado: {eid}"
+              ids.add(eid)
+              assert int(item.get("drafted_source_count") or 0) >= 4, f"{eid}: redactada con <4 fuentes"
+              variants=item.get("variants") or []
+              assert variants, f"{eid}: sin variantes"
+              for v in variants:
+                  text=str(v.get("text") or "")
+                  assert len(text) <= 280, f"{eid}: tuit >280"
+                  url=str(v.get("url") or "")
+                  if url:
+                      q=urllib.parse.urlparse(url)
+                      got=urllib.parse.parse_qs(q.query).get("text",[""])[0]
+                      assert got == text, f"{eid}: enlace X no coincide con el texto"
+
+          healthy=status.get("healthy_source_count")
+          total=status.get("configured_sources")
+          if healthy is not None and total is not None:
+              assert 0 <= int(healthy) <= int(total)
+          print("PREFLIGHT_JSON_OK")
+          PY
+
+      - name: Validar JavaScript
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html=Path("vercel-webhook/ttittulares/index.html").read_text(encoding="utf-8")
+          scripts=re.findall(r"<script>([\s\S]*?)</script>",html,re.I)
+          if not scripts:
+              raise SystemExit("No se encontró script inline")
+          Path("/tmp/ttittulares-inline.js").write_text("\n".join(scripts),encoding="utf-8")
+          PY
+          node --check /tmp/ttittulares-inline.js
+          node --check vercel-webhook/api/ttittulares-control.js
+          node --check vercel-webhook/ttittulares/sw.js
+
+      - name: Resultado
+        run: echo "TTiTTulares listo para preview técnico sin cambiar control-mode"
