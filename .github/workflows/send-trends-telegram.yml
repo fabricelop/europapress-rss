@@ -66,6 +66,14 @@ jobs:
           def norm(s):
               return " ".join(str(s or "").split()).casefold()
 
+          def noise_name(s):
+              v = norm(s)
+              return (
+                  v.startswith("explore why ")
+                  or (" is trending " in (" " + v + " ") and "latest viral tweets" in v)
+                  or "real-time buzz from twitter" in v
+              )
+
           def tweet_text_from_url(url):
               try:
                   parsed = urllib.parse.urlparse(url)
@@ -108,7 +116,7 @@ jobs:
 
               visible_text = msg["text"]
               if "🌶️" in visible_text and len(alt_texts) < 2:
-                  print(f"AVISO: {msg.get('trend_name') or 'TTendencia'} trae {len(alt_texts)} alternativa(s); se envía sin bloquear el lote", flush=True)
+                  raise ValueError(f"{msg.get('trend_name') or 'TTendencia'}: se requieren al menos 2 alternativas de remate")
               if alt_texts:
                   visible_text += "\n\nAlternativas:\n" + "\n".join(
                       f"{i}) {t}" for i, t in enumerate(alt_texts, 1)
@@ -117,7 +125,7 @@ jobs:
               name = trend_name(msg, visible_text)
               related_trends = [
                   str(x).strip() for x in msg.get("related_trends", [])
-                  if str(x).strip()
+                  if str(x).strip() and not noise_name(x)
               ]
               if not related_trends and name:
                   related_trends = [name]
