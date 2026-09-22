@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-22T18:55:44.847037+00:00",
+  "checked_at": "2026-09-22T19:43:03.027651+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -9,9 +9,9 @@
     },
     "control_mode": {
       "ok": true,
-      "mode": "telegram",
-      "web_control_enabled": false,
-      "telegram_panel_enabled": true
+      "mode": "web",
+      "web_control_enabled": true,
+      "telegram_panel_enabled": false
     },
     "recent_json": {
       "ok": true
@@ -29,34 +29,31 @@
       "ok": true
     },
     "telegram_delivery": {
-      "ok": true
+      "ok": true,
+      "required": false
     },
     "telegram_panel": {
-      "ok": true
+      "ok": true,
+      "required": false
     },
     "top10": {
       "ok": true,
       "count": 10,
       "non_stale_sources": 6,
-      "captured_age_minutes": 0.4,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
       "ok": true,
-      "status": "in_progress",
-      "conclusion": null,
-      "age_minutes": 0.5,
-      "run_id": 35770370326,
-      "reason": null,
-      "repairable": true,
-      "require_active": true
+      "required": false,
+      "reason": "control web activo"
     },
     "refresh": {
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.3,
-      "run_id": 35770280417,
+      "age_minutes": 0.5,
+      "run_id": 35775507911,
       "reason": null,
       "repairable": true,
       "require_active": false
