@@ -6,6 +6,7 @@ const RECENT = "trends/recent.json";
 const REQUESTS = "trends/requests.json";
 const EXPLAINED = "trends/telegram-manual-explained.json";
 const BOT_STATE = "trends/telegram-bot-state.json";
+const PREPARED = "trends/prepared.json";
 
 function b64decode(s) {
   return Buffer.from(String(s || "").replace(/\n/g, ""), "base64").toString("utf8");
@@ -167,7 +168,80 @@ async function markExplained(names) {
     }
     return doc;
   });
+  await mutateJson(PREPARED, "Retirar tuits cerrados de TTendencias web", doc => {
+    doc.project ||= "TTendencias";
+    doc.items = (doc.items || []).filter(item => {
+      const related = (item.related_trends || [item.trend_name]).map(norm);
+      return !related.some(x => target.has(x));
+    });
+    doc.updated_at = now;
+    return doc;
+  });
   return { ok: true, explained: unique };
+}
+
+async function discardNames(names) {
+  const result = await markExplained(names);
+  const target = new Set((names || []).map(norm));
+  const now = new Date().toISOString();
+  await mutateJson(EXPLAINED, "Registrar descartes TTendencias desde web", doc => {
+    doc.items ||= [];
+    for (const item of doc.items) {
+      if (target.has(norm(item.name))) {
+        item.source = "web_discarded";
+        item.explained_at = now;
+      }
+    }
+    return doc;
+  });
+  return { ...result, discarded: result.explained };
+}
+
+async function reworkNames(names, instruction) {
+  const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
+  if (!unique.length) throw new Error("No hay tendencias seleccionadas.");
+  const text = String(instruction || "").trim();
+  if (!text) throw new Error("Añade una instrucción para rehacer la redacción.");
+  const target = new Set(unique.map(norm));
+  const now = new Date().toISOString();
+
+  await mutateJson(REQUESTS, "Reelaborar TTendencias con instrucciones desde web", doc => {
+    doc.requests ||= [];
+    for (const name of unique) {
+      let req = [...doc.requests].reverse().find(x => norm(x.name) === norm(name));
+      if (!req) {
+        req = {
+          id: crypto.createHash("sha256").update(name).digest("hex").slice(0, 12),
+          name,
+          rank: 0,
+          revision: 0,
+          with_image: false,
+          alternatives_target: 3,
+        };
+        doc.requests.push(req);
+      }
+      req.status = "update";
+      req.requested_at = now;
+      req.revision = Number(req.revision || 0) + 1;
+      req.reexplain = true;
+      req.rewrite_instruction = text;
+      req.with_image = false;
+      req.alternatives_target = 3;
+      delete req.telegram_message_id;
+      delete req.explained_at;
+    }
+    return doc;
+  });
+
+  await mutateJson(PREPARED, "Retirar versión a reelaborar de TTendencias web", doc => {
+    doc.items = (doc.items || []).filter(item => {
+      const related = (item.related_trends || [item.trend_name]).map(norm);
+      return !related.some(x => target.has(x));
+    });
+    doc.updated_at = now;
+    return doc;
+  });
+  return { ok: true, rework: unique, instruction: text };
 }
 async function backendStatus() {
   const r = await gh(`contents/${RECENT}?ref=${encodeURIComponent(BRANCH)}`);
@@ -175,16 +249,6 @@ async function backendStatus() {
     return { ok: false, status: r.status, detail: (await r.text()).slice(0, 300) };
   }
   return { ok: true, status: r.status };
-}
-
-async function refreshNow() {
-  const r = await gh("actions/workflows/ttendencias-refresh.yml/dispatches", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ ref: BRANCH }),
-  });
-  if (!r.ok) throw new Error(`No se pudo lanzar el refresco: ${r.status} ${await r.text()}`);
-  return { ok: true };
 }
 
 export default async function handler(req, res) {
@@ -214,7 +278,8 @@ export default async function handler(req, res) {
     }
     if (action === "queue") return res.status(200).json(await queueNames(body.names));
     if (action === "explained") return res.status(200).json(await markExplained(body.names));
-    if (action === "refresh") return res.status(200).json(await refreshNow());
+    if (action === "discard") return res.status(200).json(await discardNames(body.names));
+    if (action === "rework") return res.status(200).json(await reworkNames(body.names, body.instruction));
     return res.status(400).json({ ok: false, error: "Acción no válida" });
   } catch (e) {
     console.error(e);
