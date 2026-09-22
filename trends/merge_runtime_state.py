@@ -104,6 +104,51 @@ def merge_listener(remote, local):
     )
     return out
 
+def merge_prepared(remote, local, merged_requests):
+    by_id = {}
+    order = []
+    for src in ((remote or {}).get("items", []), (local or {}).get("items", [])):
+        for item in src:
+            key = str(item.get("id") or "") or ("name:" + norm(item.get("trend_name")))
+            if not key:
+                continue
+            if key not in by_id:
+                order.append(key)
+            by_id[key] = dict(item)
+
+    req_by_name = {}
+    for req in merged_requests.get("requests", []):
+        req_by_name[norm(req.get("name"))] = req
+
+    items = []
+    for key in order:
+        item = by_id[key]
+        related = [norm(x) for x in item.get("related_trends", []) if norm(x)]
+        if not related and item.get("trend_name"):
+            related = [norm(item.get("trend_name"))]
+
+        # No reintroducir una versión que el usuario ya cerró o mandó a rehacer.
+        keep = True
+        for name in related:
+            req = req_by_name.get(name)
+            if not req:
+                continue
+            if req.get("status") != "ready":
+                keep = False
+                break
+            item_revision = int(item.get("revision") or 0)
+            if item_revision != int(req.get("revision") or 0):
+                keep = False
+                break
+        if keep:
+            items.append(item)
+
+    return {
+        "project": (remote or local or {}).get("project", "TTendencias"),
+        "updated_at": (local or {}).get("updated_at") or (remote or {}).get("updated_at"),
+        "items": items,
+    }
+
 def merge_bot_state(remote, local, merged_requests):
     # Remote carries the freshest user actions. Local may carry newly sent message IDs.
     out = dict(remote or {})
@@ -136,6 +181,7 @@ def main():
     ap.add_argument("--local-manual")
     ap.add_argument("--local-listener")
     ap.add_argument("--local-health")
+    ap.add_argument("--local-prepared")
     args = ap.parse_args()
 
     root = Path(__file__).resolve().parent
@@ -162,6 +208,12 @@ def main():
         local_listener = load(args.local_listener, {})
         merged_listener = merge_listener(remote_listener, local_listener)
         (root / "telegram-listener-state.json").write_text(json.dumps(merged_listener, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    if args.local_prepared:
+        remote_prepared = load(root / "prepared.json", {"project": "TTendencias", "items": []})
+        local_prepared = load(args.local_prepared, {"project": "TTendencias", "items": []})
+        merged_prepared = merge_prepared(remote_prepared, local_prepared, merged_requests)
+        (root / "prepared.json").write_text(json.dumps(merged_prepared, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     if args.local_health:
         local_health = load(args.local_health, None)
