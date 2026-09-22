@@ -41,9 +41,15 @@ jobs:
           data = json.loads((root / "latest.json").read_text(encoding="utf-8"))
           state_path = root / "telegram-bot-state.json"
           requests_path = root / "requests.json"
+          control_mode_path = root / "control-mode.json"
 
           state = json.loads(state_path.read_text(encoding="utf-8"))
           requests_doc = json.loads(requests_path.read_text(encoding="utf-8"))
+          try:
+              control_mode = json.loads(control_mode_path.read_text(encoding="utf-8"))
+          except Exception:
+              control_mode = {"mode": "telegram"}
+          web_mode = str(control_mode.get("mode") or "telegram").strip().lower() == "web"
           chat_id = state.get("chat_id")
           if not chat_id:
               raise SystemExit("TTendencias no está enlazado todavía: abre el bot y pulsa /start.")
@@ -184,7 +190,7 @@ jobs:
                   })
                   keyboard.append([{"text": "🔎 Buscar en X", "url": search_url}])
 
-              if key:
+              if key and not web_mode:
                   keyboard.append([
                       {"text": "✅ EXPLICADA", "callback_data": f"explained:{key}"},
                       {"text": "✖ Cerrar", "callback_data": f"close:{key}"},
