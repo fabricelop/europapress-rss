@@ -1,13 +1,161 @@
 {
   "requests": [
-    {"id":"7a0e3ee52551","name":"#TEM21S","rank":1,"status":"explained","requested_at":"2026-09-21T18:41:27+02:00","revision":0,"reexplain":false,"with_image":false,"batch_id":"95b82c9976c1","requested_together":["#TEM21S"],"explained_at":"2026-09-21T19:10:00+02:00"},
-    {"id":"rec-ferraneh","name":"#FerranEH","rank":1,"status":"explained","requested_at":"2026-09-21T23:54:00+02:00","revision":0,"reexplain":false,"with_image":false,"batch_id":"recovered-2354","requested_together":["#FerranEH","#Horizonte"],"explained_at":"2026-09-22T00:00:10+02:00"},
-    {"id":"rec-horizonte","name":"#Horizonte","rank":3,"status":"ready","requested_at":"2026-09-21T23:54:00+02:00","revision":0,"reexplain":false,"with_image":false,"batch_id":"recovered-2354","requested_together":["#FerranEH","#Horizonte"],"telegram_message_id":76},
-    {"id":"97538689783f","name":"#LaIslaDeLasTentaciones5","rank":1,"status":"ready","requested_at":"2026-09-22T07:29:38+02:00","revision":0,"reexplain":false,"with_image":false,"batch_id":"7a91cb38f481","requested_together":["#LaIslaDeLasTentaciones5","#ChiringuitoDerbi","#MCCLegends","Kico","Gema"]},
-    {"id":"4fe145cd0499","name":"#ChiringuitoDerbi","rank":2,"status":"ready","requested_at":"2026-09-22T07:29:38+02:00","revision":0,"reexplain":false,"with_image":false,"batch_id":"7a91cb38f481","requested_together":["#LaIslaDeLasTentaciones5","#ChiringuitoDerbi","#MCCLegends","Kico","Gema"]},
-    {"id":"fc1e4bc8ee32","name":"#MCCLegends","rank":5,"status":"ready","requested_at":"2026-09-22T07:29:38+02:00","revision":0,"reexplain":false,"with_image":false,"batch_id":"7a91cb38f481","requested_together":["#LaIslaDeLasTentaciones5","#ChiringuitoDerbi","#MCCLegends","Kico","Gema"]},
-    {"id":"c1e5fdc8cf2a","name":"Kico","rank":7,"status":"ready","requested_at":"2026-09-22T07:29:38+02:00","revision":0,"reexplain":false,"with_image":false,"batch_id":"7a91cb38f481","requested_together":["#LaIslaDeLasTentaciones5","#ChiringuitoDerbi","#MCCLegends","Kico","Gema"]},
-    {"id":"23be980f29a1","name":"Gema","rank":9,"status":"ready","requested_at":"2026-09-22T07:29:38+02:00","revision":0,"reexplain":false,"with_image":false,"batch_id":"7a91cb38f481","requested_together":["#LaIslaDeLasTentaciones5","#ChiringuitoDerbi","#MCCLegends","Kico","Gema"]},
-    {"id":"83a0f92b4210","name":"Begoña Gómez","rank":4,"status":"ready","requested_at":"2026-09-22T07:33:10+02:00","revision":0,"reexplain":true,"with_image":false,"batch_id":"81473d45e127","requested_together":["Begoña Gómez"]}
+    {
+      "id": "7a0e3ee52551",
+      "name": "#TEM21S",
+      "rank": 1,
+      "status": "explained",
+      "requested_at": "2026-09-21T18:41:27+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "batch_id": "95b82c9976c1",
+      "requested_together": [
+        "#TEM21S"
+      ],
+      "explained_at": "2026-09-21T19:10:00+02:00"
+    },
+    {
+      "id": "rec-ferraneh",
+      "name": "#FerranEH",
+      "rank": 1,
+      "status": "explained",
+      "requested_at": "2026-09-21T23:54:00+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "batch_id": "recovered-2354",
+      "requested_together": [
+        "#FerranEH",
+        "#Horizonte"
+      ],
+      "explained_at": "2026-09-22T00:00:10+02:00"
+    },
+    {
+      "id": "rec-horizonte",
+      "name": "#Horizonte",
+      "rank": 3,
+      "status": "ready",
+      "requested_at": "2026-09-21T23:54:00+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "batch_id": "recovered-2354",
+      "requested_together": [
+        "#FerranEH",
+        "#Horizonte"
+      ],
+      "telegram_message_id": 76
+    },
+    {
+      "id": "97538689783f",
+      "name": "#LaIslaDeLasTentaciones5",
+      "rank": 1,
+      "status": "ready",
+      "requested_at": "2026-09-22T07:29:38+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "batch_id": "7a91cb38f481",
+      "requested_together": [
+        "#LaIslaDeLasTentaciones5",
+        "#ChiringuitoDerbi",
+        "#MCCLegends",
+        "Kico",
+        "Gema"
+      ],
+      "telegram_message_id": 93
+    },
+    {
+      "id": "4fe145cd0499",
+      "name": "#ChiringuitoDerbi",
+      "rank": 2,
+      "status": "ready",
+      "requested_at": "2026-09-22T07:29:38+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "batch_id": "7a91cb38f481",
+      "requested_together": [
+        "#LaIslaDeLasTentaciones5",
+        "#ChiringuitoDerbi",
+        "#MCCLegends",
+        "Kico",
+        "Gema"
+      ],
+      "telegram_message_id": 94
+    },
+    {
+      "id": "fc1e4bc8ee32",
+      "name": "#MCCLegends",
+      "rank": 5,
+      "status": "ready",
+      "requested_at": "2026-09-22T07:29:38+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "batch_id": "7a91cb38f481",
+      "requested_together": [
+        "#LaIslaDeLasTentaciones5",
+        "#ChiringuitoDerbi",
+        "#MCCLegends",
+        "Kico",
+        "Gema"
+      ],
+      "telegram_message_id": 95
+    },
+    {
+      "id": "c1e5fdc8cf2a",
+      "name": "Kico",
+      "rank": 7,
+      "status": "ready",
+      "requested_at": "2026-09-22T07:29:38+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "batch_id": "7a91cb38f481",
+      "requested_together": [
+        "#LaIslaDeLasTentaciones5",
+        "#ChiringuitoDerbi",
+        "#MCCLegends",
+        "Kico",
+        "Gema"
+      ],
+      "telegram_message_id": 93
+    },
+    {
+      "id": "23be980f29a1",
+      "name": "Gema",
+      "rank": 9,
+      "status": "ready",
+      "requested_at": "2026-09-22T07:29:38+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "batch_id": "7a91cb38f481",
+      "requested_together": [
+        "#LaIslaDeLasTentaciones5",
+        "#ChiringuitoDerbi",
+        "#MCCLegends",
+        "Kico",
+        "Gema"
+      ],
+      "telegram_message_id": 93
+    },
+    {
+      "id": "83a0f92b4210",
+      "name": "Begoña Gómez",
+      "rank": 4,
+      "status": "ready",
+      "requested_at": "2026-09-22T07:33:10+02:00",
+      "revision": 0,
+      "reexplain": true,
+      "with_image": false,
+      "batch_id": "81473d45e127",
+      "requested_together": [
+        "Begoña Gómez"
+      ],
+      "telegram_message_id": 96
+    }
   ]
 }
