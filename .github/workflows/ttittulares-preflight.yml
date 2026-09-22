@@ -75,6 +75,7 @@ jobs:
                       remate=str(v.get("remate") or "")
                       assert remate, f"{eid}/{label}: remate vacío"
                       assert text == principal+"\n\n"+remate, f"{eid}/{label}: el tuit debe ser Principal + remate"
+                      assert "\\n" not in text and "\\n" not in remate, f"{eid}/{label}: contiene barra invertida+n literal"
                   url=str(v.get("url") or "")
                   if url:
                       q=urllib.parse.urlparse(url)
