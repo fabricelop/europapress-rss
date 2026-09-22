@@ -161,7 +161,7 @@ if isinstance(recent, dict):
         captured_age = (datetime.now(timezone.utc) - captured.astimezone(timezone.utc)).total_seconds() / 60
     except Exception:
         pass
-    top_ok = len(top) == 10 and non_stale >= 3 and captured_age <= 25 and not noisy_top
+    top_ok = len(top) == 10 and non_stale >= 3 and captured_age <= 20 and not noisy_top
     modules["top10"] = {
         "ok": top_ok,
         "count": len(top),
