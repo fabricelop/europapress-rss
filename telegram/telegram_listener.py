@@ -134,9 +134,35 @@ def persist_message(update):
     matched=None
     if reply_mid and text:
         matched=next((x for x in sent.get("messages",[]) if int(x.get("message_id") or -1)==int(reply_mid)),None)
+
+    # Fallback robusto: Telegram incluye el mensaje original completo en
+    # reply_to_message. Si emergency-sent.json perdió el message_id, recuperamos
+    # la noticia por el texto citado y la reencolamos igualmente para REWRITE.
+    if not matched and reply_mid and text:
+        reply_text=str(reply.get("text") or reply.get("caption") or "").strip()
+        def norm(v):
+            v=re.sub(r"[^a-z0-9áéíóúüñ ]+"," ",str(v or "").lower())
+            return " ".join(v.split())
+        nr=norm(reply_text)
+        best=None; best_score=0
+        if nr:
+            for x in reversed(proc.get("items",[])):
+                nt=norm(x.get("title",""))
+                # El mensaje editorial puede ser una redacción distinta del
+                # titular; usamos palabras distintivas para recuperar el evento.
+                words={w for w in nt.split() if len(w)>=5}
+                rwords={w for w in nr.split() if len(w)>=5}
+                score=len(words & rwords)
+                if score>best_score:
+                    best_score=score; best=x
+        if best is not None and best_score>=3:
+            matched={"group":"editorial-"+str(best.get("event_id")),"message_id":reply_mid,"recovered_from_reply":True}
+
     if not matched:
         write_json(STATE,state)
         commit_paths([str(STATE)],"Avanzar offset Telegram")
+        if reply_mid and text:
+            api("sendMessage",{"chat_id":CHAT,"text":"⚠️ He recibido tu cambio, pero no he podido asociarlo con seguridad a la noticia original. No lo he descartado: vuelve a responder sobre el mensaje de la noticia o pulsa PREPARAR para recuperarla.","reply_to_message_id":mid})
         return state["offset"]
 
     group=str(matched.get("group") or "")
