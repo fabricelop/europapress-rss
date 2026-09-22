@@ -7,6 +7,7 @@ PROC=Path("telegram/editorial-processing.json")
 PROCESSED=Path("telegram/processed-events.json")
 MIN_HEALTHY=10
 MAX_BYTES=900000
+ALERT_STATE=Path("telegram/autocheck-alert-state.json")
 
 def load(path, default):
     try:
@@ -92,5 +93,16 @@ report={
 Path("telegram/autocheck-status.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 print(json.dumps(report,ensure_ascii=False))
 if remaining:
-    telegram("🚨 TTiTTulares · fallo bloqueante tras auto-reparación\n"+", ".join(remaining))
+    # Evitar inundar Telegram con el mismo error en cada barrido.
+    key="|".join(sorted(remaining))
+    state=load(ALERT_STATE,{})
+    last_key=state.get("key")
+    try:
+        last_at=datetime.fromisoformat(str(state.get("sent_at","")).replace("Z","+00:00"))
+    except Exception:
+        last_at=datetime.min.replace(tzinfo=timezone.utc)
+    now=datetime.now(timezone.utc)
+    if key!=last_key or now-last_at>timedelta(hours=2):
+        telegram("🚨 TTiTTulares · fallo bloqueante tras auto-reparación\n"+", ".join(remaining))
+        ALERT_STATE.write_text(json.dumps({"key":key,"sent_at":now.isoformat()},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     raise SystemExit(1)
