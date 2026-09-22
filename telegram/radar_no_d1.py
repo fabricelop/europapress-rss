@@ -486,6 +486,12 @@ if "--selftest-dedupe" in sys.argv:
    True,
    "mismo desprendimiento Fabra i Puig",
   ),
+  (
+   'El Congreso retira definitivamente la acreditación como redactor a Vito Quiles',
+   'El Congreso de los Diputados retira de forma definitiva la acreditación a Vito Quiles',
+   True,
+   "misma noticia Vito Quiles",
+  ),
  ]
  for a,b,should_match,label in tests:
   value=score(a,b)
@@ -509,25 +515,6 @@ for e in events:
   e["appearances"]=[{"source":s,"title":e["canonical_title"],"url":e.get("url",""),"first_seen":e.get("first_seen"),"last_seen":e.get("last_seen")} for s in e.get("sources",[])]
  e["sources"]=sorted(set(e.get("sources",[])))
  e["source_count"]=len(e["sources"]);e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCES,1)
-
-# Saneado conservador de apariciones históricas: una cabecera que solo coincide
-# por palabras genéricas no puede contar como confirmación de la misma noticia.
-for e in events:
- canonical=e.get("canonical_title","")
- apps=e.get("appearances",[])
- clean_apps=[]
- for a in apps:
-  title=a.get("title","")
-  if title==canonical or score(canonical,title)>0:
-   clean_apps.append(a)
-  else:
-   print("SOURCE_APPEARANCE_DROPPED",e.get("id"),a.get("source"),title)
- e["appearances"]=clean_apps
- e["sources"]=sorted({a.get("source") for a in clean_apps if a.get("source") and a.get("source_type","general")!="sport"})
- e["sport_sources"]=sorted({a.get("source") for a in clean_apps if a.get("source") and a.get("source_type")=="sport"})
- e["source_count"]=len(e["sources"])
- e["sport_source_count"]=len(e["sport_sources"])
- e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCES,1)
 
 # Activación segura: no enviar retroactivamente alertas rápidas de eventos que ya tenían 3+ fuentes.
 if not events_doc.get("fast_track_initialized"):
