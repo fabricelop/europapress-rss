@@ -4,7 +4,7 @@ from pathlib import Path
 
 PATH = Path("telegram/events.json")
 TTL_HOURS = 24
-MAX_ACTIVE_EVENTS = 700
+MAX_ACTIVE_EVENTS = 450
 
 def parse_dt(value):
     try:
