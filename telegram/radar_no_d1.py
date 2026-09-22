@@ -131,16 +131,24 @@ def norm(s):
   out.append(TOKEN_ALIASES.get(x,x))
  return out
 def fp(s): return set(norm(s))
+GENERIC_MATCH=set("""
+morir hombre mujer persona personas anos herido herida heridos heridas incendio forestal
+detener detenido detenida caer tres dos uno noticia ultima directo crisis actualidad
+""".split())
 def score(a,b):
  A,B=fp(a),fp(b)
  if not A or not B:return 0
- inter=len(A&B)
+ common=A&B
+ inter=len(common)
  if inter<2:return 0
+ # No basta con compartir una plantilla de sucesos ("muere un hombre ... incendio").
+ # En títulos medianos/largos exigimos al menos dos anclas concretas comunes:
+ # lugar, protagonista, institución, objeto específico, etc.
+ distinctive=common-GENERIC_MATCH
+ if min(len(A),len(B))>=5 and len(distinctive)<2:return 0
  overlap=inter/max(1,min(len(A),len(B)))
  jaccard=inter/max(1,len(A|B))
  if min(len(A),len(B))<=4 and overlap<0.60:return 0
- # Evitar fusionar noticias distintas que solo comparten protagonista/lugar.
- # Exigimos una coincidencia semántica sustancial, no dos o tres tokens comunes.
  if inter==2 and overlap<0.80:return 0
  if overlap<0.65 and jaccard<0.35:return 0
  return 0.55*overlap+0.45*jaccard
@@ -472,6 +480,25 @@ for e in events:
   e["appearances"]=[{"source":s,"title":e["canonical_title"],"url":e.get("url",""),"first_seen":e.get("first_seen"),"last_seen":e.get("last_seen")} for s in e.get("sources",[])]
  e["sources"]=sorted(set(e.get("sources",[])))
  e["source_count"]=len(e["sources"]);e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCES,1)
+
+# Saneado conservador de apariciones históricas: una cabecera que solo coincide
+# por palabras genéricas no puede contar como confirmación de la misma noticia.
+for e in events:
+ canonical=e.get("canonical_title","")
+ apps=e.get("appearances",[])
+ clean_apps=[]
+ for a in apps:
+  title=a.get("title","")
+  if title==canonical or score(canonical,title)>0:
+   clean_apps.append(a)
+  else:
+   print("SOURCE_APPEARANCE_DROPPED",e.get("id"),a.get("source"),title)
+ e["appearances"]=clean_apps
+ e["sources"]=sorted({a.get("source") for a in clean_apps if a.get("source") and a.get("source_type","general")!="sport"})
+ e["sport_sources"]=sorted({a.get("source") for a in clean_apps if a.get("source") and a.get("source_type")=="sport"})
+ e["source_count"]=len(e["sources"])
+ e["sport_source_count"]=len(e["sport_sources"])
+ e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCES,1)
 
 # Activación segura: no enviar retroactivamente alertas rápidas de eventos que ya tenían 3+ fuentes.
 if not events_doc.get("fast_track_initialized"):
