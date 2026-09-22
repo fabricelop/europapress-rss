@@ -175,6 +175,11 @@ def run_radar(slot):
     print(p.stdout,flush=True)
     if p.stderr: print(p.stderr,flush=True)
     if p.returncode==0:
+        prune=subprocess.run(["python3","telegram/prune_events.py"],text=True,capture_output=True)
+        if prune.stdout: print(prune.stdout,flush=True)
+        if prune.returncode!=0:
+            print("EVENTS_PRUNE_ERROR",prune.stderr,flush=True)
+            return
         commit_paths([str(EVENTS),str(PROCESSED),str(PROC)],"Actualizar estado radar editorial")
         print("RADAR_OK",slot,flush=True)
     else:
