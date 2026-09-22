@@ -36,7 +36,7 @@ def gh(path, method="GET", payload=None):
     except urllib.error.HTTPError as e:
         return e.code, e.read().decode("utf-8", errors="replace")
 
-def workflow_state(filename, max_age_minutes):
+def workflow_state(filename, max_age_minutes, require_active=False):
     code, data = gh(f"actions/workflows/{filename}/runs?per_page=5")
     if code != 200 or not isinstance(data, dict):
         return {"ok": False, "reason": f"GitHub API {code}", "repairable": True}
@@ -53,11 +53,12 @@ def workflow_state(filename, max_age_minutes):
         age = (datetime.now(timezone.utc) - dt).total_seconds() / 60
     except Exception:
         pass
-    ok = status in {"pending", "queued", "in_progress"} or (conclusion == "success" and age <= max_age_minutes)
+    active = status in {"pending", "queued", "in_progress"}
+    ok = active if require_active else (active or (conclusion == "success" and age <= max_age_minutes))
     return {
         "ok": ok, "status": status, "conclusion": conclusion, "age_minutes": round(age, 1),
         "run_id": run.get("id"), "reason": None if ok else f"{status}/{conclusion}, {age:.1f} min",
-        "repairable": True,
+        "repairable": True, "require_active": require_active,
     }
 
 def dispatch(filename):
@@ -120,10 +121,10 @@ if isinstance(recent, dict):
 
 # Procesos continuos.
 for key, wf, age in [
-    ("listener", "ttendencias-listener.yml", 70),
+    ("listener", "ttendencias-listener.yml", 35),
     ("refresh", "ttendencias-refresh.yml", 40),
 ]:
-    st = workflow_state(wf, age)
+    st = workflow_state(wf, age, require_active=(key == "listener"))
     modules[key] = st
     if not st["ok"]:
         if dispatch(wf):
