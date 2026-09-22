@@ -19,9 +19,14 @@ function authToken(req) {
   const h = String(req.headers.authorization || "");
   return h.startsWith("Bearer ") ? h.slice(7).trim() : "";
 }
+const CONTROL_TOKEN_HASH = "2bf7a4713fa8d7474abcb124094e952c3edbe871bc35df447a2b3d094bd3fbf6";
 function authorized(req) {
-  const expected = process.env.TTENDENCIAS_CONTROL_TOKEN || process.env.TELEGRAM_WEBHOOK_SECRET || "";
-  return !!expected && authToken(req) === expected;
+  const got = authToken(req);
+  if (!got) return false;
+  const dedicated = process.env.TTENDENCIAS_CONTROL_TOKEN || "";
+  if (dedicated) return got === dedicated;
+  const digest = crypto.createHash("sha256").update(got).digest("hex");
+  return crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(CONTROL_TOKEN_HASH));
 }
 async function gh(path, options = {}) {
   const token = process.env.GITHUB_TOKEN;
