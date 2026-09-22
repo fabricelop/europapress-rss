@@ -46,7 +46,7 @@ jobs:
 
           assert cfg["radar"]["minimum_sources"] == 4
           assert cfg["radar"]["waiting_ttl_hours"] == 24
-          assert mode["mode"] == "telegram", "No cambiar a web antes del despliegue validado"
+          assert mode["mode"] in {"telegram","parallel"}, "No cambiar a web antes de validar el modo paralelo"\n          if mode["mode"]=="parallel": assert mode.get("parallel_since"), "parallel_since obligatorio"
           assert vercel["git"]["deploymentEnabled"]["main"] is False, "main no debe autodesplegar"
           assert vercel["git"]["deploymentEnabled"].get("ttittulares-release") is False, "preview TTiTTulares debe seguir bloqueado antes del corte"
           assert "Con 3 fuentes" not in html and "threeCount" not in html
