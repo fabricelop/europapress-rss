@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-22T12:04:27.809599+00:00",
+  "checked_at": "2026-09-22T13:01:24.226655+00:00",
   "ok": true,
   "modules": {
     "recent_json": {
@@ -21,27 +21,28 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 4,
-      "captured_age_minutes": 1.8
+      "captured_age_minutes": 3.4
     },
     "listener": {
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 24.5,
-      "run_id": 35722682986,
+      "age_minutes": 3.9,
+      "run_id": 35730350032,
       "reason": null,
       "repairable": true,
       "require_active": true
     },
     "refresh": {
-      "ok": true,
+      "ok": false,
       "status": "completed",
       "conclusion": "success",
-      "age_minutes": 0.8,
+      "age_minutes": 57.8,
       "run_id": 35724816579,
-      "reason": null,
+      "reason": "completed/success, 57.8 min",
       "repairable": true,
-      "require_active": false
+      "require_active": false,
+      "repair_started": true
     },
     "telegram_sender": {
       "ok": true,
@@ -52,7 +53,9 @@
       "invalid_count": 0
     }
   },
-  "repairs_started": [],
+  "repairs_started": [
+    "relanzado refresh"
+  ],
   "blocking": [],
   "alert_sent": false,
   "last_alert_signature": ""
