@@ -26,7 +26,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <div><div class="brand">TTiTTulares</div><div class="sub">Control editorial web</div></div>
  <div class="spacer"></div>
  <button class="iconbtn" id="refresh" title="Recargar">↻</button>
- <button class="iconbtn" id="settings" title="Acceso">⚙</button>
+ <button class="iconbtn" id="settings" title="Acceso" style="display:none">⚙</button>
 </header>
 <main>
  <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta" id="radar">Radar —</div></div><div class="health" id="health">—</div></section>
@@ -61,10 +61,10 @@ function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setT
 function fmt(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?v:new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}).format(d)}
 function intent(text){return "https://twitter.com/intent/tweet?text="+encodeURIComponent(text||"")}
 async function api(action,extra={}){
- const t=token();if(!t){$("settingsSheet").classList.add("show");throw new Error("Falta el token de control")}
- const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+t},body:JSON.stringify({action,...extra})});
+ const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
+ const r=await fetch(API,{method:"POST",headers,body:JSON.stringify({action,...extra})});
  let d={};try{d=await r.json()}catch(_){}
- if(r.status===401){localStorage.removeItem("ttittulares-control-token");throw new Error("Token incorrecto")}
+ if(r.status===401){$("settingsSheet").classList.add("show");throw new Error("Este entorno requiere token de control")}
  if(!r.ok)throw new Error(d.error||"No se pudo aplicar la acción");return d
 }
 async function badge(){const n=(model.prepared||[]).length;try{if("setAppBadge" in navigator){if(n)await navigator.setAppBadge(n);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}}
