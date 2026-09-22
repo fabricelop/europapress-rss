@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101522">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TTendencias">
+<link rel="manifest" href="/ttendencias/manifest.webmanifest">
+<link rel="icon" href="/ttendencias/icon.svg" type="image/svg+xml">
+<title>TTendencias Control</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 55%);padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+button{font:inherit}
+.top{position:sticky;top:0;z-index:20;background:rgba(11,14,20,.92);backdrop-filter:blur(14px);border-bottom:1px solid #252b36;padding:14px max(14px,env(safe-area-inset-left));display:flex;gap:12px;align-items:center}
+.brand{font-size:20px;font-weight:850;letter-spacing:-.02em}
+.sub{font-size:12px;color:#8f9bad;margin-top:2px}
+.spacer{flex:1}
+.iconbtn{border:1px solid #303846;background:#141a24;color:#edf3ff;border-radius:11px;min-width:44px;height:42px;padding:0 12px}
+main{max-width:980px;margin:0 auto;padding:18px 14px}
+.summary{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-bottom:16px}
+.summary h1{font-size:24px;margin:0 0 4px}
+.meta{color:#8f9bad;font-size:13px}
+.badge{border:1px solid #343c4a;background:#131923;border-radius:999px;padding:7px 10px;font-size:12px;color:#c7d1df;white-space:nowrap}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.legend span{font-size:12px;color:#9ba7b8;display:inline-flex;gap:5px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%}
+.dot.new{background:#ff5364}.dot.preparing{background:#4b91ff}.dot.ready{background:#f5c451}.dot.update{background:#b678ff}.dot.explained{background:#42c879}
+.list{display:grid;gap:10px}
+.card{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;background:#11161e;border:1px solid #262e3a;border-radius:15px;padding:13px 14px;min-height:72px;transition:.15s}
+.card.selected{border-color:#4b91ff;box-shadow:0 0 0 1px #4b91ff55;background:#121b29}
+.rank{font-weight:900;font-size:22px;color:#778399;text-align:center}
+.name{font-weight:760;font-size:16px;line-height:1.2;overflow-wrap:anywhere}
+.state{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#aab5c5;margin-top:6px}
+.check{appearance:none;width:25px;height:25px;border-radius:8px;border:1px solid #414b5c;background:#0c1118;display:grid;place-items:center;margin:0}
+.check:checked{background:#3478e5;border-color:#3478e5}
+.check:checked:after{content:"✓";font-weight:900;color:white}
+.empty,.error{padding:40px 10px;text-align:center;color:#9aa6b7}
+.error{color:#ff9a9a}
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px max(12px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:rgba(10,13,19,.94);backdrop-filter:blur(16px);border-top:1px solid #252c37}
+.bottom-inner{max-width:980px;margin:auto;display:grid;grid-template-columns:1fr auto auto;gap:9px;align-items:center}
+.count{font-size:13px;color:#a8b3c3}
+.primary,.secondary{border:0;border-radius:12px;padding:12px 15px;font-weight:800;min-height:46px}
+.primary{background:#e9eef7;color:#0c1017}
+.secondary{background:#18212f;color:#cbd9ed;border:1px solid #34445b}
+button:disabled{opacity:.45}
+.sheet{position:fixed;inset:0;z-index:60;background:#0008;display:none;align-items:flex-end}
+.sheet.show{display:flex}
+.panel{width:100%;background:#111720;border-radius:22px 22px 0 0;padding:20px 18px calc(24px + env(safe-area-inset-bottom));border-top:1px solid #354052}
+.panel h2{margin:0 0 7px;font-size:20px}.panel p{margin:0 0 14px;color:#9eabba;font-size:13px;line-height:1.45}
+input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;color:#eef3fa;border-radius:11px;padding:13px;font:inherit;margin-bottom:12px}
+.row{display:flex;gap:9px}.row button{flex:1}
+.toast{position:fixed;top:78px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:80;background:#1a2330;border:1px solid #3b485b;color:#f0f5fc;border-radius:11px;padding:10px 14px;opacity:0;pointer-events:none;transition:.2s;max-width:90vw;text-align:center;font-size:13px}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(min-width:720px){
+ main{padding:26px 20px}.list{grid-template-columns:1fr 1fr}.card{min-height:82px}.panel{max-width:520px;margin:auto;border-radius:22px 22px 0 0}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div><div class="brand">TTendencias</div><div class="sub">Control editorial</div></div>
+  <div class="spacer"></div>
+  <button class="iconbtn" id="refreshBtn" title="Actualizar datos">↻</button>
+  <button class="iconbtn" id="settingsBtn" title="Acceso">⚙</button>
+</header>
+<main>
+  <section class="summary">
+    <div><h1>Top 10 España</h1><div class="meta" id="stamp">Cargando…</div></div>
+    <div class="badge" id="quality">—</div>
+  </section>
+  <div class="legend">
+    <span><i class="dot new"></i>Nueva</span>
+    <span><i class="dot preparing"></i>Elaborando</span>
+    <span><i class="dot ready"></i>Preparada</span>
+    <span><i class="dot update"></i>Actualizando</span>
+    <span><i class="dot explained"></i>Explicada</span>
+  </div>
+  <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
+</main>
+
+<div class="bottom">
+  <div class="bottom-inner">
+    <div class="count"><b id="selectedCount">0</b> seleccionadas</div>
+    <button class="secondary" id="explainedBtn" disabled>✓ Explicadas</button>
+    <button class="primary" id="queueBtn" disabled>Elaborar</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet">
+  <div class="panel">
+    <h2>Acceso de control</h2>
+    <p>La lectura del Top 10 es pública. Las acciones editoriales requieren el token privado de TTendencias. Se guarda únicamente en este dispositivo.</p>
+    <input id="tokenInput" type="password" autocomplete="off" placeholder="Token de control">
+    <div class="row">
+      <button class="secondary" id="cancelToken">Cancelar</button>
+      <button class="primary" id="saveToken">Guardar</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const API="/api/ttendencias-control";
+let model=null, selected=new Set(), busy=false;
+const $=id=>document.getElementById(id);
+const token=()=>localStorage.getItem("ttendencias-control-token")||"";
+function showToast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove("show"),2600)}
+function stateDot(s){return '<i class="dot '+s+'"></i>'}
+function fmtDate(v){
+ if(!v)return "Sin hora";
+ const d=new Date(v); if(Number.isNaN(d.getTime()))return v;
+ return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}).format(d);
+}
+function render(){
+ if(!model)return;
+ $("stamp").textContent="Captura "+fmtDate(model.captured_at);
+ $("quality").textContent=(model.non_stale_source_count||0)+" fuentes activas";
+ const list=$("list");list.innerHTML="";
+ for(const item of model.items||[]){
+   const card=document.createElement("label");
+   card.className="card"+(selected.has(item.name)?" selected":"");
+   card.innerHTML='<div class="rank">T'+item.rank+'</div><div><div class="name"></div><div class="state">'+stateDot(item.status)+'<span></span></div></div><input class="check" type="checkbox">';
+   card.querySelector(".name").textContent=item.name;
+   card.querySelector(".state span").textContent=item.status_label;
+   const cb=card.querySelector(".check");cb.checked=selected.has(item.name);
+   cb.addEventListener("change",()=>{cb.checked?selected.add(item.name):selected.delete(item.name);render()});
+   list.appendChild(card);
+ }
+ const n=selected.size;$("selectedCount").textContent=n;$("queueBtn").disabled=!n||busy;$("explainedBtn").disabled=!n||busy;
+}
+async function load(silent=false){
+ try{
+   if(!silent)$("refreshBtn").disabled=true;
+   const r=await fetch(API+"?t="+Date.now(),{cache:"no-store"});
+   const d=await r.json();if(!r.ok)throw new Error(d.error||"No se pudo cargar");
+   model=d;
+   const current=new Set((d.items||[]).map(x=>x.name));
+   selected=new Set([...selected].filter(x=>current.has(x)));
+   render();
+ }catch(e){if(!silent)$("list").innerHTML='<div class="error">'+String(e.message||e)+'</div>'}
+ finally{$("refreshBtn").disabled=false}
+}
+function ensureToken(){
+ if(token())return true;
+ $("tokenInput").value="";$("sheet").classList.add("show");return false;
+}
+async function action(actionName,names=[]){
+ if(!ensureToken())return;
+ busy=true;render();
+ try{
+   const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:JSON.stringify({action:actionName,names})});
+   const d=await r.json();
+   if(r.status===401){localStorage.removeItem("ttendencias-control-token");$("sheet").classList.add("show");throw new Error("Token incorrecto")}
+   if(!r.ok)throw new Error(d.error||"No se pudo aplicar la acción");
+   selected.clear();
+   showToast(actionName==="queue"?"Enviadas a elaborar":actionName==="explained"?"Marcadas como explicadas":"Refresco solicitado");
+   await load(true);
+ }catch(e){showToast(String(e.message||e))}
+ finally{busy=false;render()}
+}
+$("queueBtn").onclick=()=>action("queue",[...selected]);
+$("explainedBtn").onclick=()=>action("explained",[...selected]);
+$("refreshBtn").onclick=async()=>{await load(); if(ensureToken()) action("refresh")};
+$("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("sheet").classList.add("show")};
+$("cancelToken").onclick=()=>$("sheet").classList.remove("show");
+$("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado")};
+$("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});
+load();
+setInterval(()=>{if(!document.hidden)load(true)},300000);
+</script>
+</body>
+</html>
