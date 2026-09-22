@@ -203,7 +203,7 @@ else:
 
 # Cola: estados desconocidos sí son anomalía; preparing/ready/explained son válidos.
 if isinstance(requests_doc, dict):
-    allowed = {"preparing", "ready", "explained", "update"}
+    allowed = {"preparing", "ready", "explained", "update", "dismissed", "problematic"}
     bad = [x for x in requests_doc.get("requests", []) if x.get("status") not in allowed]
     noisy = [x for x in requests_doc.get("requests", []) if noise_name(x.get("name"))]
     modules["request_queue"] = {
