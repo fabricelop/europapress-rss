@@ -5,6 +5,7 @@ const BRANCH = process.env.GITHUB_BRANCH || "main";
 const RECENT = "trends/recent.json";
 const REQUESTS = "trends/requests.json";
 const EXPLAINED = "trends/telegram-manual-explained.json";
+const BOT_STATE = "trends/telegram-bot-state.json";
 
 function b64decode(s) {
   return Buffer.from(String(s || "").replace(/\n/g, ""), "base64").toString("utf8");
@@ -147,6 +148,15 @@ async function markExplained(names) {
         req.explained_at = now;
         delete req.telegram_message_id;
       }
+    }
+    return doc;
+  });
+  await mutateJson(BOT_STATE, "Limpiar pendientes TTendencias desde web", doc => {
+    doc.pending ||= {};
+    for (const [key, item] of Object.entries(doc.pending)) {
+      const related = (item.related_trends || []).map(norm);
+      if (!related.length && item.name) related.push(norm(item.name));
+      if (related.some(x => target.has(x))) delete doc.pending[key];
     }
     return doc;
   });
