@@ -125,6 +125,9 @@ def score(a,b):
  overlap=inter/max(1,min(len(A),len(B)))
  jaccard=inter/max(1,len(A|B))
  if min(len(A),len(B))<=4 and overlap<0.60:return 0
+ # Evitar fusionar noticias distintas que solo comparten protagonista/lugar.
+ # Exigimos una coincidencia semántica sustancial, no dos o tres tokens comunes.
+ if overlap<0.65 and jaccard<0.35:return 0
  return 0.55*overlap+0.45*jaccard
 def make_id(title):
  return hashlib.sha1(" ".join(sorted(fp(title))).encode()).hexdigest()[:12]
