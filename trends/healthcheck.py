@@ -134,17 +134,18 @@ for name, obj in [
         blocking.append(f"{name}: JSON inválido o ilegible")
 
 if isinstance(bot_state, dict):
-    delivery_ok = bool(bot_state.get("chat_id"))
-    modules["telegram_delivery"] = {"ok": delivery_ok}
-    if not delivery_ok:
-        blocking.append("chat Telegram de entrega no enlazado")
-
     if not web_mode:
+        delivery_ok = bool(bot_state.get("chat_id"))
+        modules["telegram_delivery"] = {"ok": delivery_ok}
+        if not delivery_ok:
+            blocking.append("chat Telegram de entrega no enlazado")
+
         panel_ok = bool(bot_state.get("chat_id") and bot_state.get("panel_message_id"))
         modules["telegram_panel"] = {"ok": panel_ok}
         if not panel_ok:
             blocking.append("panel Telegram no enlazado")
     else:
+        modules["telegram_delivery"] = {"ok": True, "required": False}
         modules["telegram_panel"] = {"ok": True, "required": False}
 
 # Top 10 y fuentes. También exigimos que la captura sea reciente: un JSON
