@@ -3,7 +3,7 @@ name: Actualizar Top 10 TTendencias
 on:
   workflow_dispatch:
   schedule:
-    - cron: '2,17,32,47 * * * *'
+    - cron: '10,25,40,55 * * * *'
   push:
     branches: [main]
     paths:
@@ -34,15 +34,14 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
-      - name: Actualizar Top 10 y panel
-        env:
-          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+      - name: Actualizar Top 10 y cola web
         run: |
           git config user.name "ttendencias-bot"
           git config user.email "actions@users.noreply.github.com"
           git pull --rebase --autostash origin main
 
           python3 trends/update_trends.py
+          python3 trends/auto_queue_new.py
 
           MODE="$(python3 - <<'PY'
           import json
@@ -62,7 +61,7 @@ jobs:
             echo "Control web activo: no se sincroniza el panel Telegram"
           fi
 
-          git add trends/recent.json trends/checkpoint.json
+          git add trends/recent.json trends/checkpoint.json trends/requests.json
           if git diff --cached --quiet; then
             exit 0
           fi
