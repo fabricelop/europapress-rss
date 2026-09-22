@@ -69,12 +69,8 @@ if "events_json_demasiado_grande" in problems:
     p=run("python3","telegram/prune_events.py")
     actions.append("poda_events:"+str(p.returncode))
 
-# Si el radar quedó degradado, repetir una vez desde estado ya podado.
-if any(x.startswith("fuentes_sanas_") or x=="events_json_invalido" for x in problems):
-    p=run("python3","telegram/radar_no_d1.py")
-    actions.append("reintento_radar:"+str(p.returncode))
-    if p.returncode==0:
-        run("python3","telegram/prune_events.py")
+# La recuperación de fuentes ya ocurre dentro del barrido, en paralelo.
+# El autocheck solo observa y reporta: nunca relanza el radar por una fuente caída.
 
 after,remaining=inspect()
 
@@ -111,9 +107,9 @@ if remaining:
         last_at=datetime.min.replace(tzinfo=timezone.utc)
     now=datetime.now(timezone.utc)
     if key!=last_key or now-last_at>timedelta(hours=2):
-        telegram("🚨 TTiTTulares · fallo bloqueante tras auto-reparación\n"+", ".join(remaining))
+        telegram("⚠️ TTiTTulares · incidencia detectada\n"+", ".join(remaining))
         ALERT_STATE.write_text(json.dumps({"key":key,"sent_at":now.isoformat()},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    # El autocheck informa del bloqueo, pero no aborta el barrido: abortarlo
+    # El autocheck informa de la incidencia, pero no aborta el barrido: abortarlo
     # impedía persistir la poda/deduplicación y provocaba el reenvío de noticias.
     print("AUTOCHECK_BLOCKING", ", ".join(remaining))
 else:
