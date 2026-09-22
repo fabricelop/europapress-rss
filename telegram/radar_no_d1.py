@@ -86,6 +86,7 @@ MATERIAL=set("muere muerto fallece fallecido dimite dimision detenido detencion 
 
 EVENTS=Path("telegram/events.json")
 PROCESSED=Path("telegram/processed-events.json")
+CONTROL_MODE=Path("ttittulares/control-mode.json")
 
 def utcnow(): return datetime.now(timezone.utc)
 def iso(d): return d.astimezone(timezone.utc).isoformat().replace("+00:00","Z")
@@ -495,7 +496,10 @@ for row in rows:
     "first_seen":iso(now),"last_seen":iso(now),"status":"WAITING","notified":False,"revision":1}
  add_appearance(e,row,now);events.append(e)
 
-token=os.environ.get("TELEGRAM_BOT_TOKEN");chat=os.environ.get("TELEGRAM_CHAT_ID")
+control_mode=load(CONTROL_MODE,{"mode":"telegram"})
+web_mode=str(control_mode.get("mode") or "telegram").strip().lower()=="web"
+token=None if web_mode else os.environ.get("TELEGRAM_BOT_TOKEN")
+chat=None if web_mode else os.environ.get("TELEGRAM_CHAT_ID")
 sent=0;expired=0
 new_processed=[]
 
@@ -503,13 +507,17 @@ for e in list(events):
  n=e.get("source_count",0)
  status=e.get("status")
  if status=="WAITING" and n>=REVIEW_MIN:
-  # Si ya se avisó a 3 fuentes por aceleración, no duplicar el aviso al llegar a 4.
-  if not e.get("fast_track_notified") and not e.get("notified"):
-   did_send=bool(token and chat and send_review(e,token,chat))
-   if did_send: sent+=1
-  e["status"]="SENT_REVIEW";e["notified"]=True
-  new_processed.append(processed_snapshot(e,"SENT_REVIEW",now))
- elif status=="WAITING" and n==FAST_TRACK_MIN and not e.get("fast_track_notified") and not e.get("notified"):
+  if web_mode:
+   e["status"]="ELIGIBLE"
+   e["eligible_at"]=e.get("eligible_at") or iso(now)
+  else:
+   # Si ya se avisó a 3 fuentes por aceleración, no duplicar el aviso al llegar a 4.
+   if not e.get("fast_track_notified") and not e.get("notified"):
+    did_send=bool(token and chat and send_review(e,token,chat))
+    if did_send: sent+=1
+   e["status"]="SENT_REVIEW";e["notified"]=True
+   new_processed.append(processed_snapshot(e,"SENT_REVIEW",now))
+ elif (not web_mode) and status=="WAITING" and n==FAST_TRACK_MIN and not e.get("fast_track_notified") and not e.get("notified"):
   mins=fast_track_minutes(e)
   if mins is not None and mins<=FAST_TRACK_WINDOW_MIN:
    # FAST_TRACK y revisión normal son una sola notificación editorial.
@@ -522,10 +530,14 @@ for e in list(events):
    new_processed.append(processed_snapshot(e,"FAST_TRACK_ALERT",now))
    if did_send: sent+=1
  elif status=="UPDATE_WAITING" and n>=REVIEW_MIN:
-  did_send=bool(token and chat and send_review(e,token,chat))
-  e["status"]="SENT_REVIEW";e["notified"]=True
-  new_processed.append(processed_snapshot(e,"UPDATE_SENT_REVIEW",now,e.get("revision",2)))
-  if did_send: sent+=1
+  if web_mode:
+   e["status"]="ELIGIBLE_UPDATE"
+   e["eligible_at"]=e.get("eligible_at") or iso(now)
+  else:
+   did_send=bool(token and chat and send_review(e,token,chat))
+   e["status"]="SENT_REVIEW";e["notified"]=True
+   new_processed.append(processed_snapshot(e,"UPDATE_SENT_REVIEW",now,e.get("revision",2)))
+   if did_send: sent+=1
 
 # Eliminar WAITING caducadas tras la evaluación.
 kept=[]
