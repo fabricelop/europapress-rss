@@ -456,9 +456,12 @@ for e in list(events):
    sent+=1
   e["status"]="SENT_REVIEW";e["notified"]=True
   new_processed.append(processed_snapshot(e,"SENT_REVIEW",now))
- elif status=="WAITING" and n==FAST_TRACK_MIN and not e.get("fast_track_notified"):
+ elif status=="WAITING" and n==FAST_TRACK_MIN and not e.get("fast_track_notified") and not e.get("notified"):
   mins=fast_track_minutes(e)
   if mins is not None and mins<=FAST_TRACK_WINDOW_MIN:
+   # FAST_TRACK y revisión normal son una sola notificación editorial.
+   # Marcar notified evita que otro proceso/ejecución envíe el mismo event_id.
+   e["notified"]=True
    if token and chat:send_review(e,token,chat,True)
    e["fast_track_notified"]=True
    e["fast_track_notified_at"]=iso(now)
