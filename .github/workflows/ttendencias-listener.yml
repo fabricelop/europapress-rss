@@ -57,9 +57,10 @@ jobs:
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
           TTENDENCIAS_LISTEN_SECONDS: "1500"
-          # El refresco del Top 10 ya lo realizan ttendencias-refresh.yml
-          # y su watchdog. El listener queda dedicado a interacción Telegram.
-          TTENDENCIAS_REFRESH_SECONDS: "0"
+          # Fallback de frescura: el cron de GitHub puede retrasarse. Mientras
+          # siga activo el modo Telegram, el listener garantiza otra captura
+          # al arrancar y cada 15 minutos.
+          TTENDENCIAS_REFRESH_SECONDS: "900"
         run: python3 trends/telegram_bot.py listen
 
       - name: Encadenar siguiente listener
