@@ -107,6 +107,8 @@ jobs:
                           alt_texts.append(t)
 
               visible_text = msg["text"]
+              if "🌶️" in visible_text and len(alt_texts) < 2:
+                  raise ValueError(f"{msg.get('trend_name') or 'TTendencia'}: se requieren al menos 2 alternativas de remate")
               if alt_texts:
                   visible_text += "\n\nAlternativas:\n" + "\n".join(
                       f"{i}) {t}" for i, t in enumerate(alt_texts, 1)
