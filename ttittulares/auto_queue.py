@@ -43,7 +43,7 @@ for item in items:
     if event_id:
         existing[event_id] = item
 
-eligible_status = {"WAITING","SENT_REVIEW","ELIGIBLE","UPDATE_WAITING","ELIGIBLE_UPDATE"}
+eligible_status = {"ELIGIBLE","ELIGIBLE_UPDATE"}
 queued = []
 stamp = now_iso()
 
