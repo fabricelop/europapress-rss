@@ -157,15 +157,17 @@ function render(){
  const fr=freshnessText(model.captured_at);$("freshness").textContent=fr;
  const age=model.captured_at?Math.max(0,Math.round((Date.now()-new Date(model.captured_at).getTime())/60000)):0;
  $("freshness").style.color=age<=20?"#63d99a":age<=35?"#f5c451":"#ff7f8b";
- $("quality").textContent=(model.non_stale_source_count||0)+" fuentes activas · "+(model.reliability||"—");
+ const rel={high:"alta",medium:"media",fallback:"baja",none:"sin datos"}[model.reliability]||model.reliability||"—";
+ $("quality").textContent=(model.non_stale_source_count||0)+" fuentes activas · fiabilidad "+rel;
  const allItems=model.items||[];
- const activeCount=allItems.filter(x=>["preparing","ready","update"].includes(x.status)).length;
  $("statNew").textContent=allItems.filter(x=>x.status==="new").length;
- $("statActive").textContent=activeCount;
+ $("statActive").textContent=(model.pending||[]).length;
  $("statExplained").textContent=allItems.filter(x=>x.status==="explained").length;
  const sys=$("systemStat"), health=model.health||{};
- sys.textContent=health.ok===true?"Sistema OK":health.ok===false?"Sistema con avisos":"Sistema —";
- sys.className="stat "+(health.ok===true?"healthOk":health.ok===false?"healthWarn":"");
+ const healthAge=health.checked_at?Math.max(0,Math.round((Date.now()-new Date(health.checked_at).getTime())/60000)):9999;
+ const healthFresh=healthAge<=35;
+ sys.textContent=health.ok===true&&healthFresh?"Sistema OK":health.ok===false?"Sistema con avisos":health.checked_at?"Salud sin actualizar":"Sistema —";
+ sys.className="stat "+(health.ok===true&&healthFresh?"healthOk":health.checked_at?"healthWarn":"");
  const list=$("list");list.innerHTML="";
  for(const item of model.items||[]){
    const isActive=["preparing","ready","update"].includes(item.status);
@@ -190,10 +192,13 @@ function render(){
  for(const item of pending){
    const card=document.createElement("div");card.className="card";
    const label=item.status==="ready"?"Preparada":item.status==="update"?"Actualizando":"Elaborando";
-   card.innerHTML='<div class="rank">•</div><div><div class="name"></div><div class="state">'+stateDot(item.status)+'<span></span></div></div><div class="meta"></div>';
+   card.innerHTML='<div class="rank">•</div><div><div class="name"></div><div class="state">'+stateDot(item.status)+'<span></span><button class="xlink pendingX" type="button">Buscar en X</button></div></div><div><div class="meta pendingTime"></div><button class="secondary pendingDone" type="button" style="min-height:34px;padding:7px 9px;margin-top:6px;font-size:12px">✓ Explicada</button></div>';
    card.querySelector(".name").textContent=item.name;
    card.querySelector(".state span").textContent=label;
-   card.querySelector(".meta").textContent=fmtDate(item.requested_at);
+   const mins=item.requested_at?Math.max(0,Math.round((Date.now()-new Date(item.requested_at).getTime())/60000)):0;
+   card.querySelector(".pendingTime").textContent=fmtDate(item.requested_at)+(mins>360?" · antigua":"");
+   card.querySelector(".pendingX").onclick=()=>window.open("https://x.com/search?"+new URLSearchParams({q:item.name,src:"typed_query",f:"live"}).toString(),"_blank","noopener");
+   card.querySelector(".pendingDone").onclick=()=>{if(confirm("¿Marcar "+item.name+" como explicada?"))action("explained",[item.name])};
    $("pendingList").appendChild(card);
  }
  const history=$("historyList");history.innerHTML="";
