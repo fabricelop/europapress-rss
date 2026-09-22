@@ -95,8 +95,8 @@ repairs = []
 modules["control_mode"] = {
     "ok": mode in {"telegram", "web"},
     "mode": mode,
-    "web_control_enabled": bool(control_mode.get("web_control_enabled")),
-    "telegram_panel_enabled": bool(control_mode.get("telegram_panel_enabled", not web_mode)),
+    "web_control_enabled": web_mode,
+    "telegram_panel_enabled": not web_mode,
 }
 if mode not in {"telegram", "web"}:
     blocking.append(f"modo de control TTendencias no válido: {mode}")
