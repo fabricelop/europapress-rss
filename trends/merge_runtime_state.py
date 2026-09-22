@@ -13,6 +13,14 @@ def load(path, default):
 def norm(s):
     return " ".join(str(s or "").split()).casefold()
 
+def noise_name(s):
+    v = norm(s)
+    return (
+        v.startswith("explore why ")
+        or (" is trending " in (" " + v + " ") and "latest viral tweets" in v)
+        or "real-time buzz from twitter" in v
+    )
+
 def merge_requests(remote, local):
     out = []
     by_key = {}
@@ -23,6 +31,8 @@ def merge_requests(remote, local):
 
     for src in (remote.get("requests", []), local.get("requests", [])):
         for item in src:
+            if noise_name(item.get("name")):
+                continue
             k = key(item)
             if not k:
                 continue
@@ -53,6 +63,8 @@ def merge_manual(remote, local):
     items = []
     for src in (remote.get("items", []), local.get("items", [])):
         for item in src:
+            if noise_name(item.get("name")):
+                continue
             k = norm(item.get("name"))
             if not k:
                 continue
