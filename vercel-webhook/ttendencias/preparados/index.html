@@ -41,6 +41,16 @@ function forgetExplained(names){
  localStorage.setItem("ttendencias-local-explained",JSON.stringify(m));
 }
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2400)}
+async function updateBadge(){
+ let cached=null;try{cached=JSON.parse(localStorage.getItem("ttendencias-last-model")||"null")}catch(_){}
+ const newCount=(cached?.items||[]).filter(x=>x.status==="new").length;
+ const total=newCount+(model.items||[]).length;
+ try{
+   if("setAppBadge" in navigator){
+     if(total>0)await navigator.setAppBadge(total);else if("clearAppBadge" in navigator)await navigator.clearAppBadge();
+   }
+ }catch(_){}
+}
 function compose(text){return "https://twitter.com/intent/tweet?"+new URLSearchParams({text:text||""}).toString()}
 function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
 async function api(action,names,extra={}){
@@ -52,7 +62,7 @@ async function api(action,names,extra={}){
  return d;
 }
 function render(){
- const items=model.items||[];$("count").textContent=items.length;
+ const items=model.items||[];$("count").textContent=items.length;updateBadge();
  if(!items.length){$("list").innerHTML='<div class="empty">No hay tuits pendientes de revisar.</div>';return}
  $("list").innerHTML="";
  for(const item of items){
