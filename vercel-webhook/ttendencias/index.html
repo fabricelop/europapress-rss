@@ -110,6 +110,7 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
     <div class="stat">En curso <b id="statActive">0</b></div>
     <div class="stat">Explicadas <b id="statExplained">0</b></div>
     <div class="stat" id="systemStat">Sistema —</div>
+    <div class="stat" id="modeStat">Control —</div>
   </div>
   <div class="filters" id="filters">
     <button class="filter active" data-filter="all">Todas</button>
@@ -192,6 +193,9 @@ function render(){
  const healthFresh=healthAge<=35;
  sys.textContent=health.ok===true&&healthFresh?"Sistema OK":health.ok===false?"Sistema con avisos":health.checked_at?"Salud sin actualizar":"Sistema —";
  sys.className="stat "+(health.ok===true&&healthFresh?"healthOk":health.checked_at?"healthWarn":"");
+ const ms=$("modeStat"), mode=model.control_mode||{};
+ ms.textContent=mode.mode==="web"?"Control web":mode.mode==="telegram"?"Control Telegram":"Control —";
+ ms.className="stat "+(mode.mode==="web"?"healthOk":"");
  const list=$("list");list.innerHTML="";
  for(const item of model.items||[]){
    const isActive=["preparing","ready","update"].includes(item.status);
@@ -247,7 +251,7 @@ function render(){
  $("queueBtn").textContent=n&&explainedCount===n?"Actualizar":n&&explainedCount>0?"Elaborar / actualizar":"Elaborar";
 }
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
-function buildModel(recent,requestDoc,explained,health){
+function buildModel(recent,requestDoc,explained,health,controlMode){
  const requests=Array.isArray(requestDoc.requests)?requestDoc.requests:[];
  const explainedSet=new Set((explained.items||[]).map(x=>nrm(x.name)));
  const latestFor=name=>[...requests].reverse().find(x=>nrm(x.name)===nrm(name));
@@ -267,19 +271,21 @@ function buildModel(recent,requestDoc,explained,health){
    items,
    pending:requests.filter(x=>["preparing","update","ready"].includes(String(x.status||""))).map(x=>({id:x.id,name:x.name,rank:x.rank,status:x.status,requested_at:x.requested_at||null})),
    history:hist,
-   health:{ok:health?.ok,checked_at:health?.checked_at||null,blocking:health?.blocking||[]}
+   health:{ok:health?.ok,checked_at:health?.checked_at||null,blocking:health?.blocking||[]},
+   control_mode:controlMode||{}
  };
 }
 async function load(silent=false){
  try{
    if(!silent)$("refreshBtn").disabled=true;
    const stamp=Date.now();
-   const urls=["trends/recent.json","trends/requests.json","trends/telegram-manual-explained.json","trends/health-status.json"].map(p=>RAW+p+"?t="+stamp);
+   const urls=["trends/recent.json","trends/requests.json","trends/telegram-manual-explained.json","trends/health-status.json","trends/control-mode.json"].map(p=>RAW+p+"?t="+stamp);
    const rs=await Promise.all(urls.map(u=>fetch(u,{cache:"no-store"})));
    if(rs.slice(0,3).some(r=>!r.ok))throw new Error("No se pudieron leer los datos de TTendencias");
    const recent=await rs[0].json(),requestDoc=await rs[1].json(),explained=await rs[2].json();
    const health=rs[3].ok?await rs[3].json():{};
-   const d=buildModel(recent,requestDoc,explained,health);
+   const controlMode=rs[4].ok?await rs[4].json():{};
+   const d=buildModel(recent,requestDoc,explained,health,controlMode);
    model=d;
    const current=new Set((d.items||[]).map(x=>x.name));
    selected=new Set([...selected].filter(x=>current.has(x)));
