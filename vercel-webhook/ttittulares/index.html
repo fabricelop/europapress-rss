@@ -14,7 +14,7 @@
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 60%)}button,a{font:inherit}
 .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:9px;padding:13px max(12px,env(safe-area-inset-left));background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36}.brand{font-size:19px;font-weight:850}.sub{font-size:11px;color:#8f9bad}.spacer{flex:1}.iconbtn,.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:11px;padding:9px 11px;font-weight:760;text-decoration:none}.iconbtn{height:42px}
-main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 4px}.meta{font-size:12px;color:#909cad;line-height:1.45}.health{border:1px solid #354255;border-radius:999px;padding:7px 10px;font-size:12px;color:#cbd7e8;white-space:nowrap}.health.bad{border-color:#6e3439;color:#ff9ca5}
+main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 4px}.meta{font-size:12px;color:#909cad;line-height:1.45}.timing{display:grid;gap:3px;margin-top:5px}.timing .ok{color:#9fabc0}.timing .late{color:#ffb36b;font-weight:750}.health{border:1px solid #354255;border-radius:999px;padding:7px 10px;font-size:12px;color:#cbd7e8;white-space:nowrap}.health.bad{border-color:#6e3439;color:#ff9ca5}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 14px}.stat{border:1px solid #2e3744;background:#111720;border-radius:13px;padding:10px 12px;color:#aab5c5;text-align:left;cursor:pointer}.stat b{display:block;color:#eef3fa;font-size:21px}.stat.active{border-color:#607796;background:#18212f}
 .list{display:grid;gap:10px}.card,.queuecard{background:#11161e;border:1px solid #29313d;border-radius:16px;padding:13px}.head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}.title{font-size:16px;font-weight:800;line-height:1.28}.sources{font-size:12px;color:#8fa0b5;margin-top:6px}.count{border:1px solid #354255;border-radius:999px;padding:6px 9px;font-size:11px;color:#cbd7e8;white-space:nowrap}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.actions .btn{min-height:40px}.btn.primary{background:#1c2737}.btn.danger{color:#ff9ca5}.btn.rework{color:#d2bdff}.details{display:none;border-top:1px solid #29313d;margin-top:12px;padding-top:12px}.details.open{display:block}.facts{font-size:14px;line-height:1.45;color:#cbd3df;white-space:pre-wrap;margin-bottom:12px}.variant{background:#0b1017;border:1px solid #2c3543;border-radius:13px;padding:11px;margin:9px 0}.vhead{display:flex;align-items:center;gap:8px;margin-bottom:7px}.vname{font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.04em;color:#9cacbf}.chars{margin-left:auto;font-size:11px;color:#77869a}.tweet{white-space:pre-wrap;line-height:1.4;font-size:14px}.queuecard .sources-list{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.chip{font-size:11px;background:#0b1017;border:1px solid #2c3543;border-radius:999px;padding:5px 8px;color:#9eabba}.empty{text-align:center;color:#98a4b5;padding:50px 10px}
 .sheet{position:fixed;inset:0;background:#0009;z-index:50;display:none;align-items:flex-end}.sheet.show{display:flex}.panel{width:100%;max-width:600px;margin:0 auto;background:#111720;border:1px solid #354052;border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom))}.panel h2{margin:0 0 8px}.panel p{font-size:13px;color:#9eabba}textarea,input{width:100%;background:#0a0f16;color:#eef3fa;border:1px solid #364153;border-radius:11px;padding:12px;font:inherit}textarea{min-height:120px;resize:vertical}.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;transition:.2s;background:#1a2330;border:1px solid #3b485b;border-radius:10px;padding:9px 12px;z-index:80;max-width:92vw;text-align:center}.toast.show{opacity:1;transform:translateX(-50%)}
@@ -29,7 +29,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <button class="iconbtn" id="settings" title="Acceso" style="display:none">⚙</button>
 </header>
 <main>
- <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta" id="radar">Radar —</div></div><div class="health" id="health">—</div></section>
+ <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima elaboración —</div></div></div><div class="health" id="health">—</div></section>
  <div class="stats">
   <button class="stat active" data-view="ready"><b id="readyCount">0</b>Listas</button>
   <button class="stat" data-view="processing"><b id="processingCount">0</b>En elaboración</button>
@@ -55,10 +55,27 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttittulares-control";
 const $=id=>document.getElementById(id);
-let model={prepared:[],status:{}},reworkItem=null,view="ready";
+let model={prepared:[],status:{},config:{}},reworkItem=null,view="ready";
 const token=()=>localStorage.getItem("ttittulares-control-token")||"";
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2400)}
 function fmt(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?v:new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}).format(d)}
+function hhmm(d){return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit"}).format(d)}
+function nextSlot(now,minutes){const d=new Date(now);d.setSeconds(0,0);for(let i=0;i<180;i++){const x=new Date(d.getTime()+i*60000);if(minutes.includes(x.getMinutes())&&x>now)return x}return null}
+function latestSlot(now,minutes){const d=new Date(now);d.setSeconds(0,0);for(let i=0;i<180;i++){const x=new Date(d.getTime()-i*60000);if(minutes.includes(x.getMinutes())&&x<=now)return x}return null}
+function agoMin(ms){return Math.max(0,Math.floor(ms/60000))}
+function renderTiming(){
+ const s=model.status||{},cfg=model.config||{},now=new Date();
+ const radarMinutes=cfg.radar?.schedule_minutes||[10,40], editorialMinutes=cfg.editorial?.schedule_minutes||[15,45];
+ const last=s.radar_at?new Date(s.radar_at):null, expected=latestSlot(now,radarMinutes), upcoming=nextSlot(now,radarMinutes), ed=nextSlot(now,editorialMinutes);
+ $("lastRadar").textContent="Último radar "+(last?fmt(last):"—");
+ const delayed=last&&expected&&last<new Date(expected.getTime()-180000)&&now>new Date(expected.getTime()+180000);
+ if(delayed){
+   const mins=agoMin(now-expected);$("nextRadar").textContent="⚠ Radar previsto "+hhmm(expected)+" · retraso "+mins+" min";$("nextRadar").className="late";
+ }else{
+   const mins=upcoming?Math.ceil((upcoming-now)/60000):null;$("nextRadar").textContent="Próximo radar "+(upcoming?hhmm(upcoming):"—")+(mins!==null?" · en "+mins+" min":"");$("nextRadar").className="ok";
+ }
+ const em=ed?Math.ceil((ed-now)/60000):null;$("nextEditorial").textContent="Próxima elaboración "+(ed?hhmm(ed):"—")+(em!==null?" · en "+em+" min":"");
+}
 function intent(text){return "https://twitter.com/intent/tweet?text="+encodeURIComponent(text||"")}
 async function api(action,extra={}){
  const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
@@ -78,7 +95,7 @@ function setView(next){view=next;document.querySelectorAll(".stat").forEach(x=>x
 function render(){
  const s=model.status||{},healthy=Number(s.healthy_source_count),total=Number(s.configured_sources);
  $("readyCount").textContent=(model.prepared||[]).length;$("processingCount").textContent=Number(s.processing_count||0);
- $("radar").textContent="Último radar "+fmt(s.radar_at);
+ renderTiming();
  $("health").textContent=(Number.isFinite(healthy)?healthy:"—")+"/"+(Number.isFinite(total)?total:"—")+" fuentes funcionando";
  $("health").classList.toggle("bad",Number.isFinite(healthy)&&Number.isFinite(total)&&healthy<total);
  renderList();badge()
@@ -145,7 +162,7 @@ async function load(silent=false){
   const r=await fetch(API+"?state="+Date.now(),{cache:"no-store"});
   if(!r.ok)throw new Error("No se pudieron leer los datos");
   const d=await r.json();
-  model={prepared:d.prepared?.items||[],status:d.status||{}};render()
+  model={prepared:d.prepared?.items||[],status:d.status||{},config:d.config||{}};render()
  }catch(e){if(!silent)toast(e.message)}
 }
 document.querySelectorAll(".stat").forEach(x=>x.onclick=()=>setView(x.dataset.view));
@@ -158,6 +175,6 @@ $("reworkCancel").onclick=()=>{$("reworkSheet").classList.remove("show");reworkI
 $("reworkSend").onclick=async()=>{if(!reworkItem)return;const instruction=$("reworkInstruction").value.trim();if(!instruction){toast("Escribe qué quieres cambiar");return}if(!confirm("¿Mandar esta noticia de nuevo a elaboración con estas instrucciones?"))return;const old=[...model.prepared];model.prepared=model.prepared.filter(x=>x.event_id!==reworkItem.event_id);render();try{await api("rework",{event_id:reworkItem.event_id,instruction});$("reworkSheet").classList.remove("show");toast("Enviada a elaboración");reworkItem=null;setView("processing");setTimeout(()=>load(true),1000)}catch(e){model.prepared=old;render();toast(e.message)}};
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});window.addEventListener("pageshow",()=>load(true));
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttittulares/sw.js").catch(()=>{});
-load();setInterval(()=>{if(!document.hidden)load(true)},60000);
+load();setInterval(()=>{if(!document.hidden)load(true)},60000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
 </script>
 </body></html>
