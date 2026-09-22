@@ -3,7 +3,13 @@
   "editorial": {
     "alternatives_target": 3,
     "alternatives_block_send": false,
-    "images_enabled_in_web_control": false
+    "images_enabled_in_web_control": false,
+    "schedule_minutes": [
+      0,
+      30
+    ],
+    "daytime_max_wait_minutes": 30,
+    "schedule_timezone": "Europe/Madrid"
   },
   "delivery": {
     "channel": "telegram",
