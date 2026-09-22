@@ -46,7 +46,9 @@ async function readJson(path) {
 async function mutateJson(path, message, mutator) {
   for (let attempt = 1; attempt <= 5; attempt++) {
     const { doc, sha } = await readJson(path);
+    const before = JSON.stringify(doc);
     const next = await mutator(doc);
+    if (JSON.stringify(next) === before) return next;
     const r = await gh(`contents/${path}`, {
       method: "PUT",
       headers: { "content-type": "application/json" },
@@ -136,7 +138,7 @@ async function markExplained(names) {
   await mutateJson(REQUESTS, "Actualizar estado TTendencias desde web", doc => {
     doc.requests ||= [];
     for (const req of doc.requests) {
-      if (target.has(norm(req.name))) {
+      if (target.has(norm(req.name)) && req.status !== "explained") {
         req.status = "explained";
         req.explained_at = now;
         delete req.telegram_message_id;
