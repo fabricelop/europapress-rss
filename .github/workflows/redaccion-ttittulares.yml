@@ -19,8 +19,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Solicitar redaccion de cola
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Registrar solicitud de redaccion
+        run: python3 telegram/editorial_scheduler.py
+      - name: Guardar solicitud
         run: |
-          python3 telegram/editorial_scheduler.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add telegram/editorial-processing.json telegram/editorial-schedule-state.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Solicitar redaccion automatica TTiTTulares"
+          git pull --rebase origin main
+          git push origin HEAD:main
