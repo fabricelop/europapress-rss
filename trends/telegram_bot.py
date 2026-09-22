@@ -603,15 +603,25 @@ def mark_explained(callback):
         "trends/telegram-manual-explained.json",
         load(MANUAL, {"project": "TTendencias", "items": []})
     )
-    existing_manual = {norm(x.get("name")) for x in manual.get("items", [])}
+    manual.setdefault("items", [])
+    by_name = {norm(x.get("name")): i for i, x in enumerate(manual.get("items", [])) if x.get("name")}
     for trend_name in related_trends:
-        if norm(trend_name) not in existing_manual:
-            manual.setdefault("items", []).append({
+        key = norm(trend_name)
+        if key in by_name:
+            i = by_name[key]
+            manual["items"][i] = {
+                **manual["items"][i],
+                "name": trend_name,
+                "explained_at": now,
+                "source": "telegram_button",
+            }
+        else:
+            manual["items"].append({
                 "name": trend_name,
                 "explained_at": now,
                 "source": "telegram_button",
             })
-            existing_manual.add(norm(trend_name))
+            by_name[key] = len(manual["items"]) - 1
     save(MANUAL, manual)
 
     for req in requests.get("requests", []):
