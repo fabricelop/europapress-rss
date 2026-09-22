@@ -122,8 +122,10 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
     <input id="tokenInput" type="password" autocomplete="off" placeholder="Token de control">
     <div class="row">
       <button class="secondary" id="cancelToken">Cancelar</button>
+      <button class="secondary" id="testToken">Probar acceso</button>
       <button class="primary" id="saveToken">Guardar</button>
     </div>
+    <div class="meta" id="accessStatus" style="margin-top:10px"></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -300,8 +302,17 @@ $("explainedBtn").onclick=()=>{
 };
 $("refreshBtn").onclick=()=>load();
 $("forceBtn").onclick=()=>action("refresh");
-$("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("sheet").classList.add("show")};
+$("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado en este dispositivo":"Sin token guardado";$("sheet").classList.add("show")};
 $("cancelToken").onclick=()=>$("sheet").classList.remove("show");
+$("testToken").onclick=async()=>{
+ const v=$("tokenInput").value.trim();if(!v){$("accessStatus").textContent="Introduce primero el token.";return}
+ $("testToken").disabled=true;$("accessStatus").textContent="Comprobando…";
+ try{
+   const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+v},body:JSON.stringify({action:"ping"})});
+   $("accessStatus").textContent=r.ok?"✓ Acceso correcto":"✕ Token no válido";
+ }catch(e){$("accessStatus").textContent="✕ No se pudo comprobar el acceso"}
+ finally{$("testToken").disabled=false}
+};
 $("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado")};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});
