@@ -167,6 +167,7 @@ export default async function handler(req, res) {
 
     const body = req.body || {};
     const action = String(body.action || "");
+    if (action === "ping") return res.status(200).json({ ok: true, access: "granted" });
     if (action === "queue") return res.status(200).json(await queueNames(body.names));
     if (action === "explained") return res.status(200).json(await markExplained(body.names));
     if (action === "refresh") return res.status(200).json(await refreshNow());
