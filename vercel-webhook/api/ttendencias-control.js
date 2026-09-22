@@ -198,7 +198,7 @@ export default async function handler(req, res) {
   res.setHeader("cache-control", "no-store");
   try {
     if (req.method === "GET") {
-      return res.status(200).json(await model());
+      return res.status(200).json({ ok: true, service: "ttendencias-control" });
     }
     if (req.method !== "POST") return res.status(405).json({ ok: false, error: "Método no permitido" });
     if (!authorized(req)) return res.status(401).json({ ok: false, error: "No autorizado" });
