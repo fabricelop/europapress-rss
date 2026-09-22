@@ -368,7 +368,16 @@ $("testToken").onclick=async()=>{
  $("testToken").disabled=true;$("accessStatus").textContent="Comprobando…";
  try{
    const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+v},body:JSON.stringify({action:"ping"})});
-   $("accessStatus").textContent=r.ok?"✓ Acceso correcto":"✕ Token no válido";
+   let d={};try{d=await r.json()}catch(_){}
+   if(r.status===401){
+     $("accessStatus").textContent="✕ Token no válido";
+   }else if(r.ok&&d?.backend?.ok){
+     $("accessStatus").textContent="✓ Acceso correcto · GitHub operativo";
+   }else if(d?.access==="granted"){
+     $("accessStatus").textContent="⚠ Token correcto, pero GitHub no está disponible en esta instancia";
+   }else{
+     $("accessStatus").textContent="✕ No se pudo comprobar el acceso";
+   }
  }catch(e){$("accessStatus").textContent="✕ No se pudo comprobar el acceso"}
  finally{$("testToken").disabled=false}
 };
