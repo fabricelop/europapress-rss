@@ -70,6 +70,47 @@ jobs:
           git pull --rebase --autostash origin main
           git push origin HEAD:main
 
+      - name: Notificar nuevas tendencias en modo web
+        env:
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          from pathlib import Path
+
+          try:
+              mode = str(json.loads(Path("trends/control-mode.json").read_text(encoding="utf-8")).get("mode") or "telegram").strip().lower()
+          except Exception:
+              mode = "telegram"
+          if mode != "web":
+              raise SystemExit(0)
+
+          recent = json.loads(Path("trends/recent.json").read_text(encoding="utf-8"))
+          new_entries = [str(x).strip() for x in recent.get("new_entries", []) if str(x).strip()]
+          if not new_entries:
+              print("Sin nuevas tendencias que notificar")
+              raise SystemExit(0)
+
+          state = json.loads(Path("trends/telegram-bot-state.json").read_text(encoding="utf-8"))
+          chat_id = state.get("chat_id")
+          token = os.environ.get("TTENDENCIAS_BOT_TOKEN")
+          if not chat_id or not token:
+              print("Telegram no enlazado para notificaciones")
+              raise SystemExit(0)
+
+          text = "🟣 TTendencias · nuevas tendencias\n" + "\n".join(f"• {x}" for x in new_entries) + "\n\nGestiónalas desde la aplicación web."
+          req = urllib.request.Request(
+              f"https://api.telegram.org/bot{token}/sendMessage",
+              data=json.dumps({"chat_id": chat_id, "text": text}).encode("utf-8"),
+              headers={"Content-Type": "application/json"},
+          )
+          with urllib.request.urlopen(req, timeout=30) as r:
+              result = json.loads(r.read().decode("utf-8"))
+          if not result.get("ok"):
+              raise RuntimeError(result)
+          print("Notificación de nuevas tendencias enviada")
+          PY
+
       - name: Comprobar salud TTendencias
         if: always()
         env:
