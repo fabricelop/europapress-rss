@@ -43,9 +43,26 @@ jobs:
           git pull --rebase --autostash origin main
 
           python3 trends/update_trends.py
-          python3 trends/telegram_bot.py sync
 
-          git add trends/recent.json trends/checkpoint.json trends/telegram-bot-state.json
+          MODE="$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          try:
+              print(str(json.loads(Path("trends/control-mode.json").read_text(encoding="utf-8")).get("mode") or "telegram").strip().lower())
+          except Exception:
+              print("telegram")
+          PY
+          )"
+          echo "Modo TTendencias: $MODE"
+
+          if [ "$MODE" != "web" ]; then
+            python3 trends/telegram_bot.py sync
+            git add trends/telegram-bot-state.json
+          else
+            echo "Control web activo: no se sincroniza el panel Telegram"
+          fi
+
+          git add trends/recent.json trends/checkpoint.json
           if git diff --cached --quiet; then
             exit 0
           fi
