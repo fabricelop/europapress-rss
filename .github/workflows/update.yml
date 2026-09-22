@@ -68,6 +68,36 @@ jobs:
             done
           fi
 
+      - name: Recuperación editorial TTendencias por API
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          # No hace nada mientras api_failover.enabled=false o no exista la clave.
+          # Cuando se active, solo recupera solicitudes vencidas tras :10/:40.
+          python3 trends/editorial_api.py
+          git config user.name "ttendencias-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add trends/requests.json trends/prepared.json trends/editorial-runtime.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Recuperar pase editorial TTendencias"
+            for intento in 1 2 3 4; do
+              git fetch origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                echo "Conflicto al guardar recuperación editorial; reintentando desde main."
+                exit 1
+              fi
+              if git push origin HEAD:main; then
+                echo "Recuperación editorial guardada correctamente."
+                break
+              fi
+              sleep $((intento * 2))
+              if [ "$intento" -eq 4 ]; then exit 1; fi
+            done
+          else
+            echo "Sin recuperación editorial que guardar."
+          fi
+
       - name: Recorrer Europa Press y actualizar archivo
         run: python generate_feed.py
 
