@@ -3,7 +3,7 @@ name: TTendencias refresh watchdog
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "7,22,37,52 * * * *"
 
 permissions:
   actions: write
@@ -40,7 +40,7 @@ jobs:
           captured=datetime.fromisoformat(str(data["captured_at"]).replace("Z","+00:00")).astimezone(timezone.utc)
           age=(datetime.now(timezone.utc)-captured).total_seconds()/60
           print(f"Top10 age: {age:.1f} min")
-          if age <= 20:
+          if age <= 18:
               raise SystemExit(0)
 
           runs=get(f"https://api.github.com/repos/{repo}/actions/workflows/ttendencias-refresh.yml/runs?per_page=20").get("workflow_runs",[])
