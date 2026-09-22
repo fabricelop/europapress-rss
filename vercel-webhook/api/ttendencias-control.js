@@ -89,6 +89,7 @@ async function queueNames(names) {
         existing.batch_id = batchId;
         existing.requested_together = unique;
         existing.with_image = false;
+        existing.alternatives_target = 3;
         if (String(existing.status || "") === "ready") {
           existing.status = "update";
           existing.requested_at = now;
@@ -108,6 +109,7 @@ async function queueNames(names) {
           revision: Number(previous?.revision || 0) + (reexplain ? 1 : 0),
           reexplain,
           with_image: false,
+          alternatives_target: 3,
           batch_id: batchId,
           requested_together: unique,
         });
