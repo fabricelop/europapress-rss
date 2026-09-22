@@ -1,10 +1,27 @@
 {
-  "checked_at": "2026-09-22T16:55:14.708726+00:00",
-  "before": [],
-  "repair_actions": [],
-  "remaining": [],
-  "healthy_source_count": 14,
-  "source_failures": [],
-  "events_bytes": 706552,
-  "ok": true
+  "checked_at": "2026-09-22T17:11:31.298311+00:00",
+  "before": [
+    "fuentes_fallidas_3"
+  ],
+  "repair_actions": [
+    "reintento_radar:0"
+  ],
+  "remaining": [
+    "fuentes_fallidas_2"
+  ],
+  "healthy_source_count": 12,
+  "source_failures": [
+    {
+      "source": "El HuffPost",
+      "type": "general",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "source": "COPE",
+      "type": "general",
+      "error": "0 artículos extraídos en https://www.cope.es/"
+    }
+  ],
+  "events_bytes": 623050,
+  "ok": false
 }
