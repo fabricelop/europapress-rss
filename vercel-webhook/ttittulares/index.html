@@ -70,8 +70,8 @@ async function api(action,extra={}){
 async function badge(){const n=(model.prepared||[]).length;try{if("setAppBadge" in navigator){if(n)await navigator.setAppBadge(n);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}}
 function variants(item){
  if(Array.isArray(item.variants)&&item.variants.length)return item.variants;
- const out=[];if(item.primary?.text)out.push({label:"Principal",text:item.primary.text,url:item.primary.url});
- for(const [i,a] of (item.alternatives||[]).entries())out.push({label:"Remate "+(i+1),text:a.tweet_text||a.text||a.remate||"",url:a.url});
+ const out=[];if(item.primary?.text)out.push({label:"Principal",text:item.primary.text,url:item.primary.url,remate:""});
+ for(const [i,a] of (item.alternatives||[]).entries())out.push({label:String.fromCharCode(65+i),text:a.tweet_text||a.text||"",url:a.url,remate:a.remate||""});
  return out
 }
 function setView(next){view=next;document.querySelectorAll(".stat").forEach(x=>x.classList.toggle("active",x.dataset.view===view));renderList()}
@@ -109,9 +109,13 @@ function renderReady(list){
   const vh=card.querySelector(".variants");
   for(const v of variants(item)){
     const box=document.createElement("div");box.className="variant";
-    const text=String(v.text||"");box.innerHTML='<div class="vhead"><span class="vname"></span><span class="chars"></span></div><div class="tweet"></div><div class="actions"><a class="btn primary openx" target="_blank" rel="noopener">Abrir en X</a><button class="btn copy">Copiar</button></div>';
-    box.querySelector(".vname").textContent=v.label||"Versión";box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=text;
-    box.querySelector(".openx").href=v.url||intent(text);box.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit copiado"));
+    const text=String(v.text||"");
+    const isPrincipal=String(v.label||"").toLowerCase()==="principal";
+    const remate=String(v.remate||"");
+    const shown=isPrincipal?text:("🌶️ "+remate);
+    box.innerHTML='<div class="vhead"><span class="vname"></span><span class="chars"></span></div><div class="tweet"></div><div class="actions"><a class="btn primary openx" target="_blank" rel="noopener">Abrir en X</a><button class="btn copy">Copiar</button></div>';
+    box.querySelector(".vname").textContent=v.label||"Versión";box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=shown;
+    box.querySelector(".openx").href=v.url||intent(text);box.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado"));
     vh.appendChild(box)
   }
   card.querySelector(".expand").onclick=()=>{det.classList.toggle("open");card.querySelector(".expand").textContent=det.classList.contains("open")?"Cerrar":"Abrir"};
