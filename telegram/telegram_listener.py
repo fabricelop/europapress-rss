@@ -12,7 +12,6 @@ EVENTS=Path("telegram/events.json")
 PROC=Path("telegram/editorial-processing.json")
 PROCESSED=Path("telegram/processed-events.json")
 SENT=Path("telegram/emergency-sent.json")
-TARGET_MINUTES={10,25,40,55}
 END=time.time()+85*60
 
 def load_json(path, default):
@@ -194,39 +193,12 @@ def persist_message(update):
     api("sendMessage",{"chat_id":CHAT,"text":"📝 Cambio recibido. Reescribiré esta noticia en la próxima redacción.","reply_to_message_id":mid})
     return state["offset"]
 
-def run_radar(slot):
-    print("RADAR_START",slot,flush=True)
-    sync_repo()
-    p=subprocess.run(["python3","telegram/radar_no_d1.py"],text=True,capture_output=True)
-    print(p.stdout,flush=True)
-    if p.stderr: print(p.stderr,flush=True)
-    if p.returncode==0:
-        prune=subprocess.run(["python3","telegram/prune_events.py"],text=True,capture_output=True)
-        if prune.stdout: print(prune.stdout,flush=True)
-        if prune.returncode!=0:
-            print("EVENTS_PRUNE_ERROR",prune.stderr,flush=True)
-            return
-        check=subprocess.run(["python3","telegram/autocheck_ttittulares.py"],text=True,capture_output=True)
-        if check.stdout: print(check.stdout,flush=True)
-        if check.returncode!=0:
-            print("AUTOCHECK_BLOCKING",check.stderr,flush=True)
-            return
-        commit_paths([str(EVENTS),str(PROCESSED),str(PROC),"telegram/autocheck-status.json"],"Actualizar estado radar editorial")
-        print("RADAR_OK",slot,flush=True)
-    else:
-        print("RADAR_ERROR",slot,p.returncode,flush=True)
-
 # Webhook gestionado por Vercel; no borrarlo desde el listener legacy.
 state=load_json(STATE,{})
 offset=int(state.get("offset",0) or 0)
-last_slot=""
 print("TT_CONTROL_LISTENER_READY offset",offset,flush=True)
 
 while time.time()<END:
-    now=dt.datetime.now(dt.timezone.utc)
-    slot=now.strftime("%Y%m%d%H%M")
-    if now.minute in TARGET_MINUTES and slot!=last_slot:
-        run_radar(slot); last_slot=slot
     params=urllib.parse.urlencode({"offset":offset,"timeout":20,"allowed_updates":json.dumps(["callback_query","message"])})
     try:
         with urllib.request.urlopen(f"{BASE}/getUpdates?{params}",timeout=25) as r:
