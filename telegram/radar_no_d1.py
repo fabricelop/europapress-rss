@@ -76,7 +76,7 @@ SOURCE_FALLBACKS={
 
 TOTAL_SOURCES=len(SOURCES)
 REVIEW_MIN=4
-FAST_TRACK_MIN=3
+FAST_TRACK_MIN=4
 FAST_TRACK_WINDOW_MIN=30
 WAIT_HOURS=24
 MIN_HEALTHY_SOURCES=10
@@ -158,6 +158,9 @@ def parse_source(src,url,kind,sport=False,recovery=False):
   urls=[gn] if gn else []
  else:
   urls=[url]+[u for u in SOURCE_FALLBACKS.get(src,[]) if u!=url]
+  # La reparación de una fuente forma parte de SU propio worker: si fallan
+  # origen y fallbacks específicos, prueba Google News sin detener el radar.
+  if gn and gn not in urls: urls.append(gn)
  last=None
  for candidate in urls:
   try:
@@ -217,55 +220,16 @@ def fetch_items():
    except Exception as e:
     print("SOURCE_FAIL_WORKER",str(e))
 
- recovery={"triggered":False,"threshold":MIN_HEALTHY_SOURCES,"attempted":[],"recovered":[]}
- failed_general=[x["source"] for x in source_status if x["type"]=="general" and not x["ok"]]
- if failed_general:
-  recovery["triggered"]=True
-  recovery["below_threshold"]=len(set(healthy))<MIN_HEALTHY_SOURCES
-  print("SOURCE_RECOVERY_TRIGGERED",len(set(healthy)),"/",TOTAL_SOURCES,failed_general)
-  # Nunca detener ni degradar el barrido: se continúa con las fuentes sanas y
-  # se intenta recuperar cada fuente fallida en paralelo mediante fallback.
-  with concurrent.futures.ThreadPoolExecutor(max_workers=min(4,len(failed_general))) as rex:
-   futs={}
-   for src in failed_general:
-    url,kind,_=specs[src]
-    recovery["attempted"].append(src)
-    futs[rex.submit(parse_source,src,url,kind,False,True)]=src
-   for fut,src in list(futs.items()):
-    try:
-     rsrc,rows,used,err=fut.result()
-     if used and rows:
-      healthy.append(src);out.extend(rows);recovery["recovered"].append(src)
-      for st in source_status:
-       if st["source"]==src and st["type"]=="general":
-        st.update({"ok":True,"items":len(rows),"url":used,"error":None,"recovered":True})
-      failures=[x for x in failures if not (x["source"]==src and x["type"]=="general")]
-      print("SOURCE_RECOVERY_OK",src,len(rows),used)
-     else:
-      print("SOURCE_RECOVERY_FAIL",src,err)
-    except Exception as e:
-     print("SOURCE_RECOVERY_FAIL",src,str(e))
-
- # Las fuentes deportivas se recuperan también, aunque no computan para el umbral de 10 generales.
- failed_sport=[x["source"] for x in source_status if x["type"]=="sport" and not x["ok"]]
- recovery["attempted_sport"]=[]
- recovery["recovered_sport"]=[]
- for src in failed_sport:
-  url,kind,_=specs[src]
-  recovery["attempted_sport"].append(src)
-  try:
-   rsrc,rows,used,err=parse_source(src,url,kind,True,True)
-   if used and rows:
-    sport_healthy.append(src);out.extend(rows);recovery["recovered_sport"].append(src)
-    for st in source_status:
-     if st["source"]==src and st["type"]=="sport":
-      st.update({"ok":True,"items":len(rows),"url":used,"error":None,"recovered":True})
-    failures=[x for x in failures if not (x["source"]==src and x["type"]=="sport")]
-    print("SPORT_SOURCE_RECOVERY_OK",src,len(rows),used)
-   else:
-    print("SPORT_SOURCE_RECOVERY_FAIL",src,err)
-  except Exception as e:
-   print("SPORT_SOURCE_RECOVERY_FAIL",src,str(e))
+ recovery={
+  "triggered": bool(failures),
+  "threshold": MIN_HEALTHY_SOURCES,
+  "attempted": [],
+  "recovered": [x["source"] for x in source_status if x.get("recovered")],
+  "mode": "inline_parallel_fallback",
+ }
+ # No hay una segunda fase bloqueante de reparación. Cada fuente ya ha probado
+ # sus alternativas dentro de su worker concurrente; si aun falla, el barrido
+ # continúa con las demás y registra el fallo para el siguiente ciclo.
  return out,sorted(set(healthy)),sorted(set(sport_healthy)),failures,source_status,recovery
 
 def best_match(title,events,threshold=.50):
@@ -451,7 +415,7 @@ if not events_doc.get("fast_track_initialized"):
 
 # Solo WAITING caduca; lo ya tratado queda en processed-events.json.
 cutoff=now-timedelta(hours=WAIT_HOURS)
-events=[e for e in events if e.get("status")!="WAITING" or dtv(e.get("first_seen"))>=cutoff]
+events=[e for e in events if e.get("status") not in {"WAITING","UPDATE_WAITING"} or dtv(e.get("first_seen"))>=cutoff]
 
 rows,healthy,sport_healthy,source_failures,source_status,source_recovery=fetch_items()
 print("SOURCES_OK",len(set(healthy)),sorted(set(healthy)))
@@ -542,7 +506,7 @@ for e in list(events):
 # Eliminar WAITING caducadas tras la evaluación.
 kept=[]
 for e in events:
- if e.get("status")=="WAITING" and dtv(e.get("first_seen"))<cutoff:
+ if e.get("status") in {"WAITING","UPDATE_WAITING"} and dtv(e.get("first_seen"))<cutoff:
   expired+=1
  else:kept.append(e)
 events=kept
