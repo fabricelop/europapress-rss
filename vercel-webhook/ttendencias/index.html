@@ -111,7 +111,8 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
     <div class="stat" id="systemStat">Sistema —</div>
   </div>
   <div class="filters" id="filters">
-    <button class="filter active" data-filter="new">Nuevas</button>
+    <button class="filter active" data-filter="all">Todas</button>
+    <button class="filter" data-filter="new">Nuevas</button>
     <button class="filter" data-filter="active">En curso</button>
     <button class="filter" data-filter="explained">Explicadas</button>
     <button class="filter" id="selectVisible" type="button">Seleccionar visibles</button>
@@ -146,8 +147,8 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
 const API="/api/ttendencias-control";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 let model=null, selected=new Set(JSON.parse(localStorage.getItem("ttendencias-selection")||"[]")), busy=false;
-let filter=localStorage.getItem("ttendencias-filter")||"new";
-if(!["new","active","explained"].includes(filter))filter="new";
+let filter=localStorage.getItem("ttendencias-filter")||"all";
+if(!["all","new","active","explained"].includes(filter))filter="all";
 const $=id=>document.getElementById(id);
 function saveSelection(){localStorage.setItem("ttendencias-selection",JSON.stringify([...selected]))}
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -203,6 +204,14 @@ function render(){
    list.appendChild(card);
  }
  for(const b of document.querySelectorAll(".filter"))b.classList.toggle("active",b.dataset.filter===filter);
+ const visibleItems=(model.items||[]).filter(item=>
+   filter==="all"||
+   (filter==="new"&&item.status==="new")||
+   (filter==="active"&&item.status==="active")||
+   (filter==="explained"&&item.status==="explained")
+ );
+ const allVisibleSelected=visibleItems.length>0&&visibleItems.every(item=>selected.has(item.name));
+ $("selectVisible").textContent=allVisibleSelected?"Deseleccionar visibles":"Seleccionar visibles";
  const n=selected.size;
  $("selectedCount").textContent=n;
  $("clearBtn").style.display=n?"inline":"none";
@@ -296,9 +305,16 @@ async function action(actionName,names=[]){
 $("filters").addEventListener("click",e=>{
  const b=e.target.closest(".filter");if(!b)return;
  if(b.id==="selectVisible"){
-   for(const item of model?.items||[]){
-     const visible=(filter==="new"&&item.status==="new")||(filter==="active"&&item.status==="active")||(filter==="explained"&&item.status==="explained");
-     if(visible)selected.add(item.name);
+   const visibleItems=(model?.items||[]).filter(item=>
+     filter==="all"||
+     (filter==="new"&&item.status==="new")||
+     (filter==="active"&&item.status==="active")||
+     (filter==="explained"&&item.status==="explained")
+   );
+   const allSelected=visibleItems.length>0&&visibleItems.every(item=>selected.has(item.name));
+   for(const item of visibleItems){
+     if(allSelected)selected.delete(item.name);
+     else selected.add(item.name);
    }
    saveSelection();render();return;
  }
