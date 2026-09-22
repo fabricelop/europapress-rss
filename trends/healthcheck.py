@@ -85,6 +85,7 @@ recent = load("recent.json")
 requests_doc = load("requests.json")
 bot_state = load("telegram-bot-state.json")
 listener_state = load("telegram-listener-state.json")
+editorial_config = load("editorial-config.json", {}) or {}
 control_mode = load("control-mode.json", {}) or {}
 mode = str(control_mode.get("mode") or "telegram").strip().lower()
 web_mode = mode == "web"
@@ -92,6 +93,18 @@ web_mode = mode == "web"
 modules = {}
 blocking = []
 repairs = []
+
+editorial = editorial_config.get("editorial") or {}
+alt_target = int(editorial.get("alternatives_target") or 0)
+alt_non_blocking = editorial.get("alternatives_block_send") is False
+modules["editorial_config"] = {
+    "ok": alt_target == 3 and alt_non_blocking,
+    "alternatives_target": alt_target,
+    "alternatives_block_send": editorial.get("alternatives_block_send"),
+}
+if not modules["editorial_config"]["ok"]:
+    blocking.append("config editorial TTendencias inválida: deben pedirse 3 alternativas sin bloquear el envío")
+
 modules["control_mode"] = {
     "ok": mode in {"telegram", "web"},
     "mode": mode,
@@ -130,14 +143,30 @@ top_ok = False
 if isinstance(recent, dict):
     top = recent.get("top10") or []
     non_stale = int(recent.get("non_stale_source_count") or 0)
+
+    def noise_name(value):
+        v = " ".join(str(value or "").split()).casefold()
+        return (
+            v.startswith("explore why ")
+            or (" is trending " in (" " + v + " ") and "latest viral tweets" in v)
+            or "real-time buzz from twitter" in v
+        )
+
+    noisy_top = [x for x in top if noise_name(x)]
     captured_age = 99999.0
     try:
         captured = datetime.fromisoformat(str(recent.get("captured_at")).replace("Z", "+00:00"))
         captured_age = (datetime.now(timezone.utc) - captured.astimezone(timezone.utc)).total_seconds() / 60
     except Exception:
         pass
-    top_ok = len(top) == 10 and non_stale >= 3 and captured_age <= 25
-    modules["top10"] = {"ok": top_ok, "count": len(top), "non_stale_sources": non_stale, "captured_age_minutes": round(captured_age, 1)}
+    top_ok = len(top) == 10 and non_stale >= 3 and captured_age <= 25 and not noisy_top
+    modules["top10"] = {
+        "ok": top_ok,
+        "count": len(top),
+        "non_stale_sources": non_stale,
+        "captured_age_minutes": round(captured_age, 1),
+        "noise_count": len(noisy_top),
+    }
     if not top_ok:
         if dispatch("ttendencias-refresh.yml"):
             repairs.append("relanzado refresco Top 10")
@@ -173,9 +202,16 @@ else:
 if isinstance(requests_doc, dict):
     allowed = {"preparing", "ready", "explained", "update"}
     bad = [x for x in requests_doc.get("requests", []) if x.get("status") not in allowed]
-    modules["request_queue"] = {"ok": not bad, "invalid_count": len(bad)}
+    noisy = [x for x in requests_doc.get("requests", []) if noise_name(x.get("name"))]
+    modules["request_queue"] = {
+        "ok": not bad and not noisy,
+        "invalid_count": len(bad),
+        "noise_count": len(noisy),
+    }
     if bad:
         blocking.append(f"cola con {len(bad)} estado(s) inválido(s)")
+    if noisy:
+        blocking.append(f"cola con {len(noisy)} tendencia(s) espuria(s)")
 
 signature = " | ".join(sorted(blocking))
 alerted = False
