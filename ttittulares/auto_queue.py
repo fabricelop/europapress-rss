@@ -19,7 +19,13 @@ def save(path, obj):
 def now_iso():
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
-def queue_eligible(events_doc, processing, decisions, minimum, stamp):
+def dtv(value):
+    try:
+        return datetime.fromisoformat(str(value).replace("Z","+00:00")).astimezone(timezone.utc)
+    except Exception:
+        return datetime.min.replace(tzinfo=timezone.utc)
+
+def queue_eligible(events_doc, processing, decisions, minimum, stamp, mode="web", parallel_since=None):
     items = processing.setdefault("items", [])
     decision_by_event = {}
     for d in decisions.get("items", []):
@@ -33,20 +39,31 @@ def queue_eligible(events_doc, processing, decisions, minimum, stamp):
         if event_id:
             existing[event_id] = item
 
-    eligible_status = {"ELIGIBLE", "ELIGIBLE_UPDATE"}
+    mode = str(mode or "telegram").lower()
+    cutoff = dtv(parallel_since) if parallel_since else datetime.max.replace(tzinfo=timezone.utc)
     queued = []
 
     for event in events_doc.get("events", []):
         event_id = str(event.get("id") or "")
-        if not event_id:
-            continue
-        if int(event.get("source_count") or 0) < minimum:
-            continue
-        if str(event.get("status") or "") not in eligible_status:
+        if not event_id or int(event.get("source_count") or 0) < minimum:
             continue
 
-        # Una revisión material del radar tiene su propio event_id (p.ej. -r2):
-        # se trata como noticia nueva y nunca reabre la anterior.
+        status = str(event.get("status") or "")
+        if mode == "web":
+            if status not in {"ELIGIBLE", "ELIGIBLE_UPDATE"}:
+                continue
+        elif mode == "parallel":
+            # En paralelo el radar conserva el circuito Telegram y deja el evento
+            # en SENT_REVIEW. Solo espejamos noticias NUEVAS desde parallel_since:
+            # nunca importamos el backlog antiguo de Telegram.
+            if status != "SENT_REVIEW":
+                continue
+            claimed = dtv(event.get("notification_claimed_at"))
+            if claimed < cutoff:
+                continue
+        else:
+            continue
+
         decision = decision_by_event.get(event_id)
         if decision and str(decision.get("status") or "") in {"published", "dismissed"}:
             continue
@@ -65,10 +82,11 @@ def queue_eligible(events_doc, processing, decisions, minimum, stamp):
             "drafted_source_count": int(event.get("source_count") or 0),
             "selected_at": stamp,
             "status": "PROCESSING",
-            "selection_mode": "AUTO_WEB",
+            "selection_mode": "AUTO_PARALLEL" if mode == "parallel" else "AUTO_WEB",
             "revision": int(event.get("revision") or row.get("revision") or 1),
             "parent_event_id": event.get("parent_event_id"),
             "update_context": event.get("update_context"),
+            "parallel_source_claimed_at": event.get("notification_claimed_at") if mode == "parallel" else None,
         })
         if current is None:
             items.append(row)
@@ -79,32 +97,41 @@ def queue_eligible(events_doc, processing, decisions, minimum, stamp):
     return processing, queued
 
 def selftest():
-    stamp="2026-09-22T20:00:00Z"
+    stamp="2026-09-22T22:05:00Z"
     events={"events":[
         {"id":"under","canonical_title":"Tres fuentes","source_count":3,"status":"WAITING","sources":["A","B","C"]},
-        {"id":"ok","canonical_title":"Cuatro fuentes","source_count":4,"status":"ELIGIBLE","sources":["A","B","C","D"]},
-        {"id":"oldtelegram","canonical_title":"Ya avisada Telegram","source_count":6,"status":"SENT_REVIEW","sources":["A","B","C","D","E","F"]},
+        {"id":"web-ok","canonical_title":"Cuatro fuentes web","source_count":4,"status":"ELIGIBLE","sources":["A","B","C","D"]},
+        {"id":"parallel-old","canonical_title":"Telegram antiguo","source_count":6,"status":"SENT_REVIEW","sources":["A","B","C","D","E","F"],"notification_claimed_at":"2026-09-22T21:50:00Z"},
+        {"id":"parallel-new","canonical_title":"Telegram nuevo","source_count":5,"status":"SENT_REVIEW","sources":["A","B","C","D","E"],"notification_claimed_at":"2026-09-22T22:01:00Z"},
         {"id":"published","canonical_title":"Ya publicada","source_count":5,"status":"ELIGIBLE","sources":["A","B","C","D","E"]},
         {"id":"revision-r2","canonical_title":"Actualización material","source_count":4,"status":"ELIGIBLE_UPDATE","sources":["A","B","C","D"],"revision":2,"parent_event_id":"revision"},
     ]}
-    proc={"items":[]}
     decisions={"items":[{"event_id":"published","status":"published"}]}
-    out,queued=queue_eligible(events,proc,decisions,4,stamp)
-    assert queued==["ok","revision-r2"], queued
-    assert all(x["source_count"]>=4 for x in out["items"])
-    assert all(x["status"]=="PROCESSING" for x in out["items"])
-    # Idempotencia: una segunda pasada no vuelve a encolar lo que ya está PROCESSING.
-    out2,queued2=queue_eligible(events,out,decisions,4,stamp)
+
+    out_web,queued_web=queue_eligible(events,{"items":[]},decisions,4,stamp,"web")
+    assert queued_web==["web-ok","revision-r2"], queued_web
+
+    out_parallel,queued_parallel=queue_eligible(
+        events,{"items":[]},decisions,4,stamp,"parallel","2026-09-22T22:00:00Z"
+    )
+    assert queued_parallel==["parallel-new"], queued_parallel
+    assert out_parallel["items"][0]["selection_mode"]=="AUTO_PARALLEL"
+
+    # Idempotencia: una segunda pasada no vuelve a encolar el mismo evento.
+    out2,queued2=queue_eligible(
+        events,out_parallel,decisions,4,stamp,"parallel","2026-09-22T22:00:00Z"
+    )
     assert queued2==[], queued2
-    print("AUTO_QUEUE_SELFTEST_OK",queued)
+    print("AUTO_QUEUE_SELFTEST_OK",queued_web,queued_parallel)
     return 0
 
 if "--selftest" in sys.argv:
     raise SystemExit(selftest())
 
-mode = load(TT / "control-mode.json", {"mode": "telegram"})
-if str(mode.get("mode") or "telegram").lower() != "web":
-    print("TTiTTulares sigue en modo Telegram: no se encola automáticamente.")
+mode_doc = load(TT / "control-mode.json", {"mode": "telegram"})
+mode = str(mode_doc.get("mode") or "telegram").lower()
+if mode not in {"web","parallel"}:
+    print("TTiTTulares sigue en modo Telegram puro: no se encola automáticamente.")
     raise SystemExit(0)
 
 config = load(TT / "config.json", {})
@@ -113,6 +140,9 @@ events_doc = load(TG / "events.json", {"events": []})
 processing = load(TG / "editorial-processing.json", {"items": []})
 decisions = load(TT / "decisions.json", {"items": []})
 
-processing, queued = queue_eligible(events_doc, processing, decisions, minimum, now_iso())
+processing, queued = queue_eligible(
+    events_doc, processing, decisions, minimum, now_iso(),
+    mode=mode, parallel_since=mode_doc.get("parallel_since")
+)
 save(TG / "editorial-processing.json", processing)
-print("AUTO_WEB_QUEUED", len(queued), queued)
+print(("AUTO_PARALLEL_QUEUED" if mode=="parallel" else "AUTO_WEB_QUEUED"), len(queued), queued)
