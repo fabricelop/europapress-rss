@@ -19,7 +19,7 @@ function authToken(req) {
   const h = String(req.headers.authorization || "");
   return h.startsWith("Bearer ") ? h.slice(7).trim() : "";
 }
-const CONTROL_TOKEN_HASH = "351ab09db83dea6be6a9bb01b2c4ae289da4faa99e9ba0e2f2cc7f6c6e6364c4";
+const CONTROL_TOKEN_HASH = "9b2f6099de2371ae0a6d781da69bbb7afe2e1ab4a270a059a21952cb8e457143";
 function authorized(req) {
   const got = authToken(req);
   if (!got) return false;
@@ -133,14 +133,15 @@ async function queueNames(names) {
         existing.with_image = false;
       } else {
         const previous = [...byId.values()].find(x => norm(x.name) === norm(name));
+        const reexplain = explainedSet.has(norm(name));
         byId.set(id, {
           id,
           name,
           rank: Number(item.rank),
-          status: "preparing",
+          status: reexplain ? "update" : "preparing",
           requested_at: now,
-          revision: Number(previous?.revision || 0),
-          reexplain: explainedSet.has(norm(name)),
+          revision: Number(previous?.revision || 0) + (reexplain ? 1 : 0),
+          reexplain,
           with_image: false,
           batch_id: batchId,
           requested_together: unique,
