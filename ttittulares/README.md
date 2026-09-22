@@ -47,3 +47,14 @@ No activar hasta desplegar y validar la app:
 3. cambiar `ttittulares/control-mode.json` a `web`;
 4. retirar el envío/control Telegram de TTiTTulares;
 5. mantener radar y verificación editorial independientes.
+
+
+## Modo paralelo de prueba
+
+Mientras `control-mode.json` esté en `parallel`:
+
+- Telegram sigue funcionando como hasta ahora.
+- Solo las noticias que alcancen por primera vez el umbral de 4 fuentes después de `parallel_since` se espejan automáticamente a `PROCESSING`.
+- El backlog anterior de `SENT_REVIEW` no se importa.
+- La redacción :15/:45 escribe también `prepared.json`, por lo que la app se puede probar con noticias reales sin cortar Telegram.
+- Al pasar finalmente a `web`, Telegram deja de ser el canal de control.
