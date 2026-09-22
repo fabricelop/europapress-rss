@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "telegram/latest.json"
+      - "telegram/send-trigger.txt"
 
 concurrency:
   group: telegram-send-serialized
