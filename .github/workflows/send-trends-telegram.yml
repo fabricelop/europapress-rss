@@ -43,9 +43,15 @@ jobs:
           requests_path = root / "requests.json"
           control_mode_path = root / "control-mode.json"
           editorial_config_path = root / "editorial-config.json"
+          prepared_path = root / "prepared.json"
 
           state = json.loads(state_path.read_text(encoding="utf-8"))
           requests_doc = json.loads(requests_path.read_text(encoding="utf-8"))
+          try:
+              prepared_doc = json.loads(prepared_path.read_text(encoding="utf-8"))
+          except Exception:
+              prepared_doc = {"project": "TTendencias", "updated_at": None, "items": []}
+          prepared_doc.setdefault("items", [])
           try:
               control_mode = json.loads(control_mode_path.read_text(encoding="utf-8"))
           except Exception:
@@ -124,10 +130,25 @@ jobs:
               candidate = text.split(marker, 1)[1].strip()
               if not candidate:
                   return None
-              # Si el payload incluye una sección de alternativas textual,
-              # el principal termina antes de ella.
               candidate = candidate.split("\n\nAlternativas:", 1)[0].strip()
               return candidate or None
+
+          def explanation_from_message(text):
+              marker = "Tuit principal:"
+              explanation = text.split(marker, 1)[0].strip() if marker in text else text.strip()
+              lines = explanation.splitlines()
+              if lines and re.match(r"^[🔵🟢🟣🟠🔴🟡🟤⚪]?\s*T\d+\s*·", lines[0]):
+                  lines = lines[1:]
+              return "\n".join(lines).strip()
+
+          def prepared_upsert(item):
+              pid = str(item.get("id") or "")
+              items = prepared_doc.setdefault("items", [])
+              for i, old in enumerate(items):
+                  if str(old.get("id") or "") == pid:
+                      items[i] = item
+                      return
+              items.append(item)
 
           for msg in data.get("messages", []):
               buttons = list(msg.get("buttons", []) or [])
@@ -195,6 +216,46 @@ jobs:
               key_basis = " | ".join(related_trends) if related_trends else name
               key = hashlib.sha256(key_basis.encode("utf-8")).hexdigest()[:12] if key_basis else ""
 
+              primary_url = None
+              primary_text = principal_tweet_from_message(str(msg.get("text") or ""))
+              alternatives = []
+              for b in buttons:
+                  label = str(b.get("label") or "")
+                  url = str(b.get("url") or "")
+                  if not url:
+                      continue
+                  normalized_url = stable_x_compose_url(url)
+                  full_text = tweet_text_from_url(normalized_url)
+                  if "alt." in label.lower():
+                      alternatives.append({
+                          "label": label,
+                          "remate": remate_only(full_text),
+                          "tweet_text": full_text,
+                          "url": normalized_url,
+                      })
+                  elif "x" in label.lower() and ("abrir" in label.lower() or "publicar" in label.lower()) and primary_url is None:
+                      primary_url = normalized_url
+                      if full_text:
+                          primary_text = full_text
+
+              matching_requests = [
+                  item for item in requests_doc.get("requests", [])
+                  if norm(item.get("name")) in related_norm
+              ]
+              revision = max([int(item.get("revision") or 0) for item in matching_requests] or [0])
+              prepared_upsert({
+                  "id": key or hashlib.sha256((name or visible_text).encode("utf-8")).hexdigest()[:12],
+                  "trend_name": name,
+                  "related_trends": related_trends,
+                  "explanation": explanation_from_message(str(msg.get("text") or "")),
+                  "primary": {"text": primary_text, "url": primary_url},
+                  "alternatives": alternatives[:alternatives_target],
+                  "search_terms": [],
+                  "generated_at": data.get("generated_at"),
+                  "revision": revision,
+              })
+              prepared_doc["updated_at"] = data.get("generated_at")
+
               payload = {
                   "chat_id": chat_id,
                   "text": visible_text,
@@ -222,6 +283,10 @@ jobs:
                   str(x).strip() for x in msg.get("search_terms", [])
                   if str(x).strip()
               ][:3]
+              for prepared_item in reversed(prepared_doc.get("items", [])):
+                  if str(prepared_item.get("id") or "") == str(key or ""):
+                      prepared_item["search_terms"] = search_terms
+                      break
               if search_terms:
                   query = " OR ".join(search_terms)
                   search_url = "https://x.com/search?" + urllib.parse.urlencode({
@@ -236,6 +301,24 @@ jobs:
                   ])
 
               payload["reply_markup"] = {"inline_keyboard": keyboard}
+
+              # En modo web, latest.json alimenta la bandeja y el bloque
+              # completo deja de enviarse a Telegram.
+              if web_mode:
+                  for item in requests_doc.get("requests", []):
+                      if norm(item.get("name")) in related_norm and item.get("status") in {"preparing", "update"}:
+                          item["status"] = "ready"
+                          item.pop("telegram_message_id", None)
+                  prepared_path.write_text(
+                      json.dumps(prepared_doc, ensure_ascii=False, indent=2) + "\n",
+                      encoding="utf-8",
+                  )
+                  requests_path.write_text(
+                      json.dumps(requests_doc, ensure_ascii=False, indent=2) + "\n",
+                      encoding="utf-8",
+                  )
+                  print("TTendencia preparada para web:", name or "(sin nombre)")
+                  continue
 
               # Imagen editorial: debe ser la imagen generada para TTendencias.
               # Nunca se sustituye silenciosamente por una foto de archivo.
@@ -295,6 +378,10 @@ jobs:
                   json.dumps(requests_doc, ensure_ascii=False, indent=2) + "\n",
                   encoding="utf-8",
               )
+              prepared_path.write_text(
+                  json.dumps(prepared_doc, ensure_ascii=False, indent=2) + "\n",
+                  encoding="utf-8",
+              )
               print("TTendencia enviada:", name or "(sin nombre)")
 
           state_path.write_text(
@@ -303,6 +390,10 @@ jobs:
           )
           requests_path.write_text(
               json.dumps(requests_doc, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          prepared_path.write_text(
+              json.dumps(prepared_doc, ensure_ascii=False, indent=2) + "\n",
               encoding="utf-8",
           )
           PY
@@ -320,6 +411,7 @@ jobs:
         run: |
           cp trends/telegram-bot-state.json /tmp/tt-state-local.json
           cp trends/requests.json /tmp/tt-requests-local.json
+          cp trends/prepared.json /tmp/tt-prepared-local.json
           test -f trends/health-status.json && cp trends/health-status.json /tmp/tt-health-local.json || true
 
           git config user.name "ttendencias-bot"
@@ -332,9 +424,10 @@ jobs:
             python3 trends/merge_runtime_state.py \
               --local-requests /tmp/tt-requests-local.json \
               --local-state /tmp/tt-state-local.json \
+              --local-prepared /tmp/tt-prepared-local.json \
               --local-health /tmp/tt-health-local.json
 
-            git add trends/telegram-bot-state.json trends/requests.json trends/health-status.json
+            git add trends/telegram-bot-state.json trends/requests.json trends/prepared.json trends/health-status.json
             if git diff --cached --quiet; then
               exit 0
             fi
