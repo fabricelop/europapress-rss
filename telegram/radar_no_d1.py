@@ -336,6 +336,21 @@ def processed_snapshot(e,kind,now,revision=None):
   "last_titles":[a.get("title","") for a in e.get("appearances",[])][-10:]
  }
 
+def processed_match(title,proc_index):
+ # Dedupe conservador por acontecimiento ya tratado. best_match usa títulos y
+ # variantes históricas; aquí bajamos ligeramente el umbral para evitar que una
+ # reformulación de otra cabecera vuelva a crear/notificar el mismo hecho.
+ pe,psc=best_match(title,proc_index,.42)
+ return pe,psc
+
+def update_is_material(title,snap):
+ old=set(snap.get("fact_tokens",[]))
+ new=fp(title)
+ novelty=new-old
+ # Más fuentes, otra URL o una reformulación nunca bastan. Solo abrimos una
+ # actualización automática si aparece un término inequívocamente material.
+ return bool(novelty&MATERIAL)
+
 def send_review(e,token,chat,fast=False):
  # Persistimos la marca ANTES de llamar a Telegram. Si una ejecución falla
  # después del envío, el siguiente barrido no vuelve a publicar la misma noticia.
@@ -403,16 +418,15 @@ for row in rows:
  if e:
   add_appearance(e,row,now);continue
  # 2) si coincide con una ya procesada, no recrearla; solo evaluar posible actualización.
- pe,psc=best_match(row["title"],proc_index,.50)
+ pe,psc=processed_match(row["title"],proc_index)
  if pe:
   snap=pe["snapshot"]
   seen_sources=set(snap.get("sources",[]))
-  novelty=fp(row["title"])-set(snap.get("fact_tokens",[]))
-  material_hint=bool(novelty&MATERIAL)
+  material_hint=update_is_material(row["title"],snap)
   new_source=row["source"] not in seen_sources
   key=str(snap.get("event_id"))
   upd=next((x for x in events if x.get("parent_event_id")==key and x.get("status")=="UPDATE_WAITING"),None)
-  if not upd and new_source and (material_hint or len(novelty)>=3):
+  if not upd and new_source and material_hint:
    rev=int(snap.get("revision",1))+1
    upd={"id":key+"-r"+str(rev),"parent_event_id":key,"revision":rev,"canonical_title":row["title"],"url":row["url"],
         "appearances":[],"sources":[],"source_count":0,"percentage":0,"first_seen":iso(now),"last_seen":iso(now),
