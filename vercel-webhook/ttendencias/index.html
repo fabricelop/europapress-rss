@@ -106,10 +106,9 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
   </div>
   <div class="stats">
     <div class="stat">Nuevas <b id="statNew">0</b></div>
-    <div class="stat">Pendientes <b id="statActive">0</b></div>
+    <div class="stat">En curso <b id="statActive">0</b></div>
     <div class="stat">Explicadas <b id="statExplained">0</b></div>
     <div class="stat" id="systemStat">Sistema —</div>
-    <div class="stat" id="modeStat">Control —</div>
   </div>
   <div class="filters" id="filters">
     <button class="filter active" data-filter="new">Nuevas</button>
@@ -118,10 +117,6 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
     <button class="filter" id="selectVisible" type="button">Seleccionar visibles</button>
   </div>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
-  <section style="margin-top:26px">
-    <div class="summary" style="margin-bottom:8px"><div><h1 style="font-size:18px">Historial reciente</h1><div class="meta">Últimas tendencias marcadas como explicadas</div></div></div>
-    <div class="card" style="display:block" id="historyList"><div class="empty">Cargando historial…</div></div>
-  </section>
 </main>
 
 <div class="bottom">
@@ -183,7 +178,7 @@ function render(){
  $("preparedCount").textContent=pc;$("preparedBtn").style.display=pc?"inline-block":"none";
  const allItems=model.items||[];
  $("statNew").textContent=allItems.filter(x=>x.status==="new").length;
- $("statActive").textContent=(model.pending||[]).length;
+ $("statActive").textContent=allItems.filter(x=>x.status==="active").length;
  $("statExplained").textContent=allItems.filter(x=>x.status==="explained").length;
  const sys=$("systemStat"), health=model.health||{};
  const healthAge=health.checked_at?Math.max(0,Math.round((Date.now()-new Date(health.checked_at).getTime())/60000)):9999;
@@ -207,15 +202,6 @@ function render(){
    cb.addEventListener("change",()=>{cb.checked?selected.add(item.name):selected.delete(item.name);saveSelection();render()});
    list.appendChild(card);
  }
- const history=$("historyList");history.innerHTML="";
- for(const h of (model.history||[]).slice(0,12)){
-   const row=document.createElement("div");row.className="historyRow";
-   row.innerHTML='<div class="historyName"></div><div class="meta"></div>';
-   row.querySelector(".historyName").textContent=h.name;
-   row.querySelector(".meta").textContent=fmtDate(h.explained_at);
-   history.appendChild(row);
- }
- if(!(model.history||[]).length)history.innerHTML='<div class="empty">Aún no hay historial.</div>';
  for(const b of document.querySelectorAll(".filter"))b.classList.toggle("active",b.dataset.filter===filter);
  const n=selected.size;
  $("selectedCount").textContent=n;
