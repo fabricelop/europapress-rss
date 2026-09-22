@@ -1,4 +1,4 @@
-import json, base64,re,unicodedata,urllib.request,urllib.parse,urllib.error,html,os,hashlib,concurrent.futures
+import json, base64,re,unicodedata,urllib.request,urllib.parse,urllib.error,html,os,hashlib,concurrent.futures,sys
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
 
@@ -465,6 +465,35 @@ def send_review(e,token,chat,fast=False):
  req=urllib.request.Request("https://api.telegram.org/bot"+token+"/sendMessage",data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
  urllib.request.urlopen(req,timeout=15).read()
  return True
+
+if "--selftest-dedupe" in sys.argv:
+ tests=[
+  (
+   'Sánchez pide explicaciones a Marruecos “porque su control de fronteras falló”',
+   'Sánchez ve evidente que el control fronterizo de Marruecos falló en la crisis de Ceuta y asegura que pidió respuestas',
+   True,
+   "misma noticia Sánchez/Marruecos",
+  ),
+  (
+   'Muere un hombre de 78 años que resultó herido en el incendio de Benahavís (Málaga)',
+   'Muere un hombre de 76 años en un incendio forestal en Vizcaya',
+   False,
+   "incendios distintos Málaga/Vizcaya",
+  ),
+  (
+   'Cerrada la estación de tren de Fabra i Puig por el desprendimiento del falso techo',
+   'Tres heridos al caer un falso techo de la estación de Rodalies de Fabra i Puig en Barcelona',
+   True,
+   "mismo desprendimiento Fabra i Puig",
+  ),
+ ]
+ for a,b,should_match,label in tests:
+  value=score(a,b)
+  matched=value>=0.50
+  print("DEDUPE_SELFTEST",label,round(value,4),matched)
+  if matched!=should_match:
+   raise SystemExit("Fallo deduplicación: "+label)
+ raise SystemExit(0)
 
 now=utcnow()
 events_doc=load(EVENTS,{"version":3,"events":[]})
