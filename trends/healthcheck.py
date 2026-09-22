@@ -93,6 +93,7 @@ recent = load("recent.json")
 requests_doc = load("requests.json")
 bot_state = load("telegram-bot-state.json")
 listener_state = load("telegram-listener-state.json")
+prepared_doc = load("prepared.json")
 editorial_config = load("editorial-config.json", {}) or {}
 control_mode = load("control-mode.json", {}) or {}
 mode = str(control_mode.get("mode") or "telegram").strip().lower()
@@ -125,7 +126,8 @@ if mode not in {"telegram", "web"}:
 # Estado JSON y panel.
 for name, obj in [
     ("recent_json", recent), ("requests_json", requests_doc),
-    ("bot_state_json", bot_state), ("listener_state_json", listener_state)
+    ("bot_state_json", bot_state), ("listener_state_json", listener_state),
+    ("prepared_json", prepared_doc)
 ]:
     modules[name] = {"ok": isinstance(obj, dict)}
     if not isinstance(obj, dict):
