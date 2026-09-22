@@ -42,6 +42,32 @@ jobs:
           python3 trends/update_trends.py
           python3 trends/auto_queue_new.py
 
+      - name: Guardar captura TTendencias inmediatamente
+        run: |
+          set -e
+          git config user.name "ttendencias-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add trends/recent.json trends/checkpoint.json trends/requests.json
+          if git diff --cached --quiet; then
+            echo "TTendencias sin cambios."
+          else
+            git commit -m "Actualizar Top 10 TTendencias"
+            for intento in 1 2 3 4; do
+              git fetch origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                echo "Conflicto al guardar TTendencias; reintentando."
+                exit 1
+              fi
+              if git push origin HEAD:main; then
+                echo "TTendencias guardado correctamente (intento $intento)."
+                break
+              fi
+              sleep $((intento * 2))
+              if [ "$intento" -eq 4 ]; then exit 1; fi
+            done
+          fi
+
       - name: Recorrer Europa Press y actualizar archivo
         run: python generate_feed.py
 
@@ -62,7 +88,7 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add feed.xml latest.json recent.json state.json archive/ trends/recent.json trends/checkpoint.json trends/requests.json
+          git add feed.xml latest.json recent.json state.json archive/
           if ! git diff --cached --quiet; then
             git commit -m "Actualizar archivo Europa Press"
             for intento in 1 2 3 4; do
