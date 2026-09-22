@@ -1,4 +1,4 @@
-import json, base64,re,unicodedata,urllib.request,urllib.parse,html,os,hashlib,concurrent.futures
+import json, base64,re,unicodedata,urllib.request,urllib.parse,urllib.error,html,os,hashlib,concurrent.futures
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
 
@@ -352,29 +352,48 @@ def update_is_material(title,snap):
  return bool(novelty&MATERIAL)
 
 def persist_claim(event):
- # Serializa el claim mediante GitHub Contents API usando el SHA actual.
- # Si hay conflicto, no se envia: el siguiente barrido reintentara de forma segura.
+ # Claim atómico en GitHub. Si otra ejecución ya reclamó el mismo event_id,
+ # esta ejecución NO vuelve a enviar el mensaje.
  gh=os.environ.get("GITHUB_TOKEN","").strip()
  repo=os.environ.get("GITHUB_REPOSITORY","").strip()
  if not gh or not repo:
-  return
+  raise RuntimeError("GITHUB_TOKEN/GITHUB_REPOSITORY no disponibles para claim durable")
  api=f"https://api.github.com/repos/{repo}/contents/telegram/events.json"
- req=urllib.request.Request(api,headers={"Authorization":f"Bearer {gh}","Accept":"application/vnd.github+json"})
- with urllib.request.urlopen(req,timeout=20) as r:
-  cur=json.loads(r.read().decode())
- raw=base64.b64decode(cur["content"]).decode("utf-8")
- data=json.loads(raw)
- found=False
- for x in data.get("events",[]):
-  if str(x.get("id"))==str(event.get("id")):
-   x["notified"]=True
-   x["notification_claimed_at"]=event.get("notification_claimed_at")
-   if event.get("fast_track_notified"): x["fast_track_notified"]=True
-   found=True; break
- if not found: raise RuntimeError("event_id no existe al reclamar")
- body=json.dumps({"message":f"Claim Telegram {event.get('id')}","content":base64.b64encode((json.dumps(data,ensure_ascii=False,indent=2)+"\\n").encode()).decode(),"sha":cur["sha"],"branch":"main"}).encode()
- req=urllib.request.Request(api,data=body,method="PUT",headers={"Authorization":f"Bearer {gh}","Accept":"application/vnd.github+json","Content-Type":"application/json"})
- with urllib.request.urlopen(req,timeout=20) as r: r.read()
+ for attempt in range(1,6):
+  req=urllib.request.Request(api,headers={"Authorization":f"Bearer {gh}","Accept":"application/vnd.github+json"})
+  with urllib.request.urlopen(req,timeout=20) as r:
+   cur=json.loads(r.read().decode())
+  raw=base64.b64decode(cur["content"]).decode("utf-8")
+  data=json.loads(raw)
+  target=None
+  for x in data.get("events",[]):
+   if str(x.get("id"))==str(event.get("id")):
+    target=x;break
+  if target is None:
+   raise RuntimeError("event_id no existe al reclamar")
+  if target.get("notified") or target.get("notification_claimed_at"):
+   print("CLAIM_ALREADY_TAKEN",event.get("id"),target.get("notification_claimed_at"))
+   return False
+  target["notified"]=True
+  target["notification_claimed_at"]=event.get("notification_claimed_at")
+  if event.get("fast_track_notified"): target["fast_track_notified"]=True
+  body=json.dumps({
+   "message":f"Claim Telegram {event.get('id')}",
+   "content":base64.b64encode((json.dumps(data,ensure_ascii=False,indent=2)+"\n").encode()).decode(),
+   "sha":cur["sha"],"branch":"main"
+  }).encode()
+  put=urllib.request.Request(api,data=body,method="PUT",headers={
+   "Authorization":f"Bearer {gh}","Accept":"application/vnd.github+json","Content-Type":"application/json"
+  })
+  try:
+   with urllib.request.urlopen(put,timeout=20) as r:r.read()
+   print("CLAIM_ACQUIRED",event.get("id"))
+   return True
+  except urllib.error.HTTPError as ex:
+   if ex.code not in (409,422): raise
+   print("CLAIM_RACE_RETRY",event.get("id"),attempt)
+   import time;time.sleep(attempt*0.15)
+ return False
 
 def send_review(e,token,chat,fast=False):
  # Guardamos un claim DURABLE en GitHub antes de enviar. Esto evita el doble
@@ -383,7 +402,9 @@ def send_review(e,token,chat,fast=False):
  e["notified"]=True
  e["fast_track_notified"]=bool(fast or e.get("fast_track_notified"))
  try:
-  persist_claim(e)
+  if not persist_claim(e):
+   print("Envio omitido: el evento ya estaba reclamado",e.get("id"))
+   return False
  except Exception as ex:
   print("No se pudo persistir claim; se cancela envio para evitar duplicado:",ex)
   return False
@@ -402,6 +423,7 @@ def send_review(e,token,chat,fast=False):
  payload={"chat_id":chat,"text":txt,"disable_web_page_preview":True,"reply_markup":{"inline_keyboard":buttons}}
  req=urllib.request.Request("https://api.telegram.org/bot"+token+"/sendMessage",data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
  urllib.request.urlopen(req,timeout=15).read()
+ return True
 
 now=utcnow()
 events_doc=load(EVENTS,{"version":3,"events":[]})
@@ -483,8 +505,8 @@ for e in list(events):
  if status=="WAITING" and n>=REVIEW_MIN:
   # Si ya se avisó a 3 fuentes por aceleración, no duplicar el aviso al llegar a 4.
   if not e.get("fast_track_notified") and not e.get("notified"):
-   if token and chat:send_review(e,token,chat)
-   sent+=1
+   did_send=bool(token and chat and send_review(e,token,chat))
+   if did_send: sent+=1
   e["status"]="SENT_REVIEW";e["notified"]=True
   new_processed.append(processed_snapshot(e,"SENT_REVIEW",now))
  elif status=="WAITING" and n==FAST_TRACK_MIN and not e.get("fast_track_notified") and not e.get("notified"):
@@ -493,17 +515,17 @@ for e in list(events):
    # FAST_TRACK y revisión normal son una sola notificación editorial.
    # Marcar notified evita que otro proceso/ejecución envíe el mismo event_id.
    e["notified"]=True
-   if token and chat:send_review(e,token,chat,True)
+   did_send=bool(token and chat and send_review(e,token,chat,True))
    e["fast_track_notified"]=True
    e["fast_track_notified_at"]=iso(now)
    e["fast_track_minutes"]=round(mins,1)
    new_processed.append(processed_snapshot(e,"FAST_TRACK_ALERT",now))
-   sent+=1
+   if did_send: sent+=1
  elif status=="UPDATE_WAITING" and n>=REVIEW_MIN:
-  if token and chat:send_review(e,token,chat)
+  did_send=bool(token and chat and send_review(e,token,chat))
   e["status"]="SENT_REVIEW";e["notified"]=True
   new_processed.append(processed_snapshot(e,"UPDATE_SENT_REVIEW",now,e.get("revision",2)))
-  sent+=1
+  if did_send: sent+=1
 
 # Eliminar WAITING caducadas tras la evaluación.
 kept=[]
