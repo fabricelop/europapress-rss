@@ -761,7 +761,7 @@ def poll(seconds=3300):
     # El listener es también el reloj fiable del panel: refresca al arrancar
     # y después cada 15 minutos aunque el cron de GitHub se retrase o falle.
     refresh_interval = int(os.environ.get("TTENDENCIAS_REFRESH_SECONDS", "0"))
-    next_refresh = (time.time() + refresh_interval) if refresh_interval > 0 else float("inf")
+    next_refresh = time.time() if refresh_interval > 0 else float("inf")
     dirty = False
 
     while time.time() - started < seconds:
