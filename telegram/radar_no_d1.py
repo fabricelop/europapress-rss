@@ -114,9 +114,22 @@ def get(url):
  r=urllib.request.Request(url,headers=headers)
  return urllib.request.urlopen(r,timeout=12).read().decode("utf-8","ignore")
 def clean(s): return re.sub(r"\s+"," ",html.unescape(re.sub("<[^>]+>"," ",str(s)))).strip()
+TOKEN_ALIASES={
+ "frontera":"frontera","fronteras":"frontera","fronterizo":"frontera","fronteriza":"frontera","fronterizos":"frontera","fronterizas":"frontera",
+ "pide":"pedir","pidio":"pedir","pedir":"pedir","pedido":"pedir","pidiendo":"pedir","solicita":"pedir","solicito":"pedir",
+ "explicacion":"explicacion","explicaciones":"explicacion","respuesta":"explicacion","respuestas":"explicacion",
+ "falla":"fallar","fallo":"fallar","fallar":"fallar","fallido":"fallar","fallida":"fallar","fallaron":"fallar",
+ "detenido":"detener","detenida":"detener","detencion":"detener","detenciones":"detener",
+ "muere":"morir","murio":"morir","muerto":"morir","muerta":"morir","fallece":"morir","fallecio":"morir",
+ "cerrada":"cerrar","cerrado":"cerrar","cierra":"cerrar","cierre":"cerrar",
+}
 def norm(s):
  s=''.join(c for c in unicodedata.normalize("NFKD",str(s).lower()) if not unicodedata.combining(c))
- return [x for x in re.findall(r"[a-z0-9]+",s) if len(x)>2 and x not in STOP]
+ out=[]
+ for x in re.findall(r"[a-z0-9]+",s):
+  if len(x)<=2 or x in STOP: continue
+  out.append(TOKEN_ALIASES.get(x,x))
+ return out
 def fp(s): return set(norm(s))
 def score(a,b):
  A,B=fp(a),fp(b)
@@ -261,6 +274,41 @@ def add_appearance(e,row,now):
  e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCES,1)
  e["last_seen"]=iso(now)
  if not e.get("url"):e["url"]=row["url"]
+
+def merge_duplicate_active_events(events):
+ # Segunda barrera contra duplicados: si dos eventos activos representan
+ # claramente el mismo hecho, se fusionan ANTES de evaluar el umbral de 4.
+ active={"WAITING","UPDATE_WAITING","ELIGIBLE","ELIGIBLE_UPDATE"}
+ kept=[]
+ merged=0
+ for e in sorted(events,key=lambda x:dtv(x.get("first_seen"))):
+  if e.get("status") not in active:
+   kept.append(e);continue
+  target=None
+  for k in kept:
+   if k.get("status") not in active: continue
+   # No mezclar una revisión material con su noticia padre ni revisiones distintas.
+   if bool(e.get("parent_event_id"))!=bool(k.get("parent_event_id")): continue
+   if e.get("parent_event_id") and e.get("parent_event_id")!=k.get("parent_event_id"): continue
+   sc=score(e.get("canonical_title",""),k.get("canonical_title",""))
+   if sc>=0.70:
+    target=k;break
+  if not target:
+   kept.append(e);continue
+  for a in e.get("appearances",[]):
+   add_appearance(target,{
+    "source":a.get("source"),"source_type":a.get("source_type","general"),
+    "title":a.get("title") or e.get("canonical_title",""),"url":a.get("url") or e.get("url","")
+   },dtv(a.get("last_seen")) if a.get("last_seen") else utcnow())
+  if len(e.get("canonical_title",""))>len(target.get("canonical_title","")):
+   target["canonical_title"]=e.get("canonical_title","")
+  if dtv(e.get("first_seen"))<dtv(target.get("first_seen")):
+   target["first_seen"]=e.get("first_seen")
+  target["last_seen"]=max(str(target.get("last_seen") or ""),str(e.get("last_seen") or ""))
+  merged+=1
+  print("EVENT_MERGED_DUPLICATE",e.get("id"),"->",target.get("id"))
+ print("EVENT_MERGE_SUMMARY",merged)
+ return kept
 
 def source_gather_minutes(e,count=None):
  general=set(e.get("sources",[]))
@@ -463,6 +511,8 @@ for row in rows:
  e={"id":eid,"canonical_title":row["title"],"url":row["url"],"appearances":[],"sources":[],"source_count":0,"percentage":0,
     "first_seen":iso(now),"last_seen":iso(now),"status":"WAITING","notified":False,"revision":1}
  add_appearance(e,row,now);events.append(e)
+
+events=merge_duplicate_active_events(events)
 
 control_mode=load(CONTROL_MODE,{"mode":"telegram"})
 web_mode=str(control_mode.get("mode") or "telegram").strip().lower()=="web"
