@@ -86,6 +86,7 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
     <button class="filter" data-filter="new">Nuevas</button>
     <button class="filter" data-filter="active">En curso</button>
     <button class="filter" data-filter="explained">Explicadas</button>
+    <button class="filter" id="selectVisible" type="button">Seleccionar visibles</button>
   </div>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
   <section id="pendingSection" style="display:none;margin-top:24px">
@@ -241,10 +242,24 @@ async function action(actionName,names=[]){
  }catch(e){showToast(String(e.message||e))}
  finally{busy=false;render()}
 }
-$("filters").addEventListener("click",e=>{const b=e.target.closest(".filter");if(!b)return;filter=b.dataset.filter;localStorage.setItem("ttendencias-filter",filter);render()});
+$("filters").addEventListener("click",e=>{
+ const b=e.target.closest(".filter");if(!b)return;
+ if(b.id==="selectVisible"){
+   for(const item of model?.items||[]){
+     const active=["preparing","ready","update"].includes(item.status);
+     const visible=filter==="all"||(filter==="new"&&item.status==="new")||(filter==="active"&&active)||(filter==="explained"&&item.status==="explained");
+     if(visible)selected.add(item.name);
+   }
+   saveSelection();render();return;
+ }
+ filter=b.dataset.filter;localStorage.setItem("ttendencias-filter",filter);render()
+});
 $("clearBtn").onclick=()=>{selected.clear();saveSelection();render()};
 $("queueBtn").onclick=()=>action("queue",[...selected]);
-$("explainedBtn").onclick=()=>action("explained",[...selected]);
+$("explainedBtn").onclick=()=>{
+ if(!selected.size)return;
+ if(confirm("¿Marcar "+selected.size+" tendencia(s) como explicadas?"))action("explained",[...selected]);
+};
 $("refreshBtn").onclick=()=>load();
 $("forceBtn").onclick=()=>action("refresh");
 $("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("sheet").classList.add("show")};
