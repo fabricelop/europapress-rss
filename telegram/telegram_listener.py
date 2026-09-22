@@ -180,7 +180,12 @@ def run_radar(slot):
         if prune.returncode!=0:
             print("EVENTS_PRUNE_ERROR",prune.stderr,flush=True)
             return
-        commit_paths([str(EVENTS),str(PROCESSED),str(PROC)],"Actualizar estado radar editorial")
+        check=subprocess.run(["python3","telegram/autocheck_ttittulares.py"],text=True,capture_output=True)
+        if check.stdout: print(check.stdout,flush=True)
+        if check.returncode!=0:
+            print("AUTOCHECK_BLOCKING",check.stderr,flush=True)
+            return
+        commit_paths([str(EVENTS),str(PROCESSED),str(PROC),"telegram/autocheck-status.json"],"Actualizar estado radar editorial")
         print("RADAR_OK",slot,flush=True)
     else:
         print("RADAR_ERROR",slot,p.returncode,flush=True)
