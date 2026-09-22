@@ -39,7 +39,9 @@ def inspect():
     healthy=int(d.get("healthy_source_count",0) or 0) if isinstance(d,dict) else 0
     if healthy<MIN_HEALTHY: problems.append(f"fuentes_sanas_{healthy}")
     failures=d.get("source_failures",[]) if isinstance(d,dict) else []
-    if failures: problems.append(f"fuentes_fallidas_{len(failures)}")
+    # Un fallo individual de fuente NO es bloqueante si el radar conserva
+    # suficiente cobertura general. El propio radar aplica fallbacks/recuperación.
+    # Solo alertar por degradación real: menos de MIN_HEALTHY fuentes sanas.
     if EVENTS.exists() and EVENTS.stat().st_size>MAX_BYTES: problems.append("events_json_demasiado_grande")
     p=load(PROC,{})
     if not isinstance(p,dict) or not isinstance(p.get("items"),list):
@@ -68,7 +70,7 @@ if "events_json_demasiado_grande" in problems:
     actions.append("poda_events:"+str(p.returncode))
 
 # Si el radar quedó degradado, repetir una vez desde estado ya podado.
-if any(x.startswith("fuentes_sanas_") or x.startswith("fuentes_fallidas_") or x=="events_json_invalido" for x in problems):
+if any(x.startswith("fuentes_sanas_") or x=="events_json_invalido" for x in problems):
     p=run("python3","telegram/radar_no_d1.py")
     actions.append("reintento_radar:"+str(p.returncode))
     if p.returncode==0:
@@ -94,7 +96,13 @@ Path("telegram/autocheck-status.json").write_text(json.dumps(report,ensure_ascii
 print(json.dumps(report,ensure_ascii=False))
 if remaining:
     # Evitar inundar Telegram con el mismo error en cada barrido.
-    key="|".join(sorted(remaining))
+    # Clave estable por COMPONENTE, no por contador variable. Así una oscilación
+    # (p.ej. 4->5->2 fuentes) no genera una alerta nueva cada pocos minutos.
+    def alert_family(x):
+        if x.startswith("fuentes_sanas_"): return "fuentes_degradadas"
+        if x.startswith("elaborando_bloqueado_"): return "elaborando_bloqueado"
+        return x
+    key="|".join(sorted(set(alert_family(x) for x in remaining)))
     state=load(ALERT_STATE,{})
     last_key=state.get("key")
     try:
