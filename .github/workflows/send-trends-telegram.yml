@@ -35,6 +35,7 @@ jobs:
           import re
           import urllib.parse
           import urllib.request
+          import urllib.error
           from pathlib import Path
 
           root = Path("trends")
@@ -75,8 +76,12 @@ jobs:
                   data=json.dumps(payload).encode("utf-8"),
                   headers={"Content-Type": "application/json"},
               )
-              with urllib.request.urlopen(req) as r:
-                  result = json.loads(r.read().decode("utf-8"))
+              try:
+                  with urllib.request.urlopen(req) as r:
+                      result = json.loads(r.read().decode("utf-8"))
+              except urllib.error.HTTPError as e:
+                  body = e.read().decode("utf-8", errors="replace")
+                  raise RuntimeError(f"Telegram {method} HTTP {e.code}: {body}") from e
               if not result.get("ok"):
                   raise RuntimeError(result)
               return result["result"]
@@ -268,7 +273,7 @@ jobs:
                       normalized_url = stable_x_compose_url(b["url"]) if ("abrir" in b["label"].lower() or "publicar" in b["label"].lower()) and "x" in b["label"].lower() else b["url"]
                       button["url"] = normalized_url
                       tweet_text = tweet_text_from_url(normalized_url)
-                      if tweet_text and len(tweet_text) <= 280 and "abrir" in b["label"].lower() and "x" in b["label"].lower():
+                      if tweet_text and len(tweet_text) <= 256 and "abrir" in b["label"].lower() and "x" in b["label"].lower():
                           keyboard.append([
                               button,
                               {"text": "📋 Copia", "copy_text": {"text": tweet_text}},
@@ -301,6 +306,13 @@ jobs:
                   ])
 
               payload["reply_markup"] = {"inline_keyboard": keyboard}
+
+              # Persistir primero la bandeja web: Telegram es un canal de entrega,
+              # no debe bloquear ni hacer perder el material editorial preparado.
+              prepared_path.write_text(
+                  json.dumps(prepared_doc, ensure_ascii=False, indent=2) + "\n",
+                  encoding="utf-8",
+              )
 
               # En modo web, latest.json alimenta la bandeja y el bloque
               # completo deja de enviarse a Telegram.
