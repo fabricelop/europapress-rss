@@ -105,8 +105,8 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   try{
     if(req.method==="GET"){
-      const [prepared,status]=await Promise.all([readJson(PREPARED),readJson("ttittulares/status.json")]);
-      return res.status(200).json({ok:true,service:"ttittulares-control",prepared:prepared.doc,status:status.doc})
+      const [prepared,status,config]=await Promise.all([readJson(PREPARED),readJson("ttittulares/status.json"),readJson("ttittulares/config.json")]);
+      return res.status(200).json({ok:true,service:"ttittulares-control",prepared:prepared.doc,status:status.doc,config:config.doc})
     }
     if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
     if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
