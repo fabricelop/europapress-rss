@@ -333,6 +333,10 @@ def processed_snapshot(e,kind,now,revision=None):
  }
 
 def send_review(e,token,chat,fast=False):
+ # Persistimos la marca ANTES de llamar a Telegram. Si una ejecución falla
+ # después del envío, el siguiente barrido no vuelve a publicar la misma noticia.
+ e["notification_claimed_at"]=iso(utcnow())
+ e["notified"]=True
  if fast:
   mins=fast_track_minutes(e)
   speed=(" · reunidas en "+format_duration_minutes(mins)) if mins is not None else ""
@@ -429,7 +433,7 @@ for e in list(events):
  status=e.get("status")
  if status=="WAITING" and n>=REVIEW_MIN:
   # Si ya se avisó a 3 fuentes por aceleración, no duplicar el aviso al llegar a 4.
-  if not e.get("fast_track_notified"):
+  if not e.get("fast_track_notified") and not e.get("notified"):
    if token and chat:send_review(e,token,chat)
    sent+=1
   e["status"]="SENT_REVIEW";e["notified"]=True
