@@ -13,6 +13,15 @@ Esta carpeta es independiente de TTendencias y contiene el estado de la futura a
 - Una novedad material del mismo asunto se crea como un evento/revisión nueva; no reabre la noticia anterior.
 - Telegram se mantiene únicamente durante la transición. El corte final será cambiando `control-mode.json` a `web`.
 
+## Vistas de la app
+
+Los tres indicadores superiores son también selectores de vista:
+
+- **Listas**: noticias ya redactadas y pendientes de decisión/publicación.
+- **En elaboración**: noticias que ya alcanzaron el umbral y están en la cola editorial.
+- **Con 3 fuentes**: lista de noticias detectadas exactamente con tres fuentes. Se muestran **tal cual las tiene el radar**, sin redacción ni selección manual, con sus tres fuentes y enlace al origen. En cuanto alcanzan la cuarta fuente dejan esta vista y pasan automáticamente a elaboración en el siguiente ciclo.
+- Las noticias con 1–2 fuentes no ocupan la interfaz principal.
+
 ## Bandeja `prepared.json`
 
 Cada elemento preparado debe contener, como mínimo:
