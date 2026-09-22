@@ -169,6 +169,14 @@ async function markExplained(names) {
   });
   return { ok: true, explained: unique };
 }
+async function backendStatus() {
+  const r = await gh(`contents/${RECENT}?ref=${encodeURIComponent(BRANCH)}`);
+  if (!r.ok) {
+    return { ok: false, status: r.status, detail: (await r.text()).slice(0, 300) };
+  }
+  return { ok: true, status: r.status };
+}
+
 async function refreshNow() {
   const r = await gh("actions/workflows/ttendencias-refresh.yml/dispatches", {
     method: "POST",
@@ -190,7 +198,15 @@ export default async function handler(req, res) {
 
     const body = req.body || {};
     const action = String(body.action || "");
-    if (action === "ping") return res.status(200).json({ ok: true, access: "granted" });
+    if (action === "ping") {
+      const backend = await backendStatus();
+      return res.status(backend.ok ? 200 : 503).json({
+        ok: backend.ok,
+        access: "granted",
+        backend,
+        error: backend.ok ? undefined : "Token de control válido, pero esta instancia no tiene acceso válido a GitHub."
+      });
+    }
     if (action === "queue") return res.status(200).json(await queueNames(body.names));
     if (action === "explained") return res.status(200).json(await markExplained(body.names));
     if (action === "refresh") return res.status(200).json(await refreshNow());
