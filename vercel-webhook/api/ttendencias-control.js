@@ -19,7 +19,7 @@ function authToken(req) {
   const h = String(req.headers.authorization || "");
   return h.startsWith("Bearer ") ? h.slice(7).trim() : "";
 }
-const CONTROL_TOKEN_HASH = "2bf7a4713fa8d7474abcb124094e952c3edbe871bc35df447a2b3d094bd3fbf6";
+const CONTROL_TOKEN_HASH = "351ab09db83dea6be6a9bb01b2c4ae289da4faa99e9ba0e2f2cc7f6c6e6364c4";
 function authorized(req) {
   const got = authToken(req);
   if (!got) return false;
