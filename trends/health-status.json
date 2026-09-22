@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-22T20:21:44.360778+00:00",
+  "checked_at": "2026-09-22T20:22:20.843203+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -37,12 +37,11 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
       "non_stale_sources": 6,
-      "captured_age_minutes": 38.8,
-      "noise_count": 0,
-      "repair_started": true
+      "captured_age_minutes": 0.2,
+      "noise_count": 0
     },
     "listener": {
       "ok": true,
@@ -51,9 +50,9 @@
     },
     "refresh": {
       "ok": true,
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.0,
+      "age_minutes": 0.5,
       "run_id": 35779779809,
       "reason": null,
       "repairable": true,
@@ -61,7 +60,7 @@
     },
     "telegram_sender": {
       "ok": true,
-      "outcome": "success"
+      "outcome": "no-aplica"
     },
     "request_queue": {
       "ok": true,
@@ -69,9 +68,7 @@
       "noise_count": 0
     }
   },
-  "repairs_started": [
-    "relanzado refresco Top 10"
-  ],
+  "repairs_started": [],
   "blocking": [],
   "alert_sent": false,
   "last_alert_signature": ""
