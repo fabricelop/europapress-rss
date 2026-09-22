@@ -2,7 +2,7 @@
 import argparse, json
 from pathlib import Path
 
-STATUS_ORDER = {"preparing": 1, "update": 1, "ready": 2, "explained": 3}
+STATUS_ORDER = {"preparing": 1, "update": 1, "ready": 2, "problematic": 3, "dismissed": 4, "explained": 4}
 
 def load(path, default):
     try:
@@ -170,7 +170,7 @@ def merge_bot_state(remote, local, merged_requests):
 
     explained = {
         norm(x.get("name")) for x in merged_requests.get("requests", [])
-        if x.get("status") == "explained"
+        if x.get("status") in {"explained", "dismissed"}
     }
     pending = {}
     for src in ((remote or {}).get("pending", {}), (local or {}).get("pending", {})):
