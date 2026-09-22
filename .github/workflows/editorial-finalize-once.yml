@@ -1,0 +1,49 @@
+name: Finalizar cola editorial TTiTTulares
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "telegram/editorial-finalize-trigger.txt"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-repo-write
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Marcar entregas confirmadas
+        run: |
+          python3 - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+          p=Path('telegram/editorial-processing.json')
+          d=json.loads(p.read_text(encoding='utf-8'))
+          ids={'fee6a846c287','c816bad78fdd'}
+          now=datetime.now(timezone.utc).isoformat().replace('+00:00','Z')
+          changed=[]
+          for x in d.get('items',[]):
+              if str(x.get('event_id')) in ids and x.get('status')=='PROCESSING':
+                  x['status']='READY'; x['delivered_at']=now; x['delivery_confirmation']='workflow_logs'; changed.append(str(x.get('event_id')))
+          p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('FINALIZED',','.join(changed))
+          PY
+      - name: Guardar sin pisar cambios concurrentes
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add telegram/editorial-processing.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Confirmar entregas editoriales TTiTTulares"
+          git pull --rebase origin main
+          git push origin HEAD:main
