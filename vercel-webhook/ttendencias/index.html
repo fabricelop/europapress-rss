@@ -115,6 +115,9 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
   <div class="filters" id="filters">
     <button class="filter active" data-filter="all">Todas</button>
     <button class="filter" data-filter="new">Nuevas</button>
+    <button class="filter" data-filter="preparing">Elaborando</button>
+    <button class="filter" data-filter="ready">Preparadas</button>
+    <button class="filter" data-filter="update">Actualizando</button>
     <button class="filter" data-filter="active">En curso</button>
     <button class="filter" data-filter="explained">Explicadas</button>
     <button class="filter" id="selectVisible" type="button">Seleccionar visibles</button>
@@ -200,6 +203,9 @@ function render(){
  for(const item of model.items||[]){
    const isActive=["preparing","ready","update"].includes(item.status);
    if(filter==="new"&&item.status!=="new")continue;
+   if(filter==="preparing"&&item.status!=="preparing")continue;
+   if(filter==="ready"&&item.status!=="ready")continue;
+   if(filter==="update"&&item.status!=="update")continue;
    if(filter==="active"&&!isActive)continue;
    if(filter==="explained"&&item.status!=="explained")continue;
    const card=document.createElement("label");
@@ -317,7 +323,7 @@ $("filters").addEventListener("click",e=>{
  if(b.id==="selectVisible"){
    for(const item of model?.items||[]){
      const active=["preparing","ready","update"].includes(item.status);
-     const visible=filter==="all"||(filter==="new"&&item.status==="new")||(filter==="active"&&active)||(filter==="explained"&&item.status==="explained");
+     const visible=filter==="all"||(filter==="new"&&item.status==="new")||(filter==="preparing"&&item.status==="preparing")||(filter==="ready"&&item.status==="ready")||(filter==="update"&&item.status==="update")||(filter==="active"&&active)||(filter==="explained"&&item.status==="explained");
      if(visible)selected.add(item.name);
    }
    saveSelection();render();return;
