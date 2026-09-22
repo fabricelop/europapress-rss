@@ -1,0 +1,77 @@
+import json, os, subprocess, urllib.request
+from datetime import datetime, timezone
+from pathlib import Path
+
+EVENTS=Path("telegram/events.json")
+PROC=Path("telegram/editorial-processing.json")
+PROCESSED=Path("telegram/processed-events.json")
+MIN_HEALTHY=10
+MAX_BYTES=900000
+
+def load(path, default):
+    try:
+        raw=path.read_text(encoding="utf-8").strip()
+        return json.loads(raw) if raw else default
+    except Exception:
+        return default
+
+def run(*args):
+    return subprocess.run(args,text=True,capture_output=True)
+
+def telegram(text):
+    token=os.getenv("TELEGRAM_BOT_TOKEN","")
+    chat=os.getenv("TELEGRAM_CHAT_ID","")
+    if not token or not chat: return False
+    data=json.dumps({"chat_id":chat,"text":text}).encode()
+    req=urllib.request.Request(f"https://api.telegram.org/bot{token}/sendMessage",data=data,headers={"Content-Type":"application/json"})
+    try:
+        with urllib.request.urlopen(req,timeout=20) as r:
+            return json.loads(r.read().decode()).get("ok",False)
+    except Exception:
+        return False
+
+def inspect():
+    d=load(EVENTS,{})
+    problems=[]
+    if not isinstance(d,dict) or not isinstance(d.get("events"),list):
+        problems.append("events_json_invalido")
+    healthy=int(d.get("healthy_source_count",0) or 0) if isinstance(d,dict) else 0
+    if healthy<MIN_HEALTHY: problems.append(f"fuentes_sanas_{healthy}")
+    failures=d.get("source_failures",[]) if isinstance(d,dict) else []
+    if failures: problems.append(f"fuentes_fallidas_{len(failures)}")
+    if EVENTS.exists() and EVENTS.stat().st_size>MAX_BYTES: problems.append("events_json_demasiado_grande")
+    p=load(PROC,{})
+    if not isinstance(p,dict) or not isinstance(p.get("items"),list): problems.append("editorial_processing_invalido")
+    q=load(PROCESSED,{})
+    if not isinstance(q,(dict,list)): problems.append("processed_events_invalido")
+    return d,problems
+
+before,problems=inspect()
+actions=[]
+if "events_json_demasiado_grande" in problems:
+    p=run("python3","telegram/prune_events.py")
+    actions.append("poda_events:"+str(p.returncode))
+
+# Si el radar quedó degradado, repetir una vez desde estado ya podado.
+if any(x.startswith("fuentes_sanas_") or x.startswith("fuentes_fallidas_") or x=="events_json_invalido" for x in problems):
+    p=run("python3","telegram/radar_no_d1.py")
+    actions.append("reintento_radar:"+str(p.returncode))
+    if p.returncode==0:
+        run("python3","telegram/prune_events.py")
+
+after,remaining=inspect()
+report={
+ "checked_at":datetime.now(timezone.utc).isoformat(),
+ "before":problems,
+ "repair_actions":actions,
+ "remaining":remaining,
+ "healthy_source_count":after.get("healthy_source_count",0) if isinstance(after,dict) else 0,
+ "source_failures":after.get("source_failures",[]) if isinstance(after,dict) else [],
+ "events_bytes":EVENTS.stat().st_size if EVENTS.exists() else 0,
+ "ok":not remaining
+}
+Path("telegram/autocheck-status.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+print(json.dumps(report,ensure_ascii=False))
+if remaining:
+    telegram("🚨 TTiTTulares · fallo bloqueante tras auto-reparación\n"+", ".join(remaining))
+    raise SystemExit(1)
