@@ -1,4 +1,4 @@
-import json,re,unicodedata,urllib.request,urllib.parse,html,os,hashlib,concurrent.futures
+import json, base64,re,unicodedata,urllib.request,urllib.parse,html,os,hashlib,concurrent.futures
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
 
@@ -351,11 +351,42 @@ def update_is_material(title,snap):
  # actualización automática si aparece un término inequívocamente material.
  return bool(novelty&MATERIAL)
 
+def persist_claim(event):
+ # Serializa el claim mediante GitHub Contents API usando el SHA actual.
+ # Si hay conflicto, no se envia: el siguiente barrido reintentara de forma segura.
+ gh=os.environ.get("GITHUB_TOKEN","").strip()
+ repo=os.environ.get("GITHUB_REPOSITORY","").strip()
+ if not gh or not repo:
+  return
+ api=f"https://api.github.com/repos/{repo}/contents/telegram/events.json"
+ req=urllib.request.Request(api,headers={"Authorization":f"Bearer {gh}","Accept":"application/vnd.github+json"})
+ with urllib.request.urlopen(req,timeout=20) as r:
+  cur=json.loads(r.read().decode())
+ raw=base64.b64decode(cur["content"]).decode("utf-8")
+ data=json.loads(raw)
+ found=False
+ for x in data.get("events",[]):
+  if str(x.get("id"))==str(event.get("id")):
+   x["notified"]=True
+   x["notification_claimed_at"]=event.get("notification_claimed_at")
+   if event.get("fast_track_notified"): x["fast_track_notified"]=True
+   found=True; break
+ if not found: raise RuntimeError("event_id no existe al reclamar")
+ body=json.dumps({"message":f"Claim Telegram {event.get('id')}","content":base64.b64encode((json.dumps(data,ensure_ascii=False,indent=2)+"\\n").encode()).decode(),"sha":cur["sha"],"branch":"main"}).encode()
+ req=urllib.request.Request(api,data=body,method="PUT",headers={"Authorization":f"Bearer {gh}","Accept":"application/vnd.github+json","Content-Type":"application/json"})
+ with urllib.request.urlopen(req,timeout=20) as r: r.read()
+
 def send_review(e,token,chat,fast=False):
- # Persistimos la marca ANTES de llamar a Telegram. Si una ejecución falla
- # después del envío, el siguiente barrido no vuelve a publicar la misma noticia.
+ # Guardamos un claim DURABLE en GitHub antes de enviar. Esto evita el doble
+ # Telegram cuando dos barridos se solapan: el segundo ve notified=true.
  e["notification_claimed_at"]=iso(utcnow())
  e["notified"]=True
+ e["fast_track_notified"]=bool(fast or e.get("fast_track_notified"))
+ try:
+  persist_claim(e)
+ except Exception as ex:
+  print("No se pudo persistir claim; se cancela envio para evitar duplicado:",ex)
+  return False
  if fast:
   mins=fast_track_minutes(e)
   speed=(" · reunidas en "+format_duration_minutes(mins)) if mins is not None else ""
