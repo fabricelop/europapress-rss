@@ -117,9 +117,42 @@ jobs:
               m = re.search(r"\bT\d+\s*·\s*([^\n]+)", visible_text)
               return m.group(1).strip() if m else ""
 
+          def principal_tweet_from_message(text):
+              marker = "Tuit principal:"
+              if marker not in text:
+                  return None
+              candidate = text.split(marker, 1)[1].strip()
+              if not candidate:
+                  return None
+              # Si el payload incluye una sección de alternativas textual,
+              # el principal termina antes de ella.
+              candidate = candidate.split("\n\nAlternativas:", 1)[0].strip()
+              return candidate or None
+
           for msg in data.get("messages", []):
+              buttons = list(msg.get("buttons", []) or [])
+              has_primary_x = any(
+                  b.get("url")
+                  and "x" in str(b.get("label", "")).lower()
+                  and "alt." not in str(b.get("label", "")).lower()
+                  and ("abrir" in str(b.get("label", "")).lower() or "publicar" in str(b.get("label", "")).lower())
+                  for b in buttons
+              )
+              if not has_primary_x:
+                  principal_tweet = principal_tweet_from_message(str(msg.get("text") or ""))
+                  if principal_tweet:
+                      buttons.insert(0, {
+                          "label": "Abrir en X",
+                          "url": "https://twitter.com/intent/tweet?" + urllib.parse.urlencode({"text": principal_tweet}),
+                      })
+                      print(
+                          f"AVISO: {msg.get('trend_name') or 'TTendencia'} venía sin enlace principal a X; "
+                          "se ha reconstruido automáticamente",
+                          flush=True,
+                      )
+
               alt_texts = []
-              for b in msg.get("buttons", []):
+              for b in buttons:
                   label = str(b.get("label", "")).lower()
                   if "alt." in label and b.get("url"):
                       t = remate_only(tweet_text_from_url(b["url"]))
@@ -168,13 +201,13 @@ jobs:
                   "disable_web_page_preview": True,
               }
               keyboard = []
-              for b in msg.get("buttons", []):
+              for b in buttons:
                   button = {"text": b["label"]}
                   if b.get("url"):
                       normalized_url = stable_x_compose_url(b["url"]) if ("abrir" in b["label"].lower() or "publicar" in b["label"].lower()) and "x" in b["label"].lower() else b["url"]
                       button["url"] = normalized_url
                       tweet_text = tweet_text_from_url(normalized_url)
-                      if tweet_text and len(tweet_text) <= 256 and "abrir" in b["label"].lower() and "x" in b["label"].lower():
+                      if tweet_text and len(tweet_text) <= 280 and "abrir" in b["label"].lower() and "x" in b["label"].lower():
                           keyboard.append([
                               button,
                               {"text": "📋 Copia", "copy_text": {"text": tweet_text}},
