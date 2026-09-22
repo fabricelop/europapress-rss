@@ -140,6 +140,8 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
       <button class="primary" id="saveToken">Guardar</button>
     </div>
     <div class="meta" id="accessStatus" style="margin-top:10px"></div>
+    <button class="secondary" id="badgeBtn" type="button" style="width:100%;margin-top:14px">Activar contador en el icono</button>
+    <div class="meta" id="badgeStatus" style="margin-top:8px"></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -403,7 +405,12 @@ $("explainedBtn").onclick=()=>{
 };
 $("preparedBtn").onclick=()=>location.href="/ttendencias/preparados/";
 $("refreshBtn").onclick=()=>{showToast("Recargando datos");load()};
-$("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado en este dispositivo":"Sin token guardado";$("sheet").classList.add("show")};
+$("settingsBtn").onclick=()=>{
+ $("tokenInput").value=token();
+ $("accessStatus").textContent=token()?"Token guardado en este dispositivo":"Sin token guardado";
+ $("badgeStatus").textContent=("setAppBadge" in navigator)?(typeof Notification!=="undefined"&&Notification.permission==="granted"?"Contador del icono activo":"Contador del icono pendiente de activar"):"Instala TTendencias en la pantalla de inicio para usar el contador";
+ $("sheet").classList.add("show")
+};
 $("cancelToken").onclick=()=>$("sheet").classList.remove("show");
 $("testToken").onclick=async()=>{
  const v=$("tokenInput").value.trim();if(!v){$("accessStatus").textContent="Introduce primero el token.";return}
@@ -424,6 +431,21 @@ $("testToken").onclick=async()=>{
  finally{$("testToken").disabled=false}
 };
 $("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado")};
+$("badgeBtn").onclick=async()=>{
+ const status=$("badgeStatus");
+ if(!("setAppBadge" in navigator)){status.textContent="El contador requiere instalar TTendencias en la pantalla de inicio.";return}
+ if(typeof Notification==="undefined"){status.textContent="Las notificaciones no están disponibles en este modo.";return}
+ let permission=Notification.permission;
+ if(permission==="default"){
+   try{permission=await Notification.requestPermission()}catch(_){permission="denied"}
+ }
+ if(permission==="granted"){
+   await updateAppBadge();
+   status.textContent="✓ Contador del icono activado";
+ }else{
+   status.textContent="Permiso no concedido. Puedes cambiarlo en Ajustes > Notificaciones.";
+ }
+};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});
 window.addEventListener("pageshow",()=>load(true));
