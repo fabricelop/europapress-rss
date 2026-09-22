@@ -104,7 +104,10 @@ async function backendStatus(){
 export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   try{
-    if(req.method==="GET"){const backend=await backendStatus();return res.status(backend.ok?200:503).json({ok:backend.ok,service:"ttittulares-control",backend})}
+    if(req.method==="GET"){
+      const [prepared,status]=await Promise.all([readJson(PREPARED),readJson("ttittulares/status.json")]);
+      return res.status(200).json({ok:true,service:"ttittulares-control",prepared:prepared.doc,status:status.doc})
+    }
     if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
     if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
     const body=req.body||{},action=String(body.action||"");
