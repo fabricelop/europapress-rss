@@ -5,19 +5,20 @@
     "alternatives_block_send": false,
     "images_enabled_in_web_control": false,
     "schedule_minutes": [
-      0,
-      30
+      10,
+      40
     ],
     "daytime_max_wait_minutes": 30,
     "schedule_timezone": "Europe/Madrid",
     "detection_schedule_minutes": [
-      10,
-      25,
-      40,
-      55
+      5,
+      20,
+      35,
+      50
     ],
-    "problematic_after_minutes": 30,
-    "auto_queue_new_trends": true
+    "auto_queue_new_trends": true,
+    "delay_warning_after_minutes": 30,
+    "problematic_only_on_editorial_failure": true
   },
   "delivery": {
     "channel": "web",
