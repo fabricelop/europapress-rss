@@ -16,6 +16,14 @@ def load(name, default=None):
     except Exception:
         return default
 
+def noise_name(value):
+    v = " ".join(str(value or "").split()).casefold()
+    return (
+        v.startswith("explore why ")
+        or (" is trending " in (" " + v + " ") and "latest viral tweets" in v)
+        or "real-time buzz from twitter" in v
+    )
+
 def gh(path, method="GET", payload=None):
     req = urllib.request.Request(
         f"https://api.github.com/repos/{REPO}/{path}",
@@ -143,14 +151,6 @@ top_ok = False
 if isinstance(recent, dict):
     top = recent.get("top10") or []
     non_stale = int(recent.get("non_stale_source_count") or 0)
-
-    def noise_name(value):
-        v = " ".join(str(value or "").split()).casefold()
-        return (
-            v.startswith("explore why ")
-            or (" is trending " in (" " + v + " ") and "latest viral tweets" in v)
-            or "real-time buzz from twitter" in v
-        )
 
     noisy_top = [x for x in top if noise_name(x)]
     captured_age = 99999.0
