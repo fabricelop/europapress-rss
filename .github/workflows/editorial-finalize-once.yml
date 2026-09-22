@@ -1,6 +1,9 @@
 name: Finalizar cola editorial TTiTTulares
 
 on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15,45 * * * *"
   push:
     branches: [main]
     paths:
@@ -28,13 +31,26 @@ jobs:
           from pathlib import Path
           p=Path('telegram/editorial-processing.json')
           d=json.loads(p.read_text(encoding='utf-8'))
-          ids={'fee6a846c287','c816bad78fdd','4aa083068039'}
           now=datetime.now(timezone.utc).isoformat().replace('+00:00','Z')
           changed=[]
+          # Cierre genérico: si los 4 mensajes de un grupo constan como enviados,
+          # cualquier PROCESSING correspondiente pasa a READY.
+          sent_path=Path('telegram/emergency-sent.json')
+          sent=json.loads(sent_path.read_text(encoding='utf-8')) if sent_path.exists() else {'messages':[]}
+          sent_ids={str(m.get('id')) for m in sent.get('messages',[])}
           for x in d.get('items',[]):
-              if str(x.get('event_id')) in ids and x.get('status')=='PROCESSING':
-                  x['status']='READY'; x['delivered_at']=now; x['delivery_confirmation']='workflow_logs'; changed.append(str(x.get('event_id')))
-          p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+              if x.get('status')!='PROCESSING':
+                  continue
+              eid=str(x.get('event_id'))
+              rv=x.get('rewrite_version') if x.get('selection_mode')=='REWRITE' else None
+              base=f"editorial-{eid}-rewrite-{rv}" if rv else f"editorial-{eid}"
+              expected={base+'-original',base+'-a',base+'-b',base+'-c'}
+              if expected.issubset(sent_ids):
+                  x['status']='READY'
+                  x['delivered_at']=now
+                  x['delivery_confirmation']='emergency-sent'
+                  changed.append(eid)
+          p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\\n',encoding='utf-8')
           print('FINALIZED',','.join(changed))
           PY
       - name: Guardar sin pisar cambios concurrentes
