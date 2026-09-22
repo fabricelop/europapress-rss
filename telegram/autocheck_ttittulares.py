@@ -1,5 +1,5 @@
 import json, os, subprocess, urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 EVENTS=Path("telegram/events.json")
@@ -41,7 +41,21 @@ def inspect():
     if failures: problems.append(f"fuentes_fallidas_{len(failures)}")
     if EVENTS.exists() and EVENTS.stat().st_size>MAX_BYTES: problems.append("events_json_demasiado_grande")
     p=load(PROC,{})
-    if not isinstance(p,dict) or not isinstance(p.get("items"),list): problems.append("editorial_processing_invalido")
+    if not isinstance(p,dict) or not isinstance(p.get("items"),list):
+        problems.append("editorial_processing_invalido")
+    else:
+        now=datetime.now(timezone.utc)
+        stuck=[]
+        for item in p.get("items",[]):
+            if item.get("status")!="PROCESSING": continue
+            try:
+                since=datetime.fromisoformat(str(item.get("selected_at","")).replace("Z","+00:00"))
+                if now-since > timedelta(minutes=35):
+                    stuck.append(str(item.get("event_id","?")))
+            except Exception:
+                stuck.append(str(item.get("event_id","?")))
+        if stuck:
+            problems.append("elaborando_atascado_"+str(len(stuck)))
     q=load(PROCESSED,{})
     if not isinstance(q,(dict,list)): problems.append("processed_events_invalido")
     return d,problems
@@ -60,6 +74,11 @@ if any(x.startswith("fuentes_sanas_") or x.startswith("fuentes_fallidas_") or x=
         run("python3","telegram/prune_events.py")
 
 after,remaining=inspect()
+
+# Un PROCESSING antiguo significa que la selección llegó a Elaborando pero no
+# existe un redactor/entregador activo que la consuma. No lo ocultamos como
+# saludable: lo dejamos explícitamente bloqueante para evitar colas silenciosas.
+
 report={
  "checked_at":datetime.now(timezone.utc).isoformat(),
  "before":problems,
