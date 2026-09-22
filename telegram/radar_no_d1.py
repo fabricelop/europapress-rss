@@ -221,7 +221,7 @@ def fetch_items():
  specs={n:(u,k,False) for n,u,k in SOURCES}
  specs.update({n:(u,k,True) for n,u,k in SPORT_SOURCES})
  jobs=[]
- with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
+ with concurrent.futures.ThreadPoolExecutor(max_workers=len(SOURCES)+len(SPORT_SOURCES)) as ex:
   for spec in SOURCES: jobs.append((False,ex.submit(parse_source,*spec,False,False)))
   for spec in SPORT_SOURCES: jobs.append((True,ex.submit(parse_source,*spec,True,False)))
   for is_sport,fut in jobs:
