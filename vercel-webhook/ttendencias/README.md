@@ -9,6 +9,7 @@ Panel web mobile-first para controlar el Top 10 de TTendencias sin usar Telegram
 - La API usa el `GITHUB_TOKEN` ya disponible en el proyecto Vercel.
 - Los cambios de estado se escriben en GitHub con control de conflictos.
 - Telegram sigue siendo únicamente el canal de entrega de los tuits preparados.
+- El objetivo editorial es principal + 3 alternativas de remate. Si excepcionalmente una redacción llega con menos de 3 alternativas, el sender avisa en el log pero la envía igualmente para no perder la tendencia.
 - La opción con imagen queda fuera de esta primera versión.
 
 ## Estados visuales
