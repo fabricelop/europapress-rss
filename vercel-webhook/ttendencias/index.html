@@ -107,7 +107,7 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
   </div>
   <div class="stats">
     <div class="stat">Nuevas <b id="statNew">0</b></div>
-    <div class="stat">En curso <b id="statActive">0</b></div>
+    <div class="stat">Pendientes <b id="statActive">0</b></div>
     <div class="stat">Explicadas <b id="statExplained">0</b></div>
     <div class="stat" id="systemStat">Sistema —</div>
     <div class="stat" id="modeStat">Control —</div>
@@ -118,13 +118,13 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
     <button class="filter" data-filter="preparing">Elaborando</button>
     <button class="filter" data-filter="ready">Preparadas</button>
     <button class="filter" data-filter="update">Actualizando</button>
-    <button class="filter" data-filter="active">En curso</button>
+    <button class="filter" data-filter="active">Pendientes</button>
     <button class="filter" data-filter="explained">Explicadas</button>
     <button class="filter" id="selectVisible" type="button">Seleccionar visibles</button>
   </div>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
   <section id="pendingSection" style="display:none;margin-top:24px">
-    <div class="summary" style="margin-bottom:10px"><div><h1 style="font-size:18px">En curso</h1><div class="meta">Solicitudes todavía activas</div></div><div class="badge" id="pendingCount">0</div></div>
+    <div class="summary" style="margin-bottom:10px"><div><h1 style="font-size:18px">Pendientes de cerrar</h1><div class="meta">Elaborando, actualizando o preparadas sin cerrar</div></div><div class="badge" id="pendingCount">0</div></div>
     <section class="list" id="pendingList"></section>
   </section>
   <section style="margin-top:26px">
@@ -225,8 +225,8 @@ function render(){
  $("pendingList").innerHTML="";
  for(const item of pending){
    const card=document.createElement("div");card.className="card";
-   const label=item.status==="ready"?"Preparada":item.status==="update"?"Actualizando":"Elaborando";
-   card.innerHTML='<div class="rank">•</div><div><div class="name"></div><div class="state">'+stateDot(item.status)+'<span></span><button class="xlink pendingX" type="button">Buscar en X</button></div></div><div><div class="meta pendingTime"></div><button class="secondary pendingDone" type="button" style="min-height:34px;padding:7px 9px;margin-top:6px;font-size:12px">✓ Explicada</button></div>';
+   const label=item.status==="ready"?"Preparada · pendiente de cerrar":item.status==="update"?"Actualizando":"Elaborando";
+   card.innerHTML='<div class="rank">•</div><div><div class="name"></div><div class="state">'+stateDot(item.status)+'<span></span><button class="xlink pendingX" type="button">Buscar en X</button></div></div><div><div class="meta pendingTime"></div><button class="secondary pendingDone" type="button" style="min-height:34px;padding:7px 9px;margin-top:6px;font-size:12px">Marcar explicada</button></div>';
    card.querySelector(".name").textContent=item.name;
    card.querySelector(".state span").textContent=label;
    const mins=item.requested_at?Math.max(0,Math.round((Date.now()-new Date(item.requested_at).getTime())/60000)):0;
