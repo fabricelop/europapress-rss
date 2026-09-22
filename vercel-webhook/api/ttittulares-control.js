@@ -11,6 +11,9 @@ function b64d(s){return Buffer.from(String(s||"").replace(/\n/g,""),"base64").to
 function b64e(s){return Buffer.from(s,"utf8").toString("base64")}
 function authToken(req){const h=String(req.headers.authorization||"");return h.startsWith("Bearer ")?h.slice(7).trim():""}
 function authorized(req){
+  // Los previews están protegidos por Vercel Deployment Protection.
+  // No pedimos un segundo token dentro de la propia app.
+  if(process.env.VERCEL_ENV==="preview")return true;
   const got=authToken(req);if(!got)return false;
   const expected=process.env.TTITTULARES_CONTROL_TOKEN||"";
   if(expected)return got===expected;
