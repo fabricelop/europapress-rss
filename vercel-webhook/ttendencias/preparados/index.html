@@ -29,14 +29,15 @@ const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
 const $=id=>document.getElementById(id);let model={items:[]},reworkItem=null;const locallyClosed=new Set();
 function token(){return localStorage.getItem("ttendencias-control-token")||""}
+function localKey(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
 function rememberExplained(names){
  let m={};try{m=JSON.parse(localStorage.getItem("ttendencias-local-explained")||"{}")}catch(_){}
- const now=Date.now();for(const name of names||[])m[String(name||"").trim().toLowerCase()]=now;
+ const now=Date.now();for(const name of names||[])m[localKey(name)]=now;
  localStorage.setItem("ttendencias-local-explained",JSON.stringify(m));
 }
 function forgetExplained(names){
  let m={};try{m=JSON.parse(localStorage.getItem("ttendencias-local-explained")||"{}")}catch(_){}
- for(const name of names||[])delete m[String(name||"").trim().toLowerCase()];
+ for(const name of names||[])delete m[localKey(name)];
  localStorage.setItem("ttendencias-local-explained",JSON.stringify(m));
 }
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2400)}
