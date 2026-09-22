@@ -19,14 +19,6 @@
     "auto_queue_new_trends": true,
     "delay_warning_after_minutes": 30,
     "problematic_only_on_editorial_failure": true,
-    "api_failover": {
-      "enabled": false,
-      "mode": "recover_overdue",
-      "grace_minutes": 8,
-      "model": "gpt-5.6-terra",
-      "web_search": true,
-      "note": "Se activa solo cuando exista OPENAI_API_KEY y tras validar el flujo. Recupera solicitudes que sigan preparing/update después del pase :10/:40."
-    },
     "image_policy": {
       "enabled": false,
       "format": "1:1",
@@ -36,7 +28,14 @@
       "skip_if_forced_or_sensitive": true,
       "storage": "vercel_blob",
       "delete_on_explained_or_dismissed": true
-    }
+    },
+    "queue_consumer_only": true,
+    "queue_states": [
+      "preparing",
+      "update"
+    ],
+    "output_file": "trends/prepared.json",
+    "ready_after_persist": true
   },
   "delivery": {
     "channel": "web",
