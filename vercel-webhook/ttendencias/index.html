@@ -181,7 +181,7 @@ function freshnessText(v){
 }
 function render(){
  if(!model)return;
- $("stamp").textContent="Captura "+fmtDate(model.captured_at);
+ $("stamp").textContent=(model.cached?"Sin conexión · última lectura ":"Captura ")+fmtDate(model.captured_at);
  const fr=freshnessText(model.captured_at);$("freshness").textContent=fr;
  const age=model.captured_at?Math.max(0,Math.round((Date.now()-new Date(model.captured_at).getTime())/60000)):0;
  $("freshness").style.color=age<=20?"#63d99a":age<=35?"#f5c451":"#ff7f8b";
@@ -293,11 +293,23 @@ async function load(silent=false){
    const controlMode=rs[4].ok?await rs[4].json():{};
    const d=buildModel(recent,requestDoc,explained,health,controlMode);
    model=d;
+   try{localStorage.setItem("ttendencias-last-model",JSON.stringify(d))}catch(_){}
    const current=new Set((d.items||[]).map(x=>x.name));
    selected=new Set([...selected].filter(x=>current.has(x)));
    saveSelection();
    render();
- }catch(e){if(!silent)$("list").innerHTML='<div class="error">'+String(e.message||e)+'</div>'}
+ }catch(e){
+   let cached=null;
+   try{cached=JSON.parse(localStorage.getItem("ttendencias-last-model")||"null")}catch(_){}
+   if(cached){
+     cached.cached=true;model=cached;render();
+     $("freshness").textContent="● Datos en caché · no se pudo conectar";
+     $("freshness").style.color="#ff7f8b";
+     if(!silent)showToast("Sin conexión con los datos; se muestra la última lectura");
+   }else if(!silent){
+     $("list").innerHTML='<div class="error">'+String(e.message||e)+'</div>'
+   }
+ }
  finally{$("refreshBtn").disabled=false}
 }
 function ensureToken(){
