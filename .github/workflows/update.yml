@@ -2,6 +2,8 @@ name: Actualizar RSS Europa Press
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '10,40 * * * *'
   push:
     branches: [main]
     paths:
@@ -83,6 +85,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
           git config user.name "github-actions[bot]"
