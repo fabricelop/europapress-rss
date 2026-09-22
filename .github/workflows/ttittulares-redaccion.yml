@@ -1,0 +1,53 @@
+name: Redacción TTiTTulares
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'telegram/editorial-processing.json'
+
+concurrency:
+  group: ttittulares-redaccion
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  queue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Vigilar cola de redacción
+        run: |
+          python3 - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+          p=Path("telegram/editorial-processing.json")
+          d=json.loads(p.read_text(encoding="utf-8"))
+          changed=False
+          now=datetime.now(timezone.utc).isoformat()
+          for x in d.get("items",[]):
+              if x.get("status")=="PROCESSING" and not x.get("editorial_claimed_at"):
+                  x["editorial_claimed_at"]=now
+                  x["status"]="READY"
+                  x["editorial_error"]="redactor_consumer_missing"
+                  changed=True
+          if changed:
+              p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          PY
+      - name: Guardar recuperación segura
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add telegram/editorial-processing.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Recuperar cola de redacción TTiTTulares"
+          git pull --rebase origin main
+          git push origin HEAD:main
