@@ -63,46 +63,6 @@ async function mutateJson(path, message, mutator) {
   }
   throw new Error(`Conflicto persistente actualizando ${path}`);
 }
-function stateFor(name, requests, explainedSet) {
-  const n = norm(name);
-  const req = [...requests].reverse().find(x => norm(x.name) === n);
-  const status = String(req?.status || "");
-  if (status === "preparing") return { code: "preparing", label: "Elaborando" };
-  if (status === "update") return { code: "update", label: "Actualizando" };
-  if (status === "ready") return { code: "ready", label: "Preparada" };
-  if (status === "explained" || explainedSet.has(n)) return { code: "explained", label: "Explicada" };
-  return { code: "new", label: "Nueva" };
-}
-async function model() {
-  const [{ doc: recent }, { doc: requestDoc }, { doc: explained }] = await Promise.all([
-    readJson(RECENT), readJson(REQUESTS), readJson(EXPLAINED)
-  ]);
-  const requests = Array.isArray(requestDoc.requests) ? requestDoc.requests : [];
-  const explainedSet = new Set((explained.items || []).map(x => norm(x.name)));
-  const items = (recent.items || []).slice(0, 10).map(item => {
-    const state = stateFor(item.name, requests, explainedSet);
-    const req = [...requests].reverse().find(x => norm(x.name) === norm(item.name));
-    return {
-      rank: Number(item.rank),
-      name: String(item.name),
-      status: state.code,
-      status_label: state.label,
-      requested_at: req?.requested_at || null,
-      telegram_message_id: req?.telegram_message_id || null,
-    };
-  });
-  return {
-    project: "TTendencias",
-    captured_at: recent.captured_at || null,
-    reliability: recent.reliability || null,
-    source_count: recent.source_count || 0,
-    non_stale_source_count: recent.non_stale_source_count || 0,
-    items,
-    pending: requests.filter(x => ["preparing", "update", "ready"].includes(String(x.status || ""))).map(x => ({
-      id: x.id, name: x.name, rank: x.rank, status: x.status, requested_at: x.requested_at || null
-    }))
-  };
-}
 async function queueNames(names) {
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
   if (!unique.length) throw new Error("No hay tendencias seleccionadas.");
