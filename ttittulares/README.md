@@ -4,54 +4,40 @@ Esta carpeta es independiente de TTendencias y contiene el estado de la futura a
 
 ## Flujo previsto
 
-- Radar: :10 y :40 (cinco minutos antes de la redacción).
+- Radar: :10 y :40, cinco minutos antes de la redacción.
 - Redacción: :15 y :45.
-- Umbral editorial: 4 fuentes generales distintas.
-- 3 fuentes: solo indicador de proximidad; no se redacta todavía.
-- Al alcanzar 4 fuentes, la noticia queda disponible para que el siguiente pase editorial la procese automáticamente.
+- Umbral editorial fijo: **mínimo 4 fuentes generales distintas**.
+- Las noticias con menos de 4 fuentes permanecen únicamente en el radar y no aparecen en la app.
+- Si una noticia no llega a 4 fuentes en 24 horas desde su primera detección, desaparece del proceso.
+- Al alcanzar 4 fuentes entra automáticamente en elaboración.
 - Antes de redactar se mantiene la verificación editorial actual.
 - Una novedad material del mismo asunto se crea como un evento/revisión nueva; no reabre la noticia anterior.
 - Telegram se mantiene únicamente durante la transición. El corte final será cambiando `control-mode.json` a `web`.
 
+## Fuentes
+
+La app muestra **fuentes funcionando / fuentes configuradas**, por ejemplo `14/14`.
+
+La comprobación y recuperación de cada fuente se realiza dentro de su propio worker concurrente: origen principal, fallbacks específicos y, si hace falta, fallback adicional. Una fuente fallida no bloquea ni invalida el barrido; el radar continúa con las restantes. No existe una segunda fase bloqueante dedicada a reparar fuentes.
+
 ## Vistas de la app
 
-Los tres indicadores superiores son también selectores de vista:
-
 - **Listas**: noticias ya redactadas y pendientes de decisión/publicación.
-- **En elaboración**: noticias que ya alcanzaron el umbral y están en la cola editorial.
-- **Con 3 fuentes**: lista de noticias detectadas exactamente con tres fuentes. Se muestran **tal cual las tiene el radar**, sin redacción ni selección manual, con sus tres fuentes y enlace al origen. En cuanto alcanzan la cuarta fuente dejan esta vista y pasan automáticamente a elaboración en el siguiente ciclo.
-- Las noticias con 1–2 fuentes no ocupan la interfaz principal.
+- **En elaboración**: noticias que ya alcanzaron al menos 4 fuentes y están en la cola editorial.
+
+No hay vista de noticias con 1, 2 o 3 fuentes.
 
 ## Bandeja `prepared.json`
 
-Cada elemento preparado debe contener, como mínimo:
+Cada elemento preparado contiene `event_id`, titular, URL, número de fuentes al redactarse, fuentes, fecha, base factual, revisión y las variantes de publicación.
 
-```json
-{
-  "event_id": "abc123",
-  "title": "Titular",
-  "url": "https://...",
-  "drafted_source_count": 4,
-  "sources_at_draft": ["Fuente A", "Fuente B", "Fuente C", "Fuente D"],
-  "prepared_at": "ISO-8601",
-  "factual_summary": "Base factual verificada",
-  "revision": 1,
-  "variants": [
-    {"label": "Principal", "text": "Tuit completo", "url": "https://twitter.com/intent/tweet?text=..."},
-    {"label": "Remate 1", "text": "Tuit completo", "url": "https://twitter.com/intent/tweet?text=..."},
-    {"label": "Remate 2", "text": "Tuit completo", "url": "https://twitter.com/intent/tweet?text=..."},
-    {"label": "Remate 3", "text": "Tuit completo", "url": "https://twitter.com/intent/tweet?text=..."}
-  ]
-}
-```
-
-La app cruza `event_id` con `status.json` para mostrar el formato **Redactada con 4 (6)**: 4 fuentes en el momento de redactar y 6 fuentes actuales.
+La app cruza `event_id` con `status.json` para mostrar **Redactada con 4 (6)**: 4 fuentes al redactarla y 6 fuentes actuales.
 
 ## Acciones web
 
 - **Ya publicada**: retira de la bandeja y registra `published`.
 - **Desestimar**: retira de la bandeja y registra `dismissed`.
-- **Rehacer**: pide instrucciones, retira la versión actual y devuelve el mismo `event_id` a `PROCESSING` con `selection_mode=REWRITE`.
+- **Rehacer**: pide instrucciones y devuelve la noticia a `PROCESSING` con `selection_mode=REWRITE`.
 
 ## Corte a web
 
@@ -59,6 +45,5 @@ No activar hasta desplegar y validar la app:
 1. desplegar `/ttittulares/`;
 2. validar lectura y escritura;
 3. cambiar `ttittulares/control-mode.json` a `web`;
-4. actualizar las automatizaciones :15/:45 para escribir `ttittulares/prepared.json`;
-5. retirar envío/control Telegram de TTiTTulares;
-6. mantener el radar independiente y la verificación editorial.
+4. retirar el envío/control Telegram de TTiTTulares;
+5. mantener radar y verificación editorial independientes.
