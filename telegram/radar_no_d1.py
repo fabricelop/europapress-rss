@@ -290,21 +290,37 @@ def merge_duplicate_active_events(events):
    # No mezclar una revisión material con su noticia padre ni revisiones distintas.
    if bool(e.get("parent_event_id"))!=bool(k.get("parent_event_id")): continue
    if e.get("parent_event_id") and e.get("parent_event_id")!=k.get("parent_event_id"): continue
-   sc=score(e.get("canonical_title",""),k.get("canonical_title",""))
-   if sc>=0.70:
+   if score(e.get("canonical_title",""),k.get("canonical_title",""))>=0.70:
     target=k;break
   if not target:
    kept.append(e);continue
-  for a in e.get("appearances",[]):
-   add_appearance(target,{
-    "source":a.get("source"),"source_type":a.get("source_type","general"),
-    "title":a.get("title") or e.get("canonical_title",""),"url":a.get("url") or e.get("url","")
-   },dtv(a.get("last_seen")) if a.get("last_seen") else utcnow())
+
+  # Fusionar apariciones conservando las horas originales de cada medio.
+  by_source={}
+  for a in list(target.get("appearances",[]))+list(e.get("appearances",[])):
+   src=str(a.get("source") or "")
+   if not src: continue
+   cur=by_source.get(src)
+   if cur is None:
+    by_source[src]=dict(a);continue
+   if dtv(a.get("first_seen"))<dtv(cur.get("first_seen")):
+    cur["first_seen"]=a.get("first_seen")
+   if dtv(a.get("last_seen"))>dtv(cur.get("last_seen")):
+    cur.update({"last_seen":a.get("last_seen"),"title":a.get("title") or cur.get("title"),"url":a.get("url") or cur.get("url"),"source_type":a.get("source_type",cur.get("source_type","general"))})
+  target["appearances"]=list(by_source.values())
+  target["sources"]=sorted({a["source"] for a in target["appearances"] if a.get("source_type","general")!="sport"})
+  target["sport_sources"]=sorted({a["source"] for a in target["appearances"] if a.get("source_type")=="sport"})
+  target["source_count"]=len(target["sources"])
+  target["sport_source_count"]=len(target["sport_sources"])
+  target["percentage"]=round(100*target["source_count"]/TOTAL_SOURCES,1)
+
   if len(e.get("canonical_title",""))>len(target.get("canonical_title","")):
    target["canonical_title"]=e.get("canonical_title","")
   if dtv(e.get("first_seen"))<dtv(target.get("first_seen")):
    target["first_seen"]=e.get("first_seen")
-  target["last_seen"]=max(str(target.get("last_seen") or ""),str(e.get("last_seen") or ""))
+  if dtv(e.get("last_seen"))>dtv(target.get("last_seen")):
+   target["last_seen"]=e.get("last_seen")
+  if not target.get("url"): target["url"]=e.get("url","")
   merged+=1
   print("EVENT_MERGED_DUPLICATE",e.get("id"),"->",target.get("id"))
  print("EVENT_MERGE_SUMMARY",merged)
