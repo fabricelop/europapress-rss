@@ -86,6 +86,13 @@ async function queueNames(names) {
         existing.batch_id = batchId;
         existing.requested_together = unique;
         existing.with_image = false;
+        if (String(existing.status || "") === "ready") {
+          existing.status = "update";
+          existing.requested_at = now;
+          existing.revision = Number(existing.revision || 0) + 1;
+          existing.reexplain = true;
+          delete existing.telegram_message_id;
+        }
       } else {
         const previous = [...byId.values()].find(x => norm(x.name) === norm(name));
         const reexplain = explainedSet.has(norm(name));
