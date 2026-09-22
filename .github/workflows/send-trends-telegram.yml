@@ -42,6 +42,7 @@ jobs:
           state_path = root / "telegram-bot-state.json"
           requests_path = root / "requests.json"
           control_mode_path = root / "control-mode.json"
+          editorial_config_path = root / "editorial-config.json"
 
           state = json.loads(state_path.read_text(encoding="utf-8"))
           requests_doc = json.loads(requests_path.read_text(encoding="utf-8"))
@@ -49,7 +50,12 @@ jobs:
               control_mode = json.loads(control_mode_path.read_text(encoding="utf-8"))
           except Exception:
               control_mode = {"mode": "telegram"}
+          try:
+              editorial_config = json.loads(editorial_config_path.read_text(encoding="utf-8"))
+          except Exception:
+              editorial_config = {}
           web_mode = str(control_mode.get("mode") or "telegram").strip().lower() == "web"
+          alternatives_target = int((editorial_config.get("editorial") or {}).get("alternatives_target") or 3)
           chat_id = state.get("chat_id")
           if not chat_id:
               raise SystemExit("TTendencias no está enlazado todavía: abre el bot y pulsa /start.")
@@ -121,10 +127,10 @@ jobs:
                           alt_texts.append(t)
 
               visible_text = msg["text"]
-              if "🌶️" in visible_text and len(alt_texts) < 3:
+              if "🌶️" in visible_text and len(alt_texts) < alternatives_target:
                   print(
                       f"AVISO: {msg.get('trend_name') or 'TTendencia'} trae {len(alt_texts)} alternativa(s); "
-                      "el objetivo editorial son 3, pero se envía igualmente para no perder la tendencia",
+                      f"el objetivo editorial son {alternatives_target}, pero se envía igualmente para no perder la tendencia",
                       flush=True,
                   )
               if alt_texts:
