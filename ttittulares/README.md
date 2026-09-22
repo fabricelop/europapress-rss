@@ -58,3 +58,8 @@ Mientras `control-mode.json` esté en `parallel`:
 - El backlog anterior de `SENT_REVIEW` no se importa.
 - La redacción :15/:45 escribe también `prepared.json`, por lo que la app se puede probar con noticias reales sin cortar Telegram.
 - Al pasar finalmente a `web`, Telegram deja de ser el canal de control.
+
+
+## Estado actual de prueba
+
+Telegram está temporalmente cortado mediante `control-mode=web`. Se han recuperado manualmente tres noticias anteriores con >=4 fuentes para probar el circuito real de `En elaboración` y `Listas` sin importar todo el backlog.
