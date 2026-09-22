@@ -7,6 +7,8 @@ on:
     paths:
       - ".github/workflows/ttittulares-preflight.yml"
       - "ttittulares/**"
+      - "telegram/radar_no_d1.py"
+      - "telegram/autocheck_ttittulares.py"
       - "vercel-webhook/ttittulares/**"
       - "vercel-webhook/api/ttittulares-control.js"
 
@@ -21,7 +23,7 @@ jobs:
 
       - name: Validar Python
         run: |
-          python3 -m py_compile telegram/radar_no_d1.py ttittulares/auto_queue.py ttittulares/build_status.py
+          python3 -m py_compile telegram/radar_no_d1.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py
 
       - name: Validar JSON y reglas
         run: |
