@@ -3,12 +3,18 @@
   "radar": {
     "minimum_sources": 4,
     "waiting_ttl_hours": 24,
-    "schedule_minutes": [10, 40],
+    "schedule_minutes": [
+      10,
+      40
+    ],
     "timezone": "Europe/Madrid",
     "source_repair": "inline_parallel_fallback"
   },
   "editorial": {
-    "schedule_minutes": [15, 45],
+    "schedule_minutes": [
+      15,
+      45
+    ],
     "timezone": "Europe/Madrid",
     "alternatives_target": 3,
     "verify_before_draft": true
@@ -24,8 +30,9 @@
     "source_label_format": "Redactada con {drafted} ({current})"
   },
   "delivery": {
-    "channel": "web",
-    "enabled": false,
-    "telegram_enabled_until_cutover": true
+    "channel": "parallel",
+    "enabled": true,
+    "telegram_enabled_until_cutover": true,
+    "parallel_new_items_only": true
   }
-}
+}\n
