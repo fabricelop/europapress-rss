@@ -209,9 +209,11 @@ def fetch_items():
     if used and rows:
      (sport_healthy if is_sport else healthy).append(src)
      out.extend(rows)
-     source_status.append({"source":src,"type":"sport" if is_sport else "general","ok":True,"items":len(rows),"url":used,"error":None})
+     primary=next((u for n,u,k in (SPORT_SOURCES if is_sport else SOURCES) if n==src),used)
+     recovered=used!=primary
+     source_status.append({"source":src,"type":"sport" if is_sport else "general","ok":True,"items":len(rows),"url":used,"error":None,"recovered":recovered})
      print("SOURCE_STATUS",src,"OK",len(rows),used)
-     if used!=next((u for n,u,k in (SPORT_SOURCES if is_sport else SOURCES) if n==src),used):
+     if recovered:
       print("SOURCE_RECOVERED",src,used)
     else:
      failures.append({"source":src,"type":"sport" if is_sport else "general","error":err or "0 artículos extraídos"})
@@ -413,7 +415,7 @@ if not events_doc.get("fast_track_initialized"):
  events_doc["fast_track_initialized"]=True
  events_doc["fast_track_initialized_at"]=iso(now)
 
-# Solo WAITING caduca; lo ya tratado queda en processed-events.json.
+# Los eventos que aún no han llegado al umbral caducan exactamente a las 24 h.
 cutoff=now-timedelta(hours=WAIT_HOURS)
 events=[e for e in events if e.get("status") not in {"WAITING","UPDATE_WAITING"} or dtv(e.get("first_seen"))>=cutoff]
 
@@ -503,7 +505,7 @@ for e in list(events):
    new_processed.append(processed_snapshot(e,"UPDATE_SENT_REVIEW",now,e.get("revision",2)))
    if did_send: sent+=1
 
-# Eliminar WAITING caducadas tras la evaluación.
+# Segunda poda por si el ciclo acaba de cruzar el límite de 24 h.
 kept=[]
 for e in events:
  if e.get("status") in {"WAITING","UPDATE_WAITING"} and dtv(e.get("first_seen"))<cutoff:
