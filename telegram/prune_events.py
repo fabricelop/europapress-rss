@@ -22,7 +22,21 @@ if not isinstance(events, list):
 
 cutoff = datetime.now(timezone.utc) - timedelta(hours=TTL_HOURS)
 before = len(events)
-doc["events"] = [e for e in events if parse_dt(e.get("first_seen")) >= cutoff]
+
+# El modelo actual conserva/actualiza eventos durante 24 h. Algunos registros
+# históricos no tienen first_seen fiable (o usan otros campos temporales), y
+# antes la poda los dejaba crecer indefinidamente. Tomamos la mejor marca
+# disponible y descartamos lo que no pueda demostrarse activo en la ventana.
+def event_dt(e):
+    candidates = [
+        e.get("last_seen"), e.get("updated_at"), e.get("first_seen"),
+        e.get("created_at"), e.get("published_at"), e.get("timestamp"),
+    ]
+    parsed = [parse_dt(v) for v in candidates if v]
+    parsed = [v for v in parsed if v != datetime.min.replace(tzinfo=timezone.utc)]
+    return max(parsed) if parsed else datetime.min.replace(tzinfo=timezone.utc)
+
+doc["events"] = [e for e in events if event_dt(e) >= cutoff]
 doc["active_retention_hours"] = TTL_HOURS
 doc["pruned_at"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
