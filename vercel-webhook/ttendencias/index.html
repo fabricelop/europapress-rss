@@ -79,6 +79,10 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
     <span><i class="dot explained"></i>Explicada</span>
   </div>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
+  <section id="pendingSection" style="display:none;margin-top:24px">
+    <div class="summary" style="margin-bottom:10px"><div><h1 style="font-size:18px">En curso</h1><div class="meta">Solicitudes todavía activas</div></div><div class="badge" id="pendingCount">0</div></div>
+    <section class="list" id="pendingList"></section>
+  </section>
 </main>
 
 <div class="bottom">
@@ -104,8 +108,9 @@ input[type=password]{width:100%;background:#0a0f16;border:1px solid #364153;colo
 
 <script>
 const API="/api/ttendencias-control";
-let model=null, selected=new Set(), busy=false;
+let model=null, selected=new Set(JSON.parse(localStorage.getItem("ttendencias-selection")||"[]")), busy=false;
 const $=id=>document.getElementById(id);
+function saveSelection(){localStorage.setItem("ttendencias-selection",JSON.stringify([...selected]))}
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
 function showToast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove("show"),2600)}
 function stateDot(s){return '<i class="dot '+s+'"></i>'}
@@ -126,8 +131,21 @@ function render(){
    card.querySelector(".name").textContent=item.name;
    card.querySelector(".state span").textContent=item.status_label;
    const cb=card.querySelector(".check");cb.checked=selected.has(item.name);
-   cb.addEventListener("change",()=>{cb.checked?selected.add(item.name):selected.delete(item.name);render()});
+   cb.addEventListener("change",()=>{cb.checked?selected.add(item.name):selected.delete(item.name);saveSelection();render()});
    list.appendChild(card);
+ }
+ const pending=(model.pending||[]);
+ $("pendingSection").style.display=pending.length?"block":"none";
+ $("pendingCount").textContent=pending.length;
+ $("pendingList").innerHTML="";
+ for(const item of pending){
+   const card=document.createElement("div");card.className="card";
+   const label=item.status==="ready"?"Preparada":item.status==="update"?"Actualizando":"Elaborando";
+   card.innerHTML='<div class="rank">•</div><div><div class="name"></div><div class="state">'+stateDot(item.status)+'<span></span></div></div><div class="meta"></div>';
+   card.querySelector(".name").textContent=item.name;
+   card.querySelector(".state span").textContent=label;
+   card.querySelector(".meta").textContent=fmtDate(item.requested_at);
+   $("pendingList").appendChild(card);
  }
  const n=selected.size;$("selectedCount").textContent=n;$("queueBtn").disabled=!n||busy;$("explainedBtn").disabled=!n||busy;
 }
@@ -139,6 +157,7 @@ async function load(silent=false){
    model=d;
    const current=new Set((d.items||[]).map(x=>x.name));
    selected=new Set([...selected].filter(x=>current.has(x)));
+   saveSelection();
    render();
  }catch(e){if(!silent)$("list").innerHTML='<div class="error">'+String(e.message||e)+'</div>'}
  finally{$("refreshBtn").disabled=false}
@@ -155,7 +174,7 @@ async function action(actionName,names=[]){
    const d=await r.json();
    if(r.status===401){localStorage.removeItem("ttendencias-control-token");$("sheet").classList.add("show");throw new Error("Token incorrecto")}
    if(!r.ok)throw new Error(d.error||"No se pudo aplicar la acción");
-   selected.clear();
+   selected.clear();saveSelection();
    showToast(actionName==="queue"?"Enviadas a elaborar":actionName==="explained"?"Marcadas como explicadas":"Refresco solicitado");
    await load(true);
  }catch(e){showToast(String(e.message||e))}
