@@ -12,7 +12,7 @@ Esta carpeta es independiente de TTendencias y contiene el estado de la futura a
 - Al alcanzar 4 fuentes entra automáticamente en elaboración.
 - Antes de redactar se mantiene la verificación editorial actual.
 - Una novedad material del mismo asunto se crea como un evento/revisión nueva; no reabre la noticia anterior.
-- Telegram se mantiene únicamente durante la transición. El corte final será cambiando `control-mode.json` a `web`.
+- TTiTTulares funciona en modo web. Telegram está retirado del flujo.
 
 ## Fuentes
 
@@ -39,15 +39,15 @@ La app cruza `event_id` con `status.json` para mostrar **Redactada con 4 (6)**: 
 - **Desestimar**: retira de la bandeja y registra `dismissed`.
 - **Rehacer**: pide instrucciones y devuelve la noticia a `PROCESSING` con `selection_mode=REWRITE`.
 
-## Corte a web
+## Formato editorial web
 
-No activar hasta desplegar y validar la app:
-1. desplegar `/ttittulares/`;
-2. validar lectura y escritura;
-3. cambiar `ttittulares/control-mode.json` a `web`;
-4. retirar el envío/control Telegram de TTiTTulares;
-5. mantener radar y verificación editorial independientes.
+La cola editorial procesa únicamente los items `PROCESSING`. Cada noticia genera:
 
+- una **Principal** factual;
+- tres remates **A/B/C**;
+- en la app se muestra la noticia una sola vez y, para A/B/C, únicamente `🌶️ remate`;
+- el enlace **Abrir en X** contiene siempre el tuit completo: `Principal + dos saltos de línea + remate`;
+- cada tuit completo debe ser <=280 caracteres.
 
 ## Modo paralelo de prueba
 
@@ -63,3 +63,8 @@ Mientras `control-mode.json` esté en `parallel`:
 ## Estado actual de prueba
 
 Telegram está temporalmente cortado mediante `control-mode=web`. Se han recuperado manualmente tres noticias anteriores con >=4 fuentes para probar el circuito real de `En elaboración` y `Listas` sin importar todo el backlog.
+
+
+## Estado definitivo
+
+TTiTTulares queda en `control-mode=web`. Telegram no se utiliza para candidatos, redacción ni publicación. Las automatizaciones editoriales de :15/:45 tienen una única responsabilidad: vaciar la cola `PROCESSING` hacia `prepared.json`, marcar los items como `READY` y actualizar `status.json`.
