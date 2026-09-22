@@ -66,8 +66,26 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           sleep 2
+          git fetch origin main --quiet || true
           python3 - <<'PY'
-          import json, os, urllib.request
+          import json, os, subprocess, urllib.request
+
+          # Releer el modo desde origin/main justo antes de encadenar. Así,
+          # si durante estos 25 minutos se activó el control web, este listener
+          # termina sin lanzar siquiera una ejecución adicional.
+          mode="telegram"
+          try:
+              raw=subprocess.check_output(
+                  ["git","show","origin/main:trends/control-mode.json"],
+                  text=True,
+              )
+              mode=str(json.loads(raw).get("mode") or "telegram").strip().lower()
+          except Exception:
+              pass
+          if mode == "web":
+              print("Control web activo: no se encadena otro listener TTendencias")
+              raise SystemExit(0)
+
           repo=os.environ["GITHUB_REPOSITORY"]
           url=f"https://api.github.com/repos/{repo}/actions/workflows/ttendencias-listener.yml/dispatches"
           req=urllib.request.Request(
