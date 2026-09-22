@@ -48,6 +48,19 @@ jobs:
               except Exception:
                   return None
 
+          def x_len(text):
+              # X pondera cada URL como t.co (23 caracteres). Para nuestros
+              # intents normalmente no hay URL externa, pero lo contemplamos.
+              urls = re.findall(r"https?://\\S+", text or "")
+              return len(text or "") - sum(len(u) for u in urls) + 23 * len(urls)
+
+          def validate_tweet(tweet_text, label):
+              if not tweet_text:
+                  return
+              n = x_len(tweet_text)
+              if n > 280:
+                  raise ValueError(f"Tuit demasiado largo ({n}/280) en {label}: {tweet_text}")
+
           def remate_only(tweet_text):
               if not tweet_text:
                   return None
@@ -81,6 +94,8 @@ jobs:
           for msg in expand_messages(data.get("messages", [])):
               alt_texts = []
               for b in msg.get("buttons", []):
+                  if b.get("url"):
+                      validate_tweet(tweet_text_from_url(b["url"]), b.get("label","botón"))
                   label = str(b.get("label", "")).lower()
                   if ("alt." in label or "publicar" in label) and b.get("url"):
                       t = remate_only(tweet_text_from_url(b["url"]))
