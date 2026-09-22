@@ -68,3 +68,11 @@ Telegram está temporalmente cortado mediante `control-mode=web`. Se han recuper
 ## Estado definitivo
 
 TTiTTulares queda en `control-mode=web`. Telegram no se utiliza para candidatos, redacción ni publicación. Las automatizaciones editoriales de :15/:45 tienen una única responsabilidad: vaciar la cola `PROCESSING` hacia `prepared.json`, marcar los items como `READY` y actualizar `status.json`.
+
+
+## Operación 24 horas
+
+- Radar: todos los días, 24 h, a :10 y :40.
+- Elaboración: todos los días, 24 h, a :15 y :45.
+- La app muestra último radar, próximo radar con cuenta atrás y aviso de retraso, y próxima elaboración.
+- La instalación móvil usa una URL estable; la clave de control se guarda localmente en el primer acceso y no se vuelve a pedir.
