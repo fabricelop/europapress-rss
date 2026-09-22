@@ -34,6 +34,32 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
+      - name: Respaldo de frescura TTendencias
+        run: |
+          python3 - <<'PY'
+          import json, subprocess
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          path = Path("trends/recent.json")
+          stale = True
+          try:
+              data = json.loads(path.read_text(encoding="utf-8"))
+              captured = datetime.fromisoformat(str(data.get("captured_at") or "").replace("Z","+00:00")).astimezone(timezone.utc)
+              age = (datetime.now(timezone.utc)-captured).total_seconds()/60
+              print(f"Edad TTendencias: {age:.1f} min")
+              stale = age > 20
+          except Exception as e:
+              print("No se pudo comprobar frescura TTendencias:", e)
+
+          if stale:
+              print("TTendencias desactualizado: ejecutando captura de respaldo")
+              subprocess.run(["python3","trends/update_trends.py"], check=True)
+              subprocess.run(["python3","trends/auto_queue_new.py"], check=True)
+          else:
+              print("TTendencias suficientemente fresco; no hace falta respaldo")
+          PY
+
       - name: Recorrer Europa Press y actualizar archivo
         run: python generate_feed.py
 
@@ -54,7 +80,7 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add feed.xml latest.json recent.json state.json archive/
+          git add feed.xml latest.json recent.json state.json archive/ trends/recent.json trends/checkpoint.json trends/requests.json
           if ! git diff --cached --quiet; then
             git commit -m "Actualizar archivo Europa Press"
             for intento in 1 2 3 4; do
