@@ -1,0 +1,49 @@
+name: Finalizar cola editorial TTiTTulares
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'telegram/editorial-finalize.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-editorial-finalize
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Aplicar estados confirmados
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          q=Path('telegram/editorial-processing.json')
+          p=Path('telegram/editorial-finalize.json')
+          data=json.loads(q.read_text(encoding='utf-8'))
+          patch=json.loads(p.read_text(encoding='utf-8'))
+          byid={str(x.get('event_id')):x for x in data.get('items',[])}
+          for upd in patch.get('items',[]):
+              x=byid.get(str(upd.get('event_id')))
+              if not x: continue
+              for k,v in upd.items():
+                  if k!='event_id': x[k]=v
+          q.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+      - name: Guardar estados
+        run: |
+          set -e
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add telegram/editorial-processing.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Finalizar cola editorial TTiTTulares'
+          git pull --rebase origin main
+          git push origin HEAD:main
