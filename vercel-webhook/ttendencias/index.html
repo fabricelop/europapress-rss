@@ -312,9 +312,13 @@ async function action(actionName,names=[]){
    const d=await r.json();
    if(r.status===401){localStorage.removeItem("ttendencias-control-token");$("sheet").classList.add("show");throw new Error("Token incorrecto")}
    if(!r.ok)throw new Error(d.error||"No se pudo aplicar la acción");
-   selected.clear();saveSelection();
-   showToast(actionName==="queue"?"Enviadas a elaborar":actionName==="explained"?"Marcadas como explicadas":"Refresco solicitado");
+   if(actionName!=="refresh"){selected.clear();saveSelection()}
+   showToast(actionName==="queue"?"Enviadas a elaborar":actionName==="explained"?"Marcadas como explicadas":"Refresco solicitado · puede tardar unos segundos");
    await load(true);
+   if(actionName==="refresh"){
+     setTimeout(()=>load(true),12000);
+     setTimeout(()=>load(true),26000);
+   }
  }catch(e){showToast(String(e.message||e))}
  finally{busy=false;render()}
 }
@@ -337,7 +341,14 @@ $("explainedBtn").onclick=()=>{
  if(confirm("¿Marcar "+selected.size+" tendencia(s) como explicadas?"))action("explained",[...selected]);
 };
 $("refreshBtn").onclick=()=>load();
-$("forceBtn").onclick=()=>action("refresh");
+$("forceBtn").onclick=()=>{
+ const last=Number(localStorage.getItem("ttendencias-force-refresh")||0);
+ const left=60000-(Date.now()-last);
+ if(left>0){showToast("Espera "+Math.ceil(left/1000)+" s antes de volver a forzar");return}
+ if(!confirm("¿Forzar ahora una nueva captura del Top 10?"))return;
+ localStorage.setItem("ttendencias-force-refresh",String(Date.now()));
+ action("refresh");
+};
 $("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado en este dispositivo":"Sin token guardado";$("sheet").classList.add("show")};
 $("cancelToken").onclick=()=>$("sheet").classList.remove("show");
 $("testToken").onclick=async()=>{
