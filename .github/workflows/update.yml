@@ -91,7 +91,8 @@ jobs:
             git reset --hard origin/main
             python3 telegram/radar_no_d1.py
             python3 telegram/prune_events.py
-            git add telegram/events.json telegram/processed-events.json telegram/editorial-processing.json
+            python3 telegram/autocheck_ttittulares.py
+            git add telegram/events.json telegram/processed-events.json telegram/editorial-processing.json telegram/autocheck-status.json
 
             if git diff --cached --quiet; then
               echo "Barrido editorial sin cambios."
