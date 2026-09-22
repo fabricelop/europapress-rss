@@ -82,9 +82,9 @@ jobs:
               alt_texts = []
               for b in msg.get("buttons", []):
                   label = str(b.get("label", "")).lower()
-                  if "alt." in label and b.get("url"):
+                  if ("alt." in label or "publicar" in label) and b.get("url"):
                       t = remate_only(tweet_text_from_url(b["url"]))
-                      if t:
+                      if t and t not in alt_texts:
                           alt_texts.append(t)
 
               visible_text = msg["text"]
@@ -97,11 +97,7 @@ jobs:
                   button = {"text": b["label"]}
                   if b.get("url"):
                       button["url"] = b["url"]
-                      tweet_text = tweet_text_from_url(b["url"])
-                      if tweet_text:
-                          keyboard.append([button, {"text": "📋 Copia", "copy_text": {"text": tweet_text}}])
-                      else:
-                          keyboard.append([button])
+                      keyboard.append([button])
                   elif b.get("callback_data"):
                       button["callback_data"] = b["callback_data"]
                       keyboard.append([button])
