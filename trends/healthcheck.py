@@ -105,19 +105,26 @@ if isinstance(bot_state, dict):
     if not panel_ok:
         blocking.append("panel Telegram no enlazado")
 
-# Top 10 y fuentes.
+# Top 10 y fuentes. También exigimos que la captura sea reciente: un JSON
+# estructuralmente válido pero antiguo no significa que el refresco funcione.
 top_ok = False
 if isinstance(recent, dict):
     top = recent.get("top10") or []
     non_stale = int(recent.get("non_stale_source_count") or 0)
-    top_ok = len(top) == 10 and non_stale >= 3
-    modules["top10"] = {"ok": top_ok, "count": len(top), "non_stale_sources": non_stale}
+    captured_age = 99999.0
+    try:
+        captured = datetime.fromisoformat(str(recent.get("captured_at")).replace("Z", "+00:00"))
+        captured_age = (datetime.now(timezone.utc) - captured.astimezone(timezone.utc)).total_seconds() / 60
+    except Exception:
+        pass
+    top_ok = len(top) == 10 and non_stale >= 3 and captured_age <= 25
+    modules["top10"] = {"ok": top_ok, "count": len(top), "non_stale_sources": non_stale, "captured_age_minutes": round(captured_age, 1)}
     if not top_ok:
         if dispatch("ttendencias-refresh.yml"):
             repairs.append("relanzado refresco Top 10")
             modules["top10"]["repair_started"] = True
         else:
-            blocking.append(f"Top 10 no fiable: {len(top)} tendencias / {non_stale} fuentes no obsoletas")
+            blocking.append(f"Top 10 no fiable o desactualizado: {len(top)} tendencias / {non_stale} fuentes no obsoletas / {captured_age:.1f} min")
 
 # Procesos continuos.
 for key, wf, age in [
