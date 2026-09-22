@@ -85,10 +85,21 @@ recent = load("recent.json")
 requests_doc = load("requests.json")
 bot_state = load("telegram-bot-state.json")
 listener_state = load("telegram-listener-state.json")
+control_mode = load("control-mode.json", {}) or {}
+mode = str(control_mode.get("mode") or "telegram").strip().lower()
+web_mode = mode == "web"
 
 modules = {}
 blocking = []
 repairs = []
+modules["control_mode"] = {
+    "ok": mode in {"telegram", "web"},
+    "mode": mode,
+    "web_control_enabled": bool(control_mode.get("web_control_enabled")),
+    "telegram_panel_enabled": bool(control_mode.get("telegram_panel_enabled", not web_mode)),
+}
+if mode not in {"telegram", "web"}:
+    blocking.append(f"modo de control TTendencias no válido: {mode}")
 
 # Estado JSON y panel.
 for name, obj in [
@@ -100,10 +111,18 @@ for name, obj in [
         blocking.append(f"{name}: JSON inválido o ilegible")
 
 if isinstance(bot_state, dict):
-    panel_ok = bool(bot_state.get("chat_id") and bot_state.get("panel_message_id"))
-    modules["telegram_panel"] = {"ok": panel_ok}
-    if not panel_ok:
-        blocking.append("panel Telegram no enlazado")
+    delivery_ok = bool(bot_state.get("chat_id"))
+    modules["telegram_delivery"] = {"ok": delivery_ok}
+    if not delivery_ok:
+        blocking.append("chat Telegram de entrega no enlazado")
+
+    if not web_mode:
+        panel_ok = bool(bot_state.get("chat_id") and bot_state.get("panel_message_id"))
+        modules["telegram_panel"] = {"ok": panel_ok}
+        if not panel_ok:
+            blocking.append("panel Telegram no enlazado")
+    else:
+        modules["telegram_panel"] = {"ok": True, "required": False}
 
 # Top 10 y fuentes. También exigimos que la captura sea reciente: un JSON
 # estructuralmente válido pero antiguo no significa que el refresco funcione.
@@ -131,6 +150,9 @@ for key, wf, age in [
     ("listener", "ttendencias-listener.yml", 35),
     ("refresh", "ttendencias-refresh.yml", 40),
 ]:
+    if key == "listener" and web_mode:
+        modules[key] = {"ok": True, "required": False, "reason": "control web activo"}
+        continue
     st = workflow_state(wf, age, require_active=(key == "listener"))
     modules[key] = st
     if not st["ok"]:
