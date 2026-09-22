@@ -495,6 +495,12 @@ def submit_batch(callback, with_image=False):
             existing["with_image"] = bool(with_image) or bool(existing.get("with_image"))
             existing["batch_id"] = batch_id
             existing["requested_together"] = names
+            if existing.get("status") == "ready":
+                existing["status"] = "update"
+                existing["requested_at"] = now
+                existing["revision"] = int(existing.get("revision") or 0) + 1
+                existing["reexplain"] = True
+                existing.pop("telegram_message_id", None)
         else:
             reexplain = norm(term) in explained
             previous = by_id.get(key) or {}
