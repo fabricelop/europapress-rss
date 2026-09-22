@@ -3,11 +3,20 @@
   "functions": {
     "api/telegram-webhook.js": {
       "maxDuration": 10
+    },
+    "api/ttendencias-control.js": {
+      "maxDuration": 10
     }
   },
   "git": {
     "deploymentEnabled": {
       "main": false
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/ttendencias",
+      "destination": "/ttendencias/index.html"
+    }
+  ]
 }
