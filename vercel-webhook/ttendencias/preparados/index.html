@@ -71,7 +71,33 @@ function render(){
 }
 async function done(item){const rel=related(item);if(!confirm("¿Confirmas que ya has publicado/explicado "+rel.join(", ")+"?"))return;const backup=[...(model.items||[])];setLocal(rel,"explained");removeItem(item);toast("Cerrando como explicada…");try{await api("explained",rel);toast("Marcada como explicada")}catch(e){clearLocal(rel);model.items=backup;render();toast(e.message)}}
 async function discard(item){const rel=related(item);if(!confirm("¿Desestimar "+rel.join(", ")+" sin publicarla?"))return;const backup=[...(model.items||[])];setLocal(rel,"dismissed");removeItem(item);toast("Desestimando…");try{await api("discard",rel);toast("Desestimada")}catch(e){clearLocal(rel);model.items=backup;render();toast(e.message)}}
-async function load(){try{const stamp=Date.now();const [p,r]=await Promise.all([fetch(RAW+"trends/prepared.json?t="+stamp,{cache:"no-store"}),fetch(RAW+"trends/recent.json?t="+stamp,{cache:"no-store"})]);if(!p.ok||!r.ok)throw new Error("No se pudo leer la bandeja");const pd=await p.json(),rd=await r.json();model={items:pd.items||[],top:(rd.items||[]).slice(0,10).map(x=>x.name)};render()}catch(e){$("list").innerHTML='<div class="empty">'+String(e.message||e)+'</div>'}}
+async function load(){
+ try{
+  const stamp=Date.now();
+  const [p,r,q]=await Promise.all([
+   fetch(RAW+"trends/prepared.json?t="+stamp,{cache:"no-store"}),
+   fetch(RAW+"trends/recent.json?t="+stamp,{cache:"no-store"}),
+   fetch(RAW+"trends/requests.json?t="+stamp,{cache:"no-store"})
+  ]);
+  if(!p.ok||!r.ok||!q.ok)throw new Error("No se pudo leer la bandeja");
+  const pd=await p.json(),rd=await r.json(),qd=await q.json();
+  let local={};try{local=JSON.parse(localStorage.getItem("ttendencias-local-state")||"{}")}catch(_){}
+  const latest={};
+  for(const req of qd.requests||[])latest[nrm(req.name)]=req;
+  const items=(pd.items||[]).filter(item=>{
+   const rel=related(item).map(nrm);
+   for(const name of rel){
+    const ls=local[name];
+    if(ls&&["explained","dismissed"].includes(String(ls.status||"")))return false;
+    const req=latest[name];
+    if(req&&["explained","dismissed"].includes(String(req.status||"")))return false;
+   }
+   return true;
+  });
+  model={items,top:(rd.items||[]).slice(0,10).map(x=>x.name)};
+  render()
+ }catch(e){$("list").innerHTML='<div class="empty">'+String(e.message||e)+'</div>'}
+}
 for(const b of document.querySelectorAll(".tab"))b.onclick=()=>{tab=b.dataset.tab;render()};
 $("cancel").onclick=()=>{$("sheet").classList.remove("show");reworkItem=null};
 $("sendRework").onclick=async()=>{if(!reworkItem)return;const instruction=$("instruction").value.trim();if(!instruction){toast("Escribe primero qué quieres cambiar");return}const rel=related(reworkItem);if(!confirm("¿Enviar "+rel.join(", ")+" a reelaborar con estas instrucciones?"))return;const backup=[...(model.items||[])];clearLocal(rel);removeItem(reworkItem);$("sheet").classList.remove("show");try{await api("rework",rel,{instruction});toast("Enviada a reelaborar")}catch(e){model.items=backup;render();toast(e.message)}};
