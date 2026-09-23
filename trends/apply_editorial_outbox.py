@@ -141,12 +141,29 @@ def main():
                 prepared_doc["items"] = kept
                 prepared_doc["updated_at"] = item.get("generated_at") or now
 
-                req["status"] = "ready"
-                req["ready_at"] = item.get("generated_at") or now
-                req["delivery_confirmation"] = "prepared_web"
-                req["editorial_engine"] = "chatgpt-automation-outbox"
-                req.pop("problem_reason", None)
-                req.pop("problematic_at", None)
+                # Marcar como ready todos los requests activos representados
+                # inequívocamente por related_trends y con la misma revisión.
+                target_requests = []
+                for candidate in requests_doc.get("requests", []) or []:
+                    if str(candidate.get("status") or "") not in ACTIVE:
+                        continue
+                    if int(candidate.get("revision") or 0) != revision:
+                        continue
+                    if str(candidate.get("id") or "") == req_id or norm(candidate.get("name")) in related_norm:
+                        target_requests.append(candidate)
+
+                if not target_requests:
+                    target_requests = [req]
+
+                for target in target_requests:
+                    target["status"] = "ready"
+                    target["ready_at"] = item.get("generated_at") or now
+                    target["delivery_confirmation"] = "prepared_web"
+                    target["editorial_engine"] = "chatgpt-automation-outbox"
+                    target.pop("problem_reason", None)
+                    target.pop("problematic_at", None)
+                    if str(target.get("id") or "") not in processed:
+                        processed.append(str(target.get("id") or ""))
 
             elif result_status == "problematic":
                 reason = str(payload.get("problem_reason") or "").strip()
@@ -161,7 +178,8 @@ def main():
             else:
                 raise ValueError(f"status editorial no válido: {result_status}")
 
-            processed.append(req_id)
+            if req_id not in processed:
+                processed.append(req_id)
             path.unlink()
         except Exception as exc:
             errors.append(f"{path.name}: {type(exc).__name__}: {exc}")
