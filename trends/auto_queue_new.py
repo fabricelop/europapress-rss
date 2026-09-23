@@ -27,9 +27,18 @@ def norm(value):
 recent = load("recent.json", {"items": []})
 requests_doc = load("requests.json", {"requests": []})
 explained_doc = load("telegram-manual-explained.json", {"items": []})
+prepared_doc = load("prepared.json", {"items": []})
 
 requests = requests_doc.setdefault("requests", [])
 explained = {norm(x.get("name")) for x in explained_doc.get("items", []) if x.get("name")}
+prepared_names = set()
+prepared_ids = set()
+for prepared in prepared_doc.get("items", []) or []:
+    if prepared.get("id"):
+        prepared_ids.add(str(prepared.get("id")))
+    for value in ((prepared.get("related_trends") or []) or [prepared.get("trend_name")]):
+        if value:
+            prepared_names.add(norm(value))
 by_name = {}
 for req in requests:
     key = norm(req.get("name"))
@@ -48,9 +57,23 @@ for item in current:
     req = by_name.get(key)
     status = str((req or {}).get("status") or "")
     if req:
-        # Cualquier decisión/estado vigente se conserva. Una tendencia
+        # Una solicitud ready sin tarjeta prepared es un estado imposible:
+        # normalmente indica una carrera o borrado parcial. Se reabre de forma
+        # idempotente para que el siguiente pase editorial la reconstruya.
+        if status == "ready":
+            represented = str(req.get("id") or "") in prepared_ids or key in prepared_names
+            if represented:
+                continue
+            req["status"] = "preparing"
+            req["requested_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+            req.pop("ready_at", None)
+            req.pop("delivery_confirmation", None)
+            status = "preparing"
+            print("Reabierta ready sin prepared:", name)
+            continue
+        # Cualquier otra decisión/estado vigente se conserva. Una tendencia
         # desestimada o problemática solo se reabre por acción del usuario.
-        if status in {"preparing", "update", "ready", "explained", "dismissed", "problematic"}:
+        if status in {"preparing", "update", "explained", "dismissed", "problematic"}:
             continue
     elif key in explained:
         continue
