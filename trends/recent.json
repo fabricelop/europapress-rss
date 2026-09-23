@@ -1,11 +1,12 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-24T01:02:01+02:00",
+  "captured_at": "2026-09-24T01:20:51+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
+    "getdaytrends",
     "tweets24",
     "trendswe"
   ],
@@ -18,14 +19,14 @@
   "top10": [
     "#LaIslaDeLasTentaciones6",
     "Mari Carmen",
-    "#firstdates23s",
+    "#ElTunelTVE",
     "Franco",
     "Retiro",
-    "Congreso",
-    "#elintermedio",
+    "#firstdates23s",
     "Gema",
-    "Ana Vázquez",
-    "Wyoming"
+    "Congreso",
+    "Nataly",
+    "#LaMesa"
   ],
   "items": [
     {
@@ -38,7 +39,7 @@
     },
     {
       "rank": 3,
-      "name": "#firstdates23s"
+      "name": "#ElTunelTVE"
     },
     {
       "rank": 4,
@@ -50,28 +51,30 @@
     },
     {
       "rank": 6,
-      "name": "Congreso"
+      "name": "#firstdates23s"
     },
     {
       "rank": 7,
-      "name": "#elintermedio"
-    },
-    {
-      "rank": 8,
       "name": "Gema"
     },
     {
+      "rank": 8,
+      "name": "Congreso"
+    },
+    {
       "rank": 9,
-      "name": "Ana Vázquez"
+      "name": "Nataly"
     },
     {
       "rank": 10,
-      "name": "Wyoming"
+      "name": "#LaMesa"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Gema"
+    "#ElTunelTVE",
+    "Nataly",
+    "#LaMesa"
   ],
   "sources": {
     "trends24": {
@@ -102,7 +105,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T01:02:01+02:00"
+      "fetched_at": "2026-09-24T01:20:51+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -127,37 +130,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T01:02:02+02:00"
+      "fetched_at": "2026-09-24T01:20:52+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "#LaIslaDeLasTentaciones6",
         "Mari Carmen",
-        "#firstdates23s",
+        "#ElTunelTVE",
         "Franco",
         "Retiro",
-        "Congreso",
-        "#elintermedio",
+        "#firstdates23s",
         "Gema",
-        "Ana Vázquez",
+        "Congreso",
+        "Nataly",
+        "#LaMesa",
+        "Andrea",
+        "#elintermedio",
         "Wyoming",
+        "Ana Vázquez",
         "Excalibur",
         "Felipe González",
-        "#MonarquíaFueraYa",
-        "Auba",
         "Junts",
         "Risto",
-        "Ana Belén",
         "Boyero",
-        "Irene Montero",
-        "Pina"
+        "Ana Belén"
       ],
       "error": null,
-      "update_hint": "Updated 30 minutes ago",
-      "age_minutes": 30.0,
+      "update_hint": "Updated 7 minutes ago",
+      "age_minutes": 7.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-24T01:02:03+02:00"
+      "fetched_at": "2026-09-24T01:20:53+02:00"
     },
     "superx": {
       "ok": true,
@@ -187,16 +190,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T01:02:04+02:00"
+      "fetched_at": "2026-09-24T01:20:53+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790204524",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790205654",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T01:02:04+02:00"
+      "fetched_at": "2026-09-24T01:20:54+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -224,9 +227,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 23, 2026 22:00 UTC",
-      "age_minutes": 62.1,
+      "age_minutes": 80.9,
       "freshness": "aging",
-      "fetched_at": "2026-09-24T01:02:05+02:00"
+      "fetched_at": "2026-09-24T01:20:54+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -254,18 +257,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 2221.1,
+      "age_minutes": 2239.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-24T01:02:05+02:00"
+      "fetched_at": "2026-09-24T01:20:55+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790204526",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790205656",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T01:02:06+02:00"
+      "fetched_at": "2026-09-24T01:20:56+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -274,7 +277,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-24T01:02:07+02:00"
+      "fetched_at": "2026-09-24T01:20:57+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -304,16 +307,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T01:02:08+02:00"
+      "fetched_at": "2026-09-24T01:20:57+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790204530",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790205660",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T01:02:10+02:00"
+      "fetched_at": "2026-09-24T01:21:00+02:00"
     }
   }
 }
