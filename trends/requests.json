@@ -739,7 +739,7 @@
       "id": "dc26927988de",
       "name": "#ChiringuitoMadrid",
       "rank": 2,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-09-23T01:50:54+02:00",
       "revision": 0,
       "reexplain": false,
@@ -749,13 +749,14 @@
       "requested_together": [
         "#ChiringuitoMadrid"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "prepared_at": "2026-09-23T08:26:00+02:00"
     },
     {
       "id": "2dd1283eb26c",
       "name": "Omar",
       "rank": 9,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-23T03:10:57+02:00",
       "revision": 0,
       "reexplain": false,
@@ -765,13 +766,15 @@
       "requested_together": [
         "Omar"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-23T08:26:00+02:00",
+      "problem_reason": "No se ha podido verificar con suficiente fiabilidad qué hecho concreto explica que «Omar» sea tendencia ahora; las fuentes actuales lo vinculan a Supervivientes All Stars, pero no identifican un detonante actual inequívoco."
     },
     {
       "id": "6cc256e84877",
       "name": "#FelizMiércoles",
       "rank": 2,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-09-23T07:40:57+02:00",
       "revision": 0,
       "reexplain": false,
@@ -782,13 +785,14 @@
         "#FelizMiércoles",
         "Trump"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "prepared_at": "2026-09-23T08:26:00+02:00"
     },
     {
       "id": "56249f725ea0",
       "name": "Trump",
       "rank": 10,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-09-23T07:40:57+02:00",
       "revision": 0,
       "reexplain": false,
@@ -799,8 +803,9 @@
         "#FelizMiércoles",
         "Trump"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "prepared_at": "2026-09-23T08:26:00+02:00"
     }
   ],
-  "updated_at": "2026-09-23T07:40:57+02:00"
+  "updated_at": "2026-09-23T08:26:00+02:00"
 }
