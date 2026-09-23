@@ -219,6 +219,33 @@ if isinstance(requests_doc, dict):
 # Salud editorial real: una cola sintácticamente válida puede estar bloqueada.
 # En horario normal, preparing/update no deben superar el umbral configurado.
 if isinstance(requests_doc, dict):
+    # Detectar READY huérfanos: nunca deben considerarse sanos si no existe
+    # una tarjeta prepared que represente el mismo id o nombre relacionado.
+    prepared_ids = set()
+    prepared_names = set()
+    if isinstance(prepared_doc, dict):
+        for item in prepared_doc.get("items", []) or []:
+            if item.get("id"):
+                prepared_ids.add(str(item.get("id")))
+            rel = (item.get("related_trends") or []) or [item.get("trend_name")]
+            for name in rel:
+                if name:
+                    prepared_names.add(" ".join(str(name).casefold().split()))
+    orphan_ready = []
+    for req in requests_doc.get("requests", []) or []:
+        if req.get("status") != "ready":
+            continue
+        key = " ".join(str(req.get("name") or "").casefold().split())
+        if str(req.get("id") or "") not in prepared_ids and key not in prepared_names:
+            orphan_ready.append({"id": req.get("id"), "name": req.get("name")})
+    modules["ready_consistency"] = {
+        "ok": not orphan_ready,
+        "orphan_count": len(orphan_ready),
+        "orphan_items": orphan_ready[:10],
+    }
+    if orphan_ready:
+        blocking.append(f"{len(orphan_ready)} solicitud(es) ready sin tarjeta prepared")
+
     active = [x for x in requests_doc.get("requests", []) if x.get("status") in {"preparing", "update"}]
     warn_after = int(editorial.get("delay_warning_after_minutes") or editorial.get("daytime_max_wait_minutes") or 30)
     ages = []
