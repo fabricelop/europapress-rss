@@ -43,6 +43,11 @@ jobs:
           python3 trends/update_trends.py
           python3 trends/auto_queue_new.py
 
+          # Consumidor editorial de respaldo: en cada refresco recupera cualquier
+          # preparing/update que haya vencido su siguiente pase :10/:40 + gracia.
+          # Los fallos de API son recuperables y nunca convierten el item en problematic.
+          OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" python3 trends/editorial_api.py
+
           MODE="$(python3 - <<'PY'
           import json
           from pathlib import Path
@@ -61,7 +66,7 @@ jobs:
             echo "Control web activo: no se sincroniza el panel Telegram"
           fi
 
-          git add trends/recent.json trends/checkpoint.json trends/requests.json
+          git add trends/recent.json trends/checkpoint.json trends/requests.json trends/prepared.json trends/editorial-runtime.json
           if git diff --cached --quiet; then
             exit 0
           fi
