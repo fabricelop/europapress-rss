@@ -9,7 +9,7 @@ on:
       - "trends/requests.json"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ttendencias-push
@@ -19,6 +19,92 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      - name: Cerrar carrera prepared a ready
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import os, json, base64, urllib.request, urllib.error, time
+          repo=os.environ["REPO"]
+          token=os.environ["GH_TOKEN"]
+          api=f"https://api.github.com/repos/{repo}/contents/"
+          headers={
+              "Authorization":f"Bearer {token}",
+              "Accept":"application/vnd.github+json",
+              "X-GitHub-Api-Version":"2022-11-28",
+              "User-Agent":"ttendencias-push-finalizer",
+          }
+
+          def get_file(path):
+              req=urllib.request.Request(api+path+"?ref=main",headers=headers)
+              with urllib.request.urlopen(req,timeout=20) as r:
+                  obj=json.load(r)
+              content=base64.b64decode(obj["content"]).decode("utf-8")
+              return json.loads(content),obj["sha"]
+
+          def put_file(path,doc,sha):
+              payload=json.dumps({
+                  "message":"Finalizar TTendencias prepared a ready",
+                  "content":base64.b64encode((json.dumps(doc,ensure_ascii=False,indent=2)+"\n").encode()).decode(),
+                  "sha":sha,
+                  "branch":"main",
+              }).encode()
+              req=urllib.request.Request(api+path,data=payload,headers={**headers,"Content-Type":"application/json"},method="PUT")
+              with urllib.request.urlopen(req,timeout=20) as r:
+                  return json.load(r)
+
+          def norm(v):
+              import unicodedata,re
+              s=unicodedata.normalize("NFD",str(v or ""))
+              s="".join(c for c in s if unicodedata.category(c)!="Mn").lower()
+              return re.sub(r"\s+"," ",s).strip()
+
+          def valid_prepared(item):
+              primary=item.get("primary") or {}
+              alts=item.get("alternatives") or []
+              return bool(str(primary.get("text") or "").strip()) and len(alts)==3 and all(str(a.get("tweet_text") or "").strip() for a in alts)
+
+          for attempt in range(1,6):
+              requests,sha=get_file("trends/requests.json")
+              prepared,_=get_file("trends/prepared.json")
+              by_id={}
+              by_name={}
+              for item in prepared.get("items",[]):
+                  if not valid_prepared(item):
+                      continue
+                  key=(str(item.get("id") or ""),int(item.get("revision") or 0))
+                  by_id[key]=item
+                  by_name[(norm(item.get("trend_name")),int(item.get("revision") or 0))]=item
+
+              changed=[]
+              for req in requests.get("requests",[]):
+                  status=str(req.get("status") or "")
+                  if status not in {"preparing","update"}:
+                      continue
+                  rev=int(req.get("revision") or 0)
+                  item=by_id.get((str(req.get("id") or ""),rev)) or by_name.get((norm(req.get("name")),rev))
+                  if not item:
+                      continue
+                  req["status"]="ready"
+                  req["ready_at"]=item.get("generated_at") or req.get("ready_at")
+                  req["delivery_confirmation"]="prepared_web"
+                  changed.append(str(req.get("name") or req.get("id") or ""))
+
+              if not changed:
+                  print("No hay prepared válidos pendientes de pasar a ready")
+                  break
+
+              try:
+                  put_file("trends/requests.json",requests,sha)
+                  print("Pasados a ready:",", ".join(changed))
+                  break
+              except urllib.error.HTTPError as e:
+                  if e.code not in (409,422) or attempt==5:
+                      raise
+                  time.sleep(attempt)
+          PY
+
       - name: Comprobar y enviar nuevos tuits listos
         run: |
           set -euo pipefail
@@ -31,8 +117,7 @@ jobs:
           d=json.load(open("/tmp/ttendencias-push.json",encoding="utf-8"))
           candidates=int(d.get("candidates") or 0)
           delivered=int(d.get("delivered") or 0)
-          failed=int(d.get("failed") or 0)
           no_subscribers=bool(d.get("no_subscribers"))
           if candidates and not no_subscribers and delivered < 1:
-              raise SystemExit(f"Había {candidates} candidato(s) pero no se entregó ningún push; failed={failed}")
+              raise SystemExit(f"Había {candidates} candidato(s) pero no se entregó ningún push")
           PY
