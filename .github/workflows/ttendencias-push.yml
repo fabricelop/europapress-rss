@@ -1,0 +1,21 @@
+name: Avisar TTendencias ready
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "trends/prepared.json"
+      - "trends/requests.json"
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comprobar nuevos tuits listos
+        run: |
+          curl --fail --silent --show-error --retry 3 --retry-delay 2 \
+            "https://europapress-rss-git-ttendencias-release-fabricelopezillac-9660.vercel.app/api/ttendencias-control?view=push-scan&source=github"

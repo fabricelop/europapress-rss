@@ -42,11 +42,11 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
 
 <div class="sheet" id="sheet"><div class="panel">
   <h2>Acceso</h2>
-  <p>Las acciones de control requieren el token privado. El contador del icono muestra únicamente los tuits listos pendientes de revisar.</p>
+  <p>Las acciones de control requieren el token privado. Puedes activar avisos para recibir una notificación en el móvil cuando haya nuevos tuits listos.</p>
   <input id="tokenInput" type="password" autocomplete="off" placeholder="Token de control">
   <div class="row"><button class="secondary" id="cancelToken">Cancelar</button><button class="secondary" id="testToken">Probar</button><button class="primary" id="saveToken">Guardar</button></div>
   <div class="meta" id="accessStatus" style="margin-top:10px"></div>
-  <button class="secondary" id="badgeBtn" type="button" style="width:100%;margin-top:14px">Activar contador en el icono</button>
+  <button class="secondary" id="badgeBtn" type="button" style="width:100%;margin-top:14px">Activar avisos y contador</button>
   <div class="meta" id="badgeStatus" style="margin-top:8px"></div>
 </div></div>
 <div class="toast" id="toast"></div>
@@ -101,6 +101,62 @@ async function updateBadge(){
  try{if("setAppBadge" in navigator){if(count>0)await navigator.setAppBadge(count);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}
  document.title=count?"("+count+") TTendencias Control":"TTendencias Control";
 }
+
+function appServerKey(value){
+ const s=String(value||"").replace(/-/g,"+").replace(/_/g,"/");
+ const raw=atob(s+"=".repeat((4-s.length%4)%4)),out=new Uint8Array(raw.length);
+ for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);
+ return out;
+}
+async function currentPushSubscription(){
+ if(!("serviceWorker" in navigator)||!("PushManager" in window))return null;
+ const reg=await navigator.serviceWorker.ready;
+ return reg.pushManager.getSubscription();
+}
+async function refreshPushStatus(){
+ const s=$("badgeStatus"),b=$("badgeBtn");
+ if(!("serviceWorker" in navigator)||!("PushManager" in window)||typeof Notification==="undefined"){
+   s.textContent="Web Push no está disponible aquí. En iPhone, abre la app instalada desde la pantalla de inicio.";
+   b.textContent="Avisos no disponibles";b.disabled=true;return;
+ }
+ b.disabled=false;
+ const sub=await currentPushSubscription().catch(()=>null);
+ if(Notification.permission==="denied"){
+   s.textContent="Avisos bloqueados en los ajustes del sistema/navegador.";
+   b.textContent="Avisos bloqueados";b.disabled=true;return;
+ }
+ if(sub){
+   s.textContent="✓ Avisos al móvil activos · solo para nuevos tuits listos";
+   b.textContent="Desactivar avisos";return;
+ }
+ s.textContent=Notification.permission==="granted"?"Permiso concedido, pero este dispositivo aún no está suscrito.":"Avisos al móvil desactivados.";
+ b.textContent="Activar avisos y contador";
+}
+async function activatePush(){
+ if(!token()){showToast("Guarda primero el token de control");$("tokenInput").focus();return}
+ if(!("serviceWorker" in navigator)||!("PushManager" in window)||typeof Notification==="undefined"){showToast("Web Push no disponible en este dispositivo");return}
+ let permission=Notification.permission;
+ if(permission==="default")permission=await Notification.requestPermission();
+ if(permission!=="granted"){showToast("Permiso de notificaciones no concedido");await refreshPushStatus();return}
+ const reg=await navigator.serviceWorker.ready;
+ let sub=await reg.pushManager.getSubscription();
+ if(!sub){
+   const r=await fetch(API+"?view=push-key&t="+Date.now(),{cache:"no-store"});
+   const d=await r.json();
+   if(!r.ok||!d?.publicKey)throw new Error(d?.error||"No se pudo obtener la clave Web Push");
+   sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:appServerKey(d.publicKey)});
+ }
+ await api("push-subscribe",[],{subscription:sub.toJSON()});
+ await updateBadge();showToast("Avisos al móvil activados");await refreshPushStatus();
+}
+async function deactivatePush(){
+ const sub=await currentPushSubscription();
+ if(!sub){await refreshPushStatus();return}
+ await api("push-unsubscribe",[],{subscription:sub.toJSON()});
+ await sub.unsubscribe();
+ showToast("Avisos desactivados");await refreshPushStatus();
+}
+
 function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig){
  const requests=Array.isArray(requestDoc.requests)?requestDoc.requests:[],local=localState();
  const explainedSet=new Set((explained.items||[]).map(x=>nrm(x.name)));
@@ -181,11 +237,11 @@ async function load(silent=false){
 }
 $("preparedBtn").onclick=()=>location.href="/ttendencias/preparados/";
 $("refreshBtn").onclick=()=>{showToast("Recargando datos");load()};
-$("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado":"Sin token guardado";$("badgeStatus").textContent=("setAppBadge" in navigator)?(typeof Notification!=="undefined"&&Notification.permission==="granted"?"Contador del icono activo":"Contador del icono pendiente de activar"):"Instala TTendencias en la pantalla de inicio para usar el contador";$("sheet").classList.add("show")};
+$("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado":"Sin token guardado";$("sheet").classList.add("show");refreshPushStatus().catch(()=>{})};
 $("cancelToken").onclick=()=>$("sheet").classList.remove("show");
 $("testToken").onclick=async()=>{const v=$("tokenInput").value.trim();if(!v)return;$("accessStatus").textContent="Comprobando…";try{const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+v},body:JSON.stringify({action:"ping"})});const d=await r.json();$("accessStatus").textContent=r.ok&&d?.backend?.ok?"✓ Acceso correcto · GitHub operativo":r.status===401?"✕ Token no válido":"⚠ Backend no disponible"}catch(_){$("accessStatus").textContent="✕ No se pudo comprobar"}};
-$("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado")};
-$("badgeBtn").onclick=async()=>{const s=$("badgeStatus");if(!("setAppBadge" in navigator)){s.textContent="Instala TTendencias en la pantalla de inicio para usar el contador.";return}if(typeof Notification==="undefined"){s.textContent="Notificaciones no disponibles.";return}let p=Notification.permission;if(p==="default")try{p=await Notification.requestPermission()}catch(_){p="denied"}if(p==="granted"){await updateBadge();s.textContent="✓ Contador del icono activado"}else s.textContent="Permiso no concedido."};
+$("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado");refreshPushStatus().catch(()=>{})};
+$("badgeBtn").onclick=async()=>{try{const sub=await currentPushSubscription();if(sub)await deactivatePush();else await activatePush()}catch(e){showToast(e.message||"No se pudieron cambiar los avisos");await refreshPushStatus().catch(()=>{})}};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});window.addEventListener("pageshow",()=>load(true));
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttendencias/sw.js").catch(()=>{});

@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import webpush from "web-push";
 
 const REPO = process.env.GITHUB_REPO || "fabricelop/europapress-rss";
 const BRANCH = process.env.GITHUB_BRANCH || "main";
@@ -8,6 +9,7 @@ const EXPLAINED = "trends/telegram-manual-explained.json";
 const PREPARED = "trends/prepared.json";
 const HEALTH = "trends/health-status.json";
 const EDITORIAL_CONFIG = "trends/editorial-config.json";
+const PUSH_STATE = "trends/push-state.json";
 
 function b64decode(s) {
   return Buffer.from(String(s || "").replace(/\n/g, ""), "base64").toString("utf8");
@@ -72,6 +74,152 @@ async function mutateJson(path, message, mutator) {
     await new Promise(resolve => setTimeout(resolve, attempt * 150));
   }
   throw new Error(`Conflicto persistente actualizando ${path}`);
+}
+
+function b64url(value) {
+  return Buffer.from(value).toString("base64").replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
+}
+function pushMasterSecret() {
+  const secret = process.env.TTENDENCIAS_PUSH_SECRET || process.env.GITHUB_TOKEN || process.env.TTENDENCIAS_CONTROL_TOKEN || "";
+  if (!secret) throw new Error("No hay secreto de servidor disponible para Web Push");
+  return String(secret);
+}
+function derivedKey(label) {
+  return crypto.createHash("sha256").update(label + "\0" + pushMasterSecret()).digest();
+}
+function vapidKeys() {
+  let seed = derivedKey("ttendencias-vapid");
+  for (let i = 0; i < 32; i++) {
+    try {
+      const ecdh = crypto.createECDH("prime256v1");
+      ecdh.setPrivateKey(seed);
+      return {
+        publicKey: b64url(ecdh.getPublicKey(null, "uncompressed")),
+        privateKey: b64url(seed),
+      };
+    } catch (_) {
+      seed = crypto.createHash("sha256").update(seed).update(String(i)).digest();
+    }
+  }
+  throw new Error("No se pudo derivar la clave VAPID");
+}
+function subscriptionId(subscription) {
+  return crypto.createHash("sha256").update(String(subscription?.endpoint || "")).digest("hex").slice(0, 24);
+}
+function encryptSubscription(subscription) {
+  const iv = crypto.randomBytes(12);
+  const cipher = crypto.createCipheriv("aes-256-gcm", derivedKey("ttendencias-subscriptions"), iv);
+  const plaintext = Buffer.from(JSON.stringify(subscription), "utf8");
+  const encrypted = Buffer.concat([cipher.update(plaintext), cipher.final()]);
+  return {
+    id: subscriptionId(subscription),
+    iv: b64url(iv),
+    tag: b64url(cipher.getAuthTag()),
+    data: b64url(encrypted),
+    created_at: new Date().toISOString(),
+  };
+}
+function fromB64url(value) {
+  const s = String(value || "").replace(/-/g, "+").replace(/_/g, "/");
+  return Buffer.from(s + "=".repeat((4 - (s.length % 4)) % 4), "base64");
+}
+function decryptSubscription(row) {
+  const decipher = crypto.createDecipheriv("aes-256-gcm", derivedKey("ttendencias-subscriptions"), fromB64url(row.iv));
+  decipher.setAuthTag(fromB64url(row.tag));
+  const plain = Buffer.concat([decipher.update(fromB64url(row.data)), decipher.final()]).toString("utf8");
+  return JSON.parse(plain);
+}
+function preparedKey(item) {
+  return String(item?.id || item?.trend_name || "") + ":" + String(item?.revision || 0);
+}
+async function subscribePush(subscription) {
+  if (!subscription?.endpoint || !String(subscription.endpoint).startsWith("https://")) throw new Error("Suscripción Web Push no válida");
+  if (!subscription?.keys?.p256dh || !subscription?.keys?.auth) throw new Error("Claves Web Push incompletas");
+  const { doc: prepared } = await readJson(PREPARED);
+  const now = new Date().toISOString();
+  const encrypted = encryptSubscription(subscription);
+  await mutateJson(PUSH_STATE, "Registrar dispositivo Web Push TTendencias", doc => {
+    doc.project ||= "TTendencias";
+    doc.subscriptions ||= [];
+    doc.notified ||= {};
+    doc.subscriptions = doc.subscriptions.filter(x => x?.id !== encrypted.id);
+    doc.subscriptions.push(encrypted);
+    for (const item of prepared.items || []) doc.notified[preparedKey(item)] ||= now;
+    doc.updated_at = now;
+    return doc;
+  });
+  return { ok: true, subscribed: true };
+}
+async function unsubscribePush(subscription) {
+  const id = subscriptionId(subscription || {});
+  if (!id) throw new Error("Suscripción no válida");
+  const now = new Date().toISOString();
+  await mutateJson(PUSH_STATE, "Retirar dispositivo Web Push TTendencias", doc => {
+    doc.project ||= "TTendencias";
+    doc.subscriptions = (doc.subscriptions || []).filter(x => x?.id !== id);
+    doc.updated_at = now;
+    return doc;
+  });
+  return { ok: true, subscribed: false };
+}
+async function scanPush() {
+  const [{ doc: prepared }, { doc: requests }, { doc: state }] = await Promise.all([
+    readJson(PREPARED),
+    readJson(REQUESTS),
+    readJson(PUSH_STATE),
+  ]);
+  const byId = new Map((requests.requests || []).filter(x => x?.id).map(x => [String(x.id), x]));
+  const byName = new Map();
+  for (const req of requests.requests || []) byName.set(norm(req?.name), req);
+  const notified = state.notified || {};
+  const candidates = (prepared.items || []).filter(item => {
+    const req = byId.get(String(item?.id || "")) || byName.get(norm(item?.trend_name));
+    return String(req?.status || "") === "ready" && !notified[preparedKey(item)];
+  });
+  if (!candidates.length) return { ok: true, candidates: 0, delivered: 0 };
+
+  const rows = state.subscriptions || [];
+  if (!rows.length) return { ok: true, candidates: candidates.length, delivered: 0, no_subscribers: true };
+
+  const keys = vapidKeys();
+  webpush.setVapidDetails("https://github.com/fabricelop/europapress-rss", keys.publicKey, keys.privateKey);
+  const names = candidates.map(x => String(x.trend_name || "").trim()).filter(Boolean);
+  const payload = JSON.stringify({
+    title: names.length === 1 ? "TTendencias · tuit listo" : `TTendencias · ${names.length} tuits listos`,
+    body: names.length === 1 ? `${names[0]} ya está listo para revisar.` : names.slice(0, 4).join(" · ") + (names.length > 4 ? ` · +${names.length - 4}` : ""),
+    url: "/ttendencias/preparados/",
+    count: names.length,
+  });
+
+  let delivered = 0;
+  const dead = new Set();
+  for (const row of rows) {
+    try {
+      const subscription = decryptSubscription(row);
+      await webpush.sendNotification(subscription, payload, { TTL: 3600, urgency: "high" });
+      delivered++;
+    } catch (e) {
+      const status = Number(e?.statusCode || e?.status || 0);
+      if (status === 404 || status === 410) dead.add(String(row?.id || ""));
+      console.error("TTendencias push:", status || "", String(e?.message || e));
+    }
+  }
+
+  if (delivered > 0 || dead.size) {
+    const now = new Date().toISOString();
+    await mutateJson(PUSH_STATE, "Actualizar entrega Web Push TTendencias", doc => {
+      doc.project ||= "TTendencias";
+      doc.subscriptions = (doc.subscriptions || []).filter(x => !dead.has(String(x?.id || "")));
+      doc.notified ||= {};
+      if (delivered > 0) for (const item of candidates) doc.notified[preparedKey(item)] = now;
+      const entries = Object.entries(doc.notified).sort((a, b) => String(a[1]).localeCompare(String(b[1])));
+      doc.notified = Object.fromEntries(entries.slice(-300));
+      doc.last_scan_at = now;
+      doc.updated_at = now;
+      return doc;
+    });
+  }
+  return { ok: true, candidates: candidates.length, delivered, removed_subscriptions: dead.size };
 }
 async function queueNames(names) {
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
@@ -351,6 +499,12 @@ export default async function handler(req, res) {
       if (String(req.query?.view || "") === "state") {
         return res.status(200).json(await stateSnapshot());
       }
+      if (String(req.query?.view || "") === "push-key") {
+        return res.status(200).json({ ok: true, publicKey: vapidKeys().publicKey });
+      }
+      if (String(req.query?.view || "") === "push-scan") {
+        return res.status(200).json(await scanPush());
+      }
       const backend = await backendStatus();
       return res.status(backend.ok ? 200 : 503).json({
         ok: backend.ok,
@@ -372,6 +526,8 @@ export default async function handler(req, res) {
         error: backend.ok ? undefined : "Token de control válido, pero esta instancia no tiene acceso válido a GitHub."
       });
     }
+    if (action === "push-subscribe") return res.status(200).json(await subscribePush(body.subscription));
+    if (action === "push-unsubscribe") return res.status(200).json(await unsubscribePush(body.subscription));
     if (action === "queue") return res.status(200).json(await queueNames(body.names));
     if (action === "explained") return res.status(200).json(await markExplained(body.names));
     if (action === "discard") return res.status(200).json(await discardNames(body.names));
