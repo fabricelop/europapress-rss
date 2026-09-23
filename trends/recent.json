@@ -1,20 +1,20 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-23T18:50:48+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-23T19:01:17+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "superx",
-    "snaplytics",
     "trendswe"
   ],
-  "source_count": 7,
+  "source_count": 6,
   "non_stale_source_count": 6,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "tweets24"
+  ],
   "reliability": "high",
   "top10": [
     "Mari Carmen",
@@ -24,9 +24,9 @@
     "Retiro",
     "Irene",
     "Risto",
-    "Armengol",
+    "Santi Mina",
     "vacío",
-    "#ElSótano23S"
+    "Galapagar"
   ],
   "items": [
     {
@@ -59,7 +59,7 @@
     },
     {
       "rank": 8,
-      "name": "Armengol"
+      "name": "Santi Mina"
     },
     {
       "rank": 9,
@@ -67,16 +67,13 @@
     },
     {
       "rank": 10,
-      "name": "#ElSótano23S"
+      "name": "Galapagar"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Irene",
-    "Risto",
-    "Armengol",
-    "vacío",
-    "#ElSótano23S"
+    "Santi Mina",
+    "Galapagar"
   ],
   "sources": {
     "trends24": {
@@ -107,7 +104,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T18:50:48+02:00"
+      "fetched_at": "2026-09-23T19:01:17+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -132,7 +129,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T18:50:48+02:00"
+      "fetched_at": "2026-09-23T19:01:18+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -141,28 +138,28 @@
         "Congreso",
         "Ana Vázquez",
         "#TEM23S",
-        "Irene",
         "Retiro",
-        "Vacío",
+        "Irene",
         "Risto",
-        "Armengol",
-        "#ElSótano23S",
-        "Cayetana",
+        "Santi Mina",
+        "vacío",
         "Galapagar",
-        "#Mañaneros23S",
-        "Arabia Saudí",
+        "#ElSótano23S",
+        "Armengol",
         "Fonseca",
-        "Arma",
-        "Ana Belén",
+        "Cayetana",
         "Indalecio Prieto",
-        "Vivienda",
-        "Tejero"
+        "Arabia Saudí",
+        "Reglamento de Armas",
+        "Ana Belén",
+        "Tejero",
+        "Urbagestión"
       ],
       "error": null,
-      "update_hint": "Updated 1 hour ago",
-      "age_minutes": 60.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-23T18:50:49+02:00"
+      "update_hint": "Updated 7 minutes ago",
+      "age_minutes": 7.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-23T19:01:19+02:00"
     },
     "superx": {
       "ok": true,
@@ -192,16 +189,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T18:50:50+02:00"
+      "fetched_at": "2026-09-23T19:01:20+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790182250",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790182881",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T18:50:50+02:00"
+      "fetched_at": "2026-09-23T19:01:21+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -229,48 +226,27 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 23, 2026 16:00 UTC",
-      "age_minutes": 50.9,
+      "age_minutes": 61.4,
       "freshness": "aging",
-      "fetched_at": "2026-09-23T18:50:51+02:00"
+      "fetched_at": "2026-09-23T19:01:21+02:00"
     },
     "fowtools": {
-      "ok": true,
-      "trends": [
-        "#LaIslaDeLasTentaciones5",
-        "Begoña Gómez",
-        "Peinado",
-        "Berlín",
-        "#FelizMartes",
-        "Vito Quiles",
-        "#Mañaneros22S",
-        "Mourinho",
-        "Eurovision",
-        "Die Linke",
-        "Valverde",
-        "Negu Gorriak",
-        "El Congreso",
-        "#TEM21S",
-        "Madrid",
-        "Cuti",
-        "#LaHora22S",
-        "Negreira",
-        "Nueva York",
-        "Grado 3"
-      ],
-      "error": null,
-      "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 1849.9,
-      "freshness": "stale",
-      "fetched_at": "2026-09-23T18:50:51+02:00"
+      "ok": false,
+      "trends": [],
+      "error": "ReadTimeout: HTTPSConnectionPool(host='fowtools.com', port=443): Read timed out. (read timeout=30)",
+      "update_hint": null,
+      "age_minutes": null,
+      "freshness": "error",
+      "fetched_at": "2026-09-23T19:01:21+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790182252",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790182911",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T18:50:52+02:00"
+      "fetched_at": "2026-09-23T19:01:51+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -279,7 +255,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-23T18:50:59+02:00"
+      "fetched_at": "2026-09-23T19:01:52+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -288,37 +264,37 @@
         "#Congreso",
         "#Ana Vázquez",
         "#TEM23S",
-        "#Irene",
         "#Retiro",
-        "#VACÍO",
+        "#Irene",
         "#Risto",
-        "#Armengol",
-        "#ElSótano23S",
+        "#VACÍO",
+        "#santi mina",
         "#Galapagar",
-        "#Cayetana",
-        "#Mañaneros23S",
         "#Fonseca",
-        "#Arabia Saudí",
-        "#Arma",
-        "#Ana Belén",
+        "#ElSótano23S",
         "#Indalecio Prieto",
+        "#Armengol",
+        "#Cayetana",
+        "#Reglamento de Armas",
+        "#Arabia Saudí",
+        "#Tejero",
         "#Urbagestión",
-        "#Tejero"
+        "#Ana Belén"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T18:50:59+02:00"
+      "fetched_at": "2026-09-23T19:01:52+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790182261",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790182915",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T18:51:01+02:00"
+      "fetched_at": "2026-09-23T19:01:55+02:00"
     }
   }
 }
