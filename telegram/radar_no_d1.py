@@ -172,6 +172,7 @@ def fp(s): return set(norm(s))
 GENERIC_MATCH=set("""
 morir hombre mujer persona personas anos herido herida heridos heridas incendio forestal
 detener detenido detenida caer tres dos uno noticia ultima directo crisis actualidad
+nueva york reunion encuentro reunir reunirse delegacion
 """.split())
 def score(a,b):
  A,B=fp(a),fp(b)
