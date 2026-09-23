@@ -1,22 +1,21 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-23T07:01:13+02:00",
+  "captured_at": "2026-09-23T07:10:53+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
-    "getdaytrends",
     "tweets24",
     "snaplytics",
     "trendswe"
   ],
-  "source_count": 7,
-  "non_stale_source_count": 6,
+  "source_count": 6,
+  "non_stale_source_count": 5,
   "fresh_sources": [
     "tweets24"
   ],
-  "reliability": "high",
+  "reliability": "medium",
   "top10": [
     "#TierraDeNadie2",
     "Juanma Castaño",
@@ -102,32 +101,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T07:01:13+02:00"
+      "fetched_at": "2026-09-23T07:10:53+02:00"
     },
     "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "#TierraDeNadie2",
-        "Juanma Castaño",
-        "Begoña Gómez",
-        "Gara",
-        "Vito Quiles",
-        "Peinado",
-        "Delcy",
-        "#TEM22S",
-        "Ivana",
-        "#PixVerseWorldModel",
-        "Tebas",
-        "#LaIslaDeLasTentaciones5",
-        "Grado 3",
-        "Taylor",
-        "Biedma"
-      ],
-      "error": null,
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790140253",
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-23T07:01:14+02:00"
+      "freshness": "error",
+      "fetched_at": "2026-09-23T07:10:53+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -154,10 +137,10 @@
         "RMTV"
       ],
       "error": null,
-      "update_hint": "Updated 21 minutes ago",
-      "age_minutes": 21.0,
+      "update_hint": "Updated 31 minutes ago",
+      "age_minutes": 31.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-23T07:01:15+02:00"
+      "fetched_at": "2026-09-23T07:10:54+02:00"
     },
     "superx": {
       "ok": true,
@@ -187,16 +170,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T07:01:15+02:00"
+      "fetched_at": "2026-09-23T07:10:54+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790139676",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790140255",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T07:01:16+02:00"
+      "fetched_at": "2026-09-23T07:10:55+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -224,9 +207,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 23, 2026 04:00 UTC",
-      "age_minutes": 61.3,
+      "age_minutes": 70.9,
       "freshness": "aging",
-      "fetched_at": "2026-09-23T07:01:16+02:00"
+      "fetched_at": "2026-09-23T07:10:55+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -254,18 +237,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 1140.3,
+      "age_minutes": 1149.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-23T07:01:16+02:00"
+      "fetched_at": "2026-09-23T07:10:55+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790139677",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790140256",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T07:01:17+02:00"
+      "fetched_at": "2026-09-23T07:10:56+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -274,46 +257,46 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-23T07:01:20+02:00"
+      "fetched_at": "2026-09-23T07:10:57+02:00"
     },
     "trendswe": {
       "ok": true,
       "trends": [
         "#TierraDeNadie2",
         "#Juanma Castaño",
-        "#Ivana",
         "#Begoña Gómez",
         "#Gara",
-        "#Asraf",
         "#Vito Quiles",
         "#Peinado",
         "#Delcy",
         "#TEM22S",
-        "#Tebas",
+        "#Ivana",
         "#PixVerseWorldModel",
-        "#Taylor",
+        "#Tebas",
         "#LaIslaDeLasTentaciones5",
         "#Grado 3",
-        "#Valverde",
+        "#Taylor",
         "#Biedma",
         "#Trump",
         "#Halo",
-        "#Nueva York"
+        "#Valverde",
+        "#Nueva York",
+        "#FelizMartes"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T07:01:20+02:00"
+      "fetched_at": "2026-09-23T07:10:57+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790139682",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790140259",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T07:01:22+02:00"
+      "fetched_at": "2026-09-23T07:10:59+02:00"
     }
   }
 }
