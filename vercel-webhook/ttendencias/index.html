@@ -249,7 +249,14 @@ $("badgeBtn").onclick=async()=>{try{const sub=await currentPushSubscription();if
 $("pushTestBtn").onclick=async()=>{try{showToast("Enviando aviso de prueba…");const d=await api("push-test",[]);showToast(d.delivered>0?"Aviso de prueba enviado":"No se pudo entregar el aviso")}catch(e){showToast(e.message||"Falló el aviso de prueba")}};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});window.addEventListener("pageshow",()=>load(true));
-if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttendencias/sw.js").catch(()=>{});
+if("serviceWorker" in navigator){
+ navigator.serviceWorker.register("/ttendencias/sw.js",{updateViaCache:"none"}).then(reg=>reg.update().catch(()=>{})).catch(()=>{});
+ navigator.serviceWorker.addEventListener("controllerchange",()=>{
+   if(sessionStorage.getItem("ttendencias-sw-reloaded")==="1")return;
+   sessionStorage.setItem("ttendencias-sw-reloaded","1");
+   location.reload();
+ });
+}
 load();setInterval(()=>{if(!document.hidden)load(true)},15000);setInterval(()=>{if(!document.hidden&&model)editorialTimingText()},15000);
 </script>
 </body></html>
