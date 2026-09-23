@@ -9,6 +9,7 @@ const EXPLAINED = "trends/telegram-manual-explained.json";
 const PREPARED = "trends/prepared.json";
 const HEALTH = "trends/health-status.json";
 const EDITORIAL_CONFIG = "trends/editorial-config.json";
+const EDITORIAL_QUEUE = "trends/editorial-queue.json";
 const PUSH_STATE = "trends/push-state.json";
 
 function b64decode(s) {
@@ -74,6 +75,32 @@ async function mutateJson(path, message, mutator) {
     await new Promise(resolve => setTimeout(resolve, attempt * 150));
   }
   throw new Error(`Conflicto persistente actualizando ${path}`);
+}
+
+async function syncEditorialQueue() {
+  const { doc: requests } = await readJson(REQUESTS);
+  const active = (requests.requests || [])
+    .filter(req => ["preparing", "update"].includes(String(req.status || "")))
+    .map(req => ({
+      id: req.id,
+      name: req.name,
+      rank: req.rank,
+      status: req.status,
+      requested_at: req.requested_at,
+      revision: Number(req.revision || 0),
+      rewrite_instruction: req.rewrite_instruction || req.rewrite_request || "",
+      with_image: Boolean(req.with_image),
+      auto_queued: Boolean(req.auto_queued),
+    }))
+    .sort((a, b) => String(a.requested_at || "").localeCompare(String(b.requested_at || "")));
+  const now = new Date().toISOString();
+  await mutateJson(EDITORIAL_QUEUE, "Sincronizar cola editorial TTendencias desde web", () => ({
+    project: "TTendencias",
+    updated_at: now,
+    count: active.length,
+    items: active,
+  }));
+  return active;
 }
 
 function b64url(value) {
@@ -330,6 +357,7 @@ async function queueNames(names) {
     doc.requests = [...byId.values()];
     return doc;
   });
+  await syncEditorialQueue();
   return { ok: true, queued: unique, batch_id: batchId };
 }
 async function markExplained(names) {
@@ -485,6 +513,7 @@ async function reworkNames(names, instruction) {
     doc.updated_at = now;
     return doc;
   });
+  await syncEditorialQueue();
   return { ok: true, rework: unique, instruction: text };
 }
 async function retryNames(names) {
@@ -536,6 +565,7 @@ async function retryNames(names) {
     doc.updated_at = now;
     return doc;
   });
+  await syncEditorialQueue();
   return { ok: true, retried: unique };
 }
 
