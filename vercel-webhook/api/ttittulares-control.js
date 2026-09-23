@@ -141,6 +141,12 @@ async function rework(eventId,instruction){
   await mutateJson(DECISIONS,"Reabrir noticia TTiTTulares desde web",doc=>{
     doc.items=(doc.items||[]).filter(x=>idOf(x.event_id)!==id);doc.updated_at=now;return doc
   });
+  await mutateJson(EVENTS,"Marcar noticia TTiTTulares en elaboración",doc=>{
+    for(const event of doc.events||[])if(idOf(event.id||event.event_id)===id){
+      event.status="PROCESSING";event.processing_at=now
+    }
+    doc.updated_at=now;return doc
+  });
   return {ok:true,event_id:id,status:"PROCESSING"}
 }
 async function submitManualStory(url,title,instruction){
@@ -158,6 +164,9 @@ async function submitManualStory(url,title,instruction){
   const candidateIds=new Set([
     archiveMatch?.event_id,eventMatch?.id,eventMatch?.event_id,queueMatch?.event_id,preparedMatch?.event_id
   ].map(idOf).filter(Boolean));
+  if(archiveMatch&&["PUBLISHED","DISMISSED"].includes(String(archiveMatch.status||"").toUpperCase())){
+    return {ok:true,duplicate:true,event_id:idOf(archiveMatch.event_id),status:String(archiveMatch.status).toUpperCase(),message:"Esta noticia ya estaba cerrada"}
+  }
   const decision=(decisionsR.doc.items||[]).find(x=>candidateIds.has(idOf(x.event_id))&&["published","dismissed"].includes(String(x.status||"").toLowerCase()));
   if(decision)return {ok:true,duplicate:true,event_id:idOf(decision.event_id),status:String(decision.status).toUpperCase(),message:"Esta noticia ya estaba cerrada"};
   if(preparedMatch)return {ok:true,duplicate:true,event_id:idOf(preparedMatch.event_id),status:"READY",message:"Esta noticia ya está lista"};
@@ -245,6 +254,12 @@ async function manualPrepare(eventId){
       update_context:ev.update_context||null
     });
     if(!doc.items.includes(item))doc.items.push(item);
+    doc.updated_at=now;return doc
+  });
+  await mutateJson(EVENTS,"Marcar noticia TTiTTulares en elaboración",doc=>{
+    for(const event of doc.events||[])if(idOf(event.id||event.event_id)===id){
+      event.status="PROCESSING";event.processing_at=now
+    }
     doc.updated_at=now;return doc
   });
   return {ok:true,event_id:id,status:"PROCESSING"}
