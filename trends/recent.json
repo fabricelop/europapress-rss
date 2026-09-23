@@ -1,32 +1,31 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-23T22:54:23+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-24T00:31:05+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
+    "superx",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
-  "reliability": "high",
+  "non_stale_source_count": 5,
+  "fresh_sources": [],
+  "reliability": "medium",
   "top10": [
     "Mari Carmen",
+    "#firstdates23s",
     "Franco",
-    "Congreso",
     "Retiro",
+    "Congreso",
+    "#elintermedio",
     "Ana Vázquez",
-    "Aubameyang",
-    "Risto",
-    "#MonarquíaFueraYa",
-    "Boyero",
-    "Ana Belén"
+    "Wyoming",
+    "Excalibur",
+    "#LaIslaDeLasTentaciones6"
   ],
   "items": [
     {
@@ -35,11 +34,11 @@
     },
     {
       "rank": 2,
-      "name": "Franco"
+      "name": "#firstdates23s"
     },
     {
       "rank": 3,
-      "name": "Congreso"
+      "name": "Franco"
     },
     {
       "rank": 4,
@@ -47,118 +46,122 @@
     },
     {
       "rank": 5,
-      "name": "Ana Vázquez"
+      "name": "Congreso"
     },
     {
       "rank": 6,
-      "name": "Aubameyang"
+      "name": "#elintermedio"
     },
     {
       "rank": 7,
-      "name": "Risto"
+      "name": "Ana Vázquez"
     },
     {
       "rank": 8,
-      "name": "#MonarquíaFueraYa"
+      "name": "Wyoming"
     },
     {
       "rank": 9,
-      "name": "Boyero"
+      "name": "Excalibur"
     },
     {
       "rank": 10,
-      "name": "Ana Belén"
+      "name": "#LaIslaDeLasTentaciones6"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Boyero"
+    "#firstdates23s",
+    "#elintermedio",
+    "Wyoming",
+    "Excalibur",
+    "#LaIslaDeLasTentaciones6"
   ],
   "sources": {
     "trends24": {
       "ok": true,
       "trends": [
+        "#LaIslaDeLasTentaciones6",
         "Mari Carmen",
+        "#firstdates23s",
         "Franco",
-        "Congreso",
         "Retiro",
+        "Congreso",
+        "#elintermedio",
+        "Gema",
         "Ana Vázquez",
-        "Aubameyang",
-        "Risto",
-        "#MonarquíaFueraYa",
-        "Boyero",
-        "Ana Belén",
-        "Irene Montero",
-        "#MalasLenguas",
         "Wyoming",
-        "Vacío",
-        "Galapagar",
-        "Arabia Saudí",
+        "Excalibur",
+        "Felipe González",
+        "#MonarquíaFueraYa",
+        "Auba",
         "Junts",
-        "Ada Colau",
-        "Tejero",
-        "Sumar"
+        "Risto",
+        "Ana Belén",
+        "Boyero",
+        "Irene Montero",
+        "Pina"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T22:54:23+02:00"
+      "fetched_at": "2026-09-24T00:31:05+02:00"
     },
     "getdaytrends": {
       "ok": true,
       "trends": [
+        "#LaIslaDeLasTentaciones6",
         "Mari Carmen",
+        "#FirstDates23S",
         "Franco",
-        "Congreso",
         "Retiro",
-        "Ana Vázquez",
-        "Aubameyang",
-        "Risto",
-        "#MonarquíaFueraYa",
-        "Boyero",
-        "Ana Belén",
-        "Irene Montero",
-        "#MalasLenguas",
+        "#ElTúnelTVE",
+        "Congreso",
+        "GEMA",
+        "#ElIntermedio",
         "Wyoming",
-        "Galapagar",
-        "VACÍO"
+        "Ana Vázquez",
+        "Nataly",
+        "Excalibur",
+        "Felipe González",
+        "#LaNoche24h"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T22:54:24+02:00"
+      "fetched_at": "2026-09-24T00:31:05+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
+        "#LaIslaDeLasTentaciones6",
         "Mari Carmen",
+        "#firstdates23s",
         "Franco",
-        "Congreso",
         "Retiro",
+        "Congreso",
+        "#elintermedio",
+        "Gema",
         "Ana Vázquez",
-        "Aubameyang",
-        "Risto",
-        "#MonarquíaFueraYa",
-        "Boyero",
-        "Ana Belén",
-        "Irene Montero",
-        "#MalasLenguas",
         "Wyoming",
-        "Vacío",
-        "Galapagar",
-        "Arabia Saudí",
+        "Excalibur",
+        "Felipe González",
+        "#MonarquíaFueraYa",
+        "Auba",
         "Junts",
-        "Ada Colau",
-        "Tejero",
-        "Sumar"
+        "Risto",
+        "Ana Belén",
+        "Boyero",
+        "Irene Montero",
+        "Pina"
       ],
       "error": null,
-      "update_hint": "Updated 34 minutes ago",
-      "age_minutes": 34.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-23T22:54:25+02:00"
+      "update_hint": "Updated 1 second ago Live Twitter Trending Topics in Spain 1 #LaIslaDeLasTentaciones6 Ex",
+      "age_minutes": null,
+      "freshness": "unknown",
+      "fetched_at": "2026-09-24T00:31:06+02:00"
     },
     "superx": {
       "ok": true,
@@ -188,16 +191,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T22:54:25+02:00"
+      "fetched_at": "2026-09-24T00:31:07+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790196865",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790202667",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T22:54:25+02:00"
+      "fetched_at": "2026-09-24T00:31:07+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -206,28 +209,28 @@
         "Congreso",
         "Ana Vázquez",
         "PSOE",
+        "#LaIslaDeLasTentaciones6",
         "Retiro",
+        "#firstdates23s",
         "Ana Belén",
         "Delcy",
         "Franco",
         "#TEM23S",
-        "#TierraDeNadie2",
         "Ayuso",
         "Armengol",
-        "#elintermedio",
+        "#TierraDeNadie2",
         "Urbagestión",
-        "#firstdates23s",
+        "Risto",
         "Juanma Castaño",
         "#Mañaneros23S",
-        "Vito",
-        "Risto",
-        "Vox y Junts"
+        "Vox y Junts",
+        "Vito"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 23, 2026 20:00 UTC",
-      "age_minutes": 54.4,
-      "freshness": "aging",
-      "fetched_at": "2026-09-23T22:54:25+02:00"
+      "update_hint": "Trending now Sep 23, 2026 21:00 UTC",
+      "age_minutes": 91.1,
+      "freshness": "stale",
+      "fetched_at": "2026-09-24T00:31:07+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -255,18 +258,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 2093.4,
+      "age_minutes": 2190.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-23T22:54:26+02:00"
+      "fetched_at": "2026-09-24T00:31:08+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790196867",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790202669",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T22:54:27+02:00"
+      "fetched_at": "2026-09-24T00:31:09+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -275,46 +278,46 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-23T22:54:28+02:00"
+      "fetched_at": "2026-09-24T00:31:09+02:00"
     },
     "trendswe": {
       "ok": true,
       "trends": [
         "#Mari Carmen",
-        "#Congreso",
         "#Franco",
+        "#FirstDates23S",
+        "#Congreso",
+        "#ElIntermedio",
         "#Retiro",
         "#Ana Vázquez",
-        "#Aubameyang",
-        "#MalasLenguas",
-        "#Risto",
-        "#MonarquíaFueraYa",
-        "#Ana Belén",
-        "#Irene Montero",
-        "#Galapagar",
-        "#TEM23S",
-        "#VACÍO",
         "#Wyoming",
-        "#Boyer",
-        "#Mamdani",
-        "#Colau",
-        "#Fonseca",
-        "#Alba Carrillo"
+        "#MonarquíaFueraYa",
+        "#Junts",
+        "#Risto",
+        "#Aubameyang",
+        "#Pina",
+        "#Galapagar",
+        "#Irene Montero",
+        "#Excalibur",
+        "#Ada Colau",
+        "#Arabia Saudí",
+        "#Ana Belén",
+        "#Boyero"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T22:54:28+02:00"
+      "fetched_at": "2026-09-24T00:31:10+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790196870",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790202672",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T22:54:30+02:00"
+      "fetched_at": "2026-09-24T00:31:12+02:00"
     }
   }
 }
