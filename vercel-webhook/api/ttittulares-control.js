@@ -5,6 +5,7 @@ const BRANCH=process.env.GITHUB_BRANCH||"main";
 const PREPARED="ttittulares/prepared.json";
 const DECISIONS="ttittulares/decisions.json";
 const PROCESSING="telegram/editorial-processing.json";
+const EVENTS="telegram/events.json";
 const CONTROL_TOKEN_HASH="083d41ffcc41b14d52d426412b1ed44a8d4958b351ee110bdcc5a0eec167b840";
 
 function b64d(s){return Buffer.from(String(s||"").replace(/\n/g,""),"base64").toString("utf8")}
