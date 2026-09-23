@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-23T21:20:53+02:00",
+  "captured_at": "2026-09-23T21:41:55+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -13,19 +13,20 @@
   "source_count": 7,
   "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
   "reliability": "high",
   "top10": [
     "Mari Carmen",
     "Congreso",
-    "Ana Vázquez",
+    "Franco",
     "Retiro",
+    "Ana Vázquez",
     "Aubameyang",
-    "#MalasLenguas",
-    "#TEM23S",
+    "#MonarquíaFueraYa",
     "Risto",
-    "Irene Montero",
+    "#MalasLenguas",
     "Ana Belén"
   ],
   "items": [
@@ -39,7 +40,7 @@
     },
     {
       "rank": 3,
-      "name": "Ana Vázquez"
+      "name": "Franco"
     },
     {
       "rank": 4,
@@ -47,15 +48,15 @@
     },
     {
       "rank": 5,
-      "name": "Aubameyang"
+      "name": "Ana Vázquez"
     },
     {
       "rank": 6,
-      "name": "#MalasLenguas"
+      "name": "Aubameyang"
     },
     {
       "rank": 7,
-      "name": "#TEM23S"
+      "name": "#MonarquíaFueraYa"
     },
     {
       "rank": 8,
@@ -63,15 +64,18 @@
     },
     {
       "rank": 9,
-      "name": "Irene Montero"
+      "name": "#MalasLenguas"
     },
     {
       "rank": 10,
       "name": "Ana Belén"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Franco",
+    "#MonarquíaFueraYa"
+  ],
   "sources": {
     "trends24": {
       "ok": true,
@@ -101,7 +105,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T21:20:53+02:00"
+      "fetched_at": "2026-09-23T21:41:55+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -126,37 +130,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T21:20:54+02:00"
+      "fetched_at": "2026-09-23T21:41:55+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "Mari Carmen",
         "Congreso",
-        "Ana Vázquez",
+        "Franco",
         "Retiro",
+        "Ana Vázquez",
         "Aubameyang",
-        "#MalasLenguas",
-        "#TEM23S",
+        "#MonarquíaFueraYa",
         "Risto",
-        "Irene Montero",
+        "#MalasLenguas",
         "Ana Belén",
-        "Vacío",
-        "Santi Mina",
+        "Irene Montero",
+        "#TEM23S",
         "Galapagar",
-        "Cayetana",
+        "Vacío",
+        "Mamdani",
+        "Boyer",
         "Wyoming",
-        "#LaPromesa",
-        "Fonseca",
-        "Armengol",
-        "Felipe González",
-        "Arabia Saudí"
+        "Alba Carrillo",
+        "Arabia Saudí",
+        "Colau"
       ],
       "error": null,
-      "update_hint": "Updated 41 minutes ago",
-      "age_minutes": 41.0,
+      "update_hint": "Updated 16 minutes ago",
+      "age_minutes": 16.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-23T21:20:54+02:00"
+      "fetched_at": "2026-09-23T21:41:56+02:00"
     },
     "superx": {
       "ok": true,
@@ -186,16 +190,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T21:20:55+02:00"
+      "fetched_at": "2026-09-23T21:41:57+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790191255",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790192518",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T21:20:55+02:00"
+      "fetched_at": "2026-09-23T21:41:58+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -208,24 +212,24 @@
         "Delcy",
         "Ana Belén",
         "#TEM23S",
+        "Franco",
         "#TierraDeNadie2",
         "Armengol",
-        "Aubameyang",
+        "Ayuso",
+        "#Mañaneros23S",
         "Urbagestión",
         "Juanma Castaño",
-        "Franco",
-        "#Mañaneros23S",
         "Vito",
+        "Risto",
         "Trump",
-        "#MalasLenguas",
         "#FelizMiércoles",
-        "Gara"
+        "Vacío"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 23, 2026 18:00 UTC",
-      "age_minutes": 80.9,
-      "freshness": "aging",
-      "fetched_at": "2026-09-23T21:20:55+02:00"
+      "update_hint": "Trending now Sep 23, 2026 19:00 UTC",
+      "age_minutes": 42.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-23T21:41:58+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -253,18 +257,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 1999.9,
+      "age_minutes": 2021.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-23T21:20:56+02:00"
+      "fetched_at": "2026-09-23T21:41:58+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790191257",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790192520",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T21:20:57+02:00"
+      "fetched_at": "2026-09-23T21:42:00+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -273,7 +277,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-23T21:20:58+02:00"
+      "fetched_at": "2026-09-23T21:42:01+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -303,16 +307,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T21:20:58+02:00"
+      "fetched_at": "2026-09-23T21:42:01+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790191260",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790192523",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T21:21:00+02:00"
+      "fetched_at": "2026-09-23T21:42:03+02:00"
     }
   }
 }
