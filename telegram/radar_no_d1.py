@@ -123,6 +123,32 @@ TOKEN_ALIASES={
  "muere":"morir","murio":"morir","muerto":"morir","muerta":"morir","fallece":"morir","fallecio":"morir",
  "cerrada":"cerrar","cerrado":"cerrar","cierra":"cerrar","cierre":"cerrar",
 }
+EVENT_ACTION_ALIASES={
+ "reunion":"reunion","reunirse":"reunion","reunen":"reunion","reune":"reunion","renen":"reunion","encuentro":"reunion","entrevista":"reunion",
+ "firmar":"acuerdo","firma":"acuerdo","acuerdo":"acuerdo","pacto":"acuerdo",
+ "demandar":"demanda","demanda":"demanda","denunciar":"denuncia","denuncia":"denuncia",
+ "detener":"detencion","detenido":"detencion","detenida":"detencion","arresto":"detencion",
+ "morir":"muerte","muere":"muerte","fallecer":"muerte","fallece":"muerte",
+ "dimitir":"dimision","dimite":"dimision","renunciar":"dimision","renuncia":"dimision",
+ "ganar":"victoria","gana":"victoria","vencer":"victoria","vence":"victoria",
+ "perder":"derrota","pierde":"derrota","derrota":"derrota",
+ "aprobar":"aprobacion","aprueba":"aprobacion","avalar":"aprobacion","avala":"aprobacion",
+ "prohibir":"prohibicion","prohibe":"prohibicion","vetar":"prohibicion","veta":"prohibicion",
+}
+def event_actions(s):
+ out=set()
+ for x in norm(s):
+  if x in EVENT_ACTION_ALIASES: out.add(EVENT_ACTION_ALIASES[x])
+ return out
+
+def entityish_tokens(s):
+ return {x for x in norm(s) if len(x)>=4 and x not in GENERIC_MATCH}
+
+def same_event_semantic(a,b):
+ A,B=entityish_tokens(a),entityish_tokens(b)
+ common=A&B
+ return len(common)>=2 and bool(event_actions(a)&event_actions(b))
+
 def norm(s):
  s=''.join(c for c in unicodedata.normalize("NFKD",str(s).lower()) if not unicodedata.combining(c))
  out=[]
@@ -261,8 +287,11 @@ def best_match(title,events,threshold=.50):
  best=None;bs=0
  for e in events:
   s=score(title,e.get("canonical_title") or e.get("title",""))
+  if same_event_semantic(title,e.get("canonical_title") or e.get("title","")): s=max(s,.72)
   for a in e.get("appearances",[])[-8:]:
-   s=max(s,score(title,a.get("title","")))
+   cand=a.get("title","")
+   s=max(s,score(title,cand))
+   if same_event_semantic(title,cand): s=max(s,.72)
   if s>bs:best=e;bs=s
  return (best,bs) if best and bs>=threshold else (None,bs)
 
@@ -298,7 +327,9 @@ def merge_duplicate_active_events(events):
    # No mezclar una revisión material con su noticia padre ni revisiones distintas.
    if bool(e.get("parent_event_id"))!=bool(k.get("parent_event_id")): continue
    if e.get("parent_event_id") and e.get("parent_event_id")!=k.get("parent_event_id"): continue
-   if score(e.get("canonical_title",""),k.get("canonical_title",""))>=0.70:
+   se=score(e.get("canonical_title",""),k.get("canonical_title",""))
+   semantic=same_event_semantic(e.get("canonical_title",""),k.get("canonical_title",""))
+   if se>=0.70 or semantic:
     target=k;break
   if not target:
    kept.append(e);continue
@@ -468,6 +499,12 @@ def send_review(e,token,chat,fast=False):
 
 if "--selftest-dedupe" in sys.argv:
  tests=[
+  (
+   'Donald Trump y Delcy Rodriguez se reunen por primera vez en Nueva York',
+   'Trump y Delcy Rodríguez sellan el deshielo con un encuentro a puerta cerrada en Nueva York',
+   True,
+   "misma reunión Trump/Delcy con redacción distinta",
+  ),
   (
    'Sánchez pide explicaciones a Marruecos “porque su control de fronteras falló”',
    'Sánchez ve evidente que el control fronterizo de Marruecos falló en la crisis de Ceuta y asegura que pidió respuestas',
