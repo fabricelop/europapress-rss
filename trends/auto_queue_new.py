@@ -52,6 +52,7 @@ for item in (recent.get("items") or [])[:10]:
         current.append({"name": name, "rank": int(item.get("rank") or 0)})
 
 to_queue = []
+reconciled = False
 for item in current:
     key = norm(item["name"])
     req = by_name.get(key)
@@ -66,6 +67,7 @@ for item in current:
                 continue
             req["status"] = "preparing"
             req["requested_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+            reconciled = True
             req.pop("ready_at", None)
             req.pop("delivery_confirmation", None)
             status = "preparing"
@@ -80,7 +82,12 @@ for item in current:
     to_queue.append(item)
 
 if not to_queue:
-    print("Sin tendencias nuevas que encolar")
+    if reconciled:
+        requests_doc["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+        save("requests.json", requests_doc)
+        print("Cola reconciliada; no hay tendencias nuevas que encolar")
+    else:
+        print("Sin tendencias nuevas que encolar")
     raise SystemExit(0)
 
 now = datetime.now(MADRID).isoformat(timespec="seconds")
