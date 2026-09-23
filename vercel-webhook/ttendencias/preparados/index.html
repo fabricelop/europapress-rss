@@ -81,11 +81,19 @@ async function load(){
   let local={};try{local=JSON.parse(localStorage.getItem("ttendencias-local-state")||"{}")}catch(_){}
   const latest={};
   for(const req of qd.requests||[])latest[nrm(req.name)]=req;
+  // Si GitHub dice que una tendencia vuelve a estar ready/preparing/update,
+  // cualquier cierre local anterior es obsoleto y se elimina del dispositivo.
+  let localChanged=false;
+  for(const [name,req] of Object.entries(latest)){
+    if(["ready","preparing","update"].includes(String(req?.status||"")) && local[name]){
+      delete local[name];localChanged=true;
+    }
+  }
+  if(localChanged)localStorage.setItem("ttendencias-local-state",JSON.stringify(local));
+  localStorage.removeItem("ttendencias-local-explained");
   const items=(pd.items||[]).filter(item=>{
    const rel=related(item).map(nrm);
    for(const name of rel){
-    const ls=local[name];
-    if(ls&&["explained","dismissed"].includes(String(ls.status||"")))return false;
     const req=latest[name];
     if(req&&["explained","dismissed"].includes(String(req.status||"")))return false;
    }
