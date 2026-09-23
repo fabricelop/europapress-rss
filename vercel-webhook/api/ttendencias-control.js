@@ -174,12 +174,18 @@ async function scanPush() {
   const notified = state.notified || {};
   const candidates = (prepared.items || []).filter(item => {
     const req = byId.get(String(item?.id || "")) || byName.get(norm(item?.trend_name));
-    return String(req?.status || "") === "ready" && !notified[preparedKey(item)];
+    const status = String(req?.status || "");
+    const closed = ["explained", "dismissed", "problematic"].includes(status);
+    return !closed && !notified[preparedKey(item)];
   });
-  if (!candidates.length) return { ok: true, candidates: 0, delivered: 0 };
+  if (!candidates.length) {
+    return { ok: true, candidates: 0, delivered: 0 };
+  }
 
   const rows = state.subscriptions || [];
-  if (!rows.length) return { ok: true, candidates: candidates.length, delivered: 0, no_subscribers: true };
+  if (!rows.length) {
+    return { ok: true, candidates: candidates.length, delivered: 0, no_subscribers: true };
+  }
 
   const keys = vapidKeys();
   webpush.setVapidDetails("https://github.com/fabricelop/europapress-rss", keys.publicKey, keys.privateKey);
@@ -191,35 +197,50 @@ async function scanPush() {
     count: names.length,
   });
 
-  let delivered = 0;
+  let delivered = 0, failed = 0;
   const dead = new Set();
+  const errors = [];
   for (const row of rows) {
     try {
       const subscription = decryptSubscription(row);
       await webpush.sendNotification(subscription, payload, { TTL: 3600, urgency: "high" });
       delivered++;
     } catch (e) {
+      failed++;
       const status = Number(e?.statusCode || e?.status || 0);
       if (status === 404 || status === 410) dead.add(String(row?.id || ""));
+      errors.push({ status: status || null, message: String(e?.message || e).slice(0, 180) });
       console.error("TTendencias push:", status || "", String(e?.message || e));
     }
   }
 
-  if (delivered > 0 || dead.size) {
-    const now = new Date().toISOString();
-    await mutateJson(PUSH_STATE, "Actualizar entrega Web Push TTendencias", doc => {
-      doc.project ||= "TTendencias";
-      doc.subscriptions = (doc.subscriptions || []).filter(x => !dead.has(String(x?.id || "")));
-      doc.notified ||= {};
-      if (delivered > 0) for (const item of candidates) doc.notified[preparedKey(item)] = now;
-      const entries = Object.entries(doc.notified).sort((a, b) => String(a[1]).localeCompare(String(b[1])));
-      doc.notified = Object.fromEntries(entries.slice(-300));
-      doc.last_scan_at = now;
-      doc.updated_at = now;
-      return doc;
-    });
-  }
-  return { ok: true, candidates: candidates.length, delivered, removed_subscriptions: dead.size };
+  const now = new Date().toISOString();
+  await mutateJson(PUSH_STATE, "Actualizar entrega Web Push TTendencias", doc => {
+    doc.project ||= "TTendencias";
+    doc.subscriptions = (doc.subscriptions || []).filter(x => !dead.has(String(x?.id || "")));
+    doc.notified ||= {};
+    if (delivered > 0) for (const item of candidates) doc.notified[preparedKey(item)] = now;
+    const entries = Object.entries(doc.notified).sort((a, b) => String(a[1]).localeCompare(String(b[1])));
+    doc.notified = Object.fromEntries(entries.slice(-300));
+    doc.last_scan_at = now;
+    doc.last_result = {
+      candidates: candidates.length,
+      delivered,
+      failed,
+      removed_subscriptions: dead.size,
+      errors: errors.slice(0, 5),
+    };
+    doc.updated_at = now;
+    return doc;
+  });
+  return {
+    ok: delivered > 0 || failed === 0,
+    candidates: candidates.length,
+    delivered,
+    failed,
+    removed_subscriptions: dead.size,
+    errors: errors.slice(0, 5),
+  };
 }
 async function queueNames(names) {
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
