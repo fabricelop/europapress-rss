@@ -25,6 +25,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 <header class="top">
  <div><div class="brand">TTiTTulares</div><div class="sub">Control editorial web</div></div>
  <div class="spacer"></div>
+ <button class="iconbtn" id="submitNews" title="Mandar noticia a elaborar">＋</button>
  <button class="iconbtn" id="notify" title="Activar notificaciones">🔔</button>
  <button class="iconbtn" id="refresh" title="Recargar">↻</button>
  <button class="iconbtn" id="settings" title="Ajustes">⚙</button>
@@ -43,6 +44,16 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <h2>Rehacer noticia</h2><p id="reworkTitle"></p>
  <textarea id="reworkInstruction" placeholder="Indica qué quieres cambiar: enfoque, tono, remate, información que verificar…"></textarea>
  <div class="actions"><button class="btn" id="reworkCancel">Cancelar</button><button class="btn primary" id="reworkSend">Enviar a elaboración</button></div>
+</div></div>
+
+<div class="sheet" id="submitSheet"><div class="panel">
+ <h2>Mandar noticia a elaborar</h2>
+ <p>Pega el enlace de la noticia. El título y las instrucciones son opcionales. Antes de crearla se comprobará si ya existe en el radar, la cola o el archivo.</p>
+ <input id="submitUrl" type="url" inputmode="url" autocomplete="off" placeholder="https://…">
+ <input id="submitTitle" type="text" autocomplete="off" placeholder="Título opcional" style="margin-top:9px">
+ <textarea id="submitInstruction" placeholder="Instrucciones opcionales: enfoque, dato a comprobar, remate…" style="margin-top:9px"></textarea>
+ <div class="actions"><button class="btn" id="submitCancel">Cancelar</button><button class="btn primary" id="submitSend">Enviar a elaboración</button></div>
+ <div class="meta" id="submitStatus" style="margin-top:9px"></div>
 </div></div>
 
 <div class="sheet" id="settingsSheet"><div class="panel">
@@ -88,13 +99,17 @@ function renderGrowing(list){
  for(const item of items){
    const card=document.createElement("article");card.className="queuecard";
    const chips=(item.sources||[]).map(src=>'<span class="chip">'+String(src).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
-   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources growing-speed"></div></div><button class="three-go" title="Mandar a elaboración">→</button></div><div class="sources-list">'+chips+'</div>';
+   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources growing-speed"></div></div><button class="three-go" title="Mandar a elaboración">→</button></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn danger dismiss-growing">Desestimar</button></div>';
    card.querySelector(".title").textContent=item.title||"Noticia sin título";
    const mins=Number(item.source3_minutes);
    card.querySelector(".growing-speed").textContent=Number.isFinite(mins)?"3 fuentes en "+mins+" min · esperando una cuarta":"3 fuentes · esperando una cuarta";
    card.querySelector(".three-go").onclick=async()=>{
      if(!confirm("¿Mandar esta noticia a elaboración con 3 fuentes?"))return;
      try{await api("prepare3",{event_id:item.event_id});toast("Enviada a elaboración");await load(true);setView("growing")}catch(err){toast(err.message)}
+   };
+   card.querySelector(".dismiss-growing").onclick=async()=>{
+     if(!confirm("¿Desestimar esta noticia? Se quitará de todas las listas."))return;
+     try{await api("dismiss",{event_id:item.event_id});toast("Noticia desestimada");await load(true);setView("growing")}catch(err){toast(err.message)}
    };
    list.appendChild(card)
  }
@@ -219,10 +234,14 @@ function renderProcessing(list){
  for(const item of items){
    const card=document.createElement("article");card.className="queuecard";
    const chips=(item.sources||[]).map(s=>'<span class="chip">'+String(typeof s==="string"?s:(s.name||s.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
-   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="sources-list">'+chips+'</div>';
+   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn danger dismiss-processing">Desestimar</button></div>';
    card.querySelector(".title").textContent=item.title||"Noticia sin título";
    card.querySelector(".sources").textContent="Entrada "+fmt(item.selected_at)+(item.selection_mode==="REWRITE"?" · Rehacer":"");
    card.querySelector(".count").textContent=Number(item.source_count||0)+" fuentes";
+   card.querySelector(".dismiss-processing").onclick=async()=>{
+     if(!confirm("¿Desestimar esta noticia? Se quitará de todas las listas."))return;
+     try{await api("dismiss",{event_id:item.event_id});toast("Noticia desestimada");await load(true);setView("processing")}catch(err){toast(err.message)}
+   };
    list.appendChild(card)
  }
 }
@@ -237,6 +256,23 @@ async function load(silent=false){
 document.querySelectorAll(".stat").forEach(x=>x.onclick=()=>setView(x.dataset.view));
 $("notify").onclick=enablePush;
 $("refresh").onclick=()=>{toast("Recargando");load()};
+$("submitNews").onclick=()=>{
+ $("submitUrl").value="";$("submitTitle").value="";$("submitInstruction").value="";$("submitStatus").textContent="";
+ $("submitSheet").classList.add("show");$("submitUrl").focus()
+};
+$("submitCancel").onclick=()=>$("submitSheet").classList.remove("show");
+$("submitSend").onclick=async()=>{
+ const url=$("submitUrl").value.trim(),title=$("submitTitle").value.trim(),instruction=$("submitInstruction").value.trim();
+ if(!url&&!title){$("submitStatus").textContent="Pega un enlace o escribe un titular";return}
+ $("submitStatus").textContent="Comprobando archivo y cola…";
+ try{
+   const d=await api("submit",{url,title,instruction});
+   const messages={PROCESSING:d.duplicate?"Ya existía: está en elaboración":"Enviada a elaboración",READY:"Ya estaba elaborada y lista",PUBLISHED:"Ya estaba publicada",DISMISSED:"Ya estaba desestimada"};
+   $("submitStatus").textContent=messages[d.status]||d.message||"Procesada";
+   await load(true);
+   if(d.status==="PROCESSING"&&!d.duplicate){setTimeout(()=>$("submitSheet").classList.remove("show"),700)}
+ }catch(e){$("submitStatus").textContent=e.message}
+};
 $("settings").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado en este dispositivo":"Sin token guardado";$("settingsSheet").classList.add("show")};
 $("settingsCancel").onclick=()=>$("settingsSheet").classList.remove("show");
 $("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttittulares-control-token",v);else localStorage.removeItem("ttittulares-control-token");$("settingsSheet").classList.remove("show");toast(v?"Token guardado":"Token eliminado")};
