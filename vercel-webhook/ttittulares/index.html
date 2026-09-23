@@ -150,7 +150,7 @@ function renderReady(list){
   const current=Number(events[item.event_id]?.source_count||item.current_source_count||item.drafted_source_count||0);
   const drafted=Number(item.drafted_source_count||item.source_count||0);
   const card=document.createElement("article");card.className="card";
-  card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="actions"><button class="btn primary expand">Abrir</button><button class="btn danger dismiss">Desestimar</button></div><div class="details"><div class="facts"></div><div class="variants"></div><div class="actions"><button class="btn primary published">Ya publicada</button><button class="btn rework">Rehacer</button><button class="btn danger dismiss2">Desestimar</button></div></div>';
+  card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="actions"><button class="btn primary expand">Abrir</button><button class="btn primary published">Ya publicada</button><button class="btn danger dismiss">Desestimar</button></div><div class="details"><div class="facts"></div><div class="variants"></div><div class="actions"><button class="btn rework">Rehacer</button><button class="btn danger dismiss2">Desestimar</button></div></div>';
   card.querySelector(".title").textContent=item.title||"Noticia sin título";
   card.querySelector(".sources").textContent="Redactada con "+drafted+" ("+current+") · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
