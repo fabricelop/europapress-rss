@@ -147,12 +147,18 @@ def event_actions(s):
   if x in EVENT_ACTION_ALIASES: out.add(EVENT_ACTION_ALIASES[x])
  return out
 
-def entityish_tokens(s):
- return {x for x in norm(s) if len(x)>=4 and x not in GENERIC_MATCH}
+PROPER_GENERIC={"nueva","york","estados","unidos","casa","blanca","onu","europa","espana","gobierno","congreso","senado"}
+def proper_tokens(s):
+ out=set()
+ for raw in re.findall(r"\b[A-ZÁÉÍÓÚÜÑ][A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{2,}\b",str(s)):
+  tok="".join(c for c in unicodedata.normalize("NFKD",raw.lower()) if not unicodedata.combining(c))
+  if tok not in PROPER_GENERIC and tok not in GENERIC_MATCH: out.add(tok)
+ return out
 
 def same_event_semantic(a,b):
- A,B=entityish_tokens(a),entityish_tokens(b)
- common=A&B
+ # Dos nombres propios compartidos + la misma acción canónica.
+ # Evita unir historias distintas que solo comparten actor y ciudad.
+ common=proper_tokens(a)&proper_tokens(b)
  return len(common)>=2 and bool(event_actions(a)&event_actions(b))
 
 def norm(s):
