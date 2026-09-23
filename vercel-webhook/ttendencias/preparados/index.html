@@ -19,7 +19,7 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.tabs{display:flex;gap:8
 <body>
 <header class="top"><a class="back" href="/ttendencias/">‹ Top 10</a><div class="title">Tuits listos</div><div class="spacer"></div><div class="count" id="count">0</div></header>
 <main>
-  <div class="tabs"><button class="tab active" data-tab="top">En Top 10 <b id="topCount">0</b></button><button class="tab" data-tab="out">Fuera del Top 10 <b id="outCount">0</b></button></div>
+  <div class="tabs"><button class="tab active" data-tab="all">Todos <b id="allCount">0</b></button><button class="tab" data-tab="top">En Top 10 <b id="topCount">0</b></button><button class="tab" data-tab="out">Fuera del Top 10 <b id="outCount">0</b></button></div>
   <section class="list" id="list"><div class="empty">Cargando…</div></section>
 </main>
 <div class="sheet" id="sheet"><div class="panel"><h2>Rehacer redacción</h2><p id="reworkName"></p><textarea id="instruction" placeholder="Indica qué quieres cambiar: enfoque, explicación, remate, tono, datos a verificar…"></textarea><div class="finalActions"><button class="btn" id="cancel">Cancelar</button><button class="btn" id="sendRework">Enviar a reelaborar</button></div></div></div>
@@ -28,7 +28,7 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.tabs{display:flex;gap:8
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
 const $=id=>document.getElementById(id);
-let model={items:[],top:[]},tab="top",reworkItem=null,openIds=new Set();
+let model={items:[],top:[]},tab="all",reworkItem=null,openIds=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>$("toast").classList.remove("show"),2300)}
@@ -48,10 +48,10 @@ function detailHtml(){
  return '<div class="detail"><div class="explain"></div><div class="variant principal"><div class="variantHead"><span class="variantTitle">Tuit principal</span><span class="chars"></span></div><div class="tweet"></div><div class="variantActions"><a class="btn pOpen" target="_blank" rel="noopener">Abrir en X</a><button class="btn pCopy">Copiar</button></div></div><div class="alts"></div><div class="finalActions"><button class="btn done">Ya explicado</button><button class="btn rework">Rehacer</button><button class="btn danger discard2">Desestimar</button></div></div>'
 }
 function render(){
- const topItems=(model.items||[]).filter(isInTop),outItems=(model.items||[]).filter(x=>!isInTop(x));$("topCount").textContent=topItems.length;$("outCount").textContent=outItems.length;$("count").textContent=(model.items||[]).length;updateBadge();
+ const allItems=(model.items||[]),topItems=allItems.filter(isInTop),outItems=allItems.filter(x=>!isInTop(x));$("allCount").textContent=allItems.length;$("topCount").textContent=topItems.length;$("outCount").textContent=outItems.length;$("count").textContent=allItems.length;updateBadge();
  for(const b of document.querySelectorAll(".tab"))b.classList.toggle("active",b.dataset.tab===tab);
- const items=tab==="top"?topItems:outItems,list=$("list");list.innerHTML="";
- if(!items.length){list.innerHTML='<div class="empty">'+(tab==="top"?"No hay tuits listos del Top 10 actual.":"No hay tuits pendientes fuera del Top 10.")+'</div>';return}
+ const items=tab==="all"?allItems:(tab==="top"?topItems:outItems),list=$("list");list.innerHTML="";
+ if(!items.length){list.innerHTML='<div class="empty">'+(tab==="all"?"No hay tuits listos.":tab==="top"?"No hay tuits listos del Top 10 actual.":"No hay tuits pendientes fuera del Top 10.")+'</div>';return}
  for(const item of items){
   const rel=related(item),id=String(item.id||item.trend_name||rel.join("|")),open=openIds.has(id),card=document.createElement("article");card.className="rowcard"+(open?" open":"");
   card.innerHTML='<div class="summaryrow"><div><div class="trend"></div><div class="small">Tuits preparados · '+(rel.length>1?rel.length+" tendencias relacionadas":"pendiente de revisión")+'</div></div><div class="rowactions"><button class="btn explain">Explicar</button><button class="btn danger discard">Desestimar</button></div></div>'+detailHtml();
