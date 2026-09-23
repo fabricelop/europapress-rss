@@ -117,22 +117,40 @@ async function syncNotifyButton(){
   $("notify").style.display=enabled?"none":"";
  }catch(_){$("notify").style.display=""}
 }
+function sameKey(a,b){
+ if(!a||!b)return false;
+ const x=new Uint8Array(a),y=b instanceof Uint8Array?b:new Uint8Array(b);
+ if(x.length!==y.length)return false;
+ for(let i=0;i<x.length;i++)if(x[i]!==y[i])return false;
+ return true
+}
+async function ensurePushSubscription(){
+ if(!("serviceWorker" in navigator)||!("PushManager" in window))throw new Error("Este dispositivo no admite notificaciones web");
+ if(!token())throw new Error("Guarda primero el acceso");
+ const permission=Notification.permission==="granted"?"granted":await Notification.requestPermission();
+ if(permission!=="granted")throw new Error("Notificaciones no autorizadas");
+ const reg=await navigator.serviceWorker.ready;
+ const pk=await fetch("/api/ttittulares-push",{cache:"no-store"}).then(r=>r.json());
+ if(!pk.ok||!pk.publicKey)throw new Error("No se pudo obtener la clave push");
+ const wanted=b64ToUint8(pk.publicKey);
+ let sub=await reg.pushManager.getSubscription();
+ const current=sub?.options?.applicationServerKey;
+ if(sub&&current&&!sameKey(current,wanted)){await sub.unsubscribe();sub=null}
+ if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:wanted});
+ const headers={"content-type":"application/json","authorization":"Bearer "+token()};
+ const r=await fetch("/api/ttittulares-push",{method:"POST",headers,body:JSON.stringify({action:"subscribe",subscription:sub.toJSON()})});
+ if(!r.ok)throw new Error(r.status===401?"Acceso no autorizado":"No se pudo registrar el móvil");
+ localStorage.setItem("ttittulares-push-enabled","1");
+ return sub
+}
 async function enablePush(){
  try{
-  if(!("serviceWorker" in navigator)||!("PushManager" in window)){toast("Este dispositivo no admite notificaciones web");return}
-  if(!token()){$("settings").style.display="";$("settings").click();toast("Guarda primero el acceso");return}
-  const permission=await Notification.requestPermission();
-  if(permission!=="granted"){toast("Notificaciones no autorizadas");return}
-  const reg=await navigator.serviceWorker.ready;
-  const pk=await fetch("/api/ttittulares-push",{cache:"no-store"}).then(r=>r.json());
-  if(!pk.ok||!pk.publicKey)throw new Error("No se pudo obtener la clave push");
-  let sub=await reg.pushManager.getSubscription();
-  if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToUint8(pk.publicKey)});
-  const headers={"content-type":"application/json","authorization":"Bearer "+token()};
-  const r=await fetch("/api/ttittulares-push",{method:"POST",headers,body:JSON.stringify({action:"subscribe",subscription:sub.toJSON()})});
-  if(!r.ok)throw new Error(r.status===401?"Acceso no autorizado":"No se pudo registrar el móvil");
-  localStorage.setItem("ttittulares-push-enabled","1");$("notify").style.display="none";toast("Notificaciones activadas");
- }catch(e){toast(e.message||"No se pudieron activar las notificaciones")}
+  await ensurePushSubscription();
+  $("notify").style.display="none";toast("Notificaciones activadas");
+ }catch(e){
+  if(String(e.message||"").includes("Guarda primero")){$("settings").style.display="";$("settings").click()}
+  toast(e.message||"No se pudieron activar las notificaciones")
+ }
 }
 async function badge(){const n=(model.prepared||[]).length;try{if("setAppBadge" in navigator){if(n)await navigator.setAppBadge(n);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}}
 function variants(item){
@@ -226,9 +244,15 @@ $("testToken").onclick=async()=>{const v=$("tokenInput").value.trim();if(v)local
 $("testPush").onclick=async()=>{
  const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttittulares-control-token",v);
  try{
+   await ensurePushSubscription();
    const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
    const r=await fetch("/api/ttittulares-push",{method:"POST",headers,body:JSON.stringify({action:"test"})});
-   const d=await r.json();if(!r.ok)throw new Error(d.error||"No se pudo enviar la prueba");
+   const d=await r.json();
+   if(!r.ok){
+     const a=Array.isArray(d.attempts)?d.attempts[0]:null;
+     const detail=a?.reason?(" · "+a.reason):(a?.status?(" · HTTP "+a.status):"");
+     throw new Error((d.error||"No se pudo enviar la prueba")+detail)
+   }
    $("accessStatus").textContent=d.delivered?"✓ Notificación de prueba enviada":"No se entregó ninguna notificación";
  }catch(e){$("accessStatus").textContent=e.message}
 };
