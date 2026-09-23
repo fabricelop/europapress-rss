@@ -27,7 +27,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <div class="spacer"></div>
  <button class="iconbtn" id="notify" title="Activar notificaciones">🔔</button>
  <button class="iconbtn" id="refresh" title="Recargar">↻</button>
- <button class="iconbtn" id="settings" title="Acceso" style="display:none">⚙</button>
+ <button class="iconbtn" id="settings" title="Ajustes">⚙</button>
 </header>
 <main>
  <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima elaboración —</div></div></div><div class="health" id="health">—</div></section>
@@ -88,8 +88,10 @@ function renderGrowing(list){
  for(const item of items){
    const card=document.createElement("article");card.className="queuecard";
    const chips=(item.sources||[]).map(src=>'<span class="chip">'+String(src).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
-   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources">3 fuentes · esperando una cuarta</div></div><button class="three-go" title="Mandar a elaboración">→</button></div><div class="sources-list">'+chips+'</div>';
+   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources growing-speed"></div></div><button class="three-go" title="Mandar a elaboración">→</button></div><div class="sources-list">'+chips+'</div>';
    card.querySelector(".title").textContent=item.title||"Noticia sin título";
+   const mins=Number(item.source3_minutes);
+   card.querySelector(".growing-speed").textContent=Number.isFinite(mins)?"3 fuentes en "+mins+" min · esperando una cuarta":"3 fuentes · esperando una cuarta";
    card.querySelector(".three-go").onclick=async()=>{
      if(!confirm("¿Mandar esta noticia a elaboración con 3 fuentes?"))return;
      try{await api("prepare3",{event_id:item.event_id});toast("Enviada a elaboración");await load(true);setView("processing")}catch(err){toast(err.message)}
