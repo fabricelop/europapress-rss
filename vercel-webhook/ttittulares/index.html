@@ -48,7 +48,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 <div class="sheet" id="settingsSheet"><div class="panel">
  <h2>Acceso</h2><p>Las acciones que modifican estado requieren el token privado.</p>
  <input id="tokenInput" type="password" autocomplete="off" placeholder="Token de control">
- <div class="actions"><button class="btn" id="settingsCancel">Cancelar</button><button class="btn" id="testToken">Probar</button><button class="btn primary" id="saveToken">Guardar</button></div>
+ <div class="actions"><button class="btn" id="settingsCancel">Cancelar</button><button class="btn" id="testToken">Probar acceso</button><button class="btn" id="testPush">Probar notificación</button><button class="btn primary" id="saveToken">Guardar</button></div>
  <div class="meta" id="accessStatus" style="margin-top:9px"></div>
 </div></div>
 <div class="toast" id="toast"></div>
@@ -221,6 +221,15 @@ $("settings").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textC
 $("settingsCancel").onclick=()=>$("settingsSheet").classList.remove("show");
 $("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttittulares-control-token",v);else localStorage.removeItem("ttittulares-control-token");$("settingsSheet").classList.remove("show");toast(v?"Token guardado":"Token eliminado")};
 $("testToken").onclick=async()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttittulares-control-token",v);try{const d=await api("ping");$("accessStatus").textContent=d.backend?.ok?"✓ Acceso correcto · GitHub operativo":"Backend no disponible"}catch(e){$("accessStatus").textContent=e.message}};
+$("testPush").onclick=async()=>{
+ const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttittulares-control-token",v);
+ try{
+   const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
+   const r=await fetch("/api/ttittulares-push",{method:"POST",headers,body:JSON.stringify({action:"test"})});
+   const d=await r.json();if(!r.ok)throw new Error(d.error||"No se pudo enviar la prueba");
+   $("accessStatus").textContent=d.delivered?"✓ Notificación de prueba enviada":"No se entregó ninguna notificación";
+ }catch(e){$("accessStatus").textContent=e.message}
+};
 $("reworkCancel").onclick=()=>{$("reworkSheet").classList.remove("show");reworkItem=null};
 $("reworkSend").onclick=async()=>{if(!reworkItem)return;const instruction=$("reworkInstruction").value.trim();if(!instruction){toast("Escribe qué quieres cambiar");return}if(!confirm("¿Mandar esta noticia de nuevo a elaboración con estas instrucciones?"))return;const old=[...model.prepared];model.prepared=model.prepared.filter(x=>x.event_id!==reworkItem.event_id);render();try{await api("rework",{event_id:reworkItem.event_id,instruction});$("reworkSheet").classList.remove("show");toast("Enviada a elaboración");reworkItem=null;setView("processing");setTimeout(()=>load(true),1000)}catch(e){model.prepared=old;render();toast(e.message)}};
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});window.addEventListener("pageshow",()=>load(true));
