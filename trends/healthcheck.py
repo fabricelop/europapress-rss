@@ -216,6 +216,46 @@ if isinstance(requests_doc, dict):
     if noisy:
         blocking.append(f"cola con {len(noisy)} tendencia(s) espuria(s)")
 
+# Salud editorial real: una cola sintácticamente válida puede estar bloqueada.
+# En horario normal, preparing/update no deben superar el umbral configurado.
+if isinstance(requests_doc, dict):
+    active = [x for x in requests_doc.get("requests", []) if x.get("status") in {"preparing", "update"}]
+    warn_after = int(editorial.get("delay_warning_after_minutes") or editorial.get("daytime_max_wait_minutes") or 30)
+    ages = []
+    overdue = []
+    now_utc = datetime.now(timezone.utc)
+    for req in active:
+        age = 0.0
+        try:
+            dt = datetime.fromisoformat(str(req.get("requested_at") or "").replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            age = max(0.0, (now_utc - dt.astimezone(timezone.utc)).total_seconds() / 60)
+        except Exception:
+            age = float(warn_after + 1)
+        ages.append(age)
+        if age > warn_after:
+            overdue.append({
+                "id": req.get("id"),
+                "name": req.get("name"),
+                "status": req.get("status"),
+                "age_minutes": round(age, 1),
+            })
+    modules["editorial_queue"] = {
+        "ok": not overdue,
+        "pending_count": len(active),
+        "overdue_count": len(overdue),
+        "oldest_age_minutes": round(max(ages), 1) if ages else 0,
+        "warning_after_minutes": warn_after,
+        "overdue_items": overdue[:10],
+        "repairable": False,
+    }
+    if overdue:
+        blocking.append(
+            f"cola editorial bloqueada: {len(overdue)} pendiente(s) superan {warn_after} min; "
+            f"más antigua {max(ages):.1f} min"
+        )
+
 signature = " | ".join(sorted(blocking))
 alerted = False
 if blocking and signature != previous.get("last_alert_signature"):
