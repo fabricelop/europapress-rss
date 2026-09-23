@@ -63,8 +63,11 @@ function showToast(msg){const t=$("toast");t.textContent=msg;t.classList.add("sh
 function fmtDate(v){if(!v)return "Sin hora";const d=new Date(v);if(Number.isNaN(d.getTime()))return v;return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}).format(d)}
 function localState(){
  let m={};try{m=JSON.parse(localStorage.getItem("ttendencias-local-state")||"{}")}catch(_){}
+ // Migración única: el antiguo mapa local de "explicadas" no debe volver a
+ // imponerse sobre el estado real del servidor.
  let old={};try{old=JSON.parse(localStorage.getItem("ttendencias-local-explained")||"{}")}catch(_){}
  for(const [k,v] of Object.entries(old))if(!m[k])m[k]={status:"explained",ts:Number(v)||Date.now()};
+ localStorage.removeItem("ttendencias-local-explained");
  const cutoff=Date.now()-2*60*60*1000;
  for(const [k,v] of Object.entries(m))if(Number(v?.ts||0)<cutoff)delete m[k];
  localStorage.setItem("ttendencias-local-state",JSON.stringify(m));return m
@@ -163,15 +166,17 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig)
  const explainedSet=new Set((explained.items||[]).map(x=>nrm(x.name)));
  const latestFor=name=>[...requests].reverse().find(x=>nrm(x.name)===nrm(name));
  const items=(recent.items||[]).slice(0,10).map(item=>{
-   const req=latestFor(item.name),s=String(req?.status||""),reqTs=req?.requested_at?new Date(req.requested_at).getTime():0;
-   const ls=local[nrm(item.name)],localValid=ls&&Number(ls.ts||0)>=reqTs;
+   const req=latestFor(item.name),s=String(req?.status||"");
+   const ls=local[nrm(item.name)],localValid=!req&&!!ls;
    let status="active",label="En curso",detail="",ready=false;
-   if(localValid&&ls.status==="explained"){status="explained";label="Explicada"}
-   else if(localValid&&ls.status==="dismissed"){status="dismissed";label="Desestimada"}
-   else if(s==="dismissed"){status="dismissed";label="Desestimada"}
+   // El servidor manda siempre que exista una solicitud. El estado local es
+   // solo optimista mientras aún no existe confirmación remota.
+   if(s==="dismissed"){status="dismissed";label="Desestimada"}
    else if(s==="problematic"){status="problematic";label="Problemática";detail=req?.problem_reason||"No se pudo elaborar con suficiente fiabilidad"}
    else if(s==="explained"||(!req&&explainedSet.has(nrm(item.name)))){status="explained";label="Explicada"}
    else if(s==="ready"){status="active";label="Lista";detail="Tuit preparado";ready=true}
+   else if(localValid&&ls.status==="explained"){status="explained";label="Explicada"}
+   else if(localValid&&ls.status==="dismissed"){status="dismissed";label="Desestimada"}
    else if(s==="preparing"||s==="update"){
      const age=req?.requested_at?Math.max(0,Math.floor((Date.now()-new Date(req.requested_at).getTime())/60000)):0;
      status="active";label="En curso";
@@ -183,8 +188,6 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig)
  const preparedItems=(prepared.items||[]).filter(p=>{
    const rel=((p.related_trends||[]).length?p.related_trends:[p.trend_name]).map(nrm);
    return !rel.some(name=>{
-     const ls=local[name];
-     if(ls&&["explained","dismissed"].includes(String(ls.status||"")))return true;
      const req=requestByName[name];
      return req&&["explained","dismissed"].includes(String(req.status||""));
    });
