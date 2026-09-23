@@ -25,7 +25,8 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 <header class="top">
  <div><div class="brand">TTiTTulares</div><div class="sub">Control editorial web</div></div>
  <div class="spacer"></div>
- <button class="iconbtn" id="notify" title="Activar notificaciones">🔔</button>\n <button class="iconbtn" id="refresh" title="Recargar">↻</button>
+ <button class="iconbtn" id="notify" title="Activar notificaciones">🔔</button>
+ <button class="iconbtn" id="refresh" title="Recargar">↻</button>
  <button class="iconbtn" id="settings" title="Acceso" style="display:none">⚙</button>
 </header>
 <main>
@@ -89,6 +90,15 @@ async function api(action,extra={}){
  if(!r.ok)throw new Error(d.error||"No se pudo aplicar la acción");return d
 }
 function b64ToUint8(s){const pad="=".repeat((4-s.length%4)%4),b64=(s+pad).replace(/-/g,"+").replace(/_/g,"/"),raw=atob(b64);return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
+async function syncNotifyButton(){
+ try{
+  if(!("serviceWorker" in navigator)||!("PushManager" in window)){ $("notify").style.display="none"; return }
+  const reg=await navigator.serviceWorker.ready;
+  const sub=await reg.pushManager.getSubscription();
+  const enabled=Notification.permission==="granted"&&!!sub&&localStorage.getItem("ttittulares-push-enabled")==="1";
+  $("notify").style.display=enabled?"none":"";
+ }catch(_){$("notify").style.display=""}
+}
 async function enablePush(){
  try{
   if(!("serviceWorker" in navigator)||!("PushManager" in window)){toast("Este dispositivo no admite notificaciones web");return}
@@ -103,7 +113,7 @@ async function enablePush(){
   const headers={"content-type":"application/json","authorization":"Bearer "+token()};
   const r=await fetch("/api/ttittulares-push",{method:"POST",headers,body:JSON.stringify({action:"subscribe",subscription:sub.toJSON()})});
   if(!r.ok)throw new Error(r.status===401?"Acceso no autorizado":"No se pudo registrar el móvil");
-  localStorage.setItem("ttittulares-push-enabled","1");$("notify").textContent="🔔";toast("Notificaciones activadas");
+  localStorage.setItem("ttittulares-push-enabled","1");$("notify").style.display="none";toast("Notificaciones activadas");
  }catch(e){toast(e.message||"No se pudieron activar las notificaciones")}
 }
 async function badge(){const n=(model.prepared||[]).length;try{if("setAppBadge" in navigator){if(n)await navigator.setAppBadge(n);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}}
@@ -197,7 +207,7 @@ $("testToken").onclick=async()=>{const v=$("tokenInput").value.trim();if(v)local
 $("reworkCancel").onclick=()=>{$("reworkSheet").classList.remove("show");reworkItem=null};
 $("reworkSend").onclick=async()=>{if(!reworkItem)return;const instruction=$("reworkInstruction").value.trim();if(!instruction){toast("Escribe qué quieres cambiar");return}if(!confirm("¿Mandar esta noticia de nuevo a elaboración con estas instrucciones?"))return;const old=[...model.prepared];model.prepared=model.prepared.filter(x=>x.event_id!==reworkItem.event_id);render();try{await api("rework",{event_id:reworkItem.event_id,instruction});$("reworkSheet").classList.remove("show");toast("Enviada a elaboración");reworkItem=null;setView("processing");setTimeout(()=>load(true),1000)}catch(e){model.prepared=old;render();toast(e.message)}};
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});window.addEventListener("pageshow",()=>load(true));
-if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttittulares/sw.js").catch(()=>{});
+if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttittulares/sw.js").then(()=>syncNotifyButton()).catch(()=>{});
 load();setInterval(()=>{if(!document.hidden)load(true)},60000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
 </script>
 </body></html>
