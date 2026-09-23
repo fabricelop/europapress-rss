@@ -78,7 +78,7 @@ async function sendPush(sub,payload){
 
   const v=vapid(),now=Math.floor(Date.now()/1000),aud=endpoint.origin;
   const header=b64url(Buffer.from(JSON.stringify({typ:"JWT",alg:"ES256"})));
-  const claims=b64url(Buffer.from(JSON.stringify({aud,exp:now+43200,sub:"mailto:ttittulares@local.invalid"})));
+  const claims=b64url(Buffer.from(JSON.stringify({aud,exp:now+43200,sub:"https://europapress-rss.vercel.app/ttittulares/"})));
   const unsigned=header+"."+claims;
   const sig=crypto.sign("sha256",Buffer.from(unsigned),{key:v.key,dsaEncoding:"ieee-p1363"});
   const jwt=unsigned+"."+b64url(sig);
@@ -87,7 +87,12 @@ async function sendPush(sub,payload){
     Authorization:`vapid t=${jwt}, k=${b64url(v.pub)}`,
     "Content-Type":"application/octet-stream"
   },body});
-  return r.status;
+  let reason=null;
+  if(!r.ok){
+    try{const err=await r.clone().json();reason=err?.reason||err?.error||JSON.stringify(err)}
+    catch(_){try{reason=(await r.clone().text()).slice(0,300)||null}catch(__){}}
+  }
+  return {status:r.status,reason,apns_id:r.headers.get("apns-id")||null};
 }
 async function subscribe(subscription){
   const {doc,sha}=await readJson(SUBS,{version:1,items:[],sent_event_ids:[]});
@@ -118,16 +123,16 @@ async function drain(){
     let good=true;
     for(const item of pending){
       try{
-        const code=await sendPush(sub,{
+        const result=await sendPush(sub,{
           title:"TTiTTulares · noticia lista",
           body:String(item.title||"Hay una noticia lista para publicar"),
           event_id:String(item.event_id),
           url:"/ttittulares/"
         });
-        attempts.push({endpoint_hash:row.endpoint_hash,event_id:String(item.event_id),status:code});
-        console.log("PUSH_RESULT",row.endpoint_hash,String(item.event_id),code);
-        if(code===404||code===410){good=false;break}
-        if(code>=200&&code<300)deliveredEvents.add(String(item.event_id));
+        attempts.push({endpoint_hash:row.endpoint_hash,event_id:String(item.event_id),status:result.status,reason:result.reason,apns_id:result.apns_id});
+        console.log("PUSH_RESULT",row.endpoint_hash,String(item.event_id),result.status,result.reason||"");
+        if(result.status===404||result.status===410){good=false;break}
+        if(result.status>=200&&result.status<300)deliveredEvents.add(String(item.event_id));
       }catch(e){
         attempts.push({endpoint_hash:row.endpoint_hash,event_id:String(item.event_id),status:"error",error:String(e.message||e)});
         console.error("PUSH_ERROR",row.endpoint_hash,String(item.event_id),String(e.message||e));
@@ -156,9 +161,9 @@ async function testPush(){
     let sub;
     try{sub=dec(row.subscription)}catch(e){attempts.push({endpoint_hash:row.endpoint_hash,status:"decrypt_error"});continue}
     try{
-      const code=await sendPush(sub,{title:"TTiTTulares",body:"Notificaciones funcionando",event_id:"push-test-"+Date.now(),url:"/ttittulares/"});
-      attempts.push({endpoint_hash:row.endpoint_hash,status:code});
-      if(code>=200&&code<300){delivered++;alive.push(row)}
+      const result=await sendPush(sub,{title:"TTiTTulares",body:"Notificaciones funcionando",event_id:"push-test-"+Date.now(),url:"/ttittulares/"});
+      attempts.push({endpoint_hash:row.endpoint_hash,status:result.status,reason:result.reason,apns_id:result.apns_id});
+      if(result.status>=200&&result.status<300){delivered++;alive.push(row)}
     }catch(e){attempts.push({endpoint_hash:row.endpoint_hash,status:"error",error:String(e.message||e)})}
   }
   return {ok:delivered>0,delivered,attempts}
