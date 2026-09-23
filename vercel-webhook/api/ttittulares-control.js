@@ -95,6 +95,43 @@ async function rework(eventId,instruction){
   });
   return {ok:true,event_id:id,status:"PROCESSING"}
 }
+async function manualPrepare(eventId){
+  const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
+  const now=new Date().toISOString();
+  const {doc:events}=await readJson(EVENTS);
+  const ev=(events.events||[]).find(x=>idOf(x.id||x.event_id)===id);
+  if(!ev)throw new Error("No se encuentra el acontecimiento");
+  const count=Number(ev.source_count||0);
+  if(count<3)throw new Error("Solo se puede forzar elaboración con al menos 3 fuentes");
+  if(!["WAITING","UPDATE_WAITING","ELIGIBLE","ELIGIBLE_UPDATE"].includes(String(ev.status||"")))throw new Error("La noticia ya no está disponible para elaborar");
+  const {doc:decisions}=await readJson(DECISIONS);
+  const closed=(decisions.items||[]).find(x=>idOf(x.event_id)===id&&["published","dismissed"].includes(String(x.status||"")));
+  if(closed)throw new Error("La noticia ya fue cerrada");
+  await mutateJson(PROCESSING,"Forzar elaboración TTiTTulares desde web",doc=>{
+    doc.items||=[];
+    let item=[...doc.items].reverse().find(x=>idOf(x.event_id)===id);
+    if(item&&["PROCESSING","READY","PUBLISHED","DISMISSED"].includes(String(item.status||"")))return doc;
+    item=item||{event_id:id};
+    Object.assign(item,{
+      event_id:id,
+      title:String(ev.canonical_title||ev.title||""),
+      url:String(ev.url||""),
+      sources:Array.isArray(ev.sources)?ev.sources:[],
+      source_count:count,
+      drafted_source_count:count,
+      selected_at:now,
+      status:"PROCESSING",
+      selection_mode:"MANUAL_WEB_3S",
+      revision:Number(ev.revision||item.revision||1),
+      parent_event_id:ev.parent_event_id||null,
+      update_context:ev.update_context||null
+    });
+    if(!doc.items.includes(item))doc.items.push(item);
+    doc.updated_at=now;return doc
+  });
+  return {ok:true,event_id:id,status:"PROCESSING"}
+}
+
 async function backendStatus(){
   const [config,status]=await Promise.all([
     gh(`contents/ttittulares/config.json?ref=${encodeURIComponent(BRANCH)}`),
@@ -125,7 +162,15 @@ export default async function handler(req,res){
           sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
         }
       });
-      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,ready_count:(prepared.doc?.items||[]).length};
+      const threeSourceItems=(events.doc?.events||[]).filter(e=>Number(e.source_count||0)===3&&["WAITING","UPDATE_WAITING"].includes(String(e.status||""))).map(e=>({
+        event_id:String(e.id||e.event_id||""),
+        title:String(e.canonical_title||e.title||""),
+        url:String(e.url||""),
+        source_count:Number(e.source_count||0),
+        sources:Array.isArray(e.sources)?e.sources:[],
+        first_seen:e.first_seen||null
+      }));
+      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,ready_count:(prepared.doc?.items||[]).length,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
       return res.status(200).json({ok:true,service:"ttittulares-control",prepared:prepared.doc,status:liveStatus,config:config.doc})
     }
     if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
@@ -135,6 +180,7 @@ export default async function handler(req,res){
     if(action==="published")return res.status(200).json(await closePrepared(body.event_id,"published"));
     if(action==="dismiss")return res.status(200).json(await closePrepared(body.event_id,"dismissed"));
     if(action==="rework")return res.status(200).json(await rework(body.event_id,body.instruction));
+    if(action==="prepare3")return res.status(200).json(await manualPrepare(body.event_id));
     return res.status(400).json({ok:false,error:"Acción no válida"})
   }catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
 }
