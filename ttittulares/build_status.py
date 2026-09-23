@@ -62,6 +62,11 @@ out = {
     "processing_count":len(processing_items),
     "processing_items":processing_items,
     "ready_count":len(prepared.get("items", [])),
+    "three_source_count":sum(
+        1 for event in events_doc.get("events", [])
+        if int(event.get("source_count") or 0) == 3
+        and str(event.get("status") or "") in {"WAITING","UPDATE_WAITING"}
+    ),
     "healthy_source_count":events_doc.get("healthy_source_count"),
     "configured_sources":events_doc.get("configured_sources"),
     "source_failures":events_doc.get("source_failures", []),
