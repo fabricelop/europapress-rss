@@ -187,13 +187,24 @@ def validate_result(result, trend_name: str, rank: int):
     tweets = [result.get("primary_text") or ""] + [
         a.get("tweet_text") or "" for a in (result.get("alternatives") or [])
     ]
-    if len(result.get("alternatives") or []) < 1:
-        raise ValueError("sin alternativas")
+    alternatives = result.get("alternatives") or []
+    if len(alternatives) != 3:
+        raise ValueError(f"se requieren exactamente 3 alternativas; recibidas {len(alternatives)}")
     for idx, txt in enumerate(tweets):
         if not txt.startswith(prefix):
             raise ValueError(f"tuit {idx} no empieza por encabezado exacto {prefix!r}")
         if len(txt) > 280:
             raise ValueError(f"tuit {idx} excede 280 caracteres ({len(txt)})")
+        if "\n\n🌶️ " not in txt:
+            raise ValueError(f"tuit {idx} no contiene remate con guindilla tras dos saltos reales")
+        if "\\\\n" in txt:
+            raise ValueError(f"tuit {idx} contiene saltos escapados visibles")
+    for idx, alt in enumerate(alternatives, start=1):
+        remate = alt.get("remate") or ""
+        if not remate.startswith("🌶️ "):
+            raise ValueError(f"alternativa {idx} no empieza remate por guindilla")
+        if alt.get("tweet_text", "").count(remate) != 1:
+            raise ValueError(f"alternativa {idx} no contiene exactamente el mismo remate una vez")
 
 
 def repair_result(result, trend_name: str, rank: int, model: str, issue: str):
@@ -209,7 +220,9 @@ Resultado a corregir:
 
 Reglas:
 - Mantén status, category, explanation, source_urls, image_candidate e image_concept.
-- Devuelve un principal y hasta 3 alternativas.
+- Devuelve un principal y EXACTAMENTE 3 alternativas.
+- Todo remate debe empezar EXACTAMENTE por "🌶️ " y aparecer tras DOS saltos de línea REALES.
+- alternatives.remate debe ser exactamente "🌶️ " + la frase de humor.
 - Cada tuit completo <=280 caracteres.
 - El encabezado exacto obligatorio es el icono de la categoría, espacio, T{rank} · {trend_name}, salto de línea.
 - En alternativas, remate es SOLO el remate; tweet_text es el tuit completo.
@@ -240,8 +253,10 @@ OBLIGATORIO:
 - category determina el icono: politics 🔵, sports 🟢, entertainment 🟣, society 🟠, breaking 🔴, viral 🟡, economy 🟤, other ⚪.
 - Si status=ready, primary_text y cada alternative.tweet_text deben empezar EXACTAMENTE por el icono elegido + " T{rank} · {trend_name}" + salto de línea.
 - Cada tuit completo debe medir <=280 caracteres.
-- Objetivo: principal + 3 alternativas diferenciadas cuando proceda. Si no caben 3 buenas, devuelve las que tengan sentido; nunca bloquees por ello.
-- En alternatives.remate escribe SOLO el remate, no todo el tuit.
+- Devuelve SIEMPRE exactamente 3 alternativas A/B/C además del principal.
+- Todo remate humorístico, incluido el principal, debe empezar EXACTAMENTE por "🌶️ ".
+- En cada tuit el remate va después de DOS saltos de línea REALES y empieza por "🌶️ ". Nunca escribas los caracteres visibles \\n.
+- En alternatives.remate escribe SOLO "🌶️ " + la frase de humor, exactamente igual que aparece en tweet_text.
 - Humor: divertido/mordaz cuando el tema lo permita; nunca a costa de víctimas, tragedias, abusos o sufrimiento.
 - search_terms: 1-3 búsquedas útiles para X.
 - source_urls: URLs de las fuentes fiables principales realmente usadas.
