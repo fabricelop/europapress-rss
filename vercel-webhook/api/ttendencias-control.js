@@ -336,6 +336,27 @@ async function markExplained(names) {
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
   if (!unique.length) throw new Error("No hay tendencias seleccionadas.");
   const target = new Set(unique.map(norm));
+
+  // Protección contra agrupaciones editoriales defectuosas: un mismo grupo
+  // relacionado debe existir como UNA sola tarjeta preparada. Si varias
+  // tarjetas se solapan con el mismo conjunto, no cerramos nada en bloque.
+  if (unique.length > 1) {
+    const { doc: preparedBefore } = await readJson(PREPARED);
+    const sameSet = values => {
+      const keys = [...new Set((values || []).map(norm))].sort();
+      const wanted = [...target].sort();
+      return keys.length === wanted.length && keys.every((v, i) => v === wanted[i]);
+    };
+    const overlapping = (preparedBefore.items || []).filter(item => {
+      const rel = ((item.related_trends || []).length ? item.related_trends : [item.trend_name]).map(norm);
+      return rel.some(x => target.has(x));
+    });
+    const exact = overlapping.filter(item => sameSet((item.related_trends || []).length ? item.related_trends : [item.trend_name]));
+    if (overlapping.length !== 1 || exact.length !== 1) {
+      throw new Error("Grupo editorial ambiguo: se ha evitado marcar varias tendencias como explicadas. Recarga la bandeja y revisa la agrupación.");
+    }
+  }
+
   const now = new Date().toISOString();
 
   await mutateJson(EXPLAINED, "Marcar TTendencias explicadas desde web", doc => {
