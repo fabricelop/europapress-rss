@@ -80,7 +80,10 @@ for item in to_queue:
         "with_image": False,
         "alternatives_target": 3,
         "batch_id": batch_id,
-        "requested_together": names,
+        # Auto-queueing at the same capture time is NOT evidence that trends
+        # belong to the same story. Keep semantic grouping conservative.
+        "requested_together": [name],
+        "captured_with": names,
         "auto_queued": True,
     }
     if req is None:
