@@ -1396,7 +1396,7 @@
       "id": "adc4d83d5880",
       "name": "Franco",
       "rank": 3,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-09-23T21:42:03+02:00",
       "revision": 0,
       "reexplain": false,
@@ -1410,13 +1410,16 @@
         "Franco",
         "#MonarquíaFueraYa"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "ready_at": "2026-09-23T22:15:00+02:00",
+      "delivery_confirmation": "prepared_web",
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "e3c48581956f",
       "name": "#MonarquíaFueraYa",
       "rank": 7,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-23T21:42:03+02:00",
       "revision": 0,
       "reexplain": false,
@@ -1430,8 +1433,11 @@
         "Franco",
         "#MonarquíaFueraYa"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-23T22:16:12+02:00",
+      "problem_reason": "Tras búsquedas específicas por el hashtag y por la conversación actual sobre monarquía en España, no aparece un acontecimiento concreto y suficientemente verificable que explique por qué #MonarquíaFueraYa sube ahora. Hay conversación republicana y noticias sobre Juan Carlos I, pero no evidencia fiable para atribuir el hashtag a un detonante inmediato único sin inferirlo.",
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ],
-  "updated_at": "2026-09-23T21:42:03+02:00"
+  "updated_at": "2026-09-23T22:16:12+02:00"
 }
