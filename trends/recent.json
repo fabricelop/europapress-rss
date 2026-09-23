@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-23T15:44:30+02:00",
+  "captured_at": "2026-09-23T15:50:59+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -13,8 +13,7 @@
   "source_count": 7,
   "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24",
-    "snaplytics"
+    "tweets24"
   ],
   "reliability": "high",
   "top10": [
@@ -71,14 +70,8 @@
       "name": "Vivienda"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Cayetana",
-    "Armengol",
-    "Vox y Junts",
-    "Urbagestión",
-    "Vivienda"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "sources": {
     "trends24": {
       "ok": true,
@@ -108,7 +101,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T15:44:30+02:00"
+      "fetched_at": "2026-09-23T15:50:59+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -133,7 +126,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T15:44:31+02:00"
+      "fetched_at": "2026-09-23T15:51:00+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -160,10 +153,10 @@
         "Robert Pattinson"
       ],
       "error": null,
-      "update_hint": "Updated 3 minutes ago",
-      "age_minutes": 3.0,
+      "update_hint": "Updated 10 minutes ago",
+      "age_minutes": 10.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-23T15:44:32+02:00"
+      "fetched_at": "2026-09-23T15:51:01+02:00"
     },
     "superx": {
       "ok": true,
@@ -193,16 +186,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T15:44:33+02:00"
+      "fetched_at": "2026-09-23T15:51:02+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790171073",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790171462",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T15:44:33+02:00"
+      "fetched_at": "2026-09-23T15:51:02+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -230,9 +223,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 23, 2026 13:00 UTC",
-      "age_minutes": 44.6,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-23T15:44:34+02:00"
+      "age_minutes": 51.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-23T15:51:02+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -260,18 +253,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 1663.6,
+      "age_minutes": 1670.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-23T15:44:34+02:00"
+      "fetched_at": "2026-09-23T15:51:02+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 525 Server Error: <none> for url: https://trends.cyberkendra.com/spain/?_=1790171075",
+      "error": "HTTPError: 525 Server Error: <none> for url: https://trends.cyberkendra.com/spain/?_=1790171464",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T15:44:35+02:00"
+      "fetched_at": "2026-09-23T15:51:04+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -280,7 +273,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-23T15:44:48+02:00"
+      "fetched_at": "2026-09-23T15:51:16+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -310,16 +303,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T15:44:49+02:00"
+      "fetched_at": "2026-09-23T15:51:16+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790171091",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790171478",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T15:44:51+02:00"
+      "fetched_at": "2026-09-23T15:51:18+02:00"
     }
   }
 }
