@@ -158,6 +158,7 @@ export default async function handler(req,res){
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const preparedIds=new Set((prepared.doc?.items||[]).map(x=>String(x.event_id||"")));
+      const processingIds=new Set((queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING").map(x=>String(x.event_id||"")));
       const processingItems=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING"&&!preparedIds.has(String(x.event_id||""))).map(x=>{
         const ev=eventMap.get(String(x.event_id||""))||{};
         return {
@@ -171,7 +172,13 @@ export default async function handler(req,res){
           sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
         }
       });
-      const threeSourceItems=(events.doc?.events||[]).filter(e=>Number(e.source_count||0)===3&&["WAITING","UPDATE_WAITING"].includes(String(e.status||""))).map(e=>({
+      const threeSourceItems=(events.doc?.events||[]).filter(e=>{
+        const id=String(e.id||e.event_id||"");
+        return Number(e.source_count||0)===3
+          &&["WAITING","UPDATE_WAITING"].includes(String(e.status||""))
+          &&!processingIds.has(id)
+          &&!preparedIds.has(id)
+      }).map(e=>({
         event_id:String(e.id||e.event_id||""),
         title:String(e.canonical_title||e.title||""),
         url:String(e.url||""),
