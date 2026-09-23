@@ -25,7 +25,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 <header class="top">
  <div><div class="brand">TTiTTulares</div><div class="sub">Control editorial web</div></div>
  <div class="spacer"></div>
- <button class="iconbtn" id="refresh" title="Recargar">↻</button>
+ <button class="iconbtn" id="notify" title="Activar notificaciones">🔔</button>\n <button class="iconbtn" id="refresh" title="Recargar">↻</button>
  <button class="iconbtn" id="settings" title="Acceso" style="display:none">⚙</button>
 </header>
 <main>
@@ -85,8 +85,26 @@ async function api(action,extra={}){
  const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
  const r=await fetch(API,{method:"POST",headers,body:JSON.stringify({action,...extra})});
  let d={};try{d=await r.json()}catch(_){}
- if(r.status===401)throw new Error("Acceso no autorizado. Abre de nuevo la URL de instalación.")
+ if(r.status===401){$("settings").style.display="";throw new Error("Acceso no autorizado. Toca ⚙ para guardar el acceso en este dispositivo.")}
  if(!r.ok)throw new Error(d.error||"No se pudo aplicar la acción");return d
+}
+function b64ToUint8(s){const pad="=".repeat((4-s.length%4)%4),b64=(s+pad).replace(/-/g,"+").replace(/_/g,"/"),raw=atob(b64);return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
+async function enablePush(){
+ try{
+  if(!("serviceWorker" in navigator)||!("PushManager" in window)){toast("Este dispositivo no admite notificaciones web");return}
+  if(!token()){$("settings").style.display="";$("settings").click();toast("Guarda primero el acceso");return}
+  const permission=await Notification.requestPermission();
+  if(permission!=="granted"){toast("Notificaciones no autorizadas");return}
+  const reg=await navigator.serviceWorker.ready;
+  const pk=await fetch("/api/ttittulares-push",{cache:"no-store"}).then(r=>r.json());
+  if(!pk.ok||!pk.publicKey)throw new Error("No se pudo obtener la clave push");
+  let sub=await reg.pushManager.getSubscription();
+  if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToUint8(pk.publicKey)});
+  const headers={"content-type":"application/json","authorization":"Bearer "+token()};
+  const r=await fetch("/api/ttittulares-push",{method:"POST",headers,body:JSON.stringify({action:"subscribe",subscription:sub.toJSON()})});
+  if(!r.ok)throw new Error(r.status===401?"Acceso no autorizado":"No se pudo registrar el móvil");
+  localStorage.setItem("ttittulares-push-enabled","1");$("notify").textContent="🔔";toast("Notificaciones activadas");
+ }catch(e){toast(e.message||"No se pudieron activar las notificaciones")}
 }
 async function badge(){const n=(model.prepared||[]).length;try{if("setAppBadge" in navigator){if(n)await navigator.setAppBadge(n);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}}
 function variants(item){
@@ -170,6 +188,7 @@ async function load(silent=false){
  }catch(e){if(!silent)toast(e.message)}
 }
 document.querySelectorAll(".stat").forEach(x=>x.onclick=()=>setView(x.dataset.view));
+$("notify").onclick=enablePush;
 $("refresh").onclick=()=>{toast("Recargando");load()};
 $("settings").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado en este dispositivo":"Sin token guardado";$("settingsSheet").classList.add("show")};
 $("settingsCancel").onclick=()=>$("settingsSheet").classList.remove("show");
