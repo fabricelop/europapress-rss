@@ -155,14 +155,18 @@ async function submitManualStory(url,title,instruction){
   const eventMatch=(eventsR.doc.events||[]).find(x=>storyMatches(x,probe));
   const queueMatch=[...(queueR.doc.items||[])].reverse().find(x=>storyMatches(x,probe));
   const preparedMatch=(preparedR.doc.items||[]).find(x=>storyMatches(x,probe));
-  const id=idOf(archiveMatch?.event_id||eventMatch?.id||eventMatch?.event_id||queueMatch?.event_id||preparedMatch?.event_id||manualEventId(cleanUrl,cleanTitle));
-  const decision=(decisionsR.doc.items||[]).find(x=>idOf(x.event_id)===id&&["published","dismissed"].includes(String(x.status||"").toLowerCase()));
-  if(decision)return {ok:true,duplicate:true,event_id:id,status:String(decision.status).toUpperCase(),message:"Esta noticia ya estaba cerrada"};
-  if(preparedMatch)return {ok:true,duplicate:true,event_id:id,status:"READY",message:"Esta noticia ya está lista"};
-  const activeQueue=[...(queueR.doc.items||[])].reverse().find(x=>idOf(x.event_id)===id&&String(x.status||"")==="PROCESSING");
-  if(activeQueue)return {ok:true,duplicate:true,event_id:id,status:"PROCESSING",message:"Esta noticia ya está en elaboración"};
+  const candidateIds=new Set([
+    archiveMatch?.event_id,eventMatch?.id,eventMatch?.event_id,queueMatch?.event_id,preparedMatch?.event_id
+  ].map(idOf).filter(Boolean));
+  const decision=(decisionsR.doc.items||[]).find(x=>candidateIds.has(idOf(x.event_id))&&["published","dismissed"].includes(String(x.status||"").toLowerCase()));
+  if(decision)return {ok:true,duplicate:true,event_id:idOf(decision.event_id),status:String(decision.status).toUpperCase(),message:"Esta noticia ya estaba cerrada"};
+  if(preparedMatch)return {ok:true,duplicate:true,event_id:idOf(preparedMatch.event_id),status:"READY",message:"Esta noticia ya está lista"};
+  const activeQueue=queueMatch&&String(queueMatch.status||"")==="PROCESSING"?queueMatch:
+    [...(queueR.doc.items||[])].reverse().find(x=>candidateIds.has(idOf(x.event_id))&&String(x.status||"")==="PROCESSING");
+  if(activeQueue)return {ok:true,duplicate:true,event_id:idOf(activeQueue.event_id),status:"PROCESSING",message:"Esta noticia ya está en elaboración"};
+  const id=idOf(eventMatch?.id||eventMatch?.event_id||queueMatch?.event_id||archiveMatch?.event_id||manualEventId(cleanUrl,cleanTitle));
 
-  const source=eventMatch||queueMatch||preparedMatch||archiveMatch||{};
+  const source=eventMatch||queueMatch||archiveMatch||{};
   const finalTitle=cleanTitle||String(source.canonical_title||source.title||"Noticia enviada manualmente");
   const finalUrl=cleanUrl||canonicalUrl(source.url||source.canonical_url);
   const sources=Array.isArray(source.sources)?source.sources:[];
