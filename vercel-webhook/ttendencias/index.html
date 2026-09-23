@@ -171,10 +171,11 @@ async function retry(item){
 }
 async function load(silent=false){
  try{
-  const stamp=Date.now(),paths=["trends/recent.json","trends/requests.json","trends/telegram-manual-explained.json","trends/health-status.json","trends/prepared.json","trends/editorial-config.json"];
-  const rs=await Promise.all(paths.map(p=>fetch(RAW+p+"?t="+stamp,{cache:"no-store"})));
-  if(rs.slice(0,3).some(r=>!r.ok))throw new Error("No se pudieron leer los datos");
-  model=buildModel(await rs[0].json(),await rs[1].json(),await rs[2].json(),rs[3].ok?await rs[3].json():{},rs[4].ok?await rs[4].json():{items:[]},rs[5].ok?await rs[5].json():{});
+  const r=await fetch(API+"?view=state&t="+Date.now(),{cache:"no-store"});
+  if(!r.ok)throw new Error("No se pudieron leer los datos");
+  const d=await r.json();
+  if(!d?.ok)throw new Error(d?.error||"Estado TTendencias no disponible");
+  model=buildModel(d.recent||{},d.requests||{},d.explained||{},d.health||{},d.prepared||{items:[]},d.editorial_config||{});
   localStorage.setItem("ttendencias-last-model",JSON.stringify(model));render();
  }catch(e){if(!silent)showToast(e.message)}
 }

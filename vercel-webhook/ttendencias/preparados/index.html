@@ -73,14 +73,11 @@ async function done(item){const rel=related(item);if(!confirm("¿Confirmas que y
 async function discard(item){const rel=related(item);if(!confirm("¿Desestimar "+rel.join(", ")+" sin publicarla?"))return;const backup=[...(model.items||[])];setLocal(rel,"dismissed");removeItem(item);toast("Desestimando…");try{await api("discard",rel);toast("Desestimada")}catch(e){clearLocal(rel);model.items=backup;render();toast(e.message)}}
 async function load(){
  try{
-  const stamp=Date.now();
-  const [p,r,q]=await Promise.all([
-   fetch(RAW+"trends/prepared.json?t="+stamp,{cache:"no-store"}),
-   fetch(RAW+"trends/recent.json?t="+stamp,{cache:"no-store"}),
-   fetch(RAW+"trends/requests.json?t="+stamp,{cache:"no-store"})
-  ]);
-  if(!p.ok||!r.ok||!q.ok)throw new Error("No se pudo leer la bandeja");
-  const pd=await p.json(),rd=await r.json(),qd=await q.json();
+  const r=await fetch(API+"?view=state&t="+Date.now(),{cache:"no-store"});
+  if(!r.ok)throw new Error("No se pudo leer la bandeja");
+  const d=await r.json();
+  if(!d?.ok)throw new Error(d?.error||"Estado TTendencias no disponible");
+  const pd=d.prepared||{items:[]},rd=d.recent||{items:[]},qd=d.requests||{requests:[]};
   let local={};try{local=JSON.parse(localStorage.getItem("ttendencias-local-state")||"{}")}catch(_){}
   const latest={};
   for(const req of qd.requests||[])latest[nrm(req.name)]=req;

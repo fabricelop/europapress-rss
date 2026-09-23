@@ -6,6 +6,8 @@ const RECENT = "trends/recent.json";
 const REQUESTS = "trends/requests.json";
 const EXPLAINED = "trends/telegram-manual-explained.json";
 const PREPARED = "trends/prepared.json";
+const HEALTH = "trends/health-status.json";
+const EDITORIAL_CONFIG = "trends/editorial-config.json";
 
 function b64decode(s) {
   return Buffer.from(String(s || "").replace(/\n/g, ""), "base64").toString("utf8");
@@ -311,8 +313,31 @@ async function retryNames(names) {
   return { ok: true, retried: unique };
 }
 
+async function stateSnapshot() {
+  const [recent, requests, explained, health, prepared, editorialConfig] = await Promise.all([
+    readJson(RECENT),
+    readJson(REQUESTS),
+    readJson(EXPLAINED),
+    readJson(HEALTH),
+    readJson(PREPARED),
+    readJson(EDITORIAL_CONFIG),
+  ]);
+  return {
+    ok: true,
+    service: "ttendencias-control",
+    branch: BRANCH,
+    fetched_at: new Date().toISOString(),
+    recent: recent.doc,
+    requests: requests.doc,
+    explained: explained.doc,
+    health: health.doc,
+    prepared: prepared.doc,
+    editorial_config: editorialConfig.doc,
+  };
+}
+
 async function backendStatus() {
-  const r = await gh(`contents/${RECENT}?ref=${encodeURIComponent(BRANCH)}`);
+  const r = await gh(`contents/${RECENT}?ref=${encodeURIComponent(BRANCH)}`, { cache: "no-store" });
   if (!r.ok) {
     return { ok: false, status: r.status, detail: (await r.text()).slice(0, 300) };
   }
@@ -323,6 +348,9 @@ export default async function handler(req, res) {
   res.setHeader("cache-control", "no-store");
   try {
     if (req.method === "GET") {
+      if (String(req.query?.view || "") === "state") {
+        return res.status(200).json(await stateSnapshot());
+      }
       const backend = await backendStatus();
       return res.status(backend.ok ? 200 : 503).json({
         ok: backend.ok,
