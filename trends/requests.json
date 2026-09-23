@@ -1209,7 +1209,7 @@
       "id": "d22e86893535",
       "name": "Vacío",
       "rank": 8,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-23T16:31:08+02:00",
       "revision": 0,
       "reexplain": false,
@@ -1219,7 +1219,10 @@
       "requested_together": [
         "Vacío"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-23T18:13:35.279Z",
+      "problem_reason": "Término demasiado genérico: la búsqueda actual muestra varios usos simultáneos y no permite atribuir con suficiente fiabilidad la tendencia a un único detonante concreto.",
+      "editorial_engine": "manual-recovery"
     },
     {
       "id": "d059439e85e0",
@@ -1244,7 +1247,7 @@
       "id": "e2df1f280ac6",
       "name": "Galapagar",
       "rank": 10,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-23T16:50:53+02:00",
       "revision": 0,
       "reexplain": false,
@@ -1254,7 +1257,10 @@
       "requested_together": [
         "Galapagar"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-23T18:13:35.279Z",
+      "problem_reason": "No se ha podido establecer con suficiente fiabilidad un único detonante concreto para el término; aparece en conversación política y local simultánea. Se evita inferir una causa.",
+      "editorial_engine": "manual-recovery"
     },
     {
       "id": "5efe14467d95",
@@ -1319,7 +1325,7 @@
       "id": "3f727fb86568",
       "name": "#MalasLenguas",
       "rank": 8,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-09-23T19:58:44+02:00",
       "revision": 0,
       "reexplain": false,
@@ -1332,8 +1338,11 @@
       "captured_with": [
         "#MalasLenguas"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "ready_at": "2026-09-23T18:13:35.279Z",
+      "delivery_confirmation": "prepared_web",
+      "editorial_engine": "manual-recovery"
     }
   ],
-  "updated_at": "2026-09-23T19:58:44+02:00"
+  "updated_at": "2026-09-23T18:13:35.279Z"
 }
