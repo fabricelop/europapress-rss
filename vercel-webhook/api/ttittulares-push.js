@@ -120,43 +120,44 @@ async function drain(){
   const pending=(prepared.items||[]).filter(x=>x.event_id&&!sent.has(String(x.event_id)));
   if(!pending.length)return {ok:true,news:0,deliveries:0,subscriptions:doc.items.length};
 
-  const alive=[];const deliveredEvents=new Set();const attempts=[];
+  const eventIds=pending.map(x=>String(x.event_id));
+  const batchId="ready-"+crypto.createHash("sha256").update(eventIds.slice().sort().join("|")).digest("hex").slice(0,16);
+  const body=pending.length===1
+    ?"Hay una noticia lista para publicar"
+    :`Hay ${pending.length} noticias listas para publicar`;
+  const payload={title:"TTiTTulares",body,batch_id:batchId,event_ids:eventIds,url:"/ttittulares/"};
+
+  const alive=[];const attempts=[];let deliveredSubscriptions=0;
   for(const row of doc.items){
     let sub;
     try{sub=dec(row.subscription)}
-    catch(e){attempts.push({endpoint_hash:row.endpoint_hash,status:"decrypt_error",error:String(e.message||e)});continue}
+    catch(e){attempts.push({endpoint_hash:row.endpoint_hash,batch_id:batchId,status:"decrypt_error",error:String(e.message||e)});continue}
     let good=true;
-    for(const item of pending){
-      try{
-        const result=await sendPush(sub,{
-          title:"TTiTTulares · noticia lista",
-          body:String(item.title||"Hay una noticia lista para publicar"),
-          event_id:String(item.event_id),
-          url:"/ttittulares/"
-        });
-        attempts.push({endpoint_hash:row.endpoint_hash,event_id:String(item.event_id),status:result.status,reason:result.reason,apns_id:result.apns_id});
-        console.log("PUSH_RESULT",row.endpoint_hash,String(item.event_id),result.status,result.reason||"");
-        if(result.status===404||result.status===410){good=false;break}
-        if(result.status>=200&&result.status<300)deliveredEvents.add(String(item.event_id));
-      }catch(e){
-        attempts.push({endpoint_hash:row.endpoint_hash,event_id:String(item.event_id),status:"error",error:String(e.message||e)});
-        console.error("PUSH_ERROR",row.endpoint_hash,String(item.event_id),String(e.message||e));
-      }
+    try{
+      const result=await sendPush(sub,payload);
+      attempts.push({endpoint_hash:row.endpoint_hash,batch_id:batchId,news:pending.length,status:result.status,reason:result.reason,apns_id:result.apns_id});
+      console.log("PUSH_BATCH_RESULT",row.endpoint_hash,batchId,pending.length,result.status,result.reason||"");
+      if(result.status===404||result.status===410)good=false;
+      if(result.status>=200&&result.status<300)deliveredSubscriptions++;
+    }catch(e){
+      attempts.push({endpoint_hash:row.endpoint_hash,batch_id:batchId,news:pending.length,status:"error",error:String(e.message||e)});
+      console.error("PUSH_BATCH_ERROR",row.endpoint_hash,batchId,String(e.message||e));
     }
     if(good)alive.push(row)
   }
 
   doc.items=alive;
-  for(const eid of deliveredEvents)sent.add(eid);
+  const delivered=deliveredSubscriptions>0;
+  if(delivered)for(const eid of eventIds)sent.add(eid);
   doc.sent_event_ids=[...sent].slice(-500);
   doc.last_attempt_at=new Date().toISOString();
-  doc.last_attempt={pending:pending.map(x=>String(x.event_id)),delivered:[...deliveredEvents],attempts};
+  doc.last_attempt={batch_id:batchId,pending:eventIds,news:pending.length,delivered,delivered_subscriptions:deliveredSubscriptions,attempts};
   doc.updated_at=new Date().toISOString();
   await writeJson(SUBS,"Actualizar notificaciones enviadas TTiTTulares",doc,sha);
 
-  const missed=pending.map(x=>String(x.event_id)).filter(eid=>!deliveredEvents.has(eid));
-  if(missed.length)console.error("PUSH_UNDELIVERED",missed.join(","));
-  return {ok:missed.length===0,news:pending.length,deliveries:deliveredEvents.size,subscriptions:alive.length,missed,attempts}
+  const missed=delivered?[]:eventIds;
+  if(missed.length)console.error("PUSH_BATCH_UNDELIVERED",batchId,missed.join(","));
+  return {ok:delivered,news:pending.length,notifications:deliveredSubscriptions,subscriptions:alive.length,batch_id:batchId,missed,attempts}
 }
 
 async function testPush(){
