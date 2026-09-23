@@ -2,15 +2,15 @@
   "project": "TTendencias",
   "engine": "chatgpt-automation+recovery",
   "last_started_at": "2026-09-23T19:14:55Z",
-  "last_completed_at": "2026-09-23T18:13:35.279Z",
+  "last_completed_at": "2026-09-23T19:18:30Z",
   "last_slot": null,
-  "status": "running",
+  "status": "failure",
   "processed_ids": [],
   "remaining_ids": [
     "9ec24f9d1390",
     "100899c2e4c1"
   ],
-  "error": null,
+  "error": "El conector disponible permite update_file solo como reemplazo completo. requests.json supera el límite de salida de fetch_file y esta ejecución no dispone de Code Mode/edición parcial segura; no se altera el estado editorial ni se reconstruye el archivo desde fragmentos.",
   "api_failover_enabled": false,
-  "updated_at": "2026-09-23T19:14:55Z"
+  "updated_at": "2026-09-23T19:18:30Z"
 }
