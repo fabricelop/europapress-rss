@@ -162,6 +162,42 @@ async function unsubscribePush(subscription) {
   });
   return { ok: true, subscribed: false };
 }
+
+async function testPush() {
+  const { doc: state } = await readJson(PUSH_STATE);
+  const rows = state.subscriptions || [];
+  if (!rows.length) return { ok: false, delivered: 0, failed: 0, no_subscribers: true };
+  const keys = vapidKeys();
+  webpush.setVapidDetails("https://github.com/fabricelop/europapress-rss", keys.publicKey, keys.privateKey);
+  const payload = JSON.stringify({
+    title: "TTendencias · prueba de avisos",
+    body: "Los avisos al móvil funcionan correctamente.",
+    url: "/ttendencias/preparados/",
+    count: 0,
+  });
+  let delivered = 0, failed = 0;
+  const dead = new Set(), errors = [];
+  for (const row of rows) {
+    try {
+      const subscription = decryptSubscription(row);
+      await webpush.sendNotification(subscription, payload, { TTL: 300, urgency: "high" });
+      delivered++;
+    } catch (e) {
+      failed++;
+      const status = Number(e?.statusCode || e?.status || 0);
+      if (status === 404 || status === 410) dead.add(String(row?.id || ""));
+      errors.push({ status: status || null, message: String(e?.message || e).slice(0, 180) });
+    }
+  }
+  if (dead.size) {
+    await mutateJson(PUSH_STATE, "Limpiar suscripciones Web Push TTendencias", doc => {
+      doc.subscriptions = (doc.subscriptions || []).filter(x => !dead.has(String(x?.id || "")));
+      doc.updated_at = new Date().toISOString();
+      return doc;
+    });
+  }
+  return { ok: delivered > 0, delivered, failed, removed_subscriptions: dead.size, errors: errors.slice(0,5) };
+}
 async function scanPush() {
   const [{ doc: prepared }, { doc: requests }, { doc: state }] = await Promise.all([
     readJson(PREPARED),
@@ -549,6 +585,10 @@ export default async function handler(req, res) {
     }
     if (action === "push-subscribe") return res.status(200).json(await subscribePush(body.subscription));
     if (action === "push-unsubscribe") return res.status(200).json(await unsubscribePush(body.subscription));
+    if (action === "push-test") {
+      const result = await testPush();
+      return res.status(result.ok ? 200 : 503).json(result);
+    }
     if (action === "queue") return res.status(200).json(await queueNames(body.names));
     if (action === "explained") return res.status(200).json(await markExplained(body.names));
     if (action === "discard") return res.status(200).json(await discardNames(body.names));
