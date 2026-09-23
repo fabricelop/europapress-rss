@@ -82,9 +82,26 @@ jobs:
         run: |
           git config user.name "ttendencias-health"
           git config user.email "actions@users.noreply.github.com"
+
+          # El repositorio recibe muchas escrituras concurrentes desde la web y
+          # otros workflows. Rebasar y reintentar evita que health-status quede
+          # congelado durante horas por una carrera de push.
           git pull --rebase --autostash origin main || true
           git add trends/health-status.json
           git diff --cached --quiet && exit 0
           git commit -m "Actualizar salud TTendencias"
-          git pull --rebase --autostash origin main || true
-          git push origin HEAD:main
+
+          for attempt in 1 2 3 4; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push health-status falló (intento $attempt); rebasando y reintentando"
+            git pull --rebase origin main || {
+              git rebase --abort || true
+              exit 1
+            }
+            sleep $((attempt * 2))
+          done
+
+          echo "No se pudo persistir health-status tras 4 intentos" >&2
+          exit 1
