@@ -48,6 +48,15 @@ async function mutateJson(path,message,fn){
   throw new Error(`Conflicto persistente actualizando ${path}`)
 }
 function idOf(v){return String(v||"").trim()}
+function threeSourceSpeedMinutes(event){
+  const general=new Set(Array.isArray(event.sources)?event.sources:[]);
+  const times=(event.appearances||[])
+    .filter(x=>general.has(x.source)&&x.first_seen)
+    .map(x=>Date.parse(x.first_seen))
+    .filter(Number.isFinite)
+    .sort((x,y)=>x-y);
+  return times.length>=3?Math.max(0,Math.round((times[2]-times[0])/60000)):null
+}
 async function closePrepared(eventId,status){
   const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
   const now=new Date().toISOString();
@@ -168,8 +177,13 @@ export default async function handler(req,res){
         url:String(e.url||""),
         source_count:Number(e.source_count||0),
         sources:Array.isArray(e.sources)?e.sources:[],
-        first_seen:e.first_seen||null
-      }));
+        first_seen:e.first_seen||null,
+        source3_minutes:threeSourceSpeedMinutes(e)
+      })).sort((a,b)=>{
+        const av=Number.isFinite(a.source3_minutes)?a.source3_minutes:Number.MAX_SAFE_INTEGER;
+        const bv=Number.isFinite(b.source3_minutes)?b.source3_minutes:Number.MAX_SAFE_INTEGER;
+        return av-bv||String(b.first_seen||"").localeCompare(String(a.first_seen||""))
+      });
       const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,ready_count:(prepared.doc?.items||[]).length,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
       return res.status(200).json({ok:true,service:"ttittulares-control",prepared:prepared.doc,status:liveStatus,config:config.doc})
     }
