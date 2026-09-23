@@ -77,6 +77,13 @@ async function closePrepared(eventId,status){
     }
     doc.updated_at=now;return doc
   });
+  await mutateJson(EVENTS,"Cerrar evento TTiTTulares desde web",doc=>{
+    for(const event of doc.events||[])if(idOf(event.id||event.event_id)===id){
+      event.status=status==="published"?"PUBLISHED":"DISMISSED";
+      event[status==="published"?"published_at":"dismissed_at"]=now
+    }
+    doc.updated_at=now;return doc
+  });
   return {ok:true,event_id:id,status}
 }
 async function rework(eventId,instruction){
@@ -152,13 +159,16 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   try{
     if(req.method==="GET"){
-      const [prepared,status,config,queue,events]=await Promise.all([
+      const [prepared,status,config,queue,events,decisions]=await Promise.all([
         readJson(PREPARED),readJson("ttittulares/status.json"),readJson("ttittulares/config.json"),
-        readJson(PROCESSING),readJson(EVENTS)
+        readJson(PROCESSING),readJson(EVENTS),readJson(DECISIONS)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const preparedIds=new Set((prepared.doc?.items||[]).map(x=>String(x.event_id||"")));
       const processingIds=new Set((queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING").map(x=>String(x.event_id||"")));
+      const closedIds=new Set((decisions.doc?.items||[])
+        .filter(x=>["published","dismissed"].includes(String(x.status||"").toLowerCase()))
+        .map(x=>String(x.event_id||"")));
       const processingItems=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING"&&!preparedIds.has(String(x.event_id||""))).map(x=>{
         const ev=eventMap.get(String(x.event_id||""))||{};
         return {
@@ -178,6 +188,7 @@ export default async function handler(req,res){
           &&["WAITING","UPDATE_WAITING"].includes(String(e.status||""))
           &&!processingIds.has(id)
           &&!preparedIds.has(id)
+          &&!closedIds.has(id)
       }).map(e=>({
         event_id:String(e.id||e.event_id||""),
         title:String(e.canonical_title||e.title||""),
