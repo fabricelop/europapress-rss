@@ -25,6 +25,12 @@ SPORT_SOURCES=[
 ("SPORT","https://www.sport.es/es/","html"),
 ("EFE Deportes","https://efe.com/deportes/","html")
 ]
+# Fuentes internacionales suplementarias SOLO para detección y agrupación.
+# No cuentan para el umbral de 4 ni alteran el 14/14 de fuentes generales.
+DISCOVERY_SOURCES=[
+("Reuters Radar","https://news.google.com/rss/search?q=site%3Areuters.com&hl=es&gl=ES&ceid=ES:es","xml"),
+("AP Radar","https://news.google.com/rss/search?q=site%3Aapnews.com&hl=es&gl=ES&ceid=ES:es","xml")
+]
 SOURCE_DOMAINS={
  "Europa Press":"europapress.es",
  "EL PAÍS":"elpais.com",
@@ -244,15 +250,25 @@ def parse_source(src,url,kind,sport=False,recovery=False):
 
 def fetch_items():
  out=[];healthy=[];sport_healthy=[];failures=[];source_status=[]
- specs={n:(u,k,False) for n,u,k in SOURCES}
- specs.update({n:(u,k,True) for n,u,k in SPORT_SOURCES})
  jobs=[]
- with concurrent.futures.ThreadPoolExecutor(max_workers=len(SOURCES)+len(SPORT_SOURCES)) as ex:
-  for spec in SOURCES: jobs.append((False,ex.submit(parse_source,*spec,False,False)))
-  for spec in SPORT_SOURCES: jobs.append((True,ex.submit(parse_source,*spec,True,False)))
-  for is_sport,fut in jobs:
+ with concurrent.futures.ThreadPoolExecutor(max_workers=len(SOURCES)+len(SPORT_SOURCES)+len(DISCOVERY_SOURCES)) as ex:
+  for spec in SOURCES: jobs.append(("general",ex.submit(parse_source,*spec,False,False)))
+  for spec in SPORT_SOURCES: jobs.append(("sport",ex.submit(parse_source,*spec,True,False)))
+  for spec in DISCOVERY_SOURCES: jobs.append(("discovery",ex.submit(parse_source,*spec,False,False)))
+  for source_type,fut in jobs:
    try:
     src,rows,used,err=fut.result()
+    if source_type=="discovery":
+     for row in rows: row["source_type"]="discovery"
+     if used and rows:
+      out.extend(rows)
+      source_status.append({"source":src,"type":"discovery","ok":True,"items":len(rows),"url":used,"error":None,"recovered":False})
+      print("DISCOVERY_STATUS",src,"OK",len(rows),used)
+     else:
+      source_status.append({"source":src,"type":"discovery","ok":False,"items":0,"url":used,"error":err or "0 artículos extraídos","recovered":False})
+      print("DISCOVERY_STATUS",src,"FAIL",err or "0 artículos extraídos")
+     continue
+    is_sport=source_type=="sport"
     if used and rows:
      (sport_healthy if is_sport else healthy).append(src)
      out.extend(rows)
@@ -267,7 +283,7 @@ def fetch_items():
      source_status.append({"source":src,"type":"sport" if is_sport else "general","ok":False,"items":0,"url":used,"error":err or "0 artículos extraídos"})
      print("SOURCE_STATUS",src,"FAIL",err or "0 artículos extraídos")
    except Exception as e:
-    print("SOURCE_FAIL_WORKER",str(e))
+    print("SOURCE_FAIL_WORKER",source_type,str(e))
 
  recovered_names=[x["source"] for x in source_status if x.get("recovered")]
  failed_names=[x["source"] for x in source_status if not x.get("ok")]
@@ -304,7 +320,7 @@ def add_appearance(e,row,now):
   same.update({"title":row["title"],"url":row["url"],"last_seen":iso(now)})
  else:
   apps.append({"source":src,"source_type":source_type,"title":row["title"],"url":row["url"],"first_seen":iso(now),"last_seen":iso(now)})
- e["sources"]=sorted({a["source"] for a in apps if a.get("source_type","general")!="sport"})
+ e["sources"]=sorted({a["source"] for a in apps if a.get("source_type","general")=="general"})
  e["sport_sources"]=sorted({a["source"] for a in apps if a.get("source_type")=="sport"})
  e["source_count"]=len(e["sources"])
  e["sport_source_count"]=len(e["sport_sources"])
@@ -347,7 +363,7 @@ def merge_duplicate_active_events(events):
    if dtv(a.get("last_seen"))>dtv(cur.get("last_seen")):
     cur.update({"last_seen":a.get("last_seen"),"title":a.get("title") or cur.get("title"),"url":a.get("url") or cur.get("url"),"source_type":a.get("source_type",cur.get("source_type","general"))})
   target["appearances"]=list(by_source.values())
-  target["sources"]=sorted({a["source"] for a in target["appearances"] if a.get("source_type","general")!="sport"})
+  target["sources"]=sorted({a["source"] for a in target["appearances"] if a.get("source_type","general")=="general"})
   target["sport_sources"]=sorted({a["source"] for a in target["appearances"] if a.get("source_type")=="sport"})
   target["source_count"]=len(target["sources"])
   target["sport_source_count"]=len(target["sport_sources"])
@@ -676,7 +692,7 @@ events_doc={"version":5,"configured_sources":TOTAL_SOURCES,"review_min_sources":
             "automatic_processing":False,"waiting_ttl_hours":WAIT_HOURS,"min_healthy_sources":MIN_HEALTHY_SOURCES,"last_run":iso(now),
             "healthy_sources":sorted(set(healthy)),"healthy_source_count":len(set(healthy)),
             "healthy_sport_sources":sorted(set(sport_healthy)),"source_failures":source_failures,
-            "source_status":source_status,"source_recovery":source_recovery,"events":events}
+            "source_status":source_status,"source_recovery":source_recovery,"discovery_sources":[x[0] for x in DISCOVERY_SOURCES],"events":events}
 processed_doc={"version":1,"updated_at":iso(now),"events":processed}
 save(EVENTS,events_doc);save(PROCESSED,processed_doc)
 print("RESULT rows",len(rows),"active_events",len(events),"review_sent",sent,"auto_queued",0,"expired",expired)
