@@ -47,6 +47,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
   <div class="row"><button class="secondary" id="cancelToken">Cancelar</button><button class="secondary" id="testToken">Probar</button><button class="primary" id="saveToken">Guardar</button></div>
   <div class="meta" id="accessStatus" style="margin-top:10px"></div>
   <button class="secondary" id="badgeBtn" type="button" style="width:100%;margin-top:14px">Activar avisos y contador</button>
+  <button class="secondary" id="pushTestBtn" type="button" style="width:100%;margin-top:8px;display:none">Enviar aviso de prueba</button>
   <div class="meta" id="badgeStatus" style="margin-top:8px"></div>
 </div></div>
 <div class="toast" id="toast"></div>
@@ -114,23 +115,23 @@ async function currentPushSubscription(){
  return reg.pushManager.getSubscription();
 }
 async function refreshPushStatus(){
- const s=$("badgeStatus"),b=$("badgeBtn");
+ const s=$("badgeStatus"),b=$("badgeBtn"),t=$("pushTestBtn");
  if(!("serviceWorker" in navigator)||!("PushManager" in window)||typeof Notification==="undefined"){
    s.textContent="Web Push no está disponible aquí. En iPhone, abre la app instalada desde la pantalla de inicio.";
-   b.textContent="Avisos no disponibles";b.disabled=true;return;
+   b.textContent="Avisos no disponibles";b.disabled=true;t.style.display="none";return;
  }
  b.disabled=false;
  const sub=await currentPushSubscription().catch(()=>null);
  if(Notification.permission==="denied"){
    s.textContent="Avisos bloqueados en los ajustes del sistema/navegador.";
-   b.textContent="Avisos bloqueados";b.disabled=true;return;
+   b.textContent="Avisos bloqueados";b.disabled=true;t.style.display="none";return;
  }
  if(sub){
    s.textContent="✓ Avisos al móvil activos · solo para nuevos tuits listos";
-   b.textContent="Desactivar avisos";return;
+   b.textContent="Desactivar avisos";t.style.display="block";return;
  }
  s.textContent=Notification.permission==="granted"?"Permiso concedido, pero este dispositivo aún no está suscrito.":"Avisos al móvil desactivados.";
- b.textContent="Activar avisos y contador";
+ b.textContent="Activar avisos y contador";t.style.display="none";
 }
 async function activatePush(){
  if(!token()){showToast("Guarda primero el token de control");$("tokenInput").focus();return}
@@ -242,6 +243,7 @@ $("cancelToken").onclick=()=>$("sheet").classList.remove("show");
 $("testToken").onclick=async()=>{const v=$("tokenInput").value.trim();if(!v)return;$("accessStatus").textContent="Comprobando…";try{const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+v},body:JSON.stringify({action:"ping"})});const d=await r.json();$("accessStatus").textContent=r.ok&&d?.backend?.ok?"✓ Acceso correcto · GitHub operativo":r.status===401?"✕ Token no válido":"⚠ Backend no disponible"}catch(_){$("accessStatus").textContent="✕ No se pudo comprobar"}};
 $("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado");refreshPushStatus().catch(()=>{})};
 $("badgeBtn").onclick=async()=>{try{const sub=await currentPushSubscription();if(sub)await deactivatePush();else await activatePush()}catch(e){showToast(e.message||"No se pudieron cambiar los avisos");await refreshPushStatus().catch(()=>{})}};
+$("pushTestBtn").onclick=async()=>{try{showToast("Enviando aviso de prueba…");const d=await api("push-test",[]);showToast(d.delivered>0?"Aviso de prueba enviado":"No se pudo entregar el aviso")}catch(e){showToast(e.message||"Falló el aviso de prueba")}};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});window.addEventListener("pageshow",()=>load(true));
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttendencias/sw.js").catch(()=>{});
