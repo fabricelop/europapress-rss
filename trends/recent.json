@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-23T13:10:50+02:00",
+  "captured_at": "2026-09-23T13:20:51+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -71,14 +71,8 @@
       "name": "Ministra de Vivienda"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Javier Aguirre",
-    "Urbagestión",
-    "#desahucio",
-    "Ana Belén",
-    "Ministra de Vivienda"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "sources": {
     "trends24": {
       "ok": true,
@@ -108,7 +102,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T13:10:50+02:00"
+      "fetched_at": "2026-09-23T13:20:51+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -133,7 +127,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T13:10:51+02:00"
+      "fetched_at": "2026-09-23T13:20:51+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -160,10 +154,10 @@
         "Taemin"
       ],
       "error": null,
-      "update_hint": "Updated 8 minutes ago",
-      "age_minutes": 8.0,
+      "update_hint": "Updated 18 minutes ago",
+      "age_minutes": 18.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-23T13:10:52+02:00"
+      "fetched_at": "2026-09-23T13:20:52+02:00"
     },
     "superx": {
       "ok": true,
@@ -193,16 +187,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T13:10:53+02:00"
+      "fetched_at": "2026-09-23T13:20:53+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790161853",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790162453",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T13:10:53+02:00"
+      "fetched_at": "2026-09-23T13:20:53+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -230,9 +224,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 23, 2026 10:00 UTC",
-      "age_minutes": 70.9,
+      "age_minutes": 80.9,
       "freshness": "aging",
-      "fetched_at": "2026-09-23T13:10:53+02:00"
+      "fetched_at": "2026-09-23T13:20:53+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -260,27 +254,27 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 1509.9,
+      "age_minutes": 1519.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-23T13:10:54+02:00"
+      "fetched_at": "2026-09-23T13:20:54+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends.cyberkendra.com/spain/?_=1790161854",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790162455",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T13:10:54+02:00"
+      "fetched_at": "2026-09-23T13:20:55+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
       "trends": [],
-      "error": "ConnectionError: HTTPSConnectionPool(host='globaltwittertrends.com', port=443): Max retries exceeded with url: /spain/?_=1790161855 (Caused by NewConnectionError(\"HTTPSConnection(host='globaltwittertrends.com', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))",
-      "update_hint": null,
-      "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-09-23T13:10:55+02:00"
+      "error": "Lista no válida (1 elementos parseados)",
+      "update_hint": "updated 30 minutes ago",
+      "age_minutes": 30.0,
+      "freshness": "invalid",
+      "fetched_at": "2026-09-23T13:20:56+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -310,16 +304,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T13:11:55+02:00"
+      "fetched_at": "2026-09-23T13:20:56+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790161917",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790162458",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T13:11:57+02:00"
+      "fetched_at": "2026-09-23T13:20:58+02:00"
     }
   }
 }
