@@ -105,8 +105,26 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   try{
     if(req.method==="GET"){
-      const [prepared,status,config]=await Promise.all([readJson(PREPARED),readJson("ttittulares/status.json"),readJson("ttittulares/config.json")]);
-      return res.status(200).json({ok:true,service:"ttittulares-control",prepared:prepared.doc,status:status.doc,config:config.doc})
+      const [prepared,status,config,queue,events]=await Promise.all([
+        readJson(PREPARED),readJson("ttittulares/status.json"),readJson("ttittulares/config.json"),
+        readJson(PROCESSING),readJson(EVENTS)
+      ]);
+      const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
+      const processingItems=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING").map(x=>{
+        const ev=eventMap.get(String(x.event_id||""))||{};
+        return {
+          event_id:String(x.event_id||""),
+          title:String(x.title||ev.canonical_title||ev.title||""),
+          url:String(x.url||ev.url||""),
+          selected_at:x.selected_at||null,
+          selection_mode:x.selection_mode||null,
+          rewrite_version:x.rewrite_version||null,
+          source_count:Number(ev.source_count||x.source_count||0),
+          sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
+        }
+      });
+      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,ready_count:(prepared.doc?.items||[]).length};
+      return res.status(200).json({ok:true,service:"ttittulares-control",prepared:prepared.doc,status:liveStatus,config:config.doc})
     }
     if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
     if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
