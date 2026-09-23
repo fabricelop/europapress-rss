@@ -1,0 +1,55 @@
+name: Aplicar resultados editoriales TTendencias
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "trends/editorial-outbox/**"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttendencias-editorial-apply
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Aplicar resultados editoriales
+        run: |
+          set -euo pipefail
+          git config user.name "ttendencias-editorial"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --rebase --autostash origin main
+          python3 trends/apply_editorial_outbox.py
+
+          git add trends/requests.json trends/prepared.json trends/editorial-queue.json trends/editorial-runtime.json trends/editorial-outbox
+          if git diff --cached --quiet; then
+            echo "Sin cambios que aplicar"
+            exit 0
+          fi
+
+          git commit -m "Aplicar resultados editoriales TTendencias"
+
+          for attempt in 1 2 3 4; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push editorial falló (intento $attempt); rebasando"
+            git pull --rebase origin main || {
+              git rebase --abort || true
+              exit 1
+            }
+            sleep $((attempt * 2))
+          done
+
+          echo "No se pudo persistir el resultado editorial" >&2
+          exit 1
