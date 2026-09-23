@@ -1,32 +1,29 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-23T14:31:04+02:00",
-  "primary_source": "tweets24",
+  "captured_at": "2026-09-23T14:40:54+02:00",
+  "primary_source": "snaplytics",
   "selection_method": "fresh-anchor",
   "sources_used": [
-    "trends24",
-    "getdaytrends",
-    "tweets24",
-    "trendswe"
+    "snaplytics"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "Mari Carmen",
     "Congreso",
     "Ana Vázquez",
+    "#TierraDeNadie2",
     "#Mañaneros23S",
-    "Armengol",
+    "Delcy",
+    "Juanma Castaño",
     "Retiro",
-    "Urbagestión",
-    "#Desahucio",
-    "Ana Belén",
-    "Junts"
+    "PSOE",
+    "Begoña Gómez"
   ],
   "items": [
     {
@@ -43,35 +40,41 @@
     },
     {
       "rank": 4,
-      "name": "#Mañaneros23S"
+      "name": "#TierraDeNadie2"
     },
     {
       "rank": 5,
-      "name": "Armengol"
+      "name": "#Mañaneros23S"
     },
     {
       "rank": 6,
-      "name": "Retiro"
+      "name": "Delcy"
     },
     {
       "rank": 7,
-      "name": "Urbagestión"
+      "name": "Juanma Castaño"
     },
     {
       "rank": 8,
-      "name": "#Desahucio"
+      "name": "Retiro"
     },
     {
       "rank": 9,
-      "name": "Ana Belén"
+      "name": "PSOE"
     },
     {
       "rank": 10,
-      "name": "Junts"
+      "name": "Begoña Gómez"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "#TierraDeNadie2",
+    "Delcy",
+    "Juanma Castaño",
+    "PSOE",
+    "Begoña Gómez"
+  ],
   "sources": {
     "trends24": {
       "ok": true,
@@ -101,7 +104,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T14:31:04+02:00"
+      "fetched_at": "2026-09-23T14:40:54+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -126,7 +129,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T14:31:04+02:00"
+      "fetched_at": "2026-09-23T14:40:55+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -153,10 +156,10 @@
         "#FelizMiércoles"
       ],
       "error": null,
-      "update_hint": "Updated 36 minutes ago",
-      "age_minutes": 36.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-23T14:31:05+02:00"
+      "update_hint": "Updated 46 minutes ago",
+      "age_minutes": 46.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-23T14:40:56+02:00"
     },
     "superx": {
       "ok": true,
@@ -186,16 +189,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T14:31:06+02:00"
+      "fetched_at": "2026-09-23T14:40:57+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790166666",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790167257",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T14:31:06+02:00"
+      "fetched_at": "2026-09-23T14:40:57+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -203,29 +206,29 @@
         "Mari Carmen",
         "Congreso",
         "Ana Vázquez",
-        "#Mañaneros23S",
         "#TierraDeNadie2",
+        "#Mañaneros23S",
         "Delcy",
         "Juanma Castaño",
-        "Armengol",
+        "Retiro",
+        "PSOE",
         "Begoña Gómez",
         "Trump",
+        "Irene Montero",
+        "Ana Belén",
         "Gara",
         "#FelizMiércoles",
         "Vito",
-        "PSOE",
-        "Ana Belén",
-        "Urbagestión",
-        "Retiro",
-        "Junts",
-        "Peinado",
-        "Irene Montero"
+        "Armengol",
+        "Vox y Junts",
+        "Vivienda",
+        "Venezuela"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 23, 2026 11:00 UTC",
-      "age_minutes": 91.1,
-      "freshness": "stale",
-      "fetched_at": "2026-09-23T14:31:06+02:00"
+      "update_hint": "Trending now Sep 23, 2026 12:00 UTC",
+      "age_minutes": 41.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-23T14:40:57+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -253,18 +256,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 1590.1,
+      "age_minutes": 1600.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-23T14:31:06+02:00"
+      "fetched_at": "2026-09-23T14:40:58+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790166667",
+      "error": "ReadTimeout: HTTPSConnectionPool(host='trends.cyberkendra.com', port=443): Read timed out. (read timeout=30)",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T14:31:07+02:00"
+      "fetched_at": "2026-09-23T14:40:59+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -273,7 +276,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-23T14:31:08+02:00"
+      "fetched_at": "2026-09-23T14:41:29+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -303,16 +306,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T14:31:09+02:00"
+      "fetched_at": "2026-09-23T14:41:30+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790166671",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790167293",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T14:31:11+02:00"
+      "fetched_at": "2026-09-23T14:41:33+02:00"
     }
   }
 }
