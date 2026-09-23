@@ -1,4 +1,4 @@
-const CACHE="ttendencias-shell-v4";
+const CACHE="ttendencias-shell-v5";
 const SHELL=["/ttendencias/","/ttendencias/index.html","/ttendencias/preparados/","/ttendencias/manifest.webmanifest","/ttendencias/icon.svg"];
 
 self.addEventListener("install",event=>{
