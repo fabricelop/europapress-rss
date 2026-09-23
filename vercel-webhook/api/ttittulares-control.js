@@ -111,7 +111,8 @@ export default async function handler(req,res){
         readJson(PROCESSING),readJson(EVENTS)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
-      const processingItems=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING").map(x=>{
+      const preparedIds=new Set((prepared.doc?.items||[]).map(x=>String(x.event_id||"")));
+      const processingItems=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING"&&!preparedIds.has(String(x.event_id||""))).map(x=>{
         const ev=eventMap.get(String(x.event_id||""))||{};
         return {
           event_id:String(x.event_id||""),
