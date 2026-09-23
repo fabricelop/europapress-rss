@@ -1396,7 +1396,7 @@
       "id": "adc4d83d5880",
       "name": "Franco",
       "rank": 3,
-      "status": "update",
+      "status": "problematic",
       "requested_at": "2026-09-23T20:39:02.076Z",
       "revision": 1,
       "reexplain": true,
@@ -1411,16 +1411,16 @@
         "#MonarquíaFueraYa"
       ],
       "auto_queued": true,
-      "ready_at": "2026-09-23T22:15:00+02:00",
-      "delivery_confirmation": "prepared_web",
       "editorial_engine": "chatgpt-automation-outbox",
-      "rewrite_instruction": "Asegúrate si no es por el dictador Franco"
+      "rewrite_instruction": "Asegúrate si no es por el dictador Franco",
+      "problematic_at": "2026-09-23T23:03:13+02:00",
+      "problem_reason": "La tendencia sí se refiere al dictador Francisco Franco, pero no puede atribuirse con suficiente fiabilidad a un único detonante inmediato: este 23 de septiembre coinciden varias noticias y conversaciones distintas sobre él (el aniversario de la derogación franquista del divorcio civil, referencias políticas actuales a Franco y noticias sobre militares retirados vinculados a su defensa). Tras búsquedas independientes no hay evidencia suficiente para escoger una de ellas como causa concreta del trending topic."
     },
     {
       "id": "e3c48581956f",
       "name": "#MonarquíaFueraYa",
       "rank": 7,
-      "status": "update",
+      "status": "problematic",
       "requested_at": "2026-09-23T20:39:20.388Z",
       "revision": 1,
       "reexplain": true,
@@ -1435,13 +1435,15 @@
         "#MonarquíaFueraYa"
       ],
       "auto_queued": true,
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "problematic_at": "2026-09-23T23:03:13+02:00",
+      "problem_reason": "El hashtag está efectivamente entre las tendencias actuales de España, pero tras búsquedas independientes no aparece un acontecimiento concreto, verificable y suficientemente respaldado que explique su subida ahora. Hay conversación republicana y antimonárquica activa, pero no evidencia fiable para atribuir el trending topic a un detonante inmediato específico sin especular."
     },
     {
       "id": "8f5ace321fd4",
       "name": "Boyero",
       "rank": 9,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-09-23T22:54:30+02:00",
       "revision": 0,
       "reexplain": false,
@@ -1454,8 +1456,11 @@
       "captured_with": [
         "Boyero"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "ready_at": "2026-09-23T23:01:44+02:00",
+      "delivery_confirmation": "prepared_web",
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ],
-  "updated_at": "2026-09-23T22:54:30+02:00"
+  "updated_at": "2026-09-23T23:03:13+02:00"
 }
