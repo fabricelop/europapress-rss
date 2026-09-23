@@ -75,7 +75,11 @@ jobs:
                       continue
                   key=(str(item.get("id") or ""),int(item.get("revision") or 0))
                   by_id[key]=item
-                  by_name[(norm(item.get("trend_name")),int(item.get("revision") or 0))]=item
+                  rev=int(item.get("revision") or 0)
+                  related=item.get("related_trends") or [item.get("trend_name")]
+                  for related_name in related:
+                      if related_name:
+                          by_name[(norm(related_name),rev)]=item
 
               changed=[]
               for req in requests.get("requests",[]):
