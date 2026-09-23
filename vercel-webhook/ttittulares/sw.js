@@ -8,7 +8,7 @@ self.addEventListener("fetch",e=>{const u=new URL(e.request.url);if(u.origin!==l
 self.addEventListener("push",e=>{
  let data={};try{data=e.data?e.data.json():{}}catch(_){}
  const title=data.title||"TTiTTulares";
- const options={body:data.body||"Hay una noticia lista para publicar",icon:"/ttittulares/icon.svg",badge:"/ttittulares/icon.svg",tag:data.event_id||"ttittulares-ready",renotify:true,data:{url:data.url||"/ttittulares/"}};
+ const options={body:data.body||"Hay noticias listas para publicar",icon:"/ttittulares/icon.svg",badge:"/ttittulares/icon.svg",tag:data.batch_id||data.event_id||"ttittulares-ready",renotify:true,data:{url:data.url||"/ttittulares/"}};
  e.waitUntil(self.registration.showNotification(title,options));
 });
 self.addEventListener("notificationclick",e=>{
