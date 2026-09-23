@@ -29,7 +29,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <button class="iconbtn" id="settings" title="Acceso" style="display:none">⚙</button>
 </header>
 <main>
- <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima elaboración —</div></div></div><div class="health" id="health">—</div></section>
+ <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima elaboración —</div><div id="threeSources">Noticias con 3 fuentes —</div></div></div><div class="health" id="health">—</div></section>
  <div class="stats">
   <button class="stat active" data-view="ready"><b id="readyCount">0</b>Listas</button>
   <button class="stat" data-view="processing"><b id="processingCount">0</b>En elaboración</button>
@@ -68,7 +68,7 @@ function latestSlot(now,minutes){const d=new Date(now);d.setSeconds(0,0);for(let
 function agoMin(ms){return Math.max(0,Math.floor(ms/60000))}
 function renderTiming(){
  const s=model.status||{},cfg=model.config||{},now=new Date();
- const radarMinutes=cfg.radar?.schedule_minutes||[10,40], editorialMinutes=cfg.editorial?.schedule_minutes||[15,45];
+ const radarMinutes=cfg.radar?.schedule_minutes||[10,40], editorialMinutes=cfg.editorial?.schedule_minutes||[20,50];
  const last=s.radar_at?new Date(s.radar_at):null, expected=latestSlot(now,radarMinutes), upcoming=nextSlot(now,radarMinutes), ed=nextSlot(now,editorialMinutes);
  $("lastRadar").textContent="Último radar "+(last?fmt(last):"—");
  const delayed=last&&expected&&last<new Date(expected.getTime()-180000)&&now>new Date(expected.getTime()+180000);
@@ -78,6 +78,7 @@ function renderTiming(){
    const mins=upcoming?Math.ceil((upcoming-now)/60000):null;$("nextRadar").textContent="Próximo radar "+(upcoming?hhmm(upcoming):"—")+(mins!==null?" · en "+mins+" min":"");$("nextRadar").className="ok";
  }
  const em=ed?Math.ceil((ed-now)/60000):null;$("nextEditorial").textContent="Próxima elaboración "+(ed?hhmm(ed):"—")+(em!==null?" · en "+em+" min":"");
+ $("threeSources").textContent="Noticias con 3 fuentes "+Number(s.three_source_count||0);
 }
 function intent(text){return "https://twitter.com/intent/tweet?text="+encodeURIComponent(text||"")}
 async function api(action,extra={}){
