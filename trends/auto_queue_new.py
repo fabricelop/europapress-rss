@@ -24,6 +24,30 @@ def norm(value):
     text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
     return " ".join(text.casefold().split())
 
+def save_editorial_queue(requests_doc):
+    active = []
+    for req in requests_doc.get("requests", []) or []:
+        if str(req.get("status") or "") not in {"preparing", "update"}:
+            continue
+        active.append({
+            "id": req.get("id"),
+            "name": req.get("name"),
+            "rank": req.get("rank"),
+            "status": req.get("status"),
+            "requested_at": req.get("requested_at"),
+            "revision": int(req.get("revision") or 0),
+            "rewrite_instruction": req.get("rewrite_instruction") or req.get("rewrite_request") or "",
+            "with_image": bool(req.get("with_image")),
+            "auto_queued": bool(req.get("auto_queued")),
+        })
+    active.sort(key=lambda x: str(x.get("requested_at") or ""))
+    save("editorial-queue.json", {
+        "project": "TTendencias",
+        "updated_at": datetime.now(MADRID).isoformat(timespec="seconds"),
+        "count": len(active),
+        "items": active,
+    })
+
 recent = load("recent.json", {"items": []})
 requests_doc = load("requests.json", {"requests": []})
 explained_doc = load("telegram-manual-explained.json", {"items": []})
@@ -88,6 +112,7 @@ if not to_queue:
         print("Cola reconciliada; no hay tendencias nuevas que encolar")
     else:
         print("Sin tendencias nuevas que encolar")
+    save_editorial_queue(requests_doc)
     raise SystemExit(0)
 
 now = datetime.now(MADRID).isoformat(timespec="seconds")
@@ -125,4 +150,5 @@ for item in to_queue:
 
 requests_doc["updated_at"] = now
 save("requests.json", requests_doc)
+save_editorial_queue(requests_doc)
 print("Encoladas automáticamente:", ", ".join(names))
