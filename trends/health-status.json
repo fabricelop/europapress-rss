@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-23T10:45:52.439341+00:00",
+  "checked_at": "2026-09-23T10:46:34.918884+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -40,7 +40,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 6,
-      "captured_age_minutes": 5.0,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -49,19 +49,18 @@
       "reason": "control web activo"
     },
     "refresh": {
-      "ok": false,
-      "status": "completed",
-      "conclusion": "success",
-      "age_minutes": 259.1,
-      "run_id": 35826724732,
-      "reason": "completed/success, 259.1 min",
+      "ok": true,
+      "status": "in_progress",
+      "conclusion": null,
+      "age_minutes": 0.6,
+      "run_id": 35850655496,
+      "reason": null,
       "repairable": true,
-      "require_active": false,
-      "repair_started": true
+      "require_active": false
     },
     "telegram_sender": {
       "ok": true,
-      "outcome": "success"
+      "outcome": "no-aplica"
     },
     "request_queue": {
       "ok": true,
@@ -69,9 +68,7 @@
       "noise_count": 0
     }
   },
-  "repairs_started": [
-    "relanzado refresh"
-  ],
+  "repairs_started": [],
   "blocking": [],
   "alert_sent": false,
   "last_alert_signature": ""
