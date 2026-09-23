@@ -108,25 +108,62 @@ async function drain(){
   doc.items||=[];doc.sent_event_ids||=[];
   const sent=new Set(doc.sent_event_ids.map(String));
   const pending=(prepared.items||[]).filter(x=>x.event_id&&!sent.has(String(x.event_id)));
-  if(!pending.length)return {ok:true,sent:0};
-  let delivered=0;const alive=[];
+  if(!pending.length)return {ok:true,news:0,deliveries:0,subscriptions:doc.items.length};
+
+  const alive=[];const deliveredEvents=new Set();const attempts=[];
   for(const row of doc.items){
-    let sub;try{sub=dec(row.subscription)}catch(_){continue}
+    let sub;
+    try{sub=dec(row.subscription)}
+    catch(e){attempts.push({endpoint_hash:row.endpoint_hash,status:"decrypt_error",error:String(e.message||e)});continue}
     let good=true;
     for(const item of pending){
       try{
-        const code=await sendPush(sub,{title:"TTiTTulares · noticia lista",body:String(item.title||"Hay una noticia lista para publicar"),event_id:String(item.event_id),url:"/ttittulares/"});
+        const code=await sendPush(sub,{
+          title:"TTiTTulares · noticia lista",
+          body:String(item.title||"Hay una noticia lista para publicar"),
+          event_id:String(item.event_id),
+          url:"/ttittulares/"
+        });
+        attempts.push({endpoint_hash:row.endpoint_hash,event_id:String(item.event_id),status:code});
+        console.log("PUSH_RESULT",row.endpoint_hash,String(item.event_id),code);
         if(code===404||code===410){good=false;break}
-        if(code>=200&&code<300)delivered++;
-      }catch(_){}
+        if(code>=200&&code<300)deliveredEvents.add(String(item.event_id));
+      }catch(e){
+        attempts.push({endpoint_hash:row.endpoint_hash,event_id:String(item.event_id),status:"error",error:String(e.message||e)});
+        console.error("PUSH_ERROR",row.endpoint_hash,String(item.event_id),String(e.message||e));
+      }
     }
     if(good)alive.push(row)
   }
-  doc.items=alive;for(const item of pending)sent.add(String(item.event_id));
-  doc.sent_event_ids=[...sent].slice(-500);doc.updated_at=new Date().toISOString();
+
+  doc.items=alive;
+  for(const eid of deliveredEvents)sent.add(eid);
+  doc.sent_event_ids=[...sent].slice(-500);
+  doc.last_attempt_at=new Date().toISOString();
+  doc.last_attempt={pending:pending.map(x=>String(x.event_id)),delivered:[...deliveredEvents],attempts};
+  doc.updated_at=new Date().toISOString();
   await writeJson(SUBS,"Actualizar notificaciones enviadas TTiTTulares",doc,sha);
-  return {ok:true,news:pending.length,deliveries:delivered}
+
+  const missed=pending.map(x=>String(x.event_id)).filter(eid=>!deliveredEvents.has(eid));
+  if(missed.length)console.error("PUSH_UNDELIVERED",missed.join(","));
+  return {ok:missed.length===0,news:pending.length,deliveries:deliveredEvents.size,subscriptions:alive.length,missed,attempts}
 }
+
+async function testPush(){
+  const {doc}=await readJson(SUBS,{version:1,items:[]});
+  const attempts=[];let delivered=0;const alive=[];
+  for(const row of doc.items||[]){
+    let sub;
+    try{sub=dec(row.subscription)}catch(e){attempts.push({endpoint_hash:row.endpoint_hash,status:"decrypt_error"});continue}
+    try{
+      const code=await sendPush(sub,{title:"TTiTTulares",body:"Notificaciones funcionando",event_id:"push-test-"+Date.now(),url:"/ttittulares/"});
+      attempts.push({endpoint_hash:row.endpoint_hash,status:code});
+      if(code>=200&&code<300){delivered++;alive.push(row)}
+    }catch(e){attempts.push({endpoint_hash:row.endpoint_hash,status:"error",error:String(e.message||e)})}
+  }
+  return {ok:delivered>0,delivered,attempts}
+}
+
 export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   try{
@@ -139,7 +176,13 @@ export default async function handler(req,res){
       if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
       return res.status(200).json(await subscribe(body.subscription))
     }
-    if(body.action==="drain")return res.status(200).json(await drain());
+    if(body.action==="drain"){
+      const out=await drain();return res.status(out.ok?200:503).json(out)
+    }
+    if(body.action==="test"){
+      if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
+      const out=await testPush();return res.status(out.ok?200:503).json(out)
+    }
     return res.status(400).json({ok:false,error:"Acción no válida"})
   }catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
 }
