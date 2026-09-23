@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-23T09:31:11+02:00",
+  "captured_at": "2026-09-23T09:40:53+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -12,22 +12,23 @@
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "#FelizMiércoles",
     "#TierraDeNadie2",
+    "Mari Carmen",
+    "#LaHora23S",
     "Juanma Castaño",
     "Begoña Gómez",
-    "Gara",
     "Delcy",
+    "Gara",
     "Vito Quiles",
-    "Peinado",
-    "Mari Carmen",
-    "Trump"
+    "Peinado"
   ],
   "items": [
     {
@@ -40,39 +41,41 @@
     },
     {
       "rank": 3,
-      "name": "Juanma Castaño"
-    },
-    {
-      "rank": 4,
-      "name": "Begoña Gómez"
-    },
-    {
-      "rank": 5,
-      "name": "Gara"
-    },
-    {
-      "rank": 6,
-      "name": "Delcy"
-    },
-    {
-      "rank": 7,
-      "name": "Vito Quiles"
-    },
-    {
-      "rank": 8,
-      "name": "Peinado"
-    },
-    {
-      "rank": 9,
       "name": "Mari Carmen"
     },
     {
+      "rank": 4,
+      "name": "#LaHora23S"
+    },
+    {
+      "rank": 5,
+      "name": "Juanma Castaño"
+    },
+    {
+      "rank": 6,
+      "name": "Begoña Gómez"
+    },
+    {
+      "rank": 7,
+      "name": "Delcy"
+    },
+    {
+      "rank": 8,
+      "name": "Gara"
+    },
+    {
+      "rank": 9,
+      "name": "Vito Quiles"
+    },
+    {
       "rank": 10,
-      "name": "Trump"
+      "name": "Peinado"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "#LaHora23S"
+  ],
   "sources": {
     "trends24": {
       "ok": true,
@@ -102,7 +105,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T09:31:11+02:00"
+      "fetched_at": "2026-09-23T09:40:53+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -127,37 +130,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T09:31:12+02:00"
+      "fetched_at": "2026-09-23T09:40:54+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "#FelizMiércoles",
         "#TierraDeNadie2",
+        "Mari Carmen",
+        "#LaHora23S",
         "Juanma Castaño",
         "Begoña Gómez",
-        "Gara",
         "Delcy",
+        "Gara",
         "Vito Quiles",
         "Peinado",
-        "Mari Carmen",
         "Trump",
-        "San Pío de Pietrelcina",
         "Venezuela",
         "Tebas",
-        "#laisladelastentaciones5",
         "Biedma",
-        "Taylor",
+        "RMTV",
+        "#BuenosDías",
+        "Nueva York",
+        "Halo",
         "Valverde",
-        "Grado 3",
-        "#TEM22S",
-        "Halo"
+        "San Pío de Pietrelcina"
       ],
       "error": null,
-      "update_hint": "Updated 43 minutes ago",
-      "age_minutes": 43.0,
+      "update_hint": "Updated 9 minutes ago",
+      "age_minutes": 9.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-23T09:31:13+02:00"
+      "fetched_at": "2026-09-23T09:40:54+02:00"
     },
     "superx": {
       "ok": true,
@@ -187,46 +190,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T09:31:14+02:00"
+      "fetched_at": "2026-09-23T09:40:55+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790148677",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790149255",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T09:31:17+02:00"
+      "fetched_at": "2026-09-23T09:40:55+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
+        "Mari Carmen",
         "#FelizMiércoles",
         "#TierraDeNadie2",
-        "Juanma Castaño",
-        "Mari Carmen",
-        "Begoña Gómez",
-        "Gara",
-        "Delcy",
-        "Vito Quiles",
-        "Peinado",
         "#LaHora23S",
+        "Juanma Castaño",
+        "Begoña Gómez",
+        "Delcy",
+        "Gara",
+        "Vito Quiles",
         "Venezuela",
+        "Peinado",
         "Trump",
+        "Taemin",
         "Tebas",
-        "San Pío de Pietrelcina",
-        "Taylor",
-        "Biedma",
+        "RMTV",
+        "Botín",
         "Nueva York",
-        "#TEM22S",
-        "Valverde",
-        "RMTV"
+        "Biedma",
+        "#BuenosDías",
+        "Halo"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 23, 2026 06:00 UTC",
-      "age_minutes": 91.3,
-      "freshness": "stale",
-      "fetched_at": "2026-09-23T09:31:17+02:00"
+      "update_hint": "Trending now Sep 23, 2026 07:00 UTC",
+      "age_minutes": 40.9,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-23T09:40:56+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -254,27 +257,27 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 1290.3,
+      "age_minutes": 1299.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-23T09:31:18+02:00"
+      "fetched_at": "2026-09-23T09:40:56+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790148679",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790149257",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T09:31:19+02:00"
+      "fetched_at": "2026-09-23T09:40:57+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://globaltwittertrends.com/spain/?_=1790148681",
-      "update_hint": null,
-      "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-09-23T09:31:21+02:00"
+      "error": "Lista no válida (1 elementos parseados)",
+      "update_hint": "updated 30 minutes ago",
+      "age_minutes": 30.0,
+      "freshness": "invalid",
+      "fetched_at": "2026-09-23T09:40:58+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -304,16 +307,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-23T09:31:21+02:00"
+      "fetched_at": "2026-09-23T09:40:58+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790148684",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790149261",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-23T09:31:24+02:00"
+      "fetched_at": "2026-09-23T09:41:01+02:00"
     }
   }
 }
