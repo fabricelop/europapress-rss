@@ -7,7 +7,12 @@ const DECISIONS="ttittulares/decisions.json";
 const PROCESSING="telegram/editorial-processing.json";
 const EVENTS="telegram/events.json";
 const MANUAL_ARCHIVE="ttittulares/manual-submissions.json";
-const CONTROL_TOKEN_HASH="cdaa00313ab7f8031d485ac42ec8bb5d22eadf41a27e719848c8c6fcf40f3c98";
+// Tokens de control ya emitidos. No rotar ni eliminar salvo revocación de seguridad explícita.
+const CONTROL_TOKEN_HASHES=[
+  "2663da5223c2313c3670a7843a0cdfabfd2dd7c8fad1ed168247866a3b1262e5",
+  "083d41ffcc41b14d52d426412b1ed44a8d4958b351ee110bdcc5a0eec167b840",
+  "cdaa00313ab7f8031d485ac42ec8bb5d22eadf41a27e719848c8c6fcf40f3c98"
+];
 
 function b64d(s){return Buffer.from(String(s||"").replace(/\n/g,""),"base64").toString("utf8")}
 function b64e(s){return Buffer.from(s,"utf8").toString("base64")}
@@ -19,8 +24,8 @@ function authorized(req){
   const got=authToken(req);if(!got)return false;
   const expected=process.env.TTITTULARES_CONTROL_TOKEN||"";
   if(expected&&got===expected)return true;
-  const digest=crypto.createHash("sha256").update(got).digest("hex");
-  return crypto.timingSafeEqual(Buffer.from(digest),Buffer.from(CONTROL_TOKEN_HASH));
+  const digest=Buffer.from(crypto.createHash("sha256").update(got).digest("hex"));
+  return CONTROL_TOKEN_HASHES.some(hash=>crypto.timingSafeEqual(digest,Buffer.from(hash)));
 }
 async function gh(path,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
