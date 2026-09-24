@@ -43,7 +43,7 @@
           "alt": "short_description"
         }
       },
-      "rule": "Buscar una imagen existente y relevante para cada tendencia. No generar imágenes. Priorizar fuentes oficiales o primarias y, después, medios fiables. Guardar siempre la página de origen. Si no se puede verificar permiso de reutilización, marcar rights_status=unverified."
+      "rule": "Cuando with_image=true la búsqueda es obligatoria: hacer al menos una búsqueda específica de imágenes y, si no sale una URL directa útil, una segunda vía (otra fuente o og:image/social image). Priorizar fuente oficial/primaria y después medios fiables. Una imagen pertinente de un medio fiable es válida como sugerencia aunque la licencia no esté verificada; marcar rights_status=unverified. Solo omitir si tras esos intentos no hay imagen real pertinente."
     },
     "queue_consumer_only": true,
     "queue_states": [
