@@ -37,7 +37,22 @@ const { chromium } = require('playwright');
   if (authToken && ct0) await context.addCookies([{name:'auth_token',value:authToken,domain:'.x.com',path:'/',httpOnly:true,secure:true,sameSite:'None'},{name:'ct0',value:ct0,domain:'.x.com',path:'/',httpOnly:false,secure:true,sameSite:'Lax'}]);
   const page = await context.newPage();
   const result={query,search_url:url,fetched_at:new Date().toISOString(),authenticated_cookie_pair_present:Boolean(authToken&&ct0),mode:isBackfill?`backfill_since_${new Date(backfillCutoff).toISOString()}`:'incremental',final_url:null,title:null,extracted:0,scroll_rounds:0,already_seen:0,rejected:[],candidates:[],status:'unknown',note:null};
-  const rejectReason=()=>null;
+  const normalize=text=>text.toLocaleLowerCase('es-ES').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();
+  const rejectReason=text=>{
+    const t=normalize(text);
+    if (/\b(si|cuando)\s+(manana\s+)?(me\s+)?(desaparezco|muero|fallezco|palmo)\b/.test(t)||/\bcuando\s+me\s+muera\b/.test(t)) return 'memorial/no es una petición de recordatorio';
+    if (/\brecordadme\s+(asi|como\s+(el|la|los|las|quien))\b/.test(t)) return '“recordadme así/como…” se refiere a recordar a la persona';
+    if (/\brecordadme\s+(con\s+)?(carino|amor|afecto|ternura|orgullo)\b/.test(t)) return '“recordadme con cariño/afecto/orgullo…” se refiere a recordar a la persona';
+    if (/\b(que alguien me recuerde|recordadme)\s+con\s+(la\s+)?(cancion|musica|tema)\b/.test(t)) return '“recordarme con una canción/música” se refiere a recordar a la persona';
+    if (/\brecordadme\s*[,;:]?\s+y\s+(yo\s+)?os\s+recordare\b/.test(t)) return 'uso de “recordadme” como recordar a una persona, no como servicio de recordatorio';
+    if (/\brecordadme\s*[.!?…]*$/.test(t)) return '“recordadme” sin objeto ni acción no contiene una petición concreta';
+    if (/\bque alguien me recuerde\s*[.!?…]*$/.test(t)) return '“que alguien me recuerde” se refiere a la propia persona, no a un recordatorio concreto';
+    if (/\b(cosas?|algo|personas?|lugares?)\s+que\s+me\s+recuerden\b/.test(t)) return 'uso descriptivo de “que me recuerden”, no una petición de recordatorio';
+    const consultationPatterns=[/\brecordadme[,:]?\s+(quien|cual|donde|como|por que|porque)\b/,/\brecordadme[,:]?\s+en\s+(que|cual)\b/,/\brecordadme[,:]?\s+en\s+esta\b/,/\bque alguien me recuerde\s+(quien|cual|donde|como|por que|porque)\b/,/\bque alguien me recuerde\s+de\s+(donde|que|cual)\b/,/\bque alguien me recuerde\s+(una|un)\s+sol[ao]\b/];
+    if(consultationPatterns.some(r=>r.test(t))) return 'pregunta/consulta, no recordatorio futuro';
+    if(/\brecordadme[,:]?\s+que\s+(quien|que|cual|donde|como)\b/.test(t)) return 'pregunta/consulta, no recordatorio futuro';
+    return null;
+  };
   const readVisibleTweets=async()=>{const articles=page.locator('article[data-testid="tweet"]');const count=await articles.count();const tweets=[];for(let i=0;i<count;i++){const article=articles.nth(i);const text=await article.locator('[data-testid="tweetText"]').innerText().catch(()=>'');const timeEl=article.locator('time').first();const datetime=await timeEl.getAttribute('datetime').catch(()=>null);const timeHref=await timeEl.locator('xpath=..').getAttribute('href').catch(()=>null);const links=await article.locator('a[href*="/status/"]').evaluateAll(els=>els.map(a=>a.getAttribute('href')).filter(Boolean)).catch(()=>[]);const statusPath=(timeHref&&/^\/[^/]+\/status\/\d+/.test(timeHref))?timeHref:links.find(h=>/^\/[^/]+\/status\/\d+/.test(h));if(!text||!statusPath)continue;const m=statusPath.match(/^\/([^/]+)\/status\/(\d+)/);if(!m)continue;const[,user,id]=m;tweets.push({id,user:`@${user}`,text,datetime,url:`https://x.com/${user}/status/${id}`});}return tweets;};
   try{
     await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});await page.waitForTimeout(7000);result.final_url=page.url();result.title=await page.title();const loginVisible=await page.locator('text=Inicia sesión').first().isVisible().catch(()=>false);const extractedMap=new Map();let stableRounds=0,seenBoundaryRounds=0;const incrementalLookbackMs=6*60*60*1000;const incrementalCutoff=Date.now()-incrementalLookbackMs;const maxScrollRounds=isBackfill?200:60;
