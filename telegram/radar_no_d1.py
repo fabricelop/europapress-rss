@@ -58,6 +58,15 @@ def google_news_fallback(src):
  q=urllib.parse.quote("site:"+domain)
  return "https://news.google.com/rss/search?q="+q+"&hl=es&gl=ES&ceid=ES:es"
 
+def google_news_recovery(src,hours=24):
+ # Ventana retrospectiva explícita por CADA una de las 14 fuentes.
+ # Sirve para recuperar huecos del scheduler aunque la portada/RSS actual
+ # ya haya desplazado noticias publicadas durante el parón.
+ domain=SOURCE_DOMAINS.get(src)
+ if not domain:return None
+ q=urllib.parse.quote("site:"+domain+" when:"+str(int(hours))+"h")
+ return "https://news.google.com/rss/search?q="+q+"&hl=es&gl=ES&ceid=ES:es"
+
 SOURCE_FALLBACKS={
  "Europa Press":["https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json"],
  "EL PAÍS":["https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/ultimas-noticias/portada","https://elpais.com/ultimas-noticias/"],
@@ -218,8 +227,12 @@ def parse_source(src,url,kind,sport=False,recovery=False):
   urls=[gn] if gn else []
  else:
   urls=[url]+[u for u in SOURCE_FALLBACKS.get(src,[]) if u!=url]
-  # La reparación de una fuente forma parte de SU propio worker: si fallan
-  # origen y fallbacks específicos, prueba Google News sin detener el radar.
+  # Añadimos SIEMPRE una ventana retrospectiva de 24 h de la MISMA fuente.
+  # No cuenta como fuente adicional: conserva src y solo amplía cobertura.
+  # Así un parón del scheduler no pierde titulares que ya salieron de portada.
+  recovery_url=google_news_recovery(src,24)
+  if recovery_url and recovery_url not in urls: urls.append(recovery_url)
+  # Si además falla el origen, queda el fallback general de la misma fuente.
   if gn and gn not in urls: urls.append(gn)
  last=None
  for candidate in urls:
