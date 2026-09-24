@@ -28,8 +28,12 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.tabs{display:flex;gap:8
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
 const $=id=>document.getElementById(id);
+const scope=new URLSearchParams(location.search).get("scope")||"all";
 let model={items:[],top:[]},tab="all",reworkItem=null,openIds=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
+if(scope==="radar")document.querySelector(".title").textContent="Radar · Tuits listos";
+else if(scope==="tuits")document.querySelector(".title").textContent="Tuits listos";
+
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>$("toast").classList.remove("show"),2300)}
 function compose(text){return "https://twitter.com/intent/tweet?text="+encodeURIComponent(text||"")}
@@ -51,7 +55,7 @@ function render(){
  const allItems=(model.items||[]),topItems=allItems.filter(isInTop),outItems=allItems.filter(x=>!isInTop(x));$("allCount").textContent=allItems.length;$("topCount").textContent=topItems.length;$("outCount").textContent=outItems.length;$("count").textContent=allItems.length;updateBadge();
  for(const b of document.querySelectorAll(".tab"))b.classList.toggle("active",b.dataset.tab===tab);
  const items=tab==="all"?allItems:(tab==="top"?topItems:outItems),list=$("list");list.innerHTML="";
- if(!items.length){list.innerHTML='<div class="empty">'+(tab==="all"?"No hay tuits listos.":tab==="top"?"No hay tuits listos del Top 10 actual.":"No hay tuits pendientes fuera del Top 10.")+'</div>';return}
+ if(!items.length){const base=scope==="radar"?"No hay tuits del Radar listos.":scope==="tuits"?"No hay tuits normales listos.":"No hay tuits listos.";list.innerHTML='<div class="empty">'+(tab==="all"?base:tab==="top"?"No hay tuits listos del Top 10 actual.":"No hay tuits pendientes fuera del Top 10.")+'</div>';return}
  for(const item of items){
   const rel=related(item),id=String(item.id||item.trend_name||rel.join("|")),open=openIds.has(id),card=document.createElement("article");card.className="rowcard"+(open?" open":"");
   card.innerHTML='<div class="summaryrow"><div><div class="trend"></div><div class="small">Tuits preparados · '+(rel.length>1?rel.length+" tendencias relacionadas":"pendiente de revisión")+'</div></div><div class="rowactions"><button class="btn explain">Explicar</button><button class="btn danger discard">Desestimar</button></div></div>'+detailHtml();
@@ -99,9 +103,13 @@ async function load(){
     const req=latest[name];
     if(req&&["explained","dismissed"].includes(String(req.status||"")))return false;
    }
+   const radar=Boolean(item.anticipated)||rel.some(name=>Boolean(latest[name]?.anticipated));
+   if(scope==="radar"&&!radar)return false;
+   if(scope==="tuits"&&radar)return false;
    return true;
   });
   model={items,top:(rd.items||[]).slice(0,10).map(x=>x.name)};
+  if(scope==="radar"&&items.length===1)openIds.add(String(items[0].id||items[0].trend_name||related(items[0]).join("|")));
   render()
  }catch(e){$("list").innerHTML='<div class="empty">'+String(e.message||e)+'</div>'}
 }
