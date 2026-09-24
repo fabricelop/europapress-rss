@@ -145,7 +145,7 @@ TOKEN_ALIASES={
  # Equivalencias ES/EN y de formato para el mismo hecho cultural. Son deliberadamente
  # estrechas: ayudan a unir coberturas traducidas sin relajar los umbrales globales.
  "palestine":"palestina",
- "tour":"gira","tours":"gira","concierto":"gira","conciertos":"gira","concert":"gira","concerts":"gira",
+ "tour":"gira","tours":"gira",
 }
 EVENT_ACTION_ALIASES={
  "reunion":"reunion","reunirse":"reunion","reunen":"reunion","reune":"reunion","renen":"reunion","encuentro":"reunion","entrevista":"reunion",
@@ -620,6 +620,12 @@ if "--selftest-dedupe" in sys.argv:
    'Macklemore anuncia una gira benéfica en apoyo a Palestina tras su salida de la gira de Ed Sheeran',
    False,
    "manifestación contra Ed Sheeran no es la gira de Macklemore",
+  ),
+  (
+   'Ed Sheeran no se libra de la polémica: convocan una manifestación a las puertas de su concierto en Massachusetts - El HuffPost',
+   'Macklemore anuncia la gira "Free Palestine" tras haber sido expulsado de la de Ed Sheeran: "Mantenerse al margen mientras se produce un genocidio ya no funciona" - El HuffPost',
+   False,
+   "cabecera compartida no convierte la protesta de Ed Sheeran en la gira de Macklemore",
   ),
   (
    'Macklemore anuncia un nuevo disco de estudio para 2027',
