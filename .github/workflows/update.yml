@@ -218,9 +218,8 @@ jobs:
                   continue
                 fi
               else
-                echo "Estado TTiTTulares modificado en paralelo; recalculando barrido ($intento/4)..."
-                sleep $((intento * 2))
-                continue
+                echo "Estado TTiTTulares ya actualizado en paralelo; se descarta este snapshot antiguo."
+                exit 0
               fi
             fi
 
