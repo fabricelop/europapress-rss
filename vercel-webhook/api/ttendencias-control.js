@@ -400,9 +400,13 @@ async function queueNames(names) {
 async function queueUpcomingNames(names) {
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
   if (!unique.length) throw new Error("No hay señales seleccionadas.");
-  const { doc: recent } = await readJson(RECENT);
+  const [{ doc: recent }, { doc: explained }] = await Promise.all([readJson(RECENT), readJson(EXPLAINED)]);
   const upcoming = new Map((recent.upcoming || []).map(x => [norm(x.name), x]));
-  for (const name of unique) if (!upcoming.has(norm(name))) throw new Error(`"${name}" ya no está en Próximas tendencias.`);
+  const explainedSet = new Set((explained.items || []).map(x => norm(x.name)));
+  for (const name of unique) {
+    if (!upcoming.has(norm(name))) throw new Error(`"${name}" ya no está en Próximas tendencias.`);
+    if (explainedSet.has(norm(name))) throw new Error(`"${name}" ya fue explicada. Solo debe reabrirse si hay una novedad material.`);
+  }
   const now = new Date().toISOString();
 
   await mutateJson(REQUESTS, "Preparar tendencia anticipada desde Radar", doc => {
