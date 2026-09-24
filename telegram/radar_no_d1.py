@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import datetime,timezone,timedelta
 
 SOURCES=[
-("Europa Press","https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json","json"),
+("Europa Press","https://www.europapress.es/noticias/","html"),
 ("EL PAÍS","https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/ultimas-noticias/portada","xml"),
 ("La Vanguardia","https://www.lavanguardia.com/rss/home.xml","xml"),
 ("Cadena SER","https://cadenaser.com/autor/redaccion_ser/a/","html"),
