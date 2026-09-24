@@ -5,4 +5,4 @@ Set fso = CreateObject("Scripting.FileSystemObject")
 baseDir = fso.GetParentFolderName(WScript.ScriptFullName)
 scriptPath = fso.BuildPath(baseDir, "run-search.ps1")
 cmd = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File """ & scriptPath & """"
-shell.Run cmd, 0, False
+shell.Run cmd, 0, True
