@@ -22,31 +22,32 @@ foreach ($name in $slrTaskNames) {
 }
 
 $slrProcessPatterns = @(
-    'selorecordamos\\run-telegram-listener.ps1',
-    'selorecordamos\\run-search.ps1',
-    'selorecordamos\\run-published-import.ps1',
-    'selorecordamos\\watchdog.ps1',
-    'selorecordamos\\run-telegram-hidden.vbs',
-    'selorecordamos\\run-search-hidden.vbs',
-    'selorecordamos\\run-published-hidden.vbs',
-    'selorecordamos\\run-watchdog-hidden.vbs',
-    'selorecordamos\\telegram_local.js',
-    'selorecordamos\\search_x.js',
-    'selorecordamos\\publish_search_report.js',
-    'selorecordamos\\import_published.js',
-    'selorecordamos\\postprocess_search.js'
+    'selorecordamos\run-telegram-listener.ps1',
+    'selorecordamos\run-search.ps1',
+    'selorecordamos\run-published-import.ps1',
+    'selorecordamos\watchdog.ps1',
+    'selorecordamos\run-telegram-hidden.vbs',
+    'selorecordamos\run-search-hidden.vbs',
+    'selorecordamos\run-published-hidden.vbs',
+    'selorecordamos\run-watchdog-hidden.vbs',
+    'selorecordamos\telegram_local.js',
+    'selorecordamos\search_x.js',
+    'selorecordamos\publish_search_report.js',
+    'selorecordamos\import_published.js',
+    'selorecordamos\postprocess_search.js'
 )
 
 Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | ForEach-Object {
     $cmd = [string]$_.CommandLine
-    if (-not $cmd) { return }
-    foreach ($pattern in $slrProcessPatterns) {
-        if ($cmd -like "*$pattern*") {
-            try {
-                Invoke-CimMethod -InputObject $_ -MethodName Terminate | Out-Null
-                Write-Host ("Proceso SLR antiguo detenido: PID " + $_.ProcessId)
-            } catch {}
-            break
+    if ($cmd) {
+        foreach ($pattern in $slrProcessPatterns) {
+            if ($cmd -like "*$pattern*") {
+                try {
+                    Invoke-CimMethod -InputObject $_ -MethodName Terminate | Out-Null
+                    Write-Host ("Proceso SLR antiguo detenido: PID " + $_.ProcessId)
+                } catch {}
+                break
+            }
         }
     }
 }
