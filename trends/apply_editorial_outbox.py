@@ -49,8 +49,10 @@ def validate_generated_image(item):
     low = svg.casefold()
     if "<svg" not in low or "</svg>" not in low:
         raise ValueError("SVG generado inválido")
+    # El namespace SVG estándar usa http://www.w3.org/2000/svg y no es un recurso externo.
+    low_external = low.replace('xmlns="http://www.w3.org/2000/svg"', "")
     forbidden = ("<script", "<foreignobject", "javascript:", "http://", "https://", "data:")
-    if any(token in low for token in forbidden):
+    if any(token in low_external for token in forbidden):
         raise ValueError("SVG generado contiene recursos o código externo no permitido")
     if "viewbox=" not in low and not ("width=" in low and "height=" in low):
         raise ValueError("SVG generado sin dimensiones")
