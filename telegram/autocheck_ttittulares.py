@@ -91,26 +91,20 @@ report={
 Path("telegram/autocheck-status.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 print(json.dumps(report,ensure_ascii=False))
 if remaining:
-    # Evitar inundar Telegram con el mismo error en cada barrido.
-    # Clave estable por COMPONENTE, no por contador variable. Así una oscilación
-    # (p.ej. 4->5->2 fuentes) no genera una alerta nueva cada pocos minutos.
+    # Telegram está fuera del flujo activo de TTiTTulares. Conservamos el
+    # diagnóstico y el estado para la web/logs, pero nunca enviamos alertas.
     def alert_family(x):
         if x.startswith("fuentes_sanas_"): return "fuentes_degradadas"
         if x.startswith("elaborando_bloqueado_"): return "elaborando_bloqueado"
         return x
     key="|".join(sorted(set(alert_family(x) for x in remaining)))
-    state=load(ALERT_STATE,{})
-    last_key=state.get("key")
-    try:
-        last_at=datetime.fromisoformat(str(state.get("sent_at","")).replace("Z","+00:00"))
-    except Exception:
-        last_at=datetime.min.replace(tzinfo=timezone.utc)
     now=datetime.now(timezone.utc)
-    if key!=last_key or now-last_at>timedelta(hours=2):
-        telegram("⚠️ TTiTTulares · incidencia detectada\n"+", ".join(remaining))
-        ALERT_STATE.write_text(json.dumps({"key":key,"sent_at":now.isoformat()},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    # El autocheck informa de la incidencia, pero no aborta el barrido: abortarlo
-    # impedía persistir la poda/deduplicación y provocaba el reenvío de noticias.
+    ALERT_STATE.write_text(json.dumps({
+        "key":key,
+        "observed_at":now.isoformat(),
+        "telegram_disabled":True
+    },ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    # El autocheck informa de la incidencia, pero no aborta el barrido.
     print("AUTOCHECK_BLOCKING", ", ".join(remaining))
 else:
     # Si el servicio se recuperó, olvidar la alerta anterior para que una recaída
