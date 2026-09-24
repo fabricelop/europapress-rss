@@ -14,6 +14,45 @@ $searchTask = 'SeLoRecordamos-Search'
 $publishedTask = 'SeLoRecordamos-Published'
 $watchdogTask = 'SeLoRecordamos-Watchdog'
 
+# Limpieza de ejecuciones antiguas de SLR. Las versiones anteriores del lanzador
+# oculto podían dejar procesos desacoplados del Programador de tareas.
+$slrTaskNames = @($listenerTask, $searchTask, $publishedTask, $watchdogTask)
+foreach ($name in $slrTaskNames) {
+    try { Stop-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue } catch {}
+}
+
+$slrProcessPatterns = @(
+    'selorecordamos\\run-telegram-listener.ps1',
+    'selorecordamos\\run-search.ps1',
+    'selorecordamos\\run-published-import.ps1',
+    'selorecordamos\\watchdog.ps1',
+    'selorecordamos\\run-telegram-hidden.vbs',
+    'selorecordamos\\run-search-hidden.vbs',
+    'selorecordamos\\run-published-hidden.vbs',
+    'selorecordamos\\run-watchdog-hidden.vbs',
+    'selorecordamos\\telegram_local.js',
+    'selorecordamos\\search_x.js',
+    'selorecordamos\\publish_search_report.js',
+    'selorecordamos\\import_published.js',
+    'selorecordamos\\postprocess_search.js'
+)
+
+Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | ForEach-Object {
+    $cmd = [string]$_.CommandLine
+    if (-not $cmd) { return }
+    foreach ($pattern in $slrProcessPatterns) {
+        if ($cmd -like "*$pattern*") {
+            try {
+                Invoke-CimMethod -InputObject $_ -MethodName Terminate | Out-Null
+                Write-Host ("Proceso SLR antiguo detenido: PID " + $_.ProcessId)
+            } catch {}
+            break
+        }
+    }
+}
+
+Start-Sleep -Seconds 1
+
 $wscript = "$env:SystemRoot\System32\wscript.exe"
 $userId = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 $principal = New-ScheduledTaskPrincipal -UserId $userId -LogonType Interactive -RunLevel Limited
