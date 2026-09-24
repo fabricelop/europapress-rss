@@ -97,12 +97,7 @@ try {
     $code = Run-NodeToLog @((Join-Path $PSScriptRoot 'publish_search_report.js'))
     if ($code -ne 0) { throw "publish_search_report.js termino con codigo $code" }
 
-    $code = Run-NodeToLog @((Join-Path $PSScriptRoot 'telegram_local.js'), 'send') 90
-    if ($code -eq 124) {
-        Add-LogLine "[$(Get-Date -Format s)] AVISO: envio Telegram agotó 90 s; Search continúa y el listener/watchdog reintentarán el outbox."
-    } elseif ($code -ne 0) {
-        Add-LogLine "[$(Get-Date -Format s)] AVISO: telegram_local.js send terminó con codigo $code; Search no se bloquea."
-    }
+    Add-LogLine "[$(Get-Date -Format s)] Outbox delegado al listener Telegram continuo."
 
     Add-LogLine "[$(Get-Date -Format s)] Comprobando listener SLR"
     try {
