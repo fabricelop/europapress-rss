@@ -27,6 +27,34 @@ def norm(value):
     text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
     return " ".join(text.casefold().split())
 
+def validate_generated_image(item):
+    image = item.get("image") or {}
+    if not image.get("generated"):
+        return
+    url = str(image.get("url") or "").strip()
+    prefix = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/"
+    if not url.startswith(prefix) or not url.endswith(".svg"):
+        raise ValueError("imagen generada sin URL raw SVG válida")
+    if str(image.get("rights_status") or "") != "generated":
+        raise ValueError("imagen generada sin rights_status=generated")
+    if str(image.get("source") or "") != "TTendencias / ChatGPT":
+        raise ValueError("imagen generada sin source esperado")
+    filename = url[len(prefix):]
+    if "/" in filename or ".." in filename:
+        raise ValueError("ruta de imagen generada no válida")
+    path = TRENDS / "generated-images" / filename
+    if not path.exists():
+        raise ValueError("fichero de imagen generada inexistente en main")
+    svg = path.read_text(encoding="utf-8", errors="strict")
+    low = svg.casefold()
+    if "<svg" not in low or "</svg>" not in low:
+        raise ValueError("SVG generado inválido")
+    forbidden = ("<script", "<foreignobject", "javascript:", "http://", "https://", "data:")
+    if any(token in low for token in forbidden):
+        raise ValueError("SVG generado contiene recursos o código externo no permitido")
+    if "viewbox=" not in low and not ("width=" in low and "height=" in low):
+        raise ValueError("SVG generado sin dimensiones")
+
 def validate_ready(payload):
     item = payload.get("prepared_item") or {}
     if not str(item.get("id") or "").strip():
@@ -41,6 +69,7 @@ def validate_ready(payload):
     texts = [item["primary"]["text"]] + [a["tweet_text"] for a in alts]
     if any(len(t) > 280 for t in texts):
         raise ValueError("tuit de más de 280 caracteres")
+    validate_generated_image(item)
     return item
 
 def sync_queue(requests_doc):
