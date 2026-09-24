@@ -27,23 +27,39 @@
       "generate_when_candidate": false,
       "non_blocking": true,
       "source_preference": [
-        "official_or_primary",
-        "reputable_media"
+        "official_or_primary_current_event",
+        "reputable_media_current_article",
+        "exact_event_image_search",
+        "secondary_reputable_source"
       ],
       "require_source_page": true,
       "display_in_web_control": "links",
-      "store": "external_url_only",
+      "store": "external_or_github_raw_url",
       "rights_status_default": "unverified",
       "output_schema": {
         "image": {
           "url": "direct_image_url",
-          "source": "publisher_or_owner",
-          "source_url": "page_where_image_appears",
-          "rights_status": "reusable|official|unverified",
-          "alt": "short_description"
+          "source": "publisher_or_owner_or_TTendencias",
+          "source_url": "page_where_image_appears_or_public_asset_url",
+          "rights_status": "reusable|official|unverified|generated",
+          "alt": "short_description",
+          "generated": "optional_boolean"
         }
       },
-      "rule": "Cuando with_image=true la búsqueda es obligatoria: hacer al menos una búsqueda específica de imágenes y, si no sale una URL directa útil, una segunda vía (otra fuente o og:image/social image). Priorizar fuente oficial/primaria y después medios fiables. Una imagen pertinente de un medio fiable es válida como sugerencia aunque la licencia no esté verificada; marcar rights_status=unverified. Solo omitir si tras esos intentos no hay imagen real pertinente."
+      "rule": "Cuando with_image=true, no abandones tras dos intentos. Haz como mínimo cuatro vías reales y distintas: (1) fuente oficial/primaria del MISMO hecho actual e inspección de og:image/twitter:image/imagen principal; (2) una noticia actual de medio fiable sobre ese mismo hecho e inspección de su imagen principal/og:image; (3) búsqueda específica de imágenes con protagonista/evento + contexto + fecha actual, abriendo el resultado y verificando que la imagen corresponde al hecho; (4) segunda búsqueda o segunda fuente fiable diferente. Prioriza siempre imagen del hecho actual frente a archivo genérico. Comprueba que la URL final sea HTTPS directa a una imagen y que no sea logo, avatar irrelevante, miniatura engañosa ni imagen de un evento antiguo. Si una vía devuelve una imagen mediocre o dudosa, sigue buscando. Una imagen pertinente de medio fiable es válida con rights_status=unverified. Solo después de las cuatro vías puede usarse image_search_status=not_found, explicando brevemente qué se intentó.",
+      "minimum_search_routes": 4,
+      "require_direct_https_image_url": true,
+      "prefer_current_event_over_archive": true,
+      "verify_image_relevance": true,
+      "generated_image_storage": {
+        "prepared": true,
+        "enabled": false,
+        "reason": "Infraestructura preparada; activar cuando la ejecución pueda obtener los bytes/base64 de una imagen generada.",
+        "repository_path_pattern": "trends/generated-images/<id>-r<revision>.<ext>",
+        "public_url_pattern": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/<id>-r<revision>.<ext>",
+        "source": "TTendencias / ChatGPT",
+        "rights_status": "generated"
+      }
     },
     "queue_consumer_only": true,
     "queue_states": [
