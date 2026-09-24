@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-24T13:50:53+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-24T14:01:26+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
@@ -14,9 +14,7 @@
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
     "Mari Carmen",
@@ -26,9 +24,9 @@
     "Retiro",
     "#LaIslaDeLasTentaciones6",
     "Franco",
+    "Ana Belén",
     "Ayuso",
-    "#simyoPackRealme16Pro",
-    "Ana Belén"
+    "Delcy"
   ],
   "items": [
     {
@@ -61,19 +59,21 @@
     },
     {
       "rank": 8,
-      "name": "Ayuso"
+      "name": "Ana Belén"
     },
     {
       "rank": 9,
-      "name": "#simyoPackRealme16Pro"
+      "name": "Ayuso"
     },
     {
       "rank": 10,
-      "name": "Ana Belén"
+      "name": "Delcy"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Delcy"
+  ],
   "sources": {
     "trends24": {
       "ok": true,
@@ -103,7 +103,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T13:50:53+02:00"
+      "fetched_at": "2026-09-24T14:01:26+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -128,37 +128,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T13:50:53+02:00"
+      "fetched_at": "2026-09-24T14:01:26+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "Mari Carmen",
-        "Congreso",
         "PSOE",
+        "Congreso",
         "Ana Vázquez",
         "Retiro",
-        "#LaIslaDeLasTentaciones6",
         "Franco",
+        "#LaIslaDeLasTentaciones6",
         "Ayuso",
-        "#simyoPackRealme16Pro",
         "Ana Belén",
         "#FelizJueves",
-        "#LaHora24S",
-        "Delcy",
         "Zapatero",
+        "#simyoPackRealme16Pro",
+        "Delcy",
         "#tierradenadie2",
+        "#Mañaneros24S",
+        "Vox y Junts",
         "Urbagestión",
         "Vivienda",
-        "Vox y Junts",
-        "Armengol",
-        "La CIA"
+        "La CIA",
+        "Armengol"
       ],
       "error": null,
-      "update_hint": "Updated 32 minutes ago",
-      "age_minutes": 32.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-24T13:50:54+02:00"
+      "update_hint": "Updated 12 seconds ago Live Twitter Trending Topics in Spain 1 Mari Carmen Explore why M",
+      "age_minutes": null,
+      "freshness": "unknown",
+      "fetched_at": "2026-09-24T14:01:27+02:00"
     },
     "superx": {
       "ok": true,
@@ -188,16 +188,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T13:50:55+02:00"
+      "fetched_at": "2026-09-24T14:01:28+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790250655",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790251288",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T13:50:55+02:00"
+      "fetched_at": "2026-09-24T14:01:28+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -225,9 +225,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 24, 2026 11:00 UTC",
-      "age_minutes": 50.9,
+      "age_minutes": 61.5,
       "freshness": "aging",
-      "fetched_at": "2026-09-24T13:50:56+02:00"
+      "fetched_at": "2026-09-24T14:01:28+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -255,18 +255,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 2989.9,
+      "age_minutes": 3000.5,
       "freshness": "stale",
-      "fetched_at": "2026-09-24T13:50:56+02:00"
+      "fetched_at": "2026-09-24T14:01:28+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 525 Server Error: <none> for url: https://trends.cyberkendra.com/spain/?_=1790250657",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790251289",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T13:50:57+02:00"
+      "fetched_at": "2026-09-24T14:01:29+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -275,7 +275,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-24T13:51:09+02:00"
+      "fetched_at": "2026-09-24T14:01:29+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -287,34 +287,34 @@
         "#Retiro",
         "#LaIslaDeLasTentaciones6",
         "#Franco",
-        "#Ana Belén",
         "#Ayuso",
-        "#felizjueves",
-        "#LaHora24S",
-        "#Delcy",
+        "#Ana Belén",
         "#simyoPackRealme16Pro",
-        "#TierraDeNadie2",
+        "#felizjueves",
         "#Zapatero",
+        "#Delcy",
+        "#TierraDeNadie2",
+        "#Mañaneros24S",
         "#Urbagestión",
-        "#La CIA",
         "#Vox y Junts",
         "#Vivienda",
+        "#La CIA",
         "#Armengol"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T13:51:09+02:00"
+      "fetched_at": "2026-09-24T14:01:29+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790250671",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790251291",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T13:51:11+02:00"
+      "fetched_at": "2026-09-24T14:01:31+02:00"
     }
   }
 }
