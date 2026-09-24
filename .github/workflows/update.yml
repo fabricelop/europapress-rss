@@ -140,12 +140,14 @@ jobs:
           fi
 
       - name: Sincronizar main antes del barrido editorial
+        if: always()
         run: |
           set -e
           git fetch origin main
           git reset --hard origin/main
 
       - name: Ejecutar y guardar barrido multifuente TTiTTulares
+        if: always()
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
