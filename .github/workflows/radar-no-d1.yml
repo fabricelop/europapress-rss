@@ -3,7 +3,7 @@ name: Radar editorial TTiTTulares
 on:
   workflow_dispatch:
   schedule:
-    - cron: '10,25,40,55 * * * *'
+    - cron: '*/15 * * * *'
   push:
     branches: [main]
     paths:
@@ -29,7 +29,14 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Instalar dependencias del radar
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
       - name: Ejecutar y guardar radar TTiTTulares
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
           git config user.name "ttittulares-radar-bot"
