@@ -16,6 +16,42 @@ function gitStatus(args) {
   return cp.spawnSync('git', args, { cwd: repoDir, encoding: 'utf8', stdio: 'pipe' });
 }
 
+function readStageJson(stage, repoPath, fallback) {
+  const r = gitStatus(['show', `:${stage}:${repoPath}`]);
+  if (r.status !== 0 || !String(r.stdout || '').trim()) return fallback;
+  try { return JSON.parse(r.stdout); } catch (_) { return fallback; }
+}
+
+function resolveGeneratedStateConflicts() {
+  const r = gitStatus(['diff', '--name-only', '--diff-filter=U']);
+  if (r.status !== 0) return;
+  const unmerged = String(r.stdout || '').split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+  if (!unmerged.length) return;
+
+  const allowed = new Set(['selorecordamos/telegram-outbox.json']);
+  const unsupported = unmerged.filter(x => !allowed.has(x));
+  if (unsupported.length) {
+    throw new Error('Hay conflictos Git no gestionados automaticamente: ' + unsupported.join(', '));
+  }
+
+  if (unmerged.includes('selorecordamos/telegram-outbox.json')) {
+    const ours = readStageJson(2, 'selorecordamos/telegram-outbox.json', { candidates: [] });
+    const theirs = readStageJson(3, 'selorecordamos/telegram-outbox.json', { candidates: [] });
+    const merged = new Map();
+    for (const c of [...(ours.candidates || []), ...(theirs.candidates || [])]) {
+      const id = String(c && c.id || '');
+      if (id) merged.set(id, c);
+    }
+    fs.writeFileSync(
+      path.join(repoDir, 'selorecordamos', 'telegram-outbox.json'),
+      JSON.stringify({ generated_at: new Date().toISOString(), candidates: [...merged.values()].slice(-200) }, null, 2) + '\n',
+      'utf8'
+    );
+    runGit(['add', 'selorecordamos/telegram-outbox.json']);
+    console.log('Conflicto de telegram-outbox.json resuelto automaticamente conservando candidatos de ambos lados.');
+  }
+}
+
 function ensureCleanRebaseState() {
   const gitDir = runGit(['rev-parse', '--git-dir']).trim();
   const absGitDir = path.resolve(repoDir, gitDir);
@@ -83,6 +119,7 @@ try {
   // Robustez: un rebase antiguo o detached HEAD no debe bloquear para siempre
   // las ejecuciones horarias de SeLoRecordamos.
   ensureCleanRebaseState();
+  resolveGeneratedStateConflicts();
   ensureMainBranch();
 
   runGit(['add', reportRepoPath]);
