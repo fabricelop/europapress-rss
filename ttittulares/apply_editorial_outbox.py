@@ -40,7 +40,10 @@ def validate_ready(payload):
             principal=str(variants[0].get("text") or "")
             if text != principal+"\n\n"+remate: raise ValueError("text alternativo no coincide")
         expected="https://twitter.com/intent/tweet?text="+urllib.parse.quote(text,safe="")
-        if str(v.get("url") or "") != expected: raise ValueError("intent incorrecto")
+        actual=str(v.get("url") or v.get("tweet_url") or "")
+        if actual != expected: raise ValueError("intent incorrecto")
+        v["url"]=expected
+        v.pop("tweet_url",None)
     return item
 
 def sync_compact(q):
