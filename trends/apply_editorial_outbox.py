@@ -86,8 +86,8 @@ def sync_queue(requests_doc):
             "revision": int(req.get("revision") or 0),
             "rewrite_instruction": req.get("rewrite_instruction") or req.get("rewrite_request") or "",
             "with_image": bool(req.get("with_image")),
-            "image_mode": "existing_web_image",
-            "image_instruction": "Busca una imagen existente REAL y pertinente del MISMO hecho actual. Método obligatorio y exhaustivo: 1) fuente oficial/primaria del hecho e inspección de og:image/twitter:image/imagen principal; 2) noticia ACTUAL de un medio fiable sobre el mismo hecho e inspección de su imagen principal/og:image; 3) búsqueda específica de imágenes usando protagonista/evento + contexto + fecha actual, abriendo el resultado y verificando que corresponda al hecho; 4) segunda búsqueda o segunda fuente fiable distinta. Prioriza imagen del hecho actual frente a archivo genérico. Comprueba que la URL sea HTTPS directa a una imagen y descarta logos, avatares irrelevantes, miniaturas engañosas e imágenes de eventos antiguos. Si una imagen es mediocre o dudosa, sigue buscando. No generes imágenes en este paso. Si encuentras una, guarda url, source, source_url, rights_status y alt. Solo declara not_found después de intentar las cuatro vías y explica brevemente los intentos. Si las cuatro vías fallan y generated_image_storage.enabled=true en editorial-config.json, crea un SVG editorial original no fotorrealista, guárdalo en trends/generated-images/<id>-r<revision>.svg y usa su URL raw como image.url con source="TTendencias / ChatGPT", rights_status="generated", generated=true. No inventes fotografías ni citas visuales.",
+            "image_mode": "generated_editorial_image",
+            "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL para la tendencia; no uses fotos, og:image, capturas ni imágenes encontradas en Internet como imagen final. Debe ser una caricatura/ilustración de alta calidad con poco o ningún texto y un gag visual ligado a la causa real de la tendencia: protagonista + causa real + exageración visual + remate escénico. Si no puede persistirse una imagen generada raster, crea un SVG autocontenido 16:9 en trends/generated-images/<id>-r<revision>.svg y usa su URL raw con source=\"TTendencias / ChatGPT\", rights_status=\"generated\", generated=true. En temas sensibles evita humor sobre víctimas o sufrimiento.",
             "batch_id": req.get("batch_id"),
             "requested_together": req.get("requested_together") or [req.get("name")],
             "captured_with": req.get("captured_with") or [],
@@ -168,7 +168,10 @@ def main():
                 item.setdefault("trend_name", req.get("name"))
                 if bool(req.get("with_image")):
                     image = item.get("image") or {}
-                    if str(image.get("url") or "").strip():
+                    if image.get("generated") and str(image.get("url") or "").strip():
+                        item.pop("image_search_status", None)
+                        item.pop("image_note", None)
+                    elif str(image.get("url") or "").strip():
                         item["image_search_status"] = item.get("image_search_status") or "found"
                     else:
                         item["image_search_status"] = "not_found"
