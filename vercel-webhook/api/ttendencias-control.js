@@ -397,15 +397,26 @@ async function queueNames(names) {
   await syncEditorialQueue();
   return { ok: true, queued: unique, batch_id: batchId };
 }
+function hasMaterialRadarNovelty(signal, explainedAt) {
+  const sources = Number(signal?.news_source_count || 0);
+  const firstSeen = new Date(signal?.news_first_seen || 0).getTime();
+  const explained = new Date(explainedAt || 0).getTime();
+  return sources >= 4 && Number.isFinite(firstSeen) && firstSeen > 0 && Number.isFinite(explained) && explained > 0 && firstSeen > explained + 10 * 60 * 1000;
+}
+
 async function queueUpcomingNames(names) {
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
   if (!unique.length) throw new Error("No hay señales seleccionadas.");
   const [{ doc: recent }, { doc: explained }] = await Promise.all([readJson(RECENT), readJson(EXPLAINED)]);
   const upcoming = new Map((recent.upcoming || []).map(x => [norm(x.name), x]));
-  const explainedSet = new Set((explained.items || []).map(x => norm(x.name)));
+  const explainedMap = new Map((explained.items || []).map(x => [norm(x.name), x]));
   for (const name of unique) {
-    if (!upcoming.has(norm(name))) throw new Error(`"${name}" ya no está en Próximas tendencias.`);
-    if (explainedSet.has(norm(name))) throw new Error(`"${name}" ya fue explicada. Solo debe reabrirse si hay una novedad material.`);
+    const signal = upcoming.get(norm(name));
+    if (!signal) throw new Error(`"${name}" ya no está en Próximas tendencias.`);
+    const previous = explainedMap.get(norm(name));
+    if (previous && !hasMaterialRadarNovelty(signal, previous.explained_at)) {
+      throw new Error(`"${name}" ya fue explicada y no hay una novedad material verificada.`);
+    }
   }
   const now = new Date().toISOString();
 
