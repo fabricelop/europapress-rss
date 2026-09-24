@@ -144,6 +144,7 @@ TOKEN_ALIASES={
 }
 EVENT_ACTION_ALIASES={
  "reunion":"reunion","reunirse":"reunion","reunen":"reunion","reune":"reunion","renen":"reunion","encuentro":"reunion","entrevista":"reunion",
+ "cumbre":"reunion","recibe":"reunion","recibir":"reunion","visita":"reunion","recibimiento":"reunion",
  "firmar":"acuerdo","firma":"acuerdo","acuerdo":"acuerdo","pacto":"acuerdo",
  "demandar":"demanda","demanda":"demanda","denunciar":"denuncia","denuncia":"denuncia",
  "detener":"detencion","detenido":"detencion","detenida":"detencion","arresto":"detencion",
@@ -585,6 +586,12 @@ if "--selftest-dedupe" in sys.argv:
    'Trump recibe a Xi con una alfombra roja en su primera visita de Estado en una década',
    True,
    "misma visita Trump Xi con enfoques distintos",
+  ),
+  (
+   'El papel nuclear de la IA y otras claves de la cumbre de Xi y Trump en Washington',
+   'Trump recibe a Xi con una alfombra roja en su primera visita de Estado en una década',
+   True,
+   "misma cumbre Trump Xi aunque cambie por completo el enfoque",
   ),
   (
    'Un agente de inteligencia artificial de OpenAI accede sin permiso a datos del sistema de salud de Australia',
