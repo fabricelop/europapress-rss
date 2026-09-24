@@ -3,6 +3,49 @@ $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
 Set-Location $repo
 
+function Invoke-Git {
+    param(
+        [Parameter(Mandatory=$true)][string[]]$Arguments,
+        [switch]$AllowFailure,
+        [switch]$Quiet
+    )
+
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = 'git.exe'
+    $psi.WorkingDirectory = $repo
+    $psi.UseShellExecute = $false
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $psi.CreateNoWindow = $true
+    $psi.Arguments = (($Arguments | ForEach-Object {
+        '"' + ($_ -replace '"','\"') + '"'
+    }) -join ' ')
+
+    $p = New-Object System.Diagnostics.Process
+    $p.StartInfo = $psi
+    [void]$p.Start()
+    $stdout = $p.StandardOutput.ReadToEnd()
+    $stderr = $p.StandardError.ReadToEnd()
+    $p.WaitForExit()
+    $code = $p.ExitCode
+    $p.Dispose()
+
+    if (-not $Quiet) {
+        if ($stdout) { Write-Host $stdout.TrimEnd() }
+        if ($stderr) { Write-Host $stderr.TrimEnd() }
+    }
+
+    if ($code -ne 0 -and -not $AllowFailure) {
+        throw ("git " + ($Arguments -join ' ') + " termino con codigo " + $code + ": " + $stderr.Trim())
+    }
+
+    return [PSCustomObject]@{
+        ExitCode = $code
+        StdOut = $stdout
+        StdErr = $stderr
+    }
+}
+
 $taskNames = @(
     'SeLoRecordamos-Telegram',
     'SeLoRecordamos-Search',
@@ -33,37 +76,27 @@ if (Test-Path $candidates) {
 Write-Host ('Copia local guardada en ' + $backup)
 
 Write-Host 'Limpiando operaciones Git interrumpidas...' -ForegroundColor Cyan
-$gitDirRaw = (& git rev-parse --git-dir 2>$null | Out-String).Trim()
+$gitDirRaw = (Invoke-Git -Arguments @('rev-parse','--git-dir') -Quiet).StdOut.Trim()
 if (-not $gitDirRaw) { throw 'No se pudo localizar .git.' }
 $gitDir = if ([System.IO.Path]::IsPathRooted($gitDirRaw)) { $gitDirRaw } else { Join-Path $repo $gitDirRaw }
 
-$oldPreference = $ErrorActionPreference
-$ErrorActionPreference = 'Continue'
-try {
-    if ((Test-Path (Join-Path $gitDir 'rebase-merge')) -or (Test-Path (Join-Path $gitDir 'rebase-apply'))) {
-        & git rebase --abort 2>$null
-        if ($LASTEXITCODE -ne 0) { & git rebase --quit 2>$null }
-        Write-Host 'Rebase interrumpido limpiado.'
-    }
-
-    if (Test-Path (Join-Path $gitDir 'MERGE_HEAD')) {
-        & git merge --abort 2>$null
-        if ($LASTEXITCODE -ne 0) { & git reset --merge HEAD 2>$null }
-        Write-Host 'Merge interrumpido limpiado.'
-    }
+if ((Test-Path (Join-Path $gitDir 'rebase-merge')) -or (Test-Path (Join-Path $gitDir 'rebase-apply'))) {
+    $r = Invoke-Git -Arguments @('rebase','--abort') -AllowFailure
+    if ($r.ExitCode -ne 0) { [void](Invoke-Git -Arguments @('rebase','--quit') -AllowFailure) }
+    Write-Host 'Rebase interrumpido limpiado.'
 }
-finally {
-    $ErrorActionPreference = $oldPreference
+
+if (Test-Path (Join-Path $gitDir 'MERGE_HEAD')) {
+    $r = Invoke-Git -Arguments @('merge','--abort') -AllowFailure
+    if ($r.ExitCode -ne 0) { [void](Invoke-Git -Arguments @('reset','--merge','HEAD') -AllowFailure) }
+    Write-Host 'Merge interrumpido limpiado.'
 }
 
 Write-Host 'Sincronizando main con GitHub...' -ForegroundColor Cyan
-& git fetch origin main
-if ($LASTEXITCODE -ne 0) { throw 'git fetch origin main ha fallado.' }
+[void](Invoke-Git -Arguments @('fetch','origin','main'))
+[void](Invoke-Git -Arguments @('reset','--hard','origin/main'))
 
-& git reset --hard origin/main
-if ($LASTEXITCODE -ne 0) { throw 'git reset --hard origin/main ha fallado.' }
-
-# Restaurar todos los candidatos locales. search_x.js descarta automáticamente
+# Restaurar todos los candidatos locales. search_x.js descarta automaticamente
 # los que ya consten en telegram-sent.json y reconstruye el outbox pendiente.
 $backupCandidates = Join-Path $backup 'candidates'
 if (Test-Path $backupCandidates) {
@@ -73,7 +106,7 @@ if (Test-Path $backupCandidates) {
     }
 }
 
-# Fusionar cualquier solicitud local que aún no hubiera llegado a GitHub.
+# Fusionar cualquier solicitud local que aun no hubiera llegado a GitHub.
 $backupRequests = Join-Path $backup 'requests.json'
 if (Test-Path $backupRequests) {
     try {
@@ -105,31 +138,29 @@ if (Test-Path $backupRequests) {
         $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
         [System.IO.File]::WriteAllText($requests, $json + [Environment]::NewLine, $utf8NoBom)
 
-        & git add -- 'selorecordamos/requests.json'
-        & git diff --cached --quiet -- 'selorecordamos/requests.json'
-        if ($LASTEXITCODE -ne 0) {
-            & git commit -m 'Recover local SeLoRecordamos requests' -- 'selorecordamos/requests.json'
-            if ($LASTEXITCODE -ne 0) { throw 'No se pudieron guardar las solicitudes recuperadas.' }
-            & git push origin main
-            if ($LASTEXITCODE -ne 0) {
-                & git pull --rebase --autostash origin main
-                if ($LASTEXITCODE -ne 0) { throw 'No se pudo sincronizar main tras recuperar requests.' }
-                & git push origin main
-                if ($LASTEXITCODE -ne 0) { throw 'No se pudo publicar requests recuperado.' }
+        [void](Invoke-Git -Arguments @('add','--','selorecordamos/requests.json'))
+        $diff = Invoke-Git -Arguments @('diff','--cached','--quiet','--','selorecordamos/requests.json') -AllowFailure -Quiet
+        if ($diff.ExitCode -ne 0) {
+            [void](Invoke-Git -Arguments @('commit','-m','Recover local SeLoRecordamos requests','--','selorecordamos/requests.json'))
+            $push = Invoke-Git -Arguments @('push','origin','main') -AllowFailure
+            if ($push.ExitCode -ne 0) {
+                [void](Invoke-Git -Arguments @('pull','--rebase','--autostash','origin','main'))
+                [void](Invoke-Git -Arguments @('push','origin','main'))
             }
         }
     } catch {
-        Write-Warning ('No se pudo fusionar requests.json automáticamente: ' + $_.Exception.Message)
+        Write-Warning ('No se pudo fusionar requests.json automaticamente: ' + $_.Exception.Message)
     }
 }
 
 Write-Host 'Repositorio local limpio y sincronizado.' -ForegroundColor Green
-Write-Host ('HEAD: ' + ((& git rev-parse --short HEAD) | Out-String).Trim())
+$head = (Invoke-Git -Arguments @('rev-parse','--short','HEAD') -Quiet).StdOut.Trim()
+Write-Host ('HEAD: ' + $head)
 
 Write-Host 'Reinstalando y validando tareas...' -ForegroundColor Cyan
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'install-tasks.ps1')
-if ($LASTEXITCODE -ne 0) { throw ('install-tasks.ps1 terminó con código ' + $LASTEXITCODE) }
+if ($LASTEXITCODE -ne 0) { throw ('install-tasks.ps1 termino con codigo ' + $LASTEXITCODE) }
 
 Write-Host ''
-Write-Host 'Reparación terminada.' -ForegroundColor Green
+Write-Host 'Reparacion terminada.' -ForegroundColor Green
 Write-Host ('Backup conservado en: ' + $backup)
