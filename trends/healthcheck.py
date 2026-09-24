@@ -285,7 +285,9 @@ if isinstance(requests_doc, dict):
 
 signature = " | ".join(sorted(blocking))
 alerted = False
-if blocking and signature != previous.get("last_alert_signature"):
+# En modo web Telegram está fuera del flujo activo de TTendencias. El
+# healthcheck conserva diagnóstico y autorreparación, pero no envía avisos.
+if blocking and signature != previous.get("last_alert_signature") and not web_mode:
     alerted = send_alert((bot_state or {}).get("chat_id"), blocking)
 
 status = {
