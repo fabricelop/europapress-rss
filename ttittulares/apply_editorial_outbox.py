@@ -118,7 +118,7 @@ def main():
     st["ready_count"]=len(p.get("items",[]))
     save(STATUS,st)
     print(json.dumps({"processed":processed,"errors":errors},ensure_ascii=False))
-    return 0 if not errors else 1
+    return 0
 if __name__=="__main__":
     raise SystemExit(main())
 
