@@ -110,28 +110,28 @@ Write-Host 'Ejecutando busqueda ahora para recuperar el hueco pendiente...'
 Start-ScheduledTask -TaskName $searchTask
 
 Write-Host 'Esperando a que termine Search antes de arrancar Published para evitar colisiones Git...'
-$deadline = (Get-Date).AddMinutes(10)
+$deadline = (Get-Date).AddMinutes(3)
 do {
     Start-Sleep -Seconds 2
     $searchState = (Get-ScheduledTask -TaskName $searchTask).State
 } while ($searchState -eq 'Running' -and (Get-Date) -lt $deadline)
 
 if ($searchState -eq 'Running') {
-    Write-Warning 'Search sigue ejecutandose tras 10 minutos; Published se deja para su proximo :20 para no colisionar.'
+    Write-Warning 'Search sigue ejecutandose tras 3 minutos; Published se deja para su proximo :20 para no colisionar.'
 } else {
     $searchInfo = Get-ScheduledTaskInfo -TaskName $searchTask
     Write-Host ("Search termino. LastTaskResult=" + $searchInfo.LastTaskResult)
     Write-Host 'Ejecutando historico ahora...'
     Start-ScheduledTask -TaskName $publishedTask
 
-    $publishedDeadline = (Get-Date).AddMinutes(10)
+    $publishedDeadline = (Get-Date).AddMinutes(3)
     do {
         Start-Sleep -Seconds 2
         $publishedState = (Get-ScheduledTask -TaskName $publishedTask).State
     } while ($publishedState -eq 'Running' -and (Get-Date) -lt $publishedDeadline)
 
     if ($publishedState -eq 'Running') {
-        Write-Warning 'Published sigue ejecutandose tras 10 minutos; el watchdog se encargara de una ejecucion atascada.'
+        Write-Warning 'Published sigue ejecutandose tras 3 minutos; el watchdog se encargara de una ejecucion atascada.'
     } else {
         $publishedInfo = Get-ScheduledTaskInfo -TaskName $publishedTask
         Write-Host ("Published termino. LastTaskResult=" + $publishedInfo.LastTaskResult)
