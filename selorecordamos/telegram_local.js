@@ -34,6 +34,43 @@ function writeJson(file, data) {
 function runGit(args) {
   return cp.execFileSync('git', args, { cwd: repoDir, encoding: 'utf8', stdio: 'pipe' });
 }
+function gitStatus(args) {
+  return cp.spawnSync('git', args, { cwd: repoDir, encoding: 'utf8', stdio: 'pipe' });
+}
+function readStageJson(stage, repoPath, fallback) {
+  const r = gitStatus(['show', `:${stage}:${repoPath}`]);
+  if (r.status !== 0 || !String(r.stdout || '').trim()) return fallback;
+  try { return JSON.parse(r.stdout); } catch (_) { return fallback; }
+}
+function cleanInterruptedGitOperation() {
+  let gitDir = '';
+  try { gitDir = runGit(['rev-parse', '--git-dir']).trim(); } catch (_) { return; }
+  const absGitDir = path.resolve(repoDir, gitDir);
+  if (fs.existsSync(path.join(absGitDir, 'rebase-merge')) || fs.existsSync(path.join(absGitDir, 'rebase-apply'))) {
+    let r = gitStatus(['rebase', '--abort']);
+    if (r.status !== 0) gitStatus(['rebase', '--quit']);
+  }
+  if (fs.existsSync(path.join(absGitDir, 'MERGE_HEAD'))) gitStatus(['merge', '--abort']);
+}
+function resolveGeneratedStateConflicts() {
+  const r = gitStatus(['diff', '--name-only', '--diff-filter=U']);
+  if (r.status !== 0) return;
+  const unmerged = String(r.stdout || '').split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+  if (!unmerged.length) return;
+  const unsupported = unmerged.filter(x => x !== 'selorecordamos/telegram-outbox.json');
+  if (unsupported.length) throw new Error('Conflictos Git no gestionados automaticamente: ' + unsupported.join(', '));
+
+  const ours = readStageJson(2, 'selorecordamos/telegram-outbox.json', { candidates: [] });
+  const theirs = readStageJson(3, 'selorecordamos/telegram-outbox.json', { candidates: [] });
+  const merged = new Map();
+  for (const c of [...(ours.candidates || []), ...(theirs.candidates || [])]) {
+    const id = String(c && c.id || '');
+    if (id) merged.set(id, c);
+  }
+  writeJson(outboxFile, { generated_at: new Date().toISOString(), candidates: [...merged.values()].slice(-200) });
+  runGit(['add', 'selorecordamos/telegram-outbox.json']);
+  console.log('Conflicto del outbox resuelto automaticamente conservando ambos lados.');
+}
 function readRemoteOutboxFromGit() {
   try {
     runGit(['fetch', 'origin', 'main', '--quiet']);
@@ -198,6 +235,8 @@ async function sendAssistantOutputs() {
 
 function gitPushFiles(files, message) {
   try {
+    cleanInterruptedGitOperation();
+    resolveGeneratedStateConflicts();
     runGit(['add', ...files]);
     const diff = cp.spawnSync('git', ['diff', '--cached', '--quiet'], { cwd: repoDir });
     if (diff.status !== 0) runGit(['commit', '-m', message]);
