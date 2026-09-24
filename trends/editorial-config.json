@@ -23,50 +23,40 @@
     "problematic_only_on_editorial_failure": true,
     "image_policy": {
       "enabled": true,
-      "mode": "existing_web_image",
-      "generate_when_candidate": false,
-      "non_blocking": true,
-      "source_preference": [
-        "official_or_primary_current_event",
-        "reputable_media_current_article",
-        "exact_event_image_search",
-        "secondary_reputable_source"
-      ],
-      "require_source_page": true,
+      "mode": "generated_editorial_image",
+      "always_generate": true,
+      "non_blocking": false,
       "display_in_web_control": "links",
-      "store": "external_or_github_raw_url",
-      "rights_status_default": "unverified",
+      "store": "github_raw_url",
+      "rights_status_default": "generated",
+      "queue_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL para la tendencia; no uses fotos, og:image, capturas ni imágenes encontradas en Internet como imagen final. Debe ser una caricatura/ilustración de alta calidad, con poco o ningún texto, y contener un gag visual directamente ligado a la causa real de la tendencia: protagonista + causa real + exageración visual + remate escénico. La imagen debe seguir teniendo sentido y gracia sin texto. Si no puede persistirse una imagen generada raster, crea un SVG autocontenido 16:9 en trends/generated-images/<id>-r<revision>.svg y usa su URL raw con source=\"TTendencias / ChatGPT\", rights_status=\"generated\", generated=true. En temas sensibles nunca hagas humor sobre víctimas o sufrimiento.",
       "output_schema": {
         "image": {
-          "url": "direct_image_url",
-          "source": "publisher_or_owner_or_TTendencias",
-          "source_url": "page_where_image_appears_or_public_asset_url",
-          "rights_status": "reusable|official|unverified|generated",
-          "alt": "short_description",
-          "generated": "optional_boolean"
+          "url": "github_raw_generated_asset_url",
+          "source": "TTendencias / ChatGPT",
+          "source_url": "github_file_url",
+          "rights_status": "generated",
+          "alt": "short_factual_description",
+          "generated": true
         }
       },
-      "rule": "Cuando with_image=true, no abandones tras dos intentos. Haz como mínimo cuatro vías reales y distintas: (1) fuente oficial/primaria del MISMO hecho actual e inspección de og:image/twitter:image/imagen principal; (2) una noticia actual de medio fiable sobre ese mismo hecho e inspección de su imagen principal/og:image; (3) búsqueda específica de imágenes con protagonista/evento + contexto + fecha actual, abriendo el resultado y verificando que la imagen corresponde al hecho; (4) segunda búsqueda o segunda fuente fiable diferente. Prioriza siempre imagen del hecho actual frente a archivo genérico. Comprueba que la URL final sea HTTPS directa a una imagen y que no sea logo, avatar irrelevante, miniatura engañosa ni imagen de un evento antiguo. Si una vía devuelve una imagen mediocre o dudosa, sigue buscando. Una imagen pertinente de medio fiable es válida con rights_status=unverified. Solo después de las cuatro vías puede usarse image_search_status=not_found, explicando brevemente qué se intentó. Si tras las cuatro vías no existe una imagen real suficientemente pertinente, crea como fallback un SVG editorial original siguiendo generated_image_storage: no fotorrealista, no engañoso y claramente marcado como generated. Guarda el SVG en GitHub y usa su URL raw como prepared_item.image.url.",
-      "minimum_search_routes": 4,
-      "require_direct_https_image_url": true,
-      "prefer_current_event_over_archive": true,
-      "verify_image_relevance": true,
+      "rule": "Cada item ready lleva SIEMPRE una imagen editorial original generada específicamente para esa tendencia. La web solo sirve para investigar y verificar el detonante; nunca para escoger la imagen final. Prioriza caricatura/ilustración editorial de alta calidad y un gag visual ligado al motivo exacto de la tendencia. Evita retratos decorativos, pósteres genéricos y exceso de texto. Regla de calidad: sin texto, la escena debe seguir siendo comprensible y graciosa. En temas sensibles, dirige el humor a la situación, responsables, gestión o contradicciones cuando proceda; nunca a víctimas o sufrimiento. Persiste la imagen en GitHub antes de escribir el outbox.",
       "generated_image_storage": {
         "prepared": true,
         "enabled": true,
-        "reason": "Infraestructura preparada; activar cuando la ejecución pueda obtener los bytes/base64 de una imagen generada.",
+        "reason": "Vía principal de imagen editorial generada y persistida en GitHub.",
         "repository_path_pattern": "trends/generated-images/<id>-r<revision>.svg",
         "public_url_pattern": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/<id>-r<revision>.svg",
         "source": "TTendencias / ChatGPT",
         "rights_status": "generated",
-        "mode": "editorial_svg_fallback",
-        "trigger": "only_after_existing_image_search_exhausted",
+        "mode": "editorial_svg_primary",
+        "trigger": "always",
         "rules": [
-          "El SVG debe ser una pieza editorial ilustrativa, no una fotografía falsa ni una recreación fotorrealista.",
-          "No debe atribuir citas, acciones o elementos visuales no verificados a personas reales.",
-          "En política, sucesos, víctimas o conflictos usa composición neutral/informativa y evita caricaturas persuasivas o humor sobre víctimas.",
-          "Puede usar formas, tipografía, pictogramas y metáforas visuales simples ligadas al hecho.",
-          "Debe incluir alt descriptivo y generated:true."
+          "La imagen debe ser una caricatura o ilustración editorial original de alta calidad, no una fotografía falsa ni una recreación fotorrealista.",
+          "Debe contener un gag visual directamente relacionado con la causa real de la tendencia y funcionar con poco o ningún texto.",
+          "No debe atribuir citas, acciones o hechos no verificados a personas reales.",
+          "En política, conflictos, sucesos o temas con víctimas evita persuasión electoral y humor sobre víctimas o sufrimiento.",
+          "El SVG debe ser válido, autocontenido, preferentemente 16:9, sin scripts ni recursos externos, con alt descriptivo y generated:true."
         ]
       }
     },
