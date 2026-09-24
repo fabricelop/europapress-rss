@@ -43,22 +43,37 @@ def fetch_page(session: requests.Session, page_number: int) -> str:
     # Unique cache-buster per page + explicit cache headers. This matters because
     # /noticias/ changes every few minutes and intermediary caches can lag.
     url = page_url(page_number)
-    r = session.get(
-        url,
-        params={"_rss_ts": f"{int(time.time())}-{page_number}"},
-        headers={
-            "User-Agent": USER_AGENT,
-            "Cache-Control": "no-cache, no-store, max-age=0",
-            "Pragma": "no-cache",
-            "Expires": "0",
-            "Accept": "text/html,application/xhtml+xml",
-        },
-        timeout=30,
-    )
-    if r.status_code == 404:
-        return ""
-    r.raise_for_status()
-    return r.text
+    last_error: Exception | None = None
+    for attempt in range(1, 4):
+        try:
+            r = session.get(
+                url,
+                params={"_rss_ts": f"{int(time.time())}-{page_number}-{attempt}"},
+                headers={
+                    "User-Agent": USER_AGENT,
+                    "Cache-Control": "no-cache, no-store, max-age=0",
+                    "Pragma": "no-cache",
+                    "Expires": "0",
+                    "Accept": "text/html,application/xhtml+xml",
+                },
+                timeout=20,
+            )
+            if r.status_code == 404:
+                return ""
+            r.raise_for_status()
+            return r.text
+        except requests.RequestException as exc:
+            last_error = exc
+            if attempt < 3:
+                delay = attempt * 1.5
+                print(
+                    f"ADVERTENCIA: fallo transitorio en página {page_number} "
+                    f"(intento {attempt}/3): {exc}; reintento en {delay:.1f}s",
+                    file=sys.stderr,
+                )
+                time.sleep(delay)
+    assert last_error is not None
+    raise last_error
 
 
 def parse_page(page: str) -> list[dict]:
@@ -144,7 +159,20 @@ def fetch_all_current_pages() -> tuple[list[dict], int]:
     pages_read = 0
 
     for page_number in range(1, MAX_PAGES + 1):
-        html = fetch_page(session, page_number)
+        try:
+            html = fetch_page(session, page_number)
+        except requests.RequestException as exc:
+            # Una caída de una página profunda no debe invalidar todo el ciclo.
+            # Si ya tenemos páginas recientes válidas, conservamos ese recorrido
+            # parcial y dejamos que el radar continúe. Solo la página 1 es fatal.
+            if all_items:
+                print(
+                    f"ADVERTENCIA: Europa Press falló en p{page_number}; "
+                    f"se conserva el recorrido parcial de {pages_read} páginas: {exc}",
+                    file=sys.stderr,
+                )
+                break
+            raise
         parsed = parse_page(html)
         if not parsed:
             break
