@@ -118,6 +118,8 @@ async function syncEditorialQueue() {
       revision: Number(req.revision || 0),
       rewrite_instruction: req.rewrite_instruction || req.rewrite_request || "",
       with_image: Boolean(req.with_image),
+      image_mode: "existing_web_image",
+      image_instruction: "Busca una imagen existente y relevante en una fuente fiable. Guarda la URL directa de la imagen, la fuente y la URL de la página de origen. No generes una imagen.",
       auto_queued: Boolean(req.auto_queued),
     }))
     .sort((a, b) => String(a.requested_at || "").localeCompare(String(b.requested_at || "")));
@@ -375,7 +377,7 @@ async function queueNames(names) {
           requested_at: now,
           revision: Number(previous?.revision || 0) + (reexplain ? 1 : 0),
           reexplain,
-          with_image: false,
+          with_image: true,
           alternatives_target: 3,
           batch_id: batchId,
           requested_together: unique,
@@ -470,7 +472,7 @@ async function discardNames(names) {
           name,
           rank: 0,
           revision: 0,
-          with_image: false,
+          with_image: true,
           alternatives_target: 3,
         };
         doc.requests.push(req);
@@ -515,7 +517,7 @@ async function reworkNames(names, instruction) {
           name,
           rank: 0,
           revision: 0,
-          with_image: false,
+          with_image: true,
           alternatives_target: 3,
         };
         doc.requests.push(req);
@@ -562,7 +564,7 @@ async function retryNames(names) {
           id: crypto.createHash("sha256").update(name).digest("hex").slice(0, 12),
           name,
           revision: 0,
-          with_image: false,
+          with_image: true,
           alternatives_target: 3,
         };
         doc.requests.push(req);
