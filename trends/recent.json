@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-24T11:10:50+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-24T11:20:57+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
@@ -13,7 +13,9 @@
   ],
   "source_count": 6,
   "non_stale_source_count": 5,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "tweets24"
+  ],
   "reliability": "medium",
   "top10": [
     "Mari Carmen",
@@ -23,9 +25,9 @@
     "Retiro",
     "#LaIslaDeLasTentaciones6",
     "Franco",
-    "Ana Belén",
-    "Delcy",
-    "#tierradenadie2"
+    "#FelizJueves",
+    "#LaHora24S",
+    "Ana Belén"
   ],
   "items": [
     {
@@ -58,21 +60,21 @@
     },
     {
       "rank": 8,
-      "name": "Ana Belén"
+      "name": "#FelizJueves"
     },
     {
       "rank": 9,
-      "name": "Delcy"
+      "name": "#LaHora24S"
     },
     {
       "rank": 10,
-      "name": "#tierradenadie2"
+      "name": "Ana Belén"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Delcy",
-    "#tierradenadie2"
+    "#FelizJueves",
+    "#LaHora24S"
   ],
   "sources": {
     "trends24": {
@@ -103,7 +105,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T11:10:50+02:00"
+      "fetched_at": "2026-09-24T11:20:57+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -128,7 +130,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T11:10:51+02:00"
+      "fetched_at": "2026-09-24T11:20:57+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -155,10 +157,10 @@
         "Vivienda"
       ],
       "error": null,
-      "update_hint": "Updated 52 seconds ago Live Twitter Trending Topics in Spain 1 Mari Carmen Explore why M",
-      "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-24T11:10:52+02:00"
+      "update_hint": "Updated 10 minutes ago",
+      "age_minutes": 10.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-24T11:20:58+02:00"
     },
     "superx": {
       "ok": true,
@@ -188,16 +190,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T11:10:53+02:00"
+      "fetched_at": "2026-09-24T11:20:59+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790241053",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790241659",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T11:10:53+02:00"
+      "fetched_at": "2026-09-24T11:20:59+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -225,9 +227,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 24, 2026 08:00 UTC",
-      "age_minutes": 70.9,
+      "age_minutes": 81.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-24T11:10:53+02:00"
+      "fetched_at": "2026-09-24T11:20:59+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -255,18 +257,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 2829.9,
+      "age_minutes": 2840.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-24T11:10:54+02:00"
+      "fetched_at": "2026-09-24T11:21:00+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 522 Server Error: <none> for url: https://trends.cyberkendra.com/spain/?_=1790241055",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790241661",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T11:10:55+02:00"
+      "fetched_at": "2026-09-24T11:21:01+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -275,7 +277,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-24T11:11:14+02:00"
+      "fetched_at": "2026-09-24T11:21:02+02:00"
     },
     "trendswe": {
       "ok": false,
@@ -284,16 +286,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T11:11:15+02:00"
+      "fetched_at": "2026-09-24T11:21:02+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790241105",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790241693",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T11:11:45+02:00"
+      "fetched_at": "2026-09-24T11:21:33+02:00"
     }
   }
 }
