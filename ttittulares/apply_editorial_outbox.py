@@ -51,6 +51,8 @@ def sync_compact(q):
             "revision":int(x.get("revision") or 1),
             "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
             "parent_event_id":x.get("parent_event_id"),"update_context":x.get("update_context"),
+            "with_image":True,"image_mode":"existing_web_image",
+            "image_instruction":"Busca una imagen existente y relevante al hecho en una fuente oficial/primaria o medio fiable. Haz al menos una búsqueda específica y, si falla, una segunda vía u og:image de una fuente usada. No generes imágenes. Guarda URL directa, fuente, página de origen y rights_status. Si no encuentras una adecuada, deja constancia explícita.",
         })
     active.sort(key=lambda x:str(x.get("selected_at") or ""))
     save(TT/"editorial-queue.json",{
@@ -80,6 +82,13 @@ def main():
             st=str(payload.get("status") or "")
             if st=="ready":
                 item=validate_ready(payload)
+                if bool(row.get("with_image", True)):
+                    image=item.get("image") or {}
+                    if str(image.get("url") or "").strip():
+                        item["image_search_status"]=item.get("image_search_status") or "found"
+                    else:
+                        item["image_search_status"]="not_found"
+                        item["image_note"]=item.get("image_note") or "Sin imagen adecuada encontrada tras la búsqueda editorial."
                 p["items"]=[x for x in p.get("items",[]) if str(x.get("event_id") or "")!=eid]
                 p["items"].append(item);p["updated_at"]=item.get("prepared_at") or now
                 row["status"]="READY";row["delivered_at"]=item.get("prepared_at") or now;row["delivery_confirmation"]="prepared_web"
