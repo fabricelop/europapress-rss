@@ -492,6 +492,25 @@ async function markExplained(names) {
   }
 
   const now = new Date().toISOString();
+  const [{ doc: recentNow }, { doc: preparedNow }, { doc: requestsNow }] = await Promise.all([
+    readJson(RECENT), readJson(PREPARED), readJson(REQUESTS)
+  ]);
+  const recentSignals = new Map((recentNow.upcoming || []).map(x => [norm(x.name), x]));
+  const preparedByName = new Map();
+  for (const item of preparedNow.items || []) {
+    const rel = ((item.related_trends || []).length ? item.related_trends : [item.trend_name]);
+    for (const name of rel) preparedByName.set(norm(name), item);
+  }
+  const requestByName = new Map((requestsNow.requests || []).map(x => [norm(x.name), x]));
+  const explainedContext = new Map();
+  for (const name of unique) {
+    const key = norm(name), signal = recentSignals.get(key), preparedItem = preparedByName.get(key), requestItem = requestByName.get(key);
+    explainedContext.set(key, {
+      news_event_id: signal?.news_event_id || requestItem?.anticipated_news_event_id || null,
+      news_title: signal?.news_title || requestItem?.anticipated_news_title || "",
+      explanation: preparedItem?.explanation || "",
+    });
+  }
 
   await mutateJson(EXPLAINED, "Marcar TTendencias explicadas desde web", doc => {
     doc.project ||= "TTendencias";
@@ -501,9 +520,9 @@ async function markExplained(names) {
       const key = norm(name);
       if (byName.has(key)) {
         const i = byName.get(key);
-        doc.items[i] = { ...doc.items[i], name, explained_at: now, source: "web_control" };
+        doc.items[i] = { ...doc.items[i], name, explained_at: now, source: "web_control", ...explainedContext.get(key) };
       } else {
-        doc.items.push({ name, explained_at: now, source: "web_control" });
+        doc.items.push({ name, explained_at: now, source: "web_control", ...explainedContext.get(key) });
         byName.set(key, doc.items.length - 1);
       }
     }
@@ -523,12 +542,13 @@ async function markExplained(names) {
   await mutateJson(PREPARED, "Retirar tuits cerrados de TTendencias web", doc => {
     doc.project ||= "TTendencias";
     doc.items = (doc.items || []).filter(item => {
-      const related = (item.related_trends || [item.trend_name]).map(norm);
+      const related = ((item.related_trends || []).length ? item.related_trends : [item.trend_name]).map(norm);
       return !related.some(x => target.has(x));
     });
     doc.updated_at = now;
     return doc;
   });
+  await syncEditorialQueue();
   return { ok: true, explained: unique };
 }
 
@@ -566,12 +586,13 @@ async function discardNames(names) {
   await mutateJson(PREPARED, "Retirar TTendencias desestimadas de la bandeja", doc => {
     doc.project ||= "TTendencias";
     doc.items = (doc.items || []).filter(item => {
-      const related = (item.related_trends || [item.trend_name]).map(norm);
+      const related = ((item.related_trends || []).length ? item.related_trends : [item.trend_name]).map(norm);
       return !related.some(x => target.has(x));
     });
     doc.updated_at = now;
     return doc;
   });
+  await syncEditorialQueue();
   return { ok: true, dismissed: unique };
 }
 
@@ -613,7 +634,7 @@ async function reworkNames(names, instruction) {
 
   await mutateJson(PREPARED, "Retirar versión a reelaborar de TTendencias web", doc => {
     doc.items = (doc.items || []).filter(item => {
-      const related = (item.related_trends || [item.trend_name]).map(norm);
+      const related = ((item.related_trends || []).length ? item.related_trends : [item.trend_name]).map(norm);
       return !related.some(x => target.has(x));
     });
     doc.updated_at = now;
@@ -665,7 +686,7 @@ async function retryNames(names) {
   await mutateJson(PREPARED, "Limpiar versión anterior al reintentar TTendencias", doc => {
     const target = new Set(unique.map(norm));
     doc.items = (doc.items || []).filter(item => {
-      const related = (item.related_trends || [item.trend_name]).map(norm);
+      const related = ((item.related_trends || []).length ? item.related_trends : [item.trend_name]).map(norm);
       return !related.some(x => target.has(x));
     });
     doc.updated_at = now;
@@ -724,6 +745,25 @@ async function stateSnapshot() {
   };
 }
 
+async function proxyPreparedImage(rawUrl, res) {
+  const url = String(rawUrl || "");
+  let parsed;
+  try { parsed = new URL(url); } catch (_) { throw new Error("URL de imagen no válida"); }
+  if (parsed.protocol !== "https:") throw new Error("Solo se permiten imágenes HTTPS");
+  const { doc: prepared } = await readJson(PREPARED);
+  const allowed = new Set((prepared.items || []).map(x => x?.image?.url || x?.image_url).filter(Boolean).map(String));
+  if (!allowed.has(url)) throw new Error("Imagen no autorizada");
+  const r = await fetch(url, { headers: { "user-agent": "TTendencias-Image-Proxy/1.0", accept: "image/*" } });
+  if (!r.ok) throw new Error(`No se pudo descargar la imagen: ${r.status}`);
+  const type = String(r.headers.get("content-type") || "");
+  if (!type.startsWith("image/")) throw new Error("El recurso no es una imagen");
+  const buf = Buffer.from(await r.arrayBuffer());
+  if (buf.length > 12 * 1024 * 1024) throw new Error("Imagen demasiado grande");
+  res.setHeader("content-type", type);
+  res.setHeader("content-length", String(buf.length));
+  return res.status(200).send(buf);
+}
+
 async function backendStatus() {
   const r = await gh(`contents/${RECENT}?ref=${encodeURIComponent(BRANCH)}`, { cache: "no-store" });
   if (!r.ok) {
@@ -738,6 +778,9 @@ export default async function handler(req, res) {
     if (req.method === "GET") {
       if (String(req.query?.view || "") === "state") {
         return res.status(200).json(await stateSnapshot());
+      }
+      if (String(req.query?.view || "") === "image-proxy") {
+        return await proxyPreparedImage(req.query?.url, res);
       }
       if (String(req.query?.view || "") === "push-key") {
         return res.status(200).json({ ok: true, publicKey: vapidKeys().publicKey });
