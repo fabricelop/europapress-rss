@@ -31,6 +31,9 @@ for x in q.get("items",[]) or []:
         "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
         "parent_event_id":x.get("parent_event_id"),
         "update_context":x.get("update_context"),
+        "with_image":True,
+        "image_mode":"existing_web_image",
+        "image_instruction":"Busca una imagen existente y relevante al hecho en una fuente oficial/primaria o medio fiable. Haz al menos una búsqueda específica y, si falla, una segunda vía u og:image de una fuente usada. No generes imágenes. Guarda URL directa, fuente, página de origen y rights_status. Si no encuentras una adecuada, deja constancia explícita.",
     })
 items.sort(key=lambda x:str(x.get("selected_at") or ""))
 save(OUT,{
