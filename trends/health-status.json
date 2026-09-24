@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-09-24T01:30:18.126772+00:00",
-  "ok": true,
+  "checked_at": "2026-09-24T05:33:12.114161+00:00",
+  "ok": false,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -39,7 +39,7 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 5,
+      "non_stale_sources": 6,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -53,7 +53,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 0.6,
-      "run_id": 35943153952,
+      "run_id": 35960406537,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -68,22 +68,29 @@
       "noise_count": 0
     },
     "ready_consistency": {
-      "ok": true,
-      "orphan_count": 0,
-      "orphan_items": []
+      "ok": false,
+      "orphan_count": 1,
+      "orphan_items": [
+        {
+          "id": "9d2e56573e0d",
+          "name": "#elintermedio"
+        }
+      ]
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 0,
+      "pending_count": 1,
       "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "oldest_age_minutes": 25.2,
       "warning_after_minutes": 35,
       "overdue_items": [],
       "repairable": false
     }
   },
   "repairs_started": [],
-  "blocking": [],
-  "alert_sent": false,
-  "last_alert_signature": ""
+  "blocking": [
+    "1 solicitud(es) ready sin tarjeta prepared"
+  ],
+  "alert_sent": true,
+  "last_alert_signature": "1 solicitud(es) ready sin tarjeta prepared"
 }
