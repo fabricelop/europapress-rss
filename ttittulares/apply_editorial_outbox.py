@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import json, urllib.parse
+import json, urllib.parse, urllib.request
 from datetime import datetime, timezone
+from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -11,6 +12,7 @@ OUTBOX=TT/"editorial-outbox"
 QUEUE=TG/"editorial-processing.json"
 PREP=TT/"prepared.json"
 STATUS=TT/"status.json"
+EVENTS=TG/"events.json"
 
 def load(p,d):
     try:return json.loads(p.read_text(encoding="utf-8"))
@@ -40,11 +42,91 @@ def validate_ready(payload):
             principal=str(variants[0].get("text") or "")
             if text != principal+"\n\n"+remate: raise ValueError("text alternativo no coincide")
         expected="https://twitter.com/intent/tweet?text="+urllib.parse.quote(text,safe="")
-        actual=str(v.get("url") or v.get("tweet_url") or "")
-        if actual != expected: raise ValueError("intent incorrecto")
         v["url"]=expected
         v.pop("tweet_url",None)
     return item
+
+
+class _MetaImageParser(HTMLParser):
+    def __init__(self):
+        super().__init__(); self.images=[]
+    def handle_starttag(self,tag,attrs):
+        if tag.lower()!="meta": return
+        a={str(k).lower():str(v or "") for k,v in attrs}
+        key=(a.get("property") or a.get("name") or "").lower()
+        if key in {"og:image","og:image:secure_url","twitter:image","twitter:image:src"} and a.get("content"):
+            self.images.append(a["content"].strip())
+
+def _host(url):
+    try:return urllib.parse.urlparse(url).hostname or "Fuente"
+    except Exception:return "Fuente"
+
+def _fetch_meta_image(page_url):
+    try:
+        req=urllib.request.Request(page_url,headers={"User-Agent":"Mozilla/5.0 (compatible; TTiTTularesImage/1.0)","Accept":"text/html,application/xhtml+xml"})
+        with urllib.request.urlopen(req,timeout=4) as r:
+            ctype=str(r.headers.get("content-type") or "").lower()
+            if "html" not in ctype:return None
+            final=r.geturl(); raw=r.read(900000)
+        parser=_MetaImageParser(); parser.feed(raw.decode("utf-8","ignore"))
+        for value in parser.images:
+            url=urllib.parse.urljoin(final,value)
+            if not url.startswith("https://"):continue
+            try:
+                probe=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (compatible; TTiTTularesImage/1.0)","Accept":"image/*","Referer":final,"Range":"bytes=0-2047"})
+                with urllib.request.urlopen(probe,timeout=3) as ir:
+                    if str(ir.headers.get("content-type") or "").lower().startswith("image/"):
+                        ir.read(32); return url
+            except Exception:
+                continue
+    except Exception:
+        return None
+    return None
+
+def _recover_image(item,row,events):
+    image=item.get("image") or {}
+    if str(image.get("url") or "").strip():
+        item["image_search_status"]="found"; return True
+    pages=[]; seen=set()
+    def add(url,source=""):
+        url=str(url or "").strip()
+        if not url.startswith(("http://","https://")) or url in seen:return
+        seen.add(url); pages.append((url,source or _host(url)))
+    add(item.get("url") or row.get("url"),"")
+    eid=str(item.get("event_id") or row.get("event_id") or "")
+    parent=str(row.get("parent_event_id") or "")
+    ev=next((e for e in events.get("events",[]) or [] if str(e.get("id") or e.get("event_id") or "") in {eid,parent}),None)
+    if ev:
+        wanted=set(str(x) for x in (row.get("sources") or []))
+        apps=sorted(ev.get("appearances") or [],key=lambda a:(0 if str(a.get("source") or "") in wanted else 1,1 if "news.google.com" in str(a.get("url") or "") else 0))
+        for a in apps:add(a.get("url"),str(a.get("source") or ""))
+    for page,source in pages[:4]:
+        img=_fetch_meta_image(page)
+        if not img:continue
+        item["image"]={"url":img,"source":source,"source_url":page,"rights_status":"unverified","alt":str(item.get("title") or "Imagen relacionada con la noticia")}
+        item["image_search_status"]="found"; item["image_search_attempted_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+        item.pop("image_note",None); return True
+    item["image_search_status"]="not_found"; item["image_search_attempted_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+    item["image_note"]="No se encontró una imagen verificable en los metadatos de la noticia ni de sus fuentes alternativas."
+    return False
+
+def _enrich_prepared_images(p,q,events):
+    changed=False; now=datetime.now(timezone.utc)
+    rows=q.get("items",[]) or []
+    for item in p.get("items",[]) or []:
+        if str((item.get("image") or {}).get("url") or item.get("image_url") or "").strip():continue
+        attempted=item.get("image_search_attempted_at")
+        if attempted:
+            try:
+                prev=datetime.fromisoformat(str(attempted).replace("Z","+00:00"))
+                if (now-prev).total_seconds()<21600:continue
+            except Exception:pass
+        eid=str(item.get("event_id") or "")
+        row=next((x for x in reversed(rows) if str(x.get("event_id") or "")==eid),None) or {"event_id":eid,"url":item.get("url") or "","sources":item.get("sources_at_draft") or [],"with_image":True}
+        if not bool(row.get("with_image",True)):continue
+        _recover_image(item,row,events); changed=True
+    return changed
+
 
 def sync_compact(q):
     active=[]
@@ -69,9 +151,12 @@ def sync_compact(q):
 def main():
     q=load(QUEUE,{"items":[]})
     p=load(PREP,{"project":"TTiTTulares","items":[]})
+    events=load(EVENTS,{"events":[]})
     files=sorted(OUTBOX.glob("*.json")) if OUTBOX.exists() else []
     if not files:
-        sync_compact(q); print("Sin outbox pendiente"); return 0
+        changed=_enrich_prepared_images(p,q,events)
+        if changed: save(PREP,p)
+        sync_compact(q); print("Sin outbox pendiente; imágenes recuperadas" if changed else "Sin outbox pendiente"); return 0
     now=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
     errors=[];processed=[]
     for path in files:
@@ -89,12 +174,7 @@ def main():
             if st=="ready":
                 item=validate_ready(payload)
                 if bool(row.get("with_image", True)):
-                    image=item.get("image") or {}
-                    if str(image.get("url") or "").strip():
-                        item["image_search_status"]=item.get("image_search_status") or "found"
-                    else:
-                        item["image_search_status"]="not_found"
-                        item["image_note"]=item.get("image_note") or "Sin imagen adecuada encontrada tras la búsqueda editorial."
+                    _recover_image(item,row,events)
                 p["items"]=[x for x in p.get("items",[]) if str(x.get("event_id") or "")!=eid]
                 p["items"].append(item);p["updated_at"]=item.get("prepared_at") or now
                 row["status"]="READY";row["delivered_at"]=item.get("prepared_at") or now;row["delivery_confirmation"]="prepared_web"
@@ -108,6 +188,7 @@ def main():
         except Exception as exc:
             errors.append(f"{path.name}: {type(exc).__name__}: {exc}")
             print("ERROR",errors[-1])
+    _enrich_prepared_images(p,q,events)
     q["updated_at"]=now
     save(QUEUE,q);save(PREP,p);sync_compact(q)
     st=load(STATUS,{})

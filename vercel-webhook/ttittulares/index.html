@@ -68,7 +68,10 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttittulares-control";
 const $=id=>document.getElementById(id);
-let model={prepared:[],status:{},config:{}},reworkItem=null,view="ready";
+const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards";
+function loadUiSet(key){try{return new Set((JSON.parse(sessionStorage.getItem(key)||"[]")||[]).map(String))}catch(_){return new Set()}}
+function persistUiState(){try{sessionStorage.setItem(PENDING_KEY,JSON.stringify([...pendingClosed]));sessionStorage.setItem(OPEN_KEY,JSON.stringify([...openCards]))}catch(_){}}
+let model={prepared:[],status:{},config:{}},reworkItem=null,view="ready",openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),loadSeq=0;
 const ACCESS_KEY="ttittulares-control-token";
 const bootAccess=new URLSearchParams(location.search).get("access");
 if(bootAccess){localStorage.setItem(ACCESS_KEY,bootAccess);const u=new URL(location.href);u.searchParams.delete("access");history.replaceState(null,"",u.pathname+u.search+u.hash)}
@@ -94,7 +97,7 @@ function renderTiming(){
 }
 function renderGrowing(list){
  $("viewTitle").textContent="Creciendo";
- const items=[...(model.status?.three_source_items||[])];
+ const items=[...(model.status?.three_source_items||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
  if(!items.length){list.innerHTML='<div class="empty">No hay noticias ahora mismo a una fuente de pasar a elaboración.</div>';return}
  for(const item of items){
    const card=document.createElement("article");card.className="queuecard";
@@ -109,7 +112,7 @@ function renderGrowing(list){
    };
    card.querySelector(".dismiss-growing").onclick=async()=>{
      if(!confirm("¿Desestimar esta noticia? Se quitará de todas las listas."))return;
-     try{await api("dismiss",{event_id:item.event_id});toast("Noticia desestimada");await load(true);setView("growing")}catch(err){toast(err.message)}
+     pendingClosed.add(String(item.event_id||""));persistUiState();renderList();try{await api("dismiss",{event_id:item.event_id});toast("Noticia desestimada");await load(true);setView("growing")}catch(err){pendingClosed.delete(String(item.event_id||""));persistUiState();renderList();toast(err.message)}
    };
    list.appendChild(card)
  }
@@ -205,7 +208,7 @@ function renderList(){
 }
 function renderReady(list){
  $("viewTitle").textContent="Noticias listas";
- const status=model.status||{},events=status.events||{},prepared=[...(model.prepared||[])];
+ const status=model.status||{},events=status.events||{},prepared=[...(model.prepared||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
  prepared.sort((a,b)=>{
    const ac=Number(events[a.event_id]?.source_count||a.current_source_count||a.drafted_source_count||0);
    const bc=Number(events[b.event_id]?.source_count||b.current_source_count||b.drafted_source_count||0);
@@ -220,7 +223,7 @@ function renderReady(list){
   card.querySelector(".title").textContent=item.title||"Noticia sin título";
   card.querySelector(".sources").textContent="Redactada con "+drafted+" ("+current+") · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
-  const det=card.querySelector(".details");card.querySelector(".facts").textContent=item.factual_summary||item.explanation||"";
+  const det=card.querySelector(".details");card.querySelector(".facts").textContent=item.factual_summary||item.explanation||"";if(openCards.has(String(item.event_id||""))){det.classList.add("open");card.querySelector(".expand").textContent="Cerrar"}
   const img=item.image||{},imgUrl=img.url||item.image_url||"",imgSource=img.source||item.image_source||"",imgPage=img.source_url||img.page_url||item.image_source_url||"",imgRights=img.rights_status||item.image_rights_status||"",imgBox=card.querySelector(".imagebox");
   if(imgUrl){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=[imgSource,imgRights].filter(Boolean).join(" · ")||"Imagen externa sugerida";card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl);const src=card.querySelector(".imgSource");if(imgPage)src.href=imgPage;else src.style.display="none"}
   else if(item.image_search_status==="not_found"){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=item.image_note||"Sin imagen adecuada encontrada tras la búsqueda.";card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";card.querySelector(".imgSource").style.display="none"}
@@ -236,8 +239,8 @@ function renderReady(list){
     box.querySelector(".openx").href=v.url||intent(text);box.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado"));
     vh.appendChild(box)
   }
-  card.querySelector(".expand").onclick=()=>{det.classList.toggle("open");card.querySelector(".expand").textContent=det.classList.contains("open")?"Cerrar":"Abrir"};
-  async function close(action,label){if(!confirm(label+" esta noticia?"))return;const old=[...model.prepared];model.prepared=model.prepared.filter(x=>x.event_id!==item.event_id);render();try{await api(action,{event_id:item.event_id});toast(action==="published"?"Marcada como publicada":"Noticia desestimada");await load(true)}catch(e){model.prepared=old;render();toast(e.message)}}
+  card.querySelector(".expand").onclick=()=>{det.classList.toggle("open");const id=String(item.event_id||"");if(det.classList.contains("open"))openCards.add(id);else openCards.delete(id);persistUiState();card.querySelector(".expand").textContent=det.classList.contains("open")?"Cerrar":"Abrir"};
+  async function close(action,label){if(!confirm(label+" esta noticia?"))return;const id=String(item.event_id||""),old=[...model.prepared];pendingClosed.add(id);openCards.delete(id);persistUiState();model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();try{await api(action,{event_id:item.event_id});toast(action==="published"?"Marcada como publicada":"Noticia desestimada");await load(true)}catch(e){pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message)}}
   card.querySelector(".published").onclick=()=>close("published","¿Confirmas que ya has publicado");
   card.querySelector(".dismiss").onclick=card.querySelector(".dismiss2").onclick=()=>close("dismiss","¿Desestimar");
   card.querySelector(".rework").onclick=()=>{reworkItem=item;$("reworkTitle").textContent=item.title||"";$("reworkInstruction").value="";$("reworkSheet").classList.add("show");$("reworkInstruction").focus()};
@@ -246,7 +249,7 @@ function renderReady(list){
 }
 function renderProcessing(list){
  $("viewTitle").textContent="En elaboración";
- const items=[...(model.status?.processing_items||[])];
+ const items=[...(model.status?.processing_items||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
  if(!items.length){list.innerHTML='<div class="empty">No hay noticias en elaboración.</div>';return}
  for(const item of items){
    const card=document.createElement("article");card.className="queuecard";
@@ -257,18 +260,25 @@ function renderProcessing(list){
    card.querySelector(".count").textContent=Number(item.source_count||0)+" fuentes";
    card.querySelector(".dismiss-processing").onclick=async()=>{
      if(!confirm("¿Desestimar esta noticia? Se quitará de todas las listas."))return;
-     try{await api("dismiss",{event_id:item.event_id});toast("Noticia desestimada");await load(true);setView("processing")}catch(err){toast(err.message)}
+     pendingClosed.add(String(item.event_id||""));persistUiState();renderList();try{await api("dismiss",{event_id:item.event_id});toast("Noticia desestimada");await load(true);setView("processing")}catch(err){pendingClosed.delete(String(item.event_id||""));persistUiState();renderList();toast(err.message)}
    };
    list.appendChild(card)
  }
 }
 async function load(silent=false){
+ const seq=++loadSeq;
  try{
   const r=await fetch(API+"?state="+Date.now(),{cache:"no-store"});
   if(!r.ok)throw new Error("No se pudieron leer los datos");
-  const d=await r.json();
-  model={prepared:d.prepared?.items||[],status:d.status||{},config:d.config||{}};render()
- }catch(e){if(!silent)toast(e.message)}
+  const d=await r.json();if(seq!==loadSeq)return;
+  const preparedRaw=d.prepared?.items||[],processingRaw=d.status?.processing_items||[],growingRaw=d.status?.three_source_items||[];
+  const present=new Set([...preparedRaw,...processingRaw,...growingRaw].map(x=>String(x.event_id||"")).filter(Boolean));
+  let pendingChanged=false;for(const id of [...pendingClosed])if(!present.has(id)){pendingClosed.delete(id);pendingChanged=true}
+  if(pendingChanged)persistUiState();
+  const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),three_source_items:growingRaw.filter(x=>!pendingClosed.has(String(x.event_id||"")))};
+  status.processing_count=status.processing_items.length;status.three_source_count=status.three_source_items.length;
+  model={prepared:preparedRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),status,config:d.config||{}};render()
+ }catch(e){if(seq===loadSeq&&!silent)toast(e.message)}
 }
 document.querySelectorAll(".stat").forEach(x=>x.onclick=()=>setView(x.dataset.view));
 $("notify").onclick=enablePush;
