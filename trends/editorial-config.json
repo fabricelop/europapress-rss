@@ -23,16 +23,16 @@
     "problematic_only_on_editorial_failure": true,
     "image_policy": {
       "enabled": true,
-      "mode": "generated_editorial_image",
+      "mode": "generated_raster_caricature",
       "always_generate": true,
       "non_blocking": false,
       "display_in_web_control": "links",
       "store": "github_raw_url",
       "rights_status_default": "generated",
-      "queue_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL para la tendencia; no uses fotos, og:image, capturas ni imágenes encontradas en Internet como imagen final. Debe ser una caricatura/ilustración de alta calidad, con poco o ningún texto, y contener un gag visual directamente ligado a la causa real de la tendencia: protagonista + causa real + exageración visual + remate escénico. La imagen debe seguir teniendo sentido y gracia sin texto. Si no puede persistirse una imagen generada raster, crea un SVG autocontenido 16:9 en trends/generated-images/<id>-r<revision>.svg y usa su URL raw con source=\"TTendencias / ChatGPT\", rights_status=\"generated\", generated=true. En temas sensibles nunca hagas humor sobre víctimas o sufrimiento.",
+      "queue_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL en formato raster (PNG/WebP/JPG), estilo caricatura editorial de alta calidad, visualmente rica y con un gag claro ligado al detonante real de la tendencia. NO uses fotografías ni imágenes encontradas en Internet. NO uses SVG, iconos planos, mascotas vectoriales, infografías ni dibujos geométricos simples como resultado final. La escena debe parecer una viñeta/caricatura profesional: personajes expresivos, profundidad, iluminación, textura, detalle y acción; poco o ningún texto. Si se quita el texto, el chiste debe seguir funcionando. Si no puedes generar y persistir una imagen raster de esa calidad, NO marques el item ready: deja image_generation_status=\"pending_renderer\" y el item pendiente para reintento.",
       "output_schema": {
         "image": {
-          "url": "github_raw_generated_asset_url",
+          "url": "github_raw_generated_raster_url",
           "source": "TTendencias / ChatGPT",
           "source_url": "github_file_url",
           "rights_status": "generated",
@@ -40,29 +40,31 @@
           "generated": true
         }
       },
-      "rule": "Cada item ready debe llevar SIEMPRE una imagen editorial ORIGINAL generada específicamente para la tendencia. No usar fotografías, og:image, capturas ni imágenes encontradas en Internet como imagen final. La web sirve solo para verificar el detonante y contexto. La imagen debe priorizar caricatura/ilustración editorial de alta calidad, poco o ningún texto y un gag visual ligado a la causa real: protagonista + causa real + exageración visual + remate escénico. Si no puede persistirse una imagen raster generada, crear un SVG autocontenido 16:9 en trends/generated-images/<id>-r<revision>.svg, sin scripts ni recursos externos, y usar su URL raw con source='TTendencias / ChatGPT', rights_status='generated', generated=true. En temas sensibles no hacer humor sobre víctimas o sufrimiento.",
+      "rule": "Cada item ready debe llevar SIEMPRE una imagen raster original generada específicamente para la tendencia. La web se usa solo para verificar el detonante y contexto. Calidad mínima: caricatura editorial profesional de alto detalle, gag visual relacionado directamente con la causa real, escena dinámica, expresiones claras, profundidad, iluminación y textura; cero o muy poco texto. Rechaza como salida final SVG, clip-art, iconos planos, mascotas simples, pósteres genéricos, retratos sin gag y composiciones que parezcan una interfaz vectorial. En temas sensibles, nunca humor sobre víctimas o sufrimiento. Si no hay renderer raster disponible o no puede persistirse el fichero, no sustituyas por SVG: deja pending_renderer.",
       "generated_image_storage": {
         "prepared": true,
         "enabled": true,
-        "reason": "Política activa: todas las tendencias ready deben usar una imagen editorial original generada y persistida en GitHub.",
-        "repository_path_pattern": "trends/generated-images/<id>-r<revision>.svg",
-        "public_url_pattern": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/<id>-r<revision>.svg",
+        "reason": "Solo se aceptan imágenes raster generadas de calidad editorial; SVG deja de ser un fallback válido.",
+        "repository_path_pattern": "trends/generated-images/<id>-r<revision>.<png|webp|jpg>",
+        "public_url_pattern": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/<id>-r<revision>.<ext>",
         "source": "TTendencias / ChatGPT",
         "rights_status": "generated",
-        "mode": "generated_editorial_image",
+        "mode": "raster_editorial_caricature",
         "trigger": "always_for_ready",
+        "svg_fallback_allowed": false,
         "rules": [
-          "La imagen debe ser una pieza editorial ilustrativa o caricaturesca, no una fotografía falsa ni una recreación fotorrealista engañosa.",
-          "Debe contener un gag visual ligado al detonante real de la tendencia siempre que el tema permita humor seguro.",
-          "Debe usar poco o ningún texto y seguir siendo comprensible sin texto.",
-          "No debe atribuir citas, acciones o hechos no verificados a personas reales.",
-          "En política, sucesos, víctimas o conflictos, evitar humor sobre víctimas o sufrimiento y dirigir la sátira solo a acciones públicas, contradicciones, gestión o instituciones cuando proceda.",
-          "El SVG fallback debe ser autocontenido, sin scripts ni recursos externos, preferentemente 1200x675, con alt descriptivo y generated:true."
+          "Caricatura/ilustración editorial de alta calidad y alto detalle, no dibujo plano ni clip-art.",
+          "Debe contener un gag visual ligado al detonante real de la tendencia y funcionar con poco o ningún texto.",
+          "Prioriza escena, acción, expresiones, profundidad, iluminación y textura frente a cartel o infografía.",
+          "No usar SVG, iconos simples, mascotas vectoriales ni formas geométricas como imagen final.",
+          "No atribuir citas o hechos no verificados a personas reales.",
+          "En política, conflictos, sucesos o víctimas: neutralidad factual y nunca humor sobre víctimas o sufrimiento.",
+          "El fichero final debe ser PNG, WebP o JPEG y existir realmente en GitHub antes de marcar ready."
         ]
       },
       "generate_when_candidate": true,
       "source_preference": [
-        "generated_original_editorial_image"
+        "generated_original_raster_caricature"
       ],
       "require_source_page": false,
       "minimum_search_routes": 0,
