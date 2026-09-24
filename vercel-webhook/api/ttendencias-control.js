@@ -121,6 +121,13 @@ async function syncEditorialQueue() {
       image_mode: "existing_web_image",
       image_instruction: "Busca una imagen existente y relevante en una fuente fiable. Guarda la URL directa de la imagen, la fuente y la URL de la página de origen. No generes una imagen.",
       auto_queued: Boolean(req.auto_queued),
+      anticipated: Boolean(req.anticipated),
+      anticipated_at: req.anticipated_at || null,
+      anticipated_best_rank: req.anticipated_best_rank || null,
+      anticipated_social_source_count: req.anticipated_social_source_count || 0,
+      anticipated_news_source_count: req.anticipated_news_source_count || 0,
+      anticipated_news_title: req.anticipated_news_title || "",
+      anticipated_entered_top10_at: req.anticipated_entered_top10_at || null,
     }))
     .sort((a, b) => String(a.requested_at || "").localeCompare(String(b.requested_at || "")));
   const now = new Date().toISOString();
@@ -357,7 +364,7 @@ async function queueNames(names) {
       if (existing) {
         existing.batch_id = batchId;
         existing.requested_together = unique;
-        existing.with_image = false;
+        existing.with_image = true;
         existing.alternatives_target = 3;
         if (String(existing.status || "") === "ready") {
           existing.status = "update";
@@ -390,6 +397,60 @@ async function queueNames(names) {
   await syncEditorialQueue();
   return { ok: true, queued: unique, batch_id: batchId };
 }
+async function queueUpcomingNames(names) {
+  const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
+  if (!unique.length) throw new Error("No hay señales seleccionadas.");
+  const { doc: recent } = await readJson(RECENT);
+  const upcoming = new Map((recent.upcoming || []).map(x => [norm(x.name), x]));
+  for (const name of unique) if (!upcoming.has(norm(name))) throw new Error(`"${name}" ya no está en Próximas tendencias.`);
+  const now = new Date().toISOString();
+
+  await mutateJson(REQUESTS, "Preparar tendencia anticipada desde Radar", doc => {
+    doc.requests ||= [];
+    for (const name of unique) {
+      const signal = upcoming.get(norm(name));
+      let req = [...doc.requests].reverse().find(x => norm(x.name) === norm(name));
+      const existingStatus = String(req?.status || "");
+      if (!req) {
+        req = {
+          id: crypto.createHash("sha256").update(name).digest("hex").slice(0, 12),
+          name,
+          revision: 0,
+        };
+        doc.requests.push(req);
+      } else if (["explained", "dismissed", "problematic"].includes(existingStatus)) {
+        req.revision = Number(req.revision || 0) + 1;
+        req.reexplain = true;
+      }
+      if (!["preparing", "update", "ready"].includes(existingStatus)) {
+        req.status = req.reexplain ? "update" : "preparing";
+        req.requested_at = now;
+      }
+      req.rank = Number(signal.best_observed_rank || 0);
+      req.with_image = true;
+      req.alternatives_target = 3;
+      req.anticipated = true;
+      req.anticipated_at = signal.first_detected_at || now;
+      req.anticipated_best_rank = Number(signal.best_observed_rank || 0);
+      req.anticipated_social_source_count = Number(signal.social_source_count || 0);
+      req.anticipated_news_source_count = Number(signal.news_source_count || 0);
+      req.anticipated_news_title = String(signal.news_title || "");
+      req.requested_together = [name];
+      req.auto_queued = false;
+      delete req.dismissed_at;
+      delete req.dismissed_source;
+      delete req.problem_reason;
+      delete req.problematic_at;
+      delete req.explained_at;
+      delete req.telegram_message_id;
+    }
+    doc.updated_at = now;
+    return doc;
+  });
+  await syncEditorialQueue();
+  return { ok: true, queued_upcoming: unique };
+}
+
 async function markExplained(names) {
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
   if (!unique.length) throw new Error("No hay tendencias seleccionadas.");
@@ -527,7 +588,7 @@ async function reworkNames(names, instruction) {
       req.revision = Number(req.revision || 0) + 1;
       req.reexplain = true;
       req.rewrite_instruction = text;
-      req.with_image = false;
+      req.with_image = true;
       req.alternatives_target = 3;
       delete req.telegram_message_id;
       delete req.explained_at;
@@ -574,7 +635,7 @@ async function retryNames(names) {
       req.requested_at = now;
       req.revision = Number(req.revision || 0) + 1;
       req.reexplain = true;
-      req.with_image = false;
+      req.with_image = true;
       req.alternatives_target = 3;
       delete req.dismissed_at;
       delete req.dismissed_source;
@@ -697,6 +758,7 @@ export default async function handler(req, res) {
       return res.status(result.ok ? 200 : 503).json(result);
     }
     if (action === "queue") return res.status(200).json(await queueNames(body.names));
+    if (action === "queue-upcoming") return res.status(200).json(await queueUpcomingNames(body.names));
     if (action === "explained") return res.status(200).json(await markExplained(body.names));
     if (action === "discard") return res.status(200).json(await discardNames(body.names));
     if (action === "retry") return res.status(200).json(await retryNames(body.names));
