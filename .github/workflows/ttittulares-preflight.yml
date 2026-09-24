@@ -23,7 +23,7 @@ jobs:
 
       - name: Validar Python
         run: |
-          python3 -m py_compile telegram/radar_no_d1.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py
+          python3 -m py_compile telegram/radar_no_d1.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py ttittulares/build_editorial_queue.py ttittulares/apply_editorial_outbox.py
           python3 telegram/radar_no_d1.py --selftest-dedupe
           python3 ttittulares/auto_queue.py --selftest
 
@@ -48,7 +48,7 @@ jobs:
           assert cfg["radar"]["waiting_ttl_hours"] == 24
           assert mode["mode"] in {"telegram","parallel","web"}
           if mode["mode"]=="parallel": assert mode.get("parallel_since"), "parallel_since obligatorio"
-          assert vercel["git"]["deploymentEnabled"]["main"] is False, "main no debe autodesplegar"
+          assert vercel["git"]["deploymentEnabled"]["main"] is True, "main debe permanecer con autodeploy activo"
           # La antigua rama de preview ttittulares-release ya no forma parte del
           # flujo actual; no exigir una clave obsoleta que deja el preflight rojo.
           assert "Con 3 fuentes" not in html and "threeCount" not in html
