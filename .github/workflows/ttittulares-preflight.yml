@@ -63,12 +63,12 @@ jobs:
               ids.add(eid)
               assert int(item.get("drafted_source_count") or 0) >= 4, f"{eid}: redactada con <4 fuentes"
               variants=item.get("variants") or []
-              assert [str(v.get("label") or "") for v in variants] == ["Principal","A","B","C"], f"{eid}: deben existir Principal+A+B+C"
+              assert [str(v.get("label") or v.get("name") or "") for v in variants] == ["Principal","A","B","C"], f"{eid}: deben existir Principal+A+B+C"
               principal=str(variants[0].get("text") or "")
               assert principal, f"{eid}: principal vacío"
               for v in variants:
                   text=str(v.get("text") or "")
-                  label=str(v.get("label") or "")
+                  label=str(v.get("label") or v.get("name") or "")
                   assert len(text) <= 280, f"{eid}/{label}: tuit >280"
                   if label=="Principal":
                       assert str(v.get("remate") or "")=="", f"{eid}: Principal no debe tener remate"
