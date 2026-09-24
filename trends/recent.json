@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-24T19:31:26+02:00",
+  "captured_at": "2026-09-24T19:41:27+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -13,11 +13,12 @@
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "Mari Carmen",
     "PSOE",
@@ -77,16 +78,17 @@
   "upcoming": [
     {
       "name": "Vivienda",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
+        "snaplytics",
         "superx",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 16.5,
-      "movement": "down",
+      "mean_observed_rank": 16.4,
+      "movement": "up",
       "first_detected_at": "2026-09-24T16:37:32+02:00",
       "news_source_count": 12,
       "news_event_id": "6f93abb7cabe",
@@ -96,16 +98,17 @@
     },
     {
       "name": "Sumar",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
+        "snaplytics",
         "superx",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 18,
-      "mean_observed_rank": 18.5,
-      "movement": "down",
+      "mean_observed_rank": 18.6,
+      "movement": "up",
       "first_detected_at": "2026-09-24T16:37:32+02:00",
       "news_source_count": 12,
       "news_event_id": "6f93abb7cabe",
@@ -115,9 +118,10 @@
     },
     {
       "name": "#FelizJueves",
-      "social_source_count": 5,
+      "social_source_count": 6,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "superx",
         "trends24",
         "trendswe",
@@ -125,7 +129,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.8,
-      "movement": "down",
+      "movement": "up",
       "first_detected_at": "2026-09-24T16:37:32+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -135,23 +139,65 @@
     },
     {
       "name": "La CIA",
-      "social_source_count": 5,
+      "social_source_count": 6,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "superx",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 13.8,
-      "movement": "down",
+      "mean_observed_rank": 13.7,
+      "movement": "up",
       "first_detected_at": "2026-09-24T16:37:32+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
+    },
+    {
+      "name": "#simyoPackRealme16Pro",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 15.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-24T17:21:04+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Urbagestión",
+      "social_source_count": 5,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 18,
+      "mean_observed_rank": 19.6,
+      "movement": "up",
+      "first_detected_at": "2026-09-24T19:10:54+02:00",
+      "news_source_count": 1,
+      "news_event_id": "1efde5938d83",
+      "news_title": "Se fumaron un puro para que Urbagestión eche a Maricarmen - El HuffPost",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-24T05:17:52.839278Z"
     },
     {
       "name": "Zapatero",
@@ -164,7 +210,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-24T18:40:50+02:00",
       "news_source_count": 5,
       "news_event_id": "e4291df2583c",
@@ -173,60 +219,23 @@
       "news_first_seen": "2026-09-24T14:22:22.539595Z"
     },
     {
-      "name": "#simyoPackRealme16Pro",
-      "social_source_count": 5,
-      "social_sources": [
-        "getdaytrends",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 15.2,
-      "movement": "down",
-      "first_detected_at": "2026-09-24T17:21:04+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Urbagestión",
+      "name": "Junts",
       "social_source_count": 4,
       "social_sources": [
-        "superx",
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 19.5,
-      "movement": "down",
-      "first_detected_at": "2026-09-24T19:10:54+02:00",
-      "news_source_count": 1,
-      "news_event_id": "1efde5938d83",
-      "news_title": "Se fumaron un puro para que Urbagestión eche a Maricarmen - El HuffPost",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-24T05:17:52.839278Z"
-    },
-    {
-      "name": "Delcy",
-      "social_source_count": 2,
-      "social_sources": [
-        "superx",
-        "trendswe"
-      ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 15.5,
-      "movement": "down",
-      "first_detected_at": "2026-09-24T16:37:32+02:00",
-      "news_source_count": 10,
-      "news_event_id": "3c27d7332e51",
-      "news_title": "Trump y Delcy Rodríguez sellan el deshielo entre Caracas y Washington con un encuentro a puerta cerrada en Nueva York",
-      "news_status": "SENT_REVIEW",
-      "news_first_seen": "2026-09-22T18:32:13.352853Z"
+      "mean_observed_rank": 16.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-24T19:41:27+02:00",
+      "news_source_count": 2,
+      "news_event_id": "d14af77734e3",
+      "news_title": "Junts reconoce que negocia con el PSOE las medidas del decreto de vivienda y ERC avisa: \"Es un error\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-24T13:52:14.101890Z"
     }
   ],
   "anticipated_entries": [],
@@ -260,7 +269,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T19:31:26+02:00"
+      "fetched_at": "2026-09-24T19:41:27+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -285,7 +294,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T19:31:26+02:00"
+      "fetched_at": "2026-09-24T19:41:28+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -312,10 +321,10 @@
         "Urbagestión"
       ],
       "error": null,
-      "update_hint": "Updated 15 minutes ago",
-      "age_minutes": 15.0,
+      "update_hint": "Updated 24 minutes ago",
+      "age_minutes": 24.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-24T19:32:02+02:00"
+      "fetched_at": "2026-09-24T19:41:30+02:00"
     },
     "superx": {
       "ok": true,
@@ -345,16 +354,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T19:32:03+02:00"
+      "fetched_at": "2026-09-24T19:41:30+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790271123",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790271690",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T19:32:03+02:00"
+      "fetched_at": "2026-09-24T19:41:30+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -366,25 +375,25 @@
         "Franco",
         "Ana Vázquez",
         "Ayuso",
-        "#TEM24S",
         "#LaIslaDeLasTentaciones6",
         "Ana Belén",
         "Zapatero",
+        "#TEM24S",
         "#FelizJueves",
         "La CIA",
+        "Juanma Castaño",
         "#simyoPackRealme16Pro",
-        "Junts",
         "Vivienda",
+        "Paquita",
+        "Junts",
         "Sumar",
-        "Urbagestión",
-        "Delcy",
-        "Paquita"
+        "Urbagestión"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 24, 2026 16:00 UTC",
-      "age_minutes": 92.1,
-      "freshness": "stale",
-      "fetched_at": "2026-09-24T19:32:03+02:00"
+      "update_hint": "Trending now Sep 24, 2026 17:00 UTC",
+      "age_minutes": 41.5,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-24T19:41:30+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -412,18 +421,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 3331.1,
+      "age_minutes": 3340.5,
       "freshness": "stale",
-      "fetched_at": "2026-09-24T19:32:04+02:00"
+      "fetched_at": "2026-09-24T19:41:31+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790271126",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790271692",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T19:32:06+02:00"
+      "fetched_at": "2026-09-24T19:41:32+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -432,7 +441,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-24T19:32:07+02:00"
+      "fetched_at": "2026-09-24T19:41:33+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -462,16 +471,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T19:32:07+02:00"
+      "fetched_at": "2026-09-24T19:41:33+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790271129",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790271696",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T19:32:09+02:00"
+      "fetched_at": "2026-09-24T19:41:36+02:00"
     }
   }
 }
