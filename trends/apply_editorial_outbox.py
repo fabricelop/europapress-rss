@@ -74,7 +74,15 @@ def validate_ready(payload):
     validate_generated_image(item)
     return item
 
+def image_queue_policy():
+    policy = (load(TRENDS / "editorial-config.json", {}) or {}).get("editorial", {}).get("image_policy", {})
+    return (
+        str(policy.get("mode") or "generated_editorial_image"),
+        str(policy.get("queue_instruction") or "Genera SIEMPRE una imagen editorial ORIGINAL para la tendencia; no uses imágenes encontradas en Internet como imagen final."),
+    )
+
 def sync_queue(requests_doc):
+    image_mode, image_instruction = image_queue_policy()
     items = []
     for req in requests_doc.get("requests", []) or []:
         if str(req.get("status") or "") not in ACTIVE:
@@ -88,8 +96,8 @@ def sync_queue(requests_doc):
             "revision": int(req.get("revision") or 0),
             "rewrite_instruction": req.get("rewrite_instruction") or req.get("rewrite_request") or "",
             "with_image": bool(req.get("with_image")),
-            "image_mode": "generated_editorial_image",
-            "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL para la tendencia; no uses fotos, og:image, capturas ni imágenes encontradas en Internet como imagen final. Debe ser una caricatura/ilustración de alta calidad con poco o ningún texto y un gag visual ligado a la causa real de la tendencia: protagonista + causa real + exageración visual + remate escénico. Si no puede persistirse una imagen generada raster, crea un SVG autocontenido 16:9 en trends/generated-images/<id>-r<revision>.svg y usa su URL raw con source=\"TTendencias / ChatGPT\", rights_status=\"generated\", generated=true. En temas sensibles evita humor sobre víctimas o sufrimiento.",
+            "image_mode": image_mode,
+            "image_instruction": image_instruction,
             "batch_id": req.get("batch_id"),
             "requested_together": req.get("requested_together") or [req.get("name")],
             "captured_with": req.get("captured_with") or [],
