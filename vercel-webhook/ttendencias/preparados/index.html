@@ -10,7 +10,7 @@
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
 *{box-sizing:border-box}body{margin:0;background:#0b0e14;min-height:100vh}button,a{font:inherit}
 .top{position:sticky;top:0;z-index:20;background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36;padding:13px max(12px,env(safe-area-inset-left));display:flex;align-items:center;gap:10px}.back{color:#89b8ff;text-decoration:none;font-weight:750}.title{font-weight:850;font-size:18px}.spacer{flex:1}.count{font-size:12px;color:#9ba7b8;border:1px solid #303846;border-radius:999px;padding:6px 9px}
-main{max-width:820px;margin:auto;padding:12px 10px 40px}.tabs{display:flex;gap:8px;margin:0 0 12px;overflow:auto}.tab{border:1px solid #303846;background:#121923;color:#aeb9c9;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:750;white-space:nowrap}.tab.active{background:#e9eef7;color:#0c1017;border-color:#e9eef7}
+main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25px}.groupHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 2px 10px}.groupHead h2{font-size:19px;margin:0}.ratio{font-size:12px;font-weight:800;color:#a9bad0;border:1px solid #344256;border-radius:999px;padding:5px 8px}.subhead{font-size:13px;font-weight:850;color:#c5cfdd;margin:12px 2px 7px}.processingList{display:grid;gap:8px}.processingCard{background:#101720;border:1px solid #2d3b4d;border-radius:13px;padding:11px 12px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}.processingName{font-weight:790}.processingMeta{font-size:11px;color:#8fa0b5;margin-top:4px}.origin{font-size:11px;border:1px solid #3b4d64;border-radius:999px;padding:5px 8px;color:#b9cae0}
 .list{display:grid;gap:9px}.rowcard{background:#11161e;border:1px solid #29313d;border-radius:15px;overflow:hidden}.summaryrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px}.trend{font-size:16px;font-weight:820}.small{font-size:11px;color:#8390a1;margin-top:4px}.rowactions{display:flex;gap:7px}.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:10px;padding:8px 10px;font-weight:760;text-decoration:none;min-height:38px}.btn.danger{color:#ff9da6}.btn.rework{color:#c9b5ff}.detail{display:none;border-top:1px solid #29313d;padding:12px}.rowcard.open .detail{display:block}.explain{font-size:14px;line-height:1.45;color:#c8d0dc;white-space:pre-wrap;margin-bottom:13px}.variant{background:#0b1017;border:1px solid #293442;border-radius:13px;padding:11px;margin:9px 0}.variantHead{display:flex;gap:8px;align-items:center;margin-bottom:7px}.variantTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9dadc2}.chars{margin-left:auto;font-size:11px;color:#7f8b9c}.tweet,.remate{white-space:pre-wrap;font-size:14px;line-height:1.4}.variantActions,.finalActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.imagebox{background:#0d141d;border:1px solid #334155;border-radius:13px;padding:11px;margin:0 0 13px}.imageTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9dadc2;margin-bottom:5px}.imageMeta{font-size:12px;color:#aeb9c9;line-height:1.4;overflow-wrap:anywhere}.imageActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.empty{text-align:center;color:#9aa6b7;padding:50px 10px}.warning{font-size:12px;color:#f5c451;margin:8px 0}
 .sheet{position:fixed;inset:0;background:#0009;z-index:50;display:none;align-items:flex-end}.sheet.show{display:flex}.panel{width:100%;max-width:600px;margin:0 auto;background:#111720;border:1px solid #354052;border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom))}.panel h2{margin:0 0 8px}.panel p{font-size:13px;color:#9eabba}textarea{width:100%;min-height:120px;background:#0a0f16;color:#eef3fa;border:1px solid #364153;border-radius:11px;padding:12px;font:inherit;resize:vertical}.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;transition:.2s;background:#1a2330;border:1px solid #3b485b;border-radius:10px;padding:9px 12px;z-index:80;max-width:90vw;text-align:center}.toast.show{opacity:1;transform:translateX(-50%)}
 @media(max-width:560px){.summaryrow{grid-template-columns:1fr}.rowactions .btn{flex:1}.rowactions{width:100%}.variantActions .btn,.finalActions .btn{flex:1;text-align:center}.trend{font-size:15px}}
@@ -19,8 +19,20 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.tabs{display:flex;gap:8
 <body>
 <header class="top"><a class="back" href="/ttendencias/">‹ Top 10</a><div class="title">Tuits listos</div><div class="spacer"></div><div class="count" id="count">0</div></header>
 <main>
-  <div class="tabs"><button class="tab active" data-tab="all">Todos <b id="allCount">0</b></button><button class="tab" data-tab="top">En Top 10 <b id="topCount">0</b></button><button class="tab" data-tab="out">Fuera del Top 10 <b id="outCount">0</b></button></div>
-  <section class="list" id="list"><div class="empty">Cargando…</div></section>
+  <section class="group" id="topGroup">
+    <div class="groupHead"><h2>TOP 10</h2><div class="ratio" id="topRatio">0/0 listos</div></div>
+    <div class="subhead">Listos</div>
+    <section class="list" id="topReady"><div class="empty">Cargando…</div></section>
+    <div class="subhead">Elaborando</div>
+    <section class="processingList" id="topProcessing"><div class="empty">Cargando…</div></section>
+  </section>
+  <section class="group" id="radarGroup">
+    <div class="groupHead"><h2>Próximas tendencias</h2><div class="ratio" id="radarRatio">0/0 listos</div></div>
+    <div class="subhead">Listos</div>
+    <section class="list" id="radarReady"><div class="empty">Cargando…</div></section>
+    <div class="subhead">Elaborando</div>
+    <section class="processingList" id="radarProcessing"><div class="empty">Cargando…</div></section>
+  </section>
 </main>
 <div class="sheet" id="sheet"><div class="panel"><h2>Rehacer redacción</h2><p id="reworkName"></p><textarea id="instruction" placeholder="Indica qué quieres cambiar: enfoque, explicación, remate, tono, datos a verificar…"></textarea><div class="finalActions"><button class="btn" id="cancel">Cancelar</button><button class="btn" id="sendRework">Enviar a reelaborar</button></div></div></div>
 <div class="toast" id="toast"></div>
@@ -28,11 +40,8 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.tabs{display:flex;gap:8
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
 const $=id=>document.getElementById(id);
-const scope=new URLSearchParams(location.search).get("scope")||"all";
-let model={items:[],top:[]},tab="all",reworkItem=null,openIds=new Set();
+let model={items:[],top:[],upcoming:[],requests:[]},reworkItem=null,openIds=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
-if(scope==="radar")document.querySelector(".title").textContent="Radar · Tuits listos";
-else if(scope==="tuits")document.querySelector(".title").textContent="Tuits listos";
 
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>$("toast").classList.remove("show"),2300)}
@@ -51,29 +60,63 @@ function removeItem(item){const ids=new Set(related(item).map(nrm));model.items=
 function detailHtml(){
  return '<div class="detail"><div class="explain"></div><div class="imagebox" hidden><div class="imageTitle">Imagen sugerida</div><div class="imageMeta"></div><div class="imageActions"><a class="btn imgOpen" target="_blank" rel="noopener">Abrir imagen</a><button class="btn imgCopy">Copiar URL</button><a class="btn imgSource" target="_blank" rel="noopener">Abrir fuente</a></div></div><div class="variant principal"><div class="variantHead"><span class="variantTitle">Tuit principal</span><span class="chars"></span></div><div class="tweet"></div><div class="variantActions"><a class="btn pOpen" target="_blank" rel="noopener">Abrir en X</a><button class="btn pCopy">Copiar</button></div></div><div class="alts"></div><div class="finalActions"><button class="btn done">Ya explicado</button><button class="btn rework">Rehacer</button><button class="btn danger discard2">Desestimar</button></div></div>'
 }
-function render(){
- const allItems=(model.items||[]),topItems=allItems.filter(isInTop),outItems=allItems.filter(x=>!isInTop(x));$("allCount").textContent=allItems.length;$("topCount").textContent=topItems.length;$("outCount").textContent=outItems.length;$("count").textContent=allItems.length;updateBadge();
- for(const b of document.querySelectorAll(".tab"))b.classList.toggle("active",b.dataset.tab===tab);
- const items=tab==="all"?allItems:(tab==="top"?topItems:outItems),list=$("list");list.innerHTML="";
- if(!items.length){const base=scope==="radar"?"No hay tuits del Radar listos.":scope==="tuits"?"No hay tuits normales listos.":"No hay tuits listos.";list.innerHTML='<div class="empty">'+(tab==="all"?base:tab==="top"?"No hay tuits listos del Top 10 actual.":"No hay tuits pendientes fuera del Top 10.")+'</div>';return}
+function latestReq(name){return [...(model.requests||[])].reverse().find(x=>nrm(x.name)===nrm(name))}
+function isTopName(name){return new Set((model.top||[]).map(nrm)).has(nrm(name))}
+function isRadarName(name){return new Set((model.upcoming||[]).map(nrm)).has(nrm(name))}
+function itemGroup(item){
+ const rel=related(item),req=latestReq(item.trend_name||rel[0]);
+ if(rel.some(isTopName))return "top";
+ if(Boolean(item.anticipated)||Boolean(req?.anticipated)||rel.some(isRadarName))return "radar";
+ return null;
+}
+function renderReadyCards(container,items,emptyText){
+ container.innerHTML="";
+ if(!items.length){container.innerHTML='<div class="empty">'+emptyText+'</div>';return}
  for(const item of items){
   const rel=related(item),id=String(item.id||item.trend_name||rel.join("|")),open=openIds.has(id),card=document.createElement("article");card.className="rowcard"+(open?" open":"");
-  card.innerHTML='<div class="summaryrow"><div><div class="trend"></div><div class="small">Tuits preparados · '+(rel.length>1?rel.length+" tendencias relacionadas":"pendiente de revisión")+'</div></div><div class="rowactions"><button class="btn explain">Explicar</button><button class="btn danger discard">Desestimar</button></div></div>'+detailHtml();
+  card.innerHTML='<div class="summaryrow"><div><div class="trend"></div><div class="small">Tuit listo</div></div><div class="rowactions"><button class="btn explain">Explicar</button><button class="btn danger discard">Desestimar</button></div></div>'+detailHtml();
   card.querySelector(".trend").textContent=item.trend_name||rel.join(" / ");
   card.querySelector(".explain").onclick=()=>{openIds.has(id)?openIds.delete(id):openIds.add(id);render()};
-  card.querySelector(".discard").onclick=()=>discard(item);
-  card.querySelector(".discard2").onclick=()=>discard(item);
+  card.querySelector(".discard").onclick=()=>discard(item);card.querySelector(".discard2").onclick=()=>discard(item);
   card.querySelector(".explain").textContent=open?"Cerrar":"Explicar";
   card.querySelector(".detail .explain").textContent=item.explanation||"Sin explicación disponible.";
   const img=item.image||{},imgUrl=img.url||item.image_url||"",imgSource=img.source||item.image_source||"",imgPage=img.source_url||img.page_url||item.image_page_url||item.image_source_url||"",imgRights=img.rights_status||item.image_rights_status||"";
   const imgBox=card.querySelector(".imagebox");if(imgUrl){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=[imgSource,imgRights].filter(Boolean).join(" · ")||"Imagen externa sugerida";card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>navigator.clipboard.writeText(imgUrl).then(()=>toast("URL de imagen copiada"));const src=card.querySelector(".imgSource");if(imgPage){src.href=imgPage}else{src.style.display="none"}}
-  const p=item.primary||{},ptext=p.text||"",purl=p.url||compose(ptext);
-  card.querySelector(".tweet").textContent=ptext||"Sin texto principal.";card.querySelector(".chars").textContent=ptext.length+" caracteres";card.querySelector(".pOpen").href=purl;card.querySelector(".pCopy").onclick=()=>navigator.clipboard.writeText(ptext).then(()=>toast("Tuit copiado"));
+  const p=item.primary||{},ptext=p.text||"",purl=p.url||compose(ptext);card.querySelector(".tweet").textContent=ptext||"Sin texto principal.";card.querySelector(".chars").textContent=ptext.length+" caracteres";card.querySelector(".pOpen").href=purl;card.querySelector(".pCopy").onclick=()=>navigator.clipboard.writeText(ptext).then(()=>toast("Tuit copiado"));
   const ah=card.querySelector(".alts"),alts=(item.alternatives||[]).slice(0,3);if(!alts.length)ah.innerHTML='<div class="warning">Sin remates alternativos disponibles.</div>';
   alts.forEach((a,i)=>{const v=document.createElement("div");v.className="variant";const txt=a.remate||a.tweet_text||"";v.innerHTML='<div class="variantHead"><span class="variantTitle">Remate '+(i+1)+'</span></div><div class="remate"></div><div class="variantActions"><a class="btn openX" target="_blank" rel="noopener">Abrir en X</a><button class="btn copy">Copiar tuit</button></div>';v.querySelector(".remate").textContent=txt;v.querySelector(".openX").href=a.url||compose(a.tweet_text||txt);v.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(a.tweet_text||txt).then(()=>toast("Tuit copiado"));ah.appendChild(v)});
   card.querySelector(".done").onclick=()=>done(item);card.querySelector(".rework").onclick=()=>{reworkItem=item;$("reworkName").textContent=rel.join(" / ");$("instruction").value="";$("sheet").classList.add("show");$("instruction").focus()};
-  list.appendChild(card);
+  container.appendChild(card);
  }
+}
+function renderProcessingCards(container,items,emptyText){
+ container.innerHTML="";
+ if(!items.length){container.innerHTML='<div class="empty">'+emptyText+'</div>';return}
+ for(const req of items){
+  const card=document.createElement("div");card.className="processingCard";
+  card.innerHTML='<div><div class="processingName"></div><div class="processingMeta"></div></div><div class="origin"></div>';
+  card.querySelector(".processingName").textContent=req.name;
+  const age=req.requested_at?Math.max(0,Math.floor((Date.now()-new Date(req.requested_at).getTime())/60000)):0;
+  card.querySelector(".processingMeta").textContent=(String(req.status)==="update"?"Reelaborando":"Elaborando")+" · "+age+" min";
+  card.querySelector(".origin").textContent=req.anticipated?"Radar":"Top 10";
+  container.appendChild(card);
+ }
+}
+function render(){
+ const preparedVisible=model.items||[],active=(model.requests||[]).filter(x=>["preparing","update","ready"].includes(String(x.status||"")));
+ const topReq=active.filter(x=>isTopName(x.name));
+ const radarReq=active.filter(x=>!isTopName(x.name)&&Boolean(x.anticipated)&&isRadarName(x.name));
+ const topReady=preparedVisible.filter(x=>itemGroup(x)==="top");
+ const radarReady=preparedVisible.filter(x=>itemGroup(x)==="radar");
+ const topProcessing=topReq.filter(x=>["preparing","update"].includes(String(x.status||"")));
+ const radarProcessing=radarReq.filter(x=>["preparing","update"].includes(String(x.status||"")));
+ $("topRatio").textContent=topReady.length+"/"+topReq.length+" listos";
+ $("radarRatio").textContent=radarReady.length+"/"+radarReq.length+" listos";
+ $("count").textContent=topReady.length+radarReady.length;updateBadge();
+ renderReadyCards($("topReady"),topReady,"No hay tuits del TOP 10 listos.");
+ renderProcessingCards($("topProcessing"),topProcessing,"No hay tendencias del TOP 10 elaborándose.");
+ renderReadyCards($("radarReady"),radarReady,"No hay tuits de Próximas tendencias listos.");
+ renderProcessingCards($("radarProcessing"),radarProcessing,"No hay Próximas tendencias elaborándose.");
 }
 async function done(item){const rel=related(item);if(!confirm("¿Confirmas que ya has publicado/explicado "+rel.join(", ")+"?"))return;const backup=[...(model.items||[])];setLocal(rel,"explained");removeItem(item);toast("Cerrando como explicada…");try{await api("explained",rel);toast("Marcada como explicada")}catch(e){clearLocal(rel);model.items=backup;render();toast(e.message)}}
 async function discard(item){const rel=related(item);if(!confirm("¿Desestimar "+rel.join(", ")+" sin publicarla?"))return;const backup=[...(model.items||[])];setLocal(rel,"dismissed");removeItem(item);toast("Desestimando…");try{await api("discard",rel);toast("Desestimada")}catch(e){clearLocal(rel);model.items=backup;render();toast(e.message)}}
@@ -103,17 +146,15 @@ async function load(){
     const req=latest[name];
     if(req&&["explained","dismissed"].includes(String(req.status||"")))return false;
    }
-   const radar=Boolean(item.anticipated)||rel.some(name=>Boolean(latest[name]?.anticipated));
-   if(scope==="radar"&&!radar)return false;
-   if(scope==="tuits"&&radar)return false;
-   return true;
+   const currentTop=new Set((rd.items||[]).slice(0,10).map(x=>nrm(x.name)));
+   const currentUpcoming=new Set((rd.upcoming||[]).map(x=>nrm(x.name)));
+   const req=latest[nrm(item.trend_name)];
+   return rel.some(x=>currentTop.has(x)) || Boolean(item.anticipated) || Boolean(req?.anticipated) || rel.some(x=>currentUpcoming.has(x));
   });
-  model={items,top:(rd.items||[]).slice(0,10).map(x=>x.name)};
-  if(scope==="radar"&&items.length===1)openIds.add(String(items[0].id||items[0].trend_name||related(items[0]).join("|")));
+  model={items,top:(rd.items||[]).slice(0,10).map(x=>x.name),upcoming:(rd.upcoming||[]).map(x=>x.name),requests:qd.requests||[]};
   render()
  }catch(e){$("list").innerHTML='<div class="empty">'+String(e.message||e)+'</div>'}
 }
-for(const b of document.querySelectorAll(".tab"))b.onclick=()=>{tab=b.dataset.tab;render()};
 $("cancel").onclick=()=>{$("sheet").classList.remove("show");reworkItem=null};
 $("sendRework").onclick=async()=>{if(!reworkItem)return;const instruction=$("instruction").value.trim();if(!instruction){toast("Escribe primero qué quieres cambiar");return}const rel=related(reworkItem);if(!confirm("¿Enviar "+rel.join(", ")+" a reelaborar con estas instrucciones?"))return;const backup=[...(model.items||[])];clearLocal(rel);removeItem(reworkItem);$("sheet").classList.remove("show");try{await api("rework",rel,{instruction});toast("Enviada a reelaborar")}catch(e){model.items=backup;render();toast(e.message)}};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
