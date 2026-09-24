@@ -41,6 +41,13 @@ def save_editorial_queue(requests_doc):
             "image_mode": "existing_web_image",
             "image_instruction": "Busca una imagen existente y relevante en una fuente fiable. Guarda URL directa, fuente y página de origen; no generes una imagen.",
             "auto_queued": bool(req.get("auto_queued")),
+            "anticipated": bool(req.get("anticipated")),
+            "anticipated_at": req.get("anticipated_at"),
+            "anticipated_best_rank": req.get("anticipated_best_rank"),
+            "anticipated_social_source_count": int(req.get("anticipated_social_source_count") or 0),
+            "anticipated_news_source_count": int(req.get("anticipated_news_source_count") or 0),
+            "anticipated_news_title": req.get("anticipated_news_title") or "",
+            "anticipated_entered_top10_at": req.get("anticipated_entered_top10_at"),
         })
     active.sort(key=lambda x: str(x.get("requested_at") or ""))
     save("editorial-queue.json", {
@@ -90,6 +97,22 @@ for item in current:
         if status == "ready":
             represented = str(req.get("id") or "") in prepared_ids or key in prepared_names
             if represented:
+                if bool(req.get("anticipated")):
+                    now_entered = datetime.now(MADRID).isoformat(timespec="seconds")
+                    req["rank"] = item["rank"]
+                    req["status"] = "update"
+                    req["requested_at"] = now_entered
+                    req["revision"] = int(req.get("revision") or 0) + 1
+                    req["reexplain"] = True
+                    req["with_image"] = True
+                    req["anticipated_entered_top10_at"] = req.get("anticipated_entered_top10_at") or now_entered
+                    req["rewrite_instruction"] = "Ha entrado en el Top 10: actualiza el encabezado al puesto real y verifica que el motivo siga siendo actual. Reutiliza la preparación del Radar si sigue siendo válida."
+                    req.pop("ready_at", None)
+                    req.pop("delivery_confirmation", None)
+                    reconciled = True
+                    status = "update"
+                    print("Radar anticipado entra en Top 10; actualizar:", name)
+                    continue
                 continue
             req["status"] = "preparing"
             req["requested_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
@@ -101,6 +124,13 @@ for item in current:
             continue
         # Cualquier otra decisión/estado vigente se conserva. Una tendencia
         # desestimada o problemática solo se reabre por acción del usuario.
+        if status in {"preparing", "update"} and bool(req.get("anticipated")):
+            now_entered = datetime.now(MADRID).isoformat(timespec="seconds")
+            if int(req.get("rank") or 0) != item["rank"] or not req.get("anticipated_entered_top10_at"):
+                req["rank"] = item["rank"]
+                req["anticipated_entered_top10_at"] = req.get("anticipated_entered_top10_at") or now_entered
+                reconciled = True
+            continue
         if status in {"preparing", "update", "explained", "dismissed", "problematic"}:
             continue
     elif key in explained:
