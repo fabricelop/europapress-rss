@@ -243,11 +243,11 @@ function candidateFromTelegramMessage(msg) {
   return { id: '', user, text: original, url: '', datetime: null };
 }
 
-async function pollOnce() {
+async function pollOnce(timeoutSeconds = 25) {
   const state = readJson(stateFile, { offset: 0 });
   const url = new URL(api('getUpdates'));
   url.searchParams.set('offset', String(state.offset || 0));
-  url.searchParams.set('timeout', '25');
+  url.searchParams.set('timeout', String(timeoutSeconds));
   url.searchParams.set('allowed_updates', JSON.stringify(['callback_query', 'message']));
   const r = await fetch(url);
   const data = await r.json();
@@ -315,6 +315,7 @@ async function pollForever() {
   if (mode === 'send' || mode === 'all') {
     await sendOutbox();
     await sendAssistantOutputs();
+    await pollOnce(0);
   }
   if (mode === 'poll' || mode === 'all') await pollForever();
 })().catch(e => { console.error(e.stack || e); process.exit(1); });
