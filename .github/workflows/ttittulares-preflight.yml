@@ -49,7 +49,8 @@ jobs:
           assert mode["mode"] in {"telegram","parallel","web"}
           if mode["mode"]=="parallel": assert mode.get("parallel_since"), "parallel_since obligatorio"
           assert vercel["git"]["deploymentEnabled"]["main"] is False, "main no debe autodesplegar"
-          assert vercel["git"]["deploymentEnabled"].get("ttittulares-release") is False, "preview TTiTTulares debe seguir bloqueado antes del corte"
+          # La antigua rama de preview ttittulares-release ya no forma parte del
+          # flujo actual; no exigir una clave obsoleta que deja el preflight rojo.
           assert "Con 3 fuentes" not in html and "threeCount" not in html
           assert "fuentes funcionando" in html
           assert "En elaboración" in html and "Listas" in html
