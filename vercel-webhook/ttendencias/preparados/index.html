@@ -46,7 +46,7 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25p
 <script>
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
-const SHELL_BUILD="ttendencias-preparados-ui-batch-20260924";
+const SHELL_BUILD="ttendencias-preparados-ui-generated-svg-20260925";
 const $=id=>document.getElementById(id);
 let model={items:[],top:[],upcoming:[],requests:[]},reworkItem=null,openIds=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -65,22 +65,32 @@ async function api(action,names,extra={}){
 function related(item){return (item.related_trends||[]).length?item.related_trends:[item.trend_name]}
 function isInTop(item){const set=new Set((model.top||[]).map(nrm));return related(item).some(x=>set.has(nrm(x)))}
 function removeItem(item){const ids=new Set(related(item).map(nrm));model.items=(model.items||[]).filter(x=>!related(x).some(n=>ids.has(nrm(n))));render()}
+async function imageBlobToPng(blob){
+ if(blob.type==="image/png")return blob;
+ try{
+  const bmp=await createImageBitmap(blob),canvas=document.createElement("canvas");canvas.width=bmp.width;canvas.height=bmp.height;
+  canvas.getContext("2d").drawImage(bmp,0,0);if(typeof bmp.close==="function")bmp.close();
+  return await new Promise((resolve,reject)=>canvas.toBlob(x=>x?resolve(x):reject(new Error("png")),"image/png"));
+ }catch(_){}
+ const objectUrl=URL.createObjectURL(blob);
+ try{
+  const img=await new Promise((resolve,reject)=>{const x=new Image();x.onload=()=>resolve(x);x.onerror=()=>reject(new Error("image"));x.src=objectUrl});
+  const canvas=document.createElement("canvas");canvas.width=img.naturalWidth||img.width;canvas.height=img.naturalHeight||img.height;
+  canvas.getContext("2d").drawImage(img,0,0);
+  return await new Promise((resolve,reject)=>canvas.toBlob(x=>x?resolve(x):reject(new Error("png")),"image/png"));
+ }finally{URL.revokeObjectURL(objectUrl)}
+}
 async function copyImageToClipboard(url){
  try{
   if(!navigator.clipboard?.write||typeof ClipboardItem==="undefined")throw new Error("clipboard");
   const r=await fetch(API+"?view=image-proxy&url="+encodeURIComponent(url),{cache:"no-store"});
   if(!r.ok)throw new Error("download");
-  let blob=await r.blob();
-  if(blob.type!=="image/png"){
-   const bmp=await createImageBitmap(blob),canvas=document.createElement("canvas");canvas.width=bmp.width;canvas.height=bmp.height;
-   canvas.getContext("2d").drawImage(bmp,0,0);
-   blob=await new Promise((resolve,reject)=>canvas.toBlob(x=>x?resolve(x):reject(new Error("png")),"image/png"));
-  }
+  const blob=await imageBlobToPng(await r.blob());
   await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);
   toast("Imagen copiada");
  }catch(_){
   await navigator.clipboard.writeText(url).catch(()=>{});
-  toast("Este navegador no permite copiar la imagen directamente · URL copiada");
+  toast("No se pudo copiar la imagen · URL copiada");
  }
 }
 function detailHtml(){
@@ -110,7 +120,7 @@ function renderReadyCards(container,items,emptyText){
   if(!infoText){infoBtn.style.display="none"}else{infoPanel.textContent=infoText;infoBtn.onclick=()=>infoPanel.classList.toggle("show")}
   const img=item.image||{},imgUrl=img.url||item.image_url||"",imgSource=img.source||item.image_source||"",imgPage=img.source_url||img.page_url||item.image_page_url||item.image_source_url||"",imgRights=img.rights_status||item.image_rights_status||"";
   const imgBox=card.querySelector(".imagebox"),reqForImage=latestReq(item.trend_name||rel[0]),imgStatus=item.image_search_status||((reqForImage?.with_image&&!imgUrl)?"not_found":"");
-  if(imgUrl){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=[imgSource,imgRights].filter(Boolean).join(" · ")||"Imagen externa sugerida";card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl);const src=card.querySelector(".imgSource");if(imgPage){src.href=imgPage}else{src.style.display="none"}}
+  if(imgUrl){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=[img.generated?"Generada por ChatGPT":imgSource,imgRights].filter(Boolean).join(" · ")||"Imagen sugerida";card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl);const src=card.querySelector(".imgSource");if(imgPage){src.href=imgPage}else{src.style.display="none"}}
   else if(imgStatus==="not_found"){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=item.image_note||"Sin imagen adecuada encontrada tras la búsqueda.";card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";card.querySelector(".imgSource").style.display="none";}
   const p=item.primary||{},ptext=p.text||"",purl=p.url||compose(ptext);card.querySelector(".tweet").textContent=ptext||"Sin texto principal.";card.querySelector(".chars").textContent=ptext.length+" caracteres";card.querySelector(".pOpen").href=purl;card.querySelector(".pCopy").onclick=()=>navigator.clipboard.writeText(ptext).then(()=>toast("Tuit copiado"));
   const ah=card.querySelector(".alts"),alts=(item.alternatives||[]).slice(0,3);if(!alts.length)ah.innerHTML='<div class="warning">Sin remates alternativos disponibles.</div>';
