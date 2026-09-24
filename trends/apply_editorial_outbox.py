@@ -30,11 +30,11 @@ def norm(value):
 def validate_generated_image(item):
     image = item.get("image") or {}
     if not image.get("generated"):
-        return
+        raise ValueError("imagen final debe ser generated=true")
     url = str(image.get("url") or "").strip()
     prefix = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/"
-    if not url.startswith(prefix) or not url.endswith(".svg"):
-        raise ValueError("imagen generada sin URL raw SVG válida")
+    if not url.startswith(prefix):
+        raise ValueError("imagen generada sin URL raw válida")
     if str(image.get("rights_status") or "") != "generated":
         raise ValueError("imagen generada sin rights_status=generated")
     if str(image.get("source") or "") != "TTendencias / ChatGPT":
@@ -42,20 +42,20 @@ def validate_generated_image(item):
     filename = url[len(prefix):]
     if "/" in filename or ".." in filename:
         raise ValueError("ruta de imagen generada no válida")
+    ext = Path(filename).suffix.casefold()
+    if ext not in {".png", ".webp", ".jpg", ".jpeg"}:
+        raise ValueError("imagen final debe ser raster PNG/WebP/JPEG; SVG no permitido")
     path = TRENDS / "generated-images" / filename
     if not path.exists():
         raise ValueError("fichero de imagen generada inexistente en main")
-    svg = path.read_text(encoding="utf-8", errors="strict")
-    low = svg.casefold()
-    if "<svg" not in low or "</svg>" not in low:
-        raise ValueError("SVG generado inválido")
-    # El namespace SVG estándar usa http://www.w3.org/2000/svg y no es un recurso externo.
-    low_external = low.replace('xmlns="http://www.w3.org/2000/svg"', "")
-    forbidden = ("<script", "<foreignobject", "javascript:", "http://", "https://", "data:")
-    if any(token in low_external for token in forbidden):
-        raise ValueError("SVG generado contiene recursos o código externo no permitido")
-    if "viewbox=" not in low and not ("width=" in low and "height=" in low):
-        raise ValueError("SVG generado sin dimensiones")
+    data = path.read_bytes()
+    if len(data) < 1024:
+        raise ValueError("imagen raster generada demasiado pequeña o inválida")
+    is_png = data.startswith(b"\x89PNG\r\n\x1a\n")
+    is_webp = data[:4] == b"RIFF" and data[8:12] == b"WEBP"
+    is_jpg = data.startswith(b"\xff\xd8\xff")
+    if not (is_png or is_webp or is_jpg):
+        raise ValueError("fichero raster generado con firma inválida")
 
 def validate_ready(payload):
     item = payload.get("prepared_item") or {}
@@ -178,14 +178,11 @@ def main():
                 item.setdefault("trend_name", req.get("name"))
                 if bool(req.get("with_image")):
                     image = item.get("image") or {}
-                    if image.get("generated") and str(image.get("url") or "").strip():
-                        item.pop("image_search_status", None)
-                        item.pop("image_note", None)
-                    elif str(image.get("url") or "").strip():
-                        item["image_search_status"] = item.get("image_search_status") or "found"
-                    else:
-                        item["image_search_status"] = "not_found"
-                        item["image_note"] = item.get("image_note") or "Sin imagen adecuada encontrada tras la búsqueda editorial."
+                    if not image.get("generated") or not str(image.get("url") or "").strip():
+                        raise ValueError("item ready sin imagen raster generada obligatoria")
+                    item.pop("image_search_status", None)
+                    item.pop("image_note", None)
+                    item.pop("image_generation_status", None)
                 related = item.get("related_trends") or [req.get("name")]
                 related_norm = {norm(x) for x in related if x}
 
