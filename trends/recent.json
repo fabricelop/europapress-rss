@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-24T14:01:26+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-24T14:10:54+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
@@ -14,19 +14,21 @@
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "tweets24"
+  ],
   "reliability": "high",
   "top10": [
     "Mari Carmen",
-    "Congreso",
     "PSOE",
+    "Congreso",
     "Ana Vázquez",
     "Retiro",
-    "#LaIslaDeLasTentaciones6",
     "Franco",
-    "Ana Belén",
+    "#LaIslaDeLasTentaciones6",
     "Ayuso",
-    "Delcy"
+    "Ana Belén",
+    "#FelizJueves"
   ],
   "items": [
     {
@@ -35,11 +37,11 @@
     },
     {
       "rank": 2,
-      "name": "Congreso"
+      "name": "PSOE"
     },
     {
       "rank": 3,
-      "name": "PSOE"
+      "name": "Congreso"
     },
     {
       "rank": 4,
@@ -51,28 +53,28 @@
     },
     {
       "rank": 6,
-      "name": "#LaIslaDeLasTentaciones6"
-    },
-    {
-      "rank": 7,
       "name": "Franco"
     },
     {
-      "rank": 8,
-      "name": "Ana Belén"
+      "rank": 7,
+      "name": "#LaIslaDeLasTentaciones6"
     },
     {
-      "rank": 9,
+      "rank": 8,
       "name": "Ayuso"
     },
     {
+      "rank": 9,
+      "name": "Ana Belén"
+    },
+    {
       "rank": 10,
-      "name": "Delcy"
+      "name": "#FelizJueves"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Delcy"
+    "#FelizJueves"
   ],
   "sources": {
     "trends24": {
@@ -103,32 +105,32 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T14:01:26+02:00"
+      "fetched_at": "2026-09-24T14:10:54+02:00"
     },
     "getdaytrends": {
       "ok": true,
       "trends": [
         "Mari Carmen",
-        "Congreso",
         "PSOE",
-        "Ana Vázquez",
+        "Congreso",
         "Retiro",
-        "#LaIslaDeLasTentaciones6",
+        "Ana Vázquez",
         "Franco",
+        "#LaIslaDeLasTentaciones6",
         "Ayuso",
         "Ana Belén",
-        "#simyoPackRealme16Pro",
         "#felizjueves",
         "Zapatero",
-        "Delcy",
+        "#Mañaneros24S",
         "#TierraDeNadie2",
-        "#Mañaneros24S"
+        "Delcy",
+        "Vox y Junts"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T14:01:26+02:00"
+      "fetched_at": "2026-09-24T14:10:54+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -155,10 +157,10 @@
         "Armengol"
       ],
       "error": null,
-      "update_hint": "Updated 12 seconds ago Live Twitter Trending Topics in Spain 1 Mari Carmen Explore why M",
-      "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-24T14:01:27+02:00"
+      "update_hint": "Updated 9 minutes ago",
+      "age_minutes": 9.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-24T14:10:55+02:00"
     },
     "superx": {
       "ok": true,
@@ -188,16 +190,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T14:01:28+02:00"
+      "fetched_at": "2026-09-24T14:10:56+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790251288",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790251856",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T14:01:28+02:00"
+      "fetched_at": "2026-09-24T14:10:56+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -225,9 +227,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 24, 2026 11:00 UTC",
-      "age_minutes": 61.5,
+      "age_minutes": 70.9,
       "freshness": "aging",
-      "fetched_at": "2026-09-24T14:01:28+02:00"
+      "fetched_at": "2026-09-24T14:10:56+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -255,18 +257,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 3000.5,
+      "age_minutes": 3010.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-24T14:01:28+02:00"
+      "fetched_at": "2026-09-24T14:10:57+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790251289",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790251858",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T14:01:29+02:00"
+      "fetched_at": "2026-09-24T14:10:58+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -275,7 +277,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-24T14:01:29+02:00"
+      "fetched_at": "2026-09-24T14:11:06+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -305,16 +307,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T14:01:29+02:00"
+      "fetched_at": "2026-09-24T14:11:06+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790251291",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790251869",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T14:01:31+02:00"
+      "fetched_at": "2026-09-24T14:11:09+02:00"
     }
   }
 }
