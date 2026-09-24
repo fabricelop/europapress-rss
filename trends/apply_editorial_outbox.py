@@ -57,7 +57,19 @@ def sync_queue(requests_doc):
             "revision": int(req.get("revision") or 0),
             "rewrite_instruction": req.get("rewrite_instruction") or req.get("rewrite_request") or "",
             "with_image": bool(req.get("with_image")),
+            "image_mode": "existing_web_image",
+            "image_instruction": "Busca una imagen existente REAL y pertinente del mismo evento/persona. Método obligatorio: 1) intenta primero la fuente oficial/primaria o una noticia fiable sobre el hecho y extrae su og:image/imagen principal; 2) si falla, haz una búsqueda específica de imágenes y prueba una segunda fuente fiable. Prioriza una imagen del hecho actual frente a archivo genérico. No generes imágenes. Si encuentras una, guarda url directa, source, source_url, rights_status y alt. Solo declara no encontrada después de intentar ambas vías.",
+            "batch_id": req.get("batch_id"),
+            "requested_together": req.get("requested_together") or [req.get("name")],
+            "captured_with": req.get("captured_with") or [],
             "auto_queued": bool(req.get("auto_queued")),
+            "anticipated": bool(req.get("anticipated")),
+            "anticipated_at": req.get("anticipated_at"),
+            "anticipated_best_rank": req.get("anticipated_best_rank"),
+            "anticipated_social_source_count": int(req.get("anticipated_social_source_count") or 0),
+            "anticipated_news_source_count": int(req.get("anticipated_news_source_count") or 0),
+            "anticipated_news_title": req.get("anticipated_news_title") or "",
+            "anticipated_entered_top10_at": req.get("anticipated_entered_top10_at"),
         })
     items.sort(key=lambda x: str(x.get("requested_at") or ""))
     save(TRENDS / "editorial-queue.json", {
