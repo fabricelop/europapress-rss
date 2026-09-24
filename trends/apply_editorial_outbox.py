@@ -125,6 +125,13 @@ def main():
                 item["id"] = req_id
                 item["revision"] = revision
                 item.setdefault("trend_name", req.get("name"))
+                if bool(req.get("with_image")):
+                    image = item.get("image") or {}
+                    if str(image.get("url") or "").strip():
+                        item["image_search_status"] = item.get("image_search_status") or "found"
+                    else:
+                        item["image_search_status"] = "not_found"
+                        item["image_note"] = item.get("image_note") or "Sin imagen adecuada encontrada tras la búsqueda editorial."
                 related = item.get("related_trends") or [req.get("name")]
                 related_norm = {norm(x) for x in related if x}
 

@@ -33,6 +33,13 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25p
     <div class="subhead">Elaborando</div>
     <section class="processingList" id="radarProcessing"><div class="empty">Cargando…</div></section>
   </section>
+  <section class="group" id="exGroup">
+    <div class="groupHead"><h2>EX TOP 10</h2><div class="ratio" id="exRatio">0/0 listos</div></div>
+    <div class="subhead">Listos</div>
+    <section class="list" id="exReady"><div class="empty">Cargando…</div></section>
+    <div class="subhead">Elaborando</div>
+    <section class="processingList" id="exProcessing"><div class="empty">Cargando…</div></section>
+  </section>
 </main>
 <div class="sheet" id="sheet"><div class="panel"><h2>Rehacer redacción</h2><p id="reworkName"></p><textarea id="instruction" placeholder="Indica qué quieres cambiar: enfoque, explicación, remate, tono, datos a verificar…"></textarea><div class="finalActions"><button class="btn" id="cancel">Cancelar</button><button class="btn" id="sendRework">Enviar a reelaborar</button></div></div></div>
 <div class="toast" id="toast"></div>
@@ -57,8 +64,26 @@ async function api(action,names,extra={}){
 function related(item){return (item.related_trends||[]).length?item.related_trends:[item.trend_name]}
 function isInTop(item){const set=new Set((model.top||[]).map(nrm));return related(item).some(x=>set.has(nrm(x)))}
 function removeItem(item){const ids=new Set(related(item).map(nrm));model.items=(model.items||[]).filter(x=>!related(x).some(n=>ids.has(nrm(n))));render()}
+async function copyImageToClipboard(url){
+ try{
+  if(!navigator.clipboard?.write||typeof ClipboardItem==="undefined")throw new Error("clipboard");
+  const r=await fetch(API+"?view=image-proxy&url="+encodeURIComponent(url),{cache:"no-store"});
+  if(!r.ok)throw new Error("download");
+  let blob=await r.blob();
+  if(blob.type!=="image/png"){
+   const bmp=await createImageBitmap(blob),canvas=document.createElement("canvas");canvas.width=bmp.width;canvas.height=bmp.height;
+   canvas.getContext("2d").drawImage(bmp,0,0);
+   blob=await new Promise((resolve,reject)=>canvas.toBlob(x=>x?resolve(x):reject(new Error("png")),"image/png"));
+  }
+  await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);
+  toast("Imagen copiada");
+ }catch(_){
+  await navigator.clipboard.writeText(url).catch(()=>{});
+  toast("Este navegador no permite copiar la imagen directamente · URL copiada");
+ }
+}
 function detailHtml(){
- return '<div class="detail"><div class="explain"></div><div class="imagebox" hidden><div class="imageTitle">Imagen sugerida</div><div class="imageMeta"></div><div class="imageActions"><a class="btn imgOpen" target="_blank" rel="noopener">Abrir imagen</a><button class="btn imgCopy">Copiar URL</button><a class="btn imgSource" target="_blank" rel="noopener">Abrir fuente</a></div></div><div class="variant principal"><div class="variantHead"><span class="variantTitle">Tuit principal</span><span class="chars"></span></div><div class="tweet"></div><div class="variantActions"><a class="btn pOpen" target="_blank" rel="noopener">Abrir en X</a><button class="btn pCopy">Copiar</button></div></div><div class="alts"></div><div class="finalActions"><button class="btn done">Ya explicado</button><button class="btn rework">Rehacer</button><button class="btn danger discard2">Desestimar</button></div></div>'
+ return '<div class="detail"><div class="explain"></div><div class="imagebox" hidden><div class="imageTitle">Imagen sugerida</div><div class="imageMeta"></div><div class="imageActions"><a class="btn imgOpen" target="_blank" rel="noopener">Abrir imagen</a><button class="btn imgCopy">Copiar imagen</button><a class="btn imgSource" target="_blank" rel="noopener">Abrir fuente</a></div></div><div class="variant principal"><div class="variantHead"><span class="variantTitle">Tuit principal</span><span class="chars"></span></div><div class="tweet"></div><div class="variantActions"><a class="btn pOpen" target="_blank" rel="noopener">Abrir en X</a><button class="btn pCopy">Copiar</button></div></div><div class="alts"></div><div class="finalActions"><button class="btn done">Ya explicado</button><button class="btn rework">Rehacer</button><button class="btn danger discard2">Desestimar</button></div></div>'
 }
 function latestReq(name){return [...(model.requests||[])].reverse().find(x=>nrm(x.name)===nrm(name))}
 function isTopName(name){return new Set((model.top||[]).map(nrm)).has(nrm(name))}
@@ -67,7 +92,7 @@ function itemGroup(item){
  const rel=related(item),req=latestReq(item.trend_name||rel[0]);
  if(rel.some(isTopName))return "top";
  if(Boolean(item.anticipated)||Boolean(req?.anticipated)||rel.some(isRadarName))return "radar";
- return null;
+ return "ex";
 }
 function renderReadyCards(container,items,emptyText){
  container.innerHTML="";
@@ -81,7 +106,9 @@ function renderReadyCards(container,items,emptyText){
   card.querySelector(".explain").textContent=open?"Cerrar":"Explicar";
   card.querySelector(".detail .explain").textContent=item.explanation||"Sin explicación disponible.";
   const img=item.image||{},imgUrl=img.url||item.image_url||"",imgSource=img.source||item.image_source||"",imgPage=img.source_url||img.page_url||item.image_page_url||item.image_source_url||"",imgRights=img.rights_status||item.image_rights_status||"";
-  const imgBox=card.querySelector(".imagebox");if(imgUrl){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=[imgSource,imgRights].filter(Boolean).join(" · ")||"Imagen externa sugerida";card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>navigator.clipboard.writeText(imgUrl).then(()=>toast("URL de imagen copiada"));const src=card.querySelector(".imgSource");if(imgPage){src.href=imgPage}else{src.style.display="none"}}
+  const imgBox=card.querySelector(".imagebox"),reqForImage=latestReq(item.trend_name||rel[0]),imgStatus=item.image_search_status||((reqForImage?.with_image&&!imgUrl)?"not_found":"");
+  if(imgUrl){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=[imgSource,imgRights].filter(Boolean).join(" · ")||"Imagen externa sugerida";card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl);const src=card.querySelector(".imgSource");if(imgPage){src.href=imgPage}else{src.style.display="none"}}
+  else if(imgStatus==="not_found"){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=item.image_note||"Sin imagen adecuada encontrada tras la búsqueda.";card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";card.querySelector(".imgSource").style.display="none";}
   const p=item.primary||{},ptext=p.text||"",purl=p.url||compose(ptext);card.querySelector(".tweet").textContent=ptext||"Sin texto principal.";card.querySelector(".chars").textContent=ptext.length+" caracteres";card.querySelector(".pOpen").href=purl;card.querySelector(".pCopy").onclick=()=>navigator.clipboard.writeText(ptext).then(()=>toast("Tuit copiado"));
   const ah=card.querySelector(".alts"),alts=(item.alternatives||[]).slice(0,3);if(!alts.length)ah.innerHTML='<div class="warning">Sin remates alternativos disponibles.</div>';
   alts.forEach((a,i)=>{const v=document.createElement("div");v.className="variant";const txt=a.remate||a.tweet_text||"";v.innerHTML='<div class="variantHead"><span class="variantTitle">Remate '+(i+1)+'</span></div><div class="remate"></div><div class="variantActions"><a class="btn openX" target="_blank" rel="noopener">Abrir en X</a><button class="btn copy">Copiar tuit</button></div>';v.querySelector(".remate").textContent=txt;v.querySelector(".openX").href=a.url||compose(a.tweet_text||txt);v.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(a.tweet_text||txt).then(()=>toast("Tuit copiado"));ah.appendChild(v)});
@@ -106,17 +133,23 @@ function render(){
  const preparedVisible=model.items||[],active=(model.requests||[]).filter(x=>["preparing","update","ready"].includes(String(x.status||"")));
  const topReq=active.filter(x=>isTopName(x.name));
  const radarReq=active.filter(x=>!isTopName(x.name)&&Boolean(x.anticipated)&&isRadarName(x.name));
+ const exReq=active.filter(x=>!isTopName(x.name)&&!(Boolean(x.anticipated)&&isRadarName(x.name)));
  const topReady=preparedVisible.filter(x=>itemGroup(x)==="top");
  const radarReady=preparedVisible.filter(x=>itemGroup(x)==="radar");
+ const exReady=preparedVisible.filter(x=>itemGroup(x)==="ex");
  const topProcessing=topReq.filter(x=>["preparing","update"].includes(String(x.status||"")));
  const radarProcessing=radarReq.filter(x=>["preparing","update"].includes(String(x.status||"")));
+ const exProcessing=exReq.filter(x=>["preparing","update"].includes(String(x.status||"")));
  $("topRatio").textContent=topReady.length+"/"+topReq.length+" listos";
  $("radarRatio").textContent=radarReady.length+"/"+radarReq.length+" listos";
- $("count").textContent=topReady.length+radarReady.length;updateBadge();
+ $("exRatio").textContent=exReady.length+"/"+exReq.length+" listos";
+ $("count").textContent=topReady.length+radarReady.length+exReady.length;updateBadge();
  renderReadyCards($("topReady"),topReady,"No hay tuits del TOP 10 listos.");
  renderProcessingCards($("topProcessing"),topProcessing,"No hay tendencias del TOP 10 elaborándose.");
  renderReadyCards($("radarReady"),radarReady,"No hay tuits de Próximas tendencias listos.");
  renderProcessingCards($("radarProcessing"),radarProcessing,"No hay Próximas tendencias elaborándose.");
+ renderReadyCards($("exReady"),exReady,"No hay tuits EX TOP 10 listos.");
+ renderProcessingCards($("exProcessing"),exProcessing,"No hay EX TOP 10 elaborándose.");
 }
 async function done(item){const rel=related(item);if(!confirm("¿Confirmas que ya has publicado/explicado "+rel.join(", ")+"?"))return;const backup=[...(model.items||[])];setLocal(rel,"explained");removeItem(item);toast("Cerrando como explicada…");try{await api("explained",rel);toast("Marcada como explicada")}catch(e){clearLocal(rel);model.items=backup;render();toast(e.message)}}
 async function discard(item){const rel=related(item);if(!confirm("¿Desestimar "+rel.join(", ")+" sin publicarla?"))return;const backup=[...(model.items||[])];setLocal(rel,"dismissed");removeItem(item);toast("Desestimando…");try{await api("discard",rel);toast("Desestimada")}catch(e){clearLocal(rel);model.items=backup;render();toast(e.message)}}
@@ -146,10 +179,7 @@ async function load(){
     const req=latest[name];
     if(req&&["explained","dismissed"].includes(String(req.status||"")))return false;
    }
-   const currentTop=new Set((rd.items||[]).slice(0,10).map(x=>nrm(x.name)));
-   const currentUpcoming=new Set((rd.upcoming||[]).map(x=>nrm(x.name)));
-   const req=latest[nrm(item.trend_name)];
-   return rel.some(x=>currentTop.has(x)) || Boolean(item.anticipated) || Boolean(req?.anticipated) || rel.some(x=>currentUpcoming.has(x));
+   return true;
   });
   model={items,top:(rd.items||[]).slice(0,10).map(x=>x.name),upcoming:(rd.upcoming||[]).map(x=>x.name),requests:qd.requests||[]};
   render()
