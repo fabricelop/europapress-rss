@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import webpush from "web-push";
+import sharp from "sharp";
 
 const REPO = process.env.GITHUB_REPO || "fabricelop/europapress-rss";
 const BRANCH = process.env.GITHUB_BRANCH || "main";
@@ -106,7 +107,16 @@ async function mutateJson(path, message, mutator) {
 }
 
 async function syncEditorialQueue() {
-  const { doc: requests } = await readJson(REQUESTS);
+  const [{ doc: requests }, { doc: editorialConfig }] = await Promise.all([
+    readJson(REQUESTS),
+    readJson(EDITORIAL_CONFIG),
+  ]);
+  const imagePolicy = editorialConfig?.editorial?.image_policy || {};
+  const imageMode = String(imagePolicy.mode || "generated_editorial_image");
+  const imageInstruction = String(
+    imagePolicy.queue_instruction ||
+    "Genera SIEMPRE una caricatura editorial original de alta calidad, con un gag visual directamente ligado al detonante real de la tendencia. No uses imágenes encontradas en Internet."
+  );
   const active = (requests.requests || [])
     .filter(req => ["preparing", "update"].includes(String(req.status || "")))
     .map(req => ({
@@ -118,8 +128,8 @@ async function syncEditorialQueue() {
       revision: Number(req.revision || 0),
       rewrite_instruction: req.rewrite_instruction || req.rewrite_request || "",
       with_image: Boolean(req.with_image),
-      image_mode: "existing_web_image",
-      image_instruction: "Busca una imagen existente REAL y pertinente del mismo evento/persona. Método obligatorio: 1) intenta primero la fuente oficial/primaria o una noticia fiable sobre el hecho y extrae su og:image/imagen principal; 2) si falla, haz una búsqueda específica de imágenes y prueba una segunda fuente fiable. Prioriza una imagen del hecho actual frente a archivo genérico. No generes imágenes. Si encuentras una, guarda url directa, source, source_url, rights_status y alt. Solo declara no encontrada después de intentar ambas vías.",
+      image_mode: imageMode,
+      image_instruction: imageInstruction,
       batch_id: req.batch_id || null,
       requested_together: Array.isArray(req.requested_together) ? req.requested_together : [req.name].filter(Boolean),
       captured_with: Array.isArray(req.captured_with) ? req.captured_with : [],
@@ -750,7 +760,7 @@ async function stateSnapshot() {
   };
 }
 
-async function proxyPreparedImage(rawUrl, res) {
+async function proxyPreparedImage(rawUrl, res, format = "") {
   const url = String(rawUrl || "");
   let parsed;
   try { parsed = new URL(url); } catch (_) { throw new Error("URL de imagen no válida"); }
@@ -762,10 +772,16 @@ async function proxyPreparedImage(rawUrl, res) {
   if (!r.ok) throw new Error(`No se pudo descargar la imagen: ${r.status}`);
   const type = String(r.headers.get("content-type") || "");
   if (!type.startsWith("image/")) throw new Error("El recurso no es una imagen");
-  const buf = Buffer.from(await r.arrayBuffer());
+  let buf = Buffer.from(await r.arrayBuffer());
   if (buf.length > 12 * 1024 * 1024) throw new Error("Imagen demasiado grande");
-  res.setHeader("content-type", type);
+  let outputType = type;
+  if (String(format).toLowerCase() === "png") {
+    buf = await sharp(buf, { density: 180 }).png({ compressionLevel: 9 }).toBuffer();
+    outputType = "image/png";
+  }
+  res.setHeader("content-type", outputType);
   res.setHeader("content-length", String(buf.length));
+  res.setHeader("cache-control", "no-store");
   return res.status(200).send(buf);
 }
 
@@ -785,7 +801,7 @@ export default async function handler(req, res) {
         return res.status(200).json(await stateSnapshot());
       }
       if (String(req.query?.view || "") === "image-proxy") {
-        return await proxyPreparedImage(req.query?.url, res);
+        return await proxyPreparedImage(req.query?.url, res, req.query?.format);
       }
       if (String(req.query?.view || "") === "push-key") {
         return res.status(200).json({ ok: true, publicKey: vapidKeys().publicKey });
