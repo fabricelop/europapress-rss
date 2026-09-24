@@ -1111,7 +1111,7 @@
       "id": "571bfe869955",
       "name": "PSOE",
       "rank": 3,
-      "status": "update",
+      "status": "ready",
       "requested_at": "2026-09-24T08:16:22.633Z",
       "revision": 2,
       "reexplain": true,
@@ -1122,8 +1122,9 @@
         "PSOE"
       ],
       "auto_queued": true,
-      "ready_at": "2026-09-23T13:35:43.937Z",
-      "delivery_confirmation": "prepared_web"
+      "ready_at": "2026-09-24T10:27:47+02:00",
+      "delivery_confirmation": "prepared_web",
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "cb7b33217e93",
@@ -1394,7 +1395,7 @@
       "id": "adc4d83d5880",
       "name": "Franco",
       "rank": 8,
-      "status": "update",
+      "status": "problematic",
       "requested_at": "2026-09-24T07:52:49.955Z",
       "revision": 2,
       "reexplain": true,
@@ -1410,7 +1411,9 @@
       ],
       "auto_queued": true,
       "editorial_engine": "chatgpt-automation-outbox",
-      "rewrite_instruction": "Asegúrate si no es por el dictador Franco"
+      "rewrite_instruction": "Asegúrate si no es por el dictador Franco",
+      "problematic_at": "2026-09-24T10:29:51+02:00",
+      "problem_reason": "Tras dos búsquedas distintas centradas expresamente en Francisco Franco y en la actualidad española del 24 de septiembre, no aparece un acontecimiento reciente y verificable que permita atribuir con suficiente fiabilidad el pico de la tendencia al dictador; los resultados actuales relevantes para «Franco» son ambiguos o corresponden a otros usos del apellido."
     },
     {
       "id": "e3c48581956f",
@@ -1814,7 +1817,7 @@
       "id": "3d72197255c6",
       "name": "#LaHora24S",
       "rank": 9,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-09-24T10:08:41+02:00",
       "revision": 0,
       "reexplain": false,
@@ -1827,8 +1830,11 @@
       "captured_with": [
         "#LaHora24S"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "ready_at": "2026-09-24T10:27:47+02:00",
+      "delivery_confirmation": "prepared_web",
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ],
-  "updated_at": "2026-09-24T10:08:41+02:00"
+  "updated_at": "2026-09-24T10:29:51+02:00"
 }
