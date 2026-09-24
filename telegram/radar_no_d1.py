@@ -142,6 +142,10 @@ TOKEN_ALIASES={
  "australia":"australia","australiana":"australia","australiano":"australia","australianas":"australia","australianos":"australia",
  "autorizacion":"permiso","autorizado":"permiso","autorizada":"permiso","permiso":"permiso",
  "accede":"acceder","accedio":"acceder","acceder":"acceder","hackeo":"acceder","hackear":"acceder","cuela":"acceder","colarse":"acceder",
+ # Equivalencias ES/EN y de formato para el mismo hecho cultural. Son deliberadamente
+ # estrechas: ayudan a unir coberturas traducidas sin relajar los umbrales globales.
+ "palestine":"palestina",
+ "tour":"gira","tours":"gira","concierto":"gira","conciertos":"gira","concert":"gira","concerts":"gira",
 }
 EVENT_ACTION_ALIASES={
  "reunion":"reunion","reunirse":"reunion","reunen":"reunion","reune":"reunion","renen":"reunion","encuentro":"reunion","entrevista":"reunion",
@@ -169,6 +173,7 @@ def proper_tokens(s):
  out=set()
  for raw in re.findall(r"\b[A-ZÁÉÍÓÚÜÑ][A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{1,}\b",str(s)):
   tok="".join(c for c in unicodedata.normalize("NFKD",raw.lower()) if not unicodedata.combining(c))
+  tok=TOKEN_ALIASES.get(tok,tok)
   if tok not in STOP and tok not in PROPER_GENERIC and tok not in GENERIC_MATCH: out.add(tok)
  return out
 
@@ -603,6 +608,24 @@ if "--selftest-dedupe" in sys.argv:
    'Una IA de OpenAI se cuela sin permiso en la sanidad pública australiana',
    True,
    "mismo incidente OpenAI Australia con vocabulario distinto",
+  ),
+  (
+   'Macklemore anuncia conciertos a favor de Palestina y donará todo lo recaudado',
+   'Macklemore anuncia la gira "Free Palestine" tras haber sido expulsado de la de Ed Sheeran',
+   True,
+   "misma gira de Macklemore traducida y enfocada de forma distinta",
+  ),
+  (
+   'Ed Sheeran no se libra de la polémica: convocan una manifestación a las puertas de su concierto en Massachusetts',
+   'Macklemore anuncia una gira benéfica en apoyo a Palestina tras su salida de la gira de Ed Sheeran',
+   False,
+   "manifestación contra Ed Sheeran no es la gira de Macklemore",
+  ),
+  (
+   'Macklemore anuncia un nuevo disco de estudio para 2027',
+   'Macklemore anuncia conciertos a favor de Palestina y donará todo lo recaudado',
+   False,
+   "mismo artista pero hechos distintos",
   ),
  ]
  for a,b,should_match,label in tests:
