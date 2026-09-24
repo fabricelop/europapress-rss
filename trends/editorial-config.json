@@ -40,25 +40,35 @@
           "generated": true
         }
       },
-      "rule": "Cada item ready lleva SIEMPRE una imagen editorial original generada específicamente para esa tendencia. La web solo sirve para investigar y verificar el detonante; nunca para escoger la imagen final. Prioriza caricatura/ilustración editorial de alta calidad y un gag visual ligado al motivo exacto de la tendencia. Evita retratos decorativos, pósteres genéricos y exceso de texto. Regla de calidad: sin texto, la escena debe seguir siendo comprensible y graciosa. En temas sensibles, dirige el humor a la situación, responsables, gestión o contradicciones cuando proceda; nunca a víctimas o sufrimiento. Persiste la imagen en GitHub antes de escribir el outbox.",
+      "rule": "Cada item ready debe llevar SIEMPRE una imagen editorial ORIGINAL generada específicamente para la tendencia. No usar fotografías, og:image, capturas ni imágenes encontradas en Internet como imagen final. La web sirve solo para verificar el detonante y contexto. La imagen debe priorizar caricatura/ilustración editorial de alta calidad, poco o ningún texto y un gag visual ligado a la causa real: protagonista + causa real + exageración visual + remate escénico. Si no puede persistirse una imagen raster generada, crear un SVG autocontenido 16:9 en trends/generated-images/<id>-r<revision>.svg, sin scripts ni recursos externos, y usar su URL raw con source='TTendencias / ChatGPT', rights_status='generated', generated=true. En temas sensibles no hacer humor sobre víctimas o sufrimiento.",
       "generated_image_storage": {
         "prepared": true,
         "enabled": true,
-        "reason": "Vía principal de imagen editorial generada y persistida en GitHub.",
+        "reason": "Política activa: todas las tendencias ready deben usar una imagen editorial original generada y persistida en GitHub.",
         "repository_path_pattern": "trends/generated-images/<id>-r<revision>.svg",
         "public_url_pattern": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/<id>-r<revision>.svg",
         "source": "TTendencias / ChatGPT",
         "rights_status": "generated",
-        "mode": "editorial_svg_primary",
-        "trigger": "always",
+        "mode": "generated_editorial_image",
+        "trigger": "always_for_ready",
         "rules": [
-          "La imagen debe ser una caricatura o ilustración editorial original de alta calidad, no una fotografía falsa ni una recreación fotorrealista.",
-          "Debe contener un gag visual directamente relacionado con la causa real de la tendencia y funcionar con poco o ningún texto.",
+          "La imagen debe ser una pieza editorial ilustrativa o caricaturesca, no una fotografía falsa ni una recreación fotorrealista engañosa.",
+          "Debe contener un gag visual ligado al detonante real de la tendencia siempre que el tema permita humor seguro.",
+          "Debe usar poco o ningún texto y seguir siendo comprensible sin texto.",
           "No debe atribuir citas, acciones o hechos no verificados a personas reales.",
-          "En política, conflictos, sucesos o temas con víctimas evita persuasión electoral y humor sobre víctimas o sufrimiento.",
-          "El SVG debe ser válido, autocontenido, preferentemente 16:9, sin scripts ni recursos externos, con alt descriptivo y generated:true."
+          "En política, sucesos, víctimas o conflictos, evitar humor sobre víctimas o sufrimiento y dirigir la sátira solo a acciones públicas, contradicciones, gestión o instituciones cuando proceda.",
+          "El SVG fallback debe ser autocontenido, sin scripts ni recursos externos, preferentemente 1200x675, con alt descriptivo y generated:true."
         ]
-      }
+      },
+      "generate_when_candidate": true,
+      "source_preference": [
+        "generated_original_editorial_image"
+      ],
+      "require_source_page": false,
+      "minimum_search_routes": 0,
+      "require_direct_https_image_url": true,
+      "prefer_current_event_over_archive": false,
+      "verify_image_relevance": true
     },
     "queue_consumer_only": true,
     "queue_states": [
