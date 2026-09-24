@@ -135,7 +135,7 @@ async function rework(eventId,instruction){
       item={event_id:id,title:source.title||"",url:source.url||"",sources:source.sources_at_draft||[],source_count:Number(source.drafted_source_count||0),selected_at:now};
       doc.items.push(item)
     }
-    item.previous_status=item.status;item.status="PROCESSING";item.selection_mode="REWRITE";
+    item.previous_status=item.status;item.status="PROCESSING";item.selection_mode="REWRITE";item.with_image=true;item.image_mode="existing_web_image";
     item.rewrite_request=text;item.rewrite_requested_at=now;item.rewrite_version=Number(item.rewrite_version||0)+1;
     item.revision=Number(item.revision||source.revision||1)+1;delete item.delivered_at;delete item.published_at;delete item.dismissed_at;
     doc.updated_at=now;return doc
@@ -205,7 +205,7 @@ async function submitManualStory(url,title,instruction){
     if(!item){item={event_id:id};doc.items.push(item)}
     Object.assign(item,{
       event_id:id,title:finalTitle,url:finalUrl,sources,source_count:sourceCount,drafted_source_count:sourceCount,
-      selected_at:now,status:"PROCESSING",selection_mode:"MANUAL_WEB_USER",manual_submission:true,revision:Number(item.revision||1)
+      selected_at:now,status:"PROCESSING",selection_mode:"MANUAL_WEB_USER",manual_submission:true,revision:Number(item.revision||1),with_image:true,image_mode:"existing_web_image"
     });
     if(note){item.rewrite_request=note;item.manual_instruction=note}
     delete item.published_at;delete item.dismissed_at;delete item.delivered_at;
@@ -256,7 +256,9 @@ async function manualPrepare(eventId){
       selection_mode:"MANUAL_WEB_3S",
       revision:Number(ev.revision||item.revision||1),
       parent_event_id:ev.parent_event_id||null,
-      update_context:ev.update_context||null
+      update_context:ev.update_context||null,
+      with_image:true,
+      image_mode:"existing_web_image"
     });
     if(!doc.items.includes(item))doc.items.push(item);
     doc.updated_at=now;return doc
@@ -270,6 +272,22 @@ async function manualPrepare(eventId){
   return {ok:true,event_id:id,status:"PROCESSING"}
 }
 
+async function proxyPreparedImage(rawUrl,res){
+  const url=String(rawUrl||"");let parsed;
+  try{parsed=new URL(url)}catch(_){throw new Error("URL de imagen no válida")}
+  if(parsed.protocol!=="https:")throw new Error("Solo se permiten imágenes HTTPS");
+  const {doc:prepared}=await readJson(PREPARED);
+  const allowed=new Set((prepared.items||[]).map(x=>x?.image?.url||x?.image_url).filter(Boolean).map(String));
+  if(!allowed.has(url))throw new Error("Imagen no autorizada");
+  const r=await fetch(url,{headers:{"user-agent":"TTiTTulares-Image-Proxy/1.0",accept:"image/*"}});
+  if(!r.ok)throw new Error("No se pudo descargar la imagen: "+r.status);
+  const type=String(r.headers.get("content-type")||"");
+  if(!type.startsWith("image/"))throw new Error("El recurso no es una imagen");
+  const buf=Buffer.from(await r.arrayBuffer());
+  if(buf.length>12*1024*1024)throw new Error("Imagen demasiado grande");
+  res.setHeader("content-type",type);res.setHeader("content-length",String(buf.length));
+  return res.status(200).send(buf)
+}
 async function backendStatus(){
   const [config,status]=await Promise.all([
     gh(`contents/ttittulares/config.json?ref=${encodeURIComponent(BRANCH)}`),
@@ -281,6 +299,7 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   try{
     if(req.method==="GET"){
+      if(String(req.query?.view||"")==="image-proxy")return await proxyPreparedImage(req.query?.url,res);
       const [prepared,status,config,queue,events,decisions,manualArchive]=await Promise.all([
         readJson(PREPARED),readJson("ttittulares/status.json"),readJson("ttittulares/config.json"),
         readJson(PROCESSING),readJson(EVENTS),readJson(DECISIONS),readJson(MANUAL_ARCHIVE)
