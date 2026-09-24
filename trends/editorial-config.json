@@ -46,19 +46,28 @@
           "generated": "optional_boolean"
         }
       },
-      "rule": "Cuando with_image=true, no abandones tras dos intentos. Haz como mínimo cuatro vías reales y distintas: (1) fuente oficial/primaria del MISMO hecho actual e inspección de og:image/twitter:image/imagen principal; (2) una noticia actual de medio fiable sobre ese mismo hecho e inspección de su imagen principal/og:image; (3) búsqueda específica de imágenes con protagonista/evento + contexto + fecha actual, abriendo el resultado y verificando que la imagen corresponde al hecho; (4) segunda búsqueda o segunda fuente fiable diferente. Prioriza siempre imagen del hecho actual frente a archivo genérico. Comprueba que la URL final sea HTTPS directa a una imagen y que no sea logo, avatar irrelevante, miniatura engañosa ni imagen de un evento antiguo. Si una vía devuelve una imagen mediocre o dudosa, sigue buscando. Una imagen pertinente de medio fiable es válida con rights_status=unverified. Solo después de las cuatro vías puede usarse image_search_status=not_found, explicando brevemente qué se intentó.",
+      "rule": "Cuando with_image=true, no abandones tras dos intentos. Haz como mínimo cuatro vías reales y distintas: (1) fuente oficial/primaria del MISMO hecho actual e inspección de og:image/twitter:image/imagen principal; (2) una noticia actual de medio fiable sobre ese mismo hecho e inspección de su imagen principal/og:image; (3) búsqueda específica de imágenes con protagonista/evento + contexto + fecha actual, abriendo el resultado y verificando que la imagen corresponde al hecho; (4) segunda búsqueda o segunda fuente fiable diferente. Prioriza siempre imagen del hecho actual frente a archivo genérico. Comprueba que la URL final sea HTTPS directa a una imagen y que no sea logo, avatar irrelevante, miniatura engañosa ni imagen de un evento antiguo. Si una vía devuelve una imagen mediocre o dudosa, sigue buscando. Una imagen pertinente de medio fiable es válida con rights_status=unverified. Solo después de las cuatro vías puede usarse image_search_status=not_found, explicando brevemente qué se intentó. Si tras las cuatro vías no existe una imagen real suficientemente pertinente, crea como fallback un SVG editorial original siguiendo generated_image_storage: no fotorrealista, no engañoso y claramente marcado como generated. Guarda el SVG en GitHub y usa su URL raw como prepared_item.image.url.",
       "minimum_search_routes": 4,
       "require_direct_https_image_url": true,
       "prefer_current_event_over_archive": true,
       "verify_image_relevance": true,
       "generated_image_storage": {
         "prepared": true,
-        "enabled": false,
+        "enabled": true,
         "reason": "Infraestructura preparada; activar cuando la ejecución pueda obtener los bytes/base64 de una imagen generada.",
-        "repository_path_pattern": "trends/generated-images/<id>-r<revision>.<ext>",
-        "public_url_pattern": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/<id>-r<revision>.<ext>",
+        "repository_path_pattern": "trends/generated-images/<id>-r<revision>.svg",
+        "public_url_pattern": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/<id>-r<revision>.svg",
         "source": "TTendencias / ChatGPT",
-        "rights_status": "generated"
+        "rights_status": "generated",
+        "mode": "editorial_svg_fallback",
+        "trigger": "only_after_existing_image_search_exhausted",
+        "rules": [
+          "El SVG debe ser una pieza editorial ilustrativa, no una fotografía falsa ni una recreación fotorrealista.",
+          "No debe atribuir citas, acciones o elementos visuales no verificados a personas reales.",
+          "En política, sucesos, víctimas o conflictos usa composición neutral/informativa y evita caricaturas persuasivas o humor sobre víctimas.",
+          "Puede usar formas, tipografía, pictogramas y metáforas visuales simples ligadas al hecho.",
+          "Debe incluir alt descriptivo y generated:true."
+        ]
       }
     },
     "queue_consumer_only": true,
