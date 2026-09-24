@@ -80,4 +80,17 @@ if ($null -eq $searchNow -or $searchNow.State -ne 'Running') {
     Add-Log 'Published aplazado: Search sigue activo'
 }
 
+$searchFinal = Get-ScheduledTask -TaskName 'SeLoRecordamos-Search' -ErrorAction SilentlyContinue
+$publishedFinal = Get-ScheduledTask -TaskName 'SeLoRecordamos-Published' -ErrorAction SilentlyContinue
+if (($null -eq $searchFinal -or $searchFinal.State -ne 'Running') -and ($null -eq $publishedFinal -or $publishedFinal.State -ne 'Running')) {
+    try {
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'publish-local-health.ps1') | Out-Null
+        Add-Log 'Estado local publicado'
+    } catch {
+        Add-Log "AVISO publicando estado local - $($_.Exception.Message)"
+    }
+} else {
+    Add-Log 'Estado local aplazado: hay una tarea Git activa'
+}
+
 Add-Log 'Fin watchdog'
