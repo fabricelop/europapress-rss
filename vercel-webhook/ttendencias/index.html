@@ -200,7 +200,7 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig)
      return req&&["explained","dismissed"].includes(String(req.status||""));
    });
  });
- const upcoming=(recent.upcoming||[]).map(x=>{const req=latestFor(x.name),s=String(req?.status||"");return {name:String(x.name||""),social_source_count:Number(x.social_source_count||0),best_observed_rank:Number(x.best_observed_rank||0),mean_observed_rank:Number(x.mean_observed_rank||0),movement:String(x.movement||"flat"),news_source_count:Number(x.news_source_count||0),news_title:String(x.news_title||""),first_detected_at:x.first_detected_at||null,request_status:s,anticipated_request:Boolean(req?.anticipated),requested_at:req?.requested_at||null};});
+ const upcoming=(recent.upcoming||[]).map(x=>{const req=latestFor(x.name),s=String(req?.status||"");return {name:String(x.name||""),social_source_count:Number(x.social_source_count||0),best_observed_rank:Number(x.best_observed_rank||0),mean_observed_rank:Number(x.mean_observed_rank||0),movement:String(x.movement||"flat"),news_source_count:Number(x.news_source_count||0),news_title:String(x.news_title||""),first_detected_at:x.first_detected_at||null,request_status:s,anticipated_request:Boolean(req?.anticipated),requested_at:req?.requested_at||null,already_explained:s==="explained"||explainedSet.has(nrm(x.name))};});
  return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,items,upcoming,prepared:preparedItems,health,editorial_config:editorialConfig||{}};
 }
 function render(){
@@ -233,12 +233,12 @@ function render(){
    const bits=[item.social_source_count+" fuentes sociales",item.best_observed_rank?"mejor puesto "+item.best_observed_rank:"",item.news_source_count?"TTiTTulares: "+item.news_source_count+" medios":""].filter(Boolean);
    card.innerHTML='<div class="rank signal">↗</div><div><div class="name"></div><div class="state"><i class="dot active"></i><span class="label"></span></div><div class="detail"></div></div><div class="slot"></div>';
    card.querySelector(".name").textContent=item.name;
-   const queued=["preparing","update"].includes(item.request_status),ready=item.request_status==="ready"&&item.anticipated_request;
-   card.querySelector(".label").textContent=ready?"Preparada en Radar":queued?"Preparando en Radar":movementLabel[item.movement]||"Señal detectada";
+   const queued=["preparing","update"].includes(item.request_status),ready=item.request_status==="ready"&&item.anticipated_request,explained=Boolean(item.already_explained);
+   card.querySelector(".label").textContent=explained?"Ya explicada":ready?"Preparada en Radar":queued?"Preparando en Radar":movementLabel[item.movement]||"Señal detectada";
    const d=card.querySelector(".detail");d.textContent=bits.join(" · ");if(item.news_title)d.title=item.news_title;
    const slot=card.querySelector(".slot");
    const x=document.createElement("a");x.className="action xsearch";x.textContent="Buscar en X";x.href="https://x.com/search?q="+encodeURIComponent(item.name)+"&src=typed_query&f=live";x.target="_blank";x.rel="noopener noreferrer";slot.appendChild(x);
-   const p=document.createElement("button");p.className="action prepare";p.disabled=busy.has(item.name)||queued;p.textContent=ready?"Ver preparado":queued?"Preparando…":"Preparar";
+   const p=document.createElement("button");p.className="action prepare";p.disabled=busy.has(item.name)||queued||explained;p.textContent=explained?"Ya explicada":ready?"Ver preparado":queued?"Preparando…":"Preparar";
    p.onclick=()=>ready?location.assign("/ttendencias/preparados/"):prepareUpcoming(item);slot.appendChild(p);
    upcomingList.appendChild(card);
  }
