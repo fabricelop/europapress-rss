@@ -142,9 +142,18 @@ async function sendOutbox() {
       pending.push(c);
     }
   }
-  const next = { generated_at: new Date().toISOString(), candidates: pending };
-  writeJson(outboxFile, next);
-  gitPushFiles(['selorecordamos/telegram-outbox.json'], 'Actualizar outbox Telegram SeLoRecordamos');
+  const mergedIds = [...merged.values()].map(c => String(c.id || '')).filter(Boolean).sort();
+  const pendingIds = pending.map(c => String(c.id || '')).filter(Boolean).sort();
+  const localIds = (local.candidates || []).map(c => String(c.id || '')).filter(Boolean).sort();
+  const needsWrite =
+    JSON.stringify(mergedIds) !== JSON.stringify(pendingIds) ||
+    JSON.stringify(localIds) !== JSON.stringify(pendingIds);
+
+  if (needsWrite) {
+    const next = { generated_at: new Date().toISOString(), candidates: pending };
+    writeJson(outboxFile, next);
+    gitPushFiles(['selorecordamos/telegram-outbox.json'], 'Actualizar outbox Telegram SeLoRecordamos');
+  }
 }
 
 function parseAlternatives(item) {
