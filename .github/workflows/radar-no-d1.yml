@@ -1,9 +1,11 @@
-name: Radar editorial TTiTTulares
+name: Watchdog radar TTiTTulares
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/15 * * * *'
+    # Desfasado 5 minutos respecto al reloj principal. Solo actúa si el radar
+    # lleva demasiado tiempo sin actualizarse.
+    - cron: '5,15,25,35,45,55 * * * *'
   push:
     branches: [main]
     paths:
@@ -13,38 +15,72 @@ permissions:
   contents: write
 
 concurrency:
-  group: ttittulares-repo-write
+  # Independiente del workflow monolítico: si este se atasca, el watchdog
+  # debe poder recuperar TTiTTulares sin esperar detrás de él.
+  group: ttittulares-radar-watchdog
   cancel-in-progress: false
 
 jobs:
-  radar:
+  radar-watchdog:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Comprobar frescura del radar
+        id: freshness
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          force = os.environ.get("EVENT_NAME") in {"workflow_dispatch", "push"}
+          stale = force
+          age = None
+          try:
+              data = json.loads(Path("telegram/events.json").read_text(encoding="utf-8"))
+              stamp = str(data.get("last_run") or "")
+              last = datetime.fromisoformat(stamp.replace("Z","+00:00")).astimezone(timezone.utc)
+              age = (datetime.now(timezone.utc) - last).total_seconds()
+              if age >= 9 * 60:
+                  stale = True
+          except Exception as exc:
+              print("No se pudo validar last_run:", exc)
+              stale = True
+
+          print("RADAR_AGE_SECONDS", None if age is None else round(age, 1))
+          print("RADAR_WATCHDOG_STALE", stale)
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+              fh.write(f"stale={'true' if stale else 'false'}\n")
+          PY
+
       - name: Preparar Python
+        if: steps.freshness.outputs.stale == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Instalar dependencias del radar
+        if: steps.freshness.outputs.stale == 'true'
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Ejecutar y guardar radar TTiTTulares
+      - name: Recuperar y guardar radar TTiTTulares
+        if: steps.freshness.outputs.stale == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          git config user.name "ttittulares-radar-bot"
+          git config user.name "ttittulares-radar-watchdog"
           git config user.email "actions@users.noreply.github.com"
 
           for intento in 1 2 3 4; do
-            # El radar es autónomo: siempre recalcula sobre el main actual.
-            # No depende de TTendencias ni de Telegram.
             git fetch origin main
             git reset --hard origin/main
 
@@ -63,16 +99,35 @@ jobs:
               exit 0
             fi
 
-            git commit -m "Actualizar radar TTiTTulares"
+            git commit -m "Recuperar radar TTiTTulares"
             git fetch origin main
-            if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD^)" ]; then
-              echo "Cambio concurrente detectado; recalculando ($intento/4)..."
-              sleep $((intento * 2))
-              continue
+            BASE="$(git rev-parse HEAD^)"
+            REMOTE="$(git rev-parse origin/main)"
+
+            if [ "$REMOTE" != "$BASE" ]; then
+              if git diff --quiet "$BASE" "$REMOTE" -- \
+                telegram/events.json \
+                telegram/processed-events.json \
+                telegram/editorial-processing.json \
+                telegram/autocheck-status.json \
+                telegram/autocheck-alert-state.json \
+                ttittulares/status.json; then
+                echo "Cambios concurrentes ajenos a TTiTTulares; integrando."
+                if ! git rebase origin/main; then
+                  git rebase --abort || true
+                  echo "Rebase falló; recalculando ($intento/4)..."
+                  sleep $((intento * 2))
+                  continue
+                fi
+              else
+                echo "Estado TTiTTulares cambió en paralelo; recalculando ($intento/4)..."
+                sleep $((intento * 2))
+                continue
+              fi
             fi
 
             if git push origin HEAD:main; then
-              echo "Radar guardado correctamente."
+              echo "Radar recuperado correctamente."
               exit 0
             fi
 
@@ -80,5 +135,9 @@ jobs:
             sleep $((intento * 2))
           done
 
-          echo "ERROR: no se pudo guardar el radar tras 4 recálculos seguros."
+          echo "ERROR: watchdog no pudo guardar el radar tras 4 intentos."
           exit 1
+
+      - name: Radar todavía fresco
+        if: steps.freshness.outputs.stale != 'true'
+        run: echo "Radar fresco; watchdog no interviene."
