@@ -87,6 +87,8 @@ def queue_eligible(events_doc, processing, decisions, minimum, stamp, mode="web"
             "parent_event_id": event.get("parent_event_id"),
             "update_context": event.get("update_context"),
             "parallel_source_claimed_at": event.get("notification_claimed_at") if mode == "parallel" else None,
+            "with_image": True,
+            "image_mode": "existing_web_image",
         })
         if current is None:
             items.append(row)
