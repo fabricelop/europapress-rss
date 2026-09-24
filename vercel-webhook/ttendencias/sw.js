@@ -1,5 +1,5 @@
-const CACHE="ttendencias-shell-v6";
-const SHELL=["/ttendencias/","/ttendencias/index.html","/ttendencias/preparados/","/ttendencias/manifest.webmanifest","/ttendencias/icon.svg"];
+const CACHE="ttendencias-shell-v7";
+const SHELL=["/ttendencias/manifest.webmanifest","/ttendencias/icon.svg"];
 
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).catch(()=>{}));
