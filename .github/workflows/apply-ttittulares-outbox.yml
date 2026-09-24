@@ -1,0 +1,65 @@
+name: Aplicar outbox TTiTTulares
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "ttittulares/editorial-outbox/**"
+  schedule:
+    - cron: "*/10 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-repo-write
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Aplicar outbox de forma segura
+        run: |
+          set -e
+          git config user.name "ttittulares-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          for intento in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+
+            python3 ttittulares/apply_editorial_outbox.py
+
+            git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json ttittulares/editorial-outbox/
+            if git diff --cached --quiet; then
+              echo "Sin outbox pendiente."
+              exit 0
+            fi
+
+            git commit -m "Aplicar outbox editorial TTiTTulares"
+            git fetch origin main
+            BASE="$(git rev-parse HEAD^)"
+            REMOTE="$(git rev-parse origin/main)"
+            if [ "$REMOTE" != "$BASE" ]; then
+              echo "Main cambió en paralelo; recalculando sobre el estado actual ($intento/4)."
+              git reset --hard origin/main
+              sleep $((intento * 2))
+              continue
+            fi
+
+            if git push origin HEAD:main; then
+              echo "Outbox aplicado correctamente."
+              exit 0
+            fi
+            sleep $((intento * 2))
+          done
+
+          echo "ERROR: no se pudo aplicar el outbox tras 4 intentos."
+          exit 1
