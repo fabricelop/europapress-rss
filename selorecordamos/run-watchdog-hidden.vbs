@@ -5,4 +5,6 @@ Set fso = CreateObject("Scripting.FileSystemObject")
 baseDir = fso.GetParentFolderName(WScript.ScriptFullName)
 scriptPath = fso.BuildPath(baseDir, "watchdog.ps1")
 cmd = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File """ & scriptPath & """"
-shell.Run cmd, 0, True
+Dim exitCode
+exitCode = shell.Run(cmd, 0, True)
+WScript.Quit exitCode
