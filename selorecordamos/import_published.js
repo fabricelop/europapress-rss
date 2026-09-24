@@ -6,6 +6,33 @@ const { chromium } = require('playwright');
 (async()=>{
   const baseDir=__dirname;
   const repoDir=path.join(baseDir,'..');
+
+  const gitStatus=(args)=>cp.spawnSync('git',args,{cwd:repoDir,encoding:'utf8',stdio:'pipe'});
+  const runGit=(args)=>cp.execFileSync('git',args,{cwd:repoDir,encoding:'utf8',stdio:'pipe'});
+  const readStageJson=(stage,repoPath,fallback)=>{
+    const r=gitStatus(['show',`:${stage}:${repoPath}`]);
+    if(r.status!==0||!String(r.stdout||'').trim())return fallback;
+    try{return JSON.parse(r.stdout);}catch(_){return fallback;}
+  };
+  const resolveGeneratedStateConflicts=()=>{
+    const r=gitStatus(['diff','--name-only','--diff-filter=U']);
+    if(r.status!==0)return;
+    const unmerged=String(r.stdout||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+    if(!unmerged.length)return;
+    const unsupported=unmerged.filter(x=>x!=='selorecordamos/telegram-outbox.json');
+    if(unsupported.length)throw new Error('Conflictos Git no gestionados automaticamente: '+unsupported.join(', '));
+    if(unmerged.includes('selorecordamos/telegram-outbox.json')){
+      const ours=readStageJson(2,'selorecordamos/telegram-outbox.json',{candidates:[]});
+      const theirs=readStageJson(3,'selorecordamos/telegram-outbox.json',{candidates:[]});
+      const merged=new Map();
+      for(const c of [...(ours.candidates||[]),...(theirs.candidates||[])]){
+        const id=String(c&&c.id||''); if(id)merged.set(id,c);
+      }
+      fs.writeFileSync(path.join(repoDir,'selorecordamos','telegram-outbox.json'),JSON.stringify({generated_at:new Date().toISOString(),candidates:[...merged.values()].slice(-200)},null,2)+'\n','utf8');
+      runGit(['add','selorecordamos/telegram-outbox.json']);
+      console.log('Conflicto de telegram-outbox.json resuelto automaticamente antes del historico.');
+    }
+  };
   const runtimeDir=path.join(baseDir,'runtime');
   const outputFile=path.join(baseDir,'published-replies.json');
   const diagnosticFile=path.join(runtimeDir,'published-import-diagnostic.json');
@@ -94,6 +121,7 @@ const { chromium } = require('playwright');
   console.log(JSON.stringify({since:new Date(since).toISOString(),source:url,query,final_url:diagnostics.final_url,title:diagnostics.title,articles_seen:diagnostics.articles_seen,diagnostic_file:diagnosticFile,found_now:posts.length,total_history:all.length,posts},null,2));
 
   if(process.env.SR_PUBLISHED_PUSH==='1'){
+    resolveGeneratedStateConflicts();
     cp.execFileSync('git',['add','selorecordamos/published-replies.json'],{cwd:repoDir,stdio:'inherit'});
     const d=cp.spawnSync('git',['diff','--cached','--quiet'],{cwd:repoDir});
     if(d.status!==0){
