@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-24T22:20:53+02:00",
+  "captured_at": "2026-09-24T22:30:38+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -9,9 +9,10 @@
     "getdaytrends",
     "tweets24",
     "superx",
-    "snaplytics"
+    "snaplytics",
+    "trendswe"
   ],
-  "source_count": 6,
+  "source_count": 7,
   "non_stale_source_count": 5,
   "fresh_sources": [
     "tweets24"
@@ -75,17 +76,36 @@
   "new_entries": [],
   "upcoming": [
     {
-      "name": "#FelizJueves",
+      "name": "Juanma Castaño",
       "social_source_count": 4,
       "social_sources": [
-        "snaplytics",
-        "superx",
+        "getdaytrends",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 16.5,
-      "movement": "down",
+      "mean_observed_rank": 12.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-24T20:01:36+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "#FelizJueves",
+      "social_source_count": 4,
+      "social_sources": [
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 15.8,
+      "movement": "flat",
       "first_detected_at": "2026-09-24T16:37:32+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -94,18 +114,18 @@
       "news_first_seen": null
     },
     {
-      "name": "Juanma Castaño",
+      "name": "La CIA",
       "social_source_count": 4,
       "social_sources": [
-        "getdaytrends",
-        "snaplytics",
+        "superx",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.2,
-      "movement": "down",
-      "first_detected_at": "2026-09-24T20:01:36+02:00",
+      "best_observed_rank": 14,
+      "mean_observed_rank": 15.8,
+      "movement": "flat",
+      "first_detected_at": "2026-09-24T16:37:32+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -117,12 +137,12 @@
       "social_source_count": 4,
       "social_sources": [
         "getdaytrends",
-        "snaplytics",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 14.5,
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.0,
       "movement": "down",
       "first_detected_at": "2026-09-24T21:01:57+02:00",
       "news_source_count": 0,
@@ -132,60 +152,21 @@
       "news_first_seen": null
     },
     {
-      "name": "Ter Stegen",
-      "social_source_count": 4,
+      "name": "Sumar",
+      "social_source_count": 2,
       "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 14.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-24T22:03:34+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Zapatero",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-24T22:20:53+02:00",
-      "news_source_count": 5,
-      "news_event_id": "e4291df2583c",
-      "news_title": "Zapatero se opone a que Yanes perite sus joyas porque cree que la joyería «tiene interés» en tasarlas en dos millones de euros",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-24T14:22:22.539595Z"
-    },
-    {
-      "name": "La CIA",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
         "superx",
-        "trends24",
-        "tweets24"
+        "trendswe"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 15.8,
-      "movement": "down",
-      "first_detected_at": "2026-09-24T16:37:32+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "best_observed_rank": 20,
+      "mean_observed_rank": 20.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-24T22:30:38+02:00",
+      "news_source_count": 12,
+      "news_event_id": "6f93abb7cabe",
+      "news_title": "Sumar exige llevar el decreto de vivienda y la expropiación del piso de Maricarmen al Consejo de Ministros",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-24T08:32:34.586921Z"
     }
   ],
   "anticipated_entries": [],
@@ -219,7 +200,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T22:20:53+02:00"
+      "fetched_at": "2026-09-24T22:30:38+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -244,7 +225,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T22:20:54+02:00"
+      "fetched_at": "2026-09-24T22:30:39+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -271,10 +252,10 @@
         "Vivienda"
       ],
       "error": null,
-      "update_hint": "Updated 30 minutes ago",
-      "age_minutes": 30.0,
+      "update_hint": "Updated 39 minutes ago",
+      "age_minutes": 39.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-24T22:20:57+02:00"
+      "fetched_at": "2026-09-24T22:30:40+02:00"
     },
     "superx": {
       "ok": true,
@@ -304,16 +285,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T22:20:58+02:00"
+      "fetched_at": "2026-09-24T22:30:41+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790281258",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790281841",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T22:20:58+02:00"
+      "fetched_at": "2026-09-24T22:30:41+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -341,9 +322,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 24, 2026 19:00 UTC",
-      "age_minutes": 81.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-24T22:20:58+02:00"
+      "age_minutes": 90.7,
+      "freshness": "stale",
+      "fetched_at": "2026-09-24T22:30:41+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -371,18 +352,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 3500.0,
+      "age_minutes": 3509.7,
       "freshness": "stale",
-      "fetched_at": "2026-09-24T22:20:59+02:00"
+      "fetched_at": "2026-09-24T22:30:42+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790281260",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790281843",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T22:21:00+02:00"
+      "fetched_at": "2026-09-24T22:30:43+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -391,25 +372,46 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-24T22:21:01+02:00"
+      "fetched_at": "2026-09-24T22:30:44+02:00"
     },
     "trendswe": {
-      "ok": false,
-      "trends": [],
-      "error": "Lista no válida (6 elementos parseados)",
+      "ok": true,
+      "trends": [
+        "#Mari Carmen",
+        "#PSOE",
+        "#Congreso",
+        "#Retiro",
+        "#Franco",
+        "#Ana Vázquez",
+        "#Ayuso",
+        "#Ana Belén",
+        "#LaIslaDeLasTentaciones6",
+        "#Zapatero",
+        "#Juanma Castaño",
+        "#TEM24S",
+        "#dubai",
+        "#La CIA",
+        "#Paquita",
+        "#felizjueves",
+        "#simyoPackRealme16Pro",
+        "#Vivienda",
+        "#Junts",
+        "#Sumar"
+      ],
+      "error": null,
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "invalid",
-      "fetched_at": "2026-09-24T22:21:02+02:00"
+      "freshness": "unknown",
+      "fetched_at": "2026-09-24T22:30:44+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790281263",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790281847",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T22:21:03+02:00"
+      "fetched_at": "2026-09-24T22:30:47+02:00"
     }
   }
 }
