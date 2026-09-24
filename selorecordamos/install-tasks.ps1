@@ -16,10 +16,17 @@ $watchdogTask = 'SeLoRecordamos-Watchdog'
 
 # Limpieza de ejecuciones antiguas de SLR. Las versiones anteriores del lanzador
 # oculto podían dejar procesos desacoplados del Programador de tareas.
-$slrTaskNames = @($listenerTask, $searchTask, $publishedTask, $watchdogTask)
+$legacyTask = 'SeLoRecordamos-Historico'
+$slrTaskNames = @($listenerTask, $searchTask, $publishedTask, $watchdogTask, $legacyTask)
 foreach ($name in $slrTaskNames) {
     try { Stop-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue } catch {}
 }
+try {
+    if (Get-ScheduledTask -TaskName $legacyTask -ErrorAction SilentlyContinue) {
+        Unregister-ScheduledTask -TaskName $legacyTask -Confirm:$false
+        Write-Host 'Tarea antigua SeLoRecordamos-Historico eliminada.'
+    }
+} catch {}
 
 $slrProcessPatterns = @(
     'selorecordamos\run-telegram-listener.ps1',
