@@ -70,5 +70,14 @@ function Ensure-HourlyTask([string]$name, [int]$maxIdleMinutes = 80, [int]$maxRu
 Add-Log 'Inicio watchdog'
 Ensure-Listener
 Ensure-HourlyTask 'SeLoRecordamos-Search' 80 30
-Ensure-HourlyTask 'SeLoRecordamos-Published' 80 30
+
+# Search y Published comparten el mismo repositorio Git local. Nunca arrancamos
+# Published mientras Search siga en ejecución para evitar index.lock/rebases cruzados.
+$searchNow = Get-ScheduledTask -TaskName 'SeLoRecordamos-Search' -ErrorAction SilentlyContinue
+if ($null -eq $searchNow -or $searchNow.State -ne 'Running') {
+    Ensure-HourlyTask 'SeLoRecordamos-Published' 80 30
+} else {
+    Add-Log 'Published aplazado: Search sigue activo'
+}
+
 Add-Log 'Fin watchdog'
