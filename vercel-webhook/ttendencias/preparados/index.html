@@ -144,12 +144,25 @@ function render(){
  $("radarRatio").textContent=radarReady.length+"/"+radarReq.length+" listos";
  $("exRatio").textContent=exReady.length+"/"+exReq.length+" listos";
  $("count").textContent=topReady.length+radarReady.length+exReady.length;updateBadge();
- renderReadyCards($("topReady"),topReady,"No hay tuits del TOP 10 listos.");
- renderProcessingCards($("topProcessing"),topProcessing,"No hay tendencias del TOP 10 elaborándose.");
- renderReadyCards($("radarReady"),radarReady,"No hay tuits de Próximas tendencias listos.");
- renderProcessingCards($("radarProcessing"),radarProcessing,"No hay Próximas tendencias elaborándose.");
- renderReadyCards($("exReady"),exReady,"No hay tuits EX TOP 10 listos.");
- renderProcessingCards($("exProcessing"),exProcessing,"No hay EX TOP 10 elaborándose.");
+ const showGroup=(groupId,readyId,processingId,readyItems,processingItems)=>{
+   const group=$(groupId),readyEl=$(readyId),processingEl=$(processingId);
+   const any=readyItems.length+processingItems.length>0;
+   group.hidden=!any;
+   if(!any)return;
+   readyEl.hidden=!readyItems.length;
+   processingEl.hidden=!processingItems.length;
+   if(readyEl.previousElementSibling)readyEl.previousElementSibling.hidden=!readyItems.length;
+   if(processingEl.previousElementSibling)processingEl.previousElementSibling.hidden=!processingItems.length;
+ };
+ showGroup("topGroup","topReady","topProcessing",topReady,topProcessing);
+ showGroup("radarGroup","radarReady","radarProcessing",radarReady,radarProcessing);
+ showGroup("exGroup","exReady","exProcessing",exReady,exProcessing);
+ if(topReady.length)renderReadyCards($("topReady"),topReady,"");
+ if(topProcessing.length)renderProcessingCards($("topProcessing"),topProcessing,"");
+ if(radarReady.length)renderReadyCards($("radarReady"),radarReady,"");
+ if(radarProcessing.length)renderProcessingCards($("radarProcessing"),radarProcessing,"");
+ if(exReady.length)renderReadyCards($("exReady"),exReady,"");
+ if(exProcessing.length)renderProcessingCards($("exProcessing"),exProcessing,"");
 }
 async function done(item){const rel=related(item);if(!confirm("¿Confirmas que ya has publicado/explicado "+rel.join(", ")+"?"))return;const backup=[...(model.items||[])];setLocal(rel,"explained");removeItem(item);toast("Cerrando como explicada…");try{await api("explained",rel);toast("Marcada como explicada")}catch(e){clearLocal(rel);model.items=backup;render();toast(e.message)}}
 async function discard(item){const rel=related(item);if(!confirm("¿Desestimar "+rel.join(", ")+" sin publicarla?"))return;const backup=[...(model.items||[])];setLocal(rel,"dismissed");removeItem(item);toast("Desestimando…");try{await api("discard",rel);toast("Desestimada")}catch(e){clearLocal(rel);model.items=backup;render();toast(e.message)}}
