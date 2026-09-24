@@ -1,86 +1,85 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-24T23:41:19+02:00",
-  "primary_source": "snaplytics",
+  "captured_at": "2026-09-24T23:50:50+02:00",
+  "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
-    "superx",
-    "snaplytics",
-    "trendswe"
+    "trends24",
+    "getdaytrends",
+    "tweets24"
   ],
-  "source_count": 6,
-  "non_stale_source_count": 5,
+  "source_count": 7,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24",
-    "snaplytics"
+    "tweets24"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
-    "Mari Carmen",
     "#SVGala3",
-    "PSOE",
-    "Congreso",
-    "Retiro",
-    "Franco",
-    "#Horizonte",
-    "Benjamín Noval",
-    "Ayuso",
-    "Ana Vázquez"
+    "Hernández Hernández",
+    "Ter Stegen",
+    "Alemania",
+    "Holanda",
+    "Borja",
+    "Euroliga",
+    "Rockstar",
+    "Netanyahu",
+    "Nations League"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "Mari Carmen"
-    },
-    {
-      "rank": 2,
       "name": "#SVGala3"
     },
     {
+      "rank": 2,
+      "name": "Hernández Hernández"
+    },
+    {
       "rank": 3,
-      "name": "PSOE"
+      "name": "Ter Stegen"
     },
     {
       "rank": 4,
-      "name": "Congreso"
+      "name": "Alemania"
     },
     {
       "rank": 5,
-      "name": "Retiro"
+      "name": "Holanda"
     },
     {
       "rank": 6,
-      "name": "Franco"
+      "name": "Borja"
     },
     {
       "rank": 7,
-      "name": "#Horizonte"
+      "name": "Euroliga"
     },
     {
       "rank": 8,
-      "name": "Benjamín Noval"
+      "name": "Rockstar"
     },
     {
       "rank": 9,
-      "name": "Ayuso"
+      "name": "Netanyahu"
     },
     {
       "rank": 10,
-      "name": "Ana Vázquez"
+      "name": "Nations League"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Mari Carmen",
-    "PSOE",
-    "Congreso",
-    "Retiro",
-    "Franco",
-    "#Horizonte",
-    "Benjamín Noval",
-    "Ayuso",
-    "Ana Vázquez"
+    "Hernández Hernández",
+    "Ter Stegen",
+    "Alemania",
+    "Holanda",
+    "Borja",
+    "Euroliga",
+    "Rockstar",
+    "Netanyahu",
+    "Nations League"
   ],
   "upcoming": [
     {
@@ -112,7 +111,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 13.7,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-24T20:01:36+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -147,7 +146,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 14.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-24T16:37:32+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -173,16 +172,16 @@
       "news_first_seen": null
     },
     {
-      "name": "Ter Stegen",
+      "name": "Efes",
       "social_source_count": 2,
       "social_sources": [
-        "snaplytics",
-        "trendswe"
+        "getdaytrends",
+        "trends24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 12.5,
+      "mean_observed_rank": 11.0,
       "movement": "new",
-      "first_detected_at": "2026-09-24T23:41:19+02:00",
+      "first_detected_at": "2026-09-24T23:50:50+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -198,7 +197,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-24T23:41:19+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -207,7 +206,14 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Ter Stegen",
+      "first_detected_at": "2026-09-24T23:41:19+02:00",
+      "entered_top10_at": "2026-09-24T23:50:50+02:00",
+      "lead_minutes": 10
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -238,16 +244,32 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T23:41:19+02:00"
+      "fetched_at": "2026-09-24T23:50:50+02:00"
     },
     "getdaytrends": {
-      "ok": false,
-      "trends": [],
-      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790286079",
+      "ok": true,
+      "trends": [
+        "#SVGala3",
+        "Benjamín Noval",
+        "Ter Stegen",
+        "Van Bommel",
+        "Holanda",
+        "hernández hernández",
+        "Alemania",
+        "Borja",
+        "Klopp",
+        "Países Bajos",
+        "Efes",
+        "Xavi",
+        "Euroliga",
+        "#Montreal2026",
+        "Netanyahu"
+      ],
+      "error": null,
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-09-24T23:41:19+02:00"
+      "freshness": "unknown",
+      "fetched_at": "2026-09-24T23:50:51+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -274,10 +296,10 @@
         "Benjamín Noval"
       ],
       "error": null,
-      "update_hint": "Updated 25 minutes ago",
-      "age_minutes": 25.0,
+      "update_hint": "Updated 34 minutes ago",
+      "age_minutes": 34.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-24T23:41:19+02:00"
+      "fetched_at": "2026-09-24T23:50:51+02:00"
     },
     "superx": {
       "ok": true,
@@ -307,16 +329,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T23:41:20+02:00"
+      "fetched_at": "2026-09-24T23:50:52+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790286080",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790286652",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T23:41:20+02:00"
+      "fetched_at": "2026-09-24T23:50:52+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -344,9 +366,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 24, 2026 21:00 UTC",
-      "age_minutes": 41.3,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-24T23:41:20+02:00"
+      "age_minutes": 50.9,
+      "freshness": "aging",
+      "fetched_at": "2026-09-24T23:50:52+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -374,18 +396,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 3580.4,
+      "age_minutes": 3589.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-24T23:41:21+02:00"
+      "fetched_at": "2026-09-24T23:50:53+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790286082",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790286654",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T23:41:22+02:00"
+      "fetched_at": "2026-09-24T23:50:54+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -394,7 +416,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-24T23:41:23+02:00"
+      "fetched_at": "2026-09-24T23:50:55+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -424,16 +446,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T23:41:23+02:00"
+      "fetched_at": "2026-09-24T23:50:55+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790286087",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790286657",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T23:41:27+02:00"
+      "fetched_at": "2026-09-24T23:50:57+02:00"
     }
   }
 }
