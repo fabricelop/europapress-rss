@@ -1,5 +1,6 @@
 import json
 import re
+import unicodedata
 from urllib.parse import parse_qs, unquote, urlparse
 from datetime import datetime, timezone
 from pathlib import Path
@@ -10,6 +11,7 @@ from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parent
 RECENT = ROOT / "recent.json"
+TTITTULARES_STATUS = ROOT.parent / "ttittulares" / "status.json"
 MADRID = ZoneInfo("Europe/Madrid")
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124 Safari/537.36",
@@ -404,9 +406,152 @@ def choose_top10(source_data):
         return trends[:10], [name], name, "fallback"
     return consensus_fallback(usable), list(usable), "consensus", "consensus"
 
+
+def load_json(path, default=None):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {} if default is None else default
+
+def fold_text(value):
+    text = unicodedata.normalize("NFD", str(value or ""))
+    text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
+    text = text.casefold().lstrip("#")
+    text = re.sub(r"[^\w]+", " ", text, flags=re.UNICODE)
+    return clean(text)
+
+def term_matches_title(term, title):
+    term_fold = fold_text(term)
+    title_fold = fold_text(title)
+    words = [w for w in term_fold.split() if len(w) >= 3]
+    if not words:
+        return False
+    if len(words) == 1:
+        return re.search(rf"(?:^|\s){re.escape(words[0])}(?:\s|$)", title_fold) is not None
+    return all(re.search(rf"(?:^|\s){re.escape(word)}(?:\s|$)", title_fold) for word in words)
+
+def best_news_signal(term, status_doc):
+    best = None
+    for event_id, event in (status_doc.get("events") or {}).items():
+        if str(event.get("status") or "") == "DISMISSED":
+            continue
+        if not term_matches_title(term, event.get("title")):
+            continue
+        row = {
+            "event_id": event_id,
+            "title": str(event.get("title") or ""),
+            "source_count": int(event.get("source_count") or 0),
+            "status": str(event.get("status") or ""),
+            "last_seen": event.get("last_seen"),
+        }
+        if best is None or row["source_count"] > best["source_count"]:
+            best = row
+    return best
+
+def lower_rank_stats(source_data, top10):
+    top_keys = {term_key(x) for x in top10}
+    stats = {}
+    for source, data in source_data.items():
+        if not data.get("ok") or data.get("freshness") in {"stale", "invalid", "error"}:
+            continue
+        for rank, term in enumerate((data.get("trends") or [])[:20], 1):
+            if rank <= 10:
+                continue
+            key = term_key(term)
+            if not key or key in top_keys:
+                continue
+            row = stats.setdefault(key, {
+                "name": term,
+                "social_source_count": 0,
+                "social_sources": [],
+                "ranks": [],
+                "best_observed_rank": 999,
+            })
+            row["social_source_count"] += 1
+            row["social_sources"].append(source)
+            row["ranks"].append(rank)
+            row["best_observed_rank"] = min(row["best_observed_rank"], rank)
+    return stats
+
+def build_upcoming(source_data, top10, previous_doc, status_doc, now):
+    stats = lower_rank_stats(source_data, top10)
+    previous = {term_key(x.get("name")): x for x in (previous_doc.get("upcoming") or []) if x.get("name")}
+    rows = []
+    for key, row in stats.items():
+        news = best_news_signal(row["name"], status_doc)
+        news_count = int((news or {}).get("source_count") or 0)
+        social_count = int(row["social_source_count"])
+        if social_count < 2 and not (social_count >= 1 and news_count >= 4):
+            continue
+
+        prev = previous.get(key)
+        previous_rank = int((prev or {}).get("best_observed_rank") or 999)
+        previous_support = int((prev or {}).get("social_source_count") or 0)
+        if prev is None:
+            movement = "new"
+        elif row["best_observed_rank"] < previous_rank or social_count > previous_support:
+            movement = "up"
+        elif row["best_observed_rank"] > previous_rank or social_count < previous_support:
+            movement = "down"
+        else:
+            movement = "flat"
+
+        # La puntuación solo ordena internamente las señales. La interfaz muestra
+        # los datos observados (fuentes, posición y cobertura), no una probabilidad.
+        score = (
+            social_count * 20
+            + max(0, 21 - int(row["best_observed_rank"])) * 2
+            + min(news_count, 14) * 3
+            + (6 if movement == "up" else 0)
+        )
+        rows.append({
+            "name": row["name"],
+            "social_source_count": social_count,
+            "social_sources": sorted(set(row["social_sources"])),
+            "best_observed_rank": int(row["best_observed_rank"]),
+            "mean_observed_rank": round(sum(row["ranks"]) / max(1, len(row["ranks"])), 1),
+            "movement": movement,
+            "first_detected_at": (prev or {}).get("first_detected_at") or now.isoformat(timespec="seconds"),
+            "news_source_count": news_count,
+            "news_event_id": (news or {}).get("event_id"),
+            "news_title": (news or {}).get("title"),
+            "news_status": (news or {}).get("status"),
+            "_score": score,
+        })
+
+    rows.sort(key=lambda x: (-x["_score"], -x["social_source_count"], x["best_observed_rank"], x["name"].casefold()))
+    for row in rows:
+        row.pop("_score", None)
+    return rows[:8]
+
+def anticipated_entries(top10, previous_doc, now):
+    prior = {term_key(x.get("name")): x for x in (previous_doc.get("upcoming") or []) if x.get("name")}
+    out = []
+    for name in top10:
+        row = prior.get(term_key(name))
+        if not row:
+            continue
+        detected = row.get("first_detected_at")
+        lead = None
+        try:
+            start = datetime.fromisoformat(str(detected).replace("Z", "+00:00"))
+            if start.tzinfo is None:
+                start = start.replace(tzinfo=MADRID)
+            lead = max(0, round((now - start.astimezone(MADRID)).total_seconds() / 60))
+        except Exception:
+            pass
+        out.append({
+            "name": name,
+            "first_detected_at": detected,
+            "entered_top10_at": now.isoformat(timespec="seconds"),
+            "lead_minutes": lead,
+        })
+    return out
+
 def main():
     now = datetime.now(MADRID)
-    previous = previous_top10()
+    previous_doc = load_json(RECENT, {})
+    previous = previous_doc.get("top10", [])
     source_data = {name: fetch_source(name) for name in SOURCES}
 
     top10, sources_used, chosen_name, method = choose_top10(source_data)
@@ -420,6 +565,9 @@ def main():
     non_stale = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") != "stale"]
     fresh = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") == "fresh"]
     reliability = "high" if len(non_stale) >= 6 else ("medium" if len(non_stale) >= 3 else "fallback")
+    ttittulares_status = load_json(TTITTULARES_STATUS, {})
+    upcoming = build_upcoming(source_data, top10, previous_doc, ttittulares_status, now)
+    anticipated = anticipated_entries(top10, previous_doc, now)
 
     payload = {
         "project": "TTendencias",
@@ -436,13 +584,16 @@ def main():
         "items": [{"rank": i + 1, "name": name} for i, name in enumerate(top10)],
         "unchanged_from_previous": unchanged,
         "new_entries": new_entries,
+        "upcoming": upcoming,
+        "anticipated_entries": anticipated,
+        "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
         "sources": source_data,
     }
     RECENT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(
         f"TTendencias: {chosen_name} via {method}; valid={len(valid)}/{len(SOURCES)}, "
         f"non_stale={len(non_stale)}, fresh={len(fresh)}, reliability={reliability}; "
-        f"Top 10: {', '.join(top10)}"
+        f"Top 10: {', '.join(top10)}; upcoming={len(upcoming)}"
     )
 
 if __name__ == "__main__":
