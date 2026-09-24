@@ -29,9 +29,6 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Instalar dependencias
-        run: pip install -r requirements.txt
-
       - name: Ejecutar y guardar radar TTiTTulares
         run: |
           set -e
@@ -44,20 +41,6 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
-            # Europa Press forma parte del radar y debe refrescarse ANTES del
-            # cruce multifuente. Esto recupera también el hueco desde el último
-            # crawl válido porque generate_feed.py recorre el archivo desde state.json.
-            python3 generate_feed.py
-            python3 - <<'PY'
-            import json
-            from pathlib import Path
-            data=json.loads(Path("latest.json").read_text(encoding="utf-8"))
-            items=data.get("items",[])[:200]
-            recent={"source":data.get("source"),"generated_at":data.get("generated_at"),"count":len(items),"items":items}
-            Path("recent.json").write_text(json.dumps(recent,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
-            print(f"Europa Press refrescada: {len(items)} noticias recientes")
-            PY
-
             python3 telegram/radar_no_d1.py
             python3 telegram/prune_events.py
             python3 ttittulares/auto_queue.py
@@ -65,8 +48,7 @@ jobs:
             python3 ttittulares/build_status.py
             python3 telegram/autocheck_ttittulares.py
 
-            git add feed.xml latest.json recent.json state.json archive/ \
-              telegram/events.json telegram/processed-events.json telegram/editorial-processing.json \
+            git add telegram/events.json telegram/processed-events.json telegram/editorial-processing.json \
               telegram/autocheck-status.json telegram/autocheck-alert-state.json ttittulares/status.json
 
             if git diff --cached --quiet; then
