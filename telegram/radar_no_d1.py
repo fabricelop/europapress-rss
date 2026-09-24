@@ -130,6 +130,7 @@ def get(url):
  r=urllib.request.Request(url,headers=headers)
  return urllib.request.urlopen(r,timeout=12).read().decode("utf-8","ignore")
 def clean(s): return re.sub(r"\s+"," ",html.unescape(re.sub("<[^>]+>"," ",str(s)))).strip()
+# Regression guard: Macklemore/Free Palestine vs protesta de Ed Sheeran (2026-09-24)
 TOKEN_ALIASES={
  "frontera":"frontera","fronteras":"frontera","fronterizo":"frontera","fronteriza":"frontera","fronterizos":"frontera","fronterizas":"frontera",
  "pide":"pedir","pidio":"pedir","pedir":"pedir","pedido":"pedir","pidiendo":"pedir","solicita":"pedir","solicito":"pedir",
