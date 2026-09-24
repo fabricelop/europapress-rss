@@ -46,6 +46,7 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25p
 <script>
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
+const SHELL_BUILD="ttendencias-preparados-v2-20260924";
 const $=id=>document.getElementById(id);
 let model={items:[],top:[],upcoming:[],requests:[]},reworkItem=null,openIds=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -203,6 +204,25 @@ async function load(){
 $("cancel").onclick=()=>{$("sheet").classList.remove("show");reworkItem=null};
 $("sendRework").onclick=async()=>{if(!reworkItem)return;const instruction=$("instruction").value.trim();if(!instruction){toast("Escribe primero qué quieres cambiar");return}const rel=related(reworkItem);if(!confirm("¿Enviar "+rel.join(", ")+" a reelaborar con estas instrucciones?"))return;const backup=[...(model.items||[])];clearLocal(rel);removeItem(reworkItem);$("sheet").classList.remove("show");try{await api("rework",rel,{instruction});toast("Enviada a reelaborar")}catch(e){model.items=backup;render();toast(e.message)}};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)load()});window.addEventListener("pageshow",load);load();setInterval(()=>{if(!document.hidden)load()},60000);
+async function refreshShellIfNeeded(){
+ try{
+  const r=await fetch("/ttendencias/preparados/index.html?shellcheck="+Date.now(),{cache:"no-store"});
+  const html=await r.text();
+  const m=html.match(/const SHELL_BUILD="([^"]+)"/);
+  if(m&&m[1]!==SHELL_BUILD){location.reload();return true}
+ }catch(_){}
+ return false
+}
+document.addEventListener("visibilitychange",async()=>{if(!document.hidden){if(!(await refreshShellIfNeeded()))load()}});
+window.addEventListener("pageshow",async()=>{if(!(await refreshShellIfNeeded()))load()});
+if("serviceWorker" in navigator){
+ navigator.serviceWorker.register("/ttendencias/sw.js",{updateViaCache:"none"}).then(reg=>reg.update().catch(()=>{})).catch(()=>{});
+ navigator.serviceWorker.addEventListener("controllerchange",()=>{
+   if(sessionStorage.getItem("ttendencias-prepared-sw-reloaded")==="1")return;
+   sessionStorage.setItem("ttendencias-prepared-sw-reloaded","1");
+   location.reload();
+ });
+}
+load();setInterval(()=>{if(!document.hidden)load()},60000);
 </script>
 </body></html>
