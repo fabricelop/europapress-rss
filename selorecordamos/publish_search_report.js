@@ -75,6 +75,20 @@ function ensureCleanRebaseState() {
   throw new Error('Hay un rebase Git incompleto y no se pudo limpiar automaticamente.');
 }
 
+function ensureCleanMergeState() {
+  const gitDir = runGit(['rev-parse', '--git-dir']).trim();
+  const absGitDir = path.resolve(repoDir, gitDir);
+  const mergeHead = path.join(absGitDir, 'MERGE_HEAD');
+  if (!fs.existsSync(mergeHead)) return;
+
+  const abort = gitStatus(['merge', '--abort']);
+  if (abort.status === 0) {
+    console.log('Merge Git incompleto detectado y abortado antes de publicar el informe.');
+    return;
+  }
+  throw new Error('Hay un merge Git incompleto y no se pudo abortar automaticamente.');
+}
+
 function ensureMainBranch() {
   const branch = gitStatus(['symbolic-ref', '--short', '-q', 'HEAD']);
   const current = branch.status === 0 ? branch.stdout.trim() : '';
@@ -119,6 +133,7 @@ try {
   // Robustez: un rebase antiguo o detached HEAD no debe bloquear para siempre
   // las ejecuciones horarias de SeLoRecordamos.
   ensureCleanRebaseState();
+  ensureCleanMergeState();
   resolveGeneratedStateConflicts();
   ensureMainBranch();
 
