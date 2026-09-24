@@ -137,6 +137,10 @@ TOKEN_ALIASES={
  "detenido":"detener","detenida":"detener","detencion":"detener","detenciones":"detener",
  "muere":"morir","murio":"morir","muerto":"morir","muerta":"morir","fallece":"morir","fallecio":"morir",
  "cerrada":"cerrar","cerrado":"cerrar","cierra":"cerrar","cierre":"cerrar",
+ "sanidad":"salud","salud":"salud",
+ "australia":"australia","australiana":"australia","australiano":"australia","australianas":"australia","australianos":"australia",
+ "autorizacion":"permiso","autorizado":"permiso","autorizada":"permiso","permiso":"permiso",
+ "accede":"acceder","accedio":"acceder","acceder":"acceder","hackeo":"acceder","hackear":"acceder","cuela":"acceder","colarse":"acceder",
 }
 EVENT_ACTION_ALIASES={
  "reunion":"reunion","reunirse":"reunion","reunen":"reunion","reune":"reunion","renen":"reunion","encuentro":"reunion","entrevista":"reunion",
@@ -159,9 +163,9 @@ def event_actions(s):
 PROPER_GENERIC={"nueva","york","estados","unidos","casa","blanca","onu","europa","espana","gobierno","congreso","senado"}
 def proper_tokens(s):
  out=set()
- for raw in re.findall(r"\b[A-ZÁÉÍÓÚÜÑ][A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{2,}\b",str(s)):
+ for raw in re.findall(r"\b[A-ZÁÉÍÓÚÜÑ][A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{1,}\b",str(s)):
   tok="".join(c for c in unicodedata.normalize("NFKD",raw.lower()) if not unicodedata.combining(c))
-  if tok not in PROPER_GENERIC and tok not in GENERIC_MATCH: out.add(tok)
+  if tok not in STOP and tok not in PROPER_GENERIC and tok not in GENERIC_MATCH: out.add(tok)
  return out
 
 def same_event_semantic(a,b):
@@ -170,12 +174,16 @@ def same_event_semantic(a,b):
  # Esto une reformulaciones muy diferentes del mismo hecho (p. ej. una cabecera
  # habla de "llegada" y otra de "alfombra roja") sin mezclar sucesos genéricos.
  common=proper_tokens(a)&proper_tokens(b)
- if len(common)<2:
-  return False
- if event_actions(a)&event_actions(b):
-  return True
  distinctive=(fp(a)&fp(b))-GENERIC_MATCH
- return len(distinctive)>=3
+ if len(common)>=2 and event_actions(a)&event_actions(b):
+  return True
+ if len(common)>=2 and len(distinctive)>=3:
+  return True
+ # Un único nombre propio también basta cuando hay muchas anclas concretas
+ # compartidas; útil para titulares que traducen/reformulan el mismo incidente.
+ if len(common)>=1 and len(distinctive)>=5:
+  return True
+ return False
 
 def norm(s):
  s=''.join(c for c in unicodedata.normalize("NFKD",str(s).lower()) if not unicodedata.combining(c))
@@ -571,6 +579,18 @@ if "--selftest-dedupe" in sys.argv:
    'El Congreso de los Diputados retira de forma definitiva la acreditación a Vito Quiles',
    True,
    "misma noticia Vito Quiles",
+  ),
+  (
+   'Alfombra roja, IA y desconfianza mutua: las claves de la cumbre entre Trump y Xi en EEUU',
+   'Trump recibe a Xi con una alfombra roja en su primera visita de Estado en una década',
+   True,
+   "misma visita Trump Xi con enfoques distintos",
+  ),
+  (
+   'Un agente de inteligencia artificial de OpenAI accede sin permiso a datos del sistema de salud de Australia',
+   'Una IA de OpenAI se cuela sin permiso en la sanidad pública australiana',
+   True,
+   "mismo incidente OpenAI Australia con vocabulario distinto",
   ),
  ]
  for a,b,should_match,label in tests:
