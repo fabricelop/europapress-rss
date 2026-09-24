@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parent
 RECENT = ROOT / "recent.json"
+REQUESTS = ROOT / "requests.json"
 TTITTULARES_STATUS = ROOT.parent / "ttittulares" / "status.json"
 TTITTULARES_EVENTS = ROOT.parent / "telegram" / "events.json"
 MADRID = ZoneInfo("Europe/Madrid")
@@ -532,6 +533,45 @@ def build_upcoming(source_data, top10, previous_doc, status_doc, full_events, no
         row.pop("_score", None)
     return rows[:8]
 
+def filter_dismissed_upcoming(rows, requests_doc):
+    """No resucitar en Radar una señal que el usuario acaba de desestimar.
+
+    Solo se permite que vuelva si la noticia asociada apareció al menos 10
+    minutos después del último descarte; de ese modo un hecho realmente nuevo
+    puede volver al Radar, pero una noticia antigua no reaparece en cada
+    refresco.
+    """
+    latest = {}
+    for req in requests_doc.get("requests", []) or []:
+        name = req.get("name")
+        if name:
+            latest[term_key(name)] = req
+
+    kept = []
+    for row in rows:
+        req = latest.get(term_key(row.get("name")))
+        if str((req or {}).get("status") or "") != "dismissed":
+            kept.append(row)
+            continue
+
+        closed_raw = (req or {}).get("dismissed_at") or (req or {}).get("explained_at")
+        first_raw = row.get("news_first_seen")
+        if not closed_raw or not first_raw:
+            continue
+        try:
+            closed = datetime.fromisoformat(str(closed_raw).replace("Z", "+00:00"))
+            first = datetime.fromisoformat(str(first_raw).replace("Z", "+00:00"))
+            if closed.tzinfo is None:
+                closed = closed.replace(tzinfo=timezone.utc)
+            if first.tzinfo is None:
+                first = first.replace(tzinfo=timezone.utc)
+            if (first - closed).total_seconds() > 10 * 60:
+                kept.append(row)
+        except Exception:
+            # Ante fechas no parseables, prevalece el descarte del usuario.
+            continue
+    return kept
+
 def anticipated_entries(top10, previous_doc, now):
     prior = {term_key(x.get("name")): x for x in (previous_doc.get("upcoming") or []) if x.get("name")}
     out = []
@@ -577,6 +617,8 @@ def main():
     ttittulares_events_doc = load_json(TTITTULARES_EVENTS, {})
     ttittulares_events = {str(x.get("id")): x for x in (ttittulares_events_doc.get("events") or []) if x.get("id")}
     upcoming = build_upcoming(source_data, top10, previous_doc, ttittulares_status, ttittulares_events, now)
+    requests_doc = load_json(REQUESTS, {"requests": []})
+    upcoming = filter_dismissed_upcoming(upcoming, requests_doc)
     anticipated = anticipated_entries(top10, previous_doc, now)
 
     payload = {
