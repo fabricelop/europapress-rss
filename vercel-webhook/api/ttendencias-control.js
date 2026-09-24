@@ -697,13 +697,14 @@ async function retryNames(names) {
 }
 
 async function stateSnapshot() {
-  const [recent, requests, explained, health, prepared, editorialConfig] = await Promise.all([
+  const [recent, requests, explained, health, prepared, editorialConfig, editorialQueue] = await Promise.all([
     readJson(RECENT),
     readJson(REQUESTS),
     readJson(EXPLAINED),
     readJson(HEALTH),
     readJson(PREPARED),
     readJson(EDITORIAL_CONFIG),
+    readJson(EDITORIAL_QUEUE),
   ]);
 
   // Autorreparación del refresco: si GitHub retrasa o pierde ejecuciones cron,
@@ -741,6 +742,7 @@ async function stateSnapshot() {
     health: health.doc,
     prepared: prepared.doc,
     editorial_config: editorialConfig.doc,
+    editorial_queue: editorialQueue.doc,
     refresh_recovery,
   };
 }

@@ -58,7 +58,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
 <script>
 const API="/api/ttendencias-control";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="ttendencias-dismiss-ex-image-20260924";
+const SHELL_BUILD="ttendencias-live-queue-empty-groups-20260924";
 const $=id=>document.getElementById(id);
 let model=null,busy=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -101,7 +101,7 @@ function freshnessText(v){
  return "● Desactualizado: "+mins+" min";
 }
 function editorialTimingText(){
- const active=(model?.items||[]).filter(x=>x.status==="active"&&!x.ready&&x.requested_at);
+ const active=(model?.editorial_queue?.items||[]).filter(x=>["preparing","update"].includes(String(x.status||""))&&x.requested_at);
  const box=$("editorialTiming");if(!active.length){box.className="timing";box.textContent="";return}
  const now=Date.now(),stamps=active.map(x=>new Date(x.requested_at).getTime()).filter(Number.isFinite);
  if(!stamps.length){box.className="timing";box.textContent="";return}
@@ -181,7 +181,7 @@ async function deactivatePush(){
  showToast("Avisos desactivados");await refreshPushStatus();
 }
 
-function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig){
+function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,editorialQueue){
  const requests=Array.isArray(requestDoc.requests)?requestDoc.requests:[],local=localState();
  const explainedSet=new Set((explained.items||[]).map(x=>nrm(x.name)));
  const anticipatedByName={};for(const x of (recent.anticipated_entries||[]))anticipatedByName[nrm(x.name)]=x;
@@ -246,7 +246,7 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig)
    top_ready:actuallyReady(topRequests),top_total:topRequests.length,
    radar_ready:actuallyReady(radarRequests),radar_total:radarRequests.length
  };
- return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,items,upcoming,progress,prepared:preparedItems,health,editorial_config:editorialConfig||{}};
+ return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,items,upcoming,progress,prepared:preparedItems,health,editorial_config:editorialConfig||{},editorial_queue:editorialQueue||{items:[]}};
 }
 function render(){
  if(!model)return;
@@ -328,7 +328,7 @@ async function load(silent=false){
   if(!r.ok)throw new Error("No se pudieron leer los datos");
   const d=await r.json();
   if(!d?.ok)throw new Error(d?.error||"Estado TTendencias no disponible");
-  model=buildModel(d.recent||{},d.requests||{},d.explained||{},d.health||{},d.prepared||{items:[]},d.editorial_config||{});
+  model=buildModel(d.recent||{},d.requests||{},d.explained||{},d.health||{},d.prepared||{items:[]},d.editorial_config||{},d.editorial_queue||{items:[]});
   localStorage.setItem("ttendencias-last-model",JSON.stringify(model));render();
  }catch(e){if(!silent)showToast(e.message)}
 }
