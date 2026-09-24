@@ -150,5 +150,9 @@ Get-ScheduledTask -TaskName $listenerTask, $searchTask, $publishedTask, $watchdo
 } | Format-Table -AutoSize
 
 Write-Host ''
+Write-Host 'Publicando diagnostico local...'
+& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'publish-local-health.ps1')
+
+Write-Host ''
 Write-Host 'SeLoRecordamos queda configurado sin ventanas visibles.' -ForegroundColor Green
 Write-Host 'Busqueda: cada hora :05. Historico: cada hora :20. Watchdog: cada 15 min. Listener: continuo desde inicio de sesion.'
