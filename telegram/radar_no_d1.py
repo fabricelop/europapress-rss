@@ -1,4 +1,5 @@
 import json, base64,re,unicodedata,urllib.request,urllib.parse,urllib.error,html,os,hashlib,concurrent.futures,sys
+from functools import lru_cache
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
 
@@ -155,6 +156,7 @@ EVENT_ACTION_ALIASES={
  "aprobar":"aprobacion","aprueba":"aprobacion","avalar":"aprobacion","avala":"aprobacion",
  "prohibir":"prohibicion","prohibe":"prohibicion","vetar":"prohibicion","veta":"prohibicion",
 }
+@lru_cache(maxsize=50000)
 def event_actions(s):
  out=set()
  for x in norm(s):
@@ -162,6 +164,7 @@ def event_actions(s):
  return out
 
 PROPER_GENERIC={"nueva","york","estados","unidos","casa","blanca","onu","europa","espana","gobierno","congreso","senado"}
+@lru_cache(maxsize=50000)
 def proper_tokens(s):
  out=set()
  for raw in re.findall(r"\b[A-ZÁÉÍÓÚÜÑ][A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{1,}\b",str(s)):
@@ -186,6 +189,7 @@ def same_event_semantic(a,b):
   return True
  return False
 
+@lru_cache(maxsize=50000)
 def norm(s):
  s=''.join(c for c in unicodedata.normalize("NFKD",str(s).lower()) if not unicodedata.combining(c))
  out=[]
@@ -193,7 +197,8 @@ def norm(s):
   if len(x)<=2 or x in STOP: continue
   out.append(TOKEN_ALIASES.get(x,x))
  return out
-def fp(s): return set(norm(s))
+@lru_cache(maxsize=50000)
+def fp(s): return frozenset(norm(s))
 GENERIC_MATCH=set("""
 morir hombre mujer persona personas anos herido herida heridos heridas incendio forestal
 detener detenido detenida caer tres dos uno noticia ultima directo crisis actualidad
