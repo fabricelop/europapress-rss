@@ -47,26 +47,46 @@ jobs:
           set -e
           git config user.name "ttendencias-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add trends/recent.json trends/checkpoint.json trends/requests.json trends/editorial-queue.json
-          if git diff --cached --quiet; then
-            echo "TTendencias sin cambios."
-          else
+
+          for intento in 1 2 3 4; do
+            # No rebasar snapshots de la cola editorial: otro proceso puede
+            # modificarla mientras este ciclo calcula tendencias. Si main avanzó,
+            # recalculamos TTendencias sobre el estado nuevo y evitamos conflictos.
+            git fetch origin main
+            if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]; then
+              echo "TTendencias cambió en paralelo; recalculando ($intento/4)..."
+              git reset --hard origin/main
+              python3 trends/update_trends.py
+              python3 trends/auto_queue_new.py
+            fi
+
+            git add trends/recent.json trends/checkpoint.json trends/requests.json trends/editorial-queue.json
+            if git diff --cached --quiet; then
+              echo "TTendencias sin cambios."
+              exit 0
+            fi
+
             git commit -m "Actualizar Top 10 TTendencias"
-            for intento in 1 2 3 4; do
-              git fetch origin main
-              if ! git rebase origin/main; then
-                git rebase --abort || true
-                echo "Conflicto al guardar TTendencias; reintentando."
-                exit 1
-              fi
-              if git push origin HEAD:main; then
-                echo "TTendencias guardado correctamente (intento $intento)."
-                break
-              fi
+            git fetch origin main
+            if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD^)" ]; then
+              echo "Nuevo cambio concurrente en TTendencias; recalculando ($intento/4)..."
+              git reset --hard origin/main
               sleep $((intento * 2))
-              if [ "$intento" -eq 4 ]; then exit 1; fi
-            done
-          fi
+              continue
+            fi
+
+            if git push origin HEAD:main; then
+              echo "TTendencias guardado correctamente (intento $intento)."
+              exit 0
+            fi
+
+            echo "Push concurrente TTendencias; recalculando ($intento/4)..."
+            git reset --hard origin/main
+            sleep $((intento * 2))
+          done
+
+          echo "ERROR: no se pudo guardar TTendencias tras 4 recálculos seguros."
+          exit 1
 
       - name: Recuperación editorial TTendencias por API
         env:
