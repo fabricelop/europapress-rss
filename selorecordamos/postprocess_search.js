@@ -54,7 +54,9 @@ const unique = new Map();
 for (const c of result.candidates || []) unique.set(String(c.id), c);
 result.candidates = [...unique.values()];
 outbox.generated_at = result.fetched_at;
-outbox.candidates = result.candidates;
+const pendingMap = new Map((outbox.candidates || []).map(c => [String(c.id), c]));
+for (const c of result.candidates || []) pendingMap.set(String(c.id), c);
+outbox.candidates = [...pendingMap.values()].slice(-200);
 for (const c of result.candidates) writeJson(path.join(candidatesDir, `${c.id}.json`), c);
 if (result.candidates.length) {
   result.status = 'ok';
