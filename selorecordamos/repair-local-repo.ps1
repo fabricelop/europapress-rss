@@ -32,9 +32,29 @@ if (Test-Path $candidates) {
 
 Write-Host ('Copia local guardada en ' + $backup)
 
-Write-Host 'Abortando operaciones Git interrumpidas...' -ForegroundColor Cyan
-& git rebase --abort 2>$null
-& git merge --abort 2>$null
+Write-Host 'Limpiando operaciones Git interrumpidas...' -ForegroundColor Cyan
+$gitDirRaw = (& git rev-parse --git-dir 2>$null | Out-String).Trim()
+if (-not $gitDirRaw) { throw 'No se pudo localizar .git.' }
+$gitDir = if ([System.IO.Path]::IsPathRooted($gitDirRaw)) { $gitDirRaw } else { Join-Path $repo $gitDirRaw }
+
+$oldPreference = $ErrorActionPreference
+$ErrorActionPreference = 'Continue'
+try {
+    if ((Test-Path (Join-Path $gitDir 'rebase-merge')) -or (Test-Path (Join-Path $gitDir 'rebase-apply'))) {
+        & git rebase --abort 2>$null
+        if ($LASTEXITCODE -ne 0) { & git rebase --quit 2>$null }
+        Write-Host 'Rebase interrumpido limpiado.'
+    }
+
+    if (Test-Path (Join-Path $gitDir 'MERGE_HEAD')) {
+        & git merge --abort 2>$null
+        if ($LASTEXITCODE -ne 0) { & git reset --merge HEAD 2>$null }
+        Write-Host 'Merge interrumpido limpiado.'
+    }
+}
+finally {
+    $ErrorActionPreference = $oldPreference
+}
 
 Write-Host 'Sincronizando main con GitHub...' -ForegroundColor Cyan
 & git fetch origin main
