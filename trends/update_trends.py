@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 ROOT = Path(__file__).resolve().parent
 RECENT = ROOT / "recent.json"
 TTITTULARES_STATUS = ROOT.parent / "ttittulares" / "status.json"
+TTITTULARES_EVENTS = ROOT.parent / "telegram" / "events.json"
 MADRID = ZoneInfo("Europe/Madrid")
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124 Safari/537.36",
@@ -430,18 +431,24 @@ def term_matches_title(term, title):
         return re.search(rf"(?:^|\s){re.escape(words[0])}(?:\s|$)", title_fold) is not None
     return all(re.search(rf"(?:^|\s){re.escape(word)}(?:\s|$)", title_fold) for word in words)
 
-def best_news_signal(term, status_doc):
+def best_news_signal(term, status_doc, full_events):
     best = None
     for event_id, event in (status_doc.get("events") or {}).items():
         if str(event.get("status") or "") == "DISMISSED":
             continue
         if not term_matches_title(term, event.get("title")):
             continue
+        full_event = full_events.get(str(event_id), {})
+        first_seen = full_event.get("first_seen")
+        if not first_seen:
+            seen_values = [a.get("first_seen") for a in (full_event.get("appearances") or []) if a.get("first_seen")]
+            first_seen = min(seen_values) if seen_values else None
         row = {
             "event_id": event_id,
             "title": str(event.get("title") or ""),
             "source_count": int(event.get("source_count") or 0),
             "status": str(event.get("status") or ""),
+            "first_seen": first_seen,
             "last_seen": event.get("last_seen"),
         }
         if best is None or row["source_count"] > best["source_count"]:
@@ -473,12 +480,12 @@ def lower_rank_stats(source_data, top10):
             row["best_observed_rank"] = min(row["best_observed_rank"], rank)
     return stats
 
-def build_upcoming(source_data, top10, previous_doc, status_doc, now):
+def build_upcoming(source_data, top10, previous_doc, status_doc, full_events, now):
     stats = lower_rank_stats(source_data, top10)
     previous = {term_key(x.get("name")): x for x in (previous_doc.get("upcoming") or []) if x.get("name")}
     rows = []
     for key, row in stats.items():
-        news = best_news_signal(row["name"], status_doc)
+        news = best_news_signal(row["name"], status_doc, full_events)
         news_count = int((news or {}).get("source_count") or 0)
         social_count = int(row["social_source_count"])
         if social_count < 2 and not (social_count >= 1 and news_count >= 4):
@@ -516,6 +523,7 @@ def build_upcoming(source_data, top10, previous_doc, status_doc, now):
             "news_event_id": (news or {}).get("event_id"),
             "news_title": (news or {}).get("title"),
             "news_status": (news or {}).get("status"),
+            "news_first_seen": (news or {}).get("first_seen"),
             "_score": score,
         })
 
@@ -566,7 +574,9 @@ def main():
     fresh = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") == "fresh"]
     reliability = "high" if len(non_stale) >= 6 else ("medium" if len(non_stale) >= 3 else "fallback")
     ttittulares_status = load_json(TTITTULARES_STATUS, {})
-    upcoming = build_upcoming(source_data, top10, previous_doc, ttittulares_status, now)
+    ttittulares_events_doc = load_json(TTITTULARES_EVENTS, {})
+    ttittulares_events = {str(x.get("id")): x for x in (ttittulares_events_doc.get("events") or []) if x.get("id")}
+    upcoming = build_upcoming(source_data, top10, previous_doc, ttittulares_status, ttittulares_events, now)
     anticipated = anticipated_entries(top10, previous_doc, now)
 
     payload = {
