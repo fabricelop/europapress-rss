@@ -38,6 +38,8 @@ def save_editorial_queue(requests_doc):
             "revision": int(req.get("revision") or 0),
             "rewrite_instruction": req.get("rewrite_instruction") or req.get("rewrite_request") or "",
             "with_image": bool(req.get("with_image")),
+            "image_mode": "existing_web_image",
+            "image_instruction": "Busca una imagen existente y relevante en una fuente fiable. Guarda URL directa, fuente y página de origen; no generes una imagen.",
             "auto_queued": bool(req.get("auto_queued")),
         })
     active.sort(key=lambda x: str(x.get("requested_at") or ""))
@@ -132,7 +134,7 @@ for item in to_queue:
         "requested_at": now,
         "revision": int((req or {}).get("revision") or 0),
         "reexplain": False,
-        "with_image": False,
+        "with_image": True,
         "alternatives_target": 3,
         "batch_id": batch_id,
         # Auto-queueing at the same capture time is NOT evidence that trends
