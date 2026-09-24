@@ -27,7 +27,6 @@ jobs:
         run: |
           test -n "$VERCEL_TOKEN" || { echo "::error::Falta VERCEL_TOKEN"; exit 2; }
       - name: Desplegar a producción
-        working-directory: vercel-webhook
         run: |
           mkdir -p .vercel
           printf '%s\n' '{"orgId":"team_H8xHbBIbIKnsaLeITszidyOK","projectId":"prj_X1UxNqQasd8Ouf7jUpxNccbQdASf"}' > .vercel/project.json
