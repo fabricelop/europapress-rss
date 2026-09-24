@@ -14,6 +14,16 @@ const { chromium } = require('playwright');
     if(r.status!==0||!String(r.stdout||'').trim())return fallback;
     try{return JSON.parse(r.stdout);}catch(_){return fallback;}
   };
+  const cleanInterruptedGitOperation=()=>{
+    let gitDir='';
+    try{gitDir=runGit(['rev-parse','--git-dir']).trim();}catch(_){return;}
+    const absGitDir=path.resolve(repoDir,gitDir);
+    if(fs.existsSync(path.join(absGitDir,'rebase-merge'))||fs.existsSync(path.join(absGitDir,'rebase-apply'))){
+      let r=gitStatus(['rebase','--abort']);
+      if(r.status!==0)gitStatus(['rebase','--quit']);
+    }
+    if(fs.existsSync(path.join(absGitDir,'MERGE_HEAD')))gitStatus(['merge','--abort']);
+  };
   const resolveGeneratedStateConflicts=()=>{
     const r=gitStatus(['diff','--name-only','--diff-filter=U']);
     if(r.status!==0)return;
@@ -121,6 +131,7 @@ const { chromium } = require('playwright');
   console.log(JSON.stringify({since:new Date(since).toISOString(),source:url,query,final_url:diagnostics.final_url,title:diagnostics.title,articles_seen:diagnostics.articles_seen,diagnostic_file:diagnosticFile,found_now:posts.length,total_history:all.length,posts},null,2));
 
   if(process.env.SR_PUBLISHED_PUSH==='1'){
+    cleanInterruptedGitOperation();
     resolveGeneratedStateConflicts();
     cp.execFileSync('git',['add','selorecordamos/published-replies.json'],{cwd:repoDir,stdio:'inherit'});
     const d=cp.spawnSync('git',['diff','--cached','--quiet'],{cwd:repoDir});
