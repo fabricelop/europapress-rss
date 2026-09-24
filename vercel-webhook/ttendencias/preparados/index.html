@@ -11,9 +11,9 @@
 *{box-sizing:border-box}body{margin:0;background:#0b0e14;min-height:100vh}button,a{font:inherit}
 .top{position:sticky;top:0;z-index:20;background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36;padding:13px max(12px,env(safe-area-inset-left));display:flex;align-items:center;gap:10px}.back{color:#89b8ff;text-decoration:none;font-weight:750}.title{font-weight:850;font-size:18px}.spacer{flex:1}.count{font-size:12px;color:#9ba7b8;border:1px solid #303846;border-radius:999px;padding:6px 9px}
 main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25px}.groupHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 2px 10px}.groupHead h2{font-size:19px;margin:0}.ratio{font-size:12px;font-weight:800;color:#a9bad0;border:1px solid #344256;border-radius:999px;padding:5px 8px}.subhead{font-size:13px;font-weight:850;color:#c5cfdd;margin:12px 2px 7px}.processingList{display:grid;gap:8px}.processingCard{background:#101720;border:1px solid #2d3b4d;border-radius:13px;padding:11px 12px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}.processingName{font-weight:790}.processingMeta{font-size:11px;color:#8fa0b5;margin-top:4px}.origin{font-size:11px;border:1px solid #3b4d64;border-radius:999px;padding:5px 8px;color:#b9cae0}
-.list{display:grid;gap:9px}.rowcard{background:#11161e;border:1px solid #29313d;border-radius:15px;overflow:hidden}.summaryrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px}.trend{font-size:16px;font-weight:820}.small{font-size:11px;color:#8390a1;margin-top:4px}.rowactions{display:flex;gap:7px}.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:10px;padding:8px 10px;font-weight:760;text-decoration:none;min-height:38px}.btn.danger{color:#ff9da6}.btn.rework{color:#c9b5ff}.detail{display:none;border-top:1px solid #29313d;padding:12px}.rowcard.open .detail{display:block}.explain{font-size:14px;line-height:1.45;color:#c8d0dc;white-space:pre-wrap;margin-bottom:13px}.variant{background:#0b1017;border:1px solid #293442;border-radius:13px;padding:11px;margin:9px 0}.variantHead{display:flex;gap:8px;align-items:center;margin-bottom:7px}.variantTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9dadc2}.chars{margin-left:auto;font-size:11px;color:#7f8b9c}.tweet,.remate{white-space:pre-wrap;font-size:14px;line-height:1.4}.variantActions,.finalActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.imagebox{background:#0d141d;border:1px solid #334155;border-radius:13px;padding:11px;margin:0 0 13px}.imageTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9dadc2;margin-bottom:5px}.imageMeta{font-size:12px;color:#aeb9c9;line-height:1.4;overflow-wrap:anywhere}.imageActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.empty{text-align:center;color:#9aa6b7;padding:50px 10px}.warning{font-size:12px;color:#f5c451;margin:8px 0}
+.list{display:grid;gap:9px}.rowcard{background:#11161e;border:1px solid #29313d;border-radius:15px;overflow:hidden}.summaryrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px}.trend{font-size:16px;font-weight:820}.small{font-size:11px;color:#8390a1;margin-top:4px}.rowactions{display:flex;flex-direction:column;align-items:stretch;gap:7px;min-width:116px}.rowactions .btn{width:100%;text-align:center}.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:10px;padding:8px 10px;font-weight:760;text-decoration:none;min-height:38px}.btn.danger{color:#ff9da6}.btn.rework{color:#c9b5ff}.detail{display:none;border-top:1px solid #29313d;padding:12px}.rowcard.open .detail{display:block}.explain{font-size:14px;line-height:1.45;color:#c8d0dc;white-space:pre-wrap;margin-bottom:13px}.variant{background:#0b1017;border:1px solid #293442;border-radius:13px;padding:11px;margin:9px 0}.variantHead{display:flex;gap:8px;align-items:center;margin-bottom:7px}.variantTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9dadc2}.chars{margin-left:auto;font-size:11px;color:#7f8b9c}.tweet,.remate{white-space:pre-wrap;font-size:14px;line-height:1.4}.variantActions,.finalActions{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin-top:9px}.variantActions .btn,.finalActions .btn{width:100%;text-align:center}.imagebox{background:#0d141d;border:1px solid #334155;border-radius:13px;padding:11px;margin:0 0 13px}.imageTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9dadc2;margin-bottom:5px}.imageMeta{font-size:12px;color:#aeb9c9;line-height:1.4;overflow-wrap:anywhere}.imageActions{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin-top:9px}.imageActions .btn{width:100%;text-align:center}.empty{text-align:center;color:#9aa6b7;padding:50px 10px}.warning{font-size:12px;color:#f5c451;margin:8px 0}
 .sheet{position:fixed;inset:0;background:#0009;z-index:50;display:none;align-items:flex-end}.sheet.show{display:flex}.panel{width:100%;max-width:600px;margin:0 auto;background:#111720;border:1px solid #354052;border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom))}.panel h2{margin:0 0 8px}.panel p{font-size:13px;color:#9eabba}textarea{width:100%;min-height:120px;background:#0a0f16;color:#eef3fa;border:1px solid #364153;border-radius:11px;padding:12px;font:inherit;resize:vertical}.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;transition:.2s;background:#1a2330;border:1px solid #3b485b;border-radius:10px;padding:9px 12px;z-index:80;max-width:90vw;text-align:center}.toast.show{opacity:1;transform:translateX(-50%)}
-@media(max-width:560px){.summaryrow{grid-template-columns:1fr}.rowactions .btn{flex:1}.rowactions{width:100%}.variantActions .btn,.finalActions .btn{flex:1;text-align:center}.trend{font-size:15px}}
+@media(max-width:560px){.summaryrow{grid-template-columns:1fr}.rowactions{width:100%;min-width:0}.trend{font-size:15px}}
 </style>
 </head>
 <body>
@@ -22,23 +22,23 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25p
   <section class="group" id="topGroup">
     <div class="groupHead"><h2>TOP 10</h2><div class="ratio" id="topRatio">0/0 listos</div></div>
     <div class="subhead">Listos</div>
-    <section class="list" id="topReady"><div class="empty">Cargando…</div></section>
+    <section class="list" id="topReady"></section>
     <div class="subhead">Elaborando</div>
-    <section class="processingList" id="topProcessing"><div class="empty">Cargando…</div></section>
+    <section class="processingList" id="topProcessing"></section>
   </section>
   <section class="group" id="radarGroup">
     <div class="groupHead"><h2>Próximas tendencias</h2><div class="ratio" id="radarRatio">0/0 listos</div></div>
     <div class="subhead">Listos</div>
-    <section class="list" id="radarReady"><div class="empty">Cargando…</div></section>
+    <section class="list" id="radarReady"></section>
     <div class="subhead">Elaborando</div>
-    <section class="processingList" id="radarProcessing"><div class="empty">Cargando…</div></section>
+    <section class="processingList" id="radarProcessing"></section>
   </section>
   <section class="group" id="exGroup">
     <div class="groupHead"><h2>EX TOP 10</h2><div class="ratio" id="exRatio">0/0 listos</div></div>
     <div class="subhead">Listos</div>
-    <section class="list" id="exReady"><div class="empty">Cargando…</div></section>
+    <section class="list" id="exReady"></section>
     <div class="subhead">Elaborando</div>
-    <section class="processingList" id="exProcessing"><div class="empty">Cargando…</div></section>
+    <section class="processingList" id="exProcessing"></section>
   </section>
 </main>
 <div class="sheet" id="sheet"><div class="panel"><h2>Rehacer redacción</h2><p id="reworkName"></p><textarea id="instruction" placeholder="Indica qué quieres cambiar: enfoque, explicación, remate, tono, datos a verificar…"></textarea><div class="finalActions"><button class="btn" id="cancel">Cancelar</button><button class="btn" id="sendRework">Enviar a reelaborar</button></div></div></div>
@@ -46,6 +46,7 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25p
 <script>
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
+const SHELL_BUILD="ttendencias-preparados-v2-20260924";
 const $=id=>document.getElementById(id);
 let model={items:[],top:[],upcoming:[],requests:[]},reworkItem=null,openIds=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -130,19 +131,21 @@ function renderProcessingCards(container,items,emptyText){
  }
 }
 function render(){
- const preparedVisible=model.items||[],active=(model.requests||[]).filter(x=>["preparing","update","ready"].includes(String(x.status||"")));
- const topReq=active.filter(x=>isTopName(x.name));
- const radarReq=active.filter(x=>!isTopName(x.name)&&Boolean(x.anticipated)&&isRadarName(x.name));
- const exReq=active.filter(x=>!isTopName(x.name)&&!(Boolean(x.anticipated)&&isRadarName(x.name)));
+ const preparedVisible=model.items||[],processing=(model.requests||[]).filter(x=>["preparing","update"].includes(String(x.status||"")));
  const topReady=preparedVisible.filter(x=>itemGroup(x)==="top");
  const radarReady=preparedVisible.filter(x=>itemGroup(x)==="radar");
  const exReady=preparedVisible.filter(x=>itemGroup(x)==="ex");
- const topProcessing=topReq.filter(x=>["preparing","update"].includes(String(x.status||"")));
- const radarProcessing=radarReq.filter(x=>["preparing","update"].includes(String(x.status||"")));
- const exProcessing=exReq.filter(x=>["preparing","update"].includes(String(x.status||"")));
- $("topRatio").textContent=topReady.length+"/"+topReq.length+" listos";
- $("radarRatio").textContent=radarReady.length+"/"+radarReq.length+" listos";
- $("exRatio").textContent=exReady.length+"/"+exReq.length+" listos";
+ const readyNames={top:new Set(),radar:new Set(),ex:new Set()};
+ for(const item of preparedVisible){
+   const group=itemGroup(item);
+   for(const name of related(item))readyNames[group].add(nrm(name));
+ }
+ const topProcessing=processing.filter(x=>isTopName(x.name)&&!readyNames.top.has(nrm(x.name)));
+ const radarProcessing=processing.filter(x=>!isTopName(x.name)&&Boolean(x.anticipated)&&isRadarName(x.name)&&!readyNames.radar.has(nrm(x.name)));
+ const exProcessing=processing.filter(x=>!isTopName(x.name)&&!(Boolean(x.anticipated)&&isRadarName(x.name))&&!readyNames.ex.has(nrm(x.name)));
+ $("topRatio").textContent=topReady.length+"/"+(topReady.length+topProcessing.length)+" listos";
+ $("radarRatio").textContent=radarReady.length+"/"+(radarReady.length+radarProcessing.length)+" listos";
+ $("exRatio").textContent=exReady.length+"/"+(exReady.length+exProcessing.length)+" listos";
  $("count").textContent=topReady.length+radarReady.length+exReady.length;updateBadge();
  const showGroup=(groupId,readyId,processingId,readyItems,processingItems)=>{
    const group=$(groupId),readyEl=$(readyId),processingEl=$(processingId);
@@ -201,6 +204,25 @@ async function load(){
 $("cancel").onclick=()=>{$("sheet").classList.remove("show");reworkItem=null};
 $("sendRework").onclick=async()=>{if(!reworkItem)return;const instruction=$("instruction").value.trim();if(!instruction){toast("Escribe primero qué quieres cambiar");return}const rel=related(reworkItem);if(!confirm("¿Enviar "+rel.join(", ")+" a reelaborar con estas instrucciones?"))return;const backup=[...(model.items||[])];clearLocal(rel);removeItem(reworkItem);$("sheet").classList.remove("show");try{await api("rework",rel,{instruction});toast("Enviada a reelaborar")}catch(e){model.items=backup;render();toast(e.message)}};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)load()});window.addEventListener("pageshow",load);load();setInterval(()=>{if(!document.hidden)load()},60000);
+async function refreshShellIfNeeded(){
+ try{
+  const r=await fetch("/ttendencias/preparados/index.html?shellcheck="+Date.now(),{cache:"no-store"});
+  const html=await r.text();
+  const m=html.match(/const SHELL_BUILD="([^"]+)"/);
+  if(m&&m[1]!==SHELL_BUILD){location.reload();return true}
+ }catch(_){}
+ return false
+}
+document.addEventListener("visibilitychange",async()=>{if(!document.hidden){if(!(await refreshShellIfNeeded()))load()}});
+window.addEventListener("pageshow",async()=>{if(!(await refreshShellIfNeeded()))load()});
+if("serviceWorker" in navigator){
+ navigator.serviceWorker.register("/ttendencias/sw.js",{updateViaCache:"none"}).then(reg=>reg.update().catch(()=>{})).catch(()=>{});
+ navigator.serviceWorker.addEventListener("controllerchange",()=>{
+   if(sessionStorage.getItem("ttendencias-prepared-sw-reloaded")==="1")return;
+   sessionStorage.setItem("ttendencias-prepared-sw-reloaded","1");
+   location.reload();
+ });
+}
+load();setInterval(()=>{if(!document.hidden)load()},60000);
 </script>
 </body></html>
