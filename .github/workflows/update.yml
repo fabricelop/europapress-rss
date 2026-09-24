@@ -169,8 +169,8 @@ jobs:
       - name: Ejecutar y guardar barrido multifuente TTiTTulares
         if: always()
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Telegram está fuera del flujo operativo de TTiTTulares.
+          # El autocheck conserva diagnóstico, pero no recibe credenciales de envío.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
