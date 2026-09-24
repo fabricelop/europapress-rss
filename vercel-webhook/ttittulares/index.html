@@ -228,11 +228,11 @@ function renderReady(list){
   for(const v of variants(item)){
     const box=document.createElement("div");box.className="variant";
     const text=String(v.text||"");
-    const isPrincipal=String(v.label||"").toLowerCase()==="principal";
+    const isPrincipal=String(v.label||v.name||"").toLowerCase()==="principal";
     const remate=String(v.remate||"");
     const shown=isPrincipal?text:(remate.startsWith("🌶️")?remate:("🌶️ "+remate));
     box.innerHTML='<div class="vhead"><span class="vname"></span><span class="chars"></span></div><div class="tweet"></div><div class="actions"><a class="btn primary openx" target="_blank" rel="noopener">Abrir en X</a><button class="btn copy">Copiar</button></div>';
-    box.querySelector(".vname").textContent=v.label||"Versión";box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=shown;
+    box.querySelector(".vname").textContent=v.label||v.name||"Versión";box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=shown;
     box.querySelector(".openx").href=v.url||intent(text);box.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado"));
     vh.appendChild(box)
   }
