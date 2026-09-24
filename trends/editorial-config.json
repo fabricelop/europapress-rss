@@ -3,7 +3,7 @@
   "editorial": {
     "alternatives_target": 3,
     "alternatives_block_send": false,
-    "images_enabled_in_web_control": false,
+    "images_enabled_in_web_control": true,
     "schedule_minutes": [
       0,
       30
@@ -22,14 +22,28 @@
     "delay_warning_after_minutes": 30,
     "problematic_only_on_editorial_failure": true,
     "image_policy": {
-      "enabled": false,
-      "format": "1:1",
-      "generate_when_candidate": true,
+      "enabled": true,
+      "mode": "existing_web_image",
+      "generate_when_candidate": false,
       "non_blocking": true,
-      "prompt_basis": "factual_explanation_plus_blended_tone_of_all_remates",
-      "skip_if_forced_or_sensitive": true,
-      "storage": "vercel_blob",
-      "delete_on_explained_or_dismissed": true
+      "source_preference": [
+        "official_or_primary",
+        "reputable_media"
+      ],
+      "require_source_page": true,
+      "display_in_web_control": "links",
+      "store": "external_url_only",
+      "rights_status_default": "unverified",
+      "output_schema": {
+        "image": {
+          "url": "direct_image_url",
+          "source": "publisher_or_owner",
+          "source_url": "page_where_image_appears",
+          "rights_status": "reusable|official|unverified",
+          "alt": "short_description"
+        }
+      },
+      "rule": "Buscar una imagen existente y relevante para cada tendencia. No generar imágenes. Priorizar fuentes oficiales o primarias y, después, medios fiables. Guardar siempre la página de origen. Si no se puede verificar permiso de reutilización, marcar rights_status=unverified."
     },
     "queue_consumer_only": true,
     "queue_states": [
