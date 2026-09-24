@@ -56,6 +56,21 @@
       "enabled": false,
       "grace_minutes": 8,
       "model": "gpt-5.6"
+    },
+    "early_trend_radar": {
+      "enabled": true,
+      "social_rank_window": [
+        11,
+        20
+      ],
+      "min_social_sources": 2,
+      "accept_one_social_source_when_ttittulares_sources_at_least": 4,
+      "max_candidates": 8,
+      "use_ttittulares": true,
+      "auto_queue_for_editorial": false,
+      "track_first_detection": true,
+      "track_entry_into_top10": true,
+      "note": "Radar informativo: muestra señales observadas, no una probabilidad."
     }
   },
   "delivery": {
