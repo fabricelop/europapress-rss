@@ -76,3 +76,20 @@ TTiTTulares queda en `control-mode=web`. Telegram no se utiliza para candidatos,
 - Elaboración: todos los días, 24 h, a :15 y :45.
 - La app muestra último radar, próximo radar con cuenta atrás y aviso de retraso, y próxima elaboración.
 - La instalación móvil usa una URL estable; la clave de control se guarda localmente en el primer acceso y no se vuelve a pedir.
+
+## Citas en X
+
+Cada noticia preparada puede incluir `quote_candidates` con hasta tres publicaciones públicas de X relacionadas con el mismo acontecimiento. El objetivo no es citar a otro medio que publique la misma noticia, sino una conversación complementaria: reacción, pregunta, comentario u opinión que permita aportar la información de TTiTTulares.
+
+Criterio editorial de candidatos:
+
+- excluir medios/agregadores y cuentas que estén reproduciendo sustancialmente el mismo titular;
+- preferir publicaciones recientes y directamente relacionadas con el hecho;
+- priorizar fuertemente poca interacción: 0–5 ideal, 6–20 buena, 21–100 aceptable solo si no hay opciones mejores; penalizar conversación ya viral;
+- preferir conversación humana/nicho frente a anuncios oficiales;
+- nunca inventar una URL ni un texto de X: si no hay candidato verificable, dejar la lista vacía;
+- no se usa la API de pago de X; la búsqueda se hace con web pública/indexada;
+- guardar siempre `quote_search` con la consulta y una URL de búsqueda Live de X como fallback manual.
+
+La app permite elegir uno de los candidatos y cada variante ofrece `Citar elegido`, además de `Publicar en X`. Si no hay candidato automático, se muestra `Buscar otro en X`.
+
