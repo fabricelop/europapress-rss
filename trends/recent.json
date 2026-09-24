@@ -1,102 +1,84 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-24T23:11:05+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-24T23:21:06+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
-    "tweets24",
-    "superx",
-    "snaplytics",
-    "trendswe"
+    "tweets24"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "tweets24"
+  ],
   "reliability": "high",
   "top10": [
+    "#SVGala3",
     "Hernández Hernández",
     "Ter Stegen",
     "Alemania",
-    "Mari Carmen",
-    "PSOE",
-    "Congreso",
-    "Retiro",
-    "#SVGala3",
-    "Franco",
-    "Ana Vázquez"
+    "Holanda",
+    "Borja",
+    "Euroliga",
+    "Rockstar",
+    "Netanyahu",
+    "Nations League"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "Hernández Hernández"
-    },
-    {
-      "rank": 2,
-      "name": "Ter Stegen"
-    },
-    {
-      "rank": 3,
-      "name": "Alemania"
-    },
-    {
-      "rank": 4,
-      "name": "Mari Carmen"
-    },
-    {
-      "rank": 5,
-      "name": "PSOE"
-    },
-    {
-      "rank": 6,
-      "name": "Congreso"
-    },
-    {
-      "rank": 7,
-      "name": "Retiro"
-    },
-    {
-      "rank": 8,
       "name": "#SVGala3"
     },
     {
+      "rank": 2,
+      "name": "Hernández Hernández"
+    },
+    {
+      "rank": 3,
+      "name": "Ter Stegen"
+    },
+    {
+      "rank": 4,
+      "name": "Alemania"
+    },
+    {
+      "rank": 5,
+      "name": "Holanda"
+    },
+    {
+      "rank": 6,
+      "name": "Borja"
+    },
+    {
+      "rank": 7,
+      "name": "Euroliga"
+    },
+    {
+      "rank": 8,
+      "name": "Rockstar"
+    },
+    {
       "rank": 9,
-      "name": "Franco"
+      "name": "Netanyahu"
     },
     {
       "rank": 10,
-      "name": "Ana Vázquez"
+      "name": "Nations League"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Hernández Hernández",
-    "Ter Stegen",
-    "Alemania",
-    "#SVGala3"
+    "Holanda",
+    "Borja",
+    "Euroliga",
+    "Rockstar",
+    "Netanyahu",
+    "Nations League"
   ],
   "upcoming": [
-    {
-      "name": "#FelizJueves",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "superx",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 16.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-24T16:37:32+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
     {
       "name": "Juanma Castaño",
       "social_source_count": 4,
@@ -107,8 +89,8 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 12.5,
-      "movement": "down",
+      "mean_observed_rank": 12.2,
+      "movement": "flat",
       "first_detected_at": "2026-09-24T20:01:36+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -127,7 +109,7 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 15.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-24T21:01:57+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -136,16 +118,15 @@
       "news_first_seen": null
     },
     {
-      "name": "La CIA",
-      "social_source_count": 4,
+      "name": "#FelizJueves",
+      "social_source_count": 3,
       "social_sources": [
         "snaplytics",
         "superx",
-        "trendswe",
-        "tweets24"
+        "trendswe"
       ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 16.2,
+      "best_observed_rank": 11,
+      "mean_observed_rank": 16.0,
       "movement": "down",
       "first_detected_at": "2026-09-24T16:37:32+02:00",
       "news_source_count": 0,
@@ -155,31 +136,59 @@
       "news_first_seen": null
     },
     {
-      "name": "Zapatero",
+      "name": "La CIA",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trendswe"
+      ],
+      "best_observed_rank": 16,
+      "mean_observed_rank": 16.3,
+      "movement": "down",
+      "first_detected_at": "2026-09-24T16:37:32+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "#LaIslaDeLasTentaciones6",
       "social_source_count": 2,
       "social_sources": [
         "snaplytics",
-        "tweets24"
+        "trendswe"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
+      "mean_observed_rank": 12.0,
       "movement": "new",
-      "first_detected_at": "2026-09-24T23:11:05+02:00",
-      "news_source_count": 5,
-      "news_event_id": "e4291df2583c",
-      "news_title": "Zapatero se opone a que Yanes perite sus joyas porque cree que la joyería «tiene interés» en tasarlas en dos millones de euros",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-24T14:22:22.539595Z"
-    }
-  ],
-  "anticipated_entries": [
+      "first_detected_at": "2026-09-24T23:21:06+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
     {
-      "name": "Ter Stegen",
-      "first_detected_at": "2026-09-24T22:44:49+02:00",
-      "entered_top10_at": "2026-09-24T23:11:05+02:00",
-      "lead_minutes": 26
+      "name": "Dubai",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-24T23:21:06+02:00",
+      "news_source_count": 1,
+      "news_event_id": "9468dd46426b",
+      "news_title": "El Madrid cae ante el Dubai en el último aliento",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-24T18:25:06.520298Z"
     }
   ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -210,7 +219,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T23:11:05+02:00"
+      "fetched_at": "2026-09-24T23:21:06+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -235,37 +244,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T23:11:06+02:00"
+      "fetched_at": "2026-09-24T23:21:07+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
-        "Mari Carmen",
-        "PSOE",
-        "Congreso",
-        "Retiro",
-        "Franco",
-        "Ana Vázquez",
-        "Ayuso",
+        "#SVGala3",
         "Hernández Hernández",
-        "Ana Belén",
-        "#LaIslaDeLasTentaciones6",
-        "Zapatero",
-        "Juanma Castaño",
         "Ter Stegen",
         "Alemania",
+        "Holanda",
+        "Borja",
+        "Euroliga",
+        "Rockstar",
+        "Netanyahu",
+        "Nations League",
+        "Juanma Castaño",
+        "Países Bajos",
+        "Dubai",
+        "Tito Berni",
         "Paquita",
-        "La CIA",
-        "#TEM24S",
-        "#FelizJueves",
-        "#simyoPackRealme16Pro",
-        "Vivienda"
+        "Klopp",
+        "Illa",
+        "#EuroLeague",
+        "Genocida",
+        "Benjamín Noval"
       ],
       "error": null,
-      "update_hint": "Updated 1 hour ago",
-      "age_minutes": 60.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-24T23:11:06+02:00"
+      "update_hint": "Updated 4 minutes ago",
+      "age_minutes": 4.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-24T23:21:08+02:00"
     },
     "superx": {
       "ok": true,
@@ -295,16 +304,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T23:11:07+02:00"
+      "fetched_at": "2026-09-24T23:21:09+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790284267",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790284869",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T23:11:07+02:00"
+      "fetched_at": "2026-09-24T23:21:09+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -332,9 +341,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 24, 2026 20:00 UTC",
-      "age_minutes": 71.1,
+      "age_minutes": 81.2,
       "freshness": "aging",
-      "fetched_at": "2026-09-24T23:11:08+02:00"
+      "fetched_at": "2026-09-24T23:21:09+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -362,18 +371,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 3550.1,
+      "age_minutes": 3560.2,
       "freshness": "stale",
-      "fetched_at": "2026-09-24T23:11:08+02:00"
+      "fetched_at": "2026-09-24T23:21:09+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790284270",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790284870",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T23:11:10+02:00"
+      "fetched_at": "2026-09-24T23:21:10+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -382,7 +391,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-24T23:11:11+02:00"
+      "fetched_at": "2026-09-24T23:21:11+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -412,16 +421,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T23:11:12+02:00"
+      "fetched_at": "2026-09-24T23:21:11+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790284274",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790284874",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T23:11:14+02:00"
+      "fetched_at": "2026-09-24T23:21:14+02:00"
     }
   }
 }

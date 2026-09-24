@@ -2057,10 +2057,10 @@
     {
       "id": "c0004f53de75",
       "name": "Ter Stegen",
-      "revision": 0,
-      "status": "ready",
-      "requested_at": "2026-09-24T20:53:49.003Z",
-      "rank": 2,
+      "revision": 1,
+      "status": "update",
+      "requested_at": "2026-09-24T23:21:15+02:00",
+      "rank": 3,
       "with_image": true,
       "alternatives_target": 3,
       "anticipated": true,
@@ -2074,9 +2074,9 @@
       ],
       "auto_queued": false,
       "anticipated_entered_top10_at": "2026-09-24T23:11:15+02:00",
-      "ready_at": "2026-09-24T21:16:23.877Z",
-      "delivery_confirmation": "prepared_web",
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "reexplain": true,
+      "rewrite_instruction": "Ha entrado en el Top 10: actualiza el encabezado al puesto real y verifica que el motivo siga siendo actual. Reutiliza la preparación del Radar si sigue siendo válida."
     },
     {
       "id": "7630decd1ac1",
@@ -2099,7 +2099,151 @@
       "ready_at": "2026-09-24T21:16:51.265Z",
       "delivery_confirmation": "prepared_web",
       "editorial_engine": "chatgpt-automation-outbox"
+    },
+    {
+      "id": "b88f57c4f5a5",
+      "name": "Holanda",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-09-24T23:21:15+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "763e0d394264",
+      "requested_together": [
+        "Holanda"
+      ],
+      "captured_with": [
+        "Holanda",
+        "Borja",
+        "Euroliga",
+        "Rockstar",
+        "Netanyahu",
+        "Nations League"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "bd042e58ae4a",
+      "name": "Borja",
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-09-24T23:21:15+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "763e0d394264",
+      "requested_together": [
+        "Borja"
+      ],
+      "captured_with": [
+        "Holanda",
+        "Borja",
+        "Euroliga",
+        "Rockstar",
+        "Netanyahu",
+        "Nations League"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "81fd5b53ecbf",
+      "name": "Euroliga",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-09-24T23:21:15+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "763e0d394264",
+      "requested_together": [
+        "Euroliga"
+      ],
+      "captured_with": [
+        "Holanda",
+        "Borja",
+        "Euroliga",
+        "Rockstar",
+        "Netanyahu",
+        "Nations League"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "78473ac88819",
+      "name": "Rockstar",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-09-24T23:21:15+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "763e0d394264",
+      "requested_together": [
+        "Rockstar"
+      ],
+      "captured_with": [
+        "Holanda",
+        "Borja",
+        "Euroliga",
+        "Rockstar",
+        "Netanyahu",
+        "Nations League"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "777a6134d993",
+      "name": "Netanyahu",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-09-24T23:21:15+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "763e0d394264",
+      "requested_together": [
+        "Netanyahu"
+      ],
+      "captured_with": [
+        "Holanda",
+        "Borja",
+        "Euroliga",
+        "Rockstar",
+        "Netanyahu",
+        "Nations League"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "bfa814178ca6",
+      "name": "Nations League",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-09-24T23:21:15+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "763e0d394264",
+      "requested_together": [
+        "Nations League"
+      ],
+      "captured_with": [
+        "Holanda",
+        "Borja",
+        "Euroliga",
+        "Rockstar",
+        "Netanyahu",
+        "Nations League"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-24T23:17:35+02:00"
+  "updated_at": "2026-09-24T23:21:15+02:00"
 }
