@@ -1855,10 +1855,12 @@
       "source_count": 0,
       "drafted_source_count": 0,
       "selected_at": "2026-09-24T07:53:30.430Z",
-      "status": "PROCESSING",
+      "status": "READY",
       "selection_mode": "MANUAL_WEB_USER",
       "manual_submission": true,
-      "revision": 1
+      "revision": 1,
+      "delivered_at": "2026-09-24T08:55:00Z",
+      "delivery_confirmation": "prepared_web"
     },
     {
       "event_id": "4f6320ff4767",
@@ -1872,11 +1874,13 @@
       "source_count": 3,
       "drafted_source_count": 3,
       "selected_at": "2026-09-24T07:59:44.154Z",
-      "status": "PROCESSING",
+      "status": "READY",
       "selection_mode": "MANUAL_WEB_3S",
       "revision": 1,
       "parent_event_id": null,
-      "update_context": null
+      "update_context": null,
+      "delivered_at": "2026-09-24T08:55:00Z",
+      "delivery_confirmation": "prepared_web"
     },
     {
       "event_id": "088b3017808e",
@@ -1896,12 +1900,14 @@
       "source_count": 9,
       "drafted_source_count": 9,
       "selected_at": "2026-09-24T08:35:23.845963Z",
-      "status": "PROCESSING",
+      "status": "READY",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
       "parent_event_id": null,
       "update_context": null,
-      "parallel_source_claimed_at": null
+      "parallel_source_claimed_at": null,
+      "delivered_at": "2026-09-24T08:55:00Z",
+      "delivery_confirmation": "prepared_web"
     },
     {
       "event_id": "6f93abb7cabe",
@@ -1918,6 +1924,28 @@
       "source_count": 6,
       "drafted_source_count": 6,
       "selected_at": "2026-09-24T08:35:23.845963Z",
+      "status": "READY",
+      "selection_mode": "AUTO_WEB",
+      "revision": 1,
+      "parent_event_id": null,
+      "update_context": null,
+      "parallel_source_claimed_at": null,
+      "delivered_at": "2026-09-24T08:55:00Z",
+      "delivery_confirmation": "prepared_web"
+    },
+    {
+      "event_id": "23255d9e76b5",
+      "title": "El Banco de España eleva a un millón el déficit de viviendas para 2028",
+      "url": "https://elpais.com/economia/vivienda/2026-09-23/el-banco-de-espana-eleva-a-un-millon-el-deficit-de-viviendas-para-2028.html",
+      "sources": [
+        "20minutos",
+        "EL PAÍS",
+        "La Vanguardia",
+        "Público"
+      ],
+      "source_count": 4,
+      "drafted_source_count": 4,
+      "selected_at": "2026-09-24T09:04:05.082912Z",
       "status": "PROCESSING",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
@@ -1926,5 +1954,5 @@
       "parallel_source_claimed_at": null
     }
   ],
-  "updated_at": "2026-09-24T08:55:01.719476Z"
+  "updated_at": "2026-09-24T09:04:05.101717Z"
 }
