@@ -58,7 +58,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
 <script>
 const API="/api/ttendencias-control";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="ttendencias-live-queue-empty-groups-20260924";
+const SHELL_BUILD="ttendencias-upcoming-dismiss-fix-20260924";
 const $=id=>document.getElementById(id);
 let model=null,busy=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -217,16 +217,20 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
  const explainedByName={};for(const x of (explained.items||[]))explainedByName[nrm(x.name)]=x;
  const upcoming=(recent.upcoming||[]).map(x=>{
    const req=latestFor(x.name),s=String(req?.status||""),previous=explainedByName[nrm(x.name)];
-   const explainedAt=req?.explained_at||previous?.explained_at||null;
-   const firstSeen=x.news_first_seen||null;
-   const explainedMs=explainedAt?new Date(explainedAt).getTime():0,firstMs=firstSeen?new Date(firstSeen).getTime():0;
    const already=s==="explained"||explainedSet.has(nrm(x.name)),dismissed=s==="dismissed";
+   // Para decidir si una señal cerrada puede reaparecer por novedad material,
+   // manda la acción de cierre más reciente. Si el usuario acaba de desestimar
+   // la señal, no debemos compararla con una explicación antigua y resucitarla
+   // en el siguiente refresco.
+   const closedAt=dismissed?(req?.dismissed_at||req?.explained_at||previous?.explained_at||null):(req?.explained_at||previous?.explained_at||null);
+   const firstSeen=x.news_first_seen||null;
+   const closedMs=closedAt?new Date(closedAt).getTime():0,firstMs=firstSeen?new Date(firstSeen).getTime():0;
    const previousTitle=String(previous?.news_title||previous?.explanation||"");
    const currentTitle=String(x.news_title||"");
    const words=v=>new Set(nrm(v).split(/[^a-z0-9áéíóúüñ]+/i).filter(w=>w.length>=4&&!["para","como","porque","sobre","desde","entre","tras","este","esta","unos","unas"].includes(w)));
    const a=words(previousTitle),b=words(currentTitle),common=[...a].filter(w=>b.has(w)).length;
    const sameStory=Boolean(previousTitle&&currentTitle&&common>=3&&common/Math.max(1,Math.min(a.size,b.size))>=0.45);
-   const materialNovelty=(already||dismissed)&&Number(x.news_source_count||0)>=4&&firstMs>0&&explainedMs>0&&firstMs>explainedMs+10*60*1000&&!sameStory;
+   const materialNovelty=(already||dismissed)&&Number(x.news_source_count||0)>=4&&firstMs>0&&closedMs>0&&firstMs>closedMs+10*60*1000&&!sameStory;
    if((already||dismissed)&&!materialNovelty)return null;
    return {name:String(x.name||""),social_source_count:Number(x.social_source_count||0),best_observed_rank:Number(x.best_observed_rank||0),mean_observed_rank:Number(x.mean_observed_rank||0),movement:String(x.movement||"flat"),news_source_count:Number(x.news_source_count||0),news_title:String(x.news_title||""),news_first_seen:firstSeen,first_detected_at:x.first_detected_at||null,request_status:s,anticipated_request:Boolean(req?.anticipated),requested_at:req?.requested_at||null,already_explained:already,previously_dismissed:dismissed,material_novelty:materialNovelty};
  }).filter(Boolean);
