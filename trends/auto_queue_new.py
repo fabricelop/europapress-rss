@@ -24,7 +24,15 @@ def norm(value):
     text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
     return " ".join(text.casefold().split())
 
+def image_queue_policy():
+    policy = (load("editorial-config.json", {}) or {}).get("editorial", {}).get("image_policy", {})
+    return (
+        str(policy.get("mode") or "generated_editorial_image"),
+        str(policy.get("queue_instruction") or "Genera SIEMPRE una imagen editorial ORIGINAL para la tendencia; no uses imágenes encontradas en Internet como imagen final."),
+    )
+
 def save_editorial_queue(requests_doc):
+    image_mode, image_instruction = image_queue_policy()
     active = []
     for req in requests_doc.get("requests", []) or []:
         if str(req.get("status") or "") not in {"preparing", "update"}:
@@ -38,8 +46,8 @@ def save_editorial_queue(requests_doc):
             "revision": int(req.get("revision") or 0),
             "rewrite_instruction": req.get("rewrite_instruction") or req.get("rewrite_request") or "",
             "with_image": bool(req.get("with_image")),
-            "image_mode": "existing_web_image",
-            "image_instruction": "Busca una imagen existente REAL y pertinente del mismo evento/persona. Método obligatorio: 1) intenta primero la fuente oficial/primaria o una noticia fiable sobre el hecho y extrae su og:image/imagen principal; 2) si falla, haz una búsqueda específica de imágenes y prueba una segunda fuente fiable. Prioriza una imagen del hecho actual frente a archivo genérico. No generes imágenes. Si encuentras una, guarda url directa, source, source_url, rights_status y alt. Solo declara no encontrada después de intentar ambas vías.",
+            "image_mode": image_mode,
+            "image_instruction": image_instruction,
             "batch_id": req.get("batch_id"),
             "requested_together": req.get("requested_together") or [req.get("name")],
             "captured_with": req.get("captured_with") or [],
