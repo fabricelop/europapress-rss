@@ -23,8 +23,11 @@ def validate_ready(payload):
     item=payload.get("prepared_item") or {}
     if not str(item.get("event_id") or ""): raise ValueError("prepared_item sin event_id")
     variants=item.get("variants") or []
-    if [str(v.get("label")) for v in variants] != ["Principal","A","B","C"]:
+    labels=[str(v.get("label") or v.get("name") or "") for v in variants]
+    if labels != ["Principal","A","B","C"]:
         raise ValueError("variants debe ser Principal/A/B/C")
+    for v,label in zip(variants,labels):
+        v["label"]=label
     for i,v in enumerate(variants):
         text=str(v.get("text") or "")
         remate=str(v.get("remate") or "")
