@@ -343,8 +343,17 @@ async function pollOnce(timeoutSeconds = 25) {
 }
 async function pollForever() {
   console.log('SeLoRecordamos Telegram activo. Escuchando botones, instrucciones y salidas...');
+  let lastOutboxAttempt = 0;
   while (true) {
-    try { await pollOnce(); }
+    try {
+      const now = Date.now();
+      if (now - lastOutboxAttempt >= 60000) {
+        lastOutboxAttempt = now;
+        try { await sendOutbox(); }
+        catch (e) { console.error('Error enviando/reintentando outbox:', e.message || e); }
+      }
+      await pollOnce();
+    }
     catch (e) { console.error('Error escuchando Telegram:', e.message || e); await sleep(3000); }
   }
 }
