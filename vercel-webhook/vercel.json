@@ -129,7 +129,7 @@
         },
         {
           "key": "Cache-Control",
-          "value": "no-cache, must-revalidate"
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
@@ -157,7 +157,28 @@
           "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://raw.githubusercontent.com; img-src 'self' data:; manifest-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
         }
       ]
+    },
+    {
+      "source": "/ttendencias/preparados/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/ttendencias/preparados/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
     }
   ],
-  "ignoreCommand": "cd \"$(git rev-parse --show-toplevel)\" && git diff --quiet HEAD^ HEAD -- vercel-webhook vercel.json package.json package-lock.json pnpm-lock.yaml yarn.lock"
+  "ignoreCommand": "cd \"$(git rev-parse --show-toplevel)\" && git diff --quiet HEAD^ HEAD -- vercel-webhook vercel.json package.json package-lock.json pnpm-lock.yaml yarn.lock",
+  "github": {
+    "autoJobCancelation": false
+  }
 }
