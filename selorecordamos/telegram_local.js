@@ -34,6 +34,14 @@ function writeJson(file, data) {
 function runGit(args) {
   return cp.execFileSync('git', args, { cwd: repoDir, encoding: 'utf8', stdio: 'pipe' });
 }
+function readRemoteOutboxFromGit() {
+  try {
+    runGit(['fetch', 'origin', 'main', '--quiet']);
+    return JSON.parse(runGit(['show', 'origin/main:selorecordamos/telegram-outbox.json']));
+  } catch (_) {
+    return { candidates: [] };
+  }
+}
 function localTime(value) {
   if (!value) return 'hora desconocida';
   const d = new Date(value);
@@ -67,24 +75,39 @@ async function safeDeleteMessage(messageId) {
 }
 
 async function sendOutbox() {
-  const data = readJson(outboxFile, { candidates: [] });
+  const local = readJson(outboxFile, { generated_at: null, candidates: [] });
+  const remote = readRemoteOutboxFromGit();
+  const merged = new Map();
+  for (const c of [...(remote.candidates || []), ...(local.candidates || [])]) {
+    const id = String(c.id || '');
+    if (id) merged.set(id, c);
+  }
   const sent = readJson(telegramSentFile, {});
-  let changed = false, index = 1;
-  for (const c of data.candidates || []) {
+  const pending = [];
+  let index = 1;
+  for (const c of merged.values()) {
     const id = String(c.id || '');
     if (!id || sent[id]) continue;
     const visible = `🧠 SELORECORDAMOS · SR${index}\n${c.user || ''} · ${localTime(c.datetime)}\n\n${String(c.text || '').trim()}`;
-    await telegram('sendMessage', {
-      chat_id: chatId, text: visible, disable_web_page_preview: true,
-      reply_markup: { inline_keyboard: [
-        [{ text: '🔗 Abrir original en X', url: c.url }],
-        [{ text: '🧠 Evaluar', callback_data: `sr:evaluate:${id}` }, { text: '🗑️ Borrar', callback_data: `sr:delete:${id}` }]
-      ] }
-    });
-    sent[id] = { sent_at: new Date().toISOString() };
-    changed = true; index++;
+    try {
+      await telegram('sendMessage', {
+        chat_id: chatId, text: visible, disable_web_page_preview: true,
+        reply_markup: { inline_keyboard: [
+          [{ text: '🔗 Abrir original en X', url: c.url }],
+          [{ text: '🧠 Evaluar', callback_data: `sr:evaluate:${id}` }, { text: '🗑️ Borrar', callback_data: `sr:delete:${id}` }]
+        ] }
+      });
+      sent[id] = { sent_at: new Date().toISOString() };
+      writeJson(telegramSentFile, sent);
+      index++;
+    } catch (e) {
+      console.error(`No se pudo enviar candidato ${id}; queda pendiente:`, e.message || e);
+      pending.push(c);
+    }
   }
-  if (changed) writeJson(telegramSentFile, sent);
+  const next = { generated_at: new Date().toISOString(), candidates: pending };
+  writeJson(outboxFile, next);
+  gitPushFiles(['selorecordamos/telegram-outbox.json'], 'Actualizar outbox Telegram SeLoRecordamos');
 }
 
 function parseAlternatives(item) {
@@ -289,6 +312,9 @@ async function pollForever() {
 
 (async () => {
   const mode = process.argv[2] || 'all';
-  if (mode === 'send' || mode === 'all') await sendOutbox();
+  if (mode === 'send' || mode === 'all') {
+    await sendOutbox();
+    await sendAssistantOutputs();
+  }
   if (mode === 'poll' || mode === 'all') await pollForever();
 })().catch(e => { console.error(e.stack || e); process.exit(1); });
