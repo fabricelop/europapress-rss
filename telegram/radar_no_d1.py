@@ -165,10 +165,17 @@ def proper_tokens(s):
  return out
 
 def same_event_semantic(a,b):
- # Dos nombres propios compartidos + la misma acción canónica.
- # Evita unir historias distintas que solo comparten actor y ciudad.
+ # Dos nombres propios compartidos son la primera barrera. A partir de ahí,
+ # aceptamos la misma acción canónica o un solapamiento léxico distintivo fuerte.
+ # Esto une reformulaciones muy diferentes del mismo hecho (p. ej. una cabecera
+ # habla de "llegada" y otra de "alfombra roja") sin mezclar sucesos genéricos.
  common=proper_tokens(a)&proper_tokens(b)
- return len(common)>=2 and bool(event_actions(a)&event_actions(b))
+ if len(common)<2:
+  return False
+ if event_actions(a)&event_actions(b):
+  return True
+ distinctive=(fp(a)&fp(b))-GENERIC_MATCH
+ return len(distinctive)>=3
 
 def norm(s):
  s=''.join(c for c in unicodedata.normalize("NFKD",str(s).lower()) if not unicodedata.combining(c))
@@ -568,8 +575,9 @@ if "--selftest-dedupe" in sys.argv:
  ]
  for a,b,should_match,label in tests:
   value=score(a,b)
-  matched=value>=0.50
-  print("DEDUPE_SELFTEST",label,round(value,4),matched)
+  semantic=same_event_semantic(a,b)
+  matched=value>=0.50 or semantic
+  print("DEDUPE_SELFTEST",label,round(value,4),"semantic",semantic,matched)
   if matched!=should_match:
    raise SystemExit("Fallo deduplicación: "+label)
  raise SystemExit(0)
