@@ -32,7 +32,8 @@ jobs:
           set -e
           git config user.name "ttittulares-editorial-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json ttittulares/editorial-outbox/
+          git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json
+          git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "Sin cambios editoriales."
             exit 0
@@ -47,7 +48,8 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             python3 ttittulares/apply_editorial_outbox.py
-            git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json ttittulares/editorial-outbox/
+            git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json
+            git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
             git diff --cached --quiet && exit 0
             git commit -m "Aplicar editorial TTiTTulares"
             sleep $((intento * 2))

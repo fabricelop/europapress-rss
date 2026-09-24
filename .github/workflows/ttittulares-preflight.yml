@@ -42,13 +42,18 @@ jobs:
           status=load("ttittulares/status.json")
           manifest=load("vercel-webhook/ttittulares/manifest.webmanifest")
           vercel=load("vercel-webhook/vercel.json")
+          root_vercel=load("vercel.json")
           html=Path("vercel-webhook/ttittulares/index.html").read_text(encoding="utf-8")
 
           assert cfg["radar"]["minimum_sources"] == 4
           assert cfg["radar"]["waiting_ttl_hours"] == 24
           assert mode["mode"] in {"telegram","parallel","web"}
           if mode["mode"]=="parallel": assert mode.get("parallel_since"), "parallel_since obligatorio"
-          assert vercel["git"]["deploymentEnabled"]["main"] is False, "main debe permanecer con autodeploy desactivado"
+          def autodeploy_off(doc):
+              value=(doc.get("git") or {}).get("deploymentEnabled")
+              return value is False or (isinstance(value,dict) and value.get("main") is False)
+          assert autodeploy_off(vercel), "autodeploy Vercel debe permanecer desactivado"
+          assert autodeploy_off(root_vercel), "autodeploy Vercel raíz debe permanecer desactivado"
           # La antigua rama de preview ttittulares-release ya no forma parte del
           # flujo actual; no exigir una clave obsoleta que deja el preflight rojo.
           assert "Con 3 fuentes" not in html and "threeCount" not in html
