@@ -59,9 +59,37 @@ Install-RepeatingTask -Name $watchdogTask -HiddenScript $watchdogHidden -Schedul
 Write-Host 'Arrancando listener...'
 Start-ScheduledTask -TaskName $listenerTask
 
-Write-Host 'Ejecutando busqueda e historico ahora para recuperar el hueco pendiente...'
+Write-Host 'Ejecutando busqueda ahora para recuperar el hueco pendiente...'
 Start-ScheduledTask -TaskName $searchTask
-Start-ScheduledTask -TaskName $publishedTask
+
+Write-Host 'Esperando a que termine Search antes de arrancar Published para evitar colisiones Git...'
+$deadline = (Get-Date).AddMinutes(10)
+do {
+    Start-Sleep -Seconds 2
+    $searchState = (Get-ScheduledTask -TaskName $searchTask).State
+} while ($searchState -eq 'Running' -and (Get-Date) -lt $deadline)
+
+if ($searchState -eq 'Running') {
+    Write-Warning 'Search sigue ejecutandose tras 10 minutos; Published se deja para su proximo :20 para no colisionar.'
+} else {
+    $searchInfo = Get-ScheduledTaskInfo -TaskName $searchTask
+    Write-Host ("Search termino. LastTaskResult=" + $searchInfo.LastTaskResult)
+    Write-Host 'Ejecutando historico ahora...'
+    Start-ScheduledTask -TaskName $publishedTask
+
+    $publishedDeadline = (Get-Date).AddMinutes(10)
+    do {
+        Start-Sleep -Seconds 2
+        $publishedState = (Get-ScheduledTask -TaskName $publishedTask).State
+    } while ($publishedState -eq 'Running' -and (Get-Date) -lt $publishedDeadline)
+
+    if ($publishedState -eq 'Running') {
+        Write-Warning 'Published sigue ejecutandose tras 10 minutos; el watchdog se encargara de una ejecucion atascada.'
+    } else {
+        $publishedInfo = Get-ScheduledTaskInfo -TaskName $publishedTask
+        Write-Host ("Published termino. LastTaskResult=" + $publishedInfo.LastTaskResult)
+    }
+}
 
 Write-Host 'Ejecutando watchdog...'
 Start-ScheduledTask -TaskName $watchdogTask
