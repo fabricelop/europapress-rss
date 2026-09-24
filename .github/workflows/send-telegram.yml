@@ -18,7 +18,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Detectar modo de control
+        id: control_mode
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          try:
+              mode=str(json.loads(Path("ttittulares/control-mode.json").read_text(encoding="utf-8")).get("mode") or "telegram").strip().lower()
+          except Exception:
+              mode="telegram"
+          with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as fh:
+              fh.write(f"mode={mode}\n")
+          print("Modo TTiTTulares:", mode)
+          PY
+
       - name: Enviar mensajes a Telegram
+        if: steps.control_mode.outputs.mode != 'web'
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
