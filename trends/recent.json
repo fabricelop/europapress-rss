@@ -1,32 +1,35 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-24T03:30:06+02:00",
+  "captured_at": "2026-09-24T07:33:02+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "snaplytics"
+    "superx",
+    "snaplytics",
+    "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "Mari Carmen",
-    "#LaIslaDeLasTentaciones6",
     "Congreso",
     "Ana Vázquez",
     "PSOE",
+    "#LaIslaDeLasTentaciones6",
     "Retiro",
-    "#ChiringuitoResponde",
-    "Nando",
     "Ana Belén",
-    "Delcy"
+    "Delcy",
+    "Franco",
+    "#TierraDeNadie2"
   ],
   "items": [
     {
@@ -35,19 +38,19 @@
     },
     {
       "rank": 2,
-      "name": "#LaIslaDeLasTentaciones6"
-    },
-    {
-      "rank": 3,
       "name": "Congreso"
     },
     {
-      "rank": 4,
+      "rank": 3,
       "name": "Ana Vázquez"
     },
     {
-      "rank": 5,
+      "rank": 4,
       "name": "PSOE"
+    },
+    {
+      "rank": 5,
+      "name": "#LaIslaDeLasTentaciones6"
     },
     {
       "rank": 6,
@@ -55,183 +58,180 @@
     },
     {
       "rank": 7,
-      "name": "#ChiringuitoResponde"
-    },
-    {
-      "rank": 8,
-      "name": "Nando"
-    },
-    {
-      "rank": 9,
       "name": "Ana Belén"
     },
     {
-      "rank": 10,
+      "rank": 8,
       "name": "Delcy"
+    },
+    {
+      "rank": 9,
+      "name": "Franco"
+    },
+    {
+      "rank": 10,
+      "name": "#TierraDeNadie2"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Congreso",
-    "Ana Vázquez",
-    "PSOE",
-    "Ana Belén",
-    "Delcy"
+    "Franco",
+    "#TierraDeNadie2"
   ],
   "sources": {
     "trends24": {
       "ok": true,
       "trends": [
         "Mari Carmen",
-        "#LaIslaDeLasTentaciones6",
         "Congreso",
         "Ana Vázquez",
         "PSOE",
+        "#LaIslaDeLasTentaciones6",
         "Retiro",
-        "#ChiringuitoResponde",
-        "Nando",
         "Ana Belén",
         "Delcy",
-        "#ElTunelTVE",
-        "Nataly",
         "Franco",
-        "#TEM23S",
-        "Nieves",
         "#TierraDeNadie2",
-        "Armengol",
+        "#TEM23S",
         "Urbagestión",
+        "Armengol",
+        "#Mañaneros23S",
+        "Juanma Castaño",
+        "Ayuso",
+        "VOX y Junts",
         "Risto",
-        "Vox y Junts"
+        "Vacío",
+        "Zapatero"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T03:30:06+02:00"
+      "fetched_at": "2026-09-24T07:33:02+02:00"
     },
     "getdaytrends": {
       "ok": true,
       "trends": [
         "Mari Carmen",
-        "#LaIslaDeLasTentaciones6",
         "Congreso",
         "Ana Vázquez",
         "PSOE",
+        "#LaIslaDeLasTentaciones6",
         "Retiro",
-        "#ChiringuitoResponde",
-        "Nando",
         "Ana Belén",
-        "Delcy",
-        "#ElTúnelTVE",
-        "Nataly",
         "Franco",
+        "Delcy",
+        "#TierraDeNadie2",
+        "Urbagestión",
         "#TEM23S",
-        "Nieves"
+        "Armengol",
+        "#Mañaneros23S",
+        "Risto"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T03:30:06+02:00"
+      "fetched_at": "2026-09-24T07:33:02+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "Mari Carmen",
-        "#LaIslaDeLasTentaciones6",
         "Congreso",
         "Ana Vázquez",
         "PSOE",
+        "#LaIslaDeLasTentaciones6",
         "Retiro",
-        "#ChiringuitoResponde",
-        "Nando",
         "Ana Belén",
         "Delcy",
-        "#ElTunelTVE",
-        "Nataly",
         "Franco",
-        "#TEM23S",
-        "Nieves",
         "#TierraDeNadie2",
-        "Armengol",
+        "#TEM23S",
         "Urbagestión",
+        "Armengol",
+        "#Mañaneros23S",
+        "Juanma Castaño",
+        "Ayuso",
+        "VOX y Junts",
         "Risto",
-        "Vox y Junts"
+        "Vacío",
+        "Zapatero"
       ],
       "error": null,
-      "update_hint": "Updated 8 minutes ago",
-      "age_minutes": 8.0,
+      "update_hint": "Updated 38 minutes ago",
+      "age_minutes": 38.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-24T03:30:08+02:00"
+      "fetched_at": "2026-09-24T07:33:03+02:00"
     },
     "superx": {
       "ok": true,
       "trends": [
-        "Juanma Castaño",
-        "Gara",
-        "#TEM22S",
-        "Tebas",
-        "Halo",
-        "Activision",
+        "Mari Carmen",
+        "Congreso",
+        "#LaIslaDeLasTentaciones6",
+        "Ana Vázquez",
+        "PSOE",
+        "Retiro",
+        "#ChiringuitoResponde",
+        "Ana Belén",
         "Delcy",
-        "Ninja Theory",
-        "Opus 5.5",
-        "Taylor",
-        "Grado 3",
-        "Vito Quiles",
-        "taehyun",
-        "Ryanair",
-        "#ElSótano22S",
-        "Judas",
-        "Jueces y Juezas",
-        "Lula",
-        "Bethesda",
-        "Asamblea de la ONU"
+        "Franco",
+        "#tem23s",
+        "#TierraDeNadie2",
+        "Armengol",
+        "Urbagestión",
+        "#mañaneros23s",
+        "Vox y Junts",
+        "Risto",
+        "Juanma Castaño",
+        "Ayuso",
+        "Vito"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T03:30:08+02:00"
+      "fetched_at": "2026-09-24T07:33:04+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790213409",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790227984",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T03:30:09+02:00"
+      "fetched_at": "2026-09-24T07:33:04+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "Mari Carmen",
-        "#LaIslaDeLasTentaciones6",
         "Congreso",
         "Ana Vázquez",
         "PSOE",
+        "#LaIslaDeLasTentaciones6",
         "Retiro",
-        "#ChiringuitoResponde",
-        "Nando",
+        "#FelizJueves",
+        "Franco",
         "Ana Belén",
         "Delcy",
-        "#ElTunelTVE",
-        "Nataly",
-        "Franco",
-        "#TEM23S",
-        "Nieves",
         "#TierraDeNadie2",
-        "Mara",
-        "Armengol",
         "Urbagestión",
-        "Risto"
+        "#TEM23S",
+        "#Mañaneros23S",
+        "Armengol",
+        "Ayuso",
+        "Risto",
+        "Vox y Junts",
+        "Zapatero",
+        "Vacío"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 24, 2026 00:00 UTC",
-      "age_minutes": 90.2,
-      "freshness": "stale",
-      "fetched_at": "2026-09-24T03:30:09+02:00"
+      "update_hint": "Trending now Sep 24, 2026 05:00 UTC",
+      "age_minutes": 33.1,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-24T07:33:04+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -259,18 +259,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 2369.2,
+      "age_minutes": 2612.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-24T03:30:09+02:00"
+      "fetched_at": "2026-09-24T07:33:04+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790213411",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790227985",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T03:30:11+02:00"
+      "fetched_at": "2026-09-24T07:33:05+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -279,46 +279,46 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-24T03:30:12+02:00"
+      "fetched_at": "2026-09-24T07:33:06+02:00"
     },
     "trendswe": {
       "ok": true,
       "trends": [
-        "#LaIslaDeLasTentaciones6",
         "#Mari Carmen",
-        "#ChiringuitoResponde",
-        "#Nataly",
-        "#Nando",
-        "#Nieves",
-        "#ElTúnelTVE",
-        "#Franco",
-        "#Mara",
-        "#Retiro",
-        "#LaMesa",
-        "#Andrea",
-        "#Náyades",
-        "#GEMA",
-        "#FirstDates23S",
-        "#Kico",
-        "#Wyoming",
+        "#Congreso",
         "#Ana Vázquez",
-        "#Excalibur",
-        "#Felipe González"
+        "#PSOE",
+        "#LaIslaDeLasTentaciones6",
+        "#Retiro",
+        "#Ana Belén",
+        "#Delcy",
+        "#Franco",
+        "#TierraDeNadie2",
+        "#TEM23S",
+        "#Urbagestión",
+        "#Armengol",
+        "#Mañaneros23S",
+        "#Risto",
+        "#Juanma Castaño",
+        "#Vox y Junts",
+        "#Ayuso",
+        "#Vito",
+        "#Vivienda"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-24T03:30:13+02:00"
+      "fetched_at": "2026-09-24T07:33:07+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790213415",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790227989",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-24T03:30:15+02:00"
+      "fetched_at": "2026-09-24T07:33:09+02:00"
     }
   }
 }
