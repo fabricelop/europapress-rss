@@ -80,6 +80,14 @@ try {
     $code = Run-NodeToLog @((Join-Path $PSScriptRoot 'telegram_local.js'), 'send')
     if ($code -ne 0) { throw "telegram_local.js send termino con codigo $code" }
 
+    Add-LogLine "[$(Get-Date -Format s)] Reforzando listener SLR"
+    try {
+        & schtasks.exe /Run /TN 'SeLoRecordamos-Telegram' | Out-Null
+        if ($LASTEXITCODE -ne 0) { Add-LogLine "[$(Get-Date -Format s)] AVISO: no se pudo reactivar listener (codigo $LASTEXITCODE)" }
+    } catch {
+        Add-LogLine "[$(Get-Date -Format s)] AVISO listener: $($_.Exception.Message)"
+    }
+
     Add-LogLine "[$(Get-Date -Format s)] Fin correcto"
 }
 catch {
