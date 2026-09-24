@@ -11,5 +11,8 @@
       "maxDuration": 10
     }
   },
-  "ignoreCommand": "cd \"$(git rev-parse --show-toplevel)\" && git diff --quiet HEAD^ HEAD -- vercel-webhook vercel.json package.json package-lock.json pnpm-lock.yaml yarn.lock"
+  "ignoreCommand": "cd \"$(git rev-parse --show-toplevel)\" && git diff --quiet HEAD^ HEAD -- vercel-webhook vercel.json package.json package-lock.json pnpm-lock.yaml yarn.lock",
+  "github": {
+    "autoJobCancelation": false
+  }
 }
