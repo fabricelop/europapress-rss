@@ -34,5 +34,19 @@
     "enabled": true,
     "telegram_enabled_until_cutover": false,
     "parallel_new_items_only": false
+  },
+  "images": {
+    "enabled": true,
+    "mode": "existing_web_image",
+    "generate": false,
+    "non_blocking": true,
+    "source_preference": [
+      "official_or_primary",
+      "reputable_media"
+    ],
+    "require_source_page": true,
+    "store": "external_url_only",
+    "rights_status_default": "unverified",
+    "explicit_not_found": true
   }
 }
