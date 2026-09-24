@@ -1,27 +1,10 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-24T05:20:46.377735Z",
+  "updated_at": "2026-09-24T05:56:38.471Z",
   "radar_at": "2026-09-24T05:17:52.839278Z",
-  "processing_count": 1,
-  "processing_items": [
-    {
-      "event_id": "65ad498b9793",
-      "title": "Sánchez ve una \"tragedia social\" el desahucio de Maricarmen y responsabiliza a Ayuso y Almeida",
-      "url": "https://www.europapress.es/nacional/noticia-sanchez-ve-tragedia-social-desahucio-maricarmen-responsabiliza-ayuso-almeida-20260923211759.html",
-      "selected_at": "2026-09-24T05:20:46.304395Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 5,
-      "sources": [
-        "EFE",
-        "El Mundo",
-        "Europa Press",
-        "La Vanguardia",
-        "Público"
-      ]
-    }
-  ],
-  "ready_count": 0,
+  "processing_count": 0,
+  "processing_items": [],
+  "ready_count": 61,
   "three_source_count": 3,
   "healthy_source_count": 14,
   "configured_sources": 14,
@@ -5179,6 +5162,236 @@
       "last_seen": "2026-09-24T05:17:52.839278Z",
       "revision": 1,
       "parent_event_id": null
+    }
+  },
+  "source_status": {
+    "last_run": "2026-09-24T05:17:52.839278Z",
+    "healthy_source_count": 14,
+    "healthy_sources": [
+      "20minutos",
+      "ABC",
+      "COPE",
+      "Cadena SER",
+      "EFE",
+      "EL PAÍS",
+      "El HuffPost",
+      "El Mundo",
+      "Europa Press",
+      "La Vanguardia",
+      "Público",
+      "RTVE",
+      "Servimedia",
+      "elDiario.es"
+    ],
+    "source_failures": [],
+    "source_status": [
+      {
+        "source": "Europa Press",
+        "type": "general",
+        "ok": true,
+        "items": 120,
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "EL PAÍS",
+        "type": "general",
+        "ok": true,
+        "items": 77,
+        "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/ultimas-noticias/portada",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "La Vanguardia",
+        "type": "general",
+        "ok": true,
+        "items": 100,
+        "url": "https://www.lavanguardia.com/rss/home.xml",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "Cadena SER",
+        "type": "general",
+        "ok": true,
+        "items": 20,
+        "url": "https://cadenaser.com/autor/redaccion_ser/a/",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "RTVE",
+        "type": "general",
+        "ok": true,
+        "items": 80,
+        "url": "https://www.rtve.es/noticias/",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "El HuffPost",
+        "type": "general",
+        "ok": true,
+        "items": 100,
+        "url": "https://news.google.com/rss/search?q=site%3Ahuffingtonpost.es&hl=es&gl=ES&ceid=ES:es",
+        "error": null,
+        "recovered": true
+      },
+      {
+        "source": "20minutos",
+        "type": "general",
+        "ok": true,
+        "items": 80,
+        "url": "https://www.20minutos.es/ultima-hora/",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "ABC",
+        "type": "general",
+        "ok": true,
+        "items": 17,
+        "url": "https://www.abc.es/ultima-hora/",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "COPE",
+        "type": "general",
+        "ok": true,
+        "items": 100,
+        "url": "https://news.google.com/rss/search?q=site%3Acope.es&hl=es&gl=ES&ceid=ES:es",
+        "error": null,
+        "recovered": true
+      },
+      {
+        "source": "EFE",
+        "type": "general",
+        "ok": true,
+        "items": 100,
+        "url": "https://news.google.com/rss/search?q=site%3Aefe.com&hl=es&gl=ES&ceid=ES:es",
+        "error": null,
+        "recovered": true
+      },
+      {
+        "source": "Servimedia",
+        "type": "general",
+        "ok": true,
+        "items": 48,
+        "url": "https://www.servimedia.es/ultima-hora",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "elDiario.es",
+        "type": "general",
+        "ok": true,
+        "items": 80,
+        "url": "https://www.eldiario.es/ultimas-noticias/",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "Público",
+        "type": "general",
+        "ok": true,
+        "items": 80,
+        "url": "https://www.publico.es/",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "El Mundo",
+        "type": "general",
+        "ok": true,
+        "items": 80,
+        "url": "https://www.elmundo.es/ultimas-noticias.html",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "AS",
+        "type": "sport",
+        "ok": true,
+        "items": 7,
+        "url": "https://as.com/ultimas-noticias/",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "MARCA",
+        "type": "sport",
+        "ok": true,
+        "items": 32,
+        "url": "https://www.marca.com/",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "Mundo Deportivo",
+        "type": "sport",
+        "ok": true,
+        "items": 31,
+        "url": "https://www.mundodeportivo.com/",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "SPORT",
+        "type": "sport",
+        "ok": true,
+        "items": 43,
+        "url": "https://www.sport.es/es/",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "EFE Deportes",
+        "type": "sport",
+        "ok": true,
+        "items": 10,
+        "url": "https://news.google.com/rss/search?q=site%3Aefe.com&hl=es&gl=ES&ceid=ES:es",
+        "error": null,
+        "recovered": true
+      },
+      {
+        "source": "Reuters Radar",
+        "type": "discovery",
+        "ok": true,
+        "items": 100,
+        "url": "https://news.google.com/rss/search?q=site%3Areuters.com&hl=es&gl=ES&ceid=ES:es",
+        "error": null,
+        "recovered": false
+      },
+      {
+        "source": "AP Radar",
+        "type": "discovery",
+        "ok": true,
+        "items": 100,
+        "url": "https://news.google.com/rss/search?q=site%3Aapnews.com&hl=es&gl=ES&ceid=ES:es",
+        "error": null,
+        "recovered": false
+      }
+    ],
+    "source_recovery": {
+      "triggered": true,
+      "threshold": 10,
+      "attempted": [
+        "COPE",
+        "EFE",
+        "EFE Deportes",
+        "El HuffPost"
+      ],
+      "recovered": [
+        "El HuffPost",
+        "COPE",
+        "EFE",
+        "EFE Deportes"
+      ],
+      "remaining_failed": [],
+      "mode": "inline_parallel_fallback"
     }
   }
 }
