@@ -9,7 +9,9 @@ const EXPLAINED = "trends/telegram-manual-explained.json";
 const PREPARED = "trends/prepared.json";
 const HEALTH = "trends/health-status.json";
 const EDITORIAL_CONFIG = "trends/editorial-config.json";
+const EDITORIAL_QUEUE = "trends/editorial-queue.json";
 const PUSH_STATE = "trends/push-state.json";
+const REFRESH_TRIGGER = "trends/refresh-trigger.txt";
 
 function b64decode(s) {
   return Buffer.from(String(s || "").replace(/\n/g, ""), "base64").toString("utf8");
@@ -53,6 +55,33 @@ async function readJson(path) {
   const file = await r.json();
   return { doc: JSON.parse(b64decode(file.content) || "{}"), sha: file.sha };
 }
+async function readText(path) {
+  const r = await gh(`contents/${path}?ref=${encodeURIComponent(BRANCH)}`);
+  if (r.status === 404) return { text: "", sha: null };
+  if (!r.ok) throw new Error(`GitHub GET ${path}: ${r.status} ${await r.text()}`);
+  const file = await r.json();
+  return { text: b64decode(file.content) || "", sha: file.sha };
+}
+async function writeText(path, message, text) {
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    const current = await readText(path);
+    const body = {
+      message,
+      content: b64encode(String(text)),
+      branch: BRANCH,
+    };
+    if (current.sha) body.sha = current.sha;
+    const r = await gh(`contents/${path}`, {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (r.ok) return true;
+    if (![409, 422].includes(r.status)) throw new Error(`GitHub PUT ${path}: ${r.status} ${await r.text()}`);
+    await new Promise(resolve => setTimeout(resolve, attempt * 150));
+  }
+  throw new Error(`Conflicto persistente actualizando ${path}`);
+}
 async function mutateJson(path, message, mutator) {
   for (let attempt = 1; attempt <= 5; attempt++) {
     const { doc, sha } = await readJson(path);
@@ -74,6 +103,34 @@ async function mutateJson(path, message, mutator) {
     await new Promise(resolve => setTimeout(resolve, attempt * 150));
   }
   throw new Error(`Conflicto persistente actualizando ${path}`);
+}
+
+async function syncEditorialQueue() {
+  const { doc: requests } = await readJson(REQUESTS);
+  const active = (requests.requests || [])
+    .filter(req => ["preparing", "update"].includes(String(req.status || "")))
+    .map(req => ({
+      id: req.id,
+      name: req.name,
+      rank: req.rank,
+      status: req.status,
+      requested_at: req.requested_at,
+      revision: Number(req.revision || 0),
+      rewrite_instruction: req.rewrite_instruction || req.rewrite_request || "",
+      with_image: Boolean(req.with_image),
+      image_mode: "existing_web_image",
+      image_instruction: "Busca una imagen existente y relevante en una fuente fiable. Guarda la URL directa de la imagen, la fuente y la URL de la página de origen. No generes una imagen.",
+      auto_queued: Boolean(req.auto_queued),
+    }))
+    .sort((a, b) => String(a.requested_at || "").localeCompare(String(b.requested_at || "")));
+  const now = new Date().toISOString();
+  await mutateJson(EDITORIAL_QUEUE, "Sincronizar cola editorial TTendencias desde web", () => ({
+    project: "TTendencias",
+    updated_at: now,
+    count: active.length,
+    items: active,
+  }));
+  return active;
 }
 
 function b64url(value) {
@@ -320,7 +377,7 @@ async function queueNames(names) {
           requested_at: now,
           revision: Number(previous?.revision || 0) + (reexplain ? 1 : 0),
           reexplain,
-          with_image: false,
+          with_image: true,
           alternatives_target: 3,
           batch_id: batchId,
           requested_together: unique,
@@ -330,6 +387,7 @@ async function queueNames(names) {
     doc.requests = [...byId.values()];
     return doc;
   });
+  await syncEditorialQueue();
   return { ok: true, queued: unique, batch_id: batchId };
 }
 async function markExplained(names) {
@@ -414,7 +472,7 @@ async function discardNames(names) {
           name,
           rank: 0,
           revision: 0,
-          with_image: false,
+          with_image: true,
           alternatives_target: 3,
         };
         doc.requests.push(req);
@@ -459,7 +517,7 @@ async function reworkNames(names, instruction) {
           name,
           rank: 0,
           revision: 0,
-          with_image: false,
+          with_image: true,
           alternatives_target: 3,
         };
         doc.requests.push(req);
@@ -485,6 +543,7 @@ async function reworkNames(names, instruction) {
     doc.updated_at = now;
     return doc;
   });
+  await syncEditorialQueue();
   return { ok: true, rework: unique, instruction: text };
 }
 async function retryNames(names) {
@@ -505,7 +564,7 @@ async function retryNames(names) {
           id: crypto.createHash("sha256").update(name).digest("hex").slice(0, 12),
           name,
           revision: 0,
-          with_image: false,
+          with_image: true,
           alternatives_target: 3,
         };
         doc.requests.push(req);
@@ -536,6 +595,7 @@ async function retryNames(names) {
     doc.updated_at = now;
     return doc;
   });
+  await syncEditorialQueue();
   return { ok: true, retried: unique };
 }
 
@@ -548,6 +608,31 @@ async function stateSnapshot() {
     readJson(PREPARED),
     readJson(EDITORIAL_CONFIG),
   ]);
+
+  // Autorreparación del refresco: si GitHub retrasa o pierde ejecuciones cron,
+  // una lectura real del panel fuerza el workflow mediante el trigger. Se
+  // limita a una vez cada 8 minutos para evitar tormentas de commits.
+  let refresh_recovery = { stale: false, triggered: false, age_minutes: null };
+  try {
+    const captured = new Date(recent.doc?.captured_at || 0).getTime();
+    const ageMinutes = captured ? Math.max(0, (Date.now() - captured) / 60000) : 99999;
+    refresh_recovery.age_minutes = Math.round(ageMinutes * 10) / 10;
+    refresh_recovery.stale = ageMinutes > 20;
+    if (refresh_recovery.stale) {
+      const current = await readText(REFRESH_TRIGGER);
+      const match = String(current.text || "").match(/(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z)/);
+      const last = match ? new Date(match[1]).getTime() : 0;
+      if (!last || Date.now() - last > 8 * 60 * 1000) {
+        const stamp = new Date().toISOString();
+        await writeText(REFRESH_TRIGGER, "Autorreparar refresco TTendencias desde panel", `panel-watchdog ${stamp}\n`);
+        refresh_recovery.triggered = true;
+        refresh_recovery.triggered_at = stamp;
+      }
+    }
+  } catch (e) {
+    refresh_recovery.error = String(e?.message || e).slice(0, 300);
+  }
+
   return {
     ok: true,
     service: "ttendencias-control",
@@ -559,6 +644,7 @@ async function stateSnapshot() {
     health: health.doc,
     prepared: prepared.doc,
     editorial_config: editorialConfig.doc,
+    refresh_recovery,
   };
 }
 
