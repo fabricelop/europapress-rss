@@ -1,54 +1,76 @@
 $ErrorActionPreference = 'Stop'
-$repo = Split-Path -Parent $PSScriptRoot
+
 $listenerHidden = Join-Path $PSScriptRoot 'run-telegram-hidden.vbs'
 $searchHidden = Join-Path $PSScriptRoot 'run-search-hidden.vbs'
+$publishedHidden = Join-Path $PSScriptRoot 'run-published-hidden.vbs'
+$watchdogHidden = Join-Path $PSScriptRoot 'run-watchdog-hidden.vbs'
 
-if (-not (Test-Path $listenerHidden)) { throw "No existe $listenerHidden" }
-if (-not (Test-Path $searchHidden)) { throw "No existe $searchHidden" }
+foreach ($file in @($listenerHidden, $searchHidden, $publishedHidden, $watchdogHidden)) {
+    if (-not (Test-Path $file)) { throw "No existe $file" }
+}
 
 $listenerTask = 'SeLoRecordamos-Telegram'
 $searchTask = 'SeLoRecordamos-Search'
+$publishedTask = 'SeLoRecordamos-Published'
+$watchdogTask = 'SeLoRecordamos-Watchdog'
+
 $wscript = "$env:SystemRoot\System32\wscript.exe"
 $userId = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
-
-$listenerAction = New-ScheduledTaskAction -Execute $wscript -Argument ('"' + $listenerHidden + '"')
-$searchAction = New-ScheduledTaskAction -Execute $wscript -Argument ('"' + $searchHidden + '"')
 $principal = New-ScheduledTaskPrincipal -UserId $userId -LogonType Interactive -RunLevel Limited
-
-# Recupera ejecuciones tras apagado/suspension y no se detiene por bateria.
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -MultipleInstances IgnoreNew
 
-Write-Host 'Creando tarea del listener de Telegram...'
+function Install-RepeatingTask {
+    param(
+        [string]$Name,
+        [string]$HiddenScript,
+        [ValidateSet('HOURLY','MINUTE')][string]$Schedule,
+        [int]$Modifier,
+        [string]$StartTime,
+        [bool]$AtLogon
+    )
+
+    $cmd = '"' + $wscript + '" "' + $HiddenScript + '"'
+    & schtasks.exe /Create /TN $Name /TR $cmd /SC $Schedule /MO $Modifier /ST $StartTime /RL LIMITED /F | Out-Host
+    if ($LASTEXITCODE -ne 0) { throw "No se pudo crear $Name" }
+
+    Set-ScheduledTask -TaskName $Name -Settings $settings | Out-Null
+
+    if ($AtLogon) {
+        $existingTriggers = @((Get-ScheduledTask -TaskName $Name).Triggers)
+        $logonTrigger = New-ScheduledTaskTrigger -AtLogOn -User $userId
+        Set-ScheduledTask -TaskName $Name -Trigger @($existingTriggers + $logonTrigger) | Out-Null
+    }
+}
+
+Write-Host 'Creando listener Telegram...'
+$listenerAction = New-ScheduledTaskAction -Execute $wscript -Argument ('"' + $listenerHidden + '"')
 $listenerTrigger = New-ScheduledTaskTrigger -AtLogOn -User $userId
 Register-ScheduledTask -TaskName $listenerTask -Action $listenerAction -Trigger $listenerTrigger -Principal $principal -Settings $settings -Force | Out-Null
 
-Write-Host 'Creando tarea de busqueda horaria robusta...'
-# Compatibilidad amplia con Windows PowerShell 5.1:
-# schtasks crea de forma fiable la repeticion horaria; despues ajustamos settings
-# y anadimos un segundo trigger al iniciar sesion con el modulo ScheduledTasks.
-$searchCmd = '"' + $wscript + '" "' + $searchHidden + '"'
-& schtasks.exe /Create /TN $searchTask /TR $searchCmd /SC HOURLY /MO 1 /ST 00:05 /RL LIMITED /F | Out-Host
-if ($LASTEXITCODE -ne 0) { throw "No se pudo crear $searchTask" }
+Write-Host 'Creando busqueda horaria a los :05...'
+Install-RepeatingTask -Name $searchTask -HiddenScript $searchHidden -Schedule HOURLY -Modifier 1 -StartTime '00:05' -AtLogon $true
 
-$searchTaskObj = Get-ScheduledTask -TaskName $searchTask
-Set-ScheduledTask -TaskName $searchTask -Settings $settings | Out-Null
+Write-Host 'Creando importacion de historico a los :20...'
+Install-RepeatingTask -Name $publishedTask -HiddenScript $publishedHidden -Schedule HOURLY -Modifier 1 -StartTime '00:20' -AtLogon $true
 
-# Anadimos disparador al iniciar sesion conservando el trigger horario existente.
-$existingTriggers = @((Get-ScheduledTask -TaskName $searchTask).Triggers)
-$searchLogonTrigger = New-ScheduledTaskTrigger -AtLogOn -User $userId
-Set-ScheduledTask -TaskName $searchTask -Trigger @($existingTriggers + $searchLogonTrigger) | Out-Null
+Write-Host 'Creando watchdog cada 15 minutos...'
+Install-RepeatingTask -Name $watchdogTask -HiddenScript $watchdogHidden -Schedule MINUTE -Modifier 15 -StartTime '00:02' -AtLogon $true
 
-Write-Host 'Arrancando listener ahora...'
+Write-Host 'Arrancando listener...'
 Start-ScheduledTask -TaskName $listenerTask
 
-Write-Host 'Ejecutando una busqueda ahora para validar y recuperar el periodo apagado...'
+Write-Host 'Ejecutando busqueda e historico ahora para recuperar el hueco pendiente...'
 Start-ScheduledTask -TaskName $searchTask
+Start-ScheduledTask -TaskName $publishedTask
+
+Write-Host 'Ejecutando watchdog...'
+Start-ScheduledTask -TaskName $watchdogTask
 
 Start-Sleep -Seconds 2
 
 Write-Host ''
-Write-Host 'Tareas instaladas:' -ForegroundColor Green
-Get-ScheduledTask -TaskName $listenerTask, $searchTask | ForEach-Object {
+Write-Host 'Tareas SeLoRecordamos:' -ForegroundColor Green
+Get-ScheduledTask -TaskName $listenerTask, $searchTask, $publishedTask, $watchdogTask | ForEach-Object {
     $info = Get-ScheduledTaskInfo -TaskName $_.TaskName
     [PSCustomObject]@{
         TaskName = $_.TaskName
@@ -58,6 +80,7 @@ Get-ScheduledTask -TaskName $listenerTask, $searchTask | ForEach-Object {
         NextRunTime = $info.NextRunTime
     }
 } | Format-Table -AutoSize
+
 Write-Host ''
 Write-Host 'SeLoRecordamos queda configurado sin ventanas visibles.' -ForegroundColor Green
-Write-Host 'La busqueda se ejecuta al iniciar sesion y cada hora a los :05; StartWhenAvailable recupera ejecuciones perdidas.'
+Write-Host 'Busqueda: cada hora :05. Historico: cada hora :20. Watchdog: cada 15 min. Listener: continuo desde inicio de sesion.'
