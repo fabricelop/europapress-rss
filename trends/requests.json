@@ -1888,7 +1888,7 @@
       "id": "3392510e8371",
       "name": "Zapatero",
       "rank": 11,
-      "status": "update",
+      "status": "ready",
       "requested_at": "2026-09-24T15:57:44.789Z",
       "revision": 1,
       "reexplain": true,
@@ -1902,7 +1902,7 @@
         "Zapatero"
       ],
       "auto_queued": false,
-      "ready_at": "2026-09-24T15:32:50+02:00",
+      "ready_at": "2026-09-24T18:02:34+02:00",
       "delivery_confirmation": "prepared_web",
       "editorial_engine": "chatgpt-automation-outbox",
       "anticipated": true,
@@ -1916,7 +1916,7 @@
       "id": "dcb08162da63",
       "name": "La CIA",
       "revision": 1,
-      "status": "update",
+      "status": "ready",
       "requested_at": "2026-09-24T15:33:54.743Z",
       "rank": 12,
       "with_image": true,
@@ -1933,13 +1933,15 @@
       "auto_queued": false,
       "editorial_engine": "chatgpt-automation-outbox",
       "reexplain": true,
-      "rewrite_instruction": "Mantén la explicación y los remates si siguen siendo válidos. Reintenta obligatoriamente la imagen: haz una búsqueda específica de imágenes y una segunda vía si hace falta; acepta imagen pertinente de medio fiable con rights_status=unverified."
+      "rewrite_instruction": "Mantén la explicación y los remates si siguen siendo válidos. Reintenta obligatoriamente la imagen: haz una búsqueda específica de imágenes y una segunda vía si hace falta; acepta imagen pertinente de medio fiable con rights_status=unverified.",
+      "ready_at": "2026-09-24T18:02:34+02:00",
+      "delivery_confirmation": "prepared_web"
     },
     {
       "id": "c8965df3b001",
       "name": "#TEM24S",
       "rank": 9,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-24T17:41:04+02:00",
       "revision": 0,
       "reexplain": false,
@@ -1952,8 +1954,11 @@
       "captured_with": [
         "#TEM24S"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-24T18:04:13+02:00",
+      "problem_reason": "Tras búsquedas independientes del hashtag #TEM24S y de su posible relación con la emisión televisiva del 24 de septiembre, no se ha podido identificar con suficiente fiabilidad un detonante editorial concreto y actual. El hashtag aparece mezclado en publicaciones junto a otros hashtags de televisión, pero sin evidencia suficiente para atribuirle un acontecimiento específico.",
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ],
-  "updated_at": "2026-09-24T15:57:44.789Z"
+  "updated_at": "2026-09-24T18:04:13+02:00"
 }
