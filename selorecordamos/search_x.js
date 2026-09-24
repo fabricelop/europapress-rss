@@ -30,6 +30,31 @@ const { chromium } = require('playwright');
 
   let seen = {};
   try { seen = JSON.parse(fs.readFileSync(seenFile, 'utf8')); } catch (_) { seen = {}; }
+
+  const readJson = (file, fallback) => {
+    try { return JSON.parse(fs.readFileSync(file, 'utf8')); }
+    catch (_) { return fallback; }
+  };
+
+  const telegramSentFile = path.join(stateDir, 'telegram-sent.json');
+  const existingOutbox = readJson(outboxFile, { candidates: [] });
+  const telegramSent = readJson(telegramSentFile, {});
+  const pendingBeforeSearch = new Map();
+
+  for (const c of existingOutbox.candidates || []) {
+    const id = String(c && c.id || '');
+    if (id && !telegramSent[id]) pendingBeforeSearch.set(id, c);
+  }
+
+  // Recuperación adicional: si una ejecución anterior encontró el candidato pero
+  // Git/Telegram fallaron después, candidates/*.json conserva una copia local.
+  try {
+    for (const file of fs.readdirSync(candidatesDir).filter(x => x.endsWith('.json'))) {
+      const c = readJson(path.join(candidatesDir, file), null);
+      const id = String(c && c.id || '');
+      if (id && !telegramSent[id]) pendingBeforeSearch.set(id, c);
+    }
+  } catch (_) {}
   const launchOptions = { headless };
   if (chromePath && fs.existsSync(chromePath)) launchOptions.executablePath = chromePath;
   const browser = await chromium.launch(launchOptions);
@@ -44,7 +69,9 @@ const { chromium } = require('playwright');
     for(let round=0;round<maxScrollRounds;round++){const visible=await readVisibleTweets();const before=extractedMap.size;for(const tweet of visible)extractedMap.set(tweet.id,tweet);const added=extractedMap.size-before;result.scroll_rounds=round+1;if(added===0)stableRounds++;else stableRounds=0;if(isBackfill){const dated=visible.map(t=>t.datetime?Date.parse(t.datetime):NaN).filter(Number.isFinite);if(dated.length&&Math.min(...dated)<=backfillCutoff)break;if(stableRounds>=6)break;}else{const dated=visible.map(t=>t.datetime?Date.parse(t.datetime):NaN).filter(Number.isFinite);const oldest=dated.length?Math.min(...dated):null;const visibleIds=visible.map(t=>t.id);const reachedSeenBoundary=visibleIds.some(id=>Boolean(seen[id]));if(reachedSeenBoundary)seenBoundaryRounds++;else seenBoundaryRounds=0;if(oldest!==null&&oldest<=incrementalCutoff&&seenBoundaryRounds>=2)break;if(stableRounds>=6)break;}await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));await page.waitForTimeout(1400);}
     let extracted=Array.from(extractedMap.values());if(isBackfill)extracted=extracted.filter(t=>!t.datetime||Date.parse(t.datetime)>=backfillCutoff);result.extracted=extracted.length;
     for(const tweet of extracted){if(seen[tweet.id]){result.already_seen++;continue;}const reason=rejectReason(tweet.text);seen[tweet.id]={first_seen_at:result.fetched_at,url:tweet.url,rejected:Boolean(reason),datetime:tweet.datetime||null};if(reason){result.rejected.push({...tweet,reason});continue;}const candidate={...tweet,first_seen_at:result.fetched_at,status:'pending'};result.candidates.push(candidate);fs.writeFileSync(path.join(candidatesDir,`${tweet.id}.json`),JSON.stringify(candidate,null,2),'utf8');}
-    fs.writeFileSync(seenFile,JSON.stringify(seen,null,2),'utf8');fs.writeFileSync(outboxFile,JSON.stringify({generated_at:result.fetched_at,candidates:result.candidates},null,2),'utf8');
+    fs.writeFileSync(seenFile,JSON.stringify(seen,null,2),'utf8');
+    for (const c of result.candidates) pendingBeforeSearch.set(String(c.id), c);
+    fs.writeFileSync(outboxFile,JSON.stringify({generated_at:result.fetched_at,candidates:[...pendingBeforeSearch.values()].slice(-200)},null,2),'utf8');
     if(result.candidates.length){result.status='ok';result.note=`${result.candidates.length} candidatos nuevos de ${result.extracted} tuits extraídos.`;}else if(!authToken||!ct0){result.status='missing_secrets';result.note='Faltan X_AUTH_TOKEN y/o X_CT0 en las variables de entorno.';}else if(loginVisible||/login|i\/flow\/login/.test(result.final_url||'')){result.status='auth_required';result.note='Las cookies no han autenticado la sesión de X o han caducado.';}else{result.status='no_new_candidates';result.note=`Sin candidatos nuevos. Extraídos: ${result.extracted}; ya vistos: ${result.already_seen}; descartados: ${result.rejected.length}.`;}
     await page.screenshot({path:path.join(outDir,'search.png'),fullPage:true});fs.writeFileSync(path.join(outDir,'page.html'),await page.content(),'utf8');
   }catch(e){result.status='error';result.note=String(e&&e.stack?e.stack:e);}finally{fs.writeFileSync(path.join(outDir,'results.json'),JSON.stringify(result,null,2),'utf8');console.log(JSON.stringify(result,null,2));await browser.close();}
