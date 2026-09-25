@@ -77,10 +77,20 @@ Genera una imagen editorial ORIGINAL en PNG, WebP o JPEG. No sustituyas esta gen
 
 Línea visual aprobada: `editorial-scene-v2-cleveland`.
 
-La imagen debe ser una sola escena narrativa de caricatura/ilustración editorial de alta calidad:
+### Prioridad de generación
+
+Prioriza, en este orden:
+1. que la escena y el gag se entiendan inmediatamente;
+2. que conserve el estilo editorial aprobado;
+3. robustez del raster y rapidez de generación;
+4. detalle fino.
+
+NO busques calidad premium, hiperrealismo, microdetalle ni acabados lentos. Usa **detalle medio**, composición relativamente simple, pocos elementos importantes y acabado limpio suficiente para verse bien en móvil y en X. Prefiere una resolución estándar/eficiente (aprox. 1024 px en el lado largo cuando la herramienta lo permita) frente a resoluciones mayores. La calidad visual debe ser buena, pero la velocidad importa más que el refinamiento.
+
+La imagen debe ser una sola escena narrativa de caricatura/ilustración editorial:
 - protagonista(s) integrados en un entorno;
-- acción y expresiones;
-- profundidad, iluminación, textura y volumen;
+- acción y expresiones claras;
+- profundidad e iluminación suficientes, sin exigir texturas complejas;
 - gag VISUAL directamente ligado al detonante real;
 - el gag debe seguir entendiéndose aunque se elimine todo el texto;
 - cero texto siempre que sea posible; si es imprescindible, breve y diegético.
@@ -96,9 +106,20 @@ Rechaza y regenera si aparece cualquiera de estos patrones:
 - póster informativo;
 - clip-art, iconos simples o formas geométricas;
 - retrato decorativo sin gag;
-- exceso de texto.
+- exceso de texto;
+- imagen incompleta, cortada, truncada o parcialmente renderizada;
+- grandes zonas negras, transparentes o vacías que no pertenezcan realmente a la escena.
 
-DESPUÉS DE GENERAR, inspecciona la imagen real. Solo puede marcarse `ready` si supera el control visual y se guarda:
+DESPUÉS DE GENERAR, inspecciona la imagen REAL, no solo el prompt. Solo puede marcarse `ready` si:
+- el fichero se abre y decodifica correctamente;
+- la escena ocupa el fotograma completo;
+- no hay bandas, bloques negros ni regiones vacías anómalas;
+- la composición está completa;
+- supera el control visual editorial.
+
+Si falla esta comprobación, RECHAZA esa imagen y REGENERA una vez con una composición más simple. Si el segundo intento tampoco es íntegro, no marques `ready`: deja `image_generation_status:"pending_renderer"` y una nota técnica concreta.
+
+Al aceptar la imagen, guarda:
 
 `image.style_version="editorial-scene-v2-cleveland"`
 
@@ -120,7 +141,7 @@ Persistir el raster generado REAL es obligatorio antes de marcar `ready`.
 
 Preferencia:
 1. guarda el binario real en `trends/generated-images/<id>-r<revision>.<webp|png|jpg>` en `main`;
-2. verifica que el fichero existe realmente en GitHub y que la URL raw corresponde a una imagen;
+2. verifica que el fichero existe realmente en GitHub, que la URL raw corresponde a una imagen y que el raster se abre completo, sin truncado ni grandes zonas negras/vacías anómalas;
 3. guarda `prepared_item.image={url,source:"TTendencias / ChatGPT",source_url,rights_status:"generated",generated:true,alt,style_version,style_check}`.
 
 Si la herramienta de generación raster no está disponible, no puedes obtener los bytes reales, no puedes persistirlos o la imagen no supera el control visual, NO marques el item `ready`. Déjalo pendiente para reintento con `image_generation_status:"pending_renderer"` y una nota técnica concreta; continúa con los demás.
