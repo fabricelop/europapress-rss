@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T01:31:18+02:00",
+  "captured_at": "2026-09-26T01:33:30+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -12,11 +12,12 @@
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "#DeViernes",
     "Belén",
@@ -71,12 +72,47 @@
       "name": "Espiau"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "#LaBolaNegra",
-    "Espiau"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
+    {
+      "name": "Andrea",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 14.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-26T01:31:18+02:00",
+      "news_source_count": 2,
+      "news_event_id": "4a4dbb7d4821",
+      "news_title": "Andrea Ropero responde a 'Horizonte' por sus insinuaciones sobre el reportaje con Maricarmen: \"Ven fantasmas donde no hay\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-25T13:43:41.193442Z"
+    },
+    {
+      "name": "Trapote",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 13.8,
+      "movement": "up",
+      "first_detected_at": "2026-09-26T01:10:52+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
     {
       "name": "Manchester City",
       "social_source_count": 3,
@@ -87,7 +123,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 14.3,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T01:10:52+02:00",
       "news_source_count": 8,
       "news_event_id": "de32583e5844",
@@ -96,22 +132,21 @@
       "news_first_seen": "2026-09-25T15:02:55.152129Z"
     },
     {
-      "name": "Andrea",
-      "social_source_count": 3,
+      "name": "Frente Amplio",
+      "social_source_count": 2,
       "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
+        "snaplytics",
+        "trendswe"
       ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.7,
+      "best_observed_rank": 11,
+      "mean_observed_rank": 15.5,
       "movement": "new",
-      "first_detected_at": "2026-09-26T01:31:18+02:00",
-      "news_source_count": 2,
-      "news_event_id": "4a4dbb7d4821",
-      "news_title": "Andrea Ropero responde a 'Horizonte' por sus insinuaciones sobre el reportaje con Maricarmen: \"Ven fantasmas donde no hay\"",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-25T13:43:41.193442Z"
+      "first_detected_at": "2026-09-26T01:33:30+02:00",
+      "news_source_count": 9,
+      "news_event_id": "8bcea4489453",
+      "news_title": "Frente Amplio: la marca por la que se inclina el nuevo Sumar para las generales",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-25T12:22:21.811396Z"
     },
     {
       "name": "Zidane",
@@ -123,7 +158,7 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 13.3,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T01:31:18+02:00",
       "news_source_count": 2,
       "news_event_id": "8fd79fc549e0",
@@ -150,24 +185,6 @@
       "news_first_seen": null
     },
     {
-      "name": "Trapote",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 13.7,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T01:10:52+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "La Roca",
       "social_source_count": 3,
       "social_sources": [
@@ -177,24 +194,6 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 17.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T01:28:56+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "#firstdates25s",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.3,
       "movement": "flat",
       "first_detected_at": "2026-09-26T01:28:56+02:00",
       "news_source_count": 0,
@@ -235,7 +234,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T01:31:18+02:00"
+      "fetched_at": "2026-09-26T01:33:30+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -260,7 +259,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T01:31:18+02:00"
+      "fetched_at": "2026-09-26T01:33:30+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -287,10 +286,10 @@
         "Noblejas"
       ],
       "error": null,
-      "update_hint": "Updated 2 minutes ago",
-      "age_minutes": 2.0,
+      "update_hint": "Updated 5 minutes ago",
+      "age_minutes": 5.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T01:31:19+02:00"
+      "fetched_at": "2026-09-26T01:33:31+02:00"
     },
     "superx": {
       "ok": true,
@@ -320,16 +319,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T01:31:20+02:00"
+      "fetched_at": "2026-09-26T01:33:31+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790379080",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790379212",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T01:31:20+02:00"
+      "fetched_at": "2026-09-26T01:33:32+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -337,29 +336,29 @@
         "#DeViernes",
         "Mari Carmen",
         "Harvard",
-        "#XenobladeChronicles2EnGAME",
         "Belén",
+        "#XenobladeChronicles2EnGAME",
+        "Ángela Portero",
         "Paquita",
-        "#CuelgamurosTVE",
-        "Alejandra Neira",
         "PSOE",
+        "#CuelgamurosTVE",
+        "La Bola Negra",
         "Frente Amplio",
         "#SVGala3",
+        "Jesulín",
+        "Trapote",
+        "#LaVozAudiciones",
         "Taylor",
-        "Ángela Portero",
-        "Retiro",
         "Guardiola",
-        "Franco",
-        "Olga",
-        "#LaBolaNegra",
-        "Ureña",
-        "Manchester City"
+        "Retiro",
+        "Andrea",
+        "Franco"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 25, 2026 22:00 UTC",
-      "age_minutes": 91.3,
-      "freshness": "stale",
-      "fetched_at": "2026-09-26T01:31:20+02:00"
+      "update_hint": "Trending now Sep 25, 2026 23:00 UTC",
+      "age_minutes": 33.5,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-26T01:33:32+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -387,18 +386,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 25, 2026 at 11:00 PM # Trend Type Actions 1 #DeViernes Hashtag 2 Aleja",
-      "age_minutes": 151.3,
+      "age_minutes": 153.5,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T01:31:20+02:00"
+      "fetched_at": "2026-09-26T01:33:32+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790379082",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790379213",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T01:31:22+02:00"
+      "fetched_at": "2026-09-26T01:33:33+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -407,7 +406,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T01:31:23+02:00"
+      "fetched_at": "2026-09-26T01:33:34+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -437,16 +436,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T01:31:23+02:00"
+      "fetched_at": "2026-09-26T01:33:34+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790379085",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790379216",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T01:31:25+02:00"
+      "fetched_at": "2026-09-26T01:33:36+02:00"
     }
   }
 }
