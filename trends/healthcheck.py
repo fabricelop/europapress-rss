@@ -94,6 +94,7 @@ requests_doc = load("requests.json")
 bot_state = load("telegram-bot-state.json")
 listener_state = load("telegram-listener-state.json")
 prepared_doc = load("prepared.json")
+editorial_runtime = load("editorial-runtime.json", {}) or {}
 editorial_config = load("editorial-config.json", {}) or {}
 control_mode = load("control-mode.json", {}) or {}
 mode = str(control_mode.get("mode") or "telegram").strip().lower()
@@ -281,6 +282,26 @@ if isinstance(requests_doc, dict):
         blocking.append(
             f"cola editorial bloqueada: {len(overdue)} pendiente(s) superan {warn_after} min; "
             f"más antigua {max(ages):.1f} min"
+        )
+
+    # El runtime no puede declarar success mientras existan solicitudes
+    # preparing/update. Eso ocultaba fallos de hand-off (sin outbox/prepared).
+    runtime_status = str(editorial_runtime.get("status") or "")
+    impossible_success = runtime_status == "success" and bool(active)
+    modules["editorial_runtime"] = {
+        "ok": not impossible_success and runtime_status != "failure",
+        "status": runtime_status or "unknown",
+        "queue_complete": editorial_runtime.get("queue_complete"),
+        "remaining_active_ids": editorial_runtime.get("remaining_active_ids") or [],
+        "contradictory_success": impossible_success,
+    }
+    if impossible_success:
+        blocking.append(
+            f"runtime editorial inconsistente: success con {len(active)} solicitud(es) preparing/update"
+        )
+    elif runtime_status == "failure":
+        blocking.append(
+            "runtime editorial en failure: " + str(editorial_runtime.get("error") or "sin detalle")
         )
 
 signature = " | ".join(sorted(blocking))
