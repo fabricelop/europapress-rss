@@ -1,14 +1,13 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T09:11:21+02:00",
+  "captured_at": "2026-09-25T09:20:55+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "superx",
     "snaplytics",
     "trendswe"
   ],
@@ -23,12 +22,12 @@
     "#SVGala3",
     "PSOE",
     "Franco",
+    "Harvard",
     "Retiro",
     "Congreso",
-    "Cleveland",
-    "Harvard",
     "Ayuso",
-    "Paquita"
+    "Paquita",
+    "Ana Belén"
   ],
   "items": [
     {
@@ -49,31 +48,33 @@
     },
     {
       "rank": 5,
-      "name": "Retiro"
-    },
-    {
-      "rank": 6,
-      "name": "Congreso"
-    },
-    {
-      "rank": 7,
-      "name": "Cleveland"
-    },
-    {
-      "rank": 8,
       "name": "Harvard"
     },
     {
-      "rank": 9,
+      "rank": 6,
+      "name": "Retiro"
+    },
+    {
+      "rank": 7,
+      "name": "Congreso"
+    },
+    {
+      "rank": 8,
       "name": "Ayuso"
     },
     {
-      "rank": 10,
+      "rank": 9,
       "name": "Paquita"
+    },
+    {
+      "rank": 10,
+      "name": "Ana Belén"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Ana Belén"
+  ],
   "upcoming": [
     {
       "name": "#FelizJueves",
@@ -86,7 +87,7 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 16.2,
+      "mean_observed_rank": 16.4,
       "movement": "flat",
       "first_detected_at": "2026-09-25T05:10:51+02:00",
       "news_source_count": 0,
@@ -106,8 +107,8 @@
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 13.8,
-      "movement": "new",
+      "mean_observed_rank": 13.0,
+      "movement": "flat",
       "first_detected_at": "2026-09-25T09:11:21+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -129,11 +130,29 @@
       "mean_observed_rank": 15.0,
       "movement": "flat",
       "first_detected_at": "2026-09-25T04:40:59+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "news_source_count": 1,
+      "news_event_id": "1854fd61915e",
+      "news_title": "Escala el choque con Juanma Castaño: “Miente, manipula, señala y hostiga”",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-25T07:12:26.861924Z"
+    },
+    {
+      "name": "Daniel Sancho",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 16.3,
+      "movement": "flat",
+      "first_detected_at": "2026-09-25T08:37:29+02:00",
+      "news_source_count": 10,
+      "news_event_id": "ac5174a8c1bf",
+      "news_title": "Tailandia desestima los recursos y mantiene la cadena perpetua a Daniel Sancho",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-25T05:52:12.255361Z"
     },
     {
       "name": "Ana Vázquez",
@@ -146,31 +165,13 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.2,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T08:37:29+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Daniel Sancho",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 17.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T08:37:29+02:00",
-      "news_source_count": 10,
-      "news_event_id": "ac5174a8c1bf",
-      "news_title": "Tailandia desestima los recursos y mantiene la cadena perpetua a Daniel Sancho",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-25T05:52:12.255361Z"
     },
     {
       "name": "Zapatero",
@@ -181,8 +182,8 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 15.2,
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.8,
       "movement": "down",
       "first_detected_at": "2026-09-25T06:31:07+02:00",
       "news_source_count": 1,
@@ -192,17 +193,17 @@
       "news_first_seen": "2026-09-25T03:42:05.224005Z"
     },
     {
-      "name": "Ana Belén",
+      "name": "Cleveland",
       "social_source_count": 3,
       "social_sources": [
-        "snaplytics",
-        "trendswe",
+        "getdaytrends",
+        "trends24",
         "tweets24"
       ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.7,
-      "movement": "down",
-      "first_detected_at": "2026-09-25T08:37:29+02:00",
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T09:20:55+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -210,17 +211,17 @@
       "news_first_seen": null
     },
     {
-      "name": "#laisladelastentaciones6",
+      "name": "#LaHora25S",
       "social_source_count": 3,
       "social_sources": [
-        "snaplytics",
-        "trendswe",
+        "getdaytrends",
+        "trends24",
         "tweets24"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.3,
-      "movement": "down",
-      "first_detected_at": "2026-09-25T06:31:07+02:00",
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T09:20:55+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -228,7 +229,14 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Ana Belén",
+      "first_detected_at": "2026-09-25T08:37:29+02:00",
+      "entered_top10_at": "2026-09-25T09:20:55+02:00",
+      "lead_minutes": 43
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -259,7 +267,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T09:11:21+02:00"
+      "fetched_at": "2026-09-25T09:20:55+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -284,7 +292,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T09:11:21+02:00"
+      "fetched_at": "2026-09-25T09:20:55+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -293,28 +301,28 @@
         "#SVGala3",
         "PSOE",
         "Franco",
+        "Harvard",
         "Retiro",
         "Congreso",
-        "Cleveland",
-        "Harvard",
         "Ayuso",
         "Paquita",
-        "Ana Vázquez",
         "Ana Belén",
-        "#laisladelastentaciones6",
-        "Zapatero",
-        "Juanma Castaño",
+        "Ana Vázquez",
         "Taylor",
-        "#FelizJueves",
-        "Babylon",
+        "Cleveland",
+        "#LaHora25S",
+        "Juanma Castaño",
+        "Zapatero",
         "Daniel Sancho",
-        "La CIA"
+        "#FelizJueves",
+        "Olga",
+        "Borja"
       ],
       "error": null,
-      "update_hint": "Updated 33 minutes ago",
-      "age_minutes": 33.0,
+      "update_hint": "Updated 1 minute ago",
+      "age_minutes": 1.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-25T09:11:22+02:00"
+      "fetched_at": "2026-09-25T09:20:56+02:00"
     },
     "superx": {
       "ok": true,
@@ -344,16 +352,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T09:11:23+02:00"
+      "fetched_at": "2026-09-25T09:20:57+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790320283",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790320857",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T09:11:23+02:00"
+      "fetched_at": "2026-09-25T09:20:57+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -381,9 +389,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 25, 2026 06:00 UTC",
-      "age_minutes": 71.4,
+      "age_minutes": 81.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T09:11:23+02:00"
+      "fetched_at": "2026-09-25T09:20:57+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -411,18 +419,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 4150.4,
+      "age_minutes": 4160.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T09:11:23+02:00"
+      "fetched_at": "2026-09-25T09:20:57+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790320284",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790320858",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T09:11:24+02:00"
+      "fetched_at": "2026-09-25T09:20:58+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -431,7 +439,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T09:11:25+02:00"
+      "fetched_at": "2026-09-25T09:20:59+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -461,16 +469,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T09:11:26+02:00"
+      "fetched_at": "2026-09-25T09:20:59+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790320287",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790320861",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T09:11:27+02:00"
+      "fetched_at": "2026-09-25T09:21:01+02:00"
     }
   }
 }
