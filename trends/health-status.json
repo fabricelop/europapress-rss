@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-25T17:17:16.654457+00:00",
+  "checked_at": "2026-09-25T20:31:44.688434+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -39,8 +39,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 6,
-      "captured_age_minutes": 0.1,
+      "non_stale_sources": 5,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -52,8 +52,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.6,
-      "run_id": 36165988776,
+      "age_minutes": 0.7,
+      "run_id": 36186235774,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -74,22 +74,46 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 4,
-      "overdue_count": 2,
-      "oldest_age_minutes": 192.8,
+      "pending_count": 6,
+      "overdue_count": 6,
+      "oldest_age_minutes": 199.6,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "31fa73ae74f1",
-          "name": "Frente Amplio",
-          "status": "preparing",
-          "age_minutes": 192.8
+          "id": "948106d5df49",
+          "name": "Ayuso",
+          "status": "update",
+          "age_minutes": 199.6
         },
         {
-          "id": "9986911fa8ce",
-          "name": "Manchester City",
+          "id": "ed9eb5711fd2",
+          "name": "Héctor Álvarez",
           "status": "preparing",
-          "age_minutes": 42.0
+          "age_minutes": 100.7
+        },
+        {
+          "id": "13c4018e5215",
+          "name": "Haaland",
+          "status": "preparing",
+          "age_minutes": 100.7
+        },
+        {
+          "id": "8f341647456d",
+          "name": "Noblejas",
+          "status": "preparing",
+          "age_minutes": 100.7
+        },
+        {
+          "id": "ffaacd848361",
+          "name": "Finlandia",
+          "status": "preparing",
+          "age_minutes": 100.7
+        },
+        {
+          "id": "ccaaf0a7bac8",
+          "name": "El Ayuntamiento de Madrid",
+          "status": "preparing",
+          "age_minutes": 100.7
         }
       ],
       "repairable": false
@@ -97,8 +121,8 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola editorial bloqueada: 2 pendiente(s) superan 30 min; más antigua 192.8 min"
+    "cola editorial bloqueada: 6 pendiente(s) superan 30 min; más antigua 199.6 min"
   ],
   "alert_sent": false,
-  "last_alert_signature": "cola editorial bloqueada: 2 pendiente(s) superan 30 min; más antigua 192.8 min"
+  "last_alert_signature": "cola editorial bloqueada: 6 pendiente(s) superan 30 min; más antigua 199.6 min"
 }
