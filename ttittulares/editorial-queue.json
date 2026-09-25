@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-25T20:50:21.012890Z",
+  "updated_at": "2026-09-25T20:53:18.082944Z",
   "count": 1,
   "items": [
     {
@@ -21,8 +21,8 @@
       "parent_event_id": null,
       "update_context": null,
       "with_image": true,
-      "image_mode": "generated_gag_or_archive_sensitive",
-      "image_instruction": "Genera por defecto una imagen editorial ORIGINAL raster con gag visual específico, usando exactamente la línea editorial-scene-v2-cleveland de TTendencias. Marca image_strategy=generated_gag. Si la noticia implica víctimas, abusos, tragedia, sufrimiento o el gag no es editorialmente apropiado, NO generes humor: marca image_strategy=archive_sensitive y usa una imagen existente del acontecimiento, priorizando fuente oficial/primaria y después medios fiables. Un fallo técnico del renderer NO autoriza a cambiar generated_gag por archivo."
+      "image_mode": "existing_web_image",
+      "image_instruction": "Busca una imagen existente y relevante al hecho en una fuente oficial/primaria o medio fiable. Haz al menos una búsqueda específica y, si falla, una segunda vía u og:image de una fuente usada. No generes imágenes. Guarda URL directa, fuente, página de origen y rights_status. Si no encuentras una adecuada, deja constancia explícita."
     }
   ]
 }
