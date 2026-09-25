@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T21:50:53+02:00",
+  "captured_at": "2026-09-25T22:01:15+02:00",
   "primary_source": "consensus",
   "selection_method": "consensus",
   "sources_used": [
@@ -70,12 +70,8 @@
       "name": "Retiro"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Guardiola",
-    "#TEM25S",
-    "Manchester City"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "Ana Belén",
@@ -178,7 +174,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 13.7,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T21:50:53+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -195,7 +191,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.5,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T21:50:53+02:00",
       "news_source_count": 8,
       "news_event_id": "de32583e5844",
@@ -204,20 +200,7 @@
       "news_first_seen": "2026-09-25T15:02:55.152129Z"
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "#TEM25S",
-      "first_detected_at": "2026-09-25T21:41:04+02:00",
-      "entered_top10_at": "2026-09-25T21:50:53+02:00",
-      "lead_minutes": 10
-    },
-    {
-      "name": "Manchester City",
-      "first_detected_at": "2026-09-25T21:41:04+02:00",
-      "entered_top10_at": "2026-09-25T21:50:53+02:00",
-      "lead_minutes": 10
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -248,7 +231,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:50:53+02:00"
+      "fetched_at": "2026-09-25T22:01:15+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -273,7 +256,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:50:53+02:00"
+      "fetched_at": "2026-09-25T22:01:16+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -303,7 +286,7 @@
       "update_hint": "Updated 1 hour ago",
       "age_minutes": 60.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T21:50:54+02:00"
+      "fetched_at": "2026-09-25T22:01:16+02:00"
     },
     "superx": {
       "ok": true,
@@ -333,16 +316,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:50:55+02:00"
+      "fetched_at": "2026-09-25T22:01:17+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790365855",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790366478",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T21:50:55+02:00"
+      "fetched_at": "2026-09-25T22:01:18+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -370,48 +353,48 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 25, 2026 19:00 UTC",
-      "age_minutes": 50.9,
+      "age_minutes": 61.3,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T21:50:56+02:00"
+      "fetched_at": "2026-09-25T22:01:18+02:00"
     },
     "fowtools": {
       "ok": true,
       "trends": [
-        "#LaIslaDeLasTentaciones5",
-        "Begoña Gómez",
-        "Peinado",
-        "Berlín",
-        "#FelizMartes",
-        "Vito Quiles",
-        "#Mañaneros22S",
-        "Mourinho",
-        "Eurovision",
-        "Die Linke",
-        "Valverde",
-        "Negu Gorriak",
-        "El Congreso",
-        "#TEM21S",
-        "Madrid",
-        "Cuti",
-        "#LaHora22S",
-        "Negreira",
-        "Nueva York",
-        "Grado 3"
+        "Guardiola",
+        "Harvard",
+        "Manchester City",
+        "Héctor Álvarez",
+        "#TEM25S",
+        "Ashlin Barry",
+        "Frente Amplio",
+        "Finlândia",
+        "Haaland",
+        "Noblejas",
+        "Man City",
+        "Premier League",
+        "El Ayuntamiento de Madrid",
+        "El City",
+        "Talavante",
+        "#MalasLenguas",
+        "Everton",
+        "Frente Popular",
+        "Breaking Bad",
+        "Urbagestión"
       ],
       "error": null,
-      "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 4909.9,
+      "update_hint": "Updated: September 25, 2026 at 08:00 PM # Trend Type Actions 1 Guardiola Topic 2 Harvard",
+      "age_minutes": 121.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T21:50:56+02:00"
+      "fetched_at": "2026-09-25T22:01:18+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790365857",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790366479",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T21:50:57+02:00"
+      "fetched_at": "2026-09-25T22:01:19+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -420,7 +403,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T21:50:59+02:00"
+      "fetched_at": "2026-09-25T22:01:20+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -450,16 +433,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:50:59+02:00"
+      "fetched_at": "2026-09-25T22:01:20+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790365861",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790366482",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T21:51:01+02:00"
+      "fetched_at": "2026-09-25T22:01:22+02:00"
     }
   }
 }
