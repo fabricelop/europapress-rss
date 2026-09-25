@@ -1404,7 +1404,7 @@
       "id": "adc4d83d5880",
       "name": "Franco",
       "rank": 8,
-      "status": "update",
+      "status": "ready",
       "requested_at": "2026-09-25T11:24:50.301Z",
       "revision": 3,
       "reexplain": true,
@@ -1420,7 +1420,9 @@
       ],
       "auto_queued": true,
       "editorial_engine": "chatgpt-automation-outbox",
-      "rewrite_instruction": "Hay gente diciendo que lo del desahucio de Maricarmen no hubiese pasado con Franco porque había una ley que lo impedía y que luego quitó el PSOE"
+      "rewrite_instruction": "Hay gente diciendo que lo del desahucio de Maricarmen no hubiese pasado con Franco porque había una ley que lo impedía y que luego quitó el PSOE",
+      "ready_at": "2026-09-25T14:00:00+02:00",
+      "delivery_confirmation": "prepared_web"
     },
     {
       "id": "e3c48581956f",
@@ -2621,7 +2623,7 @@
       "id": "56266e2b41f5",
       "name": "#XenobladeChronicles2EnGAME",
       "rank": 2,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-25T12:11:05+02:00",
       "revision": 0,
       "reexplain": false,
@@ -2634,13 +2636,16 @@
       "captured_with": [
         "#XenobladeChronicles2EnGAME"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-25T14:02:54+02:00",
+      "problem_reason": "Tras dos búsquedas independientes no se ha encontrado una publicación actual y verificable de GAME España que permita identificar con suficiente fiabilidad el detonante exacto del hashtag.",
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "9c2d29850e7f",
       "name": "Olga",
       "revision": 0,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-09-25T11:53:02.088Z",
       "rank": 13,
       "with_image": true,
@@ -2654,8 +2659,11 @@
       "requested_together": [
         "Olga"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "ready_at": "2026-09-25T14:00:00+02:00",
+      "delivery_confirmation": "prepared_web",
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ],
-  "updated_at": "2026-09-25T11:53:02.088Z"
+  "updated_at": "2026-09-25T14:02:54+02:00"
 }
