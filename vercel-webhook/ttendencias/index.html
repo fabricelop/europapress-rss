@@ -69,7 +69,7 @@ const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
 const RUN_STATUS_API="/api/ttendencias-run-status";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="ttendencias-problematic-context-v1-20260925";
+const SHELL_BUILD="ttendencias-image-integrity-speed-v1-20260925";
 const $=id=>document.getElementById(id);
 let model=null,busy=new Set(),runPoll=null,problemRetryItem=null;
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -83,7 +83,7 @@ function renderScheduleTiming(){
  if(!model)return;
  const cfg=model.editorial_config?.editorial||{},now=new Date();
  const radarMinutes=(cfg.detection_schedule_minutes||[7,17,27,37,47,57]).map(Number);
- const editorialMinutes=(cfg.schedule_minutes||[0,30]).map(Number);
+ const editorialMinutes=(cfg.schedule_minutes||[30]).map(Number);
  const nextR=nextSlot(now,radarMinutes),nextE=nextSlot(now,editorialMinutes);
  $("lastRadar").textContent="Último radar "+fmtRadar(model.captured_at);
  const rm=nextR?Math.ceil((nextR-now)/60000):null;
