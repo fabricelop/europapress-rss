@@ -54,6 +54,25 @@ for item in processing.get("items", []):
 
 processing_items.sort(key=lambda x: str(x.get("selected_at") or ""), reverse=True)
 
+problematic_items = []
+for item in processing.get("items", []):
+    if str(item.get("status") or "") != "PROBLEMATIC":
+        continue
+    event_id = str(item.get("event_id") or "")
+    ev = event_map.get(event_id, {})
+    problematic_items.append({
+        "event_id": event_id,
+        "title": str(item.get("title") or ev.get("title") or ""),
+        "url": str(item.get("url") or ""),
+        "selected_at": item.get("selected_at"),
+        "problematic_at": item.get("problematic_at"),
+        "problem_reason": str(item.get("problem_reason") or ""),
+        "revision": int(item.get("revision") or ev.get("revision") or 1),
+        "source_count": int(ev.get("source_count") or item.get("source_count") or 0),
+        "sources": list(ev.get("sources") or item.get("sources") or []),
+    })
+problematic_items.sort(key=lambda x: str(x.get("problematic_at") or x.get("selected_at") or ""), reverse=True)
+
 stamp = datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
 out = {
     "project":"TTiTTulares",
@@ -62,6 +81,8 @@ out = {
     "processing_count":len(processing_items),
     "processing_items":processing_items,
     "ready_count":len(prepared.get("items", [])),
+    "problematic_count":len(problematic_items),
+    "problematic_items":problematic_items,
     "three_source_count":sum(
         1 for event in events_doc.get("events", [])
         if int(event.get("source_count") or 0) == 3
