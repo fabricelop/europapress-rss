@@ -223,7 +223,8 @@ function duration(s){if(s==null||!Number.isFinite(+s))return '';s=+s;if(s<60)ret
 function runKey(){return localStorage.getItem('ttittularesRunKey')||''}
 function runVisual(s){
   const el=$('#runState'),btn=$('#runNow');el.className='';btn.disabled=false;
-  if(s&&s.status==='DISABLED'){el.textContent='Preparado · falta activar trigger Work';el.className='';btn.disabled=true;return}\n  if(!s||s.status==='IDLE'){el.textContent=runKey()?'Listo para ejecutar':'Pedirá clave al primer uso';return}
+  if(s&&s.status==='DISABLED'){el.textContent='Preparado · falta activar trigger Work';el.className='';btn.disabled=true;return}
+  if(!s||s.status==='IDLE'){el.textContent=runKey()?'Listo para ejecutar':'Pedirá clave al primer uso';return}
   if(s.status==='REQUESTED'){el.textContent='Solicitada '+when(s.requested_at)+' · esperando a Work';el.className='running';btn.disabled=true;return}
   if(s.status==='RUNNING'){el.textContent='Ejecutándose desde '+when(s.started_at)+(s.start_delay_seconds!=null?' · arrancó en '+duration(s.start_delay_seconds):'');el.className='running';btn.disabled=true;return}
   if(s.status==='DONE'){el.textContent='Terminada '+when(s.finished_at)+(s.start_delay_seconds!=null?' · arranque '+duration(s.start_delay_seconds):'')+(s.duration_seconds!=null?' · duración '+duration(s.duration_seconds):'');el.className='done';return}
@@ -257,7 +258,8 @@ async function requestRun(){
     runVisual({status:'REQUESTED',requested_at:j.requested_at});scheduleRunPoll(true);
   }catch(e){$('#runState').textContent=String(e.message||e);$('#runState').className='error';btn.disabled=false}
 }
-\n$('#rewriteOk').onclick=async e=>{
+
+$('#rewriteOk').onclick=async e=>{
   e.preventDefault();
   const t=$('#rewriteText').value.trim();
   if(!t)return;
