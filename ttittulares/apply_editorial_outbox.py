@@ -183,8 +183,8 @@ def sync_compact(q):
             "revision":int(x.get("revision") or 1),
             "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
             "parent_event_id":x.get("parent_event_id"),"update_context":x.get("update_context"),
-            "with_image":True,"image_mode":"generated_gag_or_archive_fallback",
-            "image_instruction":"Genera por defecto una imagen editorial ORIGINAL raster con gag visual específico, usando exactamente la línea editorial-scene-v2-cleveland de TTendencias. Una sola escena narrativa, gag comprensible sin texto, detalle medio y composición simple. Si la noticia implica víctimas, abusos, tragedia, sufrimiento o el gag no es apropiado, NO hagas humor: usa una imagen existente del acontecimiento, priorizando fuente oficial/primaria y después medios fiables.",
+            "with_image":True,"image_mode":"generated_gag_or_archive_sensitive",
+            "image_instruction":"Genera por defecto una imagen editorial ORIGINAL raster con gag visual específico, usando exactamente la línea editorial-scene-v2-cleveland de TTendencias. Marca image_strategy=generated_gag. Si la noticia implica víctimas, abusos, tragedia, sufrimiento o el gag no es editorialmente apropiado, NO generes humor: marca image_strategy=archive_sensitive y usa una imagen existente del acontecimiento, priorizando fuente oficial/primaria y después medios fiables. Un fallo técnico del renderer NO autoriza a cambiar generated_gag por archivo.",
         })
     active.sort(key=lambda x:str(x.get("selected_at") or ""))
     save(TT/"editorial-queue.json",{
@@ -219,11 +219,26 @@ def main():
                 item=validate_ready(payload)
                 if bool(row.get("with_image", True)):
                     image=item.get("image") or {}
-                    if image.get("generated"):
+                    strategy=str(item.get("image_strategy") or "").strip()
+                    if strategy=="generated_gag":
+                        if not image.get("generated") or not str(image.get("url") or "").strip():
+                            raise ValueError("generated_gag sin raster generado: debe quedar pendiente de renderer, no usar archivo")
                         validate_image(item)
                         item["image_search_status"]="generated"
-                    elif not str(image.get("url") or "").strip():
-                        _recover_image(item,row,events)
+                    elif strategy=="archive_sensitive":
+                        if image.get("generated"):
+                            raise ValueError("archive_sensitive no debe contener gag generado")
+                        if not str(image.get("url") or "").strip():
+                            _recover_image(item,row,events)
+                    elif strategy:
+                        raise ValueError(f"image_strategy inválida: {strategy}")
+                    else:
+                        # Compatibilidad con items antiguos previos a la estrategia explícita.
+                        if image.get("generated"):
+                            validate_image(item)
+                            item["image_search_status"]="generated"
+                        elif not str(image.get("url") or "").strip():
+                            _recover_image(item,row,events)
                 p["items"]=[x for x in p.get("items",[]) if str(x.get("event_id") or "")!=eid]
                 p["items"].append(item);p["updated_at"]=item.get("prepared_at") or now
                 previous_attempts=int(row.get("problematic_attempts") or (1 if str(row.get("status") or "")=="PROBLEMATIC" else 0))
