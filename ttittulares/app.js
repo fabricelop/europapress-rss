@@ -112,6 +112,28 @@ function renderQuotePanel(host,x,onSelect){
   return candidates[0]?.url||'';
 }
 
+async function copyImage(url,btn){
+  try{
+    const r=await fetch(url,{cache:'no-store'}); if(!r.ok)throw Error('fetch');
+    const blob=await r.blob();
+    if(!navigator.clipboard||!window.ClipboardItem)throw Error('clipboard');
+    await navigator.clipboard.write([new ClipboardItem({[blob.type]:blob})]);
+    const old=btn.textContent;btn.textContent='✓ Imagen copiada';setTimeout(()=>btn.textContent=old,1600);
+  }catch(_){alert('El navegador no permite copiar esta imagen directamente. Usa Descargar imagen.');}
+}
+function renderImagePanel(host,x){
+  const im=x.image||{};const url=String(im.url||'').trim();if(!url)return;
+  const box=document.createElement('section');box.className='image-panel';
+  const img=document.createElement('img');img.src=url;img.alt=im.alt||'Imagen de la noticia';img.loading='lazy';
+  const meta=document.createElement('div');meta.className='image-meta';
+  meta.innerHTML='<strong>'+(im.generated?'🎨 Gag visual':'🖼️ Imagen de archivo')+'</strong><span>'+esc(im.generated?'TTiTTulares · imagen original':'Fuente: '+(im.source||'medio'))+'</span>';
+  const actions=document.createElement('div');actions.className='image-actions';
+  const copy=document.createElement('button');copy.type='button';copy.textContent='Copiar imagen';copy.onclick=()=>copyImage(url,copy);
+  const open=document.createElement('a');open.href=url;open.target='_blank';open.rel='noopener';open.textContent='Abrir imagen';
+  const dl=document.createElement('a');dl.href=url;dl.download='ttittulares-'+(x.event_id||'imagen')+(url.includes('.png')?'.png':url.includes('.jpg')||url.includes('.jpeg')?'.jpg':'.webp');dl.textContent='Descargar imagen';
+  actions.append(copy,open,dl);box.append(img,meta,actions);host.appendChild(box);
+}
+
 function renderReady(list){
   $('#viewTitle').textContent='Noticias listas';
   $('#viewHelp').textContent='Solo entran noticias con al menos 4 fuentes. Ordenadas por número actual de fuentes y después por recencia.';
@@ -135,6 +157,7 @@ function renderReady(list){
     n.querySelector('.facts').textContent=x.factual_summary||'';
 
     const vs=n.querySelector('.variants');
+    renderImagePanel(vs,x);
     const quoteLinks=[];
     let selectedQuote='';
 
