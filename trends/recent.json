@@ -1,31 +1,32 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T00:32:15+02:00",
-  "primary_source": "tweets24",
+  "captured_at": "2026-09-26T00:40:53+02:00",
+  "primary_source": "snaplytics",
   "selection_method": "fresh-anchor",
   "sources_used": [
-    "trends24",
-    "getdaytrends",
-    "tweets24"
+    "snaplytics",
+    "fowtools",
+    "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "#DeViernes",
-    "Alejandra Neira",
+    "Mari Carmen",
+    "Harvard",
+    "#XenobladeChronicles2EnGAME",
+    "Belén",
+    "Paquita",
     "#CuelgamurosTVE",
-    "Ureña",
-    "#LaVozAudiciones",
-    "Belén Esteban",
-    "#firstdates25s",
-    "#LaBolaNegra",
-    "Guardiola",
-    "Zidane"
+    "Alejandra Neira",
+    "PSOE",
+    "Frente Amplio"
   ],
   "items": [
     {
@@ -34,80 +35,71 @@
     },
     {
       "rank": 2,
-      "name": "Alejandra Neira"
+      "name": "Mari Carmen"
     },
     {
       "rank": 3,
-      "name": "#CuelgamurosTVE"
+      "name": "Harvard"
     },
     {
       "rank": 4,
-      "name": "Ureña"
+      "name": "#XenobladeChronicles2EnGAME"
     },
     {
       "rank": 5,
-      "name": "#LaVozAudiciones"
+      "name": "Belén"
     },
     {
       "rank": 6,
-      "name": "Belén Esteban"
+      "name": "Paquita"
     },
     {
       "rank": 7,
-      "name": "#firstdates25s"
+      "name": "#CuelgamurosTVE"
     },
     {
       "rank": 8,
-      "name": "#LaBolaNegra"
+      "name": "Alejandra Neira"
     },
     {
       "rank": 9,
-      "name": "Guardiola"
+      "name": "PSOE"
     },
     {
       "rank": 10,
-      "name": "Zidane"
+      "name": "Frente Amplio"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Mari Carmen",
+    "Harvard",
+    "#XenobladeChronicles2EnGAME",
+    "Belén",
+    "Paquita",
+    "PSOE",
+    "Frente Amplio"
+  ],
   "upcoming": [
     {
       "name": "Manchester City",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 12.5,
-      "movement": "down",
+      "mean_observed_rank": 14.0,
+      "movement": "up",
       "first_detected_at": "2026-09-25T22:40:56+02:00",
       "news_source_count": 8,
       "news_event_id": "de32583e5844",
       "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-09-25T15:02:55.152129Z"
-    },
-    {
-      "name": "Harvard",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T00:10:47+02:00",
-      "news_source_count": 9,
-      "news_event_id": "c2756c2a1cf9",
-      "news_title": "Las preguntas de los alumnos sobre corrupción, Pegasus, Ceuta y Venezuela cambian el guion de Sánchez en Harvard",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-25T01:22:01.517314Z"
     },
     {
       "name": "Borja",
@@ -120,7 +112,7 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 17.2,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T11:40:49+02:00",
       "news_source_count": 2,
       "news_event_id": "3c0a15c21cdf",
@@ -147,21 +139,20 @@
       "news_first_seen": "2026-09-25T13:43:41.193442Z"
     },
     {
-      "name": "Frente Amplio",
-      "social_source_count": 2,
+      "name": "Retiro",
+      "social_source_count": 1,
       "social_sources": [
-        "trends24",
-        "tweets24"
+        "snaplytics"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T00:10:47+02:00",
-      "news_source_count": 8,
-      "news_event_id": "6a0361d6f71e",
-      "news_title": "Ada Colau, dispuesta a ser candidata en las generales si hay un “frente realmente amplio” de izquierdas",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-25T12:02:30.187649Z"
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T00:40:53+02:00",
+      "news_source_count": 13,
+      "news_event_id": "e9ec3aee6ca0",
+      "news_title": "La concentración ante el desahucio de Maricarmen en el barrio del Retiro de Madrid, en imágenes",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-23T07:34:12.932560Z"
     },
     {
       "name": "Noblejas",
@@ -181,6 +172,23 @@
       "news_first_seen": "2026-09-25T09:32:42.463047Z"
     },
     {
+      "name": "Taylor",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 15.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T00:40:53+02:00",
+      "news_source_count": 3,
+      "news_event_id": "0abf8f845827",
+      "news_title": "Taylor Swift amplía 'The Life of a Showgirl' con cuatro canciones inéditas y lanza un adelanto del videoclip de 'Patient Zero'",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-25T08:43:40.761388Z"
+    },
+    {
       "name": "Premier League",
       "social_source_count": 2,
       "social_sources": [
@@ -189,7 +197,7 @@
       ],
       "best_observed_rank": 20,
       "mean_observed_rank": 20.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T00:32:15+02:00",
       "news_source_count": 8,
       "news_event_id": "de32583e5844",
@@ -205,7 +213,7 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 16.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T00:32:15+02:00",
       "news_source_count": 11,
       "news_event_id": "ac5174a8c1bf",
@@ -214,7 +222,20 @@
       "news_first_seen": "2026-09-25T05:52:12.255361Z"
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Harvard",
+      "first_detected_at": "2026-09-26T00:10:47+02:00",
+      "entered_top10_at": "2026-09-26T00:40:53+02:00",
+      "lead_minutes": 30
+    },
+    {
+      "name": "Frente Amplio",
+      "first_detected_at": "2026-09-26T00:10:47+02:00",
+      "entered_top10_at": "2026-09-26T00:40:53+02:00",
+      "lead_minutes": 30
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -245,7 +266,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T00:32:15+02:00"
+      "fetched_at": "2026-09-26T00:40:53+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -270,7 +291,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T00:32:15+02:00"
+      "fetched_at": "2026-09-26T00:40:54+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -297,10 +318,10 @@
         "Premier League"
       ],
       "error": null,
-      "update_hint": "Updated 28 minutes ago",
-      "age_minutes": 28.0,
+      "update_hint": "Updated 37 minutes ago",
+      "age_minutes": 37.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T00:32:16+02:00"
+      "fetched_at": "2026-09-26T00:40:55+02:00"
     },
     "superx": {
       "ok": true,
@@ -330,16 +351,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T00:32:17+02:00"
+      "fetched_at": "2026-09-26T00:40:56+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790375537",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790376056",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T00:32:17+02:00"
+      "fetched_at": "2026-09-26T00:40:56+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -348,28 +369,28 @@
         "Mari Carmen",
         "Harvard",
         "#XenobladeChronicles2EnGAME",
-        "Alejandra Neira",
+        "Belén",
         "Paquita",
+        "#CuelgamurosTVE",
+        "Alejandra Neira",
         "PSOE",
-        "#SVGala3",
         "Frente Amplio",
+        "#SVGala3",
         "Taylor",
-        "Ureña",
+        "Ángela Portero",
         "Retiro",
-        "Franco",
         "Guardiola",
+        "Franco",
         "Olga",
-        "#firstdates25s",
-        "Manchester City",
-        "Borja",
-        "#TEM25S",
-        "Ana Belén"
+        "#LaBolaNegra",
+        "Ureña",
+        "Manchester City"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 25, 2026 21:00 UTC",
-      "age_minutes": 92.3,
-      "freshness": "stale",
-      "fetched_at": "2026-09-26T00:32:18+02:00"
+      "update_hint": "Trending now Sep 25, 2026 22:00 UTC",
+      "age_minutes": 40.9,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-26T00:40:56+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -397,18 +418,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 25, 2026 at 10:00 PM # Trend Type Actions 1 Mari Carmen Topic 2 Harvar",
-      "age_minutes": 152.3,
+      "age_minutes": 161.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T00:32:18+02:00"
+      "fetched_at": "2026-09-26T00:40:57+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790375539",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790376059",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T00:32:19+02:00"
+      "fetched_at": "2026-09-26T00:40:59+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -417,7 +438,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T00:32:20+02:00"
+      "fetched_at": "2026-09-26T00:41:00+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -447,16 +468,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T00:32:21+02:00"
+      "fetched_at": "2026-09-26T00:41:00+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790375543",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790376063",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T00:32:23+02:00"
+      "fetched_at": "2026-09-26T00:41:03+02:00"
     }
   }
 }
