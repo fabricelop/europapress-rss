@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T18:10:51+02:00",
+  "captured_at": "2026-09-25T18:21:01+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -124,7 +124,7 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 17.3,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T14:21:07+02:00",
       "news_source_count": 13,
       "news_event_id": "851d3305d69b",
@@ -152,24 +152,6 @@
       "news_first_seen": "2026-09-25T13:02:37.412942Z"
     },
     {
-      "name": "Manchester City",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 12.0,
-      "movement": "up",
-      "first_detected_at": "2026-09-25T18:01:17+02:00",
-      "news_source_count": 4,
-      "news_event_id": "de32583e5844",
-      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-25T15:02:55.152129Z"
-    },
-    {
       "name": "Borja",
       "social_source_count": 4,
       "social_sources": [
@@ -180,13 +162,31 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 17.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T11:40:49+02:00",
       "news_source_count": 2,
       "news_event_id": "3c0a15c21cdf",
       "news_title": "Borja Iglesias anima a los futbolistas a perder el miedo a posicionarse: \"Igual pierdes un patrocinio, pero ganas cosas mucho más importantes\" - El HuffPost",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-25T09:51:48.858964Z"
+    },
+    {
+      "name": "Manchester City",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "trendswe"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.0,
+      "movement": "flat",
+      "first_detected_at": "2026-09-25T18:01:17+02:00",
+      "news_source_count": 4,
+      "news_event_id": "de32583e5844",
+      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-25T15:02:55.152129Z"
     },
     {
       "name": "Olga",
@@ -198,7 +198,7 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 14.3,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T14:31:09+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -238,7 +238,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T18:10:51+02:00"
+      "fetched_at": "2026-09-25T18:21:01+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -263,7 +263,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T18:10:52+02:00"
+      "fetched_at": "2026-09-25T18:21:01+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -290,10 +290,10 @@
         "Antonelli"
       ],
       "error": null,
-      "update_hint": "Updated 20 minutes ago",
-      "age_minutes": 20.0,
+      "update_hint": "Updated 30 minutes ago",
+      "age_minutes": 30.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-25T18:10:52+02:00"
+      "fetched_at": "2026-09-25T18:21:02+02:00"
     },
     "superx": {
       "ok": true,
@@ -323,16 +323,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T18:10:53+02:00"
+      "fetched_at": "2026-09-25T18:21:02+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790352653",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790353262",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T18:10:53+02:00"
+      "fetched_at": "2026-09-25T18:21:02+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -360,9 +360,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 25, 2026 14:00 UTC",
-      "age_minutes": 130.9,
+      "age_minutes": 141.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T18:10:53+02:00"
+      "fetched_at": "2026-09-25T18:21:03+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -390,18 +390,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 4689.9,
+      "age_minutes": 4700.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T18:10:54+02:00"
+      "fetched_at": "2026-09-25T18:21:03+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790352655",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790353264",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T18:10:55+02:00"
+      "fetched_at": "2026-09-25T18:21:04+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -410,7 +410,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T18:10:56+02:00"
+      "fetched_at": "2026-09-25T18:21:04+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -440,16 +440,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T18:10:56+02:00"
+      "fetched_at": "2026-09-25T18:21:04+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790352658",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790353267",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T18:10:58+02:00"
+      "fetched_at": "2026-09-25T18:21:07+02:00"
     }
   }
 }
