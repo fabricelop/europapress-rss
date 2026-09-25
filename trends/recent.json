@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T20:01:12+02:00",
+  "captured_at": "2026-09-25T20:10:56+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -72,11 +72,29 @@
       "name": "Franco"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Taylor"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
+    {
+      "name": "Frente Amplio",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.6,
+      "movement": "up",
+      "first_detected_at": "2026-09-25T16:01:19+02:00",
+      "news_source_count": 8,
+      "news_event_id": "6a0361d6f71e",
+      "news_title": "Ada Colau, dispuesta a ser candidata en las generales si hay un “frente realmente amplio” de izquierdas",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-25T12:02:30.187649Z"
+    },
     {
       "name": "Manchester City",
       "social_source_count": 5,
@@ -88,55 +106,14 @@
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 12.0,
-      "movement": "new",
+      "mean_observed_rank": 12.4,
+      "movement": "flat",
       "first_detected_at": "2026-09-25T20:01:12+02:00",
       "news_source_count": 8,
       "news_event_id": "de32583e5844",
       "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-09-25T15:02:55.152129Z"
-    },
-    {
-      "name": "Frente Amplio",
-      "social_source_count": 5,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T16:01:19+02:00",
-      "news_source_count": 8,
-      "news_event_id": "6a0361d6f71e",
-      "news_title": "Ada Colau, dispuesta a ser candidata en las generales si hay un “frente realmente amplio” de izquierdas",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-25T12:02:30.187649Z"
-    },
-    {
-      "name": "Borja",
-      "social_source_count": 6,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.8,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T11:40:49+02:00",
-      "news_source_count": 2,
-      "news_event_id": "3c0a15c21cdf",
-      "news_title": "Borja Iglesias anima a los futbolistas a perder el miedo a posicionarse: \"Igual pierdes un patrocinio, pero ganas cosas mucho más importantes\" - El HuffPost",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-25T09:51:48.858964Z"
     },
     {
       "name": "Ayuso",
@@ -148,9 +125,9 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "down",
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.8,
+      "movement": "up",
       "first_detected_at": "2026-09-25T18:41:02+02:00",
       "news_source_count": 6,
       "news_event_id": "9630d9cc9796",
@@ -169,9 +146,49 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 15.2,
+      "mean_observed_rank": 15.6,
       "movement": "flat",
       "first_detected_at": "2026-09-25T18:01:17+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Borja",
+      "social_source_count": 5,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 16.8,
+      "movement": "down",
+      "first_detected_at": "2026-09-25T11:40:49+02:00",
+      "news_source_count": 2,
+      "news_event_id": "3c0a15c21cdf",
+      "news_title": "Borja Iglesias anima a los futbolistas a perder el miedo a posicionarse: \"Igual pierdes un patrocinio, pero ganas cosas mucho más importantes\" - El HuffPost",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-25T09:51:48.858964Z"
+    },
+    {
+      "name": "Olga",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-25T18:51:13+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -194,35 +211,9 @@
       "news_title": "La concentración ante el desahucio de Maricarmen en el barrio del Retiro de Madrid, en imágenes",
       "news_status": "ELIGIBLE",
       "news_first_seen": "2026-09-23T07:34:12.932560Z"
-    },
-    {
-      "name": "Olga",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.2,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T18:51:13+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Taylor",
-      "first_detected_at": "2026-09-25T19:17:08+02:00",
-      "entered_top10_at": "2026-09-25T20:01:12+02:00",
-      "lead_minutes": 44
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -253,7 +244,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T20:01:12+02:00"
+      "fetched_at": "2026-09-25T20:10:56+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -263,22 +254,22 @@
         "#XenobladeChronicles2EnGAME",
         "PSOE",
         "#SVGala3",
-        "Guardiola",
         "Paquita",
-        "#TEM25S",
+        "Guardiola",
+        "Taylor",
         "Retiro",
         "Franco",
-        "Taylor",
-        "Manchester City",
         "Frente Amplio",
+        "#TEM25S",
         "Ayuso",
-        "Borja"
+        "Manchester City",
+        "Olga"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T20:01:12+02:00"
+      "fetched_at": "2026-09-25T20:10:57+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -305,10 +296,10 @@
         "Netanyahu"
       ],
       "error": null,
-      "update_hint": "Updated 2 minutes ago",
-      "age_minutes": 2.0,
+      "update_hint": "Updated 12 minutes ago",
+      "age_minutes": 12.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-25T20:01:13+02:00"
+      "fetched_at": "2026-09-25T20:10:58+02:00"
     },
     "superx": {
       "ok": true,
@@ -338,16 +329,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T20:01:14+02:00"
+      "fetched_at": "2026-09-25T20:10:59+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790359274",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790359859",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T20:01:14+02:00"
+      "fetched_at": "2026-09-25T20:10:59+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -375,9 +366,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 25, 2026 17:00 UTC",
-      "age_minutes": 61.3,
+      "age_minutes": 71.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T20:01:15+02:00"
+      "fetched_at": "2026-09-25T20:10:59+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -405,18 +396,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 4800.3,
+      "age_minutes": 4810.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T20:01:15+02:00"
+      "fetched_at": "2026-09-25T20:11:00+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790359276",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790359861",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T20:01:16+02:00"
+      "fetched_at": "2026-09-25T20:11:01+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -425,7 +416,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T20:01:19+02:00"
+      "fetched_at": "2026-09-25T20:11:02+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -433,21 +424,21 @@
         "#Mari Carmen",
         "#Harvard",
         "#XenobladeChronicles2EnGAME",
-        "#TEM25S",
         "#PSOE",
         "#SVGala3",
         "#Guardiola",
         "#Paquita",
+        "#TEM25S",
         "#Retiro",
         "#Franco",
         "#Taylor",
         "#Manchester City",
         "#Frente Amplio",
         "#Ayuso",
-        "#Ana Belén",
-        "#Olga",
         "#Borja",
-        "#Congreso",
+        "#Olga",
+        "#Ana Belén",
+        "#Haaland",
         "#Junts",
         "#Netanyahu"
       ],
@@ -455,16 +446,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T20:01:19+02:00"
+      "fetched_at": "2026-09-25T20:11:03+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790359281",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790359865",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T20:01:21+02:00"
+      "fetched_at": "2026-09-25T20:11:05+02:00"
     }
   }
 }
