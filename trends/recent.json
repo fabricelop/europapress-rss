@@ -1,106 +1,111 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T21:21:11+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-25T21:31:08+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
-    "tweets24"
+    "tweets24",
+    "superx",
+    "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
-  "reliability": "high",
+  "non_stale_source_count": 5,
+  "fresh_sources": [],
+  "reliability": "medium",
   "top10": [
-    "Guardiola",
     "Harvard",
-    "Manchester City",
-    "Héctor Álvarez",
+    "Guardiola",
     "Frente Amplio",
     "#TEM25S",
-    "Haaland",
-    "Noblejas",
-    "Finlandia",
-    "El Ayuntamiento de Madrid"
+    "Manchester City",
+    "Mari Carmen",
+    "PSOE",
+    "#SVGala3",
+    "Paquita",
+    "Retiro"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "Guardiola"
-    },
-    {
-      "rank": 2,
       "name": "Harvard"
     },
     {
+      "rank": 2,
+      "name": "Guardiola"
+    },
+    {
       "rank": 3,
-      "name": "Manchester City"
-    },
-    {
-      "rank": 4,
-      "name": "Héctor Álvarez"
-    },
-    {
-      "rank": 5,
       "name": "Frente Amplio"
     },
     {
-      "rank": 6,
+      "rank": 4,
       "name": "#TEM25S"
     },
     {
+      "rank": 5,
+      "name": "Manchester City"
+    },
+    {
+      "rank": 6,
+      "name": "Mari Carmen"
+    },
+    {
       "rank": 7,
-      "name": "Haaland"
+      "name": "PSOE"
     },
     {
       "rank": 8,
-      "name": "Noblejas"
+      "name": "#SVGala3"
     },
     {
       "rank": 9,
-      "name": "Finlandia"
+      "name": "Paquita"
     },
     {
       "rank": 10,
-      "name": "El Ayuntamiento de Madrid"
+      "name": "Retiro"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Mari Carmen",
+    "PSOE",
+    "#SVGala3",
+    "Paquita",
+    "Retiro"
+  ],
   "upcoming": [
     {
-      "name": "Premier League",
+      "name": "Borja",
       "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
+        "superx",
         "trends24",
+        "trendswe"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 17.3,
+      "movement": "up",
+      "first_detected_at": "2026-09-25T11:40:49+02:00",
+      "news_source_count": 2,
+      "news_event_id": "3c0a15c21cdf",
+      "news_title": "Borja Iglesias anima a los futbolistas a perder el miedo a posicionarse: \"Igual pierdes un patrocinio, pero ganas cosas mucho más importantes\" - El HuffPost",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-25T09:51:48.858964Z"
+    },
+    {
+      "name": "Premier League",
+      "social_source_count": 2,
+      "social_sources": [
+        "getdaytrends",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.3,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T20:50:56+02:00",
-      "news_source_count": 8,
-      "news_event_id": "de32583e5844",
-      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-25T15:02:55.152129Z"
-    },
-    {
-      "name": "El City",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.7,
-      "movement": "flat",
+      "mean_observed_rank": 11.5,
+      "movement": "down",
       "first_detected_at": "2026-09-25T20:50:56+02:00",
       "news_source_count": 8,
       "news_event_id": "de32583e5844",
@@ -112,12 +117,12 @@
       "name": "Ana Belén",
       "social_source_count": 3,
       "social_sources": [
-        "snaplytics",
         "superx",
+        "trends24",
         "trendswe"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 14.0,
+      "mean_observed_rank": 14.3,
       "movement": "flat",
       "first_detected_at": "2026-09-25T18:01:17+02:00",
       "news_source_count": 0,
@@ -127,64 +132,27 @@
       "news_first_seen": null
     },
     {
-      "name": "Man City",
-      "social_source_count": 3,
+      "name": "El City",
+      "social_source_count": 2,
       "social_sources": [
         "getdaytrends",
-        "trends24",
         "tweets24"
       ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.7,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T21:10:46+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Talavante",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.7,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T21:10:46+02:00",
-      "news_source_count": 1,
-      "news_event_id": "492f774409c8",
-      "news_title": "Toros en Sevilla, en directo: La zurda de Talavante salva una tarde marcada por el escaso juego ganadero",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-25T18:43:42.543990Z"
-    },
-    {
-      "name": "Borja",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "superx",
-        "trendswe"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 17.7,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T11:40:49+02:00",
-      "news_source_count": 2,
-      "news_event_id": "3c0a15c21cdf",
-      "news_title": "Borja Iglesias anima a los futbolistas a perder el miedo a posicionarse: \"Igual pierdes un patrocinio, pero ganas cosas mucho más importantes\" - El HuffPost",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-25T09:51:48.858964Z"
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.5,
+      "movement": "down",
+      "first_detected_at": "2026-09-25T20:50:56+02:00",
+      "news_source_count": 8,
+      "news_event_id": "de32583e5844",
+      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-25T15:02:55.152129Z"
     },
     {
       "name": "Ayuso",
       "social_source_count": 2,
       "social_sources": [
-        "snaplytics",
+        "trends24",
         "trendswe"
       ],
       "best_observed_rank": 13,
@@ -196,6 +164,39 @@
       "news_title": "Ayuso asegura que la idea de comprar el ático de Chamberí fue de su equipo: «Y a mí no me pareció mal»",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-09-24T15:22:49.014078Z"
+    },
+    {
+      "name": "Daniel Sancho",
+      "social_source_count": 1,
+      "social_sources": [
+        "superx"
+      ],
+      "best_observed_rank": 16,
+      "mean_observed_rank": 16.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T21:31:08+02:00",
+      "news_source_count": 11,
+      "news_event_id": "ac5174a8c1bf",
+      "news_title": "Tailandia desestima los recursos y mantiene la cadena perpetua a Daniel Sancho",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-25T05:52:12.255361Z"
+    },
+    {
+      "name": "Man City",
+      "social_source_count": 2,
+      "social_sources": [
+        "getdaytrends",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.5,
+      "movement": "down",
+      "first_detected_at": "2026-09-25T21:10:46+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -204,32 +205,32 @@
     "trends24": {
       "ok": true,
       "trends": [
-        "Guardiola",
+        "Mari Carmen",
         "Harvard",
-        "Manchester City",
-        "Héctor Álvarez",
+        "#XenobladeChronicles2EnGAME",
+        "Paquita",
+        "PSOE",
+        "#SVGala3",
+        "Taylor",
         "Frente Amplio",
+        "Retiro",
+        "Franco",
+        "Guardiola",
         "#TEM25S",
-        "Haaland",
-        "Noblejas",
-        "Finlandia",
-        "El Ayuntamiento de Madrid",
-        "Premier League",
-        "Man City",
-        "Talavante",
-        "#MalasLenguas",
-        "El City",
-        "Frente Popular",
-        "Breaking Bad",
-        "Everton",
-        "Horizonte",
-        "Urbagestión"
+        "Ayuso",
+        "Olga",
+        "Borja",
+        "Ana Belén",
+        "Manchester City",
+        "Netanyahu",
+        "Junts",
+        "Cleveland"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:21:11+02:00"
+      "fetched_at": "2026-09-25T21:31:08+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -254,7 +255,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:21:11+02:00"
+      "fetched_at": "2026-09-25T21:31:08+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -281,10 +282,10 @@
         "Urbagestión"
       ],
       "error": null,
-      "update_hint": "Updated 39 minutes ago",
-      "age_minutes": 39.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-25T21:21:12+02:00"
+      "update_hint": "Updated 49 minutes ago",
+      "age_minutes": 49.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-25T21:31:09+02:00"
     },
     "superx": {
       "ok": true,
@@ -314,16 +315,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:21:13+02:00"
+      "fetched_at": "2026-09-25T21:31:10+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790364073",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790364670",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T21:21:13+02:00"
+      "fetched_at": "2026-09-25T21:31:10+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -351,9 +352,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 25, 2026 18:00 UTC",
-      "age_minutes": 81.2,
-      "freshness": "aging",
-      "fetched_at": "2026-09-25T21:21:13+02:00"
+      "age_minutes": 91.2,
+      "freshness": "stale",
+      "fetched_at": "2026-09-25T21:31:10+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -381,18 +382,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 4880.2,
+      "age_minutes": 4890.2,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T21:21:13+02:00"
+      "fetched_at": "2026-09-25T21:31:11+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790364076",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790364672",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T21:21:16+02:00"
+      "fetched_at": "2026-09-25T21:31:12+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -401,7 +402,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T21:21:18+02:00"
+      "fetched_at": "2026-09-25T21:31:13+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -431,16 +432,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:21:18+02:00"
+      "fetched_at": "2026-09-25T21:31:14+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790364079",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790364675",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T21:21:19+02:00"
+      "fetched_at": "2026-09-25T21:31:15+02:00"
     }
   }
 }
