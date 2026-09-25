@@ -19,11 +19,11 @@ No uses Telegram. No proceses TTendencias ni SeLoRecordamos. No despliegues Verc
 1. Lee SIEMPRE `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `telegram/editorial-processing.json` y `telegram/events.json` desde `main`.
 2. Al inicio guarda una FOTO de las filas `status:"PROBLEMATIC"` de `telegram/editorial-processing.json`. Esa es la fuente de verdad para los reintentos; los nuevos `PROBLEMATIC` creados durante esta misma pasada se dejan para la SIGUIENTE ejecución.
 3. Construye un mapa de `telegram/events.json.events` por `id/event_id`. Para cada noticia usa sus `appearances` como EVIDENCIA MULTIFUENTE estructurada: `source,title,url,first_seen`.
-4. Procesa primero TODOS los items de `editorial-queue.json`, del más antiguo al más reciente.
-5. Después de terminar la cola activa, procesa las problemáticas que estaban en la foto inicial.
-6. Si no había ni cola activa ni problemáticas iniciales, termina sin búsquedas web ni escrituras.
-7. Procesa cada item de forma independiente y completa su ciclo antes de seguir. Un item difícil o fallido NUNCA bloquea los demás.
-8. Relee estado fresco antes de cada escritura. Ante conflicto, relee el SHA actual y reintenta de forma segura.
+4. Construye al inicio una lista ordenada de trabajo: primero los items de `editorial-queue.json` del más antiguo al más reciente y después las problemáticas de la foto inicial.
+5. Si no había ni cola activa ni problemáticas iniciales, termina sin búsquedas web ni escrituras.
+6. PROCESAMIENTO ESTRICTAMENTE SECUENCIAL POR ITEM: si hay N noticias, ejecuta N ciclos completos independientes. Para la noticia 1 haz TODO el proceso —verificación, Principal/A/B/C, citas X, estrategia de imagen, generación/validación/persistencia de imagen o fallback, outbox, aplicación y verificación READY/Listas— y solo cuando ese item haya terminado o haya quedado explícitamente resuelto como problematic continúa con la noticia 2. Repite hasta N. Nunca redactes varias noticias primero para fabricar después todas las imágenes, nunca acumules varios outboxes para aplicarlos al final y nunca mantengas más de un item editorial “en vuelo” por decisión de esta ejecución.
+7. Después de CADA outbox ready, fuerza/reintenta el aplicador si hace falta y relee `prepared.json`, `editorial-processing.json`, `editorial-queue.json` y `status.json`. No comiences el siguiente item hasta que el actual esté READY/Listas o hasta que hayas agotado el reintento seguro y hayas dejado su estado real sin falso éxito.
+8. Un item difícil o fallido NUNCA impide procesar los siguientes una vez cerrado su ciclo. Relee estado/SHA fresco antes de cada escritura; ante conflicto relee y reintenta de forma segura.
 
 Usa todos los campos disponibles del item activo, incluidos `event_id,title,url,sources,source_count,source_evidence,selected_at,selection_mode,revision,rewrite_request,parent_event_id,update_context,with_image,image_mode,image_instruction`.
 
@@ -116,7 +116,8 @@ Los campos `image_mode` e `image_instruction` del item son contexto heredado del
 - Línea visual aprobada: `editorial-scene-v2-cleveland`.
 - La referencia de estilo NO significa flat 2D, pixel-art, vectorial simplificado ni formas geométricas planas. Esas estéticas están expresamente rechazadas para TTiTTulares.
 - La prioridad es, en este orden: 1) gag/escena entendible de inmediato; 2) calidad de ilustración editorial; 3) composición con profundidad, iluminación y volumen suficientes; 4) robustez del raster; 5) detalle fino.
-- Usa detalle medio/alto cuando sea viable, composición limpia, pocos elementos importantes y alrededor de 1024 px en el lado largo cuando la herramienta lo permita. La imagen debe verse cuidada y de calidad en móvil/X, no como boceto, iconografía plana ni clip-art.
+- PRIORIDAD DE VELOCIDAD Y ROBUSTEZ: no generes ni persistas resolución innecesaria. Objetivo normal: alrededor de 768 px en el lado largo (por ejemplo 768×512 en paisaje o 768×768 si la escena es cuadrada). No subas de 896 px en el lado largo salvo que la herramienta no permita otra salida. La imagen debe verse perfectamente en móvil/X; se prefiere menos píxeles y un raster ligero antes que detalle fino que ralentice generación, transferencia o aplicación.
+- Usa detalle MEDIO, composición limpia y pocos elementos importantes. Para `generated_gag` prefiere JPEG sRGB de calidad aproximada 80–84 (objetivo 82), sin metadatos innecesarios. Si el generador entrega un raster mayor, redúcelo UNA sola vez antes de persistir manteniendo proporción y sin reescalarlo después.
 
 La imagen generada debe ser una sola escena narrativa de caricatura/ilustración editorial:
 - protagonista(s) integrados en un entorno;
@@ -162,7 +163,7 @@ DESPUÉS DE GENERAR, inspecciona la imagen REAL, no solo el prompt. Solo puede m
 - NO presenta estética flat 2D/pixel-art/vectorial simplificada;
 - supera el control visual editorial.
 
-Si falla esta comprobación, RECHAZA esa imagen y REGENERA una vez con una composición más simple pero manteniendo profundidad, volumen y acabado editorial. Si el segundo intento tampoco es íntegro o vuelve a caer en estética plana, no marques `ready`: deja el item en elaboración para un intento posterior de renderer y continúa con los demás. No lo conviertas en `problematic`. La imagen de archivo se usa únicamente con `archive_sensitive`.
+Si falla esta comprobación, RECHAZA esa imagen y REGENERA una vez con una composición más simple pero manteniendo profundidad, volumen y acabado editorial. Si el segundo intento tampoco es íntegro, tiene sujeto/evento equivocado, vuelve a caer en estética plana o falla su persistencia, LA IMAGEN NO BLOQUEA LA NOTICIA: continúa el mismo ciclo, escribe el outbox `ready` SIN `image` y añade `image_pending:true`, `image_attempts:2` e `image_failure_reason` concreto. No dejes una noticia factual ya verificada en PROCESSING por el renderer y no la conviertas en `problematic`. La imagen de archivo se usa únicamente con `archive_sensitive`.
 
 Para imagen generada guarda `image={url,source:"TTiTTulares / ChatGPT",source_url,rights_status:"generated",generated:true,alt,style_version:"editorial-scene-v2-cleveland",style_check}`, con estos checks en true:
 - `reviewed_after_generation`
@@ -178,17 +179,23 @@ Para imagen generada guarda `image={url,source:"TTiTTulares / ChatGPT",source_ur
 
 ### Persistencia binaria obligatoria
 
-Ruta: `ttittulares/generated-images/<event_id>-r<revision>.<webp|png|jpg>`.
+Ruta: `ttittulares/generated-images/<event_id>-r<revision>.<jpg|webp|png>`. Para `generated_gag`, usa JPEG por defecto.
 
-Para PNG/WebP/JPEG NO uses `create_file` ni `update_file`. Usa exactamente el mecanismo de TTendencias:
-1. Obtén los bytes reales del raster y conviértelos a base64 puro.
+ANTES DE SUBIR:
+1. Usa los bytes REALES del fichero generado/normalizado; nunca reconstruyas a mano un base64 parcial, nunca copies una previsualización y nunca truncues la cadena.
+2. Normaliza preferentemente a JPEG sRGB, lado largo ~768 px (máximo objetivo 896), calidad ~82, sin EXIF/metadatos innecesarios. No hagas upscale si la salida ya es menor pero supera el mínimo útil.
+3. Abre y decodifica el fichero normalizado COMPLETO antes de persistir. Si no decodifica, ese intento cuenta como fallo de imagen.
+4. Mantén al menos 600 px de ancho y 360 px de alto para paisaje; si una relación distinta no permite esos mínimos, genera una salida adecuada en vez de forzar un raster diminuto.
+
+Para PNG/WebP/JPEG NO uses `create_file` ni `update_file`. Usa:
+1. Convierte los bytes completos verificados a base64 puro.
 2. `create_blob` con `encoding:"base64"`.
 3. Relee HEAD actual de `main` y su tree SHA.
 4. `create_tree` sobre el tree actual añadiendo la ruta de imagen con el blob SHA.
 5. `create_commit` con padre = HEAD fresco.
 6. `update_ref` de `main` con `force:false`.
 7. Si `main` avanzó, conserva el blob, relee HEAD/tree y reintenta una vez sobre el nuevo padre.
-8. Verifica que la ruta existe en `main` y que la URL raw abre el raster íntegro.
+8. Relee DESDE GITHUB la ruta recién escrita y vuelve a comprobar que el raster completo abre/decodifica. Solo entonces asocia esa URL al prepared_item.
 
 URL pública: `https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/<event_id>-r<revision>.<ext>`.
 
@@ -245,7 +252,7 @@ con raíz:
 
 `prepared_item` debe incluir al menos:
 `event_id,title,url,drafted_source_count,sources_at_draft,prepared_at,factual_summary,revision,variants,quote_candidates,quote_search`
-y `image` si existe.
+más `image_strategy`; incluye `image` solo si existe y ha superado la validación. Si la imagen falló tras dos intentos, incluye `image_pending:true`, `image_attempts:2` e `image_failure_reason`; esto NO invalida READY.
 
 No dupliques un outbox válido completo. Si el outbox de esa revisión ya existe pero es inválido, incompleto o alguna variante supera 280 caracteres, corrige ESE MISMO archivo y la misma revisión. No crees una revisión nueva solo para reparar formato o contenido técnico.
 
