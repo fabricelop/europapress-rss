@@ -1850,7 +1850,7 @@
       "id": "948106d5df49",
       "name": "Ayuso",
       "rank": 13,
-      "status": "update",
+      "status": "ready",
       "requested_at": "2026-09-25T17:12:06.759Z",
       "revision": 1,
       "reexplain": true,
@@ -1864,7 +1864,7 @@
         "Ayuso"
       ],
       "auto_queued": false,
-      "ready_at": "2026-09-24T12:29:44+02:00",
+      "ready_at": "2026-09-25T20:57:52.925Z",
       "delivery_confirmation": "prepared_web",
       "editorial_engine": "chatgpt-automation-outbox",
       "anticipated": true,
@@ -2643,10 +2643,10 @@
         "#XenobladeChronicles2EnGAME"
       ],
       "auto_queued": true,
-      "problematic_at": "2026-09-25T21:42:17+02:00",
-      "problem_reason": "Nuevo intento: dos búsquedas distintas confirman que GAME España tiene Xenoblade Chronicles 2 para Switch 2 en reserva con lanzamiento físico el 1 de octubre, pero no permiten verificar qué acción concreta de GAME explica que el hashtag #XenobladeChronicles2EnGAME sea tendencia ahora. No se atribuye el detonante sin evidencia suficiente.",
+      "problematic_at": "2026-09-25T23:02:38+02:00",
+      "problem_reason": "Nuevo intento con consultas distintas: no aparece una publicación actual y verificable de GAME España que permita identificar el detonante exacto del hashtag sin especular.",
       "editorial_engine": "chatgpt-automation-outbox",
-      "problematic_attempts": 3
+      "problematic_attempts": 4
     },
     {
       "id": "9c2d29850e7f",
@@ -2772,7 +2772,7 @@
       "id": "ed9eb5711fd2",
       "name": "Héctor Álvarez",
       "rank": 4,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-25T20:51:04+02:00",
       "revision": 0,
       "reexplain": false,
@@ -2789,13 +2789,17 @@
         "Finlandia",
         "El Ayuntamiento de Madrid"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-25T23:02:38+02:00",
+      "problem_reason": "Las búsquedas actuales solo confirman su participación en el Mundial sub-23 de Montreal, pero no ofrecen un resultado final verificable de la prueba en ruta ni un detonante único actual.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "13c4018e5215",
       "name": "Haaland",
       "rank": 7,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-25T20:51:04+02:00",
       "revision": 0,
       "reexplain": false,
@@ -2812,13 +2816,17 @@
         "Finlandia",
         "El Ayuntamiento de Madrid"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-25T23:02:38+02:00",
+      "problem_reason": "Hay varios hechos recientes sobre Haaland y el Manchester City, pero ninguna fuente permite atribuir con suficiente fiabilidad cuál de ellos explica esta señal concreta en España.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "8f341647456d",
       "name": "Noblejas",
       "rank": 8,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-25T20:51:04+02:00",
       "revision": 0,
       "reexplain": false,
@@ -2835,13 +2843,17 @@
         "Finlandia",
         "El Ayuntamiento de Madrid"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-25T23:02:38+02:00",
+      "problem_reason": "Tras búsquedas diferenciadas no aparece un acontecimiento actual inequívoco que explique la señal; los resultados encontrados remiten principalmente a un partido anterior del CD Noblejas.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "ffaacd848361",
       "name": "Finlandia",
       "rank": 9,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-25T20:51:04+02:00",
       "revision": 0,
       "reexplain": false,
@@ -2858,13 +2870,17 @@
         "Finlandia",
         "El Ayuntamiento de Madrid"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-25T23:02:38+02:00",
+      "problem_reason": "Tras dos rutas de búsqueda distintas no se ha localizado un acontecimiento actual y suficientemente contrastado que explique por qué Finlandia figura en esta señal.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "ccaaf0a7bac8",
       "name": "El Ayuntamiento de Madrid",
       "rank": 10,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-25T20:51:04+02:00",
       "revision": 0,
       "reexplain": false,
@@ -2881,8 +2897,12 @@
         "Finlandia",
         "El Ayuntamiento de Madrid"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-25T23:02:38+02:00",
+      "problem_reason": "La expresión puede estar vinculada a varias noticias municipales actuales, incluida la polémica por el desahucio de Maricarmen, pero no hay evidencia suficiente para atribuirle un detonante único.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ],
-  "updated_at": "2026-09-25T21:51:01+02:00"
+  "updated_at": "2026-09-25T23:02:38+02:00"
 }
