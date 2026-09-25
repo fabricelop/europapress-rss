@@ -44,6 +44,13 @@ async function comments(){
   }
   return items
 }
+async function triggerReady(items){
+  if(items.some(c=>String(c.body||"").trim()===READY_MARKER))return true;
+  const r=await gh(`https://api.github.com/repos/${REPO}/pulls/${PR}`);
+  if(!r.ok)throw new Error(`GitHub PR: ${r.status} ${await r.text()}`);
+  const pr=await r.json();
+  return String(pr.body||"").includes(READY_MARKER)
+}
 
 export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
@@ -51,7 +58,7 @@ export default async function handler(req,res){
   if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
   try{
     const items=await comments();
-    const enabled=items.some(c=>String(c.body||"").trim()===READY_MARKER);
+    const enabled=await triggerReady(items);
     if(!enabled)return res.status(503).json({ok:false,error:"work_trigger_not_ready"});
 
     const latest=[...items].reverse().find(c=>String(c.body||"").startsWith(RUN_PREFIX));
