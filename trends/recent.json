@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T19:10:59+02:00",
+  "captured_at": "2026-09-25T19:17:08+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -23,12 +23,12 @@
     "Harvard",
     "#XenobladeChronicles2EnGAME",
     "PSOE",
+    "Guardiola",
     "#SVGala3",
     "#TEM25S",
     "Paquita",
     "Franco",
-    "Retiro",
-    "Taylor"
+    "Manchester City"
   ],
   "items": [
     {
@@ -49,32 +49,56 @@
     },
     {
       "rank": 5,
-      "name": "#SVGala3"
+      "name": "Guardiola"
     },
     {
       "rank": 6,
-      "name": "#TEM25S"
+      "name": "#SVGala3"
     },
     {
       "rank": 7,
-      "name": "Paquita"
+      "name": "#TEM25S"
     },
     {
       "rank": 8,
-      "name": "Franco"
+      "name": "Paquita"
     },
     {
       "rank": 9,
-      "name": "Retiro"
+      "name": "Franco"
     },
     {
       "rank": 10,
-      "name": "Taylor"
+      "name": "Manchester City"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Guardiola",
+    "Manchester City"
+  ],
   "upcoming": [
+    {
+      "name": "Taylor",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T19:17:08+02:00",
+      "news_source_count": 3,
+      "news_event_id": "0abf8f845827",
+      "news_title": "Taylor Swift amplía 'The Life of a Showgirl' con cuatro canciones inéditas y lanza un adelanto del videoclip de 'Patient Zero'",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-25T08:43:40.761388Z"
+    },
     {
       "name": "Frente Amplio",
       "social_source_count": 5,
@@ -85,9 +109,9 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.2,
-      "movement": "flat",
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.6,
+      "movement": "down",
       "first_detected_at": "2026-09-25T16:01:19+02:00",
       "news_source_count": 8,
       "news_event_id": "6a0361d6f71e",
@@ -107,7 +131,7 @@
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 16.3,
+      "mean_observed_rank": 16.2,
       "movement": "flat",
       "first_detected_at": "2026-09-25T11:40:49+02:00",
       "news_source_count": 2,
@@ -157,22 +181,21 @@
       "news_first_seen": null
     },
     {
-      "name": "Manchester City",
-      "social_source_count": 3,
+      "name": "Retiro",
+      "social_source_count": 2,
       "social_sources": [
-        "getdaytrends",
-        "trendswe",
+        "trends24",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.7,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T18:01:17+02:00",
-      "news_source_count": 6,
-      "news_event_id": "de32583e5844",
-      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
+      "mean_observed_rank": 11.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T19:17:08+02:00",
+      "news_source_count": 13,
+      "news_event_id": "e9ec3aee6ca0",
+      "news_title": "La concentración ante el desahucio de Maricarmen en el barrio del Retiro de Madrid, en imágenes",
       "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-25T15:02:55.152129Z"
+      "news_first_seen": "2026-09-23T07:34:12.932560Z"
     },
     {
       "name": "Olga",
@@ -183,35 +206,25 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.8,
-      "movement": "flat",
+      "best_observed_rank": 16,
+      "mean_observed_rank": 16.0,
+      "movement": "down",
       "first_detected_at": "2026-09-25T18:51:13+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Congreso",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 18.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T14:21:07+02:00",
-      "news_source_count": 13,
-      "news_event_id": "851d3305d69b",
-      "news_title": "Francina Armengol ha expulsado del hemiciclo del Congreso a la diputada del PP Ana Beln Vzquez Blanco por mostrar un spray de pimienta durante la sesin.",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-23T08:12:03.819220Z"
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Manchester City",
+      "first_detected_at": "2026-09-25T18:01:17+02:00",
+      "entered_top10_at": "2026-09-25T19:17:08+02:00",
+      "lead_minutes": 76
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -242,7 +255,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T19:10:59+02:00"
+      "fetched_at": "2026-09-25T19:17:08+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -267,7 +280,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T19:11:00+02:00"
+      "fetched_at": "2026-09-25T19:17:08+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -276,28 +289,28 @@
         "Harvard",
         "#XenobladeChronicles2EnGAME",
         "PSOE",
+        "Guardiola",
         "#SVGala3",
         "#TEM25S",
         "Paquita",
         "Franco",
+        "Manchester City",
         "Retiro",
         "Taylor",
-        "Manchester City",
-        "Frente Amplio",
         "Ayuso",
-        "Guardiola",
-        "Olga",
+        "Frente Amplio",
         "Borja",
+        "Olga",
         "Ana Belén",
-        "Congreso",
-        "Zapatero",
-        "Junts"
+        "Haaland",
+        "Junts",
+        "Netanyahu"
       ],
       "error": null,
-      "update_hint": "Updated 38 minutes ago",
-      "age_minutes": 38.0,
+      "update_hint": "Updated 1 minute ago",
+      "age_minutes": 1.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-25T19:11:01+02:00"
+      "fetched_at": "2026-09-25T19:17:09+02:00"
     },
     "superx": {
       "ok": true,
@@ -327,16 +340,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T19:11:01+02:00"
+      "fetched_at": "2026-09-25T19:17:09+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790356262",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790356630",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T19:11:02+02:00"
+      "fetched_at": "2026-09-25T19:17:10+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -364,9 +377,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 25, 2026 16:00 UTC",
-      "age_minutes": 71.0,
+      "age_minutes": 77.2,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T19:11:02+02:00"
+      "fetched_at": "2026-09-25T19:17:10+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -394,18 +407,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 4750.0,
+      "age_minutes": 4756.2,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T19:11:02+02:00"
+      "fetched_at": "2026-09-25T19:17:10+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790356264",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790356631",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T19:11:04+02:00"
+      "fetched_at": "2026-09-25T19:17:11+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -414,7 +427,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T19:11:05+02:00"
+      "fetched_at": "2026-09-25T19:17:12+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -444,16 +457,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T19:11:05+02:00"
+      "fetched_at": "2026-09-25T19:17:12+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790356268",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790356634",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T19:11:08+02:00"
+      "fetched_at": "2026-09-25T19:17:14+02:00"
     }
   }
 }

@@ -2698,7 +2698,7 @@
       "revision": 0,
       "status": "preparing",
       "requested_at": "2026-09-25T16:35:17.915Z",
-      "rank": 11,
+      "rank": 10,
       "with_image": true,
       "alternatives_target": 3,
       "anticipated": true,
@@ -2710,12 +2710,13 @@
       "requested_together": [
         "Manchester City"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "anticipated_entered_top10_at": "2026-09-25T19:17:14+02:00"
     },
     {
       "id": "e271549ce993",
       "name": "#TEM25S",
-      "rank": 6,
+      "rank": 7,
       "status": "problematic",
       "requested_at": "2026-09-25T18:41:09+02:00",
       "revision": 0,
@@ -2734,7 +2735,26 @@
       "problem_reason": "Tras dos búsquedas actuales distintas no se ha encontrado una fuente fiable que identifique el detonante concreto de #TEM25S en España. El hashtag figura en el Top 10 del radar, pero no se atribuye a un programa, episodio o acontecimiento específico sin evidencia verificable.",
       "problematic_attempts": 1,
       "editorial_engine": "chatgpt-automation-outbox"
+    },
+    {
+      "id": "c9447b75287d",
+      "name": "Guardiola",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-09-25T19:17:14+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "66d379030260",
+      "requested_together": [
+        "Guardiola"
+      ],
+      "captured_with": [
+        "Guardiola"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-25T17:12:06.759Z"
+  "updated_at": "2026-09-25T19:17:14+02:00"
 }
