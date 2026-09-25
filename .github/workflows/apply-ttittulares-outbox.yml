@@ -26,6 +26,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Preparar validador de imágenes
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow
+
       - name: Aplicar outbox de forma segura
         run: |
           set -e
