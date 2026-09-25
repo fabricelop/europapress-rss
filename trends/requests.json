@@ -2678,7 +2678,7 @@
       "revision": 0,
       "status": "preparing",
       "requested_at": "2026-09-25T14:04:28.966Z",
-      "rank": 11,
+      "rank": 5,
       "with_image": true,
       "alternatives_target": 3,
       "anticipated": true,
@@ -2690,7 +2690,8 @@
       "requested_together": [
         "Frente Amplio"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "anticipated_entered_top10_at": "2026-09-25T20:51:04+02:00"
     },
     {
       "id": "9986911fa8ce",
@@ -2698,7 +2699,7 @@
       "revision": 0,
       "status": "preparing",
       "requested_at": "2026-09-25T16:35:17.915Z",
-      "rank": 10,
+      "rank": 3,
       "with_image": true,
       "alternatives_target": 3,
       "anticipated": true,
@@ -2716,7 +2717,7 @@
     {
       "id": "e271549ce993",
       "name": "#TEM25S",
-      "rank": 8,
+      "rank": 6,
       "status": "problematic",
       "requested_at": "2026-09-25T18:41:09+02:00",
       "revision": 0,
@@ -2739,7 +2740,7 @@
     {
       "id": "c9447b75287d",
       "name": "Guardiola",
-      "rank": 7,
+      "rank": 1,
       "status": "problematic",
       "requested_at": "2026-09-25T19:17:14+02:00",
       "revision": 0,
@@ -2758,7 +2759,122 @@
       "problem_reason": "Tras dos búsquedas actuales distintas no se ha encontrado evidencia fiable suficiente para identificar qué hecho concreto está impulsando ahora «Guardiola» en España. Las noticias actuales sobre los cargos financieros del Manchester City no permiten atribuir por sí solas esta tendencia a Pep Guardiola sin especular.",
       "problematic_attempts": 1,
       "editorial_engine": "chatgpt-automation-outbox"
+    },
+    {
+      "id": "ed9eb5711fd2",
+      "name": "Héctor Álvarez",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-09-25T20:51:04+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "eeb34f6f1ff4",
+      "requested_together": [
+        "Héctor Álvarez"
+      ],
+      "captured_with": [
+        "Héctor Álvarez",
+        "Haaland",
+        "Noblejas",
+        "Finlandia",
+        "El Ayuntamiento de Madrid"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "13c4018e5215",
+      "name": "Haaland",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-09-25T20:51:04+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "eeb34f6f1ff4",
+      "requested_together": [
+        "Haaland"
+      ],
+      "captured_with": [
+        "Héctor Álvarez",
+        "Haaland",
+        "Noblejas",
+        "Finlandia",
+        "El Ayuntamiento de Madrid"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "8f341647456d",
+      "name": "Noblejas",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-09-25T20:51:04+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "eeb34f6f1ff4",
+      "requested_together": [
+        "Noblejas"
+      ],
+      "captured_with": [
+        "Héctor Álvarez",
+        "Haaland",
+        "Noblejas",
+        "Finlandia",
+        "El Ayuntamiento de Madrid"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "ffaacd848361",
+      "name": "Finlandia",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-09-25T20:51:04+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "eeb34f6f1ff4",
+      "requested_together": [
+        "Finlandia"
+      ],
+      "captured_with": [
+        "Héctor Álvarez",
+        "Haaland",
+        "Noblejas",
+        "Finlandia",
+        "El Ayuntamiento de Madrid"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "ccaaf0a7bac8",
+      "name": "El Ayuntamiento de Madrid",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-09-25T20:51:04+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 3,
+      "batch_id": "eeb34f6f1ff4",
+      "requested_together": [
+        "El Ayuntamiento de Madrid"
+      ],
+      "captured_with": [
+        "Héctor Álvarez",
+        "Haaland",
+        "Noblejas",
+        "Finlandia",
+        "El Ayuntamiento de Madrid"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-25T20:01:22+02:00"
+  "updated_at": "2026-09-25T20:51:04+02:00"
 }

@@ -1,39 +1,35 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T20:40:57+02:00",
+  "captured_at": "2026-09-25T20:50:56+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
-    "getdaytrends",
-    "tweets24",
-    "superx",
-    "snaplytics",
-    "trendswe"
+    "trends24",
+    "tweets24"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24",
-    "snaplytics"
+    "tweets24"
   ],
   "reliability": "high",
   "top10": [
-    "Mari Carmen",
-    "Harvard",
-    "#XenobladeChronicles2EnGAME",
-    "PSOE",
-    "#SVGala3",
-    "Paquita",
     "Guardiola",
+    "Harvard",
+    "Manchester City",
+    "Héctor Álvarez",
+    "Frente Amplio",
     "#TEM25S",
-    "Taylor",
-    "Franco"
+    "Haaland",
+    "Noblejas",
+    "Finlandia",
+    "El Ayuntamiento de Madrid"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "Mari Carmen"
+      "name": "Guardiola"
     },
     {
       "rank": 2,
@@ -41,71 +37,59 @@
     },
     {
       "rank": 3,
-      "name": "#XenobladeChronicles2EnGAME"
+      "name": "Manchester City"
     },
     {
       "rank": 4,
-      "name": "PSOE"
+      "name": "Héctor Álvarez"
     },
     {
       "rank": 5,
-      "name": "#SVGala3"
+      "name": "Frente Amplio"
     },
     {
       "rank": 6,
-      "name": "Paquita"
-    },
-    {
-      "rank": 7,
-      "name": "Guardiola"
-    },
-    {
-      "rank": 8,
       "name": "#TEM25S"
     },
     {
+      "rank": 7,
+      "name": "Haaland"
+    },
+    {
+      "rank": 8,
+      "name": "Noblejas"
+    },
+    {
       "rank": 9,
-      "name": "Taylor"
+      "name": "Finlandia"
     },
     {
       "rank": 10,
-      "name": "Franco"
+      "name": "El Ayuntamiento de Madrid"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Manchester City",
+    "Héctor Álvarez",
+    "Frente Amplio",
+    "Haaland",
+    "Noblejas",
+    "Finlandia",
+    "El Ayuntamiento de Madrid"
+  ],
   "upcoming": [
     {
-      "name": "Manchester City",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.8,
-      "movement": "up",
-      "first_detected_at": "2026-09-25T20:01:12+02:00",
-      "news_source_count": 8,
-      "news_event_id": "de32583e5844",
-      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-25T15:02:55.152129Z"
-    },
-    {
       "name": "Ayuso",
-      "social_source_count": 4,
+      "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
         "snaplytics",
-        "trendswe",
-        "tweets24"
+        "trendswe"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 13.5,
-      "movement": "up",
+      "mean_observed_rank": 13.3,
+      "movement": "down",
       "first_detected_at": "2026-09-25T18:41:02+02:00",
       "news_source_count": 6,
       "news_event_id": "9630d9cc9796",
@@ -114,17 +98,33 @@
       "news_first_seen": "2026-09-24T15:22:49.014078Z"
     },
     {
-      "name": "Ana Belén",
-      "social_source_count": 4,
+      "name": "Premier League",
+      "social_source_count": 2,
       "social_sources": [
-        "snaplytics",
-        "superx",
-        "trendswe",
+        "trends24",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 15.0,
-      "movement": "up",
+      "mean_observed_rank": 11.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T20:50:56+02:00",
+      "news_source_count": 8,
+      "news_event_id": "de32583e5844",
+      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-25T15:02:55.152129Z"
+    },
+    {
+      "name": "Ana Belén",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trendswe"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 14.3,
+      "movement": "down",
       "first_detected_at": "2026-09-25T18:01:17+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -134,16 +134,15 @@
     },
     {
       "name": "Borja",
-      "social_source_count": 4,
+      "social_source_count": 3,
       "social_sources": [
         "snaplytics",
         "superx",
-        "trendswe",
-        "tweets24"
+        "trendswe"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 16.8,
-      "movement": "up",
+      "mean_observed_rank": 17.0,
+      "movement": "down",
       "first_detected_at": "2026-09-25T11:40:49+02:00",
       "news_source_count": 2,
       "news_event_id": "3c0a15c21cdf",
@@ -152,35 +151,33 @@
       "news_first_seen": "2026-09-25T09:51:48.858964Z"
     },
     {
-      "name": "Frente Amplio",
-      "social_source_count": 3,
+      "name": "El City",
+      "social_source_count": 2,
       "social_sources": [
-        "getdaytrends",
-        "trendswe",
+        "trends24",
         "tweets24"
       ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 12.3,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T16:01:19+02:00",
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T20:50:56+02:00",
       "news_source_count": 8,
-      "news_event_id": "6a0361d6f71e",
-      "news_title": "Ada Colau, dispuesta a ser candidata en las generales si hay un “frente realmente amplio” de izquierdas",
+      "news_event_id": "de32583e5844",
+      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
       "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-25T12:02:30.187649Z"
+      "news_first_seen": "2026-09-25T15:02:55.152129Z"
     },
     {
       "name": "Olga",
-      "social_source_count": 4,
+      "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
         "snaplytics",
-        "trendswe",
-        "tweets24"
+        "trendswe"
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 15.0,
-      "movement": "up",
+      "movement": "down",
       "first_detected_at": "2026-09-25T18:51:13+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -189,23 +186,37 @@
       "news_first_seen": null
     },
     {
-      "name": "Retiro",
-      "social_source_count": 1,
+      "name": "Taylor",
+      "social_source_count": 2,
       "social_sources": [
-        "tweets24"
+        "superx",
+        "trendswe"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T19:17:08+02:00",
-      "news_source_count": 13,
-      "news_event_id": "e9ec3aee6ca0",
-      "news_title": "La concentración ante el desahucio de Maricarmen en el barrio del Retiro de Madrid, en imágenes",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-23T07:34:12.932560Z"
+      "mean_observed_rank": 14.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T20:50:56+02:00",
+      "news_source_count": 3,
+      "news_event_id": "0abf8f845827",
+      "news_title": "Taylor Swift amplía 'The Life of a Showgirl' con cuatro canciones inéditas y lanza un adelanto del videoclip de 'Patient Zero'",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-25T08:43:40.761388Z"
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Manchester City",
+      "first_detected_at": "2026-09-25T20:01:12+02:00",
+      "entered_top10_at": "2026-09-25T20:50:56+02:00",
+      "lead_minutes": 50
+    },
+    {
+      "name": "Frente Amplio",
+      "first_detected_at": "2026-09-25T16:01:19+02:00",
+      "entered_top10_at": "2026-09-25T20:50:56+02:00",
+      "lead_minutes": 290
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -236,7 +247,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T20:40:57+02:00"
+      "fetched_at": "2026-09-25T20:50:56+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -261,37 +272,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T20:40:57+02:00"
+      "fetched_at": "2026-09-25T20:50:56+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
-        "Mari Carmen",
-        "Harvard",
-        "#XenobladeChronicles2EnGAME",
-        "PSOE",
-        "#SVGala3",
-        "Paquita",
         "Guardiola",
-        "#TEM25S",
-        "Taylor",
-        "Franco",
-        "Retiro",
+        "Harvard",
         "Manchester City",
+        "Héctor Álvarez",
         "Frente Amplio",
-        "Ayuso",
-        "Olga",
-        "Borja",
-        "Ana Belén",
+        "#TEM25S",
         "Haaland",
-        "Junts",
-        "Netanyahu"
+        "Noblejas",
+        "Finlandia",
+        "El Ayuntamiento de Madrid",
+        "Premier League",
+        "Man City",
+        "Talavante",
+        "#MalasLenguas",
+        "El City",
+        "Frente Popular",
+        "Breaking Bad",
+        "Everton",
+        "Horizonte",
+        "Urbagestión"
       ],
       "error": null,
-      "update_hint": "Updated 42 minutes ago",
-      "age_minutes": 42.0,
+      "update_hint": "Updated 9 minutes ago",
+      "age_minutes": 9.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-25T20:40:58+02:00"
+      "fetched_at": "2026-09-25T20:50:57+02:00"
     },
     "superx": {
       "ok": true,
@@ -321,16 +332,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T20:40:59+02:00"
+      "fetched_at": "2026-09-25T20:50:57+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790361659",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790362258",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T20:40:59+02:00"
+      "fetched_at": "2026-09-25T20:50:58+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -358,9 +369,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 25, 2026 18:00 UTC",
-      "age_minutes": 41.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-25T20:41:00+02:00"
+      "age_minutes": 51.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-25T20:50:58+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -388,18 +399,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 4840.0,
+      "age_minutes": 4850.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T20:41:00+02:00"
+      "fetched_at": "2026-09-25T20:50:58+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790361665",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790362260",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T20:41:05+02:00"
+      "fetched_at": "2026-09-25T20:51:00+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -408,7 +419,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T20:41:06+02:00"
+      "fetched_at": "2026-09-25T20:51:01+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -438,16 +449,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T20:41:06+02:00"
+      "fetched_at": "2026-09-25T20:51:01+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790361669",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790362264",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T20:41:09+02:00"
+      "fetched_at": "2026-09-25T20:51:04+02:00"
     }
   }
 }
