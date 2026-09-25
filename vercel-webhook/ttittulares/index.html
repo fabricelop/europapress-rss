@@ -152,29 +152,30 @@ function runVisual(s){
 }
 function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?5000:60000)}
 async function loadRunStatus(){
- try{
-   const headers={};if(token())headers.authorization="Bearer "+token();
-   const r=await fetch(RUN_STATUS_API+"?t="+Date.now(),{cache:"no-store",headers});
-   if(r.status===401){runVisual({status:"ACCESS_REQUIRED"});scheduleRunPoll(false);return}
-   const d=await r.json().catch(()=>({}));
-   if(!r.ok)throw new Error(d.error||"No se pudo consultar la ejecución manual");
-   runVisual(d);scheduleRunPoll(["REQUESTED","RUNNING"].includes(d.status))
- }catch(e){$("runState").textContent=e.message||"No se pudo consultar el estado";$("runState").className="error";scheduleRunPoll(false)}
+ clearTimeout(runPoll);
+ const el=$("runState"),btn=$("runNow");
+ el.textContent="Listo · se abrirá ChatGPT y se ejecutará la programación :00";
+ el.className="";
+ btn.disabled=false
 }
 async function requestRun(){
- if(!token()){$("settings").click();toast("Guarda primero el acceso");return}
- if(!confirm("¿Ejecutar TTiTTulares ahora? Esta acción consumirá cuota de ChatGPT Work."))return;
- const btn=$("runNow");btn.disabled=true;$("runState").textContent="Enviando solicitud…";$("runState").className="running";
- try{
-   const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:"{}"});
-   const d=await r.json().catch(()=>({}));
-   if(r.status===401)throw new Error("Acceso no autorizado");
-   if(r.status===429)throw new Error("Ya se solicitó una ejecución hace unos segundos");
-   if(r.status===409)throw new Error("Ya hay una ejecución en curso");
-   if(r.status===503&&d.error==="work_trigger_not_ready")throw new Error("El trigger de Work todavía no está activado");
-   if(!r.ok)throw new Error(d.error||"No se pudo solicitar la ejecución");
-   runVisual({status:"REQUESTED",requested_at:d.requested_at});scheduleRunPoll(true)
- }catch(e){$("runState").textContent=e.message;$("runState").className="error";btn.disabled=false}
+ if(!confirm("¿Ejecutar TTiTTulares ahora? Se abrirá ChatGPT y se lanzará la programación editorial :00."))return;
+ const btn=$("runNow");
+ btn.disabled=true;
+ $("runState").textContent="Abriendo ChatGPT…";
+ $("runState").className="running";
+ const w=window.open("https://chatgpt.com/?tt-run=ttittulares","_blank","noopener");
+ if(!w){
+   $("runState").textContent="El navegador bloqueó la nueva pestaña";
+   $("runState").className="error";
+   btn.disabled=false;
+   return
+ }
+ setTimeout(()=>{
+   $("runState").textContent="Lanzamiento enviado a ChatGPT";
+   $("runState").className="done";
+   btn.disabled=false
+ },1200)
 }
 async function api(action,extra={}){
  const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
