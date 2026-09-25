@@ -332,11 +332,24 @@ def main():
     remaining = sync_queue(requests_doc)
 
     done = datetime.now(MADRID).isoformat(timespec="seconds")
+    remaining_active = [
+        x for x in remaining
+        if str(x.get("status") or "") in {"preparing", "update"}
+    ]
+    remaining_problematic = [
+        x for x in remaining
+        if str(x.get("status") or "") == "problematic"
+    ]
+    queue_complete = not remaining_active
+    runtime_status = "failure" if errors else ("success" if queue_complete else "waiting")
     runtime.update({
-        "last_completed_at": done if not errors else runtime.get("last_completed_at"),
+        "last_completed_at": done if (not errors and queue_complete) else runtime.get("last_completed_at"),
         "processed_ids": processed,
         "remaining_ids": [x.get("id") for x in remaining],
-        "status": "success" if not errors else "failure",
+        "remaining_active_ids": [x.get("id") for x in remaining_active],
+        "remaining_problematic_ids": [x.get("id") for x in remaining_problematic],
+        "queue_complete": queue_complete,
+        "status": runtime_status,
         "error": "; ".join(errors)[:2000] if errors else None,
         "api_failover_enabled": False,
         "updated_at": done,
