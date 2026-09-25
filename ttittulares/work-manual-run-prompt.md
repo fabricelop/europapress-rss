@@ -35,6 +35,31 @@ message: <causa concreta y breve>
 
 No generes otro `RUN TTITTULARES`. No modifiques el PR salvo comentarios RUNSTATUS. No modifiques, pauses, desactives, sustituyas ni recrees ninguna automatización.
 
+## SALIDA TEMPRANA OBLIGATORIA PARA SMOKE
+
+Si el comentario activador contiene exactamente una línea:
+
+`mode: smoke`
+
+entonces, DESPUÉS de escribir el comentario `RUNNING` y ANTES de leer cualquier cola, outbox, estado editorial o hacer búsquedas web:
+
+1. Escribe inmediatamente en el mismo PR:
+
+```
+RUNSTATUS <command_id>
+status: DONE
+finished_at: <ISO-8601>
+message: Smoke test OK
+```
+
+2. TERMINA LA EJECUCIÓN EN ESE PUNTO.
+
+En `mode: smoke` está PROHIBIDO leer o modificar `ttittulares/editorial-queue.json`, `ttittulares/prepared.json`, cualquier outbox, `telegram/editorial-processing.json`, noticias, radar, estado editorial o cualquier otro archivo funcional del proyecto. No hagas búsqueda web. No proceses noticias. No continúes al flujo editorial.
+
+Si `mode` es distinto de `manual` o `smoke`, escribe `ERROR` y termina sin tocar estado editorial.
+
+Solo si `mode: manual` continúa con el flujo siguiente.
+
 ## Flujo editorial
 
 Usa el conector GitHub conectado para leer y escribir EXCLUSIVAMENTE TTiTTulares en `fabricelop/europapress-rss`, rama `main`. El conector puede estar expuesto mediante Code Mode/functions.exec: úsalo por el mecanismo disponible antes de concluir que GitHub no está accesible. GitHub es la única persistencia/estado. Web se usa para verificación actual, investigación, imágenes existentes y búsqueda de publicaciones públicas de X.
