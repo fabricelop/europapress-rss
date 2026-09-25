@@ -5,7 +5,7 @@ Este procedimiento es la fuente operativa de la tarea de Work activada por comen
 ## Activación y telemetría
 
 La tarea SOLO debe continuar si el comentario que la activó empieza exactamente por `RUN TTITTULARES`.
-Extrae `command_id` y `requested_at`.
+Extrae `command_id`, `requested_at` y `mode`. Si `mode` falta, trátalo como `manual`.
 
 ANTES de cualquier otra operación, añade al mismo PR:
 
