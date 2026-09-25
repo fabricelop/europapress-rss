@@ -1,4 +1,4 @@
-const CACHE="ttendencias-shell-v10";
+const CACHE="ttendencias-shell-v11";
 const SHELL=["/ttendencias/manifest.webmanifest","/ttendencias/icon.svg"];
 
 self.addEventListener("install",event=>{
@@ -22,17 +22,15 @@ self.addEventListener("fetch",event=>{
   if(u.origin!==self.location.origin || u.pathname.startsWith("/api/"))return;
   if(!u.pathname.startsWith("/ttendencias"))return;
 
+  // Las navegaciones de la app nunca se sirven desde la caché del SW.
+  // Esto evita que una PWA instalada conserve una shell antigua.
+  if(event.request.mode==="navigate"){
+    event.respondWith(fetch(event.request,{cache:"no-store"}));
+    return;
+  }
+
   event.respondWith(
-    fetch(event.request).then(r=>{
-      const copy=r.clone();
-      caches.open(CACHE).then(c=>c.put(event.request,copy)).catch(()=>{});
-      return r;
-    }).catch(async()=>{
-      const exact=await caches.match(event.request);
-      if(exact)return exact;
-      if(event.request.mode==="navigate")return caches.match("/ttendencias/index.html");
-      return Response.error();
-    })
+    fetch(event.request,{cache:"no-store"}).then(r=>r).catch(()=>caches.match(event.request).then(r=>r||Response.error()))
   );
 });
 
