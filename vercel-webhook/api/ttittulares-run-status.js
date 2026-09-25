@@ -17,9 +17,11 @@ function authorized(req){
 
 const REPO=process.env.GITHUB_REPO||"fabricelop/europapress-rss";
 const PR=2;
-const RUN_PREFIX="RUN TTITTULARES\n";
+const TRIGGER_BRANCH="control/ttittulares-run-trigger-v2";
+const TRIGGER_PATH="ttittulares/run-now-trigger.json";
 const STATUS_PREFIX="RUNSTATUS ";
-const READY_MARKER="TTITTULARES WORK TRIGGER READY";
+const READY_MARKER="TTITTULARES WORK COMMIT TRIGGER READY";
+
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
   return fetch(url,{...options,headers:{
@@ -44,14 +46,20 @@ async function comments(){
   }
   return items
 }
-async function triggerReady(items){
-  if(items.some(c=>String(c.body||"").trim()===READY_MARKER))return true;
+async function triggerReady(){
   const r=await gh(`https://api.github.com/repos/${REPO}/pulls/${PR}`);
   if(!r.ok)throw new Error(`GitHub PR: ${r.status} ${await r.text()}`);
   const pr=await r.json();
   return String(pr.body||"").includes(READY_MARKER)
 }
-
+async function readTrigger(){
+  const u=`https://api.github.com/repos/${REPO}/contents/${TRIGGER_PATH}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`;
+  const r=await gh(u);
+  if(!r.ok)throw new Error(`GitHub trigger GET: ${r.status} ${await r.text()}`);
+  const f=await r.json();
+  const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+  return {sha:f.sha,doc:JSON.parse(raw||"{}")}
+}
 function field(body,name){
   const m=String(body||"").match(new RegExp("^"+name+":\\s*(.+)$","mi"));
   return m?m[1].trim():null
@@ -65,16 +73,14 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
-    const items=await comments();
-    const enabled=await triggerReady(items);
-    if(!enabled)return res.status(200).json({ok:true,status:"DISABLED"});
+    if(!(await triggerReady()))return res.status(200).json({ok:true,status:"DISABLED"});
     if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
 
-    const request=[...items].reverse().find(c=>String(c.body||"").startsWith(RUN_PREFIX));
-    if(!request)return res.status(200).json({ok:true,status:"IDLE"});
+    const [{doc:request},items]=await Promise.all([readTrigger(),comments()]);
+    const command_id=String(request.command_id||"").trim();
+    const requested_at=String(request.requested_at||"").trim();
+    if(!command_id||!requested_at)return res.status(200).json({ok:true,status:"IDLE"});
 
-    const command_id=field(request.body,"command_id");
-    const requested_at=field(request.body,"requested_at")||request.created_at;
     const marks=items.filter(c=>String(c.body||"").startsWith(STATUS_PREFIX+command_id+"\n"));
     const last=marks.at(-1);
     let status=last?field(last.body,"status")||"REQUESTED":"REQUESTED";
