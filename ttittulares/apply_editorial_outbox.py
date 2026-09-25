@@ -74,7 +74,7 @@ def validate_image(item):
     if image.get("rights_status")!="generated" or image.get("source")!="TTiTTulares / ChatGPT":
         raise ValueError("metadatos de imagen generada inválidos")
     checks=image.get("style_check") or {}
-    required=["reviewed_after_generation","single_narrative_scene","visual_gag_without_text","no_infographic_layout","no_diagram_arrows_or_connectors","no_ui_or_scoreboard_layout","low_text","depth_lighting_texture"]
+    required=["reviewed_after_generation","single_narrative_scene","visual_gag_without_text","correct_event_subject","no_flat_2d_pixel_art","no_simplified_vector_block_style","no_infographic_layout","no_diagram_arrows_or_connectors","no_ui_or_scoreboard_layout","low_text","depth_lighting_texture"]
     if image.get("style_version")!="editorial-scene-v2-cleveland" or not all(checks.get(k) is True for k in required):
         raise ValueError("imagen generada sin control visual editorial-scene-v2-cleveland completo")
     url=str(image.get("url") or "")
@@ -159,6 +159,10 @@ def _enrich_prepared_images(p,q,events):
     rows=q.get("items",[]) or []
     for item in p.get("items",[]) or []:
         if str((item.get("image") or {}).get("url") or item.get("image_url") or "").strip():continue
+        # Un generated_gag sin imagen puede estar deliberadamente READY con image_pending.
+        # Nunca lo conviertas silenciosamente en imagen de archivo.
+        if str(item.get("image_strategy") or "")=="generated_gag":
+            continue
         attempted=item.get("image_search_attempted_at")
         if attempted:
             try:
@@ -184,7 +188,7 @@ def sync_compact(q):
             "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
             "parent_event_id":x.get("parent_event_id"),"update_context":x.get("update_context"),
             "with_image":True,"image_mode":"generated_gag_or_archive_sensitive",
-            "image_instruction":"Genera por defecto una imagen editorial ORIGINAL raster con gag visual específico, usando exactamente la línea editorial-scene-v2-cleveland de TTendencias. Marca image_strategy=generated_gag. Si la noticia implica víctimas, abusos, tragedia, sufrimiento o el gag no es editorialmente apropiado, NO generes humor: marca image_strategy=archive_sensitive y usa una imagen existente del acontecimiento, priorizando fuente oficial/primaria y después medios fiables. Un fallo técnico del renderer NO autoriza a cambiar generated_gag por archivo.",
+            "image_instruction":"Genera por defecto una imagen editorial ORIGINAL con gag específico y línea editorial-scene-v2-cleveland. Prioriza velocidad: objetivo ~768 px lado largo, detalle medio y JPEG sRGB calidad ~82. Valida el raster completo antes y después de GitHub. Si tras dos intentos la imagen falla, la noticia debe poder pasar READY con image_pending; nunca sustituyas generated_gag por archivo salvo archive_sensitive real.",
         })
     active.sort(key=lambda x:str(x.get("selected_at") or ""))
     save(TT/"editorial-queue.json",{
@@ -222,9 +226,15 @@ def main():
                     strategy=str(item.get("image_strategy") or "").strip()
                     if strategy=="generated_gag":
                         if not image.get("generated") or not str(image.get("url") or "").strip():
-                            raise ValueError("generated_gag sin raster generado: debe quedar pendiente de renderer, no usar archivo")
-                        validate_image(item)
-                        item["image_search_status"]="generated"
+                            pending=bool(item.get("image_pending"))
+                            attempts=int(item.get("image_attempts") or 0)
+                            reason=str(item.get("image_failure_reason") or "").strip()
+                            if not (pending and attempts>=2 and reason):
+                                raise ValueError("generated_gag sin raster generado ni fallback image_pending válido")
+                            item["image_search_status"]="pending_renderer"
+                        else:
+                            validate_image(item)
+                            item["image_search_status"]="generated"
                     elif strategy=="archive_sensitive":
                         if image.get("generated"):
                             raise ValueError("archive_sensitive no debe contener gag generado")
