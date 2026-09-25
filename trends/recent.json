@@ -1,32 +1,32 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T02:01:13+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-25T02:10:52+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
+    "superx",
+    "snaplytics",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
     "#SVGala3",
     "#Horizonte",
     "#CineDeTerror",
-    "#ElPerroAndaluzTVE",
     "Yola",
+    "#ElPerroAndaluzTVE",
     "Benjamín Noval",
-    "#ObjetivoVivienda",
-    "Borja",
     "Paquita",
-    "Ter Stegen"
+    "Borja",
+    "Ter Stegen",
+    "Van Bommel"
   ],
   "items": [
     {
@@ -43,11 +43,11 @@
     },
     {
       "rank": 4,
-      "name": "#ElPerroAndaluzTVE"
+      "name": "Yola"
     },
     {
       "rank": 5,
-      "name": "Yola"
+      "name": "#ElPerroAndaluzTVE"
     },
     {
       "rank": 6,
@@ -55,7 +55,7 @@
     },
     {
       "rank": 7,
-      "name": "#ObjetivoVivienda"
+      "name": "Paquita"
     },
     {
       "rank": 8,
@@ -63,18 +63,20 @@
     },
     {
       "rank": 9,
-      "name": "Paquita"
+      "name": "Ter Stegen"
     },
     {
       "rank": 10,
-      "name": "Ter Stegen"
+      "name": "Van Bommel"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Van Bommel"
+  ],
   "upcoming": [
     {
-      "name": "Hernández Hernández",
+      "name": "Rosa Benito",
       "social_source_count": 4,
       "social_sources": [
         "getdaytrends",
@@ -82,10 +84,10 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 14.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T00:51:02+02:00",
+      "best_observed_rank": 15,
+      "mean_observed_rank": 16.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-25T01:31:14+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -93,29 +95,11 @@
       "news_first_seen": null
     },
     {
-      "name": "Xavi",
+      "name": "Alemania",
       "social_source_count": 3,
       "social_sources": [
         "trends24",
         "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 15.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T00:51:02+02:00",
-      "news_source_count": 1,
-      "news_event_id": "c56294aec0f5",
-      "news_title": "Xavi ya imprime su sello para conseguir un empate de quilates ante Klopp",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-24T22:19:56.954971Z"
-    },
-    {
-      "name": "Alemania",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
         "tweets24"
       ],
       "best_observed_rank": 13,
@@ -132,14 +116,68 @@
       "name": "Holanda",
       "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
       "movement": "flat",
       "first_detected_at": "2026-09-25T01:31:14+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Gakpo",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "flat",
+      "first_detected_at": "2026-09-25T01:01:57+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Xavi",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 16,
+      "mean_observed_rank": 16.7,
+      "movement": "down",
+      "first_detected_at": "2026-09-25T00:51:02+02:00",
+      "news_source_count": 1,
+      "news_event_id": "c56294aec0f5",
+      "news_title": "Xavi ya imprime su sello para conseguir un empate de quilates ante Klopp",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-24T22:19:56.954971Z"
+    },
+    {
+      "name": "Hernández Hernández",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-25T00:51:02+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -154,69 +192,15 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 16.7,
-      "movement": "flat",
+      "best_observed_rank": 17,
+      "mean_observed_rank": 17.7,
+      "movement": "down",
       "first_detected_at": "2026-09-25T00:51:02+02:00",
       "news_source_count": 1,
       "news_event_id": "c56294aec0f5",
       "news_title": "Xavi ya imprime su sello para conseguir un empate de quilates ante Klopp",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-24T22:19:56.954971Z"
-    },
-    {
-      "name": "Gakpo",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T01:01:57+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Efes",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 18.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-24T23:50:50+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Rosa Benito",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 17.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T01:31:14+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -250,32 +234,32 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:01:13+02:00"
+      "fetched_at": "2026-09-25T02:10:52+02:00"
     },
     "getdaytrends": {
       "ok": true,
       "trends": [
         "#SVGala3",
-        "#Horizonte",
-        "#CineDeTerror",
-        "#ElPerroAndaluzTVE",
         "Yola",
+        "#CineDeTerror",
+        "Damián",
+        "#Horizonte",
+        "#ChiringuitoLamine",
+        "Asraf",
+        "#ElPerroAndaluzTVE",
         "Benjamín Noval",
-        "#ObjetivoVivienda",
+        "Ivana",
         "Borja",
         "Paquita",
         "Van Bommel",
         "Ter Stegen",
-        "Holanda",
-        "Alemania",
-        "Gakpo",
-        "hernández hernández"
+        "Rosa Benito"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:01:14+02:00"
+      "fetched_at": "2026-09-25T02:10:53+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -302,10 +286,10 @@
         "Netanyahu"
       ],
       "error": null,
-      "update_hint": "Updated 37 minutes ago",
-      "age_minutes": 37.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-25T02:01:14+02:00"
+      "update_hint": "Updated 47 minutes ago",
+      "age_minutes": 47.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-25T02:10:54+02:00"
     },
     "superx": {
       "ok": true,
@@ -335,16 +319,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:01:15+02:00"
+      "fetched_at": "2026-09-25T02:10:54+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790294476",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790295055",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T02:01:16+02:00"
+      "fetched_at": "2026-09-25T02:10:55+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -372,9 +356,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 24, 2026 23:00 UTC",
-      "age_minutes": 61.3,
+      "age_minutes": 70.9,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T02:01:16+02:00"
+      "fetched_at": "2026-09-25T02:10:55+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -402,18 +386,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 3720.3,
+      "age_minutes": 3729.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T02:01:16+02:00"
+      "fetched_at": "2026-09-25T02:10:55+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790294478",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790295056",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T02:01:18+02:00"
+      "fetched_at": "2026-09-25T02:10:56+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -422,46 +406,46 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T02:01:19+02:00"
+      "fetched_at": "2026-09-25T02:10:57+02:00"
     },
     "trendswe": {
       "ok": true,
       "trends": [
         "#SVGala3",
         "#Horizonte",
-        "#Benjamín Noval",
-        "#Ter Stegen",
-        "#Borja",
-        "#Holanda",
+        "#CineDeTerror",
         "#ElPerroAndaluzTVE",
+        "#Yola",
+        "#Benjamín Noval",
+        "#ObjetivoVivienda",
+        "#Borja",
+        "#Paquita",
         "#Van Bommel",
+        "#Ter Stegen",
+        "#Holanda",
         "#Alemania",
         "#Gakpo",
-        "#Xavi",
-        "#Países Bajos",
         "#hernández hernández",
+        "#Xavi",
         "#Klopp",
-        "#Paquita",
-        "#Efes",
-        "#Euroliga",
-        "#Montreal2026",
         "#Rosa Benito",
-        "#Netanyahu"
+        "#Efes",
+        "#Países Bajos"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:01:19+02:00"
+      "fetched_at": "2026-09-25T02:10:58+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790294481",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790295060",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T02:01:21+02:00"
+      "fetched_at": "2026-09-25T02:11:00+02:00"
     }
   }
 }
