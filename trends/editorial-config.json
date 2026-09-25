@@ -86,7 +86,17 @@
       "require_direct_https_image_url": true,
       "prefer_current_event_over_archive": false,
       "verify_image_relevance": true,
-      "style_version": "editorial-scene-v2-cleveland"
+      "style_version": "editorial-scene-v2-cleveland",
+      "inline_raster_fallback": {
+        "enabled": true,
+        "trigger": "when_generated_raster_bytes_exist_but_binary_github_upload_is_unavailable",
+        "mime_types": [
+          "image/webp",
+          "image/png",
+          "image/jpeg"
+        ],
+        "rule": "Como fallback de persistencia, se permite guardar el raster generado REAL como data URL base64 en prepared_item.image.url. Esto NO autoriza SVG ni imágenes buscadas en Internet. Deben mantenerse generated:true, rights_status:'generated', source:'TTendencias / ChatGPT' y el mismo control visual editorial-scene-v2-cleveland."
+      }
     },
     "queue_consumer_only": true,
     "queue_states": [
