@@ -110,16 +110,17 @@ Si `with_image=true`, aplica exactamente la misma línea visual y mecanismo bina
 
 ### Decisión editorial
 
-- Por defecto genera una imagen editorial ORIGINAL raster PNG/WebP/JPEG con un gag visual específico de ESTA noticia, línea `editorial-scene-v2-cleveland`.
+- Por defecto genera una imagen editorial ORIGINAL raster PNG/WebP/JPEG con un gag visual específico de ESTA noticia, línea `editorial-scene-v2-cleveland`, y guarda `prepared_item.image_strategy="generated_gag"`.
 - Debe ser una sola escena narrativa, clara en móvil/X, con protagonista(s) integrados, acción/expresión comprensible y gag que funcione sin texto. Detalle medio, composición simple y pocos elementos; alrededor de 1024 px en el lado largo cuando sea posible.
 - Prohibidos infografía, diagrama, flechas/conectores, cajas/nodos, UI/TV, cabezas flotantes, paneles, póster, clip-art, retrato decorativo sin gag y exceso de texto.
 - Nunca inventes citas ni hechos visuales que atribuyan a una persona algo no verificado.
 - En política/asuntos públicos, el gag debe apoyarse en hechos o contradicciones públicas verificables y mantener neutralidad política.
-- Si hay víctimas, abusos, tragedia, sufrimiento, catástrofe o cualquier noticia en la que un gag cómico pueda resultar inapropiado, NO generes humor. En ese caso conserva el mecanismo anterior: busca una imagen EXISTENTE del mismo acontecimiento, priorizando fuente oficial/primaria y después medios fiables. Segunda vía: página original/og:image. Derechos no verificados => `rights_status:"unverified"`.
+- Si hay víctimas, abusos, tragedia, sufrimiento, catástrofe o cualquier noticia en la que un gag cómico resulte editorialmente inapropiado, NO generes humor. Guarda `prepared_item.image_strategy="archive_sensitive"` y conserva el mecanismo anterior: imagen EXISTENTE del mismo acontecimiento, priorizando fuente oficial/primaria y después medios fiables. Segunda vía: página original/og:image. Derechos no verificados => `rights_status:"unverified"`.
+- Un fallo técnico del generador NO convierte una noticia apta para gag en `archive_sensitive`. No uses foto de archivo como sustituto técnico del renderer.
 
 ### Control del raster generado
 
-Después de generar inspecciona el raster REAL. Debe abrir/decodificar, ocupar el fotograma, estar completo y no tener bandas/bloques negros, transparencia masiva ni regiones vacías anómalas. Si falla, regenera UNA vez con una escena más simple. Si vuelve a fallar, usa imagen de archivo fiable como fallback; la imagen no debe convertir una noticia factual válida en `problematic`.
+Después de generar inspecciona el raster REAL. Debe abrir/decodificar, ocupar el fotograma, estar completo y no tener bandas/bloques negros, transparencia masiva ni regiones vacías anómalas. Si falla, regenera UNA vez con una escena más simple. Si vuelve a fallar y la estrategia es `generated_gag`, NO escribas outbox `ready`: deja el item en elaboración para un intento posterior de renderer y continúa con los demás. No lo conviertas en `problematic`. La imagen de archivo se usa únicamente con `archive_sensitive`.
 
 Para imagen generada guarda `image={url,source:"TTiTTulares / ChatGPT",source_url,rights_status:"generated",generated:true,alt,style_version:"editorial-scene-v2-cleveland",style_check}`, con estos checks en true: `reviewed_after_generation,single_narrative_scene,visual_gag_without_text,no_infographic_layout,no_diagram_arrows_or_connectors,no_ui_or_scoreboard_layout,low_text,depth_lighting_texture`.
 
