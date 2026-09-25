@@ -67,6 +67,7 @@ for item in processing.get("items", []):
         "selected_at": item.get("selected_at"),
         "problematic_at": item.get("problematic_at"),
         "problem_reason": str(item.get("problem_reason") or ""),
+        "problematic_attempts": int(item.get("problematic_attempts") or 1),
         "revision": int(item.get("revision") or ev.get("revision") or 1),
         "source_count": int(ev.get("source_count") or item.get("source_count") or 0),
         "sources": list(ev.get("sources") or item.get("sources") or []),
