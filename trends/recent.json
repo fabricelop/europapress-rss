@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T02:20:58+02:00",
+  "captured_at": "2026-09-25T02:31:04+02:00",
   "primary_source": "consensus",
   "selection_method": "consensus",
   "sources_used": [
@@ -9,13 +9,12 @@
     "getdaytrends",
     "tweets24",
     "superx",
-    "snaplytics",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 6,
+  "non_stale_source_count": 5,
   "fresh_sources": [],
-  "reliability": "high",
+  "reliability": "medium",
   "top10": [
     "#SVGala3",
     "#CineDeTerror",
@@ -23,8 +22,8 @@
     "Yola",
     "#ElPerroAndaluzTVE",
     "Benjamín Noval",
-    "Paquita",
     "Borja",
+    "Paquita",
     "Ter Stegen",
     "Van Bommel"
   ],
@@ -55,11 +54,11 @@
     },
     {
       "rank": 7,
-      "name": "Paquita"
+      "name": "Borja"
     },
     {
       "rank": 8,
-      "name": "Borja"
+      "name": "Paquita"
     },
     {
       "rank": 9,
@@ -84,7 +83,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 15.8,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T01:31:14+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -137,7 +136,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T01:31:14+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -153,7 +152,7 @@
       ],
       "best_observed_rank": 20,
       "mean_observed_rank": 20.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T02:20:58+02:00",
       "news_source_count": 12,
       "news_event_id": "6f93abb7cabe",
@@ -170,7 +169,7 @@
       ],
       "best_observed_rank": 17,
       "mean_observed_rank": 18.5,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T02:20:58+02:00",
       "news_source_count": 2,
       "news_event_id": "e53f0e443b3e",
@@ -187,7 +186,7 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 16.5,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T00:51:02+02:00",
       "news_source_count": 1,
       "news_event_id": "c56294aec0f5",
@@ -227,7 +226,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:20:58+02:00"
+      "fetched_at": "2026-09-25T02:31:04+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -252,7 +251,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:20:59+02:00"
+      "fetched_at": "2026-09-25T02:31:04+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -279,10 +278,10 @@
         "Netanyahu"
       ],
       "error": null,
-      "update_hint": "Updated 57 minutes ago",
-      "age_minutes": 57.0,
+      "update_hint": "Updated 1 hour ago",
+      "age_minutes": 60.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T02:21:00+02:00"
+      "fetched_at": "2026-09-25T02:31:05+02:00"
     },
     "superx": {
       "ok": true,
@@ -312,16 +311,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:21:01+02:00"
+      "fetched_at": "2026-09-25T02:31:06+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790295661",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790296267",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T02:21:01+02:00"
+      "fetched_at": "2026-09-25T02:31:07+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -349,9 +348,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 24, 2026 23:00 UTC",
-      "age_minutes": 81.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-25T02:21:01+02:00"
+      "age_minutes": 91.1,
+      "freshness": "stale",
+      "fetched_at": "2026-09-25T02:31:07+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -379,18 +378,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 3740.0,
+      "age_minutes": 3750.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T02:21:02+02:00"
+      "fetched_at": "2026-09-25T02:31:07+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790295663",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790296269",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T02:21:03+02:00"
+      "fetched_at": "2026-09-25T02:31:09+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -399,7 +398,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T02:21:04+02:00"
+      "fetched_at": "2026-09-25T02:31:10+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -429,16 +428,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:21:04+02:00"
+      "fetched_at": "2026-09-25T02:31:10+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790295666",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790296272",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T02:21:06+02:00"
+      "fetched_at": "2026-09-25T02:31:12+02:00"
     }
   }
 }
