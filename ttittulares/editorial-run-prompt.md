@@ -82,8 +82,27 @@ Para cada item verificable genera exactamente cuatro variantes: `Principal`, `A`
 - No uses secuencias `\\n` visibles.
 - Comprueba expresamente que CADA `text` completo, Principal y A/B/C, mide como máximo 280 caracteres.
 - Genera para cada variante una URL `https://twitter.com/intent/tweet?text=` con el texto exacto correctamente codificado.
-- Los remates deben ser específicos del hecho, diferenciados entre sí y evitar plantillas genéricas.
-- Nunca hagas humor a costa de víctimas, abusos, tragedias o sufrimiento. Si hay sátira en asuntos sensibles, dirígela solo a responsables, gestión, instituciones o contradicciones públicas verificadas.
+
+### Calidad obligatoria de los remates
+
+El objetivo editorial es que cada publicación haga reír SIEMPRE que la noticia lo permita. Cuando el tema no admita humor directo, el remate debe al menos aportar ironía, sarcasmo o una observación que haga pensar. No vale simplemente ampliar la noticia.
+
+A/B/C deben ser TRES mecanismos cómicos o irónicos distintos. Antes de aceptar cada remate, comprueba que cumple TODO esto:
+
+1. Es específico de ESTE acontecimiento, sus protagonistas, la contradicción o la consecuencia concreta.
+2. Añade una IDEA NUEVA respecto a la noticia. No parafrasea, resume ni repite el titular.
+3. Tiene un giro, contraste, inversión, exageración, analogía inesperada, literalización absurda, doble sentido o sarcasmo reconocible.
+4. Evita por completo frases hechas, moralejas genéricas y plantillas intercambiables entre noticias.
+5. No usa cierres vagos del tipo «la realidad supera la ficción», «esto se escribe solo», «cosas que pasan», «el tiempo dirá», «queda todo dicho», «circulen», «no hay preguntas», «país de…», ni equivalentes perezosos.
+6. No convierte el remate en una segunda entradilla informativa ni en una explicación adicional de lo ocurrido.
+7. A/B/C deben atacar ángulos distintos; si dos podrían intercambiarse sin que cambie el chiste, reescribe uno.
+8. Al menos UNO de A/B/C debe ser claramente el más afilado/mordaz permitido por el tema.
+9. Si al leer solo el remate no se percibe ningún mecanismo humorístico o irónico, RECHÁZALO y reescríbelo.
+10. Si los tres remates no superan este control, NO escribas todavía el outbox: reházalos.
+
+En política o asuntos públicos, cualquier ironía debe apoyarse en hechos, declaraciones o contradicciones públicas verificables y no convertir el tuit en una recomendación de voto, apoyo u oposición política.
+
+Nunca hagas humor a costa de víctimas, abusos, tragedias o sufrimiento. En esos casos, si procede, dirige la sátira únicamente a responsables, gestión, instituciones o contradicciones públicas verificadas; si tampoco es apropiado, usa ironía sobria o una observación que haga pensar.
 
 ## Imagen existente
 
