@@ -106,23 +106,73 @@ Nunca hagas humor a costa de víctimas, abusos, tragedias o sufrimiento. En esos
 
 ## Imagen · gag generado por defecto y archivo cuando no proceda
 
-Si `with_image=true`, aplica exactamente la misma línea visual y mecanismo binario de TTendencias.
+Si `with_image=true`, aplica exactamente la misma línea visual y el mismo control de calidad de TTendencias, con la única excepción editorial de `archive_sensitive` para noticias en las que el humor visual no proceda.
 
 ### Decisión editorial
 
-- Por defecto genera una imagen editorial ORIGINAL raster PNG/WebP/JPEG con un gag visual específico de ESTA noticia, línea `editorial-scene-v2-cleveland`, y guarda `prepared_item.image_strategy="generated_gag"`.
-- Debe ser una sola escena narrativa, clara en móvil/X, con protagonista(s) integrados, acción/expresión comprensible y gag que funcione sin texto. Detalle medio, composición simple y pocos elementos; alrededor de 1024 px en el lado largo cuando sea posible.
-- Prohibidos infografía, diagrama, flechas/conectores, cajas/nodos, UI/TV, cabezas flotantes, paneles, póster, clip-art, retrato decorativo sin gag y exceso de texto.
-- Nunca inventes citas ni hechos visuales que atribuyan a una persona algo no verificado.
-- En política/asuntos públicos, el gag debe apoyarse en hechos o contradicciones públicas verificables y mantener neutralidad política.
-- Si hay víctimas, abusos, tragedia, sufrimiento, catástrofe o cualquier noticia en la que un gag cómico resulte editorialmente inapropiado, NO generes humor. Guarda `prepared_item.image_strategy="archive_sensitive"` y conserva el mecanismo anterior: imagen EXISTENTE del mismo acontecimiento, priorizando fuente oficial/primaria y después medios fiables. Segunda vía: página original/og:image. Derechos no verificados => `rights_status:"unverified"`.
-- Un fallo técnico del generador NO convierte una noticia apta para gag en `archive_sensitive`. No uses foto de archivo como sustituto técnico del renderer.
+- Por defecto genera una imagen editorial ORIGINAL raster PNG/WebP/JPEG con un gag visual específico de ESTA noticia y guarda `prepared_item.image_strategy="generated_gag"`.
+- Línea visual aprobada: `editorial-scene-v2-cleveland`.
+- La referencia de estilo NO significa flat 2D, pixel-art, vectorial simplificado ni formas geométricas planas. Esas estéticas están expresamente rechazadas para TTiTTulares.
+- La prioridad es, en este orden: 1) gag/escena entendible de inmediato; 2) calidad de ilustración editorial; 3) composición con profundidad, iluminación y volumen suficientes; 4) robustez del raster; 5) detalle fino.
+- Usa detalle medio/alto cuando sea viable, composición limpia, pocos elementos importantes y alrededor de 1024 px en el lado largo cuando la herramienta lo permita. La imagen debe verse cuidada y de calidad en móvil/X, no como boceto, iconografía plana ni clip-art.
+
+La imagen generada debe ser una sola escena narrativa de caricatura/ilustración editorial:
+- protagonista(s) integrados en un entorno;
+- acción y expresiones claras;
+- profundidad, volumen, iluminación y texturas visibles, sin exigir fotorealismo;
+- perspectiva y puesta en escena coherentes;
+- gag VISUAL directamente ligado al hecho real;
+- el gag debe seguir entendiéndose aunque se elimine todo el texto;
+- cero texto siempre que sea posible; si es imprescindible, breve y diegético.
+
+Rechaza y regenera si aparece cualquiera de estos patrones:
+- flat 2D, pixel-art, vectorial simplificado, block shapes o paleta plana/limitada como lenguaje dominante;
+- infografía, diagrama o esquema;
+- flechas/conectores;
+- cajas/nodos o medallones;
+- marcador/podio abstracto;
+- estética de interfaz/televisión;
+- cabezas flotantes;
+- paneles comparativos;
+- póster informativo;
+- clip-art, iconos simples o formas geométricas;
+- retrato decorativo sin gag;
+- exceso de texto;
+- composición sin profundidad/volumen;
+- imagen incompleta, cortada, truncada o parcialmente renderizada;
+- grandes zonas negras, transparentes o vacías que no pertenezcan realmente a la escena.
+
+No se exige fotorealismo ni convertir a personas reales en fotografías simuladas: se busca ilustración/caricatura editorial con acabado rico, profundidad y gag, no una imagen plana. Nunca inventes citas ni hechos visuales que atribuyan a una persona algo no verificado. En política/asuntos públicos, el gag debe apoyarse en hechos o contradicciones públicas verificables y mantener neutralidad política.
+
+Si hay víctimas, abusos, tragedia, sufrimiento, catástrofe o cualquier noticia en la que un gag cómico resulte editorialmente inapropiado, NO generes humor. Guarda `prepared_item.image_strategy="archive_sensitive"` y conserva el mecanismo anterior: imagen EXISTENTE del mismo acontecimiento, priorizando fuente oficial/primaria y después medios fiables. Segunda vía: página original/og:image. Derechos no verificados => `rights_status:"unverified"`.
+
+Un fallo técnico o DE ESTILO del generador NO convierte una noticia apta para gag en `archive_sensitive`. No uses foto de archivo como sustituto técnico del renderer.
 
 ### Control del raster generado
 
-Después de generar inspecciona el raster REAL. Debe abrir/decodificar, ocupar el fotograma, estar completo y no tener bandas/bloques negros, transparencia masiva ni regiones vacías anómalas. Si falla, regenera UNA vez con una escena más simple. Si vuelve a fallar y la estrategia es `generated_gag`, NO escribas outbox `ready`: deja el item en elaboración para un intento posterior de renderer y continúa con los demás. No lo conviertas en `problematic`. La imagen de archivo se usa únicamente con `archive_sensitive`.
+DESPUÉS DE GENERAR, inspecciona la imagen REAL, no solo el prompt. Solo puede marcarse `ready` si:
+- el fichero se abre y decodifica correctamente;
+- la escena ocupa el fotograma completo;
+- no hay bandas, bloques negros ni regiones vacías anómalas;
+- la composición está completa;
+- el gag se entiende sin depender de rótulos;
+- existe profundidad/volumen/iluminación apreciable;
+- NO presenta estética flat 2D/pixel-art/vectorial simplificada;
+- supera el control visual editorial.
 
-Para imagen generada guarda `image={url,source:"TTiTTulares / ChatGPT",source_url,rights_status:"generated",generated:true,alt,style_version:"editorial-scene-v2-cleveland",style_check}`, con estos checks en true: `reviewed_after_generation,single_narrative_scene,visual_gag_without_text,no_infographic_layout,no_diagram_arrows_or_connectors,no_ui_or_scoreboard_layout,low_text,depth_lighting_texture`.
+Si falla esta comprobación, RECHAZA esa imagen y REGENERA una vez con una composición más simple pero manteniendo profundidad, volumen y acabado editorial. Si el segundo intento tampoco es íntegro o vuelve a caer en estética plana, no marques `ready`: deja el item en elaboración para un intento posterior de renderer y continúa con los demás. No lo conviertas en `problematic`. La imagen de archivo se usa únicamente con `archive_sensitive`.
+
+Para imagen generada guarda `image={url,source:"TTiTTulares / ChatGPT",source_url,rights_status:"generated",generated:true,alt,style_version:"editorial-scene-v2-cleveland",style_check}`, con estos checks en true:
+- `reviewed_after_generation`
+- `single_narrative_scene`
+- `visual_gag_without_text`
+- `no_flat_2d_pixel_art`
+- `no_simplified_vector_block_style`
+- `no_infographic_layout`
+- `no_diagram_arrows_or_connectors`
+- `no_ui_or_scoreboard_layout`
+- `low_text`
+- `depth_lighting_texture`
 
 ### Persistencia binaria obligatoria
 
