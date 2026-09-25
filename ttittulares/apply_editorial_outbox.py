@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import json, urllib.parse, urllib.request
+import json, urllib.parse, urllib.request, base64, io
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
@@ -44,7 +44,51 @@ def validate_ready(payload):
         expected="https://twitter.com/intent/tweet?text="+urllib.parse.quote(text,safe="")
         v["url"]=expected
         v.pop("tweet_url",None)
+    validate_image(item)
     return item
+
+
+def _validate_raster_integrity(data: bytes, label: str):
+    from PIL import Image, ImageStat, UnidentifiedImageError
+    if len(data) < 4096: raise ValueError(f"{label}: imagen raster demasiado pequeña o inválida")
+    try:
+        with Image.open(io.BytesIO(data)) as probe: probe.verify()
+        with Image.open(io.BytesIO(data)) as image:
+            image.load(); w,h=image.size
+            if w < 600 or h < 360: raise ValueError(f"{label}: dimensiones insuficientes ({w}x{h})")
+            if "A" in image.getbands():
+                alpha=image.getchannel("A").resize((128,128)); vals=list(alpha.getdata())
+                if sum(1 for v in vals if v<16)/max(1,len(vals)) > .25: raise ValueError(f"{label}: demasiada transparencia")
+            rgb=image.convert("RGB"); rgb.thumbnail((256,256)); pixels=list(rgb.getdata())
+            near=lambda p:p[0]<12 and p[1]<12 and p[2]<12
+            if pixels and sum(1 for p in pixels if near(p))/len(pixels) > .60: raise ValueError(f"{label}: imagen anómalamente negra")
+            gray=rgb.convert("L"); stat=ImageStat.Stat(gray)
+            if stat.stddev and stat.stddev[0] < 4: raise ValueError(f"{label}: imagen prácticamente uniforme")
+    except (UnidentifiedImageError,OSError,SyntaxError) as exc: raise ValueError(f"{label}: raster corrupto o truncado: {exc}")
+
+
+def validate_image(item):
+    image=item.get("image") or {}
+    if not image: return
+    if not image.get("generated"): return
+    if image.get("rights_status")!="generated" or image.get("source")!="TTiTTulares / ChatGPT":
+        raise ValueError("metadatos de imagen generada inválidos")
+    checks=image.get("style_check") or {}
+    required=["reviewed_after_generation","single_narrative_scene","visual_gag_without_text","no_infographic_layout","no_diagram_arrows_or_connectors","no_ui_or_scoreboard_layout","low_text","depth_lighting_texture"]
+    if image.get("style_version")!="editorial-scene-v2-cleveland" or not all(checks.get(k) is True for k in required):
+        raise ValueError("imagen generada sin control visual editorial-scene-v2-cleveland completo")
+    url=str(image.get("url") or "")
+    prefix="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/"
+    if url.startswith("data:image/"):
+        header,payload=url.split(",",1); mime=header[5:].split(";",1)[0].casefold()
+        if ";base64" not in header or mime not in {"image/png","image/webp","image/jpeg"}: raise ValueError("data URL raster inválida")
+        _validate_raster_integrity(base64.b64decode(payload,validate=True),"imagen raster inline"); return
+    if not url.startswith(prefix): raise ValueError("URL raw de imagen generada inválida")
+    filename=url[len(prefix):]
+    if "/" in filename or ".." in filename or Path(filename).suffix.casefold() not in {".png",".webp",".jpg",".jpeg"}: raise ValueError("ruta de imagen generada inválida")
+    fp=TT/"generated-images"/filename
+    if not fp.exists(): raise ValueError("fichero de imagen generada inexistente en main")
+    _validate_raster_integrity(fp.read_bytes(),f"imagen generada {filename}")
 
 
 class _MetaImageParser(HTMLParser):
@@ -139,8 +183,8 @@ def sync_compact(q):
             "revision":int(x.get("revision") or 1),
             "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
             "parent_event_id":x.get("parent_event_id"),"update_context":x.get("update_context"),
-            "with_image":True,"image_mode":"existing_web_image",
-            "image_instruction":"Busca una imagen existente y relevante al hecho en una fuente oficial/primaria o medio fiable. Haz al menos una búsqueda específica y, si falla, una segunda vía u og:image de una fuente usada. No generes imágenes. Guarda URL directa, fuente, página de origen y rights_status. Si no encuentras una adecuada, deja constancia explícita.",
+            "with_image":True,"image_mode":"generated_gag_or_archive_fallback",
+            "image_instruction":"Genera por defecto una imagen editorial ORIGINAL raster con gag visual específico, usando exactamente la línea editorial-scene-v2-cleveland de TTendencias. Una sola escena narrativa, gag comprensible sin texto, detalle medio y composición simple. Si la noticia implica víctimas, abusos, tragedia, sufrimiento o el gag no es apropiado, NO hagas humor: usa una imagen existente del acontecimiento, priorizando fuente oficial/primaria y después medios fiables.",
         })
     active.sort(key=lambda x:str(x.get("selected_at") or ""))
     save(TT/"editorial-queue.json",{
@@ -174,7 +218,12 @@ def main():
             if st=="ready":
                 item=validate_ready(payload)
                 if bool(row.get("with_image", True)):
-                    _recover_image(item,row,events)
+                    image=item.get("image") or {}
+                    if image.get("generated"):
+                        validate_image(item)
+                        item["image_search_status"]="generated"
+                    elif not str(image.get("url") or "").strip():
+                        _recover_image(item,row,events)
                 p["items"]=[x for x in p.get("items",[]) if str(x.get("event_id") or "")!=eid]
                 p["items"].append(item);p["updated_at"]=item.get("prepared_at") or now
                 previous_attempts=int(row.get("problematic_attempts") or (1 if str(row.get("status") or "")=="PROBLEMATIC" else 0))
