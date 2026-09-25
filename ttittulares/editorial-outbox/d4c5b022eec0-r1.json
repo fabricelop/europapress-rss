@@ -48,8 +48,27 @@
       "url": "https://x.com/search?q=%22Alejandra%20Neira%22%20Montreal&src=typed_query"
     },
     "image_strategy": "generated_gag",
-    "image_pending": true,
-    "image_failure_reason": "Dos intentos de imagen rechazados: el raster correspondía al evento actual, pero no aportaba el gag visual editorial específico exigido; no se persiste una imagen no válida.",
-    "image_attempts": 2
+    "image": {
+      "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d4c5b022eec0-r1.webp",
+      "source": "TTiTTulares / ChatGPT",
+      "source_url": "https://elpais.com/deportes/ciclismo/2026-09-25/alejandra-neira-se-proclama-campeona-del-mundo-junior-de-ciclismo-en-ruta.html",
+      "rights_status": "generated",
+      "generated": true,
+      "alt": "Ilustración editorial de una joven ciclista española celebrando un sprint victorioso en Montreal con un gran maillot arcoíris desplegado como capa.",
+      "style_version": "editorial-scene-v2-cleveland",
+      "style_check": {
+        "reviewed_after_generation": true,
+        "single_narrative_scene": true,
+        "visual_gag_without_text": true,
+        "correct_event_subject": true,
+        "no_flat_2d_pixel_art": true,
+        "no_simplified_vector_block_style": true,
+        "no_infographic_layout": true,
+        "no_diagram_arrows_or_connectors": true,
+        "no_ui_or_scoreboard_layout": true,
+        "low_text": true,
+        "depth_lighting_texture": true
+      }
+    }
   }
 }
