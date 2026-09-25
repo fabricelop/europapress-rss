@@ -44,6 +44,13 @@ async function comments(){
   }
   return items
 }
+async function triggerReady(items){
+  if(items.some(c=>String(c.body||"").trim()===READY_MARKER))return true;
+  const r=await gh(`https://api.github.com/repos/${REPO}/pulls/${PR}`);
+  if(!r.ok)throw new Error(`GitHub PR: ${r.status} ${await r.text()}`);
+  const pr=await r.json();
+  return String(pr.body||"").includes(READY_MARKER)
+}
 
 function field(body,name){
   const m=String(body||"").match(new RegExp("^"+name+":\\s*(.+)$","mi"));
@@ -59,7 +66,7 @@ export default async function handler(req,res){
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
     const items=await comments();
-    const enabled=items.some(c=>String(c.body||"").trim()===READY_MARKER);
+    const enabled=await triggerReady(items);
     if(!enabled)return res.status(200).json({ok:true,status:"DISABLED"});
     if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
 
@@ -75,7 +82,7 @@ export default async function handler(req,res){
     if(!last&&Number.isFinite(requestAge)&&requestAge>30*60*1000)status="ERROR";
     const started=marks.find(c=>field(c.body,"status")==="RUNNING");
     const started_at=started?(field(started.body,"started_at")||started.created_at):null;
-    const finished_at=["DONE","ERROR"].includes(status)?(field(last.body,"finished_at")||last.created_at):null;
+    const finished_at=["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null;
     return res.status(200).json({
       ok:true,status,command_id,requested_at,started_at,finished_at,
       start_delay_seconds:started_at?seconds(requested_at,started_at):null,
