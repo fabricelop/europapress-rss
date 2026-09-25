@@ -1,5 +1,5 @@
 const $=s=>document.querySelector(s);
-let prepared={items:[]},status={},active=null,view='ready';
+let prepared={items:[]},status={},active=null,view='ready',runPoll=null;
 
 async function json(p){
   const r=await fetch(p+'?t='+Date.now(),{cache:'no-store'});
@@ -218,7 +218,45 @@ async function send(action,x,instructions){
   if(!r.ok){alert('No se pudo guardar la acción');return}
   await load();
 }
-$('#rewriteOk').onclick=async e=>{
+
+function duration(s){if(s==null||!Number.isFinite(+s))return '';s=+s;if(s<60)return s+' s';return Math.floor(s/60)+' min '+(s%60)+' s'}
+function runKey(){return localStorage.getItem('ttittularesRunKey')||''}
+function runVisual(s){
+  const el=$('#runState'),btn=$('#runNow');el.className='';btn.disabled=false;
+  if(!s||s.status==='IDLE'){el.textContent=runKey()?'Listo para ejecutar':'Pedirá clave al primer uso';return}
+  if(s.status==='REQUESTED'){el.textContent='Solicitada '+when(s.requested_at)+' · esperando a Work';el.className='running';btn.disabled=true;return}
+  if(s.status==='RUNNING'){el.textContent='Ejecutándose desde '+when(s.started_at)+(s.start_delay_seconds!=null?' · arrancó en '+duration(s.start_delay_seconds):'');el.className='running';btn.disabled=true;return}
+  if(s.status==='DONE'){el.textContent='Terminada '+when(s.finished_at)+(s.start_delay_seconds!=null?' · arranque '+duration(s.start_delay_seconds):'')+(s.duration_seconds!=null?' · duración '+duration(s.duration_seconds):'');el.className='done';return}
+  if(s.status==='ERROR'){el.textContent='Error '+when(s.finished_at)+(s.message?' · '+s.message:'');el.className='error';return}
+  el.textContent=s.status||'Estado desconocido';
+}
+async function loadRunStatus(){
+  const key=runKey();if(!key){runVisual({status:'IDLE'});scheduleRunPoll(false);return}
+  try{
+    const r=await fetch('/api/ttittulares-run-status?t='+Date.now(),{cache:'no-store',headers:{'x-tt-run-key':key}});
+    if(r.status===401){localStorage.removeItem('ttittularesRunKey');runVisual({status:'IDLE'});scheduleRunPoll(false);return}
+    if(!r.ok)throw Error('status');
+    const s=await r.json();runVisual(s);scheduleRunPoll(['REQUESTED','RUNNING'].includes(s.status));
+  }catch(_){$('#runState').textContent='No se pudo consultar el estado';$('#runState').className='error';scheduleRunPoll(false)}
+}
+function scheduleRunPoll(fast){
+  clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?5000:60000);
+}
+async function requestRun(){
+  if(!confirm('¿Ejecutar TTiTTulares ahora? Esta acción consumirá cuota de ChatGPT Work.'))return;
+  let key=runKey();
+  if(!key){key=(prompt('Clave privada de “Ejecutar ahora”')||'').trim();if(!key)return;localStorage.setItem('ttittularesRunKey',key)}
+  const btn=$('#runNow');btn.disabled=true;$('#runState').textContent='Enviando solicitud…';$('#runState').className='running';
+  try{
+    const r=await fetch('/api/ttittulares-run',{method:'POST',headers:{'content-type':'application/json','x-tt-run-key':key},body:'{}'});
+    const j=await r.json().catch(()=>({}));
+    if(r.status===401){localStorage.removeItem('ttittularesRunKey');throw Error('Clave incorrecta; se ha borrado del navegador')}
+    if(r.status===429)throw Error('Ya hay una solicitud reciente. Prueba de nuevo en '+(j.retry_after_seconds||'unos')+' s')
+    if(!r.ok)throw Error(j.detail||j.error||'No se pudo solicitar la ejecución');
+    runVisual({status:'REQUESTED',requested_at:j.requested_at});scheduleRunPoll(true);
+  }catch(e){$('#runState').textContent=String(e.message||e);$('#runState').className='error';btn.disabled=false}
+}
+\n$('#rewriteOk').onclick=async e=>{
   e.preventDefault();
   const t=$('#rewriteText').value.trim();
   if(!t)return;
