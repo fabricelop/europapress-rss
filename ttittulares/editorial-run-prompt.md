@@ -16,34 +16,47 @@ No uses Telegram. No proceses TTendencias ni SeLoRecordamos. No despliegues Verc
 
 ## Cola y orden de trabajo
 
-1. Lee SIEMPRE `ttittulares/editorial-queue.json`, `ttittulares/status.json` y `telegram/editorial-processing.json` desde `main`.
+1. Lee SIEMPRE `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `telegram/editorial-processing.json` y `telegram/events.json` desde `main`.
 2. Al inicio guarda una FOTO de las filas `status:"PROBLEMATIC"` de `telegram/editorial-processing.json`. Esa es la fuente de verdad para los reintentos; los nuevos `PROBLEMATIC` creados durante esta misma pasada se dejan para la SIGUIENTE ejecución.
-3. Procesa primero TODOS los items de `editorial-queue.json`, del más antiguo al más reciente.
-4. Después de terminar la cola activa, procesa los `problematic_items` que estaban en la foto inicial.
-5. Si no había ni cola activa ni problemáticas iniciales, termina sin búsquedas web ni escrituras.
-6. Procesa cada item de forma independiente y completa su ciclo antes de seguir. Un item difícil o fallido NUNCA bloquea los demás.
-7. Relee estado fresco antes de cada escritura. Ante conflicto, relee el SHA actual y reintenta de forma segura.
+3. Construye un mapa de `telegram/events.json.events` por `id/event_id`. Para cada noticia usa sus `appearances` como EVIDENCIA MULTIFUENTE estructurada: `source,title,url,first_seen`.
+4. Procesa primero TODOS los items de `editorial-queue.json`, del más antiguo al más reciente.
+5. Después de terminar la cola activa, procesa las problemáticas que estaban en la foto inicial.
+6. Si no había ni cola activa ni problemáticas iniciales, termina sin búsquedas web ni escrituras.
+7. Procesa cada item de forma independiente y completa su ciclo antes de seguir. Un item difícil o fallido NUNCA bloquea los demás.
+8. Relee estado fresco antes de cada escritura. Ante conflicto, relee el SHA actual y reintenta de forma segura.
 
-Usa todos los campos disponibles del item activo, incluidos `event_id,title,url,sources,source_count,selected_at,selection_mode,revision,rewrite_request,parent_event_id,update_context,with_image,image_mode,image_instruction`.
+Usa todos los campos disponibles del item activo, incluidos `event_id,title,url,sources,source_count,source_evidence,selected_at,selection_mode,revision,rewrite_request,parent_event_id,update_context,with_image,image_mode,image_instruction`.
 
-Para problemáticas usa además `problem_reason,problematic_at,problematic_attempts,verification_hint,verification_hint_at`; si `problematic_attempts` falta en un registro antiguo, trátalo como 1. Si existe `verification_hint`, trátalo como contexto aportado por el usuario y úsalo como pista prioritaria para orientar las nuevas búsquedas, sin presentarlo como hecho hasta verificarlo.
+Para problemáticas usa además `problem_reason,problematic_at,problematic_attempts,user_validated,user_validated_at`; si `problematic_attempts` falta en un registro antiguo, trátalo como 1.
 
 ## Verificación factual
 
-Verifica los hechos esenciales con las fuentes suministradas y búsquedas actuales fiables cuando haga falta.
+La primera fuente de verificación es la EVIDENCIA MULTIFUENTE YA CAPTURADA por el radar. No obligues a una noticia con varias fuentes coincidentes a superar además dos búsquedas web genéricas.
 
-- Política/controversia: redacción factual y neutral.
-- Deportes: confirma expresamente el estado/resultado justo antes de redactar. Nunca presentes como final un evento que siga en curso o cuyo resultado no hayas confirmado.
-- Para un item de la cola activa, si tras DOS búsquedas distintas no puedes verificar suficientemente el asunto, escribe inmediatamente `ttittulares/editorial-outbox/<event_id>-r<revision>.json` con `event_id`, `revision`, `status:"problematic"` y un `problem_reason` concreto. Es el PRIMER fallo y queda en cuarentena hasta la siguiente ejecución. Continúa con los demás items.
+Para cada item:
+1. Localiza su evento en `telegram/events.json` y reúne las `appearances` de fuentes distintas. Si el item ya trae `source_evidence`, úsalo también.
+2. Compara el HECHO ESENCIAL, no la literalidad exacta del titular. Corrige mojibake, tildes perdidas, erratas y diferencias normales de redacción al preparar el texto. Una errata como `revisarn vehculos` nunca convierte por sí sola una noticia en problemática.
+3. Si al menos DOS fuentes independientes y razonablemente fiables sostienen de forma inequívoca el mismo hecho esencial, considéralo verificado. Con 4 o más fuentes coincidentes, la evidencia interna debe pesar especialmente.
+4. Diferencias menores de número redondeado, tiempo verbal, sinónimos o formulación no son contradicción material si el núcleo del hecho coincide.
+5. Solo usa búsquedas web adicionales cuando la evidencia interna sea insuficiente, ambigua, antigua o materialmente contradictoria. No hagas búsquedas por cumplir una cuota.
+6. Si una fuente principal publica una afirmación y varias apariciones posteriores independientes la confirman, usa el consenso más reciente.
+7. Si las fuentes se contradicen MATERIALMENTE sobre el hecho esencial, investiga esa contradicción y redacta solo lo que pueda sostenerse.
+
+- Política/controversia: redacción factual, neutral y atribuida.
+- Deportes: confirma expresamente el estado/resultado justo antes de redactar si es un hecho que puede cambiar en tiempo real.
+- Un item solo pasa a `problematic` cuando, DESPUÉS de aprovechar la evidencia multifuente y las búsquedas adicionales realmente necesarias, no puede establecerse de forma fiable el hecho esencial o existe una contradicción material sin resolver.
+- Para un item de la cola activa que cumpla esa condición, escribe `ttittulares/editorial-outbox/<event_id>-r<revision>.json` con `event_id`, `revision`, `status:"problematic"` y un `problem_reason` concreto. Continúa inmediatamente con los demás items.
 
 ## Reintento de problemáticas
 
 Después de terminar TODOS los items de En elaboración, reintenta únicamente las problemáticas que ya existían al COMENZAR esta ejecución.
 
 Para cada una:
-1. Haz un NUEVO intento de verificación, con al menos DOS búsquedas actuales distintas y sin limitarte a repetir exactamente las consultas anteriores. Si existe `verification_hint`, incorpóralo explícitamente a la estrategia de búsqueda.
-2. Si ahora puedes verificar suficientemente el hecho, redacta y escribe un outbox `status:"ready"` normal para la MISMA revisión. El aplicador admite la transición `PROBLEMATIC → READY`.
-3. Si vuelve a no poder verificarse suficientemente, NO la devuelvas a `problematic` y NO la dejes bloqueada. Debe pasar a Noticias listas con una versión de respaldo cautelosa.
+1. Si `user_validated=true`, el usuario ha dado expresamente la noticia por válida mediante **Check**. NO vuelvas a exigir verificación factual del titular: prepara directamente el item para Listas usando el titular original, la evidencia multifuente disponible y una redacción limpia/corregida. La validación del usuario no autoriza inventar detalles adicionales que no estén en las fuentes.
+2. Si NO está validada por el usuario, vuelve primero a revisar las `appearances` actuales del evento. Muchas problemáticas anteriores proceden de una regla de búsqueda demasiado rígida: si ahora hay al menos dos fuentes independientes que sostienen el hecho esencial, considérala verificada sin exigir dos búsquedas web adicionales.
+3. Solo si la evidencia multifuente sigue siendo insuficiente o contradictoria haz un NUEVO intento de búsqueda actual, cambiando las consultas según el `problem_reason`.
+4. Si ahora puedes verificar suficientemente el hecho, redacta y escribe un outbox `status:"ready"` normal para la MISMA revisión. El aplicador admite la transición `PROBLEMATIC → READY`.
+5. Si vuelve a no poder verificarse suficientemente, NO la devuelvas a `problematic` y NO la dejes bloqueada. Debe pasar a Noticias listas con una versión de respaldo cautelosa.
 
 La versión de respaldo debe:
 - conservar SIEMPRE el `title` original completo del item dentro de `prepared_item.title`;
