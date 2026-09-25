@@ -48,6 +48,8 @@ export default async function handler(req,res){
 
   try{
     const comments=await latestComments(token);
+    const enabled=comments.some(c=>String(c.body||"").trim()===READY_MARKER);
+    if(!enabled)return res.status(200).json({status:"DISABLED"});
     const request=[...comments].reverse().find(c=>typeof c.body==="string"&&c.body.startsWith(RUN_PREFIX));
     if(!request)return res.status(200).json({status:"IDLE"});
 
