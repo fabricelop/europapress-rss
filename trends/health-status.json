@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-25T16:42:28.457832+00:00",
+  "checked_at": "2026-09-25T17:17:16.654457+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,7 +40,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 6,
-      "captured_age_minutes": 0.4,
+      "captured_age_minutes": 0.1,
       "noise_count": 0
     },
     "listener": {
@@ -52,8 +52,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.9,
-      "run_id": 36162350782,
+      "age_minutes": 1.6,
+      "run_id": 36165988776,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -74,16 +74,22 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 3,
-      "overdue_count": 1,
-      "oldest_age_minutes": 158.0,
+      "pending_count": 4,
+      "overdue_count": 2,
+      "oldest_age_minutes": 192.8,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "31fa73ae74f1",
           "name": "Frente Amplio",
           "status": "preparing",
-          "age_minutes": 158.0
+          "age_minutes": 192.8
+        },
+        {
+          "id": "9986911fa8ce",
+          "name": "Manchester City",
+          "status": "preparing",
+          "age_minutes": 42.0
         }
       ],
       "repairable": false
@@ -91,8 +97,8 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola editorial bloqueada: 1 pendiente(s) superan 30 min; más antigua 158.0 min"
+    "cola editorial bloqueada: 2 pendiente(s) superan 30 min; más antigua 192.8 min"
   ],
   "alert_sent": false,
-  "last_alert_signature": "cola editorial bloqueada: 1 pendiente(s) superan 30 min; más antigua 158.0 min"
+  "last_alert_signature": "cola editorial bloqueada: 2 pendiente(s) superan 30 min; más antigua 192.8 min"
 }
