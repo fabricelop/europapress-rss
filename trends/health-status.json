@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-09-25T01:39:11.670126+00:00",
-  "ok": false,
+  "checked_at": "2026-09-25T06:37:41.333125+00:00",
+  "ok": true,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -52,8 +52,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.5,
-      "run_id": 36082912167,
+      "age_minutes": 0.6,
+      "run_id": 36103667258,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -73,44 +73,17 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 4,
-      "overdue_count": 4,
-      "oldest_age_minutes": 145.5,
+      "ok": true,
+      "pending_count": 1,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0.1,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "1f46cf3f5168",
-          "name": "Países Bajos",
-          "status": "preparing",
-          "age_minutes": 145.5
-        },
-        {
-          "id": "39541c2f33cc",
-          "name": "#ObjetivoVivienda",
-          "status": "preparing",
-          "age_minutes": 127.8
-        },
-        {
-          "id": "5b179d2c4604",
-          "name": "Damián",
-          "status": "preparing",
-          "age_minutes": 37.8
-        },
-        {
-          "id": "7053c9e301f5",
-          "name": "#ChiringuitoLamine",
-          "status": "preparing",
-          "age_minutes": 37.8
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     }
   },
   "repairs_started": [],
-  "blocking": [
-    "cola editorial bloqueada: 4 pendiente(s) superan 30 min; más antigua 145.5 min"
-  ],
+  "blocking": [],
   "alert_sent": false,
-  "last_alert_signature": "cola editorial bloqueada: 4 pendiente(s) superan 30 min; más antigua 145.5 min"
+  "last_alert_signature": ""
 }
