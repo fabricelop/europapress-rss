@@ -4,8 +4,20 @@ Este procedimiento es la fuente operativa de la tarea de Work activada por comen
 
 ## Activación y telemetría
 
-La tarea SOLO debe continuar si el comentario que la activó empieza exactamente por `RUN TTITTULARES`.
-Extrae `command_id`, `requested_at` y `mode`. Si `mode` falta, trátalo como `manual`.
+La tarea puede activarse por dos mecanismos:
+
+1. **Principal (producción): actualización de commits del PR #2.**
+   - Lee el PR #2 y su rama head.
+   - Lee desde ESA rama head el archivo `ttittulares/run-now-trigger.json`.
+   - Extrae de ese JSON `command_id`, `requested_at` y `mode`.
+   - Si `command_id` o `requested_at` están vacíos, termina sin hacer nada.
+   - Si el commit que activó la tarea no modifica `ttittulares/run-now-trigger.json`, termina sin hacer nada.
+
+2. **Compatibilidad temporal: comentario del PR #2.**
+   - Solo continúa si el comentario empieza exactamente por `RUN TTITTULARES`.
+   - Extrae del comentario `command_id`, `requested_at` y `mode`.
+
+Si `mode` falta, trátalo como `manual`.
 
 ANTES de cualquier otra operación, añade al mismo PR:
 
