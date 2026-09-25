@@ -168,7 +168,7 @@ def main():
             row=next((x for x in q.get("items",[]) if str(x.get("event_id") or "")==eid and int(x.get("revision") or 1)==rev),None)
             if row is None:
                 path.unlink(); continue
-            if str(row.get("status") or "")!="PROCESSING":
+            if str(row.get("status") or "") not in {"PROCESSING","PROBLEMATIC"}:
                 path.unlink(); continue
             st=str(payload.get("status") or "")
             if st=="ready":
@@ -177,12 +177,16 @@ def main():
                     _recover_image(item,row,events)
                 p["items"]=[x for x in p.get("items",[]) if str(x.get("event_id") or "")!=eid]
                 p["items"].append(item);p["updated_at"]=item.get("prepared_at") or now
+                previous_attempts=int(row.get("problematic_attempts") or (1 if str(row.get("status") or "")=="PROBLEMATIC" else 0))
+                if previous_attempts:
+                    item.setdefault("problematic_attempts_before_ready",previous_attempts)
                 row["status"]="READY";row["delivered_at"]=item.get("prepared_at") or now;row["delivery_confirmation"]="prepared_web"
-                row.pop("problem_reason",None);row.pop("problematic_at",None)
+                row.pop("problem_reason",None);row.pop("problematic_at",None);row.pop("problematic_attempts",None)
             elif st=="problematic":
                 reason=str(payload.get("problem_reason") or "").strip()
                 if not reason: raise ValueError("problematic sin razón")
-                row["status"]="PROBLEMATIC";row["problematic_at"]=now;row["problem_reason"]=reason
+                attempts=int(row.get("problematic_attempts") or 0)+1
+                row["status"]="PROBLEMATIC";row["problematic_at"]=now;row["problem_reason"]=reason;row["problematic_attempts"]=attempts
             else: raise ValueError("status inválido")
             processed.append(eid);path.unlink()
         except Exception as exc:
@@ -202,7 +206,7 @@ def main():
         problematic.append({
             "event_id":x.get("event_id"),"title":x.get("title") or "","url":x.get("url") or "",
             "selected_at":x.get("selected_at"),"problematic_at":x.get("problematic_at"),
-            "problem_reason":x.get("problem_reason") or "","revision":int(x.get("revision") or 1),
+            "problem_reason":x.get("problem_reason") or "","problematic_attempts":int(x.get("problematic_attempts") or 1),"revision":int(x.get("revision") or 1),
             "source_count":int(x.get("source_count") or 0),"sources":x.get("sources") or [],
         })
     problematic.sort(key=lambda x:str(x.get("problematic_at") or x.get("selected_at") or ""),reverse=True)
