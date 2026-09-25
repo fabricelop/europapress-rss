@@ -221,7 +221,7 @@ async function submitManualStory(url,title,instruction){
     if(!item){item={event_id:id};doc.items.push(item)}
     Object.assign(item,{
       event_id:id,title:finalTitle,url:finalUrl,sources,source_count:sourceCount,drafted_source_count:sourceCount,
-      selected_at:now,status:"PROCESSING",selection_mode:"MANUAL_WEB_USER",manual_submission:true,revision:Number(item.revision||1),with_image:true,image_mode:"existing_web_image"
+      selected_at:now,status:"PROCESSING",selection_mode:"MANUAL_WEB_USER",manual_submission:true,revision:Number(item.revision||1),with_image:true,image_mode:"generated_gag_or_archive_sensitive"
     });
     if(note){item.rewrite_request=note;item.manual_instruction=note}
     delete item.published_at;delete item.dismissed_at;delete item.delivered_at;
@@ -274,7 +274,7 @@ async function manualPrepare(eventId){
       parent_event_id:ev.parent_event_id||null,
       update_context:ev.update_context||null,
       with_image:true,
-      image_mode:"existing_web_image"
+      image_mode:"generated_gag_or_archive_sensitive"
     });
     if(!doc.items.includes(item))doc.items.push(item);
     doc.updated_at=now;return doc
