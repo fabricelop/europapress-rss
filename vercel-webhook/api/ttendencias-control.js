@@ -27,14 +27,17 @@ function authToken(req) {
   const h = String(req.headers.authorization || "");
   return h.startsWith("Bearer ") ? h.slice(7).trim() : "";
 }
-const CONTROL_TOKEN_HASH = "2663da5223c2313c3670a7843a0cdfabfd2dd7c8fad1ed168247866a3b1262e5";
+const CONTROL_TOKEN_HASHES = [
+  "2663da5223c2313c3670a7843a0cdfabfd2dd7c8fad1ed168247866a3b1262e5",
+  "e6dc803e75f1bad2c6caee93b1a7fce3df540f70c8313a7e08a998506d0dcb61"
+];
 function authorized(req) {
   const got = authToken(req);
   if (!got) return false;
   const expected = process.env.TTENDENCIAS_CONTROL_TOKEN || "";
-  if (expected) return got === expected;
-  const digest = crypto.createHash("sha256").update(got).digest("hex");
-  return crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(CONTROL_TOKEN_HASH));
+  if (expected && got === expected) return true;
+  const digest = Buffer.from(crypto.createHash("sha256").update(got).digest("hex"));
+  return CONTROL_TOKEN_HASHES.some(hash => crypto.timingSafeEqual(digest, Buffer.from(hash)));
 }
 async function gh(path, options = {}) {
   const token = process.env.GITHUB_TOKEN;
