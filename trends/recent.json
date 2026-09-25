@@ -1,32 +1,32 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T02:50:52+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-25T03:01:16+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "superx",
-    "snaplytics",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "tweets24"
+  ],
   "reliability": "high",
   "top10": [
     "#SVGala3",
-    "#CineDeTerror",
     "Yola",
+    "#CineDeTerror",
+    "Damián",
     "#Horizonte",
+    "#ChiringuitoLamine",
+    "Asraf",
     "#ElPerroAndaluzTVE",
-    "Paquita",
     "Benjamín Noval",
-    "Borja",
-    "Ter Stegen",
-    "Van Bommel"
+    "Ivana"
   ],
   "items": [
     {
@@ -35,44 +35,87 @@
     },
     {
       "rank": 2,
-      "name": "#CineDeTerror"
-    },
-    {
-      "rank": 3,
       "name": "Yola"
     },
     {
+      "rank": 3,
+      "name": "#CineDeTerror"
+    },
+    {
       "rank": 4,
-      "name": "#Horizonte"
+      "name": "Damián"
     },
     {
       "rank": 5,
-      "name": "#ElPerroAndaluzTVE"
+      "name": "#Horizonte"
     },
     {
       "rank": 6,
-      "name": "Paquita"
+      "name": "#ChiringuitoLamine"
     },
     {
       "rank": 7,
-      "name": "Benjamín Noval"
+      "name": "Asraf"
     },
     {
       "rank": 8,
-      "name": "Borja"
+      "name": "#ElPerroAndaluzTVE"
     },
     {
       "rank": 9,
-      "name": "Ter Stegen"
+      "name": "Benjamín Noval"
     },
     {
       "rank": 10,
-      "name": "Van Bommel"
+      "name": "Ivana"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Damián",
+    "#ChiringuitoLamine",
+    "Asraf",
+    "Ivana"
+  ],
   "upcoming": [
+    {
+      "name": "Ter Stegen",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.8,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T03:01:16+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Paquita",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.2,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T03:01:16+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
     {
       "name": "Rosa Benito",
       "social_source_count": 4,
@@ -83,7 +126,7 @@
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 15.8,
+      "mean_observed_rank": 15.2,
       "movement": "flat",
       "first_detected_at": "2026-09-25T01:31:14+02:00",
       "news_source_count": 0,
@@ -91,6 +134,24 @@
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
+    },
+    {
+      "name": "Borja",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T03:01:16+02:00",
+      "news_source_count": 1,
+      "news_event_id": "7d18e946956e",
+      "news_title": "Borja Iglesias abre el melón sobre la paternidad en el fútbol: \"Creo que la norma es distinta según el contrato\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-25T00:22:10.292524Z"
     },
     {
       "name": "Alemania",
@@ -101,7 +162,7 @@
         "tweets24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 14.7,
+      "mean_observed_rank": 16.3,
       "movement": "flat",
       "first_detected_at": "2026-09-25T01:31:14+02:00",
       "news_source_count": 1,
@@ -109,6 +170,24 @@
       "news_title": "Análisis de ajedrez | Alemania derriba a la invicta Uzbekistán en la 8ª ronda",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-24T18:02:43.465053Z"
+    },
+    {
+      "name": "Van Bommel",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 14.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T03:01:16+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Gakpo",
@@ -119,7 +198,7 @@
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 16.0,
+      "mean_observed_rank": 18.0,
       "movement": "flat",
       "first_detected_at": "2026-09-25T01:01:57+02:00",
       "news_source_count": 0,
@@ -127,73 +206,6 @@
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Holanda",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T02:48:44+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Sumar",
-      "social_source_count": 1,
-      "social_sources": [
-        "superx"
-      ],
-      "best_observed_rank": 20,
-      "mean_observed_rank": 20.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T02:48:44+02:00",
-      "news_source_count": 12,
-      "news_event_id": "6f93abb7cabe",
-      "news_title": "Sumar exige llevar el decreto de vivienda y la expropiación del piso de Maricarmen al Consejo de Ministros",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-24T08:32:34.586921Z"
-    },
-    {
-      "name": "Netanyahu",
-      "social_source_count": 2,
-      "social_sources": [
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 18.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T02:48:44+02:00",
-      "news_source_count": 2,
-      "news_event_id": "e53f0e443b3e",
-      "news_title": "Netanyahu se encara con la ONU y asegura que \"acusar a Israel de genocidio es la mentira más grande del siglo\"",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-24T18:54:54.162612Z"
-    },
-    {
-      "name": "Xavi",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 16.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T02:48:44+02:00",
-      "news_source_count": 1,
-      "news_event_id": "c56294aec0f5",
-      "news_title": "Xavi ya imprime su sello para conseguir un empate de quilates ante Klopp",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-24T22:19:56.954971Z"
     }
   ],
   "anticipated_entries": [],
@@ -227,7 +239,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:50:52+02:00"
+      "fetched_at": "2026-09-25T03:01:16+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -252,37 +264,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:50:53+02:00"
+      "fetched_at": "2026-09-25T03:01:17+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "#SVGala3",
-        "#Horizonte",
-        "#CineDeTerror",
-        "#ElPerroAndaluzTVE",
         "Yola",
+        "#CineDeTerror",
+        "Damián",
+        "#Horizonte",
+        "#ChiringuitoLamine",
+        "Asraf",
+        "#ElPerroAndaluzTVE",
         "Benjamín Noval",
-        "#ObjetivoVivienda",
+        "Ivana",
         "Borja",
         "Paquita",
         "Ter Stegen",
-        "Van Bommel",
-        "Holanda",
-        "Alemania",
-        "Gakpo",
-        "Hernández Hernández",
         "Rosa Benito",
-        "Xavi",
-        "Klopp",
-        "Efes",
-        "Netanyahu"
+        "Van Bommel",
+        "Torres",
+        "Netanyahu",
+        "Alemania",
+        "Laura Cuevas",
+        "Gakpo"
       ],
       "error": null,
-      "update_hint": "Updated 1 hour ago",
-      "age_minutes": 60.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-25T02:50:54+02:00"
+      "update_hint": "Updated 4 minutes ago",
+      "age_minutes": 4.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-25T03:01:18+02:00"
     },
     "superx": {
       "ok": true,
@@ -312,16 +324,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:50:54+02:00"
+      "fetched_at": "2026-09-25T03:01:18+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790297454",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790298079",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T02:50:54+02:00"
+      "fetched_at": "2026-09-25T03:01:19+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -349,9 +361,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 25, 2026 00:00 UTC",
-      "age_minutes": 50.9,
+      "age_minutes": 61.3,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T02:50:55+02:00"
+      "fetched_at": "2026-09-25T03:01:19+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -379,18 +391,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 3769.9,
+      "age_minutes": 3780.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T02:50:55+02:00"
+      "fetched_at": "2026-09-25T03:01:19+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790297456",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790298081",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T02:50:56+02:00"
+      "fetched_at": "2026-09-25T03:01:21+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -399,7 +411,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T02:50:57+02:00"
+      "fetched_at": "2026-09-25T03:01:21+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -429,16 +441,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T02:50:58+02:00"
+      "fetched_at": "2026-09-25T03:01:21+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790297460",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790298083",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T02:51:00+02:00"
+      "fetched_at": "2026-09-25T03:01:23+02:00"
     }
   }
 }
