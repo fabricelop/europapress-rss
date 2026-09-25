@@ -16,14 +16,17 @@ No uses Telegram. No proceses TTendencias ni SeLoRecordamos. No despliegues Verc
 
 ## Cola y orden de trabajo
 
-1. Lee SIEMPRE `ttittulares/editorial-queue.json` desde `main`.
-2. Si `count=0`, termina el flujo editorial sin búsquedas web ni escrituras.
-3. Si hay pendientes, procesa TODOS los items, del más antiguo al más reciente.
-4. Procesa cada item de forma independiente y completa el ciclo de ese item antes de empezar el siguiente: investigar → redactar → imagen → citas X → outbox → aplicación → verificación.
-5. Relee estado fresco antes de cada escritura. Ante conflicto, relee el SHA actual y reintenta de forma segura.
-6. Un item difícil o fallido no debe bloquear los demás.
+1. Lee SIEMPRE `ttittulares/editorial-queue.json` y `ttittulares/status.json` desde `main`.
+2. Al inicio guarda una FOTO de `status.problematic_items`. Esa lista inicial es la única que podrá reintentarse en esta ejecución; los nuevos `PROBLEMATIC` creados durante esta misma pasada se dejan para la SIGUIENTE ejecución.
+3. Procesa primero TODOS los items de `editorial-queue.json`, del más antiguo al más reciente.
+4. Después de terminar la cola activa, procesa los `problematic_items` que estaban en la foto inicial.
+5. Si no había ni cola activa ni problemáticas iniciales, termina sin búsquedas web ni escrituras.
+6. Procesa cada item de forma independiente y completa su ciclo antes de seguir. Un item difícil o fallido NUNCA bloquea los demás.
+7. Relee estado fresco antes de cada escritura. Ante conflicto, relee el SHA actual y reintenta de forma segura.
 
-Usa todos los campos disponibles del item, incluidos `event_id,title,url,sources,source_count,selected_at,selection_mode,revision,rewrite_request,parent_event_id,update_context,with_image,image_mode,image_instruction`.
+Usa todos los campos disponibles del item activo, incluidos `event_id,title,url,sources,source_count,selected_at,selection_mode,revision,rewrite_request,parent_event_id,update_context,with_image,image_mode,image_instruction`.
+
+Para problemáticas usa además `problem_reason,problematic_at,problematic_attempts`; si `problematic_attempts` falta en un registro antiguo, trátalo como 1.
 
 ## Verificación factual
 
@@ -31,7 +34,30 @@ Verifica los hechos esenciales con las fuentes suministradas y búsquedas actual
 
 - Política/controversia: redacción factual y neutral.
 - Deportes: confirma expresamente el estado/resultado justo antes de redactar. Nunca presentes como final un evento que siga en curso o cuyo resultado no hayas confirmado.
-- Si tras DOS búsquedas distintas no puedes verificar suficientemente el asunto, escribe inmediatamente `ttittulares/editorial-outbox/<event_id>-r<revision>.json` con `event_id`, `revision`, `status:"problematic"` y un `problem_reason` concreto. Continúa con los demás items.
+- Para un item de la cola activa, si tras DOS búsquedas distintas no puedes verificar suficientemente el asunto, escribe inmediatamente `ttittulares/editorial-outbox/<event_id>-r<revision>.json` con `event_id`, `revision`, `status:"problematic"` y un `problem_reason` concreto. Es el PRIMER fallo y queda en cuarentena hasta la siguiente ejecución. Continúa con los demás items.
+
+## Reintento de problemáticas
+
+Después de terminar TODOS los items de En elaboración, reintenta únicamente las problemáticas que ya existían al COMENZAR esta ejecución.
+
+Para cada una:
+1. Haz un NUEVO intento de verificación, con al menos DOS búsquedas actuales distintas y sin limitarte a repetir exactamente las consultas anteriores.
+2. Si ahora puedes verificar suficientemente el hecho, redacta y escribe un outbox `status:"ready"` normal para la MISMA revisión. El aplicador admite la transición `PROBLEMATIC → READY`.
+3. Si vuelve a no poder verificarse suficientemente, NO la devuelvas a `problematic` y NO la dejes bloqueada. Debe pasar a Noticias listas con una versión de respaldo cautelosa.
+
+La versión de respaldo debe:
+- conservar SIEMPRE el `title` original completo del item dentro de `prepared_item.title`;
+- conservar `url`, fuentes y metadatos originales;
+- incluir `prepared_item.fallback_unverified=true`, `fallback_reason` y `original_title`;
+- incluir `problematic_attempts_before_ready=2`;
+- NO presentar el titular no confirmado como hecho propio;
+- redactar Principal atribuyendo lo disponible a la fuente/titular original y dejando claro, cuando sea necesario, que no se ha podido confirmar de forma independiente o que existen datos contradictorios;
+- si la investigación encontró una contradicción sólida, mencionarla de forma breve y neutral en vez de repetir el titular como hecho;
+- generar A/B/C sobre esa misma base cautelosa. Sus remates pueden ser metaperiodísticos y prudentes (`🌶️ `), sin convertir un dato no verificado en afirmación ni atacar a víctimas;
+- mantener cada variante completa ≤280 caracteres;
+- buscar imagen y candidatos X solo si pueden relacionarse de forma fiable con el asunto; su ausencia no bloquea el fallback.
+
+El objetivo de este segundo intento es que ninguna noticia quede eternamente en cuarentena: tras dos ejecuciones fallidas sale de Problemáticas y entra en Listas con todo lo útil disponible, pero sin fabricar una confirmación inexistente.
 
 ## Redacción
 
