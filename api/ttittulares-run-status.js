@@ -45,12 +45,12 @@ export default async function handler(req,res){
   if(req.method!=="GET")return res.status(405).json({error:"method"});
   const token=process.env.GITHUB_TOKEN||"";
   if(!token)return res.status(503).json({error:"github_token_missing"});
-  if(!authorized(req))return res.status(401).json({error:"unauthorized"});
 
   try{
     const comments=await latestComments(token);
     const enabled=comments.some(c=>String(c.body||"").trim()===READY_MARKER);
     if(!enabled)return res.status(200).json({status:"DISABLED"});
+    if(!authorized(req))return res.status(401).json({error:"unauthorized"});
     const request=[...comments].reverse().find(c=>typeof c.body==="string"&&c.body.startsWith(RUN_PREFIX));
     if(!request)return res.status(200).json({status:"IDLE"});
 
