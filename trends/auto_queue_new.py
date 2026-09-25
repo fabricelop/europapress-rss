@@ -149,7 +149,12 @@ for item in current:
                 req["anticipated_entered_top10_at"] = req.get("anticipated_entered_top10_at") or now_entered
                 reconciled = True
             continue
-        if status in {"preparing", "update", "explained", "dismissed", "problematic"}:
+        if status == "problematic":
+            if int(req.get("rank") or 0) != item["rank"]:
+                req["rank"] = item["rank"]
+                reconciled = True
+            continue
+        if status in {"preparing", "update", "explained", "dismissed"}:
             continue
     elif key in explained:
         continue
