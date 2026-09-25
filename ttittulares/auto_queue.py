@@ -69,7 +69,7 @@ def queue_eligible(events_doc, processing, decisions, minimum, stamp, mode="web"
             continue
 
         current = existing.get(event_id)
-        if current and str(current.get("status") or "") in {"PROCESSING", "READY", "PUBLISHED", "DISMISSED"}:
+        if current and str(current.get("status") or "") in {"PROCESSING", "READY", "PUBLISHED", "DISMISSED", "PROBLEMATIC"}:
             continue
 
         row = current or {"event_id": event_id}
@@ -118,6 +118,13 @@ def selftest():
     )
     assert queued_parallel==["parallel-new"], queued_parallel
     assert out_parallel["items"][0]["selection_mode"]=="AUTO_PARALLEL"
+
+    # Cuarentena: un evento PROBLEMATIC no vuelve a PROCESSING en otra pasada
+    # del radar. Debe requerir una acción explícita/revisión distinta para reintentarse.
+    problematic_state={"items":[{"event_id":"web-ok","status":"PROBLEMATIC","revision":1,"problem_reason":"sin verificación suficiente"}]}
+    out_problematic,queued_problematic=queue_eligible(events,problematic_state,decisions,4,stamp,"web")
+    assert queued_problematic==["revision-r2"], queued_problematic
+    assert out_problematic["items"][0]["status"]=="PROBLEMATIC", out_problematic
 
     # Idempotencia: una segunda pasada no vuelve a encolar el mismo evento.
     out2,queued2=queue_eligible(
