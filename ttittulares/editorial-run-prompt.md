@@ -4,6 +4,10 @@ Este archivo es la ÚNICA fuente de verdad para la ejecución editorial de TTiTT
 
 ## Ámbito y estado
 
+**ACCESO GITHUB OBLIGATORIO.** Usa el conector GitHub conectado para `fabricelop/europapress-rss`. En ejecuciones programadas el conector puede estar expuesto mediante Code Mode/`functions.exec`; DEBES descubrirlo y usar el mecanismo disponible antes de concluir que GitHub no está accesible. No prohíbas ni evites `functions.exec` si es la vía que expone el conector. No sustituyas una operación GitHub por web pública.
+
+Tu primera operación editorial real debe ser leer desde `main` `ttittulares/editorial-queue.json`. Si hay pendientes, durante ESA MISMA ejecución debes intentar escrituras reales en GitHub conforme al flujo (outbox/aplicación/verificación). No termines con un plan, diagnóstico o resumen sin haber intentado procesar la cola. Si una llamada al conector falla de forma transitoria, redescubre/reintenta con estado fresco antes de abandonar.
+
 Usa el conector GitHub disponible para `fabricelop/europapress-rss`. Trabaja EXCLUSIVAMENTE con TTiTTulares y con estado fresco de la rama `main`.
 
 GitHub es la única persistencia/estado del flujo. Web se usa solo para investigación y verificación actual, búsqueda de imágenes existentes y búsqueda de publicaciones públicas de X.
