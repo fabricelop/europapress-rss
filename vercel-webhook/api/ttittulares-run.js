@@ -17,9 +17,11 @@ function authorized(req){
 
 const REPO=process.env.GITHUB_REPO||"fabricelop/europapress-rss";
 const PR=2;
-const RUN_PREFIX="RUN TTITTULARES\n";
+const TRIGGER_BRANCH="control/ttittulares-run-trigger-v2";
+const TRIGGER_PATH="ttittulares/run-now-trigger.json";
 const STATUS_PREFIX="RUNSTATUS ";
-const READY_MARKER="TTITTULARES WORK TRIGGER READY";
+const READY_MARKER="TTITTULARES WORK COMMIT TRIGGER READY";
+
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
   return fetch(url,{...options,headers:{
@@ -44,12 +46,43 @@ async function comments(){
   }
   return items
 }
-async function triggerReady(items){
-  if(items.some(c=>String(c.body||"").trim()===READY_MARKER))return true;
+async function triggerReady(){
   const r=await gh(`https://api.github.com/repos/${REPO}/pulls/${PR}`);
   if(!r.ok)throw new Error(`GitHub PR: ${r.status} ${await r.text()}`);
   const pr=await r.json();
   return String(pr.body||"").includes(READY_MARKER)
+}
+async function readTrigger(){
+  const u=`https://api.github.com/repos/${REPO}/contents/${TRIGGER_PATH}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`;
+  const r=await gh(u);
+  if(!r.ok)throw new Error(`GitHub trigger GET: ${r.status} ${await r.text()}`);
+  const f=await r.json();
+  const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+  return {sha:f.sha,doc:JSON.parse(raw||"{}")}
+}
+function field(body,name){
+  const m=String(body||"").match(new RegExp("^"+name+":\\s*(.+)$","mi"));
+  return m?m[1].trim():null
+}
+function seconds(a,b){
+  const x=new Date(a).getTime(),y=new Date(b).getTime();
+  return Number.isFinite(x)&&Number.isFinite(y)?Math.max(0,Math.round((y-x)/1000)):null
+}
+
+async function writeTrigger(doc,sha){
+  const body={
+    message:`Solicitar ejecución manual TTiTTulares ${doc.command_id}`,
+    content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64"),
+    sha,
+    branch:TRIGGER_BRANCH
+  };
+  const r=await gh(`https://api.github.com/repos/${REPO}/contents/${TRIGGER_PATH}`,{
+    method:"PUT",
+    headers:{"content-type":"application/json"},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok)throw new Error(`GitHub trigger PUT: ${r.status} ${await r.text()}`);
+  return r.json()
 }
 
 export default async function handler(req,res){
@@ -57,36 +90,40 @@ export default async function handler(req,res){
   if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
   if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
   try{
-    const items=await comments();
-    const enabled=await triggerReady(items);
-    if(!enabled)return res.status(503).json({ok:false,error:"work_trigger_not_ready"});
+    if(!(await triggerReady()))return res.status(503).json({ok:false,error:"work_trigger_not_ready"});
 
-    const latest=[...items].reverse().find(c=>String(c.body||"").startsWith(RUN_PREFIX));
-    if(latest){
-      const age=Date.now()-new Date(latest.created_at).getTime();
+    const [{doc:current,sha},items]=await Promise.all([readTrigger(),comments()]);
+    const currentId=String(current.command_id||"").trim();
+    const currentRequested=String(current.requested_at||"").trim();
+    if(currentId&&currentRequested){
+      const age=Date.now()-new Date(currentRequested).getTime();
+      const marks=items.filter(c=>String(c.body||"").startsWith(STATUS_PREFIX+currentId+"\n"));
+      const last=marks.at(-1);
+      const st=last?field(last.body,"status"):"REQUESTED";
       if(Number.isFinite(age)&&age<45000){
         return res.status(429).json({ok:false,error:"recent_request",retry_after_seconds:Math.ceil((45000-age)/1000)})
       }
-      const latestId=String(latest.body||"").match(/^command_id:\s*(.+)$/mi)?.[1]?.trim();
-      if(latestId){
-        const states=items.filter(c=>String(c.body||"").startsWith(STATUS_PREFIX+latestId+"\n"));
-        const lastState=states.at(-1);
-        const st=String(lastState?.body||"").match(/^status:\s*(.+)$/mi)?.[1]?.trim();
-        if(age<30*60*1000&&["REQUESTED","RUNNING"].includes(st||"RUNNING")){
-          return res.status(409).json({ok:false,error:"run_in_progress"})
-        }
+      if(Number.isFinite(age)&&age<30*60*1000&&!["DONE","ERROR"].includes(st||"REQUESTED")){
+        return res.status(409).json({ok:false,error:"run_in_progress"})
       }
     }
 
     const requested_at=new Date().toISOString();
     const command_id=`tt-${Date.now()}-${crypto.randomBytes(3).toString("hex")}`;
-    const body=`${RUN_PREFIX}command_id: ${command_id}\nrequested_at: ${requested_at}\nmode: manual`;
-    const r=await gh(`https://api.github.com/repos/${REPO}/issues/${PR}/comments`,{
-      method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({body})
-    });
-    if(!r.ok)throw new Error(`GitHub POST: ${r.status} ${await r.text()}`);
-    const created=await r.json();
-    return res.status(200).json({ok:true,command_id,requested_at,comment_id:created.id})
+    const doc={version:1,command_id,requested_at,mode:"manual"};
+    let saved;
+    try{
+      saved=await writeTrigger(doc,sha);
+    }catch(e){
+      if(!String(e.message||e).includes("409")&&!String(e.message||e).includes("422"))throw e;
+      const fresh=await readTrigger();
+      saved=await writeTrigger(doc,fresh.sha)
+    }
+    return res.status(200).json({
+      ok:true,command_id,requested_at,
+      commit_sha:saved?.commit?.sha||null,
+      trigger:"pull_request_commit_update"
+    })
   }catch(e){
     console.error(e);
     return res.status(500).json({ok:false,error:String(e.message||e)})
