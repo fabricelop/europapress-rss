@@ -70,7 +70,9 @@ export default async function handler(req,res){
     const requested_at=field(request.body,"requested_at")||request.created_at;
     const marks=items.filter(c=>String(c.body||"").startsWith(STATUS_PREFIX+command_id+"\n"));
     const last=marks.at(-1);
-    const status=last?field(last.body,"status")||"REQUESTED":"REQUESTED";
+    let status=last?field(last.body,"status")||"REQUESTED":"REQUESTED";
+    const requestAge=Date.now()-new Date(requested_at).getTime();
+    if(!last&&Number.isFinite(requestAge)&&requestAge>30*60*1000)status="ERROR";
     const started=marks.find(c=>field(c.body,"status")==="RUNNING");
     const started_at=started?(field(started.body,"started_at")||started.created_at):null;
     const finished_at=["DONE","ERROR"].includes(status)?(field(last.body,"finished_at")||last.created_at):null;
@@ -78,7 +80,7 @@ export default async function handler(req,res){
       ok:true,status,command_id,requested_at,started_at,finished_at,
       start_delay_seconds:started_at?seconds(requested_at,started_at):null,
       duration_seconds:started_at&&finished_at?seconds(started_at,finished_at):null,
-      message:last?field(last.body,"message"):null
+      message:last?field(last.body,"message"):(status==="ERROR"?"Work no confirmó el arranque en 30 minutos":null)
     })
   }catch(e){
     console.error(e);
