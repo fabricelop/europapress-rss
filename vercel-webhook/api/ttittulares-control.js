@@ -123,6 +123,24 @@ async function closePrepared(eventId,status){
   });
   return {ok:true,event_id:id,status}
 }
+async function addVerificationHint(eventId,instruction){
+  const id=idOf(eventId),text=String(instruction||"").trim();
+  if(!id)throw new Error("Falta event_id");if(!text)throw new Error("Escribe una pista para comprobar la noticia.");
+  const now=new Date().toISOString();
+  let found=false;
+  await mutateJson(PROCESSING,"Añadir pista de comprobación TTiTTulares",doc=>{
+    doc.items||=[];
+    const item=[...doc.items].reverse().find(x=>idOf(x.event_id)===id);
+    if(!item)throw new Error("No se encuentra la noticia");
+    if(String(item.status||"")!=="PROBLEMATIC")throw new Error("La noticia ya no está en No comprobadas");
+    item.verification_hint=text;
+    item.verification_hint_at=now;
+    item.verification_hint_version=Number(item.verification_hint_version||0)+1;
+    doc.updated_at=now;found=true;return doc
+  });
+  return {ok:true,event_id:id,status:"PROBLEMATIC",verification_hint:text,updated_at:now}
+}
+
 async function rework(eventId,instruction){
   const id=idOf(eventId),text=String(instruction||"").trim();
   if(!id)throw new Error("Falta event_id");if(!text)throw new Error("Escribe las instrucciones para rehacer.");
@@ -325,6 +343,22 @@ export default async function handler(req,res){
           sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
         }
       });
+      const problematicItems=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROBLEMATIC"&&!preparedIds.has(String(x.event_id||""))&&!closedIds.has(String(x.event_id||""))).map(x=>{
+        const ev=eventMap.get(String(x.event_id||""))||{};
+        return {
+          event_id:String(x.event_id||""),
+          title:String(x.title||ev.canonical_title||ev.title||""),
+          url:String(x.url||ev.url||""),
+          selected_at:x.selected_at||null,
+          problematic_at:x.problematic_at||null,
+          problem_reason:String(x.problem_reason||""),
+          problematic_attempts:Number(x.problematic_attempts||1),
+          verification_hint:String(x.verification_hint||""),
+          verification_hint_at:x.verification_hint_at||null,
+          source_count:Number(ev.source_count||x.source_count||0),
+          sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
+        }
+      }).sort((a,b)=>String(b.problematic_at||b.selected_at||"").localeCompare(String(a.problematic_at||a.selected_at||"")));
       const threeSourceItems=(events.doc?.events||[]).filter(e=>{
         const id=String(e.id||e.event_id||"");
         return Number(e.source_count||0)===3
@@ -346,7 +380,7 @@ export default async function handler(req,res){
         const bv=Number.isFinite(b.source3_minutes)?b.source3_minutes:Number.MAX_SAFE_INTEGER;
         return av-bv||String(b.first_seen||"").localeCompare(String(a.first_seen||""))
       });
-      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,ready_count:visiblePrepared.length,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
+      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,problematic_count:problematicItems.length,problematic_items:problematicItems,ready_count:visiblePrepared.length,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
       return res.status(200).json({ok:true,service:"ttittulares-control",prepared:{...(prepared.doc||{}),items:visiblePrepared},status:liveStatus,config:config.doc})
     }
     if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
@@ -356,6 +390,7 @@ export default async function handler(req,res){
     if(action==="published")return res.status(200).json(await closePrepared(body.event_id,"published"));
     if(action==="dismiss")return res.status(200).json(await closePrepared(body.event_id,"dismissed"));
     if(action==="rework")return res.status(200).json(await rework(body.event_id,body.instruction));
+    if(action==="check")return res.status(200).json(await addVerificationHint(body.event_id,body.instruction));
     if(action==="prepare3")return res.status(200).json(await manualPrepare(body.event_id));
     if(action==="submit")return res.status(200).json(await submitManualStory(body.url,body.title,body.instruction));
     return res.status(400).json({ok:false,error:"Acción no válida"})
