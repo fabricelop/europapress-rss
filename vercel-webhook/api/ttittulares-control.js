@@ -123,24 +123,22 @@ async function closePrepared(eventId,status){
   });
   return {ok:true,event_id:id,status}
 }
-async function addVerificationHint(eventId,instruction){
-  const id=idOf(eventId),text=String(instruction||"").trim();
-  if(!id)throw new Error("Falta event_id");if(!text)throw new Error("Escribe una pista para comprobar la noticia.");
+async function markUserValidated(eventId){
+  const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
   const now=new Date().toISOString();
-  let found=false;
-  await mutateJson(PROCESSING,"Añadir pista de comprobación TTiTTulares",doc=>{
+  await mutateJson(PROCESSING,"Validar noticia no comprobada TTiTTulares",doc=>{
     doc.items||=[];
     const item=[...doc.items].reverse().find(x=>idOf(x.event_id)===id);
     if(!item)throw new Error("No se encuentra la noticia");
     if(String(item.status||"")!=="PROBLEMATIC")throw new Error("La noticia ya no está en No comprobadas");
-    item.verification_hint=text;
-    item.verification_hint_at=now;
-    item.verification_hint_version=Number(item.verification_hint_version||0)+1;
-    doc.updated_at=now;found=true;return doc
+    item.user_validated=true;
+    item.user_validated_at=now;
+    item.user_validation_source="web_check";
+    item.user_validation_version=Number(item.user_validation_version||0)+1;
+    doc.updated_at=now;return doc
   });
-  return {ok:true,event_id:id,status:"PROBLEMATIC",verification_hint:text,updated_at:now}
+  return {ok:true,event_id:id,status:"PROBLEMATIC",user_validated:true,user_validated_at:now}
 }
-
 async function rework(eventId,instruction){
   const id=idOf(eventId),text=String(instruction||"").trim();
   if(!id)throw new Error("Falta event_id");if(!text)throw new Error("Escribe las instrucciones para rehacer.");
@@ -353,8 +351,8 @@ export default async function handler(req,res){
           problematic_at:x.problematic_at||null,
           problem_reason:String(x.problem_reason||""),
           problematic_attempts:Number(x.problematic_attempts||1),
-          verification_hint:String(x.verification_hint||""),
-          verification_hint_at:x.verification_hint_at||null,
+          user_validated:Boolean(x.user_validated),
+          user_validated_at:x.user_validated_at||null,
           source_count:Number(ev.source_count||x.source_count||0),
           sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
         }
@@ -390,7 +388,7 @@ export default async function handler(req,res){
     if(action==="published")return res.status(200).json(await closePrepared(body.event_id,"published"));
     if(action==="dismiss")return res.status(200).json(await closePrepared(body.event_id,"dismissed"));
     if(action==="rework")return res.status(200).json(await rework(body.event_id,body.instruction));
-    if(action==="check")return res.status(200).json(await addVerificationHint(body.event_id,body.instruction));
+    if(action==="check")return res.status(200).json(await markUserValidated(body.event_id));
     if(action==="prepare3")return res.status(200).json(await manualPrepare(body.event_id));
     if(action==="submit")return res.status(200).json(await submitManualStory(body.url,body.title,body.instruction));
     return res.status(400).json({ok:false,error:"Acción no válida"})
