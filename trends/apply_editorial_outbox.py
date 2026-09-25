@@ -57,6 +57,23 @@ def validate_generated_image(item):
     if not (is_png or is_webp or is_jpg):
         raise ValueError("fichero raster generado con firma inválida")
 
+    if str(image.get("style_version") or "") != "editorial-scene-v2-cleveland":
+        raise ValueError("imagen sin style_version editorial-scene-v2-cleveland")
+    style_check = image.get("style_check") or {}
+    required_checks = (
+        "reviewed_after_generation",
+        "single_narrative_scene",
+        "visual_gag_without_text",
+        "no_infographic_layout",
+        "no_diagram_arrows_or_connectors",
+        "no_ui_or_scoreboard_layout",
+        "low_text",
+        "depth_lighting_texture",
+    )
+    missing = [key for key in required_checks if style_check.get(key) is not True]
+    if missing:
+        raise ValueError("imagen no supera control editorial: " + ", ".join(missing))
+
 def validate_ready(payload):
     item = payload.get("prepared_item") or {}
     if not str(item.get("id") or "").strip():
