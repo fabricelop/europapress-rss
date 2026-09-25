@@ -143,14 +143,37 @@ En temas sensibles, nunca conviertas víctimas o sufrimiento en objeto humoríst
 
 Persistir el raster generado REAL es obligatorio antes de marcar `ready`.
 
-Preferencia:
-1. guarda el binario real en `trends/generated-images/<id>-r<revision>.<webp|png|jpg>` en `main`;
-2. verifica que el fichero existe realmente en GitHub, que la URL raw corresponde a una imagen y que el raster se abre completo, sin truncado ni grandes zonas negras/vacías anómalas;
-3. guarda `prepared_item.image={url,source:"TTendencias / ChatGPT",source_url,rights_status:"generated",generated:true,alt,style_version,style_check}`.
+### Vía binaria GitHub obligatoria
 
-Si la herramienta de generación raster no está disponible, no puedes obtener los bytes reales, no puedes persistirlos o la imagen no supera el control visual, NO marques el item `ready`. Déjalo pendiente para reintento con `image_generation_status:"pending_renderer"` y una nota técnica concreta; continúa con los demás.
+Para PNG/WebP/JPEG NO uses `create_file` ni `update_file`: esas acciones son para texto UTF-8 y no son la vía de persistencia binaria.
 
-Si `editorial-config.json` permite explícitamente el fallback raster inline y dispones de los bytes raster reales, puedes usar una data URL base64 válida del MIME permitido. Esto NO autoriza SVG ni una imagen buscada en Internet.
+Usa SIEMPRE este procedimiento con el conector GitHub:
+
+1. Obtén los bytes REALES de la imagen generada y conviértelos a base64 puro, sin prefijo `data:image/...;base64,`.
+2. Llama a la acción GitHub `create_blob` con:
+   - `repository_full_name:"fabricelop/europapress-rss"`
+   - `encoding:"base64"`
+   - `content:<base64 real del raster>`
+   Guarda el SHA devuelto.
+3. Lee de nuevo el HEAD actual de `main` y su commit/tree actuales.
+4. Crea un árbol con `create_tree`, usando como `base_tree_sha` el árbol actual de `main`, y añade exactamente:
+   - `path:"trends/generated-images/<id>-r<revision>.<webp|png|jpg>"`
+   - `mode:"100644"`
+   - `type:"blob"`
+   - `sha:<SHA devuelto por create_blob>`.
+5. Crea un commit con `create_commit`, padre = HEAD fresco de `main`, mensaje breve `TTendencias: imagen <name> r<revision>`.
+6. Avanza `main` con `update_ref`, `branch_name:"main"`, `sha:<nuevo commit>`, `force:false`.
+7. Si `update_ref` falla por carrera porque `main` cambió, NO regeneres la imagen: conserva el mismo blob SHA, relee HEAD/tree frescos, recrea árbol+commit sobre el nuevo padre y reintenta UNA vez.
+8. Verifica por GitHub que la ruta existe en `main` y que apunta al blob esperado. Después verifica que la URL raw corresponde a la imagen generada y que el raster abre completo.
+
+Esta vía está explícitamente autorizada para los raster generados de TTendencias. No concluyas “no puedo persistir bytes” sin haber descubierto e intentado `create_blob` con `encoding:"base64"` y el flujo Git tree/commit/ref anterior.
+
+Después guarda:
+`prepared_item.image={url,source:"TTendencias / ChatGPT",source_url,rights_status:"generated",generated:true,alt,style_version,style_check}`.
+
+Si realmente no puedes obtener los bytes del raster generado, o el raster no supera el control visual, no marques `ready`: deja `image_generation_status:"pending_renderer"` y una nota técnica concreta y continúa con los demás. Pero una imposibilidad de usar `create_file/update_file` NO cuenta como fallo binario porque la vía correcta es `create_blob(base64)`.
+
+Si `editorial-config.json` permite explícitamente fallback raster inline y dispones de bytes reales, una data URL base64 válida puede usarse solo como fallback técnico; no sustituye la persistencia Git normal cuando `create_blob` funciona.
 
 ## Outbox
 
