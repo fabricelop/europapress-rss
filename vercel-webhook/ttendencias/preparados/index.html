@@ -9,7 +9,7 @@
 <style>
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
 *{box-sizing:border-box}body{margin:0;background:#0b0e14;min-height:100vh}button,a{font:inherit}
-.top{position:sticky;top:0;z-index:20;background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36;padding:13px max(12px,env(safe-area-inset-left));display:flex;align-items:center;gap:10px}.back{color:#89b8ff;text-decoration:none;font-weight:750}.title{font-weight:850;font-size:18px}.spacer{flex:1}.count{font-size:12px;color:#9ba7b8;border:1px solid #303846;border-radius:999px;padding:6px 9px}
+.top{position:sticky;top:0;z-index:20;background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36;padding:13px max(12px,env(safe-area-inset-left));display:flex;align-items:center;gap:10px}.back{color:#89b8ff;text-decoration:none;font-weight:750}.title{font-weight:850;font-size:18px}.spacer{flex:1}.count{font-size:12px;color:#9ba7b8;border:1px solid #303846;border-radius:999px;padding:6px 9px}.runbtn{border:1px solid #5576a6;background:#1b2d46;color:#dcecff;border-radius:10px;padding:8px 10px;font-weight:800}.runbtn:disabled{opacity:.5}.runstate{font-size:11px;color:#8f9bad;margin:0 0 10px}.runstate.running{color:#ffc178}.runstate.done{color:#8ee6a8}.runstate.error{color:#ff9ca5}
 main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25px}.groupHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 2px 10px}.groupHead h2{font-size:19px;margin:0}.ratio{font-size:12px;font-weight:800;color:#a9bad0;border:1px solid #344256;border-radius:999px;padding:5px 8px}.subhead{font-size:13px;font-weight:850;color:#c5cfdd;margin:12px 2px 7px}.processingList{display:grid;gap:8px}.processingCard{background:#101720;border:1px solid #2d3b4d;border-radius:13px;padding:11px 12px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}.processingName{font-weight:790}.processingMeta{font-size:11px;color:#8fa0b5;margin-top:4px}.origin{font-size:11px;border:1px solid #3b4d64;border-radius:999px;padding:5px 8px;color:#b9cae0}
 .list{display:grid;gap:9px}.rowcard{background:#11161e;border:1px solid #29313d;border-radius:15px;overflow:hidden}.summaryrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px}.trendLine{display:flex;align-items:center;gap:8px;min-width:0}.trend{font-size:16px;font-weight:820;overflow-wrap:anywhere}.infoBtn{width:24px;height:24px;min-width:24px;border-radius:50%;border:1px solid #4b5c72;background:#18212f;color:#b9c9dc;font-size:13px;font-weight:900;padding:0;display:inline-flex;align-items:center;justify-content:center}.infoPanel{display:none;margin:0 12px 10px;padding:9px 10px;border:1px solid #334155;border-radius:10px;background:#0d141d;color:#c8d0dc;font-size:13px;line-height:1.45;white-space:pre-wrap}.infoPanel.show{display:block}.small{font-size:11px;color:#8390a1;margin-top:4px}.rowactions{display:flex;flex-direction:column;align-items:stretch;gap:7px;min-width:116px}.rowactions .btn{width:100%;text-align:center}.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:10px;padding:8px 10px;font-weight:760;text-decoration:none;min-height:38px}.btn.danger{color:#ff9da6}.btn.rework{color:#c9b5ff}.detail{display:none;border-top:1px solid #29313d;padding:12px}.rowcard.open .detail{display:block}.variant{background:#0b1017;border:1px solid #293442;border-radius:13px;padding:11px;margin:9px 0}.variantHead{display:flex;gap:8px;align-items:center;margin-bottom:7px}.variantTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9dadc2}.chars{margin-left:auto;font-size:11px;color:#7f8b9c}.tweet,.remate{white-space:pre-wrap;font-size:14px;line-height:1.4}.variantActions,.finalActions{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin-top:9px}.variantActions .btn,.finalActions .btn{width:100%;text-align:center}.imagebox{background:#0d141d;border:1px solid #334155;border-radius:13px;padding:11px;margin:0 0 13px}.imageTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9dadc2;margin-bottom:5px}.imageMeta{font-size:12px;color:#aeb9c9;line-height:1.4;overflow-wrap:anywhere}.imageActions{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin-top:9px}.imageActions .btn{width:100%;text-align:center}.empty{text-align:center;color:#9aa6b7;padding:50px 10px}.warning{font-size:12px;color:#f5c451;margin:8px 0}
 .sheet{position:fixed;inset:0;background:#0009;z-index:50;display:none;align-items:flex-end}.sheet.show{display:flex}.panel{width:100%;max-width:600px;margin:0 auto;background:#111720;border:1px solid #354052;border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom))}.panel h2{margin:0 0 8px}.panel p{font-size:13px;color:#9eabba}textarea{width:100%;min-height:120px;background:#0a0f16;color:#eef3fa;border:1px solid #364153;border-radius:11px;padding:12px;font:inherit;resize:vertical}.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;transition:.2s;background:#1a2330;border:1px solid #3b485b;border-radius:10px;padding:9px 12px;z-index:80;max-width:90vw;text-align:center}.toast.show{opacity:1;transform:translateX(-50%)}
@@ -17,8 +17,9 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25p
 </style>
 </head>
 <body>
-<header class="top"><a class="back" href="/ttendencias/">‹ Top 10</a><div class="title">Tuits listos</div><div class="spacer"></div><div class="count" id="count">0</div></header>
+<header class="top"><a class="back" href="/ttendencias/">‹ Top 10</a><div class="title">Tuits listos</div><div class="spacer"></div><button class="runbtn" id="runNowPrepared" type="button">▶ Ejecutar</button><div class="count" id="count">0</div></header>
 <main>
+  <div class="runstate" id="runStatePrepared">Comprobando ejecución manual…</div>
   <section class="group" id="topGroup">
     <div class="groupHead"><h2>TOP 10</h2><div class="ratio" id="topRatio">0/0 listos</div></div>
     <div class="subhead">Listos</div>
@@ -46,7 +47,9 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25p
 <script>
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
-const SHELL_BUILD="ttendencias-preparados-inline-raster-copy-20260925";
+const RUN_API="/api/ttendencias-run";
+const RUN_STATUS_API="/api/ttendencias-run-status";
+const SHELL_BUILD="ttendencias-preparados-run-now-v2-20260925";
 const $=id=>document.getElementById(id);
 let model={items:[],top:[],upcoming:[],requests:[]},reworkItem=null,openIds=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -57,6 +60,36 @@ function compose(text){return "https://twitter.com/intent/tweet?text="+encodeURI
 function setLocal(names,status){let m={};try{m=JSON.parse(localStorage.getItem("ttendencias-local-state")||"{}")}catch(_){}const ts=Date.now();for(const name of names||[])m[nrm(name)]={status,ts};localStorage.setItem("ttendencias-local-state",JSON.stringify(m))}
 function clearLocal(names){let m={};try{m=JSON.parse(localStorage.getItem("ttendencias-local-state")||"{}")}catch(_){}for(const name of names||[])delete m[nrm(name)];localStorage.setItem("ttendencias-local-state",JSON.stringify(m))}
 async function updateBadge(){const count=(model.items||[]).length;try{if("setAppBadge" in navigator){if(count>0)await navigator.setAppBadge(count);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}}
+function runTime(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?"—":new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(d)}
+async function loadPreparedRunStatus(){
+ try{
+  const headers={};if(token())headers.authorization="Bearer "+token();
+  const r=await fetch(RUN_STATUS_API+"?t="+Date.now(),{cache:"no-store",headers});
+  const d=await r.json().catch(()=>({}));
+  const el=$("runStatePrepared"),btn=$("runNowPrepared");btn.disabled=false;el.className="runstate";
+  if(r.status===401){el.textContent="Guarda el acceso desde Top 10 para ejecutar";btn.disabled=true;return}
+  if(!r.ok)throw new Error(d.error||"No se pudo consultar la ejecución");
+  if(d.status==="DISABLED"){el.textContent="Trigger Work no disponible";btn.disabled=true}
+  else if(d.status==="REQUESTED"){el.textContent="Esperando a Work desde "+runTime(d.requested_at);el.classList.add("running");btn.disabled=true}
+  else if(d.status==="RUNNING"){el.textContent="Ejecutándose desde "+runTime(d.started_at);el.classList.add("running");btn.disabled=true}
+  else if(d.status==="DONE"){el.textContent="Última ejecución terminada "+runTime(d.finished_at);el.classList.add("done")}
+  else if(d.status==="ERROR"){el.textContent="Última ejecución con error"+(d.message?" · "+d.message:"");el.classList.add("error")}
+  else el.textContent="Listo para ejecutar";
+ }catch(e){$("runStatePrepared").textContent=e.message||"No se pudo consultar la ejecución";$("runStatePrepared").className="runstate error"}
+}
+async function requestPreparedRun(){
+ if(!token()){toast("Falta el token de control");return}
+ if(!confirm("¿Ejecutar TTendencias ahora? Esta acción consumirá cuota de ChatGPT Work."))return;
+ const btn=$("runNowPrepared");btn.disabled=true;$("runStatePrepared").textContent="Enviando solicitud…";$("runStatePrepared").className="runstate running";
+ try{
+  const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:"{}"});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(r.status===409?"Ya hay una ejecución en curso":r.status===429?"Ya se solicitó una ejecución hace unos segundos":d.error||"No se pudo solicitar la ejecución");
+  $("runStatePrepared").textContent="Esperando a Work desde "+runTime(d.requested_at);
+  setTimeout(loadPreparedRunStatus,5000);
+ }catch(e){$("runStatePrepared").textContent=e.message;$("runStatePrepared").className="runstate error";btn.disabled=false}
+}
+
 async function api(action,names,extra={}){
  const t=token();if(!t){toast("Falta el token de control");throw new Error("Sin token")}
  const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+t},body:JSON.stringify({action,names,...extra})});let d={};try{d=await r.json()}catch(_){}
@@ -223,6 +256,7 @@ async function load(){
   render()
  }catch(e){$("list").innerHTML='<div class="empty">'+String(e.message||e)+'</div>'}
 }
+$("runNowPrepared").onclick=requestPreparedRun;
 $("cancel").onclick=()=>{$("sheet").classList.remove("show");reworkItem=null};
 $("sendRework").onclick=async()=>{if(!reworkItem)return;const instruction=$("instruction").value.trim();if(!instruction){toast("Escribe primero qué quieres cambiar");return}const rel=related(reworkItem);if(!confirm("¿Enviar "+rel.join(", ")+" a reelaborar con estas instrucciones?"))return;const backup=[...(model.items||[])];clearLocal(rel);removeItem(reworkItem);$("sheet").classList.remove("show");try{await api("rework",rel,{instruction});localStorage.setItem("ttendencias-last-action",String(Date.now()));await load();toast("Enviada a reelaborar")}catch(e){model.items=backup;render();toast(e.message)}};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
@@ -245,6 +279,6 @@ if("serviceWorker" in navigator){
    location.reload();
  });
 }
-load();setInterval(()=>{if(!document.hidden)load()},60000);
+load();loadPreparedRunStatus();setInterval(()=>{if(!document.hidden){load();loadPreparedRunStatus()}},60000);
 </script>
 </body></html>
