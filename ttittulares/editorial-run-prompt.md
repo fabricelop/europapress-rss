@@ -16,8 +16,8 @@ No uses Telegram. No proceses TTendencias ni SeLoRecordamos. No despliegues Verc
 
 ## Cola y orden de trabajo
 
-1. Lee SIEMPRE `ttittulares/editorial-queue.json` y `ttittulares/status.json` desde `main`.
-2. Al inicio guarda una FOTO de `status.problematic_items`. Esa lista inicial es la única que podrá reintentarse en esta ejecución; los nuevos `PROBLEMATIC` creados durante esta misma pasada se dejan para la SIGUIENTE ejecución.
+1. Lee SIEMPRE `ttittulares/editorial-queue.json`, `ttittulares/status.json` y `telegram/editorial-processing.json` desde `main`.
+2. Al inicio guarda una FOTO de las filas `status:"PROBLEMATIC"` de `telegram/editorial-processing.json`. Esa es la fuente de verdad para los reintentos; los nuevos `PROBLEMATIC` creados durante esta misma pasada se dejan para la SIGUIENTE ejecución.
 3. Procesa primero TODOS los items de `editorial-queue.json`, del más antiguo al más reciente.
 4. Después de terminar la cola activa, procesa los `problematic_items` que estaban en la foto inicial.
 5. Si no había ni cola activa ni problemáticas iniciales, termina sin búsquedas web ni escrituras.
@@ -26,7 +26,7 @@ No uses Telegram. No proceses TTendencias ni SeLoRecordamos. No despliegues Verc
 
 Usa todos los campos disponibles del item activo, incluidos `event_id,title,url,sources,source_count,selected_at,selection_mode,revision,rewrite_request,parent_event_id,update_context,with_image,image_mode,image_instruction`.
 
-Para problemáticas usa además `problem_reason,problematic_at,problematic_attempts`; si `problematic_attempts` falta en un registro antiguo, trátalo como 1.
+Para problemáticas usa además `problem_reason,problematic_at,problematic_attempts,verification_hint,verification_hint_at`; si `problematic_attempts` falta en un registro antiguo, trátalo como 1. Si existe `verification_hint`, trátalo como contexto aportado por el usuario y úsalo como pista prioritaria para orientar las nuevas búsquedas, sin presentarlo como hecho hasta verificarlo.
 
 ## Verificación factual
 
@@ -41,7 +41,7 @@ Verifica los hechos esenciales con las fuentes suministradas y búsquedas actual
 Después de terminar TODOS los items de En elaboración, reintenta únicamente las problemáticas que ya existían al COMENZAR esta ejecución.
 
 Para cada una:
-1. Haz un NUEVO intento de verificación, con al menos DOS búsquedas actuales distintas y sin limitarte a repetir exactamente las consultas anteriores.
+1. Haz un NUEVO intento de verificación, con al menos DOS búsquedas actuales distintas y sin limitarte a repetir exactamente las consultas anteriores. Si existe `verification_hint`, incorpóralo explícitamente a la estrategia de búsqueda.
 2. Si ahora puedes verificar suficientemente el hecho, redacta y escribe un outbox `status:"ready"` normal para la MISMA revisión. El aplicador admite la transición `PROBLEMATIC → READY`.
 3. Si vuelve a no poder verificarse suficientemente, NO la devuelvas a `problematic` y NO la dejes bloqueada. Debe pasar a Noticias listas con una versión de respaldo cautelosa.
 
