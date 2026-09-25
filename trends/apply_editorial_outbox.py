@@ -28,17 +28,51 @@ def norm(value):
     return " ".join(text.casefold().split())
 
 def validate_generated_image(item):
+    import base64
     image = item.get("image") or {}
     if not image.get("generated"):
         raise ValueError("imagen final debe ser generated=true")
     url = str(image.get("url") or "").strip()
-    prefix = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/"
-    if not url.startswith(prefix):
-        raise ValueError("imagen generada sin URL raw válida")
     if str(image.get("rights_status") or "") != "generated":
         raise ValueError("imagen generada sin rights_status=generated")
     if str(image.get("source") or "") != "TTendencias / ChatGPT":
         raise ValueError("imagen generada sin source esperado")
+    style = str(image.get("style_version") or "")
+    check = image.get("style_check") or {}
+    required_checks = [
+        "reviewed_after_generation",
+        "single_narrative_scene",
+        "visual_gag_without_text",
+        "no_infographic_layout",
+        "no_diagram_arrows_or_connectors",
+        "no_ui_or_scoreboard_layout",
+        "low_text",
+        "depth_lighting_texture",
+    ]
+    if style != "editorial-scene-v2-cleveland" or not all(check.get(k) is True for k in required_checks):
+        raise ValueError("imagen generada sin control visual editorial-scene-v2-cleveland completo")
+    prefix = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/"
+    if url.startswith("data:image/"):
+        try:
+            header, payload = url.split(",", 1)
+            if ";base64" not in header:
+                raise ValueError("data URL no base64")
+            mime = header[5:].split(";",1)[0].casefold()
+            if mime not in {"image/png","image/webp","image/jpeg"}:
+                raise ValueError("mime raster no permitido")
+            data = base64.b64decode(payload, validate=True)
+        except Exception as exc:
+            raise ValueError(f"data URL raster inválida: {exc}")
+        if len(data) < 4096:
+            raise ValueError("imagen raster inline demasiado pequeña")
+        is_png = data.startswith(b"\x89PNG\r\n\x1a\n")
+        is_webp = data[:4] == b"RIFF" and data[8:12] == b"WEBP"
+        is_jpg = data.startswith(b"\xff\xd8\xff")
+        if not (is_png or is_webp or is_jpg):
+            raise ValueError("imagen raster inline con firma inválida")
+        return
+    if not url.startswith(prefix):
+        raise ValueError("imagen generada sin URL raw válida")
     filename = url[len(prefix):]
     if "/" in filename or ".." in filename:
         raise ValueError("ruta de imagen generada no válida")
@@ -49,30 +83,13 @@ def validate_generated_image(item):
     if not path.exists():
         raise ValueError("fichero de imagen generada inexistente en main")
     data = path.read_bytes()
-    if len(data) < 1024:
+    if len(data) < 4096:
         raise ValueError("imagen raster generada demasiado pequeña o inválida")
     is_png = data.startswith(b"\x89PNG\r\n\x1a\n")
     is_webp = data[:4] == b"RIFF" and data[8:12] == b"WEBP"
     is_jpg = data.startswith(b"\xff\xd8\xff")
     if not (is_png or is_webp or is_jpg):
         raise ValueError("fichero raster generado con firma inválida")
-
-    if str(image.get("style_version") or "") != "editorial-scene-v2-cleveland":
-        raise ValueError("imagen sin style_version editorial-scene-v2-cleveland")
-    style_check = image.get("style_check") or {}
-    required_checks = (
-        "reviewed_after_generation",
-        "single_narrative_scene",
-        "visual_gag_without_text",
-        "no_infographic_layout",
-        "no_diagram_arrows_or_connectors",
-        "no_ui_or_scoreboard_layout",
-        "low_text",
-        "depth_lighting_texture",
-    )
-    missing = [key for key in required_checks if style_check.get(key) is not True]
-    if missing:
-        raise ValueError("imagen no supera control editorial: " + ", ".join(missing))
 
 def validate_ready(payload):
     item = payload.get("prepared_item") or {}
