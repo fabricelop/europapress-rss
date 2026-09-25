@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parent.parent
 TRENDS = ROOT / "trends"
 OUTBOX = TRENDS / "editorial-outbox"
 MADRID = ZoneInfo("Europe/Madrid")
-ACTIVE = {"preparing", "update"}
+ACTIVE = {"preparing", "update", "problematic"}
 
 def load(path: Path, default):
     try:
@@ -157,9 +157,14 @@ def image_queue_policy():
 
 def sync_queue(requests_doc):
     image_mode, image_instruction = image_queue_policy()
+    recent = load(TRENDS / "recent.json", {})
+    top10_names = {norm(x.get("name")) for x in (recent.get("items") or recent.get("top10") or []) if int(x.get("rank") or 0) <= 10 and x.get("name")}
     items = []
     for req in requests_doc.get("requests", []) or []:
-        if str(req.get("status") or "") not in ACTIVE:
+        status = str(req.get("status") or "")
+        if status not in ACTIVE:
+            continue
+        if status == "problematic" and norm(req.get("name")) not in top10_names:
             continue
         items.append({
             "id": req.get("id"),
@@ -292,8 +297,11 @@ def main():
                     target["ready_at"] = item.get("generated_at") or now
                     target["delivery_confirmation"] = "prepared_web"
                     target["editorial_engine"] = "chatgpt-automation-outbox"
+                    if int(target.get("problematic_attempts") or 0):
+                        item.setdefault("problematic_attempts_before_ready", int(target.get("problematic_attempts") or 0))
                     target.pop("problem_reason", None)
                     target.pop("problematic_at", None)
+                    target.pop("problematic_attempts", None)
                     if str(target.get("id") or "") not in processed:
                         processed.append(str(target.get("id") or ""))
 
@@ -304,6 +312,7 @@ def main():
                 req["status"] = "problematic"
                 req["problematic_at"] = now
                 req["problem_reason"] = reason
+                req["problematic_attempts"] = int(req.get("problematic_attempts") or 0) + 1
                 req["editorial_engine"] = "chatgpt-automation-outbox"
                 req.pop("ready_at", None)
                 req.pop("delivery_confirmation", None)
