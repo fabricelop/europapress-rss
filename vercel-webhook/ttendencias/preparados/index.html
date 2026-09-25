@@ -46,7 +46,7 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25p
 <script>
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
-const SHELL_BUILD="ttendencias-preparados-ui-instant-close-20260925b";
+const SHELL_BUILD="ttendencias-preparados-inline-raster-copy-20260925";
 const $=id=>document.getElementById(id);
 let model={items:[],top:[],upcoming:[],requests:[]},reworkItem=null,openIds=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -83,10 +83,14 @@ async function imageBlobToPng(blob){
 async function copyImageToClipboard(url){
  try{
   if(!navigator.clipboard?.write||typeof ClipboardItem==="undefined")throw new Error("clipboard");
-  const r=await fetch(API+"?view=image-proxy&format=png&url="+encodeURIComponent(url),{cache:"no-store"});
-  if(!r.ok)throw new Error("download");
-  const blob=await r.blob();
-  if(blob.type!=="image/png")throw new Error("format");
+  let blob;
+  if(String(url||"").startsWith("data:image/")){
+    const r=await fetch(url); if(!r.ok)throw new Error("inline"); blob=await r.blob();
+  }else{
+    const r=await fetch(API+"?view=image-proxy&format=png&url="+encodeURIComponent(url),{cache:"no-store"});
+    if(!r.ok)throw new Error("download"); blob=await r.blob();
+  }
+  blob=await imageBlobToPng(blob);
   await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);
   toast("Imagen copiada");
  }catch(err){
@@ -94,6 +98,7 @@ async function copyImageToClipboard(url){
   toast("No se pudo copiar la imagen");
  }
 }
+
 function detailHtml(){
  return '<div class="detail"><div class="imagebox" hidden><div class="imageTitle">Imagen sugerida</div><div class="imageMeta"></div><div class="imageActions"><a class="btn imgOpen" target="_blank" rel="noopener">Abrir imagen</a><button class="btn imgCopy">Copiar imagen</button><a class="btn imgSource" target="_blank" rel="noopener">Abrir fuente</a></div></div><div class="variant principal"><div class="variantHead"><span class="variantTitle">Tuit principal</span><span class="chars"></span></div><div class="tweet"></div><div class="variantActions"><a class="btn pOpen" target="_blank" rel="noopener">Abrir en X</a><button class="btn pCopy">Copiar</button></div></div><div class="alts"></div><div class="finalActions"><button class="btn rework">Rehacer</button></div></div>'
 }
