@@ -1,9 +1,39 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-25T09:22:16.719448Z",
-  "radar_at": "2026-09-25T09:22:10.037800Z",
-  "processing_count": 1,
+  "updated_at": "2026-09-25T09:33:02.557316Z",
+  "radar_at": "2026-09-25T09:32:42.463047Z",
+  "processing_count": 3,
   "processing_items": [
+    {
+      "event_id": "64b2659462c7",
+      "title": "Irn ofrece a Estados Unidos un plan para reabrir Ormuz y poner fin de la guerra en siete das",
+      "url": "https://www.rtve.es/noticias/20260925/guerra-iran-eeuu-plan-paz-siete-dias-onu-ormuz/17239857.shtml",
+      "selected_at": "2026-09-25T09:33:02.475975Z",
+      "selection_mode": "AUTO_WEB",
+      "rewrite_version": null,
+      "source_count": 4,
+      "sources": [
+        "20minutos",
+        "COPE",
+        "Público",
+        "RTVE"
+      ]
+    },
+    {
+      "event_id": "4b3f49f8c301",
+      "title": "Maricarmen, desde el Gregorio Marañón: “Gracias a todos los que han estado conmigo para defender mi casa”",
+      "url": "https://elpais.com/espana/madrid/2026-09-25/maricarmen-desde-el-gregorio-maranon-gracias-a-todos-los-que-han-estado-conmigo-para-defender-mi-casa.html",
+      "selected_at": "2026-09-25T09:33:02.475975Z",
+      "selection_mode": "AUTO_WEB",
+      "rewrite_version": null,
+      "source_count": 4,
+      "sources": [
+        "20minutos",
+        "EL PAÍS",
+        "El Mundo",
+        "Público"
+      ]
+    },
     {
       "event_id": "5fb8f5e7f9fc",
       "title": "Lamine Yamal, a TVE: \"El Baln de Oro va de hacer disfrutar y hay pocos en Europa que lo hagan como yo\"",
@@ -21,10 +51,31 @@
     }
   ],
   "ready_count": 0,
-  "three_source_count": 13,
-  "healthy_source_count": 14,
+  "three_source_count": 12,
+  "healthy_source_count": 11,
   "configured_sources": 14,
-  "source_failures": [],
+  "source_failures": [
+    {
+      "source": "El HuffPost",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "COPE",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "EFE",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "EFE Deportes",
+      "type": "sport",
+      "error": "HTTP Error 503: Service Unavailable"
+    }
+  ],
   "events": {
     "e1411b717fe5": {
       "title": "Programa especial | Debate de la Asamblea General de la ONU",
@@ -45,7 +96,7 @@
         "elDiario.es"
       ],
       "status": "SENT_REVIEW",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -66,7 +117,7 @@
         "elDiario.es"
       ],
       "status": "SENT_REVIEW",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -79,7 +130,7 @@
         "RTVE"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -102,7 +153,7 @@
         "elDiario.es"
       ],
       "status": "ELIGIBLE",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -125,7 +176,7 @@
         "elDiario.es"
       ],
       "status": "ELIGIBLE",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -146,7 +197,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -167,29 +218,7 @@
         "elDiario.es"
       ],
       "status": "ELIGIBLE",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "26b60defdecf": {
-      "title": "El Supremo confirma 4 años de cárcel para el futbolista Santi Mina por abuso sexual a una mujer",
-      "source_count": 12,
-      "sources": [
-        "20minutos",
-        "ABC",
-        "COPE",
-        "EFE",
-        "EL PAÍS",
-        "El Mundo",
-        "Europa Press",
-        "La Vanguardia",
-        "Público",
-        "RTVE",
-        "Servimedia",
-        "elDiario.es"
-      ],
-      "status": "ELIGIBLE",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -206,7 +235,7 @@
         "RTVE"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -228,7 +257,7 @@
         "elDiario.es"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -246,7 +275,7 @@
         "RTVE"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -262,7 +291,7 @@
         "elDiario.es"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -283,7 +312,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -302,7 +331,7 @@
         "elDiario.es"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -322,7 +351,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -338,7 +367,7 @@
         "RTVE"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -352,7 +381,7 @@
         "Público"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -374,7 +403,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -390,7 +419,7 @@
         "La Vanguardia"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -405,7 +434,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -422,7 +451,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -436,7 +465,7 @@
         "Público"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -449,7 +478,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -465,20 +494,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "e3b5dbc0278f": {
-      "title": "‘Compañeros’ prepara su regreso para contar qué fue de Quimi y Valle 25 años después",
-      "source_count": 3,
-      "sources": [
-        "EL PAÍS",
-        "El HuffPost",
-        "El Mundo"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -490,7 +506,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -501,7 +517,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -513,7 +529,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -524,7 +540,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -536,7 +552,7 @@
         "COPE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -547,7 +563,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -558,7 +574,7 @@
         "ABC"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -574,7 +590,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -594,7 +610,7 @@
         "elDiario.es"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -605,7 +621,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -623,7 +639,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -637,7 +653,7 @@
         "Público"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -653,7 +669,7 @@
         "Servimedia"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -664,7 +680,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -675,7 +691,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -687,7 +703,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -699,22 +715,23 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
     "17df84c476db": {
       "title": "Maricarmen, una mujer de 87 aos con un 50% de discapacidad, ha sido desahuciada de la vivienda del centro de Madrid en la que llevaba viviendo 71 aos.",
-      "source_count": 5,
+      "source_count": 6,
       "sources": [
         "EFE",
         "El HuffPost",
         "Europa Press",
         "La Vanguardia",
-        "RTVE"
+        "RTVE",
+        "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -725,7 +742,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -744,7 +761,7 @@
         "elDiario.es"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 2,
       "parent_event_id": "740a74494178"
     },
@@ -764,7 +781,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -778,7 +795,7 @@
         "RTVE"
       ],
       "status": "ELIGIBLE",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -792,7 +809,7 @@
         "RTVE"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -805,7 +822,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -821,7 +838,7 @@
         "Público"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -832,7 +849,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -845,7 +862,7 @@
         "El Mundo"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -862,7 +879,7 @@
         "elDiario.es"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -876,7 +893,7 @@
         "RTVE"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -888,7 +905,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -899,7 +916,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -910,7 +927,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -926,7 +943,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -940,7 +957,7 @@
         "RTVE"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -951,23 +968,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "bdf832644eae": {
-      "title": "U2 anuncia ‘Carnaval De Luz’, su primer álbum de estudio en nueve años",
-      "source_count": 6,
-      "sources": [
-        "20minutos",
-        "ABC",
-        "EFE",
-        "EL PAÍS",
-        "El HuffPost",
-        "La Vanguardia"
-      ],
-      "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -978,7 +979,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -989,7 +990,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1000,7 +1001,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1011,7 +1012,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1022,7 +1023,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1033,7 +1034,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1044,7 +1045,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1055,7 +1056,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1070,7 +1071,7 @@
         "elDiario.es"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1082,7 +1083,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1096,19 +1097,7 @@
         "RTVE"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "ed82c9a4e5e1": {
-      "title": "Netflix mueve ficha y recupera esta distopía: 40 episodios para una de las mejores series de ciencia ficción de Prime Video",
-      "source_count": 2,
-      "sources": [
-        "20minutos",
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1119,7 +1108,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1130,7 +1119,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1141,7 +1130,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1152,22 +1141,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "f384d09e2fbe": {
-      "title": "La jueza abre juicio oral contra Tito Berni y otras 13 personas por el caso Mediador",
-      "source_count": 5,
-      "sources": [
-        "20minutos",
-        "EFE",
-        "Europa Press",
-        "RTVE",
-        "elDiario.es"
-      ],
-      "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1180,7 +1154,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1192,7 +1166,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1203,7 +1177,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1214,7 +1188,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1225,7 +1199,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1236,7 +1210,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1247,7 +1221,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1260,7 +1234,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1271,7 +1245,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1287,7 +1261,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1300,7 +1274,7 @@
         "El Mundo"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1312,7 +1286,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1323,7 +1297,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1341,7 +1315,7 @@
         "La Vanguardia"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1352,7 +1326,7 @@
         "Servimedia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1368,7 +1342,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1379,7 +1353,7 @@
         "Servimedia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1390,7 +1364,7 @@
         "Servimedia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1401,7 +1375,7 @@
         "Servimedia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1412,7 +1386,7 @@
         "Servimedia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1423,7 +1397,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1434,7 +1408,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1445,7 +1419,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1456,7 +1430,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1467,7 +1441,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1478,7 +1452,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1489,7 +1463,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1500,51 +1474,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "9bc7246bed0f": {
-      "title": "La caída del ultra Jordan Bardella en Francia: de favorito a la presidencia a desautorizado por su propio partido",
-      "source_count": 1,
-      "sources": [
-        "elDiario.es"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "1b88f8390196": {
-      "title": "Un accidente mortal en una promoción de VPO destapa que el Gobierno andaluz carece de seguro para sus responsables de obra",
-      "source_count": 1,
-      "sources": [
-        "elDiario.es"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "ac7ff184caa7": {
-      "title": "La alto cargo de Mazón con experiencia policial propuso “alarmar” a la población al inicio del caótico Cecopi de la dana",
-      "source_count": 1,
-      "sources": [
-        "elDiario.es"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "b11e706c214e": {
-      "title": "Por qué se ha disparado la abstención en las elecciones de Marruecos: “Aunque votemos, no cambia nada”",
-      "source_count": 1,
-      "sources": [
-        "elDiario.es"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1557,7 +1487,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1568,7 +1498,7 @@
         "Público"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1579,7 +1509,7 @@
         "Público"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1590,7 +1520,7 @@
         "Público"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1601,7 +1531,7 @@
         "Público"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1612,7 +1542,7 @@
         "Público"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1623,7 +1553,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1634,7 +1564,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1645,7 +1575,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1656,7 +1586,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1668,7 +1598,7 @@
         "El HuffPost"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1681,7 +1611,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1693,7 +1623,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1704,7 +1634,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1715,7 +1645,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1726,7 +1656,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1737,7 +1667,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1748,7 +1678,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1759,7 +1689,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1770,7 +1700,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1781,7 +1711,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1792,7 +1722,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1803,7 +1733,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1814,7 +1744,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1825,7 +1755,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1837,7 +1767,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1848,7 +1778,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1859,7 +1789,7 @@
         "Servimedia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1870,7 +1800,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1881,7 +1811,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1892,7 +1822,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1903,7 +1833,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1914,7 +1844,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1925,7 +1855,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1937,7 +1867,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1948,7 +1878,7 @@
         "Público"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1960,7 +1890,7 @@
         "Público"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1971,7 +1901,7 @@
         "Público"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1983,7 +1913,7 @@
         "El Mundo"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -1999,7 +1929,7 @@
         "RTVE"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2010,7 +1940,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2022,7 +1952,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2034,7 +1964,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2046,18 +1976,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "a7aa99effee8": {
-      "title": "Intento de suicidio",
-      "source_count": 1,
-      "sources": [
-        "EL PAÍS"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2069,7 +1988,7 @@
         "El Mundo"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2080,7 +1999,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2091,7 +2010,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2102,7 +2021,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2113,7 +2032,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2124,7 +2043,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2135,7 +2054,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2146,7 +2065,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2157,7 +2076,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2168,7 +2087,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2179,7 +2098,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2190,7 +2109,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2201,7 +2120,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2212,7 +2131,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2223,7 +2142,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2234,7 +2153,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2245,7 +2164,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2256,7 +2175,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2267,7 +2186,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2278,7 +2197,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2289,7 +2208,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2300,7 +2219,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2311,7 +2230,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2322,7 +2241,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2336,7 +2255,7 @@
         "Europa Press"
       ],
       "status": "DISMISSED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2347,7 +2266,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2358,7 +2277,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2369,7 +2288,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2380,7 +2299,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2391,7 +2310,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2402,7 +2321,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2413,7 +2332,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2424,7 +2343,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2435,7 +2354,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2446,7 +2365,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2457,7 +2376,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2468,7 +2387,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2479,7 +2398,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2490,7 +2409,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2501,7 +2420,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2512,7 +2431,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2523,7 +2442,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2534,7 +2453,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2545,7 +2464,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2556,7 +2475,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2567,7 +2486,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2580,7 +2499,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2591,7 +2510,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2602,7 +2521,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2613,7 +2532,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2624,7 +2543,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2635,7 +2554,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2646,7 +2565,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2657,7 +2576,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2669,29 +2588,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "edd7bf41fc4e": {
-      "title": "El nuevo Trueta transformará esta zona de Girona: 370 viviendas, un corredor verde y un nuevo puente",
-      "source_count": 1,
-      "sources": [
-        "20minutos"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "0487865f5624": {
-      "title": "La arrocera de Lidl rompe el mercado: mucho más barata que las demás, y con 1L de capacidad",
-      "source_count": 1,
-      "sources": [
-        "20minutos"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2702,7 +2599,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2714,7 +2611,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2725,7 +2622,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2736,7 +2633,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2748,7 +2645,7 @@
         "Público"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2759,7 +2656,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2770,7 +2667,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2781,7 +2678,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2792,7 +2689,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2803,7 +2700,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2814,7 +2711,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2825,7 +2722,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2836,7 +2733,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2847,7 +2744,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2858,7 +2755,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2869,7 +2766,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2880,7 +2777,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2891,7 +2788,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2902,7 +2799,7 @@
         "Cadena SER"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2913,7 +2810,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2924,7 +2821,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2935,7 +2832,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2946,7 +2843,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -2957,74 +2854,20 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "ffc5078c6627": {
-      "title": "Procesan a un expresidente del parlamento balear por posar junto a una pintada que tildaba de \"nazi\" a un diputado de Vox - huffingtonpost.es",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "8546ab250e2e": {
-      "title": "TVE traslada 'La Promesa' a la noche con un capítulo especial sobre la boda de Curro y Ángela y el suceso que todos esperan - El Televisero",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
     "f4769205d177": {
       "title": "Mediaset aclara cómo va a ser el retorno de Belén Esteban en 'De Viernes': Avance explosivo y entrevista en dos noches - El Televisero",
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "20minutos",
-        "El HuffPost"
+        "El HuffPost",
+        "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "e021df84eae3": {
-      "title": "Por qué ya no se puede ver el tesoro Quimbaya en el Museo de América de Madrid - huffingtonpost.es",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "8b114353c823": {
-      "title": "El portavoz de Podemos, Pablo Fernández, denuncia que la Policía le agredió en la protesta por Maricarmen - huffingtonpost.es",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "acad798fcad4": {
-      "title": "Madrid, el símbolo de la especulación inmobiliaria - huffingtonpost.es",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3035,7 +2878,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3046,7 +2889,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3057,7 +2900,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3068,7 +2911,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3079,7 +2922,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3090,7 +2933,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3101,7 +2944,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3112,7 +2955,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3123,7 +2966,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3134,7 +2977,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3145,7 +2988,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3156,7 +2999,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3167,7 +3010,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3178,7 +3021,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3189,7 +3032,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3200,7 +3043,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3211,7 +3054,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3222,7 +3065,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3233,7 +3076,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3244,7 +3087,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3255,7 +3098,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3275,84 +3118,7 @@
         "RTVE"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "6bdbca3d8aeb": {
-      "title": "Comic Con de Málaga: 80 euros por hacerse una foto con Antonio Resines y 125 con Elijah Wood - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "a5cb2791a558": {
-      "title": "Preguntan a Rami Malek qué recuerda de España y no se lo piensa: \"Hay algo en los españoles que me atrae muchísimo\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "47fa78f33f83": {
-      "title": "La vida actual de 'Club Social Navahonda', en Ávila, tras 'Pesadilla en la cocina': \"Alberto Chicote ha sido prepotente\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "aa51ff1f7bf6": {
-      "title": "Un futbolista de la selección española cede casi un millón de euros de la prima del Mundial a los trabajadores de la RFEF - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "282043b6c208": {
-      "title": "El nutricionista Pablo Ojeda revela el motivo de su marcha de 'El verano se mueve' en Telecinco: \"Yo no podía estar en un programa así\" - El Televisero",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "8d20142e067a": {
-      "title": "Varios turistas se quejan del cierre del Coliseo tras la muerte de un trabajador: \"Es ridículo\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "f5ecc851ceac": {
-      "title": "De 'outsider' a 'insider': cómo Meloni ha ablandado a Bruselas (y viceversa) en sus cuatro años de poder - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3363,7 +3129,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3374,7 +3140,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3385,29 +3151,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "18c58c597f54": {
-      "title": "Cómo leer 'La bola negra' de Lorca: dónde están las cuatro páginas y en qué edición se publican - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "f3ed5eb2cc0f": {
-      "title": "Estas son las medidas que han impulsado las comunidades para paliar los desahucios - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3418,7 +3162,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3429,7 +3173,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3440,7 +3184,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3451,7 +3195,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3462,7 +3206,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3473,7 +3217,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3484,73 +3228,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "c49f5ffd7245": {
-      "title": "Islandia quiere prohibir permanentemente la caza comercial de ballenas en sus aguas: \"Una industria que no sirve para nada\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "7c552d506584": {
-      "title": "Una estación de los satélites Starlink de Elon Musk que dan internet en Ucrania amanece en llamas: Varsovia ya habla de un \"sabotaje\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "2390f62eb52f": {
-      "title": "Los vendedores de un mercado de Palma, ante la subida de precios: \"Nos da vergüenza subirlos, pero no nos queda otra\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "7fed53822100": {
-      "title": "NAZA, la película que ha puesto contra las cuerdas a Netanyahu, se podrá ver gratis en internet por decisión de sus directores: \"El periodismo no es traición\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "a2568961eacf": {
-      "title": "La Guardia Civil avisa de la 'vuelta al cole' de los ciberdelincuentes y da tres claves para evitar caer en este tipo de estafas - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "38f86bc9e20e": {
-      "title": "Hasta seis meses de cárcel y 7.500 euros de multa por ir a una 'rave': la nueva ley francesa contra las fiestas ilegales de más de 250 personas - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3561,18 +3239,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "47ea7ea30cbf": {
-      "title": "enfermería - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3589,7 +3256,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3600,84 +3267,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "ae86d7aef634": {
-      "title": "Manu Sánchez revela qué hay detrás de su forma de pensar: \"El Cristo que me interesa es el revolucionario, el contestatario y el rebelde\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "9ee236a79cbb": {
-      "title": "Un viticultor pierde 20.000 euros después de que 2.000 cabras sueltas se coman dos hectáreas de terreno: \"Cuando lo cuento, la gente se ríe\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "f82f5668c6df": {
-      "title": "\"A los 24 años, lo dejé todo para irme a vivir a un pueblo desierto en busca de la tranquilidad\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "b4ea846bee9c": {
-      "title": "\"Una mezcla entre anarquía y tiranía\": Milei enloquece contra Sánchez y le acusa de abrir la puerta a \"invasores\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "2380cc0ceac7": {
-      "title": "El mar se tragó una ciudad en el siglo XIV y la leyenda cuenta que la campana de su iglesia sigue repicando sumergida: ahora los buzos la están buscando - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "243a4c2ea529": {
-      "title": "Análisis de EA Sports FC 27: el mejor de la saga en el peor año posible por la inminente llegada de 'GTA VI' - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "ce9f71a5c405": {
-      "title": "Sira Rego: \"Es muy bueno que la gente salga a la calle por la vivienda, sea exigente y nos espolee\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3689,18 +3279,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "b5f8d529287a": {
-      "title": "Veintiuno: \"Saber que puedes permitirte no girar cuando te dedicas y vives de ello es un privilegio\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3720,29 +3299,7 @@
         "elDiario.es"
       ],
       "status": "PUBLISHED",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "34ab27ecf78c": {
-      "title": "Maricarmen permanece ingresada en el hospital: está agotada, \"emocionalmente derrotada\", pero \"muy agradecida\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "091f4d0dc330": {
-      "title": "Felipe VI habla por primera vez sobre la nueva etapa universitaria de la princesa Leonor, pero le ha faltado desvelar un detalle relevante - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3753,18 +3310,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "925ff3035fc0": {
-      "title": "Una turista británica se queja de los precios de Auschwitz y los usuarios le responden: \"No olvidemos dónde estamos\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3775,74 +3321,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "6cf3b6bf1f93": {
-      "title": "El INE confirma que la economía creció un 0,7 % el segundo trimestre, una décima más - El HuffPost",
-      "source_count": 2,
-      "sources": [
-        "EFE",
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "d1a8a26055f5": {
-      "title": "Ed Sheeran no se libra de la polémica: convocan una manifestación a las puertas de su concierto en Massachusetts - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "538bf64804b3": {
-      "title": "'Rueda la Letra' cae a su peor audiencia pese a la gesta de Fran en 'El Rosco' en una tarde insostenible para Telecinco - El Televisero",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "2cdc91950988": {
-      "title": "quítate del medio: últimas noticias y actualidad - El Televisero",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "abdca9a167da": {
-      "title": "Gonzalo Miró y Esther Palomera piden bajar los micros en 'Malas Lenguas' por la actitud de sus tertulianos: \"Es insoportable\" - El Televisero",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "1ead7f2c9239": {
-      "title": "Atresmedia trastoca la programación de La Sexta: Retira a Alberto Chicote y cede su hueco a una emisión especial de 'El Objetivo' esta semana - El Televisero",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3854,7 +3333,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3867,51 +3346,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "4c1d48c4f137": {
-      "title": "El Canijo de Jerez se pronuncia sobre su foto con un líder de Vox: \"Esa publicación ha dado lugar a interpretaciones\" - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "e351e9fba9b5": {
-      "title": "Apple se fija en Avilés para promocionar su nuevo iPhone 18 Pro - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "7455c6c84fd8": {
-      "title": "El Televisero, autor en El Televisero - Página 1532 de 1532 - El Televisero",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "99b9003390e5": {
-      "title": "Software Verifactu: ¿la herramienta gratuita de Hacienda o un programa adaptado? - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3923,7 +3358,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3934,7 +3369,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3945,7 +3380,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3956,29 +3391,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "aa953e084552": {
-      "title": "Por todas las Maricarmen: sí o sí - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "d98dfbf7389b": {
-      "title": "A viernes 25 de septiembre, Carrefour empieza a vender turrones - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -3989,40 +3402,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "9875ad901c8e": {
-      "title": "Lo de Maricarmen ha hecho crack - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "409dc4a25322": {
-      "title": "'Los ochos' de Erandio piden ayuda: más de 120 familias corren el riesgo de ser expulsadas de sus casas por culpa de un fondo buitre - El HuffPost",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "ef1905b5782f": {
-      "title": "'Sueños de Libertad', avance del próximo capítulo del viernes 25 de septiembre: Gabriel culmina su venganza en la serie de Antena 3 - El Televisero",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4034,7 +3414,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4045,7 +3425,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4056,7 +3436,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4067,7 +3447,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4078,7 +3458,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4089,7 +3469,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4100,7 +3480,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4111,7 +3491,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4122,7 +3502,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4133,7 +3513,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4144,7 +3524,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4155,7 +3535,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4166,7 +3546,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4177,7 +3557,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4188,7 +3568,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4199,7 +3579,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4210,7 +3590,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4221,7 +3601,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4232,7 +3612,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4243,7 +3623,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4254,7 +3634,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4265,7 +3645,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4276,7 +3656,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4287,7 +3667,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4298,7 +3678,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4309,7 +3689,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4320,7 +3700,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4331,7 +3711,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4342,7 +3722,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4353,7 +3733,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4365,7 +3745,7 @@
         "EFE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4376,20 +3756,21 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
     "64b2659462c7": {
       "title": "Irn ofrece a Estados Unidos un plan para reabrir Ormuz y poner fin de la guerra en siete das",
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
+        "20minutos",
         "COPE",
         "Público",
         "RTVE"
       ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "status": "ELIGIBLE",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4400,7 +3781,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4412,7 +3793,7 @@
         "EFE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4423,7 +3804,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4434,7 +3815,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4445,20 +3826,21 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
     "4b3f49f8c301": {
       "title": "Maricarmen, desde el Gregorio Marañón: “Gracias a todos los que han estado conmigo para defender mi casa”",
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "20minutos",
         "EL PAÍS",
-        "El Mundo"
+        "El Mundo",
+        "Público"
       ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "status": "ELIGIBLE",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4469,7 +3851,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4480,7 +3862,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4491,7 +3873,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4502,7 +3884,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4513,18 +3895,7 @@
         "La Vanguardia"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "53d9d71f382f": {
-      "title": "Quién es quién en el reparto de 'El problema final', la nueva serie de Netflix: Estos son todos los personajes, actores y actrices - El Televisero",
-      "source_count": 1,
-      "sources": [
-        "El HuffPost"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4536,7 +3907,7 @@
         "elDiario.es"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4547,7 +3918,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4558,7 +3929,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4569,7 +3940,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4580,7 +3951,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4591,7 +3962,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4602,7 +3973,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4613,7 +3984,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4624,7 +3995,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4635,7 +4006,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4646,7 +4017,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4657,7 +4028,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4668,7 +4039,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4679,7 +4050,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4690,7 +4061,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4701,7 +4072,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4712,7 +4083,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4723,7 +4094,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4734,74 +4105,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "19cf7c57f586": {
-      "title": "Starship completa con éxito un ensayo de lanzamiento antes de su próximo vuelo orbital",
-      "source_count": 1,
-      "sources": [
-        "20minutos"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "67ac3cedba9f": {
-      "title": "Un mejor manejo del hipoparatiroidismo crónico pasa por hallar pacientes no adecuadamente controlados, según 'EndoValue'",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "07fa47acab43": {
-      "title": "Azcón prepara un decreto de fiscalidad diferenciada para el medio rural e incluirá partidas en los presupuestos",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "01c2ed6c2190": {
-      "title": "Las obras en la SE-40 en Sevilla destapan varios metros de restos arqueológicos del acueducto romano de Itálica",
-      "source_count": 2,
-      "sources": [
-        "ABC",
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "c5e527754c39": {
-      "title": "Granada aprueba ayudas de emergencia habitacional para los desalojados por los seísmos",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "22a7d6c4b73f": {
-      "title": "Activan una campaña de donaciones para reparar los daños de los terremotos en la Basílica de las Angustias de Granada",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4812,7 +4116,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4823,7 +4127,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4834,7 +4138,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4845,7 +4149,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4856,7 +4160,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4867,7 +4171,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4878,7 +4182,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4889,7 +4193,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4900,7 +4204,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4911,7 +4215,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4922,7 +4226,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4934,18 +4238,19 @@
         "El Mundo"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
     "ae2212a15b65": {
       "title": "La línea 6 de Metro de Madrid funcionará sin conductor en el primer trimestre de 2027",
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "20minutos"
+        "20minutos",
+        "ABC"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -4957,51 +4262,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "6cad2636f935": {
-      "title": "Un ciclo de conciertos con órganos históricos recorrerá 14 municipios andaluces",
-      "source_count": 1,
-      "sources": [
-        "ABC"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "fc5fe439141e": {
-      "title": "Las farmacias de Andalucía renuevan casi un millón de tratamientos de pacientes del SAS en ocho meses",
-      "source_count": 1,
-      "sources": [
-        "ABC"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "fb6c35a920a8": {
-      "title": "Israel Galván: «Me he dado cuenta de que le caigo mejor a la gente cuando bailo»",
-      "source_count": 1,
-      "sources": [
-        "ABC"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "0c9f86320c01": {
-      "title": "Zelensky asegura que Trump ha aceptado dar a Ucrania licencias para los Patriot",
-      "source_count": 1,
-      "sources": [
-        "ABC"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5012,7 +4273,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5023,7 +4284,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5034,7 +4295,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5045,7 +4306,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5056,7 +4317,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5067,7 +4328,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5078,7 +4339,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5089,106 +4350,7 @@
         "Europa Press"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "28f7ccfb6d07": {
-      "title": "Acuerdo entre Consell y sindicatos para destinar 15,4 millones a mejorar salario y plantilla de los bomberos forestales",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "f2822ef60780": {
-      "title": "La Cámara de Cuentas recomienda al IAPH \"limitar\" el uso de contratos menores y planificar necesidades de contratación",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "fc83b00e9a07": {
-      "title": "Detenida una persona por robar objetos por valor de 30.000 euros en una vivienda de Zuares (León)",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "f88120380a00": {
-      "title": "Cepyme firma un acuerdo con universidades para cooperar entre las instituciones y las empresas",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "d6ddb2bd6e74": {
-      "title": "Cae la propuesta de Ordenanzas de Collboni pese a aprobarse subir la tasa a cruceristas de escala",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "d3e102ef6425": {
-      "title": "El Parlamento Europeo forma a los profesores del programa de Escuelas Embajadoras de la UE",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "15507abcadb6": {
-      "title": "MGallery amplía su presencia en Grecia con la apertura de un hotel de lujo en la isla de Samos",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "b2ab48bc83a1": {
-      "title": "El Gregorio Marañón lleva por primera vez en España la atención farmacéutica presencial al domicilio",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "43fac22833d5": {
-      "title": "Fujitsu reúne en Madrid su mayor evento tecnológico en Europa para impulsar la \"transformación dinámica\" de las empresas",
-      "source_count": 1,
-      "sources": [
-        "Europa Press"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5199,7 +4361,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5210,7 +4372,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5221,7 +4383,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5232,7 +4394,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5243,7 +4405,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5254,7 +4416,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5265,7 +4427,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5276,7 +4438,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5287,18 +4449,7 @@
         "EL PAÍS"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
-      "revision": 1,
-      "parent_event_id": null
-    },
-    "445c98d1384a": {
-      "title": "AnsIAdad",
-      "source_count": 1,
-      "sources": [
-        "La Vanguardia"
-      ],
-      "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5309,7 +4460,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5320,7 +4471,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5331,7 +4482,7 @@
         "RTVE"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5342,7 +4493,7 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     },
@@ -5353,7 +4504,890 @@
         "20minutos"
       ],
       "status": "WAITING",
-      "last_seen": "2026-09-25T09:22:10.037800Z",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "592d69b1b191": {
+      "title": "Corea del Sur acusa a Zelenski de violar la confidencialidad del traslado de soldados norcoreanos",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "2684bd1e8256": {
+      "title": "Vivienda, precios y clima: las principales preocupaciones que marcan el análisis del turismo en España en 2026",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "954a9e6dccc7": {
+      "title": "La microbiota intestinal podría tener un papel clave en la salud y la función muscular",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "5742ca8dbc69": {
+      "title": "UEFA avisa del \"modelo frágil\" que están creando los clubes de la Premier con su mercado interno de fichajes",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "bff21403e577": {
+      "title": "El pleno del Ayuntamiento de Huesca aprueba la concesión de la Medalla de Oro de la Ciudad a la deportista, Inés Bergua",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "134a44f8e237": {
+      "title": "Ternera ecológica riojana y solidaridad se vuelven a dar cita este sábado con la degustación de CPAER",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "3b84a4fe2a6d": {
+      "title": "La ejecución del viaducto de los Tramposos en Valladolid suma al 30 de septiembre otro corte más el 2 de octubre",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "430afec32585": {
+      "title": "La Junta aprobará por decreto ley antes de final de año una norma integral frente a las agresiones a sanitarios",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "c739e4d0203f": {
+      "title": "Un terremoto de 3.5 cerca de Sucina (Murcia) se deja notar en el municipio de Murcia",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "984fb197ade3": {
+      "title": "Bustinduy y Urtasun afirman que Puente se equivocó de adversario al criticar a Sumar: No toca hacer el \"panoli\" en redes",
+      "source_count": 2,
+      "sources": [
+        "Europa Press",
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "a79a16bd246c": {
+      "title": "Cuatro heridos leves tras un aparatoso accidente entre un camión y dos turismos en la A-3",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "924d6f455b09": {
+      "title": "Consumo investiga los portales de alquiler para controlar el cumplimiento de las normas de precios",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "503daf31e703": {
+      "title": "Alumnos de Formación Profesional de Inca aprenderán a usar drones en una planta fotovoltaica en funcionamiento de Endesa",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "fd9e40da9bd5": {
+      "title": "Hostelería de España pide cambiar la \"obsesión por las cifras\" turísticas por un modelo enfocado en la calidad",
+      "source_count": 1,
+      "sources": [
+        "Europa Press"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "6789ea982d9d": {
+      "title": "Vídeo | Centros de datos: ¿debe Europa decir basta?",
+      "source_count": 1,
+      "sources": [
+        "EL PAÍS"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "90fc424a2a5e": {
+      "title": "300 nous bombers per fer front a l’emergència climàtica",
+      "source_count": 1,
+      "sources": [
+        "EL PAÍS"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "bc0f3de7129e": {
+      "title": "AnsIAdad",
+      "source_count": 1,
+      "sources": [
+        "La Vanguardia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "5b07bf417f9a": {
+      "title": "Nueve ciudadanos juzgarán a Begoña Gómez: permanecerán incomunicados para deliberar y cobrarán 70 euros al día",
+      "source_count": 1,
+      "sources": [
+        "20minutos"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "12187ab68e32": {
+      "title": "Locura por las entradas para la despedida de Messi con Argentina: se agotan en dos horas",
+      "source_count": 1,
+      "sources": [
+        "20minutos"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "5354e04db12c": {
+      "title": "Cazas de Finlandia y Suecia interceptan aviones de guerra rusos sobre el Báltico",
+      "source_count": 1,
+      "sources": [
+        "20minutos"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "786d930c01d3": {
+      "title": "Iberdrola culmina su plan de transformación de la red eléctrica valenciana dañada por la DANA",
+      "source_count": 1,
+      "sources": [
+        "20minutos"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "fa28fb3dc1f8": {
+      "title": "La imagen para la historia de Maricarmen: el reportaje de 'El Intermedio' que traspasará el tiempo",
+      "source_count": 1,
+      "sources": [
+        "20minutos"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "f4988f945a55": {
+      "title": "Adif contrata en 241,6 millones las obras de AVE entre Manzanos (Álava) y La Puebla de Arganzón (Burgos)",
+      "source_count": 1,
+      "sources": [
+        "ABC"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "332f1ceb7981": {
+      "title": "Discos de la semana: Regresar a los 60 años con el espíritu juguetón de Mike D",
+      "source_count": 1,
+      "sources": [
+        "ABC"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "e346a86f2f47": {
+      "title": "Todo listo en Sevilla para la Nocturna del Guadalquivir más multitudinaria",
+      "source_count": 1,
+      "sources": [
+        "ABC"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "20b324f080db": {
+      "title": "Salvador Morales, nuevo secretario de la Federación Internacional de Sociedades de Cirugía Endoscópica (IFSES)",
+      "source_count": 1,
+      "sources": [
+        "ABC"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "50e7322553e5": {
+      "title": "El Ayuntamiento plantará más árboles y mejorará los parques del Canal y del Flamenco",
+      "source_count": 1,
+      "sources": [
+        "ABC"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "0663d4eba1da": {
+      "title": "La línea 3 Sur del Metro de Sevilla irá soterrada por Bellavista",
+      "source_count": 1,
+      "sources": [
+        "ABC"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "2801ff3ca216": {
+      "title": "Antonio Díaz (CECO), en Valencia: «La Base Logística es un proyecto estratégico de Estado y una oportunidad histórica»",
+      "source_count": 1,
+      "sources": [
+        "ABC"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "68a33be83fe8": {
+      "title": "Sánchez visita Toledo a espaldas de Page y elige Noblejas, cuyo alcalde es «enemigo» del barón socialista",
+      "source_count": 3,
+      "sources": [
+        "ABC",
+        "El Mundo",
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "05291121f5ef": {
+      "title": "Juan Jesús Vivas, presidente de Ceuta: «No vienen de un país en guerra, deben volver por la misma puerta que entraron»",
+      "source_count": 1,
+      "sources": [
+        "ABC"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "bba4721c2f79": {
+      "title": "Soda Stereo en Madrid, eclipsada por el espectro de su vocalista",
+      "source_count": 1,
+      "sources": [
+        "ABC"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "3cc86c26899c": {
+      "title": "UGT impugna ante la Audiencia Nacional el convenio estatal de comercio textil",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "89686a0ace4f": {
+      "title": "Los creadores del himno de la visita del Papa ponen banda sonora a los 100 años del Domund",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "75b849938c9a": {
+      "title": "Bain & Company destaca que España “ha gestionado mucho mejor la inmigración” que otros países europeos",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "7a1b939b2dc6": {
+      "title": "Bustinduy cree que la expropiación de la casa de Maricarmen sentaría “precedente” y pide “voluntad” para aprobar el decreto de vivienda",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "2bf22cba4d6f": {
+      "title": "Revolut avanza con la compra de Cetelem Argentina tras recibir autorización del banco central del país",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "cf7189bbeec4": {
+      "title": "El bloqueo de un mecanismo de supervivencia celular podría facilitar la eliminación de tumores",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "e3acff7f9424": {
+      "title": "Grupo Lar nombra a Miguel Ángel Peña nuevo consejero delegado",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "a046d76a4750": {
+      "title": "El Gobierno de Ayuso se pregunta dónde estaba la izquierda cuando se suicidó una mujer tras ser desahuciada en Cataluña",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "5ea0b5b5a71f": {
+      "title": "La producción industrial del metal crece un 4,4% en julio, pero la cifra de negocios modera su subida al 2,7%",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "560809bd2e6c": {
+      "title": "El PP pide a Bruselas que valore si la investigación sobre las “cloacas” del PSOE afectan a Ribera",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "342a032c66b1": {
+      "title": "La morosidad de la banca bajó al 2,51% en julio",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "975c4522b4c9": {
+      "title": "El calor veraniego se despide el primer fin de semana del otoño",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "8bd94311d4c5": {
+      "title": "Un ensayo evalúa la viabilidad de incorporar la rehabilitación cognitiva a la atención habitual de la esclerosis múltiple",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "3d9328d62da9": {
+      "title": "CCOO denuncia el cese fraudulento de personal interino y el retraso de contrataciones necesarias",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "072d77f07fa0": {
+      "title": "El Gobierno de Ayuso dice que la Ley de Vivienda “no ha hecho otra cosa que restringir la oferta”",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "023bf2740bd9": {
+      "title": "Miriam Garlo ve “muchos cambios” en la sociedad tras el estreno de ‘Sorda’",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "b519077c5005": {
+      "title": "La APM pide a Interior que las Fuerzas de Seguridad del Estado garanticen el libre ejercicio del periodismo",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "f3ff22f099c9": {
+      "title": "Vox exige un impulso institucional de la investigación de las enfermedades raras",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "c3322a13baa1": {
+      "title": "El gasto en pensiones aumenta un 6,3% en septiembre y se sitúa en los 14.498,2 millones",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "68e27559f48e": {
+      "title": "El Museo de Ciencias Naturales convierte la investigación en una aventura nocturna para familias y jóvenes",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "bdf50aa101c0": {
+      "title": "El Gobierno destinará 55,7 millones al servicio para difundir los resultados de las elecciones",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "9252290feb38": {
+      "title": "Sánchez en Harvard: \"Algunos algoritmos no han sido construidos para servirnos, sino para esclavizarnos\"",
+      "source_count": 1,
+      "sources": [
+        "Servimedia"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "6babd4ea6e50": {
+      "title": "Generalitat y sindicatos pactan 15,4 millones para la mejora salarial y el refuerzo de la plantilla de los bomberos forestales",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "ab6e77bc50f9": {
+      "title": "'Conexión a Tierra’: un viaje por la España rural que convive con las renovables",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "b9ab14c18c2e": {
+      "title": "Iván Cerdeño: “Yo no me imaginaría nunca cocinando en un sitio que no fuese Toledo”",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "76a9d5dca26e": {
+      "title": "La Guardia Civil desarticula una red de ciberdelincuencia que suplantó a un juzgado de Valladolid",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "b8b031992dea": {
+      "title": "Un contenedor de papel, calcinado por completo esta noche en Logroño",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "c191b9f29c62": {
+      "title": "Maricarmen, desde el hospital: “Lo que quiero es que este problema con los fondos buitre se elimine de una vez”",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "6ac5e43c903d": {
+      "title": "Un cráter recién formado en la Luna revela que los impactos alteran el suelo a kilómetros de distancia",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "8b659e3e5c8a": {
+      "title": "El Festival de las Artes Visuales y Escénicas arranca en Santa Cruz de La Palma con teatro, circo y experiencias sonoras",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "5790106819d5": {
+      "title": "La tradición llega al Otoño Cultural CajaCanarias de La Palma de la mano de Benito Cabrera y José Manuel Ramos",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "78471ddd07fc": {
+      "title": "Vivas propone la devolución “automática e inmediata” de los migrantes que entren a Ceuta",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "0d47a7cfdea7": {
+      "title": "'La bola negra' y su estrategia para los Oscar: todo el elenco competirá como intérpretes de reparto y no como protagonistas",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "d3226469b768": {
+      "title": "Dolores Corujo anuncia su intención de repetir como candidata del PSOE al Cabildo de Lanzarote",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "888118f50bab": {
+      "title": "Un encuentro de improvisación poética en Villa de Mazo une las tradiciones de Canarias y Cuba",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "7c39f4a8d27e": {
+      "title": "‘La Palma quiere el TMT’ pide “claridad” sobre el futuro del telescopio y dice que la isla “no ha sido oficialmente descartada”",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "3cd34fe09466": {
+      "title": "Dos heridos tras la colisión entre un turismo y una motocicleta en La Laguna",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "225d2b0d3eee": {
+      "title": "Investigados dos motoristas por conducir a casi 200 kilómetros por hora en una carretera limitada a 90 en Guadalajara",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "8bf33bfee34b": {
+      "title": "Localizado un cayuco con 107 migrantes en aguas próximas a El Hierro",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "289837feee62": {
+      "title": "Un incendio forestal en Calvos de Randín (Ourense) supera las 350 hectáreas y amenaza a zonas pobladas",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "bfa059e44f06": {
+      "title": "La Palma recibe el premio al Destino Turístico Sostenible y Ecofinca Nogales a la Innovación",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "89e3a2eb8e5d": {
+      "title": "Qué dice la Ley de Propiedad Horizontal sobre los vecinos que dejan siempre la basura en el rellano, según un experto",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "fed19b2517eb": {
+      "title": "Callejera y feminista, esta es la chirigota de Cádiz que ha sido invitada por Shakira para actuar mañana en Madrid",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "5cc9c87b0d21": {
+      "title": "La recogida de la uva airén marca la fase final de una vendimia“inusualmente rápida” en la DO La Mancha",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "9d9752d68540": {
+      "title": "Luz Casal lleva al Festival del Patio + Metrópolis su particular forma de habitar las canciones",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "1bb2f37b04d2": {
+      "title": "El arroz aragonés busca una figura de calidad para frenar la pérdida de más de la mitad de su superficie de cultivo",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "4e7b0e0b5f36": {
+      "title": "Un accidente con un camión ardiendo corta media hora la A-3 en Madrid a la altura de Santa Eugenia",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
+      "revision": 1,
+      "parent_event_id": null
+    },
+    "0e0e66cdc6b0": {
+      "title": "¿Cómo es el tratado de paz más antiguo del mundo? Un fragmento encontrado en Turquía revela nuevos detalles",
+      "source_count": 1,
+      "sources": [
+        "elDiario.es"
+      ],
+      "status": "WAITING",
+      "last_seen": "2026-09-25T09:32:42.463047Z",
       "revision": 1,
       "parent_event_id": null
     }

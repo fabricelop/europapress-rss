@@ -1,10 +1,31 @@
 {
-  "checked_at": "2026-09-25T09:22:16.802104+00:00",
+  "checked_at": "2026-09-25T09:33:02.621183+00:00",
   "before": [],
   "repair_actions": [],
   "remaining": [],
-  "healthy_source_count": 14,
-  "source_failures": [],
-  "events_bytes": 805544,
+  "healthy_source_count": 11,
+  "source_failures": [
+    {
+      "source": "El HuffPost",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "COPE",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "EFE",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "EFE Deportes",
+      "type": "sport",
+      "error": "HTTP Error 503: Service Unavailable"
+    }
+  ],
+  "events_bytes": 750996,
   "ok": true
 }
