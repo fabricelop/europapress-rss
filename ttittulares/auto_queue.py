@@ -80,6 +80,16 @@ def queue_eligible(events_doc, processing, decisions, minimum, stamp, mode="web"
             "sources": list(event.get("sources") or []),
             "source_count": int(event.get("source_count") or 0),
             "drafted_source_count": int(event.get("source_count") or 0),
+            "source_evidence": [
+                {
+                    "source": str(a.get("source") or ""),
+                    "title": str(a.get("title") or ""),
+                    "url": str(a.get("url") or ""),
+                    "first_seen": a.get("first_seen"),
+                }
+                for a in (event.get("appearances") or [])
+                if str(a.get("source") or "") in set(event.get("sources") or [])
+            ][:16],
             "selected_at": stamp,
             "status": "PROCESSING",
             "selection_mode": "AUTO_PARALLEL" if mode == "parallel" else "AUTO_WEB",
