@@ -27,6 +27,58 @@ def norm(value):
     text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
     return " ".join(text.casefold().split())
 
+def _validate_raster_integrity(data: bytes, label: str):
+    import io
+    from PIL import Image, ImageStat, UnidentifiedImageError
+
+    if len(data) < 4096:
+        raise ValueError(f"{label}: imagen raster demasiado pequeña o inválida")
+    try:
+        with Image.open(io.BytesIO(data)) as probe:
+            probe.verify()
+        with Image.open(io.BytesIO(data)) as image:
+            image.load()
+            width, height = image.size
+            if width < 600 or height < 360:
+                raise ValueError(f"{label}: dimensiones insuficientes ({width}x{height})")
+
+            # Rechaza transparencia masiva, típica de un render incompleto.
+            if "A" in image.getbands():
+                alpha = image.getchannel("A").resize((128, 128))
+                alpha_values = list(alpha.getdata())
+                transparent_ratio = sum(1 for v in alpha_values if v < 16) / max(1, len(alpha_values))
+                if transparent_ratio > 0.25:
+                    raise ValueError(f"{label}: demasiada superficie transparente ({transparent_ratio:.0%})")
+
+            rgb = image.convert("RGB")
+            rgb.thumbnail((256, 256))
+            width2, height2 = rgb.size
+            pixels = list(rgb.getdata())
+            if not pixels:
+                raise ValueError(f"{label}: raster vacío")
+
+            near_black = lambda p: p[0] < 12 and p[1] < 12 and p[2] < 12
+            black_ratio = sum(1 for p in pixels if near_black(p)) / len(pixels)
+            if black_ratio > 0.60:
+                raise ValueError(f"{label}: imagen anómalamente negra ({black_ratio:.0%})")
+
+            # Detecta el fallo observado: una franja válida arriba y el resto negro.
+            bottom_start = int(height2 * 0.45)
+            bottom = [rgb.getpixel((x, y)) for y in range(bottom_start, height2) for x in range(width2)]
+            if bottom:
+                bottom_black = sum(1 for p in bottom if near_black(p)) / len(bottom)
+                if bottom_black > 0.88:
+                    raise ValueError(f"{label}: bloque negro/incompleto en la parte inferior ({bottom_black:.0%})")
+
+            # Rechaza un raster prácticamente plano/vacío.
+            gray = rgb.convert("L")
+            stat = ImageStat.Stat(gray)
+            if stat.stddev and stat.stddev[0] < 4.0:
+                raise ValueError(f"{label}: imagen prácticamente uniforme o vacía")
+    except (UnidentifiedImageError, OSError, SyntaxError) as exc:
+        raise ValueError(f"{label}: raster corrupto o truncado: {exc}")
+
+
 def validate_generated_image(item):
     import base64
     image = item.get("image") or {}
@@ -63,13 +115,7 @@ def validate_generated_image(item):
             data = base64.b64decode(payload, validate=True)
         except Exception as exc:
             raise ValueError(f"data URL raster inválida: {exc}")
-        if len(data) < 4096:
-            raise ValueError("imagen raster inline demasiado pequeña")
-        is_png = data.startswith(b"\x89PNG\r\n\x1a\n")
-        is_webp = data[:4] == b"RIFF" and data[8:12] == b"WEBP"
-        is_jpg = data.startswith(b"\xff\xd8\xff")
-        if not (is_png or is_webp or is_jpg):
-            raise ValueError("imagen raster inline con firma inválida")
+        _validate_raster_integrity(data, "imagen raster inline")
         return
     if not url.startswith(prefix):
         raise ValueError("imagen generada sin URL raw válida")
@@ -83,13 +129,7 @@ def validate_generated_image(item):
     if not path.exists():
         raise ValueError("fichero de imagen generada inexistente en main")
     data = path.read_bytes()
-    if len(data) < 4096:
-        raise ValueError("imagen raster generada demasiado pequeña o inválida")
-    is_png = data.startswith(b"\x89PNG\r\n\x1a\n")
-    is_webp = data[:4] == b"RIFF" and data[8:12] == b"WEBP"
-    is_jpg = data.startswith(b"\xff\xd8\xff")
-    if not (is_png or is_webp or is_jpg):
-        raise ValueError("fichero raster generado con firma inválida")
+    _validate_raster_integrity(data, f"imagen generada {filename}")
 
 def validate_ready(payload):
     item = payload.get("prepared_item") or {}
