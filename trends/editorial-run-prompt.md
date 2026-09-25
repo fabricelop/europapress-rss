@@ -16,8 +16,10 @@ No uses Telegram. No proceses TTiTTulares ni SeLoRecordamos. No despliegues Verc
 2. Lee `trends/recent.json` y `trends/editorial-config.json`.
 3. Si `trends/recent.json.captured_at` supera 20 minutos, actualiza `trends/refresh-trigger.txt` en `main` para pedir una captura fresca y después relee `trends/editorial-queue.json`, `trends/recent.json` y `trends/editorial-config.json`.
 4. Si la cola queda vacía, termina el flujo editorial sin investigación web ni escrituras adicionales.
-5. Si hay pendientes, procesa TODOS los grupos/items del más antiguo al más reciente. Un fallo no debe bloquear los demás.
-6. Relee estado fresco antes de cada escritura. Ante conflicto, relee SHA y reintenta de forma segura.
+5. Si hay pendientes, procesa TODOS los grupos/items del más antiguo al más reciente. La cola puede contener `preparing`, `update` y también `problematic`.
+6. Una tendencia `problematic` se reintenta automáticamente mientras siga en el Top 10. Si ya salió del Top 10, no debe aparecer en la cola editorial y no se fuerza ningún nuevo intento.
+7. Un fallo no debe bloquear los demás.
+8. Relee estado fresco antes de cada escritura. Ante conflicto, relee SHA y reintenta de forma segura.
 
 ## Agrupación
 
@@ -39,7 +41,9 @@ Investiga por qué es tendencia AHORA en España con búsquedas web actuales y f
 
 - Política/controversia: factual y neutral.
 - Deportes: confirma expresamente el estado/resultado justo antes de redactar. Nunca presentes como final algo que siga en curso o cuyo resultado no hayas confirmado.
-- Si tras DOS búsquedas distintas no puedes determinar el detonante con suficiente fiabilidad, escribe `trends/editorial-outbox/<id>-r<revision>.json` con `id,name,revision,status:"problematic"` y un `problem_reason` concreto. Continúa con los demás.
+- Si el item llega como `problematic`, trata la ejecución como un NUEVO intento: cambia las consultas y usa el contexto acumulado, no te limites a repetir exactamente las búsquedas anteriores.
+- Si tras DOS búsquedas distintas no puedes determinar el detonante con suficiente fiabilidad, escribe `trends/editorial-outbox/<id>-r<revision>.json` con `id,name,revision,status:"problematic"` y un `problem_reason` concreto. Continúa con los demás. Ese estado NO elimina la tendencia del Top 10: mientras siga allí, el radar la mantendrá visible y volverá a incluirla para otro intento en una ejecución posterior.
+- Nunca inventes una explicación solo para sacar una tendencia de `problematic`.
 
 Usa el rank ACTUAL de `trends/recent.json` al redactar: Top10 = `Tn`; fuera del Top10, cuando proceda según el estado actual, usa `R<mejor_puesto>`.
 
