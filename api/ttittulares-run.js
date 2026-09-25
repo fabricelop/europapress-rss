@@ -40,6 +40,8 @@ export default async function handler(req,res){
 
   try{
     const comments=await latestComments(token);
+    const enabled=comments.some(c=>String(c.body||"").trim()===READY_MARKER);
+    if(!enabled)return res.status(503).json({error:"work_trigger_not_ready"});
     const latest=[...comments].reverse().find(c=>typeof c.body==="string"&&c.body.startsWith(RUN_PREFIX));
     if(latest){
       const age=Date.now()-new Date(latest.created_at).getTime();
