@@ -29,7 +29,7 @@
       "display_in_web_control": "links",
       "store": "github_raw_url",
       "rights_status_default": "generated",
-      "queue_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL en formato raster (PNG/WebP/JPG), estilo caricatura editorial de alta calidad, visualmente rica y con un gag claro ligado al detonante real de la tendencia. NO uses fotografías ni imágenes encontradas en Internet. NO uses SVG, iconos planos, mascotas vectoriales, infografías ni dibujos geométricos simples como resultado final. La escena debe parecer una viñeta/caricatura profesional: personajes expresivos, profundidad, iluminación, textura, detalle y acción; poco o ningún texto. Si se quita el texto, el chiste debe seguir funcionando. Si no puedes generar y persistir una imagen raster de esa calidad, NO marques el item ready: deja image_generation_status=\"pending_renderer\" y el item pendiente para reintento.",
+      "queue_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA de caricatura/viñeta de prensa de alta calidad. Referencia positiva: la línea de Cleveland aprobada por el usuario: escena completa y ambiental, protagonista integrado en el entorno, metáfora o exageración visual clara, profundidad, iluminación, textura, expresiones y acción. PROHIBIDO como salida final: infografía, diagrama, esquema, flechas o conectores explicativos, cajas/nodos, círculos tipo medallón, marcador/podio abstracto, layout de interfaz o televisión, cabezas flotantes, comparación por paneles, póster informativo, iconografía plana o composición cuyo chiste dependa de leer etiquetas. Debe haber un gag VISUAL ligado al detonante real; al quitar todo el texto, la escena y el chiste deben seguir entendiéndose. Usa cero texto siempre que sea posible; si es imprescindible, que sea breve y parte natural del escenario. DESPUÉS DE GENERAR, inspecciona la imagen real, no solo el prompt. Si detectas cualquiera de los patrones prohibidos, RECHÁZALA y REGENERA con una composición de escena única. Solo puede marcarse ready si la imagen supera el control visual posterior y se guarda image.style_version='editorial-scene-v2-cleveland' y image.style_check con TODOS estos booleanos true: reviewed_after_generation, single_narrative_scene, visual_gag_without_text, no_infographic_layout, no_diagram_arrows_or_connectors, no_ui_or_scoreboard_layout, low_text, depth_lighting_texture. Si no puedes obtener una imagen que pase ese control o persistirla en GitHub, NO marques ready: deja image_generation_status='pending_renderer' para reintento.",
       "output_schema": {
         "image": {
           "url": "github_raw_generated_raster_url",
@@ -37,10 +37,21 @@
           "source_url": "github_file_url",
           "rights_status": "generated",
           "alt": "short_factual_description",
-          "generated": true
+          "generated": true,
+          "style_version": "editorial-scene-v2-cleveland",
+          "style_check": {
+            "reviewed_after_generation": true,
+            "single_narrative_scene": true,
+            "visual_gag_without_text": true,
+            "no_infographic_layout": true,
+            "no_diagram_arrows_or_connectors": true,
+            "no_ui_or_scoreboard_layout": true,
+            "low_text": true,
+            "depth_lighting_texture": true
+          }
         }
       },
-      "rule": "Cada item ready debe llevar SIEMPRE una imagen raster original generada específicamente para la tendencia. La web se usa solo para verificar el detonante y contexto. Calidad mínima: caricatura editorial profesional de alto detalle, gag visual relacionado directamente con la causa real, escena dinámica, expresiones claras, profundidad, iluminación y textura; cero o muy poco texto. Rechaza como salida final SVG, clip-art, iconos planos, mascotas simples, pósteres genéricos, retratos sin gag y composiciones que parezcan una interfaz vectorial. En temas sensibles, nunca humor sobre víctimas o sufrimiento. Si no hay renderer raster disponible o no puede persistirse el fichero, no sustituyas por SVG: deja pending_renderer.",
+      "rule": "Cada item ready debe llevar una imagen raster original generada específicamente para la tendencia y superar una revisión VISUAL posterior a la generación. Línea aprobada: escena narrativa de caricatura editorial tipo Cleveland, con entorno, acción, expresiones, profundidad, iluminación y textura; el gag debe funcionar sin texto. Rechazo automático editorial: infografía, diagrama, esquema, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/plató gráfico, cabezas flotantes, paneles comparativos, póster informativo, clip-art, retrato sin gag o exceso de texto. Si aparece cualquiera de esos rasgos, regenerar; no persistir como ready.",
       "generated_image_storage": {
         "prepared": true,
         "enabled": true,
@@ -49,16 +60,20 @@
         "public_url_pattern": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/<id>-r<revision>.<ext>",
         "source": "TTendencias / ChatGPT",
         "rights_status": "generated",
-        "mode": "raster_editorial_caricature",
+        "mode": "raster_editorial_scene_v2",
         "trigger": "always_for_ready",
         "svg_fallback_allowed": false,
         "rules": [
-          "Caricatura/ilustración editorial de alta calidad y alto detalle, no dibujo plano ni clip-art.",
-          "Debe contener un gag visual ligado al detonante real de la tendencia y funcionar con poco o ningún texto.",
-          "Prioriza escena, acción, expresiones, profundidad, iluminación y textura frente a cartel o infografía.",
+          "Referencia positiva: escena editorial narrativa tipo Cleveland aprobada por el usuario.",
+          "Una sola escena coherente con protagonista(s), entorno y acción; no montaje de paneles ni diagrama.",
+          "Gag visual ligado al detonante real que siga funcionando al eliminar todo el texto.",
+          "Prohibidos flechas/conectores, cajas/nodos, medallones, marcadores abstractos, estética de interfaz/infografía, cabezas flotantes y composición de debate esquemático.",
+          "Cero texto siempre que sea posible; si es necesario, breve y diegético dentro de la escena.",
+          "Caricatura/ilustración editorial de alta calidad: profundidad, iluminación, textura, volumen y expresiones.",
           "No usar SVG, iconos simples, mascotas vectoriales ni formas geométricas como imagen final.",
           "No atribuir citas o hechos no verificados a personas reales.",
           "En política, conflictos, sucesos o víctimas: neutralidad factual y nunca humor sobre víctimas o sufrimiento.",
+          "Antes de ready, inspeccionar la imagen generada y registrar style_version + style_check completo.",
           "El fichero final debe ser PNG, WebP o JPEG y existir realmente en GitHub antes de marcar ready."
         ]
       },
@@ -70,7 +85,8 @@
       "minimum_search_routes": 0,
       "require_direct_https_image_url": true,
       "prefer_current_event_over_archive": false,
-      "verify_image_relevance": true
+      "verify_image_relevance": true,
+      "style_version": "editorial-scene-v2-cleveland"
     },
     "queue_consumer_only": true,
     "queue_states": [
