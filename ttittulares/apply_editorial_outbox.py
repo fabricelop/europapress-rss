@@ -56,6 +56,7 @@ def _validate_raster_integrity(data: bytes, label: str):
         with Image.open(io.BytesIO(data)) as image:
             image.load(); w,h=image.size
             if w < 600 or h < 360: raise ValueError(f"{label}: dimensiones insuficientes ({w}x{h})")
+            if max(w,h) > 896: raise ValueError(f"{label}: resolución excesiva ({w}x{h}); normalizar a <=896 px de lado largo")
             if "A" in image.getbands():
                 alpha=image.getchannel("A").resize((128,128)); vals=list(alpha.getdata())
                 if sum(1 for v in vals if v<16)/max(1,len(vals)) > .25: raise ValueError(f"{label}: demasiada transparencia")
