@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-25T20:55:06.380691+00:00",
+  "checked_at": "2026-09-25T23:29:08.203068+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -52,8 +52,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.5,
-      "run_id": 36188535988,
+      "age_minutes": 0.6,
+      "run_id": 36201151761,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -74,46 +74,64 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 6,
-      "overdue_count": 6,
-      "oldest_age_minutes": 223.0,
+      "pending_count": 12,
+      "overdue_count": 9,
+      "oldest_age_minutes": 108.1,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "948106d5df49",
-          "name": "Ayuso",
-          "status": "update",
-          "age_minutes": 223.0
+          "id": "9a39e6471274",
+          "name": "Alejandra Neira",
+          "status": "preparing",
+          "age_minutes": 108.1
         },
         {
-          "id": "ed9eb5711fd2",
-          "name": "Héctor Álvarez",
+          "id": "2d09561e7e2f",
+          "name": "#CuelgamurosTVE",
           "status": "preparing",
-          "age_minutes": 124.0
+          "age_minutes": 78.2
         },
         {
-          "id": "13c4018e5215",
-          "name": "Haaland",
+          "id": "ef2f71c7d3df",
+          "name": "Ureña",
           "status": "preparing",
-          "age_minutes": 124.0
+          "age_minutes": 78.2
         },
         {
-          "id": "8f341647456d",
-          "name": "Noblejas",
+          "id": "1a5eed26f2e0",
+          "name": "#LaVozAudiciones",
           "status": "preparing",
-          "age_minutes": 124.0
+          "age_minutes": 78.2
         },
         {
-          "id": "ffaacd848361",
-          "name": "Finlandia",
+          "id": "39f9d712163b",
+          "name": "Belén Esteban",
           "status": "preparing",
-          "age_minutes": 124.0
+          "age_minutes": 78.2
         },
         {
-          "id": "ccaaf0a7bac8",
-          "name": "El Ayuntamiento de Madrid",
+          "id": "a5d81e5493c0",
+          "name": "#firstdates25s",
           "status": "preparing",
-          "age_minutes": 124.0
+          "age_minutes": 78.2
+        },
+        {
+          "id": "0829e969417f",
+          "name": "#LaBolaNegra",
+          "status": "preparing",
+          "age_minutes": 78.2
+        },
+        {
+          "id": "1ee2d3a86e4e",
+          "name": "Zidane",
+          "status": "preparing",
+          "age_minutes": 78.2
+        },
+        {
+          "id": "456ebcfdd8f1",
+          "name": "Belén",
+          "status": "preparing",
+          "age_minutes": 48.1
         }
       ],
       "repairable": false
@@ -123,20 +141,22 @@
       "status": "waiting",
       "queue_complete": false,
       "remaining_active_ids": [
-        "948106d5df49",
-        "ed9eb5711fd2",
-        "13c4018e5215",
-        "8f341647456d",
-        "ffaacd848361",
-        "ccaaf0a7bac8"
+        "9a39e6471274",
+        "2d09561e7e2f",
+        "ef2f71c7d3df",
+        "1a5eed26f2e0",
+        "39f9d712163b",
+        "a5d81e5493c0",
+        "0829e969417f",
+        "1ee2d3a86e4e"
       ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "cola editorial bloqueada: 6 pendiente(s) superan 30 min; más antigua 223.0 min"
+    "cola editorial bloqueada: 9 pendiente(s) superan 30 min; más antigua 108.1 min"
   ],
   "alert_sent": false,
-  "last_alert_signature": "cola editorial bloqueada: 6 pendiente(s) superan 30 min; más antigua 223.0 min"
+  "last_alert_signature": "cola editorial bloqueada: 9 pendiente(s) superan 30 min; más antigua 108.1 min"
 }
