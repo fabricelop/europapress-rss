@@ -65,7 +65,7 @@ export default async function handler(req,res){
         const states=items.filter(c=>String(c.body||"").startsWith(STATUS_PREFIX+latestId+"\n"));
         const lastState=states.at(-1);
         const st=String(lastState?.body||"").match(/^status:\s*(.+)$/mi)?.[1]?.trim();
-        if(["REQUESTED","RUNNING"].includes(st||"RUNNING")){
+        if(age<30*60*1000&&["REQUESTED","RUNNING"].includes(st||"RUNNING")){
           return res.status(409).json({ok:false,error:"run_in_progress"})
         }
       }
