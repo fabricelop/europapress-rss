@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T13:50:55+02:00",
+  "captured_at": "2026-09-25T13:53:29+02:00",
   "primary_source": "consensus",
   "selection_method": "consensus",
   "sources_used": [
@@ -70,10 +70,8 @@
       "name": "Taylor"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Congreso"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "Ana Belén",
@@ -198,25 +196,6 @@
       "news_first_seen": null
     },
     {
-      "name": "Junts",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 18.8,
-      "movement": "flat",
-      "first_detected_at": "2026-09-25T13:40:53+02:00",
-      "news_source_count": 9,
-      "news_event_id": "6623d0fbb602",
-      "news_title": "Lleida prohíbe el uso del burka y el niqab en los espacios públicos con los votos del PSC y Junts",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-25T10:32:01.186193Z"
-    },
-    {
       "name": "Cleveland",
       "social_source_count": 4,
       "social_sources": [
@@ -227,7 +206,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 17.5,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T13:50:55+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -236,14 +215,7 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Congreso",
-      "first_detected_at": "2026-09-25T13:40:53+02:00",
-      "entered_top10_at": "2026-09-25T13:50:55+02:00",
-      "lead_minutes": 10
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -274,7 +246,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T13:50:55+02:00"
+      "fetched_at": "2026-09-25T13:53:29+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -299,7 +271,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T13:50:56+02:00"
+      "fetched_at": "2026-09-25T13:53:29+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -326,10 +298,10 @@
         "Netanyahu"
       ],
       "error": null,
-      "update_hint": "Updated 58 minutes ago",
-      "age_minutes": 58.0,
+      "update_hint": "Updated 1 hour ago",
+      "age_minutes": 60.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T13:50:56+02:00"
+      "fetched_at": "2026-09-25T13:53:30+02:00"
     },
     "superx": {
       "ok": true,
@@ -359,16 +331,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T13:50:57+02:00"
+      "fetched_at": "2026-09-25T13:53:30+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790337057",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790337211",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T13:50:57+02:00"
+      "fetched_at": "2026-09-25T13:53:31+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -396,9 +368,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 25, 2026 11:00 UTC",
-      "age_minutes": 51.0,
+      "age_minutes": 53.5,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T13:50:57+02:00"
+      "fetched_at": "2026-09-25T13:53:31+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -426,18 +398,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 4430.0,
+      "age_minutes": 4432.5,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T13:50:58+02:00"
+      "fetched_at": "2026-09-25T13:53:31+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790337059",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790337212",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T13:50:59+02:00"
+      "fetched_at": "2026-09-25T13:53:32+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -446,7 +418,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T13:51:00+02:00"
+      "fetched_at": "2026-09-25T13:53:32+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -476,16 +448,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T13:51:00+02:00"
+      "fetched_at": "2026-09-25T13:53:33+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790337062",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790337215",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T13:51:02+02:00"
+      "fetched_at": "2026-09-25T13:53:35+02:00"
     }
   }
 }
