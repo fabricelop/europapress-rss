@@ -88,7 +88,7 @@ function latestSlot(now,minutes){const d=new Date(now);d.setSeconds(0,0);for(let
 function agoMin(ms){return Math.max(0,Math.floor(ms/60000))}
 function renderTiming(){
  const s=model.status||{},cfg=model.config||{},now=new Date();
- const radarMinutes=cfg.radar?.schedule_minutes||[10,40], editorialMinutes=cfg.editorial?.schedule_minutes||[20,50];
+ const radarMinutes=cfg.radar?.schedule_minutes||[10,40], editorialMinutes=cfg.editorial?.schedule_minutes||[0];
  const last=s.radar_at?new Date(s.radar_at):null, expected=latestSlot(now,radarMinutes), upcoming=nextSlot(now,radarMinutes), ed=nextSlot(now,editorialMinutes);
  $("lastRadar").textContent="Último radar "+(last?fmt(last):"—");
  const delayed=last&&expected&&last<new Date(expected.getTime()-180000)&&now>new Date(expected.getTime()+180000);
