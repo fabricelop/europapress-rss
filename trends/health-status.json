@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-09-25T12:16:08.227240+00:00",
-  "ok": true,
+  "checked_at": "2026-09-25T16:42:28.457832+00:00",
+  "ok": false,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -52,8 +52,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.8,
-      "run_id": 36133871589,
+      "age_minutes": 0.9,
+      "run_id": 36162350782,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -73,17 +73,26 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 3,
+      "overdue_count": 1,
+      "oldest_age_minutes": 158.0,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "31fa73ae74f1",
+          "name": "Frente Amplio",
+          "status": "preparing",
+          "age_minutes": 158.0
+        }
+      ],
       "repairable": false
     }
   },
   "repairs_started": [],
-  "blocking": [],
+  "blocking": [
+    "cola editorial bloqueada: 1 pendiente(s) superan 30 min; más antigua 158.0 min"
+  ],
   "alert_sent": false,
-  "last_alert_signature": ""
+  "last_alert_signature": "cola editorial bloqueada: 1 pendiente(s) superan 30 min; más antigua 158.0 min"
 }
