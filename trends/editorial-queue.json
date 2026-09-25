@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-09-25T08:37:37+02:00",
+  "updated_at": "2026-09-25T06:37:59.934Z",
   "count": 1,
   "items": [
     {
@@ -12,8 +12,8 @@
       "revision": 0,
       "rewrite_instruction": "",
       "with_image": true,
-      "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL en formato raster (PNG/WebP/JPG), estilo caricatura editorial de alta calidad, visualmente rica y con un gag claro ligado al detonante real de la tendencia. NO uses fotografías ni imágenes encontradas en Internet. NO uses SVG, iconos planos, mascotas vectoriales, infografías ni dibujos geométricos simples como resultado final. La escena debe parecer una viñeta/caricatura profesional: personajes expresivos, profundidad, iluminación, textura, detalle y acción; poco o ningún texto. Si se quita el texto, el chiste debe seguir funcionando. Si no puedes generar y persistir una imagen raster de esa calidad, NO marques el item ready: deja image_generation_status=\"pending_renderer\" y el item pendiente para reintento.",
+      "image_mode": "existing_web_image",
+      "image_instruction": "Busca una imagen existente REAL y pertinente del mismo evento/persona. Método obligatorio: 1) intenta primero la fuente oficial/primaria o una noticia fiable sobre el hecho y extrae su og:image/imagen principal; 2) si falla, haz una búsqueda específica de imágenes y prueba una segunda fuente fiable. Prioriza una imagen del hecho actual frente a archivo genérico. No generes imágenes. Si encuentras una, guarda url directa, source, source_url, rights_status y alt. Solo declara no encontrada después de intentar ambas vías.",
       "batch_id": "16a0812764b7",
       "requested_together": [
         "Harvard"
