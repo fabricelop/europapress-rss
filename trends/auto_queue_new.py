@@ -33,9 +33,14 @@ def image_queue_policy():
 
 def save_editorial_queue(requests_doc):
     image_mode, image_instruction = image_queue_policy()
+    recent_now = load("recent.json", {"items": []})
+    top10_names = {norm(x.get("name")) for x in (recent_now.get("items") or [])[:10] if x.get("name")}
     active = []
     for req in requests_doc.get("requests", []) or []:
-        if str(req.get("status") or "") not in {"preparing", "update"}:
+        status = str(req.get("status") or "")
+        if status not in {"preparing", "update", "problematic"}:
+            continue
+        if status == "problematic" and norm(req.get("name")) not in top10_names:
             continue
         active.append({
             "id": req.get("id"),
@@ -133,8 +138,10 @@ for item in current:
             status = "preparing"
             print("Reabierta ready sin prepared:", name)
             continue
-        # Cualquier otra decisión/estado vigente se conserva. Una tendencia
-        # desestimada o problemática solo se reabre por acción del usuario.
+        # Cualquier otra decisión/estado vigente se conserva. Las problemáticas
+        # no se convierten a preparing: permanecen como problemáticas, pero
+        # save_editorial_queue las vuelve a exponer mientras sigan en el Top 10
+        # para que la siguiente ejecución editorial haga un nuevo intento.
         if status in {"preparing", "update"} and bool(req.get("anticipated")):
             now_entered = datetime.now(MADRID).isoformat(timespec="seconds")
             if int(req.get("rank") or 0) != item["rank"] or not req.get("anticipated_entered_top10_at"):
