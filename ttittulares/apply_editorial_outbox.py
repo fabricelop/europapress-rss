@@ -196,6 +196,18 @@ def main():
     active=[x for x in q.get("items",[]) if str(x.get("status") or "")=="PROCESSING"]
     st["processing_count"]=len(active)
     st["processing_items"]=active
+    problematic=[]
+    for x in q.get("items",[]) or []:
+        if str(x.get("status") or "")!="PROBLEMATIC": continue
+        problematic.append({
+            "event_id":x.get("event_id"),"title":x.get("title") or "","url":x.get("url") or "",
+            "selected_at":x.get("selected_at"),"problematic_at":x.get("problematic_at"),
+            "problem_reason":x.get("problem_reason") or "","revision":int(x.get("revision") or 1),
+            "source_count":int(x.get("source_count") or 0),"sources":x.get("sources") or [],
+        })
+    problematic.sort(key=lambda x:str(x.get("problematic_at") or x.get("selected_at") or ""),reverse=True)
+    st["problematic_count"]=len(problematic)
+    st["problematic_items"]=problematic
     st["ready_count"]=len(p.get("items",[]))
     save(STATUS,st)
     print(json.dumps({"processed":processed,"errors":errors},ensure_ascii=False))
