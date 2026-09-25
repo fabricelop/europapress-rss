@@ -181,7 +181,7 @@ def main():
                 if previous_attempts:
                     item.setdefault("problematic_attempts_before_ready",previous_attempts)
                 row["status"]="READY";row["delivered_at"]=item.get("prepared_at") or now;row["delivery_confirmation"]="prepared_web"
-                row.pop("problem_reason",None);row.pop("problematic_at",None);row.pop("problematic_attempts",None);row.pop("verification_hint",None);row.pop("verification_hint_at",None)
+                row.pop("problem_reason",None);row.pop("problematic_at",None);row.pop("problematic_attempts",None);row.pop("verification_hint",None);row.pop("verification_hint_at",None);row.pop("user_validated",None);row.pop("user_validated_at",None);row.pop("user_validation_source",None);row.pop("user_validation_version",None)
             elif st=="problematic":
                 reason=str(payload.get("problem_reason") or "").strip()
                 if not reason: raise ValueError("problematic sin razón")
@@ -207,7 +207,7 @@ def main():
             "event_id":x.get("event_id"),"title":x.get("title") or "","url":x.get("url") or "",
             "selected_at":x.get("selected_at"),"problematic_at":x.get("problematic_at"),
             "problem_reason":x.get("problem_reason") or "","problematic_attempts":int(x.get("problematic_attempts") or 1),
-            "verification_hint":x.get("verification_hint") or "","verification_hint_at":x.get("verification_hint_at"),
+            "user_validated":bool(x.get("user_validated")),"user_validated_at":x.get("user_validated_at"),
             "revision":int(x.get("revision") or 1),
             "source_count":int(x.get("source_count") or 0),"sources":x.get("sources") or [],
         })
