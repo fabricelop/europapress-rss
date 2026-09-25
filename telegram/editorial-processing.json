@@ -3369,14 +3369,16 @@
       "source_count": 4,
       "drafted_source_count": 4,
       "selected_at": "2026-09-25T09:22:16.617505Z",
-      "status": "PROCESSING",
+      "status": "PROBLEMATIC",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
       "parent_event_id": null,
       "update_context": null,
       "parallel_source_claimed_at": null,
       "with_image": true,
-      "image_mode": "existing_web_image"
+      "image_mode": "existing_web_image",
+      "problematic_at": "2026-09-25T09:51:41.945134Z",
+      "problem_reason": "No se pudo persistir de forma segura el outbox ready en esta ejecución tras reintentos de escritura; se deja pendiente para un siguiente pase."
     },
     {
       "event_id": "64b2659462c7",
@@ -3423,5 +3425,5 @@
       "image_mode": "existing_web_image"
     }
   ],
-  "updated_at": "2026-09-25T09:43:32.156568Z"
+  "updated_at": "2026-09-25T09:51:41.945134Z"
 }
