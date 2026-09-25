@@ -641,6 +641,8 @@ async function reworkNames(names, instruction) {
       req.reexplain = true;
       req.rewrite_instruction = text;
       req.with_image = true;
+      delete req.problem_reason;
+      delete req.problematic_at;
       req.alternatives_target = 3;
       delete req.telegram_message_id;
       delete req.explained_at;
