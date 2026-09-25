@@ -3,6 +3,7 @@ import crypto from "crypto";
 const REPO = "fabricelop/europapress-rss";
 const PR = 2;
 const RUN_PREFIX = "RUN TTITTULARES\n";
+const READY_MARKER = "TTITTULARES WORK TRIGGER READY";
 const RUN_KEY_HASH = "9be0b022cbade3c3f61d867c52a1e46b532525e4b8ddfc354575157f189d6962";
 
 function authorized(req){
