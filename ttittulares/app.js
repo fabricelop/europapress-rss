@@ -232,10 +232,11 @@ function runVisual(s){
   el.textContent=s.status||'Estado desconocido';
 }
 async function loadRunStatus(){
-  const key=runKey();if(!key){runVisual({status:'IDLE'});scheduleRunPoll(false);return}
+  const key=runKey();
   try{
-    const r=await fetch('/api/ttittulares-run-status?t='+Date.now(),{cache:'no-store',headers:{'x-tt-run-key':key}});
-    if(r.status===401){localStorage.removeItem('ttittularesRunKey');runVisual({status:'IDLE'});scheduleRunPoll(false);return}
+    const headers=key?{'x-tt-run-key':key}:{};
+    const r=await fetch('/api/ttittulares-run-status?t='+Date.now(),{cache:'no-store',headers});
+    if(r.status===401){if(key)localStorage.removeItem('ttittularesRunKey');runVisual({status:'IDLE'});scheduleRunPoll(false);return}
     if(!r.ok)throw Error('status');
     const s=await r.json();runVisual(s);scheduleRunPoll(['REQUESTED','RUNNING'].includes(s.status));
   }catch(_){$('#runState').textContent='No se pudo consultar el estado';$('#runState').className='error';scheduleRunPoll(false)}
