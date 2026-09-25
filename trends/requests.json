@@ -2908,7 +2908,7 @@
       "id": "413c73f54712",
       "name": "#DeViernes",
       "rank": 1,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-25T23:41:05+02:00",
       "revision": 0,
       "reexplain": false,
@@ -2922,7 +2922,11 @@
         "#DeViernes",
         "Alejandra Neira"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-26T00:34:00+02:00",
+      "problem_reason": "Dos búsquedas actuales confirman la emisión de ¡De Viernes! y la entrevista de Belén Esteban, pero no permiten atribuir con suficiente fiabilidad el hashtag #DeViernes a un detonante único distinto de la conversación general del programa en emisión.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "9a39e6471274",
@@ -3120,5 +3124,5 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-26T00:10:56+02:00"
+  "updated_at": "2026-09-26T00:34:00+02:00"
 }
