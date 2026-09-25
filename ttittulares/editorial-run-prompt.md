@@ -10,7 +10,7 @@ Tu primera operación editorial real debe ser leer desde `main` `ttittulares/edi
 
 Usa el conector GitHub disponible para `fabricelop/europapress-rss`. Trabaja EXCLUSIVAMENTE con TTiTTulares y con estado fresco de la rama `main`.
 
-GitHub es la única persistencia/estado del flujo. Web se usa solo para investigación y verificación actual, búsqueda de imágenes existentes y búsqueda de publicaciones públicas de X.
+GitHub es la única persistencia/estado del flujo. Web se usa para investigación/verificación actual, para el fallback de imagen de archivo cuando corresponda y para búsqueda de publicaciones públicas de X. La imagen editorial original se genera con el generador de imágenes disponible y se persiste en GitHub.
 
 No uses Telegram. No proceses TTendencias ni SeLoRecordamos. No despliegues Vercel. No cambies radar, fuentes, umbrales ni ninguna programación/automatización.
 
@@ -104,17 +104,40 @@ En política o asuntos públicos, cualquier ironía debe apoyarse en hechos, dec
 
 Nunca hagas humor a costa de víctimas, abusos, tragedias o sufrimiento. En esos casos, si procede, dirige la sátira únicamente a responsables, gestión, instituciones o contradicciones públicas verificadas; si tampoco es apropiado, usa ironía sobria o una observación que haga pensar.
 
-## Imagen existente
+## Imagen · gag generado por defecto y archivo cuando no proceda
 
-Si `with_image=true`, intenta encontrar una imagen EXISTENTE, real y pertinente. Nunca generes una imagen para TTiTTulares.
+Si `with_image=true`, aplica exactamente la misma línea visual y mecanismo binario de TTendencias.
 
-1. Haz una búsqueda específica del acontecimiento.
-2. Si falla, prueba una segunda vía, incluida la página original o su `og:image`.
-3. Prioriza fuente oficial/primaria y después medios fiables.
-4. Verifica que la imagen Y la página de origen correspondan realmente al MISMO acontecimiento, persona o lugar del item. No uses una imagen de otro tema por coincidencia de palabras, nombres o etiquetas.
-5. Si no puedes verificar derechos, usa `rights_status:"unverified"`.
-6. Si existe una imagen adecuada, guarda `prepared_item.image={url,source,source_url,rights_status,alt}`.
-7. La ausencia de una imagen adecuada NO bloquea el tuit. No inventes una URL ni uses una imagen dudosa para rellenar el campo.
+### Decisión editorial
+
+- Por defecto genera una imagen editorial ORIGINAL raster PNG/WebP/JPEG con un gag visual específico de ESTA noticia, línea `editorial-scene-v2-cleveland`.
+- Debe ser una sola escena narrativa, clara en móvil/X, con protagonista(s) integrados, acción/expresión comprensible y gag que funcione sin texto. Detalle medio, composición simple y pocos elementos; alrededor de 1024 px en el lado largo cuando sea posible.
+- Prohibidos infografía, diagrama, flechas/conectores, cajas/nodos, UI/TV, cabezas flotantes, paneles, póster, clip-art, retrato decorativo sin gag y exceso de texto.
+- Nunca inventes citas ni hechos visuales que atribuyan a una persona algo no verificado.
+- En política/asuntos públicos, el gag debe apoyarse en hechos o contradicciones públicas verificables y mantener neutralidad política.
+- Si hay víctimas, abusos, tragedia, sufrimiento, catástrofe o cualquier noticia en la que un gag cómico pueda resultar inapropiado, NO generes humor. En ese caso conserva el mecanismo anterior: busca una imagen EXISTENTE del mismo acontecimiento, priorizando fuente oficial/primaria y después medios fiables. Segunda vía: página original/og:image. Derechos no verificados => `rights_status:"unverified"`.
+
+### Control del raster generado
+
+Después de generar inspecciona el raster REAL. Debe abrir/decodificar, ocupar el fotograma, estar completo y no tener bandas/bloques negros, transparencia masiva ni regiones vacías anómalas. Si falla, regenera UNA vez con una escena más simple. Si vuelve a fallar, usa imagen de archivo fiable como fallback; la imagen no debe convertir una noticia factual válida en `problematic`.
+
+Para imagen generada guarda `image={url,source:"TTiTTulares / ChatGPT",source_url,rights_status:"generated",generated:true,alt,style_version:"editorial-scene-v2-cleveland",style_check}`, con estos checks en true: `reviewed_after_generation,single_narrative_scene,visual_gag_without_text,no_infographic_layout,no_diagram_arrows_or_connectors,no_ui_or_scoreboard_layout,low_text,depth_lighting_texture`.
+
+### Persistencia binaria obligatoria
+
+Ruta: `ttittulares/generated-images/<event_id>-r<revision>.<webp|png|jpg>`.
+
+Para PNG/WebP/JPEG NO uses `create_file` ni `update_file`. Usa exactamente el mecanismo de TTendencias:
+1. Obtén los bytes reales del raster y conviértelos a base64 puro.
+2. `create_blob` con `encoding:"base64"`.
+3. Relee HEAD actual de `main` y su tree SHA.
+4. `create_tree` sobre el tree actual añadiendo la ruta de imagen con el blob SHA.
+5. `create_commit` con padre = HEAD fresco.
+6. `update_ref` de `main` con `force:false`.
+7. Si `main` avanzó, conserva el blob, relee HEAD/tree y reintenta una vez sobre el nuevo padre.
+8. Verifica que la ruta existe en `main` y que la URL raw abre el raster íntegro.
+
+URL pública: `https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/<event_id>-r<revision>.<ext>`.
 
 ## Citas de X sin API de pago
 
