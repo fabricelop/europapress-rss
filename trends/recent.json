@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T19:17:08+02:00",
+  "captured_at": "2026-09-25T19:21:09+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -72,11 +72,8 @@
       "name": "Manchester City"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Guardiola",
-    "Manchester City"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "Taylor",
@@ -91,7 +88,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 12.7,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T19:17:08+02:00",
       "news_source_count": 3,
       "news_event_id": "0abf8f845827",
@@ -111,7 +108,7 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 13.6,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T16:01:19+02:00",
       "news_source_count": 8,
       "news_event_id": "6a0361d6f71e",
@@ -189,7 +186,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T19:17:08+02:00",
       "news_source_count": 13,
       "news_event_id": "e9ec3aee6ca0",
@@ -208,7 +205,7 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 16.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T18:51:13+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -217,14 +214,7 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Manchester City",
-      "first_detected_at": "2026-09-25T18:01:17+02:00",
-      "entered_top10_at": "2026-09-25T19:17:08+02:00",
-      "lead_minutes": 76
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -255,7 +245,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T19:17:08+02:00"
+      "fetched_at": "2026-09-25T19:21:09+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -280,7 +270,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T19:17:08+02:00"
+      "fetched_at": "2026-09-25T19:21:09+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -307,10 +297,10 @@
         "Netanyahu"
       ],
       "error": null,
-      "update_hint": "Updated 1 minute ago",
-      "age_minutes": 1.0,
+      "update_hint": "Updated 5 minutes ago",
+      "age_minutes": 5.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-25T19:17:09+02:00"
+      "fetched_at": "2026-09-25T19:21:11+02:00"
     },
     "superx": {
       "ok": true,
@@ -340,16 +330,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T19:17:09+02:00"
+      "fetched_at": "2026-09-25T19:21:11+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790356630",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790356872",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T19:17:10+02:00"
+      "fetched_at": "2026-09-25T19:21:12+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -377,9 +367,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 25, 2026 16:00 UTC",
-      "age_minutes": 77.2,
+      "age_minutes": 81.2,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T19:17:10+02:00"
+      "fetched_at": "2026-09-25T19:21:12+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -407,18 +397,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 4756.2,
+      "age_minutes": 4760.2,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T19:17:10+02:00"
+      "fetched_at": "2026-09-25T19:21:12+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790356631",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790356873",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T19:17:11+02:00"
+      "fetched_at": "2026-09-25T19:21:13+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -427,7 +417,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T19:17:12+02:00"
+      "fetched_at": "2026-09-25T19:21:14+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -457,16 +447,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T19:17:12+02:00"
+      "fetched_at": "2026-09-25T19:21:14+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790356634",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790356876",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T19:17:14+02:00"
+      "fetched_at": "2026-09-25T19:21:16+02:00"
     }
   }
 }
