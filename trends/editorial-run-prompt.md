@@ -177,6 +177,23 @@ Si `editorial-config.json` permite explícitamente fallback raster inline y disp
 
 ## Outbox
 
+### Persistencia textual obligatoria
+
+El outbox JSON es parte crítica del hand-off y NO puede quedar solo en memoria de la ejecución.
+
+Para escribir `trends/editorial-outbox/<id>-r<revision>.json`, usa preferentemente la misma vía Git de bajo nivel que para los binarios, pero con contenido UTF-8:
+
+1. Serializa el JSON completo y válido.
+2. `create_blob` con `encoding:"utf-8"` y el contenido exacto.
+3. Relee HEAD y tree actuales de `main`.
+4. `create_tree` sobre el tree fresco con una entrada `100644/blob` para la ruta exacta del outbox.
+5. `create_commit` con padre = HEAD fresco.
+6. `update_ref` de `main` con `force:false`.
+7. Si `main` avanzó, conserva el blob SHA, relee HEAD/tree y reintenta UNA vez sobre el nuevo padre.
+8. Verifica con una lectura fresca que el outbox existe en `main` y que `id/revision/status` coinciden.
+
+`create_file/update_file` pueden usarse para texto si funcionan, pero un rechazo de esas acciones NO autoriza a abandonar: debes intentar explícitamente la vía `create_blob(utf-8) → create_tree → create_commit → update_ref`. No informes “fallo de escritura” hasta haber probado ambas vías disponibles.
+
 Para cada grupo/item `ready`, escribe:
 
 `trends/editorial-outbox/<id>-r<revision>.json`
@@ -220,5 +237,7 @@ Al terminar, relee hasta tres veces, cuando sea necesario, la cola, `trends/prep
 Para cada item tratado exige: aplicado en preparados/app + imagen raster generada persistida + ausencia de cola.
 
 Solo considera el item completado cuando todo lo anterior esté verificado. Si persiste un fallo de aplicación, deja constancia técnica y el item pendiente.
+
+La ejecución completa NO puede declararse satisfactoria si cualquiera de los items que intentó tratar sigue en `preparing` o `update` por falta de imagen, outbox o aplicación. En ese caso el estado operativo debe quedar como pendiente/waiting o failure según corresponda, nunca como success. Las tendencias `problematic` que sigan en Top 10 son la única excepción: pueden permanecer visibles para un nuevo intento posterior sin convertir el ciclo en fallo.
 
 Nunca uses una rama o PR como sustituto silencioso de `main`.
