@@ -110,9 +110,10 @@ async function mutateJson(path, message, mutator) {
 }
 
 async function syncEditorialQueue() {
-  const [{ doc: requests }, { doc: editorialConfig }] = await Promise.all([
+  const [{ doc: requests }, { doc: editorialConfig }, { doc: recent }] = await Promise.all([
     readJson(REQUESTS),
     readJson(EDITORIAL_CONFIG),
+    readJson(RECENT),
   ]);
   const imagePolicy = editorialConfig?.editorial?.image_policy || {};
   const imageMode = String(imagePolicy.mode || "generated_editorial_image");
@@ -120,8 +121,13 @@ async function syncEditorialQueue() {
     imagePolicy.queue_instruction ||
     "Genera SIEMPRE una caricatura editorial original de alta calidad, con un gag visual directamente ligado al detonante real de la tendencia. No uses imágenes encontradas en Internet."
   );
+  const top10 = new Set((recent.items || []).slice(0,10).map(x => norm(x.name)).filter(Boolean));
   const active = (requests.requests || [])
-    .filter(req => ["preparing", "update"].includes(String(req.status || "")))
+    .filter(req => {
+      const status = String(req.status || "");
+      if (["preparing", "update"].includes(status)) return true;
+      return status === "problematic" && top10.has(norm(req.name));
+    })
     .map(req => ({
       id: req.id,
       name: req.name,
