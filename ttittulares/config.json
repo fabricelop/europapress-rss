@@ -36,7 +36,7 @@
   },
   "images": {
     "enabled": true,
-    "mode": "generated_gag_or_archive_fallback",
+    "mode": "generated_gag_or_archive_sensitive",
     "generate": true,
     "non_blocking": false,
     "generated_style_version": "editorial-scene-v2-cleveland",
@@ -61,12 +61,14 @@
         "reputable_media"
       ],
       "require_source_page": true,
-      "rights_status_default": "unverified"
+      "rights_status_default": "unverified",
+      "reason": "only_when_comic_gag_is_editorially_inappropriate"
     },
     "web_buttons": [
-      "copy_image",
       "open_image",
-      "download_image"
-    ]
+      "copy_image",
+      "open_source"
+    ],
+    "generated_failure_policy": "pending_renderer"
   }
 }
