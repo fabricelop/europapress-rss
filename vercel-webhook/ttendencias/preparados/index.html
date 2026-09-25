@@ -46,7 +46,7 @@ main{max-width:820px;margin:auto;padding:12px 10px 40px}.group{margin-bottom:25p
 <script>
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
-const SHELL_BUILD="ttendencias-preparados-ui-raster-copy-20260925";
+const SHELL_BUILD="ttendencias-preparados-ui-instant-close-20260925b";
 const $=id=>document.getElementById(id);
 let model={items:[],top:[],upcoming:[],requests:[]},reworkItem=null,openIds=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -180,8 +180,8 @@ function render(){
  if(exReady.length)renderReadyCards($("exReady"),exReady,"");
  if(exProcessing.length)renderProcessingCards($("exProcessing"),exProcessing,"");
 }
-async function done(item){const rel=related(item);if(!confirm("¿Confirmas que ya has publicado/explicado "+rel.join(", ")+"?"))return;const backup=[...(model.items||[])];setLocal(rel,"explained");removeItem(item);toast("Cerrando como explicada…");try{await api("explained",rel);localStorage.setItem("ttendencias-last-action",String(Date.now()));await load();toast("Marcada como explicada")}catch(e){clearLocal(rel);model.items=backup;render();toast(e.message)}}
-async function discard(item){const rel=related(item);if(!confirm("¿Desestimar "+rel.join(", ")+" sin publicarla?"))return;const backup=[...(model.items||[])];setLocal(rel,"dismissed");removeItem(item);toast("Desestimando…");try{await api("discard",rel);localStorage.setItem("ttendencias-last-action",String(Date.now()));await load();toast("Desestimada")}catch(e){clearLocal(rel);model.items=backup;render();toast(e.message)}}
+function done(item){const rel=related(item);if(!confirm("¿Confirmas que ya has publicado/explicado "+rel.join(", ")+"?"))return;const backup=[...(model.items||[])];setLocal(rel,"explained");removeItem(item);toast("Marcada como explicada");api("explained",rel).then(()=>{localStorage.setItem("ttendencias-last-action",String(Date.now()));setTimeout(()=>load(),250)}).catch(e=>{clearLocal(rel);model.items=backup;render();toast(e.message)})}
+function discard(item){const rel=related(item);if(!confirm("¿Desestimar "+rel.join(", ")+" sin publicarla?"))return;const backup=[...(model.items||[])];setLocal(rel,"dismissed");removeItem(item);toast("Desestimada");api("discard",rel).then(()=>{localStorage.setItem("ttendencias-last-action",String(Date.now()));setTimeout(()=>load(),250)}).catch(e=>{clearLocal(rel);model.items=backup;render();toast(e.message)})}
 async function load(){
  try{
   const r=await fetch(API+"?view=state&t="+Date.now(),{cache:"no-store"});
@@ -192,11 +192,13 @@ async function load(){
   let local={};try{local=JSON.parse(localStorage.getItem("ttendencias-local-state")||"{}")}catch(_){}
   const latest={};
   for(const req of qd.requests||[])latest[nrm(req.name)]=req;
-  // Si GitHub dice que una tendencia vuelve a estar ready/preparing/update,
-  // cualquier cierre local anterior es obsoleto y se elimina del dispositivo.
+  // Mantén el cierre optimista mientras GitHub termina sus escrituras.
+  // Una lectura remota todavía antigua no debe resucitar la tarjeta.
   let localChanged=false;
-  for(const [name,req] of Object.entries(latest)){
-    if(["ready","preparing","update"].includes(String(req?.status||"")) && local[name]){
+  const now=Date.now(),optimisticTtl=2*60*1000;
+  for(const [name,state] of Object.entries(local)){
+    const req=latest[name],status=String(req?.status||""),age=now-Number(state?.ts||0);
+    if(["explained","dismissed"].includes(status) || (age>optimisticTtl&&["ready","preparing","update"].includes(status))){
       delete local[name];localChanged=true;
     }
   }
@@ -205,6 +207,8 @@ async function load(){
   const items=(pd.items||[]).filter(item=>{
    const rel=related(item).map(nrm);
    for(const name of rel){
+    const state=local[name];
+    if(state&&["explained","dismissed"].includes(String(state.status||""))&&now-Number(state.ts||0)<=optimisticTtl)return false;
     const req=latest[name];
     if(req&&["explained","dismissed"].includes(String(req.status||"")))return false;
    }
