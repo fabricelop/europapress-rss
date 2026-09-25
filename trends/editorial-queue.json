@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-09-25T07:52:14.316Z",
+  "updated_at": "2026-09-25T10:01:42+02:00",
   "count": 2,
   "items": [
     {
@@ -12,8 +12,8 @@
       "revision": 0,
       "rewrite_instruction": "",
       "with_image": true,
-      "image_mode": "existing_web_image",
-      "image_instruction": "Busca una imagen existente REAL y pertinente del mismo evento/persona. Método obligatorio: 1) intenta primero la fuente oficial/primaria o una noticia fiable sobre el hecho y extrae su og:image/imagen principal; 2) si falla, haz una búsqueda específica de imágenes y prueba una segunda fuente fiable. Prioriza una imagen del hecho actual frente a archivo genérico. No generes imágenes. Si encuentras una, guarda url directa, source, source_url, rights_status y alt. Solo declara no encontrada después de intentar ambas vías.",
+      "image_mode": "generated_raster_caricature",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA de caricatura/viñeta de prensa de alta calidad. Referencia positiva: la línea de Cleveland aprobada por el usuario: escena completa y ambiental, protagonista integrado en el entorno, metáfora o exageración visual clara, profundidad, iluminación, textura, expresiones y acción. PROHIBIDO como salida final: infografía, diagrama, esquema, flechas o conectores explicativos, cajas/nodos, círculos tipo medallón, marcador/podio abstracto, layout de interfaz o televisión, cabezas flotantes, comparación por paneles, póster informativo, iconografía plana o composición cuyo chiste dependa de leer etiquetas. Debe haber un gag VISUAL ligado al detonante real; al quitar todo el texto, la escena y el chiste deben seguir entendiéndose. Usa cero texto siempre que sea posible; si es imprescindible, que sea breve y parte natural del escenario. DESPUÉS DE GENERAR, inspecciona la imagen real, no solo el prompt. Si detectas cualquiera de los patrones prohibidos, RECHÁZALA y REGENERA con una composición de escena única. Solo puede marcarse ready si la imagen supera el control visual posterior y se guarda image.style_version='editorial-scene-v2-cleveland' y image.style_check con TODOS estos booleanos true: reviewed_after_generation, single_narrative_scene, visual_gag_without_text, no_infographic_layout, no_diagram_arrows_or_connectors, no_ui_or_scoreboard_layout, low_text, depth_lighting_texture. Si no puedes obtener una imagen que pase ese control o persistirla en GitHub, NO marques ready: deja image_generation_status='pending_renderer' para reintento.",
       "batch_id": null,
       "requested_together": [
         "Daniel Sancho"
@@ -37,8 +37,8 @@
       "revision": 0,
       "rewrite_instruction": "",
       "with_image": true,
-      "image_mode": "existing_web_image",
-      "image_instruction": "Busca una imagen existente REAL y pertinente del mismo evento/persona. Método obligatorio: 1) intenta primero la fuente oficial/primaria o una noticia fiable sobre el hecho y extrae su og:image/imagen principal; 2) si falla, haz una búsqueda específica de imágenes y prueba una segunda fuente fiable. Prioriza una imagen del hecho actual frente a archivo genérico. No generes imágenes. Si encuentras una, guarda url directa, source, source_url, rights_status y alt. Solo declara no encontrada después de intentar ambas vías.",
+      "image_mode": "generated_raster_caricature",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA de caricatura/viñeta de prensa de alta calidad. Referencia positiva: la línea de Cleveland aprobada por el usuario: escena completa y ambiental, protagonista integrado en el entorno, metáfora o exageración visual clara, profundidad, iluminación, textura, expresiones y acción. PROHIBIDO como salida final: infografía, diagrama, esquema, flechas o conectores explicativos, cajas/nodos, círculos tipo medallón, marcador/podio abstracto, layout de interfaz o televisión, cabezas flotantes, comparación por paneles, póster informativo, iconografía plana o composición cuyo chiste dependa de leer etiquetas. Debe haber un gag VISUAL ligado al detonante real; al quitar todo el texto, la escena y el chiste deben seguir entendiéndose. Usa cero texto siempre que sea posible; si es imprescindible, que sea breve y parte natural del escenario. DESPUÉS DE GENERAR, inspecciona la imagen real, no solo el prompt. Si detectas cualquiera de los patrones prohibidos, RECHÁZALA y REGENERA con una composición de escena única. Solo puede marcarse ready si la imagen supera el control visual posterior y se guarda image.style_version='editorial-scene-v2-cleveland' y image.style_check con TODOS estos booleanos true: reviewed_after_generation, single_narrative_scene, visual_gag_without_text, no_infographic_layout, no_diagram_arrows_or_connectors, no_ui_or_scoreboard_layout, low_text, depth_lighting_texture. Si no puedes obtener una imagen que pase ese control o persistirla en GitHub, NO marques ready: deja image_generation_status='pending_renderer' para reintento.",
       "batch_id": "16a0812764b7",
       "requested_together": [
         "Harvard"
