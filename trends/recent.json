@@ -1,80 +1,80 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-25T21:41:04+02:00",
-  "primary_source": "snaplytics",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-25T21:50:53+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
+    "getdaytrends",
+    "tweets24",
     "superx",
     "snaplytics",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "snaplytics"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
-    "Mari Carmen",
     "Harvard",
-    "#XenobladeChronicles2EnGAME",
-    "Paquita",
+    "Guardiola",
+    "Frente Amplio",
+    "#TEM25S",
+    "Manchester City",
+    "Mari Carmen",
     "PSOE",
     "#SVGala3",
-    "Taylor",
-    "Frente Amplio",
-    "Retiro",
-    "Franco"
+    "Paquita",
+    "Retiro"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "Mari Carmen"
-    },
-    {
-      "rank": 2,
       "name": "Harvard"
     },
     {
+      "rank": 2,
+      "name": "Guardiola"
+    },
+    {
       "rank": 3,
-      "name": "#XenobladeChronicles2EnGAME"
-    },
-    {
-      "rank": 4,
-      "name": "Paquita"
-    },
-    {
-      "rank": 5,
-      "name": "PSOE"
-    },
-    {
-      "rank": 6,
-      "name": "#SVGala3"
-    },
-    {
-      "rank": 7,
-      "name": "Taylor"
-    },
-    {
-      "rank": 8,
       "name": "Frente Amplio"
     },
     {
+      "rank": 4,
+      "name": "#TEM25S"
+    },
+    {
+      "rank": 5,
+      "name": "Manchester City"
+    },
+    {
+      "rank": 6,
+      "name": "Mari Carmen"
+    },
+    {
+      "rank": 7,
+      "name": "PSOE"
+    },
+    {
+      "rank": 8,
+      "name": "#SVGala3"
+    },
+    {
       "rank": 9,
-      "name": "Retiro"
+      "name": "Paquita"
     },
     {
       "rank": 10,
-      "name": "Franco"
+      "name": "Retiro"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "#XenobladeChronicles2EnGAME",
-    "Taylor",
-    "Franco"
+    "Guardiola",
+    "#TEM25S",
+    "Manchester City"
   ],
   "upcoming": [
     {
@@ -88,7 +88,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 14.8,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T18:01:17+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -107,7 +107,7 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 16.8,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T11:40:49+02:00",
       "news_source_count": 2,
       "news_event_id": "3c0a15c21cdf",
@@ -125,31 +125,13 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 13.0,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T18:41:02+02:00",
       "news_source_count": 6,
       "news_event_id": "9630d9cc9796",
       "news_title": "Ayuso asegura que la idea de comprar el ático de Chamberí fue de su equipo: «Y a mí no me pareció mal»",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-09-24T15:22:49.014078Z"
-    },
-    {
-      "name": "Manchester City",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 16.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-25T21:41:04+02:00",
-      "news_source_count": 8,
-      "news_event_id": "de32583e5844",
-      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-25T15:02:55.152129Z"
     },
     {
       "name": "Premier League",
@@ -169,24 +151,6 @@
       "news_first_seen": "2026-09-25T15:02:55.152129Z"
     },
     {
-      "name": "#TEM25S",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.7,
-      "movement": "new",
-      "first_detected_at": "2026-09-25T21:41:04+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "Cleveland",
       "social_source_count": 3,
       "social_sources": [
@@ -196,16 +160,64 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 17.3,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-25T21:41:04+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
+    },
+    {
+      "name": "Olga",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T21:50:53+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "El City",
+      "social_source_count": 2,
+      "social_sources": [
+        "getdaytrends",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-25T21:50:53+02:00",
+      "news_source_count": 8,
+      "news_event_id": "de32583e5844",
+      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-25T15:02:55.152129Z"
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "#TEM25S",
+      "first_detected_at": "2026-09-25T21:41:04+02:00",
+      "entered_top10_at": "2026-09-25T21:50:53+02:00",
+      "lead_minutes": 10
+    },
+    {
+      "name": "Manchester City",
+      "first_detected_at": "2026-09-25T21:41:04+02:00",
+      "entered_top10_at": "2026-09-25T21:50:53+02:00",
+      "lead_minutes": 10
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -236,7 +248,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:41:04+02:00"
+      "fetched_at": "2026-09-25T21:50:53+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -261,7 +273,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:41:04+02:00"
+      "fetched_at": "2026-09-25T21:50:53+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -288,10 +300,10 @@
         "Urbagestión"
       ],
       "error": null,
-      "update_hint": "Updated 59 minutes ago",
-      "age_minutes": 59.0,
+      "update_hint": "Updated 1 hour ago",
+      "age_minutes": 60.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-25T21:41:05+02:00"
+      "fetched_at": "2026-09-25T21:50:54+02:00"
     },
     "superx": {
       "ok": true,
@@ -321,16 +333,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:41:05+02:00"
+      "fetched_at": "2026-09-25T21:50:55+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790365266",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790365855",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T21:41:06+02:00"
+      "fetched_at": "2026-09-25T21:50:55+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -358,9 +370,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 25, 2026 19:00 UTC",
-      "age_minutes": 41.1,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-25T21:41:06+02:00"
+      "age_minutes": 50.9,
+      "freshness": "aging",
+      "fetched_at": "2026-09-25T21:50:56+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -388,18 +400,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 22, 2026 at 12:01 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones5 H",
-      "age_minutes": 4900.1,
+      "age_minutes": 4909.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-25T21:41:06+02:00"
+      "fetched_at": "2026-09-25T21:50:56+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790365267",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790365857",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T21:41:07+02:00"
+      "fetched_at": "2026-09-25T21:50:57+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -408,7 +420,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-25T21:41:07+02:00"
+      "fetched_at": "2026-09-25T21:50:59+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -438,16 +450,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-25T21:41:07+02:00"
+      "fetched_at": "2026-09-25T21:50:59+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790365269",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790365861",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-25T21:41:09+02:00"
+      "fetched_at": "2026-09-25T21:51:01+02:00"
     }
   }
 }
