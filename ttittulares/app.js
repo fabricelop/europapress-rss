@@ -252,6 +252,7 @@ async function requestRun(){
     const j=await r.json().catch(()=>({}));
     if(r.status===401){localStorage.removeItem('ttittularesRunKey');throw Error('Clave incorrecta; se ha borrado del navegador')}
     if(r.status===429)throw Error('Ya hay una solicitud reciente. Prueba de nuevo en '+(j.retry_after_seconds||'unos')+' s')
+    if(r.status===503&&j.error==='work_trigger_not_ready')throw Error('El trigger de Work todavía no está activado')
     if(!r.ok)throw Error(j.detail||j.error||'No se pudo solicitar la ejecución');
     runVisual({status:'REQUESTED',requested_at:j.requested_at});scheduleRunPoll(true);
   }catch(e){$('#runState').textContent=String(e.message||e);$('#runState').className='error';btn.disabled=false}
@@ -264,6 +265,8 @@ async function requestRun(){
   await send('rewrite',active,t);
 };
 document.querySelectorAll('.stat').forEach(b=>b.onclick=()=>setView(b.dataset.view));
-$('#refresh').onclick=load;
+$('#refresh').onclick=()=>{load();loadRunStatus()};
+$('#runNow').onclick=requestRun;
 load();
+loadRunStatus();
 setInterval(load,60000);
