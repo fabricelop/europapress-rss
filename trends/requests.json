@@ -2643,10 +2643,10 @@
         "#XenobladeChronicles2EnGAME"
       ],
       "auto_queued": true,
-      "problematic_at": "2026-09-25T19:35:17+02:00",
-      "problem_reason": "Nuevo reintento con consultas distintas: no se ha encontrado una fuente actual fiable que permita atribuir el hashtag #XenobladeChronicles2EnGAME a un detonante concreto ocurrido ahora en España. Las referencias localizadas a Xenoblade Chronicles 2 / Switch 2 no bastan para explicar con fiabilidad el hashtag de GAME sin especular.",
+      "problematic_at": "2026-09-25T21:42:17+02:00",
+      "problem_reason": "Nuevo intento: dos búsquedas distintas confirman que GAME España tiene Xenoblade Chronicles 2 para Switch 2 en reserva con lanzamiento físico el 1 de octubre, pero no permiten verificar qué acción concreta de GAME explica que el hashtag #XenobladeChronicles2EnGAME sea tendencia ahora. No se atribuye el detonante sin evidencia suficiente.",
       "editorial_engine": "chatgpt-automation-outbox",
-      "problematic_attempts": 2
+      "problematic_attempts": 3
     },
     {
       "id": "9c2d29850e7f",
@@ -2676,7 +2676,7 @@
       "id": "31fa73ae74f1",
       "name": "Frente Amplio",
       "revision": 0,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-09-25T14:04:28.966Z",
       "rank": 8,
       "with_image": true,
@@ -2691,13 +2691,16 @@
         "Frente Amplio"
       ],
       "auto_queued": false,
-      "anticipated_entered_top10_at": "2026-09-25T20:51:04+02:00"
+      "anticipated_entered_top10_at": "2026-09-25T20:51:04+02:00",
+      "ready_at": "2026-09-25T19:45:00+02:00",
+      "delivery_confirmation": "prepared_web",
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "9986911fa8ce",
       "name": "Manchester City",
       "revision": 0,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-09-25T16:35:17.915Z",
       "rank": 5,
       "with_image": true,
@@ -2712,7 +2715,10 @@
         "Manchester City"
       ],
       "auto_queued": false,
-      "anticipated_entered_top10_at": "2026-09-25T19:17:14+02:00"
+      "anticipated_entered_top10_at": "2026-09-25T19:17:14+02:00",
+      "ready_at": "2026-09-25T19:40:00+02:00",
+      "delivery_confirmation": "prepared_web",
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "e271549ce993",
@@ -2732,16 +2738,16 @@
         "#TEM25S"
       ],
       "auto_queued": true,
-      "problematic_at": "2026-09-25T19:35:17+02:00",
-      "problem_reason": "Tras dos búsquedas actuales distintas no aparece una fuente fiable que identifique con suficiente precisión qué emisión, acontecimiento o conversación concreta está impulsando ahora #TEM25S en España. Se evita inferir el detonante solo por el patrón del hashtag.",
-      "problematic_attempts": 2,
+      "problematic_at": "2026-09-25T21:42:17+02:00",
+      "problem_reason": "Nuevo intento: dos búsquedas actuales distintas por #TEM25S/TEM25S en España no permiten identificar con suficiente fiabilidad un acontecimiento, programa o campaña concreta que explique el hashtag ahora. No se publica una atribución especulativa.",
+      "problematic_attempts": 3,
       "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "c9447b75287d",
       "name": "Guardiola",
       "rank": 2,
-      "status": "problematic",
+      "status": "ready",
       "requested_at": "2026-09-25T19:17:14+02:00",
       "revision": 0,
       "reexplain": false,
@@ -2755,10 +2761,9 @@
         "Guardiola"
       ],
       "auto_queued": true,
-      "problematic_at": "2026-09-25T19:35:52+02:00",
-      "problem_reason": "Tras dos búsquedas actuales distintas no se ha encontrado evidencia fiable suficiente para identificar qué hecho concreto está impulsando ahora «Guardiola» en España. Las noticias actuales sobre los cargos financieros del Manchester City no permiten atribuir por sí solas esta tendencia a Pep Guardiola sin especular.",
-      "problematic_attempts": 1,
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "ready_at": "2026-09-25T19:40:00+02:00",
+      "delivery_confirmation": "prepared_web"
     },
     {
       "id": "ed9eb5711fd2",
@@ -2876,5 +2881,5 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-25T21:41:10+02:00"
+  "updated_at": "2026-09-25T21:42:17+02:00"
 }
