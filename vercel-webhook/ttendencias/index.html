@@ -115,26 +115,6 @@ function freshnessText(v){
  if(mins<=30)return "● Atención: "+mins+" min sin nueva captura";
  return "● Desactualizado: "+mins+" min";
 }
-function editorialTimingText(){
- const active=(model?.editorial_queue?.items||[]).filter(x=>["preparing","update"].includes(String(x.status||""))&&x.requested_at);
- const box=$("editorialTiming");if(!active.length){box.className="timing";box.textContent="";return}
- const now=Date.now(),stamps=active.map(x=>new Date(x.requested_at).getTime()).filter(Number.isFinite);
- if(!stamps.length){box.className="timing";box.textContent="";return}
- const oldest=Math.min(...stamps),age=Math.max(0,Math.floor((now-oldest)/60000));
- const schedule=((model?.editorial_config?.editorial?.schedule_minutes)||[0,30]).map(Number).sort((a,b)=>a-b);
- const d=new Date(),minute=d.getMinutes(),previous=schedule.filter(x=>x<=minute);
- const lastMinute=previous.length?previous[previous.length-1]:(schedule[schedule.length-1]??30);
- const last=new Date(d);if(previous.length)last.setMinutes(lastMinute,0,0);else{last.setHours(d.getHours()-1);last.setMinutes(lastMinute,0,0)}
- const upcoming=schedule.find(x=>x>minute),next=new Date(d);if(upcoming!==undefined)next.setMinutes(upcoming,0,0);else{next.setHours(d.getHours()+1);next.setMinutes(schedule[0]??0,0,0)}
- const eligible=active.some(x=>new Date(x.requested_at).getTime()<=last.getTime());
- if(eligible){
-   const late=Math.max(0,Math.floor((now-last.getTime())/60000));box.className="timing "+(age>=30?"late":"warn");
-   box.textContent="⚠ "+active.length+" en elaboración · el pase de las "+last.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})+" pasó hace "+late+" min · la más antigua lleva "+age+" min";
- }else{
-   const left=Math.max(0,Math.ceil((next.getTime()-now)/60000));box.className="timing "+(age>=25?"warn":"ok");
-   box.textContent=active.length+" en elaboración · próximo pase "+next.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})+" · faltan "+left+" min";
- }
-}
 async function updateBadge(){
  const count=(model?.prepared||[]).length;
  try{if("setAppBadge" in navigator){if(count>0)await navigator.setAppBadge(count);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}
