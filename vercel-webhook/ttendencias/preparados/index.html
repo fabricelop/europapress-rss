@@ -49,7 +49,7 @@ const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
 const RUN_STATUS_API="/api/ttendencias-run-status";
-const SHELL_BUILD="ttendencias-preparados-run-now-v2-20260925";
+const SHELL_BUILD="ttendencias-preparados-x-search-v1-20260926";
 const $=id=>document.getElementById(id);
 let model={items:[],top:[],upcoming:[],requests:[]},reworkItem=null,openIds=new Set();
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -133,7 +133,7 @@ async function copyImageToClipboard(url){
 }
 
 function detailHtml(){
- return '<div class="detail"><div class="imagebox" hidden><div class="imageTitle">Imagen sugerida</div><div class="imageMeta"></div><div class="imageActions"><a class="btn imgOpen" target="_blank" rel="noopener">Abrir imagen</a><button class="btn imgCopy">Copiar imagen</button><a class="btn imgSource" target="_blank" rel="noopener">Abrir fuente</a></div></div><div class="variant principal"><div class="variantHead"><span class="variantTitle">Tuit principal</span><span class="chars"></span></div><div class="tweet"></div><div class="variantActions"><a class="btn pOpen" target="_blank" rel="noopener">Abrir en X</a><button class="btn pCopy">Copiar</button></div></div><div class="alts"></div><div class="finalActions"><button class="btn rework">Rehacer</button></div></div>'
+ return '<div class="detail"><div class="imagebox" hidden><div class="imageTitle">Imagen sugerida</div><div class="imageMeta"></div><div class="imageActions"><a class="btn imgOpen" target="_blank" rel="noopener">Abrir imagen</a><button class="btn imgCopy">Copiar imagen</button></div></div><div class="variant principal"><div class="variantHead"><span class="variantTitle">Tuit principal</span><span class="chars"></span></div><div class="tweet"></div><div class="variantActions"><a class="btn pOpen" target="_blank" rel="noopener">Abrir en X</a><button class="btn pCopy">Copiar</button></div></div><div class="alts"></div><div class="finalActions"><button class="btn rework">Rehacer</button></div></div>'
 }
 function latestReq(name){return [...(model.requests||[])].reverse().find(x=>nrm(x.name)===nrm(name))}
 function isTopName(name){return new Set((model.top||[]).map(nrm)).has(nrm(name))}
@@ -149,18 +149,19 @@ function renderReadyCards(container,items,emptyText){
  if(!items.length){container.innerHTML='<div class="empty">'+emptyText+'</div>';return}
  for(const item of items){
   const rel=related(item),id=String(item.id||item.trend_name||rel.join("|")),open=openIds.has(id),card=document.createElement("article");card.className="rowcard"+(open?" open":"");
-  card.innerHTML='<div class="summaryrow"><div><div class="trendLine"><div class="trend"></div><button class="infoBtn" type="button" aria-label="Por qué es tendencia">i</button></div><div class="small">Tuit listo</div></div><div class="rowactions"><button class="btn explain">Abrir</button><button class="btn danger discard">Desestimar</button><button class="btn done">Ya explicado</button></div></div><div class="infoPanel"></div>'+detailHtml();
+  card.innerHTML='<div class="summaryrow"><div><div class="trendLine"><div class="trend"></div><button class="infoBtn" type="button" aria-label="Por qué es tendencia">i</button></div><div class="small">Tuit listo</div></div><div class="rowactions"><button class="btn explain">Abrir</button><button class="btn danger discard">Desestimar</button><a class="btn searchX" target="_blank" rel="noopener noreferrer">Buscar en X</a><button class="btn done">Ya explicado</button></div></div><div class="infoPanel"></div>'+detailHtml();
   card.querySelector(".trend").textContent=item.trend_name||rel.join(" / ");
   card.querySelector(".explain").onclick=()=>{openIds.has(id)?openIds.delete(id):openIds.add(id);render()};
   card.querySelector(".discard").onclick=()=>discard(item);
+  const searchName=item.trend_name||rel[0]||"";card.querySelector(".searchX").href="https://x.com/search?q="+encodeURIComponent(searchName)+"&src=typed_query&f=live";
   card.querySelector(".done").onclick=()=>done(item);
   card.querySelector(".explain").textContent=open?"Cerrar":"Abrir";
   const infoPanel=card.querySelector(".infoPanel"),infoBtn=card.querySelector(".infoBtn"),infoText=String(item.explanation||"").trim();
   if(!infoText){infoBtn.style.display="none"}else{infoPanel.textContent=infoText;infoBtn.onclick=()=>infoPanel.classList.toggle("show")}
-  const img=item.image||{},imgUrl=img.url||item.image_url||"",imgSource=img.source||item.image_source||"",imgPage=img.source_url||img.page_url||item.image_page_url||item.image_source_url||"",imgRights=img.rights_status||item.image_rights_status||"";
+  const img=item.image||{},imgUrl=img.url||item.image_url||"",imgSource=img.source||item.image_source||"",imgRights=img.rights_status||item.image_rights_status||"";
   const imgBox=card.querySelector(".imagebox"),reqForImage=latestReq(item.trend_name||rel[0]),imgStatus=item.image_search_status||((reqForImage?.with_image&&!imgUrl)?"not_found":"");
-  if(imgUrl){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=[img.generated?"Generada por ChatGPT":imgSource,imgRights].filter(Boolean).join(" · ")||"Imagen sugerida";card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl);const src=card.querySelector(".imgSource");if(imgPage){src.href=imgPage}else{src.style.display="none"}}
-  else if(imgStatus==="not_found"){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=item.image_note||"Sin imagen adecuada encontrada tras la búsqueda.";card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";card.querySelector(".imgSource").style.display="none";}
+  if(imgUrl){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=[img.generated?"Generada por ChatGPT":imgSource,imgRights].filter(Boolean).join(" · ")||"Imagen sugerida";card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl)}
+  else if(imgStatus==="not_found"){imgBox.hidden=false;card.querySelector(".imageMeta").textContent=item.image_note||"Sin imagen adecuada encontrada tras la búsqueda.";card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";}
   const p=item.primary||{},ptext=p.text||"",purl=p.url||compose(ptext);card.querySelector(".tweet").textContent=ptext||"Sin texto principal.";card.querySelector(".chars").textContent=ptext.length+" caracteres";card.querySelector(".pOpen").href=purl;card.querySelector(".pCopy").onclick=()=>navigator.clipboard.writeText(ptext).then(()=>toast("Tuit copiado"));
   const ah=card.querySelector(".alts"),alts=(item.alternatives||[]).slice(0,3);if(!alts.length)ah.innerHTML='<div class="warning">Sin remates alternativos disponibles.</div>';
   alts.forEach((a,i)=>{const v=document.createElement("div");v.className="variant";const txt=a.remate||a.tweet_text||"";v.innerHTML='<div class="variantHead"><span class="variantTitle">Remate '+(i+1)+'</span></div><div class="remate"></div><div class="variantActions"><a class="btn openX" target="_blank" rel="noopener">Abrir en X</a><button class="btn copy">Copiar tuit</button></div>';v.querySelector(".remate").textContent=txt;v.querySelector(".openX").href=a.url||compose(a.tweet_text||txt);v.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(a.tweet_text||txt).then(()=>toast("Tuit copiado"));ah.appendChild(v)});
