@@ -1,4 +1,4 @@
-import SwiftUI
+import Foundation\nimport SwiftUI
 import WidgetKit
 
 struct DashboardCounts: Codable, Equatable {
