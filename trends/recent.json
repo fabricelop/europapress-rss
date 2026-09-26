@@ -1,17 +1,16 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T17:50:58+02:00",
+  "captured_at": "2026-09-26T18:01:20+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
-    "getdaytrends",
     "tweets24",
     "superx"
   ],
-  "source_count": 5,
-  "non_stale_source_count": 5,
+  "source_count": 4,
+  "non_stale_source_count": 4,
   "fresh_sources": [
     "tweets24"
   ],
@@ -70,25 +69,20 @@
       "name": "Bottas"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "#Fiesta26S",
-    "Desinflar",
-    "Carlos Hernández"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "Gasly",
-      "social_source_count": 4,
+      "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
         "superx",
         "trends24",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.5,
-      "movement": "new",
+      "mean_observed_rank": 11.3,
+      "movement": "down",
       "first_detected_at": "2026-09-26T17:50:58+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -98,34 +92,15 @@
     },
     {
       "name": "#AzerbaijanGP",
-      "social_source_count": 4,
+      "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
         "snaplytics",
         "trends24",
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 12.5,
+      "mean_observed_rank": 12.3,
       "movement": "down",
-      "first_detected_at": "2026-09-26T17:09:15+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Piastri",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 14.3,
-      "movement": "flat",
       "first_detected_at": "2026-09-26T17:09:15+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -161,44 +136,8 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 17.7,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T15:31:20+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Russell",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.3,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T17:50:58+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Alpine",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.3,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T17:50:58+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -215,8 +154,58 @@
       ],
       "best_observed_rank": 18,
       "mean_observed_rank": 18.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T15:40:53+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Manchester City",
+      "social_source_count": 1,
+      "social_sources": [
+        "snaplytics"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T18:01:20+02:00",
+      "news_source_count": 9,
+      "news_event_id": "de32583e5844",
+      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-25T15:02:55.152129Z"
+    },
+    {
+      "name": "Russell",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-26T17:50:58+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Alpine",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-26T17:50:58+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -255,32 +244,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T17:50:58+02:00"
+      "fetched_at": "2026-09-26T18:01:20+02:00"
     },
     "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "Colapinto",
-        "Norris",
-        "#Fiesta26S",
-        "Desinflar",
-        "Sanse",
-        "Triana",
-        "Verstappen",
-        "#ADCeutaFCRealSociedadB",
-        "Carlos Hernández",
-        "Bottas",
-        "Piastri",
-        "Gasly",
-        "#AzerbaijanGP",
-        "Russell",
-        "Alpine"
-      ],
-      "error": null,
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790438481",
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-26T17:50:59+02:00"
+      "freshness": "error",
+      "fetched_at": "2026-09-26T18:01:21+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -307,10 +280,10 @@
         "Hadjar"
       ],
       "error": null,
-      "update_hint": "Updated 5 minutes ago",
-      "age_minutes": 5.0,
+      "update_hint": "Updated 15 minutes ago",
+      "age_minutes": 15.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T17:51:02+02:00"
+      "fetched_at": "2026-09-26T18:01:21+02:00"
     },
     "superx": {
       "ok": true,
@@ -340,16 +313,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T17:51:02+02:00"
+      "fetched_at": "2026-09-26T18:01:22+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790437863",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790438482",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T17:51:03+02:00"
+      "fetched_at": "2026-09-26T18:01:22+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -377,27 +350,27 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 15:00 UTC",
-      "age_minutes": 51.1,
+      "age_minutes": 61.4,
       "freshness": "aging",
-      "fetched_at": "2026-09-26T17:51:03+02:00"
+      "fetched_at": "2026-09-26T18:01:22+02:00"
     },
     "fowtools": {
       "ok": false,
       "trends": [],
       "error": "Lista no válida (0 elementos parseados)",
-      "update_hint": "Updated: September 26, 2026 at 03:00 PM No trend data available for this region right now",
+      "update_hint": "Updated: September 26, 2026 at 04:00 PM No trend data available for this region right now",
       "age_minutes": null,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T17:51:03+02:00"
+      "fetched_at": "2026-09-26T18:01:22+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790437864",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790438484",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T17:51:04+02:00"
+      "fetched_at": "2026-09-26T18:01:24+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -406,7 +379,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T17:51:15+02:00"
+      "fetched_at": "2026-09-26T18:01:25+02:00"
     },
     "trendswe": {
       "ok": false,
@@ -415,16 +388,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T17:51:15+02:00"
+      "fetched_at": "2026-09-26T18:01:25+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790437876",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790438487",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T17:51:16+02:00"
+      "fetched_at": "2026-09-26T18:01:27+02:00"
     }
   }
 }
