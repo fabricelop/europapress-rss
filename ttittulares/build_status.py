@@ -20,6 +20,7 @@ events_doc = load(TG / "events.json", {"events":[]})
 processing = load(TG / "editorial-processing.json", {"items":[]})
 prepared = load(TT / "prepared.json", {"items":[]})
 trend_candidates_doc = load(TT / "trend-candidates.json", {"items":[]})
+# TTendencias bridge: candidate stories stay separate until user promotes them.
 
 event_map = {}
 for event in events_doc.get("events", []):
