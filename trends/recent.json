@@ -1,51 +1,46 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T20:37:07+02:00",
-  "primary_source": "tweets24",
+  "captured_at": "2026-09-26T20:41:02+02:00",
+  "primary_source": "snaplytics",
   "selection_method": "fresh-anchor",
   "sources_used": [
-    "trends24",
-    "tweets24",
-    "superx",
-    "fowtools",
-    "trendswe"
-  ],
-  "source_count": 6,
-  "non_stale_source_count": 5,
-  "fresh_sources": [
-    "tweets24",
     "snaplytics"
   ],
-  "reliability": "medium",
+  "source_count": 7,
+  "non_stale_source_count": 6,
+  "fresh_sources": [
+    "snaplytics"
+  ],
+  "reliability": "high",
   "top10": [
-    "Pablo Aguado",
-    "David Gil",
-    "Vomitivo",
-    "#Fiesta26S",
+    "#DeViernes",
+    "Harvard",
+    "Mari Carmen",
+    "Belén",
     "Colapinto",
-    "Pacheta",
-    "Emilio de Justo",
-    "#TenerifeCádiz",
-    "Granada",
-    "Jandilla"
+    "Andrea",
+    "PSOE",
+    "Guardiola",
+    "La Bola Negra",
+    "Frente Amplio"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "Pablo Aguado"
+      "name": "#DeViernes"
     },
     {
       "rank": 2,
-      "name": "David Gil"
+      "name": "Harvard"
     },
     {
       "rank": 3,
-      "name": "Vomitivo"
+      "name": "Mari Carmen"
     },
     {
       "rank": 4,
-      "name": "#Fiesta26S"
+      "name": "Belén"
     },
     {
       "rank": 5,
@@ -53,27 +48,37 @@
     },
     {
       "rank": 6,
-      "name": "Pacheta"
+      "name": "Andrea"
     },
     {
       "rank": 7,
-      "name": "Emilio de Justo"
+      "name": "PSOE"
     },
     {
       "rank": 8,
-      "name": "#TenerifeCádiz"
+      "name": "Guardiola"
     },
     {
       "rank": 9,
-      "name": "Granada"
+      "name": "La Bola Negra"
     },
     {
       "rank": 10,
-      "name": "Jandilla"
+      "name": "Frente Amplio"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "#DeViernes",
+    "Harvard",
+    "Mari Carmen",
+    "Belén",
+    "Andrea",
+    "PSOE",
+    "Guardiola",
+    "La Bola Negra",
+    "Frente Amplio"
+  ],
   "upcoming": [
     {
       "name": "Triana",
@@ -86,13 +91,51 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 13.8,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T20:01:29+02:00",
       "news_source_count": 10,
       "news_event_id": "e7dfae846c83",
       "news_title": "Muere Eduardo Rodríguez ‘Rodway’, guitarrista fundador de Triana",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-09-26T09:13:36.267032Z"
+    },
+    {
+      "name": "#My9Games",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "superx",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 15.8,
+      "movement": "up",
+      "first_detected_at": "2026-09-26T20:01:29+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Coria",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "superx",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 15.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-26T20:01:29+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Águilas",
@@ -151,42 +194,6 @@
       "news_first_seen": "2026-09-26T16:33:01.891487Z"
     },
     {
-      "name": "#My9Games",
-      "social_source_count": 3,
-      "social_sources": [
-        "superx",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 17.3,
-      "movement": "down",
-      "first_detected_at": "2026-09-26T20:01:29+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Coria",
-      "social_source_count": 3,
-      "social_sources": [
-        "superx",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 15.3,
-      "movement": "down",
-      "first_detected_at": "2026-09-26T20:01:29+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "Norris",
       "social_source_count": 2,
       "social_sources": [
@@ -204,20 +211,21 @@
       "news_first_seen": "2026-09-26T14:33:45.825654Z"
     },
     {
-      "name": "Manchester City",
-      "social_source_count": 1,
+      "name": "Granada",
+      "social_source_count": 2,
       "social_sources": [
-        "snaplytics"
+        "getdaytrends",
+        "superx"
       ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 17.0,
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.0,
       "movement": "new",
-      "first_detected_at": "2026-09-26T20:37:07+02:00",
-      "news_source_count": 9,
-      "news_event_id": "de32583e5844",
-      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
+      "first_detected_at": "2026-09-26T20:41:02+02:00",
+      "news_source_count": 4,
+      "news_event_id": "f6215bedfd62",
+      "news_title": "Fallece un miembro del grupo de música alemán Das Ich tras un concierto en una sala de Granada capital",
       "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-25T15:02:55.152129Z"
+      "news_first_seen": "2026-09-26T10:02:32.485062Z"
     }
   ],
   "anticipated_entries": [],
@@ -251,16 +259,32 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T20:37:07+02:00"
+      "fetched_at": "2026-09-26T20:41:02+02:00"
     },
     "getdaytrends": {
-      "ok": false,
-      "trends": [],
-      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790447828",
+      "ok": true,
+      "trends": [
+        "Pablo Aguado",
+        "David Gil",
+        "Vomitivo",
+        "#Fiesta26S",
+        "Colapinto",
+        "Emilio de Justo",
+        "Jandro",
+        "Pacheta",
+        "#TenerifeCadiz",
+        "#LaRoca241",
+        "#My9Games",
+        "Jandilla",
+        "Lando",
+        "Coria",
+        "Granada"
+      ],
+      "error": null,
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-09-26T20:37:08+02:00"
+      "freshness": "unknown",
+      "fetched_at": "2026-09-26T20:41:03+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -287,10 +311,10 @@
         "Paula Blasi"
       ],
       "error": null,
-      "update_hint": "Updated 44 minutes ago",
-      "age_minutes": 44.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-26T20:37:08+02:00"
+      "update_hint": "Updated 48 minutes ago",
+      "age_minutes": 48.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-26T20:41:04+02:00"
     },
     "superx": {
       "ok": true,
@@ -320,16 +344,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T20:37:09+02:00"
+      "fetched_at": "2026-09-26T20:41:05+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790447829",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790448065",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T20:37:09+02:00"
+      "fetched_at": "2026-09-26T20:41:05+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -357,9 +381,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 18:00 UTC",
-      "age_minutes": 37.2,
+      "age_minutes": 41.1,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T20:37:09+02:00"
+      "fetched_at": "2026-09-26T20:41:05+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -387,18 +411,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 06:00 PM # Trend Type Actions 1 #Fiesta26S Hashtag 2 Colap",
-      "age_minutes": 157.2,
+      "age_minutes": 161.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T20:37:10+02:00"
+      "fetched_at": "2026-09-26T20:41:06+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790447831",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790448067",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T20:37:11+02:00"
+      "fetched_at": "2026-09-26T20:41:07+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -407,7 +431,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T20:37:12+02:00"
+      "fetched_at": "2026-09-26T20:41:08+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -437,16 +461,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T20:37:13+02:00"
+      "fetched_at": "2026-09-26T20:41:08+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790447836",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790448070",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T20:37:16+02:00"
+      "fetched_at": "2026-09-26T20:41:10+02:00"
     }
   }
 }
