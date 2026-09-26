@@ -97,8 +97,12 @@ def materialize_inline_generated_image(item, event_id: str, revision: int):
     image["source_url"]="https://github.com/fabricelop/europapress-rss/blob/main/"+f"ttittulares/generated-images/{filename}"
     image["handoff"]="inline-outbox-materialized-by-actions"
     item["image"]=image
+    item["image_delivery"]="app"
+    item["image_app_available"]=True
+    item["image_persistence_attempts"]=int(item.get("image_persistence_attempts") or 0)+1
     item.pop("image_pending",None)
     item.pop("image_failure_reason",None)
+    item.pop("image_attempts",None)
     return True
 
 
@@ -285,10 +289,19 @@ def main():
                     if strategy=="generated_gag":
                         if not image.get("generated") or not str(image.get("url") or "").strip():
                             pending=bool(item.get("image_pending"))
-                            attempts=int(item.get("image_attempts") or 0)
+                            generation_attempts=int(item.get("image_generation_attempts") or item.get("image_attempts") or 0)
+                            persistence_attempts=int(item.get("image_persistence_attempts") or 0)
                             reason=str(item.get("image_failure_reason") or "").strip()
-                            if not (pending and attempts>=2 and reason):
-                                raise ValueError("generated_gag sin raster generado ni fallback image_pending válido")
+                            # image_generation_attempts cuenta EXCLUSIVAMENTE llamadas reales al generador.
+                            # image_persistence_attempts cuenta intentos de hacer accesible un raster ya generado.
+                            # No inventar intentos para satisfacer el fallback.
+                            if "image_attempts" in item and "image_generation_attempts" not in item:
+                                item["image_generation_attempts"]=generation_attempts
+                            item.pop("image_attempts",None)
+                            if not (pending and generation_attempts>=2 and reason):
+                                raise ValueError("generated_gag sin raster generado ni dos intentos REALES de generación")
+                            item["image_persistence_attempts"]=persistence_attempts
+                            item["image_delivery"]="pending"
                             item["image_search_status"]="pending_renderer"
                         else:
                             validate_image(item)
