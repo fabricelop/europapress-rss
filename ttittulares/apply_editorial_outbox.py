@@ -277,7 +277,7 @@ def main():
                 if st!="ready": raise ValueError("image retry no puede cambiar el estado READY")
                 incoming=payload.get("prepared_item") or {}
                 if not (incoming.get("image") or {}).get("url"): raise ValueError("image retry sin imagen; conservar pendiente")
-                payload["prepared_item"]={**previous,"image":incoming["image"]}
+                payload["prepared_item"]={**previous,"image":incoming["image"],"image_status":"ready","image_delivery":"app","image_app_available":True}
                 payload["prepared_item"].pop("image_pending",None)
                 payload["prepared_item"].pop("image_failure_reason",None)
             if st=="ready":
