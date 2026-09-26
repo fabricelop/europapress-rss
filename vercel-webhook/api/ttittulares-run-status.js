@@ -22,7 +22,7 @@ const TRIGGER_PATH="ttittulares/run-now-trigger.json";
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
 const READY_MARKER="TTITTULARES WORK COMMIT TRIGGER READY";
-const STALE_MS=45*60*1000;
+const STALE_MS=20*60*1000;
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -168,7 +168,7 @@ export default async function handler(req,res){
       const freshAt=latest.telemetry_comment_updated_at||latest.updated_at||latest.started_at||latest.requested_at;
       const age=Date.now()-stamp(freshAt);
       if(Number.isFinite(age)&&age<STALE_MS)active=latest;
-      else latest={...latest,status:"ERROR",finished_at:latest.updated_at||new Date().toISOString(),message:latest.message||"La ejecución dejó de actualizar la telemetría durante más de 45 minutos."}
+      else latest={...latest,status:"ERROR",finished_at:latest.updated_at||new Date().toISOString(),message:latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos."}
     }
 
     let fallback=null;
@@ -178,7 +178,7 @@ export default async function handler(req,res){
       if(fallback&&["REQUESTED","RUNNING"].includes(fallback.status)){
         const newer=!latest||stamp(fallback.requested_at)>stamp(latest.updated_at||latest.finished_at||latest.requested_at);
         const age=Date.now()-stamp(fallback.updated_at||fallback.started_at||fallback.requested_at);
-        if(newer&&Number.isFinite(age)&&age>=0&&age<30*60*1000)active=fallback
+        if(newer&&Number.isFinite(age)&&age>=0&&age<20*60*1000)active=fallback
       }
     }
 
