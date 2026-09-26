@@ -143,11 +143,12 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
-    const [enabled,items,{doc:request},errors]=await Promise.all([triggerReady(),comments(),readTrigger(),readErrors()]);
+    const [enabled,items]=await Promise.all([triggerReady(),comments()]);
     const traces=items.map(traceOf).filter(Boolean).sort((a,b)=>stamp(a.updated_at||a.comment_updated_at)-stamp(b.updated_at||b.comment_updated_at));
     const latestRaw=traces.at(-1)||null;
+    let errors=[];
+    if(latestRaw&&Number(latestRaw.incident_count||0)>0)errors=await readErrors();
     let latest=latestRaw?normalizeTrace(latestRaw,errors):null;
-    const fallback=manualFallback(items,request);
 
     let active=null;
     if(latest&&["REQUESTED","RUNNING"].includes(latest.status)){
@@ -155,23 +156,38 @@ export default async function handler(req,res){
       if(Number.isFinite(age)&&age>=0&&age<STALE_MS)active=latest;
       else latest={...latest,status:"ERROR",finished_at:latest.updated_at||new Date().toISOString(),message:latest.message||"La ejecución dejó de actualizar la telemetría durante más de 45 minutos."}
     }
-    if(!active&&fallback&&["REQUESTED","RUNNING"].includes(fallback.status)){
-      const age=Date.now()-stamp(fallback.updated_at||fallback.started_at||fallback.requested_at);
-      if(Number.isFinite(age)&&age>=0&&age<30*60*1000)active={...fallback,incidents:incidentsFor(errors,fallback.started_at||fallback.requested_at,null)};
+
+    let fallback=null;
+    if(!active){
+      const {doc:request}=await readTrigger();
+      fallback=manualFallback(items,request);
+      if(fallback&&["REQUESTED","RUNNING"].includes(fallback.status)){
+        const newer=!latest||stamp(fallback.requested_at)>stamp(latest.updated_at||latest.finished_at||latest.requested_at);
+        const age=Date.now()-stamp(fallback.updated_at||fallback.started_at||fallback.requested_at);
+        if(newer&&Number.isFinite(age)&&age>=0&&age<30*60*1000)active=fallback
+      }
     }
 
     if(active){
-      active.incident_count=Math.max(Number(active.incident_count||0),active.incidents?.length||0);
+      if(Number(active.incident_count||0)>0&&!errors.length)errors=await readErrors();
+      active.incidents=incidentsFor(errors,active.started_at||active.requested_at,null);
+      active.incident_count=Math.max(Number(active.incident_count||0),active.incidents.length);
       return res.status(200).json({ok:true,enabled,active:true,...active,last_run:null,can_run:enabled&&authorized(req)})
     }
 
     let last_run=null;
-    const terminalTraces=traces.map(t=>normalizeTrace(t,errors)).filter(t=>["DONE","ERROR"].includes(t.status));
-    if(terminalTraces.length)last_run=terminalTraces.at(-1);
-    else if(latest&&["DONE","ERROR"].includes(latest.status))last_run=latest;
-    else if(fallback&&["DONE","ERROR"].includes(fallback.status)){
-      const inc=incidentsFor(errors,fallback.started_at||fallback.requested_at,fallback.finished_at);
-      last_run={...fallback,incidents:inc,incident_count:inc.length}
+    if(latest&&["DONE","ERROR"].includes(latest.status))last_run=latest;
+    else{
+      const terminalTraces=traces.filter(t=>["DONE","ERROR"].includes(t.status));
+      if(terminalTraces.length){
+        const raw=terminalTraces.at(-1);
+        if(Number(raw.incident_count||0)>0&&!errors.length)errors=await readErrors();
+        last_run=normalizeTrace(raw,errors)
+      }else if(fallback&&["DONE","ERROR"].includes(fallback.status)){
+        if(!errors.length)errors=await readErrors();
+        const inc=incidentsFor(errors,fallback.started_at||fallback.requested_at,fallback.finished_at);
+        last_run={...fallback,incidents:inc,incident_count:inc.length}
+      }
     }
     return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,can_run:enabled&&authorized(req)})
   }catch(e){
