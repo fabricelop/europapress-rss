@@ -396,7 +396,14 @@ async function load(silent=false){
   const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),problematic_items:problematicRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),three_source_items:growingRaw.filter(x=>!pendingClosed.has(String(x.event_id||"")))};
   status.processing_count=status.processing_items.length;status.problematic_count=status.problematic_items.length;status.three_source_count=status.three_source_items.length;
   model={prepared:preparedRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),status,config:d.config||{}};render()
- }catch(e){if(seq===loadSeq&&!silent)toast(e.message)}
+ }catch(e){
+  if(seq===loadSeq&&!silent){
+    toast(e.message);
+    const list=$("list");
+    if(list&&/Cargando/.test(list.textContent||""))list.innerHTML='<div class="empty"><b>No se pudieron cargar los datos.</b><br><button class="btn" id="retryLoad">Reintentar</button></div>';
+    const retry=$("retryLoad");if(retry)retry.onclick=()=>load();
+  }
+ }
 }
 document.querySelectorAll(".stat").forEach(x=>x.onclick=()=>setView(x.dataset.view));
 $("runNow").onclick=requestRun;
