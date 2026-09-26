@@ -248,7 +248,11 @@ def sync_queue(requests_doc):
             "anticipated_news_title": req.get("anticipated_news_title") or "",
             "anticipated_entered_top10_at": req.get("anticipated_entered_top10_at"),
         })
-    items.sort(key=lambda x: str(x.get("requested_at") or ""))
+    # Evita starvation: trabajo nuevo/revisiones primero; problematic al final.
+    items.sort(key=lambda x: (
+        1 if str(x.get("status") or "") == "problematic" else 0,
+        str(x.get("requested_at") or ""),
+    ))
     save(TRENDS / "editorial-queue.json", {
         "project": "TTendencias",
         "updated_at": datetime.now(MADRID).isoformat(timespec="seconds"),
