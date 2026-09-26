@@ -373,8 +373,13 @@ function renderReady(list){
   const img=item.image||{},imgUrl=String(img.url||item.image_url||""),imgSource=img.source||item.image_source||"",imgPage=img.source_url||img.page_url||item.image_source_url||"",imgRights=img.rights_status||item.image_rights_status||"",imgBox=card.querySelector(".imagebox");
   const imageState=String(item.image_status||(item.image_pending?"working":imgUrl?"ready":"none")).toLowerCase();
   const imageReady=imageState==="ready"&&!!imgUrl;
-  const imageLabels={working:"Imagen en elaboración",pending:"Sin imagen",retry:"Sin imagen",ready:"Imagen lista",telegram:"Imagen en Telegram",none:"Sin imagen",error:"Sin imagen"};
-  const imageLabel=imageLabels[imageState]||"Imagen en elaboración";
+  const imageLabels={working:"Generando imagen",pending:"Esperando imagen",retry:"Esperando reintento",ready:"Imagen lista",telegram:"Imagen en Telegram",none:"Sin imagen",error:"Sin imagen"};
+  const imageLabel=imageLabels[imageState]||"Esperando imagen";
+  const imageTerminal=(imageState==="ready"&&!!imgUrl)||imageState==="telegram"||imageState==="none";
+  const publishBtn=card.querySelector(".published");
+  publishBtn.disabled=!imageTerminal;
+  publishBtn.textContent=imageTerminal?"Ya publicada":imageState==="working"?"Generando imagen…":imageState==="retry"?"Esperando reintento…":"Esperando imagen…";
+  publishBtn.title=imageTerminal?"Marca la noticia como publicada":"Espera a que la imagen termine antes de publicar";
   imgBox.hidden=false;
   card.querySelector(".imageTitle").textContent=imageLabel;
   if(imageReady){
@@ -384,7 +389,7 @@ function renderReady(list){
    card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl);
    const src=card.querySelector(".imgSource");if(imgPage)src.href=imgPage;else src.style.display="none";
   }else{
-   card.querySelector(".imageMeta").textContent=imageState==="telegram"?"Foto enviada al bot de Telegram.":imageState==="working"?"Hay una generación o entrega de imagen activa ahora mismo.":imageState==="none"||imageState==="pending"||imageState==="retry"?"No hay una generación de imagen activa. Se reintentará en la siguiente ejecución.":"La noticia está lista.";
+   card.querySelector(".imageMeta").textContent=imageState==="telegram"?"Foto enviada al bot de Telegram. Ya puedes publicar.":imageState==="working"?"Se está generando o guardando la imagen. No publiques todavía.":imageState==="pending"?"La noticia está redactada, pero la imagen todavía está pendiente. No publiques todavía.":imageState==="retry"?"La imagen necesita un nuevo intento. No publiques todavía.":imageState==="none"?"La ejecución terminó sin imagen. Ya puedes publicar sin imagen.":"La noticia está lista.";
    card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";card.querySelector(".imgSource").style.display="none";
   }
   const photo=document.createElement("button");photo.className="btn photoStatus";photo.textContent="📷 "+imageLabel;photo.onclick=()=>{det.classList.add("open");openCards.add(String(item.event_id||""));card.querySelector(".expand").textContent="Cerrar";imgBox.scrollIntoView({block:"nearest",behavior:"smooth"})};card.querySelector(".actions").appendChild(photo);
@@ -425,7 +430,7 @@ function renderReady(list){
   }
   card.querySelector(".expand").onclick=()=>{det.classList.toggle("open");const id=String(item.event_id||"");if(det.classList.contains("open"))openCards.add(id);else openCards.delete(id);persistUiState();card.querySelector(".expand").textContent=det.classList.contains("open")?"Cerrar":"Abrir"};
   async function close(action,label){if(!confirm(label+" esta noticia?"))return;const id=String(item.event_id||""),old=[...model.prepared];pendingClosed.add(id);openCards.delete(id);persistUiState();model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();try{await api(action,{event_id:item.event_id});toast(action==="published"?"Marcada como publicada":"Noticia desestimada");await load(true)}catch(e){pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message)}}
-  card.querySelector(".published").onclick=()=>close("published","¿Confirmas que ya has publicado");
+  card.querySelector(".published").onclick=()=>{if(!imageTerminal){toast("Espera a que la imagen termine antes de publicar");return}return close("published","¿Confirmas que ya has publicado")};
   card.querySelector(".dismiss").onclick=card.querySelector(".dismiss2").onclick=()=>close("dismiss","¿Desestimar");
   card.querySelector(".rework").onclick=()=>{reworkItem=item;$("reworkTitle").textContent=item.title||"";$("reworkInstruction").value="";$("reworkSheet").classList.add("show");$("reworkInstruction").focus()};
   list.appendChild(card)
