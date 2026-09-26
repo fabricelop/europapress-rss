@@ -39,9 +39,27 @@ jobs:
           git config user.name "ttendencias-bot"
           git config user.email "actions@users.noreply.github.com"
           git pull --rebase --autostash origin main
+          cp trends/editorial-queue.json /tmp/tt-queue-before.json 2>/dev/null || printf '{"items":[]}\n' >/tmp/tt-queue-before.json
 
           python3 trends/update_trends.py
           python3 trends/auto_queue_new.py
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          def load(p):
+              try: return json.loads(Path(p).read_text(encoding="utf-8"))
+              except Exception: return {"items":[]}
+          before=load("/tmp/tt-queue-before.json")
+          after=load("trends/editorial-queue.json")
+          def keys(doc):
+              return {(str(x.get("id") or ""),int(x.get("revision") or 0))
+                      for x in doc.get("items",[])
+                      if str(x.get("status") or "") in {"preparing","update","problematic"}}
+          new=sorted(keys(after)-keys(before))
+          Path("/tmp/tt-new-explanations.json").write_text(json.dumps(new),encoding="utf-8")
+          print("Nuevas explicaciones pendientes:",new)
+          PY
 
 
           MODE="$(python3 - <<'PY'
@@ -69,6 +87,44 @@ jobs:
           git commit -m "Actualizar Top 10 TTendencias"
           git pull --rebase --autostash origin main
           git push origin HEAD:main
+
+          # Si han entrado tendencias nuevas, dispara el mismo canal permanente
+          # que usa «Ejecutar ahora». Así la explicación no espera al :30.
+          if python3 - <<'PY'
+          import json
+          from pathlib import Path
+          rows=json.loads(Path("/tmp/tt-new-explanations.json").read_text())
+          raise SystemExit(0 if rows else 1)
+          PY
+          then
+            rm -rf /tmp/ttendencias-run-trigger
+            git fetch origin control/ttendencias-run-trigger
+            git worktree add -f /tmp/ttendencias-run-trigger origin/control/ttendencias-run-trigger
+            (
+              cd /tmp/ttendencias-run-trigger
+              git config user.name "ttendencias-bot"
+              git config user.email "actions@users.noreply.github.com"
+              python3 - <<'PY'
+          import json, datetime, hashlib, time
+          from pathlib import Path
+          now=datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00","Z")
+          command="auto-"+hashlib.sha256((now+str(time.time_ns())).encode()).hexdigest()[:16]
+          path=Path("trends/run-now-trigger.json")
+          path.parent.mkdir(parents=True,exist_ok=True)
+          path.write_text(json.dumps({
+              "version":1,
+              "command_id":command,
+              "requested_at":now,
+              "mode":"auto_explain"
+          },ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print("Trigger explicación inmediata:",command)
+          PY
+              git add trends/run-now-trigger.json
+              git commit -m "TTendencias: explicar nuevas tendencias"
+              git push origin HEAD:control/ttendencias-run-trigger
+            )
+            git worktree remove -f /tmp/ttendencias-run-trigger || true
+          fi
 
       - name: Comprobar salud TTendencias
         if: always()
