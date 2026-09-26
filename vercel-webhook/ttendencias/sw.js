@@ -1,4 +1,4 @@
-const CACHE="ttendencias-shell-ui-run-image-v3";
+const CACHE="ttendencias-shell-explain-v1";
 const SHELL=["/ttendencias/manifest.webmanifest","/ttendencias/icon.svg"];
 
 self.addEventListener("install",event=>{
@@ -40,8 +40,8 @@ self.addEventListener("push",event=>{
   try{data=event.data?event.data.json():{}}catch(_){data={body:event.data?event.data.text():""}}
   const title=data.title||"TTendencias";
   const options={
-    body:data.body||"Hay un nuevo tuit listo para revisar.",
-    tag:"ttendencias-ready",
+    body:data.body||"Hay una nueva tendencia explicada.",
+    tag:"ttendencias-explained",
     renotify:true,
     data:{url:data.url||"/ttendencias/preparados/"},
   };
