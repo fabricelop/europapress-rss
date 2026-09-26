@@ -37,7 +37,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <div class="stats">
   <button class="stat active" data-view="ready"><b id="readyCount">0</b>Listas</button>
   <button class="stat" data-view="processing"><b id="processingCount">0</b>En elaboración</button>
-  <button class="stat" data-view="problematic"><b id="problematicCount">0</b>No comprobadas</button>
+  <button class="stat" data-view="problematic"><b id="problematicCount">0</b>Tendencias</button>
   <button class="stat" data-view="growing"><b id="growingCount">0</b>Creciendo</button>
  </div>
  <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="btn primary" id="runNow" type="button">▶ Ejecutar ahora</button></section>
@@ -438,34 +438,62 @@ function renderReady(list){
  }
 }
 function renderProblematic(list){
- $("viewTitle").textContent="No comprobadas";
- const items=[...(model.status?.problematic_items||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
- if(!items.length){list.innerHTML='<div class="empty">No hay noticias pendientes de comprobación.</div>';return}
- for(const item of items){
+ $("viewTitle").textContent="Tendencias";
+ const candidates=[...(model.status?.trend_candidates||[])].filter(x=>!pendingClosed.has(String(x.candidate_id||x.event_id||"")));
+ const legacy=[...(model.status?.problematic_items||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
+ if(!candidates.length&&!legacy.length){list.innerHTML='<div class="empty">No hay posibles noticias detectadas desde tendencias.</div>';return}
+
+ for(const item of candidates){
    const card=document.createElement("article");card.className="queuecard";
    const chips=(item.sources||[]).map(src=>'<span class="chip">'+String(typeof src==="string"?src:(src.name||src.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
-   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="problem-reason"></div><div class="verification-hint" hidden></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn check">Check</button><button class="btn danger dismiss-problematic">Desestimar</button></div>';
+   const names=(item.trend_names||[]).join(" · ");
+   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="problem-reason"></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn primary promote-trend">✓ En elaboración</button><a class="btn search-trend" target="_blank" rel="noopener noreferrer">Buscar en X</a><button class="btn danger dismiss-trend">Descartar</button></div>';
+   card.querySelector(".title").textContent=item.title||"Posible noticia desde TTendencias";
+   card.querySelector(".sources").textContent="TTendencias"+(names?" · "+names:"")+" · "+fmt(item.detected_at);
+   card.querySelector(".count").textContent=Number(item.source_count||0)+" fuentes";
+   card.querySelector(".problem-reason").textContent=item.explanation||"Posible noticia detectada a partir de una tendencia.";
+   const terms=(item.search_terms||item.trend_names||[]).filter(Boolean);
+   card.querySelector(".search-trend").href="https://x.com/search?q="+encodeURIComponent(terms.length?terms.join(" OR "):(item.title||""))+"&src=typed_query&f=live";
+   card.querySelector(".promote-trend").onclick=async()=>{
+     if(!confirm("¿Mandar esta noticia a En elaboración? TTiTTulares hará la redacción y la imagen."))return;
+     try{await api("promote-trend",{candidate_id:item.candidate_id});toast("Enviada a En elaboración");await load(true);setView("processing")}
+     catch(err){toast(err.message)}
+   };
+   card.querySelector(".dismiss-trend").onclick=async()=>{
+     if(!confirm("¿Descartar esta posible noticia?"))return;
+     try{await api("dismiss-trend",{candidate_id:item.candidate_id});toast("Tendencia descartada");await load(true);setView("problematic")}
+     catch(err){toast(err.message)}
+   };
+   list.appendChild(card)
+ }
+ if(candidates.length&&legacy.length){
+   const sep=document.createElement("div");sep.className="meta";sep.style.margin="12px 2px 4px";sep.textContent="Pendientes de comprobación del flujo anterior";list.appendChild(sep)
+ }
+ for(const item of legacy){
+   const card=document.createElement("article");card.className="queuecard";
+   const chips=(item.sources||[]).map(src=>'<span class="chip">'+String(typeof src==="string"?src:(src.name||src.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
+   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="problem-reason"></div><div class="verification-hint" hidden></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn check">✓ En elaboración</button><button class="btn danger dismiss-problematic">Descartar</button></div>';
    card.querySelector(".title").textContent=item.title||"Noticia sin título";
    const attempts=Number(item.problematic_attempts||1);
-   card.querySelector(".sources").textContent="Sin comprobar · intento "+attempts+" · "+fmt(item.problematic_at||item.selected_at);
+   card.querySelector(".sources").textContent="Pendiente de comprobar · intento "+attempts+" · "+fmt(item.problematic_at||item.selected_at);
    card.querySelector(".count").textContent=Number(item.source_count||0)+" fuentes";
    card.querySelector(".problem-reason").textContent=item.problem_reason||"No se pudo verificar suficientemente.";
    const hint=card.querySelector(".verification-hint"),check=card.querySelector(".check");
    if(item.user_validated){
-     hint.hidden=false;hint.textContent="✓ Dada por válida · pasará a Listas en la próxima ejecución";
-     check.textContent="✓ Check";check.disabled=true
+     hint.hidden=false;hint.textContent="✓ Dada por válida · entrará en el siguiente pase editorial";
+     check.textContent="✓ Validada";check.disabled=true
    }else{
      check.onclick=async()=>{
-       if(!confirm("¿Dar esta noticia por válida? Se preparará para Listas en la próxima ejecución editorial."))return;
+       if(!confirm("¿Dar esta noticia por válida? Entrará en el siguiente pase editorial de TTiTTulares."))return;
        check.disabled=true;
-       try{await api("check",{event_id:item.event_id});toast("Validada para la próxima ejecución");await load(true);setView("problematic")}
+       try{await api("check",{event_id:item.event_id});toast("Validada para elaboración");await load(true);setView("problematic")}
        catch(err){check.disabled=false;toast(err.message)}
      }
    }
    card.querySelector(".dismiss-problematic").onclick=async()=>{
-     if(!confirm("¿Desestimar esta noticia no comprobada? Se quitará de todas las listas."))return;
+     if(!confirm("¿Descartar esta noticia?"))return;
      const id=String(item.event_id||"");pendingClosed.add(id);persistUiState();renderList();
-     try{await api("dismiss",{event_id:item.event_id});toast("Noticia desestimada");await load(true);setView("problematic")}
+     try{await api("dismiss",{event_id:item.event_id});toast("Noticia descartada");await load(true);setView("problematic")}
      catch(err){pendingClosed.delete(id);persistUiState();renderList();toast(err.message)}
    };
    list.appendChild(card)
@@ -495,12 +523,13 @@ async function load(silent=false){
   const r=await fetch(API+"?state="+Date.now(),{cache:"no-store"});
   if(!r.ok)throw new Error("No se pudieron leer los datos");
   const d=await r.json();if(seq!==loadSeq)return;
-  const preparedRaw=d.prepared?.items||[],processingRaw=d.status?.processing_items||[],problematicRaw=d.status?.problematic_items||[],growingRaw=d.status?.three_source_items||[];
+  const preparedRaw=d.prepared?.items||[],processingRaw=d.status?.processing_items||[],problematicRaw=d.status?.problematic_items||[],trendCandidatesRaw=d.status?.trend_candidates||[],growingRaw=d.status?.three_source_items||[];
   const present=new Set([...preparedRaw,...processingRaw,...problematicRaw,...growingRaw].map(x=>String(x.event_id||"")).filter(Boolean));
+  for(const x of trendCandidatesRaw){const id=String(x.candidate_id||x.event_id||"");if(id)present.add(id)}
   let pendingChanged=false;for(const id of [...pendingClosed])if(!present.has(id)){pendingClosed.delete(id);pendingChanged=true}
   if(pendingChanged)persistUiState();
-  const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),problematic_items:problematicRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),three_source_items:growingRaw.filter(x=>!pendingClosed.has(String(x.event_id||"")))};
-  status.processing_count=status.processing_items.length;status.problematic_count=status.problematic_items.length;status.three_source_count=status.three_source_items.length;
+  const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),problematic_items:problematicRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),trend_candidates:trendCandidatesRaw.filter(x=>!pendingClosed.has(String(x.candidate_id||x.event_id||""))),three_source_items:growingRaw.filter(x=>!pendingClosed.has(String(x.event_id||"")))};
+  status.processing_count=status.processing_items.length;status.problematic_count=status.problematic_items.length+status.trend_candidates.length;status.trend_candidates_count=status.trend_candidates.length;status.three_source_count=status.three_source_items.length;
   model={prepared:preparedRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),status,config:d.config||{}};render()
  }catch(e){
   if(seq===loadSeq&&!silent){
