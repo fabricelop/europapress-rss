@@ -1,11 +1,13 @@
 {
-  "checked_at": "2026-09-26T21:32:55.682012+00:00",
+  "checked_at": "2026-09-26T22:10:25.709822+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
       "ok": true,
-      "alternatives_target": 3,
-      "alternatives_block_send": false
+      "mode": "explanation_only",
+      "alternatives_target": 0,
+      "alternatives_block_send": false,
+      "images_enabled": false
     },
     "control_mode": {
       "ok": true,
@@ -39,8 +41,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 5,
-      "captured_age_minutes": 1.2,
+      "non_stale_sources": 4,
+      "captured_age_minutes": 0.1,
       "noise_count": 0
     },
     "listener": {
@@ -52,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.7,
-      "run_id": 36273211189,
+      "age_minutes": 0.6,
+      "run_id": 36275357617,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,76 +77,76 @@
     "editorial_queue": {
       "ok": false,
       "pending_count": 14,
-      "overdue_count": 12,
-      "oldest_age_minutes": 51.9,
+      "overdue_count": 14,
+      "oldest_age_minutes": 89.4,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "f5060a515233",
           "name": "Ferran",
           "status": "preparing",
-          "age_minutes": 51.9
+          "age_minutes": 89.4
         },
         {
           "id": "72b636044cc9",
           "name": "Wembley",
           "status": "preparing",
-          "age_minutes": 51.9
+          "age_minutes": 89.4
         },
         {
           "id": "9503ec979794",
           "name": "Inglaterra",
           "status": "preparing",
-          "age_minutes": 51.9
+          "age_minutes": 89.4
         },
         {
           "id": "0c51edc1ef4b",
           "name": "Eric García",
           "status": "preparing",
-          "age_minutes": 51.9
+          "age_minutes": 89.4
         },
         {
           "id": "6454422cbf4a",
           "name": "#NationsLeague",
           "status": "preparing",
-          "age_minutes": 51.9
+          "age_minutes": 89.4
         },
         {
           "id": "9cf1498400ce",
           "name": "Celades",
           "status": "preparing",
-          "age_minutes": 51.9
+          "age_minutes": 89.4
         },
         {
           "id": "ea3aa08d7383",
           "name": "Cucurella",
           "status": "preparing",
-          "age_minutes": 41.3
+          "age_minutes": 78.8
         },
         {
           "id": "456a845d1b0b",
           "name": "Gordon",
           "status": "preparing",
-          "age_minutes": 41.3
+          "age_minutes": 78.8
         },
         {
           "id": "ae7f066f3c94",
           "name": "Oyarzabal",
           "status": "preparing",
-          "age_minutes": 41.3
+          "age_minutes": 78.8
         },
         {
           "id": "4b85f530992d",
           "name": "Puerta del Sol",
           "status": "preparing",
-          "age_minutes": 41.3
+          "age_minutes": 78.8
         }
       ],
       "repairable": false
     },
     "editorial_runtime": {
       "ok": true,
-      "status": "waiting",
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
         "f5060a515233",
@@ -158,15 +160,17 @@
         "ae7f066f3c94",
         "4b85f530992d",
         "6e5f3712838f",
-        "a3a7e7773e0b"
+        "a3a7e7773e0b",
+        "03e6546dc5f6",
+        "d438ccc039cc"
       ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "cola editorial bloqueada: 12 pendiente(s) superan 30 min; más antigua 51.9 min"
+    "cola editorial bloqueada: 14 pendiente(s) superan 30 min; más antigua 89.4 min"
   ],
   "alert_sent": false,
-  "last_alert_signature": "cola editorial bloqueada: 12 pendiente(s) superan 30 min; más antigua 51.9 min"
+  "last_alert_signature": "cola editorial bloqueada: 14 pendiente(s) superan 30 min; más antigua 89.4 min"
 }
