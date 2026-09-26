@@ -36,6 +36,13 @@ const { chromium } = require('playwright');
     catch (_) { return fallback; }
   };
 
+  const normalizeText = (text) => String(text || '').toLocaleLowerCase('es-ES').replace(/\s+/g, ' ').trim();
+  const rejectReason = (text) => {
+    const normalized = normalizeText(text);
+    if (normalized.includes('me recuerden por')) return 'excluded_phrase_me_recuerden_por';
+    return null;
+  };
+
   const telegramSentFile = path.join(stateDir, 'telegram-sent.json');
   const existingOutbox = readJson(outboxFile, { candidates: [] });
   const telegramSent = readJson(telegramSentFile, {});
@@ -43,7 +50,7 @@ const { chromium } = require('playwright');
 
   for (const c of existingOutbox.candidates || []) {
     const id = String(c && c.id || '');
-    if (id && !telegramSent[id]) pendingBeforeSearch.set(id, c);
+    if (id && !telegramSent[id] && !rejectReason(c && c.text)) pendingBeforeSearch.set(id, c);
   }
 
   // Recuperación adicional: si una ejecución anterior encontró el candidato pero
@@ -52,7 +59,7 @@ const { chromium } = require('playwright');
     for (const file of fs.readdirSync(candidatesDir).filter(x => x.endsWith('.json'))) {
       const c = readJson(path.join(candidatesDir, file), null);
       const id = String(c && c.id || '');
-      if (id && !telegramSent[id]) pendingBeforeSearch.set(id, c);
+      if (id && !telegramSent[id] && !rejectReason(c && c.text)) pendingBeforeSearch.set(id, c);
     }
   } catch (_) {}
   const launchOptions = { headless };
@@ -62,7 +69,6 @@ const { chromium } = require('playwright');
   if (authToken && ct0) await context.addCookies([{name:'auth_token',value:authToken,domain:'.x.com',path:'/',httpOnly:true,secure:true,sameSite:'None'},{name:'ct0',value:ct0,domain:'.x.com',path:'/',httpOnly:false,secure:true,sameSite:'Lax'}]);
   const page = await context.newPage();
   const result={query,search_url:url,fetched_at:new Date().toISOString(),authenticated_cookie_pair_present:Boolean(authToken&&ct0),mode:isBackfill?`backfill_since_${new Date(backfillCutoff).toISOString()}`:'incremental',final_url:null,title:null,extracted:0,scroll_rounds:0,already_seen:0,rejected:[],candidates:[],status:'unknown',note:null};
-  const rejectReason=()=>null;
   const readVisibleTweets=async()=>{const articles=page.locator('article[data-testid="tweet"]');const count=await articles.count();const tweets=[];for(let i=0;i<count;i++){const article=articles.nth(i);const text=await article.locator('[data-testid="tweetText"]').innerText().catch(()=>'');const timeEl=article.locator('time').first();const datetime=await timeEl.getAttribute('datetime').catch(()=>null);const timeHref=await timeEl.locator('xpath=..').getAttribute('href').catch(()=>null);const links=await article.locator('a[href*="/status/"]').evaluateAll(els=>els.map(a=>a.getAttribute('href')).filter(Boolean)).catch(()=>[]);const statusPath=(timeHref&&/^\/[^/]+\/status\/\d+/.test(timeHref))?timeHref:links.find(h=>/^\/[^/]+\/status\/\d+/.test(h));if(!text||!statusPath)continue;const m=statusPath.match(/^\/([^/]+)\/status\/(\d+)/);if(!m)continue;const[,user,id]=m;tweets.push({id,user:`@${user}`,text,datetime,url:`https://x.com/${user}/status/${id}`});}return tweets;};
   try{
     await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});await page.waitForTimeout(7000);result.final_url=page.url();result.title=await page.title();const loginVisible=await page.locator('text=Inicia sesión').first().isVisible().catch(()=>false);const extractedMap=new Map();let stableRounds=0,seenBoundaryRounds=0;const incrementalLookbackMs=24*60*60*1000;const incrementalCutoff=Date.now()-incrementalLookbackMs;const maxScrollRounds=isBackfill?200:60;
