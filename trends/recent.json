@@ -1,33 +1,32 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T19:01:27+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-26T19:10:55+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "fowtools",
+    "superx",
+    "snaplytics",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
     "Colapinto",
     "Norris",
+    "Triana",
     "#Fiesta26S",
     "Vomitivo",
-    "Triana",
-    "Desinflar",
-    "Sanse",
-    "Carlos Hernández",
+    "Gasly",
     "Bottas",
-    "Paula Blasi"
+    "Granada",
+    "Carlos Hernández",
+    "Desinflar"
   ],
   "items": [
     {
@@ -40,62 +39,45 @@
     },
     {
       "rank": 3,
-      "name": "#Fiesta26S"
-    },
-    {
-      "rank": 4,
-      "name": "Vomitivo"
-    },
-    {
-      "rank": 5,
       "name": "Triana"
     },
     {
+      "rank": 4,
+      "name": "#Fiesta26S"
+    },
+    {
+      "rank": 5,
+      "name": "Vomitivo"
+    },
+    {
       "rank": 6,
-      "name": "Desinflar"
+      "name": "Gasly"
     },
     {
       "rank": 7,
-      "name": "Sanse"
-    },
-    {
-      "rank": 8,
-      "name": "Carlos Hernández"
-    },
-    {
-      "rank": 9,
       "name": "Bottas"
     },
     {
-      "rank": 10,
-      "name": "Paula Blasi"
-    }
-  ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
-  "upcoming": [
-    {
-      "name": "Gasly",
-      "social_source_count": 5,
-      "social_sources": [
-        "getdaytrends",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.8,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T17:50:58+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "rank": 8,
+      "name": "Granada"
     },
     {
-      "name": "Mariezkurrena",
+      "rank": 9,
+      "name": "Carlos Hernández"
+    },
+    {
+      "rank": 10,
+      "name": "Desinflar"
+    }
+  ],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Gasly",
+    "Granada"
+  ],
+  "upcoming": [
+    {
+      "name": "Paula Blasi",
       "social_source_count": 4,
       "social_sources": [
         "getdaytrends",
@@ -103,43 +85,26 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T18:10:46+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "#AzerbaijanGP",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 15.3,
-      "movement": "down",
-      "first_detected_at": "2026-09-26T17:09:15+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T19:10:55+02:00",
+      "news_source_count": 2,
+      "news_event_id": "2602ce936500",
+      "news_title": "Caída y abandono de Paula Blasi en el Mundial de Montreal",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-26T16:33:01.891487Z"
     },
     {
       "name": "Lorca",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
         "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 15.0,
+      "mean_observed_rank": 14.7,
       "movement": "up",
       "first_detected_at": "2026-09-26T18:31:25+02:00",
       "news_source_count": 4,
@@ -149,21 +114,40 @@
       "news_first_seen": "2026-09-25T16:05:13.330458Z"
     },
     {
-      "name": "Granada",
-      "social_source_count": 2,
+      "name": "Sanse",
+      "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
+        "trends24",
         "tweets24"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T19:10:55+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Mariezkurrena",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 18.3,
       "movement": "down",
       "first_detected_at": "2026-09-26T18:10:46+02:00",
-      "news_source_count": 4,
-      "news_event_id": "f6215bedfd62",
-      "news_title": "Fallece un miembro del grupo de música alemán Das Ich tras un concierto en una sala de Granada capital",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-26T10:02:32.485062Z"
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Manchester City",
@@ -182,16 +166,16 @@
       "news_first_seen": "2026-09-25T15:02:55.152129Z"
     },
     {
-      "name": "Hadjar",
+      "name": "#AzerbaijanGP",
       "social_source_count": 2,
       "social_sources": [
-        "superx",
+        "snaplytics",
         "trendswe"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 15.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T19:01:27+02:00",
+      "best_observed_rank": 16,
+      "mean_observed_rank": 16.5,
+      "movement": "down",
+      "first_detected_at": "2026-09-26T17:09:15+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -199,24 +183,54 @@
       "news_first_seen": null
     },
     {
-      "name": "Safety Car",
+      "name": "Briatore",
       "social_source_count": 2,
       "social_sources": [
-        "superx",
-        "trendswe"
+        "trends24",
+        "tweets24"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 16.0,
+      "best_observed_rank": 17,
+      "mean_observed_rank": 17.0,
       "movement": "new",
-      "first_detected_at": "2026-09-26T19:01:27+02:00",
+      "first_detected_at": "2026-09-26T19:10:55+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
+    },
+    {
+      "name": "Lugo",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 19,
+      "mean_observed_rank": 19.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T19:10:55+02:00",
+      "news_source_count": 1,
+      "news_event_id": "0c94dfe3477d",
+      "news_title": "Antón Castro, mejor cocinero gallego a los 28 años, lleva el restaurante que abrió su bisabuelo en un pueblo de Lugo: 'Era la vida en pequeñito' - El HuffPost",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-26T06:41:57.094902Z"
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Gasly",
+      "first_detected_at": "2026-09-26T17:50:58+02:00",
+      "entered_top10_at": "2026-09-26T19:10:55+02:00",
+      "lead_minutes": 80
+    },
+    {
+      "name": "Granada",
+      "first_detected_at": "2026-09-26T18:10:46+02:00",
+      "entered_top10_at": "2026-09-26T19:10:55+02:00",
+      "lead_minutes": 60
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -247,62 +261,62 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T19:01:27+02:00"
+      "fetched_at": "2026-09-26T19:10:55+02:00"
     },
     "getdaytrends": {
       "ok": true,
       "trends": [
-        "Colapinto",
         "#Fiesta26S",
-        "Norris",
+        "Colapinto",
         "Vomitivo",
-        "Triana",
-        "Desinflar",
-        "#ADCeutaFCRealSociedadB",
-        "Bottas",
-        "Carlos Hernández",
-        "Sanse",
-        "Paula Blasi",
-        "Gasly",
+        "David Gil",
+        "Pacheta",
+        "Emilio de Justo",
+        "Norris",
         "Granada",
-        "Verstappen",
-        "Mariezkurrena"
+        "Triana",
+        "Andorra",
+        "Sanse",
+        "Carlos Hernández",
+        "Paula Blasi",
+        "#TenerifeCadiz",
+        "Gasly"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T19:01:27+02:00"
+      "fetched_at": "2026-09-26T19:10:56+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
-        "Colapinto",
-        "Norris",
         "#Fiesta26S",
+        "Colapinto",
         "Vomitivo",
+        "Emilio de Justo",
+        "Pacheta",
+        "Norris",
+        "Granada",
         "Triana",
-        "Desinflar",
-        "Sanse",
+        "Andorra",
         "Carlos Hernández",
         "Bottas",
         "Paula Blasi",
-        "#ADCeutaFCRealSociedadB",
-        "Gasly",
-        "Granada",
-        "Verstappen",
-        "Mariezkurrena",
+        "Sanse",
         "Lorca",
-        "#AzerbaijanGP",
-        "Alpine",
-        "Andorra",
-        "Japan"
+        "Desinflar",
+        "Gasly",
+        "Briatore",
+        "#TenerifeCádiz",
+        "Lugo",
+        "Mariezkurrena"
       ],
       "error": null,
-      "update_hint": "Updated 33 minutes ago",
-      "age_minutes": 33.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-26T19:01:28+02:00"
+      "update_hint": "Updated 41 seconds ago Live Twitter Trending Topics in Spain 1 #Fiesta26S Explore why #F",
+      "age_minutes": null,
+      "freshness": "unknown",
+      "fetched_at": "2026-09-26T19:10:56+02:00"
     },
     "superx": {
       "ok": true,
@@ -332,16 +346,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T19:01:29+02:00"
+      "fetched_at": "2026-09-26T19:10:57+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790442089",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790442658",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T19:01:29+02:00"
+      "fetched_at": "2026-09-26T19:10:58+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -369,9 +383,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 16:00 UTC",
-      "age_minutes": 61.5,
+      "age_minutes": 71.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-26T19:01:29+02:00"
+      "fetched_at": "2026-09-26T19:10:58+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -399,18 +413,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 05:00 PM # Trend Type Actions 1 Colapinto Topic 2 #Fiesta2",
-      "age_minutes": 121.5,
+      "age_minutes": 131.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T19:01:29+02:00"
+      "fetched_at": "2026-09-26T19:10:58+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790442091",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790442659",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T19:01:31+02:00"
+      "fetched_at": "2026-09-26T19:10:59+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -419,46 +433,46 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T19:01:32+02:00"
+      "fetched_at": "2026-09-26T19:11:05+02:00"
     },
     "trendswe": {
       "ok": true,
       "trends": [
         "#Colapinto",
-        "#Norris",
         "#Fiesta26S",
-        "#Desinflar",
-        "#Sanse",
+        "#Norris",
+        "#Vomitivo",
         "#Triana",
-        "#Verstappen",
+        "#Desinflar",
         "#ADCeutaFCRealSociedadB",
-        "#Carlos Hernández",
         "#Bottas",
-        "#Piastri",
+        "#Carlos Hernández",
+        "#Sanse",
+        "#Paula Blasi",
         "#Gasly",
-        "#AzerbaijanGP",
-        "#Russell",
-        "#Alpine",
+        "#Granada",
+        "#Verstappen",
         "#Mariezkurrena",
-        "#hadjar",
-        "#Safety Car",
-        "#Albon",
-        "#Alonso"
+        "#Lorca",
+        "#AzerbaijanGP",
+        "#Alpine",
+        "#Andorra",
+        "#japan"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T19:01:32+02:00"
+      "fetched_at": "2026-09-26T19:11:05+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790442094",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790442667",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T19:01:34+02:00"
+      "fetched_at": "2026-09-26T19:11:07+02:00"
     }
   }
 }
