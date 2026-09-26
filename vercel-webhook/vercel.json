@@ -13,6 +13,14 @@
   },
   "rewrites": [
     {
+      "source": "/ttendencias/explicadas/",
+      "destination": "/ttendencias/explicadas/index.html"
+    },
+    {
+      "source": "/ttendencias/explicadas",
+      "destination": "/ttendencias/explicadas/index.html"
+    },
+    {
       "source": "/ttendencias/preparados",
       "destination": "/ttendencias/preparados/index.html"
     },
@@ -192,6 +200,33 @@
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/ttendencias/explicadas",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/ttendencias/explicadas/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/ttendencias/explicadas/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     }
