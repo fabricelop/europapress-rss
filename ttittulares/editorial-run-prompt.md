@@ -324,3 +324,15 @@ Nunca uses una rama o PR como sustituto silencioso de `main`.
 Los únicos estados visibles finales son: `working` = «Imagen en elaboración» mientras la ejecución sigue intentando esa imagen; `ready` = «Imagen lista» y la app muestra el botón Copiar imagen; `telegram` = «Imagen en Telegram» cuando el raster se entregó por Telegram pero no pudo integrarse en la app; `none` = «Sin imagen» cuando la ejecución ha terminado sin entrega. Al inicio de la siguiente ejecución, `none` vuelve a `working` y se reintenta desde cero.
 
 NINGÚN error de generación, validación, persistencia, Telegram, cita X, imagen de archivo o actualización de estado puede abortar la ejecución global. Captura el fallo por item, deja un estado coherente, registra la razón y continúa con el siguiente item. Los errores editoriales de una noticia tampoco deben impedir procesar las demás.
+
+
+### Contrato de outbox para resultado de imagen
+
+En FASE 2, el outbox de una noticia ya READY puede actualizar SOLO los campos de imagen del prepared_item existente; conserva literalmente title, factual_summary, variants, quote_candidates y quote_search.
+
+- Integración app correcta: image_status="ready", image_delivery="app", image_app_available=true, image_pending=false e image.url accesible. La app mostrará la imagen y Copiar imagen.
+- App fallida pero Telegram correcto: image_status="telegram", image_delivery="telegram", image_app_available=false, image_pending=false. Conserva metadatos del raster si sirven para diagnóstico, pero la app NO debe ofrecer Copiar imagen si no tiene una URL accesible.
+- Generación/validación/persistencia/Telegram agotados en esta ejecución: image_status="none", image_delivery="none", image_app_available=false, image_pending=false e image_failure_reason concreto.
+- Antes de intentar una imagen en una ejecución: image_status="working", image_delivery="pending", image_pending=true.
+
+Si el transporte del outbox de estado de imagen falla, no abortes: registra el fallo, continúa con las demás y en la verificación final intenta una única reconciliación de estado. El objetivo prioritario sigue siendo que ninguna incidencia de imagen detenga la ejecución global.
