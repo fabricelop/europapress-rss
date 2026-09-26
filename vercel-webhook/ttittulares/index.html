@@ -82,7 +82,9 @@ const $=id=>document.getElementById(id);
 const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards";
 function loadUiSet(key){try{return new Set((JSON.parse(sessionStorage.getItem(key)||"[]")||[]).map(String))}catch(_){return new Set()}}
 function persistUiState(){try{sessionStorage.setItem(PENDING_KEY,JSON.stringify([...pendingClosed]));sessionStorage.setItem(OPEN_KEY,JSON.stringify([...openCards]))}catch(_){}}
-const REQUESTED_VIEW=new URLSearchParams(location.search).get("view");\nconst INITIAL_VIEW=["ready","processing","problematic","growing"].includes(REQUESTED_VIEW)?REQUESTED_VIEW:"ready";\nlet model={prepared:[],status:{},config:{}},reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),loadSeq=0,runPoll=null;
+const REQUESTED_VIEW=new URLSearchParams(location.search).get("view");
+const INITIAL_VIEW=["ready","processing","problematic","growing"].includes(REQUESTED_VIEW)?REQUESTED_VIEW:"ready";
+let model={prepared:[],status:{},config:{}},reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),loadSeq=0,runPoll=null;
 const ACCESS_KEY="ttittulares-control-token";
 const bootAccess=new URLSearchParams(location.search).get("access");
 if(bootAccess){localStorage.setItem(ACCESS_KEY,bootAccess);const u=new URL(location.href);u.searchParams.delete("access");history.replaceState(null,"",u.pathname+u.search+u.hash)}
