@@ -21,7 +21,7 @@ const TRIGGER_PATH="trends/run-now-trigger.json";
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const READY_MARKER="TTENDENCIAS WORK COMMIT TRIGGER READY";
-const STALE_MS=75*60*1000;
+const STALE_MS=20*60*1000;
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
