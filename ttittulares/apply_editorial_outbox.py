@@ -311,7 +311,7 @@ def sync_compact(q):
             "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
             "parent_event_id":x.get("parent_event_id"),"update_context":x.get("update_context"),
             "with_image":True,"image_mode":"generated_gag_or_archive_sensitive",
-            "image_instruction":"Genera por defecto una imagen editorial ORIGINAL con gag específico y línea editorial-scene-v2-cleveland. Prioriza velocidad: objetivo ~768 px lado largo, detalle medio y JPEG sRGB calidad ~82. Valida el raster completo antes y después de GitHub. Si tras dos intentos la imagen falla, la noticia debe poder pasar READY con image_pending; nunca sustituyas generated_gag por archivo salvo archive_sensitive real.",
+            "image_instruction":"Fase 1: NO generes imagen. Deja READY con image_status=working. Fase 2: archive_sensitive usa imagen existente; generated_gag debe pasar por worker aislado EVENTO ACTUAL y nunca llamar imagegen desde el contexto editorial genérico.",
         })
     # Retry missing artwork without removing already prepared text from the app.
     prepared=load(PREP,{"items":[]})
