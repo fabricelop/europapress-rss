@@ -2984,7 +2984,7 @@
       "id": "ef2f71c7d3df",
       "name": "Ureña",
       "rank": 4,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-26T00:10:56+02:00",
       "revision": 0,
       "reexplain": false,
@@ -3003,7 +3003,11 @@
         "#LaBolaNegra",
         "Zidane"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-26T07:54:17+02:00",
+      "problem_reason": "No se pudo identificar con fiabilidad qué Ureña motivó la tendencia tras dos búsquedas actuales distintas; los resultados no aportan un acontecimiento único verificable en España.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "1a5eed26f2e0",
@@ -3308,5 +3312,5 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-26T07:53:00+02:00"
+  "updated_at": "2026-09-26T07:54:17+02:00"
 }
