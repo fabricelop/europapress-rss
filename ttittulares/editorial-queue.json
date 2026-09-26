@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-26T12:34:16.144525Z",
+  "updated_at": "2026-09-26T12:36:47.631406Z",
   "count": 1,
   "items": [
     {
@@ -58,12 +58,14 @@
           "url": "https://x.com/search?q=cazas%20espa%C3%B1oles%20Ruman%C3%ADa%20dron%20ruso%20frontera%20Ucrania&src=typed_query&f=live"
         },
         "image_strategy": "generated_gag",
-        "image_status": "working",
-        "image_pending": true,
-        "image_delivery": "pending",
-        "image_generation_attempts": 0,
+        "image_status": "none",
+        "image_pending": false,
+        "image_delivery": "none",
+        "image_generation_attempts": 2,
         "image_persistence_attempts": 0,
-        "image_search_status": "pending_renderer"
+        "image_search_status": "pending_renderer",
+        "image_failure_reason": "Dos intentos reales de generación fallaron el aislamiento semántico: ambos devolvieron escenas judiciales ajenas al evento de los cazas españoles y el dron ruso. Se descartaron y no se persistió ningún raster incorrecto.",
+        "image_app_available": false
       },
       "image_mode": "generated_gag_or_archive_sensitive",
       "image_instruction": "Completa solo la imagen pendiente. Conserva íntegramente prepared_item y su revisión, añade image con raster válido y envía status ready por el outbox habitual. No regeneres ni cambies los textos."
