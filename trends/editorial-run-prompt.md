@@ -84,6 +84,35 @@ Genera una imagen editorial ORIGINAL en PNG, WebP o JPEG. No sustituyas esta gen
 
 Línea visual aprobada: `editorial-scene-v2-cleveland`.
 
+### AISLAMIENTO SEMÁNTICO V2 — obligatorio antes de CADA imagegen
+
+La causa a evitar es la contaminación de contexto entre tendencias dentro de una misma conversación/ejecución. Para cada imagen crea una whitelist de contexto nueva y descarta todo el contexto visual anterior.
+
+1. Construye `CURRENT_IMAGE_CONTEXT` únicamente con: `id`, `revision`, `name`, el detonante factual verificado y `related_trends` SOLO cuando sean inequívocamente el mismo acontecimiento.
+2. NO uses para el brief: `captured_with`, otros items de la cola, tarjetas de `prepared.json`, prompts anteriores, rasters anteriores, imágenes visibles de la conversación ni detalles de tendencias procesadas antes o después.
+3. El brief debe empezar EXACTAMENTE:
+   `TTENDENCIAS_IMAGE_ISOLATION_V2`
+   `CURRENT_ITEM_ONLY: <id> r<revision> · <name>`
+   y después describir SOLO sujetos, acción, lugar y gag permitidos por `CURRENT_IMAGE_CONTEXT`.
+4. No nombres tendencias anteriores ni siquiera en la lista negativa. Usa una prohibición genérica: cualquier sujeto, deporte, lugar, objeto o acontecimiento no incluido expresamente en CURRENT_IMAGE_CONTEXT está prohibido.
+5. Genera desde cero. No reutilices ni pases como referencia `image_id`, `gen_id`, `parent_gen_id`, `referenced_image_ids`, semilla ni raster de ninguna generación anterior.
+6. Si el primer raster falla, el segundo intento también se construye DESDE CERO a partir de la misma whitelist. No pidas “corregir la imagen anterior” ni describas su contenido; añade solo una causa genérica como `RETRY_CAUSE: foreign_context`, `ui_layout` o `multipanel`.
+7. Prohibido collage, mosaico, split-screen o multipanel aunque cada panel sea visualmente correcto.
+
+INSPECCIÓN SEMÁNTICA: compara el raster EXCLUSIVAMENTE con `CURRENT_IMAGE_CONTEXT`. Rechaza si aparece un sujeto/evento/deporte/lugar identificable que no esté permitido, si mezcla más de un acontecimiento o si usa composición multipanel. Dos rechazos => no marques `ready`; conserva el item pendiente con nota técnica y continúa.
+
+Al aceptar, además de los checks existentes, exige:
+- `correct_event_subject:true`
+- `single_current_event_only:true`
+- `no_cross_item_context:true`
+- `no_multipanel_or_collage:true`
+
+y añade:
+`image.context_guard={"version":2,"trend_id":"<id>","revision":<revision>,"scope":"current_item_only"}`
+
+El aplicador rechazará imágenes sin este contrato o cuyo `context_guard` no coincida con el id/revision actuales.
+
+
 ### Prioridad de generación
 
 Prioriza, en este orden:
@@ -139,6 +168,10 @@ y `image.style_check` con TODOS estos booleanos en `true`:
 - `no_ui_or_scoreboard_layout`
 - `low_text`
 - `depth_lighting_texture`
+- `correct_event_subject`
+- `single_current_event_only`
+- `no_cross_item_context`
+- `no_multipanel_or_collage`
 
 En temas sensibles, nunca conviertas víctimas o sufrimiento en objeto humorístico. Si no hay vía humorística segura, usa una ilustración editorial seria y respetuosa.
 
