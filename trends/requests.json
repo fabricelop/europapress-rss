@@ -3963,7 +3963,7 @@
       "id": "5c97a9186c32",
       "name": "Vomitivo",
       "rank": 4,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-26T18:31:32+02:00",
       "revision": 0,
       "reexplain": false,
@@ -3977,7 +3977,11 @@
         "Vomitivo",
         "Paula Blasi"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-26T18:40:31+02:00",
+      "problem_reason": "Tras varias búsquedas actuales y específicas no se ha podido identificar un detonante único y verificable: «Vomitivo» aparece usado en conversaciones distintas sobre fútbol, política y la crisis de Ceuta, sin evidencia suficiente para atribuir la tendencia a una de ellas sin especular.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "5435cf0481ed",
@@ -4000,5 +4004,5 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-26T18:38:49+02:00"
+  "updated_at": "2026-09-26T18:40:31+02:00"
 }
