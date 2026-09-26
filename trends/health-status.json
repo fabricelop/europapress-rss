@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T11:52:51.838997+00:00",
+  "checked_at": "2026-09-26T15:10:25.291742+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -39,8 +39,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 6,
-      "captured_age_minutes": 0.2,
+      "non_stale_sources": 5,
+      "captured_age_minutes": 1.2,
       "noise_count": 0
     },
     "listener": {
@@ -52,8 +52,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.7,
-      "run_id": 36240156471,
+      "age_minutes": 1.6,
+      "run_id": 36250908330,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -73,26 +73,77 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 1,
-      "overdue_count": 0,
-      "oldest_age_minutes": 11.6,
+      "ok": false,
+      "pending_count": 9,
+      "overdue_count": 7,
+      "oldest_age_minutes": 129.1,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "68721e5cdf86",
+          "name": "#AzerbaijanGP",
+          "status": "preparing",
+          "age_minutes": 129.1
+        },
+        {
+          "id": "8c5ab4afd440",
+          "name": "Safety Car",
+          "status": "preparing",
+          "age_minutes": 129.1
+        },
+        {
+          "id": "85aab69140b5",
+          "name": "Gasly",
+          "status": "preparing",
+          "age_minutes": 129.1
+        },
+        {
+          "id": "77fcb05c6134",
+          "name": "Desinflar",
+          "status": "preparing",
+          "age_minutes": 129.1
+        },
+        {
+          "id": "0eb183243950",
+          "name": "Verstappen",
+          "status": "preparing",
+          "age_minutes": 129.1
+        },
+        {
+          "id": "0710cf37c7ab",
+          "name": "Bottas",
+          "status": "preparing",
+          "age_minutes": 89.3
+        },
+        {
+          "id": "f03247d1c40e",
+          "name": "Russell",
+          "status": "preparing",
+          "age_minutes": 89.3
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "success",
-      "queue_complete": true,
-      "remaining_active_ids": [],
-      "contradictory_success": true
+      "ok": true,
+      "status": "waiting",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "68721e5cdf86",
+        "8c5ab4afd440",
+        "85aab69140b5",
+        "77fcb05c6134",
+        "0eb183243950",
+        "0710cf37c7ab",
+        "f03247d1c40e"
+      ],
+      "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "runtime editorial inconsistente: success con 1 solicitud(es) preparing/update"
+    "cola editorial bloqueada: 7 pendiente(s) superan 30 min; más antigua 129.1 min"
   ],
   "alert_sent": false,
-  "last_alert_signature": "runtime editorial inconsistente: success con 1 solicitud(es) preparing/update"
+  "last_alert_signature": "cola editorial bloqueada: 7 pendiente(s) superan 30 min; más antigua 129.1 min"
 }
