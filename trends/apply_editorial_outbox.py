@@ -39,7 +39,7 @@ def _validate_raster_integrity(data: bytes, label: str):
         with Image.open(io.BytesIO(data)) as image:
             image.load()
             width, height = image.size
-            if width < 600 or height < 360:
+            if width < 480 or height < 270:
                 raise ValueError(f"{label}: dimensiones insuficientes ({width}x{height})")
 
             # Rechaza transparencia masiva, típica de un render incompleto.
@@ -130,6 +130,65 @@ def validate_generated_image(item):
         raise ValueError("fichero de imagen generada inexistente en main")
     data = path.read_bytes()
     _validate_raster_integrity(data, f"imagen generada {filename}")
+
+def materialize_inline_generated_image(item, req_id: str, revision: int):
+    """Convert the automation's text-safe data URL handoff into a real raster file.
+
+    The scheduled ChatGPT task only needs to persist one UTF-8 outbox. GitHub
+    Actions owns the binary write, which avoids connector restrictions on
+    binary Git object operations during scheduled executions.
+    """
+    import base64
+
+    image = item.get("image") or {}
+    url = str(image.get("url") or "").strip()
+    if not url.startswith("data:image/"):
+        return False
+
+    try:
+        header, payload = url.split(",", 1)
+        if ";base64" not in header:
+            raise ValueError("data URL no base64")
+        mime = header[5:].split(";", 1)[0].casefold()
+        ext_by_mime = {
+            "image/jpeg": ".jpg",
+            "image/png": ".png",
+            "image/webp": ".webp",
+        }
+        ext = ext_by_mime.get(mime)
+        if not ext:
+            raise ValueError(f"mime raster no permitido: {mime}")
+        data = base64.b64decode(payload, validate=True)
+    except Exception as exc:
+        raise ValueError(f"data URL raster inválida: {exc}")
+
+    # Keep the text outbox small enough to be reliable through the connector.
+    if len(data) > 350_000:
+        raise ValueError(
+            f"imagen inline demasiado grande ({len(data)} bytes); "
+            "redimensiona/comprime a ~512 px y JPEG/WebP eficiente"
+        )
+
+    _validate_raster_integrity(data, "imagen raster inline")
+
+    generated_dir = TRENDS / "generated-images"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+    filename = f"{req_id}-r{revision}{ext}"
+    path = generated_dir / filename
+    path.write_bytes(data)
+
+    image["url"] = (
+        "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"
+        f"trends/generated-images/{filename}"
+    )
+    image["source_url"] = (
+        "https://github.com/fabricelop/europapress-rss/blob/main/"
+        f"trends/generated-images/{filename}"
+    )
+    image["handoff"] = "inline-outbox-materialized-by-actions"
+    item["image"] = image
+    return True
+
 
 def validate_ready(payload):
     item = payload.get("prepared_item") or {}
@@ -251,6 +310,8 @@ def main():
 
             result_status = str(payload.get("status") or "")
             if result_status == "ready":
+                raw_item = payload.get("prepared_item") or {}
+                materialize_inline_generated_image(raw_item, req_id, revision)
                 item = validate_ready(payload)
                 item["id"] = req_id
                 item["revision"] = revision
