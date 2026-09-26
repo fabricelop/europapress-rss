@@ -25,7 +25,7 @@ def validate_ready(payload):
     item=payload.get("prepared_item") or {}
     if not str(item.get("event_id") or ""): raise ValueError("prepared_item sin event_id")
     variants=item.get("variants") or []
-    labels=[str(v.get("label") or v.get("name") or "") for v in variants]
+    labels=[str(v.get("label") or v.get("key") or v.get("name") or "") for v in variants]
     if labels != ["Principal","A","B","C"]:
         raise ValueError("variants debe ser Principal/A/B/C")
     for v,label in zip(variants,labels):
@@ -328,7 +328,7 @@ def main():
     st["ready_count"]=len(p.get("items",[]))
     save(STATUS,st)
     print(json.dumps({"processed":processed,"errors":errors},ensure_ascii=False))
-    return 0
+    return 1 if errors else 0
 if __name__=="__main__":
     raise SystemExit(main())
 
