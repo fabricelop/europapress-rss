@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T10:01:19+02:00",
+  "captured_at": "2026-09-26T10:11:02+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -72,17 +72,53 @@
       "name": "Frente Amplio"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "#agropopularSanmiguel",
-    "Frente Amplio"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
-      "name": "Taylor",
-      "social_source_count": 6,
+      "name": "Andrea",
+      "social_source_count": 5,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-26T10:01:19+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "#SVGala3",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.4,
+      "movement": "up",
+      "first_detected_at": "2026-09-26T10:01:19+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Taylor",
+      "social_source_count": 5,
+      "social_sources": [
         "snaplytics",
         "superx",
         "trends24",
@@ -90,8 +126,8 @@
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 14.5,
-      "movement": "flat",
+      "mean_observed_rank": 15.0,
+      "movement": "down",
       "first_detected_at": "2026-09-26T09:21:06+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -101,17 +137,16 @@
     },
     {
       "name": "Manchester City",
-      "social_source_count": 5,
+      "social_source_count": 4,
       "social_sources": [
-        "getdaytrends",
         "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 16.6,
-      "movement": "flat",
+      "mean_observed_rank": 16.5,
+      "movement": "down",
       "first_detected_at": "2026-09-26T03:31:09+02:00",
       "news_source_count": 8,
       "news_event_id": "de32583e5844",
@@ -167,53 +202,15 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 18.0,
-      "movement": "flat",
+      "best_observed_rank": 18,
+      "mean_observed_rank": 18.7,
+      "movement": "down",
       "first_detected_at": "2026-09-26T08:01:12+02:00",
       "news_source_count": 13,
       "news_event_id": "e9ec3aee6ca0",
       "news_title": "La concentración ante el desahucio de Maricarmen en el barrio del Retiro de Madrid, en imágenes",
       "news_status": "ELIGIBLE",
       "news_first_seen": "2026-09-23T07:34:12.932560Z"
-    },
-    {
-      "name": "Andrea",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T10:01:19+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "#SVGala3",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T10:01:19+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     },
     {
       "name": "Olga",
@@ -224,9 +221,9 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.2,
-      "movement": "flat",
+      "best_observed_rank": 16,
+      "mean_observed_rank": 16.5,
+      "movement": "down",
       "first_detected_at": "2026-09-26T04:20:48+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -235,14 +232,7 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Frente Amplio",
-      "first_detected_at": "2026-09-26T08:40:44+02:00",
-      "entered_top10_at": "2026-09-26T10:01:19+02:00",
-      "lead_minutes": 81
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -273,32 +263,32 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T10:01:19+02:00"
+      "fetched_at": "2026-09-26T10:11:02+02:00"
     },
     "getdaytrends": {
       "ok": true,
       "trends": [
         "#DeViernes",
         "Mari Carmen",
-        "#FelizSábado",
         "Harvard",
-        "#XenobladeChronicles2EnGAME",
         "#agropopularSanmiguel",
+        "#FelizSábado",
         "Belén",
+        "#XenobladeChronicles2EnGAME",
+        "Maestrazgo",
         "PSOE",
         "Paquita",
         "Frente Amplio",
         "Andrea",
-        "Taylor",
-        "#SVGala3",
+        "La Bola Negra",
         "Guardiola",
-        "Manchester City"
+        "#SVGala3"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T10:01:19+02:00"
+      "fetched_at": "2026-09-26T10:11:02+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -325,10 +315,10 @@
         "Borja"
       ],
       "error": null,
-      "update_hint": "Updated 3 minutes ago",
-      "age_minutes": 3.0,
+      "update_hint": "Updated 12 minutes ago",
+      "age_minutes": 12.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T10:01:20+02:00"
+      "fetched_at": "2026-09-26T10:11:04+02:00"
     },
     "superx": {
       "ok": true,
@@ -358,16 +348,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T10:01:21+02:00"
+      "fetched_at": "2026-09-26T10:11:05+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790409681",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790410265",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T10:01:21+02:00"
+      "fetched_at": "2026-09-26T10:11:05+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -395,9 +385,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 07:00 UTC",
-      "age_minutes": 61.4,
+      "age_minutes": 71.1,
       "freshness": "aging",
-      "fetched_at": "2026-09-26T10:01:21+02:00"
+      "fetched_at": "2026-09-26T10:11:05+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -425,18 +415,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 08:00 AM # Trend Type Actions 1 #DeViernes Hashtag 2 Mari",
-      "age_minutes": 121.4,
+      "age_minutes": 131.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T10:01:22+02:00"
+      "fetched_at": "2026-09-26T10:11:05+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790409683",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790410266",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T10:01:23+02:00"
+      "fetched_at": "2026-09-26T10:11:06+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -445,46 +435,46 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T10:01:24+02:00"
+      "fetched_at": "2026-09-26T10:11:07+02:00"
     },
     "trendswe": {
       "ok": true,
       "trends": [
         "#DeViernes",
         "#Mari Carmen",
+        "#FelizSábado",
         "#Harvard",
         "#XenobladeChronicles2EnGAME",
+        "#agropopularSanmiguel",
         "#Belén",
-        "#FelizSábado",
         "#PSOE",
         "#Paquita",
-        "#SVGala3",
-        "#Andrea",
         "#Frente Amplio",
+        "#Andrea",
         "#Taylor",
-        "#TEM25S",
+        "#SVGala3",
         "#Guardiola",
-        "#Olga",
-        "#Retiro",
         "#Manchester City",
+        "#Olga",
         "#Franco",
+        "#Retiro",
         "#Borja",
-        "#Ángela Portero"
+        "#Ayuso"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T10:01:24+02:00"
+      "fetched_at": "2026-09-26T10:11:07+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790409687",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790410270",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T10:01:27+02:00"
+      "fetched_at": "2026-09-26T10:11:10+02:00"
     }
   }
 }
