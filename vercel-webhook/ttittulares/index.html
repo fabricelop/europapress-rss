@@ -508,7 +508,7 @@ function renderProcessing(list){
    const chips=(item.sources||[]).map(s=>'<span class="chip">'+String(typeof s==="string"?s:(s.name||s.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
    card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn danger dismiss-processing">Desestimar</button></div>';
    card.querySelector(".title").textContent=item.title||"Noticia sin título";
-   card.querySelector(".sources").textContent="Entrada "+fmt(item.selected_at)+(item.selection_mode==="REWRITE"?" · Rehacer":"");
+   card.querySelector(".sources").textContent="Entrada "+fmt(item.selected_at)+(item.trend_origin?" · TTendencias":"")+(item.selection_mode==="REWRITE"?" · Rehacer":"");
    card.querySelector(".count").textContent=Number(item.source_count||0)+" fuentes";
    card.querySelector(".dismiss-processing").onclick=async()=>{
      if(!confirm("¿Desestimar esta noticia? Se quitará de todas las listas."))return;
