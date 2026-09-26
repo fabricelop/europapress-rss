@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-26T12:52:31.236828Z",
+  "updated_at": "2026-09-26T12:54:17.572174Z",
   "count": 1,
   "items": [
     {
@@ -22,7 +22,7 @@
       "update_context": null,
       "with_image": true,
       "image_mode": "generated_gag_or_archive_sensitive",
-      "image_instruction": "Genera por defecto una imagen editorial ORIGINAL con gag específico y línea editorial-scene-v2-cleveland. Prioriza velocidad: objetivo ~768 px lado largo, detalle medio y JPEG sRGB calidad ~82. Valida el raster completo antes y después de GitHub. Si tras dos intentos la imagen falla, la noticia debe poder pasar READY con image_pending; nunca sustituyas generated_gag por archivo salvo archive_sensitive real."
+      "image_instruction": "Fase 1: NO generes imagen. Deja READY con image_status=working. Fase 2: archive_sensitive usa imagen existente; generated_gag debe pasar por worker aislado EVENTO ACTUAL y nunca llamar imagegen desde el contexto editorial genérico."
     }
   ]
 }
