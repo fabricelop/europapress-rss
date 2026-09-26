@@ -74,10 +74,10 @@ function traceOf(comment){
   try{return {...JSON.parse(body.slice(TRACE_PREFIX.length).trim()),comment_id:comment.id,comment_updated_at:comment.updated_at||comment.created_at}}catch(_){return null}
 }
 function activeTrace(items){
-  const traces=items.map(traceOf).filter(Boolean).sort((a,b)=>stamp(a.updated_at||a.comment_updated_at)-stamp(b.updated_at||b.comment_updated_at));
-  const t=traces.at(-1);if(!t||!["REQUESTED","RUNNING"].includes(String(t.status||"")))return null;
-  const age=Date.now()-stamp(t.updated_at||t.started_at||t.requested_at);
-  return Number.isFinite(age)&&age>=0&&age<20*60*1000?t:null
+  const traces=items.map(traceOf).filter(Boolean).filter(t=>["REQUESTED","RUNNING"].includes(String(t.status||"")));
+  const fresh=traces.filter(t=>{const age=Date.now()-stamp(t.updated_at||t.started_at||t.requested_at);return Number.isFinite(age)&&age>=0&&age<20*60*1000});
+  fresh.sort((a,b)=>stamp(a.updated_at||a.comment_updated_at)-stamp(b.updated_at||b.comment_updated_at));
+  return fresh.at(-1)||null
 }
 
 async function writeTrigger(doc,sha){
