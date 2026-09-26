@@ -19,6 +19,7 @@ def save(path, obj):
 events_doc = load(TG / "events.json", {"events":[]})
 processing = load(TG / "editorial-processing.json", {"items":[]})
 prepared = load(TT / "prepared.json", {"items":[]})
+trend_candidates_doc = load(TT / "trend-candidates.json", {"items":[]})
 
 event_map = {}
 for event in events_doc.get("events", []):
@@ -76,6 +77,26 @@ for item in processing.get("items", []):
     })
 problematic_items.sort(key=lambda x: str(x.get("problematic_at") or x.get("selected_at") or ""), reverse=True)
 
+trend_candidates = []
+for item in trend_candidates_doc.get("items", []):
+    if str(item.get("status") or "candidate").lower() not in {"candidate", "pending", ""}:
+        continue
+    trend_candidates.append({
+        "candidate_id": str(item.get("candidate_id") or item.get("id") or ""),
+        "event_id": str(item.get("event_id") or item.get("ttittulares_event_id") or ""),
+        "title": str(item.get("title") or item.get("news_title") or "Posible noticia desde TTendencias"),
+        "explanation": str(item.get("explanation") or ""),
+        "url": str(item.get("url") or item.get("source_url") or ""),
+        "trend_names": list(item.get("trend_names") or []),
+        "search_terms": list(item.get("search_terms") or item.get("trend_names") or []),
+        "source_count": int(item.get("source_count") or len(item.get("sources") or [])),
+        "sources": list(item.get("sources") or []),
+        "source_evidence": list(item.get("source_evidence") or []),
+        "detected_at": item.get("detected_at") or item.get("created_at") or item.get("updated_at"),
+        "origin": "TTendencias",
+    })
+trend_candidates.sort(key=lambda x: str(x.get("detected_at") or ""), reverse=True)
+
 stamp = datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
 out = {
     "project":"TTiTTulares",
@@ -84,8 +105,10 @@ out = {
     "processing_count":len(processing_items),
     "processing_items":processing_items,
     "ready_count":len(prepared.get("items", [])),
-    "problematic_count":len(problematic_items),
+    "problematic_count":len(problematic_items) + len(trend_candidates),
     "problematic_items":problematic_items,
+    "trend_candidates_count":len(trend_candidates),
+    "trend_candidates":trend_candidates,
     "three_source_count":sum(
         1 for event in events_doc.get("events", [])
         if int(event.get("source_count") or 0) == 3
@@ -97,4 +120,4 @@ out = {
     "events":event_map,
 }
 save(TT / "status.json", out)
-print("STATUS", "sources=",out["healthy_source_count"],"/",out["configured_sources"],"processing=",out["processing_count"],"ready=",out["ready_count"])
+print("STATUS", "sources=",out["healthy_source_count"],"/",out["configured_sources"],"processing=",out["processing_count"],"trends=",out["trend_candidates_count"],"ready=",out["ready_count"])
