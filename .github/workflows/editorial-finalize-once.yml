@@ -68,7 +68,7 @@ jobs:
                   x['delivered_at']=now
                   x['delivery_confirmation']='emergency-sent'
                   changed.append(eid)
-          p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\\n',encoding='utf-8')
+          p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           print('FINALIZED',','.join(changed))
           PY
       - name: Guardar sin pisar cambios concurrentes
