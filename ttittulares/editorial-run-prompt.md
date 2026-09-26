@@ -1,5 +1,27 @@
 # TTiTTulares · flujo editorial común
 
+## OVERRIDE v4 · aislamiento real de imagegen (26-09-2026)
+
+**ESTA SECCIÓN PREVALECE sobre cualquier instrucción posterior de imagen que sea incompatible.** La ejecución editorial genérica NO debe llamar directamente a `image_gen` para un `generated_gag`: se comprobó contaminación de contexto (una noticia de cazas recibió imágenes del juez Peinado).
+
+Para `archive_sensitive`, no uses imagegen: valida/busca una imagen existente del mismo acontecimiento y cierra `ready`/app o `none`.
+
+Para `generated_gag`:
+1. Busca primero un checkpoint validado exacto `ttittulares/generated-images/<event_id>-r<revision>.json` y su raster; solo puede reutilizarse si coinciden event_id, revisión y hash.
+2. Si no existe, usa como worker aislado la automatización ya activa `6ab6332eb6c0819182781275a525c989` (TTiTTulares · ejecutar por commit). Está autorizado EXCLUSIVAMENTE para esta función actualizar temporalmente su prompt y actualizar `ttittulares/image-worker-trigger.json` en la rama `control/ttittulares-run-trigger-v2`.
+3. Antes del trigger marca el item `working` con `image_worker_status:"queued"`, un `image_worker_id` único y `image_worker_dispatched_at`.
+4. El prompt temporal del worker debe empezar EXACTAMENTE `EVENTO ACTUAL: <event_id> · <title>` y contener SOLO ese evento (id, revision, title, factual_summary, hechos verificados y reglas visuales). Ningún otro nombre/noticia/sujeto.
+5. Solo después de actualizar el prompt, incrementa `image-worker-trigger.json` con SHA fresco. No toques `run-now-trigger.json`.
+6. PRIMERA acción del worker ya activado: leer `ttittulares/commit-watcher-prompt.json` como plantilla de restauración y restaurar mediante `automations.update` el prompt genérico de `6ab6332eb6c0819182781275a525c989`. Esto NO cambia el contexto de la ejecución actual, que sigue siendo el prompt EVENTO ACTUAL.
+7. El worker verifica de nuevo id/revisión/estado; revisa checkpoint; y solo si sigue pendiente llama a imagegen. Rechaza cualquier raster cuyo sujeto/evento no sea inequívocamente el actual y regenera una sola vez con escena más simple. Una imagen contaminada nunca se persiste.
+8. Salida: paisaje >=600×360 y lado largo <=896; preferencia ~640 px y JPEG/WebP <=28 KB para que la data URL quepa dentro del outbox base64 del comentario. Si no cabe con calidad razonable, usa bytes completos por la vía binaria autorizada `generated-images/`.
+9. Imagen aceptada: `source:"TTiTTulares / ChatGPT"`, `rights_status:"generated"`, `generated:true`, `style_version:"editorial-scene-v2-cleveland"` y `style_check.correct_event_subject:true` solo tras inspección visual real.
+10. El worker transporta un outbox image-only de la MISMA revisión y verifica URL raw + `image_status:"ready"`. Si app falla con raster válido, fallback Telegram; si también falla, `none` con razón. Dos rechazos semánticos reales => `none`, nunca imagen equivocada.
+11. Al terminar, el worker puede encadenar el siguiente `generated_gag` pendiente creando OTRO prompt EVENTO ACTUAL y otro trigger; nunca genera la segunda noticia dentro del contexto de la primera.
+
+El aplicador mantiene checkpoints de imágenes generadas validadas por event_id/revisión. No regeneres si existe uno válido.
+
+
 Este archivo es la ÚNICA fuente de verdad para la ejecución editorial de TTiTTulares. Debe ser usado tanto por el botón `Ejecutar ahora` como por las programaciones automáticas. La lógica de activación, horario, anti-solape y telemetría pertenece al envoltorio que invoque este archivo y NO se redefine aquí.
 
 ## Ámbito y estado
