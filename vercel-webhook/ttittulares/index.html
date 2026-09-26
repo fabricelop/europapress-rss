@@ -15,7 +15,7 @@
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 60%)}button,a{font:inherit}
 .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:9px;padding:13px max(12px,env(safe-area-inset-left));background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36}.brand{font-size:19px;font-weight:850}.sub{font-size:11px;color:#8f9bad}.spacer{flex:1}.iconbtn,.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:11px;padding:9px 11px;font-weight:760;text-decoration:none}.iconbtn{height:42px}
 main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 4px}.meta{font-size:12px;color:#909cad;line-height:1.45}.timing{display:grid;gap:3px;margin-top:5px}.three-go{border:1px solid #40526a;background:#18212f;color:#eef3fa;border-radius:9px;min-width:36px;min-height:34px;font-weight:850}.timing .ok{color:#9fabc0}.timing .late{color:#ffb36b;font-weight:750}.health{border:1px solid #354255;border-radius:999px;padding:7px 10px;font-size:12px;color:#cbd7e8;white-space:nowrap}.health.bad{border-color:#6e3439;color:#ff9ca5}
-.runbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #354255;background:#101721;border-radius:14px;padding:10px 12px;margin:0 0 14px}.runbar>div{display:grid;gap:3px}.runbar strong{font-size:13px}.runbar span{font-size:11px;color:#8f9bad}.runbar span.running{color:#ffc178}.runbar span.done{color:#8ee6a8}.runbar span.error{color:#ff9ca5}.runbar .btn:disabled{opacity:.45;cursor:not-allowed}
+.runbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #354255;background:#101721;border-radius:14px;padding:11px 12px;margin:0 0 14px;min-height:68px}.runmain{display:grid;gap:4px;min-width:0;flex:1}.runline{display:flex;align-items:center;gap:8px;min-width:0}.runbar strong{font-size:13px;min-width:0}.runbar span{font-size:11px;color:#8f9bad;line-height:1.35}.runbar span.running{color:#ffc178}.runbar span.done{color:#8ee6a8}.runbar span.error{color:#ff9ca5}.runbar .btn:disabled{opacity:.45;cursor:not-allowed}.runbar .btn[hidden]{display:none}.runbar.active{align-items:stretch}.runbar.active .runmain{width:100%}.runprogress{height:5px;background:#252f3c;border-radius:999px;overflow:hidden;margin-top:4px}.runprogress[hidden]{display:none}.runprogress i{display:block;height:100%;width:0;background:#6f8fb8;border-radius:999px;transition:width .35s ease}.incidentBtn{border:1px solid #7b5b25;background:#2a2114;color:#ffc178;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:850;cursor:pointer;white-space:nowrap}.incidentBtn.severe{border-color:#7d3038;background:#2a171a;color:#ff9ca5}.diag{white-space:pre-wrap;word-break:break-word;background:#090d13;border:1px solid #2d3745;border-radius:11px;padding:11px;max-height:44vh;overflow:auto;color:#cbd7e8;font:11px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0 14px}.stat{border:1px solid #2e3744;background:#111720;border-radius:13px;padding:10px 12px;color:#aab5c5;text-align:left;cursor:pointer}.stat b{display:block;color:#eef3fa;font-size:21px}.stat.active{border-color:#607796;background:#18212f}
 .list{display:grid;gap:10px}.card,.queuecard{background:#11161e;border:1px solid #29313d;border-radius:16px;padding:13px}.head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}.title{font-size:16px;font-weight:800;line-height:1.28}.sources{font-size:12px;color:#8fa0b5;margin-top:6px}.count{border:1px solid #354255;border-radius:999px;padding:6px 9px;font-size:11px;color:#cbd7e8;white-space:nowrap}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.actions .btn{min-height:40px}.btn.primary{background:#1c2737}.btn.danger{color:#ff9ca5}.btn.rework{color:#d2bdff}.btn.check{color:#9fd7ff}.problem-reason{font-size:13px;line-height:1.4;color:#ffbd91;margin-top:9px}.verification-hint{font-size:12px;line-height:1.4;color:#9fd7ff;margin-top:8px}.details{display:none;border-top:1px solid #29313d;margin-top:12px;padding-top:12px}.details.open{display:block}.facts{font-size:14px;line-height:1.45;color:#cbd3df;white-space:pre-wrap;margin-bottom:12px}.imagebox{background:#0b1017;border:1px solid #324052;border-radius:13px;padding:10px 11px;margin:0 0 12px}.imageTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9cacbf;margin-bottom:5px}.imageMeta{font-size:12px;color:#aeb9c9}.imageActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.variant{background:#0b1017;border:1px solid #2c3543;border-radius:13px;padding:11px;margin:9px 0}.vhead{display:flex;align-items:center;gap:8px;margin-bottom:7px}.vname{font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.04em;color:#9cacbf}.chars{margin-left:auto;font-size:11px;color:#77869a}.tweet{white-space:pre-wrap;line-height:1.4;font-size:14px}.quoteBox{background:#0b1017;border:1px solid #324052;border-radius:13px;padding:10px 11px;margin:0 0 12px}.quoteTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9cacbf;margin-bottom:4px}.quoteHint{font-size:11px;color:#7f8da0;margin-bottom:8px}.quoteCandidates{display:grid;gap:7px}.quoteCandidate{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:start;border:1px solid #2c3543;border-radius:10px;padding:8px;background:#101721}.quoteCandidate input{margin-top:3px}.quoteCandidate.selected{border-color:#607796;background:#18212f}.quoteText{font-size:12px;line-height:1.35;color:#dce5f1}.quoteMeta{font-size:10px;color:#8391a3;margin-top:3px}.quoteReason{font-size:10px;color:#98a4b5;font-style:italic;margin-top:3px}.quoteActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.quoteEmpty{font-size:12px;color:#8f9bad;margin:4px 0}.quoteX[hidden]{display:none}.queuecard .sources-list{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.chip{font-size:11px;background:#0b1017;border:1px solid #2c3543;border-radius:999px;padding:5px 8px;color:#9eabba}.empty{text-align:center;color:#98a4b5;padding:50px 10px}
 .sheet{position:fixed;inset:0;background:#0009;z-index:50;display:none;align-items:flex-end}.sheet.show{display:flex}.panel{width:100%;max-width:600px;margin:0 auto;background:#111720;border:1px solid #354052;border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom))}.panel h2{margin:0 0 8px}.panel p{font-size:13px;color:#9eabba}textarea,input{width:100%;background:#0a0f16;color:#eef3fa;border:1px solid #364153;border-radius:11px;padding:12px;font:inherit}textarea{min-height:120px;resize:vertical}.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;transition:.2s;background:#1a2330;border:1px solid #3b485b;border-radius:10px;padding:9px 12px;z-index:80;max-width:92vw;text-align:center}.toast.show{opacity:1;transform:translateX(-50%)}
@@ -40,7 +40,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
   <button class="stat" data-view="problematic"><b id="problematicCount">0</b>No comprobadas</button>
   <button class="stat" data-view="growing"><b id="growingCount">0</b>Creciendo</button>
  </div>
- <section class="runbar"><div><strong>Ejecución manual</strong><span id="runState">Comprobando…</span></div><button class="btn primary" id="runNow" type="button">▶ Ejecutar ahora</button></section>
+ <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="btn primary" id="runNow" type="button">▶ Ejecutar ahora</button></section>
  <section class="list" id="list"><div class="empty">Cargando…</div></section>
 </main>
 
@@ -65,6 +65,11 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <input id="tokenInput" type="password" autocomplete="off" placeholder="Token de control">
  <div class="actions"><button class="btn" id="settingsCancel">Cancelar</button><button class="btn" id="testToken">Probar acceso</button><button class="btn" id="testPush">Probar notificación</button><button class="btn primary" id="saveToken">Guardar</button></div>
  <div class="meta" id="accessStatus" style="margin-top:9px"></div>
+</div></div>
+<div class="sheet" id="incidentSheet"><div class="panel">
+ <h2>Diagnóstico de ejecución</h2><p id="incidentSummary">Información técnica de la ejecución.</p>
+ <pre class="diag" id="incidentDetails"></pre>
+ <div class="actions"><button class="btn" id="incidentClose">Cerrar</button><button class="btn primary" id="incidentCopy">Copiar diagnóstico</button></div>
 </div></div>
 <div class="toast" id="toast"></div>
 
@@ -138,34 +143,115 @@ function interactionLabel(c){
  const m=c.metrics_observed||{},nums=["likes","reposts","replies","quotes"].map(k=>Number(m[k])).filter(Number.isFinite);
  return nums.length?nums.reduce((a,b)=>a+b,0)+" interacciones observadas":"Interacción no disponible"
 }
-function runDuration(s){if(s==null||!Number.isFinite(+s))return "";s=+s;if(s<60)return s+" s";return Math.floor(s/60)+" min "+(s%60)+" s"}
+function runDuration(s){if(s==null||!Number.isFinite(+s))return "";s=Math.max(0,Math.round(+s));if(s<60)return s+" s";return Math.floor(s/60)+" min "+(s%60)+" s"}
 function runTime(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?"—":new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(d)}
-function runVisual(s){
- const el=$("runState"),btn=$("runNow");el.className="";btn.disabled=false;
- if(!s||s.status==="DISABLED"){el.textContent="Preparado · falta activar trigger Work";btn.disabled=true;return}
- if(s.status==="ACCESS_REQUIRED"){el.textContent="Guarda el acceso en ⚙ para ejecutar";btn.disabled=true;return}
- if(s.status==="IDLE"){el.textContent="Listo para ejecutar";return}
- if(s.status==="REQUESTED"){el.textContent="Solicitada "+runTime(s.requested_at)+" · esperando a Work";el.className="running";btn.disabled=true;return}
- if(s.status==="RUNNING"){el.textContent="Ejecutándose desde "+runTime(s.started_at)+(s.start_delay_seconds!=null?" · arrancó en "+runDuration(s.start_delay_seconds):"");el.className="running";btn.disabled=true;return}
- if(s.status==="DONE"){el.textContent="Terminada "+runTime(s.finished_at)+(s.start_delay_seconds!=null?" · arranque "+runDuration(s.start_delay_seconds):"")+(s.duration_seconds!=null?" · duración "+runDuration(s.duration_seconds):"");el.className="done";return}
- if(s.status==="ERROR"){el.textContent="Error"+(s.message?" · "+s.message:"");el.className="error";return}
- el.textContent=String(s.status||"Estado desconocido")
+function runSource(v){return v==="manual"?"Manual":v==="scheduled"?"Automática":v==="chat"?"Chat":(v||"")}
+function runPhaseLabel(s){
+ const n=Number(s.current||0),t=Number(s.total||0),pos=n>0&&t>0?" "+n+" de "+t:"";
+ const p=String(s.phase||"").toLowerCase();
+ if(["preparing","prepare"].includes(p))return s.status==="REQUESTED"?"Preparando ejecución":"Preparando ejecución";
+ if(["investigating","research","verifying_news"].includes(p))return "Investigando noticia"+pos;
+ if(["drafting","redacting","writing"].includes(p))return "Redactando noticia"+pos;
+ if(["image_generating","image_generate","generating_image"].includes(p))return "Generando imagen"+pos;
+ if(["image_searching","image_search","searching_image"].includes(p))return "Buscando imagen"+pos;
+ if(["image_persisting","image_persist","saving_image"].includes(p))return "Guardando imagen"+pos;
+ if(["verifying","verification"].includes(p))return "Verificando resultado"+pos;
+ if(["closing","finalizing"].includes(p))return "Cerrando ejecución";
+ if(p==="error")return "Ejecución con error";
+ return s.status==="REQUESTED"?"Preparando ejecución":"Ejecutando TTiTTulares"
 }
-function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?5000:60000)}
+function runProgressValue(s){
+ const n=Number(s.current||0),t=Math.max(1,Number(s.total||0)),f=Math.max(0,Math.min(1,n/t));
+ const p=String(s.phase||"").toLowerCase();
+ if(["preparing","prepare"].includes(p))return 4;
+ if(["investigating","research","verifying_news"].includes(p))return 5+22*f;
+ if(["drafting","redacting","writing"].includes(p))return 28+27*f;
+ if(["image_generating","image_generate","generating_image","image_searching","image_search","searching_image"].includes(p))return 56+24*f;
+ if(["image_persisting","image_persist","saving_image","verifying","verification"].includes(p))return 80+16*f;
+ if(["closing","finalizing"].includes(p))return 98;
+ return 12
+}
+function runIncidentCount(s){return Math.max(Number(s?.incident_count||0),Array.isArray(s?.incidents)?s.incidents.length:0)}
+function runSummaryText(r){
+ const x=r?.summary||{},parts=[];
+ const news=Number(x.news_processed??x.news_ready??x.news_total);if(Number.isFinite(news)&&news>0)parts.push(news+" noticias");
+ const ir=Number(x.images_ready);if(Number.isFinite(ir)&&ir>0)parts.push(ir+" imágenes listas");
+ const it=Number(x.images_telegram);if(Number.isFinite(it)&&it>0)parts.push(it+" en Telegram");
+ const ino=Number(x.images_none);if(Number.isFinite(ino)&&ino>0)parts.push(ino+" sin imagen");
+ if(r?.duration_seconds!=null)parts.push(runDuration(r.duration_seconds));
+ return parts.join(" · ")
+}
+function buildDiagnostic(s){
+ const r=s?.active?s:(s?.last_run||s||{}),lines=[
+  "TTiTTulares · Diagnóstico de ejecución",
+  "Run ID: "+(r.run_id||r.command_id||"—"),
+  "Origen: "+runSource(r.source||r.source_label)||"—",
+  "Estado: "+(r.status||"—"),
+  "Fase: "+(r.phase||"—"),
+  "Progreso: "+(r.current||0)+" / "+(r.total||0),
+  "Evento: "+(r.event_id||"—"),
+  "Título: "+(r.title||"—"),
+  "Inicio: "+(r.started_at||r.requested_at||"—"),
+  "Última actualización: "+(r.updated_at||"—"),
+  "Final: "+(r.finished_at||"—"),
+  "Incidencias: "+runIncidentCount(r)
+ ];
+ if(r.message)lines.push("Mensaje: "+r.message);
+ if(r.summary)lines.push("Resumen: "+JSON.stringify(r.summary));
+ for(const [i,e] of (r.incidents||[]).entries()){
+  lines.push("", "["+(i+1)+"] "+(e.at||"—")+" · "+(e.phase||"sin fase")+" · "+(e.event_id||"sin evento"),String(e.reason||""))
+ }
+ return lines.join("\n")
+}
+let lastRunTelemetry=null;
+function showRunIncidents(s){
+ const r=s?.active?s:(s?.last_run||s||{}),count=runIncidentCount(r);
+ $("incidentSummary").textContent=count?(count+" incidencia"+(count===1?"":"s")+" registrada"+(count===1?"":"s")+". Puedes copiar este diagnóstico y pegarlo en ChatGPT."):"No hay incidencias registradas.";
+ $("incidentDetails").textContent=buildDiagnostic(s);
+ $("incidentSheet").classList.add("show")
+}
+function runVisual(s){
+ lastRunTelemetry=s;
+ const bar=$("runBar"),head=$("runHeadline"),el=$("runState"),btn=$("runNow"),warn=$("runIncident"),prog=$("runProgress"),fill=$("runProgressFill");
+ const active=Boolean(s?.active)||["REQUESTED","RUNNING"].includes(String(s?.status||""));
+ bar.classList.toggle("active",active);btn.hidden=active;btn.disabled=!s?.enabled;
+ el.className="";warn.hidden=true;warn.classList.remove("severe");prog.hidden=!active;
+ if(active){
+   const count=runIncidentCount(s);head.textContent=runPhaseLabel(s);
+   const elapsed=s.started_at?runDuration((Date.now()-new Date(s.started_at).getTime())/1000):"";
+   el.textContent=[s.title,runSource(s.source||s.source_label),elapsed].filter(Boolean).join(" · ")||(s.status==="REQUESTED"?"Esperando a ChatGPT Work":"Ejecución en curso");
+   el.className="running";fill.style.width=Math.max(3,Math.min(99,runProgressValue(s)))+"%";
+   if(count){warn.hidden=false;warn.textContent="⚠ "+count;warn.onclick=()=>showRunIncidents(s)}
+   return
+ }
+ prog.hidden=true;fill.style.width="0%";
+ const r=s?.last_run||null;
+ if(r){
+   const count=runIncidentCount(r),isError=r.status==="ERROR";
+   head.textContent="Última ejecución · "+runTime(r.finished_at||r.updated_at)+" · "+(isError?"Error":count?"Terminada con "+count+" incidencia"+(count===1?"":"s"):"Terminada");
+   el.textContent=[runSummaryText(r),runSource(r.source||r.source_label)].filter(Boolean).join(" · ")||"Lista para ejecutar";
+   el.className=isError?"error":"done";
+   if(count||isError){warn.hidden=false;warn.textContent=(isError?"✖ ":"⚠ ")+(count||1);warn.classList.toggle("severe",isError);warn.onclick=()=>showRunIncidents(s)}
+ }else{
+   head.textContent="Ejecución";el.textContent=s?.enabled===false?"Trigger de Work no disponible":"Lista para ejecutar";
+ }
+}
+function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?3000:30000)}
 async function loadRunStatus(){
  try{
    const headers={};if(token())headers.authorization="Bearer "+token();
    const r=await fetch(RUN_STATUS_API+"?t="+Date.now(),{cache:"no-store",headers});
-   if(r.status===401){runVisual({status:"ACCESS_REQUIRED"});scheduleRunPoll(false);return}
    const d=await r.json().catch(()=>({}));
-   if(!r.ok)throw new Error(d.error||"No se pudo consultar la ejecución manual");
-   runVisual(d);scheduleRunPoll(["REQUESTED","RUNNING"].includes(d.status))
- }catch(e){$("runState").textContent=e.message||"No se pudo consultar el estado";$("runState").className="error";scheduleRunPoll(false)}
+   if(!r.ok)throw new Error(d.error||"No se pudo consultar el estado de ejecución");
+   runVisual(d);scheduleRunPoll(Boolean(d.active)||["REQUESTED","RUNNING"].includes(d.status))
+ }catch(e){
+   $("runHeadline").textContent="Ejecución";$("runState").textContent=e.message||"No se pudo consultar el estado";$("runState").className="error";$("runNow").hidden=false;scheduleRunPoll(false)
+ }
 }
 async function requestRun(){
  if(!token()){$("settings").click();toast("Guarda primero el acceso");return}
  if(!confirm("¿Ejecutar TTiTTulares ahora? Esta acción consumirá cuota de ChatGPT Work."))return;
- const btn=$("runNow");btn.disabled=true;$("runState").textContent="Enviando solicitud…";$("runState").className="running";
+ runVisual({ok:true,enabled:true,active:true,status:"REQUESTED",source:"manual",phase:"preparing",current:0,total:0,requested_at:new Date().toISOString(),message:"Enviando solicitud…"});
  try{
    const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:"{}"});
    const d=await r.json().catch(()=>({}));
@@ -174,8 +260,8 @@ async function requestRun(){
    if(r.status===409)throw new Error("Ya hay una ejecución en curso");
    if(r.status===503&&d.error==="work_trigger_not_ready")throw new Error("El trigger de Work todavía no está activado");
    if(!r.ok)throw new Error(d.error||"No se pudo solicitar la ejecución");
-   runVisual({status:"REQUESTED",requested_at:d.requested_at});scheduleRunPoll(true)
- }catch(e){$("runState").textContent=e.message;$("runState").className="error";btn.disabled=false}
+   runVisual({ok:true,enabled:true,active:true,status:"REQUESTED",run_id:d.command_id,command_id:d.command_id,source:"manual",phase:"preparing",current:0,total:0,requested_at:d.requested_at,updated_at:d.requested_at,message:"Solicitud recibida; esperando a ChatGPT Work."});scheduleRunPoll(true)
+ }catch(e){toast(e.message);await loadRunStatus()}
 }
 async function api(action,extra={}){
  const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
@@ -421,6 +507,8 @@ async function load(silent=false){
 }
 document.querySelectorAll(".stat").forEach(x=>x.onclick=()=>setView(x.dataset.view));
 $("runNow").onclick=requestRun;
+$("incidentClose").onclick=()=>$("incidentSheet").classList.remove("show");
+$("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buildDiagnostic(lastRunTelemetry||{}));toast("Diagnóstico copiado")}catch(_){toast("No se pudo copiar el diagnóstico")}};
 $("notify").onclick=enablePush;
 $("refresh").onclick=()=>{toast("Recargando");load();loadRunStatus()};
 $("submitNews").onclick=()=>{
