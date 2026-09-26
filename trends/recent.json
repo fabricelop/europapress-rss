@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T12:10:55+02:00",
+  "captured_at": "2026-09-26T12:21:04+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -72,10 +72,8 @@
       "name": "Frente Amplio"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Frente Amplio"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "Manchester City",
@@ -96,26 +94,6 @@
       "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-09-25T15:02:55.152129Z"
-    },
-    {
-      "name": "Guardiola",
-      "social_source_count": 5,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.2,
-      "movement": "up",
-      "first_detected_at": "2026-09-26T03:40:50+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     },
     {
       "name": "Andrea",
@@ -148,13 +126,33 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 13.5,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T12:10:55+02:00",
       "news_source_count": 8,
       "news_event_id": "e7dfae846c83",
       "news_title": "Muere Eduardo Rodríguez ‘Rodway’, guitarrista fundador de Triana",
       "news_status": "ELIGIBLE",
       "news_first_seen": "2026-09-26T09:13:36.267032Z"
+    },
+    {
+      "name": "Guardiola",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.2,
+      "movement": "flat",
+      "first_detected_at": "2026-09-26T03:40:50+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Taylor",
@@ -168,7 +166,7 @@
       ],
       "best_observed_rank": 18,
       "mean_observed_rank": 19.2,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T09:21:06+02:00",
       "news_source_count": 1,
       "news_event_id": "9a0e04a84cde",
@@ -187,7 +185,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 13.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T10:40:52+02:00",
       "news_source_count": 2,
       "news_event_id": "62315c97ec78",
@@ -225,7 +223,7 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 16.5,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T10:01:19+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -234,14 +232,7 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Frente Amplio",
-      "first_detected_at": "2026-09-26T10:40:52+02:00",
-      "entered_top10_at": "2026-09-26T12:10:55+02:00",
-      "lead_minutes": 90
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -272,7 +263,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T12:10:55+02:00"
+      "fetched_at": "2026-09-26T12:21:04+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -297,7 +288,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T12:10:55+02:00"
+      "fetched_at": "2026-09-26T12:21:04+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -324,10 +315,10 @@
         "Taylor"
       ],
       "error": null,
-      "update_hint": "Updated 5 minutes ago",
-      "age_minutes": 5.0,
+      "update_hint": "Updated 15 minutes ago",
+      "age_minutes": 15.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T12:10:56+02:00"
+      "fetched_at": "2026-09-26T12:21:05+02:00"
     },
     "superx": {
       "ok": true,
@@ -357,16 +348,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T12:10:57+02:00"
+      "fetched_at": "2026-09-26T12:21:06+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790417458",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790418067",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T12:10:58+02:00"
+      "fetched_at": "2026-09-26T12:21:07+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -394,9 +385,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 09:00 UTC",
-      "age_minutes": 71.0,
+      "age_minutes": 81.1,
       "freshness": "aging",
-      "fetched_at": "2026-09-26T12:10:58+02:00"
+      "fetched_at": "2026-09-26T12:21:07+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -424,18 +415,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 10:00 AM # Trend Type Actions 1 #DeViernes Hashtag 2 Mari",
-      "age_minutes": 131.0,
+      "age_minutes": 141.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T12:10:58+02:00"
+      "fetched_at": "2026-09-26T12:21:07+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790417459",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790418068",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T12:10:59+02:00"
+      "fetched_at": "2026-09-26T12:21:08+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -444,7 +435,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T12:11:02+02:00"
+      "fetched_at": "2026-09-26T12:21:09+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -474,16 +465,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T12:11:03+02:00"
+      "fetched_at": "2026-09-26T12:21:09+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790417465",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790418071",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T12:11:05+02:00"
+      "fetched_at": "2026-09-26T12:21:11+02:00"
     }
   }
 }
