@@ -1,13 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chatgpt-automation-outbox",
-  "last_started_at": "2026-09-26T15:38:09+02:00",
+  "last_started_at": "2026-09-26T15:39:59+02:00",
   "last_completed_at": "2026-09-26T14:52:08+02:00",
   "last_slot": null,
-  "status": "waiting",
-  "processed_ids": [
-    "3d6977e14685"
-  ],
+  "status": "failure",
+  "processed_ids": [],
   "remaining_ids": [
     "85f487f432f7",
     "68721e5cdf86",
@@ -16,9 +14,9 @@
     "77fcb05c6134",
     "0eb183243950"
   ],
-  "error": null,
+  "error": "85f487f432f7-r0.json: ValueError: data URL raster inválida: Invalid base64-encoded string: number of data characters (4777) cannot be 1 more than a multiple of 4",
   "api_failover_enabled": false,
-  "updated_at": "2026-09-26T15:38:09+02:00",
+  "updated_at": "2026-09-26T15:39:59+02:00",
   "queue_complete": false,
   "remaining_active_ids": [
     "85f487f432f7",
