@@ -378,8 +378,9 @@ async function queueNames(names) {
       if (existing) {
         existing.batch_id = batchId;
         existing.requested_together = unique;
-        existing.with_image = true;
-        existing.alternatives_target = 3;
+        existing.with_image = false;
+        existing.alternatives_target = 0;
+        existing.task = "explain";
         if (String(existing.status || "") === "ready") {
           existing.status = "update";
           existing.requested_at = now;
@@ -402,6 +403,7 @@ async function queueNames(names) {
           alternatives_target: 0,
           batch_id: batchId,
           requested_together: unique,
+          task: "explain",
         });
       }
     }
