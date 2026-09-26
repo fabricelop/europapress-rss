@@ -7,6 +7,7 @@ const DECISIONS="ttittulares/decisions.json";
 const PROCESSING="telegram/editorial-processing.json";
 const EVENTS="telegram/events.json";
 const MANUAL_ARCHIVE="ttittulares/manual-submissions.json";
+const TREND_CANDIDATES="ttittulares/trend-candidates.json";
 // Tokens de control ya emitidos. No rotar ni eliminar salvo revocación de seguridad explícita.
 const CONTROL_TOKEN_HASHES=[
   "2663da5223c2313c3670a7843a0cdfabfd2dd7c8fad1ed168247866a3b1262e5",
@@ -322,6 +323,98 @@ async function manualPrepare(eventId){
   return {ok:true,event_id:id,status:"PROCESSING"}
 }
 
+
+function trendCandidateId(item){
+  return idOf(item?.candidate_id||item?.event_id||item?.id);
+}
+function trendCandidateEventId(item){
+  const existing=idOf(item?.ttittulares_event_id||item?.event_id);
+  if(existing)return existing;
+  const base=[String(item?.title||""),...(Array.isArray(item?.trend_names)?item.trend_names:[])].join("|")||JSON.stringify(item||{});
+  return "trend-"+crypto.createHash("sha256").update(base).digest("hex").slice(0,12)
+}
+async function markTrendCandidate(candidateId,status,extra={}){
+  const wanted=idOf(candidateId);if(!wanted)throw new Error("Falta candidate_id");
+  const now=new Date().toISOString();
+  let found=false;
+  await mutateJson(TREND_CANDIDATES,status==="dismissed"?"Descartar candidato de TTendencias":"Actualizar candidato de TTendencias",doc=>{
+    doc.project||="TTiTTulares";doc.version=Number(doc.version||1);doc.items||=[];
+    for(const item of doc.items){
+      if(trendCandidateId(item)!==wanted)continue;
+      found=true;item.status=status;item.updated_at=now;Object.assign(item,extra);
+      if(status==="dismissed")item.dismissed_at=now;
+      if(status==="promoted")item.promoted_at=now
+    }
+    doc.updated_at=now;return doc
+  });
+  if(!found)throw new Error("No se encuentra el candidato de tendencia");
+}
+async function dismissTrendCandidate(candidateId){
+  await markTrendCandidate(candidateId,"dismissed",{dismissed_source:"web_control"});
+  return {ok:true,candidate_id:idOf(candidateId),status:"dismissed"}
+}
+async function promoteTrendCandidate(candidateId){
+  const wanted=idOf(candidateId);if(!wanted)throw new Error("Falta candidate_id");
+  const [{doc:candidates},{doc:events},{doc:queue},{doc:prepared},{doc:decisions}]=await Promise.all([
+    readJson(TREND_CANDIDATES),readJson(EVENTS),readJson(PROCESSING),readJson(PREPARED),readJson(DECISIONS)
+  ]);
+  const candidate=(candidates.items||[]).find(x=>trendCandidateId(x)===wanted);
+  if(!candidate)throw new Error("No se encuentra el candidato de tendencia");
+  if(["dismissed","promoted"].includes(String(candidate.status||"").toLowerCase())){
+    return {ok:true,candidate_id:wanted,status:String(candidate.status||"").toLowerCase(),event_id:candidate.ttittulares_event_id||candidate.event_id||null,duplicate:true}
+  }
+  const eventId=trendCandidateEventId(candidate),now=new Date().toISOString();
+  const title=String(candidate.title||candidate.news_title||candidate.explanation||"Noticia detectada en TTendencias").trim();
+  const url=String(candidate.url||candidate.source_url||"").trim();
+  const sources=Array.isArray(candidate.sources)?candidate.sources:[];
+  const sourceEvidence=Array.isArray(candidate.source_evidence)?candidate.source_evidence:[];
+  const sourceCount=Number(candidate.source_count||sources.length||0);
+  const probe={url,title};
+  const closed=(decisions.items||[]).find(x=>idOf(x.event_id)===eventId&&["published","dismissed"].includes(String(x.status||"").toLowerCase()));
+  if(closed){
+    await markTrendCandidate(wanted,"dismissed",{dismissed_source:"duplicate_closed",ttittulares_event_id:eventId});
+    return {ok:true,candidate_id:wanted,event_id:eventId,status:"dismissed",duplicate:true,message:"La noticia ya estaba cerrada"}
+  }
+  const preparedMatch=(prepared.items||[]).find(x=>idOf(x.event_id)===eventId||storyMatches(x,probe));
+  const queueMatch=[...(queue.items||[])].reverse().find(x=>idOf(x.event_id)===eventId||storyMatches(x,probe));
+  const eventMatch=(events.events||[]).find(x=>idOf(x.id||x.event_id)===eventId||storyMatches(x,probe));
+  if(preparedMatch||["PROCESSING","READY"].includes(String(queueMatch?.status||""))){
+    const linked=idOf(preparedMatch?.event_id||queueMatch?.event_id||eventMatch?.id||eventId);
+    await markTrendCandidate(wanted,"promoted",{ttittulares_event_id:linked,promoted_source:"duplicate_active"});
+    return {ok:true,candidate_id:wanted,event_id:linked,status:"PROCESSING",duplicate:true}
+  }
+
+  await mutateJson(EVENTS,"Registrar noticia detectada por TTendencias",doc=>{
+    doc.events||=[];
+    let ev=doc.events.find(x=>idOf(x.id||x.event_id)===eventId||storyMatches(x,probe));
+    if(!ev){
+      ev={id:eventId,canonical_title:title,url,appearances:sourceEvidence,sources,source_count:sourceCount,percentage:0,first_seen:candidate.detected_at||candidate.created_at||now,last_seen:now,status:"PROCESSING",notified:false,revision:Number(candidate.revision||1),trend_origin:true,trend_names:candidate.trend_names||[]};
+      doc.events.push(ev)
+    }else{
+      ev.status="PROCESSING";ev.processing_at=now;ev.trend_origin=true;
+      ev.trend_names=[...new Set([...(ev.trend_names||[]),...(candidate.trend_names||[])])];
+      if(title&&!ev.canonical_title)ev.canonical_title=title;if(url&&!ev.url)ev.url=url;
+      if(sourceCount>Number(ev.source_count||0)){ev.sources=sources;ev.source_count=sourceCount;if(sourceEvidence.length)ev.appearances=sourceEvidence}
+    }
+    doc.updated_at=now;return doc
+  });
+  await mutateJson(PROCESSING,"Enviar candidato de TTendencias a elaboración",doc=>{
+    doc.items||=[];
+    let item=[...doc.items].reverse().find(x=>idOf(x.event_id)===eventId||storyMatches(x,probe));
+    if(!item){item={event_id:eventId};doc.items.push(item)}
+    Object.assign(item,{
+      event_id:eventId,title,url,sources,source_evidence:sourceEvidence,source_count:sourceCount,drafted_source_count:sourceCount,
+      selected_at:now,status:"PROCESSING",selection_mode:"TTENDENCIAS_USER",revision:Number(candidate.revision||item.revision||1),
+      with_image:true,image_mode:"generated_gag_or_archive_sensitive",trend_origin:true,trend_names:candidate.trend_names||[],
+      trend_explanation:String(candidate.explanation||"")
+    });
+    delete item.problem_reason;delete item.problematic_at;delete item.dismissed_at;delete item.delivered_at;
+    doc.updated_at=now;return doc
+  });
+  await markTrendCandidate(wanted,"promoted",{ttittulares_event_id:eventId,promoted_source:"web_check"});
+  return {ok:true,candidate_id:wanted,event_id:eventId,status:"PROCESSING"}
+}
+
 async function proxyPreparedImage(rawUrl,res){
   const url=String(rawUrl||"");let parsed;
   try{parsed=new URL(url)}catch(_){throw new Error("URL de imagen no válida")}
@@ -350,9 +443,9 @@ export default async function handler(req,res){
   try{
     if(req.method==="GET"){
       if(String(req.query?.view||"")==="image-proxy")return await proxyPreparedImage(req.query?.url,res);
-      const [prepared,status,config,queue,events,decisions,manualArchive]=await Promise.all([
+      const [prepared,status,config,queue,events,decisions,manualArchive,trendCandidates]=await Promise.all([
         readJson(PREPARED),readJson("ttittulares/status.json"),readJson("ttittulares/config.json"),
-        readJson(PROCESSING),readJson(EVENTS),readJson(DECISIONS),readJson(MANUAL_ARCHIVE)
+        readJson(PROCESSING),readJson(EVENTS),readJson(DECISIONS),readJson(MANUAL_ARCHIVE),readJson(TREND_CANDIDATES)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const closedIds=new Set((decisions.doc?.items||[])
@@ -391,6 +484,23 @@ export default async function handler(req,res){
           sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
         }
       }).sort((a,b)=>String(b.problematic_at||b.selected_at||"").localeCompare(String(a.problematic_at||a.selected_at||"")));
+      const trendCandidateItems=(trendCandidates.doc?.items||[])
+        .filter(x=>["candidate","pending",""].includes(String(x.status||"").toLowerCase()))
+        .map(x=>({
+          candidate_id:trendCandidateId(x),
+          event_id:idOf(x.event_id||x.ttittulares_event_id),
+          title:String(x.title||x.news_title||"Posible noticia desde TTendencias"),
+          explanation:String(x.explanation||""),
+          url:String(x.url||x.source_url||""),
+          trend_names:Array.isArray(x.trend_names)?x.trend_names:[],
+          search_terms:Array.isArray(x.search_terms)?x.search_terms:(Array.isArray(x.trend_names)?x.trend_names:[]),
+          source_count:Number(x.source_count||(Array.isArray(x.sources)?x.sources.length:0)),
+          sources:Array.isArray(x.sources)?x.sources:[],
+          source_evidence:Array.isArray(x.source_evidence)?x.source_evidence:[],
+          detected_at:x.detected_at||x.created_at||x.updated_at||null,
+          origin:"TTendencias"
+        }))
+        .sort((a,b)=>String(b.detected_at||"").localeCompare(String(a.detected_at||"")));
       const threeSourceItems=(events.doc?.events||[]).filter(e=>{
         const id=String(e.id||e.event_id||"");
         return Number(e.source_count||0)===3
@@ -412,7 +522,7 @@ export default async function handler(req,res){
         const bv=Number.isFinite(b.source3_minutes)?b.source3_minutes:Number.MAX_SAFE_INTEGER;
         return av-bv||String(b.first_seen||"").localeCompare(String(a.first_seen||""))
       });
-      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,problematic_count:problematicItems.length,problematic_items:problematicItems,ready_count:visiblePrepared.length,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
+      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,problematic_count:problematicItems.length+trendCandidateItems.length,problematic_items:problematicItems,trend_candidates_count:trendCandidateItems.length,trend_candidates:trendCandidateItems,ready_count:visiblePrepared.length,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
       return res.status(200).json({ok:true,service:"ttittulares-control",prepared:{...(prepared.doc||{}),items:visiblePrepared},status:liveStatus,config:config.doc})
     }
     if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
@@ -423,6 +533,8 @@ export default async function handler(req,res){
     if(action==="dismiss")return res.status(200).json(await closePrepared(body.event_id,"dismissed"));
     if(action==="rework")return res.status(200).json(await rework(body.event_id,body.instruction));
     if(action==="check")return res.status(200).json(await markUserValidated(body.event_id));
+    if(action==="promote-trend")return res.status(200).json(await promoteTrendCandidate(body.candidate_id));
+    if(action==="dismiss-trend")return res.status(200).json(await dismissTrendCandidate(body.candidate_id));
     if(action==="prepare3")return res.status(200).json(await manualPrepare(body.event_id));
     if(action==="submit")return res.status(200).json(await submitManualStory(body.url,body.title,body.instruction));
     return res.status(400).json({ok:false,error:"Acción no válida"})
