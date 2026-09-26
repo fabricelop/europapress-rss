@@ -27,13 +27,13 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
 <body>
 <header class="top">
   <div class="brand">TTendencias</div>
-  <div class="spacer"></div><button class="iconbtn tweets" id="preparedBtn" title="Tuits preparados">Tuits 0/0</button>
+  <div class="spacer"></div><button class="iconbtn tweets" id="preparedBtn" title="Ver tendencias explicadas">Explicadas</button>
   <button class="iconbtn" id="refreshBtn" title="Recargar datos">↻</button>
   <button class="iconbtn" id="settingsBtn" title="Acceso">⚙</button>
 </header>
 <main>
   <section class="summary">
-    <div><h1>Top 10 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima elaboración —</div></div></div>
+    <div><h1>Top 10 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima explicación —</div></div></div>
     <div class="badge" id="quality">—</div>
   </section>
   <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="primary" id="runNow" type="button">▶ Ejecutar ahora</button></section>
@@ -46,7 +46,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
 
 <div class="sheet" id="sheet"><div class="panel">
   <h2>Acceso</h2>
-  <p>Las acciones de control requieren el token privado. Puedes activar avisos para recibir una notificación en el móvil cuando haya nuevos tuits listos.</p>
+  <p>Las acciones de control requieren el token privado. Puedes activar avisos para recibir una notificación en el móvil cuando haya nuevas explicaciones disponibles.</p>
   <input id="tokenInput" type="password" autocomplete="off" placeholder="Token de control">
   <div class="row"><button class="secondary" id="cancelToken">Cancelar</button><button class="secondary" id="testToken">Probar</button><button class="primary" id="saveToken">Guardar</button></div>
   <div class="meta" id="accessStatus" style="margin-top:10px"></div>
@@ -70,7 +70,7 @@ const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
 const RUN_STATUS_API="/api/ttendencias-run-status";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="ttendencias-ui-run-image-v3-20260926";
+const SHELL_BUILD="ttendencias-ui-explain-only-v1-20260926";
 const $=id=>document.getElementById(id);
 let model=null,busy=new Set(),runPoll=null,problemRetryItem=null;
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -93,7 +93,7 @@ function renderScheduleTiming(){
  const rm=nextR?Math.ceil((nextR-now)/60000):null;
  $("nextRadar").textContent="Próximo radar "+(nextR?hhmm(nextR):"—")+(rm!==null?" · en "+rm+" min":"");
  const em=nextE?Math.ceil((nextE-now)/60000):null;
- $("nextEditorial").textContent="Próxima elaboración "+(nextE?hhmm(nextE):"—")+(em!==null?" · en "+em+" min":"");
+ $("nextEditorial").textContent="Próxima explicación "+(nextE?hhmm(nextE):"—")+(em!==null?" · en "+em+" min":"");
 }
 
 function localState(){
@@ -116,9 +116,8 @@ function freshnessText(v){
  return "● Desactualizado: "+mins+" min";
 }
 async function updateBadge(){
- const count=(model?.prepared||[]).length;
- try{if("setAppBadge" in navigator){if(count>0)await navigator.setAppBadge(count);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}
- document.title=count?"("+count+") TTendencias Control":"TTendencias Control";
+ try{if("clearAppBadge" in navigator)await navigator.clearAppBadge()}catch(_){}
+ document.title="TTendencias Control";
 }
 
 function appServerKey(value){
@@ -145,7 +144,7 @@ async function refreshPushStatus(){
    b.textContent="Avisos bloqueados";b.disabled=true;t.style.display="none";return;
  }
  if(sub){
-   s.textContent="✓ Avisos al móvil activos · solo para nuevos tuits listos";
+   s.textContent="✓ Avisos al móvil activos · explicaciones";
    b.textContent="Desactivar avisos";t.style.display="block";return;
  }
  s.textContent=Notification.permission==="granted"?"Permiso concedido, pero este dispositivo aún no está suscrito.":"Avisos al móvil desactivados.";
@@ -189,17 +188,17 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
    let status="active",label="En curso",detail="",ready=false;
    // El servidor manda siempre que exista una solicitud. El estado local es
    // solo optimista mientras aún no existe confirmación remota.
-   if(s==="dismissed"){status="dismissed";label="Desestimada"}
-   else if(s==="problematic"){status="problematic";label="Problemática";detail=req?.problem_reason||"No se pudo elaborar con suficiente fiabilidad"}
+   if(s==="dismissed"){status="active";label="Pendiente";detail="Sin explicación activa"}
+   else if(s==="problematic"){status="problematic";label="Sin explicación fiable";detail=req?.problem_reason||"No se pudo determinar el motivo con suficiente fiabilidad"}
    else if(s==="explained"||(!req&&explainedSet.has(nrm(item.name)))){status="explained";label="Explicada"}
-   else if(s==="ready"){status="active";label="Lista";detail="Tuit preparado";ready=true}
+   else if(s==="ready"){status="explained";label="Explicada";detail="Explicación disponible";ready=false}
    else if(localValid&&ls.status==="explained"){status="explained";label="Explicada"}
    else if(localValid&&ls.status==="dismissed"){status="dismissed";label="Desestimada"}
    else if(s==="preparing"||s==="update"){
      const age=req?.requested_at?Math.max(0,Math.floor((Date.now()-new Date(req.requested_at).getTime())/60000)):0;
      status="active";label="En curso";
-     detail=age>=30?"Elaborando · retraso de "+age+" min":"Elaborando · "+age+" min";
-   }else detail="Pendiente de cola automática";
+     detail=age>=30?"Explicando · retraso de "+age+" min":"Explicando · "+age+" min";
+   }else detail="Pendiente de explicación automática";
    const anticipated=anticipatedByName[nrm(item.name)];if(anticipated&&Number.isFinite(Number(anticipated.lead_minutes))){detail+=(detail?" · ":"")+"Radar: "+Number(anticipated.lead_minutes)+" min antes"}
    return {rank:Number(item.rank),name:String(item.name),status,label,detail,ready,requested_at:req?.requested_at||null,internal_status:s,explanation:String(explainedEntry?.explanation||"").trim(),explained_title:String(explainedEntry?.news_title||"").trim()};
  });
@@ -271,9 +270,8 @@ function render(){
  renderScheduleTiming();
  const rel={high:"alta",medium:"media",fallback:"baja",none:"sin datos"}[model.reliability]||model.reliability||"—";
  $("quality").textContent=(model.source_count||0)+" válidas · "+(model.non_stale_source_count||0)+" actuales · fiabilidad "+rel;
- const tweetReady=Number(model.progress?.tweet_ready||0),tweetTotal=Number(model.progress?.tweet_total||0);
- $("preparedBtn").textContent="Tuits "+tweetReady+"/"+tweetTotal;
- $("preparedBtn").classList.toggle("hasReady",tweetReady>0);
+ $("preparedBtn").textContent="Explicadas";
+ $("preparedBtn").classList.remove("hasReady");
  updateBadge();
  const list=$("list");list.innerHTML="";
  for(const item of model.items||[]){
@@ -287,10 +285,7 @@ function render(){
    }else{detail.textContent=item.detail||"";detail.style.display=item.detail?"block":"none"}
    const slot=card.querySelector(".slot");
    const x=document.createElement("a");x.className="action xsearch";x.textContent="Buscar en X";x.href="https://x.com/search?q="+encodeURIComponent(item.name)+"&src=typed_query&f=live";x.target="_blank";x.rel="noopener noreferrer";x.setAttribute("aria-label","Buscar "+item.name+" en X");slot.appendChild(x);
-   if(item.status==="dismissed"||item.status==="problematic"){
-     const b=document.createElement("button");b.className="action"+(item.status==="problematic"?" warn":"");b.textContent=item.status==="dismissed"?"Explicar":"Reintentar";b.disabled=busy.has(item.name);
-     b.onclick=()=>retry(item);slot.appendChild(b);
-   }
+
    list.appendChild(card);
  }
  if(!(model.items||[]).length)list.innerHTML='<div class="empty">No hay tendencias disponibles.</div>';
@@ -302,7 +297,7 @@ function render(){
    const bits=[item.social_source_count+" fuentes sociales",item.best_observed_rank?"mejor puesto "+item.best_observed_rank:"",item.news_source_count?"TTiTTulares: "+item.news_source_count+" medios":""].filter(Boolean);
    card.innerHTML='<div class="rank signal">↗</div><div><div class="nameLine"><div class="name"></div><button class="infoBtn" type="button" aria-label="Ver información">i</button></div><div class="state"><i class="dot '+(item.request_status==="problematic"?"problematic":"active")+'"></i><span class="label"></span></div><div class="detail"></div><div class="problemInfo"></div></div><div class="slot"></div>';
    card.querySelector(".name").textContent=item.name;
-   card.querySelector(".label").textContent=item.material_novelty?"Ya explicada pero con novedad":ready?"Preparada en Radar":queued?"Preparando en Radar":item.request_status==="problematic"?"Problemática":movementLabel[item.movement]||"Señal detectada";
+   card.querySelector(".label").textContent=item.material_novelty?"Ya explicada pero con novedad":ready?"Explicada":queued?"Explicando":item.request_status==="problematic"?"Sin explicación fiable":movementLabel[item.movement]||"Señal detectada";
    const d=card.querySelector(".detail");d.textContent=bits.join(" · ");if(item.news_title)d.title=item.news_title;
    if(item.request_status==="problematic"&&item.problem_reason){
      const info=card.querySelector(".problemInfo"),btn=card.querySelector(".infoBtn");info.textContent=item.problem_reason;btn.classList.add("show");btn.onclick=()=>info.classList.toggle("show");
@@ -312,7 +307,6 @@ function render(){
    const p=document.createElement("button");p.className="action prepare";p.disabled=busy.has(item.name)||queued;
    p.textContent=item.request_status==="problematic"?"Reintentar":item.material_novelty?"Preparar novedad":ready?"Ver preparado":queued?"Preparando…":"Preparar";
    p.onclick=()=>item.request_status==="problematic"?openProblemRetry({name:item.name,status:"problematic"}):ready?location.assign("/ttendencias/preparados/"):prepareUpcoming(item);slot.appendChild(p);
-   if(!ready&&!queued){const z=document.createElement("button");z.className="action";z.textContent="Desestimar";z.onclick=()=>discardUpcoming(item);slot.appendChild(z);}
    upcomingList.appendChild(card);
  }
  if(!(model.upcoming||[]).length)upcomingList.innerHTML='<div class="empty">No hay señales anticipadas con suficiente respaldo ahora mismo.</div>';
@@ -430,7 +424,7 @@ async function loadRunStatus(){
 }
 async function requestRun(){
  if(!token()){$("settingsBtn").click();showToast("Guarda primero el acceso");return}
- if(!confirm("¿Ejecutar TTendencias ahora? Esta acción consumirá cuota de ChatGPT Work."))return;
+ if(!confirm("¿Explicar ahora las tendencias pendientes? Esta acción consumirá cuota de ChatGPT Work."))return;
  runVisual({ok:true,enabled:true,active:true,status:"REQUESTED",source:"manual",phase:"preparing",current:0,total:0,requested_at:new Date().toISOString(),message:"Enviando solicitud…"});
  try{
    const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:"{}"});
@@ -465,7 +459,7 @@ async function prepareUpcoming(item){
  busy.add(item.name);item.request_status="preparing";render();
  try{
   await api("queue-upcoming",[item.name]);
-  showToast(item.name+" enviada a preparación anticipada");
+  showToast(item.name+" enviada a explicación");
   setTimeout(()=>load(true),1200);
  }catch(e){
   showToast(e.message);await load(true);
@@ -489,7 +483,7 @@ async function sendProblemRetry(){
    clearLocal([item.name]);
    $("problemRetrySheet").classList.remove("show");
    problemRetryItem=null;
-   showToast("Contexto enviado · vuelve a elaboración");
+   showToast("Contexto enviado · vuelve a explicación");
    await load(true);
  }catch(e){showToast(e.message)}
  finally{$("sendProblemRetry").disabled=false;busy.delete(item.name);render()}
@@ -497,8 +491,8 @@ async function sendProblemRetry(){
 async function retry(item){
  if(item.status==="problematic"){openProblemRetry(item);return}
  if(!confirm("¿Volver a mandar "+item.name+" a elaboración?"))return;
- busy.add(item.name);clearLocal([item.name]);item.status="active";item.label="En curso";item.detail="Elaborando";item.requested_at=new Date().toISOString();render();
- try{await api("retry",[item.name]);showToast("Enviada a elaboración");setTimeout(()=>load(true),1200)}catch(e){showToast(e.message);await load(true)}finally{busy.delete(item.name);render()}
+ busy.add(item.name);clearLocal([item.name]);item.status="active";item.label="En curso";item.detail="Explicando";item.requested_at=new Date().toISOString();render();
+ try{await api("retry",[item.name]);showToast("Enviada a explicación");setTimeout(()=>load(true),1200)}catch(e){showToast(e.message);await load(true)}finally{busy.delete(item.name);render()}
 }
 async function load(silent=false){
  try{
