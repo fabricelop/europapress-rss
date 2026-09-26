@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T18:37:19.243384+00:00",
+  "checked_at": "2026-09-26T21:32:55.682012+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,7 +40,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 5,
-      "captured_age_minutes": 0.2,
+      "captured_age_minutes": 1.2,
       "noise_count": 0
     },
     "listener": {
@@ -52,8 +52,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.7,
-      "run_id": 36263150063,
+      "age_minutes": 1.7,
+      "run_id": 36273211189,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -74,34 +74,70 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 4,
-      "overdue_count": 4,
-      "oldest_age_minutes": 35.7,
+      "pending_count": 14,
+      "overdue_count": 12,
+      "oldest_age_minutes": 51.9,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "042c08b8ba02",
-          "name": "Pablo Aguado",
+          "id": "f5060a515233",
+          "name": "Ferran",
           "status": "preparing",
-          "age_minutes": 35.7
+          "age_minutes": 51.9
         },
         {
-          "id": "4beb8cf76c9a",
-          "name": "David Gil",
+          "id": "72b636044cc9",
+          "name": "Wembley",
           "status": "preparing",
-          "age_minutes": 35.7
+          "age_minutes": 51.9
         },
         {
-          "id": "d6687e647571",
-          "name": "#TenerifeCádiz",
+          "id": "9503ec979794",
+          "name": "Inglaterra",
           "status": "preparing",
-          "age_minutes": 35.7
+          "age_minutes": 51.9
         },
         {
-          "id": "449a7169284e",
-          "name": "Jandilla",
+          "id": "0c51edc1ef4b",
+          "name": "Eric García",
           "status": "preparing",
-          "age_minutes": 35.7
+          "age_minutes": 51.9
+        },
+        {
+          "id": "6454422cbf4a",
+          "name": "#NationsLeague",
+          "status": "preparing",
+          "age_minutes": 51.9
+        },
+        {
+          "id": "9cf1498400ce",
+          "name": "Celades",
+          "status": "preparing",
+          "age_minutes": 51.9
+        },
+        {
+          "id": "ea3aa08d7383",
+          "name": "Cucurella",
+          "status": "preparing",
+          "age_minutes": 41.3
+        },
+        {
+          "id": "456a845d1b0b",
+          "name": "Gordon",
+          "status": "preparing",
+          "age_minutes": 41.3
+        },
+        {
+          "id": "ae7f066f3c94",
+          "name": "Oyarzabal",
+          "status": "preparing",
+          "age_minutes": 41.3
+        },
+        {
+          "id": "4b85f530992d",
+          "name": "Puerta del Sol",
+          "status": "preparing",
+          "age_minutes": 41.3
         }
       ],
       "repairable": false
@@ -111,18 +147,26 @@
       "status": "waiting",
       "queue_complete": false,
       "remaining_active_ids": [
-        "042c08b8ba02",
-        "4beb8cf76c9a",
-        "d6687e647571",
-        "449a7169284e"
+        "f5060a515233",
+        "72b636044cc9",
+        "9503ec979794",
+        "0c51edc1ef4b",
+        "6454422cbf4a",
+        "9cf1498400ce",
+        "ea3aa08d7383",
+        "456a845d1b0b",
+        "ae7f066f3c94",
+        "4b85f530992d",
+        "6e5f3712838f",
+        "a3a7e7773e0b"
       ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "cola editorial bloqueada: 4 pendiente(s) superan 30 min; más antigua 35.7 min"
+    "cola editorial bloqueada: 12 pendiente(s) superan 30 min; más antigua 51.9 min"
   ],
   "alert_sent": false,
-  "last_alert_signature": "cola editorial bloqueada: 4 pendiente(s) superan 30 min; más antigua 35.7 min"
+  "last_alert_signature": "cola editorial bloqueada: 12 pendiente(s) superan 30 min; más antigua 51.9 min"
 }
