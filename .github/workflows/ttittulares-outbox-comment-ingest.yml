@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Preparar dependencias
         run: python3 -m pip install --disable-pip-version-check --quiet Pillow
@@ -36,7 +36,7 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
 
           for intento in 1 2 3 4 5; do
-            git fetch origin main
+            git fetch --depth=1 origin main
             git reset --hard origin/main
 
             python3 ttittulares/ingest_pr_outbox_comment.py
