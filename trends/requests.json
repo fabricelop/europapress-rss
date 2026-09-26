@@ -3070,7 +3070,7 @@
       "id": "a5d81e5493c0",
       "name": "#firstdates25s",
       "rank": 7,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-26T00:10:56+02:00",
       "revision": 0,
       "reexplain": false,
@@ -3089,7 +3089,11 @@
         "#LaBolaNegra",
         "Zidane"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-26T07:59:53+02:00",
+      "problem_reason": "No se pudo atribuir con fiabilidad el hashtag fechado a una cita concreta tras dos búsquedas distintas; los resultados actuales remiten a episodios y virales de fechas diferentes.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "0829e969417f",
@@ -3322,5 +3326,5 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-26T07:58:58+02:00"
+  "updated_at": "2026-09-26T07:59:53+02:00"
 }
