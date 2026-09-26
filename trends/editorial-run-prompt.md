@@ -2,6 +2,8 @@
 
 Este archivo es la ÚNICA fuente de verdad para la elaboración editorial de TTendencias. Debe ser usado tanto por el botón `Ejecutar ahora` como por las programaciones automáticas. La activación, horarios, anti-solape y telemetría pertenecen al envoltorio que invoque este archivo y no se redefinen aquí.
 
+Cuando el envoltorio haya creado un comentario `TTENDENCIAS_RUNTRACE_V1`, actualízalo durante el ciclo para reflejar las fases `investigating`, `drafting`, `image_generating`, `image_checking`, `image_checkpoint`, `persisting`, `verifying` y `closing`, con `current/total`, `trend_id`, `title` e incidencias. Actualiza siempre el mismo comentario; nunca uses esa telemetría como activador.
+
 ## Ámbito y estado
 
 Usa el conector GitHub disponible para `fabricelop/europapress-rss`. Trabaja EXCLUSIVAMENTE con TTendencias y con estado fresco de la rama `main`.
