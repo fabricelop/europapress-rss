@@ -72,6 +72,55 @@ jobs:
           echo "ERROR: no se pudo persistir el outbox transportado tras 5 intentos."
           exit 1
 
+      - name: Fallback de imagen a Telegram
+        if: success()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, urllib.request, uuid
+          prep=json.loads(pathlib.Path("ttittulares/prepared.json").read_text(encoding="utf-8"))
+          # Solo items READY cuya imagen no está disponible para la app pero sí existe
+          # como raster materializado en generated-images.
+          for item in prep.get("items",[]):
+              if not item.get("image_pending") or item.get("image_telegram_delivered"):
+                  continue
+              eid=str(item.get("event_id") or "")
+              rev=int(item.get("revision") or 1)
+              candidates=list(pathlib.Path("ttittulares/generated-images").glob(f"{eid}-r{rev}.*"))
+              if not candidates:
+                  continue
+              fp=candidates[0]
+              boundary="----ttittulares"+uuid.uuid4().hex
+              caption=("TTiTTulares · imagen fallback\n"+str(item.get("title") or eid))[:1024]
+              fields={"chat_id":os.environ["TELEGRAM_CHAT_ID"],"caption":caption}
+              body=b""
+              for k,v in fields.items():
+                  body+=(f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n").encode()
+              body+=(f"--{boundary}\r\nContent-Disposition: form-data; name=\"photo\"; filename=\"{fp.name}\"\r\nContent-Type: image/jpeg\r\n\r\n").encode()+fp.read_bytes()+f"\r\n--{boundary}--\r\n".encode()
+              req=urllib.request.Request(f"https://api.telegram.org/bot{os.environ['TELEGRAM_BOT_TOKEN']}/sendPhoto",data=body,headers={"Content-Type":f"multipart/form-data; boundary={boundary}"})
+              with urllib.request.urlopen(req,timeout=30) as r:
+                  ans=json.loads(r.read())
+                  if not ans.get("ok"): raise RuntimeError(ans)
+              item["image_telegram_delivered"]=True
+              item["image_delivery"]="telegram"
+              item["image_telegram_delivered_at"]=__import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat().replace("+00:00","Z")
+              print("IMAGE_TELEGRAM_FALLBACK",eid,fp)
+          pathlib.Path("ttittulares/prepared.json").write_text(json.dumps(prep,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          PY
+
+          if ! git diff --quiet -- ttittulares/prepared.json; then
+            git add ttittulares/prepared.json
+            git commit -m "Registrar fallback Telegram de imagen TTiTTulares"
+            for intento in 1 2 3 4 5; do
+              git pull --rebase origin main && git push origin HEAD:main && break
+              git rebase --abort 2>/dev/null || true
+              git fetch origin main
+              sleep $((intento * 2))
+            done
+          fi
+
       - name: Retirar comentario de transporte ya consumido
         if: success()
         env:
