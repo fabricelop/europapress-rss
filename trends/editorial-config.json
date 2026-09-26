@@ -28,7 +28,7 @@
       "display_in_web_control": "links",
       "store": "github_raw_url",
       "rights_status_default": "generated",
-      "queue_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
+      "queue_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; la compresión local es opcional: Actions normaliza el original antes de prepared. Reutiliza el checkpoint de imagen del mismo id/revision si existe; no regeneres por un fallo posterior. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "output_schema": {
         "image": {
           "url": "github_raw_generated_raster_url",
@@ -63,15 +63,16 @@
         "trigger": "always_for_ready",
         "svg_fallback_allowed": false,
         "rules": [
-          "La automatización entrega el raster real dentro del outbox como data URL base64.",
-          "GitHub Actions materializa el raster en trends/generated-images/<id>-r<revision>.<ext> y reemplaza image.url por la URL raw.",
+          "La automatización conserva los bytes reales del generador y entrega primero image_checkpoint por el outbox textual; reutiliza trends/image-cache/<id>-r<revision>.json en reintentos.",
+          "GitHub Actions valida y normaliza el raster original a JPEG <=350 KB, guarda generated-images y el cache por id/revision; solo ready completo pasa a prepared.",
           "Objetivo de tamaño: ~512 px lado largo, mínimo 480 px, preferentemente JPEG/WebP comprimido para velocidad y fiabilidad.",
           "Una sola escena coherente con protagonista(s), entorno y acción; no montaje de paneles ni diagrama.",
           "Gag visual ligado al detonante real que funcione sin texto.",
           "No usar SVG ni imágenes encontradas en Internet como imagen final.",
           "En temas sensibles, ilustración seria y respetuosa; nunca humor sobre víctimas o sufrimiento.",
           "Antes de ready, inspeccionar el raster y rechazar corrupción, truncado, grandes zonas negras/translúcidas o vacías."
-        ]
+        ],
+        "checkpoint_path_pattern": "trends/image-cache/<id>-r<revision>.json"
       },
       "generate_when_candidate": true,
       "source_preference": [
@@ -91,9 +92,10 @@
           "image/png",
           "image/jpeg"
         ],
-        "rule": "Vía principal de hand-off: prepared_item.image.url contiene data:image/<jpeg|webp|png>;base64,... con el raster REAL comprimido. El aplicador en GitHub Actions lo valida, lo escribe como fichero binario y sustituye la data URL por la URL raw antes de guardar prepared.",
-        "max_binary_bytes": 350000,
-        "target_long_side_px": 512
+        "rule": "Entrega textual de bytes REALES como data URL, sin transcribir base64. Compresión local opcional. Actions normaliza a JPEG <=350 KB y persiste un checkpoint reutilizable antes de validar el texto.",
+        "max_binary_bytes": 12000000,
+        "target_long_side_px": 512,
+        "max_normalized_binary_bytes": 350000
       }
     },
     "queue_consumer_only": true,
