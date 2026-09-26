@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T15:10:25.291742+00:00",
+  "checked_at": "2026-09-26T18:37:19.243384+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,7 +40,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 5,
-      "captured_age_minutes": 1.2,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -52,8 +52,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.6,
-      "run_id": 36250908330,
+      "age_minutes": 0.7,
+      "run_id": 36263150063,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -74,52 +74,34 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 9,
-      "overdue_count": 7,
-      "oldest_age_minutes": 129.1,
+      "pending_count": 4,
+      "overdue_count": 4,
+      "oldest_age_minutes": 35.7,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "68721e5cdf86",
-          "name": "#AzerbaijanGP",
+          "id": "042c08b8ba02",
+          "name": "Pablo Aguado",
           "status": "preparing",
-          "age_minutes": 129.1
+          "age_minutes": 35.7
         },
         {
-          "id": "8c5ab4afd440",
-          "name": "Safety Car",
+          "id": "4beb8cf76c9a",
+          "name": "David Gil",
           "status": "preparing",
-          "age_minutes": 129.1
+          "age_minutes": 35.7
         },
         {
-          "id": "85aab69140b5",
-          "name": "Gasly",
+          "id": "d6687e647571",
+          "name": "#TenerifeCádiz",
           "status": "preparing",
-          "age_minutes": 129.1
+          "age_minutes": 35.7
         },
         {
-          "id": "77fcb05c6134",
-          "name": "Desinflar",
+          "id": "449a7169284e",
+          "name": "Jandilla",
           "status": "preparing",
-          "age_minutes": 129.1
-        },
-        {
-          "id": "0eb183243950",
-          "name": "Verstappen",
-          "status": "preparing",
-          "age_minutes": 129.1
-        },
-        {
-          "id": "0710cf37c7ab",
-          "name": "Bottas",
-          "status": "preparing",
-          "age_minutes": 89.3
-        },
-        {
-          "id": "f03247d1c40e",
-          "name": "Russell",
-          "status": "preparing",
-          "age_minutes": 89.3
+          "age_minutes": 35.7
         }
       ],
       "repairable": false
@@ -129,21 +111,18 @@
       "status": "waiting",
       "queue_complete": false,
       "remaining_active_ids": [
-        "68721e5cdf86",
-        "8c5ab4afd440",
-        "85aab69140b5",
-        "77fcb05c6134",
-        "0eb183243950",
-        "0710cf37c7ab",
-        "f03247d1c40e"
+        "042c08b8ba02",
+        "4beb8cf76c9a",
+        "d6687e647571",
+        "449a7169284e"
       ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "cola editorial bloqueada: 7 pendiente(s) superan 30 min; más antigua 129.1 min"
+    "cola editorial bloqueada: 4 pendiente(s) superan 30 min; más antigua 35.7 min"
   ],
   "alert_sent": false,
-  "last_alert_signature": "cola editorial bloqueada: 7 pendiente(s) superan 30 min; más antigua 129.1 min"
+  "last_alert_signature": "cola editorial bloqueada: 4 pendiente(s) superan 30 min; más antigua 35.7 min"
 }
