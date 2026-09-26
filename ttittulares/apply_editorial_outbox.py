@@ -314,9 +314,10 @@ def sync_compact(q):
         eid=str(item.get("event_id") or ""); revision=int(item.get("revision") or 1)
         if eid in active_ids or (eid,revision) not in ready_rows: continue
         if (item.get("image") or {}).get("url"): continue
-        if str(item.get("image_status") or "") not in {"pending","working","none","retry",""} and not item.get("image_pending"): continue
+        if str(item.get("image_status") or "")=="none" and not item.get("image_pending"): continue
+        if str(item.get("image_status") or "") not in {"pending","working","retry",""} and not item.get("image_pending"): continue
         active.append({"event_id":eid,"revision":revision,"title":item.get("title", ""),"url":item.get("url", ""),
-            "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":True,"image_status":str(item.get("image_status") or "pending"),"prepared_item":item,
+            "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":bool(item.get("image_pending")),"image_status":str(item.get("image_status") or "pending"),"prepared_item":item,
             "image_mode":"generated_gag_or_archive_sensitive",
             "image_instruction":"Completa solo la imagen pendiente. Al iniciar un intento real marca working; al finalizar cierra obligatoriamente en ready, telegram o none. Conserva íntegramente prepared_item y su revisión; no regeneres ni cambies los textos."})
     # Dos fases: las noticias PROCESSING siempre preceden a cualquier IMAGE_RETRY.
