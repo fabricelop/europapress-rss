@@ -1,18 +1,3 @@
 {
-  "items": [
-    {
-      "at": "2026-09-26T12:34:16.143028Z",
-      "event_id": "902c11aa84e6-r1",
-      "phase": "outbox",
-      "reason": "902c11aa84e6-r1.json: ValueError: data URL raster inválida: Only base64 data is allowed",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 902c11aa84e6-r1: 902c11aa84e6-r1.json: ValueError: data URL raster inválida: Only base64 data is allowed. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-26T12:36:47.630229Z",
-      "event_id": "902c11aa84e6",
-      "phase": "imagen",
-      "reason": "Dos intentos reales de generación fallaron el aislamiento semántico: ambos devolvieron escenas judiciales ajenas al evento de los cazas españoles y el dron ruso. Se descartaron y no se persistió ningún raster incorrecto.",
-      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 902c11aa84e6: Dos intentos reales de generación fallaron el aislamiento semántico: ambos devolvieron escenas judiciales ajenas al evento de los cazas españoles y el dron ruso. Se descartaron y no se persistió ningún raster incorrecto.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    }
-  ]
+  "items": []
 }
