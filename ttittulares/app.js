@@ -112,12 +112,19 @@ function renderQuotePanel(host,x,onSelect){
   return candidates[0]?.url||'';
 }
 
+async function imageBlobToPng(blob){
+  if(blob.type==='image/png')return blob;
+  const bitmap=await createImageBitmap(blob);
+  const canvas=document.createElement('canvas');canvas.width=bitmap.width;canvas.height=bitmap.height;
+  canvas.getContext('2d').drawImage(bitmap,0,0);if(typeof bitmap.close==='function')bitmap.close();
+  return await new Promise((resolve,reject)=>canvas.toBlob(x=>x?resolve(x):reject(Error('png')),'image/png'));
+}
 async function copyImage(url,btn){
   try{
-    const r=await fetch(url,{cache:'no-store'}); if(!r.ok)throw Error('fetch');
-    const blob=await r.blob();
+    const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('fetch');
+    let blob=await r.blob();blob=await imageBlobToPng(blob);
     if(!navigator.clipboard||!window.ClipboardItem)throw Error('clipboard');
-    await navigator.clipboard.write([new ClipboardItem({[blob.type]:blob})]);
+    await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
     const old=btn.textContent;btn.textContent='✓ Imagen copiada';setTimeout(()=>btn.textContent=old,1600);
   }catch(_){alert('El navegador no permite copiar esta imagen directamente. Usa Descargar imagen.');}
 }
