@@ -110,17 +110,10 @@ async function mutateJson(path, message, mutator) {
 }
 
 async function syncEditorialQueue() {
-  const [{ doc: requests }, { doc: editorialConfig }, { doc: recent }] = await Promise.all([
+  const [{ doc: requests }, { doc: recent }] = await Promise.all([
     readJson(REQUESTS),
-    readJson(EDITORIAL_CONFIG),
     readJson(RECENT),
   ]);
-  const imagePolicy = editorialConfig?.editorial?.image_policy || {};
-  const imageMode = String(imagePolicy.mode || "generated_editorial_image");
-  const imageInstruction = String(
-    imagePolicy.queue_instruction ||
-    "Genera SIEMPRE una caricatura editorial original de alta calidad, con un gag visual directamente ligado al detonante real de la tendencia. No uses imágenes encontradas en Internet."
-  );
   const top10 = new Set((recent.items || []).slice(0,10).map(x => norm(x.name)).filter(Boolean));
   const active = (requests.requests || [])
     .filter(req => {
@@ -136,9 +129,8 @@ async function syncEditorialQueue() {
       requested_at: req.requested_at,
       revision: Number(req.revision || 0),
       rewrite_instruction: req.rewrite_instruction || req.rewrite_request || "",
-      with_image: Boolean(req.with_image),
-      image_mode: imageMode,
-      image_instruction: imageInstruction,
+      with_image: false,
+      task: "explain",
       batch_id: req.batch_id || null,
       requested_together: Array.isArray(req.requested_together) ? req.requested_together : [req.name].filter(Boolean),
       captured_with: Array.isArray(req.captured_with) ? req.captured_with : [],
@@ -406,8 +398,8 @@ async function queueNames(names) {
           requested_at: now,
           revision: Number(previous?.revision || 0) + (reexplain ? 1 : 0),
           reexplain,
-          with_image: true,
-          alternatives_target: 3,
+          with_image: false,
+          alternatives_target: 0,
           batch_id: batchId,
           requested_together: unique,
         });
@@ -442,7 +434,7 @@ async function queueUpcomingNames(names) {
   }
   const now = new Date().toISOString();
 
-  await mutateJson(REQUESTS, "Preparar tendencia anticipada desde Radar", doc => {
+  await mutateJson(REQUESTS, "Explicar tendencia anticipada desde Radar", doc => {
     doc.requests ||= [];
     for (const name of unique) {
       const signal = upcoming.get(norm(name));
@@ -464,8 +456,8 @@ async function queueUpcomingNames(names) {
         req.requested_at = now;
       }
       req.rank = Number(signal.best_observed_rank || 0);
-      req.with_image = true;
-      req.alternatives_target = 3;
+      req.with_image = false;
+      req.alternatives_target = 0;
       req.anticipated = true;
       req.anticipated_at = signal.first_detected_at || now;
       req.anticipated_best_rank = Number(signal.best_observed_rank || 0);
@@ -590,8 +582,8 @@ async function discardNames(names) {
           name,
           rank: 0,
           revision: 0,
-          with_image: true,
-          alternatives_target: 3,
+          with_image: false,
+          alternatives_target: 0,
         };
         doc.requests.push(req);
       }
@@ -622,7 +614,7 @@ async function reworkNames(names, instruction) {
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
   if (!unique.length) throw new Error("No hay tendencias seleccionadas.");
   const text = String(instruction || "").trim();
-  if (!text) throw new Error("Añade una instrucción para rehacer la redacción.");
+  if (!text) throw new Error("Añade una instrucción para rehacer la explicación.");
   const target = new Set(unique.map(norm));
   const now = new Date().toISOString();
 
@@ -636,8 +628,8 @@ async function reworkNames(names, instruction) {
           name,
           rank: 0,
           revision: 0,
-          with_image: true,
-          alternatives_target: 3,
+          with_image: false,
+          alternatives_target: 0,
         };
         doc.requests.push(req);
       }
@@ -646,10 +638,10 @@ async function reworkNames(names, instruction) {
       req.revision = Number(req.revision || 0) + 1;
       req.reexplain = true;
       req.rewrite_instruction = text;
-      req.with_image = true;
+      req.with_image = false;
       delete req.problem_reason;
       delete req.problematic_at;
-      req.alternatives_target = 3;
+      req.alternatives_target = 0;
       delete req.telegram_message_id;
       delete req.explained_at;
     }
@@ -685,8 +677,8 @@ async function retryNames(names) {
           id: crypto.createHash("sha256").update(name).digest("hex").slice(0, 12),
           name,
           revision: 0,
-          with_image: true,
-          alternatives_target: 3,
+          with_image: false,
+          alternatives_target: 0,
         };
         doc.requests.push(req);
       }
@@ -695,8 +687,8 @@ async function retryNames(names) {
       req.requested_at = now;
       req.revision = Number(req.revision || 0) + 1;
       req.reexplain = true;
-      req.with_image = true;
-      req.alternatives_target = 3;
+      req.with_image = false;
+      req.alternatives_target = 0;
       delete req.dismissed_at;
       delete req.dismissed_source;
       delete req.problem_reason;
