@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26T05:47:15.727008+00:00",
+  "checked_at": "2026-09-26T06:48:18.896672+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -52,8 +52,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.5,
-      "run_id": 36221805186,
+      "age_minutes": 0.6,
+      "run_id": 36224818010,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -73,105 +73,26 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 17,
-      "overdue_count": 17,
-      "oldest_age_minutes": 486.2,
+      "ok": true,
+      "pending_count": 1,
+      "overdue_count": 0,
+      "oldest_age_minutes": 7.4,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "9a39e6471274",
-          "name": "Alejandra Neira",
-          "status": "preparing",
-          "age_minutes": 486.2
-        },
-        {
-          "id": "2d09561e7e2f",
-          "name": "#CuelgamurosTVE",
-          "status": "preparing",
-          "age_minutes": 456.3
-        },
-        {
-          "id": "ef2f71c7d3df",
-          "name": "Ureña",
-          "status": "preparing",
-          "age_minutes": 456.3
-        },
-        {
-          "id": "1a5eed26f2e0",
-          "name": "#LaVozAudiciones",
-          "status": "preparing",
-          "age_minutes": 456.3
-        },
-        {
-          "id": "39f9d712163b",
-          "name": "Belén Esteban",
-          "status": "preparing",
-          "age_minutes": 456.3
-        },
-        {
-          "id": "a5d81e5493c0",
-          "name": "#firstdates25s",
-          "status": "preparing",
-          "age_minutes": 456.3
-        },
-        {
-          "id": "0829e969417f",
-          "name": "#LaBolaNegra",
-          "status": "preparing",
-          "age_minutes": 456.3
-        },
-        {
-          "id": "1ee2d3a86e4e",
-          "name": "Zidane",
-          "status": "preparing",
-          "age_minutes": 456.3
-        },
-        {
-          "id": "456ebcfdd8f1",
-          "name": "Belén",
-          "status": "preparing",
-          "age_minutes": 426.2
-        },
-        {
-          "id": "253387e8620e",
-          "name": "Andrea",
-          "status": "preparing",
-          "age_minutes": 396.2
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "waiting",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "9a39e6471274",
-        "2d09561e7e2f",
-        "ef2f71c7d3df",
-        "1a5eed26f2e0",
-        "39f9d712163b",
-        "a5d81e5493c0",
-        "0829e969417f",
-        "1ee2d3a86e4e",
-        "456ebcfdd8f1",
-        "253387e8620e",
-        "13f0c35b4500",
-        "279a52cb2e84",
-        "0ce4b63e3bfc",
-        "e6ee5d34c014",
-        "172e0445fcbe",
-        "212eebab10fc",
-        "93d2c58a061e"
-      ],
-      "contradictory_success": false
+      "ok": false,
+      "status": "success",
+      "queue_complete": true,
+      "remaining_active_ids": [],
+      "contradictory_success": true
     }
   },
   "repairs_started": [],
   "blocking": [
-    "cola editorial bloqueada: 17 pendiente(s) superan 30 min; más antigua 486.2 min"
+    "runtime editorial inconsistente: success con 1 solicitud(es) preparing/update"
   ],
   "alert_sent": false,
-  "last_alert_signature": "cola editorial bloqueada: 17 pendiente(s) superan 30 min; más antigua 486.2 min"
+  "last_alert_signature": "runtime editorial inconsistente: success con 1 solicitud(es) preparing/update"
 }
