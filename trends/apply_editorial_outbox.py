@@ -81,7 +81,7 @@ def _validate_raster_integrity(data: bytes, label: str):
         raise ValueError(f"{label}: raster corrupto o truncado: {exc}")
 
 
-def validate_generated_image(item):
+def validate_generated_image(item, expected_id=None, expected_revision=None):
     import base64
     image = item.get("image") or {}
     if not image.get("generated"):
@@ -102,9 +102,23 @@ def validate_generated_image(item):
         "no_ui_or_scoreboard_layout",
         "low_text",
         "depth_lighting_texture",
+        "correct_event_subject",
+        "single_current_event_only",
+        "no_cross_item_context",
+        "no_multipanel_or_collage",
     ]
     if style != "editorial-scene-v2-cleveland" or not all(check.get(k) is True for k in required_checks):
-        raise ValueError("imagen generada sin control visual editorial-scene-v2-cleveland completo")
+        raise ValueError("imagen generada sin control visual/editorial/aislamiento completo")
+
+    guard = image.get("context_guard") or {}
+    if int(guard.get("version") or 0) != 2:
+        raise ValueError("imagen generada sin context_guard v2")
+    if str(guard.get("scope") or "") != "current_item_only":
+        raise ValueError("imagen generada sin scope current_item_only")
+    if expected_id is not None and str(guard.get("trend_id") or "") != str(expected_id):
+        raise ValueError("context_guard pertenece a otra tendencia")
+    if expected_revision is not None and int(guard.get("revision") if guard.get("revision") is not None else -1) != int(expected_revision):
+        raise ValueError("context_guard pertenece a otra revisión")
     prefix = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/"
     if url.startswith("data:image/"):
         try:
@@ -222,9 +236,9 @@ def checkpoint_image(payload, req_id, revision):
         raise ValueError("sin imagen ni checkpoint reutilizable para id/revision")
     holder = {"image": dict(image)}
     # Validate metadata as well as pixels before writing a durable cache.
-    validate_generated_image(holder)
+    validate_generated_image(holder, req_id, revision)
     materialize_inline_generated_image(holder, req_id, revision)
-    validate_generated_image(holder)
+    validate_generated_image(holder, req_id, revision)
     image = holder["image"]
     expected = f"{req_id}-r{revision}"
     if Path(image["url"]).stem != expected:
@@ -257,7 +271,7 @@ def validate_ready(payload):
         if not str(item.get("image_failure_reason") or "").strip():
             raise ValueError("image_pending sin image_failure_reason")
     else:
-        validate_generated_image(item)
+        validate_generated_image(item, item.get("id"), item.get("revision"))
     return item
 
 def image_queue_policy():
