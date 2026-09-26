@@ -36,8 +36,26 @@ jobs:
           # Cierre genérico: si los 4 mensajes de un grupo constan como enviados,
           # cualquier PROCESSING correspondiente pasa a READY.
           sent_path=Path('telegram/emergency-sent.json')
-          sent=json.loads(sent_path.read_text(encoding='utf-8')) if sent_path.exists() else {'messages':[]}
-          sent_ids={str(m.get('id')) for m in sent.get('messages',[])}
+          sent={'messages':[]}
+          if sent_path.exists():
+              raw=sent_path.read_text(encoding='utf-8')
+              try:
+                  sent=json.loads(raw)
+              except json.JSONDecodeError:
+                  # Compatibilidad con históricos que terminaron con un "\\n"
+                  # literal o con varios documentos JSON concatenados.
+                  raw=raw.replace('}\\n','}').strip()
+                  dec=json.JSONDecoder(); pos=0; docs=[]
+                  while pos < len(raw):
+                      while pos < len(raw) and raw[pos].isspace(): pos += 1
+                      if pos >= len(raw): break
+                      obj,end=dec.raw_decode(raw,pos); docs.append(obj); pos=end
+                  merged=[]
+                  for obj in docs:
+                      if isinstance(obj,dict):
+                          merged.extend(obj.get('messages',[]) or [])
+                  sent={'messages':merged}
+          sent_ids={str(m.get('id')) for m in sent.get('messages',[]) if isinstance(m,dict)}
           for x in d.get('items',[]):
               if x.get('status')!='PROCESSING':
                   continue
