@@ -25,7 +25,7 @@ status: RUNNING
 started_at: <ISO-8601>
 ```
 
-No generes otro `RUN TTITTULARES`. No modifiques el PR salvo comentarios `RUNSTATUS`. No modifiques, pauses, desactives, sustituyas ni recrees ninguna automatización.
+No generes otro `RUN TTITTULARES`. No modifiques el PR salvo comentarios `RUNSTATUS` y el trigger técnico `ttittulares/image-worker-trigger.json` definido por el flujo editorial común. No modifiques, pauses, desactives, sustituyas ni recrees ninguna automatización, EXCEPTO la actualización temporal y restauración del prompt de `6ab6332eb6c0819182781275a525c989` cuando `editorial-run-prompt.md` despache un worker aislado de imagen.
 
 ## Smoke
 
