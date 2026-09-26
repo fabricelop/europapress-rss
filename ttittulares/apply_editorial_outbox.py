@@ -225,6 +225,18 @@ def sync_compact(q):
             "with_image":True,"image_mode":"generated_gag_or_archive_sensitive",
             "image_instruction":"Genera por defecto una imagen editorial ORIGINAL con gag específico y línea editorial-scene-v2-cleveland. Prioriza velocidad: objetivo ~768 px lado largo, detalle medio y JPEG sRGB calidad ~82. Valida el raster completo antes y después de GitHub. Si tras dos intentos la imagen falla, la noticia debe poder pasar READY con image_pending; nunca sustituyas generated_gag por archivo salvo archive_sensitive real.",
         })
+    # Retry missing artwork without removing already prepared text from the app.
+    prepared=load(PREP,{"items":[]})
+    active_ids={str(x.get("event_id") or "") for x in active}
+    ready_rows={(str(x.get("event_id") or ""),int(x.get("revision") or 1)) for x in q.get("items",[]) if x.get("status")=="READY"}
+    for item in prepared.get("items",[]):
+        eid=str(item.get("event_id") or ""); revision=int(item.get("revision") or 1)
+        if eid in active_ids or (eid,revision) not in ready_rows: continue
+        if not item.get("image_pending") or (item.get("image") or {}).get("url"): continue
+        active.append({"event_id":eid,"revision":revision,"title":item.get("title", ""),"url":item.get("url", ""),
+            "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":True,"prepared_item":item,
+            "image_mode":"generated_gag_or_archive_sensitive",
+            "image_instruction":"Completa solo la imagen pendiente. Conserva íntegramente prepared_item y su revisión, añade image con raster válido y envía status ready por el outbox habitual. No regeneres ni cambies los textos."})
     active.sort(key=lambda x:str(x.get("selected_at") or ""))
     save(TT/"editorial-queue.json",{
         "project":"TTiTTulares","updated_at":datetime.now(timezone.utc).isoformat().replace("+00:00","Z"),
@@ -251,9 +263,18 @@ def main():
             row=next((x for x in q.get("items",[]) if str(x.get("event_id") or "")==eid and int(x.get("revision") or 1)==rev),None)
             if row is None:
                 path.unlink(); continue
-            if str(row.get("status") or "") not in {"PROCESSING","PROBLEMATIC"}:
+            previous=next((x for x in p.get("items",[]) if str(x.get("event_id") or "")==eid and int(x.get("revision") or 1)==rev),None)
+            image_retry=row.get("status")=="READY" and previous and previous.get("image_pending")
+            if str(row.get("status") or "") not in {"PROCESSING","PROBLEMATIC"} and not image_retry:
                 path.unlink(); continue
             st=str(payload.get("status") or "")
+            if image_retry:
+                if st!="ready": raise ValueError("image retry no puede cambiar el estado READY")
+                incoming=payload.get("prepared_item") or {}
+                if not (incoming.get("image") or {}).get("url"): raise ValueError("image retry sin imagen; conservar pendiente")
+                payload["prepared_item"]={**previous,"image":incoming["image"]}
+                payload["prepared_item"].pop("image_pending",None)
+                payload["prepared_item"].pop("image_failure_reason",None)
             if st=="ready":
                 raw_item=payload.get("prepared_item") or {}
                 materialize_inline_generated_image(raw_item,eid,rev)
@@ -331,4 +352,5 @@ def main():
     return 1 if errors else 0
 if __name__=="__main__":
     raise SystemExit(main())
+
 
