@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: ttittulares-editorial-outbox
+  group: ttittulares-repo-write
   cancel-in-progress: false
 
 jobs:
@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Preparar validador de imágenes
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow
       - name: Aplicar resultados editoriales
         run: |
           python3 ttittulares/apply_editorial_outbox.py
@@ -33,6 +35,7 @@ jobs:
           git config user.name "ttittulares-editorial-bot"
           git config user.email "actions@users.noreply.github.com"
           git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json
+          git add -A -- ttittulares/generated-images
           git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "Sin cambios editoriales."
@@ -49,6 +52,7 @@ jobs:
             git reset --hard origin/main
             python3 ttittulares/apply_editorial_outbox.py
             git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json
+            git add -A -- ttittulares/generated-images
             git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
             git diff --cached --quiet && exit 0
             git commit -m "Aplicar editorial TTiTTulares"
