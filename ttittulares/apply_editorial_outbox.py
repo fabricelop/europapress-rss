@@ -13,6 +13,11 @@ QUEUE=TG/"editorial-processing.json"
 PREP=TT/"prepared.json"
 STATUS=TT/"status.json"
 EVENTS=TG/"events.json"
+ERRORS=TT/"execution-errors.json"
+
+def record_error(errors, event_id, phase, reason, now):
+    errors.append({"at":now,"event_id":event_id,"phase":phase,"reason":str(reason)[:1000],
+                   "remediation_prompt":f"Revisa TTiTTulares, fase {phase}, evento {event_id}: {str(reason)[:600]}. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."})
 
 def load(p,d):
     try:return json.loads(p.read_text(encoding="utf-8"))
@@ -270,22 +275,35 @@ def main():
             if row is None:
                 path.unlink(); continue
             previous=next((x for x in p.get("items",[]) if str(x.get("event_id") or "")==eid and int(x.get("revision") or 1)==rev),None)
-            image_retry=row.get("status")=="READY" and previous and previous.get("image_pending")
+            image_retry=row.get("status")=="READY" and previous is not None
             if str(row.get("status") or "") not in {"PROCESSING","PROBLEMATIC"} and not image_retry:
                 path.unlink(); continue
             st=str(payload.get("status") or "")
             if image_retry:
                 if st!="ready": raise ValueError("image retry no puede cambiar el estado READY")
                 incoming=payload.get("prepared_item") or {}
-                if not (incoming.get("image") or {}).get("url"): raise ValueError("image retry sin imagen; conservar pendiente")
-                payload["prepared_item"]={**previous,"image":incoming["image"],"image_status":"ready","image_delivery":"app","image_app_available":True,"image_pending":False}
-                payload["prepared_item"].pop("image_pending",None)
-                payload["prepared_item"].pop("image_failure_reason",None)
+                state=str(incoming.get("image_status") or "")
+                if state not in {"working","ready","telegram","none"}: raise ValueError("estado de imagen inválido")
+                patch_keys={"image","image_status","image_delivery","image_app_available","image_pending","image_failure_reason","image_generation_attempts","image_persistence_attempts","image_telegram_delivered","image_telegram_delivered_at"}
+                item={**previous,**{k:v for k,v in incoming.items() if k in patch_keys}}
+                item["image_pending"]=state=="working"
+                item["image_delivery"]={"working":"pending","ready":"app","telegram":"telegram","none":"none"}[state]
+                item["image_app_available"]=state=="ready"
+                if state=="ready" and not (item.get("image") or {}).get("url"): raise ValueError("imagen lista sin URL")
+                if state=="telegram" and not item.get("image_telegram_delivered"): raise ValueError("Telegram no confirmado")
+                if state=="none" and not item.get("image_failure_reason"): raise ValueError("sin imagen requiere razón")
+                if state in {"telegram","none"}:
+                    item.pop("image",None) # Nunca mostrar una URL no accesible como imagen lista.
+                if state=="none":
+                    ledger=load(ERRORS,{"items":[]})
+                    record_error(ledger.setdefault("items",[]),eid,"imagen",item["image_failure_reason"],now)
+                    ledger["items"]=ledger["items"][-200:];save(ERRORS,ledger)
+                payload["prepared_item"]=item
             if st=="ready":
                 raw_item=payload.get("prepared_item") or {}
                 materialize_inline_generated_image(raw_item,eid,rev)
                 item=validate_ready(payload)
-                if bool(row.get("with_image", True)):
+                if bool(row.get("with_image", True)) and not image_retry:
                     image=item.get("image") or {}
                     strategy=str(item.get("image_strategy") or "").strip()
                     if strategy=="generated_gag":
@@ -328,6 +346,8 @@ def main():
                             _recover_image(item,row,events)
                 p["items"]=[x for x in p.get("items",[]) if str(x.get("event_id") or "")!=eid]
                 p["items"].append(item);p["updated_at"]=item.get("prepared_at") or now
+                if image_retry:
+                    processed.append(eid);path.unlink();continue
                 previous_attempts=int(row.get("problematic_attempts") or (1 if str(row.get("status") or "")=="PROBLEMATIC" else 0))
                 if previous_attempts:
                     item.setdefault("problematic_attempts_before_ready",previous_attempts)
@@ -343,6 +363,9 @@ def main():
         except Exception as exc:
             errors.append(f"{path.name}: {type(exc).__name__}: {exc}")
             print("ERROR",errors[-1])
+            ledger=load(ERRORS,{"items":[]})
+            record_error(ledger.setdefault("items",[]),path.stem,"outbox",errors[-1],now)
+            ledger["items"]=ledger["items"][-200:];save(ERRORS,ledger)
     _enrich_prepared_images(p,q,events)
     q["updated_at"]=now
     save(QUEUE,q);save(PREP,p);sync_compact(q)
@@ -368,8 +391,7 @@ def main():
     st["ready_count"]=len(p.get("items",[]))
     save(STATUS,st)
     print(json.dumps({"processed":processed,"errors":errors},ensure_ascii=False))
-    return 1 if errors else 0
+    # Un outbox defectuoso queda para reparación; los demás ya se aplicaron.
+    return 0
 if __name__=="__main__":
     raise SystemExit(main())
-
-
