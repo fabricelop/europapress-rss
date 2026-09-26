@@ -26,7 +26,7 @@ Usa `command_id` como `run_id`, `source:"manual"` y localiza el comentario cread
 
 Campos mínimos: `version:1,run_id,command_id,source,status,phase,current,total,trend_id,title,requested_at,started_at,updated_at,finished_at,incident_count,incidents,summary,message`.
 
-Al arrancar: `status:"RUNNING",phase:"preparing"`. Antes de investigar cada tendencia: `phase:"investigating"`; antes de redactar: `drafting`; antes de imagegen: `image_generating`; al revisar raster: `image_checking`; al guardar checkpoint/raster: `image_checkpoint`; al persistir outbox ready: `persisting`; al comprobar aplicación: `verifying`; al terminar: `closing`. Usa `current` 1..N y `total` N con `trend_id` y `title` actuales.
+Al arrancar: `status:"RUNNING",phase:"preparing"`. Antes de investigar cada tendencia: `phase:"investigating"`; antes de redactar: `drafting`; antes de imagegen: `image_generating`; al revisar raster: `image_checking`; al persistir el único outbox ready con imagen: `persisting`; al comprobar aplicación: `verifying`; al terminar: `closing`. Usa `current` 1..N y `total` N con `trend_id` y `title` actuales.
 
 Cada fallo no bloqueante incrementa `incident_count` y añade a `incidents` un objeto breve `{at,phase,trend_id,title,reason}` sin secretos. Mantén como máximo las 8 incidencias más recientes. Un fallo individual no cambia RUNNING si se puede continuar.
 
