@@ -34,16 +34,15 @@ async function gh(url,options={}){
   }})
 }
 async function comments(){
-  const base=`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100`;
-  const first=await gh(base);
-  if(!first.ok)throw new Error(`GitHub comments: ${first.status} ${await first.text()}`);
-  let items=await first.json();
-  const link=first.headers.get("link")||"";
-  const last=link.match(/<([^>]+)>;\s*rel="last"/);
-  if(last){
-    const r=await gh(last[1]);
+  const since=new Date(Date.now()-24*60*60*1000).toISOString();
+  let url=`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100&since=${encodeURIComponent(since)}`;
+  const items=[];
+  for(let page=0;page<10&&url;page++){
+    const r=await gh(url);
     if(!r.ok)throw new Error(`GitHub comments: ${r.status} ${await r.text()}`);
-    items=await r.json()
+    items.push(...await r.json());
+    const next=(r.headers.get("link")||"").match(/<([^>]+)>;\s*rel="next"/);
+    url=next?next[1]:null
   }
   return items
 }
@@ -64,6 +63,20 @@ async function readTrigger(){
 function field(body,name){
   const m=String(body||"").match(new RegExp("^"+name+":\\s*(.+)$","mi"));
   return m?m[1].trim():null
+}
+function stamp(v){const n=Date.parse(v||"");return Number.isFinite(n)?n:0}
+function traceOf(comment){
+  const body=String(comment?.body||"");
+  if(!body.startsWith(TRACE_PREFIX))return null;
+  try{return {...JSON.parse(body.slice(TRACE_PREFIX.length).trim()),comment_id:comment.id,comment_updated_at:comment.updated_at||comment.created_at}}catch(_){return null}
+}
+function activeTrace(items){
+  const fresh=items.map(traceOf).filter(Boolean).filter(t=>["REQUESTED","RUNNING"].includes(String(t.status||""))).filter(t=>{
+    const age=Date.now()-stamp(t.comment_updated_at||t.updated_at||t.started_at||t.requested_at);
+    return Number.isFinite(age)&&age>=0&&age<20*60*1000
+  });
+  fresh.sort((a,b)=>stamp(a.comment_updated_at||a.updated_at)-stamp(b.comment_updated_at||b.updated_at));
+  return fresh.at(-1)||null
 }
 async function writeTrigger(doc,sha){
   const body={
@@ -98,6 +111,7 @@ export default async function handler(req,res){
   try{
     if(!(await triggerReady()))return res.status(503).json({ok:false,error:"work_trigger_not_ready"});
     const [{doc:current,sha},items]=await Promise.all([readTrigger(),comments()]);
+    if(activeTrace(items))return res.status(409).json({ok:false,error:"run_in_progress"});
     const currentId=String(current.command_id||"").trim();
     const currentRequested=String(current.requested_at||"").trim();
     if(currentId&&currentRequested){
@@ -106,7 +120,7 @@ export default async function handler(req,res){
       const last=marks.at(-1);
       const st=last?field(last.body,"status"):"REQUESTED";
       if(Number.isFinite(age)&&age<45000)return res.status(429).json({ok:false,error:"recent_request",retry_after_seconds:Math.ceil((45000-age)/1000)});
-      if(Number.isFinite(age)&&age<30*60*1000&&!["DONE","ERROR"].includes(st||"REQUESTED"))return res.status(409).json({ok:false,error:"run_in_progress"})
+      if(Number.isFinite(age)&&age<20*60*1000&&!["DONE","ERROR"].includes(st||"REQUESTED"))return res.status(409).json({ok:false,error:"run_in_progress"})
     }
 
     const requested_at=new Date().toISOString();
