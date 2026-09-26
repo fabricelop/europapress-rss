@@ -250,7 +250,14 @@ def validate_ready(payload):
     texts = [item["primary"]["text"]] + [a["tweet_text"] for a in alts]
     if any(len(t) > 280 for t in texts):
         raise ValueError("tuit de más de 280 caracteres")
-    validate_generated_image(item)
+    image_pending = bool(item.get("image_pending"))
+    if image_pending:
+        if item.get("image"):
+            raise ValueError("image_pending no puede incluir una imagen parcial")
+        if not str(item.get("image_failure_reason") or "").strip():
+            raise ValueError("image_pending sin image_failure_reason")
+    else:
+        validate_generated_image(item)
     return item
 
 def image_queue_policy():
@@ -362,14 +369,16 @@ def main():
 
             result_status = str(payload.get("status") or "")
             if result_status == "ready":
-                checkpoint_image(payload, req_id, revision)
-                # Keep the materialized URL even if text validation fails.
-                save(path, payload)
+                pending_image = bool((payload.get("prepared_item") or {}).get("image_pending"))
+                if not pending_image:
+                    checkpoint_image(payload, req_id, revision)
+                    # Keep the materialized URL even if text validation fails.
+                    save(path, payload)
                 item = validate_ready(payload)
                 item["id"] = req_id
                 item["revision"] = revision
                 item.setdefault("trend_name", req.get("name"))
-                if bool(req.get("with_image")):
+                if bool(req.get("with_image")) and not bool(item.get("image_pending")):
                     image = item.get("image") or {}
                     if not image.get("generated") or not str(image.get("url") or "").strip():
                         raise ValueError("item ready sin imagen raster generada obligatoria")
