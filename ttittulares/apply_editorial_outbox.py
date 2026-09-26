@@ -236,9 +236,10 @@ def sync_compact(q):
     for item in prepared.get("items",[]):
         eid=str(item.get("event_id") or ""); revision=int(item.get("revision") or 1)
         if eid in active_ids or (eid,revision) not in ready_rows: continue
-        if not item.get("image_pending") or (item.get("image") or {}).get("url"): continue
+        if (item.get("image") or {}).get("url"): continue
+        if str(item.get("image_status") or "") not in {"pending","working","none","retry",""} and not item.get("image_pending"): continue
         active.append({"event_id":eid,"revision":revision,"title":item.get("title", ""),"url":item.get("url", ""),
-            "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":True,"image_status":item.get("image_status") or "pending","prepared_item":item,
+            "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":True,"image_status":"working","prepared_item":item,
             "image_mode":"generated_gag_or_archive_sensitive",
             "image_instruction":"Completa solo la imagen pendiente. Conserva íntegramente prepared_item y su revisión, añade image con raster válido y envía status ready por el outbox habitual. No regeneres ni cambies los textos."})
     # Dos fases: las noticias PROCESSING siempre preceden a cualquier IMAGE_RETRY.
@@ -277,7 +278,7 @@ def main():
                 if st!="ready": raise ValueError("image retry no puede cambiar el estado READY")
                 incoming=payload.get("prepared_item") or {}
                 if not (incoming.get("image") or {}).get("url"): raise ValueError("image retry sin imagen; conservar pendiente")
-                payload["prepared_item"]={**previous,"image":incoming["image"],"image_status":"ready","image_delivery":"app","image_app_available":True}
+                payload["prepared_item"]={**previous,"image":incoming["image"],"image_status":"ready","image_delivery":"app","image_app_available":True,"image_pending":False}
                 payload["prepared_item"].pop("image_pending",None)
                 payload["prepared_item"].pop("image_failure_reason",None)
             if st=="ready":
@@ -302,7 +303,7 @@ def main():
                             if not pending:
                                 raise ValueError("generated_gag sin raster debe quedar image_pending")
                             item["image_persistence_attempts"]=persistence_attempts
-                            item["image_status"]="retry" if (generation_attempts or reason) else "pending"
+                            item["image_status"]="working"
                             item["image_delivery"]="pending"
                             item["image_search_status"]="pending_renderer"
                         else:
