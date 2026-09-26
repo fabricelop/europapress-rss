@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T08:11:01+02:00",
+  "captured_at": "2026-09-26T08:20:56+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -107,7 +107,7 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 17.2,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T08:01:12+02:00",
       "news_source_count": 13,
       "news_event_id": "e9ec3aee6ca0",
@@ -136,26 +136,6 @@
       "news_first_seen": null
     },
     {
-      "name": "Olga",
-      "social_source_count": 5,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.4,
-      "movement": "up",
-      "first_detected_at": "2026-09-26T04:20:48+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "Manchester City",
       "social_source_count": 4,
       "social_sources": [
@@ -173,6 +153,26 @@
       "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-09-25T15:02:55.152129Z"
+    },
+    {
+      "name": "Olga",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.4,
+      "movement": "flat",
+      "first_detected_at": "2026-09-26T04:20:48+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Borja",
@@ -245,7 +245,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T08:11:01+02:00"
+      "fetched_at": "2026-09-26T08:20:56+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -270,7 +270,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T08:11:02+02:00"
+      "fetched_at": "2026-09-26T08:20:56+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -297,10 +297,10 @@
         "ángela portero"
       ],
       "error": null,
-      "update_hint": "Updated 20 minutes ago",
-      "age_minutes": 20.0,
+      "update_hint": "Updated 29 minutes ago",
+      "age_minutes": 29.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T08:11:02+02:00"
+      "fetched_at": "2026-09-26T08:20:57+02:00"
     },
     "superx": {
       "ok": true,
@@ -330,16 +330,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T08:11:03+02:00"
+      "fetched_at": "2026-09-26T08:20:57+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790403063",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790403658",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T08:11:03+02:00"
+      "fetched_at": "2026-09-26T08:20:58+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -367,9 +367,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 05:00 UTC",
-      "age_minutes": 71.1,
+      "age_minutes": 81.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-26T08:11:03+02:00"
+      "fetched_at": "2026-09-26T08:20:58+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -397,18 +397,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 06:00 AM # Trend Type Actions 1 #DeViernes Hashtag 2 Mari",
-      "age_minutes": 131.1,
+      "age_minutes": 141.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T08:11:04+02:00"
+      "fetched_at": "2026-09-26T08:20:58+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790403065",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790403658",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T08:11:05+02:00"
+      "fetched_at": "2026-09-26T08:20:58+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -417,7 +417,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T08:11:05+02:00"
+      "fetched_at": "2026-09-26T08:20:59+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -447,16 +447,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T08:11:05+02:00"
+      "fetched_at": "2026-09-26T08:20:59+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790403067",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790403661",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T08:11:07+02:00"
+      "fetched_at": "2026-09-26T08:21:01+02:00"
     }
   }
 }
