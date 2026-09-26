@@ -277,85 +277,100 @@ async function testPush() {
   return { ok: delivered > 0, delivered, failed, removed_subscriptions: dead.size, errors: errors.slice(0,5) };
 }
 async function scanPush() {
-  const [{ doc: prepared }, { doc: requests }, { doc: state }] = await Promise.all([
-    readJson(PREPARED),
-    readJson(REQUESTS),
+  const [{ doc: recent }, { doc: state }] = await Promise.all([
+    readJson(RECENT),
     readJson(PUSH_STATE),
   ]);
-  const byId = new Map((requests.requests || []).filter(x => x?.id).map(x => [String(x.id), x]));
-  const byName = new Map();
-  for (const req of requests.requests || []) byName.set(norm(req?.name), req);
-  const notified = state.notified || {};
-  const candidates = (prepared.items || []).filter(item => {
-    const req = byId.get(String(item?.id || "")) || byName.get(norm(item?.trend_name));
-    const status = String(req?.status || "");
-    const closed = ["explained", "dismissed", "problematic"].includes(status);
-    return !closed && !notified[preparedKey(item)];
-  });
-  if (!candidates.length) {
-    return { ok: true, candidates: 0, delivered: 0 };
+  const capture = String(recent.captured_at || "");
+  const rankMap = new Map((recent.items || []).slice(0, 10).map(x => [norm(x.name), Number(x.rank || 0)]));
+  const pendingMap = new Map((state.pending_top10 || []).map(x => [norm(x.name), x]));
+
+  if (capture && capture !== String(state.last_scanned_capture || "")) {
+    for (const name of recent.new_entries || []) {
+      const clean = String(name || "").trim();
+      if (!clean) continue;
+      pendingMap.set(norm(clean), { name: clean, rank: rankMap.get(norm(clean)) || null, entered_at: capture });
+    }
   }
 
+  const pending = [...pendingMap.values()].sort((x, y) =>
+    (Number(x.rank || 99) - Number(y.rank || 99)) || String(x.name).localeCompare(String(y.name), "es")
+  );
   const rows = state.subscriptions || [];
-  if (!rows.length) {
-    return { ok: true, candidates: candidates.length, delivered: 0, no_subscribers: true };
+  const lastPush = Date.parse(String(state.last_top10_push_at || "")) || 0;
+  const cooldown = 30 * 60 * 1000;
+  const remaining = Math.max(0, cooldown - (Date.now() - lastPush));
+
+  if (!pending.length || !rows.length || remaining > 0) {
+    const now = new Date().toISOString();
+    await mutateJson(PUSH_STATE, "Agrupar avisos Top 10 TTendencias", doc => {
+      doc.project ||= "TTendencias";
+      doc.pending_top10 = pending;
+      doc.last_scanned_capture = capture || doc.last_scanned_capture || null;
+      doc.top10_snapshot = (recent.items || []).slice(0, 10).map(x => ({ name: String(x.name || ""), rank: Number(x.rank || 0) }));
+      doc.last_scan_at = now;
+      doc.last_result = {
+        candidates: pending.length,
+        delivered: 0,
+        deferred: remaining > 0,
+        cooldown_remaining_seconds: Math.ceil(remaining / 1000),
+        no_subscribers: !rows.length,
+      };
+      doc.updated_at = now;
+      return doc;
+    });
+    return { ok: true, candidates: pending.length, delivered: 0, deferred: remaining > 0, no_subscribers: !rows.length };
   }
 
   const keys = vapidKeys();
   webpush.setVapidDetails("https://github.com/fabricelop/europapress-rss", keys.publicKey, keys.privateKey);
-  const names = candidates.map(x => String(x.trend_name || "").trim()).filter(Boolean);
+  const shown = pending.slice(0, 5);
+  const body = shown.map(x => (x.rank ? "#" + x.rank + " " : "") + x.name).join(" · ")
+    + (pending.length > shown.length ? " · +" + (pending.length - shown.length) : "");
   const payload = JSON.stringify({
-    title: names.length === 1 ? "TTendencias · tuit listo" : `TTendencias · ${names.length} tuits listos`,
-    body: names.length === 1 ? `${names[0]} ya está listo para revisar.` : names.slice(0, 4).join(" · ") + (names.length > 4 ? ` · +${names.length - 4}` : ""),
-    url: "/ttendencias/preparados/",
-    count: names.length,
+    title: pending.length === 1 ? "TTendencias · nuevo Top 10" : "TTendencias · nuevos Top 10",
+    body,
+    url: "/ttendencias/",
+    count: pending.length,
+    silent: true,
   });
 
   let delivered = 0, failed = 0;
-  const dead = new Set();
-  const errors = [];
+  const dead = new Set(), errors = [];
   for (const row of rows) {
     try {
       const subscription = decryptSubscription(row);
-      await webpush.sendNotification(subscription, payload, { TTL: 3600, urgency: "high" });
+      await webpush.sendNotification(subscription, payload, { TTL: 3600, urgency: "low" });
       delivered++;
     } catch (e) {
       failed++;
       const status = Number(e?.statusCode || e?.status || 0);
       if (status === 404 || status === 410) dead.add(String(row?.id || ""));
       errors.push({ status: status || null, message: String(e?.message || e).slice(0, 180) });
-      console.error("TTendencias push:", status || "", String(e?.message || e));
     }
   }
 
   const now = new Date().toISOString();
-  await mutateJson(PUSH_STATE, "Actualizar entrega Web Push TTendencias", doc => {
+  await mutateJson(PUSH_STATE, "Actualizar avisos Top 10 TTendencias", doc => {
     doc.project ||= "TTendencias";
     doc.subscriptions = (doc.subscriptions || []).filter(x => !dead.has(String(x?.id || "")));
-    doc.notified ||= {};
-    if (delivered > 0) for (const item of candidates) doc.notified[preparedKey(item)] = now;
-    const entries = Object.entries(doc.notified).sort((a, b) => String(a[1]).localeCompare(String(b[1])));
-    doc.notified = Object.fromEntries(entries.slice(-300));
+    doc.last_scanned_capture = capture || doc.last_scanned_capture || null;
+    doc.top10_snapshot = (recent.items || []).slice(0, 10).map(x => ({ name: String(x.name || ""), rank: Number(x.rank || 0) }));
+    if (delivered > 0) {
+      doc.pending_top10 = [];
+      doc.last_top10_push_at = now;
+    } else {
+      doc.pending_top10 = pending;
+    }
     doc.last_scan_at = now;
-    doc.last_result = {
-      candidates: candidates.length,
-      delivered,
-      failed,
-      removed_subscriptions: dead.size,
-      errors: errors.slice(0, 5),
-    };
+    doc.last_result = { candidates: pending.length, delivered, failed, removed_subscriptions: dead.size, errors: errors.slice(0, 5) };
     doc.updated_at = now;
     return doc;
   });
-  return {
-    ok: delivered > 0 || failed === 0,
-    candidates: candidates.length,
-    delivered,
-    failed,
-    removed_subscriptions: dead.size,
-    errors: errors.slice(0, 5),
-  };
+
+  return { ok: delivered > 0 || failed === 0, candidates: pending.length, delivered, failed, removed_subscriptions: dead.size, errors: errors.slice(0, 5) };
 }
+
 async function queueNames(names) {
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
   if (!unique.length) throw new Error("No hay tendencias seleccionadas.");
