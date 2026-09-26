@@ -1,11 +1,14 @@
 name: Aplicar resultados editoriales TTendencias
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
     paths:
       - "trends/editorial-outbox/**"
+      - "trends/apply_editorial_outbox.py"
+      - "trends/test_editorial_images.py"
 
 permissions:
   contents: write
@@ -26,31 +29,31 @@ jobs:
       - name: Preparar validador de imágenes
         run: python3 -m pip install --disable-pip-version-check --quiet Pillow
 
+      - name: Verificar recuperación de imágenes
+        run: python3 trends/test_editorial_images.py
+
       - name: Aplicar resultados editoriales
         run: |
           set -euo pipefail
           git config user.name "ttendencias-editorial"
           git config user.email "actions@users.noreply.github.com"
-          git pull --rebase --autostash origin main
-          python3 trends/apply_editorial_outbox.py
-
-          git add -A trends
-          if git diff --cached --quiet; then
-            echo "Sin cambios que aplicar"
-            exit 0
-          fi
-
-          git commit -m "Aplicar resultados editoriales TTendencias"
-
           for attempt in 1 2 3 4; do
-            if git push origin HEAD:main; then
-              exit 0
+            git fetch origin main
+            git reset --hard origin/main
+            # Recompute against fresh state after a push conflict. Do not
+            # rebase generated JSON over a concurrent user/radar change.
+            apply_status=0
+            python3 trends/apply_editorial_outbox.py || apply_status=$?
+            git add -A trends
+            if git diff --cached --quiet; then
+              exit "$apply_status"
             fi
-            echo "Push editorial falló (intento $attempt); rebasando"
-            git pull --rebase origin main || {
-              git rebase --abort || true
-              exit 1
-            }
+            git commit -m "Aplicar resultados editoriales TTendencias"
+            if git push origin HEAD:main; then
+              # Save valid items, image checkpoints and errors before failing.
+              exit "$apply_status"
+            fi
+            echo "Push editorial falló (intento $attempt); reaplicando estado fresco"
             sleep $((attempt * 2))
           done
 
