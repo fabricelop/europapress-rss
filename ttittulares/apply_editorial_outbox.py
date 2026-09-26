@@ -238,10 +238,11 @@ def sync_compact(q):
         if eid in active_ids or (eid,revision) not in ready_rows: continue
         if not item.get("image_pending") or (item.get("image") or {}).get("url"): continue
         active.append({"event_id":eid,"revision":revision,"title":item.get("title", ""),"url":item.get("url", ""),
-            "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":True,"prepared_item":item,
+            "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":True,"image_status":item.get("image_status") or "pending","prepared_item":item,
             "image_mode":"generated_gag_or_archive_sensitive",
             "image_instruction":"Completa solo la imagen pendiente. Conserva íntegramente prepared_item y su revisión, añade image con raster válido y envía status ready por el outbox habitual. No regeneres ni cambies los textos."})
-    active.sort(key=lambda x:str(x.get("selected_at") or ""))
+    # Dos fases: las noticias PROCESSING siempre preceden a cualquier IMAGE_RETRY.
+    active.sort(key=lambda x:(1 if x.get("selection_mode")=="IMAGE_RETRY" else 0, str(x.get("selected_at") or "")))
     save(TT/"editorial-queue.json",{
         "project":"TTiTTulares","updated_at":datetime.now(timezone.utc).isoformat().replace("+00:00","Z"),
         "count":len(active),"items":active
@@ -298,13 +299,17 @@ def main():
                             if "image_attempts" in item and "image_generation_attempts" not in item:
                                 item["image_generation_attempts"]=generation_attempts
                             item.pop("image_attempts",None)
-                            if not (pending and generation_attempts>=2 and reason):
-                                raise ValueError("generated_gag sin raster generado ni dos intentos REALES de generación")
+                            if not pending:
+                                raise ValueError("generated_gag sin raster debe quedar image_pending")
                             item["image_persistence_attempts"]=persistence_attempts
+                            item["image_status"]="retry" if (generation_attempts or reason) else "pending"
                             item["image_delivery"]="pending"
                             item["image_search_status"]="pending_renderer"
                         else:
                             validate_image(item)
+                            item["image_status"]="ready"
+                            item["image_delivery"]="app"
+                            item["image_app_available"]=True
                             item["image_search_status"]="generated"
                     elif strategy=="archive_sensitive":
                         if image.get("generated"):
