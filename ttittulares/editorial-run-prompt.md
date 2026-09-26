@@ -222,21 +222,26 @@ Si no hay ninguno suficientemente bueno, usa `quote_candidates:[]`; no rebajes e
 
 Añade SIEMPRE `prepared_item.quote_search={query,url}` como fallback manual, usando una query breve y útil y una búsqueda Live de X del tipo `https://x.com/search?q=<query codificada>&src=typed_query&f=live`.
 
-## Persistencia textual del outbox · obligatoria y con fallback
+## Persistencia del outbox · transporte robusto por PR #2
 
-El JSON del outbox NO puede quedarse solo en memoria ni abandonarse porque `create_file/update_file` sean bloqueados. Para `ttittulares/editorial-outbox/<event_id>-r<revision>.json`:
+La causa de los bloqueos anteriores era depender de mutaciones directas del árbol Git desde la ejecución ChatGPT. Ese mecanismo queda RETIRADO para el outbox editorial.
 
-1. Intenta la escritura textual normal si está disponible.
-2. Si `create_file` o `update_file` falla, es rechazado o bloqueado por la capa de seguridad, NO abandones y NO dejes el item en PROCESSING por ese motivo.
-3. Serializa el JSON completo y válido en UTF-8.
-4. Usa explícitamente `create_blob` con `encoding:"utf-8"`.
-5. Relee HEAD y tree actuales de `main`.
-6. Usa `create_tree` sobre el tree fresco con una entrada `100644/blob` para la ruta exacta del outbox y el blob SHA.
-7. Crea `create_commit` con padre = HEAD fresco y avanza `main` con `update_ref(force:false)`.
-8. Si `main` avanzó, conserva el blob SHA, relee HEAD/tree y reintenta UNA vez sobre el nuevo padre.
-9. Verifica con lectura fresca que el outbox existe en `main` y que `event_id/revision/status` coinciden.
+Para CADA item, serializa el payload completo y válido como JSON UTF-8 y transpórtalo mediante un comentario del PR #2 usando el formato exacto:
 
-No informes “escritura bloqueada” ni des por terminado el item hasta haber intentado esta vía Git objects. Este fallback es el mismo mecanismo ya validado en TTendencias.
+`TTITTULARES_OUTBOX_V1`
+`<base64 del JSON UTF-8, en una sola línea>`
+
+Usa el conector GitHub `add_comment_to_issue` sobre el PR #2. Este comentario NO es telemetría RUNSTATUS y NO activa `Ejecutar ahora`, porque el disparador manual solo responde a commits que modifican `run-now-trigger.json`.
+
+El workflow `.github/workflows/ttittulares-outbox-comment-ingest.yml` recibe ese comentario, valida autor/PR/event_id/revision/status, crea el outbox DENTRO de GitHub Actions, ejecuta `ttittulares/apply_editorial_outbox.py` y persiste el estado final con `GITHUB_TOKEN contents:write`. Por tanto, la ejecución editorial NO debe usar `create_file/update_file/create_blob/create_tree/create_commit/update_ref` para persistir el outbox.
+
+Reglas obligatorias:
+1. El comentario debe contener TODO el payload del item actual y nada de otros items.
+2. Para `ready`, incluye `prepared_item` completo. Para `problematic`, incluye `problem_reason`.
+3. Si la imagen generada ya puede transportarse como data URL de tamaño razonable, puede viajar dentro de `prepared_item.image.url`; si no cabe o falla, usa `image_pending:true` y la noticia igualmente debe llegar a READY.
+4. Después de publicar el comentario, espera/relee estado desde `main`. No des por terminado el item hasta que esté READY/Listas o PROBLEMATIC según corresponda.
+5. Si el workflow de ingestión falla, inspecciona su run/log y reintenta UNA vez con el MISMO payload idempotente. No vuelvas a la antigua vía de mutación Git directa.
+6. Nunca informes “capa de seguridad del conector” como causa de bloqueo del outbox: esa dependencia queda eliminada del diseño.
 
 ## Outbox
 
