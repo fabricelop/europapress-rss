@@ -97,8 +97,24 @@ function threeSourceSpeedMinutes(event){
     .sort((x,y)=>x-y);
   return times.length>=3?Math.max(0,Math.round((times[2]-times[0])/60000)):null
 }
+async function ensurePublishable(eventId){
+  const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
+  const {doc}=await readJson(PREPARED);
+  const item=(doc.items||[]).find(x=>idOf(x.event_id)===id);
+  if(!item)throw new Error("No se encuentra la noticia lista");
+  const state=String(item.image_status||(item.image_pending?"pending":item.image?.url?"ready":"none")).toLowerCase();
+  const url=String(item.image?.url||item.image_url||"");
+  const terminal=(state==="ready"&&!!url)||state==="telegram"||state==="none";
+  if(!terminal){
+    const err=new Error(state==="working"?"La imagen se está generando. Espera a que termine antes de publicar.":state==="retry"?"La imagen está pendiente de reintento. Espera antes de publicar.":"La imagen todavía está pendiente. Espera a que termine antes de publicar.");
+    err.statusCode=409;
+    throw err;
+  }
+  return item
+}
 async function closePrepared(eventId,status){
   const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
+  if(status==="published")await ensurePublishable(id);
   const now=new Date().toISOString();
   await mutateJson(DECISIONS,`${status==="published"?"Publicar":"Desestimar"} TTiTTulares desde web`,doc=>{
     doc.project||="TTiTTulares";doc.items||=[];
@@ -402,5 +418,5 @@ export default async function handler(req,res){
     if(action==="prepare3")return res.status(200).json(await manualPrepare(body.event_id));
     if(action==="submit")return res.status(200).json(await submitManualStory(body.url,body.title,body.instruction));
     return res.status(400).json({ok:false,error:"Acción no válida"})
-  }catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
+  }catch(e){console.error(e);return res.status(Number(e?.statusCode)||500).json({ok:false,error:String(e.message||e)})}
 }
