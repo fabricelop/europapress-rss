@@ -1,63 +1,8 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-09-26T07:41:02+02:00",
+  "updated_at": "2026-09-26T07:47:13+02:00",
   "count": 19,
   "items": [
-    {
-      "id": "56266e2b41f5",
-      "name": "#XenobladeChronicles2EnGAME",
-      "rank": 4,
-      "status": "problematic",
-      "requested_at": "2026-09-25T12:11:05+02:00",
-      "revision": 0,
-      "rewrite_instruction": "",
-      "with_image": true,
-      "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
-      "batch_id": "721002bf2b8a",
-      "requested_together": [
-        "#XenobladeChronicles2EnGAME"
-      ],
-      "captured_with": [
-        "#XenobladeChronicles2EnGAME"
-      ],
-      "auto_queued": true,
-      "anticipated": false,
-      "anticipated_at": null,
-      "anticipated_best_rank": null,
-      "anticipated_social_source_count": 0,
-      "anticipated_news_source_count": 0,
-      "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
-    },
-    {
-      "id": "413c73f54712",
-      "name": "#DeViernes",
-      "rank": 1,
-      "status": "problematic",
-      "requested_at": "2026-09-25T23:41:05+02:00",
-      "revision": 0,
-      "rewrite_instruction": "",
-      "with_image": true,
-      "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
-      "batch_id": "1e46db37d60d",
-      "requested_together": [
-        "#DeViernes"
-      ],
-      "captured_with": [
-        "#DeViernes",
-        "Alejandra Neira"
-      ],
-      "auto_queued": true,
-      "anticipated": false,
-      "anticipated_at": null,
-      "anticipated_best_rank": null,
-      "anticipated_social_source_count": 0,
-      "anticipated_news_source_count": 0,
-      "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
-    },
     {
       "id": "9a39e6471274",
       "name": "Alejandra Neira",
@@ -68,7 +13,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "1e46db37d60d",
       "requested_together": [
         "Alejandra Neira"
@@ -96,7 +41,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "0df5a1fd146c",
       "requested_together": [
         "#CuelgamurosTVE"
@@ -129,7 +74,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "0df5a1fd146c",
       "requested_together": [
         "Ureña"
@@ -162,7 +107,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "0df5a1fd146c",
       "requested_together": [
         "#LaVozAudiciones"
@@ -195,7 +140,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "0df5a1fd146c",
       "requested_together": [
         "Belén Esteban"
@@ -228,7 +173,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "0df5a1fd146c",
       "requested_together": [
         "#firstdates25s"
@@ -261,7 +206,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "0df5a1fd146c",
       "requested_together": [
         "#LaBolaNegra"
@@ -294,7 +239,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "0df5a1fd146c",
       "requested_together": [
         "Zidane"
@@ -327,7 +272,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "daa99c6e9c7a",
       "requested_together": [
         "Belén"
@@ -354,7 +299,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "63f6fd800e35",
       "requested_together": [
         "Andrea"
@@ -381,7 +326,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "75a2086c8382",
       "requested_together": [
         "Ángela Portero"
@@ -409,7 +354,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "75a2086c8382",
       "requested_together": [
         "Jesulín"
@@ -437,7 +382,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "dba5f9bb6cd6",
       "requested_together": [
         "Espiau"
@@ -464,7 +409,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "bc878b756844",
       "requested_together": [
         "Trapote"
@@ -492,7 +437,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "bc878b756844",
       "requested_together": [
         "La Bola Negra"
@@ -520,7 +465,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "66719b6aa7f0",
       "requested_together": [
         "Campanario"
@@ -548,7 +493,7 @@
       "rewrite_instruction": "",
       "with_image": true,
       "image_mode": "generated_raster_caricature",
-      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "batch_id": "66719b6aa7f0",
       "requested_together": [
         "Juls"
@@ -556,6 +501,61 @@
       "captured_with": [
         "Campanario",
         "Juls"
+      ],
+      "auto_queued": true,
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "56266e2b41f5",
+      "name": "#XenobladeChronicles2EnGAME",
+      "rank": 4,
+      "status": "problematic",
+      "requested_at": "2026-09-25T12:11:05+02:00",
+      "revision": 0,
+      "rewrite_instruction": "",
+      "with_image": true,
+      "image_mode": "generated_raster_caricature",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
+      "batch_id": "721002bf2b8a",
+      "requested_together": [
+        "#XenobladeChronicles2EnGAME"
+      ],
+      "captured_with": [
+        "#XenobladeChronicles2EnGAME"
+      ],
+      "auto_queued": true,
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "413c73f54712",
+      "name": "#DeViernes",
+      "rank": 1,
+      "status": "problematic",
+      "requested_at": "2026-09-25T23:41:05+02:00",
+      "revision": 0,
+      "rewrite_instruction": "",
+      "with_image": true,
+      "image_mode": "generated_raster_caricature",
+      "image_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
+      "batch_id": "1e46db37d60d",
+      "requested_together": [
+        "#DeViernes"
+      ],
+      "captured_with": [
+        "#DeViernes",
+        "Alejandra Neira"
       ],
       "auto_queued": true,
       "anticipated": false,
