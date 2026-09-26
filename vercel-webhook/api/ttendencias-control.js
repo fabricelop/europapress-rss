@@ -213,21 +213,23 @@ function preparedKey(item) {
 async function subscribePush(subscription) {
   if (!subscription?.endpoint || !String(subscription.endpoint).startsWith("https://")) throw new Error("Suscripción Web Push no válida");
   if (!subscription?.keys?.p256dh || !subscription?.keys?.auth) throw new Error("Claves Web Push incompletas");
-  const { doc: prepared } = await readJson(PREPARED);
+  const { doc: recent } = await readJson(RECENT);
   const now = new Date().toISOString();
   const encrypted = encryptSubscription(subscription);
   await mutateJson(PUSH_STATE, "Registrar dispositivo Web Push TTendencias", doc => {
     doc.project ||= "TTendencias";
     doc.subscriptions ||= [];
-    doc.notified ||= {};
     doc.subscriptions = doc.subscriptions.filter(x => x?.id !== encrypted.id);
     doc.subscriptions.push(encrypted);
-    for (const item of prepared.items || []) doc.notified[preparedKey(item)] ||= now;
+    doc.pending_top10 = [];
+    doc.last_scanned_capture = recent.captured_at || now;
+    doc.top10_snapshot = (recent.items || []).slice(0, 10).map(x => ({ name: String(x.name || ""), rank: Number(x.rank || 0) }));
     doc.updated_at = now;
     return doc;
   });
   return { ok: true, subscribed: true };
 }
+
 async function unsubscribePush(subscription) {
   const id = subscriptionId(subscription || {});
   if (!id) throw new Error("Suscripción no válida");
@@ -250,7 +252,7 @@ async function testPush() {
   const payload = JSON.stringify({
     title: "TTendencias · prueba de avisos",
     body: "Los avisos al móvil funcionan correctamente.",
-    url: "/ttendencias/preparados/",
+    url: "/ttendencias/",
     count: 0,
   });
   let delivered = 0, failed = 0;
