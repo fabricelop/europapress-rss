@@ -9,6 +9,7 @@ const candidatesDir = path.join(baseDir, 'candidates');
 const outboxFile = path.join(baseDir, 'telegram-outbox.json');
 const stateFile = path.join(runtimeDir, 'telegram-state.json');
 const requestsFile = path.join(baseDir, 'requests.json');
+const discardedFile = path.join(baseDir, 'discarded.json');
 const assistantSentFile = path.join(runtimeDir, 'assistant-output-sent.json');
 const outputGroupsFile = path.join(runtimeDir, 'assistant-output-groups.json');
 const telegramSentFile = path.join(runtimeDir, 'telegram-sent.json');
@@ -30,6 +31,26 @@ function readJson(file, fallback) {
 }
 function writeJson(file, data) {
   fs.writeFileSync(file, JSON.stringify(data, null, 2) + '\n', 'utf8');
+}
+function recordDiscardedCandidate(id) {
+  const candidate = readJson(path.join(candidatesDir, `${id}.json`), null);
+  const doc = readJson(discardedFile, { updated_at: null, items: [] });
+  doc.items ||= [];
+  if (!doc.items.some(x => String(x && x.id || '') === String(id))) {
+    doc.items.push({
+      id: String(id),
+      discarded_at: new Date().toISOString(),
+      user: candidate && candidate.user || null,
+      text: candidate && candidate.text || null,
+      url: candidate && candidate.url || null,
+      datetime: candidate && candidate.datetime || null,
+      reason: 'telegram_delete'
+    });
+    doc.items = doc.items.slice(-1000);
+  }
+  doc.updated_at = new Date().toISOString();
+  writeJson(discardedFile, doc);
+  gitPushFiles(['selorecordamos/discarded.json'], 'SeLoRecordamos: registrar candidato descartado');
 }
 function runGit(args) {
   return cp.execFileSync('git', args, { cwd: repoDir, encoding: 'utf8', stdio: 'pipe' });
@@ -312,7 +333,7 @@ async function pollOnce(timeoutSeconds = 25) {
       const parts = String(cq.data || '').split(':');
       if (parts[0] !== 'sr' || parts.length < 3) continue;
       const action = parts[1], id = parts[2];
-      if (action === 'delete') { await safeAnswerCallbackQuery(cq.id, '🗑️ Candidato quitado.'); await safeDeleteMessage(msg.message_id); continue; }
+      if (action === 'delete') { recordDiscardedCandidate(id); await safeAnswerCallbackQuery(cq.id, '🗑️ Candidato quitado y registrado.'); await safeDeleteMessage(msg.message_id); continue; }
       if (action === 'msgdelete') { await safeAnswerCallbackQuery(cq.id, '🗑️ Mensaje borrado.'); await safeDeleteMessage(msg.message_id); continue; }
       if (action === 'outdelete') {
         await safeAnswerCallbackQuery(cq.id, '🗑️ Evaluación borrada.');
