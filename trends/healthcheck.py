@@ -105,15 +105,20 @@ blocking = []
 repairs = []
 
 editorial = editorial_config.get("editorial") or {}
+explanation_only = bool(editorial.get("explanation_only"))
 alt_target = int(editorial.get("alternatives_target") or 0)
 alt_non_blocking = editorial.get("alternatives_block_send") is False
+image_enabled = bool((editorial.get("image_policy") or {}).get("enabled"))
+editorial_ok = (alt_target == 0 and not image_enabled) if explanation_only else (alt_target == 3 and alt_non_blocking)
 modules["editorial_config"] = {
-    "ok": alt_target == 3 and alt_non_blocking,
+    "ok": editorial_ok,
+    "mode": "explanation_only" if explanation_only else "editorial",
     "alternatives_target": alt_target,
     "alternatives_block_send": editorial.get("alternatives_block_send"),
+    "images_enabled": image_enabled,
 }
 if not modules["editorial_config"]["ok"]:
-    blocking.append("config editorial TTendencias inválida: deben pedirse 3 alternativas sin bloquear el envío")
+    blocking.append("config TTendencias incompatible con el modo activo")
 
 modules["control_mode"] = {
     "ok": mode in {"telegram", "web"},
@@ -234,7 +239,7 @@ if isinstance(requests_doc, dict):
                     prepared_names.add(" ".join(str(name).casefold().split()))
     orphan_ready = []
     for req in requests_doc.get("requests", []) or []:
-        if req.get("status") != "ready":
+        if explanation_only or req.get("status") != "ready":
             continue
         key = " ".join(str(req.get("name") or "").casefold().split())
         if str(req.get("id") or "") not in prepared_ids and key not in prepared_names:
@@ -286,23 +291,32 @@ if isinstance(requests_doc, dict):
 
     # El runtime no puede declarar success mientras existan solicitudes
     # preparing/update. Eso ocultaba fallos de hand-off (sin outbox/prepared).
-    runtime_status = str(editorial_runtime.get("status") or "")
-    impossible_success = runtime_status == "success" and bool(active)
-    modules["editorial_runtime"] = {
-        "ok": not impossible_success and runtime_status != "failure",
-        "status": runtime_status or "unknown",
-        "queue_complete": editorial_runtime.get("queue_complete"),
-        "remaining_active_ids": editorial_runtime.get("remaining_active_ids") or [],
-        "contradictory_success": impossible_success,
-    }
-    if impossible_success:
-        blocking.append(
-            f"runtime editorial inconsistente: success con {len(active)} solicitud(es) preparing/update"
-        )
-    elif runtime_status == "failure":
-        blocking.append(
-            "runtime editorial en failure: " + str(editorial_runtime.get("error") or "sin detalle")
-        )
+    if explanation_only:
+        modules["editorial_runtime"] = {
+            "ok": True,
+            "status": "not-required",
+            "queue_complete": not bool(active),
+            "remaining_active_ids": [x.get("id") for x in active],
+            "contradictory_success": False,
+        }
+    else:
+        runtime_status = str(editorial_runtime.get("status") or "")
+        impossible_success = runtime_status == "success" and bool(active)
+        modules["editorial_runtime"] = {
+            "ok": not impossible_success and runtime_status != "failure",
+            "status": runtime_status or "unknown",
+            "queue_complete": editorial_runtime.get("queue_complete"),
+            "remaining_active_ids": editorial_runtime.get("remaining_active_ids") or [],
+            "contradictory_success": impossible_success,
+        }
+        if impossible_success:
+            blocking.append(
+                f"runtime editorial inconsistente: success con {len(active)} solicitud(es) preparing/update"
+            )
+        elif runtime_status == "failure":
+            blocking.append(
+                "runtime editorial en failure: " + str(editorial_runtime.get("error") or "sin detalle")
+            )
 
 signature = " | ".join(sorted(blocking))
 alerted = False
