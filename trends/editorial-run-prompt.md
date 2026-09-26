@@ -17,7 +17,7 @@ No uses Telegram. No proceses TTiTTulares ni SeLoRecordamos. No despliegues Verc
 3. Si `trends/recent.json.captured_at` supera 20 minutos, actualiza `trends/refresh-trigger.txt` en `main` para pedir una captura fresca y después relee `trends/editorial-queue.json`, `trends/recent.json` y `trends/editorial-config.json`.
 4. Si la cola queda vacía, termina el flujo editorial sin investigación web ni escrituras adicionales.
 5. Si hay pendientes, usa DOS fases de prioridad: primero TODOS los `preparing`/`update` del más antiguo al más reciente; solo después reintenta los `problematic` que sigan en Top 10. Un problematic antiguo NUNCA puede hacer starvation de tendencias nuevas.
-6. PROCESAMIENTO ESTRICTAMENTE SECUENCIAL END-TO-END: para cada tendencia/grupo completa TODO su ciclo antes de empezar la siguiente: investigar → redactar Principal/A/B/C → generar y revisar imagen → preparar hand-off inline → persistir UN outbox → esperar/verificar aplicación → confirmar que está en `prepared.json` y fuera de cola. Solo entonces pasa al siguiente item. NO investigues todas primero ni generes todas las imágenes al final.
+6. PROCESAMIENTO ESTRICTAMENTE SECUENCIAL END-TO-END: para cada tendencia/grupo completa TODO su ciclo antes de empezar la siguiente: investigar → redactar Principal/A/B/C → generar y revisar imagen → guardar checkpoint de imagen → persistir outbox ready → esperar/verificar aplicación → confirmar que está en `prepared.json` y fuera de cola. Solo entonces pasa al siguiente item. NO investigues todas primero ni generes todas las imágenes al final.
 7. Una tendencia `problematic` se reintenta automáticamente mientras siga en el Top 10, pero siempre al final de la pasada. Si ya salió del Top 10, no se fuerza otro intento.
 8. Un fallo de un item no debe bloquear los siguientes: registra ese item pendiente/problematic según corresponda y continúa con el siguiente.
 9. Relee estado fresco antes de cada escritura. Ante conflicto, relee SHA y reintenta de forma segura.
@@ -147,15 +147,29 @@ La automatización programada NO debe intentar escribir binarios directamente en
 La vía oficial es ahora:
 
 1. Genera el raster real.
-2. Si sale a más resolución, redimensiónalo/comprímelo antes del hand-off: objetivo aproximado **512 px de lado largo** (mínimo 480 px), preferentemente JPEG/WebP eficiente. No necesitamos calidad premium: es una imagen para X.
+2. Si sale a más resolución, puedes reducirlo localmente si las herramientas lo permiten; de lo contrario entrega el original a Actions: objetivo aproximado **512 px de lado largo** (mínimo 480 px), preferentemente JPEG/WebP eficiente. No necesitamos calidad premium: es una imagen para X.
 3. Inspecciona el raster REAL.
-4. Convierte esos bytes comprimidos a base64 y usa en `prepared_item.image.url` una data URL válida `data:image/jpeg;base64,...` / WebP / PNG.
+4. Conserva la data URL real devuelta por el generador o convierte programáticamente sus bytes a base64 y usa en `prepared_item.image.url` una data URL válida `data:image/jpeg;base64,...` / WebP / PNG.
 5. Mantén `generated:true`, `rights_status:"generated"`, `source:"TTendencias / ChatGPT"`, `style_version:"editorial-scene-v2-cleveland"` y todos los `style_check` requeridos.
 6. Persiste **solo el JSON UTF-8 del outbox** con la operación de texto normal de GitHub (`create_file` o `update_file` según corresponda). No uses operaciones Git de bajo nivel para la imagen.
 7. El workflow `.github/workflows/ttendencias-editorial-apply.yml` ejecuta `apply_editorial_outbox.py`: valida la data URL, crea el fichero binario real en `trends/generated-images/<id>-r<revision>.<ext>`, sustituye la data URL por la URL raw de GitHub y guarda `prepared.json`.
 8. Tras la aplicación, verifica que `prepared_item.image.url` YA NO es data URL, sino la URL raw del raster persistido, y que el fichero existe.
 
-El binario inline debe ser <=350 KB. Si supera ese tamaño, reduce resolución/calidad antes de escribir el outbox. Esta arquitectura evita que una capa de seguridad del conector sobre escrituras binarias pueda impedir que el tuit llegue a la lista final.
+El binario inline original puede alcanzar 12 MB. Actions valida y normaliza a JPEG <=350 KB; la compresión local es opcional. Esta arquitectura delega la escritura binaria en Actions. Confirma siempre que el transporte textual y la aplicación han terminado.
+
+RECUPERACIÓN DE IMAGEN Y TRANSPORTE — CONTRATO v3:
+Antes de generar, lee desde main `trends/image-cache/<id>-r<revision>.json` y el outbox de ese id/revision si existen. Si hay imagen válida del MISMO id/revision y corresponde al brief actual, reutilízala; no la generes de nuevo por un fallo de texto, escritura o aplicación. Un 404 solo significa que aún no existe checkpoint.
+
+Conserva programáticamente el resultado COMPLETO de imagegen al recibirlo; no pierdas sus bytes entre herramientas. Si el generador se invoca en functions.exec, guarda su resultado con store("ttendencias-image-"+id+"-r"+revision, result) ANTES de mostrarlo con generatedImage(result). Si devuelve image_url de tipo data:image/...;base64, úsala directamente desde el objeto guardado: NO la transcribas, no la resumas, no la imprimas ni reconstruyas base64 a mano. Si devuelve una ruta, usa únicamente el archivo real devuelto y conserva sus bytes en el entorno que pueda leerlo. No inventes rutas ni URLs. Una ruta local no es una URL de imagen utilizable por GitHub Actions.
+
+La compresión LOCAL es opcional, nunca una condición para persistir. Si los bytes originales son accesibles pero no puedes comprimirlos, entrega la data URL original (máximo 12 MB decodificados); Actions valida y normaliza a JPEG ligero <=350 KB. Objetivo de salida ~512 px, manteniendo ancho >=480 y alto >=270 sin ampliar. No repitas imagegen por falta de compresión local.
+
+Tras revisar y aceptar visualmente la imagen, escribe inmediatamente el MISMO outbox `trends/editorial-outbox/<id>-r<revision>.json` con {id,name,revision,status:"image_checkpoint",image:<metadatos completos y data URL real>}. Usa create_file/update_file UTF-8 normales. El aplicador guarda el raster y `trends/image-cache/<id>-r<revision>.json`, mantiene la solicitud pendiente y consume el checkpoint. Relee el cache: solo entonces considera la imagen recuperable en otra ejecución. Este checkpoint no es READY ni crea otro item/revisión.
+A continuación, completa el texto y escribe el outbox ready de la misma revisión usando image del cache (URL raw real). Si algo falla después, la siguiente ejecución parte del cache. Si ya había un outbox READY sin aplicar, reanúdalo sin reemplazarlo por un checkpoint. Si una escritura devuelve error, relee primero: puede haberse confirmado. Nunca sobrescribas trabajo más reciente.
+
+Construye el objeto JSON y JSON.stringify en el mismo entorno que posee la data URL; pasa esa cadena directamente a create_file/update_file. No hace falta escribir Git blobs binarios. Si la herramienta rechaza una operación por autorización, registra el rechazo exacto y conserva lo recuperable; no intentes eludirlo por otro canal ni afirmes que has eliminado controles externos. Distingue falta de bytes, compresión, rechazo de escritura y error de aplicación.
+
+Un error técnico de imagen NO convierte una tendencia verificada en problematic: conserva su estado pendiente y continúa con las demás. Espera/verifica como máximo tres lecturas por item; si sigue pendiente, informa con precisión y continúa sin regenerar. La ejecución solo informa éxito para items realmente aplicados.
 
 ## Outbox
 
