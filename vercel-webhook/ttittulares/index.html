@@ -373,7 +373,7 @@ function renderReady(list){
   const img=item.image||{},imgUrl=String(img.url||item.image_url||""),imgSource=img.source||item.image_source||"",imgPage=img.source_url||img.page_url||item.image_source_url||"",imgRights=img.rights_status||item.image_rights_status||"",imgBox=card.querySelector(".imagebox");
   const imageState=String(item.image_status||(item.image_pending?"working":imgUrl?"ready":"none")).toLowerCase();
   const imageReady=imageState==="ready"&&!!imgUrl;
-  const imageLabels={working:"Imagen en elaboración",pending:"Imagen en elaboración",retry:"Imagen en elaboración",ready:"Imagen lista",telegram:"Imagen en Telegram",none:"Sin imagen",error:"Sin imagen"};
+  const imageLabels={working:"Imagen en elaboración",pending:"Sin imagen",retry:"Sin imagen",ready:"Imagen lista",telegram:"Imagen en Telegram",none:"Sin imagen",error:"Sin imagen"};
   const imageLabel=imageLabels[imageState]||"Imagen en elaboración";
   imgBox.hidden=false;
   card.querySelector(".imageTitle").textContent=imageLabel;
@@ -384,7 +384,7 @@ function renderReady(list){
    card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl);
    const src=card.querySelector(".imgSource");if(imgPage)src.href=imgPage;else src.style.display="none";
   }else{
-   card.querySelector(".imageMeta").textContent=imageState==="telegram"?"Foto enviada al bot de Telegram.":imageState==="none"?"La ejecución terminó sin poder entregar una imagen. Se reintentará en la siguiente.":"La noticia está lista; la imagen se está elaborando.";
+   card.querySelector(".imageMeta").textContent=imageState==="telegram"?"Foto enviada al bot de Telegram.":imageState==="working"?"Hay una generación o entrega de imagen activa ahora mismo.":imageState==="none"||imageState==="pending"||imageState==="retry"?"No hay una generación de imagen activa. Se reintentará en la siguiente ejecución.":"La noticia está lista.";
    card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";card.querySelector(".imgSource").style.display="none";
   }
   const photo=document.createElement("button");photo.className="btn photoStatus";photo.textContent="📷 "+imageLabel;photo.onclick=()=>{det.classList.add("open");openCards.add(String(item.event_id||""));card.querySelector(".expand").textContent="Cerrar";imgBox.scrollIntoView({block:"nearest",behavior:"smooth"})};card.querySelector(".actions").appendChild(photo);
