@@ -506,7 +506,7 @@ async function load(silent=false){
 $("cancelProblemRetry").onclick=()=>{$("problemRetrySheet").classList.remove("show");problemRetryItem=null};
 $("sendProblemRetry").onclick=sendProblemRetry;
 $("problemRetrySheet").addEventListener("click",e=>{if(e.target===$("problemRetrySheet")){$("problemRetrySheet").classList.remove("show");problemRetryItem=null}});
-$("preparedBtn").onclick=()=>location.href="/ttendencias/preparados/";
+$("preparedBtn").onclick=()=>location.href="/ttendencias/explicadas/";
 $("explainedClose").onclick=()=>$("explainedSheet").classList.remove("show");
 $("explainedSheet").addEventListener("click",e=>{if(e.target===$("explainedSheet"))$("explainedSheet").classList.remove("show")});
 $("runNow").onclick=requestRun;
