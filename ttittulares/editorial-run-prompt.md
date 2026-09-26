@@ -14,6 +14,12 @@ Procesa todas las PROCESSING y después las problemáticas iniciales. Verifica p
 
 Genera exactamente Principal/A/B/C, cada texto completo <=280 caracteres. Principal lleva `remate:""`. A/B/C tienen remate empezando exactamente por `🌶️ ` y deben usar tres mecanismos distintos. Nunca hagas humor a costa de víctimas, abusos, tragedias o sufrimiento.
 
+### Marca de Trending Topic
+
+Lee también `trends/recent.json` y `trends/telegram-manual-explained.json`. Para cada noticia comprueba si el MISMO acontecimiento tiene una o más tendencias asociadas en el Top 10 actual. Usa `trend_context`/`trend_names` si existen y no asocies por mera coincidencia de palabras o personas.
+
+Guarda `trend_context:[{"name":"...","rank":N},...]` en el prepared_item. Si hay una sola tendencia asociada, añade al final del Principal, en párrafo separado, `📈 TT #N en España`. Si hay dos o más, añade `📈 N TTs en España`, donde N es el número real de tendencias asociadas. La marca forma parte del Principal y debe aparecer idéntica en A/B/C. Mantén cada variante <=280 caracteres acortando la parte factual si hace falta. Si no hay asociación inequívoca, no añadas marca.
+
 Haz al menos dos búsquedas públicas de X y guarda máximo tres `quote_candidates` válidos. Decide `image_strategy:"generated_gag"` o `"archive_sensitive"`.
 
 NO generes, busques, valides ni persistas imágenes en fase 1. Transporta cada READY por comentario del PR #2 con formato exacto:
