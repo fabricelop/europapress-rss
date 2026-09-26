@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T14:11:08+02:00",
+  "captured_at": "2026-09-26T14:23:12+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -25,10 +25,10 @@
     "Belén",
     "PSOE",
     "Frente Amplio",
-    "#XenobladeChronicles2EnGAME",
     "Triana",
-    "Paquita",
-    "La Bola Negra"
+    "Andrea",
+    "La Bola Negra",
+    "Paquita"
   ],
   "items": [
     {
@@ -57,23 +57,25 @@
     },
     {
       "rank": 7,
-      "name": "#XenobladeChronicles2EnGAME"
-    },
-    {
-      "rank": 8,
       "name": "Triana"
     },
     {
+      "rank": 8,
+      "name": "Andrea"
+    },
+    {
       "rank": 9,
-      "name": "Paquita"
+      "name": "La Bola Negra"
     },
     {
       "rank": 10,
-      "name": "La Bola Negra"
+      "name": "Paquita"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Andrea"
+  ],
   "upcoming": [
     {
       "name": "Manchester City",
@@ -156,6 +158,25 @@
       "news_first_seen": null
     },
     {
+      "name": "#XenobladeChronicles2EnGAME",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T14:23:12+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
       "name": "Ayuso",
       "social_source_count": 4,
       "social_sources": [
@@ -211,24 +232,6 @@
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Borja",
-      "social_source_count": 3,
-      "social_sources": [
-        "superx",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 19,
-      "mean_observed_rank": 19.3,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T13:10:54+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -262,7 +265,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T14:11:08+02:00"
+      "fetched_at": "2026-09-26T14:23:12+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -287,7 +290,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T14:11:08+02:00"
+      "fetched_at": "2026-09-26T14:23:12+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -298,11 +301,11 @@
         "Belén",
         "PSOE",
         "Frente Amplio",
-        "#XenobladeChronicles2EnGAME",
         "Triana",
-        "Paquita",
-        "La Bola Negra",
         "Andrea",
+        "La Bola Negra",
+        "Paquita",
+        "#XenobladeChronicles2EnGAME",
         "Guardiola",
         "#FelizSábado",
         "Manchester City",
@@ -310,14 +313,14 @@
         "Olga",
         "Ayuso",
         "Franco",
-        "Borja",
-        "Jesulin"
+        "Red Bull",
+        "Bottas"
       ],
       "error": null,
-      "update_hint": "Updated 40 minutes ago",
-      "age_minutes": 40.0,
+      "update_hint": "Updated 10 minutes ago",
+      "age_minutes": 10.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T14:11:09+02:00"
+      "fetched_at": "2026-09-26T14:23:14+02:00"
     },
     "superx": {
       "ok": true,
@@ -347,16 +350,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T14:11:10+02:00"
+      "fetched_at": "2026-09-26T14:23:15+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790424670",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790425395",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T14:11:10+02:00"
+      "fetched_at": "2026-09-26T14:23:15+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -384,9 +387,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 11:00 UTC",
-      "age_minutes": 71.2,
+      "age_minutes": 83.3,
       "freshness": "aging",
-      "fetched_at": "2026-09-26T14:11:10+02:00"
+      "fetched_at": "2026-09-26T14:23:16+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -414,18 +417,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 12:00 PM # Trend Type Actions 1 #DeViernes Hashtag 2 Mari",
-      "age_minutes": 131.2,
+      "age_minutes": 143.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T14:11:10+02:00"
+      "fetched_at": "2026-09-26T14:23:16+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790424671",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790425397",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T14:11:11+02:00"
+      "fetched_at": "2026-09-26T14:23:17+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -434,7 +437,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T14:11:12+02:00"
+      "fetched_at": "2026-09-26T14:23:18+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -464,16 +467,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T14:11:12+02:00"
+      "fetched_at": "2026-09-26T14:23:18+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790424674",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790425402",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T14:11:14+02:00"
+      "fetched_at": "2026-09-26T14:23:22+02:00"
     }
   }
 }
