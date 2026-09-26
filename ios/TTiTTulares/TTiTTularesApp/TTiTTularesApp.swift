@@ -1,4 +1,5 @@
-import Foundation\nimport SwiftUI
+import Foundation
+import SwiftUI
 
 @main
 struct TTiTTularesApp: App {
