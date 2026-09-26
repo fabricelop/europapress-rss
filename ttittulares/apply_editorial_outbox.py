@@ -367,7 +367,7 @@ def main():
                 if state=="none" and not item.get("image_failure_reason"): raise ValueError("sin imagen requiere razón")
                 if state in {"telegram","none"}:
                     item.pop("image",None) # Nunca mostrar una URL no accesible como imagen lista.
-                if state=="none":
+                if state=="none" and (str(previous.get("image_status") or "")!="none" or str(previous.get("image_failure_reason") or "")!=str(item.get("image_failure_reason") or "")):
                     ledger=load(ERRORS,{"items":[]})
                     record_error(ledger.setdefault("items",[]),eid,"imagen",item["image_failure_reason"],now)
                     ledger["items"]=ledger["items"][-200:];save(ERRORS,ledger)
