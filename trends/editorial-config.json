@@ -28,7 +28,7 @@
       "display_in_web_control": "links",
       "store": "github_raw_url",
       "rights_status_default": "generated",
-      "queue_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; la compresión local es opcional: Actions normaliza el original antes de prepared. Reutiliza el checkpoint de imagen del mismo id/revision si existe; no regeneres por un fallo posterior. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
+      "queue_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. AISLAMIENTO V2 OBLIGATORIO: crea el brief desde cero SOLO con id/revision/nombre/detonante verificado del item actual y related_trends únicamente si son inequívocamente el mismo acontecimiento. No uses captured_with, otros items de cola, prepared previos, prompts/raster anteriores ni imágenes de la conversación. No reutilices image ids, parent ids, referenced images, seeds, sujetos, lugares, deportes, símbolos u objetos de otras tendencias. El brief debe empezar TTENDENCIAS_IMAGE_ISOLATION_V2 y CURRENT_ITEM_ONLY: <id> r<revision> · <name>. En reintento reconstruye otro brief limpio desde la misma whitelist; no describas la imagen fallida salvo una causa genérica. Prohibido collage/multipanel. Rechaza si aparece cualquier sujeto/evento ajeno. PRIORIDAD: sujeto/evento correcto, gag claro, rapidez y robustez. Objetivo ~512 px lado largo (mínimo 480), JPEG/WebP preferido. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Tras inspección real, style_check debe incluir correct_event_subject, single_current_event_only, no_cross_item_context y no_multipanel_or_collage=true, y image.context_guard={version:2,trend_id:<id>,revision:<revision>,scope:current_item_only}.",
       "output_schema": {
         "image": {
           "url": "github_raw_generated_raster_url",
@@ -46,7 +46,17 @@
             "no_diagram_arrows_or_connectors": true,
             "no_ui_or_scoreboard_layout": true,
             "low_text": true,
-            "depth_lighting_texture": true
+            "depth_lighting_texture": true,
+            "correct_event_subject": true,
+            "single_current_event_only": true,
+            "no_cross_item_context": true,
+            "no_multipanel_or_collage": true
+          },
+          "context_guard": {
+            "version": 2,
+            "trend_id": "current_item_id",
+            "revision": "current_item_revision",
+            "scope": "current_item_only"
           }
         }
       },
@@ -70,7 +80,8 @@
           "Gag visual ligado al detonante real que funcione sin texto.",
           "No usar SVG ni imágenes encontradas en Internet como imagen final.",
           "En temas sensibles, ilustración seria y respetuosa; nunca humor sobre víctimas o sufrimiento.",
-          "Antes de ready, inspeccionar el raster y rechazar corrupción, truncado, grandes zonas negras/translúcidas o vacías."
+          "Antes de ready, inspeccionar el raster y rechazar corrupción, truncado, grandes zonas negras/translúcidas o vacías.",
+          "AISLAMIENTO V2: cada raster nuevo declara context_guard current_item_only y cuatro checks semánticos; cualquier contaminación entre items se rechaza antes del checkpoint."
         ],
         "checkpoint_path_pattern": "trends/image-cache/<id>-r<revision>.json"
       },
@@ -96,6 +107,36 @@
         "max_binary_bytes": 12000000,
         "target_long_side_px": 512,
         "max_normalized_binary_bytes": 350000
+      },
+      "isolation_contract": {
+        "version": 2,
+        "brief_prefix": "TTENDENCIAS_IMAGE_ISOLATION_V2",
+        "scope": "current_item_only",
+        "allow_fields": [
+          "id",
+          "revision",
+          "name",
+          "verified_trigger",
+          "related_trends_same_event_only"
+        ],
+        "forbid_context_sources": [
+          "captured_with",
+          "other_queue_items",
+          "previous_prepared_items",
+          "previous_image_prompts",
+          "previous_generated_images",
+          "conversation_images",
+          "referenced_image_ids",
+          "parent_gen_id",
+          "seed_reuse"
+        ],
+        "retry_rule": "rebuild_from_whitelist_only",
+        "reject_on": [
+          "foreign_subject_or_event",
+          "foreign_sport_or_place",
+          "multipanel_or_collage",
+          "ui_or_scoreboard"
+        ]
       }
     },
     "queue_consumer_only": true,
