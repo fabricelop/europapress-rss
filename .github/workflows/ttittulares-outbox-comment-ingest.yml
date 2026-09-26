@@ -6,7 +6,7 @@ on:
 
 permissions:
   contents: write
-  issues: read
+  issues: write
   pull-requests: read
 
 concurrency:
@@ -70,3 +70,14 @@ jobs:
 
           echo "ERROR: no se pudo persistir el outbox transportado tras 5 intentos."
           exit 1
+
+      - name: Retirar comentario de transporte ya consumido
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMENT_ID: ${{ github.event.comment.id }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Los comentarios TTITTULARES_OUTBOX_V1 son un bus efímero, no historial editorial.
+          # Se eliminan solo después de que la aplicación haya terminado con éxito.
+          gh api --method DELETE "repos/$REPO/issues/comments/$COMMENT_ID"
