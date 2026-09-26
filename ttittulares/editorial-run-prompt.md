@@ -12,7 +12,7 @@ Usa el conector GitHub disponible para `fabricelop/europapress-rss`. Trabaja EXC
 
 GitHub es la única persistencia/estado del flujo. Web se usa para investigación/verificación actual, para el fallback de imagen de archivo cuando corresponda y para búsqueda de publicaciones públicas de X. La imagen editorial original se genera con el generador de imágenes disponible y se persiste en GitHub.
 
-No uses Telegram. No proceses TTendencias ni SeLoRecordamos. No despliegues Vercel. No cambies radar, fuentes, umbrales ni ninguna programación/automatización.
+Telegram NO se usa para entregar noticias ni como parte de la fase editorial. Solo está autorizado como fallback de entrega de una imagen YA GENERADA cuando su integración en la app haya fallado. No proceses TTendencias ni SeLoRecordamos. No despliegues Vercel. No cambies radar, fuentes, umbrales ni ninguna programación/automatización.
 
 ## Cola y orden de trabajo
 
@@ -21,9 +21,10 @@ No uses Telegram. No proceses TTendencias ni SeLoRecordamos. No despliegues Verc
 3. Construye un mapa de `telegram/events.json.events` por `id/event_id`. Para cada noticia usa sus `appearances` como EVIDENCIA MULTIFUENTE estructurada: `source,title,url,first_seen`.
 4. Construye al inicio una lista ordenada de trabajo: primero los items de `editorial-queue.json` del más antiguo al más reciente y después las problemáticas de la foto inicial.
 5. Si no había ni cola activa ni problemáticas iniciales, termina sin búsquedas web ni escrituras.
-6. PROCESAMIENTO ESTRICTAMENTE SECUENCIAL POR ITEM: si hay N noticias, ejecuta N ciclos completos independientes. Para la noticia 1 haz TODO el proceso —verificación, Principal/A/B/C, citas X, estrategia de imagen, generación/validación/persistencia de imagen o fallback, outbox, aplicación y verificación READY/Listas— y solo cuando ese item haya terminado o haya quedado explícitamente resuelto como problematic continúa con la noticia 2. Repite hasta N. Nunca redactes varias noticias primero para fabricar después todas las imágenes, nunca acumules varios outboxes para aplicarlos al final y nunca mantengas más de un item editorial “en vuelo” por decisión de esta ejecución.
-7. Después de CADA outbox ready, fuerza/reintenta el aplicador si hace falta y relee `prepared.json`, `editorial-processing.json`, `editorial-queue.json` y `status.json`. No comiences el siguiente item hasta que el actual esté READY/Listas o hasta que hayas agotado el reintento seguro y hayas dejado su estado real sin falso éxito.
-8. Un item difícil o fallido NUNCA impide procesar los siguientes una vez cerrado su ciclo. Relee estado/SHA fresco antes de cada escritura; ante conflicto relee y reintenta de forma segura.
+6. FASE 1 — NOTICIAS, PRIORIDAD ABSOLUTA. Procesa ESTRICTAMENTE todas las noticias editoriales (`PROCESSING` y después las problemáticas iniciales) sin generar, buscar, validar, persistir ni enviar imágenes. Para cada noticia completa verificación, Principal/A/B/C, citas X y outbox `ready`; el `prepared_item` debe entrar en Listas inmediatamente con `image_strategy` decidido, `image_status:"pending"` e `image_pending:true` cuando corresponda. La imagen JAMÁS puede bloquear `READY`.
+7. Después de CADA outbox editorial fuerza/reintenta el aplicador si hace falta y relee `prepared.json`, `editorial-processing.json`, `editorial-queue.json` y `status.json`. No empieces la fase de imágenes mientras quede una noticia editorial pendiente de esta ejecución.
+8. FASE 2 — IMÁGENES, SOLO DESPUÉS DE VACIAR LA FASE EDITORIAL. Relee `prepared.json`/`editorial-queue.json` y procesa secuencialmente los items READY con `image_status` en `pending|retry` o `image_pending:true`. Para cada uno: construye el brief aislado, genera/valida la imagen, intenta integrarla en la app; si queda accesible marca `image_status:"ready"`/`image_delivery:"app"`. Si existe un raster válido pero no puede integrarse en la app, usa exclusivamente el fallback Telegram de imagen y marca `image_status:"telegram"`/`image_delivery:"telegram"`. Si tampoco puede entregarse, marca `image_status:"retry"` conservando la noticia READY. Una imagen fallida nunca devuelve una noticia a En elaboración ni impide procesar la siguiente imagen.
+9. En ejecuciones posteriores, cualquier noticia nueva vuelve a tener prioridad sobre TODOS los reintentos de imagen. Relee estado/SHA fresco antes de cada escritura; ante conflicto relee y reintenta de forma segura.
 
 Usa todos los campos disponibles del item activo, incluidos `event_id,title,url,sources,source_count,source_evidence,selected_at,selection_mode,revision,rewrite_request,parent_event_id,update_context,with_image,image_mode,image_instruction`.
 
@@ -106,7 +107,7 @@ Nunca hagas humor a costa de víctimas, abusos, tragedias o sufrimiento. En esos
 
 ## Imagen · gag generado por defecto y archivo cuando no proceda
 
-Si `with_image=true`, aplica exactamente la misma línea visual y el mismo control de calidad de TTendencias, con la única excepción editorial de `archive_sensitive` para noticias en las que el humor visual no proceda.
+Esta sección se ejecuta EXCLUSIVAMENTE en la FASE 2, cuando ya no queda ninguna noticia por pasar a Listas. Si `with_image=true`, aplica exactamente la misma línea visual y el mismo control de calidad de TTendencias, con la única excepción editorial de `archive_sensitive` para noticias en las que el humor visual no proceda.
 
 Los campos `image_mode` e `image_instruction` del item son contexto heredado del selector, NO una orden irrevocable. Reevalúa la estrategia con esta política actual. Si un item antiguo trae `existing_web_image` o “no generes imágenes” pero no cumple los criterios estrictos de `archive_sensitive`, IGNORA esa clasificación heredada y usa `generated_gag`. Una lesión deportiva ordinaria —molestias, retirada por lesión, sobrecarga, esguince u otra lesión no grave ni traumática— NO se considera por sí sola víctima/tragedia/sufrimiento y debe seguir la vía `generated_gag`. Reserva `archive_sensitive` para muerte, lesión grave o traumática, accidente serio, violencia, abuso, catástrofe, sufrimiento humano significativo o situaciones donde el gag pueda trivializar daño real.
 
