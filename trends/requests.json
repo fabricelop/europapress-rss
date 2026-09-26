@@ -3971,7 +3971,7 @@
       "id": "5c97a9186c32",
       "name": "Vomitivo",
       "rank": 7,
-      "status": "problematic",
+      "status": "maintenance_pause",
       "requested_at": "2026-09-26T18:31:32+02:00",
       "revision": 0,
       "reexplain": false,
@@ -3989,7 +3989,10 @@
       "problematic_at": "2026-09-26T19:34:08+02:00",
       "problem_reason": "Nuevo intento sin detonante verificable: dos consultas distintas solo devuelven usos genéricos o antiguos de la palabra «vomitivo» y no permiten vincularla con fiabilidad a un acontecimiento actual en España.",
       "problematic_attempts": 3,
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "maintenance_previous_status": "problematic",
+      "maintenance_paused_at": "2026-09-26T20:38:53.990Z",
+      "maintenance_pause_reason": "stop_requested_before_ttendencias_optimization"
     },
     {
       "id": "5435cf0481ed",
@@ -4372,7 +4375,7 @@
       "id": "f5060a515233",
       "name": "Ferran",
       "rank": 1,
-      "status": "preparing",
+      "status": "maintenance_pause",
       "requested_at": "2026-09-26T22:01:29+02:00",
       "revision": 0,
       "reexplain": false,
@@ -4390,13 +4393,16 @@
         "#NationsLeague",
         "Celades"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "maintenance_previous_status": "preparing",
+      "maintenance_paused_at": "2026-09-26T20:38:53.990Z",
+      "maintenance_pause_reason": "stop_requested_before_ttendencias_optimization"
     },
     {
       "id": "72b636044cc9",
       "name": "Wembley",
       "rank": 3,
-      "status": "preparing",
+      "status": "maintenance_pause",
       "requested_at": "2026-09-26T22:01:29+02:00",
       "revision": 0,
       "reexplain": false,
@@ -4414,13 +4420,16 @@
         "#NationsLeague",
         "Celades"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "maintenance_previous_status": "preparing",
+      "maintenance_paused_at": "2026-09-26T20:38:53.990Z",
+      "maintenance_pause_reason": "stop_requested_before_ttendencias_optimization"
     },
     {
       "id": "9503ec979794",
       "name": "Inglaterra",
       "rank": 4,
-      "status": "preparing",
+      "status": "maintenance_pause",
       "requested_at": "2026-09-26T22:01:29+02:00",
       "revision": 0,
       "reexplain": false,
@@ -4438,13 +4447,16 @@
         "#NationsLeague",
         "Celades"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "maintenance_previous_status": "preparing",
+      "maintenance_paused_at": "2026-09-26T20:38:53.990Z",
+      "maintenance_pause_reason": "stop_requested_before_ttendencias_optimization"
     },
     {
       "id": "0c51edc1ef4b",
       "name": "Eric García",
       "rank": 5,
-      "status": "preparing",
+      "status": "maintenance_pause",
       "requested_at": "2026-09-26T22:01:29+02:00",
       "revision": 0,
       "reexplain": false,
@@ -4462,13 +4474,16 @@
         "#NationsLeague",
         "Celades"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "maintenance_previous_status": "preparing",
+      "maintenance_paused_at": "2026-09-26T20:38:53.990Z",
+      "maintenance_pause_reason": "stop_requested_before_ttendencias_optimization"
     },
     {
       "id": "6454422cbf4a",
       "name": "#NationsLeague",
       "rank": 6,
-      "status": "preparing",
+      "status": "maintenance_pause",
       "requested_at": "2026-09-26T22:01:29+02:00",
       "revision": 0,
       "reexplain": false,
@@ -4486,13 +4501,16 @@
         "#NationsLeague",
         "Celades"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "maintenance_previous_status": "preparing",
+      "maintenance_paused_at": "2026-09-26T20:38:53.990Z",
+      "maintenance_pause_reason": "stop_requested_before_ttendencias_optimization"
     },
     {
       "id": "9cf1498400ce",
       "name": "Celades",
       "rank": 9,
-      "status": "preparing",
+      "status": "maintenance_pause",
       "requested_at": "2026-09-26T22:01:29+02:00",
       "revision": 0,
       "reexplain": false,
@@ -4510,8 +4528,11 @@
         "#NationsLeague",
         "Celades"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "maintenance_previous_status": "preparing",
+      "maintenance_paused_at": "2026-09-26T20:38:53.990Z",
+      "maintenance_pause_reason": "stop_requested_before_ttendencias_optimization"
     }
   ],
-  "updated_at": "2026-09-26T22:04:05+02:00"
+  "updated_at": "2026-09-26T20:38:53.990Z"
 }
