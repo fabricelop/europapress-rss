@@ -274,28 +274,21 @@ def _recover_image(item,row,events):
     return False
 
 def _enrich_prepared_images(p,q,events):
-    changed=False; now=datetime.now(timezone.utc)
-    rows=q.get("items",[]) or []
+    """Solo recupera checkpoints generados ya validados. No busca imágenes de archivo aquí.
+
+    La búsqueda/validación archive_sensitive pertenece exclusivamente a FASE 2,
+    para que FASE 1 pueda cerrar la noticia en READY sin trabajo de imagen.
+    """
+    changed=False
     for item in p.get("items",[]) or []:
-        if str((item.get("image") or {}).get("url") or item.get("image_url") or "").strip():continue
-        # Un generated_gag sin imagen solo se recupera desde un checkpoint validado
-        # del MISMO event_id/revision. Nunca se sustituye por una imagen de otro evento.
-        if str(item.get("image_strategy") or "")=="generated_gag":
-            eid=str(item.get("event_id") or "")
-            revision=int(item.get("revision") or 1)
-            if _recover_generated_checkpoint(item,eid,revision):
-                changed=True
+        if str((item.get("image") or {}).get("url") or item.get("image_url") or "").strip():
             continue
-        attempted=item.get("image_search_attempted_at")
-        if attempted:
-            try:
-                prev=datetime.fromisoformat(str(attempted).replace("Z","+00:00"))
-                if (now-prev).total_seconds()<21600:continue
-            except Exception:pass
+        if str(item.get("image_strategy") or "")!="generated_gag":
+            continue
         eid=str(item.get("event_id") or "")
-        row=next((x for x in reversed(rows) if str(x.get("event_id") or "")==eid),None) or {"event_id":eid,"url":item.get("url") or "","sources":item.get("sources_at_draft") or [],"with_image":True}
-        if not bool(row.get("with_image",True)):continue
-        _recover_image(item,row,events); changed=True
+        revision=int(item.get("revision") or 1)
+        if _recover_generated_checkpoint(item,eid,revision):
+            changed=True
     return changed
 
 
@@ -420,14 +413,14 @@ def main():
                     elif strategy=="archive_sensitive":
                         if image.get("generated"):
                             raise ValueError("archive_sensitive no debe contener gag generado")
-                        if not str(image.get("url") or "").strip():
-                            _recover_image(item,row,events)
-                            image=item.get("image") or {}
-                        if str(image.get("url") or "").strip():
-                            item["image_status"]="ready"
-                            item["image_pending"]=False
-                            item["image_delivery"]="app"
-                            item["image_app_available"]=True
+                        # FASE 1 nunca busca/valida/persiste imágenes. La noticia entra
+                        # inmediatamente en READY y FASE 2 resolverá la imagen por outbox image-only.
+                        item.pop("image",None)
+                        item["image_status"]="working"
+                        item["image_pending"]=True
+                        item["image_delivery"]="pending"
+                        item["image_app_available"]=False
+                        item["image_search_status"]="pending_archive_phase2"
                     elif strategy:
                         raise ValueError(f"image_strategy inválida: {strategy}")
                     else:
