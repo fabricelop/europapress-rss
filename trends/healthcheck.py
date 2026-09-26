@@ -102,6 +102,7 @@ web_mode = mode == "web"
 
 modules = {}
 blocking = []
+warnings = []
 repairs = []
 
 editorial = editorial_config.get("editorial") or {}
@@ -284,10 +285,14 @@ if isinstance(requests_doc, dict):
         "repairable": False,
     }
     if overdue:
-        blocking.append(
-            f"cola editorial bloqueada: {len(overdue)} pendiente(s) superan {warn_after} min; "
+        queue_message = (
+            f"cola de explicaciones retrasada: {len(overdue)} pendiente(s) superan {warn_after} min; "
             f"más antigua {max(ages):.1f} min"
         )
+        if explanation_only:
+            warnings.append(queue_message)
+        else:
+            blocking.append(queue_message)
 
     # El runtime no puede declarar success mientras existan solicitudes
     # preparing/update. Eso ocultaba fallos de hand-off (sin outbox/prepared).
@@ -331,6 +336,7 @@ status = {
     "modules": modules,
     "repairs_started": repairs,
     "blocking": blocking,
+    "warnings": warnings,
     "alert_sent": alerted,
     "last_alert_signature": signature if blocking else "",
 }
