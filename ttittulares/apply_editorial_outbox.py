@@ -304,7 +304,7 @@ def sync_compact(q):
             "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
             "parent_event_id":x.get("parent_event_id"),"update_context":x.get("update_context"),
             "with_image":True,"image_mode":"generated_gag_or_archive_sensitive",
-            "image_instruction":"Fase 1: NO generes imagen. Deja READY con image_status=working. Fase 2: archive_sensitive usa imagen existente; generated_gag debe pasar por worker aislado EVENTO ACTUAL y nunca llamar imagegen desde el contexto editorial genérico.",
+            "image_instruction":"Fase 1: NO generes imagen. READY sin raster queda image_status=pending (nunca working). Fase 2: cambia a working SOLO mientras exista un intento real de imagen activo; al terminar debe cerrar en ready, telegram o none.",
         })
     # Retry missing artwork without removing already prepared text from the app.
     prepared=load(PREP,{"items":[]})
@@ -316,9 +316,9 @@ def sync_compact(q):
         if (item.get("image") or {}).get("url"): continue
         if str(item.get("image_status") or "") not in {"pending","working","none","retry",""} and not item.get("image_pending"): continue
         active.append({"event_id":eid,"revision":revision,"title":item.get("title", ""),"url":item.get("url", ""),
-            "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":True,"image_status":"working","prepared_item":item,
+            "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":True,"image_status":str(item.get("image_status") or "pending"),"prepared_item":item,
             "image_mode":"generated_gag_or_archive_sensitive",
-            "image_instruction":"Completa solo la imagen pendiente. Conserva íntegramente prepared_item y su revisión, añade image con raster válido y envía status ready por el outbox habitual. No regeneres ni cambies los textos."})
+            "image_instruction":"Completa solo la imagen pendiente. Al iniciar un intento real marca working; al finalizar cierra obligatoriamente en ready, telegram o none. Conserva íntegramente prepared_item y su revisión; no regeneres ni cambies los textos."})
     # Dos fases: las noticias PROCESSING siempre preceden a cualquier IMAGE_RETRY.
     active.sort(key=lambda x:(1 if x.get("selection_mode")=="IMAGE_RETRY" else 0, str(x.get("selected_at") or "")))
     save(TT/"editorial-queue.json",{
@@ -355,11 +355,11 @@ def main():
                 if st!="ready": raise ValueError("image retry no puede cambiar el estado READY")
                 incoming=payload.get("prepared_item") or {}
                 state=str(incoming.get("image_status") or "")
-                if state not in {"working","ready","telegram","none"}: raise ValueError("estado de imagen inválido")
+                if state not in {"pending","working","ready","telegram","none"}: raise ValueError("estado de imagen inválido")
                 patch_keys={"image","image_status","image_delivery","image_app_available","image_pending","image_failure_reason","image_generation_attempts","image_persistence_attempts","image_semantic_rejections","image_telegram_delivered","image_telegram_delivered_at","image_worker_id","image_worker_status","image_worker_dispatched_at"}
                 item={**previous,**{k:v for k,v in incoming.items() if k in patch_keys}}
-                item["image_pending"]=state=="working"
-                item["image_delivery"]={"working":"pending","ready":"app","telegram":"telegram","none":"none"}[state]
+                item["image_pending"]=state in {"pending","working"}
+                item["image_delivery"]={"pending":"pending","working":"pending","ready":"app","telegram":"telegram","none":"none"}[state]
                 item["image_app_available"]=state=="ready"
                 if state=="ready" and not (item.get("image") or {}).get("url"): raise ValueError("imagen lista sin URL")
                 if state=="telegram" and not item.get("image_telegram_delivered"): raise ValueError("Telegram no confirmado")
@@ -399,9 +399,9 @@ def main():
                                 if not pending:
                                     raise ValueError("generated_gag sin raster debe quedar image_pending")
                                 item["image_persistence_attempts"]=persistence_attempts
-                                item["image_status"]="working"
+                                item["image_status"]="pending"
                                 item["image_delivery"]="pending"
-                                item["image_search_status"]="pending_isolated_worker"
+                                item["image_search_status"]="pending_phase2"
                         if image.get("generated") and str(image.get("url") or "").strip():
                             validate_image(item)
                             item["image_status"]="ready"
@@ -416,7 +416,7 @@ def main():
                         # FASE 1 nunca busca/valida/persiste imágenes. La noticia entra
                         # inmediatamente en READY y FASE 2 resolverá la imagen por outbox image-only.
                         item.pop("image",None)
-                        item["image_status"]="working"
+                        item["image_status"]="pending"
                         item["image_pending"]=True
                         item["image_delivery"]="pending"
                         item["image_app_available"]=False
