@@ -178,7 +178,7 @@ DESPUÉS DE GENERAR, inspecciona la imagen REAL, no solo el prompt. Compárala e
 - NO presenta estética flat 2D/pixel-art/vectorial simplificada;
 - supera el control visual editorial.
 
-Si falla esta comprobación, RECHAZA esa imagen y REGENERA una vez con una composición más simple pero manteniendo profundidad, volumen y acabado editorial. Si el segundo intento tampoco es íntegro, tiene sujeto/evento equivocado, vuelve a caer en estética plana o falla su persistencia, LA IMAGEN NO BLOQUEA LA NOTICIA: continúa el mismo ciclo, escribe el outbox `ready` SIN `image` y añade `image_pending:true`, `image_attempts:2` e `image_failure_reason` concreto. No dejes una noticia factual ya verificada en PROCESSING por el renderer y no la conviertas en `problematic`. La imagen de archivo se usa únicamente con `archive_sensitive`.
+Si falla esta comprobación, RECHAZA esa imagen y REGENERA una vez con una composición más simple pero manteniendo profundidad, volumen y acabado editorial. Si el segundo intento tampoco es íntegro, tiene sujeto/evento equivocado, vuelve a caer en estética plana o falla su persistencia, LA IMAGEN NO BLOQUEA LA NOTICIA: continúa el mismo ciclo, escribe el outbox `ready` SIN `image` y añade `image_pending:true`, `image_generation_attempts:2`, `image_persistence_attempts:<n>` e `image_failure_reason` concreto. No dejes una noticia factual ya verificada en PROCESSING por el renderer y no la conviertas en `problematic`. La imagen de archivo se usa únicamente con `archive_sensitive`.
 
 Para imagen generada guarda `image={url,source:"TTiTTulares / ChatGPT",source_url,rights_status:"generated",generated:true,alt,style_version:"editorial-scene-v2-cleveland",style_check}`, con estos checks en true:
 - `reviewed_after_generation`
@@ -272,7 +272,7 @@ con raíz:
 
 `prepared_item` debe incluir al menos:
 `event_id,title,url,drafted_source_count,sources_at_draft,prepared_at,factual_summary,revision,variants,quote_candidates,quote_search`
-más `image_strategy`; incluye `image` solo si existe y ha superado la validación. Si la imagen falló tras dos intentos, incluye `image_pending:true`, `image_attempts:2` e `image_failure_reason`; esto NO invalida READY.
+más `image_strategy`; incluye `image` solo si existe y ha superado la validación. Si la imagen falló tras dos intentos, incluye `image_pending:true`, `image_generation_attempts:2`, `image_persistence_attempts:<n>` e `image_failure_reason`; esto NO invalida READY.
 
 No dupliques un outbox válido completo. Si el outbox de esa revisión ya existe pero es inválido, incompleto o alguna variante supera 280 caracteres, corrige ESE MISMO archivo y la misma revisión. No crees una revisión nueva solo para reparar formato o contenido técnico.
 
