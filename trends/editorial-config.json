@@ -28,7 +28,7 @@
       "display_in_web_control": "links",
       "store": "github_raw_url",
       "rights_status_default": "generated",
-      "queue_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster (PNG/WebP/JPG) como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD: claridad del gag + estilo + robustez + velocidad. Usa detalle MEDIO, composición simple, pocos elementos importantes y acabado limpio suficiente para móvil/X; NO busques hiperrealismo, calidad premium, microdetalle ni resoluciones grandes. Cuando la herramienta lo permita, prefiere alrededor de 1024 px en el lado largo. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcadores abstractos, interfaz/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. DESPUÉS DE GENERAR inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si está cortado, truncado, parcialmente negro o corrupto, RECHÁZALO y REGENERA una vez con una escena más simple. Si vuelve a fallar, no marques ready: deja image_generation_status='pending_renderer'. Solo ready con style_version='editorial-scene-v2-cleveland' y style_check completo.",
+      "queue_instruction": "Genera SIEMPRE una imagen editorial ORIGINAL raster como UNA ESCENA NARRATIVA tipo Cleveland. PRIORIDAD ABSOLUTA: velocidad + claridad móvil. La imagen final de hand-off debe quedar aprox. en 512 px de lado largo (mínimo 480 px), preferentemente JPEG/WebP comprimido; si el generador entrega más resolución, redimensiona y comprime antes del outbox. Detalle MEDIO-BAJO, composición simple y pocos elementos. Debe haber un gag VISUAL ligado al detonante real y funcionar sin texto. PROHIBIDO: infografía, diagrama, flechas/conectores, cajas/nodos, medallones, marcador/podio abstracto, UI/TV, cabezas flotantes, paneles, póster, clip-art o retrato sin gag. Inspecciona el raster real: debe abrir completo, ocupar el fotograma y no contener bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenera UNA vez con escena más simple.",
       "output_schema": {
         "image": {
           "url": "github_raw_generated_raster_url",
@@ -50,7 +50,7 @@
           }
         }
       },
-      "rule": "Cada item ready debe llevar una imagen raster original generada específicamente para la tendencia. Prioriza estilo, claridad y velocidad frente a calidad premium: detalle medio, escena simple y legible. Revisión obligatoria posterior: fichero decodificable, fotograma completo, sin truncado, grandes bandas/bloques negros, transparencias o zonas vacías anómalas. Si falla, regenerar una vez; si vuelve a fallar, pending_renderer. Mantener línea editorial-scene-v2-cleveland.",
+      "rule": "Cada item ready lleva raster original generado. Para X basta calidad móvil: objetivo ~512 px lado largo, JPEG/WebP eficiente, detalle medio-bajo. El task entrega la imagen dentro del outbox como data URL base64; GitHub Actions la materializa en generated-images y sustituye la URL antes de pasar a prepared. Revisión obligatoria: raster decodificable, completo y sin bloques negros/transparencia anómala.",
       "generated_image_storage": {
         "prepared": true,
         "enabled": true,
@@ -59,21 +59,18 @@
         "public_url_pattern": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/<id>-r<revision>.<ext>",
         "source": "TTendencias / ChatGPT",
         "rights_status": "generated",
-        "mode": "raster_editorial_scene_v2",
+        "mode": "inline_outbox_to_actions_raster",
         "trigger": "always_for_ready",
         "svg_fallback_allowed": false,
         "rules": [
-          "Referencia positiva: escena editorial narrativa tipo Cleveland aprobada por el usuario.",
-          "Priorizar rapidez y claridad: detalle medio, composición simple y resolución estándar; no perseguir hiperrealismo ni acabado premium.",
+          "La automatización entrega el raster real dentro del outbox como data URL base64.",
+          "GitHub Actions materializa el raster en trends/generated-images/<id>-r<revision>.<ext> y reemplaza image.url por la URL raw.",
+          "Objetivo de tamaño: ~512 px lado largo, mínimo 480 px, preferentemente JPEG/WebP comprimido para velocidad y fiabilidad.",
           "Una sola escena coherente con protagonista(s), entorno y acción; no montaje de paneles ni diagrama.",
-          "Gag visual ligado al detonante real que siga funcionando al eliminar todo el texto.",
-          "Prohibidos flechas/conectores, cajas/nodos, medallones, marcadores abstractos, estética de interfaz/infografía, cabezas flotantes y composición de debate esquemático.",
-          "Cero texto siempre que sea posible; si es necesario, breve y diegético dentro de la escena.",
-          "No usar SVG, iconos simples, mascotas vectoriales ni formas geométricas como imagen final.",
-          "No atribuir citas o hechos no verificados a personas reales.",
-          "En política, conflictos, sucesos o víctimas: neutralidad factual y nunca humor sobre víctimas o sufrimiento.",
-          "Antes de ready, inspeccionar la imagen generada y rechazar cualquier raster corrupto, truncado, parcialmente negro/transparente o con grandes zonas vacías anómalas.",
-          "El fichero final debe ser PNG, WebP o JPEG, abrirse correctamente y existir realmente en GitHub antes de marcar ready."
+          "Gag visual ligado al detonante real que funcione sin texto.",
+          "No usar SVG ni imágenes encontradas en Internet como imagen final.",
+          "En temas sensibles, ilustración seria y respetuosa; nunca humor sobre víctimas o sufrimiento.",
+          "Antes de ready, inspeccionar el raster y rechazar corrupción, truncado, grandes zonas negras/translúcidas o vacías."
         ]
       },
       "generate_when_candidate": true,
@@ -88,13 +85,15 @@
       "style_version": "editorial-scene-v2-cleveland",
       "inline_raster_fallback": {
         "enabled": true,
-        "trigger": "when_generated_raster_bytes_exist_but_binary_github_upload_is_unavailable",
+        "trigger": "primary_handoff_for_scheduled_editorial",
         "mime_types": [
           "image/webp",
           "image/png",
           "image/jpeg"
         ],
-        "rule": "Como fallback de persistencia, se permite guardar el raster generado REAL como data URL base64 en prepared_item.image.url. Esto NO autoriza SVG ni imágenes buscadas en Internet. Deben mantenerse generated:true, rights_status:'generated', source:'TTendencias / ChatGPT' y el mismo control visual editorial-scene-v2-cleveland."
+        "rule": "Vía principal de hand-off: prepared_item.image.url contiene data:image/<jpeg|webp|png>;base64,... con el raster REAL comprimido. El aplicador en GitHub Actions lo valida, lo escribe como fichero binario y sustituye la data URL por la URL raw antes de guardar prepared.",
+        "max_binary_bytes": 350000,
+        "target_long_side_px": 512
       }
     },
     "queue_consumer_only": true,
