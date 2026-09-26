@@ -40,17 +40,18 @@ self.addEventListener("push",event=>{
   try{data=event.data?event.data.json():{}}catch(_){data={body:event.data?event.data.text():""}}
   const title=data.title||"TTendencias";
   const options={
-    body:data.body||"Hay una nueva tendencia explicada.",
-    tag:"ttendencias-explained",
-    renotify:true,
-    data:{url:data.url||"/ttendencias/preparados/"},
+    body:data.body||"Hay nuevos Trending Topics en España.",
+    tag:"ttendencias-top10",
+    renotify:false,
+    silent:true,
+    data:{url:data.url||"/ttendencias/"},
   };
   event.waitUntil(self.registration.showNotification(title,options));
 });
 
 self.addEventListener("notificationclick",event=>{
   event.notification.close();
-  const target=event.notification?.data?.url||"/ttendencias/preparados/";
+  const target=event.notification?.data?.url||"/ttendencias/";
   event.waitUntil((async()=>{
     const windows=await self.clients.matchAll({type:"window",includeUncontrolled:true});
     for(const client of windows){
