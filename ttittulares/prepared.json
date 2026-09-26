@@ -120,16 +120,38 @@
         }
       ],
       "image_strategy": "generated_gag",
-      "image_status": "working",
-      "image_pending": true,
-      "image_delivery": "pending",
-      "image_generation_attempts": 0,
-      "image_persistence_attempts": 0,
+      "image_status": "ready",
+      "image_delivery": "app",
+      "image_generation_attempts": 1,
+      "image_persistence_attempts": 1,
       "image_search_status": "pending_isolated_worker",
-      "image_worker_status": "queued",
+      "image_worker_status": "completed",
       "image_worker_id": "5978ba3c42d7-r1-20260926T145830Z",
       "image_worker_dispatched_at": "2026-09-26T14:58:30Z",
-      "image_app_available": false
+      "image_app_available": true,
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5978ba3c42d7-r1.jpg",
+        "source": "TTiTTulares / ChatGPT",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5978ba3c42d7-r1.jpg",
+        "rights_status": "generated",
+        "generated": true,
+        "alt": "Feijóo entre Aznar y Abascal mientras ambos compiten por presentarse como su padrino político.",
+        "style_version": "editorial-scene-v2-cleveland",
+        "style_check": {
+          "reviewed_after_generation": true,
+          "single_narrative_scene": true,
+          "visual_gag_without_text": true,
+          "correct_event_subject": true,
+          "no_flat_2d_pixel_art": true,
+          "no_simplified_vector_block_style": true,
+          "no_infographic_layout": true,
+          "no_diagram_arrows_or_connectors": true,
+          "no_ui_or_scoreboard_layout": true,
+          "low_text": true,
+          "depth_lighting_texture": true
+        },
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     }
   ]
 }
