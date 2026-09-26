@@ -1,4 +1,4 @@
-import SwiftUI
+import Foundation\nimport SwiftUI
 import WebKit
 
 struct WebContainer: UIViewRepresentable {
