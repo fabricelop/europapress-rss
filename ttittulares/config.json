@@ -38,7 +38,7 @@
     "enabled": true,
     "mode": "generated_gag_or_archive_sensitive",
     "generate": true,
-    "non_blocking": false,
+    "non_blocking": true,
     "generated_style_version": "editorial-scene-v2-cleveland",
     "generated_image_storage": {
       "repository_path_pattern": "ttittulares/generated-images/<event_id>-r<revision>.<png|webp|jpg>",
@@ -69,6 +69,14 @@
       "copy_image",
       "open_source"
     ],
-    "generated_failure_policy": "pending_renderer"
+    "generated_failure_policy": "ready_with_image_pending_then_retry",
+    "news_first_two_phase": true,
+    "ready_initial_status": "pending",
+    "retry_after_news": true,
+    "delivery_order": [
+      "app",
+      "telegram"
+    ],
+    "telegram_fallback": true
   }
 }
