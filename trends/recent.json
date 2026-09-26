@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T19:21:07+02:00",
+  "captured_at": "2026-09-26T19:40:54+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -14,7 +14,8 @@
   "source_count": 7,
   "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
   "reliability": "high",
   "top10": [
@@ -71,12 +72,8 @@
       "name": "Carlos Hernández"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Emilio de Justo",
-    "Pacheta",
-    "Andorra"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "Gasly",
@@ -90,7 +87,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 14.2,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T19:21:07+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -172,20 +169,20 @@
       "news_first_seen": null
     },
     {
-      "name": "Manchester City",
+      "name": "Frente Amplio",
       "social_source_count": 1,
       "social_sources": [
         "snaplytics"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T18:41:05+02:00",
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T19:40:54+02:00",
       "news_source_count": 9,
-      "news_event_id": "de32583e5844",
-      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
+      "news_event_id": "8bcea4489453",
+      "news_title": "Frente Amplio: la marca por la que se inclina el nuevo Sumar para las generales",
       "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-25T15:02:55.152129Z"
+      "news_first_seen": "2026-09-25T12:22:21.811396Z"
     },
     {
       "name": "Bottas",
@@ -196,7 +193,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T19:21:07+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -205,21 +202,20 @@
       "news_first_seen": null
     },
     {
-      "name": "Desinflar",
-      "social_source_count": 2,
+      "name": "Manchester City",
+      "social_source_count": 1,
       "social_sources": [
-        "trends24",
-        "tweets24"
+        "snaplytics"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T19:21:07+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "best_observed_rank": 17,
+      "mean_observed_rank": 17.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-26T18:41:05+02:00",
+      "news_source_count": 9,
+      "news_event_id": "de32583e5844",
+      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-25T15:02:55.152129Z"
     }
   ],
   "anticipated_entries": [],
@@ -253,7 +249,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T19:21:07+02:00"
+      "fetched_at": "2026-09-26T19:40:54+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -278,7 +274,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T19:21:07+02:00"
+      "fetched_at": "2026-09-26T19:40:54+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -305,10 +301,10 @@
         "Mariezkurrena"
       ],
       "error": null,
-      "update_hint": "Updated 10 minutes ago",
-      "age_minutes": 10.0,
+      "update_hint": "Updated 30 minutes ago",
+      "age_minutes": 30.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T19:21:08+02:00"
+      "fetched_at": "2026-09-26T19:40:55+02:00"
     },
     "superx": {
       "ok": true,
@@ -338,16 +334,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T19:21:09+02:00"
+      "fetched_at": "2026-09-26T19:40:56+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790443269",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790444457",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T19:21:09+02:00"
+      "fetched_at": "2026-09-26T19:40:57+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -357,27 +353,27 @@
         "Mari Carmen",
         "Belén",
         "Colapinto",
-        "PSOE",
         "Andrea",
+        "PSOE",
+        "Pablo Aguado",
         "Guardiola",
-        "#Fiesta26S",
+        "David Gil",
         "Frente Amplio",
         "La Bola Negra",
-        "Paquita",
         "Triana",
-        "Manchester City",
-        "#XenobladeChronicles2EnGame",
-        "#AzerbaijanGP",
+        "Paquita",
         "Vomitivo",
-        "#FelizSábado",
-        "Norris",
-        "Jesulin"
+        "#xenobladechronicles2engame",
+        "Manchester City",
+        "#Fiesta26S",
+        "#AzerbaijanGP",
+        "#FelizSábado"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 26, 2026 16:00 UTC",
-      "age_minutes": 81.2,
-      "freshness": "aging",
-      "fetched_at": "2026-09-26T19:21:09+02:00"
+      "update_hint": "Trending now Sep 26, 2026 17:00 UTC",
+      "age_minutes": 41.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-26T19:40:57+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -405,18 +401,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 05:00 PM # Trend Type Actions 1 Colapinto Topic 2 #Fiesta2",
-      "age_minutes": 141.2,
+      "age_minutes": 161.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T19:21:09+02:00"
+      "fetched_at": "2026-09-26T19:40:57+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790443270",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790444459",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T19:21:10+02:00"
+      "fetched_at": "2026-09-26T19:40:59+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -425,7 +421,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T19:21:13+02:00"
+      "fetched_at": "2026-09-26T19:41:00+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -455,16 +451,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T19:21:13+02:00"
+      "fetched_at": "2026-09-26T19:41:00+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790443276",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790444462",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T19:21:16+02:00"
+      "fetched_at": "2026-09-26T19:41:02+02:00"
     }
   }
 }
