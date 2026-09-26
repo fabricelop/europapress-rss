@@ -89,6 +89,7 @@ for item in trend_candidates_doc.get("items", []):
         "explanation": str(item.get("explanation") or ""),
         "url": str(item.get("url") or item.get("source_url") or ""),
         "trend_names": list(item.get("trend_names") or []),
+        "trend_context": list(item.get("trend_context") or []),
         "search_terms": list(item.get("search_terms") or item.get("trend_names") or []),
         "source_count": int(item.get("source_count") or len(item.get("sources") or [])),
         "sources": list(item.get("sources") or []),
