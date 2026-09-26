@@ -305,8 +305,8 @@ function render(){
    const slot=card.querySelector(".slot");
    const x=document.createElement("a");x.className="action xsearch";x.textContent="Buscar en X";x.href="https://x.com/search?q="+encodeURIComponent(item.name)+"&src=typed_query&f=live";x.target="_blank";x.rel="noopener noreferrer";slot.appendChild(x);
    const p=document.createElement("button");p.className="action prepare";p.disabled=busy.has(item.name)||queued;
-   p.textContent=item.request_status==="problematic"?"Reintentar":item.material_novelty?"Preparar novedad":ready?"Ver preparado":queued?"Preparando…":"Preparar";
-   p.onclick=()=>item.request_status==="problematic"?openProblemRetry({name:item.name,status:"problematic"}):ready?location.assign("/ttendencias/preparados/"):prepareUpcoming(item);slot.appendChild(p);
+   p.textContent=item.material_novelty?"Preparar novedad":queued?"Preparando…":"Preparar";
+   p.onclick=()=>prepareUpcoming(item);slot.appendChild(p);
    upcomingList.appendChild(card);
  }
  if(!(model.upcoming||[]).length)upcomingList.innerHTML='<div class="empty">No hay señales anticipadas con suficiente respaldo ahora mismo.</div>';
