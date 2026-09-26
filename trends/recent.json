@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T15:40:53+02:00",
+  "captured_at": "2026-09-26T15:50:50+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -13,8 +13,7 @@
   "source_count": 7,
   "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24",
-    "snaplytics"
+    "tweets24"
   ],
   "reliability": "high",
   "top10": [
@@ -71,31 +70,9 @@
       "name": "Desinflar"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Bottas",
-    "Russell"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
-    {
-      "name": "Hadjar",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "superx",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.5,
-      "movement": "up",
-      "first_detected_at": "2026-09-26T15:31:20+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
     {
       "name": "Gasly",
       "social_source_count": 4,
@@ -107,8 +84,27 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.5,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T15:40:53+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Hadjar",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "superx",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.5,
+      "movement": "flat",
+      "first_detected_at": "2026-09-26T15:31:20+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -126,7 +122,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T15:40:53+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -145,7 +141,7 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 17.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T15:10:51+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -199,7 +195,7 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 16.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T15:40:53+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -217,7 +213,7 @@
       ],
       "best_observed_rank": 17,
       "mean_observed_rank": 17.3,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T15:40:53+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -226,14 +222,7 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Bottas",
-      "first_detected_at": "2026-09-26T14:41:19+02:00",
-      "entered_top10_at": "2026-09-26T15:40:53+02:00",
-      "lead_minutes": 60
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -264,7 +253,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T15:40:53+02:00"
+      "fetched_at": "2026-09-26T15:50:50+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -289,7 +278,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T15:40:54+02:00"
+      "fetched_at": "2026-09-26T15:50:51+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -316,10 +305,10 @@
         "Cadillac"
       ],
       "error": null,
-      "update_hint": "Updated 3 minutes ago",
-      "age_minutes": 3.0,
+      "update_hint": "Updated 13 minutes ago",
+      "age_minutes": 13.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T15:40:55+02:00"
+      "fetched_at": "2026-09-26T15:50:51+02:00"
     },
     "superx": {
       "ok": true,
@@ -349,16 +338,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T15:40:56+02:00"
+      "fetched_at": "2026-09-26T15:50:52+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790430056",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790430654",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T15:40:56+02:00"
+      "fetched_at": "2026-09-26T15:50:54+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -386,9 +375,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 13:00 UTC",
-      "age_minutes": 40.9,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-26T15:40:56+02:00"
+      "age_minutes": 50.9,
+      "freshness": "aging",
+      "fetched_at": "2026-09-26T15:50:54+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -416,18 +405,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 01:00 PM # Trend Type Actions 1 #DeViernes Hashtag 2 Harva",
-      "age_minutes": 161.0,
+      "age_minutes": 170.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T15:40:57+02:00"
+      "fetched_at": "2026-09-26T15:50:54+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 525 Server Error: <none> for url: https://trends.cyberkendra.com/spain/?_=1790430058",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790430655",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T15:40:58+02:00"
+      "fetched_at": "2026-09-26T15:50:55+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -436,7 +425,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T15:41:07+02:00"
+      "fetched_at": "2026-09-26T15:50:56+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -466,16 +455,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T15:41:07+02:00"
+      "fetched_at": "2026-09-26T15:50:57+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790430070",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790430659",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T15:41:10+02:00"
+      "fetched_at": "2026-09-26T15:50:59+02:00"
     }
   }
 }
