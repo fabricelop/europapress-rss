@@ -97,30 +97,27 @@ function threeSourceSpeedMinutes(event){
     .sort((x,y)=>x-y);
   return times.length>=3?Math.max(0,Math.round((times[2]-times[0])/60000)):null
 }
-async function ensurePublishable(eventId){
-  const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
-  const {doc}=await readJson(PREPARED);
-  const item=(doc.items||[]).find(x=>idOf(x.event_id)===id);
-  if(!item)throw new Error("No se encuentra la noticia lista");
-  const state=String(item.image_status||(item.image_pending?"pending":item.image?.url?"ready":"none")).toLowerCase();
-  const url=String(item.image?.url||item.image_url||"");
-  const terminal=(state==="ready"&&!!url)||state==="telegram"||state==="none";
-  if(!terminal){
-    const err=new Error(state==="working"?"La imagen se está generando. Espera a que termine antes de publicar.":state==="retry"?"La imagen está pendiente de reintento. Espera antes de publicar.":"La imagen todavía está pendiente. Espera a que termine antes de publicar.");
-    err.statusCode=409;
-    throw err;
-  }
-  return item
-}
 async function closePrepared(eventId,status){
   const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
-  if(status==="published")await ensurePublishable(id);
   const now=new Date().toISOString();
+  let cancelPendingImage=false;
+  if(status==="published"){
+    try{
+      const {doc}=await readJson(PREPARED);
+      const item=(doc.items||[]).find(x=>idOf(x.event_id)===id);
+      if(item){
+        const state=String(item.image_status||(item.image_pending?"pending":item.image?.url?"ready":"none")).toLowerCase();
+        const url=String(item.image?.url||item.image_url||"");
+        const terminal=(state==="ready"&&!!url)||state==="telegram"||state==="none";
+        cancelPendingImage=!terminal||Boolean(item.image_pending);
+      }
+    }catch(e){console.error("No se pudo determinar estado de imagen al publicar",e)}
+  }
   await mutateJson(DECISIONS,`${status==="published"?"Publicar":"Desestimar"} TTiTTulares desde web`,doc=>{
     doc.project||="TTiTTulares";doc.items||=[];
     const old=doc.items.find(x=>idOf(x.event_id)===id);
-    if(old)Object.assign(old,{status,updated_at:now});
-    else doc.items.push({event_id:id,status,updated_at:now});
+    if(old)Object.assign(old,{status,updated_at:now,...(cancelPendingImage?{image_cancelled_by_publication:true,image_cancelled_at:now,image_cancel_reason:"published_before_image_complete"}:{})});
+    else doc.items.push({event_id:id,status,updated_at:now,...(cancelPendingImage?{image_cancelled_by_publication:true,image_cancelled_at:now,image_cancel_reason:"published_before_image_complete"}:{})});
     doc.updated_at=now;return doc
   });
   await mutateJson(PREPARED,"Retirar noticia cerrada de TTiTTulares web",doc=>{
@@ -129,14 +126,25 @@ async function closePrepared(eventId,status){
   await mutateJson(PROCESSING,"Actualizar cierre web TTiTTulares",doc=>{
     for(const item of doc.items||[])if(idOf(item.event_id)===id){
       item.status=status==="published"?"PUBLISHED":"DISMISSED";
-      item[status==="published"?"published_at":"dismissed_at"]=now
+      item[status==="published"?"published_at":"dismissed_at"]=now;
+      if(cancelPendingImage){
+        item.image_cancelled_by_publication=true;
+        item.image_cancelled_at=now;
+        item.image_cancel_reason="published_before_image_complete";
+        item.image_pending=false
+      }
     }
     doc.updated_at=now;return doc
   });
   await mutateJson(EVENTS,"Cerrar evento TTiTTulares desde web",doc=>{
     for(const event of doc.events||[])if(idOf(event.id||event.event_id)===id){
       event.status=status==="published"?"PUBLISHED":"DISMISSED";
-      event[status==="published"?"published_at":"dismissed_at"]=now
+      event[status==="published"?"published_at":"dismissed_at"]=now;
+      if(cancelPendingImage){
+        event.image_cancelled_by_publication=true;
+        event.image_cancelled_at=now;
+        event.image_cancel_reason="published_before_image_complete"
+      }
     }
     doc.updated_at=now;return doc
   });
