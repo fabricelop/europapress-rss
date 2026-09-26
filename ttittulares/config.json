@@ -69,14 +69,27 @@
       "copy_image",
       "open_source"
     ],
-    "generated_failure_policy": "ready_with_image_pending_then_retry",
+    "generated_failure_policy": "finish_none_retry_next_execution",
     "news_first_two_phase": true,
-    "ready_initial_status": "pending",
+    "ready_initial_status": "working",
     "retry_after_news": true,
     "delivery_order": [
       "app",
       "telegram"
     ],
-    "telegram_fallback": true
+    "telegram_fallback": true,
+    "state_machine": {
+      "working": "Imagen en elaboración",
+      "ready": "Imagen lista",
+      "telegram": "Imagen en Telegram",
+      "none": "Sin imagen"
+    },
+    "reset_none_to_working_each_execution": true,
+    "global_error_policy": "continue_next_item",
+    "final_states": [
+      "ready",
+      "telegram",
+      "none"
+    ]
   }
 }
