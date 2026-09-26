@@ -84,7 +84,7 @@ function renderScheduleTiming(){
  if(!model)return;
  const cfg=model.editorial_config?.editorial||{},now=new Date();
  const radarMinutes=(cfg.detection_schedule_minutes||[7,17,27,37,47,57]).map(Number);
- const editorialMinutes=(cfg.schedule_minutes||[30]).map(Number);
+ const editorialMinutes=(cfg.schedule_minutes||[15]).map(Number);
  const nextR=nextSlot(now,radarMinutes),nextE=nextSlot(now,editorialMinutes);
  const healthChecked=new Date(model.health?.checked_at||0);
  const healthFresh=!Number.isNaN(healthChecked.getTime())&&(Date.now()-healthChecked.getTime())<=25*60000;
