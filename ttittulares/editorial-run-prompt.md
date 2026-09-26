@@ -151,14 +151,29 @@ Si hay muerte, lesión grave o traumática, víctimas de violencia/abuso, traged
 
 Un fallo técnico o DE ESTILO del generador NO convierte una noticia apta para gag en `archive_sensitive`. No uses foto de archivo como sustituto técnico del renderer.
 
+### Brief visual aislado obligatorio antes de generar
+
+ANTES de CADA llamada al generador crea desde cero un `visual_brief` autocontenido usando EXCLUSIVAMENTE el item activo. No reutilices prompts, imágenes, personajes, lugares, deportes, expedientes, gags ni contexto visual de ningún item anterior.
+
+El brief debe comenzar literalmente con `EVENTO ACTUAL: <event_id> · <title>` y contener: `HECHO CENTRAL` (una frase factual), `GAG VISUAL` (una sola idea ligada al hecho), `ELEMENTOS OBLIGATORIOS` (2–4), `ELEMENTOS PROHIBIDOS` (contextos secundarios que desvíen la imagen) y `ESCENA` (una composición única y sencilla).
+
+REGLA DE AISLAMIENTO: título, factual_summary, gag elegido y visual_brief del item activo son la ÚNICA memoria semántica permitida para la llamada de imagen. No añadas por asociación otros casos conocidos del protagonista. Si el hecho es «jubilación por edad», la imagen debe visualizar edad/jubilación/calendario/BOE según el gag elegido; no puede sustituir el tema por otros procedimientos judiciales del protagonista.
+
+Antes de generar, preflight obligatorio: (1) gag = HECHO CENTRAL; (2) obligatorios presentes; (3) prohibidos excluidos; (4) el prompt NO podría servir igual para otra noticia del mismo protagonista. Si falla, reescribe el brief antes de generar.
+
+En `IMAGE_RETRY`, reconstruye un visual_brief fresco desde `prepared_item.event_id,title,factual_summary,variants`; nunca uses por sí sola la instrucción genérica de la cola.
+
 ### Control del raster generado
 
-DESPUÉS DE GENERAR, inspecciona la imagen REAL, no solo el prompt. Solo puede marcarse `ready` si:
+DESPUÉS DE GENERAR, inspecciona la imagen REAL, no solo el prompt. Compárala expresamente con HECHO CENTRAL, GAG VISUAL, ELEMENTOS OBLIGATORIOS y ELEMENTOS PROHIBIDOS. Si representa un asunto secundario del mismo protagonista, RECHÁZALA aunque sea técnicamente perfecta. Solo puede marcarse `ready` si:
 - el fichero se abre y decodifica correctamente;
 - la escena ocupa el fotograma completo;
 - no hay bandas, bloques negros ni regiones vacías anómalas;
 - la composición está completa;
 - el gag se entiende sin depender de rótulos;
+- representa inequívocamente el HECHO CENTRAL actual;
+- cumple los ELEMENTOS OBLIGATORIOS y no introduce ELEMENTOS PROHIBIDOS;
+- no sustituye el evento actual por otro asunto asociado al protagonista;
 - existe profundidad/volumen/iluminación apreciable;
 - NO presenta estética flat 2D/pixel-art/vectorial simplificada;
 - supera el control visual editorial.
