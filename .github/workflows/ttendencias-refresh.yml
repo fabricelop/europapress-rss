@@ -88,43 +88,8 @@ jobs:
           git pull --rebase --autostash origin main
           git push origin HEAD:main
 
-          # Si han entrado tendencias nuevas, dispara el mismo canal permanente
-          # que usa «Ejecutar ahora». Así la explicación no espera al :30.
-          if python3 - <<'PY'
-          import json
-          from pathlib import Path
-          rows=json.loads(Path("/tmp/tt-new-explanations.json").read_text())
-          raise SystemExit(0 if rows else 1)
-          PY
-          then
-            rm -rf /tmp/ttendencias-run-trigger
-            git fetch origin control/ttendencias-run-trigger
-            git worktree add -f /tmp/ttendencias-run-trigger origin/control/ttendencias-run-trigger
-            (
-              cd /tmp/ttendencias-run-trigger
-              git config user.name "ttendencias-bot"
-              git config user.email "actions@users.noreply.github.com"
-              python3 - <<'PY'
-          import json, datetime, hashlib, time
-          from pathlib import Path
-          now=datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00","Z")
-          command="auto-"+hashlib.sha256((now+str(time.time_ns())).encode()).hexdigest()[:16]
-          path=Path("trends/run-now-trigger.json")
-          path.parent.mkdir(parents=True,exist_ok=True)
-          path.write_text(json.dumps({
-              "version":1,
-              "command_id":command,
-              "requested_at":now,
-              "mode":"auto_explain"
-          },ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-          print("Trigger explicación inmediata:",command)
-          PY
-              git add trends/run-now-trigger.json
-              git commit -m "TTendencias: explicar nuevas tendencias"
-              git push origin HEAD:control/ttendencias-run-trigger
-            )
-            git worktree remove -f /tmp/ttendencias-run-trigger || true
-          fi
+          # Las nuevas tendencias se explican en la ejecución horaria de TTendencias.
+          # Ya no se crea un trigger separado de ChatGPT Work por cada entrada nueva.
 
       - name: Avisar nuevos Trending Topics
         if: always()
