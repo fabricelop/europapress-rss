@@ -1,15 +1,12 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T14:51:17+02:00",
+  "captured_at": "2026-09-26T15:01:09+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
-    "getdaytrends",
-    "tweets24",
-    "snaplytics",
-    "fowtools",
-    "trendswe"
+    "trends24",
+    "tweets24"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
@@ -18,81 +15,72 @@
   ],
   "reliability": "high",
   "top10": [
-    "#DeViernes",
-    "Mari Carmen",
-    "Harvard",
-    "Belén",
-    "PSOE",
-    "Frente Amplio",
+    "Colapinto",
+    "Piastri",
+    "Norris",
     "Triana",
-    "Andrea",
-    "La Bola Negra",
-    "Paquita"
+    "Alpine",
+    "#AzerbaijanGP",
+    "Safety Car",
+    "Gasly",
+    "Desinflar",
+    "Verstappen"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "#DeViernes"
+      "name": "Colapinto"
     },
     {
       "rank": 2,
-      "name": "Mari Carmen"
+      "name": "Piastri"
     },
     {
       "rank": 3,
-      "name": "Harvard"
+      "name": "Norris"
     },
     {
       "rank": 4,
-      "name": "Belén"
-    },
-    {
-      "rank": 5,
-      "name": "PSOE"
-    },
-    {
-      "rank": 6,
-      "name": "Frente Amplio"
-    },
-    {
-      "rank": 7,
       "name": "Triana"
     },
     {
+      "rank": 5,
+      "name": "Alpine"
+    },
+    {
+      "rank": 6,
+      "name": "#AzerbaijanGP"
+    },
+    {
+      "rank": 7,
+      "name": "Safety Car"
+    },
+    {
       "rank": 8,
-      "name": "Andrea"
+      "name": "Gasly"
     },
     {
       "rank": 9,
-      "name": "La Bola Negra"
+      "name": "Desinflar"
     },
     {
       "rank": 10,
-      "name": "Paquita"
+      "name": "Verstappen"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Colapinto",
+    "Piastri",
+    "Norris",
+    "Alpine",
+    "#AzerbaijanGP",
+    "Safety Car",
+    "Gasly",
+    "Desinflar",
+    "Verstappen"
+  ],
   "upcoming": [
-    {
-      "name": "Manchester City",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 15.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T03:31:09+02:00",
-      "news_source_count": 9,
-      "news_event_id": "de32583e5844",
-      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-25T15:02:55.152129Z"
-    },
     {
       "name": "#FelizSábado",
       "social_source_count": 5,
@@ -104,7 +92,7 @@
         "tweets24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 15.2,
+      "mean_observed_rank": 16.6,
       "movement": "flat",
       "first_detected_at": "2026-09-26T13:10:54+02:00",
       "news_source_count": 0,
@@ -114,17 +102,34 @@
       "news_first_seen": null
     },
     {
-      "name": "Guardiola",
-      "social_source_count": 4,
+      "name": "Manchester City",
+      "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
         "snaplytics",
-        "trendswe",
-        "tweets24"
+        "trendswe"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 15.3,
+      "movement": "down",
+      "first_detected_at": "2026-09-26T03:31:09+02:00",
+      "news_source_count": 9,
+      "news_event_id": "de32583e5844",
+      "news_title": "El Manchester City, culpable de más de 100 cargos relacionados por el incumplimiento de las normas financieras de la Premier League",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-25T15:02:55.152129Z"
+    },
+    {
+      "name": "Guardiola",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trendswe"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.5,
-      "movement": "flat",
+      "mean_observed_rank": 11.3,
+      "movement": "down",
       "first_detected_at": "2026-09-26T03:40:50+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -134,35 +139,16 @@
     },
     {
       "name": "#SVGala3",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.2,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T13:41:07+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "#XenobladeChronicles2EnGAME",
       "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
         "snaplytics",
-        "tweets24"
+        "trendswe"
       ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 13.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T14:23:12+02:00",
+      "best_observed_rank": 15,
+      "mean_observed_rank": 16.7,
+      "movement": "down",
+      "first_detected_at": "2026-09-26T13:41:07+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -193,7 +179,7 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 15.5,
+      "mean_observed_rank": 11.0,
       "movement": "flat",
       "first_detected_at": "2026-09-26T14:41:19+02:00",
       "news_source_count": 0,
@@ -203,21 +189,38 @@
       "news_first_seen": null
     },
     {
-      "name": "Ayuso",
+      "name": "#XenobladeChronicles2EnGAME",
       "social_source_count": 2,
       "social_sources": [
-        "trendswe",
+        "getdaytrends",
+        "snaplytics"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 14.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-26T14:23:12+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Red Bull",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
         "tweets24"
       ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 17.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T10:50:51+02:00",
-      "news_source_count": 4,
-      "news_event_id": "7f98fb589304",
-      "news_title": "Ayuso tilda de violentas las protestas frente al ático por el desahucio de Maricarmen: “Intentan deshumanizar y acosar”",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-24T08:45:04.516177Z"
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T15:01:09+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -251,7 +254,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T14:51:17+02:00"
+      "fetched_at": "2026-09-26T15:01:09+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -276,37 +279,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T14:51:18+02:00"
+      "fetched_at": "2026-09-26T15:01:09+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
-        "#DeViernes",
-        "Mari Carmen",
-        "Harvard",
-        "Belén",
-        "PSOE",
-        "Frente Amplio",
+        "Colapinto",
+        "Piastri",
+        "Norris",
         "Triana",
-        "Andrea",
-        "La Bola Negra",
-        "Paquita",
-        "#XenobladeChronicles2EnGAME",
-        "Guardiola",
-        "#FelizSábado",
-        "Manchester City",
-        "#SVGala3",
-        "Olga",
-        "Ayuso",
-        "Franco",
+        "Alpine",
+        "#AzerbaijanGP",
+        "Safety Car",
+        "Gasly",
+        "Desinflar",
+        "Verstappen",
+        "Bottas",
         "Red Bull",
-        "Bottas"
+        "Aston Martin",
+        "Antonelli",
+        "Cadillac",
+        "Stroll",
+        "McLaren",
+        "Honda",
+        "Bakú",
+        "#FelizSábado"
       ],
       "error": null,
-      "update_hint": "Updated 38 minutes ago",
-      "age_minutes": 38.0,
+      "update_hint": "Updated 5 minutes ago",
+      "age_minutes": 5.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T14:51:18+02:00"
+      "fetched_at": "2026-09-26T15:01:10+02:00"
     },
     "superx": {
       "ok": true,
@@ -336,16 +339,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T14:51:19+02:00"
+      "fetched_at": "2026-09-26T15:01:11+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790427079",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790427671",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T14:51:19+02:00"
+      "fetched_at": "2026-09-26T15:01:11+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -373,48 +376,48 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 12:00 UTC",
-      "age_minutes": 51.3,
+      "age_minutes": 61.2,
       "freshness": "aging",
-      "fetched_at": "2026-09-26T14:51:19+02:00"
+      "fetched_at": "2026-09-26T15:01:11+02:00"
     },
     "fowtools": {
       "ok": true,
       "trends": [
         "#DeViernes",
-        "Mari Carmen",
         "Harvard",
+        "Mari Carmen",
         "Belén",
         "PSOE",
         "Frente Amplio",
-        "#XenobladeChronicles2EnGAME",
-        "Paquita",
         "La Bola Negra",
         "Andrea",
-        "Guardiola",
         "Triana",
+        "Paquita",
+        "Guardiola",
+        "#XenobladeChronicles2EnGAME",
         "#FelizSábado",
         "Manchester City",
         "#SVGala3",
+        "Bottas",
+        "Desinflar",
         "Olga",
         "Ayuso",
-        "Franco",
-        "Borja",
-        "Jesulín"
+        "Aston Martin"
       ],
       "error": null,
-      "update_hint": "Updated: September 26, 2026 at 12:00 PM # Trend Type Actions 1 #DeViernes Hashtag 2 Mari",
-      "age_minutes": 171.3,
+      "update_hint": "Updated: September 26, 2026 at 01:00 PM # Trend Type Actions 1 #DeViernes Hashtag 2 Harva",
+      "age_minutes": 121.2,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T14:51:19+02:00"
+      "fetched_at": "2026-09-26T15:01:11+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790427080",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790427673",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T14:51:20+02:00"
+      "fetched_at": "2026-09-26T15:01:13+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -423,7 +426,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T14:51:21+02:00"
+      "fetched_at": "2026-09-26T15:01:15+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -453,16 +456,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T14:51:21+02:00"
+      "fetched_at": "2026-09-26T15:01:15+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790427083",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790427677",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T14:51:23+02:00"
+      "fetched_at": "2026-09-26T15:01:17+02:00"
     }
   }
 }
