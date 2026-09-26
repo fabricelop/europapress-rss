@@ -464,6 +464,8 @@ export default async function handler(req,res){
           selected_at:x.selected_at||null,
           selection_mode:x.selection_mode||null,
           rewrite_version:x.rewrite_version||null,
+          trend_origin:Boolean(x.trend_origin||ev.trend_origin),
+          trend_names:Array.isArray(x.trend_names)?x.trend_names:(Array.isArray(ev.trend_names)?ev.trend_names:[]),
           source_count:Number(ev.source_count||x.source_count||0),
           sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
         }
@@ -480,6 +482,8 @@ export default async function handler(req,res){
           problematic_attempts:Number(x.problematic_attempts||1),
           user_validated:Boolean(x.user_validated),
           user_validated_at:x.user_validated_at||null,
+          trend_origin:Boolean(x.trend_origin||ev.trend_origin),
+          trend_names:Array.isArray(x.trend_names)?x.trend_names:(Array.isArray(ev.trend_names)?ev.trend_names:[]),
           source_count:Number(ev.source_count||x.source_count||0),
           sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
         }
