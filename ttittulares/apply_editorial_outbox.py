@@ -68,6 +68,40 @@ def _validate_raster_integrity(data: bytes, label: str):
     except (UnidentifiedImageError,OSError,SyntaxError) as exc: raise ValueError(f"{label}: raster corrupto o truncado: {exc}")
 
 
+def materialize_inline_generated_image(item, event_id: str, revision: int):
+    """Materializa un raster inline recibido por outbox, como TTendencias."""
+    image=item.get("image") or {}
+    url=str(image.get("url") or "").strip()
+    if not url.startswith("data:image/"):
+        return False
+    try:
+        header,payload=url.split(",",1)
+        if ";base64" not in header:
+            raise ValueError("data URL no base64")
+        mime=header[5:].split(";",1)[0].casefold()
+        ext={"image/jpeg":".jpg","image/png":".png","image/webp":".webp"}.get(mime)
+        if not ext:
+            raise ValueError(f"mime raster no permitido: {mime}")
+        data=base64.b64decode(payload,validate=True)
+    except Exception as exc:
+        raise ValueError(f"data URL raster inválida: {exc}")
+    if len(data)>42_000:
+        raise ValueError(f"imagen inline demasiado grande ({len(data)} bytes); comprime a JPEG/WebP <=42 KB")
+    _validate_raster_integrity(data,"imagen raster inline")
+    generated_dir=TT/"generated-images"
+    generated_dir.mkdir(parents=True,exist_ok=True)
+    filename=f"{event_id}-r{revision}{ext}"
+    fp=generated_dir/filename
+    fp.write_bytes(data)
+    image["url"]="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+f"ttittulares/generated-images/{filename}"
+    image["source_url"]="https://github.com/fabricelop/europapress-rss/blob/main/"+f"ttittulares/generated-images/{filename}"
+    image["handoff"]="inline-outbox-materialized-by-actions"
+    item["image"]=image
+    item.pop("image_pending",None)
+    item.pop("image_failure_reason",None)
+    return True
+
+
 def validate_image(item):
     image=item.get("image") or {}
     if not image: return
@@ -221,6 +255,8 @@ def main():
                 path.unlink(); continue
             st=str(payload.get("status") or "")
             if st=="ready":
+                raw_item=payload.get("prepared_item") or {}
+                materialize_inline_generated_image(raw_item,eid,rev)
                 item=validate_ready(payload)
                 if bool(row.get("with_image", True)):
                     image=item.get("image") or {}
