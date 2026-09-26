@@ -1,32 +1,34 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-27T00:41:12+02:00",
-  "primary_source": "snaplytics",
+  "captured_at": "2026-09-27T00:50:50+02:00",
+  "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "snaplytics"
+    "snaplytics",
+    "fowtools",
+    "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
   "fresh_sources": [
-    "snaplytics"
+    "tweets24"
   ],
   "reliability": "high",
   "top10": [
     "Oyarzabal",
     "#MalasLenguasN",
-    "Puerta del Sol",
-    "Inglaterra",
     "Ferran",
+    "Inglaterra",
     "Wembley",
+    "Puerta del Sol",
     "Cucurella",
     "#laSextaXplica",
-    "Lamine",
-    "#DeViernes"
+    "Gordon",
+    "Galapagar"
   ],
   "items": [
     {
@@ -39,7 +41,7 @@
     },
     {
       "rank": 3,
-      "name": "Puerta del Sol"
+      "name": "Ferran"
     },
     {
       "rank": 4,
@@ -47,11 +49,11 @@
     },
     {
       "rank": 5,
-      "name": "Ferran"
+      "name": "Wembley"
     },
     {
       "rank": 6,
-      "name": "Wembley"
+      "name": "Puerta del Sol"
     },
     {
       "rank": 7,
@@ -63,19 +65,38 @@
     },
     {
       "rank": 9,
-      "name": "Lamine"
+      "name": "Gordon"
     },
     {
       "rank": 10,
-      "name": "#DeViernes"
+      "name": "Galapagar"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Lamine",
-    "#DeViernes"
+    "Gordon",
+    "Galapagar"
   ],
   "upcoming": [
+    {
+      "name": "Kane",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 13.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-27T00:41:12+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
     {
       "name": "#NationsLeague",
       "social_source_count": 4,
@@ -86,7 +107,7 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 12.5,
+      "mean_observed_rank": 13.2,
       "movement": "flat",
       "first_detected_at": "2026-09-26T22:51:27+02:00",
       "news_source_count": 0,
@@ -105,7 +126,7 @@
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 14.5,
+      "mean_observed_rank": 14.8,
       "movement": "flat",
       "first_detected_at": "2026-09-26T23:31:06+02:00",
       "news_source_count": 1,
@@ -113,6 +134,24 @@
       "news_title": "De la Fuente: \"Estos futbolistas tienen ganas de crecer y crecer y seguir creciendo siempre\"",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-26T22:32:10.975582Z"
+    },
+    {
+      "name": "Ana Samboal",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-27T00:11:03+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Nico",
@@ -123,7 +162,7 @@
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 13.7,
+      "mean_observed_rank": 15.3,
       "movement": "flat",
       "first_detected_at": "2026-09-26T23:31:06+02:00",
       "news_source_count": 1,
@@ -133,17 +172,17 @@
       "news_first_seen": "2026-09-26T15:12:28.691339Z"
     },
     {
-      "name": "Kane",
+      "name": "15 M",
       "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
-        "snaplytics",
-        "trends24"
+        "trends24",
+        "tweets24"
       ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 14.0,
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
       "movement": "new",
-      "first_detected_at": "2026-09-27T00:41:12+02:00",
+      "first_detected_at": "2026-09-27T00:50:50+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -159,7 +198,7 @@
         "tweets24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 14.0,
+      "mean_observed_rank": 15.0,
       "movement": "flat",
       "first_detected_at": "2026-09-26T23:31:06+02:00",
       "news_source_count": 0,
@@ -176,44 +215,10 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.7,
-      "movement": "flat",
+      "best_observed_rank": 16,
+      "mean_observed_rank": 18.0,
+      "movement": "down",
       "first_detected_at": "2026-09-26T22:31:03+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Galapagar",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 14.5,
-      "movement": "new",
-      "first_detected_at": "2026-09-27T00:41:12+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Ana Samboal",
-      "social_source_count": 2,
-      "social_sources": [
-        "getdaytrends",
-        "trends24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T00:11:03+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -221,7 +226,14 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Galapagar",
+      "first_detected_at": "2026-09-27T00:41:12+02:00",
+      "entered_top10_at": "2026-09-27T00:50:50+02:00",
+      "lead_minutes": 10
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -252,7 +264,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T00:41:12+02:00"
+      "fetched_at": "2026-09-27T00:50:50+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -277,37 +289,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T00:41:12+02:00"
+      "fetched_at": "2026-09-27T00:50:50+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "Oyarzabal",
+        "#MalasLenguasN",
         "Ferran",
         "Inglaterra",
-        "Cucurella",
         "Wembley",
-        "#MalasLenguasN",
-        "Gordon",
         "Puerta del Sol",
-        "Kane",
+        "Cucurella",
         "#laSextaXplica",
-        "#NationsLeague",
-        "Nico",
-        "Pablo Aguado",
-        "De La Fuente",
-        "Unai",
-        "Merino",
-        "Olmo",
+        "Gordon",
         "Galapagar",
-        "Tuchel",
-        "Saka"
+        "Kane",
+        "Ana Samboal",
+        "15 M",
+        "#NationsLeague",
+        "De la Fuente",
+        "Pablo Aguado",
+        "Nico",
+        "Trampolín",
+        "Unai",
+        "Irene y Pablo"
       ],
       "error": null,
-      "update_hint": "Updated 1 hour ago",
-      "age_minutes": 60.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-27T00:41:15+02:00"
+      "update_hint": "Updated 1 minute ago",
+      "age_minutes": 1.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-27T00:50:51+02:00"
     },
     "superx": {
       "ok": true,
@@ -337,16 +349,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T00:41:16+02:00"
+      "fetched_at": "2026-09-27T00:50:51+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790462476",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790463052",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T00:41:16+02:00"
+      "fetched_at": "2026-09-27T00:50:52+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -374,9 +386,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 22:00 UTC",
-      "age_minutes": 41.3,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-27T00:41:16+02:00"
+      "age_minutes": 50.9,
+      "freshness": "aging",
+      "fetched_at": "2026-09-27T00:50:52+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -404,18 +416,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 10:00 PM # Trend Type Actions 1 Oyarzabal Topic 2 Ferran T",
-      "age_minutes": 161.3,
+      "age_minutes": 170.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-27T00:41:17+02:00"
+      "fetched_at": "2026-09-27T00:50:52+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790462477",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790463053",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T00:41:17+02:00"
+      "fetched_at": "2026-09-27T00:50:53+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -424,7 +436,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-27T00:41:18+02:00"
+      "fetched_at": "2026-09-27T00:50:54+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -454,16 +466,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T00:41:18+02:00"
+      "fetched_at": "2026-09-27T00:50:54+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790462482",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790463056",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T00:41:22+02:00"
+      "fetched_at": "2026-09-27T00:50:56+02:00"
     }
   }
 }
