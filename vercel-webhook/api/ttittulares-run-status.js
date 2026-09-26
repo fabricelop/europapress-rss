@@ -35,16 +35,20 @@ async function gh(url,options={}){
   }})
 }
 async function comments(){
-  const base=`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100`;
-  const first=await gh(base);
-  if(!first.ok)throw new Error(`GitHub comments: ${first.status} ${await first.text()}`);
-  let items=await first.json();
-  const link=first.headers.get("link")||"";
-  const last=link.match(/<([^>]+)>;\s*rel="last"/);
-  if(last){
-    const r=await gh(last[1]);
+  // El comentario de telemetría se crea una sola vez y se actualiza durante
+  // toda la ejecución, mientras los outboxes crean comentarios nuevos.
+  // Por eso NO basta con reemplazar la primera página por la última: al superar
+  // 100 comentarios el RUNTRACE activo puede quedar en una página anterior.
+  const since=new Date(Date.now()-24*60*60*1000).toISOString();
+  let url=`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100&since=${encodeURIComponent(since)}`;
+  const items=[];
+  for(let page=0;page<10&&url;page++){
+    const r=await gh(url);
     if(!r.ok)throw new Error(`GitHub comments: ${r.status} ${await r.text()}`);
-    items=await r.json()
+    items.push(...await r.json());
+    const link=r.headers.get("link")||"";
+    const next=link.match(/<([^>]+)>;\s*rel="next"/);
+    url=next?next[1]:null
   }
   return items
 }
