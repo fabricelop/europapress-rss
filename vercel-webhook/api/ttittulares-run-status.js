@@ -113,6 +113,7 @@ function normalizeTrace(t,errors){
     started_at:t.started_at||started,
     updated_at:t.updated_at||t.comment_updated_at||null,
     finished_at:finished,
+    duration_seconds:started&&finished?seconds(started,finished):null,
     message:t.message||null,
     summary:t.summary||null,
     incident_count,
