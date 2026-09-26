@@ -126,6 +126,12 @@ jobs:
             git worktree remove -f /tmp/ttendencias-run-trigger || true
           fi
 
+      - name: Avisar nuevos Trending Topics
+        if: always()
+        continue-on-error: true
+        run: |
+          curl -fsS --max-time 20 "https://europapress-rss.vercel.app/api/ttendencias-top10-push" || true
+
       - name: Comprobar salud TTendencias
         if: always()
         env:
