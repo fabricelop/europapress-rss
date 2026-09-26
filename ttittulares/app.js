@@ -129,7 +129,16 @@ async function copyImage(url,btn){
   }catch(_){alert('El navegador no permite copiar esta imagen directamente. Usa Descargar imagen.');}
 }
 function renderImagePanel(host,x){
-  const im=x.image||{};const url=String(im.url||'').trim();if(!url)return;
+  const im=x.image||{};const url=String(im.url||'').trim();
+  if(!url){
+    const state=String(x.image_status||(x.image_pending?'pending':'')).toLowerCase();
+    if(!state)return;
+    const box=document.createElement('section');box.className='image-panel image-status';
+    const meta=document.createElement('div');meta.className='image-meta';
+    const labels={pending:'⏳ Imagen pendiente',retry:'↻ Imagen pendiente · se reintentará',telegram:'✈️ Imagen enviada a Telegram',error:'⚠️ Imagen pendiente · error'};
+    meta.innerHTML='<strong>'+esc(labels[state]||'⏳ Imagen pendiente')+'</strong><span>La noticia ya está lista; la imagen se procesa aparte.</span>';
+    box.append(meta);host.appendChild(box);return;
+  }
   const box=document.createElement('section');box.className='image-panel';
   const img=document.createElement('img');img.src=url;img.alt=im.alt||'Imagen de la noticia';img.loading='lazy';
   const meta=document.createElement('div');meta.className='image-meta';
