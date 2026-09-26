@@ -70,7 +70,7 @@ const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
 const RUN_STATUS_API="/api/ttendencias-run-status";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="ttendencias-ui-explain-only-v1-20260926";
+const SHELL_BUILD="ttendencias-ui-radar-bridge-v2-20260927";
 const $=id=>document.getElementById(id);
 let model=null,busy=new Set(),runPoll=null,problemRetryItem=null;
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
@@ -327,11 +327,9 @@ function runPhaseLabel(s){
  if(["preparing","prepare"].includes(p))return "Preparando ejecución";
  if(["refreshing","radar_refresh"].includes(p))return "Actualizando tendencias";
  if(["investigating","research"].includes(p))return "Investigando tendencia"+pos;
- if(["drafting","redacting","writing"].includes(p))return "Redactando tendencia"+pos;
- if(["image_generating","image_generate","generating_image"].includes(p))return "Generando imagen"+pos;
- if(["image_checking","image_review"].includes(p))return "Revisando imagen"+pos;
- if(["image_checkpoint","image_persisting","image_persist","saving_image"].includes(p))return "Guardando imagen"+pos;
- if(["persisting","outbox"].includes(p))return "Guardando tendencia"+pos;
+ if(["drafting","redacting","writing"].includes(p))return "Redactando explicación"+pos;
+ if(["classifying","classification"].includes(p))return "Clasificando posible noticia"+pos;
+ if(["persisting","outbox"].includes(p))return "Guardando explicación"+pos;
  if(["verifying","verification"].includes(p))return "Verificando tendencia"+pos;
  if(["closing","finalizing"].includes(p))return "Cerrando ejecución";
  if(p==="error")return "Ejecución con error";
@@ -342,10 +340,10 @@ function runProgressValue(s){
  const p=String(s.phase||"").toLowerCase();
  if(["preparing","prepare","refreshing","radar_refresh"].includes(p))return 5;
  if(["investigating","research"].includes(p))return 7+18*f;
- if(["drafting","redacting","writing"].includes(p))return 26+18*f;
- if(["image_generating","image_generate","generating_image","image_checking","image_review"].includes(p))return 45+25*f;
- if(["image_checkpoint","image_persisting","image_persist","saving_image","persisting","outbox"].includes(p))return 71+17*f;
- if(["verifying","verification"].includes(p))return 89+8*f;
+ if(["drafting","redacting","writing"].includes(p))return 26+20*f;
+ if(["classifying","classification"].includes(p))return 47+20*f;
+ if(["persisting","outbox"].includes(p))return 68+18*f;
+ if(["verifying","verification"].includes(p))return 87+10*f;
  if(["closing","finalizing"].includes(p))return 99;
  return 12
 }
@@ -355,7 +353,8 @@ function runSummaryText(r){
  const processed=Number(x.trends_processed??x.items_processed);if(Number.isFinite(processed)&&processed>0)parts.push(processed+" tendencias procesadas");
  const ready=Number(x.trends_ready??x.ready);if(Number.isFinite(ready)&&ready>0)parts.push(ready+" listas");
  const prob=Number(x.trends_problematic??x.problematic);if(Number.isFinite(prob)&&prob>0)parts.push(prob+" problemáticas");
- const imgs=Number(x.images_ready);if(Number.isFinite(imgs)&&imgs>0)parts.push(imgs+" imágenes");
+ const candidates=Number(x.news_candidates);if(Number.isFinite(candidates)&&candidates>0)parts.push(candidates+" a TTiTTulares · Tendencias");
+ const processing=Number(x.news_processing);if(Number.isFinite(processing)&&processing>0)parts.push(processing+" a En elaboración");
  if(r?.duration_seconds!=null)parts.push(runDuration(r.duration_seconds));
  return parts.join(" · ")
 }
