@@ -1,7 +1,7 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-26T10:22:24.249123Z",
-  "count": 3,
+  "updated_at": "2026-09-26T10:29:27.599875Z",
+  "count": 5,
   "items": [
     {
       "event_id": "5df36b93b1da",
@@ -66,9 +66,11 @@
         },
         "image_strategy": "generated_gag",
         "image_pending": true,
-        "image_attempts": 2,
-        "image_failure_reason": "No se obtuvo un raster binario completo y validable con persistencia fiable en este ciclo; se aplica el fallback obligatorio sin bloquear READY.",
-        "image_search_status": "pending_renderer"
+        "image_failure_reason": "Pendiente de generación real: los intentos anteriores se contabilizaron sin llamadas reales al generador y han sido anulados.",
+        "image_search_status": "pending_renderer",
+        "image_generation_attempts": 0,
+        "image_persistence_attempts": 0,
+        "image_delivery": "pending"
       },
       "image_mode": "generated_gag_or_archive_sensitive",
       "image_instruction": "Completa solo la imagen pendiente. Conserva íntegramente prepared_item y su revisión, añade image con raster válido y envía status ready por el outbox habitual. No regeneres ni cambies los textos."
@@ -110,6 +112,48 @@
       ],
       "source_count": 8,
       "selected_at": "2026-09-26T10:22:24.157912Z",
+      "selection_mode": "AUTO_WEB",
+      "revision": 1,
+      "rewrite_request": "",
+      "parent_event_id": null,
+      "update_context": null,
+      "with_image": true,
+      "image_mode": "generated_gag_or_archive_sensitive",
+      "image_instruction": "Genera por defecto una imagen editorial ORIGINAL con gag específico y línea editorial-scene-v2-cleveland. Prioriza velocidad: objetivo ~768 px lado largo, detalle medio y JPEG sRGB calidad ~82. Valida el raster completo antes y después de GitHub. Si tras dos intentos la imagen falla, la noticia debe poder pasar READY con image_pending; nunca sustituyas generated_gag por archivo salvo archive_sensitive real."
+    },
+    {
+      "event_id": "902c11aa84e6",
+      "title": "Cazas españoles intervienen tras detectar un dron ruso cerca de la frontera con Rumanía",
+      "url": "https://www.20minutos.es/internacional/cazas-espanoles-intervienen-detectar-dron-ruso-cerca-frontera-rumania_7041652_0.html",
+      "sources": [
+        "20minutos",
+        "ABC",
+        "El Mundo",
+        "Europa Press"
+      ],
+      "source_count": 4,
+      "selected_at": "2026-09-26T10:29:27.498586Z",
+      "selection_mode": "AUTO_WEB",
+      "revision": 1,
+      "rewrite_request": "",
+      "parent_event_id": null,
+      "update_context": null,
+      "with_image": true,
+      "image_mode": "generated_gag_or_archive_sensitive",
+      "image_instruction": "Genera por defecto una imagen editorial ORIGINAL con gag específico y línea editorial-scene-v2-cleveland. Prioriza velocidad: objetivo ~768 px lado largo, detalle medio y JPEG sRGB calidad ~82. Valida el raster completo antes y después de GitHub. Si tras dos intentos la imagen falla, la noticia debe poder pasar READY con image_pending; nunca sustituyas generated_gag por archivo salvo archive_sensitive real."
+    },
+    {
+      "event_id": "7300131475ae",
+      "title": "Muere un inmigrante en el incendio de un asentamiento chabolista en Palos de la Frontera (Huelva)",
+      "url": "https://elpais.com/espana/2026-09-26/muere-un-inmigrante-en-el-incendio-de-un-asentamiento-chabolista-en-palos-de-la-frontera-huelva.html",
+      "sources": [
+        "COPE",
+        "EFE",
+        "EL PAÍS",
+        "Europa Press"
+      ],
+      "source_count": 4,
+      "selected_at": "2026-09-26T10:29:27.498586Z",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
       "rewrite_request": "",
