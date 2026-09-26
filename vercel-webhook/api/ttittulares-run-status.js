@@ -94,8 +94,15 @@ function incidentsFor(errors,start,finish){
   return errors.filter(x=>{const t=stamp(x.at);return t>=a&&t<=b}).slice(-8)
 }
 function normalizeTrace(t,errors){
-  const started=t.started_at||t.requested_at||t.updated_at||null;
-  const finished=t.finished_at||(["DONE","ERROR"].includes(t.status)?t.updated_at:null);
+  const commentUpdated=t.comment_updated_at||null;
+  const payloadUpdated=t.updated_at||null;
+  // GitHub es el reloj autoritativo de la telemetría. Algunos ejecutores pueden
+  // publicar timestamps unos minutos adelantados; no deben convertir una ejecución
+  // viva en ERROR ni ocultarla del panel.
+  const payloadMs=stamp(payloadUpdated),commentMs=stamp(commentUpdated);
+  const updated=(payloadMs&&commentMs&&payloadMs>commentMs+2*60*1000)?commentUpdated:(payloadUpdated||commentUpdated||null);
+  const started=t.started_at||t.requested_at||updated||null;
+  const finished=t.finished_at||(["DONE","ERROR"].includes(t.status)?updated:null);
   const incidents=incidentsFor(errors,started,finished);
   const incident_count=Math.max(Number(t.incident_count||0),incidents.length);
   return {
@@ -111,7 +118,8 @@ function normalizeTrace(t,errors){
     title:t.title||null,
     requested_at:t.requested_at||null,
     started_at:t.started_at||started,
-    updated_at:t.updated_at||t.comment_updated_at||null,
+    updated_at:updated,
+    telemetry_comment_updated_at:commentUpdated,
     finished_at:finished,
     duration_seconds:started&&finished?seconds(started,finished):null,
     message:t.message||null,
@@ -145,7 +153,7 @@ export default async function handler(req,res){
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
     const [enabled,items]=await Promise.all([triggerReady(),comments()]);
-    const traces=items.map(traceOf).filter(Boolean).sort((a,b)=>stamp(a.updated_at||a.comment_updated_at)-stamp(b.updated_at||b.comment_updated_at));
+    const traces=items.map(traceOf).filter(Boolean).sort((a,b)=>stamp(a.comment_updated_at||a.updated_at)-stamp(b.comment_updated_at||b.updated_at));
     const latestRaw=traces.at(-1)||null;
     let errors=[];
     if(latestRaw&&Number(latestRaw.incident_count||0)>0)errors=await readErrors();
@@ -153,8 +161,9 @@ export default async function handler(req,res){
 
     let active=null;
     if(latest&&["REQUESTED","RUNNING"].includes(latest.status)){
-      const age=Date.now()-stamp(latest.updated_at||latest.started_at||latest.requested_at);
-      if(Number.isFinite(age)&&age>=0&&age<STALE_MS)active=latest;
+      const freshAt=latest.telemetry_comment_updated_at||latest.updated_at||latest.started_at||latest.requested_at;
+      const age=Date.now()-stamp(freshAt);
+      if(Number.isFinite(age)&&age<STALE_MS)active=latest;
       else latest={...latest,status:"ERROR",finished_at:latest.updated_at||new Date().toISOString(),message:latest.message||"La ejecución dejó de actualizar la telemetría durante más de 45 minutos."}
     }
 
