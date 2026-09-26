@@ -1,23 +1,23 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T23:31:43+02:00",
+  "captured_at": "2026-09-26T23:40:50+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "snaplytics",
     "fowtools",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "Oyarzabal",
     "Ferran",
@@ -249,7 +249,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T23:31:43+02:00"
+      "fetched_at": "2026-09-26T23:40:50+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -274,7 +274,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T23:31:44+02:00"
+      "fetched_at": "2026-09-26T23:40:51+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -301,10 +301,10 @@
         "Saka"
       ],
       "error": null,
-      "update_hint": "Updated 6 minutes ago",
-      "age_minutes": 6.0,
+      "update_hint": "Updated 15 minutes ago",
+      "age_minutes": 15.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T23:31:45+02:00"
+      "fetched_at": "2026-09-26T23:40:52+02:00"
     },
     "superx": {
       "ok": true,
@@ -334,46 +334,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T23:31:46+02:00"
+      "fetched_at": "2026-09-26T23:40:53+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790458306",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790458853",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T23:31:46+02:00"
+      "fetched_at": "2026-09-26T23:40:53+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "Oyarzabal",
         "Ferran",
-        "Cucurella",
-        "Gordon",
-        "Lamine",
         "Inglaterra",
-        "#DeViernes",
         "Wembley",
+        "#MalasLenguasN",
+        "Cucurella",
+        "Lamine",
+        "Puerta del Sol",
+        "Gordon",
+        "Bellingham",
+        "#DeViernes",
         "Harvard",
         "Mari Carmen",
-        "Bellingham",
         "Colapinto",
+        "#laSextaXplica",
         "Belén",
-        "Puerta del Sol",
-        "Nico",
         "Kane",
         "Andrea",
-        "Pablo Aguado",
-        "#NationsLeague",
+        "La Bola Negra",
         "Guardiola"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 26, 2026 20:00 UTC",
-      "age_minutes": 91.8,
-      "freshness": "stale",
-      "fetched_at": "2026-09-26T23:31:47+02:00"
+      "update_hint": "Trending now Sep 26, 2026 21:00 UTC",
+      "age_minutes": 40.9,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-26T23:40:53+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -401,27 +401,27 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 09:00 PM # Trend Type Actions 1 Ferran Topic 2 Cucurella T",
-      "age_minutes": 151.8,
+      "age_minutes": 160.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T23:31:47+02:00"
+      "fetched_at": "2026-09-26T23:40:54+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends.cyberkendra.com/spain/?_=1790458308",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790458855",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T23:31:48+02:00"
+      "fetched_at": "2026-09-26T23:40:55+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
       "trends": [],
-      "error": "ConnectionError: HTTPSConnectionPool(host='globaltwittertrends.com', port=443): Max retries exceeded with url: /spain/?_=1790458309 (Caused by NewConnectionError(\"HTTPSConnection(host='globaltwittertrends.com', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))",
-      "update_hint": null,
-      "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-09-26T23:31:49+02:00"
+      "error": "Lista no válida (1 elementos parseados)",
+      "update_hint": "updated 30 minutes ago",
+      "age_minutes": 30.0,
+      "freshness": "invalid",
+      "fetched_at": "2026-09-26T23:40:56+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -451,16 +451,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T23:32:50+02:00"
+      "fetched_at": "2026-09-26T23:40:56+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790458372",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790458860",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T23:32:52+02:00"
+      "fetched_at": "2026-09-26T23:41:00+02:00"
     }
   }
 }
