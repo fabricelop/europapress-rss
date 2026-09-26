@@ -23,7 +23,7 @@ jobs:
 
       - name: Validar Python
         run: |
-          python3 -m py_compile telegram/radar_no_d1.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py ttittulares/build_editorial_queue.py ttittulares/apply_editorial_outbox.py
+          python3 -m py_compile telegram/radar_no_d1.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py ttittulares/build_editorial_queue.py ttittulares/apply_editorial_outbox.py ttittulares/ingest_pr_outbox_comment.py
           python3 telegram/radar_no_d1.py --selftest-dedupe
           python3 ttittulares/auto_queue.py --selftest
 
