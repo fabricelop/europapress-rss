@@ -1,79 +1,79 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T12:50:51+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-26T13:01:15+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
+    "superx",
     "snaplytics",
-    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
-    "#DeViernes",
     "Mari Carmen",
     "Harvard",
-    "#agropopularSanmiguel",
-    "Belén",
     "PSOE",
-    "#FelizSábado",
-    "#XenobladeChronicles2EnGAME",
     "Paquita",
-    "Frente Amplio"
+    "#DeViernes",
+    "Belén",
+    "#XenobladeChronicles2EnGAME",
+    "Frente Amplio",
+    "#FelizSábado",
+    "Andrea"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "#DeViernes"
-    },
-    {
-      "rank": 2,
       "name": "Mari Carmen"
     },
     {
-      "rank": 3,
+      "rank": 2,
       "name": "Harvard"
     },
     {
-      "rank": 4,
-      "name": "#agropopularSanmiguel"
-    },
-    {
-      "rank": 5,
-      "name": "Belén"
-    },
-    {
-      "rank": 6,
+      "rank": 3,
       "name": "PSOE"
     },
     {
-      "rank": 7,
-      "name": "#FelizSábado"
-    },
-    {
-      "rank": 8,
-      "name": "#XenobladeChronicles2EnGAME"
-    },
-    {
-      "rank": 9,
+      "rank": 4,
       "name": "Paquita"
     },
     {
-      "rank": 10,
+      "rank": 5,
+      "name": "#DeViernes"
+    },
+    {
+      "rank": 6,
+      "name": "Belén"
+    },
+    {
+      "rank": 7,
+      "name": "#XenobladeChronicles2EnGAME"
+    },
+    {
+      "rank": 8,
       "name": "Frente Amplio"
+    },
+    {
+      "rank": 9,
+      "name": "#FelizSábado"
+    },
+    {
+      "rank": 10,
+      "name": "Andrea"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Andrea"
+  ],
   "upcoming": [
     {
       "name": "Manchester City",
@@ -86,7 +86,7 @@
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 14.8,
+      "mean_observed_rank": 14.6,
       "movement": "flat",
       "first_detected_at": "2026-09-26T03:31:09+02:00",
       "news_source_count": 9,
@@ -106,47 +106,9 @@
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 13.0,
+      "mean_observed_rank": 12.6,
       "movement": "flat",
       "first_detected_at": "2026-09-26T03:40:50+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "La Bola Negra",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 12.2,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T10:40:52+02:00",
-      "news_source_count": 2,
-      "news_event_id": "62315c97ec78",
-      "news_title": "Del trabajo magistral de Los Javis al cautivador debut de Guitarricadelafuente: qué dice la crítica de 'La bola negra' - El HuffPost",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-25T12:22:21.811396Z"
-    },
-    {
-      "name": "Andrea",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.2,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T10:01:19+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -163,7 +125,7 @@
         "tweets24"
       ],
       "best_observed_rank": 17,
-      "mean_observed_rank": 18.0,
+      "mean_observed_rank": 17.8,
       "movement": "flat",
       "first_detected_at": "2026-09-26T10:50:51+02:00",
       "news_source_count": 4,
@@ -171,24 +133,6 @@
       "news_title": "Ayuso tilda de violentas las protestas frente al ático por el desahucio de Maricarmen: “Intentan deshumanizar y acosar”",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-09-24T08:45:04.516177Z"
-    },
-    {
-      "name": "Triana",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-26T12:10:55+02:00",
-      "news_source_count": 8,
-      "news_event_id": "e7dfae846c83",
-      "news_title": "Muere Eduardo Rodríguez ‘Rodway’, guitarrista fundador de Triana",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-26T09:13:36.267032Z"
     },
     {
       "name": "#SVGala3",
@@ -200,7 +144,7 @@
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 15.8,
+      "mean_observed_rank": 15.5,
       "movement": "flat",
       "first_detected_at": "2026-09-26T10:01:19+02:00",
       "news_source_count": 0,
@@ -219,7 +163,7 @@
         "tweets24"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 16.8,
+      "mean_observed_rank": 16.5,
       "movement": "flat",
       "first_detected_at": "2026-09-26T12:41:01+02:00",
       "news_source_count": 0,
@@ -227,9 +171,70 @@
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
+    },
+    {
+      "name": "Franco",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 18,
+      "mean_observed_rank": 18.8,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T13:01:15+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "La Bola Negra",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.3,
+      "movement": "down",
+      "first_detected_at": "2026-09-26T10:40:52+02:00",
+      "news_source_count": 2,
+      "news_event_id": "62315c97ec78",
+      "news_title": "Del trabajo magistral de Los Javis al cautivador debut de Guitarricadelafuente: qué dice la crítica de 'La bola negra' - El HuffPost",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-25T12:22:21.811396Z"
+    },
+    {
+      "name": "Triana",
+      "social_source_count": 2,
+      "social_sources": [
+        "getdaytrends",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-26T12:10:55+02:00",
+      "news_source_count": 8,
+      "news_event_id": "e7dfae846c83",
+      "news_title": "Muere Eduardo Rodríguez ‘Rodway’, guitarrista fundador de Triana",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-26T09:13:36.267032Z"
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Andrea",
+      "first_detected_at": "2026-09-26T10:01:19+02:00",
+      "entered_top10_at": "2026-09-26T13:01:15+02:00",
+      "lead_minutes": 180
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -238,29 +243,29 @@
         "#DeViernes",
         "Mari Carmen",
         "Harvard",
-        "#agropopularSanmiguel",
         "Belén",
         "PSOE",
-        "#FelizSábado",
-        "#XenobladeChronicles2EnGAME",
-        "Paquita",
         "Frente Amplio",
-        "Andrea",
-        "La Bola Negra",
+        "#XenobladeChronicles2EnGAME",
         "Triana",
+        "Paquita",
+        "La Bola Negra",
+        "Andrea",
         "Guardiola",
+        "#FelizSábado",
         "Manchester City",
         "#SVGala3",
         "Olga",
         "Ayuso",
         "Franco",
-        "Taylor"
+        "Borja",
+        "Jesulin"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T12:50:51+02:00"
+      "fetched_at": "2026-09-26T13:01:15+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -285,7 +290,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T12:50:52+02:00"
+      "fetched_at": "2026-09-26T13:01:16+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -312,10 +317,10 @@
         "Taylor"
       ],
       "error": null,
-      "update_hint": "Updated 45 minutes ago",
-      "age_minutes": 45.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-26T12:50:54+02:00"
+      "update_hint": "Updated 55 minutes ago",
+      "age_minutes": 55.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-26T13:01:17+02:00"
     },
     "superx": {
       "ok": true,
@@ -345,16 +350,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T12:50:55+02:00"
+      "fetched_at": "2026-09-26T13:01:18+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790419855",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790420478",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T12:50:55+02:00"
+      "fetched_at": "2026-09-26T13:01:18+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -382,9 +387,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 10:00 UTC",
-      "age_minutes": 50.9,
+      "age_minutes": 61.3,
       "freshness": "aging",
-      "fetched_at": "2026-09-26T12:50:55+02:00"
+      "fetched_at": "2026-09-26T13:01:18+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -392,38 +397,38 @@
         "#DeViernes",
         "Mari Carmen",
         "Harvard",
-        "#agropopularSanmiguel",
-        "#FelizSábado",
         "Belén",
-        "Maestrazgo",
         "PSOE",
+        "#agropopularSanmiguel",
         "#XenobladeChronicles2EnGAME",
         "Paquita",
         "Frente Amplio",
+        "La Bola Negra",
         "Andrea",
         "Guardiola",
-        "La Bola Negra",
+        "Triana",
+        "#FelizSábado",
         "Manchester City",
         "#SVGala3",
         "Olga",
-        "Taylor",
         "Ayuso",
-        "Franco"
+        "Franco",
+        "Borja"
       ],
       "error": null,
-      "update_hint": "Updated: September 26, 2026 at 10:00 AM # Trend Type Actions 1 #DeViernes Hashtag 2 Mari",
-      "age_minutes": 170.9,
+      "update_hint": "Updated: September 26, 2026 at 11:00 AM # Trend Type Actions 1 #DeViernes Hashtag 2 Mari",
+      "age_minutes": 121.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T12:50:55+02:00"
+      "fetched_at": "2026-09-26T13:01:18+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790419857",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790420480",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T12:50:57+02:00"
+      "fetched_at": "2026-09-26T13:01:20+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -432,7 +437,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T12:50:58+02:00"
+      "fetched_at": "2026-09-26T13:01:22+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -462,16 +467,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T12:50:58+02:00"
+      "fetched_at": "2026-09-26T13:01:22+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790419860",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790420484",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T12:51:00+02:00"
+      "fetched_at": "2026-09-26T13:01:24+02:00"
     }
   }
 }
