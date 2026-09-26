@@ -1,13 +1,14 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T20:01:29+02:00",
+  "captured_at": "2026-09-26T20:10:53+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
+    "superx",
     "fowtools",
     "trendswe"
   ],
@@ -71,31 +72,103 @@
       "name": "Jandilla"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Pablo Aguado",
-    "David Gil",
-    "#TenerifeCádiz",
-    "Jandilla"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "Triana",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "snaplytics",
+        "superx",
         "trends24",
         "tweets24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "new",
+      "mean_observed_rank": 14.0,
+      "movement": "up",
       "first_detected_at": "2026-09-26T20:01:29+02:00",
       "news_source_count": 10,
       "news_event_id": "e7dfae846c83",
       "news_title": "Muere Eduardo Rodríguez ‘Rodway’, guitarrista fundador de Triana",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-09-26T09:13:36.267032Z"
+    },
+    {
+      "name": "#My9Games",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "superx",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 15.8,
+      "movement": "up",
+      "first_detected_at": "2026-09-26T20:01:29+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Águilas",
+      "social_source_count": 4,
+      "social_sources": [
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 15.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-26T20:01:29+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Coria",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "superx",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 15.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-26T20:01:29+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Lugo",
+      "social_source_count": 4,
+      "social_sources": [
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 17.5,
+      "movement": "up",
+      "first_detected_at": "2026-09-26T19:50:51+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Paula Blasi",
@@ -107,85 +180,13 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 17.7,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T19:10:55+02:00",
       "news_source_count": 2,
       "news_event_id": "2602ce936500",
       "news_title": "Caída y abandono de Paula Blasi en el Mundial de Montreal",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-26T16:33:01.891487Z"
-    },
-    {
-      "name": "Lugo",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.7,
-      "movement": "up",
-      "first_detected_at": "2026-09-26T19:50:51+02:00",
-      "news_source_count": 1,
-      "news_event_id": "0c94dfe3477d",
-      "news_title": "Antón Castro, mejor cocinero gallego a los 28 años, lleva el restaurante que abrió su bisabuelo en un pueblo de Lugo: 'Era la vida en pequeñito' - El HuffPost",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-26T06:41:57.094902Z"
-    },
-    {
-      "name": "#My9Games",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 16.3,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T20:01:29+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Águilas",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 14.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T20:01:29+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Coria",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T20:01:29+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     },
     {
       "name": "Frente Amplio",
@@ -212,7 +213,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T20:01:29+02:00",
       "news_source_count": 2,
       "news_event_id": "d2731fc2d307",
@@ -252,7 +253,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T20:01:29+02:00"
+      "fetched_at": "2026-09-26T20:10:53+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -277,7 +278,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T20:01:29+02:00"
+      "fetched_at": "2026-09-26T20:10:54+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -304,49 +305,49 @@
         "Paula Blasi"
       ],
       "error": null,
-      "update_hint": "Updated 8 minutes ago",
-      "age_minutes": 8.0,
+      "update_hint": "Updated 18 minutes ago",
+      "age_minutes": 18.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T20:01:30+02:00"
+      "fetched_at": "2026-09-26T20:10:54+02:00"
     },
     "superx": {
       "ok": true,
       "trends": [
+        "Pablo Aguado",
+        "David Gil",
+        "Vomitivo",
+        "#Fiesta26S",
         "Colapinto",
-        "Verstappen",
-        "Bottas",
-        "Russell",
-        "Norris",
-        "Alpine",
-        "Piastri",
-        "#AzerbaijanGP",
+        "Vladys",
+        "Emilio de Justo",
+        "Enric Gallego",
+        "Jandro",
+        "Pacheta",
+        "#TenerifeCádiz",
+        "#LaRoca241",
+        "Jandilla",
+        "#My9Games",
+        "Granada",
+        "Lando",
         "Triana",
-        "Desinflar",
-        "Red Bull",
-        "Gasly",
-        "Hadjar",
-        "Safety Car",
-        "Bakú",
-        "Lobato",
-        "Antonelli",
-        "Albon",
-        "McLaren",
-        "Cadillac"
+        "Coria",
+        "Águilas",
+        "Lugo"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T20:01:31+02:00"
+      "fetched_at": "2026-09-26T20:10:55+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790445691",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790446255",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T20:01:31+02:00"
+      "fetched_at": "2026-09-26T20:10:55+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -374,9 +375,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 17:00 UTC",
-      "age_minutes": 61.5,
+      "age_minutes": 70.9,
       "freshness": "aging",
-      "fetched_at": "2026-09-26T20:01:32+02:00"
+      "fetched_at": "2026-09-26T20:10:55+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -404,18 +405,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 06:00 PM # Trend Type Actions 1 #Fiesta26S Hashtag 2 Colap",
-      "age_minutes": 121.5,
+      "age_minutes": 130.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T20:01:32+02:00"
+      "fetched_at": "2026-09-26T20:10:55+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790445693",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790446257",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T20:01:33+02:00"
+      "fetched_at": "2026-09-26T20:10:57+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -424,7 +425,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T20:01:35+02:00"
+      "fetched_at": "2026-09-26T20:10:58+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -454,16 +455,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T20:01:35+02:00"
+      "fetched_at": "2026-09-26T20:10:58+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790445697",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790446260",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T20:01:37+02:00"
+      "fetched_at": "2026-09-26T20:11:00+02:00"
     }
   }
 }
