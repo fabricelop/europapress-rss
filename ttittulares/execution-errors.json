@@ -13,6 +13,13 @@
       "phase": "outbox",
       "reason": "9f874ea16149-r1.json: ValueError: text alternativo no coincide",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 9f874ea16149-r1: 9f874ea16149-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-26T16:15:07.303313Z",
+      "event_id": "2725cc94958d",
+      "phase": "imagen",
+      "reason": "No se encontró una imagen de archivo del mismo acontecimiento que pudiera validarse en HTTPS y cumpliera la resolución mínima requerida; no se genera imagen por tratarse de una noticia sensible con una víctima mortal.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 2725cc94958d: No se encontró una imagen de archivo del mismo acontecimiento que pudiera validarse en HTTPS y cumpliera la resolución mínima requerida; no se genera imagen por tratarse de una noticia sensible con una víctima mortal.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }

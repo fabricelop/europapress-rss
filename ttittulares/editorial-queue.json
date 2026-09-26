@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-26T16:14:12.107205Z",
+  "updated_at": "2026-09-26T16:15:07.304978Z",
   "count": 3,
   "items": [
     {
@@ -108,13 +108,14 @@
           }
         ],
         "image_strategy": "archive_sensitive",
-        "image_status": "working",
-        "image_pending": true,
-        "image_delivery": "pending",
+        "image_status": "none",
+        "image_pending": false,
+        "image_delivery": "none",
         "image_generation_attempts": 0,
         "image_persistence_attempts": 0,
         "image_app_available": false,
-        "image_search_status": "pending_archive_phase2"
+        "image_search_status": "pending_archive_phase2",
+        "image_failure_reason": "No se encontró una imagen de archivo del mismo acontecimiento que pudiera validarse en HTTPS y cumpliera la resolución mínima requerida; no se genera imagen por tratarse de una noticia sensible con una víctima mortal."
       },
       "image_mode": "generated_gag_or_archive_sensitive",
       "image_instruction": "Completa solo la imagen pendiente. Conserva íntegramente prepared_item y su revisión, añade image con raster válido y envía status ready por el outbox habitual. No regeneres ni cambies los textos."

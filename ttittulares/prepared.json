@@ -58,13 +58,14 @@
         }
       ],
       "image_strategy": "archive_sensitive",
-      "image_status": "working",
-      "image_pending": true,
-      "image_delivery": "pending",
+      "image_status": "none",
+      "image_pending": false,
+      "image_delivery": "none",
       "image_generation_attempts": 0,
       "image_persistence_attempts": 0,
       "image_app_available": false,
-      "image_search_status": "pending_archive_phase2"
+      "image_search_status": "pending_archive_phase2",
+      "image_failure_reason": "No se encontró una imagen de archivo del mismo acontecimiento que pudiera validarse en HTTPS y cumpliera la resolución mínima requerida; no se genera imagen por tratarse de una noticia sensible con una víctima mortal."
     }
   ]
 }
