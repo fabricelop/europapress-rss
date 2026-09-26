@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T09:37:05+02:00",
+  "captured_at": "2026-09-26T09:40:54+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -89,7 +89,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 14.0,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T09:21:06+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -109,7 +109,7 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 16.6,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T03:31:09+02:00",
       "news_source_count": 8,
       "news_event_id": "de32583e5844",
@@ -129,7 +129,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.0,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T03:40:50+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -149,7 +149,7 @@
       ],
       "best_observed_rank": 19,
       "mean_observed_rank": 19.8,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T07:10:51+02:00",
       "news_source_count": 2,
       "news_event_id": "3c0a15c21cdf",
@@ -186,27 +186,8 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 16.2,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T04:20:48+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Franco",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 18.2,
-      "movement": "up",
-      "first_detected_at": "2026-09-26T09:31:04+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -229,6 +210,25 @@
       "news_title": "Frente Amplio: la marca por la que se inclina el nuevo Sumar para las generales",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-09-25T12:22:21.811396Z"
+    },
+    {
+      "name": "Franco",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 18,
+      "mean_observed_rank": 18.2,
+      "movement": "flat",
+      "first_detected_at": "2026-09-26T09:31:04+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -262,7 +262,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T09:37:05+02:00"
+      "fetched_at": "2026-09-26T09:40:54+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -287,7 +287,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T09:37:05+02:00"
+      "fetched_at": "2026-09-26T09:40:55+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -314,10 +314,10 @@
         "Borja"
       ],
       "error": null,
-      "update_hint": "Updated 21 minutes ago",
-      "age_minutes": 21.0,
+      "update_hint": "Updated 25 minutes ago",
+      "age_minutes": 25.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T09:37:06+02:00"
+      "fetched_at": "2026-09-26T09:40:55+02:00"
     },
     "superx": {
       "ok": true,
@@ -347,16 +347,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T09:37:07+02:00"
+      "fetched_at": "2026-09-26T09:40:56+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790408228",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790408457",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T09:37:08+02:00"
+      "fetched_at": "2026-09-26T09:40:57+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -384,9 +384,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 07:00 UTC",
-      "age_minutes": 37.1,
+      "age_minutes": 41.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T09:37:08+02:00"
+      "fetched_at": "2026-09-26T09:40:57+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -414,18 +414,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 07:00 AM # Trend Type Actions 1 #DeViernes Hashtag 2 Mari",
-      "age_minutes": 157.1,
+      "age_minutes": 161.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T09:37:08+02:00"
+      "fetched_at": "2026-09-26T09:40:57+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790408230",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790408459",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T09:37:10+02:00"
+      "fetched_at": "2026-09-26T09:40:59+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -434,7 +434,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T09:37:12+02:00"
+      "fetched_at": "2026-09-26T09:41:00+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -464,16 +464,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T09:37:13+02:00"
+      "fetched_at": "2026-09-26T09:41:01+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790408235",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790408463",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T09:37:15+02:00"
+      "fetched_at": "2026-09-26T09:41:03+02:00"
     }
   }
 }
