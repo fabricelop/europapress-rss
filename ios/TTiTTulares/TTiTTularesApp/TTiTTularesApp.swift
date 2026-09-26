@@ -1,4 +1,4 @@
-import SwiftUI
+import Foundation\nimport SwiftUI
 
 @main
 struct TTiTTularesApp: App {
@@ -42,7 +42,8 @@ enum Router {
 
     static func webURL(from url: URL) -> URL? {
         guard url.scheme?.lowercased() == "ttittulares" else { return nil }
-        let key = (url.host?.isEmpty == false ? url.host : url.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))).lowercased()
+        let host = url.host ?? ""
+        let key = (host.isEmpty ? url.path.trimmingCharacters(in: CharacterSet(charactersIn: "/")) : host).lowercased()
         guard let destination = WidgetDestination(rawValue: key) else { return nil }
         return webURL(for: destination)
     }
