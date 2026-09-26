@@ -135,8 +135,8 @@ function renderImagePanel(host,x){
     if(!state)return;
     const box=document.createElement('section');box.className='image-panel image-status';
     const meta=document.createElement('div');meta.className='image-meta';
-    const labels={pending:'⏳ Imagen en elaboración',working:'⏳ Imagen en elaboración',retry:'⏳ Imagen en elaboración',ready:'✅ Imagen lista',telegram:'✈️ Imagen en Telegram',none:'— Sin imagen',error:'— Sin imagen'};
-    meta.innerHTML='<strong>'+esc(labels[state]||'⏳ Imagen en elaboración')+'</strong><span>'+(state==='none'||state==='error'?'La ejecución terminó sin poder entregar una imagen. Se volverá a intentar en la siguiente ejecución.':state==='telegram'?'Imagen enviada al bot de Telegram.':'La noticia ya está lista; la imagen se procesa aparte.')+'</span>';
+    const labels={pending:'— Sin imagen',working:'⏳ Imagen en elaboración',retry:'— Sin imagen',ready:'✅ Imagen lista',telegram:'✈️ Imagen en Telegram',none:'— Sin imagen',error:'— Sin imagen'};
+    meta.innerHTML='<strong>'+esc(labels[state]||'— Sin imagen')+'</strong><span>'+(state==='working'?'Hay un intento de generación o entrega de imagen activo ahora mismo.':state==='none'||state==='error'||state==='pending'||state==='retry'?'No hay una generación de imagen activa. Se volverá a intentar en la siguiente ejecución.':state==='telegram'?'Imagen enviada al bot de Telegram.':'')+'</span>';
     box.append(meta);host.appendChild(box);return;
   }
   const box=document.createElement('section');box.className='image-panel';
