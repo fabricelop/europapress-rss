@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import json, urllib.parse, urllib.request, base64, io
+import json, urllib.parse, urllib.request, base64, io, hashlib
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
@@ -90,8 +90,7 @@ def materialize_inline_generated_image(item, event_id: str, revision: int):
         data=base64.b64decode(payload,validate=True)
     except Exception as exc:
         raise ValueError(f"data URL raster inválida: {exc}")
-    if len(data)>350_000:
-        raise ValueError(f"imagen inline demasiado grande ({len(data)} bytes); redimensiona/comprime a ~768 px y JPEG/WebP eficiente <=350 KB")
+    # El outbox viaja dentro de un comentario de GitHub y luego vuelve a codificarse en base64.\n    # Mantener el raster inline pequeño evita superar el límite del comentario.\n    if len(data)>40_000:\n        raise ValueError(f"imagen inline demasiado grande ({len(data)} bytes); normaliza a ~512 px y JPEG/WebP <=40 KB o usa la vía binaria generated-images/")
     _validate_raster_integrity(data,"imagen raster inline")
     generated_dir=TT/"generated-images"
     generated_dir.mkdir(parents=True,exist_ok=True)
@@ -108,6 +107,82 @@ def materialize_inline_generated_image(item, event_id: str, revision: int):
     item.pop("image_pending",None)
     item.pop("image_failure_reason",None)
     item.pop("image_attempts",None)
+    return True
+
+
+def _generated_checkpoint_file(event_id: str, revision: int):
+    return TT/"generated-images"/f"{event_id}-r{revision}.json"
+
+
+def _write_generated_checkpoint(item, event_id: str, revision: int):
+    image=item.get("image") or {}
+    if not image.get("generated"):
+        return False
+    prefix="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/"
+    url=str(image.get("url") or "")
+    if not url.startswith(prefix):
+        return False
+    filename=url[len(prefix):]
+    if "/" in filename or ".." in filename:
+        return False
+    fp=TT/"generated-images"/filename
+    if not fp.exists():
+        return False
+    data=fp.read_bytes()
+    _validate_raster_integrity(data,f"checkpoint generado {filename}")
+    meta={
+        "version":1,
+        "event_id":event_id,
+        "revision":revision,
+        "filename":filename,
+        "sha256":hashlib.sha256(data).hexdigest(),
+        "validated":True,
+        "created_at":datetime.now(timezone.utc).isoformat().replace("+00:00","Z"),
+        "source":image.get("source") or "TTiTTulares / ChatGPT",
+        "rights_status":image.get("rights_status") or "generated",
+        "alt":image.get("alt") or str(item.get("title") or "Imagen editorial"),
+        "style_version":image.get("style_version"),
+        "style_check":image.get("style_check") or {},
+    }
+    save(_generated_checkpoint_file(event_id,revision),meta)
+    return True
+
+
+def _recover_generated_checkpoint(item, event_id: str, revision: int):
+    sidecar=_generated_checkpoint_file(event_id,revision)
+    if not sidecar.exists():
+        return False
+    meta=load(sidecar,{})
+    if str(meta.get("event_id") or "")!=event_id or int(meta.get("revision") or 0)!=revision or meta.get("validated") is not True:
+        return False
+    filename=str(meta.get("filename") or "")
+    if not filename.startswith(f"{event_id}-r{revision}.") or "/" in filename or ".." in filename:
+        return False
+    fp=TT/"generated-images"/filename
+    if not fp.exists():
+        return False
+    data=fp.read_bytes()
+    if hashlib.sha256(data).hexdigest()!=str(meta.get("sha256") or ""):
+        return False
+    _validate_raster_integrity(data,f"checkpoint generado {filename}")
+    item["image"]={
+        "url":"https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/"+filename,
+        "source":meta.get("source") or "TTiTTulares / ChatGPT",
+        "source_url":"https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/"+filename,
+        "rights_status":"generated",
+        "generated":True,
+        "alt":meta.get("alt") or str(item.get("title") or "Imagen editorial"),
+        "style_version":meta.get("style_version"),
+        "style_check":meta.get("style_check") or {},
+        "handoff":"generated-checkpoint-reused",
+    }
+    validate_image(item)
+    item["image_status"]="ready"
+    item["image_pending"]=False
+    item["image_delivery"]="app"
+    item["image_app_available"]=True
+    item["image_search_status"]="generated-cache"
+    item.pop("image_failure_reason",None)
     return True
 
 
@@ -203,9 +278,13 @@ def _enrich_prepared_images(p,q,events):
     rows=q.get("items",[]) or []
     for item in p.get("items",[]) or []:
         if str((item.get("image") or {}).get("url") or item.get("image_url") or "").strip():continue
-        # Un generated_gag sin imagen puede estar deliberadamente READY con image_pending.
-        # Nunca lo conviertas silenciosamente en imagen de archivo.
+        # Un generated_gag sin imagen solo se recupera desde un checkpoint validado
+        # del MISMO event_id/revision. Nunca se sustituye por una imagen de otro evento.
         if str(item.get("image_strategy") or "")=="generated_gag":
+            eid=str(item.get("event_id") or "")
+            revision=int(item.get("revision") or 1)
+            if _recover_generated_checkpoint(item,eid,revision):
+                changed=True
             continue
         attempted=item.get("image_search_attempted_at")
         if attempted:
@@ -284,7 +363,7 @@ def main():
                 incoming=payload.get("prepared_item") or {}
                 state=str(incoming.get("image_status") or "")
                 if state not in {"working","ready","telegram","none"}: raise ValueError("estado de imagen inválido")
-                patch_keys={"image","image_status","image_delivery","image_app_available","image_pending","image_failure_reason","image_generation_attempts","image_persistence_attempts","image_telegram_delivered","image_telegram_delivered_at"}
+                patch_keys={"image","image_status","image_delivery","image_app_available","image_pending","image_failure_reason","image_generation_attempts","image_persistence_attempts","image_semantic_rejections","image_telegram_delivered","image_telegram_delivered_at","image_worker_id","image_worker_status","image_worker_dispatched_at"}
                 item={**previous,**{k:v for k,v in incoming.items() if k in patch_keys}}
                 item["image_pending"]=state=="working"
                 item["image_delivery"]={"working":"pending","ready":"app","telegram":"telegram","none":"none"}[state]
@@ -303,38 +382,52 @@ def main():
                 raw_item=payload.get("prepared_item") or {}
                 materialize_inline_generated_image(raw_item,eid,rev)
                 item=validate_ready(payload)
+                if (item.get("image") or {}).get("generated"):
+                    _write_generated_checkpoint(item,eid,rev)
                 if bool(row.get("with_image", True)) and not image_retry:
                     image=item.get("image") or {}
                     strategy=str(item.get("image_strategy") or "").strip()
                     if strategy=="generated_gag":
                         if not image.get("generated") or not str(image.get("url") or "").strip():
-                            pending=bool(item.get("image_pending"))
-                            generation_attempts=int(item.get("image_generation_attempts") or item.get("image_attempts") or 0)
-                            persistence_attempts=int(item.get("image_persistence_attempts") or 0)
-                            reason=str(item.get("image_failure_reason") or "").strip()
-                            # image_generation_attempts cuenta EXCLUSIVAMENTE llamadas reales al generador.
-                            # image_persistence_attempts cuenta intentos de hacer accesible un raster ya generado.
-                            # No inventar intentos para satisfacer el fallback.
-                            if "image_attempts" in item and "image_generation_attempts" not in item:
-                                item["image_generation_attempts"]=generation_attempts
-                            item.pop("image_attempts",None)
-                            if not pending:
-                                raise ValueError("generated_gag sin raster debe quedar image_pending")
-                            item["image_persistence_attempts"]=persistence_attempts
-                            item["image_status"]="working"
-                            item["image_delivery"]="pending"
-                            item["image_search_status"]="pending_renderer"
-                        else:
+                            # Primero reutiliza SOLO un checkpoint validado del mismo evento/revisión.
+                            # Esto evita regenerar y, sobre todo, evita que una imagen de otro evento
+                            # pueda colarse por contaminación de contexto.
+                            if _recover_generated_checkpoint(item,eid,rev):
+                                image=item.get("image") or {}
+                            else:
+                                pending=bool(item.get("image_pending"))
+                                generation_attempts=int(item.get("image_generation_attempts") or item.get("image_attempts") or 0)
+                                persistence_attempts=int(item.get("image_persistence_attempts") or 0)
+                                # image_generation_attempts cuenta EXCLUSIVAMENTE llamadas reales al generador.
+                                # image_persistence_attempts cuenta intentos de hacer accesible un raster ya generado.
+                                if "image_attempts" in item and "image_generation_attempts" not in item:
+                                    item["image_generation_attempts"]=generation_attempts
+                                item.pop("image_attempts",None)
+                                if not pending:
+                                    raise ValueError("generated_gag sin raster debe quedar image_pending")
+                                item["image_persistence_attempts"]=persistence_attempts
+                                item["image_status"]="working"
+                                item["image_delivery"]="pending"
+                                item["image_search_status"]="pending_isolated_worker"
+                        if image.get("generated") and str(image.get("url") or "").strip():
                             validate_image(item)
                             item["image_status"]="ready"
+                            item["image_pending"]=False
                             item["image_delivery"]="app"
                             item["image_app_available"]=True
                             item["image_search_status"]="generated"
+                            item["image_worker_status"]="done"
                     elif strategy=="archive_sensitive":
                         if image.get("generated"):
                             raise ValueError("archive_sensitive no debe contener gag generado")
                         if not str(image.get("url") or "").strip():
                             _recover_image(item,row,events)
+                            image=item.get("image") or {}
+                        if str(image.get("url") or "").strip():
+                            item["image_status"]="ready"
+                            item["image_pending"]=False
+                            item["image_delivery"]="app"
+                            item["image_app_available"]=True
                     elif strategy:
                         raise ValueError(f"image_strategy inválida: {strategy}")
                     else:
