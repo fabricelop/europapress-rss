@@ -24,15 +24,7 @@ def norm(value):
     text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
     return " ".join(text.casefold().split())
 
-def image_queue_policy():
-    policy = (load("editorial-config.json", {}) or {}).get("editorial", {}).get("image_policy", {})
-    return (
-        str(policy.get("mode") or "generated_editorial_image"),
-        str(policy.get("queue_instruction") or "Genera SIEMPRE una imagen editorial ORIGINAL para la tendencia; no uses imágenes encontradas en Internet como imagen final."),
-    )
-
 def save_editorial_queue(requests_doc):
-    image_mode, image_instruction = image_queue_policy()
     recent_now = load("recent.json", {"items": []})
     top10_names = {norm(x.get("name")) for x in (recent_now.get("items") or [])[:10] if x.get("name")}
     active = []
@@ -50,9 +42,8 @@ def save_editorial_queue(requests_doc):
             "requested_at": req.get("requested_at"),
             "revision": int(req.get("revision") or 0),
             "rewrite_instruction": req.get("rewrite_instruction") or req.get("rewrite_request") or "",
-            "with_image": bool(req.get("with_image")),
-            "image_mode": image_mode,
-            "image_instruction": image_instruction,
+            "with_image": False,
+            "task": "explain",
             "batch_id": req.get("batch_id"),
             "requested_together": req.get("requested_together") or [req.get("name")],
             "captured_with": req.get("captured_with") or [],
@@ -124,7 +115,7 @@ for item in current:
                     req["requested_at"] = now_entered
                     req["revision"] = int(req.get("revision") or 0) + 1
                     req["reexplain"] = True
-                    req["with_image"] = True
+                    req["with_image"] = False
                     req["anticipated_entered_top10_at"] = req.get("anticipated_entered_top10_at") or now_entered
                     req["rewrite_instruction"] = "Ha entrado en el Top 10: actualiza el encabezado al puesto real y verifica que el motivo siga siendo actual. Reutiliza la preparación del Radar si sigue siendo válida."
                     req.pop("ready_at", None)
@@ -191,8 +182,8 @@ for item in to_queue:
         "requested_at": now,
         "revision": int((req or {}).get("revision") or 0),
         "reexplain": False,
-        "with_image": True,
-        "alternatives_target": 3,
+        "with_image": False,
+        "alternatives_target": 0,
         "batch_id": batch_id,
         # Auto-queueing at the same capture time is NOT evidence that trends
         # belong to the same story. Keep semantic grouping conservative.
