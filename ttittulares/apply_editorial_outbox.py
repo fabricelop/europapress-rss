@@ -85,8 +85,8 @@ def materialize_inline_generated_image(item, event_id: str, revision: int):
         data=base64.b64decode(payload,validate=True)
     except Exception as exc:
         raise ValueError(f"data URL raster inválida: {exc}")
-    if len(data)>42_000:
-        raise ValueError(f"imagen inline demasiado grande ({len(data)} bytes); comprime a JPEG/WebP <=42 KB")
+    if len(data)>350_000:
+        raise ValueError(f"imagen inline demasiado grande ({len(data)} bytes); redimensiona/comprime a ~768 px y JPEG/WebP eficiente <=350 KB")
     _validate_raster_integrity(data,"imagen raster inline")
     generated_dir=TT/"generated-images"
     generated_dir.mkdir(parents=True,exist_ok=True)
