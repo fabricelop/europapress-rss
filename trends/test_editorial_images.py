@@ -25,22 +25,23 @@ class ImageRecoveryTests(unittest.TestCase):
             for key in ("first", "second")
         ]})
 
-    def image(self, size=(1024, 1024)):
+    def image(self, size=(1024, 1024), key="first", revision=0):
         # Synthetic pixel noise is only a validator fixture, never editorial art.
         im = Image.effect_noise(size, 60).convert("RGB")
         buf = io.BytesIO()
         im.save(buf, "PNG")
         self.assertGreater(len(buf.getvalue()), 350000)
-        checks = "reviewed_after_generation single_narrative_scene visual_gag_without_text no_infographic_layout no_diagram_arrows_or_connectors no_ui_or_scoreboard_layout low_text depth_lighting_texture".split()
+        checks = "reviewed_after_generation single_narrative_scene visual_gag_without_text no_infographic_layout no_diagram_arrows_or_connectors no_ui_or_scoreboard_layout low_text depth_lighting_texture correct_event_subject single_current_event_only no_cross_item_context no_multipanel_or_collage".split()
         return {"url": "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode(),
                 "generated": True, "rights_status": "generated", "source": "TTendencias / ChatGPT",
-                "style_version": "editorial-scene-v2-cleveland", "style_check": dict.fromkeys(checks, True)}
+                "style_version": "editorial-scene-v2-cleveland", "style_check": dict.fromkeys(checks, True),
+                "context_guard": {"version": 2, "trend_id": key, "revision": revision, "scope": "current_item_only"}}
 
     def payload(self, key="first", image=True):
         return {"id": key, "revision": 0, "status": "ready", "prepared_item": {
             "id": key, "primary": {"text": "Verified test"},
             "alternatives": [{"tweet_text": "Alternative"} for _ in range(3)],
-            **({"image": self.image()} if image else {})}}
+            **({"image": self.image(key=key)} if image else {})}}
 
     def test_checkpoint_then_resume_without_image_bytes(self):
         app.save(app.OUTBOX / "first-r0.json", {"id": "first", "revision": 0,
@@ -72,6 +73,20 @@ class ImageRecoveryTests(unittest.TestCase):
     def test_corrupt_image_is_rejected(self):
         payload = self.payload()
         payload["prepared_item"]["image"]["url"] = "data:image/jpeg;base64,YmFk"
+        app.save(app.OUTBOX / "first-r0.json", payload)
+        self.assertEqual(app.main(), 1)
+        self.assertFalse((app.TRENDS / "image-cache/first-r0.json").exists())
+
+    def test_cross_item_context_guard_is_rejected(self):
+        payload = self.payload("first")
+        payload["prepared_item"]["image"]["context_guard"]["trend_id"] = "second"
+        app.save(app.OUTBOX / "first-r0.json", payload)
+        self.assertEqual(app.main(), 1)
+        self.assertFalse((app.TRENDS / "image-cache/first-r0.json").exists())
+
+    def test_missing_semantic_isolation_check_is_rejected(self):
+        payload = self.payload("first")
+        payload["prepared_item"]["image"]["style_check"].pop("no_cross_item_context")
         app.save(app.OUTBOX / "first-r0.json", payload)
         self.assertEqual(app.main(), 1)
         self.assertFalse((app.TRENDS / "image-cache/first-r0.json").exists())
