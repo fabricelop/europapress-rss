@@ -388,11 +388,12 @@ async function promoteTrendCandidate(candidateId){
     doc.events||=[];
     let ev=doc.events.find(x=>idOf(x.id||x.event_id)===eventId||storyMatches(x,probe));
     if(!ev){
-      ev={id:eventId,canonical_title:title,url,appearances:sourceEvidence,sources,source_count:sourceCount,percentage:0,first_seen:candidate.detected_at||candidate.created_at||now,last_seen:now,status:"PROCESSING",notified:false,revision:Number(candidate.revision||1),trend_origin:true,trend_names:candidate.trend_names||[]};
+      ev={id:eventId,canonical_title:title,url,appearances:sourceEvidence,sources,source_count:sourceCount,percentage:0,first_seen:candidate.detected_at||candidate.created_at||now,last_seen:now,status:"PROCESSING",notified:false,revision:Number(candidate.revision||1),trend_origin:true,trend_names:candidate.trend_names||[],trend_context:candidate.trend_context||[]};
       doc.events.push(ev)
     }else{
       ev.status="PROCESSING";ev.processing_at=now;ev.trend_origin=true;
       ev.trend_names=[...new Set([...(ev.trend_names||[]),...(candidate.trend_names||[])])];
+      ev.trend_context=Array.isArray(candidate.trend_context)?candidate.trend_context:(ev.trend_context||[]);
       if(title&&!ev.canonical_title)ev.canonical_title=title;if(url&&!ev.url)ev.url=url;
       if(sourceCount>Number(ev.source_count||0)){ev.sources=sources;ev.source_count=sourceCount;if(sourceEvidence.length)ev.appearances=sourceEvidence}
     }
@@ -406,7 +407,7 @@ async function promoteTrendCandidate(candidateId){
       event_id:eventId,title,url,sources,source_evidence:sourceEvidence,source_count:sourceCount,drafted_source_count:sourceCount,
       selected_at:now,status:"PROCESSING",selection_mode:"TTENDENCIAS_USER",revision:Number(candidate.revision||item.revision||1),
       with_image:true,image_mode:"generated_gag_or_archive_sensitive",trend_origin:true,trend_names:candidate.trend_names||[],
-      trend_explanation:String(candidate.explanation||"")
+      trend_context:candidate.trend_context||[],trend_explanation:String(candidate.explanation||"")
     });
     delete item.problem_reason;delete item.problematic_at;delete item.dismissed_at;delete item.delivered_at;
     doc.updated_at=now;return doc
