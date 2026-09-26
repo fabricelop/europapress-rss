@@ -1,81 +1,124 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T07:51:34+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-26T08:01:12+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "superx",
     "snaplytics",
+    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "tweets24"
+  ],
   "reliability": "high",
   "top10": [
+    "#DeViernes",
     "Mari Carmen",
     "Harvard",
-    "PSOE",
-    "#SVGala3",
-    "Paquita",
-    "Taylor",
-    "Retiro",
-    "#DeViernes",
     "#xenobladechronicles2engame",
-    "Belén"
+    "Belén",
+    "PSOE",
+    "Paquita",
+    "#SVGala3",
+    "Andrea",
+    "Frente Amplio"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "Mari Carmen"
-    },
-    {
-      "rank": 2,
-      "name": "Harvard"
-    },
-    {
-      "rank": 3,
-      "name": "PSOE"
-    },
-    {
-      "rank": 4,
-      "name": "#SVGala3"
-    },
-    {
-      "rank": 5,
-      "name": "Paquita"
-    },
-    {
-      "rank": 6,
-      "name": "Taylor"
-    },
-    {
-      "rank": 7,
-      "name": "Retiro"
-    },
-    {
-      "rank": 8,
       "name": "#DeViernes"
     },
     {
-      "rank": 9,
+      "rank": 2,
+      "name": "Mari Carmen"
+    },
+    {
+      "rank": 3,
+      "name": "Harvard"
+    },
+    {
+      "rank": 4,
       "name": "#xenobladechronicles2engame"
     },
     {
-      "rank": 10,
+      "rank": 5,
       "name": "Belén"
+    },
+    {
+      "rank": 6,
+      "name": "PSOE"
+    },
+    {
+      "rank": 7,
+      "name": "Paquita"
+    },
+    {
+      "rank": 8,
+      "name": "#SVGala3"
+    },
+    {
+      "rank": 9,
+      "name": "Andrea"
+    },
+    {
+      "rank": 10,
+      "name": "Frente Amplio"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Taylor",
-    "Retiro"
+    "Andrea",
+    "Frente Amplio"
   ],
   "upcoming": [
+    {
+      "name": "Retiro",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 17.2,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T08:01:12+02:00",
+      "news_source_count": 13,
+      "news_event_id": "e9ec3aee6ca0",
+      "news_title": "La concentración ante el desahucio de Maricarmen en el barrio del Retiro de Madrid, en imágenes",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-23T07:34:12.932560Z"
+    },
+    {
+      "name": "Taylor",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.2,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T08:01:12+02:00",
+      "news_source_count": 3,
+      "news_event_id": "0abf8f845827",
+      "news_title": "Taylor Swift amplía 'The Life of a Showgirl' con cuatro canciones inéditas y lanza un adelanto del videoclip de 'Patient Zero'",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-25T08:43:40.761388Z"
+    },
     {
       "name": "Guardiola",
       "social_source_count": 5,
@@ -146,7 +189,7 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 15.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-26T04:20:48+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -172,56 +215,9 @@
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "#LaBolaNegra",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trendswe"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T07:51:34+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Daniel Sancho",
-      "social_source_count": 1,
-      "social_sources": [
-        "superx"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 16.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T07:51:34+02:00",
-      "news_source_count": 11,
-      "news_event_id": "ac5174a8c1bf",
-      "news_title": "Tailandia desestima los recursos y mantiene la cadena perpetua a Daniel Sancho",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-25T05:52:12.255361Z"
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Taylor",
-      "first_detected_at": "2026-09-26T05:40:50+02:00",
-      "entered_top10_at": "2026-09-26T07:51:34+02:00",
-      "lead_minutes": 131
-    },
-    {
-      "name": "Retiro",
-      "first_detected_at": "2026-09-26T03:31:09+02:00",
-      "entered_top10_at": "2026-09-26T07:51:34+02:00",
-      "lead_minutes": 260
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -252,7 +248,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T07:51:34+02:00"
+      "fetched_at": "2026-09-26T08:01:12+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -277,7 +273,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T07:51:35+02:00"
+      "fetched_at": "2026-09-26T08:01:12+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -304,10 +300,10 @@
         "ángela portero"
       ],
       "error": null,
-      "update_hint": "Updated 34 seconds ago Live Twitter Trending Topics in Spain 1 #DeViernes Explore why #D",
-      "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-26T07:51:35+02:00"
+      "update_hint": "Updated 10 minutes ago",
+      "age_minutes": 10.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-26T08:01:13+02:00"
     },
     "superx": {
       "ok": true,
@@ -337,16 +333,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T07:51:36+02:00"
+      "fetched_at": "2026-09-26T08:01:14+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790401896",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790402474",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T07:51:36+02:00"
+      "fetched_at": "2026-09-26T08:01:14+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -374,9 +370,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 05:00 UTC",
-      "age_minutes": 51.6,
+      "age_minutes": 61.2,
       "freshness": "aging",
-      "fetched_at": "2026-09-26T07:51:36+02:00"
+      "fetched_at": "2026-09-26T08:01:14+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -389,33 +385,33 @@
         "PSOE",
         "Paquita",
         "#SVGala3",
-        "Andrea",
         "Frente Amplio",
+        "Andrea",
         "Taylor",
-        "Trapote",
         "Guardiola",
-        "#LaBolaNegra",
-        "Olga",
         "#TEM25S",
+        "#LaBolaNegra",
         "Retiro",
         "Manchester City",
+        "Olga",
         "Franco",
-        "Borja"
+        "Borja",
+        "Ángela Portero"
       ],
       "error": null,
-      "update_hint": "Updated: September 26, 2026 at 05:00 AM # Trend Type Actions 1 #DeViernes Hashtag 2 Mari",
-      "age_minutes": 171.6,
+      "update_hint": "Updated: September 26, 2026 at 06:00 AM # Trend Type Actions 1 #DeViernes Hashtag 2 Mari",
+      "age_minutes": 121.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T07:51:36+02:00"
+      "fetched_at": "2026-09-26T08:01:15+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790401897",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790402476",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T07:51:37+02:00"
+      "fetched_at": "2026-09-26T08:01:16+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -424,7 +420,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T07:51:37+02:00"
+      "fetched_at": "2026-09-26T08:01:17+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -454,16 +450,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T07:51:37+02:00"
+      "fetched_at": "2026-09-26T08:01:17+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790401899",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790402479",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T07:51:39+02:00"
+      "fetched_at": "2026-09-26T08:01:19+02:00"
     }
   }
 }
