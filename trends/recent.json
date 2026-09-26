@@ -1,22 +1,21 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-26T22:21:02+02:00",
+  "captured_at": "2026-09-26T22:31:03+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
-    "trends24",
     "tweets24",
     "superx",
     "fowtools",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 6,
+  "non_stale_source_count": 5,
   "fresh_sources": [
     "tweets24"
   ],
-  "reliability": "high",
+  "reliability": "medium",
   "top10": [
     "Ferran",
     "Pablo Aguado",
@@ -76,16 +75,15 @@
   "upcoming": [
     {
       "name": "#LaRoca241",
-      "social_source_count": 4,
+      "social_source_count": 3,
       "social_sources": [
         "superx",
-        "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 17.8,
-      "movement": "up",
+      "mean_observed_rank": 17.0,
+      "movement": "down",
       "first_detected_at": "2026-09-26T20:50:59+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -94,16 +92,32 @@
       "news_first_seen": null
     },
     {
-      "name": "Emilio de Justo",
-      "social_source_count": 3,
+      "name": "Mike Leigh",
+      "social_source_count": 2,
       "social_sources": [
-        "trends24",
+        "getdaytrends",
+        "trends24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T22:31:03+02:00",
+      "news_source_count": 2,
+      "news_event_id": "45932d088770",
+      "news_title": "Concha de Oro para 'Tender loving care', probable despedida del maestro del realismo Mike Leigh",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-26T20:02:35.628591Z"
+    },
+    {
+      "name": "Emilio de Justo",
+      "social_source_count": 2,
+      "social_sources": [
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 15.3,
-      "movement": "up",
+      "mean_observed_rank": 15.5,
+      "movement": "down",
       "first_detected_at": "2026-09-26T22:01:18+02:00",
       "news_source_count": 3,
       "news_event_id": "b72643cde50e",
@@ -112,34 +126,15 @@
       "news_first_seen": "2026-09-26T15:02:46.180401Z"
     },
     {
-      "name": "David Gil",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.7,
-      "movement": "up",
-      "first_detected_at": "2026-09-26T22:01:18+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "#TenerifeCádiz",
-      "social_source_count": 3,
+      "social_source_count": 2,
       "social_sources": [
         "superx",
-        "trends24",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 13.0,
-      "movement": "flat",
+      "mean_observed_rank": 12.5,
+      "movement": "down",
       "first_detected_at": "2026-09-26T21:20:56+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -148,16 +143,15 @@
       "news_first_seen": null
     },
     {
-      "name": "Jandilla",
-      "social_source_count": 3,
+      "name": "David Gil",
+      "social_source_count": 2,
       "social_sources": [
-        "superx",
-        "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.7,
-      "movement": "flat",
+      "mean_observed_rank": 11.5,
+      "movement": "down",
       "first_detected_at": "2026-09-26T22:01:18+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -166,57 +160,54 @@
       "news_first_seen": null
     },
     {
-      "name": "Triana",
+      "name": "Jandilla",
       "social_source_count": 2,
       "social_sources": [
-        "snaplytics",
+        "superx",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-26T22:01:18+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Unai",
+      "social_source_count": 2,
+      "social_sources": [
+        "getdaytrends",
+        "trends24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-26T22:31:03+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Triana",
+      "social_source_count": 1,
+      "social_sources": [
         "superx"
       ],
       "best_observed_rank": 17,
-      "mean_observed_rank": 17.5,
-      "movement": "flat",
+      "mean_observed_rank": 17.0,
+      "movement": "down",
       "first_detected_at": "2026-09-26T21:10:54+02:00",
       "news_source_count": 10,
       "news_event_id": "e7dfae846c83",
       "news_title": "Muere Eduardo Rodríguez ‘Rodway’, guitarrista fundador de Triana",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-09-26T09:13:36.267032Z"
-    },
-    {
-      "name": "Enric Gallego",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 15.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T22:21:02+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Jandro",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 17.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-26T22:21:02+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -226,31 +217,31 @@
       "ok": true,
       "trends": [
         "Ferran",
-        "Pablo Aguado",
-        "Wembley",
+        "Cucurella",
+        "Gordon",
         "Inglaterra",
-        "Eric García",
+        "Oyarzabal",
+        "Wembley",
+        "Puerta del Sol",
+        "Nico",
+        "Kane",
+        "Pablo Aguado",
         "#NationsLeague",
-        "Vomitivo",
-        "Vladys",
-        "Celades",
-        "Roca Rey",
-        "Jandilla",
-        "David Gil",
-        "Colapinto",
-        "#TenerifeCádiz",
-        "Emilio de Justo",
-        "Enric Gallego",
-        "Jandro",
-        "Pacheta",
-        "#Fiesta26S",
-        "#LaRoca241"
+        "Alex Baena",
+        "Mike Leigh",
+        "Unai",
+        "Olmo",
+        "Eric García",
+        "Puerta del Príncipe",
+        "Fabián",
+        "Morata",
+        "Tuchel"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T22:21:02+02:00"
+      "fetched_at": "2026-09-26T22:31:03+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -275,7 +266,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T22:21:02+02:00"
+      "fetched_at": "2026-09-26T22:31:03+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -302,10 +293,10 @@
         "#LaRoca241"
       ],
       "error": null,
-      "update_hint": "Updated 20 minutes ago",
-      "age_minutes": 20.0,
+      "update_hint": "Updated 31 minutes ago",
+      "age_minutes": 31.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-26T22:21:03+02:00"
+      "fetched_at": "2026-09-26T22:31:04+02:00"
     },
     "superx": {
       "ok": true,
@@ -335,16 +326,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T22:21:03+02:00"
+      "fetched_at": "2026-09-26T22:31:05+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790454064",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790454665",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T22:21:04+02:00"
+      "fetched_at": "2026-09-26T22:31:05+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -372,9 +363,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 26, 2026 19:00 UTC",
-      "age_minutes": 81.1,
-      "freshness": "aging",
-      "fetched_at": "2026-09-26T22:21:04+02:00"
+      "age_minutes": 91.1,
+      "freshness": "stale",
+      "fetched_at": "2026-09-26T22:31:05+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -402,18 +393,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 26, 2026 at 08:00 PM # Trend Type Actions 1 Pablo Aguado Topic 2 Wembl",
-      "age_minutes": 141.1,
+      "age_minutes": 151.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-26T22:21:04+02:00"
+      "fetched_at": "2026-09-26T22:31:06+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790454065",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790454667",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T22:21:05+02:00"
+      "fetched_at": "2026-09-26T22:31:07+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -422,7 +413,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-26T22:21:06+02:00"
+      "fetched_at": "2026-09-26T22:31:08+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -452,16 +443,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-26T22:21:07+02:00"
+      "fetched_at": "2026-09-26T22:31:08+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790454069",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790454671",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-26T22:21:09+02:00"
+      "fetched_at": "2026-09-26T22:31:11+02:00"
     }
   }
 }
