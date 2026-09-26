@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import re
 import unicodedata
 from datetime import datetime
 from pathlib import Path
@@ -162,14 +164,30 @@ def materialize_inline_generated_image(item, req_id: str, revision: int):
     except Exception as exc:
         raise ValueError(f"data URL raster inválida: {exc}")
 
-    # Keep the text outbox small enough to be reliable through the connector.
-    if len(data) > 350_000:
-        raise ValueError(
-            f"imagen inline demasiado grande ({len(data)} bytes); "
-            "redimensiona/comprime a ~512 px y JPEG/WebP eficiente"
-        )
-
+    # Normalization belongs to Actions; the producer need not have Pillow or
+    # a bridge between its filesystem and the connector's JS runtime.
+    if len(data) > 12_000_000:
+        raise ValueError("imagen inline supera el límite de entrada de 12 MB")
     _validate_raster_integrity(data, "imagen raster inline")
+    import io
+    from PIL import Image, ImageOps
+    with Image.open(io.BytesIO(data)) as original:
+        normalized = ImageOps.exif_transpose(original).convert("RGB")
+        # Preserve the validator's minimum width for portrait images too.
+        width, height = normalized.size
+        scale = min(1.0, max(512 / max(width, height), 480 / width, 270 / height))
+        if scale < 1:
+            normalized = normalized.resize((round(width * scale), round(height * scale)), Image.Resampling.LANCZOS)
+        for quality in (82, 72, 60, 45):
+            output = io.BytesIO()
+            normalized.save(output, format="JPEG", quality=quality, optimize=True)
+            data = output.getvalue()
+            if len(data) <= 350_000:
+                break
+        if len(data) > 350_000:
+            raise ValueError("imagen normalizada supera 350 KB")
+    _validate_raster_integrity(data, "imagen normalizada")
+    ext = ".jpg"
 
     generated_dir = TRENDS / "generated-images"
     generated_dir.mkdir(parents=True, exist_ok=True)
@@ -186,8 +204,36 @@ def materialize_inline_generated_image(item, req_id: str, revision: int):
         f"trends/generated-images/{filename}"
     )
     image["handoff"] = "inline-outbox-materialized-by-actions"
+    image["sha256"] = hashlib.sha256(data).hexdigest()
     item["image"] = image
     return True
+
+
+def checkpoint_image(payload, req_id, revision):
+    """Persist an accepted image before validating any editorial text."""
+    item = payload.get("prepared_item") or {}
+    image = item.get("image") or payload.get("image")
+    cache_path = TRENDS / "image-cache" / f"{req_id}-r{revision}.json"
+    if not image or not image.get("url"):
+        cached = load(cache_path, {})
+        if cached.get("id") == req_id and cached.get("revision") == revision:
+            image = cached.get("image")
+    if not image:
+        raise ValueError("sin imagen ni checkpoint reutilizable para id/revision")
+    holder = {"image": dict(image)}
+    # Validate metadata as well as pixels before writing a durable cache.
+    validate_generated_image(holder)
+    materialize_inline_generated_image(holder, req_id, revision)
+    validate_generated_image(holder)
+    image = holder["image"]
+    expected = f"{req_id}-r{revision}"
+    if Path(image["url"]).stem != expected:
+        raise ValueError("imagen de otro id/revision; no se puede reutilizar")
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    save(cache_path, {"id": req_id, "revision": revision, "image": image})
+    item["image"] = image
+    payload["prepared_item"] = item
+    return image
 
 
 def validate_ready(payload):
@@ -296,6 +342,8 @@ def main():
 
             req_id = str(payload.get("id") or "")
             revision = int(payload.get("revision") or 0)
+            if not re.fullmatch(r"[A-Za-z0-9_-]+", req_id) or revision < 0:
+                raise ValueError("id/revision no válido")
             req = next((r for r in requests_doc.get("requests", []) if str(r.get("id") or "") == req_id), None)
             if req is None:
                 print(f"Ignorado {path.name}: request inexistente")
@@ -314,8 +362,9 @@ def main():
 
             result_status = str(payload.get("status") or "")
             if result_status == "ready":
-                raw_item = payload.get("prepared_item") or {}
-                materialize_inline_generated_image(raw_item, req_id, revision)
+                checkpoint_image(payload, req_id, revision)
+                # Keep the materialized URL even if text validation fails.
+                save(path, payload)
                 item = validate_ready(payload)
                 item["id"] = req_id
                 item["revision"] = revision
@@ -369,6 +418,18 @@ def main():
                     target.pop("problematic_attempts", None)
                     if str(target.get("id") or "") not in processed:
                         processed.append(str(target.get("id") or ""))
+
+            elif result_status == "image_checkpoint":
+                image = checkpoint_image(payload, req_id, revision)
+                req["image_checkpoint"] = {
+                    "revision": revision,
+                    "url": image["url"],
+                    "cache_path": f"trends/image-cache/{req_id}-r{revision}.json",
+                    "saved_at": now,
+                }
+                # Keep the request pending; a saved image is not a ready tweet.
+                path.unlink()
+                continue
 
             elif result_status == "problematic":
                 reason = str(payload.get("problem_reason") or "").strip()
