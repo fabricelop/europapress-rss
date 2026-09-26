@@ -34,16 +34,16 @@ async function gh(url,options={}){
   }})
 }
 async function comments(){
-  const base="https://api.github.com/repos/"+REPO+"/issues/"+PR+"/comments?per_page=100";
-  const first=await gh(base);
-  if(!first.ok)throw new Error("GitHub comments: "+first.status+" "+await first.text());
-  let items=await first.json();
-  const link=first.headers.get("link")||"";
-  const last=link.match(/<([^>]+)>;\s*rel="last"/);
-  if(last){
-    const r=await gh(last[1]);
+  const since=new Date(Date.now()-24*60*60*1000).toISOString();
+  let url="https://api.github.com/repos/"+REPO+"/issues/"+PR+"/comments?per_page=100&since="+encodeURIComponent(since);
+  const items=[];
+  for(let page=0;page<10&&url;page++){
+    const r=await gh(url);
     if(!r.ok)throw new Error("GitHub comments: "+r.status+" "+await r.text());
-    items=await r.json()
+    items.push(...await r.json());
+    const link=r.headers.get("link")||"";
+    const next=link.match(/<([^>]+)>;\s*rel="next"/);
+    url=next?next[1]:null
   }
   return items
 }
@@ -140,11 +140,11 @@ export default async function handler(req,res){
     if(latest&&["REQUESTED","RUNNING"].includes(latest.status)){
       const age=Date.now()-stamp(latest.updated_at||latest.started_at||latest.requested_at);
       if(Number.isFinite(age)&&age>=0&&age<STALE_MS)active=latest;
-      else latest={...latest,status:"ERROR",finished_at:latest.updated_at||new Date().toISOString(),message:latest.message||"La ejecución dejó de actualizar la telemetría durante más de 75 minutos."}
+      else latest={...latest,status:"ERROR",finished_at:latest.updated_at||new Date().toISOString(),message:latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos."}
     }
     if(!active&&fallback&&["REQUESTED","RUNNING"].includes(fallback.status)){
       const age=Date.now()-stamp(fallback.updated_at||fallback.started_at||fallback.requested_at);
-      if(Number.isFinite(age)&&age>=0&&age<30*60*1000)active=fallback
+      if(Number.isFinite(age)&&age>=0&&age<20*60*1000)active=fallback
     }
 
     if(active)return res.status(200).json({ok:true,enabled,active:true,...active,last_run:null,can_run:enabled&&authorized(req)});
