@@ -89,6 +89,15 @@ export default async function handler(req,res){
     const started=marks.find(c=>field(c.body,"status")==="RUNNING");
     const started_at=started?(field(started.body,"started_at")||started.created_at):null;
     const finished_at=["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null;
+    // Un resultado terminal es solo informativo durante un breve intervalo.
+    // Después volvemos a IDLE para que el panel recupere su estado normal y
+    // no quede fijado indefinidamente mostrando un error o una ejecución antigua.
+    if(["DONE","ERROR"].includes(status)&&finished_at){
+      const age=Date.now()-new Date(finished_at).getTime();
+      if(Number.isFinite(age)&&age>120000){
+        return res.status(200).json({ok:true,status:"IDLE"});
+      }
+    }
     return res.status(200).json({
       ok:true,status,command_id,requested_at,started_at,finished_at,
       start_delay_seconds:started_at?seconds(requested_at,started_at):null,
