@@ -1,0 +1,72 @@
+name: Ingestar outbox TTiTTulares desde PR
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: ttittulares-repo-write
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    if: >-
+      github.event.issue.pull_request &&
+      github.event.issue.number == 2 &&
+      startsWith(github.event.comment.body, 'TTITTULARES_OUTBOX_V1')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Preparar dependencias
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow
+
+      - name: Ingestar y aplicar de forma atómica
+        run: |
+          set -euo pipefail
+          git config user.name "ttittulares-transport-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          for intento in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+
+            python3 ttittulares/ingest_pr_outbox_comment.py
+            python3 ttittulares/apply_editorial_outbox.py
+
+            git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json
+            git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
+
+            if git diff --cached --quiet; then
+              echo "Sin cambios que persistir; payload ya estaba aplicado o no era válido para esta cola."
+              exit 0
+            fi
+
+            git commit -m "Aplicar outbox TTiTTulares transportado por PR"
+            git fetch origin main
+            BASE="$(git rev-parse HEAD^)"
+            REMOTE="$(git rev-parse origin/main)"
+            if [ "$REMOTE" != "$BASE" ]; then
+              echo "Main avanzó; recalculando sobre estado fresco ($intento/5)."
+              git reset --hard origin/main
+              sleep $((intento * 2))
+              continue
+            fi
+
+            if git push origin HEAD:main; then
+              echo "OUTBOX_TRANSPORT_APPLIED"
+              exit 0
+            fi
+            sleep $((intento * 2))
+          done
+
+          echo "ERROR: no se pudo persistir el outbox transportado tras 5 intentos."
+          exit 1
