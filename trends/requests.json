@@ -3127,7 +3127,7 @@
       "id": "1ee2d3a86e4e",
       "name": "Zidane",
       "rank": 10,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-26T00:10:56+02:00",
       "revision": 0,
       "reexplain": false,
@@ -3146,7 +3146,11 @@
         "#LaBolaNegra",
         "Zidane"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-26T08:03:46+02:00",
+      "problem_reason": "El detonante parece ser el debut de Zinedine Zidane como seleccionador de Francia ante Turquía, pero no se pudo confirmar de forma fiable el resultado final tras búsquedas específicas; no se publica información deportiva sin esa verificación.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "456ebcfdd8f1",
@@ -3332,5 +3336,5 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-26T08:02:23+02:00"
+  "updated_at": "2026-09-26T08:03:46+02:00"
 }
