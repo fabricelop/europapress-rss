@@ -27,6 +27,8 @@ El prepared_item debe ser completo y entrar con `image_status:"pending"`, `image
 
 Relee `prepared.json` y procesa TODOS los READY pendientes secuencialmente, uno por uno. Los textos, factual_summary y citas son inmutables. Un error de imagen nunca detiene los siguientes items.
 
+**Cancelación por publicación:** justo antes de buscar, generar o persistir CADA imagen, relee `ttittulares/prepared.json` y `telegram/editorial-processing.json`. Si el event_id ya no existe en prepared, figura `PUBLISHED` o `DISMISSED`, o tiene `image_cancelled_by_publication:true`, cancela inmediatamente ese trabajo de imagen: no llames imagegen, no busques archivo, no persistas raster ni envíes outbox de imagen. Continúa con el siguiente item. Repite esta comprobación otra vez inmediatamente antes de cada llamada a imagegen y justo antes de cualquier outbox image-only. Publicar una noticia sin esperar la imagen es una decisión válida del usuario y NO cuenta como incidencia.
+
 Al iniciar el trabajo real de una imagen puede pasar temporalmente a `working`. Al terminar ese item debe quedar exactamente en uno de estos estados: `ready/app` con URL raw accesible; `telegram` con entrega confirmada; o `none` con razón concreta. Nunca dejes un item tratado en working/pending/retry al cerrar la ejecución.
 
 ### archive_sensitive
