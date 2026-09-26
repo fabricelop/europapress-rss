@@ -18,7 +18,7 @@ const REPO=process.env.GITHUB_REPO||"fabricelop/europapress-rss";
 const PR=7;
 const TRIGGER_BRANCH="control/ttendencias-run-trigger";
 const TRIGGER_PATH="trends/run-now-trigger.json";
-const STATUS_PREFIX="RUNSTATUS ";
+const STATUS_PREFIX="RUNSTATUS ";\nconst TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\\n";
 const READY_MARKER="TTENDENCIAS WORK COMMIT TRIGGER READY";
 
 async function gh(url,options={}){
@@ -67,6 +67,18 @@ function seconds(a,b){
   const x=new Date(a).getTime(),y=new Date(b).getTime();
   return Number.isFinite(x)&&Number.isFinite(y)?Math.max(0,Math.round((y-x)/1000)):null
 }
+function stamp(v){const n=Date.parse(v||"");return Number.isFinite(n)?n:0}
+function traceOf(comment){
+  const body=String(comment?.body||"");
+  if(!body.startsWith(TRACE_PREFIX))return null;
+  try{return {...JSON.parse(body.slice(TRACE_PREFIX.length).trim()),comment_id:comment.id,comment_updated_at:comment.updated_at||comment.created_at}}catch(_){return null}
+}
+function activeTrace(items){
+  const traces=items.map(traceOf).filter(Boolean).sort((a,b)=>stamp(a.updated_at||a.comment_updated_at)-stamp(b.updated_at||b.comment_updated_at));
+  const t=traces.at(-1);if(!t||!["REQUESTED","RUNNING"].includes(String(t.status||"")))return null;
+  const age=Date.now()-stamp(t.updated_at||t.started_at||t.requested_at);
+  return Number.isFinite(age)&&age>=0&&age<75*60*1000?t:null
+}
 
 async function writeTrigger(doc,sha){
   const body={
@@ -83,6 +95,12 @@ async function writeTrigger(doc,sha){
   if(!r.ok)throw new Error(`GitHub trigger PUT: ${r.status} ${await r.text()}`);
   return r.json()
 }
+async function createTrace(doc){
+  const trace={version:1,run_id:doc.command_id,command_id:doc.command_id,source:"manual",status:"REQUESTED",phase:"preparing",current:0,total:0,trend_id:null,title:null,requested_at:doc.requested_at,started_at:null,updated_at:doc.requested_at,finished_at:null,incident_count:0,incidents:[],summary:null,message:"Solicitud recibida; esperando a ChatGPT Work."};
+  const r=await gh(`https://api.github.com/repos/${REPO}/issues/${PR}/comments`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({body:TRACE_PREFIX+JSON.stringify(trace)})});
+  if(!r.ok)throw new Error(`GitHub trace POST: ${r.status} ${await r.text()}`);
+  return r.json()
+}
 
 export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
@@ -91,7 +109,7 @@ export default async function handler(req,res){
   try{
     if(!(await triggerReady()))return res.status(503).json({ok:false,error:"work_trigger_not_ready"});
 
-    const [{doc:current,sha},items]=await Promise.all([readTrigger(),comments()]);
+    const [{doc:current,sha},items]=await Promise.all([readTrigger(),comments()]);\n    if(activeTrace(items))return res.status(409).json({ok:false,error:"run_in_progress"});
     const currentId=String(current.command_id||"").trim();
     const currentRequested=String(current.requested_at||"").trim();
     if(currentId&&currentRequested){
@@ -118,9 +136,12 @@ export default async function handler(req,res){
       const fresh=await readTrigger();
       saved=await writeTrigger(doc,fresh.sha)
     }
+    let trace_comment_id=null;
+    try{trace_comment_id=(await createTrace(doc)).id||null}catch(e){console.error("trace",e)}
     return res.status(200).json({
       ok:true,command_id,requested_at,
       commit_sha:saved?.commit?.sha||null,
+      trace_comment_id,
       trigger:"pull_request_commit_update"
     })
   }catch(e){
