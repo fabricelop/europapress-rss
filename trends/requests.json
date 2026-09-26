@@ -4075,7 +4075,7 @@
       "id": "f4792be54a4b",
       "name": "Pacheta",
       "rank": 5,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-26T19:21:17+02:00",
       "revision": 0,
       "reexplain": false,
@@ -4090,7 +4090,11 @@
         "Pacheta",
         "Andorra"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-09-26T19:30:33+02:00",
+      "problem_reason": "Las búsquedas apuntan al entrenador del Granada CF y a su próximo partido ante el FC Andorra, pero no permiten confirmar de forma fiable el estado o resultado actual del encuentro que explique la tendencia.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "3e340be4de18",
@@ -4114,5 +4118,5 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-26T19:29:14+02:00"
+  "updated_at": "2026-09-26T19:30:33+02:00"
 }
