@@ -36,9 +36,19 @@ async function gh(path,options={}){
   })
 }
 async function readJson(path){
-  const r=await gh(`contents/${path}?ref=${encodeURIComponent(BRANCH)}`);
-  if(!r.ok)throw new Error(`GitHub GET ${path}: ${r.status} ${await r.text()}`);
-  const f=await r.json();return {doc:JSON.parse(b64d(f.content)||"{}"),sha:f.sha}
+  let lastError;
+  for(let attempt=1;attempt<=3;attempt++){
+    const r=await gh(`contents/${path}?ref=${encodeURIComponent(BRANCH)}&_=${Date.now()}-${attempt}`,{cache:"no-store"});
+    if(!r.ok)throw new Error(`GitHub GET ${path}: ${r.status} ${await r.text()}`);
+    const f=await r.json();
+    try{return {doc:JSON.parse(b64d(f.content)||"{}"),sha:f.sha}}
+    catch(e){
+      lastError=e;
+      console.error("JSON inválido temporal",path,"sha",f.sha,"intento",attempt,String(e));
+      if(attempt<3)await new Promise(resolve=>setTimeout(resolve,attempt*250));
+    }
+  }
+  throw new Error(`JSON inválido en ${path} tras 3 lecturas: ${String(lastError?.message||lastError)}`)
 }
 async function mutateJson(path,message,fn){
   for(let attempt=1;attempt<=5;attempt++){
