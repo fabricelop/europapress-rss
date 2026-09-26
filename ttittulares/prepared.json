@@ -170,14 +170,36 @@
         "url": "https://x.com/search?q=cazas%20espa%C3%B1oles%20Ruman%C3%ADa%20dron%20ruso%20frontera%20Ucrania&src=typed_query&f=live"
       },
       "image_strategy": "generated_gag",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_delivery": "none",
-      "image_generation_attempts": 2,
-      "image_persistence_attempts": 0,
+      "image_delivery": "app",
+      "image_generation_attempts": 1,
+      "image_persistence_attempts": 1,
       "image_search_status": "pending_renderer",
       "image_failure_reason": "Dos intentos reales de generación fallaron el aislamiento semántico: ambos devolvieron escenas judiciales ajenas al evento de los cazas españoles y el dron ruso. Se descartaron y no se persistió ningún raster incorrecto.",
-      "image_app_available": false
+      "image_app_available": true,
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/902c11aa84e6-r1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/902c11aa84e6-r1.jpg",
+        "generated": true,
+        "source": "TTiTTulares / ChatGPT",
+        "rights_status": "generated",
+        "alt": "Ilustración editorial sobre dos cazas españoles activados en Rumanía por un dron ruso",
+        "style_version": "editorial-scene-v2-cleveland",
+        "style_check": {
+          "reviewed_after_generation": true,
+          "single_narrative_scene": true,
+          "visual_gag_without_text": true,
+          "correct_event_subject": true,
+          "no_flat_2d_pixel_art": true,
+          "no_simplified_vector_block_style": true,
+          "no_infographic_layout": true,
+          "no_diagram_arrows_or_connectors": true,
+          "no_ui_or_scoreboard_layout": true,
+          "low_text": true,
+          "depth_lighting_texture": true
+        }
+      }
     }
   ]
 }
