@@ -284,10 +284,24 @@ function renderReady(list){
   card.querySelector(".sources").textContent="Redactada con "+drafted+" ("+current+") · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
   const det=card.querySelector(".details");card.querySelector(".facts").textContent=item.factual_summary||item.explanation||"";if(openCards.has(String(item.event_id||""))){det.classList.add("open");card.querySelector(".expand").textContent="Cerrar"}
-  const img=item.image||{},imgUrl=img.url||item.image_url||"",imgSource=img.source||item.image_source||"",imgPage=img.source_url||img.page_url||item.image_source_url||"",imgRights=img.rights_status||item.image_rights_status||"",imgBox=card.querySelector(".imagebox");
-  if(imgUrl){imgBox.hidden=false;const preview=card.querySelector(".imagePreview");preview.hidden=false;preview.alt=img.alt||item.title||"Imagen de la noticia";preview.src=API+"?view=image-proxy&url="+encodeURIComponent(imgUrl);preview.onerror=()=>{preview.hidden=true;card.querySelector(".imageMeta").textContent="No se pudo cargar la imagen. Puedes intentar abrirla con el botón."};card.querySelector(".imageTitle").textContent=img.generated?"Gag visual":"Imagen sugerida";card.querySelector(".imageMeta").textContent=[imgSource,imgRights].filter(Boolean).join(" · ")||(img.generated?"TTiTTulares · imagen original":"Imagen externa sugerida");card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl);const src=card.querySelector(".imgSource");if(imgPage)src.href=imgPage;else src.style.display="none"}
-  else {imgBox.hidden=false;card.querySelector(".imageMeta").textContent=item.image_pending?"Imagen pendiente de generación. La noticia está lista; todavía no hay una foto para abrir o copiar.":(item.image_note||"Esta noticia todavía no tiene una imagen asociada.");card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";card.querySelector(".imgSource").style.display="none"}
-  const photo=document.createElement("button");photo.className="btn photoStatus";photo.textContent=imgUrl?"📷 Foto":"📷 Imagen pendiente";photo.onclick=()=>{det.classList.add("open");openCards.add(String(item.event_id||""));card.querySelector(".expand").textContent="Cerrar";imgBox.scrollIntoView({block:"nearest",behavior:"smooth"})};card.querySelector(".actions").appendChild(photo);
+  const img=item.image||{},imgUrl=String(img.url||item.image_url||""),imgSource=img.source||item.image_source||"",imgPage=img.source_url||img.page_url||item.image_source_url||"",imgRights=img.rights_status||item.image_rights_status||"",imgBox=card.querySelector(".imagebox");
+  const imageState=String(item.image_status||(item.image_pending?"working":imgUrl?"ready":"none")).toLowerCase();
+  const imageReady=imageState==="ready"&&!!imgUrl;
+  const imageLabels={working:"Imagen en elaboración",pending:"Imagen en elaboración",retry:"Imagen en elaboración",ready:"Imagen lista",telegram:"Imagen en Telegram",none:"Sin imagen",error:"Sin imagen"};
+  const imageLabel=imageLabels[imageState]||"Imagen en elaboración";
+  imgBox.hidden=false;
+  card.querySelector(".imageTitle").textContent=imageLabel;
+  if(imageReady){
+   const preview=card.querySelector(".imagePreview");preview.hidden=false;preview.alt=img.alt||item.title||"Imagen de la noticia";preview.src=API+"?view=image-proxy&url="+encodeURIComponent(imgUrl);
+   preview.onerror=()=>{preview.hidden=true;card.querySelector(".imageMeta").textContent="No se pudo cargar la imagen. Se reintentará en la siguiente ejecución.";card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none"};
+   card.querySelector(".imageMeta").textContent=[imgSource,imgRights].filter(Boolean).join(" · ")||(img.generated?"TTiTTulares · imagen original":"Imagen externa sugerida");
+   card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl);
+   const src=card.querySelector(".imgSource");if(imgPage)src.href=imgPage;else src.style.display="none";
+  }else{
+   card.querySelector(".imageMeta").textContent=imageState==="telegram"?"Foto enviada al bot de Telegram.":imageState==="none"?"La ejecución terminó sin poder entregar una imagen. Se reintentará en la siguiente.":"La noticia está lista; la imagen se está elaborando.";
+   card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";card.querySelector(".imgSource").style.display="none";
+  }
+  const photo=document.createElement("button");photo.className="btn photoStatus";photo.textContent="📷 "+imageLabel;photo.onclick=()=>{det.classList.add("open");openCards.add(String(item.event_id||""));card.querySelector(".expand").textContent="Cerrar";imgBox.scrollIntoView({block:"nearest",behavior:"smooth"})};card.querySelector(".actions").appendChild(photo);
   const vh=card.querySelector(".variants");
   const candidates=quoteCandidates(item),quoteLinks=[];
   let selectedQuote=candidates[0]?.url||"";
