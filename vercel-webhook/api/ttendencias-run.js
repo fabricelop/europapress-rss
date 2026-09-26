@@ -77,7 +77,7 @@ function activeTrace(items){
   const traces=items.map(traceOf).filter(Boolean).sort((a,b)=>stamp(a.updated_at||a.comment_updated_at)-stamp(b.updated_at||b.comment_updated_at));
   const t=traces.at(-1);if(!t||!["REQUESTED","RUNNING"].includes(String(t.status||"")))return null;
   const age=Date.now()-stamp(t.updated_at||t.started_at||t.requested_at);
-  return Number.isFinite(age)&&age>=0&&age<75*60*1000?t:null
+  return Number.isFinite(age)&&age>=0&&age<20*60*1000?t:null
 }
 
 async function writeTrigger(doc,sha){
