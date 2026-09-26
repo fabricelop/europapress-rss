@@ -236,7 +236,7 @@ function runVisual(s){
    head.textContent="Ejecución";el.textContent=s?.enabled===false?"Trigger de Work no disponible":"Lista para ejecutar";
  }
 }
-function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?3000:30000)}
+function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?5000:30000)}
 async function loadRunStatus(){
  try{
    const headers={};if(token())headers.authorization="Bearer "+token();
