@@ -43,6 +43,7 @@ jobs:
             python3 ttittulares/apply_editorial_outbox.py
 
             git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json
+            git add -A -- ttittulares/generated-images
             git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
 
             if git diff --cached --quiet; then
