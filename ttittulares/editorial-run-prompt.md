@@ -21,3 +21,9 @@ Cada incidencia se añade a `ttittulares/execution-errors.json` mediante el outb
 ## Cierre
 
 Relee cola, prepared y estado; informa recuentos reales de imágenes en Telegram, archivo y sin imagen y noticias tratadas. DONE parcial cuando haya pendientes/incidencias, sin bloquear el resto. Mantén la regla de antisolape del control manual: solo una petición manual reciente realmente activa bloquea; comentarios de transporte y RUNTRACE nunca disparan trabajo editorial.
+
+## Puente binario y cierre del fallback (verificado el 27/09/2026)
+
+Llama a imagegen desde functions.exec y conserva la ruta absoluta del PNG indicada en output_hint. Normaliza ese archivo con Pillow mediante tools.exec_command. En la misma llamada JavaScript de functions.exec, analiza result.output (JSON con event_id, revision, sha256 e image_base64) y pásalo programáticamente a tools.mcp__codex_apps__github_add_comment_to_issue. El cuerpo del comentario es el prefijo TTITTULARES_TELEGRAM_IMAGE_V1, un salto de línea y JSON.stringify(payload). No imprimas ni transcribas el base64. El resultado de exec_command está disponible como valor de JavaScript para la llamada GitHub siguiente. Este recorrido entregó dos fotos y actualizó el estado a telegram. Si una capacidad concreta no está disponible, informa la excepción real y aplica fallback; no supongas que falta el puente sin probarlo.
+
+Para fallback image-only, envía image_status ready solo con una URL HTTPS de archivo verificada del mismo acontecimiento, o image_status none con image_failure_reason concreta. Nunca envíes pending ni working como resultado de fallback: el aplicador los rechaza. Una Action cancelada sin jobs no entregó nada y permite un comentario nuevo tras comprobar el estado; una Action que sí pudo mandar foto requiere inspección de recibo antes de cualquier reintento.
