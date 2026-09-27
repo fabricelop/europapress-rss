@@ -1,86 +1,93 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-27T23:31:06+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-27T23:40:56+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "superx",
+    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
-  "fresh_sources": [],
-  "reliability": "medium",
+  "non_stale_source_count": 6,
+  "fresh_sources": [
+    "tweets24",
+    "snaplytics"
+  ],
+  "reliability": "high",
   "top10": [
+    "#ConexiónHonduras3",
     "McNulty",
     "#SalvadosRufián",
     "#DragRaceEs",
     "Pablo Vázquez",
     "#NASCARenDAZN",
-    "#Montreal2026",
-    "Van der Poel",
-    "Del Toro",
-    "Jorgenson",
-    "#ConexiónHonduras3"
+    "Nyland",
+    "Gelabert",
+    "Noruega",
+    "#Montreal2026"
   ],
   "items": [
     {
       "rank": 1,
+      "name": "#ConexiónHonduras3",
+      "entered_top10_at": "2026-09-27T23:10:54+02:00"
+    },
+    {
+      "rank": 2,
       "name": "McNulty",
       "entered_top10_at": "2026-09-27T21:31:05+02:00"
     },
     {
-      "rank": 2,
+      "rank": 3,
       "name": "#SalvadosRufián",
       "entered_top10_at": "2026-09-27T23:10:54+02:00"
     },
     {
-      "rank": 3,
+      "rank": 4,
       "name": "#DragRaceEs",
       "entered_top10_at": "2026-09-27T20:40:53+02:00"
     },
     {
-      "rank": 4,
+      "rank": 5,
       "name": "Pablo Vázquez",
       "entered_top10_at": "2026-09-27T22:10:55+02:00"
     },
     {
-      "rank": 5,
+      "rank": 6,
       "name": "#NASCARenDAZN",
       "entered_top10_at": "2026-09-27T22:10:55+02:00"
     },
     {
-      "rank": 6,
-      "name": "#Montreal2026",
-      "entered_top10_at": "2026-09-27T20:40:53+02:00"
-    },
-    {
       "rank": 7,
-      "name": "Van der Poel",
-      "entered_top10_at": "2026-09-27T20:40:53+02:00"
+      "name": "Nyland",
+      "entered_top10_at": "2026-09-27T23:40:56+02:00"
     },
     {
       "rank": 8,
-      "name": "Del Toro",
-      "entered_top10_at": "2026-09-27T20:40:53+02:00"
+      "name": "Gelabert",
+      "entered_top10_at": "2026-09-27T23:40:56+02:00"
     },
     {
       "rank": 9,
-      "name": "Jorgenson",
-      "entered_top10_at": "2026-09-27T22:10:55+02:00"
+      "name": "Noruega",
+      "entered_top10_at": "2026-09-27T23:40:56+02:00"
     },
     {
       "rank": 10,
-      "name": "#ConexiónHonduras3",
-      "entered_top10_at": "2026-09-27T23:10:54+02:00"
+      "name": "#Montreal2026",
+      "entered_top10_at": "2026-09-27T20:40:53+02:00"
     }
   ],
   "unchanged_from_previous": false,
-  "new_entries": [],
+  "new_entries": [
+    "Nyland",
+    "Gelabert",
+    "Noruega"
+  ],
   "upcoming": [
     {
       "name": "Matthews",
@@ -92,8 +99,26 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 13.7,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-27T23:01:23+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Van der Poel",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T23:40:56+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -110,8 +135,44 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 14.7,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-27T23:10:54+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Del Toro",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T23:40:56+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Jorgenson",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T23:40:56+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -128,7 +189,7 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 15.7,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-27T23:10:54+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -146,7 +207,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-27T20:40:53+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -164,49 +225,13 @@
       ],
       "best_observed_rank": 17,
       "mean_observed_rank": 19.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-27T22:10:55+02:00",
       "news_source_count": 2,
       "news_event_id": "63c70b28d2eb",
       "news_title": "Pedro Martínez, entrenador del Real Madrid: \"No tenemos tanta diferencia con el Unicaja, lo de pretemporada no fue normal\"",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-27T20:22:15.118178Z"
-    },
-    {
-      "name": "Pogacar",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 18.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T23:01:23+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Yolanda Díaz",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 18.3,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T21:10:57+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -240,7 +265,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T23:31:06+02:00"
+      "fetched_at": "2026-09-27T23:40:56+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -265,7 +290,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T23:31:07+02:00"
+      "fetched_at": "2026-09-27T23:40:57+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -292,10 +317,10 @@
         "Unicaja"
       ],
       "error": null,
-      "update_hint": "Updated 56 seconds ago Live Twitter Trending Topics in Spain 1 #ConexiónHonduras3 Explor",
-      "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-27T23:31:07+02:00"
+      "update_hint": "Updated 10 minutes ago",
+      "age_minutes": 10.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-27T23:40:58+02:00"
     },
     "superx": {
       "ok": true,
@@ -325,46 +350,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T23:31:08+02:00"
+      "fetched_at": "2026-09-27T23:40:58+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790544668",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790545259",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T23:31:08+02:00"
+      "fetched_at": "2026-09-27T23:40:59+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
-        "Puerta del Sol",
-        "McNulty",
-        "Galapagar",
         "#ConexiónHonduras3",
-        "#DragRaceEs",
+        "Puerta del Sol",
+        "Galapagar",
         "#SalvadosRufián",
+        "Gelabert",
+        "McNulty",
+        "#DragRaceEs",
+        "Ivana",
+        "Sporting",
         "Pablo Vázquez",
-        "Nyland",
         "Inglaterra",
-        "15 M",
-        "Noruega",
-        "#Montreal2026",
         "#NASCARenDAZN",
-        "Van der Poel",
+        "15 M",
+        "Nyland",
+        "Noruega",
         "Wembley",
         "Oyarzabal",
-        "Jorgenson",
-        "Del Toro",
-        "Colapinto",
-        "Mari Carmen"
+        "Enzo Pérez",
+        "#FelizDomingo",
+        "Yola"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 27, 2026 20:00 UTC",
-      "age_minutes": 91.1,
-      "freshness": "stale",
-      "fetched_at": "2026-09-27T23:31:08+02:00"
+      "update_hint": "Trending now Sep 27, 2026 21:00 UTC",
+      "age_minutes": 41.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-27T23:40:59+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -392,18 +417,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 27, 2026 at 09:00 PM # Trend Type Actions 1 McNulty Topic 2 #DragRaceE",
-      "age_minutes": 151.2,
+      "age_minutes": 161.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-27T23:31:09+02:00"
+      "fetched_at": "2026-09-27T23:41:00+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790544670",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790545261",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T23:31:10+02:00"
+      "fetched_at": "2026-09-27T23:41:01+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -412,7 +437,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-27T23:31:11+02:00"
+      "fetched_at": "2026-09-27T23:41:02+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -442,16 +467,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T23:31:11+02:00"
+      "fetched_at": "2026-09-27T23:41:03+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790544673",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790545265",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T23:31:13+02:00"
+      "fetched_at": "2026-09-27T23:41:05+02:00"
     }
   }
 }
