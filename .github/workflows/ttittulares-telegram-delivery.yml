@@ -1,0 +1,52 @@
+name: Entregar imagen TTiTTulares a Telegram
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: ttittulares-repo-write
+  cancel-in-progress: false
+
+jobs:
+  deliver:
+    if: >-
+      github.event.issue.pull_request && github.event.issue.number == 2 &&
+      github.event.comment.user.login == 'fabricelop' &&
+      (startsWith(github.event.comment.body, 'TTITTULARES_TELEGRAM_IMAGE_V1') ||
+       startsWith(github.event.comment.body, 'TTITTULARES_TELEGRAM_IMAGE_ERROR_V1'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preparar validador de imagen
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow
+      - name: Enviar a Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python3 ttittulares/telegram_delivery.py
+      - name: Registrar la entrega confirmada sin guardar el raster
+        if: success()
+        run: |
+          set -euo pipefail
+          if [ ! -f /tmp/ttittulares-telegram-receipt.json ]; then exit 0; fi
+          git config user.name "ttittulares-transport-bot"
+          git config user.email "actions@users.noreply.github.com"
+          for intento in 1 2 3 4 5; do
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 ttittulares/telegram_delivery.py apply-receipt
+            git add ttittulares/prepared.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Registrar imagen TTiTTulares entregada a Telegram"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep $((intento * 2))
+          done
+          echo "ERROR: Telegram recibió la foto, pero no se pudo registrar el estado; revisar IDs en los logs." >&2
+          exit 1
