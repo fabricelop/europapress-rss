@@ -1,35 +1,32 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-27T14:59:37+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-27T15:01:46+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
     "superx",
     "snaplytics",
-    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
     "Puerta del Sol",
-    "Galapagar",
     "Inglaterra",
     "Wembley",
     "Oyarzabal",
     "#MalasLenguasN",
-    "#FelizDomingo",
     "Ferran",
-    "15 M",
-    "Mari Carmen"
+    "Mari Carmen",
+    "Colapinto",
+    "#laSextaXplica",
+    "Cucurella"
   ],
   "items": [
     {
@@ -39,116 +36,57 @@
     },
     {
       "rank": 2,
-      "name": "Galapagar",
-      "entered_top10_at": "2026-09-27T13:01:17+02:00"
-    },
-    {
-      "rank": 3,
       "name": "Inglaterra",
       "entered_top10_at": "2026-09-26T22:41:01+02:00"
     },
     {
-      "rank": 4,
+      "rank": 3,
       "name": "Wembley",
       "entered_top10_at": "2026-09-26T22:41:01+02:00"
     },
     {
-      "rank": 5,
+      "rank": 4,
       "name": "Oyarzabal",
       "entered_top10_at": "2026-09-26T22:51:35+02:00"
     },
     {
-      "rank": 6,
+      "rank": 5,
       "name": "#MalasLenguasN",
       "entered_top10_at": "2026-09-26T23:31:16+02:00"
     },
     {
-      "rank": 7,
-      "name": "#FelizDomingo",
-      "entered_top10_at": "2026-09-27T13:01:17+02:00"
-    },
-    {
-      "rank": 8,
+      "rank": 6,
       "name": "Ferran",
       "entered_top10_at": "2026-09-26T22:41:01+02:00"
     },
     {
+      "rank": 7,
+      "name": "Mari Carmen",
+      "entered_top10_at": "2026-09-23T08:50:58+02:00"
+    },
+    {
+      "rank": 8,
+      "name": "Colapinto",
+      "entered_top10_at": "2026-09-27T15:01:46+02:00"
+    },
+    {
       "rank": 9,
-      "name": "15 M",
-      "entered_top10_at": "2026-09-27T13:40:54+02:00"
+      "name": "#laSextaXplica",
+      "entered_top10_at": "2026-09-27T15:01:46+02:00"
     },
     {
       "rank": 10,
-      "name": "Mari Carmen",
-      "entered_top10_at": "2026-09-23T08:50:58+02:00"
+      "name": "Cucurella",
+      "entered_top10_at": "2026-09-27T15:01:46+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Colapinto",
+    "#laSextaXplica",
+    "Cucurella"
+  ],
   "upcoming": [
-    {
-      "name": "Colapinto",
-      "social_source_count": 6,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T13:01:17+02:00",
-      "news_source_count": 2,
-      "news_event_id": "b2f2f1dbbe35",
-      "news_title": "Flavio Briatore deja en el aire el futuro de Colapinto tras su grave error en Bakú: \"Quiero tiempo para ver qué medidas tomar\"",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T10:11:19.861103Z"
-    },
-    {
-      "name": "#laSextaXplica",
-      "social_source_count": 6,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.7,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T13:01:17+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Cucurella",
-      "social_source_count": 6,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.2,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T06:01:30+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
     {
       "name": "La Bola Negra",
       "social_source_count": 6,
@@ -161,7 +99,7 @@
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 14.7,
+      "mean_observed_rank": 14.3,
       "movement": "flat",
       "first_detected_at": "2026-09-27T03:40:50+02:00",
       "news_source_count": 1,
@@ -182,7 +120,7 @@
         "tweets24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 14.3,
+      "mean_observed_rank": 14.7,
       "movement": "flat",
       "first_detected_at": "2026-09-27T13:01:17+02:00",
       "news_source_count": 0,
@@ -202,7 +140,7 @@
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 15.2,
+      "mean_observed_rank": 15.4,
       "movement": "flat",
       "first_detected_at": "2026-09-27T03:40:50+02:00",
       "news_source_count": 2,
@@ -222,9 +160,48 @@
         "tweets24"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 17.4,
+      "mean_observed_rank": 17.2,
       "movement": "flat",
       "first_detected_at": "2026-09-27T04:31:08+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Triana",
+      "social_source_count": 5,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 20,
+      "mean_observed_rank": 20.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T15:01:46+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Paquita",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 17,
+      "mean_observed_rank": 18.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T15:01:46+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -240,9 +217,9 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 18.2,
-      "movement": "flat",
+      "best_observed_rank": 18,
+      "mean_observed_rank": 18.5,
+      "movement": "down",
       "first_detected_at": "2026-09-27T12:31:07+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -251,7 +228,26 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Colapinto",
+      "first_detected_at": "2026-09-27T13:01:17+02:00",
+      "entered_top10_at": "2026-09-27T15:01:46+02:00",
+      "lead_minutes": 120
+    },
+    {
+      "name": "#laSextaXplica",
+      "first_detected_at": "2026-09-27T13:01:17+02:00",
+      "entered_top10_at": "2026-09-27T15:01:46+02:00",
+      "lead_minutes": 120
+    },
+    {
+      "name": "Cucurella",
+      "first_detected_at": "2026-09-27T06:01:30+02:00",
+      "entered_top10_at": "2026-09-27T15:01:46+02:00",
+      "lead_minutes": 540
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -282,7 +278,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T14:59:37+02:00"
+      "fetched_at": "2026-09-27T15:01:46+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -294,20 +290,20 @@
         "Oyarzabal",
         "#MalasLenguasN",
         "#FelizDomingo",
-        "Ferran",
         "15 M",
         "Mari Carmen",
+        "Ferran",
         "Colapinto",
         "Cucurella",
         "#laSextaXplica",
-        "Harvard",
-        "La Bola Negra"
+        "La Bola Negra",
+        "Harvard"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T14:59:37+02:00"
+      "fetched_at": "2026-09-27T15:01:46+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -334,10 +330,10 @@
         "Triana"
       ],
       "error": null,
-      "update_hint": "Updated 44 minutes ago",
-      "age_minutes": 44.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-27T14:59:38+02:00"
+      "update_hint": "Updated 46 minutes ago",
+      "age_minutes": 46.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-27T15:01:47+02:00"
     },
     "superx": {
       "ok": true,
@@ -367,16 +363,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T14:59:39+02:00"
+      "fetched_at": "2026-09-27T15:01:48+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790513980",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790514108",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T14:59:40+02:00"
+      "fetched_at": "2026-09-27T15:01:48+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -404,48 +400,48 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 27, 2026 12:00 UTC",
-      "age_minutes": 59.7,
+      "age_minutes": 61.8,
       "freshness": "aging",
-      "fetched_at": "2026-09-27T14:59:40+02:00"
+      "fetched_at": "2026-09-27T15:01:48+02:00"
     },
     "fowtools": {
       "ok": true,
       "trends": [
         "Puerta del Sol",
-        "Inglaterra",
         "Galapagar",
+        "Inglaterra",
         "Wembley",
         "Oyarzabal",
         "#MalasLenguasN",
         "#FelizDomingo",
         "Ferran",
-        "Mari Carmen",
         "M",
+        "Mari Carmen",
         "Colapinto",
+        "Cucurella",
         "#laSextaXplica",
         "Harvard",
-        "Cucurella",
-        "Belén",
         "La Bola Negra",
-        "#DeViernes",
+        "Belén",
         "Andrea",
-        "LA CAMPAÑA",
-        "Paquita"
+        "#DeViernes",
+        "Paquita",
+        "Triana"
       ],
       "error": null,
-      "update_hint": "Updated: September 27, 2026 at 12:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 Ing",
-      "age_minutes": 179.7,
+      "update_hint": "Updated: September 27, 2026 at 01:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 Gal",
+      "age_minutes": 121.8,
       "freshness": "stale",
-      "fetched_at": "2026-09-27T14:59:40+02:00"
+      "fetched_at": "2026-09-27T15:01:48+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790513981",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790514111",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T14:59:41+02:00"
+      "fetched_at": "2026-09-27T15:01:51+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -454,46 +450,46 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-27T14:59:44+02:00"
+      "fetched_at": "2026-09-27T15:01:51+02:00"
     },
     "trendswe": {
       "ok": true,
       "trends": [
         "#Puerta del Sol",
-        "#Inglaterra",
         "#Galapagar",
+        "#Inglaterra",
         "#Wembley",
         "#Oyarzabal",
         "#MalasLenguasN",
         "#FelizDomingo",
         "#Ferran",
-        "#Mari Carmen",
         "M",
+        "#Mari Carmen",
         "#Colapinto",
+        "#Cucurella",
         "#laSextaXplica",
         "#Harvard",
-        "#Cucurella",
-        "#Belén",
         "#La Bola Negra",
-        "#DeViernes",
+        "#Belén",
         "#Andrea",
-        "#LA CAMPAÑA",
-        "#Paquita"
+        "#DeViernes",
+        "#Paquita",
+        "#Triana"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T14:59:44+02:00"
+      "fetched_at": "2026-09-27T15:01:51+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790513987",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790514113",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T14:59:47+02:00"
+      "fetched_at": "2026-09-27T15:01:53+02:00"
     }
   }
 }
