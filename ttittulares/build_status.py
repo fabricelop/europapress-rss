@@ -30,7 +30,9 @@ for event in events_doc.get("events", []):
     event_map[event_id] = {
         "title": str(event.get("canonical_title") or event.get("title") or ""),
         "source_count": int(event.get("source_count") or 0),
+        "outlet_count": int(event.get("outlet_count") or len(event.get("sources") or [])),
         "sources": list(event.get("sources") or []),
+        "source_families": list(event.get("source_families") or []),
         "status": str(event.get("status") or ""),
         "last_seen": event.get("last_seen"),
         "revision": int(event.get("revision") or 1),
@@ -118,6 +120,9 @@ out = {
     ),
     "healthy_source_count":events_doc.get("healthy_source_count"),
     "configured_sources":events_doc.get("configured_sources"),
+    "healthy_source_family_count":events_doc.get("healthy_source_family_count"),
+    "configured_source_families":events_doc.get("configured_source_families"),
+    "source_status":events_doc.get("source_status", []),
     "source_failures":events_doc.get("source_failures", []),
     "events":event_map,
 }

@@ -14,7 +14,7 @@
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 60%)}button,a{font:inherit}
 .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:9px;padding:13px max(12px,env(safe-area-inset-left));background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36}.brand{font-size:19px;font-weight:850}.sub{font-size:11px;color:#8f9bad}.spacer{flex:1}.iconbtn,.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:11px;padding:9px 11px;font-weight:760;text-decoration:none}.iconbtn{height:42px}
-main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 4px}.meta{font-size:12px;color:#909cad;line-height:1.45}.timing{display:grid;gap:3px;margin-top:5px}.three-go{border:1px solid #40526a;background:#18212f;color:#eef3fa;border-radius:9px;min-width:36px;min-height:34px;font-weight:850}.timing .ok{color:#9fabc0}.timing .late{color:#ffb36b;font-weight:750}.health{border:1px solid #354255;border-radius:999px;padding:7px 10px;font-size:12px;color:#cbd7e8;white-space:nowrap}.health.bad{border-color:#6e3439;color:#ff9ca5}
+main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 4px}.meta{font-size:12px;color:#909cad;line-height:1.45}.timing{display:grid;gap:3px;margin-top:5px}.three-go{border:1px solid #40526a;background:#18212f;color:#eef3fa;border-radius:9px;min-width:36px;min-height:34px;font-weight:850}.timing .ok{color:#9fabc0}.timing .late{color:#ffb36b;font-weight:750}.health{border:1px solid #354255;border-radius:999px;padding:7px 10px;font-size:12px;color:#cbd7e8;white-space:nowrap;cursor:pointer;background:#101721}.health.bad{border-color:#6e3439;color:#ff9ca5}.sourceList{display:grid;gap:8px;max-height:58vh;overflow:auto;margin-top:12px}.sourceGroup{font-size:11px;font-weight:850;text-transform:uppercase;color:#91a0b4;margin:10px 2px 2px}.sourceRow{border:1px solid #2f3947;border-radius:12px;padding:10px;background:#0c1118}.sourceTop{display:flex;gap:8px;align-items:center}.sourceName{font-weight:800;min-width:0;flex:1}.sourceState{font-size:11px;font-weight:800}.sourceState.ok{color:#8ee6a8}.sourceState.bad{color:#ff9ca5}.sourceMeta{font-size:11px;color:#8f9bad;margin-top:4px;line-height:1.4}.sourceLast{font-size:12px;color:#cbd7e8;margin-top:5px;line-height:1.35}
 .runbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #354255;background:#101721;border-radius:14px;padding:11px 12px;margin:0 0 14px;min-height:68px}.runmain{display:grid;gap:4px;min-width:0;flex:1}.runline{display:flex;align-items:center;gap:8px;min-width:0}.runbar strong{font-size:13px;min-width:0}.runbar span{font-size:11px;color:#8f9bad;line-height:1.35}.runbar span.running{color:#ffc178}.runbar span.done{color:#8ee6a8}.runbar span.error{color:#ff9ca5}.runbar .btn:disabled{opacity:.45;cursor:not-allowed}.runbar .btn[hidden]{display:none}.runbar.active{align-items:stretch}.runbar.active .runmain{width:100%}.runprogress{height:5px;background:#252f3c;border-radius:999px;overflow:hidden;margin-top:4px}.runprogress[hidden]{display:none}.runprogress i{display:block;height:100%;width:0;background:#6f8fb8;border-radius:999px;transition:width .35s ease}.incidentBtn{border:1px solid #7b5b25;background:#2a2114;color:#ffc178;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:850;cursor:pointer;white-space:nowrap}.incidentBtn.severe{border-color:#7d3038;background:#2a171a;color:#ff9ca5}.diag{white-space:pre-wrap;word-break:break-word;background:#090d13;border:1px solid #2d3745;border-radius:11px;padding:11px;max-height:44vh;overflow:auto;color:#cbd7e8;font:11px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0 14px}.stat{border:1px solid #2e3744;background:#111720;border-radius:13px;padding:10px 12px;color:#aab5c5;text-align:left;cursor:pointer}.stat b{display:block;color:#eef3fa;font-size:21px}.stat.active{border-color:#607796;background:#18212f}
 .list{display:grid;gap:10px}.card,.queuecard{background:#11161e;border:1px solid #29313d;border-radius:16px;padding:13px}.head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}.title{font-size:16px;font-weight:800;line-height:1.28}.sources{font-size:12px;color:#8fa0b5;margin-top:6px}.count{border:1px solid #354255;border-radius:999px;padding:6px 9px;font-size:11px;color:#cbd7e8;white-space:nowrap}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.actions .btn{min-height:40px}.btn.primary{background:#1c2737}.btn.danger{color:#ff9ca5}.btn.rework{color:#d2bdff}.btn.check{color:#9fd7ff}.problem-reason{font-size:13px;line-height:1.4;color:#ffbd91;margin-top:9px}.verification-hint{font-size:12px;line-height:1.4;color:#9fd7ff;margin-top:8px}.details{display:none;border-top:1px solid #29313d;margin-top:12px;padding-top:12px}.details.open{display:block}.facts{font-size:14px;line-height:1.45;color:#cbd3df;white-space:pre-wrap;margin-bottom:12px}.imagebox{background:#0b1017;border:1px solid #324052;border-radius:13px;padding:10px 11px;margin:0 0 12px}.imageTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9cacbf;margin-bottom:5px}.imageMeta{font-size:12px;color:#aeb9c9}.imageActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.variant{background:#0b1017;border:1px solid #2c3543;border-radius:13px;padding:11px;margin:9px 0}.vhead{display:flex;align-items:center;gap:8px;margin-bottom:7px}.vname{font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.04em;color:#9cacbf}.chars{margin-left:auto;font-size:11px;color:#77869a}.tweet{white-space:pre-wrap;line-height:1.4;font-size:14px}.quoteBox{background:#0b1017;border:1px solid #324052;border-radius:13px;padding:10px 11px;margin:0 0 12px}.quoteTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9cacbf;margin-bottom:4px}.quoteHint{font-size:11px;color:#7f8da0;margin-bottom:8px}.quoteCandidates{display:grid;gap:7px}.quoteCandidate{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:start;border:1px solid #2c3543;border-radius:10px;padding:8px;background:#101721}.quoteCandidate input{margin-top:3px}.quoteCandidate.selected{border-color:#607796;background:#18212f}.quoteText{font-size:12px;line-height:1.35;color:#dce5f1}.quoteMeta{font-size:10px;color:#8391a3;margin-top:3px}.quoteReason{font-size:10px;color:#98a4b5;font-style:italic;margin-top:3px}.quoteActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.quoteEmpty{font-size:12px;color:#8f9bad;margin:4px 0}.quoteX[hidden]{display:none}.queuecard .sources-list{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.chip{font-size:11px;background:#0b1017;border:1px solid #2c3543;border-radius:999px;padding:5px 8px;color:#9eabba}.empty{text-align:center;color:#98a4b5;padding:50px 10px}
@@ -65,6 +65,11 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <input id="tokenInput" type="password" autocomplete="off" placeholder="Token de control">
  <div class="actions"><button class="btn" id="settingsCancel">Cancelar</button><button class="btn" id="testToken">Probar acceso</button><button class="btn" id="testPush">Probar notificación</button><button class="btn primary" id="saveToken">Guardar</button></div>
  <div class="meta" id="accessStatus" style="margin-top:9px"></div>
+</div></div>
+<div class="sheet" id="sourcesSheet"><div class="panel">
+ <h2>Fuentes del radar</h2><p id="sourcesSummary">Estado de las fuentes.</p>
+ <div class="sourceList" id="sourcesList"></div>
+ <div class="actions"><button class="btn primary" id="sourcesClose">Cerrar</button></div>
 </div></div>
 <div class="sheet" id="incidentSheet"><div class="panel">
  <h2>Diagnóstico de ejecución</h2><p id="incidentSummary">Información técnica de la ejecución.</p>
@@ -339,6 +344,38 @@ function variants(item){
  return out
 }
 function setView(next){view=next;document.querySelectorAll(".stat").forEach(x=>x.classList.toggle("active",x.dataset.view===view));renderList()}
+function sourceTypeLabel(t){return t==="general"?"Generales":t==="sport"?"Deportes":t==="social"?"Social / tendencias":"Descubrimiento internacional"}
+function renderSourcesSheet(){
+ const s=model.status||{},rows=[...(s.source_status||[])];
+ const hf=Number(s.healthy_source_family_count),tf=Number(s.configured_source_families);
+ $("sourcesSummary").textContent=(Number.isFinite(hf)&&Number.isFinite(tf)?hf+"/"+tf+" familias independientes · ":"")+"el umbral editorial sigue siendo 4 familias independientes.";
+ const box=$("sourcesList");box.innerHTML="";
+ const order=["general","sport","social","discovery"];
+ for(const type of order){
+   const group=rows.filter(x=>String(x.type||"general")===type);
+   if(!group.length)continue;
+   const label=document.createElement("div");label.className="sourceGroup";label.textContent=sourceTypeLabel(type);box.appendChild(label);
+   for(const x of group){
+     const row=document.createElement("div");row.className="sourceRow";
+     row.innerHTML='<div class="sourceTop"><div class="sourceName"></div><div class="sourceState"></div></div><div class="sourceMeta"></div><div class="sourceLast"></div>';
+     row.querySelector(".sourceName").textContent=x.source||"Fuente";
+     const state=row.querySelector(".sourceState");state.textContent=x.ok?"● OK":"● ERROR";state.className="sourceState "+(x.ok?"ok":"bad");
+     const bits=[];
+     if(x.family&&x.family!==x.source)bits.push("Familia "+x.family);
+     if(type==="general")bits.push(x.counts_for_threshold?"Cuenta para el umbral":"No cuenta para el umbral");
+     else if(type==="social")bits.push("Señal social · no suma voto independiente");
+     else if(type==="discovery")bits.push("Descubrimiento · no suma voto independiente");
+     if(Number.isFinite(Number(x.items)))bits.push(Number(x.items)+" artículos en el último barrido");
+     if(x.recovered)bits.push("vía fallback");
+     row.querySelector(".sourceMeta").textContent=bits.join(" · ");
+     const last=row.querySelector(".sourceLast");
+     last.textContent=x.last_contribution_at?"Última aportación "+fmt(x.last_contribution_at)+(x.last_event_title?" · "+x.last_event_title:""):"Sin aportación registrada en la ventana actual";
+     if(x.error&&!x.ok)last.textContent=(last.textContent?last.textContent+" · ":"")+String(x.error);
+     box.appendChild(row);
+   }
+ }
+ if(!rows.length)box.innerHTML='<div class="empty">Todavía no hay diagnóstico detallado de fuentes.</div>';
+}
 function render(){
  const s=model.status||{},healthy=Number(s.healthy_source_count),total=Number(s.configured_sources);
  $("readyCount").textContent=(model.prepared||[]).length;$("processingCount").textContent=Number(s.processing_count||0);$("problematicCount").textContent=Number(s.problematic_count||0);$("growingCount").textContent=Number(s.three_source_count||0);
@@ -584,6 +621,9 @@ $("testPush").onclick=async()=>{
    $("accessStatus").textContent=d.delivered?"✓ Notificación de prueba enviada":"No se entregó ninguna notificación";
  }catch(e){$("accessStatus").textContent=e.message}
 };
+$("health").onclick=()=>{renderSourcesSheet();$("sourcesSheet").classList.add("show")};
+$("sourcesClose").onclick=()=>$("sourcesSheet").classList.remove("show");
+$("sourcesSheet").onclick=e=>{if(e.target===$("sourcesSheet"))$("sourcesSheet").classList.remove("show")};
 $("reworkCancel").onclick=()=>{$("reworkSheet").classList.remove("show");reworkItem=null};
 $("reworkSend").onclick=async()=>{if(!reworkItem)return;const instruction=$("reworkInstruction").value.trim();if(!instruction){toast("Escribe qué quieres cambiar");return}if(!confirm("¿Mandar esta noticia de nuevo a elaboración con estas instrucciones?"))return;const old=[...model.prepared];model.prepared=model.prepared.filter(x=>x.event_id!==reworkItem.event_id);render();try{await api("rework",{event_id:reworkItem.event_id,instruction});$("reworkSheet").classList.remove("show");toast("Enviada a elaboración");reworkItem=null;setView("processing");setTimeout(()=>load(true),1000)}catch(e){model.prepared=old;render();toast(e.message)}};
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});window.addEventListener("pageshow",()=>load(true));

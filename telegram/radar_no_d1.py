@@ -17,7 +17,12 @@ SOURCES=[
 ("Servimedia","https://www.servimedia.es/ultima-hora","html"),
 ("elDiario.es","https://www.eldiario.es/ultimas-noticias/","html"),
 ("Público","https://www.publico.es/","html"),
-("El Mundo","https://www.elmundo.es/ultimas-noticias.html","html")
+("El Mundo","https://www.elmundo.es/ultimas-noticias.html","html"),
+("Antena 3 Noticias","https://www.antena3.com/noticias/ultimas-noticias/","html"),
+("laSexta Noticias","https://www.lasexta.com/noticias/","html"),
+("Onda Cero","https://www.ondacero.es/noticias/","html"),
+("Telecinco Noticias","https://www.telecinco.es/noticias/","html"),
+("Noticias Cuatro","https://www.cuatro.com/noticias/","html")
 ]
 SPORT_SOURCES=[
 ("AS","https://as.com/ultimas-noticias/","html"),
@@ -30,8 +35,10 @@ SPORT_SOURCES=[
 # No cuentan para el umbral de 4 ni alteran el 14/14 de fuentes generales.
 DISCOVERY_SOURCES=[
 ("Reuters Radar","https://news.google.com/rss/search?q=site%3Areuters.com&hl=es&gl=ES&ceid=ES:es","xml"),
-("AP Radar","https://news.google.com/rss/search?q=site%3Aapnews.com&hl=es&gl=ES&ceid=ES:es","xml")
+("AP Radar","https://news.google.com/rss/search?q=site%3Aapnews.com&hl=es&gl=ES&ceid=ES:es","xml"),
+("Público · Tremending","https://www.publico.es/tremending/","html")
 ]
+DISCOVERY_SOURCE_KINDS={"Público · Tremending":"social"}
 SOURCE_DOMAINS={
  "Europa Press":"europapress.es",
  "EL PAÍS":"elpais.com",
@@ -47,6 +54,11 @@ SOURCE_DOMAINS={
  "elDiario.es":"eldiario.es",
  "Público":"publico.es",
  "El Mundo":"elmundo.es",
+ "Antena 3 Noticias":"antena3.com",
+ "laSexta Noticias":"lasexta.com",
+ "Onda Cero":"ondacero.es",
+ "Telecinco Noticias":"telecinco.es",
+ "Noticias Cuatro":"cuatro.com",
  "AS":"as.com",
  "MARCA":"marca.com",
  "Mundo Deportivo":"mundodeportivo.com",
@@ -83,6 +95,12 @@ SOURCE_FALLBACKS={
  "elDiario.es":["https://www.eldiario.es/ultimas-noticias/","https://www.eldiario.es/rss/","https://www.eldiario.es/"],
  "Público":["https://www.publico.es/","https://www.publico.es/rss"],
  "El Mundo":["https://www.elmundo.es/ultimas-noticias.html","https://www.elmundo.es/"],
+ "Antena 3 Noticias":["https://www.antena3.com/noticias/ultimas-noticias/","https://www.antena3.com/noticias/"],
+ "laSexta Noticias":["https://www.lasexta.com/noticias/","https://www.lasexta.com/temas/noticias_ultima_hora-1"],
+ "Onda Cero":["https://www.ondacero.es/noticias/","https://www.ondacero.es/noticias/espana/"],
+ "Telecinco Noticias":["https://www.telecinco.es/noticias/","https://www.telecinco.es/ultimas-noticias/"],
+ "Noticias Cuatro":["https://www.cuatro.com/noticias/","https://www.cuatro.com/"],
+ "Público · Tremending":["https://www.publico.es/tremending/"],
  "AS":["https://as.com/ultimas-noticias/","https://as.com/"],
  "MARCA":["https://www.marca.com/","https://www.marca.com/futbol.html"],
  "Mundo Deportivo":["https://www.mundodeportivo.com/","https://www.mundodeportivo.com/futbol"],
@@ -90,12 +108,23 @@ SOURCE_FALLBACKS={
  "EFE Deportes":["https://efe.com/deportes/feed/","https://efe.com/deportes/"]
 }
 
+SOURCE_FAMILIES={
+ "Antena 3 Noticias":"Atresmedia",
+ "laSexta Noticias":"Atresmedia",
+ "Onda Cero":"Atresmedia",
+ "Telecinco Noticias":"Mediaset",
+ "Noticias Cuatro":"Mediaset",
+ "Público · Tremending":"Público",
+}
+def source_family(src): return SOURCE_FAMILIES.get(src,src)
+
 TOTAL_SOURCES=len(SOURCES)
+TOTAL_SOURCE_FAMILIES=len({source_family(name) for name,_,_ in SOURCES})
 REVIEW_MIN=4
 FAST_TRACK_MIN=4
 FAST_TRACK_WINDOW_MIN=30
 WAIT_HOURS=24
-MIN_HEALTHY_SOURCES=10
+MIN_HEALTHY_SOURCES=14
 MAX_PROCESSED=2000
 STOP=set("a al algo ante bajo con contra de del desde el ella en entre era es esta este esto ha hay la las lo los mas muy no o para pero por que se sin sobre su sus un una y ya".split())
 MATERIAL=set("muere muerto fallece fallecido dimite dimision detenido detencion sentencia condena absuelto absuelve gana ganador pierde derrota confirma confirmado acuerdo aprueba aprobado cancela cancelado rompe ruptura rescata rescatado desaparecido encontrado hospitalizado alta cesado cese nombrado nombramiento".split())
@@ -332,13 +361,14 @@ def fetch_items():
    try:
     src,rows,used,err=fut.result()
     if source_type=="discovery":
-     for row in rows: row["source_type"]="discovery"
+     subtype=DISCOVERY_SOURCE_KINDS.get(src,"discovery")
+     for row in rows: row["source_type"]=subtype
      if used and rows:
       out.extend(rows)
-      source_status.append({"source":src,"type":"discovery","ok":True,"items":len(rows),"url":used,"error":None,"recovered":False})
+      source_status.append({"source":src,"type":subtype,"ok":True,"items":len(rows),"url":used,"error":None,"recovered":False})
       print("DISCOVERY_STATUS",src,"OK",len(rows),used)
      else:
-      source_status.append({"source":src,"type":"discovery","ok":False,"items":0,"url":used,"error":err or "0 artículos extraídos","recovered":False})
+      source_status.append({"source":src,"type":subtype,"ok":False,"items":0,"url":used,"error":err or "0 artículos extraídos","recovered":False})
       print("DISCOVERY_STATUS",src,"FAIL",err or "0 artículos extraídos")
      continue
     is_sport=source_type=="sport"
@@ -393,11 +423,7 @@ def add_appearance(e,row,now):
   same.update({"title":row["title"],"url":row["url"],"last_seen":iso(now)})
  else:
   apps.append({"source":src,"source_type":source_type,"title":row["title"],"url":row["url"],"first_seen":iso(now),"last_seen":iso(now)})
- e["sources"]=sorted({a["source"] for a in apps if a.get("source_type","general")=="general"})
- e["sport_sources"]=sorted({a["source"] for a in apps if a.get("source_type")=="sport"})
- e["source_count"]=len(e["sources"])
- e["sport_source_count"]=len(e["sport_sources"])
- e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCES,1)
+ recalc_event_sources(e)
  e["last_seen"]=iso(now)
  if not e.get("url"):e["url"]=row["url"]
 
@@ -422,9 +448,13 @@ def recalc_event_sources(e):
  apps=e.get("appearances",[])
  e["sources"]=sorted({a["source"] for a in apps if a.get("source_type","general")=="general"})
  e["sport_sources"]=sorted({a["source"] for a in apps if a.get("source_type")=="sport"})
- e["source_count"]=len(e["sources"])
+ e["social_sources"]=sorted({a["source"] for a in apps if a.get("source_type")=="social"})
+ e["discovery_sources"]=sorted({a["source"] for a in apps if a.get("source_type")=="discovery"})
+ e["source_families"]=sorted({source_family(src) for src in e["sources"]})
+ e["source_count"]=len(e["source_families"])
+ e["outlet_count"]=len(e["sources"])
  e["sport_source_count"]=len(e["sport_sources"])
- e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCES,1)
+ e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCE_FAMILIES,1)
 
 def prune_event_outliers(e):
  # Si un evento tiene un núcleo de varias cabeceras conectadas y alguna
@@ -521,10 +551,10 @@ def source_gather_minutes(e,count=None):
  general=set(e.get("sources",[]))
  seen={}
  for a in e.get("appearances",[]):
-  if a.get("source") not in general or a.get("source_type","general")=="sport" or not a.get("first_seen"):continue
+  if a.get("source") not in general or a.get("source_type","general")!="general" or not a.get("first_seen"):continue
   t=dtv(a.get("first_seen"))
-  src=a.get("source")
-  if src not in seen or t<seen[src]:seen[src]=t
+  family=source_family(a.get("source"))
+  if family not in seen or t<seen[family]:seen[family]=t
  if not seen:return None
  times=sorted(seen.values())
  need=count or len(times)
@@ -541,14 +571,8 @@ def format_duration_minutes(mins):
 
 def fast_track_minutes(e):
  general=set(e.get("sources",[]))
- seen={}
- for a in e.get("appearances",[]):
-  if a.get("source") not in general or a.get("source_type","general")=="sport" or not a.get("first_seen"):continue
-  t=dtv(a.get("first_seen"))
-  src=a.get("source")
-  if src not in seen or t<seen[src]:seen[src]=t
- if len(seen)<FAST_TRACK_MIN:return None
- times=sorted(seen.values())
+ families={source_family(x) for x in general}
+ if len(families)<FAST_TRACK_MIN:return None
  return source_gather_minutes(e,FAST_TRACK_MIN)
 
 def processed_snapshot(e,kind,now,revision=None):
@@ -793,8 +817,7 @@ for e in events:
  if "canonical_title" not in e:e["canonical_title"]=e.get("title","")
  if "appearances" not in e:
   e["appearances"]=[{"source":s,"title":e["canonical_title"],"url":e.get("url",""),"first_seen":e.get("first_seen"),"last_seen":e.get("last_seen")} for s in e.get("sources",[])]
- e["sources"]=sorted(set(e.get("sources",[])))
- e["source_count"]=len(e["sources"]);e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCES,1)
+ recalc_event_sources(e)
 
 # Activación segura: no enviar retroactivamente alertas rápidas de eventos que ya tenían 3+ fuentes.
 if not events_doc.get("fast_track_initialized"):
@@ -812,7 +835,7 @@ rows,healthy,sport_healthy,source_failures,source_status,source_recovery=fetch_i
 print("SOURCES_OK",len(set(healthy)),sorted(set(healthy)))
 print("SPORT_SOURCES_OK",len(set(sport_healthy)),sorted(set(sport_healthy)))
 print("SOURCES_CONFIGURED",TOTAL_SOURCES)
-print("SOURCE_HEALTH_SUMMARY",len(set(healthy)),"/",TOTAL_SOURCES,"general;",len(set(sport_healthy)),"/",len(SPORT_SOURCES),"sport")
+print("SOURCE_HEALTH_SUMMARY",len(set(healthy)),"/",TOTAL_SOURCES,"general outlets;",len({source_family(x) for x in healthy}),"/",TOTAL_SOURCE_FAMILIES,"independent families;",len(set(sport_healthy)),"/",len(SPORT_SOURCES),"sport")
 if len(set(healthy))<MIN_HEALTHY_SOURCES:
  print("SOURCE_HEALTH_DEGRADED correction process attempted; remaining failures:",[x["source"] for x in source_status if x["type"]=="general" and not x["ok"]])
 
@@ -917,11 +940,34 @@ processed=processed[-MAX_PROCESSED:]
 
 if initial_event_count>0 and len(events)==0:
  raise RuntimeError("Protección de estado: el barrido intentó vaciar todos los eventos")
-events_doc={"version":5,"configured_sources":TOTAL_SOURCES,"review_min_sources":REVIEW_MIN,
+
+# Diagnóstico por fuente para la app: última aportación REAL (first_seen de una
+# aparición), no el simple refresco de un artículo que continúa en portada.
+last_contribution={}
+for e in events:
+ for a in e.get("appearances",[]):
+  src=str(a.get("source") or "")
+  when=a.get("first_seen")
+  if not src or not when:continue
+  cur=last_contribution.get(src)
+  if cur is None or dtv(when)>dtv(cur.get("at")):
+   last_contribution[src]={"at":when,"title":a.get("title") or e.get("canonical_title",""),"event_id":e.get("id")}
+for item in source_status:
+ src=item.get("source")
+ last=last_contribution.get(src,{})
+ item["family"]=source_family(src)
+ item["counts_for_threshold"]=item.get("type")=="general"
+ item["last_contribution_at"]=last.get("at")
+ item["last_event_title"]=last.get("title")
+ item["last_event_id"]=last.get("event_id")
+
+healthy_families=sorted({source_family(src) for src in healthy})
+events_doc={"version":6,"configured_sources":TOTAL_SOURCES,"configured_source_families":TOTAL_SOURCE_FAMILIES,"review_min_sources":REVIEW_MIN,
             "fast_track_min_sources":FAST_TRACK_MIN,"fast_track_window_minutes":FAST_TRACK_WINDOW_MIN,
             "fast_track_initialized":True,"fast_track_initialized_at":events_doc.get("fast_track_initialized_at") or iso(now),
             "automatic_processing":False,"waiting_ttl_hours":WAIT_HOURS,"min_healthy_sources":MIN_HEALTHY_SOURCES,"last_run":iso(now),
             "healthy_sources":sorted(set(healthy)),"healthy_source_count":len(set(healthy)),
+            "healthy_source_families":healthy_families,"healthy_source_family_count":len(healthy_families),
             "healthy_sport_sources":sorted(set(sport_healthy)),"source_failures":source_failures,
             "source_status":source_status,"source_recovery":source_recovery,"discovery_sources":[x[0] for x in DISCOVERY_SOURCES],"events":events}
 processed_doc={"version":1,"updated_at":iso(now),"events":processed}
