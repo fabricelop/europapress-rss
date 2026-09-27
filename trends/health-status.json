@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-27T20:29:30.750067+00:00",
+  "checked_at": "2026-09-27T23:22:29.638847+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -55,7 +55,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 0.7,
-      "run_id": 36348176081,
+      "run_id": 36358399127,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,110 +75,25 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 21,
-      "overdue_count": 16,
-      "oldest_age_minutes": 408.4,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "3ce5afef7763",
-          "name": "Latasa",
-          "status": "preparing",
-          "age_minutes": 408.4
-        },
-        {
-          "id": "df30c371946b",
-          "name": "Sindicato de Inquilinas",
-          "status": "preparing",
-          "age_minutes": 169.2
-        },
-        {
-          "id": "ed10b7804b9f",
-          "name": "Garcigrande",
-          "status": "preparing",
-          "age_minutes": 108.5
-        },
-        {
-          "id": "6919ad63e614",
-          "name": "Van Aert",
-          "status": "preparing",
-          "age_minutes": 108.5
-        },
-        {
-          "id": "e69f0f4a635d",
-          "name": "Van der Poel",
-          "status": "preparing",
-          "age_minutes": 108.5
-        },
-        {
-          "id": "923301ff44dc",
-          "name": "#Fiesta27S",
-          "status": "preparing",
-          "age_minutes": 108.5
-        },
-        {
-          "id": "e346845b5fc3",
-          "name": "#LaRoca242",
-          "status": "preparing",
-          "age_minutes": 108.5
-        },
-        {
-          "id": "a47c14746b3f",
-          "name": "#Montreal2026",
-          "status": "preparing",
-          "age_minutes": 108.5
-        },
-        {
-          "id": "2feadab54e99",
-          "name": "Del Toro",
-          "status": "preparing",
-          "age_minutes": 108.5
-        },
-        {
-          "id": "2a319bab5b04",
-          "name": "Eibar",
-          "status": "preparing",
-          "age_minutes": 108.5
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "3ce5afef7763",
-        "df30c371946b",
-        "ed10b7804b9f",
-        "6919ad63e614",
-        "e69f0f4a635d",
-        "923301ff44dc",
-        "e346845b5fc3",
-        "a47c14746b3f",
-        "2feadab54e99",
-        "2a319bab5b04",
-        "3947a38f094f",
-        "5ef31602f2b1",
-        "4f7955cd2ad5",
-        "8a1aa7a112c9",
-        "948316202345",
-        "c700abb892cc",
-        "2c40a1b8a25f",
-        "fbe559afbc03",
-        "aecd944b5e7c",
-        "823fadd0fb3a",
-        "edfea86bc84b"
-      ],
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [],
-  "warnings": [
-    "cola de explicaciones retrasada: 16 pendiente(s) superan 30 min; más antigua 408.4 min"
-  ],
+  "warnings": [],
   "alert_sent": false,
   "last_alert_signature": ""
 }
