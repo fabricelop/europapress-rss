@@ -138,6 +138,13 @@ function normalizeTrace(t,errors){
     duration_seconds:started&&finished?seconds(started,finished):null,
     message:t.message||null,
     summary:t.summary||null,
+    generation_started_at:t.generation_started_at||null,
+    generation_finished_at:t.generation_finished_at||null,
+    bytes_obtained:typeof t.bytes_obtained==="boolean"?t.bytes_obtained:null,
+    bytes_size:Number.isFinite(Number(t.bytes_size))?Number(t.bytes_size):null,
+    sha256:t.sha256||null,
+    outbox_comment_id:t.outbox_comment_id||null,
+    final_image_result:t.final_image_result||null,
     incident_count,
     incidents
   }
@@ -200,8 +207,14 @@ export default async function handler(req,res){
 
     if(active){
       if(Number(active.incident_count||0)>0&&!errors.length)errors=await readErrors();
-      active.incidents=incidentsFor(errors,active.started_at||active.requested_at,null);
-      active.incident_count=Math.max(Number(active.incident_count||0),active.incidents.length);
+      const ledger=incidentsFor(errors,active.started_at||active.requested_at,null);
+      const seen=new Set(),merged=[];
+      for(const x of [...(Array.isArray(active.incidents)?active.incidents:[]),...ledger]){
+        const key=[x.at||"",x.event_id||"",x.phase||"",x.reason||""].join("|");
+        if(seen.has(key))continue;seen.add(key);merged.push(x)
+      }
+      active.incidents=merged;
+      active.incident_count=Math.max(Number(active.incident_count||0),merged.length);
       return res.status(200).json({ok:true,enabled,active:true,...active,last_run:null,can_run:enabled&&authorized(req)})
     }
 
