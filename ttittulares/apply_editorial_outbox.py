@@ -26,10 +26,30 @@ def load(p,d):
 def save(p,o):
     p.write_text(json.dumps(o,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 
+def normalize_variants(raw):
+    """Accept the compact outbox forms and return the canonical four records.
+
+    Work comments have historically represented variants either as a list of
+    records or as a label-to-content object.  This is a transport detail, not
+    an editorial distinction: the web state always stores four records.
+    """
+    if isinstance(raw, dict):
+        raw=[{"label":label, **(value if isinstance(value,dict) else {"text":value})}
+             for label,value in raw.items()]
+    if not isinstance(raw,list):
+        raise ValueError("variants inválidas")
+    result=[]
+    for value in raw:
+        if not isinstance(value,dict):
+            raise ValueError("variante no es objeto")
+        result.append(dict(value))
+    return result
+
 def validate_ready(payload):
     item=payload.get("prepared_item") or {}
+    if not isinstance(item,dict): raise ValueError("prepared_item inválido")
     if not str(item.get("event_id") or ""): raise ValueError("prepared_item sin event_id")
-    variants=item.get("variants") or []
+    variants=normalize_variants(item.get("variants") or [])
     labels=[str(v.get("label") or v.get("key") or v.get("name") or "") for v in variants]
     if labels != ["Principal","A","B","C"]:
         raise ValueError("variants debe ser Principal/A/B/C")
@@ -43,8 +63,19 @@ def validate_ready(payload):
         if i==0:
             if remate!="": raise ValueError("Principal remate no vacío")
         else:
-            if not remate.startswith("🌶️ "): raise ValueError("remate sin guindilla")
             principal=str(variants[0].get("text") or "")
+            # A/B/C may arrive as their compact remate, or as the full text.
+            # Canonicalize the envelope without changing the written remate.
+            inferred_remate=False
+            if not remate and text.startswith(principal+"\n\n"):
+                remate=text[len(principal)+2:]
+                inferred_remate=True
+            elif not remate:
+                remate=text
+                inferred_remate=True
+            if not remate.startswith("🌶️ "):
+                remate="🌶️ "+remate.lstrip()
+            v["remate"]=remate
             expected_text=principal+"\n\n"+remate
             # Tolerancia de transporte: algunos ejecutores envían en A/B/C solo el
             # remate aunque `remate` sea correcto. Normalízalo aquí sin inventar
@@ -52,11 +83,16 @@ def validate_ready(payload):
             if text == remate:
                 text=expected_text
                 v["text"]=text
+            elif inferred_remate:
+                text=expected_text
+                v["text"]=text
             elif text != expected_text:
                 raise ValueError("text alternativo no coincide")
+        v["text"]=text
         expected="https://twitter.com/intent/tweet?text="+urllib.parse.quote(text,safe="")
         v["url"]=expected
         v.pop("tweet_url",None)
+    item["variants"]=variants
     normalize_image(item)
     validate_image(item)
     return item
@@ -368,6 +404,17 @@ def main():
     return 0
 
 def selftest_images():
+    compact={
+        "prepared_item":{"event_id":"selftest","revision":1,"variants":{
+            "Principal":"Titular de prueba",
+            "A":"Remate compacto",
+            "B":{"text":"Titular de prueba\n\nOtro remate"},
+            "C":{"text":"🌶️ Remate ya marcado","remate":"🌶️ Remate ya marcado"},
+        }}
+    }
+    normalized=validate_ready(compact)
+    assert [v["label"] for v in normalized["variants"]]==["Principal","A","B","C"]
+    assert all(v["text"].startswith("Titular de prueba\n\n🌶️ ") for v in normalized["variants"][1:])
     flat={"title":"Prueba","image":"https://cdn.example.test/photo.jpg","image_source":"Fuente","image_source_url":"https://example.test/story"}
     image=normalize_image(flat)
     assert image["url"]=="https://cdn.example.test/photo.jpg"
