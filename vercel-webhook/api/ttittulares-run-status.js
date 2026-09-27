@@ -107,8 +107,17 @@ function normalizeTrace(t,errors){
   const updated=(payloadMs&&commentMs&&payloadMs>commentMs+2*60*1000)?commentUpdated:(payloadUpdated||commentUpdated||null);
   const started=t.started_at||t.requested_at||updated||null;
   const finished=t.finished_at||(["DONE","ERROR"].includes(t.status)?updated:null);
-  const incidents=incidentsFor(errors,started,finished);
+  const traceIncidents=(Array.isArray(t.incidents)?t.incidents:[]).map(x=>({
+    at:x?.at||updated||null,event_id:x?.event_id||t.event_id||null,phase:x?.phase||t.phase||null,reason:String(x?.reason||"").slice(0,1200)
+  })).filter(x=>x.reason);
+  const ledgerIncidents=incidentsFor(errors,started,finished);
+  const seen=new Set(),incidents=[];
+  for(const x of [...traceIncidents,...ledgerIncidents]){
+    const key=[x.at||"",x.event_id||"",x.phase||"",x.reason||""].join("|");
+    if(seen.has(key))continue;seen.add(key);incidents.push(x)
+  }
   const incident_count=Math.max(Number(t.incident_count||0),incidents.length);
+  const heartbeat_age_seconds=updated?Math.max(0,Math.round((Date.now()-stamp(updated))/1000)):null;
   return {
     run_id:t.run_id||t.command_id||null,
     command_id:t.command_id||t.run_id||null,
@@ -124,6 +133,7 @@ function normalizeTrace(t,errors){
     started_at:t.started_at||started,
     updated_at:updated,
     telemetry_comment_updated_at:commentUpdated,
+    heartbeat_age_seconds,
     finished_at:finished,
     duration_seconds:started&&finished?seconds(started,finished):null,
     message:t.message||null,

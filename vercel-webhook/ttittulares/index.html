@@ -200,6 +200,7 @@ function buildDiagnostic(s){
   "Título: "+(r.title||"—"),
   "Inicio: "+(r.started_at||r.requested_at||"—"),
   "Última actualización: "+(r.updated_at||"—"),
+  "Heartbeat: "+(r.heartbeat_age_seconds!=null?runDuration(r.heartbeat_age_seconds)+" desde la última actualización":"—"),
   "Final: "+(r.finished_at||"—"),
   "Incidencias: "+runIncidentCount(r)
  ];
@@ -226,8 +227,10 @@ function runVisual(s){
  if(active){
    const count=runIncidentCount(s);head.textContent=runPhaseLabel(s);
    const elapsed=s.started_at?runDuration((Date.now()-new Date(s.started_at).getTime())/1000):"";
-   el.textContent=[s.title,runSource(s.source||s.source_label),elapsed].filter(Boolean).join(" · ")||(s.status==="REQUESTED"?"Esperando a ChatGPT Work":"Ejecución en curso");
-   el.className="running";fill.style.width=Math.max(3,Math.min(99,runProgressValue(s)))+"%";
+   const heartbeat=Number(s.heartbeat_age_seconds);
+   const stalled=Number.isFinite(heartbeat)&&heartbeat>=120?("sin heartbeat "+runDuration(heartbeat)):"";
+   el.textContent=[s.title,runSource(s.source||s.source_label),elapsed,stalled].filter(Boolean).join(" · ")||(s.status==="REQUESTED"?"Esperando a ChatGPT Work":"Ejecución en curso");
+   el.className=stalled?"error":"running";fill.style.width=Math.max(3,Math.min(99,runProgressValue(s)))+"%";
    if(count){warn.hidden=false;warn.textContent="⚠ "+count;warn.onclick=()=>showRunIncidents(s)}
    return
  }
