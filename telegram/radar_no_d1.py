@@ -153,7 +153,7 @@ TOKEN_ALIASES={
  "espanol":"espanol","espanoles":"espanol","espanola":"espanol","espanolas":"espanol",
  "ruso":"ruso","rusos":"ruso","rusa":"ruso","rusas":"ruso",
  "moviliza":"movilizar","movilizan":"movilizar","movilizado":"movilizar","movilizados":"movilizar","movilizar":"movilizar",
- "activa":"movilizar","activan":"movilizar","activar":"movilizar","despliega":"movilizar","despliegan":"movilizar","desplegar":"movilizar",
+ "activa":"activar","activan":"activar","activar":"activar","despliega":"desplegar","despliegan":"desplegar","desplegar":"desplegar",
 }
 EVENT_ACTION_ALIASES={
  "reunion":"reunion","reunirse":"reunion","reunen":"reunion","reune":"reunion","renen":"reunion","encuentro":"reunion","entrevista":"reunion",
@@ -167,13 +167,19 @@ EVENT_ACTION_ALIASES={
  "perder":"derrota","pierde":"derrota","derrota":"derrota",
  "aprobar":"aprobacion","aprueba":"aprobacion","avalar":"aprobacion","avala":"aprobacion",
  "prohibir":"prohibicion","prohibe":"prohibicion","vetar":"prohibicion","veta":"prohibicion",
- "movilizar":"movilizacion","activar":"movilizacion","desplegar":"movilizacion",
+ "movilizar":"movilizacion","desplegar":"movilizacion",
 }
 @lru_cache(maxsize=50000)
 def event_actions(s):
  out=set()
- for x in norm(s):
+ tokens=set(norm(s))
+ for x in tokens:
   if x in EVENT_ACTION_ALIASES: out.add(EVENT_ACTION_ALIASES[x])
+ # "activar" es demasiado genérico por sí solo (activar una operación, alarma,
+ # protocolo...). Solo equivale a movilización si el propio titular habla de
+ # cazas/F-18/fuerzas militares.
+ if "activar" in tokens and ({"caza","f18","fuerza","avion"} & tokens):
+  out.add("movilizacion")
  return out
 
 PROPER_GENERIC={"nueva","york","estados","unidos","casa","blanca","onu","europa","espana","gobierno","congreso","senado"}
@@ -391,6 +397,67 @@ def add_appearance(e,row,now):
  e["last_seen"]=iso(now)
  if not e.get("url"):e["url"]=row["url"]
 
+def titles_match(a,b):
+ return score(a,b)>=0.50 or same_event_semantic(a,b)
+
+def event_variants(e):
+ out=[e.get("canonical_title","")]
+ out.extend(a.get("title","") for a in e.get("appearances",[]) if a.get("title"))
+ return [x for x in out if x]
+
+def events_match(e,k):
+ # Dos eventos fragmentados pueden tener canónicos muy distintos pero alguna
+ # cabecera de cada uno describir inequívocamente el mismo hecho.
+ for a in event_variants(e)[-10:]:
+  for b in event_variants(k)[-10:]:
+   if titles_match(a,b):
+    return True
+ return False
+
+def recalc_event_sources(e):
+ apps=e.get("appearances",[])
+ e["sources"]=sorted({a["source"] for a in apps if a.get("source_type","general")=="general"})
+ e["sport_sources"]=sorted({a["source"] for a in apps if a.get("source_type")=="sport"})
+ e["source_count"]=len(e["sources"])
+ e["sport_source_count"]=len(e["sport_sources"])
+ e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCES,1)
+
+def prune_event_outliers(e):
+ # Si un evento tiene un núcleo de varias cabeceras conectadas y alguna
+ # aparición aislada, eliminamos solo esos outliers. No se toca un evento de
+ # 1-2 fuentes porque no hay evidencia suficiente para decidir cuál sobra.
+ apps=list(e.get("appearances",[]))
+ if len(apps)<3:return 0
+ graph={i:set() for i in range(len(apps))}
+ for i in range(len(apps)):
+  for j in range(i+1,len(apps)):
+   if titles_match(apps[i].get("title",""),apps[j].get("title","")):
+    graph[i].add(j);graph[j].add(i)
+ seen=set();components=[]
+ for i in range(len(apps)):
+  if i in seen:continue
+  stack=[i];comp=set()
+  while stack:
+   x=stack.pop()
+   if x in comp:continue
+   comp.add(x);seen.add(x);stack.extend(graph[x]-comp)
+  components.append(comp)
+ components.sort(key=len,reverse=True)
+ core=components[0] if components else set()
+ if len(core)<2 or len(core)*2<=len(apps):return 0
+ kept=[apps[i] for i in sorted(core)]
+ removed=len(apps)-len(kept)
+ if not removed:return 0
+ e["appearances"]=kept
+ recalc_event_sources(e)
+ # Si el canónico era precisamente el outlier, escoger una cabecera del núcleo.
+ if not any(titles_match(e.get("canonical_title",""),a.get("title","")) for a in kept):
+  e["canonical_title"]=max((a.get("title","") for a in kept),key=len,default=e.get("canonical_title",""))
+  best=next((a for a in kept if a.get("title")==e["canonical_title"]),None)
+  if best and best.get("url"):e["url"]=best["url"]
+ print("EVENT_OUTLIERS_PRUNED",e.get("id"),removed)
+ return removed
+
 def merge_duplicate_active_events(events):
  # Segunda barrera contra duplicados: si dos eventos activos representan
  # claramente el mismo hecho, se fusionan ANTES de evaluar el umbral de 4.
@@ -406,9 +473,7 @@ def merge_duplicate_active_events(events):
    # No mezclar una revisión material con su noticia padre ni revisiones distintas.
    if bool(e.get("parent_event_id"))!=bool(k.get("parent_event_id")): continue
    if e.get("parent_event_id") and e.get("parent_event_id")!=k.get("parent_event_id"): continue
-   se=score(e.get("canonical_title",""),k.get("canonical_title",""))
-   semantic=same_event_semantic(e.get("canonical_title",""),k.get("canonical_title",""))
-   if se>=0.70 or semantic:
+   if events_match(e,k):
     target=k;break
   if not target:
    kept.append(e);continue
@@ -426,11 +491,11 @@ def merge_duplicate_active_events(events):
    if dtv(a.get("last_seen"))>dtv(cur.get("last_seen")):
     cur.update({"last_seen":a.get("last_seen"),"title":a.get("title") or cur.get("title"),"url":a.get("url") or cur.get("url"),"source_type":a.get("source_type",cur.get("source_type","general"))})
   target["appearances"]=list(by_source.values())
-  target["sources"]=sorted({a["source"] for a in target["appearances"] if a.get("source_type","general")=="general"})
-  target["sport_sources"]=sorted({a["source"] for a in target["appearances"] if a.get("source_type")=="sport"})
-  target["source_count"]=len(target["sources"])
-  target["sport_source_count"]=len(target["sport_sources"])
-  target["percentage"]=round(100*target["source_count"]/TOTAL_SOURCES,1)
+  recalc_event_sources(target)
+  # Nunca degradar un evento ya elegible al fusionarlo con un fragmento WAITING.
+  if e.get("status") in {"ELIGIBLE","ELIGIBLE_UPDATE"} and target.get("status") in {"WAITING","UPDATE_WAITING"}:
+   target["status"]=e.get("status")
+   target["eligible_at"]=target.get("eligible_at") or e.get("eligible_at")
 
   if len(e.get("canonical_title",""))>len(target.get("canonical_title","")):
    target["canonical_title"]=e.get("canonical_title","")
@@ -441,7 +506,11 @@ def merge_duplicate_active_events(events):
   if not target.get("url"): target["url"]=e.get("url","")
   merged+=1
   print("EVENT_MERGED_DUPLICATE",e.get("id"),"->",target.get("id"))
- print("EVENT_MERGE_SUMMARY",merged)
+ pruned=0
+ for item in kept:
+  if item.get("status") in active:
+   pruned+=prune_event_outliers(item)
+ print("EVENT_MERGE_SUMMARY",merged,"outliers_pruned",pruned)
  return kept
 
 def source_gather_minutes(e,count=None):
@@ -673,6 +742,12 @@ if "--selftest-dedupe" in sys.argv:
    'F-18 españoles, a la caza de los drones kamikaze rusos que ponen a prueba a la OTAN',
    False,
    "tema OTAN compartido pero hechos distintos",
+  ),
+  (
+   "Ucrania activa la 'Operación Vivaldi': sorprende lanzando robots terrestres tras las líneas enemigas y causa 3.000 bajas rusas",
+   'La OTAN vuelve a activar cazas F18 españoles en Rumanía por la presencia de un dron ruso en la frontera con Ucrania',
+   False,
+   "Ucrania compartida no mezcla Operación Vivaldi con alerta F-18 en Rumanía",
   ),
  ]
  for a,b,should_match,label in tests:
