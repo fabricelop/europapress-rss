@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-27T09:51:02+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-27T10:01:15+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
@@ -12,44 +12,42 @@
     "snaplytics",
     "trendswe"
   ],
-  "source_count": 6,
+  "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
-    "#FelizDomingo",
     "Inglaterra",
     "Oyarzabal",
     "#MalasLenguasN",
-    "Wembley",
     "Puerta del Sol",
+    "Wembley",
     "Ferran",
     "#DeViernes",
     "Mari Carmen",
-    "Harvard"
+    "Colapinto",
+    "#LaSextaXplica"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "#FelizDomingo",
-      "entered_top10_at": "2026-09-27T08:40:50+02:00"
-    },
-    {
-      "rank": 2,
       "name": "Inglaterra",
       "entered_top10_at": "2026-09-26T22:41:01+02:00"
     },
     {
-      "rank": 3,
+      "rank": 2,
       "name": "Oyarzabal",
       "entered_top10_at": "2026-09-26T22:51:35+02:00"
     },
     {
-      "rank": 4,
+      "rank": 3,
       "name": "#MalasLenguasN",
       "entered_top10_at": "2026-09-26T23:31:16+02:00"
+    },
+    {
+      "rank": 4,
+      "name": "Puerta del Sol",
+      "entered_top10_at": "2026-09-26T22:51:35+02:00"
     },
     {
       "rank": 5,
@@ -58,75 +56,36 @@
     },
     {
       "rank": 6,
-      "name": "Puerta del Sol",
-      "entered_top10_at": "2026-09-26T22:51:35+02:00"
-    },
-    {
-      "rank": 7,
       "name": "Ferran",
       "entered_top10_at": "2026-09-26T22:41:01+02:00"
     },
     {
-      "rank": 8,
+      "rank": 7,
       "name": "#DeViernes",
       "entered_top10_at": "2026-09-25T23:41:05+02:00"
     },
     {
-      "rank": 9,
+      "rank": 8,
       "name": "Mari Carmen",
       "entered_top10_at": "2026-09-23T08:50:58+02:00"
     },
     {
+      "rank": 9,
+      "name": "Colapinto",
+      "entered_top10_at": "2026-09-27T10:01:15+02:00"
+    },
+    {
       "rank": 10,
-      "name": "Harvard",
-      "entered_top10_at": "2026-09-27T09:20:58+02:00"
+      "name": "#LaSextaXplica",
+      "entered_top10_at": "2026-09-27T10:01:15+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Colapinto",
+    "#LaSextaXplica"
+  ],
   "upcoming": [
-    {
-      "name": "La Bola Negra",
-      "social_source_count": 6,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.8,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T03:40:50+02:00",
-      "news_source_count": 12,
-      "news_event_id": "f35a094b05c2",
-      "news_title": "Concha de Oro para Mike Leigh: San Sebastián se rinde al maestro del cine social y 'La bola negra' gana el Premio del Público - Telecinco",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-27T07:50:40.239902Z"
-    },
-    {
-      "name": "#LaSextaXplica",
-      "social_source_count": 6,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.7,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T08:40:50+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
     {
       "name": "Belén",
       "social_source_count": 6,
@@ -142,11 +101,53 @@
       "mean_observed_rank": 13.2,
       "movement": "flat",
       "first_detected_at": "2026-09-27T03:40:50+02:00",
-      "news_source_count": 1,
-      "news_event_id": "feac1c66a6b3",
-      "news_title": "Belén Hostalet: “He visto la manzana pudrirse”",
+      "news_source_count": 2,
+      "news_event_id": "1763fdaa502d",
+      "news_title": "Las últimas palabras de Belén Esteban tras volver a Telecinco después de tres años: \"Tengo que pedirle perdón\" - El HuffPost",
       "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T05:43:35.118736Z"
+      "news_first_seen": "2026-09-27T07:53:36.883770Z"
+    },
+    {
+      "name": "Harvard",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T10:01:15+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "La Bola Negra",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.3,
+      "movement": "down",
+      "first_detected_at": "2026-09-27T03:40:50+02:00",
+      "news_source_count": 1,
+      "news_event_id": "3596aa332ab4",
+      "news_title": "Las claves de 'La bola negra': los Javis tocan la tecla mundial de la libertad",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-26T08:32:41.693053Z"
     },
     {
       "name": "Cucurella",
@@ -160,9 +161,49 @@
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 15.0,
+      "mean_observed_rank": 14.8,
       "movement": "flat",
       "first_detected_at": "2026-09-27T06:01:30+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Andrea",
+      "social_source_count": 5,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 16,
+      "mean_observed_rank": 16.6,
+      "movement": "flat",
+      "first_detected_at": "2026-09-27T04:31:08+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Pablo Aguado",
+      "social_source_count": 5,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 18,
+      "mean_observed_rank": 19.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-27T07:10:52+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -183,46 +224,6 @@
       "mean_observed_rank": 18.8,
       "movement": "flat",
       "first_detected_at": "2026-09-27T07:01:15+02:00",
-      "news_source_count": 4,
-      "news_event_id": "279c878a283a",
-      "news_title": "Muere a los 81 años Eduardo Rodríguez Rodway, el último superviviente de la banda andaluza Triana",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-27T07:50:40.239902Z"
-    },
-    {
-      "name": "Andrea",
-      "social_source_count": 5,
-      "social_sources": [
-        "snaplytics",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 16.4,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T04:31:08+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Pablo Aguado",
-      "social_source_count": 5,
-      "social_sources": [
-        "snaplytics",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 18.2,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T07:10:52+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -231,15 +232,16 @@
     },
     {
       "name": "Galapagar",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "snaplytics",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 16.0,
-      "movement": "new",
+      "mean_observed_rank": 15.2,
+      "movement": "up",
       "first_detected_at": "2026-09-27T09:51:02+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -248,7 +250,14 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "#LaSextaXplica",
+      "first_detected_at": "2026-09-27T08:40:50+02:00",
+      "entered_top10_at": "2026-09-27T10:01:15+02:00",
+      "lead_minutes": 80
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -279,7 +288,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T09:51:02+02:00"
+      "fetched_at": "2026-09-27T10:01:15+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -304,37 +313,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T09:51:02+02:00"
+      "fetched_at": "2026-09-27T10:01:15+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "#FelizDomingo",
         "Inglaterra",
+        "Puerta del Sol",
         "Oyarzabal",
         "#MalasLenguasN",
         "Wembley",
-        "Puerta del Sol",
         "Ferran",
-        "#DeViernes",
         "Mari Carmen",
-        "Harvard",
-        "#laSextaXplica",
+        "#DeViernes",
         "Colapinto",
+        "#LaSextaXplica",
+        "Harvard",
         "Belén",
-        "La Bola Negra",
-        "Cucurella",
-        "Andrea",
-        "Pablo Aguado",
         "Galapagar",
+        "Cucurella",
+        "La Bola Negra",
+        "Andrea",
         "Triana",
-        "Guardiola"
+        "DÍA DE PARTIDO",
+        "Pablo Aguado"
       ],
       "error": null,
-      "update_hint": "Updated 32 minutes ago",
-      "age_minutes": 32.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-27T09:51:03+02:00"
+      "update_hint": "Updated 7 seconds ago Live Twitter Trending Topics in Spain 1 #FelizDomingo Explore why",
+      "age_minutes": null,
+      "freshness": "unknown",
+      "fetched_at": "2026-09-27T10:01:16+02:00"
     },
     "superx": {
       "ok": true,
@@ -364,16 +373,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T09:51:03+02:00"
+      "fetched_at": "2026-09-27T10:01:17+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790495464",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790496077",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T09:51:04+02:00"
+      "fetched_at": "2026-09-27T10:01:17+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -401,27 +410,48 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 27, 2026 07:00 UTC",
-      "age_minutes": 51.1,
+      "age_minutes": 61.3,
       "freshness": "aging",
-      "fetched_at": "2026-09-27T09:51:04+02:00"
+      "fetched_at": "2026-09-27T10:01:17+02:00"
     },
     "fowtools": {
-      "ok": false,
-      "trends": [],
-      "error": "Lista no válida (0 elementos parseados)",
-      "update_hint": "Updated: September 27, 2026 at 07:00 AM No trend data available for this region right now",
-      "age_minutes": null,
-      "freshness": "invalid",
-      "fetched_at": "2026-09-27T09:51:04+02:00"
+      "ok": true,
+      "trends": [
+        "#FelizDomingo",
+        "Inglaterra",
+        "Oyarzabal",
+        "#MalasLenguasN",
+        "Wembley",
+        "Puerta del Sol",
+        "Ferran",
+        "#DeViernes",
+        "Mari Carmen",
+        "Colapinto",
+        "Harvard",
+        "#laSextaXplica",
+        "Belén",
+        "Cucurella",
+        "La Bola Negra",
+        "Andrea",
+        "Galapagar",
+        "Pablo Aguado",
+        "Triana",
+        "Paquita"
+      ],
+      "error": null,
+      "update_hint": "Updated: September 27, 2026 at 08:00 AM # Trend Type Actions 1 #FelizDomingo Hashtag 2 In",
+      "age_minutes": 121.3,
+      "freshness": "stale",
+      "fetched_at": "2026-09-27T10:01:17+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790495465",
+      "error": "HTTPError: 522 Server Error: <none> for url: https://trends.cyberkendra.com/spain/?_=1790496079",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T09:51:05+02:00"
+      "fetched_at": "2026-09-27T10:01:19+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -430,7 +460,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-27T09:51:05+02:00"
+      "fetched_at": "2026-09-27T10:01:39+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -442,34 +472,34 @@
         "#Wembley",
         "#Puerta del Sol",
         "#Ferran",
-        "#Colapinto",
         "#DeViernes",
         "#Mari Carmen",
+        "#Colapinto",
         "#Harvard",
         "#laSextaXplica",
         "#Belén",
-        "#La Bola Negra",
         "#Cucurella",
+        "#La Bola Negra",
         "#Andrea",
+        "#Galapagar",
         "#Pablo Aguado",
         "#Triana",
-        "#Guardiola",
-        "#Mt 21"
+        "#Paquita"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T09:51:05+02:00"
+      "fetched_at": "2026-09-27T10:01:39+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790495467",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790496101",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T09:51:07+02:00"
+      "fetched_at": "2026-09-27T10:01:41+02:00"
     }
   }
 }
