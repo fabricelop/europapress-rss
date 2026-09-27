@@ -35,7 +35,7 @@ function routeLabel(x){
 }
 function rankFor(x,requests){
  const direct=Number(x.rank_at_explanation);
- if(Number.isFinite(direct)&&direct>=1&&direct<=10)return direct;
+ if(Number.isFinite(direct)&&direct>=1&&direct<=20)return direct;
  const target=Date.parse(x.explained_at||"");
  const rows=(requests||[]).filter(r=>nrm(r.name)===nrm(displayName(x))&&Number.isFinite(Number(r.rank)));
  rows.sort((a,b)=>{
@@ -45,11 +45,11 @@ function rankFor(x,requests){
    return da-db;
  });
  const fallback=Number(rows[0]?.rank);
- return Number.isFinite(fallback)&&fallback>=1&&fallback<=10?fallback:null;
+ return Number.isFinite(fallback)&&fallback>=1&&fallback<=20?fallback:null;
 }
 function copyText(x){
  const rank=Number(x._rank);
- const head=(rank>=1&&rank<=10?"TT#"+rank+" ":"")+displayName(x);
+ const head=(rank>=1&&rank<=20?"TT#"+rank+" ":"")+displayName(x);
  return head+"\n\n"+String(x.explanation||"").trim();
 }
 async function copyItem(x,button){
@@ -68,7 +68,7 @@ function render(){
  for(const x of items){
   const card=document.createElement("article");card.className="card";
   const name=displayName(x),route=routeLabel(x),rank=Number(x._rank);
-  const labelled=(rank>=1&&rank<=10?"TT#"+rank+" ":"")+name;
+  const labelled=(rank>=1&&rank<=20?"TT#"+rank+" ":"")+name;
   card.innerHTML='<div class="head"><div class="name"></div><div class="when"></div></div><div class="explanation"></div><div class="meta"></div><div class="actions"></div>';
   card.querySelector(".name").textContent=labelled;
   card.querySelector(".when").textContent=fmt(x.explained_at);
