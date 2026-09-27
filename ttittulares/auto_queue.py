@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-import json, sys
+import json, sys, re, unicodedata
+from difflib import SequenceMatcher
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -25,8 +26,55 @@ def dtv(value):
     except Exception:
         return datetime.min.replace(tzinfo=timezone.utc)
 
-def queue_eligible(events_doc, processing, decisions, minimum, stamp, mode="web", parallel_since=None):
+STOPWORDS={"el","la","los","las","un","una","unos","unas","de","del","al","a","ante","con","contra","por","para","en","y","e","o","u","que","se","su","sus","tras","este","esta","estos","estas","como","más","menos","ya","hoy","ayer","domingo","lunes","martes","miercoles","miércoles","jueves","viernes","sabado","sábado"}
+
+def norm_text(value):
+    s="".join(ch for ch in unicodedata.normalize("NFKD",str(value or "").casefold()) if not unicodedata.combining(ch))
+    s=re.sub(r"[^a-z0-9]+"," ",s)
+    return " ".join(s.split())
+
+def stem_token(token):
+    t=token
+    # Prefijo conservador para absorber flexión/redacción (jubila/jubilación,
+    # confina/confinamiento) sin convertir palabras cortas en anclas fuertes.
+    return t[:6] if len(t)>=7 else t
+
+def title_terms(value):
+    return {stem_token(t) for t in norm_text(value).split() if len(t)>=4 and t not in STOPWORDS}
+
+def canonical_url(value):
+    s=str(value or "").strip()
+    if not s:return ""
+    # La URL completa de Google News es estable para el mismo artículo.
+    return s.split("#",1)[0].rstrip("/")
+
+def same_story(a,b):
+    ua,ub=canonical_url(a.get("url")),canonical_url(b.get("url"))
+    if ua and ub and ua==ub:
+        return True
+    ta,tb=norm_text(a.get("title")),norm_text(b.get("title"))
+    if not ta or not tb:return False
+    if ta==tb:return True
+    A,B=title_terms(ta),title_terms(tb)
+    common=A&B
+    union=A|B
+    ratio=SequenceMatcher(None,ta,tb).ratio()
+    jacc=(len(common)/len(union)) if union else 0
+    # Exigencia alta: varias anclas compartidas + similitud global o densidad.
+    return (len(common)>=4 and ratio>=0.58) or (len(common)>=5 and jacc>=0.34)
+
+def duplicate_against_existing(event, processing_items, prepared_items):
+    candidate={"title":str(event.get("canonical_title") or event.get("title") or ""),"url":str(event.get("url") or "")}
+    for item in list(prepared_items or [])+list(processing_items or []):
+        if str(item.get("status") or "") in {"DISMISSED"}:
+            continue
+        if same_story(candidate,item):
+            return str(item.get("event_id") or ""), str(item.get("status") or ("READY" if item in (prepared_items or []) else ""))
+    return None,None
+
+def queue_eligible(events_doc, processing, decisions, minimum, stamp, mode="web", parallel_since=None, prepared=None):
     items = processing.setdefault("items", [])
+    prepared_items=(prepared or {}).get("items", [])
     decision_by_event = {}
     for d in decisions.get("items", []):
         event_id = str(d.get("event_id") or "")
@@ -70,6 +118,11 @@ def queue_eligible(events_doc, processing, decisions, minimum, stamp, mode="web"
 
         current = existing.get(event_id)
         if current and str(current.get("status") or "") in {"PROCESSING", "READY", "PUBLISHED", "DISMISSED", "PROBLEMATIC"}:
+            continue
+
+        duplicate_id,duplicate_status=duplicate_against_existing(event,items,prepared_items)
+        if duplicate_id and duplicate_id!=event_id:
+            print("AUTO_QUEUE_DUPLICATE_SKIPPED",event_id,"duplicate_of",duplicate_id,duplicate_status)
             continue
 
         row = current or {"event_id": event_id}
@@ -120,11 +173,19 @@ def selftest():
     ]}
     decisions={"items":[{"event_id":"published","status":"published"}]}
 
-    out_web,queued_web=queue_eligible(events,{"items":[]},decisions,4,stamp,"web")
+    prepared={"items":[
+        {"event_id":"ready-ai","title":"El sistema de IA de OpenAI habría accedido a portales oficiales del Gobierno de Estados Unidos sin autorización","url":"https://example.test/ia"},
+        {"event_id":"ready-peinado","title":"El BOE publica la jubilación forzosa por edad del juez Peinado cuatro días después de enviar a Begoña Gómez a juicio","url":"https://example.test/peinado"},
+    ]}
+    events["events"].extend([
+        {"id":"dup-ai","canonical_title":"El sistema de IA de OpenAI habría accedido a portales oficiales del Gobierno de Estados Unidos sin autorización","url":"https://example.test/ia","source_count":4,"status":"ELIGIBLE","sources":["A","B","C","D"]},
+        {"id":"dup-peinado","canonical_title":"El juez Peinado se jubila este domingo tras enviar a juicio con jurado popular a Begoa Gmez","url":"https://example.test/peinado-otra","source_count":4,"status":"ELIGIBLE","sources":["A","B","C","D"]},
+    ])
+    out_web,queued_web=queue_eligible(events,{"items":[]},decisions,4,stamp,"web",prepared=prepared)
     assert queued_web==["web-ok","revision-r2"], queued_web
 
     out_parallel,queued_parallel=queue_eligible(
-        events,{"items":[]},decisions,4,stamp,"parallel","2026-09-22T22:00:00Z"
+        events,{"items":[]},decisions,4,stamp,"parallel","2026-09-22T22:00:00Z",prepared=prepared
     )
     assert queued_parallel==["parallel-new"], queued_parallel
     assert out_parallel["items"][0]["selection_mode"]=="AUTO_PARALLEL"
@@ -138,7 +199,7 @@ def selftest():
 
     # Idempotencia: una segunda pasada no vuelve a encolar el mismo evento.
     out2,queued2=queue_eligible(
-        events,out_parallel,decisions,4,stamp,"parallel","2026-09-22T22:00:00Z"
+        events,out_parallel,decisions,4,stamp,"parallel","2026-09-22T22:00:00Z",prepared=prepared
     )
     assert queued2==[], queued2
     print("AUTO_QUEUE_SELFTEST_OK",queued_web,queued_parallel)
@@ -158,10 +219,11 @@ minimum = int(config.get("radar", {}).get("minimum_sources", 4))
 events_doc = load(TG / "events.json", {"events": []})
 processing = load(TG / "editorial-processing.json", {"items": []})
 decisions = load(TT / "decisions.json", {"items": []})
+prepared = load(TT / "prepared.json", {"items": []})
 
 processing, queued = queue_eligible(
     events_doc, processing, decisions, minimum, now_iso(),
-    mode=mode, parallel_since=mode_doc.get("parallel_since")
+    mode=mode, parallel_since=mode_doc.get("parallel_since"), prepared=prepared
 )
 save(TG / "editorial-processing.json", processing)
 print(("AUTO_PARALLEL_QUEUED" if mode=="parallel" else "AUTO_WEB_QUEUED"), len(queued), queued)
