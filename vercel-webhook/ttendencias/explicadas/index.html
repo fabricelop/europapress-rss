@@ -30,6 +30,14 @@ function markCopied(x){
  const s=copiedSet();s.add(copiedId(x));
  try{localStorage.setItem(COPIED_KEY,JSON.stringify([...s].slice(-500)))}catch(_){}
 }
+async function updateUnreadBadge(){
+ const copied=copiedSet(),unread=allItems.filter(x=>!copied.has(copiedId(x))).length;
+ try{
+   if(unread&&"setAppBadge" in navigator)await navigator.setAppBadge(unread);
+   else if(!unread&&"clearAppBadge" in navigator)await navigator.clearAppBadge();
+ }catch(_){}
+ document.title=(unread?"("+unread+") ":"")+"TTendencias · Explicadas";
+}
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
 function fmt(v){if(!v)return "";const d=new Date(v);return Number.isNaN(d.getTime())?"":new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d)}
 function displayName(x){return x.name||x.display_name||x.term_normalized||"Tendencia"}
@@ -63,6 +71,7 @@ async function copyItem(x,button){
  try{
    await navigator.clipboard.writeText(copyText(x));
    markCopied(x);
+   updateUnreadBadge();
    const card=button.closest(".card");if(card)card.classList.add("copied");
    const old=button.textContent;button.textContent="Copiado ✓";
    setTimeout(()=>button.textContent=old,1400);
@@ -72,6 +81,7 @@ function render(){
  const q=nrm($("filter").value);
  const items=q?allItems.filter(x=>nrm(displayName(x)).includes(q)||nrm(x.explanation).includes(q)):allItems;
  $("count").textContent=String(items.length);
+ updateUnreadBadge();
  const list=$("list");list.innerHTML="";
  if(!items.length){list.innerHTML='<div class="empty">No hay coincidencias.</div>';return}
  for(const x of items){
