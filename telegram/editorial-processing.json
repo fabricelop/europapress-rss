@@ -3534,7 +3534,7 @@
         }
       ],
       "selected_at": "2026-09-27T08:04:25.743407Z",
-      "status": "PROCESSING",
+      "status": "DISMISSED",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
       "parent_event_id": null,
@@ -3542,7 +3542,11 @@
       "parallel_source_claimed_at": null,
       "with_image": true,
       "image_mode": "existing_web_image",
-      "automatic_redaction_requested_at": "2026-09-27T08:14:42.738334+00:00"
+      "automatic_redaction_requested_at": "2026-09-27T08:14:42.738334+00:00",
+      "duplicate_of": "2415cb1fe713",
+      "dismissed_at": "2026-09-27T08:33:38.760Z",
+      "dismissal_source": "automatic_cross_state_dedupe",
+      "dismissal_reason": "Mismo acontecimiento de la acampada en Sol / Decreto Maricarmen ya preparado en Listas."
     },
     {
       "event_id": "5716e697e047",
@@ -4000,5 +4004,5 @@
       "image_mode": "existing_web_image"
     }
   ],
-  "updated_at": "2026-09-27T08:32:18.325650Z"
+  "updated_at": "2026-09-27T08:33:38.760Z"
 }
