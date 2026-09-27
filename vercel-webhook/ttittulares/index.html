@@ -205,6 +205,13 @@ function buildDiagnostic(s){
   "Incidencias: "+runIncidentCount(r)
  ];
  if(r.message)lines.push("Mensaje: "+r.message);
+ if(r.generation_started_at)lines.push("Imagen iniciada: "+r.generation_started_at);
+ if(r.generation_finished_at)lines.push("Imagen terminada: "+r.generation_finished_at);
+ if(r.bytes_obtained!=null)lines.push("Bytes obtenidos: "+(r.bytes_obtained?"sí":"no"));
+ if(r.bytes_size!=null)lines.push("Tamaño imagen: "+r.bytes_size+" bytes");
+ if(r.sha256)lines.push("SHA256: "+r.sha256);
+ if(r.outbox_comment_id)lines.push("OUTBOX: "+r.outbox_comment_id);
+ if(r.final_image_result)lines.push("Resultado imagen: "+r.final_image_result);
  if(r.summary)lines.push("Resumen: "+JSON.stringify(r.summary));
  for(const [i,e] of (r.incidents||[]).entries()){
   lines.push("", "["+(i+1)+"] "+(e.at||"—")+" · "+(e.phase||"sin fase")+" · "+(e.event_id||"sin evento"),String(e.reason||""))
