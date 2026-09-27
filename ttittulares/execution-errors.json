@@ -76,6 +76,13 @@
       "phase": "outbox",
       "reason": "80628f366caa-r1.json: ValueError: text alternativo no coincide",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 80628f366caa-r1: 80628f366caa-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T09:58:56.117398Z",
+      "event_id": "d87bac0874cd",
+      "phase": "imagen",
+      "reason": "La imagen generated_gag se generó y validó visualmente, pero no se pudo garantizar un transporte íntegro de los bytes al aplicador desde esta ejecución y no había fallback Telegram autenticado disponible.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento d87bac0874cd: La imagen generated_gag se generó y validó visualmente, pero no se pudo garantizar un transporte íntegro de los bytes al aplicador desde esta ejecución y no había fallback Telegram autenticado disponible.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
