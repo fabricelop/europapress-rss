@@ -1,12 +1,11 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T00:01:20+02:00",
+  "captured_at": "2026-09-28T00:10:57+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
-    "getdaytrends",
     "tweets24",
     "fowtools",
     "trendswe"
@@ -88,8 +87,8 @@
       "name": "Van der Poel",
       "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 11,
@@ -106,8 +105,8 @@
       "name": "Del Toro",
       "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 12,
@@ -121,33 +120,16 @@
       "news_first_seen": null
     },
     {
-      "name": "Matthews",
+      "name": "Enzo Pérez",
       "social_source_count": 2,
       "social_sources": [
-        "trendswe",
-        "tweets24"
+        "getdaytrends",
+        "snaplytics"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 13.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T23:01:23+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Corea del Norte",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 14.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T23:10:54+02:00",
+      "mean_observed_rank": 14.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T00:10:57+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -158,30 +140,13 @@
       "name": "Jorgenson",
       "social_source_count": 2,
       "social_sources": [
-        "getdaytrends",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 14.0,
       "movement": "flat",
       "first_detected_at": "2026-09-27T23:40:56+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Remco",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 15.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T23:10:54+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -206,6 +171,23 @@
       "news_first_seen": null
     },
     {
+      "name": "Goti",
+      "social_source_count": 2,
+      "social_sources": [
+        "getdaytrends",
+        "trends24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 15.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T00:10:57+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
       "name": "Seixas",
       "social_source_count": 2,
       "social_sources": [
@@ -213,9 +195,26 @@
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
+      "mean_observed_rank": 15.0,
       "movement": "flat",
       "first_detected_at": "2026-09-27T20:40:53+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Matthews",
+      "social_source_count": 2,
+      "social_sources": [
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 17.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-27T23:01:23+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -254,32 +253,32 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T00:01:20+02:00"
+      "fetched_at": "2026-09-28T00:10:57+02:00"
     },
     "getdaytrends": {
       "ok": true,
       "trends": [
         "#ConexiónHonduras3",
-        "#SalvadosRufián",
-        "McNulty",
         "Gelabert",
-        "#DragRaceEs",
-        "Pablo Vázquez",
-        "#NASCARenDAZN",
-        "Nyland",
-        "Noruega",
-        "Ivana",
-        "#Montreal2026",
-        "van der poel",
-        "Del Toro",
+        "Yola",
+        "#SalvadosRufián",
         "Sporting",
-        "Jorgenson"
+        "#DragRaceEs",
+        "#NASCARenDAZN",
+        "Pablo Vázquez",
+        "McNulty",
+        "Ivana",
+        "Enzo Pérez",
+        "Noruega",
+        "Nyland",
+        "Goti",
+        "Rosa Benito"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T00:01:20+02:00"
+      "fetched_at": "2026-09-28T00:10:57+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -306,10 +305,10 @@
         "Unicaja"
       ],
       "error": null,
-      "update_hint": "Updated 31 minutes ago",
-      "age_minutes": 31.0,
+      "update_hint": "Updated 40 minutes ago",
+      "age_minutes": 40.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-28T00:01:21+02:00"
+      "fetched_at": "2026-09-28T00:10:58+02:00"
     },
     "superx": {
       "ok": true,
@@ -339,16 +338,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T00:01:22+02:00"
+      "fetched_at": "2026-09-28T00:10:59+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790546483",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790547059",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T00:01:23+02:00"
+      "fetched_at": "2026-09-28T00:10:59+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -376,9 +375,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 27, 2026 21:00 UTC",
-      "age_minutes": 61.4,
+      "age_minutes": 71.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-28T00:01:23+02:00"
+      "fetched_at": "2026-09-28T00:10:59+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -406,66 +405,66 @@
       ],
       "error": null,
       "update_hint": "Updated: September 27, 2026 at 10:00 PM # Trend Type Actions 1 #ConexiónHonduras3 Hashtag",
-      "age_minutes": 121.4,
+      "age_minutes": 131.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T00:01:23+02:00"
+      "fetched_at": "2026-09-28T00:10:59+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790546485",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790547061",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T00:01:25+02:00"
+      "fetched_at": "2026-09-28T00:11:01+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://globaltwittertrends.com/spain/?_=1790546486",
-      "update_hint": null,
-      "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-09-28T00:01:26+02:00"
+      "error": "Lista no válida (1 elementos parseados)",
+      "update_hint": "updated 30 minutes ago",
+      "age_minutes": 30.0,
+      "freshness": "invalid",
+      "fetched_at": "2026-09-28T00:11:02+02:00"
     },
     "trendswe": {
       "ok": true,
       "trends": [
+        "#ConexiónHonduras3",
+        "#SalvadosRufián",
         "#McNulty",
+        "#Gelabert",
         "#DragRaceEs",
         "#Pablo Vázquez",
+        "#NASCARenDAZN",
+        "#Nyland",
+        "#Noruega",
+        "#Ivana",
         "#Montreal2026",
-        "#SalvadosRufián",
         "#van der poel",
         "#Del Toro",
+        "#Sporting",
         "#Jorgenson",
-        "#NASCARenDAZN",
-        "#JuanjoBonaDivinoFestt",
-        "#Matthews",
-        "#Corea del Norte",
-        "#Remco",
         "#Seixas",
-        "#Campeonas del Mundo",
-        "#Pogacar",
-        "#Unicaja",
-        "#Garcigrande",
         "#Yolanda Díaz",
-        "#Van Aert"
+        "#Pogacar",
+        "#Matthews",
+        "#Remco"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T00:01:26+02:00"
+      "fetched_at": "2026-09-28T00:11:02+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790546488",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790547064",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T00:01:28+02:00"
+      "fetched_at": "2026-09-28T00:11:04+02:00"
     }
   }
 }
