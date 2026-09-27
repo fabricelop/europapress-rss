@@ -45,7 +45,15 @@ def validate_ready(payload):
         else:
             if not remate.startswith("🌶️ "): raise ValueError("remate sin guindilla")
             principal=str(variants[0].get("text") or "")
-            if text != principal+"\n\n"+remate: raise ValueError("text alternativo no coincide")
+            expected_text=principal+"\n\n"+remate
+            # Tolerancia de transporte: algunos ejecutores envían en A/B/C solo el
+            # remate aunque `remate` sea correcto. Normalízalo aquí sin inventar
+            # contenido. Cualquier otra discrepancia sigue siendo un error real.
+            if text == remate:
+                text=expected_text
+                v["text"]=text
+            elif text != expected_text:
+                raise ValueError("text alternativo no coincide")
         expected="https://twitter.com/intent/tweet?text="+urllib.parse.quote(text,safe="")
         v["url"]=expected
         v.pop("tweet_url",None)
