@@ -118,6 +118,13 @@
       "phase": "verifying",
       "reason": "El outbox de imagen de archivo se publicó con una URL HTTPS validada del mismo acontecimiento, pero tras las dos relecturas acotadas prepared seguía pending; se conserva para la siguiente ejecución.",
       "remediation_prompt": "Revisar la ingestión del comentario outbox image-only y reaplicar idempotentemente sin cambiar los textos."
+    },
+    {
+      "at": "2026-09-27T11:01:33.548Z",
+      "event_id": "1cf7fefb4370",
+      "phase": "verifying",
+      "reason": "El outbox image-only que cerraba el incendio de Igualeja como sin imagen no se reflejó en prepared tras las dos relecturas acotadas; se conserva pending para la siguiente ejecución.",
+      "remediation_prompt": "Revisar la ingestión del comentario outbox image-only 5855248114 y reaplicarlo idempotentemente sin cambiar los textos."
     }
   ]
 }
