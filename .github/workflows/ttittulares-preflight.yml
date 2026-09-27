@@ -12,6 +12,7 @@ on:
       - "vercel-webhook/ttittulares/**"
       - "vercel-webhook/api/ttittulares-control.js"
       - "vercel-webhook/api/ttittulares-widget.js"
+      - "vercel-webhook/api/ttittulares-run-status.js"
 
 permissions:
   contents: read
@@ -40,6 +41,7 @@ jobs:
           cfg=load("ttittulares/config.json")
           mode=load("ttittulares/control-mode.json")
           prepared=load("ttittulares/prepared.json")
+          processing=load("telegram/editorial-processing.json")
           status=load("ttittulares/status.json")
           manifest=load("vercel-webhook/ttittulares/manifest.webmanifest")
           vercel=load("vercel-webhook/vercel.json")
@@ -67,7 +69,10 @@ jobs:
               eid=str(item.get("event_id") or "")
               assert eid and eid not in ids, f"event_id duplicado: {eid}"
               ids.add(eid)
-              assert int(item.get("drafted_source_count") or 0) >= 4, f"{eid}: redactada con <4 fuentes"
+              drafted=int(item.get("drafted_source_count") or 0)
+              source_row=next((x for x in processing.get("items",[]) if str(x.get("event_id") or "")==eid),{})
+              manual_3s=str(source_row.get("selection_mode") or "")=="MANUAL_WEB_3S"
+              assert drafted >= (3 if manual_3s else 4), f"{eid}: redactada con fuentes insuficientes ({drafted})"
               variants=item.get("variants") or []
               assert [str(v.get("label") or v.get("name") or "") for v in variants] == ["Principal","A","B","C"], f"{eid}: deben existir Principal+A+B+C"
               principal=str(variants[0].get("text") or "")
@@ -110,6 +115,7 @@ jobs:
           node --check /tmp/ttittulares-inline.js
           node --check vercel-webhook/api/ttittulares-control.js
           node --check vercel-webhook/api/ttittulares-widget.js
+          node --check vercel-webhook/api/ttittulares-run-status.js
           node --check vercel-webhook/ttittulares/sw.js
 
       - name: Resultado
