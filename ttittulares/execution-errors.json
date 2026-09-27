@@ -167,6 +167,13 @@
       "phase": "imagen",
       "reason": "Se confirmó el acontecimiento y se localizaron fotografías actuales de la gala, pero esta ejecución no obtuvo una URL HTTPS directa del raster ni un puente de bytes íntegro hacia el aplicador. Se cierra sin imagen sin bloquear la cola.",
       "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 3a551d1258a1: Se confirmó el acontecimiento y se localizaron fotografías actuales de la gala, pero esta ejecución no obtuvo una URL HTTPS directa del raster ni un puente de bytes íntegro hacia el aplicador. Se cierra sin imagen sin bloquear la cola.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T12:46:07.322281Z",
+      "event_id": "d7441528e76a",
+      "phase": "imagen",
+      "reason": "Se confirmaron fotografías del mismo acontecimiento en EFE, RTVE y otros medios, pero no se obtuvo una URL HTTPS directa del raster que pudiera validarse y persistirse de forma segura. Al ser archive_sensitive no se genera recreación.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento d7441528e76a: Se confirmaron fotografías del mismo acontecimiento en EFE, RTVE y otros medios, pero no se obtuvo una URL HTTPS directa del raster que pudiera validarse y persistirse de forma segura. Al ser archive_sensitive no se genera recreación.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
