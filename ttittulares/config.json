@@ -37,60 +37,18 @@
   },
   "images": {
     "enabled": true,
-    "mode": "generated_gag_or_archive_sensitive",
-    "generate": true,
+    "mode": "existing_web_image",
+    "generate": false,
     "non_blocking": true,
-    "generated_style_version": "editorial-scene-v2-cleveland",
-    "generated_image_storage": {
-      "repository_path_pattern": "ttittulares/generated-images/<event_id>-r<revision>.<png|webp|jpg>",
-      "public_url_pattern": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/<event_id>-r<revision>.<ext>",
-      "source": "TTiTTulares / ChatGPT",
-      "rights_status": "generated"
-    },
-    "policy": "Generar por defecto una escena editorial original con gag visual específico de la noticia, siguiendo exactamente la línea editorial-scene-v2-cleveland de TTendencias. Si la noticia implica víctimas, abusos, tragedia, sufrimiento o un contexto en el que el gag visual no sea apropiado, no generar humor: usar una imagen existente del acontecimiento, priorizando fuente oficial/primaria y después medios fiables.",
-    "generated_rules": [
-      "Una sola escena narrativa; gag visual comprensible sin texto.",
-      "Detalle medio, composición simple, pocos elementos y legibilidad móvil/X.",
-      "Prohibidos infografía, diagrama, flechas, cajas/nodos, UI/TV, cabezas flotantes, paneles, póster, clip-art y retrato decorativo sin gag.",
-      "Cero texto siempre que sea posible; si es imprescindible, breve y diegético.",
-      "Nunca humor a costa de víctimas, abusos, tragedias o sufrimiento.",
-      "Inspeccionar el raster real; si está corrupto, truncado, negro o vacío, regenerar una vez."
+    "source_preference": [
+      "official_or_primary",
+      "reputable_media"
     ],
-    "archive_fallback": {
-      "source_preference": [
-        "official_or_primary",
-        "reputable_media"
-      ],
-      "require_source_page": true,
-      "rights_status_default": "unverified",
-      "reason": "only_when_comic_gag_is_editorially_inappropriate"
-    },
-    "web_buttons": [
-      "open_image",
-      "copy_image",
-      "open_source"
-    ],
-    "generated_failure_policy": "finish_none_retry_next_execution",
-    "news_first_two_phase": true,
-    "ready_initial_status": "working",
-    "retry_after_news": true,
-    "delivery_order": [
-      "app",
-      "telegram"
-    ],
-    "telegram_fallback": true,
-    "state_machine": {
-      "working": "Imagen en elaboración",
-      "ready": "Imagen lista",
-      "telegram": "Imagen en Telegram",
-      "none": "Sin imagen"
-    },
-    "reset_none_to_working_each_execution": true,
-    "global_error_policy": "continue_next_item",
-    "final_states": [
-      "ready",
-      "telegram",
-      "none"
-    ]
+    "require_source_page": true,
+    "store": "external_url_only",
+    "rights_status_default": "unverified",
+    "explicit_not_found": true,
+    "validate_https": true,
+    "policy": "Recuperar una imagen real del mismo acontecimiento desde una página de fuente oficial/primaria o de un medio fiable. No generar, recrear ni sintetizar imágenes."
   }
 }

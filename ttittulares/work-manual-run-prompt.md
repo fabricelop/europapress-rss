@@ -25,7 +25,7 @@ status: RUNNING
 started_at: <ISO-8601>
 ```
 
-No generes otro `RUN TTITTULARES`. El PR #2 puede recibir únicamente la telemetría `RUNSTATUS`, el comentario único `TTITTULARES_RUNTRACE_V1` que mantiene el panel , los comentarios `TTITTULARES_OUTBOX_V1` y los transportes efímeros `TTITTULARES_TELEGRAM_IMAGE_V1` / `TTITTULARES_TELEGRAM_IMAGE_ERROR_V1` del flujo editorial. No uses ni modifiques `ttittulares/image-worker-trigger.json`: la fase de imagen se resuelve dentro de la misma ejecución. No modifiques, pauses, desactives, sustituyas ni recrees ninguna automatización.
+No generes otro `RUN TTITTULARES`. El PR #2 puede recibir la telemetría `RUNSTATUS`, el comentario único `TTITTULARES_RUNTRACE_V1` y los comentarios `TTITTULARES_OUTBOX_V1` del flujo editorial. No modifiques, pauses, desactives, sustituyas ni recrees ninguna automatización.
 
 ## Smoke
 

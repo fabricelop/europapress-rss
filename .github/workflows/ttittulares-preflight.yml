@@ -13,6 +13,17 @@ on:
       - "vercel-webhook/api/ttittulares-control.js"
       - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/ttittulares-preflight.yml"
+      - "ttittulares/**"
+      - "telegram/radar_no_d1.py"
+      - "telegram/autocheck_ttittulares.py"
+      - "vercel-webhook/ttittulares/**"
+      - "vercel-webhook/api/ttittulares-control.js"
+      - "vercel-webhook/api/ttittulares-widget.js"
+      - "vercel-webhook/api/ttittulares-run-status.js"
 
 permissions:
   contents: read
@@ -28,6 +39,7 @@ jobs:
           python3 -m py_compile telegram/radar_no_d1.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py ttittulares/build_editorial_queue.py ttittulares/apply_editorial_outbox.py ttittulares/ingest_pr_outbox_comment.py
           python3 telegram/radar_no_d1.py --selftest-dedupe
           python3 ttittulares/auto_queue.py --selftest
+          python3 ttittulares/apply_editorial_outbox.py --selftest-images
 
       - name: Validar JSON y reglas
         run: |
@@ -50,6 +62,8 @@ jobs:
 
           assert cfg["radar"]["minimum_sources"] == 4
           assert cfg["radar"]["waiting_ttl_hours"] == 24
+          assert cfg["images"]["mode"] == "existing_web_image"
+          assert cfg["images"]["generate"] is False
           assert mode["mode"] in {"telegram","parallel","web"}
           if mode["mode"]=="parallel": assert mode.get("parallel_since"), "parallel_since obligatorio"
           def autodeploy_off(doc):
