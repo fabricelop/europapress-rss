@@ -1,14 +1,15 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-27T22:01:19+02:00",
+  "captured_at": "2026-09-27T22:10:55+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "fowtools"
+    "fowtools",
+    "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
@@ -17,36 +18,36 @@
   ],
   "reliability": "high",
   "top10": [
-    "#DragRaceEs",
     "McNulty",
-    "Del Toro",
-    "Garcigrande",
-    "Van der Poel",
-    "Van Aert",
-    "Roglic",
-    "#U20WWC",
+    "#DragRaceEs",
+    "Pablo Vázquez",
     "#Montreal2026",
-    "Remco"
+    "Van der Poel",
+    "Jorgenson",
+    "Del Toro",
+    "#NASCARenDAZN",
+    "Matthews",
+    "Corea del Norte"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "#DragRaceEs",
-      "entered_top10_at": "2026-09-27T20:40:53+02:00"
-    },
-    {
-      "rank": 2,
       "name": "McNulty",
       "entered_top10_at": "2026-09-27T21:31:05+02:00"
     },
     {
-      "rank": 3,
-      "name": "Del Toro",
+      "rank": 2,
+      "name": "#DragRaceEs",
       "entered_top10_at": "2026-09-27T20:40:53+02:00"
     },
     {
+      "rank": 3,
+      "name": "Pablo Vázquez",
+      "entered_top10_at": "2026-09-27T22:10:55+02:00"
+    },
+    {
       "rank": 4,
-      "name": "Garcigrande",
+      "name": "#Montreal2026",
       "entered_top10_at": "2026-09-27T20:40:53+02:00"
     },
     {
@@ -56,45 +57,71 @@
     },
     {
       "rank": 6,
-      "name": "Van Aert",
-      "entered_top10_at": "2026-09-27T20:40:53+02:00"
+      "name": "Jorgenson",
+      "entered_top10_at": "2026-09-27T22:10:55+02:00"
     },
     {
       "rank": 7,
-      "name": "Roglic",
-      "entered_top10_at": "2026-09-27T21:31:05+02:00"
-    },
-    {
-      "rank": 8,
-      "name": "#U20WWC",
-      "entered_top10_at": "2026-09-27T21:31:05+02:00"
-    },
-    {
-      "rank": 9,
-      "name": "#Montreal2026",
+      "name": "Del Toro",
       "entered_top10_at": "2026-09-27T20:40:53+02:00"
     },
     {
+      "rank": 8,
+      "name": "#NASCARenDAZN",
+      "entered_top10_at": "2026-09-27T22:10:55+02:00"
+    },
+    {
+      "rank": 9,
+      "name": "Matthews",
+      "entered_top10_at": "2026-09-27T22:10:55+02:00"
+    },
+    {
       "rank": 10,
-      "name": "Remco",
-      "entered_top10_at": "2026-09-27T21:31:05+02:00"
+      "name": "Corea del Norte",
+      "entered_top10_at": "2026-09-27T22:10:55+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Pablo Vázquez",
+    "Jorgenson",
+    "#NASCARenDAZN",
+    "Matthews",
+    "Corea del Norte"
+  ],
   "upcoming": [
     {
       "name": "Seixas",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "getdaytrends",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 13.0,
+      "mean_observed_rank": 12.5,
       "movement": "up",
       "first_detected_at": "2026-09-27T20:40:53+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "CAMPEONAS DEL MUNDO",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.5,
+      "movement": "up",
+      "first_detected_at": "2026-09-27T22:01:19+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -105,14 +132,50 @@
       "name": "Laia",
       "social_source_count": 3,
       "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 16.3,
+      "movement": "flat",
+      "first_detected_at": "2026-09-27T21:10:57+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Remco",
+      "social_source_count": 3,
+      "social_sources": [
         "getdaytrends",
         "trends24",
         "tweets24"
       ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 14.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T21:10:57+02:00",
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T22:10:55+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Unicaja",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T22:10:55+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -123,14 +186,32 @@
       "name": "Yolanda Díaz",
       "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 16.0,
+      "mean_observed_rank": 17.0,
       "movement": "flat",
       "first_detected_at": "2026-09-27T21:10:57+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Garcigrande",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 17,
+      "mean_observed_rank": 18.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T22:10:55+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -153,77 +234,16 @@
       "news_title": "Alpine denuncia el acoso en redes tras la polémica en Bakú entre Colapinto y Norris: \"Se ha convertido en un hecho habitual en las últimas carreras y no se puede tolerar\" - cope.es",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-27T10:11:19.861103Z"
-    },
-    {
-      "name": "Corea del Norte",
-      "social_source_count": 2,
-      "social_sources": [
-        "getdaytrends",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.5,
-      "movement": "down",
-      "first_detected_at": "2026-09-27T21:10:57+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Eibar",
-      "social_source_count": 2,
-      "social_sources": [
-        "getdaytrends",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-27T21:31:05+02:00",
-      "news_source_count": 1,
-      "news_event_id": "63c9d1690905",
-      "news_title": "Las Palmas visita a un Eibar en racha",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T17:22:54.847942Z"
-    },
-    {
-      "name": "#laSextaXplica",
-      "social_source_count": 2,
-      "social_sources": [
-        "superx",
-        "trendswe"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 14.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T15:40:55+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "CAMPEONAS DEL MUNDO",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-27T22:01:19+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Corea del Norte",
+      "first_detected_at": "2026-09-27T21:10:57+02:00",
+      "entered_top10_at": "2026-09-27T22:10:55+02:00",
+      "lead_minutes": 60
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -254,62 +274,62 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T22:01:19+02:00"
+      "fetched_at": "2026-09-27T22:10:55+02:00"
     },
     "getdaytrends": {
       "ok": true,
       "trends": [
         "McNulty",
         "#DragRaceEs",
-        "Del Toro",
-        "Garcigrande",
-        "Van Aert",
-        "van der poel",
-        "Roglic",
-        "#U20WWC",
+        "Pablo Vázquez",
         "#Montreal2026",
-        "Remco",
-        "Laia",
+        "#SalvadosRufián",
+        "van der poel",
+        "Del Toro",
+        "Jorgenson",
+        "#NASCARenDAZN",
+        "#JuanjoBonaDivinoFestt",
+        "Matthews",
         "Corea del Norte",
-        "Eibar",
+        "Remco",
         "Seixas",
-        "Yolanda Díaz"
+        "Campeonas del Mundo"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T22:01:19+02:00"
+      "fetched_at": "2026-09-27T22:10:55+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
-        "#DragRaceEs",
         "McNulty",
-        "Del Toro",
-        "Garcigrande",
-        "Van der Poel",
-        "Van Aert",
-        "Roglic",
-        "#U20WWC",
+        "#DragRaceEs",
+        "Pablo Vázquez",
         "#Montreal2026",
-        "Remco",
+        "Van der Poel",
+        "Jorgenson",
+        "Del Toro",
+        "#NASCARenDAZN",
+        "Matthews",
         "Corea del Norte",
-        "Laia",
-        "Eibar",
         "Seixas",
-        "Yolanda Díaz",
+        "Remco",
+        "CAMPEONAS DEL MUNDO",
+        "#U20WWC",
         "Unicaja",
-        "#LaRoca242",
-        "Willy",
-        "#TorosEnCanalSur",
-        "Darder"
+        "Van Aert",
+        "Garcigrande",
+        "Yolanda Díaz",
+        "Laia",
+        "Pogacar"
       ],
       "error": null,
-      "update_hint": "Updated 39 minutes ago",
-      "age_minutes": 39.0,
+      "update_hint": "Updated 5 minutes ago",
+      "age_minutes": 5.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-27T22:01:20+02:00"
+      "fetched_at": "2026-09-27T22:10:56+02:00"
     },
     "superx": {
       "ok": true,
@@ -339,16 +359,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T22:01:21+02:00"
+      "fetched_at": "2026-09-27T22:10:57+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790539281",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790539857",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T22:01:21+02:00"
+      "fetched_at": "2026-09-27T22:10:57+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -376,9 +396,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 27, 2026 19:00 UTC",
-      "age_minutes": 61.4,
+      "age_minutes": 71.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-27T22:01:21+02:00"
+      "fetched_at": "2026-09-27T22:10:57+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -406,66 +426,66 @@
       ],
       "error": null,
       "update_hint": "Updated: September 27, 2026 at 08:00 PM # Trend Type Actions 1 McNulty Topic 2 #DragRaceE",
-      "age_minutes": 121.4,
+      "age_minutes": 131.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-27T22:01:22+02:00"
+      "fetched_at": "2026-09-27T22:10:58+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790539283",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends.cyberkendra.com/spain/?_=1790539859",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T22:01:23+02:00"
+      "fetched_at": "2026-09-27T22:10:59+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
       "trends": [],
-      "error": "Lista no válida (1 elementos parseados)",
-      "update_hint": "updated 30 minutes ago",
-      "age_minutes": 30.0,
-      "freshness": "invalid",
-      "fetched_at": "2026-09-27T22:01:24+02:00"
+      "error": "ConnectionError: HTTPSConnectionPool(host='globaltwittertrends.com', port=443): Max retries exceeded with url: /spain/?_=1790539859 (Caused by NewConnectionError(\"HTTPSConnection(host='globaltwittertrends.com', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))",
+      "update_hint": null,
+      "age_minutes": null,
+      "freshness": "error",
+      "fetched_at": "2026-09-27T22:10:59+02:00"
     },
     "trendswe": {
       "ok": true,
       "trends": [
-        "#Puerta del Sol",
-        "#Galapagar",
-        "#Inglaterra",
-        "#Wembley",
-        "M",
-        "#Oyarzabal",
-        "#FelizDomingo",
-        "#Mari Carmen",
-        "#Colapinto",
-        "#MalasLenguasN",
+        "#McNulty",
+        "#DragRaceEs",
+        "#Del Toro",
+        "#Garcigrande",
         "#Van Aert",
         "#van der poel",
-        "#Garcigrande",
-        "#Ferran",
         "#Roglic",
-        "#La Bola Negra",
-        "#laSextaXplica",
-        "#Cucurella",
-        "#Fiesta27S",
-        "#Paquita"
+        "#U20WWC",
+        "#Montreal2026",
+        "#Remco",
+        "#Laia",
+        "#Corea del Norte",
+        "#Eibar",
+        "#Seixas",
+        "#Yolanda Díaz",
+        "#Unicaja",
+        "#LaRoca242",
+        "#Willy",
+        "#TorosEnCanalSur",
+        "#Darder"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T22:01:24+02:00"
+      "fetched_at": "2026-09-27T22:12:00+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790539286",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790539922",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T22:01:26+02:00"
+      "fetched_at": "2026-09-27T22:12:02+02:00"
     }
   }
 }
