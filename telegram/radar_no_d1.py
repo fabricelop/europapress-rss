@@ -147,6 +147,13 @@ TOKEN_ALIASES={
  # estrechas: ayudan a unir coberturas traducidas sin relajar los umbrales globales.
  "palestine":"palestina",
  "tour":"gira","tours":"gira",
+ # Variantes frecuentes que estaban fragmentando el mismo acontecimiento entre medios.
+ "caza":"caza","cazas":"caza",
+ "dron":"dron","drones":"dron",
+ "espanol":"espanol","espanoles":"espanol","espanola":"espanol","espanolas":"espanol",
+ "ruso":"ruso","rusos":"ruso","rusa":"ruso","rusas":"ruso",
+ "moviliza":"movilizar","movilizan":"movilizar","movilizado":"movilizar","movilizados":"movilizar","movilizar":"movilizar",
+ "activa":"movilizar","activan":"movilizar","activar":"movilizar","despliega":"movilizar","despliegan":"movilizar","desplegar":"movilizar",
 }
 EVENT_ACTION_ALIASES={
  "reunion":"reunion","reunirse":"reunion","reunen":"reunion","reune":"reunion","renen":"reunion","encuentro":"reunion","entrevista":"reunion",
@@ -160,6 +167,7 @@ EVENT_ACTION_ALIASES={
  "perder":"derrota","pierde":"derrota","derrota":"derrota",
  "aprobar":"aprobacion","aprueba":"aprobacion","avalar":"aprobacion","avala":"aprobacion",
  "prohibir":"prohibicion","prohibe":"prohibicion","vetar":"prohibicion","veta":"prohibicion",
+ "movilizar":"movilizacion","activar":"movilizacion","desplegar":"movilizacion",
 }
 @lru_cache(maxsize=50000)
 def event_actions(s):
@@ -185,9 +193,14 @@ def same_event_semantic(a,b):
  # habla de "llegada" y otra de "alfombra roja") sin mezclar sucesos genéricos.
  common=proper_tokens(a)&proper_tokens(b)
  distinctive=(fp(a)&fp(b))-GENERIC_MATCH
- if len(common)>=2 and event_actions(a)&event_actions(b):
+ common_actions=event_actions(a)&event_actions(b)
+ if len(common)>=2 and common_actions:
   return True
  if len(common)>=2 and len(distinctive)>=3:
+  return True
+ # Un único nombre propio + la misma acción canónica + tres anclas concretas
+ # permite unir titulares muy reformulados sin convertir un tema general en evento.
+ if len(common)>=1 and common_actions and len(distinctive)>=3:
   return True
  # Un único nombre propio también basta cuando hay muchas anclas concretas
  # compartidas; útil para titulares que traducen/reformulan el mismo incidente.
@@ -198,6 +211,9 @@ def same_event_semantic(a,b):
 @lru_cache(maxsize=50000)
 def norm(s):
  s=''.join(c for c in unicodedata.normalize("NFKD",str(s).lower()) if not unicodedata.combining(c))
+ # "F-18", "F 18" y "F18" deben ser la misma ancla; el tokenizador anterior
+ # perdía la variante con guion al separar "f" y "18".
+ s=re.sub(r"\bf\s*[- ]\s*18\b","f18",s)
  out=[]
  for x in re.findall(r"[a-z0-9]+",s):
   if len(x)<=2 or x in STOP: continue
@@ -634,6 +650,30 @@ if "--selftest-dedupe" in sys.argv:
    False,
    "mismo artista pero hechos distintos",
   ),
+  (
+   'La OTAN vuelve a activar cazas F18 españoles en Rumanía por la presencia de un dron ruso en la frontera con Ucrania',
+   'Dos cazas españoles son movilizados en Rumanía ante una alerta de drones',
+   True,
+   "mismo despliegue de cazas españoles en Rumanía",
+  ),
+  (
+   'La OTAN vuelve a activar cazas F18 españoles en Rumanía por la presencia de un dron ruso en la frontera con Ucrania',
+   'F-18 españoles, a la caza de los drones kamikaze rusos que ponen a prueba a la OTAN',
+   True,
+   "mismo incidente F-18/drones con formato F-18",
+  ),
+  (
+   'Rumanía anuncia la compra de nuevos cazas F-35 para modernizar su fuerza aérea',
+   'Dos cazas españoles son movilizados en Rumanía ante una alerta de drones',
+   False,
+   "mismo país y cazas pero acontecimientos distintos",
+  ),
+  (
+   'España busca ganar peso en la OTAN ante el repliegue de Estados Unidos',
+   'F-18 españoles, a la caza de los drones kamikaze rusos que ponen a prueba a la OTAN',
+   False,
+   "tema OTAN compartido pero hechos distintos",
+  ),
  ]
  for a,b,should_match,label in tests:
   value=score(a,b)
@@ -684,9 +724,13 @@ proc_index=[]
 for p in processed:
  proc_index.append({"id":p.get("event_id"),"canonical_title":p.get("canonical_title",""),"appearances":[{"title":t} for t in p.get("last_titles",[])],"snapshot":p})
 
+CLUSTERABLE_STATUSES={"WAITING","UPDATE_WAITING","ELIGIBLE","ELIGIBLE_UPDATE"}
 for row in rows:
- # 1) intentar agregar a evento activo.
- e,sc=best_match(row["title"],events,.50)
+ # 1) intentar agregar solo a eventos todavía clusterizables.
+ # Nunca adjuntar titulares nuevos a PUBLISHED/DISMISSED/SENT_REVIEW históricos:
+ # eso contaminaba eventos antiguos y además robaba fuentes a noticias nuevas.
+ clusterable=[x for x in events if x.get("status") in CLUSTERABLE_STATUSES]
+ e,sc=best_match(row["title"],clusterable,.50)
  if e:
   add_appearance(e,row,now);continue
  # 2) si coincide con una ya procesada, no recrearla; solo evaluar posible actualización.
