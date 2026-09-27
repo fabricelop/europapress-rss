@@ -63,13 +63,40 @@
         }
       ],
       "image_strategy": "generated_gag",
-      "image_status": "pending",
-      "image_pending": true,
-      "image_delivery": "pending",
-      "image_app_available": false,
-      "image_generation_attempts": 0,
-      "image_persistence_attempts": 0,
-      "image_search_status": "pending_phase2"
+      "image_status": "ready",
+      "image_delivery": "app",
+      "image_app_available": true,
+      "image_generation_attempts": 1,
+      "image_persistence_attempts": 2,
+      "image_search_status": "pending_phase2",
+      "image_semantic_rejections": 0,
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/trendnews-19f842aef0b7-r1.jpg",
+        "source": "TTiTTulares / ChatGPT",
+        "rights_status": "generated",
+        "generated": true,
+        "alt": "Pablo Iglesias contempla perplejo una maqueta de cartón que se desploma en un solar vacío de Galapagar, mientras un trol de utilería sostiene el decorado falso.",
+        "style_version": "editorial-scene-v2-cleveland",
+        "sha256": "d4f2c7697ce21f2af2e4219cedc48667d3f1f899b528e88b85c200c2da280a2a",
+        "width": 640,
+        "height": 360,
+        "mime_type": "image/jpeg",
+        "style_check": {
+          "reviewed_after_generation": true,
+          "single_narrative_scene": true,
+          "visual_gag_without_text": true,
+          "correct_event_subject": true,
+          "no_flat_2d_pixel_art": true,
+          "no_simplified_vector_block_style": true,
+          "no_infographic_layout": true,
+          "no_diagram_arrows_or_connectors": true,
+          "no_ui_or_scoreboard_layout": true,
+          "low_text": true,
+          "depth_lighting_texture": true
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/trendnews-19f842aef0b7-r1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     }
   ]
 }
