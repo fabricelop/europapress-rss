@@ -193,7 +193,7 @@ def selftest():
     # Cuarentena: un evento PROBLEMATIC no vuelve a PROCESSING en otra pasada
     # del radar. Debe requerir una acción explícita/revisión distinta para reintentarse.
     problematic_state={"items":[{"event_id":"web-ok","status":"PROBLEMATIC","revision":1,"problem_reason":"sin verificación suficiente"}]}
-    out_problematic,queued_problematic=queue_eligible(events,problematic_state,decisions,4,stamp,"web")
+    out_problematic,queued_problematic=queue_eligible(events,problematic_state,decisions,4,stamp,"web",prepared=prepared)
     assert queued_problematic==["revision-r2"], queued_problematic
     assert out_problematic["items"][0]["status"]=="PROBLEMATIC", out_problematic
 
