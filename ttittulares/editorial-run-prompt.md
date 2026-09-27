@@ -6,7 +6,13 @@ La telemetría del panel y RUNSTATUS pertenecen al envoltorio manual. Este flujo
 
 ## Inicio
 
-Lee al inicio `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `telegram/editorial-processing.json`, `telegram/events.json`, `ttittulares/prepared.json` y `ttittulares/execution-errors.json`. Haz una foto inicial de las filas PROBLEMATIC; solo esas se reintentan en esta pasada. Procesa primero todos los PROCESSING; IMAGE_RETRY pertenece exclusivamente a fase 2.
+Lee al inicio `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `telegram/editorial-processing.json`, `telegram/events.json`, `ttittulares/prepared.json` y `ttittulares/execution-errors.json`. Haz una foto inicial de las filas PROBLEMATIC; solo esas se reintentan en esta pasada. Antes de PROCESSING, fotografía los READY de Listas con imagen sin finalizar (`pending|working|retry|none` o `image_pending:true`), excluyendo imágenes `ready`/`telegram` y noticias PUBLISHED, DISMISSED o canceladas. IMAGE_RETRY pertenece a este lote prioritario.
+
+## Fase 0 · completar imágenes pendientes de Listas
+
+Procesa primero el lote de imágenes que YA estaban pendientes en Listas al inicio. Usa las mismas reglas de fase 2 para relectura fresca, cancelación por publicación, brief aislado, validación, entrega app/Telegram/none, errores por item y telemetría. No redactes noticias de En Elaboración ni reintentes problemáticas hasta terminar ese lote o cerrar por un límite real de ejecución; conserva los restantes para la próxima pasada y marca `partial:true`. Una noticia publicada durante la ejecución cancela su imagen sin incidencia. No reintentes dos veces el mismo event_id/revision en la misma ejecución.
+
+Después de la fase 0, ejecuta la fase 1 de noticias y luego la fase 2 únicamente para nuevos READY que aún no se hayan intentado.
 
 ## Fase 1 · noticias
 
@@ -31,11 +37,11 @@ El prepared_item debe ser completo y entrar con `image_status:"pending"`, `image
 
 ## Fase 2 · imágenes
 
-Relee `prepared.json` y haz una foto del lote READY pendiente al entrar en fase 2. Procesa ese lote secuencialmente, uno por uno. Los textos, factual_summary y citas son inmutables. Un error de imagen nunca detiene los siguientes items.
+Relee `prepared.json` y haz una foto de los READY pendientes que NO se intentaron en fase 0 (incluidos los nuevos de fase 1). Procesa ese lote secuencialmente, uno por uno. Los textos, factual_summary y citas son inmutables. Un error de imagen nunca detiene los siguientes items.
 
 **Progreso estricto:** usa `current=1..N,total=N` exclusivamente para esa foto inicial. En cuanto un item termina, se cancela por publicación o se abandona de forma segura tras una incidencia, incrementa `current` y cambia `event_id/title` al siguiente ANTES de cualquier espera adicional. Nunca dejes el RUNTRACE apuntando a un item ya terminado.
 
-**Presupuesto temporal y transición obligatoria a imágenes:** terminar la fase 1 NUNCA es motivo suficiente para cerrar una ejecución si existen READY con `image_pending:true`. Tras la fase 1 debes entrar SIEMPRE en fase 2 y comenzar a procesar imágenes ya materializadas. No uses un umbral fijo de 10 minutos para saltarte toda la fase de imágenes.
+**Presupuesto temporal y transición obligatoria a imágenes:** terminar la fase 0 o la fase 1 NUNCA es motivo suficiente para cerrar una ejecución si existen READY con `image_pending:true`. Tras la fase 1 debes entrar SIEMPRE en fase 2 y comenzar a procesar imágenes ya materializadas. No uses un umbral fijo de 10 minutos para saltarte toda la fase de imágenes.
 
 El tiempo transcurrido sirve únicamente para reducir esperas y reintentos opcionales. Si existen imágenes pendientes, intenta al menos una imagen en fase 2 antes de cerrar `partial:true`, salvo que exista un fallo global o una señal real de que quedan menos de ~90 segundos de ejecución. Continúa secuencialmente mientras sea seguro hacerlo. Cuando realmente sea necesario cerrar por límite de ejecución, termina el item en curso de forma coherente, relee estado, cierra DONE con `partial:true` y el número real de imágenes pendientes. Los pendientes se conservan para la siguiente ejecución. No uses ERROR solo porque no dio tiempo a vaciar la cola.
 
