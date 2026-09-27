@@ -131,6 +131,9 @@ MATERIAL=set("muere muerto fallece fallecido dimite dimision detenido detencion 
 
 EVENTS=Path("telegram/events.json")
 PROCESSED=Path("telegram/processed-events.json")
+EDITORIAL_PROCESSING=Path("telegram/editorial-processing.json")
+PREPARED=Path("ttittulares/prepared.json")
+DECISIONS=Path("ttittulares/decisions.json")
 CONTROL_MODE=Path("ttittulares/control-mode.json")
 
 def utcnow(): return datetime.now(timezone.utc)
@@ -766,6 +769,18 @@ if "--selftest-dedupe" in sys.argv:
    "mismo incidente OpenAI Australia con vocabulario distinto",
   ),
   (
+   'El sistema de IA de OpenAI habría accedido a portales oficiales del Gobierno de Estados Unidos sin autorización',
+   'La IA de OpenAI intentó acceder sin autorización a webs oficiales del Gobierno de EEUU',
+   True,
+   "mismo acceso no autorizado de OpenAI a webs oficiales de EEUU",
+  ),
+  (
+   'El juez Peinado se jubila este domingo tras enviar a juicio con jurado popular a Begoña Gómez',
+   'El BOE publica la jubilación forzosa por edad del juez Peinado cuatro días después de enviar a Begoña Gómez a juicio',
+   True,
+   "misma jubilación del juez Peinado",
+  ),
+  (
    'Macklemore anuncia conciertos a favor de Palestina y donará todo lo recaudado',
    'Macklemore anuncia la gira "Free Palestine" tras haber sido expulsado de la de Ed Sheeran',
    True,
@@ -905,10 +920,39 @@ print("SOURCE_HEALTH_SUMMARY",len(set(healthy)),"/",TOTAL_SOURCES,"general outle
 if len(set(healthy))<MIN_HEALTHY_SOURCES:
  print("SOURCE_HEALTH_DEGRADED correction process attempted; remaining failures:",[x["source"] for x in source_status if x["type"]=="general" and not x["ok"]])
 
-# Index de procesadas como eventos sintéticos para reconocer ecos posteriores.
+# Índice durable de acontecimientos ya tratados o actualmente dentro del flujo
+# editorial web. Si un ELIGIBLE desaparece de events.json al prepararse, debe
+# seguir siendo deduplicable para que no renazca con otro event_id.
 proc_index=[]
 for p in processed:
  proc_index.append({"id":p.get("event_id"),"canonical_title":p.get("canonical_title",""),"appearances":[{"title":t} for t in p.get("last_titles",[])],"snapshot":p})
+
+editorial_doc=load(EDITORIAL_PROCESSING,{"items":[]})
+prepared_doc=load(PREPARED,{"items":[]})
+decisions_doc=load(DECISIONS,{"items":[]})
+
+def pipeline_snapshot(item,kind):
+ title=item.get("title") or item.get("canonical_title") or ""
+ sources=list(item.get("sources") or item.get("sources_at_draft") or [])
+ evidence=item.get("source_evidence") or []
+ last_titles=[x.get("title","") for x in evidence if isinstance(x,dict) and x.get("title")]
+ return {"event_id":item.get("event_id"),"canonical_title":title,
+  "first_seen":item.get("selected_at") or item.get("prepared_at") or item.get("published_at"),
+  "processed_at":item.get("delivered_at") or item.get("prepared_at") or item.get("published_at") or iso(now),
+  "kind":kind,"revision":int(item.get("revision",1) or 1),
+  "sources":sources,"source_count":int(item.get("source_count") or item.get("drafted_source_count") or len(sources)),
+  "fact_tokens":sorted(fp(title)),"last_titles":last_titles}
+
+for kind,items in (
+ ("EDITORIAL",(editorial_doc.get("items") or [])),
+ ("PREPARED",(prepared_doc.get("items") or [])),
+ ("DECISION",(decisions_doc.get("items") or decisions_doc.get("decisions") or [])),
+):
+ for item in items:
+  eid=str(item.get("event_id") or "");title=item.get("title") or item.get("canonical_title") or ""
+  if not eid or not title:continue
+  snap=pipeline_snapshot(item,kind)
+  proc_index.append({"id":eid,"canonical_title":title,"appearances":[{"title":t} for t in snap.get("last_titles",[])],"snapshot":snap})
 
 CLUSTERABLE_STATUSES={"WAITING","UPDATE_WAITING"}
 for row in rows:
