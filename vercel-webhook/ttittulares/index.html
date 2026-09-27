@@ -33,7 +33,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <button class="iconbtn" id="settings" title="Ajustes">⚙</button>
 </header>
 <main>
- <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima elaboración —</div></div></div><div class="health" id="health">—</div></section>
+ <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima elaboración —</div></div></div><div class="health" id="health" role="button" tabindex="0" aria-label="Ver estado de las fuentes">—</div></section>
  <div class="stats">
   <button class="stat active" data-view="ready"><b id="readyCount">0</b>Listas</button>
   <button class="stat" data-view="processing"><b id="processingCount">0</b>En elaboración</button>
@@ -361,8 +361,11 @@ function renderSourcesSheet(){
      row.querySelector(".sourceName").textContent=x.source||"Fuente";
      const state=row.querySelector(".sourceState");state.textContent=x.ok?"● OK":"● ERROR";state.className="sourceState "+(x.ok?"ok":"bad");
      const bits=[];
-     if(x.family&&x.family!==x.source)bits.push("Familia "+x.family);
-     if(type==="general")bits.push(x.counts_for_threshold?"Cuenta para el umbral":"No cuenta para el umbral");
+     if(type==="general"){
+       if(x.family&&x.family!==x.source)bits.push("Familia "+x.family+" · máximo 1 voto conjunto");
+       else bits.push("1 voto independiente");
+     }else if(x.family&&x.family!==x.source)bits.push("Familia "+x.family);
+     if(type==="general"&&!x.counts_for_threshold)bits.push("No cuenta para el umbral");
      else if(type==="social")bits.push("Señal social · no suma voto independiente");
      else if(type==="discovery")bits.push("Descubrimiento · no suma voto independiente");
      if(Number.isFinite(Number(x.items)))bits.push(Number(x.items)+" artículos en el último barrido");
@@ -622,6 +625,7 @@ $("testPush").onclick=async()=>{
  }catch(e){$("accessStatus").textContent=e.message}
 };
 $("health").onclick=()=>{renderSourcesSheet();$("sourcesSheet").classList.add("show")};
+$("health").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$("health").click()}};
 $("sourcesClose").onclick=()=>$("sourcesSheet").classList.remove("show");
 $("sourcesSheet").onclick=e=>{if(e.target===$("sourcesSheet"))$("sourcesSheet").classList.remove("show")};
 $("reworkCancel").onclick=()=>{$("reworkSheet").classList.remove("show");reworkItem=null};
