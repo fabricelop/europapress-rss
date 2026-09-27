@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-27T07:14:28.724Z",
+  "updated_at": "2026-09-27T07:05:40.512Z",
   "items": [
     {
       "event_id": "82ae7e7d7cf6",
@@ -81,13 +81,36 @@
         }
       ],
       "image_strategy": "generated_gag",
-      "image_status": "pending",
-      "image_pending": true,
-      "image_delivery": "pending",
-      "image_app_available": false,
-      "image_generation_attempts": 0,
-      "image_persistence_attempts": 0,
-      "image_search_status": "pending_phase2"
+      "image_status": "ready",
+      "image_delivery": "app",
+      "image_app_available": true,
+      "image_generation_attempts": 1,
+      "image_persistence_attempts": 1,
+      "image_search_status": "pending_phase2",
+      "image_semantic_rejections": 0,
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/82ae7e7d7cf6-r1.jpg",
+        "source": "TTiTTulares / ChatGPT",
+        "rights_status": "generated",
+        "generated": true,
+        "alt": "Ilustración editorial de la remontada de España ante Inglaterra en Wembley mediante un muelle futbolístico.",
+        "style_version": "editorial-scene-v2-cleveland",
+        "style_check": {
+          "reviewed_after_generation": true,
+          "single_narrative_scene": true,
+          "visual_gag_without_text": true,
+          "correct_event_subject": true,
+          "no_flat_2d_pixel_art": true,
+          "no_simplified_vector_block_style": true,
+          "no_infographic_layout": true,
+          "no_diagram_arrows_or_connectors": true,
+          "no_ui_or_scoreboard_layout": true,
+          "low_text": true,
+          "depth_lighting_texture": true
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/82ae7e7d7cf6-r1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     }
   ]
 }
