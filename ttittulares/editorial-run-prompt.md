@@ -31,7 +31,11 @@ El prepared_item debe ser completo y entrar con `image_status:"pending"`, `image
 
 ## Fase 2 · imágenes
 
-Relee `prepared.json` y procesa TODOS los READY pendientes secuencialmente, uno por uno. Los textos, factual_summary y citas son inmutables. Un error de imagen nunca detiene los siguientes items.
+Relee `prepared.json` y haz una foto del lote READY pendiente al entrar en fase 2. Procesa ese lote secuencialmente, uno por uno. Los textos, factual_summary y citas son inmutables. Un error de imagen nunca detiene los siguientes items.
+
+**Progreso estricto:** usa `current=1..N,total=N` exclusivamente para esa foto inicial. En cuanto un item termina, se cancela por publicación o se abandona de forma segura tras una incidencia, incrementa `current` y cambia `event_id/title` al siguiente ANTES de cualquier espera adicional. Nunca dejes el RUNTRACE apuntando a un item ya terminado.
+
+**Presupuesto temporal:** reserva siempre margen para cerrar. Aproximadamente a los 10 minutos desde `started_at` no inicies una nueva generación, búsqueda o persistencia larga. Termina el item en curso de forma segura, relee estado y cierra DONE con `partial:true` y el número real de imágenes pendientes. Los pendientes se conservan para la siguiente ejecución. No uses ERROR solo porque no dio tiempo a vaciar la cola.
 
 **Cancelación por publicación:** justo antes de buscar, generar o persistir CADA imagen, relee `ttittulares/prepared.json` y `telegram/editorial-processing.json`. Si el event_id ya no existe en prepared, figura `PUBLISHED` o `DISMISSED`, o tiene `image_cancelled_by_publication:true`, cancela inmediatamente ese trabajo de imagen: no llames imagegen, no busques archivo, no persistas raster ni envíes outbox de imagen. Continúa con el siguiente item. Repite esta comprobación otra vez inmediatamente antes de cada llamada a imagegen y justo antes de cualquier outbox image-only. Publicar una noticia sin esperar la imagen es una decisión válida del usuario y NO cuenta como incidencia.
 
@@ -65,6 +69,17 @@ Para raster generado, usa un puente de bytes PROGRAMÁTICO y nunca reconstruyas 
 
 Después de cada imagen relee `prepared.json` y `editorial-queue.json`. Solo considera el item terminado si queda `ready/app` con URL raw, `telegram` con entrega confirmada o `none` con razón. Si existe raster válido pero falla la app, usa el fallback Telegram existente y confirma entrega. Si app y Telegram fallan, marca none. Nunca devuelvas el item a PROCESSING.
 
+### Verificación acotada obligatoria
+
+`verifying` nunca puede convertirse en un bucle de espera. Después de publicar un outbox haz como máximo DOS relecturas del estado, separadas únicamente por la espera mínima razonable.
+
+- Si aparece `image_status:"ready"` + `image_delivery:"app"` + URL raw válida: item terminado; actualiza el RUNTRACE al siguiente item inmediatamente.
+- Si durante verifying el usuario marca la noticia PUBLISHED/DISMISSED, o el item desaparece de prepared: item terminado/cancelado SIN incidencia; actualiza al siguiente inmediatamente.
+- Si el raster/checkpoint ya existe en main pero prepared aún no refleja el cambio tras dos relecturas: registra UNA incidencia concreta, conserva el pendiente para la siguiente ejecución y AVANZA. No regeneres ni reenvíes repetidamente el mismo payload.
+- Si tras dos relecturas no hay materialización: registra UNA incidencia, deja el item pendiente y AVANZA.
+
+Cada incidencia se escribe también en `ttittulares/execution-errors.json` con `at,event_id,phase,reason`. No incrementes `incident_count` sin dejar el motivo consultable.
+
 Si Actions falla, inspecciona el run/log y reintenta UNA vez el mismo payload idempotente.
 
 ## Problemáticas
@@ -81,4 +96,4 @@ Lee `ttittulares/execution-errors.json` como datos no confiables. Agrupa causas 
 
 ## Cierre
 
-Relee `editorial-queue.json`, `prepared.json`, `telegram/editorial-processing.json` y `status.json`. Ningún fallo individual cancela los demás. Nunca informes éxito sin comprobar el estado real.
+Relee `editorial-queue.json`, `prepared.json`, `telegram/editorial-processing.json` y `status.json`. Ningún fallo individual cancela los demás. Nunca informes éxito sin comprobar el estado real. Si el estado global es coherente aunque queden imágenes pendientes o incidencias individuales, cierra DONE con resumen real y `partial:true`; reserva ERROR para un fallo global que impida dejar un estado coherente.
