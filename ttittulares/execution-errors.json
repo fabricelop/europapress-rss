@@ -111,6 +111,13 @@
       "phase": "imagen",
       "reason": "Se localizó una imagen atribuida al mismo accidente, pero el raster HTTPS directo no pudo abrirse ni validarse; no se adjunta material no comprobado.",
       "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 8a7053b7113b: Se localizó una imagen atribuida al mismo accidente, pero el raster HTTPS directo no pudo abrirse ni validarse; no se adjunta material no comprobado.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T10:51:59.630Z",
+      "event_id": "2415cb1fe713",
+      "phase": "verifying",
+      "reason": "El outbox de imagen de archivo se publicó con una URL HTTPS validada del mismo acontecimiento, pero tras las dos relecturas acotadas prepared seguía pending; se conserva para la siguiente ejecución.",
+      "remediation_prompt": "Revisar la ingestión del comentario outbox image-only y reaplicar idempotentemente sin cambiar los textos."
     }
   ]
 }
