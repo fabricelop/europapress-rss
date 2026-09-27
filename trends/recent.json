@@ -1,22 +1,22 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-27T03:31:03+02:00",
+  "captured_at": "2026-09-27T03:40:50+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
-    "trends24",
     "getdaytrends",
     "tweets24",
     "fowtools",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "#MalasLenguasN",
     "Puerta del Sol",
@@ -75,17 +75,53 @@
   "new_entries": [],
   "upcoming": [
     {
-      "name": "El 15M",
+      "name": "#UFCHBOMax",
       "social_source_count": 4,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 14.5,
+      "movement": "up",
+      "first_detected_at": "2026-09-27T03:10:56+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Triana",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24"
+      ],
+      "best_observed_rank": 17,
+      "mean_observed_rank": 17.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T03:40:50+02:00",
+      "news_source_count": 10,
+      "news_event_id": "e7dfae846c83",
+      "news_title": "Muere Eduardo Rodríguez ‘Rodway’, guitarrista fundador de Triana",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-26T09:13:36.267032Z"
+    },
+    {
+      "name": "El 15M",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.5,
-      "movement": "flat",
+      "mean_observed_rank": 11.7,
+      "movement": "down",
       "first_detected_at": "2026-09-27T02:50:54+02:00",
       "news_source_count": 1,
       "news_event_id": "56bbcdbfc521",
@@ -94,17 +130,16 @@
       "news_first_seen": "2026-09-27T01:12:00.821420Z"
     },
     {
-      "name": "Gordon",
-      "social_source_count": 4,
+      "name": "gordon",
+      "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
-        "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 13.0,
-      "movement": "flat",
+      "movement": "down",
       "first_detected_at": "2026-09-27T02:20:54+02:00",
       "news_source_count": 1,
       "news_event_id": "3721f7eac84a",
@@ -114,16 +149,15 @@
     },
     {
       "name": "Kane",
-      "social_source_count": 4,
+      "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
-        "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 14.0,
-      "movement": "flat",
+      "movement": "down",
       "first_detected_at": "2026-09-27T00:41:12+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -132,94 +166,55 @@
       "news_first_seen": null
     },
     {
-      "name": "#UFCHBOMax",
-      "social_source_count": 3,
+      "name": "Colapinto",
+      "social_source_count": 2,
       "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
+        "snaplytics",
+        "trends24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.7,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T03:10:56+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Sindicato de Inquilinas",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 16.3,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T02:50:54+02:00",
-      "news_source_count": 3,
-      "news_event_id": "9a17f4dbf448",
-      "news_title": "El Sindicato de Inquilinas se manifiesta esta tarde en Madrid “para que no haya más Maricármenes”",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-26T11:12:06.286907Z"
-    },
-    {
-      "name": "Ana Samboal",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.7,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T00:11:03+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Irene y Pablo",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.3,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T01:10:54+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Valeria Racu",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 17.3,
+      "mean_observed_rank": 11.0,
       "movement": "new",
-      "first_detected_at": "2026-09-27T03:31:03+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "first_detected_at": "2026-09-27T03:40:50+02:00",
+      "news_source_count": 2,
+      "news_event_id": "d2731fc2d307",
+      "news_title": "Brutal rajada de Norris contra Colapinto tras su accidente en Bakú: \"Algunos pilotos no deberían estar en la Fórmula 1\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-26T14:33:45.825654Z"
+    },
+    {
+      "name": "Belén",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "trends24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T03:40:50+02:00",
+      "news_source_count": 1,
+      "news_event_id": "1a3aeb99206d",
+      "news_title": "Belén Esteban se sincera sobre su adicción a las drogas: \"La que me ayudó realmente fue mi hija, y salí\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-26T21:52:09.694559Z"
+    },
+    {
+      "name": "La Bola Negra",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "trends24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T03:40:50+02:00",
+      "news_source_count": 1,
+      "news_event_id": "3596aa332ab4",
+      "news_title": "Las claves de 'La bola negra': los Javis tocan la tecla mundial de la libertad",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-26T08:32:41.693053Z"
     }
   ],
   "anticipated_entries": [],
@@ -229,31 +224,31 @@
       "ok": true,
       "trends": [
         "#MalasLenguasN",
-        "Puerta del Sol",
-        "#laSextaXplica",
         "Oyarzabal",
         "Inglaterra",
-        "Galapagar",
         "Wembley",
-        "#AcampadaSol",
         "Ferran",
+        "Puerta del Sol",
+        "#laSextaXplica",
+        "#DeViernes",
+        "Mari Carmen",
+        "Harvard",
+        "Colapinto",
+        "Belén",
+        "La Bola Negra",
+        "#AcampadaSol",
+        "Andrea",
         "Cucurella",
-        "El 15M",
         "#UFCHBOMax",
-        "Gordon",
-        "Kane",
-        "Ana Samboal",
-        "Sindicato de Inquilinas",
-        "Irene y Pablo",
-        "Valeria Racu",
-        "Trampolín",
-        "Pablo Iglesias"
+        "Triana",
+        "Pablo Aguado",
+        "Guardiola"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T03:31:03+02:00"
+      "fetched_at": "2026-09-27T03:40:50+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -278,7 +273,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T03:31:04+02:00"
+      "fetched_at": "2026-09-27T03:40:51+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -305,10 +300,10 @@
         "Pablo Iglesias"
       ],
       "error": null,
-      "update_hint": "Updated 34 minutes ago",
-      "age_minutes": 34.0,
+      "update_hint": "Updated 44 minutes ago",
+      "age_minutes": 44.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-27T03:31:04+02:00"
+      "fetched_at": "2026-09-27T03:40:52+02:00"
     },
     "superx": {
       "ok": true,
@@ -338,46 +333,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T03:31:05+02:00"
+      "fetched_at": "2026-09-27T03:40:53+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790472666",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790473253",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T03:31:06+02:00"
+      "fetched_at": "2026-09-27T03:40:53+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "#MalasLenguasN",
-        "Puerta del Sol",
-        "#laSextaXplica",
         "Oyarzabal",
         "Inglaterra",
         "Wembley",
         "Ferran",
+        "Puerta del Sol",
+        "#laSextaXplica",
         "#DeViernes",
         "Mari Carmen",
         "Harvard",
         "Colapinto",
         "Belén",
-        "Galapagar",
         "La Bola Negra",
+        "#AcampadaSol",
         "Andrea",
         "Cucurella",
-        "#AcampadaSol",
-        "Lamine",
         "Triana",
-        "Pablo Aguado"
+        "#UFCHBOMax",
+        "Pablo Aguado",
+        "Guardiola"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 27, 2026 00:00 UTC",
-      "age_minutes": 91.1,
-      "freshness": "stale",
-      "fetched_at": "2026-09-27T03:31:06+02:00"
+      "update_hint": "Trending now Sep 27, 2026 01:00 UTC",
+      "age_minutes": 40.9,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-27T03:40:53+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -405,18 +400,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 27, 2026 at 01:00 AM # Trend Type Actions 1 #MalasLenguasN Hashtag 2 P",
-      "age_minutes": 151.1,
+      "age_minutes": 160.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-27T03:31:06+02:00"
+      "fetched_at": "2026-09-27T03:40:54+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790472667",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790473255",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T03:31:07+02:00"
+      "fetched_at": "2026-09-27T03:40:55+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -425,7 +420,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-27T03:31:08+02:00"
+      "fetched_at": "2026-09-27T03:40:56+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -455,16 +450,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T03:31:08+02:00"
+      "fetched_at": "2026-09-27T03:40:57+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790472670",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790473259",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T03:31:10+02:00"
+      "fetched_at": "2026-09-27T03:40:59+02:00"
     }
   }
 }
