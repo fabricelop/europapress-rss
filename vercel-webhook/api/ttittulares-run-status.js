@@ -167,8 +167,14 @@ export default async function handler(req,res){
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
     const [enabled,items]=await Promise.all([triggerReady(),comments()]);
-    const traces=items.map(traceOf).filter(Boolean).sort((a,b)=>stamp(a.comment_updated_at||a.updated_at)-stamp(b.comment_updated_at||b.updated_at));
-    const latestRaw=traces.at(-1)||null;
+    const traces=items.map(traceOf).filter(Boolean);
+    // Un RUNTRACE se crea una vez y se actualiza in-place. comment.updated_at mide
+    // actividad/heartbeat, NO identidad cronológica del run: un run antiguo tocado
+    // tarde no debe desplazar al run realmente más reciente.
+    const runOrder=t=>stamp(t.started_at||t.requested_at||t.created_at||t.comment_updated_at||t.updated_at);
+    const terminalOrder=t=>stamp(t.finished_at||t.updated_at||t.comment_updated_at||t.started_at||t.requested_at);
+    const newest=[...traces].sort((a,b)=>runOrder(a)-runOrder(b));
+    const latestRaw=newest.at(-1)||null;
     let errors=[];
     if(latestRaw&&Number(latestRaw.incident_count||0)>0)errors=await readErrors();
     let latest=latestRaw?normalizeTrace(latestRaw,errors):null;
@@ -202,7 +208,7 @@ export default async function handler(req,res){
     let last_run=null;
     if(latest&&["DONE","ERROR"].includes(latest.status))last_run=latest;
     else{
-      const terminalTraces=traces.filter(t=>["DONE","ERROR"].includes(t.status));
+      const terminalTraces=traces.filter(t=>["DONE","ERROR"].includes(t.status)).sort((a,b)=>terminalOrder(a)-terminalOrder(b));
       if(terminalTraces.length){
         const raw=terminalTraces.at(-1);
         if(Number(raw.incident_count||0)>0&&!errors.length)errors=await readErrors();
