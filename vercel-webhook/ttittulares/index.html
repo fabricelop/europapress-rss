@@ -151,7 +151,7 @@ function interactionLabel(c){
  return nums.length?nums.reduce((a,b)=>a+b,0)+" interacciones observadas":"Interacción no disponible"
 }
 function runDuration(s){if(s==null||!Number.isFinite(+s))return "";s=Math.max(0,Math.round(+s));if(s<60)return s+" s";return Math.floor(s/60)+" min "+(s%60)+" s"}
-function runTime(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?"—":new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(d)}
+function runTime(v){if(!v)return "—";let d=new Date(v);if(Number.isNaN(d.getTime()))return "—";if(d.getTime()>Date.now()+15000)d=new Date();return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(d)}
 function runSource(v){return v==="manual"?"Manual":v==="scheduled"?"Automática":v==="chat"?"Chat":(v||"")}
 function runPhaseLabel(s){
  const n=Number(s.current||0),t=Number(s.total||0),pos=n>0&&t>0?" "+n+" de "+t:"";
