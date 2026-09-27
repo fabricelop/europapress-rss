@@ -67,6 +67,21 @@
         "to_trends": "Hay indicios razonables de noticia, pero falta contexto o verificación suficiente para enviarla directamente a elaboración.",
         "ignore": "Conversación genérica, programa/hashtag sin hecho nuevo, fandom, meme, promoción, tendencia ambigua o duplicado."
       }
+    },
+    "grouping_policy": {
+      "enabled": true,
+      "mode": "same_event_or_topic",
+      "single_explanation_per_group": true,
+      "require_unambiguous_relation": true,
+      "canonical_name": "best_ranked_trend",
+      "persist_fields": [
+        "group_id",
+        "group_title",
+        "trend_names",
+        "trend_context"
+      ],
+      "request_link_field": "explanation_group_id",
+      "note": "Si varias tendencias describen inequívocamente el mismo acontecimiento o tema, se investigan y explican como un único grupo. Cada request individual queda cerrado contra el mismo group_id; no se duplican explicaciones."
     }
   },
   "delivery": {

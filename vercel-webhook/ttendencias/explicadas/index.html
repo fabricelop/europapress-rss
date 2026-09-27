@@ -40,7 +40,19 @@ async function updateUnreadBadge(){
 }
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
 function fmt(v){if(!v)return "";const d=new Date(v);return Number.isNaN(d.getTime())?"":new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d)}
-function displayName(x){return x.name||x.display_name||x.term_normalized||"Tendencia"}
+function displayName(x){
+ if(String(x.group_title||"").trim())return String(x.group_title).trim();
+ if(Array.isArray(x.trend_names)&&x.trend_names.length>1)return x.trend_names.join(" · ");
+ return x.name||x.display_name||x.term_normalized||"Tendencia"
+}
+function groupRankLabel(x){
+ const ctx=(Array.isArray(x.trend_context)?x.trend_context:[])
+   .filter(t=>t&&t.name)
+   .sort((a,b)=>Number(a.rank||99)-Number(b.rank||99));
+ if(ctx.length>1)return ctx.map(t=>(Number(t.rank)>=1&&Number(t.rank)<=20?"TT#"+Number(t.rank)+" ":"")+t.name).join(" · ");
+ const rank=Number(x._rank),name=displayName(x);
+ return (rank>=1&&rank<=20?"TT#"+rank+" ":"")+name
+}
 function routeLabel(x){
  const r=String(x.news_disposition||x.ttittulares_route||"");
  if(r==="processing")return "→ TTiTTulares · En elaboración";
@@ -63,8 +75,7 @@ function rankFor(x,requests){
  return Number.isFinite(fallback)&&fallback>=1&&fallback<=20?fallback:null;
 }
 function copyText(x){
- const rank=Number(x._rank);
- const head=(rank>=1&&rank<=20?"TT#"+rank+" ":"")+displayName(x);
+ const head=groupRankLabel(x);
  return head+"\n\n"+String(x.explanation||"").trim();
 }
 async function copyItem(x,button){
@@ -79,7 +90,7 @@ async function copyItem(x,button){
 }
 function render(){
  const q=nrm($("filter").value);
- const items=q?allItems.filter(x=>nrm(displayName(x)).includes(q)||nrm(x.explanation).includes(q)):allItems;
+ const items=q?allItems.filter(x=>nrm(displayName(x)).includes(q)||nrm((x.trend_names||[]).join(" ")).includes(q)||nrm(x.explanation).includes(q)):allItems;
  $("count").textContent=String(items.length);
  updateUnreadBadge();
  const list=$("list");list.innerHTML="";
@@ -87,8 +98,8 @@ function render(){
  for(const x of items){
   const card=document.createElement("article");card.className="card";
   if(copiedSet().has(copiedId(x)))card.classList.add("copied");
-  const name=displayName(x),route=routeLabel(x),rank=Number(x._rank);
-  const labelled=(rank>=1&&rank<=20?"TT#"+rank+" ":"")+name;
+  const name=displayName(x),route=routeLabel(x);
+  const labelled=groupRankLabel(x);
   card.innerHTML='<div class="head"><div class="name"></div><div class="when"></div></div><div class="explanation"></div><div class="meta"></div><div class="actions"></div>';
   card.querySelector(".name").textContent=labelled;
   card.querySelector(".when").textContent=fmt(x.explained_at);
@@ -97,7 +108,7 @@ function render(){
   if(route){const s=document.createElement("span");s.className="route";s.textContent=route;meta.appendChild(s)}
   const actions=card.querySelector(".actions");
   const copy=document.createElement("button");copy.className="btn";copy.type="button";copy.textContent="Copiar";copy.onclick=()=>copyItem(x,copy);actions.appendChild(copy);
-  const a=document.createElement("a");a.className="btn";a.target="_blank";a.rel="noopener noreferrer";a.href="https://x.com/search?q="+encodeURIComponent(name)+"&src=typed_query&f=live";a.textContent="Buscar en X";actions.appendChild(a);
+  const a=document.createElement("a");a.className="btn";a.target="_blank";a.rel="noopener noreferrer";const searchNames=(Array.isArray(x.trend_names)&&x.trend_names.length?x.trend_names:[name]).join(" ");a.href="https://x.com/search?q="+encodeURIComponent(searchNames)+"&src=typed_query&f=live";a.textContent="Buscar en X";actions.appendChild(a);
   list.appendChild(card);
  }
 }

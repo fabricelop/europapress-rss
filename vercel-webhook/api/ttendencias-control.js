@@ -23,6 +23,11 @@ function b64encode(s) {
 function norm(v) {
   return String(v || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("es-ES").replace(/\s+/g, " ").trim();
 }
+function explanationNames(item) {
+  const values = [item?.name, ...(Array.isArray(item?.trend_names) ? item.trend_names : [])];
+  for (const ctx of (Array.isArray(item?.trend_context) ? item.trend_context : [])) values.push(ctx?.name);
+  return [...new Set(values.map(x => String(x || "").trim()).filter(Boolean))];
+}
 function authToken(req) {
   const h = String(req.headers.authorization || "");
   return h.startsWith("Bearer ") ? h.slice(7).trim() : "";
@@ -381,7 +386,7 @@ async function queueNames(names) {
   for (const name of unique) if (!current.has(norm(name))) throw new Error(`"${name}" ya no está en el Top 10 actual.`);
 
   const { doc: explained } = await readJson(EXPLAINED);
-  const explainedSet = new Set((explained.items || []).map(x => norm(x.name)));
+  const explainedSet = new Set((explained.items || []).flatMap(explanationNames).map(norm));
   const now = new Date().toISOString();
   const batchId = crypto.createHash("sha256").update(unique.join(" | ") + " | " + now).digest("hex").slice(0, 12);
 
@@ -442,7 +447,8 @@ async function queueUpcomingNames(names) {
   if (!unique.length) throw new Error("No hay señales seleccionadas.");
   const [{ doc: recent }, { doc: explained }] = await Promise.all([readJson(RECENT), readJson(EXPLAINED)]);
   const upcoming = new Map((recent.upcoming || []).map(x => [norm(x.name), x]));
-  const explainedMap = new Map((explained.items || []).map(x => [norm(x.name), x]));
+  const explainedMap = new Map();
+  for (const row of (explained.items || [])) for (const name of explanationNames(row)) explainedMap.set(norm(name), row);
   for (const name of unique) {
     const signal = upcoming.get(norm(name));
     if (!signal) throw new Error(`"${name}" ya no está en Próximas tendencias.`);

@@ -186,9 +186,14 @@ async function deactivatePush(){
  showToast("Avisos desactivados");await refreshPushStatus();
 }
 
+function explanationNames(x){
+ const values=[x?.name,...(Array.isArray(x?.trend_names)?x.trend_names:[])];
+ for(const ctx of (Array.isArray(x?.trend_context)?x.trend_context:[]))values.push(ctx?.name);
+ return [...new Set(values.map(v=>String(v||"").trim()).filter(Boolean))]
+}
 function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,editorialQueue){
  const requests=Array.isArray(requestDoc.requests)?requestDoc.requests:[],local=localState();
- const explainedByName={};for(const x of (explained.items||[]))explainedByName[nrm(x.name)]=x;
+ const explainedByName={};for(const x of (explained.items||[]))for(const name of explanationNames(x))explainedByName[nrm(name)]=x;
  const explainedSet=new Set(Object.keys(explainedByName));
  const anticipatedByName={};for(const x of (recent.anticipated_entries||[]))anticipatedByName[nrm(x.name)]=x;
  const latestFor=name=>[...requests].reverse().find(x=>nrm(x.name)===nrm(name));
@@ -211,7 +216,7 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
      detail=age>=30?"Explicando · retraso de "+age+" min":"Explicando · "+age+" min";
    }else detail="Pendiente de explicación automática";
    const anticipated=anticipatedByName[nrm(item.name)];if(anticipated&&Number.isFinite(Number(anticipated.lead_minutes))){detail+=(detail?" · ":"")+"Radar: "+Number(anticipated.lead_minutes)+" min antes"}
-   return {rank:Number(item.rank),name:String(item.name),entered_top10_at:item.entered_top10_at||null,status,label,detail,ready,requested_at:req?.requested_at||null,internal_status:s,explanation:String(explainedEntry?.explanation||"").trim(),explained_title:String(explainedEntry?.news_title||"").trim()};
+   return {rank:Number(item.rank),name:String(item.name),entered_top10_at:item.entered_top10_at||null,status,label,detail,ready,requested_at:req?.requested_at||null,internal_status:s,explanation:String(explainedEntry?.explanation||"").trim(),explained_title:String(explainedEntry?.news_title||"").trim(),explanation_group_title:String(explainedEntry?.group_title||"").trim(),explanation_trend_names:explanationNames(explainedEntry||{})};
  });
  const requestByName={};for(const req of requests)requestByName[nrm(req.name)]=req;
  const preparedItems=(prepared.items||[]).filter(p=>{
@@ -356,7 +361,8 @@ function render(){
 }
 
 function openExplained(item){
- $("explainedTitle").textContent=item.name||"Tendencia explicada";
+ const grouped=Array.isArray(item.explanation_trend_names)&&item.explanation_trend_names.length>1;
+ $("explainedTitle").textContent=item.explanation_group_title||(grouped?item.explanation_trend_names.join(" · "):item.name)||"Tendencia explicada";
  $("explainedText").textContent=item.explanation||"No hay explicación factual guardada para esta tendencia.";
  $("explainedSheet").classList.add("show")
 }

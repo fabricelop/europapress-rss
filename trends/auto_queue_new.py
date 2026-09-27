@@ -74,7 +74,18 @@ explained_doc = load("telegram-manual-explained.json", {"items": []})
 prepared_doc = load("prepared.json", {"items": []})
 
 requests = requests_doc.setdefault("requests", [])
-explained = {norm(x.get("name")) for x in explained_doc.get("items", []) if x.get("name")}
+explained = set()
+for entry in explained_doc.get("items", []) or []:
+    values = []
+    if entry.get("name"):
+        values.append(entry.get("name"))
+    values.extend(entry.get("trend_names") or [])
+    for ctx in entry.get("trend_context") or []:
+        if isinstance(ctx, dict) and ctx.get("name"):
+            values.append(ctx.get("name"))
+    for value in values:
+        if value:
+            explained.add(norm(value))
 prepared_names = set()
 prepared_ids = set()
 for prepared in prepared_doc.get("items", []) or []:
