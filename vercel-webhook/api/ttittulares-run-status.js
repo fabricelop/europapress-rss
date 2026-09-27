@@ -232,7 +232,7 @@ export default async function handler(req,res){
         last_run={...fallback,incidents:inc,incident_count:inc.length}
       }
     }
-    return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,can_run:enabled&&authorized(req)})
+    return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,debug:{server_now:new Date().toISOString(),trace_count:traces.length,latest_run_id:latest?.run_id||null,latest_status:latest?.status||null,last_run_id:last_run?.run_id||null,last_run_finished_at:last_run?.finished_at||null},can_run:enabled&&authorized(req)})
   }catch(e){
     console.error(e);
     return res.status(500).json({ok:false,error:String(e.message||e)})
