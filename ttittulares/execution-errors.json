@@ -83,6 +83,20 @@
       "phase": "imagen",
       "reason": "La imagen generated_gag se generó y validó visualmente, pero no se pudo garantizar un transporte íntegro de los bytes al aplicador desde esta ejecución y no había fallback Telegram autenticado disponible.",
       "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento d87bac0874cd: La imagen generated_gag se generó y validó visualmente, pero no se pudo garantizar un transporte íntegro de los bytes al aplicador desde esta ejecución y no había fallback Telegram autenticado disponible.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T09:36:31Z",
+      "event_id": "80628f366caa",
+      "phase": "drafting",
+      "reason": "El outbox heredado fue rechazado por text alternativo no coincide; se reconstruyó con Principal + dos saltos + remate y se aplicó correctamente.",
+      "remediation_prompt": "Mantener la validación de variantes antes de publicar cada outbox y aplicar los outboxes de texto secuencialmente."
+    },
+    {
+      "at": "2026-09-27T09:58:20Z",
+      "event_id": "d87bac0874cd",
+      "phase": "image_persisting",
+      "reason": "La imagen generated_gag de Mbappé fue generada y validada, pero no se pudo garantizar un puente de bytes íntegro hacia el comentario PR; se evitó enviar un base64 dudoso y se cerró la imagen como none al no existir fallback Telegram autenticado.",
+      "remediation_prompt": "Usar un puente binario programático de extremo a extremo entre el archivo generado y el comentario PR, sin transcripción del base64 por el modelo."
     }
   ]
 }
