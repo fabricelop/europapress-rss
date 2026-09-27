@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-27T04:01:15+02:00",
+  "captured_at": "2026-09-27T04:10:47+02:00",
   "primary_source": "consensus",
   "selection_method": "consensus",
   "sources_used": [
@@ -19,14 +19,14 @@
   "top10": [
     "#MalasLenguasN",
     "Oyarzabal",
-    "Puerta del Sol",
     "Inglaterra",
+    "Puerta del Sol",
     "#laSextaXplica",
     "Wembley",
     "Ferran",
     "#AcampadaSol",
-    "Cucurella",
-    "#UFCHBOMax"
+    "#UFCHBOMax",
+    "Colapinto"
   ],
   "items": [
     {
@@ -39,11 +39,11 @@
     },
     {
       "rank": 3,
-      "name": "Puerta del Sol"
+      "name": "Inglaterra"
     },
     {
       "rank": 4,
-      "name": "Inglaterra"
+      "name": "Puerta del Sol"
     },
     {
       "rank": 5,
@@ -63,15 +63,17 @@
     },
     {
       "rank": 9,
-      "name": "Cucurella"
+      "name": "#UFCHBOMax"
     },
     {
       "rank": 10,
-      "name": "#UFCHBOMax"
+      "name": "Colapinto"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Colapinto"
+  ],
   "upcoming": [
     {
       "name": "Triana",
@@ -92,86 +94,16 @@
       "news_first_seen": "2026-09-26T09:13:36.267032Z"
     },
     {
-      "name": "El 15M",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.7,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T02:50:54+02:00",
-      "news_source_count": 1,
-      "news_event_id": "56bbcdbfc521",
-      "news_title": "Un 15M por la vivienda presiona a los partidos para pactar medidas urgentes",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T01:12:00.821420Z"
-    },
-    {
-      "name": "gordon",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T02:20:54+02:00",
-      "news_source_count": 1,
-      "news_event_id": "3721f7eac84a",
-      "news_title": "De Lamine Yamal a Anthony Gordon, un templo blaugrana",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-26T21:34:08.964471Z"
-    },
-    {
-      "name": "Kane",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 14.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T00:41:12+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Colapinto",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T03:40:50+02:00",
-      "news_source_count": 2,
-      "news_event_id": "d2731fc2d307",
-      "news_title": "Brutal rajada de Norris contra Colapinto tras su accidente en Bakú: \"Algunos pilotos no deberían estar en la Fórmula 1\"",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-26T14:33:45.825654Z"
-    },
-    {
       "name": "Belén",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
+        "getdaytrends",
         "snaplytics",
         "trends24"
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
-      "movement": "flat",
+      "movement": "up",
       "first_detected_at": "2026-09-27T03:40:50+02:00",
       "news_source_count": 1,
       "news_event_id": "1a3aeb99206d",
@@ -181,20 +113,73 @@
     },
     {
       "name": "La Bola Negra",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
+        "getdaytrends",
         "snaplytics",
         "trends24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "flat",
+      "mean_observed_rank": 13.3,
+      "movement": "up",
       "first_detected_at": "2026-09-27T03:40:50+02:00",
       "news_source_count": 1,
       "news_event_id": "3596aa332ab4",
       "news_title": "Las claves de 'La bola negra': los Javis tocan la tecla mundial de la libertad",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-26T08:32:41.693053Z"
+    },
+    {
+      "name": "Cucurella",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 14.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T04:10:47+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "El 15M",
+      "social_source_count": 2,
+      "social_sources": [
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-27T02:50:54+02:00",
+      "news_source_count": 1,
+      "news_event_id": "56bbcdbfc521",
+      "news_title": "Un 15M por la vivienda presiona a los partidos para pactar medidas urgentes",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-27T01:12:00.821420Z"
+    },
+    {
+      "name": "Gordon",
+      "social_source_count": 2,
+      "social_sources": [
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.5,
+      "movement": "down",
+      "first_detected_at": "2026-09-27T02:20:54+02:00",
+      "news_source_count": 1,
+      "news_event_id": "3721f7eac84a",
+      "news_title": "De Lamine Yamal a Anthony Gordon, un templo blaugrana",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-26T21:34:08.964471Z"
     },
     {
       "name": "Sindicato de Inquilinas",
@@ -204,7 +189,7 @@
         "tweets24"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 16.5,
+      "mean_observed_rank": 16.0,
       "movement": "flat",
       "first_detected_at": "2026-09-27T03:50:53+02:00",
       "news_source_count": 3,
@@ -212,9 +197,33 @@
       "news_title": "El Sindicato de Inquilinas se manifiesta esta tarde en Madrid “para que no haya más Maricármenes”",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-26T11:12:06.286907Z"
+    },
+    {
+      "name": "Kane",
+      "social_source_count": 2,
+      "social_sources": [
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.5,
+      "movement": "down",
+      "first_detected_at": "2026-09-27T00:41:12+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Colapinto",
+      "first_detected_at": "2026-09-27T03:40:50+02:00",
+      "entered_top10_at": "2026-09-27T04:10:47+02:00",
+      "lead_minutes": 30
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -245,32 +254,32 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T04:01:15+02:00"
+      "fetched_at": "2026-09-27T04:10:47+02:00"
     },
     "getdaytrends": {
       "ok": true,
       "trends": [
-        "#MalasLenguasN",
-        "Puerta del Sol",
-        "#laSextaXplica",
         "Oyarzabal",
-        "#AcampadaSol",
         "Inglaterra",
-        "Galapagar",
+        "#MalasLenguasN",
         "Wembley",
         "Ferran",
-        "Baena",
+        "Puerta del Sol",
+        "#laSextaXplica",
+        "#DeViernes",
+        "Mari Carmen",
+        "Harvard",
+        "Colapinto",
+        "Belén",
         "#UFCHBOMax",
-        "Cucurella",
-        "El 15M",
-        "gordon",
-        "Kane"
+        "La Bola Negra",
+        "#AcampadaSol"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T04:01:15+02:00"
+      "fetched_at": "2026-09-27T04:10:47+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -300,7 +309,7 @@
       "update_hint": "Updated 1 hour ago",
       "age_minutes": 60.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-27T04:01:16+02:00"
+      "fetched_at": "2026-09-27T04:10:49+02:00"
     },
     "superx": {
       "ok": true,
@@ -330,16 +339,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T04:01:17+02:00"
+      "fetched_at": "2026-09-27T04:10:49+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790474477",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790475050",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T04:01:17+02:00"
+      "fetched_at": "2026-09-27T04:10:50+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -367,9 +376,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 27, 2026 01:00 UTC",
-      "age_minutes": 61.3,
+      "age_minutes": 70.8,
       "freshness": "aging",
-      "fetched_at": "2026-09-27T04:01:17+02:00"
+      "fetched_at": "2026-09-27T04:10:50+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -397,18 +406,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 27, 2026 at 02:00 AM # Trend Type Actions 1 #MalasLenguasN Hashtag 2 P",
-      "age_minutes": 121.3,
+      "age_minutes": 130.8,
       "freshness": "stale",
-      "fetched_at": "2026-09-27T04:01:17+02:00"
+      "fetched_at": "2026-09-27T04:10:50+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790474479",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790475052",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T04:01:19+02:00"
+      "fetched_at": "2026-09-27T04:10:52+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -417,7 +426,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-27T04:01:20+02:00"
+      "fetched_at": "2026-09-27T04:10:53+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -426,37 +435,37 @@
         "#Puerta del Sol",
         "#laSextaXplica",
         "#Oyarzabal",
-        "#Inglaterra",
-        "#Wembley",
-        "#Galapagar",
-        "#Ferran",
-        "#Cucurella",
         "#AcampadaSol",
+        "#Inglaterra",
+        "#Galapagar",
+        "#Wembley",
+        "#Ferran",
+        "#Baena",
+        "#UFCHBOMax",
+        "#Cucurella",
         "#El 15M",
         "#gordon",
         "#Kane",
-        "#Ana Samboal",
+        "#Sindicato de Inquilinas",
         "#Irene y Pablo",
         "#Valeria Racu",
-        "#Sindicato de Inquilinas",
-        "#Trampolin",
-        "#Radicales",
-        "#Rodri"
+        "#Pablo Iglesias",
+        "#Radicales"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T04:01:20+02:00"
+      "fetched_at": "2026-09-27T04:10:53+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790474482",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790475055",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T04:01:22+02:00"
+      "fetched_at": "2026-09-27T04:10:55+02:00"
     }
   }
 }
