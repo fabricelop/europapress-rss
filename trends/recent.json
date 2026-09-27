@@ -1,32 +1,35 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-27T12:51:00+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-27T13:01:17+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
     "superx",
     "snaplytics",
+    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "tweets24"
+  ],
   "reliability": "high",
   "top10": [
     "Puerta del Sol",
     "Inglaterra",
+    "#CCubicos435",
     "Oyarzabal",
     "Wembley",
+    "Galapagar",
     "#MalasLenguasN",
+    "#FelizDomingo",
     "Ferran",
-    "Mari Carmen",
-    "Colapinto",
-    "Harvard",
-    "#laSextaXplica"
+    "Mari Carmen"
   ],
   "items": [
     {
@@ -41,52 +44,115 @@
     },
     {
       "rank": 3,
+      "name": "#CCubicos435",
+      "entered_top10_at": "2026-09-27T13:01:17+02:00"
+    },
+    {
+      "rank": 4,
       "name": "Oyarzabal",
       "entered_top10_at": "2026-09-26T22:51:35+02:00"
     },
     {
-      "rank": 4,
+      "rank": 5,
       "name": "Wembley",
       "entered_top10_at": "2026-09-26T22:41:01+02:00"
     },
     {
-      "rank": 5,
+      "rank": 6,
+      "name": "Galapagar",
+      "entered_top10_at": "2026-09-27T13:01:17+02:00"
+    },
+    {
+      "rank": 7,
       "name": "#MalasLenguasN",
       "entered_top10_at": "2026-09-26T23:31:16+02:00"
     },
     {
-      "rank": 6,
+      "rank": 8,
+      "name": "#FelizDomingo",
+      "entered_top10_at": "2026-09-27T13:01:17+02:00"
+    },
+    {
+      "rank": 9,
       "name": "Ferran",
       "entered_top10_at": "2026-09-26T22:41:01+02:00"
     },
     {
-      "rank": 7,
+      "rank": 10,
       "name": "Mari Carmen",
       "entered_top10_at": "2026-09-23T08:50:58+02:00"
-    },
-    {
-      "rank": 8,
-      "name": "Colapinto",
-      "entered_top10_at": "2026-09-27T12:51:00+02:00"
-    },
-    {
-      "rank": 9,
-      "name": "Harvard",
-      "entered_top10_at": "2026-09-27T12:51:00+02:00"
-    },
-    {
-      "rank": 10,
-      "name": "#laSextaXplica",
-      "entered_top10_at": "2026-09-27T12:51:00+02:00"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Colapinto",
-    "Harvard",
-    "#laSextaXplica"
+    "#CCubicos435",
+    "Galapagar",
+    "#FelizDomingo"
   ],
   "upcoming": [
+    {
+      "name": "Colapinto",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T13:01:17+02:00",
+      "news_source_count": 2,
+      "news_event_id": "b2f2f1dbbe35",
+      "news_title": "Flavio Briatore deja en el aire el futuro de Colapinto tras su grave error en Bakú: \"Quiero tiempo para ver qué medidas tomar\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-27T10:11:19.861103Z"
+    },
+    {
+      "name": "#laSextaXplica",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T13:01:17+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Harvard",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.2,
+      "movement": "new",
+      "first_detected_at": "2026-09-27T13:01:17+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
     {
       "name": "Cucurella",
       "social_source_count": 6,
@@ -124,7 +190,7 @@
       "first_detected_at": "2026-09-27T03:40:50+02:00",
       "news_source_count": 2,
       "news_event_id": "1763fdaa502d",
-      "news_title": "Las últimas palabras de Belén Esteban tras volver a Telecinco después de tres años: \"Tengo que pedirle perdón\" - huffingtonpost.es",
+      "news_title": "Las últimas palabras de Belén Esteban tras volver a Telecinco después de tres años: \"Tengo que pedirle perdón\" - El HuffPost",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-27T07:53:36.883770Z"
     },
@@ -186,65 +252,9 @@
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "15 M",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-27T12:51:00+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "La Campana",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 20,
-      "mean_observed_rank": 20.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-27T12:51:00+02:00",
-      "news_source_count": 11,
-      "news_event_id": "6b1968da2910",
-      "news_title": "Un hombre mata a su pareja y se entrega tras atrincherarse durante horas en una casa de La Campana (Sevilla)",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-27T10:42:07.259819Z"
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Colapinto",
-      "first_detected_at": "2026-09-27T12:21:07+02:00",
-      "entered_top10_at": "2026-09-27T12:51:00+02:00",
-      "lead_minutes": 30
-    },
-    {
-      "name": "Harvard",
-      "first_detected_at": "2026-09-27T10:01:15+02:00",
-      "entered_top10_at": "2026-09-27T12:51:00+02:00",
-      "lead_minutes": 170
-    },
-    {
-      "name": "#laSextaXplica",
-      "first_detected_at": "2026-09-27T12:21:07+02:00",
-      "entered_top10_at": "2026-09-27T12:51:00+02:00",
-      "lead_minutes": 30
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -275,7 +285,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T12:51:00+02:00"
+      "fetched_at": "2026-09-27T13:01:17+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -300,7 +310,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T12:51:00+02:00"
+      "fetched_at": "2026-09-27T13:01:18+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -327,10 +337,10 @@
         "La Campana"
       ],
       "error": null,
-      "update_hint": "Updated 29 seconds ago Live Twitter Trending Topics in Spain 1 Puerta del Sol Explore wh",
-      "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-27T12:51:01+02:00"
+      "update_hint": "Updated 10 minutes ago",
+      "age_minutes": 10.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-27T13:01:18+02:00"
     },
     "superx": {
       "ok": true,
@@ -360,16 +370,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T12:51:02+02:00"
+      "fetched_at": "2026-09-27T13:01:19+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790506263",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790506879",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T12:51:03+02:00"
+      "fetched_at": "2026-09-27T13:01:19+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -397,48 +407,48 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 27, 2026 10:00 UTC",
-      "age_minutes": 51.1,
+      "age_minutes": 61.3,
       "freshness": "aging",
-      "fetched_at": "2026-09-27T12:51:03+02:00"
+      "fetched_at": "2026-09-27T13:01:20+02:00"
     },
     "fowtools": {
       "ok": true,
       "trends": [
         "Puerta del Sol",
-        "#FelizDomingo",
         "Inglaterra",
         "#CCubicos435",
-        "Oyarzabal",
         "Wembley",
+        "Oyarzabal",
+        "#FelizDomingo",
+        "Galapagar",
         "#MalasLenguasN",
         "Ferran",
-        "Galapagar",
         "Mari Carmen",
         "Colapinto",
-        "#DeViernes",
+        "M",
         "Harvard",
         "#laSextaXplica",
-        "Belén",
         "Cucurella",
+        "#DeViernes",
+        "Belén",
         "La Bola Negra",
         "Andrea",
-        "M",
-        "día de partido"
+        "LA CAMPAÑA"
       ],
       "error": null,
-      "update_hint": "Updated: September 27, 2026 at 10:00 AM # Trend Type Actions 1 Puerta del Sol Topic 2 #Fe",
-      "age_minutes": 171.1,
+      "update_hint": "Updated: September 27, 2026 at 11:00 AM # Trend Type Actions 1 Puerta del Sol Topic 2 Ing",
+      "age_minutes": 121.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-27T12:51:03+02:00"
+      "fetched_at": "2026-09-27T13:01:20+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790506264",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790506881",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T12:51:04+02:00"
+      "fetched_at": "2026-09-27T13:01:21+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -447,7 +457,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-27T12:51:06+02:00"
+      "fetched_at": "2026-09-27T13:01:21+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -477,16 +487,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T12:51:06+02:00"
+      "fetched_at": "2026-09-27T13:01:22+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790506268",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790506883",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T12:51:08+02:00"
+      "fetched_at": "2026-09-27T13:01:23+02:00"
     }
   }
 }
