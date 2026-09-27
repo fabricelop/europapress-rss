@@ -1,8 +1,8 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-27T18:54:58.044173Z",
+  "updated_at": "2026-09-27T18:55:29.847105Z",
   "radar_at": "2026-09-27T18:52:17.401877Z",
-  "processing_count": 3,
+  "processing_count": 2,
   "processing_items": [
     {
       "event_id": "4da79a83822c",
@@ -143,59 +143,30 @@
       "with_image": true,
       "image_mode": "existing_web_image",
       "automatic_redaction_requested_at": "2026-09-27T18:27:26.695421+00:00"
-    },
+    }
+  ],
+  "ready_count": 4,
+  "problematic_count": 2,
+  "problematic_items": [
     {
       "event_id": "c5bc5da6b327",
       "title": "Noticias de Cataluña - EFE - Agencia de noticias",
       "url": "https://news.google.com/rss/articles/CBMiPkFVX3lxTE1LZUk5bFBSalluSEwwc0VDQVlfc19sd0pKS0VhazdHd01tVko1aFV4MnlLY0xiaUdob2ZXQ19n?oc=5",
+      "selected_at": "2026-09-27T18:32:22.729579Z",
+      "problematic_at": "2026-09-27T18:55:29.847105Z",
+      "problem_reason": "El título es una portada genérica y las evidencias asociadas corresponden a acontecimientos distintos (México, vivienda y Ceuta). No se puede identificar una noticia concreta con dos fuentes concordantes sin inventar o mezclar hechos.",
+      "problematic_attempts": 1,
+      "user_validated": false,
+      "user_validated_at": null,
+      "revision": 1,
+      "source_count": 4,
       "sources": [
         "EFE",
         "EL PAÍS",
         "Onda Cero",
         "RTVE"
-      ],
-      "source_count": 4,
-      "drafted_source_count": 4,
-      "source_evidence": [
-        {
-          "source": "EL PAÍS",
-          "title": "‘Polo’ aligera su fuerza en el Pacífico y pone rumbo a Baja California Sur y Sonora",
-          "url": "https://elpais.com/mexico/2026-09-27/polo-aligera-su-fuerza-en-el-pacifico-y-pone-rumbo-a-baja-california-sur-y-sonora.html",
-          "first_seen": "2026-09-27T18:32:11.336514Z"
-        },
-        {
-          "source": "EFE",
-          "title": "Noticias de Cataluña - EFE - Agencia de noticias",
-          "url": "https://news.google.com/rss/articles/CBMiPkFVX3lxTE1LZUk5bFBSalluSEwwc0VDQVlfc19sd0pKS0VhazdHd01tVko1aFV4MnlLY0xiaUdob2ZXQ19n?oc=5",
-          "first_seen": "2026-09-27T18:32:11.336514Z"
-        },
-        {
-          "source": "RTVE",
-          "title": "El caso de Maricarmen, el desahucio de una mujer de 87 aos en Madrid, ha conmovido a todo el pas, pero no es nico: hay muchas otras Maricarmen en toda Espaa, decenas de expulsiones a diario sin alternativa habitacional.",
-          "url": "https://stories.rtve.es/noticias/newstory/stories/e788862a7dc99f438090?r=MATSPC",
-          "first_seen": "2026-09-27T18:32:11.336514Z"
-        },
-        {
-          "source": "Onda Cero",
-          "title": "Ceuta recupera el control de la zona del litoral tras el desalojo de las zonas cercanas a la desaladora",
-          "url": "https://www.ondacero.es/noticias/espana/ceuta-recupera-control-zona-litoral-desalojo-zonas-cercanas-desaladora_202609276ab9447af8fc5f73abbbabf8.html",
-          "first_seen": "2026-09-27T18:32:11.336514Z"
-        }
-      ],
-      "selected_at": "2026-09-27T18:32:22.729579Z",
-      "status": "PROCESSING",
-      "selection_mode": "AUTO_WEB",
-      "revision": 1,
-      "parent_event_id": null,
-      "update_context": null,
-      "parallel_source_claimed_at": null,
-      "with_image": true,
-      "image_mode": "existing_web_image"
-    }
-  ],
-  "ready_count": 4,
-  "problematic_count": 1,
-  "problematic_items": [
+      ]
+    },
     {
       "event_id": "0fb55752f70f",
       "title": "Noticias de La Rioja - EFE - Agencia de noticias",
