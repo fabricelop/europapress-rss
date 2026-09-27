@@ -97,6 +97,13 @@
       "phase": "image_persisting",
       "reason": "La imagen generated_gag de Mbappé fue generada y validada, pero no se pudo garantizar un puente de bytes íntegro hacia el comentario PR; se evitó enviar un base64 dudoso y se cerró la imagen como none al no existir fallback Telegram autenticado.",
       "remediation_prompt": "Usar un puente binario programático de extremo a extremo entre el archivo generado y el comentario PR, sin transcripción del base64 por el modelo."
+    },
+    {
+      "at": "2026-09-27T10:33:23.207638Z",
+      "event_id": "67fced92d0ee",
+      "phase": "imagen",
+      "reason": "No se encontró una imagen HTTPS verificable del mismo acontecimiento actual; se descartaron resultados antiguos o no inequívocamente vinculados.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 67fced92d0ee: No se encontró una imagen HTTPS verificable del mismo acontecimiento actual; se descartaron resultados antiguos o no inequívocamente vinculados.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
