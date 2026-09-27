@@ -1,0 +1,70 @@
+name: Preflight TTendencias web
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ttendencias-preflight.yml"
+      - "trends/update_trends.py"
+      - "trends/telegram-manual-explained.json"
+      - "vercel-webhook/ttendencias/**"
+      - "vercel-webhook/api/ttendencias-control.js"
+      - "vercel-webhook/api/ttendencias-top10-push.js"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validar Python y JSON
+        run: |
+          python3 -m py_compile trends/update_trends.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          json.loads(Path("trends/telegram-manual-explained.json").read_text(encoding="utf-8"))
+          json.loads(Path("vercel-webhook/vercel.json").read_text(encoding="utf-8"))
+          print("JSON_OK")
+          PY
+
+      - name: Validar JavaScript TTendencias
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          for src,dst in [
+              ("vercel-webhook/ttendencias/index.html","/tmp/ttendencias-index.js"),
+              ("vercel-webhook/ttendencias/explicadas/index.html","/tmp/ttendencias-explicadas.js"),
+          ]:
+              html=Path(src).read_text(encoding="utf-8")
+              scripts=re.findall(r"<script>([\s\S]*?)</script>",html,re.I)
+              if not scripts:
+                  raise SystemExit(f"No se encontró script inline en {src}")
+              Path(dst).write_text("\n".join(scripts),encoding="utf-8")
+          PY
+          node --check /tmp/ttendencias-index.js
+          node --check /tmp/ttendencias-explicadas.js
+          node --check vercel-webhook/api/ttendencias-control.js
+          node --check vercel-webhook/api/ttendencias-top10-push.js
+          node --check vercel-webhook/ttendencias/sw.js
+
+      - name: Validar contrato nuevo
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          py=Path("trends/update_trends.py").read_text(encoding="utf-8")
+          top=Path("vercel-webhook/ttendencias/index.html").read_text(encoding="utf-8")
+          exp=Path("vercel-webhook/ttendencias/explicadas/index.html").read_text(encoding="utf-8")
+          assert "entered_top10_at" in py
+          assert "recentEntry" in top and "entryTime" in top
+          assert ".slice(0,100)" in exp
+          assert "Copiar" in exp and 'id="filter"' in exp
+          assert "TT#" in exp
+          print("CONTRACT_OK")
+          PY
