@@ -364,6 +364,18 @@ def main():
                 if state not in {"pending","working","ready","telegram","none"}: raise ValueError("estado de imagen inválido")
                 patch_keys={"image","image_status","image_delivery","image_app_available","image_pending","image_failure_reason","image_generation_attempts","image_persistence_attempts","image_semantic_rejections","image_telegram_delivered","image_telegram_delivered_at","image_worker_id","image_worker_status","image_worker_dispatched_at"}
                 item={**previous,**{k:v for k,v in incoming.items() if k in patch_keys}}
+                # Para archive_sensitive, FASE 2 no depende de que ChatGPT consiga extraer
+                # una URL raster desde el buscador. La Action resuelve la imagen desde la
+                # URL original y las appearances ya guardadas, valida HTTPS/content-type
+                # y cierra el estado de forma determinista.
+                if str(item.get("image_strategy") or "")=="archive_sensitive" and state in {"pending","working"}:
+                    if _recover_image(item,row,events):
+                        state="ready"
+                        item["image_status"]="ready"
+                    else:
+                        state="none"
+                        item["image_status"]="none"
+                        item["image_failure_reason"]="No se encontró una imagen HTTPS verificable del mismo acontecimiento en la noticia ni en sus fuentes alternativas."
                 item["image_pending"]=state in {"pending","working"}
                 item["image_delivery"]={"pending":"pending","working":"pending","ready":"app","telegram":"telegram","none":"none"}[state]
                 item["image_app_available"]=state=="ready"
