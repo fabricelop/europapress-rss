@@ -1,21 +1,20 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-27T15:15:52+02:00",
+  "captured_at": "2026-09-27T15:21:06+02:00",
   "primary_source": "consensus",
   "selection_method": "consensus",
   "sources_used": [
     "trends24",
-    "getdaytrends",
     "tweets24",
     "superx",
     "snaplytics",
     "trendswe"
   ],
-  "source_count": 7,
-  "non_stale_source_count": 6,
+  "source_count": 6,
+  "non_stale_source_count": 5,
   "fresh_sources": [],
-  "reliability": "high",
+  "reliability": "medium",
   "top10": [
     "Puerta del Sol",
     "Inglaterra",
@@ -84,48 +83,6 @@
   "new_entries": [],
   "upcoming": [
     {
-      "name": "La Bola Negra",
-      "social_source_count": 6,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.3,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T03:40:50+02:00",
-      "news_source_count": 1,
-      "news_event_id": "4048a16bea4f",
-      "news_title": "La bola negra, la esperada nueva pelcula de los Javis, llega hoy a los cines y su estreno ha desatado una autntica fiebre entre los espectadores.",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-26T19:32:16.679230Z"
-    },
-    {
-      "name": "Harvard",
-      "social_source_count": 6,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 14.7,
-      "movement": "flat",
-      "first_detected_at": "2026-09-27T13:01:17+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "Belén",
       "social_source_count": 5,
       "social_sources": [
@@ -144,6 +101,46 @@
       "news_title": "Las últimas palabras de Belén Esteban tras volver a Telecinco después de tres años: \"Tengo que pedirle perdón\" - El HuffPost",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-27T07:53:36.883770Z"
+    },
+    {
+      "name": "La Bola Negra",
+      "social_source_count": 5,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.4,
+      "movement": "down",
+      "first_detected_at": "2026-09-27T03:40:50+02:00",
+      "news_source_count": 1,
+      "news_event_id": "4048a16bea4f",
+      "news_title": "La bola negra, la esperada nueva pelcula de los Javis, llega hoy a los cines y su estreno ha desatado una autntica fiebre entre los espectadores.",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-26T19:32:16.679230Z"
+    },
+    {
+      "name": "Harvard",
+      "social_source_count": 5,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 14.6,
+      "movement": "down",
+      "first_detected_at": "2026-09-27T13:01:17+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Andrea",
@@ -255,32 +252,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T15:15:52+02:00"
+      "fetched_at": "2026-09-27T15:21:06+02:00"
     },
     "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "Puerta del Sol",
-        "Galapagar",
-        "Inglaterra",
-        "Wembley",
-        "Oyarzabal",
-        "#MalasLenguasN",
-        "#FelizDomingo",
-        "15 M",
-        "Mari Carmen",
-        "Ferran",
-        "Colapinto",
-        "Cucurella",
-        "#laSextaXplica",
-        "La Bola Negra",
-        "Harvard"
-      ],
-      "error": null,
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790515266",
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-27T15:15:52+02:00"
+      "freshness": "error",
+      "fetched_at": "2026-09-27T15:21:06+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -310,7 +291,7 @@
       "update_hint": "Updated 1 hour ago",
       "age_minutes": 60.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-27T15:15:54+02:00"
+      "fetched_at": "2026-09-27T15:21:06+02:00"
     },
     "superx": {
       "ok": true,
@@ -340,16 +321,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T15:15:55+02:00"
+      "fetched_at": "2026-09-27T15:21:07+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790514956",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790515268",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T15:15:56+02:00"
+      "fetched_at": "2026-09-27T15:21:08+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -377,9 +358,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 27, 2026 12:00 UTC",
-      "age_minutes": 75.9,
+      "age_minutes": 81.1,
       "freshness": "aging",
-      "fetched_at": "2026-09-27T15:15:56+02:00"
+      "fetched_at": "2026-09-27T15:21:08+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -407,18 +388,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 27, 2026 at 01:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 Gal",
-      "age_minutes": 135.9,
+      "age_minutes": 141.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-27T15:15:56+02:00"
+      "fetched_at": "2026-09-27T15:21:08+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790514957",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790515269",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T15:15:57+02:00"
+      "fetched_at": "2026-09-27T15:21:09+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -427,7 +408,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-27T15:15:59+02:00"
+      "fetched_at": "2026-09-27T15:21:13+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -457,16 +438,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-27T15:15:59+02:00"
+      "fetched_at": "2026-09-27T15:21:13+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790514963",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790515278",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-27T15:16:03+02:00"
+      "fetched_at": "2026-09-27T15:21:18+02:00"
     }
   }
 }
