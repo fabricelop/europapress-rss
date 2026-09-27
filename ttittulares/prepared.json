@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-27T16:06:01.007Z",
+  "updated_at": "2026-09-27T16:46:00Z",
   "items": [
     {
       "event_id": "397beee03362",
@@ -59,13 +59,14 @@
       ],
       "trend_context": [],
       "image_strategy": "generated_gag",
-      "image_status": "pending",
-      "image_pending": true,
-      "image_delivery": "pending",
+      "image_status": "none",
+      "image_pending": false,
+      "image_delivery": "none",
       "image_app_available": false,
       "image_generation_attempts": 0,
       "image_persistence_attempts": 0,
-      "image_search_status": "pending_phase2"
+      "image_search_status": "not_found",
+      "image_failure_reason": "archive_image_not_found"
     },
     {
       "event_id": "d44c78541175",
@@ -124,13 +125,14 @@
       ],
       "trend_context": [],
       "image_strategy": "archive_sensitive",
-      "image_status": "pending",
-      "image_pending": true,
-      "image_delivery": "pending",
+      "image_status": "none",
+      "image_pending": false,
+      "image_delivery": "none",
       "image_app_available": false,
       "image_generation_attempts": 0,
       "image_persistence_attempts": 0,
-      "image_search_status": "pending_archive_phase2"
+      "image_search_status": "not_found",
+      "image_failure_reason": "archive_image_not_found"
     },
     {
       "event_id": "d56bf61848ec",
@@ -199,13 +201,19 @@
         }
       ],
       "image_strategy": "archive_sensitive",
-      "image_status": "pending",
-      "image_pending": true,
-      "image_delivery": "pending",
-      "image_app_available": false,
+      "image_status": "ready",
+      "image_pending": false,
+      "image_delivery": "app",
+      "image_app_available": true,
       "image_generation_attempts": 0,
       "image_persistence_attempts": 0,
-      "image_search_status": "pending_archive_phase2"
+      "image_search_status": "found",
+      "image": "https://imagenes2.fotos.europapress.es/preview/7803752.jpg?s=1000",
+      "image_source": "Europa Press Fotos",
+      "image_source_url": "https://fotos.europapress.es/fotonoticia/f7803752",
+      "image_rights_status": "unverified",
+      "image_alt": "Personas acampadas en la Puerta del Sol de Madrid para exigir medidas de vivienda, 27 de septiembre de 2026.",
+      "image_url": "https://imagenes2.fotos.europapress.es/preview/7803752.jpg?s=1000"
     },
     {
       "event_id": "6095b25c9757",
@@ -261,6 +269,179 @@
         {
           "query": "Snchez dice que est trabajando para aprobar el martes el decreto de vivienda y pide \"un ltimo esfuer",
           "url": "https://x.com/search?q=Snchez%20dice%20que%20est%20trabajando%20para%20aprobar%20el%20martes%20el%20decreto%20de%20vivienda%20y%20pide%20%22un%20ltimo%20esfuer&src=typed_query&f=live"
+        }
+      ],
+      "trend_context": [],
+      "image_strategy": "generated_gag",
+      "image_status": "none",
+      "image_pending": false,
+      "image_delivery": "none",
+      "image_app_available": false,
+      "image_generation_attempts": 0,
+      "image_persistence_attempts": 0,
+      "image_search_status": "not_found",
+      "image_failure_reason": "archive_image_not_found"
+    },
+    {
+      "event_id": "1ff7b9f464d0",
+      "title": "El Papa León XIV pide a los obispos franceses \"máxima vigilancia\" ante la lacra de los abusos sexuales",
+      "url": "https://www.europapress.es/sociedad/noticia-papa-leon-xiv-pide-obispos-franceses-maxima-vigilancia-lacra-abusos-sexuales-20260927144526.html",
+      "drafted_source_count": 4,
+      "sources_at_draft": [
+        "El Mundo",
+        "Europa Press",
+        "La Vanguardia",
+        "Telecinco Noticias"
+      ],
+      "prepared_at": "2026-09-27T16:42:00Z",
+      "factual_summary": "León XIV pidió a los obispos franceses mantener la «máxima vigilancia» frente a los abusos sexuales contra menores en la Iglesia durante una reunión en Lourdes.",
+      "revision": 1,
+      "variants": [
+        {
+          "label": "Principal",
+          "text": "León XIV pidió a los obispos franceses mantener la «máxima vigilancia» frente a los abusos sexuales contra menores en la Iglesia durante una reunión en Lourdes.",
+          "remate": ""
+        },
+        {
+          "label": "A",
+          "text": "León XIV pidió a los obispos franceses mantener la «máxima vigilancia» frente a los abusos sexuales contra menores en la Iglesia durante una reunión en Lourdes.\n\n🌶️ La vigilancia no admite indulgencias ni descansos.",
+          "remate": "🌶️ La vigilancia no admite indulgencias ni descansos."
+        },
+        {
+          "label": "B",
+          "text": "León XIV pidió a los obispos franceses mantener la «máxima vigilancia» frente a los abusos sexuales contra menores en la Iglesia durante una reunión en Lourdes.\n\n🌶️ Una lacra donde bajar la guardia nunca puede entrar en el calendario.",
+          "remate": "🌶️ Una lacra donde bajar la guardia nunca puede entrar en el calendario."
+        },
+        {
+          "label": "C",
+          "text": "León XIV pidió a los obispos franceses mantener la «máxima vigilancia» frente a los abusos sexuales contra menores en la Iglesia durante una reunión en Lourdes.\n\n🌶️ En prevención, la única rutina aceptable es no aflojar.",
+          "remate": "🌶️ En prevención, la única rutina aceptable es no aflojar."
+        }
+      ],
+      "quote_candidates": [],
+      "x_searches": [
+        {
+          "query": "León XIV abusos obispos franceses",
+          "url": "https://x.com/search?q=Le%C3%B3n%20XIV%20abusos%20obispos%20franceses&src=typed_query&f=live"
+        },
+        {
+          "query": "Papa máxima vigilancia abusos Francia",
+          "url": "https://x.com/search?q=Papa%20m%C3%A1xima%20vigilancia%20abusos%20Francia&src=typed_query&f=live"
+        }
+      ],
+      "trend_context": [],
+      "image_strategy": "archive_sensitive",
+      "image_status": "pending",
+      "image_pending": true,
+      "image_delivery": "pending",
+      "image_app_available": false,
+      "image_generation_attempts": 0,
+      "image_persistence_attempts": 0,
+      "image_search_status": "pending_archive_phase2"
+    },
+    {
+      "event_id": "80391a16d887",
+      "title": "El PP denuncia que Sánchez \"no puede pretender arreglar en cuatro días lo que ha destrozado en ocho años\" en vivienda",
+      "url": "https://www.20minutos.es/nacional/pp-denuncia-que-sanchez-no-puede-pretender-arreglar-cuatro-dias-que-ha-destrozado-ocho-anos-vivienda_7041843_0.html",
+      "drafted_source_count": 4,
+      "sources_at_draft": [
+        "20minutos",
+        "ABC",
+        "Servimedia",
+        "laSexta Noticias"
+      ],
+      "prepared_at": "2026-09-27T16:44:00Z",
+      "factual_summary": "Juan Bravo (PP) acusó a Sánchez de haber «destrozado» la política de vivienda y criticó sus medidas; el Gobierno prepara un decreto para el martes.",
+      "revision": 1,
+      "variants": [
+        {
+          "label": "Principal",
+          "text": "Juan Bravo (PP) acusó a Sánchez de haber «destrozado» la política de vivienda y criticó sus medidas; el Gobierno prepara un decreto para el martes.",
+          "remate": ""
+        },
+        {
+          "label": "A",
+          "text": "Juan Bravo (PP) acusó a Sánchez de haber «destrozado» la política de vivienda y criticó sus medidas; el Gobierno prepara un decreto para el martes.\n\n🌶️ Vivienda entra en campaña antes de encontrar una casa.",
+          "remate": "🌶️ Vivienda entra en campaña antes de encontrar una casa."
+        },
+        {
+          "label": "B",
+          "text": "Juan Bravo (PP) acusó a Sánchez de haber «destrozado» la política de vivienda y criticó sus medidas; el Gobierno prepara un decreto para el martes.\n\n🌶️ Entre decretos y reproches, el metro cuadrado sigue escuchando su nombre.",
+          "remate": "🌶️ Entre decretos y reproches, el metro cuadrado sigue escuchando su nombre."
+        },
+        {
+          "label": "C",
+          "text": "Juan Bravo (PP) acusó a Sánchez de haber «destrozado» la política de vivienda y criticó sus medidas; el Gobierno prepara un decreto para el martes.\n\n🌶️ El ladrillo vuelve al debate con más declaraciones que planos.",
+          "remate": "🌶️ El ladrillo vuelve al debate con más declaraciones que planos."
+        }
+      ],
+      "quote_candidates": [],
+      "x_searches": [
+        {
+          "query": "Juan Bravo vivienda Sánchez 27 septiembre 2026",
+          "url": "https://x.com/search?q=Juan%20Bravo%20vivienda%20S%C3%A1nchez%2027%20septiembre%202026&src=typed_query&f=live"
+        },
+        {
+          "query": "PP 184.000 viviendas Sánchez",
+          "url": "https://x.com/search?q=PP%20184.000%20viviendas%20S%C3%A1nchez&src=typed_query&f=live"
+        }
+      ],
+      "trend_context": [],
+      "image_strategy": "generated_gag",
+      "image_status": "pending",
+      "image_pending": true,
+      "image_delivery": "pending",
+      "image_app_available": false,
+      "image_generation_attempts": 0,
+      "image_persistence_attempts": 0,
+      "image_search_status": "pending_phase2"
+    },
+    {
+      "event_id": "8fc3847d9e38",
+      "title": "Yolanda Díaz mete presión a Sánchez por el 'decreto Maricarmen': \"No nos vale cualquiera, que le meta mano a los fondos buitre\" - El HuffPost",
+      "url": "https://www.europapress.es/nacional/noticia-diaz-exige-decreto-vivienda-meta-mano-fondos-buitre-anima-acampados-sol-movilizarse-mas-20260927135055.html",
+      "drafted_source_count": 5,
+      "sources_at_draft": [
+        "El HuffPost",
+        "Europa Press",
+        "Onda Cero",
+        "Público",
+        "Telecinco Noticias"
+      ],
+      "prepared_at": "2026-09-27T16:46:00Z",
+      "factual_summary": "Yolanda Díaz reclamó que el decreto de vivienda actúe contra los fondos buitre y animó a mantener la movilización de la acampada de Sol.",
+      "revision": 1,
+      "variants": [
+        {
+          "label": "Principal",
+          "text": "Yolanda Díaz reclamó que el decreto de vivienda actúe contra los fondos buitre y animó a mantener la movilización de la acampada de Sol.",
+          "remate": ""
+        },
+        {
+          "label": "A",
+          "text": "Yolanda Díaz reclamó que el decreto de vivienda actúe contra los fondos buitre y animó a mantener la movilización de la acampada de Sol.\n\n🌶️ El decreto aún no tiene llaves, pero ya tiene lista de exigencias.",
+          "remate": "🌶️ El decreto aún no tiene llaves, pero ya tiene lista de exigencias."
+        },
+        {
+          "label": "B",
+          "text": "Yolanda Díaz reclamó que el decreto de vivienda actúe contra los fondos buitre y animó a mantener la movilización de la acampada de Sol.\n\n🌶️ La coalición negocia el texto mientras Sol mantiene abierta la asamblea.",
+          "remate": "🌶️ La coalición negocia el texto mientras Sol mantiene abierta la asamblea."
+        },
+        {
+          "label": "C",
+          "text": "Yolanda Díaz reclamó que el decreto de vivienda actúe contra los fondos buitre y animó a mantener la movilización de la acampada de Sol.\n\n🌶️ Vivienda llega al martes con más condiciones que un contrato de alquiler.",
+          "remate": "🌶️ Vivienda llega al martes con más condiciones que un contrato de alquiler."
+        }
+      ],
+      "quote_candidates": [],
+      "x_searches": [
+        {
+          "query": "Yolanda Díaz fondos buitre vivienda",
+          "url": "https://x.com/search?q=Yolanda%20D%C3%ADaz%20fondos%20buitre%20vivienda&src=typed_query&f=live"
+        },
+        {
+          "query": "No nos vale cualquier decreto Díaz",
+          "url": "https://x.com/search?q=No%20nos%20vale%20cualquier%20decreto%20D%C3%ADaz&src=typed_query&f=live"
         }
       ],
       "trend_context": [],
