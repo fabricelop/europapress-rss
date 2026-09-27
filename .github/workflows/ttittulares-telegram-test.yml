@@ -1,0 +1,53 @@
+name: Prueba aislada de imagen TTiTTulares a Telegram
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+
+jobs:
+  send:
+    if: >-
+      github.event.issue.pull_request &&
+      github.event.issue.number == 2 &&
+      github.event.comment.user.login == 'fabricelop' &&
+      startsWith(github.event.comment.body, 'TTITTULARES_TELEGRAM_TEST_V1')
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Enviar raster temporal sin modificar estado editorial
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python3 - <<'PY'
+          import base64, json, os, urllib.request, uuid
+          from pathlib import Path
+
+          event=json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text())
+          body=event['comment']['body']
+          prefix='TTITTULARES_TELEGRAM_TEST_V1\n'
+          if not body.startswith(prefix): raise SystemExit('Prefijo inválido')
+          raster=base64.b64decode(body[len(prefix):].strip(),validate=True)
+          if not (4096 <= len(raster) <= 50000 and raster[:3] == b'\xff\xd8\xff' and raster[-2:] == b'\xff\xd9'):
+              raise SystemExit('JPEG inválido o tamaño inesperado')
+          token=os.environ['TELEGRAM_BOT_TOKEN'];chat=os.environ['TELEGRAM_CHAT_ID']
+          boundary='----tttest'+uuid.uuid4().hex
+          caption='PRUEBA AISLADA · TTiTTulares · 4da79a83822c\nManifestación por la educación pública en Madrid. Gag editorial de prueba; sin cambios en la app.'
+          payload=(f'--{boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n{chat}\r\n'
+                   f'--{boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n{caption}\r\n'
+                   f'--{boundary}\r\nContent-Disposition: form-data; name="photo"; filename="prueba-4da79a83822c.jpg"\r\nContent-Type: image/jpeg\r\n\r\n').encode()+raster+f'\r\n--{boundary}--\r\n'.encode()
+          req=urllib.request.Request(f'https://api.telegram.org/bot{token}/sendPhoto',data=payload,headers={'Content-Type':f'multipart/form-data; boundary={boundary}'})
+          with urllib.request.urlopen(req,timeout=30) as response: result=json.load(response)
+          if not result.get('ok'): raise SystemExit('Telegram rechazó la foto')
+          print('TELEGRAM_TEST_SENT', 'message_id='+str(result['result']['message_id']), 'bytes='+str(len(raster)))
+          PY
+      - name: Borrar el comentario de transporte tras entrega confirmada
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMENT_ID: ${{ github.event.comment.id }}
+          REPO: ${{ github.repository }}
+        run: gh api --method DELETE "repos/$REPO/issues/comments/$COMMENT_ID"
