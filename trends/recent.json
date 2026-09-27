@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T01:31:08+02:00",
+  "captured_at": "2026-09-28T01:40:53+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -13,22 +13,23 @@
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "#ConexiónHonduras3",
+    "Asraf",
     "Yola",
     "Gelabert",
     "Sporting",
-    "#SalvadosRufián",
     "#DragRaceEs",
+    "#SalvadosRufián",
     "Enzo Pérez",
-    "#NASCARenDAZN",
-    "McNulty",
-    "Pablo Vázquez"
+    "#VMAs",
+    "#NASCARenDAZN"
   ],
   "items": [
     {
@@ -38,23 +39,23 @@
     },
     {
       "rank": 2,
+      "name": "Asraf",
+      "entered_top10_at": "2026-09-28T01:40:53+02:00"
+    },
+    {
+      "rank": 3,
       "name": "Yola",
       "entered_top10_at": "2026-09-28T01:01:17+02:00"
     },
     {
-      "rank": 3,
+      "rank": 4,
       "name": "Gelabert",
       "entered_top10_at": "2026-09-27T23:40:56+02:00"
     },
     {
-      "rank": 4,
+      "rank": 5,
       "name": "Sporting",
       "entered_top10_at": "2026-09-28T00:20:56+02:00"
-    },
-    {
-      "rank": 5,
-      "name": "#SalvadosRufián",
-      "entered_top10_at": "2026-09-27T23:10:54+02:00"
     },
     {
       "rank": 6,
@@ -63,41 +64,44 @@
     },
     {
       "rank": 7,
+      "name": "#SalvadosRufián",
+      "entered_top10_at": "2026-09-27T23:10:54+02:00"
+    },
+    {
+      "rank": 8,
       "name": "Enzo Pérez",
       "entered_top10_at": "2026-09-28T00:20:56+02:00"
     },
     {
-      "rank": 8,
-      "name": "#NASCARenDAZN",
-      "entered_top10_at": "2026-09-27T22:10:55+02:00"
-    },
-    {
       "rank": 9,
-      "name": "McNulty",
-      "entered_top10_at": "2026-09-27T21:31:05+02:00"
+      "name": "#VMAs",
+      "entered_top10_at": "2026-09-28T01:40:53+02:00"
     },
     {
       "rank": 10,
-      "name": "Pablo Vázquez",
+      "name": "#NASCARenDAZN",
       "entered_top10_at": "2026-09-27T22:10:55+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Asraf",
+    "#VMAs"
+  ],
   "upcoming": [
     {
-      "name": "Rosa Benito",
+      "name": "Pablo Vázquez",
       "social_source_count": 4,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
-        "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.2,
-      "movement": "up",
-      "first_detected_at": "2026-09-28T00:40:55+02:00",
+      "best_observed_rank": 11,
+      "mean_observed_rank": 14.2,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T01:40:53+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -114,9 +118,82 @@
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 13.5,
-      "movement": "down",
+      "mean_observed_rank": 14.5,
+      "movement": "flat",
       "first_detected_at": "2026-09-28T00:10:57+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Rosa Benito",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.0,
+      "movement": "flat",
+      "first_detected_at": "2026-09-28T00:40:55+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Yulen",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T01:31:08+02:00",
+      "news_source_count": 1,
+      "news_event_id": "b08c6488ac21",
+      "news_title": "Encuesta: ¿Quién quieres que sea el salvado de 'Supervivientes All Stars': Asraf, Arkano, Ivana o Yulen? - El Televisero",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-27T21:13:32.513110Z"
+    },
+    {
+      "name": "McNulty",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 14.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T01:40:53+02:00",
+      "news_source_count": 1,
+      "news_event_id": "ca0005b16437",
+      "news_title": "McNulty sorprende a los favoritos por el oro mundial de la prueba en ruta",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-27T19:43:28.464989Z"
+    },
+    {
+      "name": "Barranco",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 17.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T01:31:08+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -132,7 +209,7 @@
         "tweets24"
       ],
       "best_observed_rank": 17,
-      "mean_observed_rank": 17.7,
+      "mean_observed_rank": 17.0,
       "movement": "flat",
       "first_detected_at": "2026-09-28T01:01:17+02:00",
       "news_source_count": 1,
@@ -150,81 +227,13 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T01:01:17+02:00",
       "news_source_count": 1,
       "news_event_id": "b08c6488ac21",
       "news_title": "Encuesta: ¿Quién quieres que sea el salvado de 'Supervivientes All Stars': Asraf, Arkano, Ivana o Yulen? - El Televisero",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-27T21:13:32.513110Z"
-    },
-    {
-      "name": "Noruega",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T00:20:56+02:00",
-      "news_source_count": 1,
-      "news_event_id": "fb2668e760e1",
-      "news_title": "Joao Félix abandera el sorpaso de Portugal ante Noruega",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T21:02:31.851235Z"
-    },
-    {
-      "name": "Yulen",
-      "social_source_count": 2,
-      "social_sources": [
-        "getdaytrends",
-        "trends24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-28T01:31:08+02:00",
-      "news_source_count": 1,
-      "news_event_id": "b08c6488ac21",
-      "news_title": "Encuesta: ¿Quién quieres que sea el salvado de 'Supervivientes All Stars': Asraf, Arkano, Ivana o Yulen? - El Televisero",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T21:13:32.513110Z"
-    },
-    {
-      "name": "Nyland",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 14.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T00:20:56+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Barranco",
-      "social_source_count": 2,
-      "social_sources": [
-        "getdaytrends",
-        "trends24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.5,
-      "movement": "new",
-      "first_detected_at": "2026-09-28T01:31:08+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -258,7 +267,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T01:31:08+02:00"
+      "fetched_at": "2026-09-28T01:40:53+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -283,37 +292,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T01:31:08+02:00"
+      "fetched_at": "2026-09-28T01:40:53+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "#ConexiónHonduras3",
+        "Asraf",
         "Yola",
         "Gelabert",
         "Sporting",
-        "#SalvadosRufián",
         "#DragRaceEs",
+        "#SalvadosRufián",
         "Enzo Pérez",
+        "#VMAs",
         "#NASCARenDAZN",
-        "McNulty",
-        "Pablo Vázquez",
         "Ivana",
-        "Goti",
         "Rosa Benito",
-        "Noruega",
-        "Nyland",
-        "Larcamón",
-        "Chris Ramos",
-        "Otero",
+        "Pablo Vázquez",
+        "Yulen",
+        "McNulty",
+        "GOTI",
         "Arkano",
-        "#ElSecreto"
+        "Barranco",
+        "Tartiere",
+        "Larcamón"
       ],
       "error": null,
-      "update_hint": "Updated 36 minutes ago",
-      "age_minutes": 36.0,
+      "update_hint": "Updated 3 minutes ago",
+      "age_minutes": 3.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-28T01:31:09+02:00"
+      "fetched_at": "2026-09-28T01:40:54+02:00"
     },
     "superx": {
       "ok": true,
@@ -343,46 +352,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T01:31:10+02:00"
+      "fetched_at": "2026-09-28T01:40:54+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790551871",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790552455",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T01:31:11+02:00"
+      "fetched_at": "2026-09-28T01:40:55+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "#ConexiónHonduras3",
         "Puerta del Sol",
-        "Galapagar",
         "Asraf",
+        "Galapagar",
         "Yola",
+        "Rosa Benito",
+        "#DragRaceEs",
         "Gelabert",
         "Sporting",
-        "#SalvadosRufián",
-        "#DragRaceEs",
-        "McNulty",
         "Inglaterra",
-        "Enzo Pérez",
-        "Nyland",
         "#NASCARenDAZN",
-        "Pablo Vázquez",
+        "McNulty",
+        "#VMAs",
         "15 M",
-        "Ivana",
-        "Goti",
-        "Noruega",
-        "#FelizDomingo"
+        "Enzo Pérez",
+        "#FelizDomingo",
+        "Wembley",
+        "Oyarzabal",
+        "La Bola Negra",
+        "Pablo Vázquez"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 27, 2026 22:00 UTC",
-      "age_minutes": 91.2,
-      "freshness": "stale",
-      "fetched_at": "2026-09-28T01:31:11+02:00"
+      "update_hint": "Trending now Sep 27, 2026 23:00 UTC",
+      "age_minutes": 40.9,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-28T01:40:55+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -410,18 +419,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 27, 2026 at 11:00 PM # Trend Type Actions 1 #ConexiónHonduras3 Hashtag",
-      "age_minutes": 151.2,
+      "age_minutes": 160.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T01:31:11+02:00"
+      "fetched_at": "2026-09-28T01:40:56+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790551874",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790552457",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T01:31:14+02:00"
+      "fetched_at": "2026-09-28T01:40:57+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -430,7 +439,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-28T01:31:15+02:00"
+      "fetched_at": "2026-09-28T01:40:58+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -460,16 +469,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T01:31:16+02:00"
+      "fetched_at": "2026-09-28T01:40:59+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790551878",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790552460",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T01:31:18+02:00"
+      "fetched_at": "2026-09-28T01:41:00+02:00"
     }
   }
 }
