@@ -70,9 +70,10 @@ jobs:
               assert eid and eid not in ids, f"event_id duplicado: {eid}"
               ids.add(eid)
               drafted=int(item.get("drafted_source_count") or 0)
-              source_row=next((x for x in processing.get("items",[]) if str(x.get("event_id") or "")==eid),{})
-              manual_3s=str(source_row.get("selection_mode") or "")=="MANUAL_WEB_3S"
-              assert drafted >= (3 if manual_3s else 4), f"{eid}: redactada con fuentes insuficientes ({drafted})"
+              # El umbral de 4 rige la selección automática del radar, no la
+              # verificación editorial de una noticia ya preparada.
+              cited={str(c.get("source") or "").strip() for c in item.get("citations",[]) if isinstance(c,dict)}
+              assert drafted >= 2 and len(cited-{''}) >= 2, f"{eid}: faltan dos fuentes editoriales independientes ({drafted})"
               variants=item.get("variants") or []
               assert [str(v.get("label") or v.get("name") or "") for v in variants] == ["Principal","A","B","C"], f"{eid}: deben existir Principal+A+B+C"
               principal=str(variants[0].get("text") or "")

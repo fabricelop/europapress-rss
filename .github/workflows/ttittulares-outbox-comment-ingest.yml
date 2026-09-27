@@ -10,7 +10,8 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: ttittulares-repo-write
+  # Every comment must be ingested; a shared pending slot loses comments.
+  group: ttittulares-outbox-${{ github.event.comment.id }}
   cancel-in-progress: false
 
 jobs:

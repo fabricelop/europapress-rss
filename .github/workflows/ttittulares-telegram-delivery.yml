@@ -10,7 +10,9 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: ttittulares-repo-write
+  # GitHub retains only one pending run per concurrency group. A shared
+  # repo-wide group silently cancelled image deliveries during radar writes.
+  group: ttittulares-image-${{ github.event.comment.id }}
   cancel-in-progress: false
 
 jobs:
