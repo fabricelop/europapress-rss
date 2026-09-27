@@ -150,8 +150,11 @@ TOKEN_ALIASES={
  # Variantes frecuentes que estaban fragmentando el mismo acontecimiento entre medios.
  "caza":"caza","cazas":"caza",
  "dron":"dron","drones":"dron",
- "espanol":"espanol","espanoles":"espanol","espanola":"espanol","espanolas":"espanol",
+ "espanol":"espanol","espanoles":"espanol","espanola":"espanol","espanolas":"espanol","espaoles":"espanol","espaola":"espanol",
+ "rumania":"rumania","rumana":"rumania","rumano":"rumania",
  "ruso":"ruso","rusos":"ruso","rusa":"ruso","rusas":"ruso",
+ "malaga":"malaga","malagueno":"malaga","malaguena":"malaga","malagueño":"malaga","malagueña":"malaga",
+ "confina":"confinar","confinan":"confinar","confinado":"confinar","confinada":"confinar","confinamiento":"confinar","confinar":"confinar",
  "moviliza":"movilizar","movilizan":"movilizar","movilizado":"movilizar","movilizados":"movilizar","movilizar":"movilizar",
  "activa":"activar","activan":"activar","activar":"activar","despliega":"desplegar","despliegan":"desplegar","desplegar":"desplegar",
 }
@@ -168,6 +171,7 @@ EVENT_ACTION_ALIASES={
  "aprobar":"aprobacion","aprueba":"aprobacion","avalar":"aprobacion","avala":"aprobacion",
  "prohibir":"prohibicion","prohibe":"prohibicion","vetar":"prohibicion","veta":"prohibicion",
  "movilizar":"movilizacion","desplegar":"movilizacion",
+ "confinar":"confinamiento",
 }
 @lru_cache(maxsize=50000)
 def event_actions(s):
@@ -748,6 +752,24 @@ if "--selftest-dedupe" in sys.argv:
    'La OTAN vuelve a activar cazas F18 españoles en Rumanía por la presencia de un dron ruso en la frontera con Ucrania',
    False,
    "Ucrania compartida no mezcla Operación Vivaldi con alerta F-18 en Rumanía",
+  ),
+  (
+   'La OTAN vuelve a activar cazas F18 espaoles en Rumana por la presencia de un dron ruso en la frontera con Ucrania',
+   'Dos cazas españoles son movilizados en Rumanía ante una alerta de drones',
+   True,
+   "mismo F-18 pese a caracteres perdidos en una fuente",
+  ),
+  (
+   'Andalucía activa la emergencia por el incendio de Igualeja y confina el municipio malagueño',
+   'El fuego de un incendio obliga a confinar Igualeja, en Málaga, y a cortar el tráfico en la carretera MA-7304',
+   True,
+   "mismo incendio y confinamiento de Igualeja",
+  ),
+  (
+   'Incendio forestal en Marbella obliga a desalojar varias viviendas',
+   'El fuego de un incendio obliga a confinar Igualeja, en Málaga, y a cortar el tráfico en la carretera MA-7304',
+   False,
+   "incendios distintos en Málaga",
   ),
  ]
  for a,b,should_match,label in tests:
