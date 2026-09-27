@@ -372,7 +372,7 @@ def main():
                 incoming=payload.get("prepared_item") or {}
                 state=str(incoming.get("image_status") or "")
                 if state not in {"pending","working","ready","telegram","none"}: raise ValueError("estado de imagen inválido")
-                patch_keys={"image","image_status","image_delivery","image_app_available","image_pending","image_failure_reason","image_generation_attempts","image_persistence_attempts","image_semantic_rejections","image_telegram_delivered","image_telegram_delivered_at","image_worker_id","image_worker_status","image_worker_dispatched_at"}
+                patch_keys={"image","image_status","image_delivery","image_app_available","image_pending","image_failure_reason","image_none_reason","image_generation_attempts","image_persistence_attempts","image_semantic_rejections","image_telegram_delivered","image_telegram_delivered_at","image_worker_id","image_worker_status","image_worker_dispatched_at"}
                 item={**previous,**{k:v for k,v in incoming.items() if k in patch_keys}}
                 # Para archive_sensitive, FASE 2 no depende de que ChatGPT consiga extraer
                 # una URL raster desde el buscador. La Action resuelve la imagen desde la
@@ -386,7 +386,7 @@ def main():
                         state="none"
                         item["image_status"]="none"
                         item["image_failure_reason"]="No se encontró una imagen HTTPS verificable del mismo acontecimiento en la noticia ni en sus fuentes alternativas."
-                item["image_pending"]=state in {"pending","working"}
+                if state=="none" and not item.get("image_failure_reason") and item.get("image_none_reason"):\n                    item["image_failure_reason"]=item.get("image_none_reason")\n                item.pop("image_none_reason",None)\n                item["image_pending"]=state in {"pending","working"}
                 item["image_delivery"]={"pending":"pending","working":"pending","ready":"app","telegram":"telegram","none":"none"}[state]
                 item["image_app_available"]=state=="ready"
                 if state=="ready" and not (item.get("image") or {}).get("url"): raise ValueError("imagen lista sin URL")
