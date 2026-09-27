@@ -17,10 +17,14 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.fabricelop.ttittulares
         PRODUCT_NAME: TTiTTulares
         CODE_SIGN_STYLE: Automatic
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     info:
       path: TTiTTularesApp/Info.plist
       properties:
         CFBundleDisplayName: TTiTTulares
+        ITSAppUsesNonExemptEncryption: false
         UILaunchScreen: {}
         CFBundleURLTypes:
           - CFBundleURLName: com.fabricelop.ttittulares
@@ -40,9 +44,21 @@ targets:
         PRODUCT_NAME: TTiTTularesWidget
         SKIP_INSTALL: YES
         CODE_SIGN_STYLE: Automatic
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
     info:
       path: TTiTTularesWidget/Info.plist
       properties:
         CFBundleDisplayName: TTiTTulares
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
+
+schemes:
+  TTiTTulares:
+    build:
+      targets:
+        TTiTTulares: all
+    run:
+      config: Debug
+    archive:
+      config: Release
