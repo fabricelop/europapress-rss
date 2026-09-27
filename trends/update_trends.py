@@ -609,6 +609,31 @@ def main():
     unchanged = [x.casefold() for x in top10] == [x.casefold() for x in previous]
     previous_keys = {term_key(x) for x in previous}
     new_entries = [x for x in top10 if term_key(x) not in previous_keys]
+    previous_items = {
+        term_key(x.get("name")): x
+        for x in (previous_doc.get("items") or [])
+        if x.get("name")
+    }
+    requests_doc = load_json(REQUESTS, {"requests": []})
+    request_history = {}
+    for req in requests_doc.get("requests", []) or []:
+        name = req.get("name")
+        if name:
+            request_history.setdefault(term_key(name), []).append(req)
+
+    def entered_top10_at(name):
+        key = term_key(name)
+        if key not in previous_keys:
+            return now.isoformat(timespec="seconds")
+        prev = previous_items.get(key) or {}
+        if prev.get("entered_top10_at"):
+            return prev["entered_top10_at"]
+        candidates = [r for r in request_history.get(key, []) if r.get("requested_at")]
+        if candidates:
+            candidates.sort(key=lambda r: str(r.get("requested_at") or ""), reverse=True)
+            return candidates[0]["requested_at"]
+        return previous_doc.get("captured_at") or now.isoformat(timespec="seconds")
+
     valid = [n for n, d in source_data.items() if d.get("ok")]
     non_stale = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") != "stale"]
     fresh = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") == "fresh"]
@@ -617,7 +642,6 @@ def main():
     ttittulares_events_doc = load_json(TTITTULARES_EVENTS, {})
     ttittulares_events = {str(x.get("id")): x for x in (ttittulares_events_doc.get("events") or []) if x.get("id")}
     upcoming = build_upcoming(source_data, top10, previous_doc, ttittulares_status, ttittulares_events, now)
-    requests_doc = load_json(REQUESTS, {"requests": []})
     upcoming = filter_dismissed_upcoming(upcoming, requests_doc)
     anticipated = anticipated_entries(top10, previous_doc, now)
 
@@ -633,7 +657,14 @@ def main():
         "fresh_sources": fresh,
         "reliability": reliability,
         "top10": top10,
-        "items": [{"rank": i + 1, "name": name} for i, name in enumerate(top10)],
+        "items": [
+            {
+                "rank": i + 1,
+                "name": name,
+                "entered_top10_at": entered_top10_at(name),
+            }
+            for i, name in enumerate(top10)
+        ],
         "unchanged_from_previous": unchanged,
         "new_entries": new_entries,
         "upcoming": upcoming,
