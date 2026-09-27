@@ -90,7 +90,10 @@ def materialize_inline_generated_image(item, event_id: str, revision: int):
         data=base64.b64decode(payload,validate=True)
     except Exception as exc:
         raise ValueError(f"data URL raster inválida: {exc}")
-    # El outbox viaja dentro de un comentario de GitHub y luego vuelve a codificarse en base64.\n    # Mantener el raster inline pequeño evita superar el límite del comentario.\n    if len(data)>40_000:\n        raise ValueError(f"imagen inline demasiado grande ({len(data)} bytes); normaliza a ~512 px y JPEG/WebP <=40 KB o usa la vía binaria generated-images/")
+    # El outbox viaja dentro de un comentario de GitHub y luego vuelve a codificarse en base64.
+    # Mantener el raster inline pequeño evita superar el límite del comentario.
+    if len(data) > 40_000:
+        raise ValueError(f"imagen inline demasiado grande ({len(data)} bytes); normaliza a ~512 px y JPEG/WebP <=40 KB o usa la vía binaria generated-images/")
     _validate_raster_integrity(data,"imagen raster inline")
     generated_dir=TT/"generated-images"
     generated_dir.mkdir(parents=True,exist_ok=True)
@@ -314,8 +317,10 @@ def sync_compact(q):
         eid=str(item.get("event_id") or ""); revision=int(item.get("revision") or 1)
         if eid in active_ids or (eid,revision) not in ready_rows: continue
         if (item.get("image") or {}).get("url"): continue
-        if str(item.get("image_status") or "")=="none" and not item.get("image_pending"): continue
-        if str(item.get("image_status") or "") not in {"pending","working","retry",""} and not item.get("image_pending"): continue
+        # `none` cierra la ejecución actual, pero vuelve a ser elegible en la siguiente.
+        # Un fallo de transporte no debe abandonar permanentemente una imagen.
+        image_state=str(item.get("image_status") or "")
+        if image_state not in {"pending","working","retry","none",""} and not item.get("image_pending"): continue
         active.append({"event_id":eid,"revision":revision,"title":item.get("title", ""),"url":item.get("url", ""),
             "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":True,"image_status":"pending","previous_image_status":str(item.get("image_status") or "pending"),"prepared_item":item,
             "image_mode":"generated_gag_or_archive_sensitive",
