@@ -5718,7 +5718,7 @@
         }
       ],
       "selected_at": "2026-09-27T18:22:28.879176Z",
-      "status": "PROCESSING",
+      "status": "PROBLEMATIC",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
       "parent_event_id": null,
@@ -5726,7 +5726,10 @@
       "parallel_source_claimed_at": null,
       "with_image": true,
       "image_mode": "existing_web_image",
-      "automatic_redaction_requested_at": "2026-09-27T18:27:26.695421+00:00"
+      "automatic_redaction_requested_at": "2026-09-27T18:27:26.695421+00:00",
+      "problematic_at": "2026-09-27T18:54:18.764393Z",
+      "problem_reason": "El título es una portada genérica y las evidencias asociadas mezclan acontecimientos incompatibles (México, vivienda, política catalana y Ceuta). No existe un mismo hecho verificable con dos fuentes sin mezclar noticias.",
+      "problematic_attempts": 1
     },
     {
       "event_id": "34111aaa370a",
@@ -5839,5 +5842,5 @@
       "image_mode": "existing_web_image"
     }
   ],
-  "updated_at": "2026-09-27T18:53:46.581767Z"
+  "updated_at": "2026-09-27T18:54:18.764393Z"
 }

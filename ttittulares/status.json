@@ -1,8 +1,8 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-27T18:53:46.581767Z",
+  "updated_at": "2026-09-27T18:54:18.764393Z",
   "radar_at": "2026-09-27T18:52:17.401877Z",
-  "processing_count": 5,
+  "processing_count": 4,
   "processing_items": [
     {
       "event_id": "4da79a83822c",
@@ -145,62 +145,6 @@
       "automatic_redaction_requested_at": "2026-09-27T18:27:26.695421+00:00"
     },
     {
-      "event_id": "0fb55752f70f",
-      "title": "Noticias de La Rioja - EFE - Agencia de noticias",
-      "url": "https://news.google.com/rss/articles/CBMiPkFVX3lxTE5ndmZjWVVRa01DSTE1bk9WYklweXNRdDVsTU84NlZRTFNuOHJRWFdEVXRqM2dCeU90OGo2MWx3?oc=5",
-      "sources": [
-        "EFE",
-        "EL PAÍS",
-        "La Vanguardia",
-        "Onda Cero",
-        "RTVE"
-      ],
-      "source_count": 5,
-      "drafted_source_count": 5,
-      "source_evidence": [
-        {
-          "source": "EL PAÍS",
-          "title": "‘Polo’ aligera su fuerza en el Pacífico y pone rumbo a Baja California Sur y Sonora",
-          "url": "https://elpais.com/mexico/2026-09-27/polo-aligera-su-fuerza-en-el-pacifico-y-pone-rumbo-a-baja-california-sur-y-sonora.html",
-          "first_seen": "2026-09-27T17:53:28.036965Z"
-        },
-        {
-          "source": "EFE",
-          "title": "Noticias de La Rioja - EFE - Agencia de noticias",
-          "url": "https://news.google.com/rss/articles/CBMiPkFVX3lxTE5ndmZjWVVRa01DSTE1bk9WYklweXNRdDVsTU84NlZRTFNuOHJRWFdEVXRqM2dCeU90OGo2MWx3?oc=5",
-          "first_seen": "2026-09-27T17:53:28.036965Z"
-        },
-        {
-          "source": "La Vanguardia",
-          "title": "Turull (Junts): “Si el decreto de vivienda es para parar a los fondos buitre, tendrá nuestro voto”",
-          "url": "https://www.lavanguardia.com/politica/20260927/11645009/turull-junts-decreto-vivienda-parar-fondos-buitre-tendra-nuestro-voto.html",
-          "first_seen": "2026-09-27T17:53:28.036965Z"
-        },
-        {
-          "source": "RTVE",
-          "title": "El caso de Maricarmen, el desahucio de una mujer de 87 aos en Madrid, ha conmovido a todo el pas, pero no es nico: hay muchas otras Maricarmen en toda Espaa, decenas de expulsiones a diario sin alternativa habitacional.",
-          "url": "https://stories.rtve.es/noticias/newstory/stories/e788862a7dc99f438090?r=MATSPC",
-          "first_seen": "2026-09-27T17:53:28.036965Z"
-        },
-        {
-          "source": "Onda Cero",
-          "title": "Ceuta recupera el control de la zona del litoral tras el desalojo de las zonas cercanas a la desaladora",
-          "url": "https://www.ondacero.es/noticias/espana/ceuta-recupera-control-zona-litoral-desalojo-zonas-cercanas-desaladora_202609276ab9447af8fc5f73abbbabf8.html",
-          "first_seen": "2026-09-27T18:22:17.349755Z"
-        }
-      ],
-      "selected_at": "2026-09-27T18:22:28.879176Z",
-      "status": "PROCESSING",
-      "selection_mode": "AUTO_WEB",
-      "revision": 1,
-      "parent_event_id": null,
-      "update_context": null,
-      "parallel_source_claimed_at": null,
-      "with_image": true,
-      "image_mode": "existing_web_image",
-      "automatic_redaction_requested_at": "2026-09-27T18:27:26.695421+00:00"
-    },
-    {
       "event_id": "34111aaa370a",
       "title": "Unas 600 personas marchan hasta El Tarajal para exigir el refuerzo de la frontera de Ceuta",
       "url": "https://www.europapress.es/nacional/noticia-600-personas-marchan-tarajal-exigir-refuerzo-frontera-ceuta-20260927163241.html",
@@ -312,8 +256,29 @@
     }
   ],
   "ready_count": 3,
-  "problematic_count": 0,
-  "problematic_items": [],
+  "problematic_count": 1,
+  "problematic_items": [
+    {
+      "event_id": "0fb55752f70f",
+      "title": "Noticias de La Rioja - EFE - Agencia de noticias",
+      "url": "https://news.google.com/rss/articles/CBMiPkFVX3lxTE5ndmZjWVVRa01DSTE1bk9WYklweXNRdDVsTU84NlZRTFNuOHJRWFdEVXRqM2dCeU90OGo2MWx3?oc=5",
+      "selected_at": "2026-09-27T18:22:28.879176Z",
+      "problematic_at": "2026-09-27T18:54:18.764393Z",
+      "problem_reason": "El título es una portada genérica y las evidencias asociadas mezclan acontecimientos incompatibles (México, vivienda, política catalana y Ceuta). No existe un mismo hecho verificable con dos fuentes sin mezclar noticias.",
+      "problematic_attempts": 1,
+      "user_validated": false,
+      "user_validated_at": null,
+      "revision": 1,
+      "source_count": 5,
+      "sources": [
+        "EFE",
+        "EL PAÍS",
+        "La Vanguardia",
+        "Onda Cero",
+        "RTVE"
+      ]
+    }
+  ],
   "trend_candidates_count": 0,
   "trend_candidates": [],
   "three_source_count": 7,
