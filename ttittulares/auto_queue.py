@@ -61,7 +61,7 @@ def same_story(a,b):
     ratio=SequenceMatcher(None,ta,tb).ratio()
     jacc=(len(common)/len(union)) if union else 0
     # Exigencia alta: varias anclas compartidas + similitud global o densidad.
-    return (len(common)>=4 and ratio>=0.58) or (len(common)>=5 and (jacc>=0.24 or ratio>=0.40))
+    return (len(common)>=4 and ratio>=0.58) or (len(common)>=5 and (jacc>=0.24 or ratio>=0.40)) or (len(common)>=3 and jacc>=0.20 and any(len(x)>=6 for x in common))
 
 def duplicate_against_existing(event, processing_items, prepared_items):
     candidate={"title":str(event.get("canonical_title") or event.get("title") or ""),"url":str(event.get("url") or "")}
