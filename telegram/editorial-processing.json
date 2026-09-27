@@ -4755,7 +4755,7 @@
         }
       ],
       "selected_at": "2026-09-27T12:12:46.093818Z",
-      "status": "READY",
+      "status": "PUBLISHED",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
       "parent_event_id": null,
@@ -4764,7 +4764,12 @@
       "with_image": true,
       "image_mode": "existing_web_image",
       "delivered_at": "2026-09-27T13:26:00Z",
-      "delivery_confirmation": "prepared_web"
+      "delivery_confirmation": "prepared_web",
+      "published_at": "2026-09-27T14:59:38.965Z",
+      "image_cancelled_by_publication": true,
+      "image_cancelled_at": "2026-09-27T14:59:38.965Z",
+      "image_cancel_reason": "published_before_image_complete",
+      "image_pending": false
     },
     {
       "event_id": "692ebd425c7a",
@@ -5314,5 +5319,5 @@
       "image_mode": "existing_web_image"
     }
   ],
-  "updated_at": "2026-09-27T14:52:55.636469Z"
+  "updated_at": "2026-09-27T14:59:38.965Z"
 }
