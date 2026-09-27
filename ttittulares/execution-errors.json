@@ -125,6 +125,13 @@
       "phase": "verifying",
       "reason": "El outbox image-only que cerraba el incendio de Igualeja como sin imagen no se reflejó en prepared tras las dos relecturas acotadas; se conserva pending para la siguiente ejecución.",
       "remediation_prompt": "Revisar la ingestión del comentario outbox image-only 5855248114 y reaplicarlo idempotentemente sin cambiar los textos."
+    },
+    {
+      "at": "2026-09-27T11:03:20.620777Z",
+      "event_id": "1cf7fefb4370",
+      "phase": "imagen",
+      "reason": "Se localizó una fotonoticia del incendio de Igualeja atribuida a Plan Infoca, pero no una URL HTTPS directa del raster que pudiera validarse y persistirse con seguridad; archive_sensitive no permite recreación.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 1cf7fefb4370: Se localizó una fotonoticia del incendio de Igualeja atribuida a Plan Infoca, pero no una URL HTTPS directa del raster que pudiera validarse y persistirse con seguridad; archive_sensitive no permite recreación.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
