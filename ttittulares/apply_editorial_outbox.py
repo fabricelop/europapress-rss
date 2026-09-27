@@ -374,19 +374,22 @@ def main():
                 if state not in {"pending","working","ready","telegram","none"}: raise ValueError("estado de imagen inválido")
                 patch_keys={"image","image_status","image_delivery","image_app_available","image_pending","image_failure_reason","image_none_reason","image_generation_attempts","image_persistence_attempts","image_semantic_rejections","image_telegram_delivered","image_telegram_delivered_at","image_worker_id","image_worker_status","image_worker_dispatched_at"}
                 item={**previous,**{k:v for k,v in incoming.items() if k in patch_keys}}
-                # Para archive_sensitive, FASE 2 no depende de que ChatGPT consiga extraer
-                # una URL raster desde el buscador. La Action resuelve la imagen desde la
-                # URL original y las appearances ya guardadas, valida HTTPS/content-type
-                # y cierra el estado de forma determinista.
-                if str(item.get("image_strategy") or "")=="archive_sensitive" and state in {"pending","working"}:
+                # FASE 2 resuelve imágenes editoriales de la noticia y sus
+                # appearances también para generated_gag mientras rige la
+                # recuperación web temporal. El modo persistido no cambia.
+                if state in {"pending","working","none"} and not (item.get("image") or {}).get("url"):
                     if _recover_image(item,row,events):
                         state="ready"
                         item["image_status"]="ready"
-                    else:
+                        item.pop("image_failure_reason",None)
+                    elif state in {"pending","working"}:
                         state="none"
                         item["image_status"]="none"
                         item["image_failure_reason"]="No se encontró una imagen HTTPS verificable del mismo acontecimiento en la noticia ni en sus fuentes alternativas."
-                if state=="none" and not item.get("image_failure_reason") and item.get("image_none_reason"):\n                    item["image_failure_reason"]=item.get("image_none_reason")\n                item.pop("image_none_reason",None)\n                item["image_pending"]=state in {"pending","working"}
+                if state=="none" and not item.get("image_failure_reason") and item.get("image_none_reason"):
+                    item["image_failure_reason"]=item.get("image_none_reason")
+                item.pop("image_none_reason",None)
+                item["image_pending"]=state in {"pending","working"}
                 item["image_delivery"]={"pending":"pending","working":"pending","ready":"app","telegram":"telegram","none":"none"}[state]
                 item["image_app_available"]=state=="ready"
                 if state=="ready" and not (item.get("image") or {}).get("url"): raise ValueError("imagen lista sin URL")

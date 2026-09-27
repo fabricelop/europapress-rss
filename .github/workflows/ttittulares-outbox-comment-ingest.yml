@@ -2,7 +2,7 @@ name: Ingestar outbox TTiTTulares desde PR
 
 on:
   issue_comment:
-    types: [created]
+    types: [created, edited]
 
 permissions:
   contents: write
