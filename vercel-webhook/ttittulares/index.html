@@ -492,7 +492,7 @@ function renderReady(list){
   }
   card.querySelector(".expand").onclick=()=>{det.classList.toggle("open");const id=String(item.event_id||"");if(det.classList.contains("open"))openCards.add(id);else openCards.delete(id);persistUiState();card.querySelector(".expand").textContent=det.classList.contains("open")?"Cerrar":"Abrir"};
   async function close(action,question){if(!confirm(question))return;const id=String(item.event_id||""),old=[...model.prepared];pendingClosed.add(id);openCards.delete(id);persistUiState();model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();try{await api(action,{event_id:item.event_id});toast(action==="published"?(imageInFlight?"Publicada; imagen pendiente cancelada":"Marcada como publicada"):"Noticia desestimada");await load(true)}catch(e){pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message)}}
-  card.querySelector(".published").onclick=()=>close("published",imageInFlight?"¿Confirmas que quieres publicarla sin esperar la imagen? Se cancelará cualquier generación, búsqueda o reintento pendiente.":"¿Confirmas que ya has publicado esta noticia?");
+  card.querySelector(".published").onclick=()=>close("published",imageInFlight?"¿Confirmas que quieres publicarla sin esperar la imagen? Se cancelará cualquier búsqueda o reintento pendiente.":"¿Confirmas que ya has publicado esta noticia?");
   card.querySelector(".dismiss").onclick=card.querySelector(".dismiss2").onclick=()=>close("dismiss","¿Desestimar esta noticia?");
   card.querySelector(".rework").onclick=()=>{reworkItem=item;$("reworkTitle").textContent=item.title||"";$("reworkInstruction").value="";$("reworkSheet").classList.add("show");$("reworkInstruction").focus()};
   list.appendChild(card)
