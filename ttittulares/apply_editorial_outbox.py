@@ -313,9 +313,10 @@ def sync_compact(q):
     prepared=load(PREP,{"items":[]})
     active_ids={str(x.get("event_id") or "") for x in active}
     ready_rows={(str(x.get("event_id") or ""),int(x.get("revision") or 1)) for x in q.get("items",[]) if x.get("status")=="READY"}
+    terminal_ids={str(x.get("event_id") or "") for x in q.get("items",[]) if str(x.get("status") or "") in {"PUBLISHED","DISMISSED"}}
     for item in prepared.get("items",[]):
         eid=str(item.get("event_id") or ""); revision=int(item.get("revision") or 1)
-        if eid in active_ids or (eid,revision) not in ready_rows: continue
+        if eid in active_ids or eid in terminal_ids or item.get("image_cancelled_by_publication") or (eid,revision) not in ready_rows: continue
         if (item.get("image") or {}).get("url"): continue
         # `none` cierra la ejecución actual, pero vuelve a ser elegible en la siguiente.
         # Un fallo de transporte no debe abandonar permanentemente una imagen.
@@ -325,8 +326,9 @@ def sync_compact(q):
             "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":True,"image_status":"pending","previous_image_status":str(item.get("image_status") or "pending"),"prepared_item":item,
             "image_mode":"generated_gag_or_archive_sensitive",
             "image_instruction":"Completa solo la imagen pendiente. Al iniciar un intento real marca working; al finalizar cierra obligatoriamente en ready, telegram o none. Conserva íntegramente prepared_item y su revisión; no regeneres ni cambies los textos."})
-    # Dos fases: las noticias PROCESSING siempre preceden a cualquier IMAGE_RETRY.
-    active.sort(key=lambda x:(1 if x.get("selection_mode")=="IMAGE_RETRY" else 0, str(x.get("selected_at") or "")))
+    # Prioridad editorial: las imágenes pendientes que YA estaban en Listas
+    # preceden a PROCESSING. El ejecutor toma la misma foto inicial en FASE 0.
+    active.sort(key=lambda x:(0 if x.get("selection_mode")=="IMAGE_RETRY" else 1, str(x.get("selected_at") or "")))
     save(TT/"editorial-queue.json",{
         "project":"TTiTTulares","updated_at":datetime.now(timezone.utc).isoformat().replace("+00:00","Z"),
         "count":len(active),"items":active
