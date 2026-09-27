@@ -122,9 +122,13 @@ function freshnessText(v){
  if(mins<=30)return "● Atención: "+mins+" min sin nueva captura";
  return "● Desactualizado: "+mins+" min";
 }
-async function updateBadge(){
- try{if("clearAppBadge" in navigator)await navigator.clearAppBadge()}catch(_){}
- document.title="TTendencias Control";
+async function updateBadge(unread=0){
+ const n=Math.max(0,Number(unread)||0);
+ try{
+   if(n&&"setAppBadge" in navigator)await navigator.setAppBadge(n);
+   else if(!n&&"clearAppBadge" in navigator)await navigator.clearAppBadge();
+ }catch(_){}
+ document.title=(n?"("+n+") ":"")+"TTendencias Control";
 }
 
 function appServerKey(value){
@@ -172,7 +176,7 @@ async function activatePush(){
    sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:appServerKey(d.publicKey)});
  }
  await api("push-subscribe",[],{subscription:sub.toJSON()});
- await updateBadge();showToast("Avisos de nuevos TT activados");await refreshPushStatus();
+ await updateBadge(model?.explainedRecent?.filter(x=>!copiedExplainedSet().has(explainedCopiedId(x))).length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
 }
 async function deactivatePush(){
  const sub=await currentPushSubscription();
@@ -302,7 +306,7 @@ function render(){
  unreadBadge.textContent=unread>99?"99+":String(unread);
  unreadBadge.classList.toggle("show",unread>0);
  $("preparedBtn").classList.toggle("hasReady",unread>0);
- updateBadge();
+ updateBadge(unread);
  const list=$("list");list.innerHTML="";
  for(const item of model.items||[]){
    const card=document.createElement("div");card.className="card "+item.status;
