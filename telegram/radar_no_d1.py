@@ -954,6 +954,20 @@ for kind,items in (
   snap=pipeline_snapshot(item,kind)
   proc_index.append({"id":eid,"canonical_title":title,"appearances":[{"title":t} for t in snap.get("last_titles",[])],"snapshot":snap})
 
+# Poda de fragmentos WAITING que ya corresponden a una noticia presente en
+# el flujo editorial web. Esto limpia recreaciones nacidas en un barrido anterior
+# a la actualización del índice. UPDATE_WAITING se conserva porque representa
+# una posible novedad material sobre un acontecimiento ya tratado.
+deduped_waiting=[]
+for e in events:
+ if e.get("status")=="WAITING":
+  pe,_=processed_match(e.get("canonical_title") or "",proc_index)
+  if pe:
+   print("WAITING_PIPELINE_DUPLICATE_DROPPED",e.get("id"),"duplicate_of",pe.get("id"))
+   continue
+ deduped_waiting.append(e)
+events=deduped_waiting
+
 CLUSTERABLE_STATUSES={"WAITING","UPDATE_WAITING"}
 for row in rows:
  # 1) intentar agregar solo a eventos todavía clusterizables.
