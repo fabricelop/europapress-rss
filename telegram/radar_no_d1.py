@@ -444,6 +444,30 @@ def events_match(e,k):
     return True
  return False
 
+def choose_representative_title(e):
+ apps=[a for a in e.get("appearances",[]) if a.get("title")]
+ if len(apps)<2:return
+ best=None
+ for a in apps:
+  title=a.get("title","")
+  support=0
+  strength=0.0
+  for b in apps:
+   if a is b:continue
+   other=b.get("title","")
+   s=score(title,other)
+   semantic=same_event_semantic(title,other)
+   if s>=0.50 or semantic:
+    support+=1
+    strength+=max(s,0.72 if semantic else 0)
+  key=(support,round(strength,4),len(title))
+  if best is None or key>best[0]:
+   best=(key,a)
+ if best and best[0][0]>=1:
+  chosen=best[1]
+  e["canonical_title"]=chosen.get("title") or e.get("canonical_title","")
+  if chosen.get("url"):e["url"]=chosen["url"]
+
 def recalc_event_sources(e):
  apps=e.get("appearances",[])
  e["sources"]=sorted({a["source"] for a in apps if a.get("source_type","general")=="general"})
@@ -455,6 +479,7 @@ def recalc_event_sources(e):
  e["outlet_count"]=len(e["sources"])
  e["sport_source_count"]=len(e["sport_sources"])
  e["percentage"]=round(100*e["source_count"]/TOTAL_SOURCE_FAMILIES,1)
+ choose_representative_title(e)
 
 def prune_event_outliers(e):
  # Si un evento tiene un núcleo de varias cabeceras conectadas y alguna
@@ -495,7 +520,8 @@ def prune_event_outliers(e):
 def merge_duplicate_active_events(events):
  # Segunda barrera contra duplicados: si dos eventos activos representan
  # claramente el mismo hecho, se fusionan ANTES de evaluar el umbral de 4.
- active={"WAITING","UPDATE_WAITING","ELIGIBLE","ELIGIBLE_UPDATE"}
+ active={"WAITING","UPDATE_WAITING"}
+ repairable={"WAITING","UPDATE_WAITING","ELIGIBLE","ELIGIBLE_UPDATE"}
  kept=[]
  merged=0
  for e in sorted(events,key=lambda x:dtv(x.get("first_seen"))):
@@ -542,8 +568,9 @@ def merge_duplicate_active_events(events):
   print("EVENT_MERGED_DUPLICATE",e.get("id"),"->",target.get("id"))
  pruned=0
  for item in kept:
-  if item.get("status") in active:
+  if item.get("status") in repairable:
    pruned+=prune_event_outliers(item)
+   recalc_event_sources(item)
  print("EVENT_MERGE_SUMMARY",merged,"outliers_pruned",pruned)
  return kept
 
@@ -844,7 +871,7 @@ proc_index=[]
 for p in processed:
  proc_index.append({"id":p.get("event_id"),"canonical_title":p.get("canonical_title",""),"appearances":[{"title":t} for t in p.get("last_titles",[])],"snapshot":p})
 
-CLUSTERABLE_STATUSES={"WAITING","UPDATE_WAITING","ELIGIBLE","ELIGIBLE_UPDATE"}
+CLUSTERABLE_STATUSES={"WAITING","UPDATE_WAITING"}
 for row in rows:
  # 1) intentar agregar solo a eventos todavía clusterizables.
  # Nunca adjuntar titulares nuevos a PUBLISHED/DISMISSED/SENT_REVIEW históricos:
@@ -853,6 +880,16 @@ for row in rows:
  e,sc=best_match(row["title"],clusterable,.50)
  if e:
   add_appearance(e,row,now);continue
+ # 1b) si el acontecimiento ya alcanzó el umbral, queda congelado: no añadimos
+ # más cabeceras, pero evitamos recrear un duplicado cuando el canónico coincide.
+ frozen=[x for x in events if x.get("status") in {"ELIGIBLE","ELIGIBLE_UPDATE"}]
+ duplicate_frozen=False
+ for done in frozen:
+  title=done.get("canonical_title") or done.get("title","")
+  s=score(row["title"],title)
+  if s>=0.58 or same_event_semantic(row["title"],title):
+   duplicate_frozen=True;break
+ if duplicate_frozen:continue
  # 2) si coincide con una ya procesada, no recrearla; solo evaluar posible actualización.
  pe,psc=processed_match(row["title"],proc_index)
  if pe:
