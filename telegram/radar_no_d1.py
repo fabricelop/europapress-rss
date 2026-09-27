@@ -402,15 +402,25 @@ def fetch_items():
  # alternativas dentro de su worker concurrente; el resto del radar sigue.
  return out,sorted(set(healthy)),sorted(set(sport_healthy)),failures,source_status,recovery
 
+def title_match_value(a,b):
+ s=score(a,b)
+ if same_event_semantic(a,b):s=max(s,.72)
+ return s
+
 def best_match(title,events,threshold=.50):
  best=None;bs=0
  for e in events:
-  s=score(title,e.get("canonical_title") or e.get("title",""))
-  if same_event_semantic(title,e.get("canonical_title") or e.get("title","")): s=max(s,.72)
-  for a in e.get("appearances",[])[-8:]:
-   cand=a.get("title","")
-   s=max(s,score(title,cand))
-   if same_event_semantic(title,cand): s=max(s,.72)
+  canonical=e.get("canonical_title") or e.get("title","")
+  canonical_score=title_match_value(title,canonical)
+  variant_scores=[title_match_value(title,a.get("title","")) for a in e.get("appearances",[])[-8:] if a.get("title")]
+  hits=[s for s in variant_scores if s>=threshold]
+  # Evitar el efecto cadena: cuando un evento ya tiene varias cabeceras, un
+  # titular nuevo no entra solo por parecerse a UNA aparición periférica.
+  # Debe coincidir con el título representativo o con al menos dos cabeceras.
+  if len(variant_scores)>=3 and canonical_score<threshold and len(hits)<2:
+   s=0
+  else:
+   s=max([canonical_score]+variant_scores+[0])
   if s>bs:best=e;bs=s
  return (best,bs) if best and bs>=threshold else (None,bs)
 
@@ -436,12 +446,17 @@ def event_variants(e):
  return [x for x in out if x]
 
 def events_match(e,k):
- # Dos eventos fragmentados pueden tener canónicos muy distintos pero alguna
- # cabecera de cada uno describir inequívocamente el mismo hecho.
+ # El canónico representativo puede unir directamente dos fragmentos.
+ if titles_match(e.get("canonical_title",""),k.get("canonical_title","")):
+  return True
+ # Si no, exigimos dos apoyos cruzados cuando hay suficiente evidencia.
+ # Así evitamos fusionar dos historias enteras por una única cabecera puente.
+ matches=0
  for a in event_variants(e)[-10:]:
   for b in event_variants(k)[-10:]:
    if titles_match(a,b):
-    return True
+    matches+=1
+    if matches>=2:return True
  return False
 
 def choose_representative_title(e):
@@ -830,6 +845,30 @@ if "--selftest-dedupe" in sys.argv:
   print("DEDUPE_SELFTEST",label,round(value,4),"semantic",semantic,matched)
   if matched!=should_match:
    raise SystemExit("Fallo deduplicación: "+label)
+ chain_event={
+  "canonical_title":"El 'Decreto Maricarmen': medidas por la vivienda durante la acampada en Sol",
+  "appearances":[
+   {"title":"Miles de personas acampan en Sol tras la manifestación por Maricarmen"},
+   {"title":"La marcha por la vivienda se transforma en una acampada en la Puerta del Sol"},
+   {"title":"Acampada en Sol contra los desahucios y por el derecho a la vivienda"},
+   {"title":"El Sindicato de Inquilinas reclama el decreto Maricarmen durante la acampada"},
+  ],
+ }
+ bad,_=best_match("El PP descarta activar el juicio a Pedro Sánchez por traición",[chain_event],.50)
+ if bad:
+  raise SystemExit("Fallo deduplicación: una cabecera política ajena entra por efecto cadena en el evento de Sol")
+ chain_event2={
+  "canonical_title":"Miles de personas marchan en Madrid en apoyo a Ceuta y para exigir elecciones",
+  "appearances":[
+   {"title":"La marcha en apoyo a Ceuta reúne a miles de manifestantes en Madrid"},
+   {"title":"Una multitudinaria marcha recorre Madrid en apoyo a Ceuta y exige elecciones"},
+   {"title":"PP y Vox apoyan una marcha en Madrid en defensa de Ceuta"},
+  ],
+ }
+ bad2,_=best_match("Sánchez participa junto a Óscar López en la presentación de candidaturas de Madrid",[chain_event2],.50)
+ if bad2:
+  raise SystemExit("Fallo deduplicación: acto de candidaturas se mezcla con la marcha de Ceuta")
+ print("DEDUPE_CHAIN_SELFTEST OK")
  raise SystemExit(0)
 
 now=utcnow()
