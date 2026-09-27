@@ -186,7 +186,7 @@ async function rework(eventId,instruction){
       item={event_id:id,title:source.title||"",url:source.url||"",sources:source.sources_at_draft||[],source_count:Number(source.drafted_source_count||0),selected_at:now};
       doc.items.push(item)
     }
-    item.previous_status=item.status;item.status="PROCESSING";item.selection_mode="REWRITE";item.with_image=true;item.image_mode="generated_gag_or_archive_sensitive";item.image_instruction="Genera por defecto un gag editorial visual; usa archive_sensitive solo para muerte, lesión grave o traumática, accidente serio, violencia, abuso, catástrofe o sufrimiento humano significativo. Una lesión deportiva ordinaria no activa archive_sensitive.";
+    item.previous_status=item.status;item.status="PROCESSING";item.selection_mode="REWRITE";item.with_image=true;item.image_mode="existing_web_image";item.image_instruction="Recupera una imagen real del mismo acontecimiento desde una fuente oficial/primaria o un medio fiable. No generes imágenes.";
     item.rewrite_request=text;item.rewrite_requested_at=now;item.rewrite_version=Number(item.rewrite_version||0)+1;
     item.revision=Number(item.revision||source.revision||1)+1;delete item.delivered_at;delete item.published_at;delete item.dismissed_at;
     doc.updated_at=now;return doc
@@ -256,7 +256,7 @@ async function submitManualStory(url,title,instruction){
     if(!item){item={event_id:id};doc.items.push(item)}
     Object.assign(item,{
       event_id:id,title:finalTitle,url:finalUrl,sources,source_count:sourceCount,drafted_source_count:sourceCount,
-      selected_at:now,status:"PROCESSING",selection_mode:"MANUAL_WEB_USER",manual_submission:true,revision:Number(item.revision||1),with_image:true,image_mode:"generated_gag_or_archive_sensitive"
+      selected_at:now,status:"PROCESSING",selection_mode:"MANUAL_WEB_USER",manual_submission:true,revision:Number(item.revision||1),with_image:true,image_mode:"existing_web_image"
     });
     if(note){item.rewrite_request=note;item.manual_instruction=note}
     delete item.published_at;delete item.dismissed_at;delete item.delivered_at;
@@ -309,7 +309,7 @@ async function manualPrepare(eventId){
       parent_event_id:ev.parent_event_id||null,
       update_context:ev.update_context||null,
       with_image:true,
-      image_mode:"generated_gag_or_archive_sensitive"
+      image_mode:"existing_web_image"
     });
     if(!doc.items.includes(item))doc.items.push(item);
     doc.updated_at=now;return doc
@@ -406,7 +406,7 @@ async function promoteTrendCandidate(candidateId){
     Object.assign(item,{
       event_id:eventId,title,url,sources,source_evidence:sourceEvidence,source_count:sourceCount,drafted_source_count:sourceCount,
       selected_at:now,status:"PROCESSING",selection_mode:"TTENDENCIAS_USER",revision:Number(candidate.revision||item.revision||1),
-      with_image:true,image_mode:"generated_gag_or_archive_sensitive",trend_origin:true,trend_names:candidate.trend_names||[],
+      with_image:true,image_mode:"existing_web_image",trend_origin:true,trend_names:candidate.trend_names||[],
       trend_context:candidate.trend_context||[],trend_explanation:String(candidate.explanation||"")
     });
     delete item.problem_reason;delete item.problematic_at;delete item.dismissed_at;delete item.delivered_at;

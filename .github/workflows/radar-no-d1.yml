@@ -98,7 +98,6 @@ jobs:
 
             git add telegram/events.json telegram/processed-events.json telegram/editorial-processing.json \
               telegram/autocheck-status.json telegram/autocheck-alert-state.json ttittulares/status.json ttittulares/prepared.json ttittulares/editorial-queue.json
-            git add -A -- ttittulares/generated-images
             git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
 
             if git diff --cached --quiet; then

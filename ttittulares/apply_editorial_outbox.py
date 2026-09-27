@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import json, urllib.parse, urllib.request, base64, io, hashlib
+import json, urllib.parse, urllib.request, io, sys
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
@@ -57,168 +57,57 @@ def validate_ready(payload):
         expected="https://twitter.com/intent/tweet?text="+urllib.parse.quote(text,safe="")
         v["url"]=expected
         v.pop("tweet_url",None)
+    normalize_image(item)
     validate_image(item)
     return item
 
 
-def _validate_raster_integrity(data: bytes, label: str):
-    from PIL import Image, ImageStat, UnidentifiedImageError
-    if len(data) < 4096: raise ValueError(f"{label}: imagen raster demasiado pequeña o inválida")
-    try:
-        with Image.open(io.BytesIO(data)) as probe: probe.verify()
-        with Image.open(io.BytesIO(data)) as image:
-            image.load(); w,h=image.size
-            if w < 600 or h < 360: raise ValueError(f"{label}: dimensiones insuficientes ({w}x{h})")
-            if max(w,h) > 896: raise ValueError(f"{label}: resolución excesiva ({w}x{h}); normalizar a <=896 px de lado largo")
-            if "A" in image.getbands():
-                alpha=image.getchannel("A").resize((128,128)); vals=list(alpha.getdata())
-                if sum(1 for v in vals if v<16)/max(1,len(vals)) > .25: raise ValueError(f"{label}: demasiada transparencia")
-            rgb=image.convert("RGB"); rgb.thumbnail((256,256)); pixels=list(rgb.getdata())
-            near=lambda p:p[0]<12 and p[1]<12 and p[2]<12
-            if pixels and sum(1 for p in pixels if near(p))/len(pixels) > .60: raise ValueError(f"{label}: imagen anómalamente negra")
-            gray=rgb.convert("L"); stat=ImageStat.Stat(gray)
-            if stat.stddev and stat.stddev[0] < 4: raise ValueError(f"{label}: imagen prácticamente uniforme")
-    except (UnidentifiedImageError,OSError,SyntaxError) as exc: raise ValueError(f"{label}: raster corrupto o truncado: {exc}")
-
-
-def materialize_inline_generated_image(item, event_id: str, revision: int):
-    """Materializa un raster inline recibido por outbox, como TTendencias."""
-    image=item.get("image") or {}
+def normalize_image(item):
+    """Normaliza formatos históricos y conserva solo imágenes reales externas."""
+    raw=item.get("image")
+    image=dict(raw) if isinstance(raw,dict) else {}
+    if isinstance(raw,str) and raw.strip():
+        image["url"]=raw.strip()
+    aliases={
+        "image_url":"url","image_source":"source","image_source_url":"source_url",
+        "image_alt":"alt","image_rights_status":"rights_status",
+    }
+    for old,new in aliases.items():
+        value=item.get(old)
+        if value not in (None,"") and not image.get(new):
+            image[new]=value
     url=str(image.get("url") or "").strip()
-    if not url.startswith("data:image/"):
-        return False
-    try:
-        header,payload=url.split(",",1)
-        if ";base64" not in header:
-            raise ValueError("data URL no base64")
-        mime=header[5:].split(";",1)[0].casefold()
-        ext={"image/jpeg":".jpg","image/png":".png","image/webp":".webp"}.get(mime)
-        if not ext:
-            raise ValueError(f"mime raster no permitido: {mime}")
-        data=base64.b64decode(payload,validate=True)
-    except Exception as exc:
-        raise ValueError(f"data URL raster inválida: {exc}")
-    # El outbox viaja dentro de un comentario de GitHub y luego vuelve a codificarse en base64.
-    # Mantener el raster inline pequeño evita superar el límite del comentario.
-    if len(data) > 40_000:
-        raise ValueError(f"imagen inline demasiado grande ({len(data)} bytes); normaliza a ~512 px y JPEG/WebP <=40 KB o usa la vía binaria generated-images/")
-    _validate_raster_integrity(data,"imagen raster inline")
-    generated_dir=TT/"generated-images"
-    generated_dir.mkdir(parents=True,exist_ok=True)
-    filename=f"{event_id}-r{revision}{ext}"
-    fp=generated_dir/filename
-    fp.write_bytes(data)
-    image["url"]="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+f"ttittulares/generated-images/{filename}"
-    image["source_url"]="https://github.com/fabricelop/europapress-rss/blob/main/"+f"ttittulares/generated-images/{filename}"
-    image["handoff"]="inline-outbox-materialized-by-actions"
+    for old in aliases:
+        item.pop(old,None)
+    if not url:
+        item.pop("image",None)
+        return {}
+    if not url.startswith("https://"):
+        raise ValueError("la imagen debe usar HTTPS")
+    if image.get("generated") or str(image.get("rights_status") or "").lower()=="generated" or "chatgpt" in str(image.get("source") or "").lower():
+        raise ValueError("las imágenes generadas por IA no están permitidas")
+    image["url"]=url
+    image["source"]=str(image.get("source") or _host(image.get("source_url") or url))
+    source_url=str(image.get("source_url") or "").strip()
+    if source_url and not source_url.startswith("https://"):
+        raise ValueError("la página de origen debe usar HTTPS")
+    image["source_url"]=source_url
+    image["rights_status"]=str(image.get("rights_status") or "unverified")
+    image["alt"]=str(image.get("alt") or item.get("title") or "Imagen del acontecimiento")
+    for key in ("generated","style_version","style_check","handoff"):
+        image.pop(key,None)
     item["image"]=image
-    item["image_delivery"]="app"
-    item["image_app_available"]=True
-    item["image_persistence_attempts"]=int(item.get("image_persistence_attempts") or 0)+1
-    item.pop("image_pending",None)
-    item.pop("image_failure_reason",None)
-    item.pop("image_attempts",None)
-    return True
-
-
-def _generated_checkpoint_file(event_id: str, revision: int):
-    return TT/"generated-images"/f"{event_id}-r{revision}.json"
-
-
-def _write_generated_checkpoint(item, event_id: str, revision: int):
-    image=item.get("image") or {}
-    if not image.get("generated"):
-        return False
-    prefix="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/"
-    url=str(image.get("url") or "")
-    if not url.startswith(prefix):
-        return False
-    filename=url[len(prefix):]
-    if "/" in filename or ".." in filename:
-        return False
-    fp=TT/"generated-images"/filename
-    if not fp.exists():
-        return False
-    data=fp.read_bytes()
-    _validate_raster_integrity(data,f"checkpoint generado {filename}")
-    meta={
-        "version":1,
-        "event_id":event_id,
-        "revision":revision,
-        "filename":filename,
-        "sha256":hashlib.sha256(data).hexdigest(),
-        "validated":True,
-        "created_at":datetime.now(timezone.utc).isoformat().replace("+00:00","Z"),
-        "source":image.get("source") or "TTiTTulares / ChatGPT",
-        "rights_status":image.get("rights_status") or "generated",
-        "alt":image.get("alt") or str(item.get("title") or "Imagen editorial"),
-        "style_version":image.get("style_version"),
-        "style_check":image.get("style_check") or {},
-    }
-    save(_generated_checkpoint_file(event_id,revision),meta)
-    return True
-
-
-def _recover_generated_checkpoint(item, event_id: str, revision: int):
-    sidecar=_generated_checkpoint_file(event_id,revision)
-    if not sidecar.exists():
-        return False
-    meta=load(sidecar,{})
-    if str(meta.get("event_id") or "")!=event_id or int(meta.get("revision") or 0)!=revision or meta.get("validated") is not True:
-        return False
-    filename=str(meta.get("filename") or "")
-    if not filename.startswith(f"{event_id}-r{revision}.") or "/" in filename or ".." in filename:
-        return False
-    fp=TT/"generated-images"/filename
-    if not fp.exists():
-        return False
-    data=fp.read_bytes()
-    if hashlib.sha256(data).hexdigest()!=str(meta.get("sha256") or ""):
-        return False
-    _validate_raster_integrity(data,f"checkpoint generado {filename}")
-    item["image"]={
-        "url":"https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/"+filename,
-        "source":meta.get("source") or "TTiTTulares / ChatGPT",
-        "source_url":"https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/"+filename,
-        "rights_status":"generated",
-        "generated":True,
-        "alt":meta.get("alt") or str(item.get("title") or "Imagen editorial"),
-        "style_version":meta.get("style_version"),
-        "style_check":meta.get("style_check") or {},
-        "handoff":"generated-checkpoint-reused",
-    }
-    validate_image(item)
-    item["image_status"]="ready"
-    item["image_pending"]=False
-    item["image_delivery"]="app"
-    item["image_app_available"]=True
-    item["image_search_status"]="generated-cache"
-    item.pop("image_failure_reason",None)
-    return True
+    return image
 
 
 def validate_image(item):
-    image=item.get("image") or {}
-    if not image: return
-    if not image.get("generated"): return
-    if image.get("rights_status")!="generated" or image.get("source")!="TTiTTulares / ChatGPT":
-        raise ValueError("metadatos de imagen generada inválidos")
-    checks=image.get("style_check") or {}
-    required=["reviewed_after_generation","single_narrative_scene","visual_gag_without_text","correct_event_subject","no_flat_2d_pixel_art","no_simplified_vector_block_style","no_infographic_layout","no_diagram_arrows_or_connectors","no_ui_or_scoreboard_layout","low_text","depth_lighting_texture"]
-    if image.get("style_version")!="editorial-scene-v2-cleveland" or not all(checks.get(k) is True for k in required):
-        raise ValueError("imagen generada sin control visual editorial-scene-v2-cleveland completo")
-    url=str(image.get("url") or "")
-    prefix="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/"
-    if url.startswith("data:image/"):
-        header,payload=url.split(",",1); mime=header[5:].split(";",1)[0].casefold()
-        if ";base64" not in header or mime not in {"image/png","image/webp","image/jpeg"}: raise ValueError("data URL raster inválida")
-        _validate_raster_integrity(base64.b64decode(payload,validate=True),"imagen raster inline"); return
-    if not url.startswith(prefix): raise ValueError("URL raw de imagen generada inválida")
-    filename=url[len(prefix):]
-    if "/" in filename or ".." in filename or Path(filename).suffix.casefold() not in {".png",".webp",".jpg",".jpeg"}: raise ValueError("ruta de imagen generada inválida")
-    fp=TT/"generated-images"/filename
-    if not fp.exists(): raise ValueError("fichero de imagen generada inexistente en main")
-    _validate_raster_integrity(fp.read_bytes(),f"imagen generada {filename}")
+    image=normalize_image(item)
+    if not image:
+        return
+    if not str(image.get("url") or "").startswith("https://"):
+        raise ValueError("imagen externa sin URL HTTPS")
+    if not str(image.get("source_url") or "").startswith("https://"):
+        raise ValueError("imagen externa sin página de origen HTTPS")
 
 
 class _MetaImageParser(HTMLParser):
@@ -235,36 +124,58 @@ def _host(url):
     try:return urllib.parse.urlparse(url).hostname or "Fuente"
     except Exception:return "Fuente"
 
+def _valid_external_image(url,referer=""):
+    try:
+        headers={"User-Agent":"Mozilla/5.0 (compatible; TTiTTularesImage/2.0)","Accept":"image/*"}
+        if referer: headers["Referer"]=referer
+        req=urllib.request.Request(url,headers=headers)
+        with urllib.request.urlopen(req,timeout=10) as r:
+            if not str(r.geturl()).startswith("https://"): return False
+            if not str(r.headers.get("content-type") or "").lower().startswith("image/"): return False
+            data=r.read(12*1024*1024+1)
+        if len(data)<4096 or len(data)>12*1024*1024: return False
+        from PIL import Image, UnidentifiedImageError
+        try:
+            with Image.open(io.BytesIO(data)) as probe: probe.verify()
+            with Image.open(io.BytesIO(data)) as image:
+                image.load(); w,h=image.size
+                return w>=320 and h>=180
+        except (UnidentifiedImageError,OSError,SyntaxError):
+            return False
+    except Exception:
+        return False
+
+
 def _fetch_meta_image(page_url):
     try:
-        req=urllib.request.Request(page_url,headers={"User-Agent":"Mozilla/5.0 (compatible; TTiTTularesImage/1.0)","Accept":"text/html,application/xhtml+xml"})
-        with urllib.request.urlopen(req,timeout=4) as r:
+        req=urllib.request.Request(page_url,headers={"User-Agent":"Mozilla/5.0 (compatible; TTiTTularesImage/2.0)","Accept":"text/html,application/xhtml+xml"})
+        with urllib.request.urlopen(req,timeout=10) as r:
             ctype=str(r.headers.get("content-type") or "").lower()
             if "html" not in ctype:return None
-            final=r.geturl(); raw=r.read(900000)
+            final=r.geturl(); raw=r.read(1500000)
         parser=_MetaImageParser(); parser.feed(raw.decode("utf-8","ignore"))
+        seen=set()
         for value in parser.images:
             url=urllib.parse.urljoin(final,value)
-            if not url.startswith("https://"):continue
-            try:
-                probe=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (compatible; TTiTTularesImage/1.0)","Accept":"image/*","Referer":final,"Range":"bytes=0-2047"})
-                with urllib.request.urlopen(probe,timeout=3) as ir:
-                    if str(ir.headers.get("content-type") or "").lower().startswith("image/"):
-                        ir.read(32); return url
-            except Exception:
-                continue
+            if not url.startswith("https://") or url in seen:continue
+            seen.add(url)
+            if _valid_external_image(url,final):
+                return url
     except Exception:
         return None
     return None
 
+
 def _recover_image(item,row,events):
-    image=item.get("image") or {}
+    image=normalize_image(item)
     if str(image.get("url") or "").strip():
-        item["image_search_status"]="found"; return True
+        if _valid_external_image(str(image["url"]),str(image.get("source_url") or "")):
+            item["image_search_status"]="found"; return True
+        item.pop("image",None)
     pages=[]; seen=set()
     def add(url,source=""):
         url=str(url or "").strip()
-        if not url.startswith(("http://","https://")) or url in seen:return
+        if not url.startswith("https://") or url in seen:return
         seen.add(url); pages.append((url,source or _host(url)))
     add(item.get("url") or row.get("url"),"")
     eid=str(item.get("event_id") or row.get("event_id") or "")
@@ -284,22 +195,38 @@ def _recover_image(item,row,events):
     item["image_note"]="No se encontró una imagen verificable en los metadatos de la noticia ni de sus fuentes alternativas."
     return False
 
-def _enrich_prepared_images(p,q,events):
-    """Solo recupera checkpoints generados ya validados. No busca imágenes de archivo aquí.
+def _finish_archive_image(item,row,events):
+    for key in ("image_generation_attempts","image_persistence_attempts","image_semantic_rejections",
+                "image_worker_id","image_worker_status","image_worker_dispatched_at",
+                "image_telegram_delivered","image_telegram_delivered_at","image_telegram_message_id",
+                "image_telegram_headline_message_id","image_telegram_sha256"):
+        item.pop(key,None)
+    item["image_strategy"]="existing_web_image"
+    found=_recover_image(item,row,events)
+    item["image_pending"]=False
+    item["image_app_available"]=bool(found)
+    if found:
+        item["image_status"]="ready";item["image_delivery"]="app"
+        item.pop("image_failure_reason",None)
+    else:
+        item.pop("image",None)
+        item["image_status"]="none";item["image_delivery"]="none"
+        item["image_failure_reason"]="No se encontró una imagen HTTPS verificable en las páginas de las fuentes del acontecimiento."
+    return found
 
-    La búsqueda/validación archive_sensitive pertenece exclusivamente a FASE 2,
-    para que FASE 1 pueda cerrar la noticia en READY sin trabajo de imagen.
-    """
+
+def _enrich_prepared_images(p,q,events):
+    """Cierra búsquedas pendientes sin volver a introducir trabajo en ChatGPT Work."""
     changed=False
+    rows={(str(x.get("event_id") or ""),int(x.get("revision") or 1)):x for x in q.get("items",[]) or []}
     for item in p.get("items",[]) or []:
-        if str((item.get("image") or {}).get("url") or item.get("image_url") or "").strip():
+        state=str(item.get("image_status") or "")
+        if state in {"ready","none"}:
             continue
-        if str(item.get("image_strategy") or "")!="generated_gag":
-            continue
-        eid=str(item.get("event_id") or "")
-        revision=int(item.get("revision") or 1)
-        if _recover_generated_checkpoint(item,eid,revision):
-            changed=True
+        eid=str(item.get("event_id") or "");revision=int(item.get("revision") or 1)
+        before=json.dumps(item,ensure_ascii=False,sort_keys=True)
+        _finish_archive_image(item,rows.get((eid,revision),{}),events)
+        changed=changed or before!=json.dumps(item,ensure_ascii=False,sort_keys=True)
     return changed
 
 
@@ -314,33 +241,20 @@ def sync_compact(q):
             "revision":int(x.get("revision") or 1),
             "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
             "parent_event_id":x.get("parent_event_id"),"update_context":x.get("update_context"),
-            "with_image":True,"image_mode":"generated_gag_or_archive_sensitive",
-            "image_instruction":"Fase 1: NO generes imagen. READY sin raster queda image_status=pending (nunca working). Fase 2: cambia a working SOLO mientras exista un intento real de imagen activo; al terminar debe cerrar en ready, telegram o none.",
+            "with_image":True,"image_mode":"existing_web_image",
+            "image_instruction":"Recupera una imagen real del mismo acontecimiento desde una fuente oficial/primaria o un medio fiable. No generes imágenes.",
         })
-    # Retry missing artwork without removing already prepared text from the app.
-    prepared=load(PREP,{"items":[]})
-    active_ids={str(x.get("event_id") or "") for x in active}
-    ready_rows={(str(x.get("event_id") or ""),int(x.get("revision") or 1)) for x in q.get("items",[]) if x.get("status")=="READY"}
-    terminal_ids={str(x.get("event_id") or "") for x in q.get("items",[]) if str(x.get("status") or "") in {"PUBLISHED","DISMISSED"}}
-    for item in prepared.get("items",[]):
-        eid=str(item.get("event_id") or ""); revision=int(item.get("revision") or 1)
-        if eid in active_ids or eid in terminal_ids or item.get("image_cancelled_by_publication") or (eid,revision) not in ready_rows: continue
-        if (item.get("image") or {}).get("url"): continue
-        # `none` cierra la ejecución actual, pero vuelve a ser elegible en la siguiente.
-        # Un fallo de transporte no debe abandonar permanentemente una imagen.
-        image_state=str(item.get("image_status") or "")
-        if image_state not in {"pending","working","retry","none",""} and not item.get("image_pending"): continue
-        active.append({"event_id":eid,"revision":revision,"title":item.get("title", ""),"url":item.get("url", ""),
-            "selection_mode":"IMAGE_RETRY","with_image":True,"image_pending":True,"image_status":"pending","previous_image_status":str(item.get("image_status") or "pending"),"prepared_item":item,
-            "image_mode":"generated_gag_or_archive_sensitive",
-            "image_instruction":"Completa solo la imagen pendiente. Al iniciar un intento real marca working; al finalizar cierra obligatoriamente en ready, telegram o none. Conserva íntegramente prepared_item y su revisión; no regeneres ni cambies los textos."})
-    # Prioridad editorial: las imágenes pendientes que YA estaban en Listas
-    # preceden a PROCESSING. El ejecutor toma la misma foto inicial en FASE 0.
+    # La imagen se resuelve de forma determinista al aplicar el READY; nunca crea IMAGE_RETRY.
     active.sort(key=lambda x:(0 if x.get("selection_mode")=="IMAGE_RETRY" else 1, str(x.get("selected_at") or "")))
-    save(TT/"editorial-queue.json",{
+    path=TT/"editorial-queue.json"
+    old=load(path,{})
+    if old.get("items")==active and int(old.get("count") or 0)==len(active):
+        return False
+    save(path,{
         "project":"TTiTTulares","updated_at":datetime.now(timezone.utc).isoformat().replace("+00:00","Z"),
         "count":len(active),"items":active
     })
+    return True
 
 def main():
     q=load(QUEUE,{"items":[]})
@@ -370,20 +284,20 @@ def main():
             if image_retry:
                 if st!="ready": raise ValueError("image retry no puede cambiar el estado READY")
                 incoming=payload.get("prepared_item") or {}
+                normalize_image(incoming)
                 state=str(incoming.get("image_status") or "")
                 if state not in {"ready","none"}: raise ValueError("image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento")
-                patch_keys={"image","image_status","image_delivery","image_app_available","image_pending","image_failure_reason","image_none_reason","image_generation_attempts","image_persistence_attempts","image_semantic_rejections","image_telegram_delivered","image_telegram_delivered_at","image_worker_id","image_worker_status","image_worker_dispatched_at"}
+                patch_keys={"image","image_status","image_delivery","image_app_available","image_pending","image_failure_reason","image_none_reason","image_strategy","image_search_status","image_search_attempted_at"}
                 item={**previous,**{k:v for k,v in incoming.items() if k in patch_keys}}
                 if state=="none" and not item.get("image_failure_reason") and item.get("image_none_reason"):
                     item["image_failure_reason"]=item.get("image_none_reason")
                 item.pop("image_none_reason",None)
                 item["image_pending"]=state in {"pending","working"}
-                item["image_delivery"]={"pending":"pending","working":"pending","ready":"app","telegram":"telegram","none":"none"}[state]
+                item["image_delivery"]={"ready":"app","none":"none"}[state]
                 item["image_app_available"]=state=="ready"
                 if state=="ready" and not (item.get("image") or {}).get("url"): raise ValueError("imagen lista sin URL")
-                if state=="telegram" and not item.get("image_telegram_delivered"): raise ValueError("Telegram no confirmado")
                 if state=="none" and not item.get("image_failure_reason"): raise ValueError("sin imagen requiere razón")
-                if state in {"telegram","none"}:
+                if state=="none":
                     item.pop("image",None) # Nunca mostrar una URL no accesible como imagen lista.
                 if state=="none" and (str(previous.get("image_status") or "")!="none" or str(previous.get("image_failure_reason") or "")!=str(item.get("image_failure_reason") or "")):
                     ledger=load(ERRORS,{"items":[]})
@@ -391,64 +305,18 @@ def main():
                     ledger["items"]=ledger["items"][-200:];save(ERRORS,ledger)
                 payload["prepared_item"]=item
             if st=="ready":
-                raw_item=payload.get("prepared_item") or {}
-                materialize_inline_generated_image(raw_item,eid,rev)
                 item=validate_ready(payload)
-                if (item.get("image") or {}).get("generated"):
-                    _write_generated_checkpoint(item,eid,rev)
-                if bool(row.get("with_image", True)) and not image_retry:
-                    image=item.get("image") or {}
-                    strategy=str(item.get("image_strategy") or "").strip()
-                    if strategy=="generated_gag":
-                        if not image.get("generated") or not str(image.get("url") or "").strip():
-                            # Primero reutiliza SOLO un checkpoint validado del mismo evento/revisión.
-                            # Esto evita regenerar y, sobre todo, evita que una imagen de otro evento
-                            # pueda colarse por contaminación de contexto.
-                            if _recover_generated_checkpoint(item,eid,rev):
-                                image=item.get("image") or {}
-                            else:
-                                pending=bool(item.get("image_pending"))
-                                generation_attempts=int(item.get("image_generation_attempts") or item.get("image_attempts") or 0)
-                                persistence_attempts=int(item.get("image_persistence_attempts") or 0)
-                                # image_generation_attempts cuenta EXCLUSIVAMENTE llamadas reales al generador.
-                                # image_persistence_attempts cuenta intentos de hacer accesible un raster ya generado.
-                                if "image_attempts" in item and "image_generation_attempts" not in item:
-                                    item["image_generation_attempts"]=generation_attempts
-                                item.pop("image_attempts",None)
-                                if not pending:
-                                    raise ValueError("generated_gag sin raster debe quedar image_pending")
-                                item["image_persistence_attempts"]=persistence_attempts
-                                item["image_status"]="pending"
-                                item["image_delivery"]="pending"
-                                item["image_search_status"]="pending_phase2"
-                        if image.get("generated") and str(image.get("url") or "").strip():
+                item["image_strategy"]="existing_web_image"
+                if bool(row.get("with_image",True)):
+                    if image_retry:
+                        state=str(item.get("image_status") or "")
+                        if state=="ready":
                             validate_image(item)
-                            item["image_status"]="ready"
-                            item["image_pending"]=False
-                            item["image_delivery"]="app"
-                            item["image_app_available"]=True
-                            item["image_search_status"]="generated"
-                            item["image_worker_status"]="done"
-                    elif strategy=="archive_sensitive":
-                        if image.get("generated"):
-                            raise ValueError("archive_sensitive no debe contener gag generado")
-                        # FASE 1 nunca busca/valida/persiste imágenes. La noticia entra
-                        # inmediatamente en READY y FASE 2 resolverá la imagen por outbox image-only.
-                        item.pop("image",None)
-                        item["image_status"]="pending"
-                        item["image_pending"]=True
-                        item["image_delivery"]="pending"
-                        item["image_app_available"]=False
-                        item["image_search_status"]="pending_archive_phase2"
-                    elif strategy:
-                        raise ValueError(f"image_strategy inválida: {strategy}")
+                            item["image_pending"]=False;item["image_delivery"]="app";item["image_app_available"]=True
+                        elif state=="none":
+                            item.pop("image",None);item["image_pending"]=False;item["image_delivery"]="none";item["image_app_available"]=False
                     else:
-                        # Compatibilidad con items antiguos previos a la estrategia explícita.
-                        if image.get("generated"):
-                            validate_image(item)
-                            item["image_search_status"]="generated"
-                        elif not str(image.get("url") or "").strip():
-                            _recover_image(item,row,events)
+                        _finish_archive_image(item,row,events)
                 p["items"]=[x for x in p.get("items",[]) if str(x.get("event_id") or "")!=eid]
                 p["items"].append(item);p["updated_at"]=item.get("prepared_at") or now
                 if image_retry:
@@ -498,5 +366,24 @@ def main():
     print(json.dumps({"processed":processed,"errors":errors},ensure_ascii=False))
     # Un outbox defectuoso queda para reparación; los demás ya se aplicaron.
     return 0
+
+def selftest_images():
+    flat={"title":"Prueba","image":"https://cdn.example.test/photo.jpg","image_source":"Fuente","image_source_url":"https://example.test/story"}
+    image=normalize_image(flat)
+    assert image["url"]=="https://cdn.example.test/photo.jpg"
+    assert image["source"]=="Fuente" and image["rights_status"]=="unverified"
+    assert "image_url" not in flat and isinstance(flat["image"],dict)
+    generated={"image":{"url":"https://example.test/generated.jpg","source":"TTiTTulares / ChatGPT","rights_status":"generated","generated":True}}
+    try:
+        normalize_image(generated)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("una imagen generada debe rechazarse")
+    print("ARCHIVE_IMAGE_SELFTEST_OK")
+    return 0
+
+if "--selftest-images" in sys.argv:
+    raise SystemExit(selftest_images())
 if __name__=="__main__":
     raise SystemExit(main())

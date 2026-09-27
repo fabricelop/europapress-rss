@@ -39,6 +39,15 @@ La app cruza `event_id` con `status.json` para mostrar **Redactada con 4 (6)**: 
 - **Desestimar**: retira de la bandeja y registra `dismissed`.
 - **Rehacer**: pide instrucciones y devuelve la noticia a `PROCESSING` con `selection_mode=REWRITE`.
 
+## Imágenes reales del acontecimiento
+
+- No se generan imágenes por IA.
+- Al aplicar cada READY se examinan las páginas de las fuentes del mismo acontecimiento.
+- Se prioriza una fuente oficial/primaria y después un medio fiable.
+- Se validan URL HTTPS, tipo de contenido, raster y dimensiones.
+- Solo se guarda la URL externa, la fuente, la página de origen, el texto alternativo y el estado de derechos.
+- Si no existe una imagen verificable, la revisión queda cerrada como `none`; no se crea un reintento infinito.
+
 ## Formato editorial web
 
 La cola editorial procesa únicamente los items `PROCESSING`. Cada noticia genera:

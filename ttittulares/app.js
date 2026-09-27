@@ -135,14 +135,14 @@ function renderImagePanel(host,x){
     if(!state)return;
     const box=document.createElement('section');box.className='image-panel image-status';
     const meta=document.createElement('div');meta.className='image-meta';
-    const labels={pending:'— Sin imagen',working:'⏳ Imagen en elaboración',retry:'— Sin imagen',ready:'✅ Imagen lista',telegram:'✈️ Imagen en Telegram',none:'— Sin imagen',error:'— Sin imagen'};
-    meta.innerHTML='<strong>'+esc(labels[state]||'— Sin imagen')+'</strong><span>'+(state==='working'?'Hay un intento de generación o entrega de imagen activo ahora mismo.':state==='none'||state==='error'||state==='pending'||state==='retry'?'No hay una generación de imagen activa. Se volverá a intentar en la siguiente ejecución.':state==='telegram'?'Imagen enviada al bot de Telegram.':'')+'</span>';
+    const labels={pending:'⏳ Buscando imagen real',working:'⏳ Buscando imagen real',retry:'⏳ Buscando imagen real',ready:'✅ Imagen lista',telegram:'Imagen histórica',none:'— Sin imagen',error:'— Sin imagen'};
+    meta.innerHTML='<strong>'+esc(labels[state]||'— Sin imagen')+'</strong><span>'+(state==='working'?'Se está buscando una imagen real del acontecimiento.':state==='pending'||state==='retry'?'La recuperación se completará al aplicar el resultado editorial.':state==='none'||state==='error'?'No se encontró una imagen verificable para esta revisión.':state==='telegram'?'Entrega histórica conservada.':'')+'</span>';
     box.append(meta);host.appendChild(box);return;
   }
   const box=document.createElement('section');box.className='image-panel';
   const img=document.createElement('img');img.src=url;img.alt=im.alt||'Imagen de la noticia';img.loading='lazy';
   const meta=document.createElement('div');meta.className='image-meta';
-  meta.innerHTML='<strong>'+(im.generated?'🎨 Gag visual':'🖼️ Imagen de archivo')+'</strong><span>'+esc(im.generated?'TTiTTulares · imagen original':'Fuente: '+(im.source||'medio'))+'</span>';
+  meta.innerHTML='<strong>🖼️ Imagen del acontecimiento</strong><span>'+esc('Fuente: '+(im.source||'medio'))+'</span>';
   const actions=document.createElement('div');actions.className='image-actions';
   const copy=document.createElement('button');copy.type='button';copy.textContent='Copiar imagen';copy.onclick=()=>copyImage(url,copy);
   const open=document.createElement('a');open.href=url;open.target='_blank';open.rel='noopener';open.textContent='Abrir imagen';

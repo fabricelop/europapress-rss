@@ -160,7 +160,7 @@ function runPhaseLabel(s){
  if(["preparing","prepare"].includes(p))return s.status==="REQUESTED"?"Preparando ejecución":"Preparando ejecución";
  if(["investigating","research","verifying_news"].includes(p))return "Investigando noticia"+pos;
  if(["drafting","redacting","writing"].includes(p))return "Redactando noticia"+pos;
- if(["image_generating","image_generate","generating_image"].includes(p))return "Generando imagen"+pos;
+ if(["image_generating","image_generate","generating_image"].includes(p))return "Buscando imagen real"+pos;
  if(["image_searching","image_search","searching_image"].includes(p))return "Buscando imagen"+pos;
  if(["image_persisting","image_persist","saving_image"].includes(p))return "Guardando imagen"+pos;
  if(["verifying","verification"].includes(p))return "Verificando resultado"+pos;
@@ -434,7 +434,7 @@ function renderReady(list){
   const img=item.image||{},imgUrl=String(img.url||item.image_url||""),imgSource=img.source||item.image_source||"",imgPage=img.source_url||img.page_url||item.image_source_url||"",imgRights=img.rights_status||item.image_rights_status||"",imgBox=card.querySelector(".imagebox");
   const imageState=String(item.image_status||(item.image_pending?"working":imgUrl?"ready":"none")).toLowerCase();
   const imageReady=imageState==="ready"&&!!imgUrl;
-  const imageLabels={working:"Generando imagen",pending:"Esperando imagen",retry:"Esperando reintento",ready:"Imagen lista",telegram:"Disponible en Telegram",none:"Sin imagen",error:"Sin imagen"};
+  const imageLabels={working:"Buscando imagen real",pending:"Esperando imagen",retry:"Esperando reintento",ready:"Imagen lista",telegram:"Disponible en Telegram",none:"Sin imagen",error:"Sin imagen"};
   const imageLabel=imageLabels[imageState]||"Esperando imagen";
   const imageTerminal=(imageState==="ready"&&!!imgUrl)||imageState==="telegram"||imageState==="none";
   const imageInFlight=!imageTerminal;
@@ -451,7 +451,7 @@ function renderReady(list){
    card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl);
    const src=card.querySelector(".imgSource");if(imgPage)src.href=imgPage;else src.style.display="none";
   }else{
-   card.querySelector(".imageMeta").textContent=imageState==="telegram"?"Foto enviada al bot de Telegram. Ya puedes publicar.":imageState==="working"?"Se está generando o guardando la imagen. No publiques todavía.":imageState==="pending"?"La noticia está redactada, pero la imagen todavía está pendiente. No publiques todavía.":imageState==="retry"?"La imagen necesita un nuevo intento. No publiques todavía.":imageState==="none"?"La ejecución terminó sin imagen. Ya puedes publicar sin imagen.":"La noticia está lista.";
+   card.querySelector(".imageMeta").textContent=imageState==="telegram"?"Foto enviada al bot de Telegram. Ya puedes publicar.":imageState==="working"?"Se está buscando y validando una imagen real del acontecimiento.":imageState==="pending"?"La noticia está redactada, pero la imagen todavía está pendiente. No publiques todavía.":imageState==="retry"?"La imagen necesita un nuevo intento. No publiques todavía.":imageState==="none"?"La ejecución terminó sin imagen. Ya puedes publicar sin imagen.":"La noticia está lista.";
    card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";card.querySelector(".imgSource").style.display="none";
   }
   const photo=document.createElement("button");photo.className="btn photoStatus"+(imageReady?" imageReadyStatus":"")+(imageState==="telegram"?" telegramStatus":"");photo.textContent="📷 "+imageLabel;photo.onclick=()=>{det.classList.add("open");openCards.add(String(item.event_id||""));card.querySelector(".expand").textContent="Cerrar";imgBox.scrollIntoView({block:"nearest",behavior:"smooth"})};card.querySelector(".actions").appendChild(photo);
@@ -516,7 +516,7 @@ function renderProblematic(list){
    const terms=(item.search_terms||item.trend_names||[]).filter(Boolean);
    card.querySelector(".search-trend").href="https://x.com/search?q="+encodeURIComponent(terms.length?terms.join(" OR "):(item.title||""))+"&src=typed_query&f=live";
    card.querySelector(".promote-trend").onclick=async()=>{
-     if(!confirm("¿Mandar esta noticia a En elaboración? TTiTTulares hará la redacción y la imagen."))return;
+     if(!confirm("¿Mandar esta noticia a En elaboración? TTiTTulares hará la redacción y buscará una imagen real."))return;
      try{await api("promote-trend",{candidate_id:item.candidate_id});toast("Enviada a En elaboración");await load(true);setView("processing")}
      catch(err){toast(err.message)}
    };
