@@ -1,31 +1,36 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T21:31:13+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-28T21:39:45+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
     "superx",
+    "snaplytics",
+    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
-  "fresh_sources": [],
-  "reliability": "medium",
+  "non_stale_source_count": 6,
+  "fresh_sources": [
+    "tweets24",
+    "snaplytics"
+  ],
+  "reliability": "high",
   "top10": [
     "Puerta del Sol",
     "#ConexiónHonduras3",
     "Galapagar",
     "#FelizLunes",
     "Ndongo",
+    "#TEM28S",
     "Ortega Smith",
-    "McNulty",
-    "Gelabert",
-    "Sindicato de Inquilinas",
-    "#TEM28S"
+    "#Mañaneros28S",
+    "#felizdomingo",
+    "Llevas 8"
   ],
   "items": [
     {
@@ -55,45 +60,92 @@
     },
     {
       "rank": 6,
+      "name": "#TEM28S",
+      "entered_top10_at": "2026-09-28T21:02:10+02:00"
+    },
+    {
+      "rank": 7,
       "name": "Ortega Smith",
       "entered_top10_at": "2026-09-28T16:31:17+02:00"
     },
     {
-      "rank": 7,
-      "name": "McNulty",
-      "entered_top10_at": "2026-09-28T20:54:53+02:00"
-    },
-    {
       "rank": 8,
-      "name": "Gelabert",
-      "entered_top10_at": "2026-09-28T20:54:53+02:00"
+      "name": "#Mañaneros28S",
+      "entered_top10_at": "2026-09-28T21:39:45+02:00"
     },
     {
       "rank": 9,
-      "name": "Sindicato de Inquilinas",
-      "entered_top10_at": "2026-09-28T20:54:53+02:00"
+      "name": "#felizdomingo",
+      "entered_top10_at": "2026-09-28T21:39:45+02:00"
     },
     {
       "rank": 10,
-      "name": "#TEM28S",
-      "entered_top10_at": "2026-09-28T21:02:10+02:00"
+      "name": "Llevas 8",
+      "entered_top10_at": "2026-09-28T21:39:45+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "#Mañaneros28S",
+    "#felizdomingo",
+    "Llevas 8"
+  ],
   "upcoming": [
     {
-      "name": "Yolanda Díaz",
-      "social_source_count": 4,
+      "name": "Sindicato de Inquilinas",
+      "social_source_count": 6,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 13.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T21:39:45+02:00",
+      "news_source_count": 5,
+      "news_event_id": "fe651a5c6196-r2",
+      "news_title": "Acampada en Sol, en directo | El Sindicato de Inquilinas avisa que la acampada seguirá más allá del nuevo decreto o un acuerdo para Maricarmen: \"Es el primer paso\"",
+      "news_status": "UPDATE_WAITING",
+      "news_first_seen": "2026-09-28T18:56:34.040565Z"
+    },
+    {
+      "name": "Gelabert",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 12.5,
-      "movement": "down",
+      "mean_observed_rank": 14.2,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T21:39:45+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Yolanda Díaz",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.0,
+      "movement": "up",
       "first_detected_at": "2026-09-28T16:01:53+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -103,16 +155,17 @@
     },
     {
       "name": "Mari Carmen",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
+        "snaplytics",
         "superx",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 16.0,
-      "movement": "down",
+      "mean_observed_rank": 15.4,
+      "movement": "up",
       "first_detected_at": "2026-09-28T12:10:58+02:00",
       "news_source_count": 1,
       "news_event_id": "f90766565797",
@@ -121,16 +174,37 @@
       "news_first_seen": "2026-09-28T18:04:12.837512Z"
     },
     {
-      "name": "Avalmadrid",
-      "social_source_count": 3,
+      "name": "McNulty",
+      "social_source_count": 5,
       "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.6,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T21:39:45+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Avalmadrid",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 17.7,
-      "movement": "down",
+      "mean_observed_rank": 17.5,
+      "movement": "up",
       "first_detected_at": "2026-09-28T20:54:53+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -140,15 +214,16 @@
     },
     {
       "name": "La Bola Negra",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "superx",
         "trends24",
-        "trendswe"
+        "trendswe",
+        "tweets24"
       ],
       "best_observed_rank": 18,
-      "mean_observed_rank": 19.3,
-      "movement": "down",
+      "mean_observed_rank": 19.0,
+      "movement": "up",
       "first_detected_at": "2026-09-28T20:54:53+02:00",
       "news_source_count": 1,
       "news_event_id": "01d7b9664034",
@@ -157,75 +232,32 @@
       "news_first_seen": "2026-09-28T16:02:52.975385Z"
     },
     {
-      "name": "Chris Ramos",
+      "name": "15 M",
       "social_source_count": 3,
       "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 19,
-      "mean_observed_rank": 19.3,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T19:40:59+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Llevas 8",
-      "social_source_count": 2,
-      "social_sources": [
-        "getdaytrends",
-        "trendswe"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-28T20:54:53+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "15 M",
-      "social_source_count": 2,
-      "social_sources": [
+        "snaplytics",
         "trends24",
         "tweets24"
       ],
       "best_observed_rank": 17,
-      "mean_observed_rank": 17.5,
-      "movement": "down",
+      "mean_observed_rank": 17.3,
+      "movement": "up",
       "first_detected_at": "2026-09-28T20:40:56+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Samantha Hudson",
-      "social_source_count": 1,
-      "social_sources": [
-        "trends24"
-      ],
-      "best_observed_rank": 20,
-      "mean_observed_rank": 20.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T21:02:10+02:00",
-      "news_source_count": 4,
-      "news_event_id": "b3c2e16c19a4",
-      "news_title": "La acampada de Sol supera ya las 300 tiendas y suma a Almodóvar, Aitana Sánchez-Gijón y Samantha Hudson: \"Yo solo quiero seguir viviendo en mi ciudad\" - El HuffPost",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-28T19:12:24.737470Z"
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Llevas 8",
+      "first_detected_at": "2026-09-28T20:54:53+02:00",
+      "entered_top10_at": "2026-09-28T21:39:45+02:00",
+      "lead_minutes": 45
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -256,7 +288,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T21:31:13+02:00"
+      "fetched_at": "2026-09-28T21:39:45+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -281,7 +313,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T21:31:13+02:00"
+      "fetched_at": "2026-09-28T21:39:46+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -296,22 +328,22 @@
         "#Mañaneros28S",
         "#felizdomingo",
         "Llevas 8",
-        "Pumpido",
-        "Yolanda Díaz",
-        "McNulty",
-        "Gelabert",
-        "Fina",
         "Sindicato de Inquilinas",
+        "McNulty",
+        "Yolanda Díaz",
+        "Gelabert",
         "Mari Carmen",
-        "15 M",
         "Avalmadrid",
-        "Chris Ramos"
+        "15 M",
+        "La Bola Negra",
+        "Chris Ramos",
+        "Samantha Hudson"
       ],
       "error": null,
-      "update_hint": "Updated 1 hour ago",
-      "age_minutes": 60.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-28T21:31:14+02:00"
+      "update_hint": "Updated 5 minutes ago",
+      "age_minutes": 5.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-28T21:39:46+02:00"
     },
     "superx": {
       "ok": true,
@@ -341,16 +373,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T21:31:14+02:00"
+      "fetched_at": "2026-09-28T21:39:47+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790623875",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790624388",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T21:31:15+02:00"
+      "fetched_at": "2026-09-28T21:39:48+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -358,29 +390,29 @@
         "Puerta del Sol",
         "#ConexiónHonduras3",
         "Galapagar",
-        "#FelizLunes",
         "Ndongo",
-        "#TEM28S",
+        "#FelizLunes",
         "Ortega Smith",
-        "#Mañaneros28S",
+        "#TEM28S",
+        "Luca Zidane",
         "#felizdomingo",
+        "Suero",
+        "#Mañaneros28S",
+        "Sindicato de Inquilinas",
         "Llevas 8",
         "Yolanda Díaz",
-        "McNulty",
-        "Sindicato de Inquilinas",
-        "Gelabert",
         "Mari Carmen",
+        "McNulty",
+        "Gelabert",
         "15 M",
-        "Avalmadrid",
-        "La Bola Negra",
-        "Chris Ramos",
-        "Samantha Hudson"
+        "Sonnet 5.5",
+        "Avalmadrid"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 28, 2026 18:00 UTC",
-      "age_minutes": 91.3,
-      "freshness": "stale",
-      "fetched_at": "2026-09-28T21:31:15+02:00"
+      "update_hint": "Trending now Sep 28, 2026 19:00 UTC",
+      "age_minutes": 39.8,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-28T21:39:48+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -408,27 +440,27 @@
       ],
       "error": null,
       "update_hint": "Updated: September 28, 2026 at 07:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 #Co",
-      "age_minutes": 151.3,
+      "age_minutes": 159.8,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T21:31:15+02:00"
+      "fetched_at": "2026-09-28T21:39:48+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends.cyberkendra.com/spain/?_=1790623877",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790624389",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T21:31:17+02:00"
+      "fetched_at": "2026-09-28T21:39:49+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
       "trends": [],
-      "error": "ConnectionError: HTTPSConnectionPool(host='globaltwittertrends.com', port=443): Max retries exceeded with url: /spain/?_=1790623878 (Caused by NewConnectionError(\"HTTPSConnection(host='globaltwittertrends.com', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://globaltwittertrends.com/spain/?_=1790624391",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T21:31:18+02:00"
+      "fetched_at": "2026-09-28T21:39:51+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -458,16 +490,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T21:32:18+02:00"
+      "fetched_at": "2026-09-28T21:39:51+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790623941",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790624394",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T21:32:21+02:00"
+      "fetched_at": "2026-09-28T21:39:54+02:00"
     }
   }
 }
