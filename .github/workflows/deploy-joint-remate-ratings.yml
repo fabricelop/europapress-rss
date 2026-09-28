@@ -80,15 +80,5 @@ jobs:
           assert "mountRemateRating" in Path(pages[2]).read_text()
           print("JOINT_RELEASE_VERIFIED")
           PY
-      - name: Instalar CLI de Vercel
-        run: npm install --global vercel@latest
-      - name: Construir y desplegar AMBAS apps en UN proyecto de producción
-        working-directory: vercel-webhook
-        run: |
-          set -euo pipefail
-          mkdir -p .vercel
-          printf '{"orgId":"%s","projectId":"%s"}\n' "$VERCEL_ORG_ID" "$VERCEL_PROJECT_ID" > .vercel/project.json
-          vercel pull --yes --environment=production --scope=fabricelopezillac-9660 --token="$VERCEL_TOKEN"
-          vercel build --prod --scope=fabricelopezillac-9660 --token="$VERCEL_TOKEN"
-          vercel deploy --prebuilt --prod --scope=fabricelopezillac-9660 --token="$VERCEL_TOKEN" | tee /tmp/joint-deploy-url.txt
-          echo "TTendencias y TTiTTulares publicados en un solo despliegue de europapress-rss"
+      - name: Publicar ambos proyectos mediante UNA solicitud REST Vercel
+        run: node .github/scripts/deploy-joint-remate-ratings.mjs
