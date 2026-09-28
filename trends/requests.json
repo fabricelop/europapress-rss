@@ -36,19 +36,29 @@
     {
       "id": "rec-horizonte",
       "name": "#Horizonte",
-      "rank": 3,
-      "status": "explained",
-      "requested_at": "2026-09-21T23:54:00+02:00",
-      "revision": 0,
-      "reexplain": false,
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-09-28T23:11:20+02:00",
+      "revision": 1,
+      "reexplain": true,
       "with_image": false,
       "batch_id": "recovered-2354",
       "requested_together": [
-        "#FerranEH",
         "#Horizonte"
       ],
-      "explained_at": "2026-09-22T16:17:32.867Z",
-      "alternatives_target": 0
+      "alternatives_target": 0,
+      "captured_with": [
+        "Puerta del Sol",
+        "#Horizonte",
+        "#firstdates28s",
+        "#ConexiónHonduras3",
+        "Galapagar",
+        "Ndongo",
+        "Morata",
+        "#FelizLunes",
+        "Antonio Banderas",
+        "Ortega Smith"
+      ]
     },
     {
       "id": "97538689783f",
@@ -6668,7 +6678,7 @@
       "revision": 0,
       "status": "preparing",
       "requested_at": "2026-09-28T20:34:34.162Z",
-      "rank": 16,
+      "rank": 7,
       "with_image": false,
       "alternatives_target": 0,
       "anticipated": true,
@@ -6680,8 +6690,49 @@
       "requested_together": [
         "Morata"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "anticipated_entered_top10_at": "2026-09-28T23:11:20+02:00"
+    },
+    {
+      "id": "18e72201e584",
+      "name": "#firstdates28s",
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-09-28T23:11:20+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "alternatives_target": 0,
+      "batch_id": "9b921d86a242",
+      "requested_together": [
+        "#firstdates28s"
+      ],
+      "captured_with": [
+        "#firstdates28s",
+        "Antonio Banderas"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "84e20b8fe4a7",
+      "name": "Antonio Banderas",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-09-28T23:11:20+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "alternatives_target": 0,
+      "batch_id": "9b921d86a242",
+      "requested_together": [
+        "Antonio Banderas"
+      ],
+      "captured_with": [
+        "#firstdates28s",
+        "Antonio Banderas"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-28T20:34:34.162Z"
+  "updated_at": "2026-09-28T23:11:20+02:00"
 }
