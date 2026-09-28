@@ -1,8 +1,8 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-28T12:00:43.377395Z",
+  "updated_at": "2026-09-28T12:00:48.854021Z",
   "radar_at": "2026-09-28T12:00:23.461681Z",
-  "processing_count": 5,
+  "processing_count": 4,
   "processing_items": [
     {
       "event_id": "0d304ef77afc",
@@ -43,61 +43,6 @@
         }
       ],
       "selected_at": "2026-09-28T11:03:17.125402Z",
-      "status": "PROCESSING",
-      "selection_mode": "AUTO_WEB",
-      "revision": 1,
-      "parent_event_id": null,
-      "update_context": null,
-      "parallel_source_claimed_at": null,
-      "with_image": true,
-      "image_mode": "existing_web_image"
-    },
-    {
-      "event_id": "28b73d2406ea",
-      "title": "Almeida estudia «opciones legales para proceder contra el delegado» si «sigue rehuyendo competencias» ante la acampada en Sol",
-      "url": "https://www.abc.es/espana/madrid/almeida-estudia-opciones-legales-proceder-delegado-sigue-20260928125923-nt.html",
-      "sources": [
-        "20minutos",
-        "ABC",
-        "El Mundo",
-        "Servimedia",
-        "elDiario.es"
-      ],
-      "source_count": 5,
-      "drafted_source_count": 5,
-      "source_evidence": [
-        {
-          "source": "20minutos",
-          "title": "Almeida exige levantar la acampada de Sol y estudia acciones legales contra el delegado del Gobierno",
-          "url": "https://www.20minutos.es/madrid/almeida-exige-levantar-acampada-sol-estudia-acciones-legales-contra-delegado-gobierno_7042144_0.html",
-          "first_seen": "2026-09-28T11:12:14.344260Z"
-        },
-        {
-          "source": "ABC",
-          "title": "Almeida estudia «opciones legales para proceder contra el delegado» si «sigue rehuyendo competencias» ante la acampada en Sol",
-          "url": "https://www.abc.es/espana/madrid/almeida-estudia-opciones-legales-proceder-delegado-sigue-20260928125923-nt.html",
-          "first_seen": "2026-09-28T11:12:14.344260Z"
-        },
-        {
-          "source": "Servimedia",
-          "title": "Almeida acusa al delegado del Gobierno de dar ordenes para retirar a la Policía de Sol y estudia acciones legales",
-          "url": "https://www.servimedia.es/noticias/almeida-acusa-delegado-gobierno-dar-ordenes-para-retirar-policia-sol-estudia-acciones-legales/1413372726",
-          "first_seen": "2026-09-28T11:12:14.344260Z"
-        },
-        {
-          "source": "elDiario.es",
-          "title": "Almeida busca cómo frustrar la acampada de Sol si Delegación lo evita: “No queremos quedarnos de brazos cruzados”",
-          "url": "https://www.eldiario.es/madrid/somos/almeida-busca-frustrar-acampada-sol-si-delegacion-evita-no-queremos-quedarnos-brazos-cruzados_1_13542762.html",
-          "first_seen": "2026-09-28T11:12:14.344260Z"
-        },
-        {
-          "source": "El Mundo",
-          "title": "Almeida est \"indignado\" por permitir la acampada en Sol: \"Que vayan a La Moncloa o a la sede del PSOE\"",
-          "url": "https://www.elmundo.es/madrid/2026/09/28/6aba319ae85ece744d8b4589-video.html",
-          "first_seen": "2026-09-28T11:12:14.344260Z"
-        }
-      ],
-      "selected_at": "2026-09-28T11:12:30.363829Z",
       "status": "PROCESSING",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
@@ -278,8 +223,28 @@
     }
   ],
   "ready_count": 2,
-  "problematic_count": 1,
+  "problematic_count": 2,
   "problematic_items": [
+    {
+      "event_id": "28b73d2406ea",
+      "title": "Almeida estudia «opciones legales para proceder contra el delegado» si «sigue rehuyendo competencias» ante la acampada en Sol",
+      "url": "https://www.abc.es/espana/madrid/almeida-estudia-opciones-legales-proceder-delegado-sigue-20260928125923-nt.html",
+      "selected_at": "2026-09-28T11:12:30.363829Z",
+      "problematic_at": "2026-09-28T12:00:48.854021Z",
+      "problem_reason": "Duplicado del mismo anuncio de Almeida sobre la acampada de Sol y posibles acciones legales contra el delegado, que se está preparando en el evento 4cf7026cace3. No crear dos noticias sobre el mismo hecho.",
+      "problematic_attempts": 1,
+      "user_validated": false,
+      "user_validated_at": null,
+      "revision": 1,
+      "source_count": 5,
+      "sources": [
+        "20minutos",
+        "ABC",
+        "El Mundo",
+        "Servimedia",
+        "elDiario.es"
+      ]
+    },
     {
       "event_id": "41fbb2ed58fc",
       "title": "Noticias de la Comunidad Valenciana - EFE - Agencia de noticias",
