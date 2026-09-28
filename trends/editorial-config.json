@@ -82,6 +82,18 @@
       ],
       "request_link_field": "explanation_group_id",
       "note": "Si varias tendencias describen inequívocamente el mismo acontecimiento o tema, se investigan y explican como un único grupo. Cada request individual queda cerrado contra el mismo group_id; no se duplican explicaciones."
+    },
+    "explanation_style": {
+      "mode": "tweet_ready_with_optional_witty_closer",
+      "max_x_weighted_characters": 280,
+      "preferred_final_characters": "230-250",
+      "fallback_max_unicode_codepoints": 250,
+      "count_full_copied_text_including_header": true,
+      "require_factual_trigger": true,
+      "try_specific_final_chascarrillo": true,
+      "allow_respectful_no_joke_on_sensitive_events": true,
+      "validate_before_persist": true,
+      "note": "Solo aplica a explanation en explanation_only; preserva bridge, agrupación, estados, ausencia de imágenes y alternativas."
     }
   },
   "delivery": {
