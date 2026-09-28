@@ -198,7 +198,7 @@ EVENT_ACTION_ALIASES={
  "demandar":"demanda","demanda":"demanda","denunciar":"denuncia","denuncia":"denuncia",
  "detener":"detencion","detenido":"detencion","detenida":"detencion","arresto":"detencion",
  "morir":"muerte","muere":"muerte","fallecer":"muerte","fallece":"muerte",
- "dimitir":"dimision","dimite":"dimision","renunciar":"dimision","renuncia":"dimision",
+ "dimitir":"dimision","dimite":"dimision","renunciar":"dimision","renuncia":"dimision","cese":"dimision","cesar":"dimision","relevo":"dimision","abandona":"dimision","abandonar":"dimision",
  "ganar":"victoria","gana":"victoria","vencer":"victoria","vence":"victoria",
  "perder":"derrota","pierde":"derrota","derrota":"derrota",
  "aprobar":"aprobacion","aprueba":"aprobacion","avalar":"aprobacion","avala":"aprobacion",
