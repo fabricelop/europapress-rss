@@ -21,6 +21,14 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 .sheet{position:fixed;inset:0;background:#0009;z-index:50;display:none;align-items:flex-end}.sheet.show{display:flex}.panel{width:100%;max-width:600px;margin:0 auto;background:#111720;border:1px solid #354052;border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom))}.panel h2{margin:0 0 8px}.panel p{font-size:13px;color:#9eabba}textarea,input{width:100%;background:#0a0f16;color:#eef3fa;border:1px solid #364153;border-radius:11px;padding:12px;font:inherit}textarea{min-height:120px;resize:vertical}.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;transition:.2s;background:#1a2330;border:1px solid #3b485b;border-radius:10px;padding:9px 12px;z-index:80;max-width:92vw;text-align:center}.toast.show{opacity:1;transform:translateX(-50%)}
 @media(max-width:560px){main{padding:11px 8px 34px}.summary{grid-template-columns:1fr}.card,.queuecard{padding:11px}.title{font-size:15px}.actions .btn{flex:1;text-align:center}.stats{grid-template-columns:repeat(2,1fr)}.stat{padding:9px 7px;font-size:11px}.stat b{font-size:19px}}
 .imagePreview[hidden]{display:none}
+.remateRating{border:1px solid #3b4d63;border-radius:10px;background:#111c2b;margin:10px 0 3px;padding:10px}
+.remateRating[hidden]{display:none}.remateRating .ratingTitle{font-size:12px;font-weight:800;color:#c5d5eb;margin-bottom:6px}
+.remateRating .ratingStars{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.remateRating .ratingStars button{width:36px;height:36px;border:1px solid #455268;border-radius:9px;background:#1a2635;color:#97a9c1;font-size:23px;cursor:pointer;line-height:1}
+.remateRating .ratingStars button.filled{color:#ffce69;background:#342918;border-color:#997441}
+.remateRating .ratingStars button[aria-pressed="true"]{outline:2px solid #ffce69;outline-offset:1px}
+.remateRating .ratingStars button:disabled{opacity:.55;cursor:wait}
+.remateRating .ratingHint{font-size:11px;color:#97a9c1;margin-left:5px}
 </style>
 </head>
 <body>
@@ -349,6 +357,42 @@ async function copyImageToClipboard(url){
   await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);toast("Imagen copiada");
  }catch(err){console.error("copy image",err);toast("No se pudo copiar la imagen")}
 }
+function mountRemateRating(host,variant){
+ // Principal es factual: solo se valoran los remates A, B y C.
+ const key=String(variant?.rating_key||""),label=String(variant?.label||variant?.name||"").toUpperCase();
+ if(!/^titular-remate-v1:[a-f0-9]{24}$/.test(key)||!["A","B","C"].includes(label)){host.hidden=true;return}
+ host.hidden=false;
+ let busy=false;
+ const draw=()=>{
+  host.replaceChildren();
+  const title=document.createElement("div");title.className="ratingTitle";
+  title.textContent="¿Qué te ha parecido este remate?";host.appendChild(title);
+  const stars=document.createElement("div");stars.className="ratingStars";
+  const selected=Number(variant.remate_rating)||0;
+  for(let value=1;value<=5;value++){
+   const star=document.createElement("button");star.type="button";
+   star.textContent=value<=selected?"★":"☆";star.className=value<=selected?"filled":"";
+   star.title=value+" de 5";star.setAttribute("aria-label","Valorar remate "+label+": "+value+" de 5 estrellas");
+   star.setAttribute("aria-pressed",String(value===selected));star.disabled=busy;
+   star.onclick=async()=>{
+    if(busy)return;
+    if(!token()){toast("Guarda tu token de acceso en ⚙ para puntuar");$("settings").click();return}
+    busy=true;draw();
+    try{
+     const answer=await api("rate-remate",{rating_key:key,rating:value});
+     variant.remate_rating=answer.rating;variant.remate_rated_at=answer.rated_at;
+     toast("Remate "+label+" · "+answer.rating+"/5 guardado");
+    }catch(e){toast(e.message||"No se pudo guardar la puntuación")}
+    finally{busy=false;draw()}
+   };
+   stars.appendChild(star);
+  }
+  const hint=document.createElement("span");hint.className="ratingHint";
+  hint.textContent=busy?"Guardando…":selected?selected+"/5 · guardado · editable":"1 = flojo · 5 = genial";
+  stars.appendChild(hint);host.appendChild(stars);
+ };
+ draw();
+}
 function variants(item){
  if(Array.isArray(item.variants)&&item.variants.length)return item.variants;
  const out=[];if(item.primary?.text)out.push({label:"Principal",text:item.primary.text,url:item.primary.url,remate:""});
@@ -485,8 +529,8 @@ function renderReady(list){
     const isPrincipal=String(v.label||v.name||"").toLowerCase()==="principal";
     const remate=String(v.remate||"");
     const shown=isPrincipal?text:(remate.startsWith("🌶️")?remate:("🌶️ "+remate));
-    box.innerHTML='<div class="vhead"><span class="vname"></span><span class="chars"></span></div><div class="tweet"></div><div class="actions"><a class="btn primary openx" target="_blank" rel="noopener">Abrir en X</a><a class="btn quoteX" target="_blank" rel="noopener">Citar elegido</a><button class="btn copy">Copiar</button></div>';
-    box.querySelector(".vname").textContent=v.label||v.name||"Versión";box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=shown;
+    box.innerHTML='<div class="vhead"><span class="vname"></span><span class="chars"></span></div><div class="tweet"></div><div class="remateRating" hidden></div><div class="actions"><a class="btn primary openx" target="_blank" rel="noopener">Abrir en X</a><a class="btn quoteX" target="_blank" rel="noopener">Citar elegido</a><button class="btn copy">Copiar</button></div>';
+    box.querySelector(".vname").textContent=v.label||v.name||"Versión";box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=shown;mountRemateRating(box.querySelector(".remateRating"),v);
     box.querySelector(".openx").href=v.url||intent(text);const qx=box.querySelector(".quoteX");qx.hidden=!selectedQuote;if(selectedQuote)qx.href=quoteIntent(text,selectedQuote);quoteLinks.push({a:qx,text});box.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado"));
     vh.appendChild(box)
   }
