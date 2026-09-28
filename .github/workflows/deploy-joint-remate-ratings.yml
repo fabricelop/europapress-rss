@@ -33,6 +33,28 @@ jobs:
             echo "::error::Falta el secreto VERCEL_TOKEN en GitHub Actions. No se ha desplegado nada."
             exit 1
           fi
+      - name: Verificar acceso del token al proyecto Vercel
+        run: |
+          set -euo pipefail
+          status=$(curl --silent --show-error --output /tmp/vercel-access-response.json --write-out "%{http_code}" \
+            --header "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID")
+          if [ "$status" != "200" ]; then
+            echo "::error::VERCEL_TOKEN no puede leer la configuración del proyecto (HTTP $status). No se ha iniciado despliegue."
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          try:
+              data=json.loads(Path("/tmp/vercel-access-response.json").read_text())
+              err=data.get("error",{})
+              print("VERCEL_API_CODE:",str(err.get("code","unknown"))[:100])
+              print("VERCEL_API_MESSAGE:",str(err.get("message","unknown"))[:250])
+          except Exception:
+              print("VERCEL_API_RESPONSE_UNREADABLE")
+          PY
+            exit 1
+          fi
+          echo "Token autorizado para el proyecto europapress-rss."
       - name: Validar ambos proyectos y sus remates
         run: |
           node --check vercel-webhook/api/ttendencias-control.js
