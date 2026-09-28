@@ -1,0 +1,72 @@
+name: Deploy conjunto remates TTendencias y TTiTTulares
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/deploy-joint-remate-ratings.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: europapress-rss-production-web-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy-both:
+    if: "github.event.head_commit.message == 'Deploy conjunto de puntuaciones TTendencias y TTiTTulares'"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VERCEL_ORG_ID: team_H8xHbBIbIKnsaLeITszidyOK
+      VERCEL_PROJECT_ID: prj_X1UxNqQasd8Ouf7jUpxNccbQdASf
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Confirmar credencial antes de cualquier despliegue
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::Falta el secreto VERCEL_TOKEN en GitHub Actions. No se ha desplegado nada."
+            exit 1
+          fi
+      - name: Validar ambos proyectos y sus remates
+        run: |
+          node --check vercel-webhook/api/ttendencias-control.js
+          node --check vercel-webhook/api/ttittulares-control.js
+          node --check vercel-webhook/lib/ttendencias-remate-ratings.js
+          node --check vercel-webhook/lib/ttittulares-remate-ratings.js
+          node --test vercel-webhook/test/ttendencias-remate-ratings.test.js vercel-webhook/test/ttittulares-remate-ratings.test.js
+          python3 - <<'PY'
+          import re,subprocess
+          from pathlib import Path
+          pages=[
+            "vercel-webhook/ttendencias/index.html",
+            "vercel-webhook/ttendencias/explicadas/index.html",
+            "vercel-webhook/ttittulares/index.html"
+          ]
+          for i,p in enumerate(pages):
+              html=Path(p).read_text()
+              scripts=re.findall(r"<script>([\\s\\S]*?)</script>",html,re.I)
+              if not scripts: raise SystemExit("Missing JS: "+p)
+              dst=Path(f"/tmp/joint-release-{i}.js");dst.write_text("\\n".join(scripts))
+              subprocess.run(["node","--check",str(dst)],check=True)
+          assert "renderRemateRating" in Path(pages[1]).read_text()
+          assert "mountRemateRating" in Path(pages[2]).read_text()
+          print("JOINT_RELEASE_VERIFIED")
+          PY
+      - name: Instalar CLI de Vercel
+        run: npm install --global vercel@latest
+      - name: Construir y desplegar AMBAS apps en UN proyecto de producción
+        working-directory: vercel-webhook
+        run: |
+          set -euo pipefail
+          mkdir -p .vercel
+          printf '{"orgId":"%s","projectId":"%s"}\\n' "$VERCEL_ORG_ID" "$VERCEL_PROJECT_ID" > .vercel/project.json
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          vercel build --prod --token="$VERCEL_TOKEN"
+          vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN" | tee /tmp/joint-deploy-url.txt
+          echo "TTendencias y TTiTTulares publicados en un solo despliegue de europapress-rss"
