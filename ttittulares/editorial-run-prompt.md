@@ -8,7 +8,11 @@ Lee `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `telegram/edi
 
 ## Redacción
 
-Comprueba al menos dos fuentes independientes fiables que sostengan el hecho esencial. Usa web solo si la evidencia falta, es ambigua, antigua o contradictoria. Redacta exactamente Principal/A/B/C. Principal lleva `remate:""`; A/B/C usan remates distintos que empiezan por `🌶️ `, y cada texto completo es `Principal + dos saltos + remate`. Cada variante debe medir <=280 caracteres.
+Comprueba al menos dos fuentes independientes fiables que sostengan el hecho esencial. Usa web solo si la evidencia falta, es ambigua, antigua o contradictoria. Redacta exactamente cuatro textos: Principal, A, B y C. Principal es informativo y lleva `remate:""`. A/B/C conservan el mismo Principal y añaden, tras dos saltos, un remate distinto que empieza por `🌶️ `. Cada texto completo debe medir <=280 caracteres.
+
+Cada remate A/B/C consta de UNA sola frase, con voz de monologuista de actualidad: ironía o sarcasmo mordaz, ágil y no partidista. El ingenio debe nacer de un detalle específico, relevante y contrastado de esa noticia, y cerrar con un giro sorprendente, natural y entendible. No expliques el chiste, no uses coletillas ni fórmulas genéricas intercambiables, no inventes hechos y no caricaturices colectivos. Los tres remates deben explotar ángulos o mecanismos cómicos diferentes, no meras reformulaciones.
+
+Referencias de tono aprobadas, no plantillas: `Renfe facilita la compra de billetes, ahora falta facilitar que llegue el tren`; `ReViVa no resucita a Maricarmen, pero sí la burocracia`.
 
 Conserva las reglas de marca de Trending Topic y de candidatas públicas de X ya existentes. Nunca inventes citas, URLs, fuentes ni hechos.
 

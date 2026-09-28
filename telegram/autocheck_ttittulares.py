@@ -74,7 +74,7 @@ if "events_json_demasiado_grande" in problems:
 
 after,remaining=inspect()
 
-# La redacción programada corre a :15 y :45. Un PROCESSING es normal mientras
+# La redacción programada corre a :00 y :30. Un PROCESSING es normal mientras
 # espera su siguiente turno. Solo lo consideramos bloqueo tras 75 minutos:
 # eso implica que ha perdido al menos dos oportunidades razonables de redacción.
 

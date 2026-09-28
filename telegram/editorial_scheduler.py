@@ -11,9 +11,7 @@ Path("telegram/editorial-schedule-state.json").write_text(json.dumps(state,ensur
 if not pending:
  print("Sin noticias PROCESSING")
  raise SystemExit(0)
-# Este workflow deja una solicitud durable y visible. La redaccion editorial real
-# sigue siendo el agente que procesa PROCESSING; nunca fingimos READY sin redactar.
-for x in pending:
- x.setdefault("automatic_redaction_requested_at",now)
-p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+# Este workflow deja una solicitud durable y visible. No reescribe la cola:
+# la redaccion editorial real la procesa desde el contrato canonico y nunca
+# fingimos READY sin redactar.
 print("Solicitudes de redaccion:",len(pending))
