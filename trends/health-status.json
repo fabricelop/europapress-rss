@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-27T23:22:29.638847+00:00",
+  "checked_at": "2026-09-28T01:47:19.431534+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -55,7 +55,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 0.7,
-      "run_id": 36358399127,
+      "run_id": 36367274236,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,25 +75,50 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 3,
+      "overdue_count": 3,
+      "oldest_age_minutes": 126.3,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "1f8f79d0a2ee",
+          "name": "#VMAs",
+          "status": "preparing",
+          "age_minutes": 126.3
+        },
+        {
+          "id": "f7133992c86d",
+          "name": "Rosa Benito",
+          "status": "preparing",
+          "age_minutes": 76.1
+        },
+        {
+          "id": "44c0e0956682",
+          "name": "GOTI",
+          "status": "preparing",
+          "age_minutes": 56.2
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "1f8f79d0a2ee",
+        "f7133992c86d",
+        "44c0e0956682"
+      ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [],
-  "warnings": [],
+  "warnings": [
+    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 126.3 min"
+  ],
   "alert_sent": false,
   "last_alert_signature": ""
 }
