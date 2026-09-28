@@ -1,30 +1,34 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T17:31:19+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-28T17:40:56+02:00",
+  "primary_source": "snaplytics",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
     "superx",
+    "snaplytics",
+    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
-  "fresh_sources": [],
-  "reliability": "medium",
+  "non_stale_source_count": 6,
+  "fresh_sources": [
+    "snaplytics"
+  ],
+  "reliability": "high",
   "top10": [
     "Puerta del Sol",
     "#ConexiónHonduras3",
-    "Galapagar",
     "#FelizLunes",
+    "Galapagar",
     "Ndongo",
+    "#TEM28S",
     "#Mañaneros28S",
+    "ortega smith",
     "McNulty",
-    "Ortega Smith",
-    "Gelabert",
     "#FelizDomingo"
   ],
   "items": [
@@ -40,13 +44,13 @@
     },
     {
       "rank": 3,
-      "name": "Galapagar",
-      "entered_top10_at": "2026-09-28T03:40:49+02:00"
+      "name": "#FelizLunes",
+      "entered_top10_at": "2026-09-28T07:18:13+02:00"
     },
     {
       "rank": 4,
-      "name": "#FelizLunes",
-      "entered_top10_at": "2026-09-28T07:18:13+02:00"
+      "name": "Galapagar",
+      "entered_top10_at": "2026-09-28T03:40:49+02:00"
     },
     {
       "rank": 5,
@@ -55,23 +59,23 @@
     },
     {
       "rank": 6,
+      "name": "#TEM28S",
+      "entered_top10_at": "2026-09-28T17:40:56+02:00"
+    },
+    {
+      "rank": 7,
       "name": "#Mañaneros28S",
       "entered_top10_at": "2026-09-28T13:01:29+02:00"
     },
     {
-      "rank": 7,
-      "name": "McNulty",
-      "entered_top10_at": "2026-09-28T03:40:49+02:00"
-    },
-    {
       "rank": 8,
-      "name": "Ortega Smith",
+      "name": "ortega smith",
       "entered_top10_at": "2026-09-28T16:31:17+02:00"
     },
     {
       "rank": 9,
-      "name": "Gelabert",
-      "entered_top10_at": "2026-09-28T17:21:11+02:00"
+      "name": "McNulty",
+      "entered_top10_at": "2026-09-28T03:40:49+02:00"
     },
     {
       "rank": 10,
@@ -79,21 +83,45 @@
       "entered_top10_at": "2026-09-28T16:31:17+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "#TEM28S"
+  ],
   "upcoming": [
     {
-      "name": "Llevas 8",
-      "social_source_count": 4,
+      "name": "Gelabert",
+      "social_source_count": 6,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T17:40:56+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Llevas 8",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 15.5,
-      "movement": "down",
+      "mean_observed_rank": 15.2,
+      "movement": "up",
       "first_detected_at": "2026-09-28T17:01:38+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -102,36 +130,18 @@
       "news_first_seen": null
     },
     {
-      "name": "Sporting",
-      "social_source_count": 4,
-      "social_sources": [
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 16.8,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T12:31:07+02:00",
-      "news_source_count": 1,
-      "news_event_id": "869204179a20",
-      "news_title": "La pasión de Cazorla animando al Oviedo antes del derbi contra el Sporting que está viendo todo el mundo - El HuffPost",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-28T14:04:36.978534Z"
-    },
-    {
       "name": "Yolanda Díaz",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 13.0,
-      "movement": "down",
+      "movement": "up",
       "first_detected_at": "2026-09-28T16:01:53+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -140,17 +150,38 @@
       "news_first_seen": null
     },
     {
-      "name": "Mari Carmen",
-      "social_source_count": 4,
+      "name": "Sporting",
+      "social_source_count": 5,
       "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 17.4,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T12:31:07+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Mari Carmen",
+      "social_source_count": 5,
+      "social_sources": [
+        "snaplytics",
         "superx",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 15.5,
-      "movement": "down",
+      "mean_observed_rank": 15.8,
+      "movement": "up",
       "first_detected_at": "2026-09-28T12:10:58+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -160,16 +191,17 @@
     },
     {
       "name": "Sindicato de Inquilinas",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
+        "snaplytics",
         "superx",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 16.8,
-      "movement": "down",
+      "mean_observed_rank": 17.2,
+      "movement": "up",
       "first_detected_at": "2026-09-28T16:21:04+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -179,15 +211,16 @@
     },
     {
       "name": "15 M",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 13.3,
-      "movement": "down",
+      "mean_observed_rank": 14.0,
+      "movement": "up",
       "first_detected_at": "2026-09-28T17:11:23+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -197,34 +230,17 @@
     },
     {
       "name": "Chris Ramos",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 14.3,
-      "movement": "down",
+      "mean_observed_rank": 15.2,
+      "movement": "up",
       "first_detected_at": "2026-09-28T17:11:23+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Pablo Vázquez",
-      "social_source_count": 3,
-      "social_sources": [
-        "superx",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 17.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T17:21:11+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -263,7 +279,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T17:31:19+02:00"
+      "fetched_at": "2026-09-28T17:40:56+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -288,7 +304,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T17:31:20+02:00"
+      "fetched_at": "2026-09-28T17:40:57+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -318,7 +334,7 @@
       "update_hint": "Updated 1 hour ago",
       "age_minutes": 60.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-28T17:31:20+02:00"
+      "fetched_at": "2026-09-28T17:40:58+02:00"
     },
     "superx": {
       "ok": true,
@@ -348,46 +364,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T17:31:21+02:00"
+      "fetched_at": "2026-09-28T17:40:58+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790609482",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790610059",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T17:31:22+02:00"
+      "fetched_at": "2026-09-28T17:40:59+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "Puerta del Sol",
-        "#conexiónhonduras3",
-        "Galapagar",
+        "#ConexiónHonduras3",
         "#FelizLunes",
+        "Galapagar",
         "Ndongo",
         "#TEM28S",
         "#Mañaneros28S",
+        "ortega smith",
         "McNulty",
         "#FelizDomingo",
-        "Gelabert",
-        "Ortega Smith",
-        "15 M",
-        "Llevas 8",
+        "Fina",
+        "gelabert",
         "Yolanda Díaz",
-        "Chris Ramos",
+        "Llevas 8",
+        "Pumpido",
+        "15 M",
         "Mari Carmen",
+        "Chris Ramos",
         "Sindicato de Inquilinas",
-        "Sporting",
-        "Pablo Vázquez",
-        "Lorca"
+        "Sporting"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 28, 2026 14:00 UTC",
-      "age_minutes": 91.4,
-      "freshness": "stale",
-      "fetched_at": "2026-09-28T17:31:22+02:00"
+      "update_hint": "Trending now Sep 28, 2026 15:00 UTC",
+      "age_minutes": 41.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-28T17:40:59+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -415,18 +431,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 28, 2026 at 03:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 #Co",
-      "age_minutes": 151.4,
+      "age_minutes": 161.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T17:31:22+02:00"
+      "fetched_at": "2026-09-28T17:40:59+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790609483",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790610060",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T17:31:23+02:00"
+      "fetched_at": "2026-09-28T17:41:00+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -435,7 +451,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-28T17:31:25+02:00"
+      "fetched_at": "2026-09-28T17:41:01+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -465,16 +481,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T17:31:25+02:00"
+      "fetched_at": "2026-09-28T17:41:01+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790609488",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790610064",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T17:31:28+02:00"
+      "fetched_at": "2026-09-28T17:41:04+02:00"
     }
   }
 }
