@@ -3343,7 +3343,7 @@
       "id": "172e0445fcbe",
       "name": "La Bola Negra",
       "rank": 3,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-09-28T11:11:07+02:00",
       "revision": 1,
       "reexplain": true,
@@ -3368,7 +3368,12 @@
       "auto_queued": true,
       "ready_at": "2026-09-26T06:01:49.176Z",
       "delivery_confirmation": "prepared_web",
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "explained_at": "2026-09-28T11:40:00+02:00",
+      "explanation": "«La Bola Negra» vuelve al Top 10 tras su estreno en cines: la película de Javier Calvo y Javier Ambrossi recaudó cerca de 4,7 millones de euros y reunió a más de 610.000 espectadores en su primer fin de semana; también recibió el Premio del Público en San Sebastián.",
+      "rank_at_explanation": 3,
+      "news_disposition": "ignored",
+      "news_note": "La noticia del premio ya consta publicada en TTiTTulares; no crear puente duplicado de ese hecho."
     },
     {
       "id": "212eebab10fc",
@@ -6249,7 +6254,7 @@
       "id": "03236c04c7aa",
       "name": "Miguel Ángel Pérez Triano",
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-09-28T08:41:27.130Z",
       "rank": 12,
       "with_image": false,
@@ -6263,7 +6268,13 @@
       "requested_together": [
         "Miguel Ángel Pérez Triano"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "explained_at": "2026-09-28T11:40:00+02:00",
+      "explanation": "«Miguel Ángel Pérez Triano» aparece entre las tendencias anticipadas por su petición de relevo como delegado del Gobierno en Ceuta. Fuentes oficiales la describen como una decisión personal tras semanas de trabajo, en el contexto de la crisis migratoria de julio.",
+      "rank_at_explanation": 12,
+      "news_disposition": "ignored",
+      "duplicate_of": "bdf3d7af25a7",
+      "news_note": "Mismo relevo ya tratado como Gobierno de Ceuta y en TTiTTulares; no duplicar."
     }
   ],
   "updated_at": "2026-09-28T11:11:07+02:00"
