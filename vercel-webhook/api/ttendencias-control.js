@@ -5,7 +5,7 @@ import {
   annotateExplainedCopyState,
   buildCopyRecord,
   explanationCopyIdentity,
-} from "./ttendencias-copy-state.js";
+} from "../lib/ttendencias-copy-state.js";
 
 const REPO = process.env.GITHUB_REPO || "fabricelop/europapress-rss";
 const BRANCH = process.env.GITHUB_BRANCH || "main";

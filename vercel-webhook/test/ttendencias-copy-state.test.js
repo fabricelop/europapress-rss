@@ -5,7 +5,7 @@ import {
   annotateExplainedCopyState,
   buildCopyRecord,
   explanationCopyIdentity,
-} from "./ttendencias-copy-state.js";
+} from "../lib/ttendencias-copy-state.js";
 
 const grouped = {
   name: "Noruega",
