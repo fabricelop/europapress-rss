@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T00:11:00+02:00",
+  "captured_at": "2026-09-29T00:22:08+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -97,7 +97,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 12.8,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T23:50:36+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -136,7 +136,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.8,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T23:40:53+02:00",
       "news_source_count": 4,
       "news_event_id": "51b171523563",
@@ -155,7 +155,7 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 14.5,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T23:40:53+02:00",
       "news_source_count": 1,
       "news_event_id": "f54a8fe526f9",
@@ -174,7 +174,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.8,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T00:11:00+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -271,7 +271,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T00:11:00+02:00"
+      "fetched_at": "2026-09-29T00:22:08+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -296,7 +296,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T00:11:01+02:00"
+      "fetched_at": "2026-09-29T00:22:09+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -323,10 +323,10 @@
         "Yolanda Díaz"
       ],
       "error": null,
-      "update_hint": "Updated 28 minutes ago",
-      "age_minutes": 28.0,
+      "update_hint": "Updated 39 minutes ago",
+      "age_minutes": 39.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-29T00:11:02+02:00"
+      "fetched_at": "2026-09-29T00:22:10+02:00"
     },
     "superx": {
       "ok": true,
@@ -356,16 +356,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T00:11:03+02:00"
+      "fetched_at": "2026-09-29T00:22:11+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790633463",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790634131",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T00:11:03+02:00"
+      "fetched_at": "2026-09-29T00:22:11+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -393,9 +393,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 28, 2026 21:00 UTC",
-      "age_minutes": 71.1,
+      "age_minutes": 82.2,
       "freshness": "aging",
-      "fetched_at": "2026-09-29T00:11:03+02:00"
+      "fetched_at": "2026-09-29T00:22:11+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -423,27 +423,27 @@
       ],
       "error": null,
       "update_hint": "Updated: September 28, 2026 at 10:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 #Fi",
-      "age_minutes": 131.1,
+      "age_minutes": 142.2,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T00:11:04+02:00"
+      "fetched_at": "2026-09-29T00:22:11+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790633465",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends.cyberkendra.com/spain/?_=1790634133",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T00:11:05+02:00"
+      "fetched_at": "2026-09-29T00:22:13+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
       "trends": [],
-      "error": "Lista no válida (1 elementos parseados)",
-      "update_hint": "updated 30 minutes ago",
-      "age_minutes": 30.0,
-      "freshness": "invalid",
-      "fetched_at": "2026-09-29T00:11:06+02:00"
+      "error": "ConnectionError: HTTPSConnectionPool(host='globaltwittertrends.com', port=443): Max retries exceeded with url: /spain/?_=1790634134 (Caused by NewConnectionError(\"HTTPSConnection(host='globaltwittertrends.com', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))",
+      "update_hint": null,
+      "age_minutes": null,
+      "freshness": "error",
+      "fetched_at": "2026-09-29T00:22:14+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -473,16 +473,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T00:11:07+02:00"
+      "fetched_at": "2026-09-29T00:23:14+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790633469",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790634196",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T00:11:09+02:00"
+      "fetched_at": "2026-09-29T00:23:16+02:00"
     }
   }
 }
