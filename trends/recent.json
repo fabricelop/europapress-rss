@@ -1,77 +1,80 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T00:31:12+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-29T00:40:54+02:00",
+  "primary_source": "snaplytics",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "superx",
+    "snaplytics",
+    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
-  "fresh_sources": [],
-  "reliability": "medium",
+  "non_stale_source_count": 6,
+  "fresh_sources": [
+    "snaplytics"
+  ],
+  "reliability": "high",
   "top10": [
+    "#LaIslaDeLasTentaciones7",
     "Puerta del Sol",
-    "#ConexiónHonduras3",
-    "Ndongo",
-    "Galapagar",
-    "#FelizLunes",
+    "Almeida",
+    "Juanpi",
     "#firstdates28s",
     "#Horizonte",
-    "Morata",
-    "Almeida",
+    "#ConexiónHonduras3",
+    "Kico",
+    "Ndongo",
     "Olise"
   ],
   "items": [
     {
       "rank": 1,
+      "name": "#LaIslaDeLasTentaciones7",
+      "entered_top10_at": "2026-09-29T00:40:54+02:00"
+    },
+    {
+      "rank": 2,
       "name": "Puerta del Sol",
       "entered_top10_at": "2026-09-28T03:40:49+02:00"
     },
     {
-      "rank": 2,
-      "name": "#ConexiónHonduras3",
-      "entered_top10_at": "2026-09-27T23:10:54+02:00"
-    },
-    {
       "rank": 3,
-      "name": "Ndongo",
-      "entered_top10_at": "2026-09-28T14:31:14+02:00"
-    },
-    {
-      "rank": 4,
-      "name": "Galapagar",
-      "entered_top10_at": "2026-09-28T03:40:49+02:00"
-    },
-    {
-      "rank": 5,
-      "name": "#FelizLunes",
+      "name": "Almeida",
       "entered_top10_at": "2026-09-29T00:31:12+02:00"
     },
     {
-      "rank": 6,
+      "rank": 4,
+      "name": "Juanpi",
+      "entered_top10_at": "2026-09-29T00:40:54+02:00"
+    },
+    {
+      "rank": 5,
       "name": "#firstdates28s",
       "entered_top10_at": "2026-09-28T23:11:14+02:00"
     },
     {
-      "rank": 7,
+      "rank": 6,
       "name": "#Horizonte",
       "entered_top10_at": "2026-09-28T23:11:14+02:00"
     },
     {
+      "rank": 7,
+      "name": "#ConexiónHonduras3",
+      "entered_top10_at": "2026-09-27T23:10:54+02:00"
+    },
+    {
       "rank": 8,
-      "name": "Morata",
-      "entered_top10_at": "2026-09-28T23:11:14+02:00"
+      "name": "Kico",
+      "entered_top10_at": "2026-09-29T00:40:54+02:00"
     },
     {
       "rank": 9,
-      "name": "Almeida",
-      "entered_top10_at": "2026-09-29T00:31:12+02:00"
+      "name": "Ndongo",
+      "entered_top10_at": "2026-09-28T14:31:14+02:00"
     },
     {
       "rank": 10,
@@ -81,22 +84,24 @@
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "#FelizLunes",
-    "Almeida"
+    "#LaIslaDeLasTentaciones7",
+    "Juanpi",
+    "Kico"
   ],
   "upcoming": [
     {
       "name": "Ortega Smith",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
+        "snaplytics",
         "superx",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 13.0,
-      "movement": "down",
+      "mean_observed_rank": 13.4,
+      "movement": "up",
       "first_detected_at": "2026-09-28T23:50:36+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -106,21 +111,77 @@
     },
     {
       "name": "Patriotismo",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 16.0,
-      "movement": "down",
+      "mean_observed_rank": 17.0,
+      "movement": "up",
       "first_detected_at": "2026-09-28T23:40:53+02:00",
       "news_source_count": 1,
       "news_event_id": "f54a8fe526f9",
       "news_title": "Sánchez: “Patriotismo es evitar que una anciana acabe en la calle”",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-28T20:22:19.923045Z"
+    },
+    {
+      "name": "#FelizLunes",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T00:40:54+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Nataly",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-29T00:31:12+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Galapagar",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T00:40:54+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Sindicato de Inquilinas",
@@ -132,7 +193,7 @@
       ],
       "best_observed_rank": 17,
       "mean_observed_rank": 17.3,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T21:39:45+02:00",
       "news_source_count": 3,
       "news_event_id": "455b24013ff7",
@@ -149,7 +210,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.5,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T23:40:53+02:00",
       "news_source_count": 4,
       "news_event_id": "51b171523563",
@@ -166,74 +227,16 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 16.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T00:31:12+02:00",
       "news_source_count": 3,
       "news_event_id": "eb8d3e7063a5",
       "news_title": "Protección Civil envía un Es-Alert ante la previsión de fuertes lluvias en Cataluña",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-28T17:22:20.720842Z"
-    },
-    {
-      "name": "Nataly",
-      "social_source_count": 2,
-      "social_sources": [
-        "getdaytrends",
-        "trends24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.5,
-      "movement": "new",
-      "first_detected_at": "2026-09-29T00:31:12+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Amaia",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 19.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-29T00:01:18+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Llevas 8",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 18.5,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T22:21:12+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "#FelizLunes",
-      "first_detected_at": "2026-09-29T00:11:00+02:00",
-      "entered_top10_at": "2026-09-29T00:31:12+02:00",
-      "lead_minutes": 20
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -264,7 +267,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T00:31:12+02:00"
+      "fetched_at": "2026-09-29T00:40:54+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -289,7 +292,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T00:31:13+02:00"
+      "fetched_at": "2026-09-29T00:40:54+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -316,10 +319,10 @@
         "Yolanda Díaz"
       ],
       "error": null,
-      "update_hint": "Updated 48 minutes ago",
-      "age_minutes": 48.0,
+      "update_hint": "Updated 58 minutes ago",
+      "age_minutes": 58.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-29T00:31:14+02:00"
+      "fetched_at": "2026-09-29T00:40:55+02:00"
     },
     "superx": {
       "ok": true,
@@ -349,46 +352,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T00:31:15+02:00"
+      "fetched_at": "2026-09-29T00:40:55+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790634676",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790635255",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T00:31:16+02:00"
+      "fetched_at": "2026-09-29T00:40:55+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
-        "Puerta del Sol",
         "#LaIslaDeLasTentaciones7",
-        "#Horizonte",
+        "Puerta del Sol",
+        "Almeida",
+        "Juanpi",
         "#firstdates28s",
+        "#Horizonte",
         "#ConexiónHonduras3",
-        "Morata",
+        "Kico",
         "Ndongo",
         "Olise",
         "Galapagar",
-        "Almeida",
-        "Antonio Banderas",
         "#FelizLunes",
-        "Castellón",
+        "Irini",
+        "Nataly",
         "Ortega Smith",
-        "Patriotismo",
-        "Sindicato de Inquilinas",
-        "Amaia",
-        "Llevas 8",
-        "Yolanda Díaz",
-        "Junts"
+        "Mara",
+        "Morata",
+        "Paola",
+        "Antonio Banderas",
+        "Patriotismo"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 28, 2026 21:00 UTC",
-      "age_minutes": 91.3,
-      "freshness": "stale",
-      "fetched_at": "2026-09-29T00:31:16+02:00"
+      "update_hint": "Trending now Sep 28, 2026 22:00 UTC",
+      "age_minutes": 40.9,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-29T00:40:56+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -416,18 +419,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 28, 2026 at 10:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 #Fi",
-      "age_minutes": 151.3,
+      "age_minutes": 160.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T00:31:16+02:00"
+      "fetched_at": "2026-09-29T00:40:56+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790634678",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790635257",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T00:31:18+02:00"
+      "fetched_at": "2026-09-29T00:40:57+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -436,7 +439,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T00:31:19+02:00"
+      "fetched_at": "2026-09-29T00:40:58+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -466,16 +469,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T00:31:19+02:00"
+      "fetched_at": "2026-09-29T00:40:58+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790634681",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790635260",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T00:31:21+02:00"
+      "fetched_at": "2026-09-29T00:41:00+02:00"
     }
   }
 }
