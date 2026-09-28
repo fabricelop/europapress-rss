@@ -373,6 +373,7 @@ function renderSheetRemateRating(item){
    b.setAttribute("aria-pressed",String(n===current));b.disabled=saving;
    b.onclick=async()=>{
     if(saving)return;
+    if(!token()){$("explainedSheet").classList.remove("show");$("tokenInput").value="";$("sheet").classList.add("show");showToast("Configura el token de control para puntuar");return}
     saving=true;draw();
     try{
      const response=await api("rate-remate",[],{rating_key:item.rating_key,rating:n});
