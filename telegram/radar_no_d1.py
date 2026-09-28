@@ -1,5 +1,6 @@
 import json, base64,re,unicodedata,urllib.request,urllib.parse,urllib.error,html,os,hashlib,concurrent.futures,sys
 from functools import lru_cache
+from itertools import combinations
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
 
@@ -197,7 +198,7 @@ EVENT_ACTION_ALIASES={
  "demandar":"demanda","demanda":"demanda","denunciar":"denuncia","denuncia":"denuncia",
  "detener":"detencion","detenido":"detencion","detenida":"detencion","arresto":"detencion",
  "morir":"muerte","muere":"muerte","fallecer":"muerte","fallece":"muerte",
- "dimitir":"dimision","dimite":"dimision","renunciar":"dimision","renuncia":"dimision",
+ "dimitir":"dimision","dimite":"dimision","renunciar":"dimision","renuncia":"dimision","cese":"dimision","cesar":"dimision","relevo":"dimision","abandona":"dimision","abandonar":"dimision",
  "ganar":"victoria","gana":"victoria","vencer":"victoria","vence":"victoria",
  "perder":"derrota","pierde":"derrota","derrota":"derrota",
  "aprobar":"aprobacion","aprueba":"aprobacion","avalar":"aprobacion","avala":"aprobacion",
@@ -442,6 +443,52 @@ def add_appearance(e,row,now):
 
 def titles_match(a,b):
  return score(a,b)>=0.50 or same_event_semantic(a,b)
+
+def evidence_title_eligible(title):
+ tokens=fp(title);distinctive=tokens-GENERIC_MATCH
+ lowered=" ".join(norm(title))
+ # Etiquetas de sección, portadas y titulares temáticos genéricos no corroboran
+ # por sí solos un acontecimiento concreto.
+ if len(tokens)<5 or len(distinctive)<3:return False
+ if lowered.startswith(("portada ","noticias ","ultima hora ","guerra ")):return False
+ return True
+
+def has_independent_evidence_clique(e,min_families):
+ # Descubrir por similitud puede ser flexible; cruzar el umbral exige un núcleo
+ # de familias independientes cuyas evidencias coincidan todas entre sí.
+ # A≈B y B≈C no implica que A, B y C sean el mismo acontecimiento.
+ apps=[a for a in e.get("appearances",[]) if a.get("source_type","general")=="general" and a.get("source") and evidence_title_eligible(a.get("title",""))]
+ if len({source_family(a["source"]) for a in apps})<min_families:return False
+ for group in combinations(apps,min_families):
+  if len({source_family(a["source"]) for a in group})!=min_families:continue
+  if all(titles_match(a.get("title",""),b.get("title","")) for a,b in combinations(group,2)):return True
+ return False
+
+def run_grouping_regressions():
+ def event(rows):return {"appearances":[{"source":s,"source_type":"general","title":t} for s,t in rows]}
+ ceuta=event([
+  ("EL PAÍS","El Gobierno ultima el cese del delegado en Ceuta"),
+  ("laSexta Noticias","El Ejecutivo ultima el cese del delegado del Gobierno en Ceuta"),
+  ("Público","El delegado del Gobierno en Ceuta abandona el cargo"),
+  ("Europa Press","El Gobierno prepara el relevo del delegado del Gobierno en Ceuta tras comunicar su deseo de no continuar en el cargo"),
+ ])
+ kyiv=event([
+  ("Europa Press","Al menos dos muertos y ocho heridos en Kiev tras otra noche de ataques rusos con drones y misiles"),
+  ("laSexta Noticias","Rusia boicotea ayuda humanitaria a la ciudad ocupada de Oleshki y dispara el riesgo de hambruna"),
+  ("EFE","Guerra de Ucrania"),
+  ("La Vanguardia","¿Estamos en guerra?"),
+ ])
+ generic=event([
+  ("El Mundo","Portada de EL MUNDO del lunes 28 de septiembre de 2026"),
+  ("20minutos","Tu horóscopo diario: lunes 28 de septiembre de 2026"),
+  ("Europa Press","El tiempo en La Rioja para hoy, lunes 28 de septiembre de 2026"),
+  ("Antena 3 Noticias","Noticias de hoy, domingo 27 de septiembre de 2026"),
+ ])
+ if not has_independent_evidence_clique(ceuta,4):raise RuntimeError("Regresión: el caso Ceuta debería ser coherente")
+ if has_independent_evidence_clique(kyiv,4):raise RuntimeError("Regresión: se mezclaron hechos distintos sobre Ucrania")
+ if has_independent_evidence_clique(generic,4):raise RuntimeError("Regresión: se mezclaron portada, horóscopo y tiempo")
+
+run_grouping_regressions()
 
 def event_variants(e):
  out=[e.get("canonical_title","")]
@@ -1024,7 +1071,7 @@ new_processed=[]
 for e in list(events):
  n=e.get("source_count",0)
  status=e.get("status")
- if status=="WAITING" and n>=REVIEW_MIN:
+ if status=="WAITING" and n>=REVIEW_MIN and has_independent_evidence_clique(e,REVIEW_MIN):
   if web_mode:
    e["status"]="ELIGIBLE"
    e["eligible_at"]=e.get("eligible_at") or iso(now)
@@ -1035,7 +1082,7 @@ for e in list(events):
     if did_send: sent+=1
    e["status"]="SENT_REVIEW";e["notified"]=True
    new_processed.append(processed_snapshot(e,"SENT_REVIEW",now))
- elif (not web_mode) and status=="WAITING" and n==FAST_TRACK_MIN and not e.get("fast_track_notified") and not e.get("notified"):
+ elif (not web_mode) and status=="WAITING" and n==FAST_TRACK_MIN and has_independent_evidence_clique(e,FAST_TRACK_MIN) and not e.get("fast_track_notified") and not e.get("notified"):
   mins=fast_track_minutes(e)
   if mins is not None and mins<=FAST_TRACK_WINDOW_MIN:
    # FAST_TRACK y revisión normal son una sola notificación editorial.
@@ -1047,7 +1094,7 @@ for e in list(events):
    e["fast_track_minutes"]=round(mins,1)
    new_processed.append(processed_snapshot(e,"FAST_TRACK_ALERT",now))
    if did_send: sent+=1
- elif status=="UPDATE_WAITING" and n>=REVIEW_MIN:
+ elif status=="UPDATE_WAITING" and n>=REVIEW_MIN and has_independent_evidence_clique(e,REVIEW_MIN):
   if web_mode:
    e["status"]="ELIGIBLE_UPDATE"
    e["eligible_at"]=e.get("eligible_at") or iso(now)
