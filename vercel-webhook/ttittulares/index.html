@@ -396,7 +396,7 @@ function mountRemateRating(host,variant){
 function variants(item){
  if(Array.isArray(item.variants)&&item.variants.length)return item.variants;
  const out=[];if(item.primary?.text)out.push({label:"Principal",text:item.primary.text,url:item.primary.url,remate:""});
- for(const [i,a] of (item.alternatives||[]).entries())out.push({label:String.fromCharCode(65+i),text:a.tweet_text||a.text||"",url:a.url,remate:a.remate||""});
+ for(const [i,a] of (item.alternatives||[]).entries())out.push({label:String.fromCharCode(65+i),text:a.tweet_text||a.text||"",url:a.url,remate:a.remate||"",rating_key:a.rating_key||null,remate_rating:a.remate_rating??null,remate_rated_at:a.remate_rated_at||null});
  return out
 }
 function setView(next){view=next;document.querySelectorAll(".stat").forEach(x=>x.classList.toggle("active",x.dataset.view===view));renderList()}
