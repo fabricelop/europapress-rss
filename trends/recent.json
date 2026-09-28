@@ -1,23 +1,20 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T15:01:24+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-28T15:11:14+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
     "superx",
     "snaplytics",
-    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
     "Puerta del Sol",
@@ -99,7 +96,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T13:40:56+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -120,7 +117,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 17.3,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T13:10:57+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -140,7 +137,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.2,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T12:31:07+02:00",
       "news_source_count": 2,
       "news_event_id": "21edcab4e5fd",
@@ -160,7 +157,7 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 15.6,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T08:10:54+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -180,7 +177,7 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 16.2,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T12:10:58+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -200,7 +197,7 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 17.0,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T13:40:56+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -220,7 +217,7 @@
       ],
       "best_observed_rank": 19,
       "mean_observed_rank": 19.2,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T12:31:07+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -239,7 +236,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T14:50:56+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -279,7 +276,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T15:01:24+02:00"
+      "fetched_at": "2026-09-28T15:11:14+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -304,7 +301,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T15:01:25+02:00"
+      "fetched_at": "2026-09-28T15:11:15+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -331,10 +328,10 @@
         "La Bola Negra"
       ],
       "error": null,
-      "update_hint": "Updated 40 minutes ago",
-      "age_minutes": 40.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-28T15:01:39+02:00"
+      "update_hint": "Updated 49 minutes ago",
+      "age_minutes": 49.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-28T15:11:17+02:00"
     },
     "superx": {
       "ok": true,
@@ -364,16 +361,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T15:01:40+02:00"
+      "fetched_at": "2026-09-28T15:11:18+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790600500",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790601078",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T15:01:40+02:00"
+      "fetched_at": "2026-09-28T15:11:18+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -401,9 +398,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 28, 2026 12:00 UTC",
-      "age_minutes": 61.7,
+      "age_minutes": 71.3,
       "freshness": "aging",
-      "fetched_at": "2026-09-28T15:01:40+02:00"
+      "fetched_at": "2026-09-28T15:11:18+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -431,18 +428,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 28, 2026 at 01:01 PM # Trend Type Actions 1 Puerta del Sol Topic 2 #Co",
-      "age_minutes": 120.7,
+      "age_minutes": 130.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T15:01:41+02:00"
+      "fetched_at": "2026-09-28T15:11:19+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 522 Server Error: <none> for url: https://trends.cyberkendra.com/spain/?_=1790600502",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790601080",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T15:01:42+02:00"
+      "fetched_at": "2026-09-28T15:11:20+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -451,7 +448,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-28T15:02:02+02:00"
+      "fetched_at": "2026-09-28T15:11:20+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -481,16 +478,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T15:02:02+02:00"
+      "fetched_at": "2026-09-28T15:11:20+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790600526",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790601084",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T15:02:06+02:00"
+      "fetched_at": "2026-09-28T15:11:24+02:00"
     }
   }
 }
