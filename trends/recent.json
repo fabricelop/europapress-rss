@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T05:31:09+02:00",
+  "captured_at": "2026-09-28T05:40:52+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -13,11 +13,12 @@
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "#ConexiónHonduras3",
     "Puerta del Sol",
@@ -87,17 +88,18 @@
   "upcoming": [
     {
       "name": "La Bola Negra",
-      "social_source_count": 5,
+      "social_source_count": 6,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "superx",
         "trends24",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.6,
-      "movement": "down",
+      "best_observed_rank": 12,
+      "mean_observed_rank": 14.2,
+      "movement": "up",
       "first_detected_at": "2026-09-28T03:21:05+02:00",
       "news_source_count": 1,
       "news_event_id": "3596aa332ab4",
@@ -107,22 +109,119 @@
     },
     {
       "name": "#SalvadosRufián",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.2,
-      "movement": "down",
+      "mean_observed_rank": 11.8,
+      "movement": "up",
       "first_detected_at": "2026-09-28T03:40:49+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
+    },
+    {
+      "name": "Pablo Vázquez",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 15.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T03:11:00+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Colapinto",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 17.8,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T04:10:52+02:00",
+      "news_source_count": 2,
+      "news_event_id": "b2f2f1dbbe35",
+      "news_title": "Alpine denuncia el acoso en redes tras la polémica en Bakú entre Colapinto y Norris: \"Se ha convertido en un hecho habitual en las últimas carreras y no se puede tolerar\" - COPE",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-27T10:11:19.861103Z"
+    },
+    {
+      "name": "Yola",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.5,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T05:31:09+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Oyarzabal",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 15.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T03:40:49+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Wembley",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 16.5,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T04:10:52+02:00",
+      "news_source_count": 1,
+      "news_event_id": "73f70c83b4d2",
+      "news_title": "De la discoteca de Buenos Aires a la conquista de Wembley",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-27T14:52:31.404874Z"
     },
     {
       "name": "Gelabert",
@@ -135,104 +234,13 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.5,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T03:40:49+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Pablo Vázquez",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.5,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T03:11:00+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Colapinto",
-      "social_source_count": 3,
-      "social_sources": [
-        "superx",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 17.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T04:10:52+02:00",
-      "news_source_count": 2,
-      "news_event_id": "b2f2f1dbbe35",
-      "news_title": "Alpine denuncia el acoso en redes tras la polémica en Bakú entre Colapinto y Norris: \"Se ha convertido en un hecho habitual en las últimas carreras y no se puede tolerar\" - COPE",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T10:11:19.861103Z"
-    },
-    {
-      "name": "Oyarzabal",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 15.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T03:40:49+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Yola",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-28T05:31:09+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Wembley",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.3,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T04:10:52+02:00",
-      "news_source_count": 1,
-      "news_event_id": "73f70c83b4d2",
-      "news_title": "De la discoteca de Buenos Aires a la conquista de Wembley",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T14:52:31.404874Z"
     }
   ],
   "anticipated_entries": [],
@@ -266,7 +274,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T05:31:09+02:00"
+      "fetched_at": "2026-09-28T05:40:52+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -291,7 +299,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T05:31:10+02:00"
+      "fetched_at": "2026-09-28T05:40:53+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -318,10 +326,10 @@
         "Colapinto"
       ],
       "error": null,
-      "update_hint": "Updated 22 minutes ago",
-      "age_minutes": 22.0,
+      "update_hint": "Updated 31 minutes ago",
+      "age_minutes": 31.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-28T05:31:10+02:00"
+      "fetched_at": "2026-09-28T05:40:54+02:00"
     },
     "superx": {
       "ok": true,
@@ -351,16 +359,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T05:31:11+02:00"
+      "fetched_at": "2026-09-28T05:40:55+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790566272",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790566855",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T05:31:12+02:00"
+      "fetched_at": "2026-09-28T05:40:55+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -369,28 +377,28 @@
         "Puerta del Sol",
         "Galapagar",
         "#VMAs",
-        "Asraf",
-        "Yola",
         "#DragRaceEs",
-        "McNulty",
+        "Asraf",
         "Inglaterra",
+        "McNulty",
         "15 M",
-        "#FelizDomingo",
-        "#SalvadosRufián",
         "Gelabert",
+        "Yola",
         "La Bola Negra",
         "Pablo Vázquez",
+        "#SalvadosRufián",
+        "Madonna",
         "Oyarzabal",
         "Wembley",
-        "Madonna",
+        "#Montreal2026",
         "Rosa Benito",
         "Colapinto"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 28, 2026 02:00 UTC",
-      "age_minutes": 91.2,
-      "freshness": "stale",
-      "fetched_at": "2026-09-28T05:31:12+02:00"
+      "update_hint": "Trending now Sep 28, 2026 03:00 UTC",
+      "age_minutes": 40.9,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-28T05:40:55+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -418,18 +426,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 28, 2026 at 03:00 AM # Trend Type Actions 1 #ConexiónHonduras3 Hashtag",
-      "age_minutes": 151.2,
+      "age_minutes": 160.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T05:31:12+02:00"
+      "fetched_at": "2026-09-28T05:40:55+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790566273",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790566857",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T05:31:13+02:00"
+      "fetched_at": "2026-09-28T05:40:57+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -438,7 +446,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-28T05:31:14+02:00"
+      "fetched_at": "2026-09-28T05:40:58+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -468,16 +476,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T05:31:15+02:00"
+      "fetched_at": "2026-09-28T05:40:59+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790566277",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790566861",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T05:31:17+02:00"
+      "fetched_at": "2026-09-28T05:41:01+02:00"
     }
   }
 }
