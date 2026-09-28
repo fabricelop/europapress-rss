@@ -1,11 +1,16 @@
-name: TTendencias remate rating checks
+name: Validar remates TTendencias y TTiTTulares
 
 on:
   push:
     branches: [main]
     paths:
       - "vercel-webhook/lib/ttendencias-remate-ratings.js"
-      - "vercel-webhook/test/ttendencias-remate-ratings.test.js"
+      - "vercel-webhook/lib/ttittulares-remate-ratings.js"
+      - "vercel-webhook/test/*remate-ratings.test.js"
+      - "vercel-webhook/api/ttendencias-control.js"
+      - "vercel-webhook/api/ttittulares-control.js"
+      - "vercel-webhook/ttendencias/**"
+      - "vercel-webhook/ttittulares/**"
       - ".github/workflows/ttendencias-remate-rating-tests.yml"
   workflow_dispatch:
 
@@ -13,32 +18,53 @@ permissions:
   contents: read
 
 jobs:
-  validate-ratings:
+  validate-both:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Parse source and endpoint
+      - name: Verificar JavaScript del backend y helpers
         run: |
           node --check vercel-webhook/lib/ttendencias-remate-ratings.js
+          node --check vercel-webhook/lib/ttittulares-remate-ratings.js
           node --check vercel-webhook/api/ttendencias-control.js
-      - name: Parse app inline JavaScript
+          node --check vercel-webhook/api/ttittulares-control.js
+      - name: Verificar scripts de ambas apps
         run: |
-          node --input-type=module -e '
-            import fs from "node:fs";
-            import os from "node:os";
-            import path from "node:path";
-            import { execFileSync } from "node:child_process";
-            for (const page of ["vercel-webhook/ttendencias/index.html", "vercel-webhook/ttendencias/explicadas/index.html"]) {
-              const html = fs.readFileSync(page, "utf8");
-              const match = html.match(/<script>([\s\S]*?)<\/script>/);
-              if (!match) throw new Error("Missing inline script: " + page);
-              const file = path.join(os.tmpdir(), "ttendencias-check-" + path.basename(path.dirname(page)) + ".mjs");
-              fs.writeFileSync(file, match[1]);
-              execFileSync(process.execPath, ["--check", file], { stdio: "inherit" });
-            }
-          '
-      - name: Validate identity, scores and stale revisions
-        run: node --test vercel-webhook/test/ttendencias-remate-ratings.test.js
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          pages = [
+            "vercel-webhook/ttendencias/index.html",
+            "vercel-webhook/ttendencias/explicadas/index.html",
+            "vercel-webhook/ttittulares/index.html",
+          ]
+          for i, page in enumerate(pages):
+            scripts = re.findall(r'<script>([\s\S]*?)</script>', Path(page).read_text(encoding="utf8"), flags=re.I)
+            assert scripts, f"Missing inline scripts: {page}"
+            Path(f"/tmp/remate-check-{i}.js").write_text("\n".join(scripts), encoding="utf8")
+          PY
+          for script in /tmp/remate-check-*.js; do node --check "$script"; done
+      - name: Pruebas de identidad por revisión, estrellas y compatibilidad
+        run: |
+          node --test vercel-webhook/test/ttendencias-remate-ratings.test.js vercel-webhook/test/ttittulares-remate-ratings.test.js
+      - name: Contrato de interfaces y aprendizaje
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          t = Path("vercel-webhook/ttendencias/explicadas/index.html").read_text()
+          m = Path("vercel-webhook/ttendencias/index.html").read_text()
+          i = Path("vercel-webhook/ttittulares/index.html").read_text()
+          assert "renderRemateRating" in t and "rate-remate" in t
+          assert "renderSheetRemateRating" not in m
+          assert "mountRemateRating" in i and "rate-remate" in i
+          assert "Pedir otro remate" not in t + m + i
+          assert json.loads(Path("trends/remate-ratings.json").read_text())["version"] == 1
+          assert json.loads(Path("ttittulares/remate-ratings.json").read_text())["version"] == 1
+          assert "remate-ratings.json" in Path("trends/editorial-run-prompt.md").read_text()
+          assert "remate-ratings.json" in Path("ttittulares/editorial-run-prompt.md").read_text()
+          print("BOTH_PROJECTS_OK")
+          PY
