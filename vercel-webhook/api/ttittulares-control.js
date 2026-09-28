@@ -1,8 +1,10 @@
 import crypto from "node:crypto";
+import { annotateTitularRemates, titularRemateIdentity, titularRemateVariants, buildTitularRemateRecord } from "../lib/ttittulares-remate-ratings.js";
 
 const REPO=process.env.GITHUB_REPO||"fabricelop/europapress-rss";
 const BRANCH=process.env.GITHUB_BRANCH||"main";
 const PREPARED="ttittulares/prepared.json";
+const REMATE_RATINGS="ttittulares/remate-ratings.json";
 const DECISIONS="ttittulares/decisions.json";
 const PROCESSING="telegram/editorial-processing.json";
 const EVENTS="telegram/events.json";
@@ -439,14 +441,41 @@ async function backendStatus(){
   ]);
   return {ok:config.ok&&status.ok,status:config.ok&&status.ok?200:503}
 }
+// Persist one editable score for the exact prepared variant and revision. No client-supplied text.
+async function rateTitularRemate(key, score){
+  const ratingKey=String(key||"").trim(),rating=Number(score);
+  if(!/^titular-remate-v1:[a-f0-9]{24}$/.test(ratingKey)||!Number.isInteger(rating)||rating<1||rating>5){
+    const error=new Error("Envía un remate A/B/C válido y una valoración entera de 1 a 5.");error.statusCode=400;throw error;
+  }
+  const {doc:prepared}=await readJson(PREPARED);
+  let item=null,variant=null;
+  for(const candidate of prepared.items||[]){
+    const match=titularRemateVariants(candidate).find(v=>titularRemateIdentity(candidate,v)===ratingKey);
+    if(match){item=candidate;variant=match;break}
+  }
+  if(!item){const error=new Error("Esta variante ya no está disponible o su texto ha cambiado.");error.statusCode=409;throw error}
+  const now=new Date().toISOString();let saved;
+  await mutateJson(REMATE_RATINGS,"TTiTTulares: valorar remate A/B/C",doc=>{
+    doc.project||="TTiTTulares";doc.version||=1;doc.items||=[];
+    let record=doc.items.find(r=>r.key===ratingKey);
+    if(record&&record.rating===rating){saved=record;return doc}
+    const next=buildTitularRemateRecord(item,variant,rating,now);
+    if(record){Object.assign(record,next,{created_at:record.created_at||now});saved=record}
+    else{doc.items.push(next);saved=next}
+    doc.updated_at=now;
+    return doc;
+  });
+  return {ok:true,rating_key:ratingKey,rating:saved.rating,rated_at:saved.updated_at};
+}
+
 export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   try{
     if(req.method==="GET"){
       if(String(req.query?.view||"")==="image-proxy")return await proxyPreparedImage(req.query?.url,res);
-      const [prepared,status,config,queue,events,decisions,manualArchive,trendCandidates]=await Promise.all([
+      const [prepared,status,config,queue,events,decisions,manualArchive,trendCandidates,remateRatings]=await Promise.all([
         readJson(PREPARED),readJson("ttittulares/status.json"),readJson("ttittulares/config.json"),
-        readJson(PROCESSING),readJson(EVENTS),readJson(DECISIONS),readJson(MANUAL_ARCHIVE),readJson(TREND_CANDIDATES)
+        readJson(PROCESSING),readJson(EVENTS),readJson(DECISIONS),readJson(MANUAL_ARCHIVE),readJson(TREND_CANDIDATES),readJson(REMATE_RATINGS)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const closedIds=new Set((decisions.doc?.items||[])
@@ -528,12 +557,13 @@ export default async function handler(req,res){
         return av-bv||String(b.first_seen||"").localeCompare(String(a.first_seen||""))
       });
       const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,problematic_count:problematicItems.length+trendCandidateItems.length,problematic_items:problematicItems,trend_candidates_count:trendCandidateItems.length,trend_candidates:trendCandidateItems,ready_count:visiblePrepared.length,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
-      return res.status(200).json({ok:true,service:"ttittulares-control",prepared:{...(prepared.doc||{}),items:visiblePrepared},status:liveStatus,config:config.doc})
+      return res.status(200).json({ok:true,service:"ttittulares-control",prepared:annotateTitularRemates({...(prepared.doc||{}),items:visiblePrepared},remateRatings.doc),status:liveStatus,config:config.doc})
     }
     if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
     if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
     const body=req.body||{},action=String(body.action||"");
     if(action==="ping"){const backend=await backendStatus();return res.status(backend.ok?200:503).json({ok:backend.ok,access:"granted",backend})}
+    if(action==="rate-remate")return res.status(200).json(await rateTitularRemate(body.rating_key,body.rating));
     if(action==="published")return res.status(200).json(await closePrepared(body.event_id,"published"));
     if(action==="dismiss")return res.status(200).json(await closePrepared(body.event_id,"dismissed"));
     if(action==="rework")return res.status(200).json(await rework(body.event_id,body.instruction));
