@@ -6,6 +6,11 @@ import {
   buildCopyRecord,
   explanationCopyIdentity,
 } from "../lib/ttendencias-copy-state.js";
+import {
+  annotateRemateRatings,
+  buildRemateRatingRecord,
+  remateRatingIdentity,
+} from "../lib/ttendencias-remate-ratings.js";
 
 const REPO = process.env.GITHUB_REPO || "fabricelop/europapress-rss";
 const BRANCH = process.env.GITHUB_BRANCH || "main";
@@ -13,6 +18,7 @@ const RECENT = "trends/recent.json";
 const REQUESTS = "trends/requests.json";
 const EXPLAINED = "trends/telegram-manual-explained.json";
 const EXPLAINED_COPY_STATE = "trends/explained-copy-state.json";
+const REMATE_RATINGS = "trends/remate-ratings.json";
 const PREPARED = "trends/prepared.json";
 const HEALTH = "trends/health-status.json";
 const EDITORIAL_CONFIG = "trends/editorial-config.json";
@@ -766,8 +772,45 @@ async function markExplanationCopied(copyKey) {
   return { ok: true, copy_key: key, copied: true, copied_at: record?.copied_at || now };
 }
 
+// Una sola valoración editable por versión exacta de explicación/remate.
+// Toda lectura y escritura se valida contra el registro vivo, no contra el navegador.
+async function rateRemate(ratingKey, rating) {
+  const key = String(ratingKey || "").trim();
+  const value = Number(rating);
+  if (!/^remate-v1:[a-f0-9]{24}$/.test(key) ||
+      !Number.isInteger(value) || value < 1 || value > 5) {
+    throw new Error("Clave o valoración de remate no válida.");
+  }
+  const { doc: explained } = await readJson(EXPLAINED);
+  const item = (explained.items || []).find(entry => remateRatingIdentity(entry) === key);
+  if (!item) throw new Error("Esta versión de la explicación ya no está disponible.");
+  const now = new Date().toISOString();
+  let saved;
+  await mutateJson(REMATE_RATINGS, "TTendencias: valorar remate editorial", doc => {
+    doc.project ||= "TTendencias";
+    doc.version ||= 1;
+    doc.items ||= [];
+    const existing = doc.items.find(entry => entry?.key === key);
+    if (existing && existing.rating === value) { saved = existing; return doc; }
+    const record = buildRemateRatingRecord(item, value, now);
+    if (existing) {
+      Object.assign(existing, record, { created_at: existing.created_at || now });
+      saved = existing;
+    } else {
+      doc.items.push(record);
+      saved = record;
+    }
+    doc.updated_at = now;
+    return doc;
+  });
+  return {
+    ok: true, rating_key: key, rating: saved.rating,
+    rated_at: saved.updated_at,
+  };
+}
+
 async function stateSnapshot() {
-  const [recent, requests, explained, explainedCopyState, health, prepared, editorialConfig, editorialQueue] = await Promise.all([
+  const [recent, requests, explained, explainedCopyState, health, prepared, editorialConfig, editorialQueue, remateRatings] = await Promise.all([
     readJson(RECENT),
     readJson(REQUESTS),
     readJson(EXPLAINED),
@@ -776,6 +819,7 @@ async function stateSnapshot() {
     readJson(PREPARED),
     readJson(EDITORIAL_CONFIG),
     readJson(EDITORIAL_QUEUE),
+    readJson(REMATE_RATINGS),
   ]);
 
   // Autorreparación del refresco: si GitHub retrasa o pierde ejecuciones cron,
@@ -809,7 +853,7 @@ async function stateSnapshot() {
     fetched_at: new Date().toISOString(),
     recent: recent.doc,
     requests: requests.doc,
-    explained: annotateExplainedCopyState(explained.doc, explainedCopyState.doc),
+    explained: annotateRemateRatings(annotateExplainedCopyState(explained.doc, explainedCopyState.doc), remateRatings.doc),
     explained_copy_state: explainedCopyState.doc,
     health: health.doc,
     prepared: prepared.doc,
@@ -899,6 +943,13 @@ export default async function handler(req, res) {
     if (action === "queue-upcoming") return res.status(200).json(await queueUpcomingNames(body.names));
     if (action === "explained") return res.status(200).json(await markExplained(body.names));
     if (action === "copy-explained") return res.status(200).json(await markExplanationCopied(body.copy_key));
+    if (action === "rate-remate") {
+      if (!/^remate-v1:[a-f0-9]{24}$/.test(String(body.rating_key || "")) ||
+          !Number.isInteger(body.rating) || body.rating < 1 || body.rating > 5) {
+        return res.status(400).json({ ok: false, error: "Envía una explicación válida y de 1 a 5 estrellas." });
+      }
+      return res.status(200).json(await rateRemate(body.rating_key, body.rating));
+    }
     if (action === "discard") return res.status(200).json(await discardNames(body.names));
     if (action === "retry") return res.status(200).json(await retryNames(body.names));
     if (action === "rework") return res.status(200).json(await reworkNames(body.names, body.instruction));
