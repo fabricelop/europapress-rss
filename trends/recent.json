@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T23:31:01+02:00",
+  "captured_at": "2026-09-28T23:40:53+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -13,11 +13,12 @@
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "Puerta del Sol",
     "#Horizonte",
@@ -87,16 +88,17 @@
   "upcoming": [
     {
       "name": "Sindicato de Inquilinas",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
+        "snaplytics",
         "superx",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 14.5,
-      "movement": "down",
+      "mean_observed_rank": 15.6,
+      "movement": "up",
       "first_detected_at": "2026-09-28T21:39:45+02:00",
       "news_source_count": 3,
       "news_event_id": "455b24013ff7",
@@ -105,79 +107,60 @@
       "news_first_seen": "2026-09-28T21:13:53.587728Z"
     },
     {
-      "name": "#TEM28S",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.8,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T23:11:14+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Gelabert",
-      "social_source_count": 4,
-      "social_sources": [
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 17.2,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T21:39:45+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Mari Carmen",
-      "social_source_count": 4,
-      "social_sources": [
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 16.8,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T12:10:58+02:00",
-      "news_source_count": 1,
-      "news_event_id": "f90766565797",
-      "news_title": "Centenares de persones presionan para que el gobierno apruebe el 'decreto Mari Carmen': \"Siento rabia\"",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-28T18:04:12.837512Z"
-    },
-    {
       "name": "Llevas 8",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 14.3,
-      "movement": "down",
+      "mean_observed_rank": 16.5,
+      "movement": "up",
       "first_detected_at": "2026-09-28T22:21:12+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
+    },
+    {
+      "name": "Yolanda Díaz",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 17.5,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T16:01:53+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Castellón",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T23:40:53+02:00",
+      "news_source_count": 4,
+      "news_event_id": "51b171523563",
+      "news_title": "Hallan muerto cerca del pico Gabieto, en el Pirineo aragonés, a un montañero de Castellón que desapareció en Francia",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-28T15:32:31.785272Z"
     },
     {
       "name": "Almeida",
@@ -187,9 +170,9 @@
         "trends24",
         "tweets24"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 17.0,
-      "movement": "down",
+      "best_observed_rank": 11,
+      "mean_observed_rank": 14.7,
+      "movement": "up",
       "first_detected_at": "2026-09-28T22:40:59+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -198,17 +181,17 @@
       "news_first_seen": null
     },
     {
-      "name": "Yolanda Díaz",
+      "name": "#TEM28S",
       "social_source_count": 3,
       "social_sources": [
-        "trends24",
+        "getdaytrends",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.3,
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.0,
       "movement": "down",
-      "first_detected_at": "2026-09-28T16:01:53+02:00",
+      "first_detected_at": "2026-09-28T23:11:14+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -216,17 +199,35 @@
       "news_first_seen": null
     },
     {
-      "name": "McNulty",
+      "name": "Patriotismo",
       "social_source_count": 3,
       "social_sources": [
-        "trends24",
+        "getdaytrends",
+        "snaplytics",
+        "trends24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 14.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T23:40:53+02:00",
+      "news_source_count": 1,
+      "news_event_id": "f54a8fe526f9",
+      "news_title": "Sánchez: “Patriotismo es evitar que una anciana acabe en la calle”",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-28T20:22:19.923045Z"
+    },
+    {
+      "name": "Gelabert",
+      "social_source_count": 3,
+      "social_sources": [
+        "superx",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 19.3,
-      "movement": "new",
-      "first_detected_at": "2026-09-28T23:31:01+02:00",
+      "best_observed_rank": 12,
+      "mean_observed_rank": 16.7,
+      "movement": "down",
+      "first_detected_at": "2026-09-28T21:39:45+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -241,31 +242,31 @@
       "ok": true,
       "trends": [
         "Puerta del Sol",
+        "#LaIslaDeLasTentaciones7",
         "#Horizonte",
         "#firstdates28s",
         "#ConexiónHonduras3",
-        "Galapagar",
-        "Ndongo",
         "Morata",
-        "#FelizLunes",
+        "Olise",
+        "Ndongo",
+        "Galapagar",
         "Antonio Banderas",
+        "Almeida",
+        "#FelizLunes",
+        "Castellón",
         "Ortega Smith",
-        "#TEM28S",
+        "Patriotismo",
         "ES-Alert",
         "Sindicato de Inquilinas",
+        "Amaia",
         "Llevas 8",
-        "Yolanda Díaz",
-        "Suero",
-        "Mari Carmen",
-        "Almeida",
-        "Gelabert",
-        "McNulty"
+        "Yolanda Díaz"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T23:31:01+02:00"
+      "fetched_at": "2026-09-28T23:40:53+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -290,7 +291,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T23:31:01+02:00"
+      "fetched_at": "2026-09-28T23:40:54+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -317,10 +318,10 @@
         "McNulty"
       ],
       "error": null,
-      "update_hint": "Updated 31 minutes ago",
-      "age_minutes": 31.0,
+      "update_hint": "Updated 40 minutes ago",
+      "age_minutes": 40.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-28T23:31:02+02:00"
+      "fetched_at": "2026-09-28T23:40:54+02:00"
     },
     "superx": {
       "ok": true,
@@ -350,46 +351,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T23:31:03+02:00"
+      "fetched_at": "2026-09-28T23:40:55+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790631064",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790631655",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T23:31:04+02:00"
+      "fetched_at": "2026-09-28T23:40:55+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "Puerta del Sol",
+        "#LaIslaDeLasTentaciones7",
         "#Horizonte",
         "#firstdates28s",
         "#ConexiónHonduras3",
-        "Galapagar",
-        "Ndongo",
         "Morata",
-        "#FelizLunes",
-        "Ortega Smith",
+        "Ndongo",
+        "Olise",
+        "Galapagar",
+        "Almeida",
         "Antonio Banderas",
-        "#TEM28S",
-        "ES-Alert",
+        "#FelizLunes",
+        "Castellón",
+        "Ortega Smith",
+        "Patriotismo",
         "Sindicato de Inquilinas",
+        "Amaia",
         "Llevas 8",
         "Yolanda Díaz",
-        "Suero",
-        "Almeida",
-        "Mari Carmen",
-        "Gelabert",
-        "Castellón"
+        "Junts"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 28, 2026 20:00 UTC",
-      "age_minutes": 91.1,
-      "freshness": "stale",
-      "fetched_at": "2026-09-28T23:31:05+02:00"
+      "update_hint": "Trending now Sep 28, 2026 21:00 UTC",
+      "age_minutes": 40.9,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-28T23:40:55+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -417,18 +418,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 28, 2026 at 09:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 #Co",
-      "age_minutes": 151.1,
+      "age_minutes": 160.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T23:31:05+02:00"
+      "fetched_at": "2026-09-28T23:40:56+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790631066",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790631657",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T23:31:06+02:00"
+      "fetched_at": "2026-09-28T23:40:57+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -437,7 +438,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-28T23:31:08+02:00"
+      "fetched_at": "2026-09-28T23:40:58+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -467,16 +468,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T23:31:08+02:00"
+      "fetched_at": "2026-09-28T23:40:59+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790631070",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790631661",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T23:31:10+02:00"
+      "fetched_at": "2026-09-28T23:41:01+02:00"
     }
   }
 }
