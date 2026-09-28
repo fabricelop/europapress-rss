@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T02:01:20+02:00",
+  "captured_at": "2026-09-28T02:10:54+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -96,9 +96,28 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 13.6,
-      "movement": "up",
+      "mean_observed_rank": 14.4,
+      "movement": "flat",
       "first_detected_at": "2026-09-28T01:40:53+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "GOTI",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 14.2,
+      "movement": "flat",
+      "first_detected_at": "2026-09-28T00:10:57+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -116,7 +135,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.0,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T01:31:08+02:00",
       "news_source_count": 1,
       "news_event_id": "b08c6488ac21",
@@ -125,61 +144,22 @@
       "news_first_seen": "2026-09-27T21:13:32.513110Z"
     },
     {
-      "name": "GOTI",
-      "social_source_count": 4,
+      "name": "Ivana",
+      "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
         "trends24",
-        "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 14.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-28T00:10:57+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Rosa Benito",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-28T00:40:55+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Barranco",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.5,
-      "movement": "up",
-      "first_detected_at": "2026-09-28T01:31:08+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T02:10:54+02:00",
+      "news_source_count": 1,
+      "news_event_id": "b08c6488ac21",
+      "news_title": "Encuesta: ¿Quién quieres que sea el salvado de 'Supervivientes All Stars': Asraf, Arkano, Ivana o Yulen? - El Televisero",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-27T21:13:32.513110Z"
     },
     {
       "name": "McNulty",
@@ -200,6 +180,42 @@
       "news_first_seen": "2026-09-27T19:43:28.464989Z"
     },
     {
+      "name": "Rosa Benito",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.3,
+      "movement": "down",
+      "first_detected_at": "2026-09-28T00:40:55+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Barranco",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 17.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-28T01:31:08+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
       "name": "Arkano",
       "social_source_count": 3,
       "social_sources": [
@@ -216,24 +232,6 @@
       "news_title": "Encuesta: ¿Quién quieres que sea el salvado de 'Supervivientes All Stars': Asraf, Arkano, Ivana o Yulen? - El Televisero",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-27T21:13:32.513110Z"
-    },
-    {
-      "name": "Larcamón",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 18.7,
-      "movement": "new",
-      "first_detected_at": "2026-09-28T02:01:20+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -267,32 +265,32 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T02:01:20+02:00"
+      "fetched_at": "2026-09-28T02:10:54+02:00"
     },
     "getdaytrends": {
       "ok": true,
       "trends": [
         "#ConexiónHonduras3",
+        "Asraf",
         "Yola",
+        "#VMAs",
+        "Rosa Benito",
         "Gelabert",
         "Sporting",
         "#DragRaceEs",
         "#SalvadosRufián",
         "Enzo Pérez",
-        "#NASCARenDAZN",
         "Ivana",
-        "McNulty",
-        "Pablo Vázquez",
+        "#NASCARenDAZN",
         "Goti",
-        "Rosa Benito",
         "Yulen",
-        "Barranco"
+        "Pablo Vázquez"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T02:01:20+02:00"
+      "fetched_at": "2026-09-28T02:10:55+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -319,10 +317,10 @@
         "Larcamón"
       ],
       "error": null,
-      "update_hint": "Updated 24 minutes ago",
-      "age_minutes": 24.0,
+      "update_hint": "Updated 33 minutes ago",
+      "age_minutes": 33.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-28T02:01:22+02:00"
+      "fetched_at": "2026-09-28T02:10:55+02:00"
     },
     "superx": {
       "ok": true,
@@ -352,16 +350,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T02:01:22+02:00"
+      "fetched_at": "2026-09-28T02:10:56+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790553683",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790554256",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T02:01:23+02:00"
+      "fetched_at": "2026-09-28T02:10:56+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -389,9 +387,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 27, 2026 23:00 UTC",
-      "age_minutes": 61.4,
+      "age_minutes": 71.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-28T02:01:23+02:00"
+      "fetched_at": "2026-09-28T02:10:57+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -419,18 +417,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 28, 2026 at 12:00 AM # Trend Type Actions 1 #ConexiónHonduras3 Hashtag",
-      "age_minutes": 121.4,
+      "age_minutes": 131.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T02:01:23+02:00"
+      "fetched_at": "2026-09-28T02:10:57+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790553685",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790554258",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T02:01:25+02:00"
+      "fetched_at": "2026-09-28T02:10:58+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -439,7 +437,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-28T02:01:26+02:00"
+      "fetched_at": "2026-09-28T02:10:59+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -469,16 +467,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T02:01:26+02:00"
+      "fetched_at": "2026-09-28T02:11:00+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790553688",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790554262",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T02:01:28+02:00"
+      "fetched_at": "2026-09-28T02:11:02+02:00"
     }
   }
 }
