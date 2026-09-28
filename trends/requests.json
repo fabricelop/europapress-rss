@@ -210,10 +210,10 @@
       "id": "012a4789404e",
       "name": "#BuenosDías",
       "rank": 5,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-09-28T09:31:59+02:00",
       "revision": 1,
-      "reexplain": true,
+      "reexplain": false,
       "with_image": false,
       "batch_id": "4996ff5ce1c4",
       "requested_together": [
@@ -232,7 +232,11 @@
         "15 M",
         "Inglaterra",
         "#LaHora28S"
-      ]
+      ],
+      "explained_at": "2026-09-28T08:31:14.804Z",
+      "explanation": "«#BuenosDías» vuelve a las tendencias de España este lunes 28 de septiembre por los saludos, mensajes de ánimo y publicaciones matinales de los usuarios de X. Es una etiqueta recurrente de conversación y no identifica una noticia concreta.",
+      "rank_at_explanation": 6,
+      "news_disposition": "ignored"
     },
     {
       "id": "f4f75d653a58",
@@ -6188,7 +6192,7 @@
       "id": "dc927b4ccc81",
       "name": "#LaHora28S",
       "rank": 10,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-09-28T09:31:59+02:00",
       "revision": 0,
       "reexplain": false,
@@ -6201,13 +6205,17 @@
       "captured_with": [
         "#LaHora28S"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "explained_at": "2026-09-28T08:31:14.804Z",
+      "explanation": "«#LaHora28S» acompaña la emisión de este lunes 28 de septiembre de «La hora de La 1», el matinal de actualidad de RTVE. Aída Bao y Álex Barreiro sustituyen hoy a Silvia Intxaurrondo; Barreiro conecta desde la Puerta del Sol de Madrid.",
+      "rank_at_explanation": 4,
+      "news_disposition": "ignored"
     },
     {
       "id": "a44820517073",
       "name": "Gobierno de Ceuta",
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-09-28T08:29:24.510Z",
       "rank": 11,
       "with_image": false,
@@ -6221,8 +6229,15 @@
       "requested_together": [
         "Gobierno de Ceuta"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "reexplain": false,
+      "explained_at": "2026-09-28T08:31:14.804Z",
+      "explanation": "«Gobierno de Ceuta» es tendencia por el relevo anunciado de Miguel Ángel Pérez Triano, delegado del Gobierno de España en la ciudad autónoma. Fuentes de Moncloa señalan que comunicó su deseo de no continuar; el cambio llega tras la crisis migratoria de julio. No se refiere al cese del Gobierno autonómico.",
+      "rank_at_explanation": 11,
+      "news_disposition": "ignored",
+      "duplicate_of": "bdf3d7af25a7",
+      "news_note": "Mismo relevo ya en PROCESSING en TTiTTulares; no crear puente duplicado."
     }
   ],
-  "updated_at": "2026-09-28T08:29:24.510Z"
+  "updated_at": "2026-09-28T08:31:14.804Z"
 }
