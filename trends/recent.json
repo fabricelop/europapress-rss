@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T12:50:47+02:00",
+  "captured_at": "2026-09-28T13:01:29+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -9,21 +9,22 @@
     "getdaytrends",
     "tweets24",
     "snaplytics",
-    "fowtools"
+    "fowtools",
+    "trendswe"
   ],
-  "source_count": 6,
-  "non_stale_source_count": 5,
+  "source_count": 7,
+  "non_stale_source_count": 6,
   "fresh_sources": [
     "tweets24"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "Puerta del Sol",
     "#ConexiónHonduras3",
     "Galapagar",
-    "#FelizLunes",
-    "#LaHora28S",
     "#EnBocaDeTodos",
+    "#FelizLunes",
+    "#Mañaneros28S",
     "#DragRaceEs",
     "McNulty",
     "15 M",
@@ -47,18 +48,18 @@
     },
     {
       "rank": 4,
+      "name": "#EnBocaDeTodos",
+      "entered_top10_at": "2026-09-28T12:31:07+02:00"
+    },
+    {
+      "rank": 5,
       "name": "#FelizLunes",
       "entered_top10_at": "2026-09-28T07:18:13+02:00"
     },
     {
-      "rank": 5,
-      "name": "#LaHora28S",
-      "entered_top10_at": "2026-09-28T09:31:10+02:00"
-    },
-    {
       "rank": 6,
-      "name": "#EnBocaDeTodos",
-      "entered_top10_at": "2026-09-28T12:31:07+02:00"
+      "name": "#Mañaneros28S",
+      "entered_top10_at": "2026-09-28T13:01:29+02:00"
     },
     {
       "rank": 7,
@@ -81,41 +82,24 @@
       "entered_top10_at": "2026-09-28T12:31:07+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "#Mañaneros28S"
+  ],
   "upcoming": [
     {
-      "name": "La Bola Negra",
+      "name": "Yola",
       "social_source_count": 5,
       "social_sources": [
         "getdaytrends",
         "snaplytics",
-        "superx",
         "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-28T11:40:55+02:00",
-      "news_source_count": 2,
-      "news_event_id": "5229f6899908",
-      "news_title": "'La bola negra' recauda 1,3 millones en su estreno: supera el primer día de 'La Odisea' de Nolan en España - El HuffPost",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T17:45:38.505704Z"
-    },
-    {
-      "name": "Yola",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.2,
-      "movement": "flat",
+      "mean_observed_rank": 11.0,
+      "movement": "up",
       "first_detected_at": "2026-09-28T11:10:59+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -124,72 +108,17 @@
       "news_first_seen": null
     },
     {
-      "name": "Lorca",
-      "social_source_count": 4,
+      "name": "Sporting",
+      "social_source_count": 5,
       "social_sources": [
         "getdaytrends",
         "snaplytics",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 14.2,
-      "movement": "up",
-      "first_detected_at": "2026-09-28T11:01:18+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Inglaterra",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.2,
-      "movement": "down",
-      "first_detected_at": "2026-09-28T12:31:07+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Pablo Vázquez",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.2,
-      "movement": "flat",
-      "first_detected_at": "2026-09-28T08:10:54+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Sporting",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.0,
+      "mean_observed_rank": 15.2,
       "movement": "up",
       "first_detected_at": "2026-09-28T12:31:07+02:00",
       "news_source_count": 2,
@@ -199,16 +128,97 @@
       "news_first_seen": "2026-09-27T22:42:08.185107Z"
     },
     {
+      "name": "Inglaterra",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T12:31:07+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Pablo Vázquez",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T08:10:54+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "La Bola Negra",
+      "social_source_count": 5,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 16.2,
+      "movement": "flat",
+      "first_detected_at": "2026-09-28T11:40:55+02:00",
+      "news_source_count": 2,
+      "news_event_id": "5229f6899908",
+      "news_title": "'La bola negra' recauda 1,3 millones en su estreno: supera el primer día de 'La Odisea' de Nolan en España - El HuffPost",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-27T17:45:38.505704Z"
+    },
+    {
+      "name": "Mari Carmen",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.8,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T12:10:58+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
       "name": "Rosa Benito",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "snaplytics",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 20,
-      "mean_observed_rank": 20.0,
-      "movement": "new",
+      "best_observed_rank": 19,
+      "mean_observed_rank": 19.8,
+      "movement": "up",
       "first_detected_at": "2026-09-28T12:50:47+02:00",
       "news_source_count": 5,
       "news_event_id": "2db2f680c927",
@@ -217,22 +227,23 @@
       "news_first_seen": "2026-09-28T07:02:33.858002Z"
     },
     {
-      "name": "Mari Carmen",
-      "social_source_count": 3,
+      "name": "Sindicato de Inquilinas",
+      "social_source_count": 4,
       "social_sources": [
         "snaplytics",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 16.3,
-      "movement": "up",
-      "first_detected_at": "2026-09-28T12:10:58+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "best_observed_rank": 19,
+      "mean_observed_rank": 19.2,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T13:01:29+02:00",
+      "news_source_count": 5,
+      "news_event_id": "fe651a5c6196-r2",
+      "news_title": "Acampada en la Puerta de Sol, en directo | El Sindicato de Inquilinas avisa: seguir movilizndose aunque el Gobierno incluya en decreto los contratos indefinidos",
+      "news_status": "UPDATE_WAITING",
+      "news_first_seen": "2026-09-28T10:51:57.596070Z"
     }
   ],
   "anticipated_entries": [],
@@ -266,7 +277,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T12:50:47+02:00"
+      "fetched_at": "2026-09-28T13:01:29+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -284,14 +295,14 @@
         "Yola",
         "Inglaterra",
         "Pablo Vázquez",
-        "Lorca",
-        "La Bola Negra"
+        "Sporting",
+        "Mari Carmen"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T12:50:47+02:00"
+      "fetched_at": "2026-09-28T13:01:30+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -299,29 +310,29 @@
         "Puerta del Sol",
         "#ConexiónHonduras3",
         "Galapagar",
-        "#FelizLunes",
-        "#LaHora28S",
         "#EnBocaDeTodos",
+        "#FelizLunes",
+        "#Mañaneros28S",
         "#DragRaceEs",
         "McNulty",
         "15 M",
         "Gelabert",
-        "Miguel Ángel Pérez Triano",
         "Yola",
         "Inglaterra",
         "Pablo Vázquez",
         "Lorca",
-        "La Bola Negra",
-        "Mari Carmen",
         "Sporting",
+        "Mari Carmen",
+        "La Bola Negra",
         "Wembley",
+        "Sindicato de Inquilinas",
         "Rosa Benito"
       ],
       "error": null,
-      "update_hint": "Updated 36 minutes ago",
-      "age_minutes": 36.0,
+      "update_hint": "Updated 4 minutes ago",
+      "age_minutes": 4.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-28T12:50:50+02:00"
+      "fetched_at": "2026-09-28T13:01:32+02:00"
     },
     "superx": {
       "ok": true,
@@ -351,16 +362,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T12:50:50+02:00"
+      "fetched_at": "2026-09-28T13:01:33+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790592651",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790593294",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T12:50:51+02:00"
+      "fetched_at": "2026-09-28T13:01:34+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -388,48 +399,48 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 28, 2026 10:00 UTC",
-      "age_minutes": 50.9,
+      "age_minutes": 61.6,
       "freshness": "aging",
-      "fetched_at": "2026-09-28T12:50:51+02:00"
+      "fetched_at": "2026-09-28T13:01:34+02:00"
     },
     "fowtools": {
       "ok": true,
       "trends": [
         "Puerta del Sol",
         "#ConexiónHonduras3",
-        "#FelizLunes",
         "Galapagar",
-        "#LaHora28S",
+        "#FelizLunes",
+        "#Mañaneros28S",
+        "#EnBocaDeTodos",
         "#DragRaceEs",
         "McNulty",
         "M",
-        "#VMAs",
         "Gelabert",
-        "Inglaterra",
         "Yola",
-        "Miguel Ángel Pérez Triano",
+        "Inglaterra",
         "Pablo Vázquez",
+        "Lorca",
         "La Bola Negra",
-        "Gobierno de Ceuta",
-        "Lc 9",
         "Mari Carmen",
         "Sporting",
-        "Wembley"
+        "Wembley",
+        "Rosa Benito",
+        "Sindicato de Inquilinas"
       ],
       "error": null,
-      "update_hint": "Updated: September 28, 2026 at 10:00 AM # Trend Type Actions 1 Puerta del Sol Topic 2 #Co",
-      "age_minutes": 170.9,
+      "update_hint": "Updated: September 28, 2026 at 11:00 AM # Trend Type Actions 1 Puerta del Sol Topic 2 #Co",
+      "age_minutes": 121.6,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T12:50:51+02:00"
+      "fetched_at": "2026-09-28T13:01:34+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790592652",
+      "error": "HTTPError: 522 Server Error: <none> for url: https://trends.cyberkendra.com/spain/?_=1790593297",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T12:50:52+02:00"
+      "fetched_at": "2026-09-28T13:01:37+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -438,25 +449,46 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-28T12:50:54+02:00"
+      "fetched_at": "2026-09-28T13:01:57+02:00"
     },
     "trendswe": {
-      "ok": false,
-      "trends": [],
-      "error": "Lista no válida (6 elementos parseados)",
+      "ok": true,
+      "trends": [
+        "#Puerta del Sol",
+        "#ConexiónHonduras3",
+        "#Galapagar",
+        "#FelizLunes",
+        "#Mañaneros28S",
+        "#EnBocaDeTodos",
+        "#DragRaceEs",
+        "#McNulty",
+        "M",
+        "#Gelabert",
+        "#Yola",
+        "#Inglaterra",
+        "#Pablo Vázquez",
+        "#Lorca",
+        "#La Bola Negra",
+        "#Mari Carmen",
+        "#Sporting",
+        "#Wembley",
+        "#Rosa Benito",
+        "#Sindicato de Inquilinas"
+      ],
+      "error": null,
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "invalid",
-      "fetched_at": "2026-09-28T12:50:55+02:00"
+      "freshness": "unknown",
+      "fetched_at": "2026-09-28T13:01:58+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790592656",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790593320",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T12:50:56+02:00"
+      "fetched_at": "2026-09-28T13:02:00+02:00"
     }
   }
 }
