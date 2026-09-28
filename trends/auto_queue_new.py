@@ -2,12 +2,13 @@
 import hashlib
 import json
 import unicodedata
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent
 MADRID = ZoneInfo("Europe/Madrid")
+EXPLANATION_TTL = timedelta(hours=48)
 
 def load(name, default):
     path = ROOT / name
@@ -23,6 +24,16 @@ def norm(value):
     text = unicodedata.normalize("NFD", str(value or ""))
     text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
     return " ".join(text.casefold().split())
+
+def parse_timestamp(value):
+    """Devuelve una fecha con zona horaria o None si el dato es inválido."""
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        return parsed.replace(tzinfo=MADRID) if parsed.tzinfo is None else parsed
+    except (TypeError, ValueError):
+        return None
 
 def save_editorial_queue(requests_doc):
     recent_now = load("recent.json", {"items": []})
@@ -74,7 +85,19 @@ explained_doc = load("telegram-manual-explained.json", {"items": []})
 prepared_doc = load("prepared.json", {"items": []})
 
 requests = requests_doc.setdefault("requests", [])
+now_dt = datetime.now(MADRID)
 explained = set()
+latest_explanation = {}
+
+def remember_explanation(value, explained_at):
+    key = norm(value)
+    if not key:
+        return
+    explained.add(key)
+    timestamp = parse_timestamp(explained_at)
+    if timestamp and (key not in latest_explanation or timestamp > latest_explanation[key]):
+        latest_explanation[key] = timestamp
+
 for entry in explained_doc.get("items", []) or []:
     values = []
     if entry.get("name"):
@@ -85,7 +108,7 @@ for entry in explained_doc.get("items", []) or []:
             values.append(ctx.get("name"))
     for value in values:
         if value:
-            explained.add(norm(value))
+            remember_explanation(value, entry.get("explained_at"))
 prepared_names = set()
 prepared_ids = set()
 for prepared in prepared_doc.get("items", []) or []:
@@ -99,12 +122,25 @@ for req in requests:
     key = norm(req.get("name"))
     if key:
         by_name[key] = req
+        if str(req.get("status") or "") == "explained":
+            values = [req.get("name")] + list(req.get("trend_names") or [])
+            for value in values:
+                remember_explanation(value, req.get("explained_at"))
 
 current = []
 for item in (recent.get("items") or [])[:10]:
     name = str(item.get("name") or "").strip()
     if name:
         current.append({"name": name, "rank": int(item.get("rank") or 0)})
+
+def explanation_expired(key):
+    """Solo reabre una tendencia con una explicación fechada de hace >48 h.
+
+    Si falta o no se puede interpretar la fecha, se conserva la deduplicación
+    anterior: una fecha desconocida no debe provocar reexplicaciones masivas.
+    """
+    explained_at = latest_explanation.get(key)
+    return bool(explained_at and now_dt - explained_at > EXPLANATION_TTL)
 
 to_queue = []
 reconciled = False
@@ -113,6 +149,20 @@ for item in current:
     req = by_name.get(key)
     status = str((req or {}).get("status") or "")
     if req:
+        if status == "explained" and explanation_expired(key):
+            reopened_at = now_dt.isoformat(timespec="seconds")
+            req["rank"] = item["rank"]
+            req["status"] = "preparing"
+            req["requested_at"] = reopened_at
+            req["revision"] = int(req.get("revision") or 0) + 1
+            req["reexplain"] = True
+            req["with_image"] = False
+            req["requested_together"] = [item["name"]]
+            req["captured_with"] = [x["name"] for x in current]
+            req.pop("explained_at", None)
+            reconciled = True
+            print("Reabierta explicación con más de 48 h:", item["name"])
+            continue
         # Una solicitud ready sin tarjeta prepared es un estado imposible:
         # normalmente indica una carrera o borrado parcial. Se reabre de forma
         # idempotente para que el siguiente pase editorial la reconstruya.
@@ -162,7 +212,7 @@ for item in current:
             continue
         if status in {"preparing", "update", "explained", "dismissed"}:
             continue
-    elif key in explained:
+    elif key in explained and not explanation_expired(key):
         continue
     to_queue.append(item)
 
@@ -176,7 +226,7 @@ if not to_queue:
     save_editorial_queue(requests_doc)
     raise SystemExit(0)
 
-now = datetime.now(MADRID).isoformat(timespec="seconds")
+now = now_dt.isoformat(timespec="seconds")
 names = [x["name"] for x in to_queue]
 batch_id = hashlib.sha256((" | ".join(names) + " | " + now).encode("utf-8")).hexdigest()[:12]
 
