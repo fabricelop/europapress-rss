@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T09:01:21+02:00",
+  "captured_at": "2026-09-28T09:10:56+02:00",
   "primary_source": "consensus",
   "selection_method": "consensus",
   "sources_used": [
@@ -19,8 +19,8 @@
   "top10": [
     "Puerta del Sol",
     "Inglaterra",
-    "Wembley",
     "Oyarzabal",
+    "Wembley",
     "#FelizLunes",
     "#conexiónhonduras3",
     "Galapagar",
@@ -41,12 +41,12 @@
     },
     {
       "rank": 3,
-      "name": "Wembley",
+      "name": "Oyarzabal",
       "entered_top10_at": "2026-09-28T08:50:49+02:00"
     },
     {
       "rank": 4,
-      "name": "Oyarzabal",
+      "name": "Wembley",
       "entered_top10_at": "2026-09-28T08:50:49+02:00"
     },
     {
@@ -81,10 +81,28 @@
     }
   ],
   "unchanged_from_previous": false,
-  "new_entries": [
-    "Yola"
-  ],
+  "new_entries": [],
   "upcoming": [
+    {
+      "name": "Pablo Vázquez",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 14.4,
+      "movement": "up",
+      "first_detected_at": "2026-09-28T08:10:54+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
     {
       "name": "Gelabert",
       "social_source_count": 5,
@@ -97,28 +115,8 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 12.0,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T07:18:13+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Pablo Vázquez",
-      "social_source_count": 5,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.8,
-      "movement": "up",
-      "first_detected_at": "2026-09-28T08:10:54+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -144,25 +142,6 @@
       "news_title": "A Borja Iglesias le bastan dos palabras para describir 'La bola negra' tras ver la película de Los Javis: muchos coinciden - huffingtonpost.es",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-27T17:42:19.652918Z"
-    },
-    {
-      "name": "Mari Carmen",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 19,
-      "mean_observed_rank": 19.2,
-      "movement": "up",
-      "first_detected_at": "2026-09-28T08:50:49+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     },
     {
       "name": "Sporting",
@@ -212,7 +191,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 15.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T04:10:52+02:00",
       "news_source_count": 2,
       "news_event_id": "b2f2f1dbbe35",
@@ -221,16 +200,18 @@
       "news_first_seen": "2026-09-27T10:11:19.861103Z"
     },
     {
-      "name": "#SalvadosRufián",
-      "social_source_count": 2,
+      "name": "Mari Carmen",
+      "social_source_count": 4,
       "social_sources": [
-        "getdaytrends",
-        "trendswe"
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
       ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-28T09:01:21+02:00",
+      "best_observed_rank": 19,
+      "mean_observed_rank": 19.2,
+      "movement": "flat",
+      "first_detected_at": "2026-09-28T08:50:49+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -238,14 +219,7 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Yola",
-      "first_detected_at": "2026-09-28T06:10:57+02:00",
-      "entered_top10_at": "2026-09-28T09:01:21+02:00",
-      "lead_minutes": 170
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -276,7 +250,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T09:01:21+02:00"
+      "fetched_at": "2026-09-28T09:10:56+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -285,23 +259,23 @@
         "Puerta del Sol",
         "#ConexiónHonduras3",
         "Galapagar",
+        "#LaHora28S",
+        "#Buenosdías",
         "#DragRaceEs",
         "McNulty",
-        "Inglaterra",
         "15 M",
-        "#VMAs",
+        "Inglaterra",
         "Yola",
-        "#SalvadosRufián",
         "Gelabert",
-        "Wembley",
+        "Pablo Vázquez",
         "Oyarzabal",
-        "Pablo Vázquez"
+        "Wembley"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T09:01:22+02:00"
+      "fetched_at": "2026-09-28T09:10:56+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -331,7 +305,7 @@
       "update_hint": "Updated 1 hour ago",
       "age_minutes": 60.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-28T09:01:23+02:00"
+      "fetched_at": "2026-09-28T09:10:57+02:00"
     },
     "superx": {
       "ok": true,
@@ -361,16 +335,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T09:01:24+02:00"
+      "fetched_at": "2026-09-28T09:10:58+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790578884",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790579458",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T09:01:24+02:00"
+      "fetched_at": "2026-09-28T09:10:58+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -398,9 +372,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 28, 2026 06:00 UTC",
-      "age_minutes": 61.4,
+      "age_minutes": 71.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-28T09:01:24+02:00"
+      "fetched_at": "2026-09-28T09:10:58+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -428,18 +402,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 28, 2026 at 07:00 AM # Trend Type Actions 1 #FelizLunes Hashtag 2 Puer",
-      "age_minutes": 121.4,
+      "age_minutes": 131.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T09:01:25+02:00"
+      "fetched_at": "2026-09-28T09:10:59+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790578887",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790579460",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T09:01:27+02:00"
+      "fetched_at": "2026-09-28T09:11:00+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -448,7 +422,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-28T09:01:28+02:00"
+      "fetched_at": "2026-09-28T09:11:01+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -478,16 +452,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T09:01:29+02:00"
+      "fetched_at": "2026-09-28T09:11:01+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790578890",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790579463",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T09:01:30+02:00"
+      "fetched_at": "2026-09-28T09:11:03+02:00"
     }
   }
 }
