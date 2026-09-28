@@ -12,6 +12,17 @@ GitHub es la única persistencia/estado del flujo. Web se usa para investigar po
 
 No uses Telegram. No proceses TTiTTulares ni SeLoRecordamos. No despliegues Vercel. No cambies radar, fuentes, umbrales ni ninguna programación/automatización.
 
+## Formato vigente de explicaciones para un tuit (prioridad de redacción)
+
+Cuando `trends/editorial-config.json.editorial.mode` sea `explanation_only` (o `explanation_only:true`), esta sección prevalece sobre cualquier formato heredado de Principal/A/B/C, imágenes o remates de la sección «Redacción». **No cambia el flujo, la verificación factual, los estados, la agrupación, el puente a TTiTTulares ni la persistencia existente**: solo cambia el texto de `explanation`. En este modo se redacta UNA explicación por acontecimiento/grupo, sin alternativas ni imágenes, conforme a la configuración vigente.
+
+- La explicación ha de ser **directamente copiable como un solo tuit** de X: límite estricto de **280 caracteres ponderados para el texto FINAL completo**, no solo para `explanation` aislada. Cuenta también, si forman parte del texto que se copia, icono, `Tn/Rn · nombre de tendencia`, espacios, puntuación, saltos de línea, etiquetas y chascarrillo. No añadas URL de fuentes al texto salvo que se cuente correctamente su longitud de X. Reserva preferentemente margen y apunta a 230–250 caracteres finales cuando se pueda.
+- Empieza por el detonante verificable **actual**, con quién/qué ocurrió y el contexto imprescindible, sin relleno ni especulaciones. Redacta con brevedad periodística (normalmente una o dos frases factuales).
+- **Intenta terminar TODAS las explicaciones con un chascarrillo breve, agudo y específico de ESA tendencia**, en la última frase y sin explicación posterior: humor de monologuista, ironía, sarcasmo o giro ingenioso sobre la peculiaridad real del hecho, nunca una coletilla intercambiable ni una afirmación inventada. El remate debe sentirse natural y dejar claro qué parte es humor. No sacrifiques el hecho verificado ni atribuyas intenciones sin evidencia para encajar el chiste.
+- Política/controversias: hechos neutrales y atribución de afirmaciones disputadas; el chascarrillo, si cabe, versa sobre circunstancias concretas, no es una consigna partidista. No hagas humor de víctimas, tragedias, sufrimiento, abusos ni colectivos vulnerables. Si un remate no resulta respetuoso o distorsiona los hechos, termina sin chiste: **«intenta» no autoriza forzarlo**.
+- **Validación obligatoria justo antes de persistir**: construye exactamente el texto que el botón Copiar compartirá (incluido cualquier prefijo que añada la app) y mide su longitud con el contador ponderado de X/twitter-text si está disponible. Si no lo está, usa un margen conservador de hasta 250 puntos de código Unicode para el texto final, evita URLs y trata emojis compuestos como caracteres adicionales. Si supera el límite o hay duda, reescribe y vuelve a contar; no cortes a ciegas al carácter 280 ni publiques una explicación incompleta. Si la app añade un encabezado dinámico, descuenta su longitud del presupuesto de `explanation`.
+- Ejemplo de tono (solo ilustrativo, no reutilizable): «El programa amplía su emisión hasta las 14:00. La actualidad ya está echando horas extra». No uses el mismo remate en otras tendencias.
+
 ## Estado inicial y watchdog
 
 1. Lee SIEMPRE `trends/editorial-queue.json` desde `main`.
