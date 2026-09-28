@@ -1,33 +1,35 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T03:31:09+02:00",
-  "primary_source": "tweets24",
+  "captured_at": "2026-09-28T03:40:49+02:00",
+  "primary_source": "snaplytics",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
+    "getdaytrends",
     "tweets24",
     "snaplytics",
     "fowtools",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "#ConexiónHonduras3",
+    "Puerta del Sol",
+    "Galapagar",
     "Asraf",
     "#VMAs",
     "Yola",
     "Rosa Benito",
-    "Gelabert",
-    "Sporting",
     "#DragRaceEs",
-    "#SalvadosRufián",
-    "Ivana"
+    "Inglaterra",
+    "McNulty"
   ],
   "items": [
     {
@@ -37,33 +39,33 @@
     },
     {
       "rank": 2,
+      "name": "Puerta del Sol",
+      "entered_top10_at": "2026-09-28T03:40:49+02:00"
+    },
+    {
+      "rank": 3,
+      "name": "Galapagar",
+      "entered_top10_at": "2026-09-28T03:40:49+02:00"
+    },
+    {
+      "rank": 4,
       "name": "Asraf",
       "entered_top10_at": "2026-09-28T02:40:55+02:00"
     },
     {
-      "rank": 3,
+      "rank": 5,
       "name": "#VMAs",
       "entered_top10_at": "2026-09-28T03:11:00+02:00"
     },
     {
-      "rank": 4,
+      "rank": 6,
       "name": "Yola",
       "entered_top10_at": "2026-09-28T01:01:17+02:00"
     },
     {
-      "rank": 5,
+      "rank": 7,
       "name": "Rosa Benito",
       "entered_top10_at": "2026-09-28T02:31:07+02:00"
-    },
-    {
-      "rank": 6,
-      "name": "Gelabert",
-      "entered_top10_at": "2026-09-27T23:40:56+02:00"
-    },
-    {
-      "rank": 7,
-      "name": "Sporting",
-      "entered_top10_at": "2026-09-28T02:50:59+02:00"
     },
     {
       "rank": 8,
@@ -72,29 +74,35 @@
     },
     {
       "rank": 9,
-      "name": "#SalvadosRufián",
-      "entered_top10_at": "2026-09-28T02:50:59+02:00"
+      "name": "Inglaterra",
+      "entered_top10_at": "2026-09-28T03:40:49+02:00"
     },
     {
       "rank": 10,
-      "name": "Ivana",
-      "entered_top10_at": "2026-09-28T03:11:00+02:00"
+      "name": "McNulty",
+      "entered_top10_at": "2026-09-28T03:40:49+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Puerta del Sol",
+    "Galapagar",
+    "Inglaterra",
+    "McNulty"
+  ],
   "upcoming": [
     {
       "name": "GOTI",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 15.0,
-      "movement": "down",
+      "mean_observed_rank": 16.2,
+      "movement": "up",
       "first_detected_at": "2026-09-28T03:11:00+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -104,15 +112,16 @@
     },
     {
       "name": "Pablo Vázquez",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 16.3,
-      "movement": "down",
+      "mean_observed_rank": 16.8,
+      "movement": "up",
       "first_detected_at": "2026-09-28T03:11:00+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -121,49 +130,16 @@
       "news_first_seen": null
     },
     {
-      "name": "Colapinto",
-      "social_source_count": 2,
-      "social_sources": [
-        "superx",
-        "trends24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 15.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-28T03:21:05+02:00",
-      "news_source_count": 2,
-      "news_event_id": "b2f2f1dbbe35",
-      "news_title": "Alpine denuncia el acoso en redes tras la polémica en Bakú entre Colapinto y Norris: \"Se ha convertido en un hecho habitual en las últimas carreras y no se puede tolerar\" - COPE",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T10:11:19.861103Z"
-    },
-    {
-      "name": "#NASCARenDAZN",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.5,
-      "movement": "new",
-      "first_detected_at": "2026-09-28T03:31:09+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "15 M",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24"
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "down",
+      "movement": "up",
       "first_detected_at": "2026-09-28T03:21:05+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -173,14 +149,15 @@
     },
     {
       "name": "#FelizDomingo",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24"
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
-      "movement": "down",
+      "movement": "up",
       "first_detected_at": "2026-09-28T03:21:05+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -189,38 +166,76 @@
       "news_first_seen": null
     },
     {
-      "name": "Yulen",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-28T03:31:09+02:00",
-      "news_source_count": 1,
-      "news_event_id": "b08c6488ac21",
-      "news_title": "Encuesta: ¿Quién quieres que sea el salvado de 'Supervivientes All Stars': Asraf, Arkano, Ivana o Yulen? - El Televisero",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T21:13:32.513110Z"
-    },
-    {
       "name": "La Bola Negra",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
+        "snaplytics",
         "superx",
         "trends24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 16.0,
-      "movement": "down",
+      "mean_observed_rank": 16.3,
+      "movement": "up",
       "first_detected_at": "2026-09-28T03:21:05+02:00",
       "news_source_count": 1,
       "news_event_id": "3596aa332ab4",
       "news_title": "Las claves de 'La bola negra': los Javis tocan la tecla mundial de la libertad",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-27T09:12:11.363041Z"
+    },
+    {
+      "name": "#SalvadosRufián",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T03:40:49+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Oyarzabal",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T03:40:49+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Gelabert",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-28T03:40:49+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -254,7 +269,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T03:31:09+02:00"
+      "fetched_at": "2026-09-28T03:40:49+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -279,7 +294,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T03:31:09+02:00"
+      "fetched_at": "2026-09-28T03:40:49+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -306,10 +321,10 @@
         "Irlanda"
       ],
       "error": null,
-      "update_hint": "Updated 29 minutes ago",
-      "age_minutes": 29.0,
+      "update_hint": "Updated 38 minutes ago",
+      "age_minutes": 38.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-28T03:31:10+02:00"
+      "fetched_at": "2026-09-28T03:40:50+02:00"
     },
     "superx": {
       "ok": true,
@@ -339,46 +354,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T03:31:11+02:00"
+      "fetched_at": "2026-09-28T03:40:51+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790559073",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790559651",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T03:31:13+02:00"
+      "fetched_at": "2026-09-28T03:40:51+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "#ConexiónHonduras3",
         "Puerta del Sol",
-        "Asraf",
         "Galapagar",
+        "Asraf",
         "#VMAs",
         "Yola",
         "Rosa Benito",
         "#DragRaceEs",
-        "Gelabert",
         "Inglaterra",
         "McNulty",
         "15 M",
         "#FelizDomingo",
         "#SalvadosRufián",
-        "Sporting",
         "Oyarzabal",
+        "Gelabert",
         "Wembley",
         "La Bola Negra",
         "Pablo Vázquez",
+        "Madonna",
         "GOTI"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 28, 2026 00:00 UTC",
-      "age_minutes": 91.2,
-      "freshness": "stale",
-      "fetched_at": "2026-09-28T03:31:13+02:00"
+      "update_hint": "Trending now Sep 28, 2026 01:00 UTC",
+      "age_minutes": 40.9,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-28T03:40:51+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -406,18 +421,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 28, 2026 at 01:00 AM # Trend Type Actions 1 #ConexiónHonduras3 Hashtag",
-      "age_minutes": 151.2,
+      "age_minutes": 160.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T03:31:14+02:00"
+      "fetched_at": "2026-09-28T03:40:52+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790559075",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790559653",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T03:31:15+02:00"
+      "fetched_at": "2026-09-28T03:40:53+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -426,7 +441,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-28T03:31:16+02:00"
+      "fetched_at": "2026-09-28T03:40:54+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -456,16 +471,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T03:31:17+02:00"
+      "fetched_at": "2026-09-28T03:40:55+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790559079",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790559657",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T03:31:19+02:00"
+      "fetched_at": "2026-09-28T03:40:57+02:00"
     }
   }
 }
