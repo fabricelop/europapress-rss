@@ -1,12 +1,18 @@
 import crypto from "node:crypto";
 import webpush from "web-push";
 import sharp from "sharp";
+import {
+  annotateExplainedCopyState,
+  buildCopyRecord,
+  explanationCopyIdentity,
+} from "./ttendencias-copy-state.js";
 
 const REPO = process.env.GITHUB_REPO || "fabricelop/europapress-rss";
 const BRANCH = process.env.GITHUB_BRANCH || "main";
 const RECENT = "trends/recent.json";
 const REQUESTS = "trends/requests.json";
 const EXPLAINED = "trends/telegram-manual-explained.json";
+const EXPLAINED_COPY_STATE = "trends/explained-copy-state.json";
 const PREPARED = "trends/prepared.json";
 const HEALTH = "trends/health-status.json";
 const EDITORIAL_CONFIG = "trends/editorial-config.json";
@@ -737,11 +743,35 @@ async function retryNames(names) {
   return { ok: true, retried: unique };
 }
 
+async function markExplanationCopied(copyKey) {
+  const key = String(copyKey || "").trim();
+  if (!/^explanation-v1:[a-f0-9]{24}$/.test(key)) throw new Error("Explicación no válida.");
+  const { doc: explained } = await readJson(EXPLAINED);
+  const item = (explained.items || []).find(entry => explanationCopyIdentity(entry) === key);
+  if (!item) throw new Error("La explicación ya no existe o pertenece a otra revisión.");
+  const now = new Date().toISOString();
+  let record;
+  await mutateJson(EXPLAINED_COPY_STATE, "Marcar explicación TTendencias como copiada", doc => {
+    doc.project ||= "TTendencias";
+    doc.version ||= 1;
+    doc.items ||= [];
+    record = doc.items.find(entry => entry?.key === key) || null;
+    if (!record) {
+      record = buildCopyRecord(item, now);
+      doc.items.push(record);
+      doc.updated_at = now;
+    }
+    return doc;
+  });
+  return { ok: true, copy_key: key, copied: true, copied_at: record?.copied_at || now };
+}
+
 async function stateSnapshot() {
-  const [recent, requests, explained, health, prepared, editorialConfig, editorialQueue] = await Promise.all([
+  const [recent, requests, explained, explainedCopyState, health, prepared, editorialConfig, editorialQueue] = await Promise.all([
     readJson(RECENT),
     readJson(REQUESTS),
     readJson(EXPLAINED),
+    readJson(EXPLAINED_COPY_STATE),
     readJson(HEALTH),
     readJson(PREPARED),
     readJson(EDITORIAL_CONFIG),
@@ -779,7 +809,8 @@ async function stateSnapshot() {
     fetched_at: new Date().toISOString(),
     recent: recent.doc,
     requests: requests.doc,
-    explained: explained.doc,
+    explained: annotateExplainedCopyState(explained.doc, explainedCopyState.doc),
+    explained_copy_state: explainedCopyState.doc,
     health: health.doc,
     prepared: prepared.doc,
     editorial_config: editorialConfig.doc,
@@ -867,6 +898,7 @@ export default async function handler(req, res) {
     if (action === "queue") return res.status(200).json(await queueNames(body.names));
     if (action === "queue-upcoming") return res.status(200).json(await queueUpcomingNames(body.names));
     if (action === "explained") return res.status(200).json(await markExplained(body.names));
+    if (action === "copy-explained") return res.status(200).json(await markExplanationCopied(body.copy_key));
     if (action === "discard") return res.status(200).json(await discardNames(body.names));
     if (action === "retry") return res.status(200).json(await retryNames(body.names));
     if (action === "rework") return res.status(200).json(await reworkNames(body.names, body.instruction));

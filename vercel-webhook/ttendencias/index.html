@@ -70,12 +70,9 @@ const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
 const RUN_STATUS_API="/api/ttendencias-run-status";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="ttendencias-ui-unread-explained-v6-20260927";
+const SHELL_BUILD="ttendencias-ui-backend-copied-v7-20260928";
 const $=id=>document.getElementById(id);
-const COPIED_EXPLAINED_KEY="ttendencias-explained-copied-v1";
 let model=null,busy=new Set(),runPoll=null,problemRetryItem=null;
-function copiedExplainedSet(){try{return new Set(JSON.parse(localStorage.getItem(COPIED_EXPLAINED_KEY)||"[]"))}catch(_){return new Set()}}
-function explainedCopiedId(x){return [nrm(x.name||x.display_name||x.term_normalized||"Tendencia"),String(x.explained_at||""),String(x._rank||"")].join("|")}
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
 function showToast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove("show"),2500)}
@@ -176,7 +173,7 @@ async function activatePush(){
    sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:appServerKey(d.publicKey)});
  }
  await api("push-subscribe",[],{subscription:sub.toJSON()});
- await updateBadge(model?.explainedRecent?.filter(x=>!copiedExplainedSet().has(explainedCopiedId(x))).length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
+ await updateBadge(model?.explainedRecent?.filter(x=>!x.copied).length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
 }
 async function deactivatePush(){
  const sub=await currentPushSubscription();
@@ -305,8 +302,7 @@ function render(){
  renderScheduleTiming();
  const rel={high:"alta",medium:"media",fallback:"baja",none:"sin datos"}[model.reliability]||model.reliability||"—";
  $("quality").textContent=(model.source_count||0)+" válidas · "+(model.non_stale_source_count||0)+" actuales · fiabilidad "+rel;
- const copied=copiedExplainedSet();
- const unread=(model.explainedRecent||[]).filter(x=>!copied.has(explainedCopiedId(x))).length;
+ const unread=(model.explainedRecent||[]).filter(x=>!x.copied).length;
  const unreadBadge=$("unreadExplainedBadge");
  unreadBadge.textContent=unread>99?"99+":String(unread);
  unreadBadge.classList.toggle("show",unread>0);

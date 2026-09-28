@@ -22,16 +22,9 @@ main{max-width:820px;margin:auto;padding:14px 10px 40px}.filter{width:100%;backg
 </main>
 <script>
 const API="/api/ttendencias-control", $=id=>document.getElementById(id);
-const COPIED_KEY="ttendencias-explained-copied-v1";
 let allItems=[];
-function copiedSet(){try{return new Set(JSON.parse(localStorage.getItem(COPIED_KEY)||"[]"))}catch(_){return new Set()}}
-function copiedId(x){return [nrm(displayName(x)),String(x.explained_at||""),String(x._rank||"")].join("|")}
-function markCopied(x){
- const s=copiedSet();s.add(copiedId(x));
- try{localStorage.setItem(COPIED_KEY,JSON.stringify([...s].slice(-500)))}catch(_){}
-}
 async function updateUnreadBadge(){
- const copied=copiedSet(),unread=allItems.filter(x=>!copied.has(copiedId(x))).length;
+ const unread=allItems.filter(x=>!x.copied).length;
  try{
    if(unread&&"setAppBadge" in navigator)await navigator.setAppBadge(unread);
    else if(!unread&&"clearAppBadge" in navigator)await navigator.clearAppBadge();
@@ -81,23 +74,28 @@ function copyText(x){
 async function copyItem(x,button){
  try{
    await navigator.clipboard.writeText(copyText(x));
-   markCopied(x);
+   const controlToken=localStorage.getItem("ttendencias-control-token")||"";
+   if(!controlToken)throw new Error("La explicación se copió, pero falta el token de control para guardar el estado.");
+   const response=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+controlToken},body:JSON.stringify({action:"copy-explained",copy_key:x.copy_key})});
+   const result=await response.json();
+   if(!response.ok||!result?.ok)throw new Error(result?.error||"No se pudo guardar el estado de copiado.");
+   x.copied=true;x.copied_at=result.copied_at||new Date().toISOString();
    updateUnreadBadge();
    const card=button.closest(".card");if(card)card.classList.add("copied");
    const old=button.textContent;button.textContent="Copiado ✓";
    setTimeout(()=>button.textContent=old,1400);
- }catch(_){alert("No se pudo copiar al portapapeles.")}
+ }catch(error){alert(error?.message||"No se pudo copiar y guardar la explicación.")}
 }
 function render(){
  const q=nrm($("filter").value);
  const items=q?allItems.filter(x=>nrm(displayName(x)).includes(q)||nrm((x.trend_names||[]).join(" ")).includes(q)||nrm(x.explanation).includes(q)):allItems;
- $("count").textContent=String(items.length);
+ $("count").textContent=String(items.filter(x=>!x.copied).length);
  updateUnreadBadge();
  const list=$("list");list.innerHTML="";
  if(!items.length){list.innerHTML='<div class="empty">No hay coincidencias.</div>';return}
  for(const x of items){
   const card=document.createElement("article");card.className="card";
-  if(copiedSet().has(copiedId(x)))card.classList.add("copied");
+  if(x.copied)card.classList.add("copied");
   const name=displayName(x),route=routeLabel(x);
   const labelled=groupRankLabel(x);
   card.innerHTML='<div class="head"><div class="name"></div><div class="when"></div></div><div class="explanation"></div><div class="meta"></div><div class="actions"></div>';
