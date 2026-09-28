@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-28T01:47:19.431534+00:00",
+  "checked_at": "2026-09-28T07:44:03.196122+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 6,
-      "captured_age_minutes": 0.2,
+      "captured_age_minutes": 0.5,
       "noise_count": 0
     },
     "listener": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.7,
-      "run_id": 36367274236,
+      "age_minutes": 1.0,
+      "run_id": 36393164982,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,31 +75,12 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 3,
-      "overdue_count": 3,
-      "oldest_age_minutes": 126.3,
+      "ok": true,
+      "pending_count": 2,
+      "overdue_count": 0,
+      "oldest_age_minutes": 12.1,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "1f8f79d0a2ee",
-          "name": "#VMAs",
-          "status": "preparing",
-          "age_minutes": 126.3
-        },
-        {
-          "id": "f7133992c86d",
-          "name": "Rosa Benito",
-          "status": "preparing",
-          "age_minutes": 76.1
-        },
-        {
-          "id": "44c0e0956682",
-          "name": "GOTI",
-          "status": "preparing",
-          "age_minutes": 56.2
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
@@ -107,18 +88,15 @@
       "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "1f8f79d0a2ee",
-        "f7133992c86d",
-        "44c0e0956682"
+        "012a4789404e",
+        "dc927b4ccc81"
       ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [],
-  "warnings": [
-    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 126.3 min"
-  ],
+  "warnings": [],
   "alert_sent": false,
   "last_alert_signature": ""
 }
