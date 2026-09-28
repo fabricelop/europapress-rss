@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-28T10:10:58+02:00",
+  "captured_at": "2026-09-28T10:21:13+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -82,7 +82,7 @@
       "entered_top10_at": "2026-09-28T03:40:49+02:00"
     }
   ],
-  "unchanged_from_previous": false,
+  "unchanged_from_previous": true,
   "new_entries": [],
   "upcoming": [
     {
@@ -96,13 +96,13 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 12.8,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T10:10:58+02:00",
       "news_source_count": 7,
-      "news_event_id": "0188ceca5051",
+      "news_event_id": "c127e6a73f8d",
       "news_title": "El Gobierno releva al delegado del Gobierno en Ceuta",
       "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-28T08:02:42.899678Z"
+      "news_first_seen": "2026-09-28T08:12:06.066346Z"
     },
     {
       "name": "Gelabert",
@@ -145,6 +145,26 @@
       "news_first_seen": null
     },
     {
+      "name": "La Bola Negra",
+      "social_source_count": 5,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.6,
+      "movement": "flat",
+      "first_detected_at": "2026-09-28T08:01:21+02:00",
+      "news_source_count": 2,
+      "news_event_id": "5229f6899908",
+      "news_title": "'La bola negra' recauda 1,3 millones en su estreno: supera el primer día de 'La Odisea' de Nolan en España - El HuffPost",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-27T17:45:38.505704Z"
+    },
+    {
       "name": "Pablo Vázquez",
       "social_source_count": 5,
       "social_sources": [
@@ -165,26 +185,6 @@
       "news_first_seen": null
     },
     {
-      "name": "La Bola Negra",
-      "social_source_count": 5,
-      "social_sources": [
-        "snaplytics",
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.6,
-      "movement": "flat",
-      "first_detected_at": "2026-09-28T08:01:21+02:00",
-      "news_source_count": 1,
-      "news_event_id": "3596aa332ab4",
-      "news_title": "Las claves de 'La bola negra': los Javis tocan la tecla mundial de la libertad",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-27T09:12:11.363041Z"
-    },
-    {
       "name": "Wembley",
       "social_source_count": 4,
       "social_sources": [
@@ -195,13 +195,13 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 15.2,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T09:31:10+02:00",
-      "news_source_count": 3,
-      "news_event_id": "51eec740ab3c",
-      "news_title": "Lamine Yamal acelera hacia el Balón de Oro con su exhibición en Wembley",
+      "news_source_count": 1,
+      "news_event_id": "cd182393ad9a",
+      "news_title": "Wembley",
       "news_status": "WAITING",
-      "news_first_seen": "2026-09-28T07:33:01.074235Z"
+      "news_first_seen": "2026-09-28T08:12:06.066346Z"
     },
     {
       "name": "Oyarzabal",
@@ -214,7 +214,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 16.8,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-28T09:31:10+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -273,7 +273,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T10:10:58+02:00"
+      "fetched_at": "2026-09-28T10:21:13+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -298,7 +298,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T10:10:59+02:00"
+      "fetched_at": "2026-09-28T10:21:13+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -325,10 +325,10 @@
         "Mari Carmen"
       ],
       "error": null,
-      "update_hint": "Updated 4 minutes ago",
-      "age_minutes": 4.0,
+      "update_hint": "Updated 14 minutes ago",
+      "age_minutes": 14.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-28T10:11:00+02:00"
+      "fetched_at": "2026-09-28T10:21:14+02:00"
     },
     "superx": {
       "ok": true,
@@ -358,16 +358,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T10:11:01+02:00"
+      "fetched_at": "2026-09-28T10:21:15+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790583061",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790583675",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T10:11:01+02:00"
+      "fetched_at": "2026-09-28T10:21:15+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -395,9 +395,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 28, 2026 07:00 UTC",
-      "age_minutes": 71.0,
+      "age_minutes": 81.3,
       "freshness": "aging",
-      "fetched_at": "2026-09-28T10:11:01+02:00"
+      "fetched_at": "2026-09-28T10:21:15+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -425,18 +425,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 28, 2026 at 08:00 AM # Trend Type Actions 1 #FelizLunes Hashtag 2 Puer",
-      "age_minutes": 131.0,
+      "age_minutes": 141.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-28T10:11:02+02:00"
+      "fetched_at": "2026-09-28T10:21:15+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790583063",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790583677",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T10:11:03+02:00"
+      "fetched_at": "2026-09-28T10:21:17+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -445,7 +445,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-28T10:11:04+02:00"
+      "fetched_at": "2026-09-28T10:21:18+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -475,16 +475,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-28T10:11:05+02:00"
+      "fetched_at": "2026-09-28T10:21:18+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790583067",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790583680",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-28T10:11:07+02:00"
+      "fetched_at": "2026-09-28T10:21:20+02:00"
     }
   }
 }
