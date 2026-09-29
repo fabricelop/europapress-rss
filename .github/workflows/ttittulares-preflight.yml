@@ -14,6 +14,7 @@ on:
       - "vercel-webhook/ttittulares/**"
       - "vercel-webhook/test/ttittulares-image-ui.test.mjs"
       - "vercel-webhook/test/ttittulares-source-table.test.mjs"
+      - "vercel-webhook/test/ttittulares-search-x.test.mjs"
       - "vercel-webhook/api/ttittulares-control.js"
       - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
@@ -33,6 +34,7 @@ on:
       - "vercel-webhook/ttittulares/**"
       - "vercel-webhook/test/ttittulares-image-ui.test.mjs"
       - "vercel-webhook/test/ttittulares-source-table.test.mjs"
+      - "vercel-webhook/test/ttittulares-search-x.test.mjs"
       - "vercel-webhook/api/ttittulares-control.js"
       - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
@@ -153,7 +155,7 @@ jobs:
           node --check vercel-webhook/api/ttittulares-run-status.js
           node --check ttittulares/tremending/capture_tweet.mjs
           node --check vercel-webhook/ttittulares/sw.js
-          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs vercel-webhook/test/ttittulares-source-table.test.mjs
+          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs vercel-webhook/test/ttittulares-source-table.test.mjs vercel-webhook/test/ttittulares-search-x.test.mjs
 
       - name: Resultado
         run: echo "TTiTTulares listo para preview técnico sin cambiar control-mode"
