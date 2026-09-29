@@ -10,7 +10,7 @@ SOURCES=[
 ("Europa Press","https://www.europapress.es/noticias/","html"),
 ("EL PAÍS","https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/ultimas-noticias/portada","xml"),
 ("La Vanguardia","https://www.lavanguardia.com/rss/home.xml","xml"),
-("Cadena SER","https://cadenaser.com/autor/redaccion_ser/a/","html"),
+("Cadena SER","https://cadenaser.com/","html"),
 ("RTVE","https://www.rtve.es/noticias/","html"),
 ("El HuffPost","https://www.huffingtonpost.es/feeds/index.xml","xml"),
 ("20minutos","https://www.20minutos.es/ultima-hora/","html"),
@@ -87,7 +87,7 @@ SOURCE_FALLBACKS={
  "Europa Press":["https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json"],
  "EL PAÍS":["https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/ultimas-noticias/portada","https://elpais.com/ultimas-noticias/"],
  "La Vanguardia":["https://www.lavanguardia.com/rss/home.xml","https://www.lavanguardia.com/"],
- "Cadena SER":["https://cadenaser.com/","https://cadenaser.com/nacional/","https://cadenaser.com/autor/redaccion_ser/a/"],
+ "Cadena SER":["https://cadenaser.com/actualidad/","https://cadenaser.com/cadena-ser/p1/"],
  "RTVE":["https://www.rtve.es/rss/temas_noticias.xml","https://www.rtve.es/noticias/"],
  "El HuffPost":["https://www.huffingtonpost.es/feeds/index.xml","https://www.huffingtonpost.es/"],
  "20minutos":["https://www.20minutos.es/ultima-hora/","https://www.20minutos.es/"],
@@ -357,6 +357,13 @@ def parse_source(src,url,kind,sport=False,recovery=False):
      if 35<=len(t)<=240:
       if u.startswith("/"):u=urllib.parse.urljoin(candidate,u)
       if u.startswith("http") and (not sport or sport_important(t)):
+       # Cadena SER: accept dated original news URLs, not author archives,
+       # podcasts, programme promos or generic undated home-page links.
+       if src=="Cadena SER":
+        parsed=urllib.parse.urlparse(u)
+        if not (parsed.hostname in {"cadenaser.com","www.cadenaser.com"} and
+                re.search(r"/20\d{2}/\d{2}/\d{2}/[^/]+",parsed.path)):
+         continue
        out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"});n+=1
       if n>=80:break
    if out:
@@ -364,7 +371,7 @@ def parse_source(src,url,kind,sport=False,recovery=False):
     # of up to three directly linked articles. Never use the listing poll time.
     # Failure here is telemetry-only and cannot block article retrieval.
     if effective_kind=="html":
-     enrich_html_rows(out,SOURCE_DOMAINS.get(src),get,limit=3)
+     enrich_html_rows(out,SOURCE_DOMAINS.get(src),get,limit=8 if src=="Cadena SER" else 3)
     return src,out,candidate,None
    last="0 artículos extraídos en "+candidate
   except Exception as e:last=str(e)
