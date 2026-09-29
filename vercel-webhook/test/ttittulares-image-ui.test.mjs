@@ -5,7 +5,7 @@ import vm from "node:vm";
 
 const html=readFileSync(new URL("../ttittulares/index.html",import.meta.url),"utf8");
 const inline=html.match(/<script>([\s\S]*?)<\/script>/i)?.[1]||"";
-const clipStart=inline.indexOf("async function imagePngBlob(url){");
+const clipStart=inline.indexOf("async function imagePngBlob(url,preview){");
 const clipEnd=inline.indexOf("function mountRemateRating(",clipStart);
 
 test("El refresco no destruye imágenes que ya están cargadas",()=>{
