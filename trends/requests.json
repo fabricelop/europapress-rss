@@ -8033,7 +8033,7 @@
       "id": "701750e23ceb",
       "name": "#CarrefourConFC27",
       "rank": 7,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-09-29T12:01:27+02:00",
       "revision": 0,
       "reexplain": false,
@@ -8046,13 +8046,15 @@
       "captured_with": [
         "#CarrefourConFC27"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problem_reason": "La etiqueta #CarrefourConFC27 aparece en el radar, pero dos búsquedas independientes no aportan una fuente identificable que confirme el detonante específico, sus bases o campaña actual. No atribuirla a una promoción o sorteo por conjetura.",
+      "last_attempt_at": "2026-09-29T10:49:03.504Z"
     },
     {
       "id": "9454d8c95e18",
       "name": "PSOE y Sumar",
       "rank": 6,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-09-29T12:31:21+02:00",
       "revision": 0,
       "reexplain": false,
@@ -8066,13 +8068,37 @@
         "PSOE y Sumar",
         "Mataró"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "explained_at": "2026-09-29T10:49:03.504Z",
+      "explanation": "TT#6 PSOE y Sumar es tendencia porque pactaron aprobar dos decretos de vivienda tras retrasarse una hora el Consejo de Ministros; el acuerdo todavía debe pasar por el Congreso.\n🌶️ La reunión también pidió una prórroga del horario.",
+      "closer_text": "🌶️ La reunión también pidió una prórroga del horario.",
+      "rank_at_explanation": 6,
+      "news_disposition": "ignored",
+      "source": "editorial_manual_chat",
+      "group_id": "grp-psoe-sumar-consejo-vivienda-20260929",
+      "explanation_group_id": "grp-psoe-sumar-consejo-vivienda-20260929",
+      "group_title": "Acuerdo PSOE y Sumar en Consejo de Ministros",
+      "group_leader_id": "74e71453da5e",
+      "trend_names": [
+        "Consejo de Ministros",
+        "PSOE y Sumar"
+      ],
+      "trend_context": [
+        {
+          "name": "Consejo de Ministros",
+          "rank": 18
+        },
+        {
+          "name": "PSOE y Sumar",
+          "rank": 6
+        }
+      ]
     },
     {
       "id": "853f0f605fac",
       "name": "Mataró",
       "rank": 10,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-09-29T12:31:21+02:00",
       "revision": 0,
       "reexplain": false,
@@ -8086,13 +8112,20 @@
         "PSOE y Sumar",
         "Mataró"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "explained_at": "2026-09-29T10:49:03.504Z",
+      "explanation": "TT#10 Mataró es tendencia porque este martes fue desahuciada una familia con una persona que tiene reconocida una discapacidad del 87%, en plena negociación del decreto de vivienda.",
+      "closer_text": "",
+      "rank_at_explanation": 10,
+      "news_disposition": "ignored",
+      "source": "editorial_manual_chat",
+      "duplicate_of": "015255830aaa"
     },
     {
       "id": "74e71453da5e",
       "name": "Consejo de Ministros",
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-09-29T10:46:10.793Z",
       "rank": 18,
       "with_image": false,
@@ -8106,8 +8139,32 @@
       "requested_together": [
         "Consejo de Ministros"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "explained_at": "2026-09-29T10:49:03.504Z",
+      "explanation": "TT#6 PSOE y Sumar es tendencia porque pactaron aprobar dos decretos de vivienda tras retrasarse una hora el Consejo de Ministros; el acuerdo todavía debe pasar por el Congreso.\n🌶️ La reunión también pidió una prórroga del horario.",
+      "closer_text": "🌶️ La reunión también pidió una prórroga del horario.",
+      "rank_at_explanation": 6,
+      "news_disposition": "ignored",
+      "source": "editorial_manual_chat",
+      "group_id": "grp-psoe-sumar-consejo-vivienda-20260929",
+      "explanation_group_id": "grp-psoe-sumar-consejo-vivienda-20260929",
+      "group_title": "Acuerdo PSOE y Sumar en Consejo de Ministros",
+      "group_leader_id": "74e71453da5e",
+      "trend_names": [
+        "Consejo de Ministros",
+        "PSOE y Sumar"
+      ],
+      "trend_context": [
+        {
+          "name": "Consejo de Ministros",
+          "rank": 18
+        },
+        {
+          "name": "PSOE y Sumar",
+          "rank": 6
+        }
+      ]
     }
   ],
-  "updated_at": "2026-09-29T10:46:10.793Z"
+  "updated_at": "2026-09-29T10:49:03.504Z"
 }
