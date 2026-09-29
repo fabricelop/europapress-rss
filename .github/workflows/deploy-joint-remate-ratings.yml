@@ -1,5 +1,5 @@
 name: Deploy conjunto remates TTendencias y TTiTTulares
-# Publicación conjunta de TTendencias y TTiTTulares, incluido el marcador TT 🗯️ de Tremending.
+# Publicación conjunta web, incluida la tabla compacta de fuentes del radar TTiTTulares.
 
 on:
   push:
@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   deploy-both:
-    if: "github.event.head_commit.message == 'Deploy conjunto de puntuaciones TTendencias y TTiTTulares' || github.event.head_commit.message == 'Desplegar notificaciones TTendencias y TTiTTulares' || github.event.head_commit.message == 'Desplegar correccion de imagen TTiTTulares' || github.event.head_commit.message == 'Desplegar bandeja compacta Tremending' || github.event.head_commit.message == 'Desplegar formato e imagenes TTendencias Tremending'"
+    if: "github.event.head_commit.message == 'Deploy conjunto de puntuaciones TTendencias y TTiTTulares' || github.event.head_commit.message == 'Desplegar notificaciones TTendencias y TTiTTulares' || github.event.head_commit.message == 'Desplegar correccion de imagen TTiTTulares' || github.event.head_commit.message == 'Desplegar bandeja compacta Tremending' || github.event.head_commit.message == 'Desplegar formato e imagenes TTendencias Tremending' || github.event.head_commit.message == 'Desplegar tabla de fuentes TTiTTulares'"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
