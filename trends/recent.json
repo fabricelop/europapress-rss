@@ -1,33 +1,32 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T21:11:00+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-29T21:18:50+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "fowtools",
+    "superx",
+    "snaplytics",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
     "Gonzalo Suárez",
-    "#TEM29S",
     "#RTXON",
+    "#TEM29S",
     "Manchester City",
-    "Premier League",
-    "Repsol",
-    "Spotify",
+    "Croacia",
     "Isabel Rodríguez",
+    "Repsol",
     "#HONORMagicV6",
-    "Croacia"
+    "Spotify",
+    "El City"
   ],
   "items": [
     {
@@ -37,13 +36,13 @@
     },
     {
       "rank": 2,
-      "name": "#TEM29S",
-      "entered_top10_at": "2026-09-29T16:50:58+02:00"
+      "name": "#RTXON",
+      "entered_top10_at": "2026-09-29T20:31:11+02:00"
     },
     {
       "rank": 3,
-      "name": "#RTXON",
-      "entered_top10_at": "2026-09-29T20:31:11+02:00"
+      "name": "#TEM29S",
+      "entered_top10_at": "2026-09-29T16:50:58+02:00"
     },
     {
       "rank": 4,
@@ -52,57 +51,40 @@
     },
     {
       "rank": 5,
-      "name": "Premier League",
-      "entered_top10_at": "2026-09-29T20:41:35+02:00"
+      "name": "Croacia",
+      "entered_top10_at": "2026-09-29T20:31:11+02:00"
     },
     {
       "rank": 6,
-      "name": "Repsol",
-      "entered_top10_at": "2026-09-29T19:50:57+02:00"
-    },
-    {
-      "rank": 7,
-      "name": "Spotify",
-      "entered_top10_at": "2026-09-29T19:50:57+02:00"
-    },
-    {
-      "rank": 8,
       "name": "Isabel Rodríguez",
       "entered_top10_at": "2026-09-29T16:50:58+02:00"
     },
     {
-      "rank": 9,
+      "rank": 7,
+      "name": "Repsol",
+      "entered_top10_at": "2026-09-29T19:50:57+02:00"
+    },
+    {
+      "rank": 8,
       "name": "#HONORMagicV6",
       "entered_top10_at": "2026-09-29T11:20:54+02:00"
     },
     {
+      "rank": 9,
+      "name": "Spotify",
+      "entered_top10_at": "2026-09-29T19:50:57+02:00"
+    },
+    {
       "rank": 10,
-      "name": "Croacia",
-      "entered_top10_at": "2026-09-29T20:31:11+02:00"
+      "name": "El City",
+      "entered_top10_at": "2026-09-29T21:18:50+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "El City"
+  ],
   "upcoming": [
-    {
-      "name": "El City",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T20:10:50+02:00",
-      "news_source_count": 8,
-      "news_event_id": "a51866b63472",
-      "news_title": "Nueve años de infracciones Oficial: la Premier League declara culpable al Manchester City \"de todos los cargos\" Guillermo Álvarez 29 de septiembre de 2026, 18:36",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-29T19:02:43.100267Z"
-    },
     {
       "name": "Pyme",
       "social_source_count": 4,
@@ -112,8 +94,8 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 15.0,
+      "best_observed_rank": 12,
+      "mean_observed_rank": 14.0,
       "movement": "up",
       "first_detected_at": "2026-09-29T20:01:26+02:00",
       "news_source_count": 0,
@@ -121,25 +103,6 @@
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Urbagestión",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 18.8,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T20:31:11+02:00",
-      "news_source_count": 1,
-      "news_event_id": "4d24d750065e",
-      "news_title": "El alucinante comunicado de Urbagestión: ahora \"siente en el alma\" lo ocurrido con Maricarmen y da todo el mérito a Almeida - El HuffPost",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T17:04:16.491385Z"
     },
     {
       "name": "Miguel Román",
@@ -150,32 +113,14 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "down",
+      "mean_observed_rank": 12.3,
+      "movement": "flat",
       "first_detected_at": "2026-09-29T20:41:35+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "El Gobierno",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 17.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T21:01:29+02:00",
-      "news_source_count": 4,
-      "news_event_id": "54a09a8e38bf",
-      "news_title": "Los colectivos de vivienda que mantienen una acampada en Madrid consideran insuficiente el denominado 'Decreto Maricarmen' que el Gobierno prev aprobar y reclaman medidas ms amplias para hacer frente al problema del acceso a la vivienda",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-29T18:42:40.211160Z"
     },
     {
       "name": "Man City",
@@ -186,27 +131,9 @@
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 12.3,
-      "movement": "down",
+      "mean_observed_rank": 14.0,
+      "movement": "flat",
       "first_detected_at": "2026-09-29T20:10:50+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Emilio Delgado",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.3,
-      "movement": "down",
-      "first_detected_at": "2026-09-29T20:31:11+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -222,7 +149,7 @@
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 15.3,
+      "mean_observed_rank": 16.3,
       "movement": "flat",
       "first_detected_at": "2026-09-29T21:01:29+02:00",
       "news_source_count": 1,
@@ -230,40 +157,116 @@
       "news_title": "Una entrevistada da plantón en directo a Joaquín Prat en 'El Tiempo Justo' por las mofas de Aldo Comas: \"Os dan por...\" - El Televisero",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-29T17:12:28.459859Z"
+    },
+    {
+      "name": "Urbagestión",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 18,
+      "mean_observed_rank": 19.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-29T20:31:11+02:00",
+      "news_source_count": 1,
+      "news_event_id": "4d24d750065e",
+      "news_title": "El alucinante comunicado de Urbagestión: ahora \"siente en el alma\" lo ocurrido con Maricarmen y da todo el mérito a Almeida - El HuffPost",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T17:04:16.491385Z"
+    },
+    {
+      "name": "Sindicato de Inquilinas",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 15.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T21:18:50+02:00",
+      "news_source_count": 1,
+      "news_event_id": "a9cf137a2a06",
+      "news_title": "El Sindicato de Inquilinas reclama a los sindicatos la convocatoria de una huelga general: \"Ahora hay camino\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T18:42:40.211160Z"
+    },
+    {
+      "name": "El Gobierno",
+      "social_source_count": 2,
+      "social_sources": [
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 17,
+      "mean_observed_rank": 17.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-29T21:01:29+02:00",
+      "news_source_count": 3,
+      "news_event_id": "f99b8c026129",
+      "news_title": "Feijo cree que \"ocho aos de rumbo equivocado en vivienda\" no se solucionar con el decreto que prepara el Gobierno",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T08:32:41.919714Z"
+    },
+    {
+      "name": "Emilio Delgado",
+      "social_source_count": 2,
+      "social_sources": [
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.5,
+      "movement": "down",
+      "first_detected_at": "2026-09-29T20:31:11+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "El City",
+      "first_detected_at": "2026-09-29T20:10:50+02:00",
+      "entered_top10_at": "2026-09-29T21:18:50+02:00",
+      "lead_minutes": 68
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
       "ok": true,
       "trends": [
-        "Gonzalo Suárez",
-        "#TEM29S",
-        "#RTXON",
-        "Manchester City",
-        "Premier League",
-        "Repsol",
-        "Spotify",
-        "Isabel Rodríguez",
-        "#HONORMagicV6",
         "Croacia",
-        "Miguel Román",
-        "Man City",
-        "Emilio Delgado",
-        "El City",
-        "Aldo Comas",
+        "Gonzalo Suárez",
+        "#RTXON",
+        "#JuanjoBonaXNetflix",
+        "Manchester City",
+        "#TEM29S",
+        "Fermin",
+        "#NationsLeague",
+        "Isabel Rodríguez",
+        "Mariona",
+        "Premier League",
         "Pyme",
-        "El Gobierno",
-        "Urbagestión",
-        "Fernando Alonso",
-        "Ada Colau"
+        "Repsol",
+        "El City",
+        "Miguel Román",
+        "Ministra de Vivienda",
+        "Man City",
+        "Aldo Comas",
+        "#HONORMagicV6",
+        "Spotify"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T21:11:00+02:00"
+      "fetched_at": "2026-09-29T21:18:50+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -288,7 +291,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T21:11:01+02:00"
+      "fetched_at": "2026-09-29T21:18:51+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -315,10 +318,10 @@
         "Ada Colau"
       ],
       "error": null,
-      "update_hint": "Updated 40 minutes ago",
-      "age_minutes": 40.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-29T21:11:02+02:00"
+      "update_hint": "Updated 47 minutes ago",
+      "age_minutes": 47.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-29T21:18:55+02:00"
     },
     "superx": {
       "ok": true,
@@ -348,16 +351,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T21:11:02+02:00"
+      "fetched_at": "2026-09-29T21:18:56+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790709063",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790709536",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T21:11:03+02:00"
+      "fetched_at": "2026-09-29T21:18:56+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -385,9 +388,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 18:00 UTC",
-      "age_minutes": 71.1,
+      "age_minutes": 78.9,
       "freshness": "aging",
-      "fetched_at": "2026-09-29T21:11:03+02:00"
+      "fetched_at": "2026-09-29T21:18:56+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -415,18 +418,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 07:00 PM # Trend Type Actions 1 #RTXOn Hashtag 2 Gonzalo S",
-      "age_minutes": 131.1,
+      "age_minutes": 139.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T21:11:04+02:00"
+      "fetched_at": "2026-09-29T21:18:57+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790709065",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790709538",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T21:11:05+02:00"
+      "fetched_at": "2026-09-29T21:18:58+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -435,7 +438,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T21:11:06+02:00"
+      "fetched_at": "2026-09-29T21:18:59+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -465,16 +468,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T21:11:07+02:00"
+      "fetched_at": "2026-09-29T21:19:00+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790709069",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790709542",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T21:11:09+02:00"
+      "fetched_at": "2026-09-29T21:19:02+02:00"
     }
   }
 }
