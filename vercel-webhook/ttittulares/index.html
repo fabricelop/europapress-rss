@@ -29,7 +29,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 .remateRating .ratingStars button[aria-pressed="true"]{outline:2px solid #ffce69;outline-offset:1px}
 .remateRating .ratingStars button:disabled{opacity:.55;cursor:wait}
 .remateRating .ratingHint{font-size:11px;color:#97a9c1;margin-left:5px}
-.tremendingCard{border-left:3px solid #d95f8d}.tremendingMeta{font-size:12px;color:#9cacbf;margin-top:6px}.tweetPicker{display:grid;gap:10px;margin-top:12px}.tweetEmbed{border:1px solid #2d3745;border-radius:12px;overflow:hidden;background:#fff}.tweetEmbed.selected{border-color:#d95f8d;box-shadow:0 0 0 1px #d95f8d}.tweetEmbed label{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#111720;color:#eef2f8;font-size:12px;font-weight:750}.tweetEmbed iframe{display:block;width:100%;height:430px;border:0;background:#fff}.tremendingImage{max-width:100%;display:block;border-radius:10px;border:1px solid #354255;margin-top:9px}
+.tremendingCard{border-left:3px solid #d95f8d}.tremendingCard.postponed{opacity:.84}.tremendingMeta{font-size:12px;color:#9cacbf;margin-top:6px}.tremendingHeadActions{display:flex;align-items:center;gap:7px}.tremendingToggle{min-width:67px}.tweetPicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px;max-height:440px;overflow-y:auto;overscroll-behavior:contain;padding:2px 4px 4px 0}.tweetEmbed{min-width:0;border:1px solid #2d3745;border-radius:12px;overflow:hidden;background:#fff}.tweetEmbed.selected{border-color:#d95f8d;box-shadow:0 0 0 1px #d95f8d}.tweetEmbed label{display:flex;align-items:center;gap:8px;padding:7px 9px;background:#111720;color:#eef2f8;font-size:12px;font-weight:750}.tweetEmbed label span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tweetEmbed iframe{display:block;width:100%;height:235px;border:0;background:#fff}.tweetEmbed .tweetLink{display:block;padding:6px 9px;color:#d3e3fb;background:#111720;font-size:11px;text-align:right}.tremendingImage{width:min(100%,350px);max-height:220px;object-fit:contain;display:block;border-radius:10px;border:1px solid #354255;margin-top:9px}@media(max-width:560px){.tweetPicker{grid-template-columns:minmax(0,1fr);max-height:340px}.tweetEmbed iframe{height:235px}.tremendingHeadActions{flex-direction:column;align-items:end}.tremendingImage{width:min(100%,290px);max-height:190px}}
 </style>
 </head>
 <body>
@@ -94,12 +94,12 @@ const API="/api/ttittulares-control";
 const RUN_API="/api/ttittulares-run";
 const RUN_STATUS_API="/api/ttittulares-run-status";
 const $=id=>document.getElementById(id);
-const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards";
+const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards",TREMENDING_OPEN_KEY="ttittulares-open-tremending";
 function loadUiSet(key){try{return new Set((JSON.parse(sessionStorage.getItem(key)||"[]")||[]).map(String))}catch(_){return new Set()}}
-function persistUiState(){try{sessionStorage.setItem(PENDING_KEY,JSON.stringify([...pendingClosed]));sessionStorage.setItem(OPEN_KEY,JSON.stringify([...openCards]))}catch(_){}}
+function persistUiState(){try{sessionStorage.setItem(PENDING_KEY,JSON.stringify([...pendingClosed]));sessionStorage.setItem(OPEN_KEY,JSON.stringify([...openCards]));sessionStorage.setItem(TREMENDING_OPEN_KEY,JSON.stringify([...tremendingOpen]))}catch(_){}}
 const REQUESTED_VIEW=new URLSearchParams(location.search).get("view");
 const INITIAL_VIEW=["ready","processing","problematic","growing","tremending"].includes(REQUESTED_VIEW)?REQUESTED_VIEW:"ready";
-let model={prepared:[],status:{},config:{},tremending:{items:[]}},reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),loadSeq=0,runPoll=null;
+let model={prepared:[],status:{},config:{},tremending:{items:[]}},reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),tremendingOpen=loadUiSet(TREMENDING_OPEN_KEY),loadSeq=0,runPoll=null;
 const LINKED_EVENT_ID=new URLSearchParams(location.search).get("event_id");
 const ACCESS_KEY="ttittulares-control-token";
 const bootAccess=new URLSearchParams(location.search).get("access");
@@ -491,13 +491,13 @@ function renderSourcesSheet(){
 }
 function render(){
  const s=model.status||{},healthy=Number(s.healthy_source_count),total=Number(s.configured_sources);
- $("readyCount").textContent=(model.prepared||[]).length;$("processingCount").textContent=Number(s.processing_count||0);$("problematicCount").textContent=Number(s.problematic_count||0);$("growingCount").textContent=Number(s.three_source_count||0);$("tremendingCount").textContent=(model.tremending?.items||[]).filter(x=>x.status!=="discarded").length;
+ $("readyCount").textContent=(model.prepared||[]).length;$("processingCount").textContent=Number(s.processing_count||0);$("problematicCount").textContent=Number(s.problematic_count||0);$("growingCount").textContent=Number(s.three_source_count||0);$("tremendingCount").textContent=(model.tremending?.items||[]).filter(x=>!["discarded","sent"].includes(x.status)).length;
  renderTiming();
  $("health").textContent=(Number.isFinite(healthy)?healthy:"—")+"/"+(Number.isFinite(total)?total:"—")+" fuentes funcionando";
  $("health").classList.toggle("bad",Number.isFinite(healthy)&&Number.isFinite(total)&&healthy<total);
  renderList();badge()
 }
-let lastRenderedView="",lastReadyRendering=null;
+let lastRenderedView="",lastReadyRendering=null,lastTremendingRendering=null;
 function renderList(){
  const list=$("list");
  if(view==="ready"){
@@ -523,20 +523,32 @@ function renderList(){
   lastRenderedView="ready";lastReadyRendering=signature;
   return;
  }
- lastRenderedView=view;lastReadyRendering=null;
+ if(view==="tremending"){
+  const signature=JSON.stringify([model.tremending?.items||[],[...tremendingOpen]]);
+  if(lastRenderedView==="tremending"&&lastTremendingRendering===signature)return;
+  const sameView=lastRenderedView==="tremending";
+  lastRenderedView="tremending";lastTremendingRendering=signature;lastReadyRendering=null;
+  if(!sameView)list.innerHTML="";renderTremending(list);return;
+ }
+ lastRenderedView=view;lastReadyRendering=null;lastTremendingRendering=null;
  list.innerHTML="";
  if(view==="processing"){renderProcessing(list);return}
  if(view==="problematic"){renderProblematic(list);return}
  if(view==="growing"){renderGrowing(list);return}
- if(view==="tremending"){renderTremending(list);return}
 }
 function renderTremending(list){
  $("viewTitle").textContent="Bandeja Tremending";
- const items=[...(model.tremending?.items||[])].filter(x=>x.status!=="discarded");
- if(!items.length){list.innerHTML='<div class="empty">Aún no hay entradas recogidas. La bandeja conserva las pendientes y recupera omisiones automáticamente.</div>';return}
+ const items=[...(model.tremending?.items||[])].filter(x=>!["discarded","sent"].includes(x.status)).sort((a,b)=>(a.status==="postponed")-(b.status==="postponed")||String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
+ if(!items.length){list.innerHTML='<div class="empty">No hay entradas Tremending pendientes. Las enviadas y descartadas salen de esta bandeja.</div>';return}
+ const previousCards=new Map([...list.querySelectorAll("article.tremendingCard[data-tremending-id]")].map(node=>[node.dataset.tremendingId,node]));
+ const desired=[];
  for(const item of items){
-  const card=document.createElement("article");card.className="queuecard tremendingCard";
-  const head=document.createElement("div");head.className="head";const titleBox=document.createElement("div"),title=document.createElement("div"),meta=document.createElement("div"),badge=document.createElement("div");title.className="title";title.textContent=item.title;meta.className="tremendingMeta";meta.textContent="Público · Tremending · "+fmt(item.published_at||item.first_seen_at)+(item.status==="postponed"?" · pospuesta":item.destinations?.length?" · enviada a "+item.destinations.join(" y "):"");badge.className="count";badge.textContent=(item.tweets||[]).length+" tuits";titleBox.append(title,meta);head.append(titleBox,badge);card.appendChild(head);
+  const key=String(item.id),itemSignature=JSON.stringify([item,tremendingOpen.has(key)]),oldCard=previousCards.get(key);
+  if(oldCard&&oldCard.dataset.renderSignature===itemSignature){desired.push(oldCard);continue}
+  const card=document.createElement("article");card.className="queuecard tremendingCard"+(item.status==="postponed"?" postponed":"");
+  card.dataset.tremendingId=key;card.dataset.renderSignature=itemSignature;
+  if(oldCard)oldCard.replaceWith(card);
+  const head=document.createElement("div");head.className="head";const titleBox=document.createElement("div"),title=document.createElement("div"),meta=document.createElement("div"),badge=document.createElement("div");title.className="title";title.textContent=item.title;meta.className="tremendingMeta";meta.textContent="Público · Tremending · "+fmt(item.published_at||item.first_seen_at)+(item.status==="postponed"?" · pospuesta":item.destinations?.length?" · enviada a "+item.destinations.join(" y "):"");badge.className="count";badge.textContent=(item.tweets||[]).length+" tuits";titleBox.append(title,meta);const id=String(item.id),expanded=tremendingOpen.has(id),aside=document.createElement("div"),toggle=document.createElement("button");aside.className="tremendingHeadActions";toggle.className="btn tremendingToggle";toggle.textContent=expanded?"Cerrar":"Abrir";toggle.setAttribute("aria-expanded",String(expanded));toggle.onclick=()=>{if(tremendingOpen.has(id))tremendingOpen.delete(id);else tremendingOpen.add(id);persistUiState();renderList()};aside.append(badge,toggle);head.append(titleBox,aside);card.appendChild(head);if(!expanded){desired.push(card);continue}
   if(item.description){const desc=document.createElement("div");desc.className="facts";desc.textContent=item.description;card.appendChild(desc)}
   const source=document.createElement("a");source.className="btn";source.target="_blank";source.rel="noopener";source.href=item.url;source.textContent="Abrir artículo";
   const actions=document.createElement("div");actions.className="actions";actions.appendChild(source);
@@ -544,17 +556,20 @@ function renderTremending(list){
   const picker=document.createElement("div");picker.className="tweetPicker";
   for(const tweet of item.tweets||[]){
    const wrap=document.createElement("div");wrap.className="tweetEmbed"+(String(tweet.id)===selected?" selected":"");
-   const label=document.createElement("label"),radio=document.createElement("input"),span=document.createElement("span"),frame=document.createElement("iframe");radio.type="radio";radio.name="tremending-"+item.id;radio.checked=String(tweet.id)===selected;span.textContent=(tweet.author||"Cuenta de X")+" · elegir este tuit";frame.loading="lazy";frame.title="Embed oficial de "+(tweet.author||"X");frame.src=tweet.embed_url||("https://platform.twitter.com/embed/Tweet.html?id="+encodeURIComponent(tweet.id)+"&dnt=true");label.append(radio,span);wrap.append(label,frame);radio.onchange=async()=>{try{await api("select-tremending-tweet",{entry_id:item.id,tweet_id:tweet.id});toast("Tuit elegido; la captura estática se prepara en segundo plano");await load(true)}catch(e){toast(e.message)}};picker.appendChild(wrap)
+   const label=document.createElement("label"),radio=document.createElement("input"),span=document.createElement("span"),frame=document.createElement("iframe");radio.type="radio";radio.name="tremending-"+item.id;radio.checked=String(tweet.id)===selected;span.textContent=(tweet.author||"Cuenta de X")+" · elegir este tuit";frame.loading="lazy";frame.title="Embed oficial de "+(tweet.author||"X");frame.src=tweet.embed_url||("https://platform.twitter.com/embed/Tweet.html?id="+encodeURIComponent(tweet.id)+"&dnt=true");label.append(radio,span);wrap.append(label,frame);const link=document.createElement("a");link.className="tweetLink";link.href=tweet.url;link.target="_blank";link.rel="noopener";link.textContent="Ver tuit completo ↗";wrap.appendChild(link);radio.onchange=async()=>{try{await api("select-tremending-tweet",{entry_id:item.id,tweet_id:tweet.id});toast("Tuit elegido; la captura estática se prepara en segundo plano");await load(true)}catch(e){toast(e.message)}};picker.appendChild(wrap)
   }
   if(!item.tweets?.length){const empty=document.createElement("div");empty.className="verification-hint";empty.textContent=item.article_status==="retry"?"El artículo se volverá a intentar: aún no se pudieron extraer sus tuits.":"Este artículo no contiene embeds de X seleccionables.";picker.appendChild(empty)}
   card.appendChild(picker);
-  const send=(destination,label)=>{const b=document.createElement("button");b.className="btn primary";b.textContent=label;b.disabled=!selected;b.title=selected?"":"Elige antes el tuit";b.onclick=async()=>{try{const r=await api("send-tremending",{entry_id:item.id,destination});toast(r.news_queued||r.trend_queued?"Enviada a elaboración":"Ya estaba cerrada");await load(true)}catch(e){toast(e.message)}};actions.appendChild(b)};
-  send("news","→ TTiTTulares");send("trend","→ TTendencias");send("both","→ Ambas");
-  const postpone=document.createElement("button");postpone.className="btn";postpone.textContent=item.status==="postponed"?"Reactivar":"Posponer";postpone.onclick=async()=>{try{await api(item.status==="postponed"?"reactivate-tremending":"postpone-tremending",{entry_id:item.id});await load(true)}catch(e){toast(e.message)}};actions.appendChild(postpone);
-  const discard=document.createElement("button");discard.className="btn danger";discard.textContent="Descartar";discard.onclick=async()=>{if(!confirm("¿Descartar esta entrada de forma persistente?"))return;try{await api("discard-tremending",{entry_id:item.id});await load(true)}catch(e){toast(e.message)}};actions.appendChild(discard);card.appendChild(actions);
-  if(item.image?.url){const img=document.createElement("img");img.className="tremendingImage imagePreview";img.src=API+"?view=image-proxy&url="+encodeURIComponent(item.image.url);img.alt="Captura del tuit elegido";card.appendChild(img);const imgActions=document.createElement("div");imgActions.className="actions";const copy=document.createElement("button");copy.className="btn";copy.textContent="Copiar imagen";copy.onclick=()=>copyImageToClipboard(item.image.url,copy,img);imgActions.appendChild(copy);card.appendChild(imgActions)}
-  list.appendChild(card)
+  const send=(destination,label)=>{const b=document.createElement("button");b.className="btn primary";b.textContent=label;b.disabled=!selected;b.title=selected?"":"Elige antes el tuit";b.onclick=async()=>{try{const r=await api("send-tremending",{entry_id:item.id,destination});tremendingOpen.delete(id);persistUiState();setView("ready");toast(r.news_queued||r.trend_queued?"Enviada a elaboración":"Ya estaba cerrada");await load(true)}catch(e){toast(e.message)}};actions.appendChild(b)};
+  send("news","→ TTiTTulares");send("trend","→ TTendencias");
+  const postpone=document.createElement("button");postpone.className="btn";postpone.textContent=item.status==="postponed"?"Reactivar":"Posponer";postpone.title="Aplazar la decisión: queda al final de la bandeja sin descartarse";postpone.onclick=async()=>{try{await api(item.status==="postponed"?"reactivate-tremending":"postpone-tremending",{entry_id:item.id});tremendingOpen.delete(id);persistUiState();await load(true);toast(item.status==="postponed"?"Reactivada":"Pospuesta para después")}catch(e){toast(e.message)}};actions.appendChild(postpone);
+  const discard=document.createElement("button");discard.className="btn danger";discard.textContent="Descartar";discard.onclick=async()=>{if(!confirm("¿Descartar esta entrada de forma persistente?"))return;try{await api("discard-tremending",{entry_id:item.id});tremendingOpen.delete(id);persistUiState();await load(true)}catch(e){toast(e.message)}};actions.appendChild(discard);card.appendChild(actions);
+  if(item.image?.url){const img=document.createElement("img");img.className="tremendingImage imagePreview";img.src=API+"?view=image-proxy&url="+encodeURIComponent(item.image.url);img.alt="Captura del tuit elegido";img.loading="lazy";img.decoding="async";const imageLink=document.createElement("a");imageLink.href=item.image.url;imageLink.target="_blank";imageLink.rel="noopener";imageLink.title="Ampliar imagen";imageLink.appendChild(img);card.appendChild(imageLink);const imgActions=document.createElement("div");imgActions.className="actions";const copy=document.createElement("button");copy.className="btn";copy.textContent="Copiar imagen";copy.onclick=()=>copyImageToClipboard(item.image.url,copy,img);imgActions.appendChild(copy);card.appendChild(imgActions)}
+  desired.push(card)
  }
+ const keep=new Set(desired);
+ for(const node of [...list.children])if(!keep.has(node))node.remove();
+ desired.forEach((node,i)=>{if(list.children[i]!==node)list.insertBefore(node,list.children[i]||null)});
 }
 function renderReady(list,preservedImages=new Map()){
  $("viewTitle").textContent="Noticias listas";
