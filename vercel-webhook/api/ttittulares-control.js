@@ -127,6 +127,19 @@ async function markTremending(entryId,status){
   });
   return {ok:true,entry_id:entry,status}
 }
+function shortTremendingTrendTitle(title){
+  const clean=String(title||"").replace(/\s+/g," ").trim();
+  const pair=clean.match(/\bentre\s+([A-ZÁÉÍÓÚÑ][\p{L}.-]*(?:\s+[A-ZÁÉÍÓÚÑ][\p{L}.-]*){1,2})\s+y\s+([A-ZÁÉÍÓÚÑ][\p{L}.-]*(?:\s+[A-ZÁÉÍÓÚÑ][\p{L}.-]*){1,2})(?=\s+en\b|[,:;“"]|$)/u);
+  if(pair){
+    const first=pair[1].trim().split(/\s+/).at(-1),second=pair[2].trim().split(/\s+/).at(-1);
+    const candidate=first+(/^[ií]/i.test(second)?" e ":" y ")+second;
+    if(candidate.length<=56)return candidate;
+  }
+  const phrase=clean.split(/[“":;!?]/,1)[0].trim().replace(/[.,\s]+$/g,"");
+  const words=phrase.split(/\s+/),chosen=[];
+  for(const word of words){if((chosen.join(" ")+(chosen.length?" ":"")+word).length>55)break;chosen.push(word);}
+  return chosen.join(" ")||clean.slice(0,55).trim()||"Tremending";
+}
 async function sendTremending(entryId,destination){
   const entry=tremendingEntryId(entryId);const target=String(destination||"");
   if(!["news","trend","both"].includes(target))throw new Error("Destino Tremending no válido");
@@ -144,9 +157,10 @@ async function sendTremending(entryId,destination){
     await mutateJson(PROCESSING,"Enviar entrada Tremending a elaboración",doc=>{doc.items||=[];let row=[...(doc.items||[])].reverse().find(x=>idOf(x.event_id)===eventId);if(!row){row={event_id:eventId};doc.items.push(row)}Object.assign(row,{event_id:eventId,title,url,sources:["Público · Tremending"],source_count:1,drafted_source_count:1,selected_at:now,status:"PROCESSING",selection_mode:"TREMENDING_USER",manual_submission:true,tremending_origin:true,tremending_id:entry,tremending_tweet:tweet,with_image:false,image_mode:"tremending_tweet_capture",image_status:"pending_capture"});delete row.dismissed_at;delete row.delivered_at;doc.updated_at=now;return doc});
   }
   if(requestedTrend){
-    const trendId="tremending-"+crypto.createHash("sha256").update(entry).digest("hex").slice(0,12),name="Tremending · "+title;
-    await mutateJson(TREND_REQUESTS,"Enviar entrada Tremending a TTendencias",doc=>{doc.requests||=[];let row=doc.requests.find(x=>idOf(x.id)===trendId);if(!row){row={id:trendId,revision:0};doc.requests.push(row)}Object.assign(row,{id:trendId,name,rank:0,status:"preparing",requested_at:now,reexplain:false,with_image:false,alternatives_target:0,task:"explain",requested_together:[name],auto_queued:false,tremending_origin:true,tremending_id:entry,source_url:url,selected_tweet:tweet,rewrite_instruction:"Entrada elegida por el usuario desde Público/Tremending. Separa hechos comprobados de opiniones; no adoptes posición partidista ni elijas el enfoque por sesgo. El usuario ha elegido el tuit asociado."});doc.updated_at=now;return doc});
-    await mutateJson(TREND_EDITORIAL_QUEUE,"Incorporar entrada Tremending a cola TTendencias",doc=>{doc.project||="TTendencias";doc.items||=[];doc.items=doc.items.filter(x=>idOf(x.id)!==trendId);doc.items.push({id:trendId,name,rank:0,status:"preparing",requested_at:now,revision:0,rewrite_instruction:"Entrada elegida por el usuario desde Público/Tremending. Separa hechos comprobados de opiniones; no adoptes posición partidista ni elijas el enfoque por sesgo.",with_image:false,task:"explain",batch_id:null,requested_together:[name],captured_with:[],auto_queued:false,tremending_origin:true,tremending_id:entry,source_url:url,selected_tweet:tweet});doc.count=doc.items.length;doc.updated_at=now;return doc});
+    const trendId="tremending-"+crypto.createHash("sha256").update(entry).digest("hex").slice(0,12),name=shortTremendingTrendTitle(title);
+    const trendContext="Entrada seleccionada desde Público/Tremending. Titula con el nombre corto \""+name+"\" y redacta \""+name+" es tendencia por/porque ...\" con un remate opcional 🌶️ en la línea siguiente. No utilizar TT#0 ni repetir título, ni copiar el titular completo. Verifica los hechos y atribuye opiniones. La captura del tuit seleccionado tiene prioridad como imagen, y nunca bloquea la explicación.";
+    await mutateJson(TREND_REQUESTS,"Enviar entrada Tremending a TTendencias",doc=>{doc.requests||=[];let row=doc.requests.find(x=>idOf(x.id)===trendId);if(!row){row={id:trendId,revision:0};doc.requests.push(row)}Object.assign(row,{id:trendId,name,rank:0,status:"preparing",requested_at:now,reexplain:false,with_image:false,alternatives_target:0,task:"explain",requested_together:[name],auto_queued:false,tremending_origin:true,tremending_id:entry,article_title:title,source_url:url,selected_tweet:tweet,rewrite_instruction:trendContext});doc.updated_at=now;return doc});
+    await mutateJson(TREND_EDITORIAL_QUEUE,"Incorporar entrada Tremending a cola TTendencias",doc=>{doc.project||="TTendencias";doc.items||=[];doc.items=doc.items.filter(x=>idOf(x.id)!==trendId);doc.items.push({id:trendId,name,rank:0,status:"preparing",requested_at:now,revision:0,rewrite_instruction:trendContext,with_image:false,task:"explain",batch_id:null,requested_together:[name],captured_with:[],auto_queued:false,tremending_origin:true,tremending_id:entry,article_title:title,source_url:url,selected_tweet:tweet});doc.count=doc.items.length;doc.updated_at=now;return doc});
   }
   await mutateJson(TREMENDING,"Registrar destino editorial de Tremending",doc=>{doc.items||=[];const row=doc.items.find(x=>tremendingEntryId(x.id)===entry);if(!row)throw new Error("No se encuentra la entrada Tremending");row.status="sent";row.destinations=[...new Set([...(row.destinations||[]),...(requestedNews?["news"]:[]),...(requestedTrend?["trend"]:[])])];row.sent_at=now;row.updated_at=now;doc.updated_at=now;return doc});
   return {ok:true,entry_id:entry,event_id:eventId,destination:target,news_queued:requestedNews&&!closed,trend_queued:requestedTrend,duplicate_news:!!closed}
