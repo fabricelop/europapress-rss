@@ -53,12 +53,12 @@ jobs:
           const format=script[1].match(/function hasTweetReadyFormat\(x\)\{[\s\S]*?\n\}\nfunction tweetBody/);
           assert.ok(format,'Falta detector anti-duplicación');
           const code=format[0].replace(/\nfunction tweetBody$/,'');
-          const valid=vm.runInNewContext(code+'\nhasTweetReadyFormat({tremending_origin:true,explanation:"Nogueras e Intxaurrondo es tendencia por la entrevista."})');
+          const valid=vm.runInNewContext(code+'\nhasTweetReadyFormat({tremending_origin:true,explanation:"TT 🗯️ Nogueras e Intxaurrondo es tendencia por la entrevista."})');
           const legacy=vm.runInNewContext(code+'\nhasTweetReadyFormat({tremending_origin:true,explanation:"TT#0 Tremending · Entrada es tendencia por la entrevista."})');
           assert.ok(valid&&legacy,'Se repetiría encabezado Tremending');
           const data=JSON.parse(fs.readFileSync('trends/telegram-manual-explained.json','utf8'));
           const row=data.items.find(x=>x.id==='tremending-5f69baea2a47');
-          assert.ok(row&&!row.explanation.includes('TT#0')&&row.explanation.startsWith(row.name+' es tendencia'));
+          assert.ok(row&&!row.explanation.includes('TT#0')&&row.explanation.startsWith('TT 🗯️ '+row.name+' es tendencia'));
           assert.equal(row.explanation.split(row.name).length-1,1,'Título duplicado en explicación');
           console.log('TTENDENCIAS_TREMENDING_UI_SELFTEST_OK');
           JS
