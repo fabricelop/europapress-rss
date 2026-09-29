@@ -506,7 +506,7 @@ function renderSourcesSheet(){
  const table=document.createElement("table");table.className="sourceTable";
  table.setAttribute("aria-label","Fuentes: antigüedad de la última noticia, artículos en 24 horas y estado");
  const thead=document.createElement("thead"),header=document.createElement("tr");
- for(const value of ["Fuente","Hace hh:mm","Art. 24 h","Estado"]){
+ for(const value of ["Fuente","Publicó hace","Art. 24 h","Estado"]){
    const th=document.createElement("th");th.scope="col";th.textContent=value;header.appendChild(th);
  }
  thead.appendChild(header);table.appendChild(thead);
