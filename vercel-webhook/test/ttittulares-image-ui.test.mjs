@@ -54,3 +54,27 @@ test("Si falla la descarga, restaurar el botón sin fingir que copió",async()=>
  assert.ok(messages.some(x=>x.includes("No se pudo copiar")));
  assert.ok(!messages.some(x=>x.includes("copiada")));
 });
+
+test("La copia usa los píxeles visibles sin repetir la descarga remota",async()=>{
+ const calls=[];
+ const fakeCanvas={
+  width:0,height:0,
+  getContext(){return {drawImage(image,x,y){calls.push(["draw",image.naturalWidth,image.naturalHeight,x,y])}}},
+  toBlob(callback,mime){calls.push(["blob",this.width,this.height,mime]);callback(new Blob(["png"],{type:mime}))}
+ };
+ const context={
+  API:"/api/ttittulares-control",Promise,encodeURIComponent,Blob,
+  document:{createElement(type){assert.equal(type,"canvas");return fakeCanvas}},
+  fetch(){calls.push("fetch");throw new Error("La foto ya está disponible; no hay que descargarla")},
+  console:{warn(){}}
+ };
+ vm.createContext(context);vm.runInContext(inline.slice(clipStart,clipEnd),context);
+ const url="https://example.test/photo.webp";
+ const preview={
+  complete:true,naturalWidth:1600,naturalHeight:900,
+  getAttribute(attr){assert.equal(attr,"src");return context.API+"?view=image-proxy&url="+encodeURIComponent(url)}
+ };
+ const blob=await context.imagePngBlob(url,preview);
+ assert.equal(blob.type,"image/png");
+ assert.deepEqual(calls,[["draw",1600,900,0,0],["blob",1600,900,"image/png"]]);
+});

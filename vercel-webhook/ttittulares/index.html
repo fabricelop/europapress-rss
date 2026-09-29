@@ -343,8 +343,21 @@ async function enablePush(){
  }
 }
 async function badge(){const n=(model.prepared||[]).length;try{if("setAppBadge" in navigator){if(n)await navigator.setAppBadge(n);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}}
-async function imagePngBlob(url){
- const r=await fetch(API+"?view=image-proxy&url="+encodeURIComponent(url),{cache:"no-store"});
+async function imagePngBlob(url,preview){
+ const proxySrc=API+"?view=image-proxy&url="+encodeURIComponent(url);
+ // Usar preferentemente los píxeles YA cargados: no repetir una descarga remota
+ // que puede fallar justo cuando la foto está visible en la tarjeta.
+ if(preview&&preview.complete&&preview.naturalWidth>0&&preview.getAttribute("src")===proxySrc){
+  try{
+   const canvas=document.createElement("canvas");
+   canvas.width=preview.naturalWidth;canvas.height=preview.naturalHeight;
+   const context=canvas.getContext("2d");
+   if(!context)throw new Error("No se pudo convertir el preview");
+   context.drawImage(preview,0,0);
+   return await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error("PNG vacío")),"image/png"));
+  }catch(err){console.warn("copy preview fallback",err)}
+ }
+ const r=await fetch(proxySrc,{cache:"no-store"});
  if(!r.ok)throw new Error("Descarga de imagen: HTTP "+r.status);
  const blob=await r.blob();
  if(blob.type.split(";")[0].toLowerCase()==="image/png")return blob;
@@ -375,7 +388,7 @@ async function imagePngBlob(url){
   if(objectUrl)URL.revokeObjectURL(objectUrl);
  }
 }
-function copyImageToClipboard(url,button){
+function copyImageToClipboard(url,button,preview){
  if(!navigator.clipboard?.write||typeof ClipboardItem==="undefined"){
   toast("Este navegador no permite copiar imágenes. Usa Abrir imagen.");
   return;
@@ -385,7 +398,7 @@ function copyImageToClipboard(url,button){
  if(button){button.disabled=true;button.textContent="Copiando…"}
  // Es imprescindible pedir acceso al portapapeles EN el clic, sin un await previo.
  // La descarga/conversión posterior se resuelve por la promesa de ClipboardItem.
- const pngPromise=imagePngBlob(url);
+ const pngPromise=imagePngBlob(url,preview);
  let writing;
  try{
   writing=navigator.clipboard.write([new ClipboardItem({"image/png":pngPromise})]);
@@ -564,7 +577,7 @@ function renderReady(list,preservedImages=new Map()){
    if(preview.getAttribute("src")!==proxySrc)preview.src=proxySrc;
    card.querySelector(".imageMeta").textContent=[imgSource,imgRights].filter(Boolean).join(" · ")||(img.generated?"TTiTTulares · imagen original":"Imagen externa sugerida");
    card.querySelector(".imgOpen").href=imgUrl;
-   const copyButton=card.querySelector(".imgCopy");copyButton.onclick=()=>copyImageToClipboard(imgUrl,copyButton);
+   const copyButton=card.querySelector(".imgCopy");copyButton.onclick=()=>copyImageToClipboard(imgUrl,copyButton,preview);
    const src=card.querySelector(".imgSource");if(imgPage)src.href=imgPage;else src.style.display="none";
   }else{
    card.querySelector(".imageMeta").textContent=imageState==="telegram"?"Foto enviada al bot de Telegram. Ya puedes publicar.":imageState==="working"?"Se está buscando y validando una imagen real del acontecimiento.":imageState==="pending"?"La noticia está redactada, pero la imagen todavía está pendiente. No publiques todavía.":imageState==="retry"?"La imagen necesita un nuevo intento. No publiques todavía.":imageState==="none"?"La ejecución terminó sin imagen. Ya puedes publicar sin imagen.":"La noticia está lista.";
