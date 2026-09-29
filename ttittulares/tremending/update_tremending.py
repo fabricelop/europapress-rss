@@ -187,12 +187,15 @@ def merge_listing_item(existing: dict | None, candidate: dict, seen_at: str) -> 
 def update_state(state: dict, session: requests.Session, recent_pages: int, max_articles: int) -> dict:
     stamp = now_iso()
     scan = state.setdefault("scan", {})
-    recovery_page = max(recent_pages + 1, int(scan.get("recovery_page") or recent_pages + 1))
-    pages = list(range(1, recent_pages + 1)) + [recovery_page]
+    # First run: display only the five newest listing entries. Later runs only admit
+    # URLs that have not appeared during previous scans; never backfill old pages.
+    bootstrap = not scan.get("bootstrap_completed_at")
+    seen_urls = set(scan.get("seen_urls") or [])
+    pages = list(range(1, recent_pages + 1))
     by_url = {canonical_article_url(item.get("url", "")): item for item in state.get("items", []) if canonical_article_url(item.get("url", ""))}
     discovered: list[str] = []
+    observed_urls: set[str] = set()
     page_errors = []
-    max_page_seen = recovery_page
 
     for page in pages:
         try:
@@ -202,9 +205,17 @@ def update_state(state: dict, session: requests.Session, recent_pages: int, max_
                 continue
             for row in rows:
                 url = row["url"]
+                if url in observed_urls:
+                    continue
+                observed_urls.add(url)
+                if bootstrap:
+                    # Existing sent test entries remain untouched even outside the five.
+                    if len(observed_urls) > 5 and url not in by_url:
+                        continue
+                elif url in seen_urls or url in by_url:
+                    continue
                 by_url[url] = merge_listing_item(by_url.get(url), row, stamp)
-                if url not in discovered:
-                    discovered.append(url)
+                discovered.append(url)
         except Exception as exc:  # one listing failure must not erase or block the inbox
             page_errors.append(f"página {page}: {exc}")
 
@@ -234,11 +245,14 @@ def update_state(state: dict, session: requests.Session, recent_pages: int, max_
     items.sort(key=lambda item: (item.get("published_at") or item.get("first_seen_at") or "", item.get("id") or ""), reverse=True)
     state["items"] = items
     state["updated_at"] = stamp
+    scan["seen_urls"] = sorted(seen_urls | observed_urls)
+    if bootstrap and not page_errors and len(observed_urls) >= 5:
+        scan["bootstrap_completed_at"] = stamp
     scan.update({
         "last_run_at": stamp,
         "last_success_at": stamp if not page_errors else scan.get("last_success_at"),
         "recent_pages": recent_pages,
-        "recovery_page": (max_page_seen + 1) if max_page_seen < 300 else recent_pages + 1,
+        "recovery_page": None,  # Historical recovery disabled after controlled activation.
         "last_error": "; ".join(page_errors)[:1000] if page_errors else None,
         "last_discovered_count": len(discovered),
         "total_items": len(items),
