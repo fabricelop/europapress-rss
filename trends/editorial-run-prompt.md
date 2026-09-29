@@ -2,6 +2,11 @@
 
 Este archivo es la ÚNICA fuente de verdad para la elaboración editorial de TTendencias. Debe ser usado tanto por el botón `Ejecutar ahora` como por las programaciones automáticas. La activación, horarios, anti-solape y telemetría pertenecen al envoltorio que invoque este archivo y no se redefinen aquí.
 
+## Ejecución directa desde el chat (incluido el PC)
+
+Cuando el usuario envía «Ejecuta TTendencias» a una conversación de ChatGPT, es una orden de realizar **en esa misma conversación** la pasada editorial real sobre `main`, conforme a este contrato. No se satisface la orden actualizando únicamente `control/ttendencias-run-trigger` ni escribiendo `trends/run-now-trigger.json`: un commit en el PR #7 **no inicia ningún editor por sí mismo**. Esa delegación solo es válida si se ha comprobado que existe un consumidor Work de eventos activo y que la solicitud ha recibido confirmación `RUNNING`. Sin confirmación, informar del bloqueo, no simular que está en curso. Para la ejecución directa, usar el PR #7 exclusivamente como telemetría, ejecutar el ciclo editorial, persistir y releer para verificar las revisiones tratadas. No reactivar programaciones antiguas ni generar imágenes; respetar siempre `explanation_only`.
+
+
 Cuando el envoltorio haya creado un comentario `TTENDENCIAS_RUNTRACE_V1`, actualízalo durante el ciclo para reflejar las fases `investigating`, `drafting`, `image_generating`, `image_checking`, `persisting`, `verifying` y `closing`, con `current/total`, `trend_id`, `title` e incidencias. Actualiza siempre el mismo comentario; nunca uses esa telemetría como activador.
 
 ## Ámbito y estado
