@@ -323,6 +323,7 @@ def parse_source(src,url,kind,sport=False,recovery=False):
   # Si además falla el origen, queda el fallback general de la misma fuente.
   if gn and gn not in urls: urls.append(gn)
  last=None
+ ser_stale_backup=None
  for candidate in urls:
   try:
    body=get(candidate); out=[]
@@ -367,14 +368,31 @@ def parse_source(src,url,kind,sport=False,recovery=False):
        out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"});n+=1
       if n>=80:break
    if out:
-    # For publisher HTML listings, retrieve the original publication metadata
-    # of up to three directly linked articles. Never use the listing poll time.
-    # Failure here is telemetry-only and cannot block article retrieval.
+    # For publisher HTML listings, retrieve original publication metadata.
+    # Failure here is telemetry-only and cannot block editorial collection.
     if effective_kind=="html":
      enrich_html_rows(out,SOURCE_DOMAINS.get(src),get,limit=8 if src=="Cadena SER" else 3)
+    # HTTP 200 from a stale SER archive is NOT proof of an active news feed.
+    # If its eight checked articles lack a recent publisher date, try the
+    # other official listings and finally the 24h Google fallback (as the
+    # SAME source/family, never another independent editorial vote).
+    if src=="Cadena SER" and not recovery and urllib.parse.urlparse(candidate).hostname!="news.google.com":
+     publication_dates=[dtv(x["published_at"]) for x in out if x.get("published_at")]
+     latest=max(publication_dates) if publication_dates else None
+     if latest is None or latest<utcnow()-timedelta(hours=12):
+      if ser_stale_backup is None or (latest or dtv(None))>ser_stale_backup[0]:
+       ser_stale_backup=(latest or dtv(None),out,candidate)
+      print("SOURCE_STALE_PAGE","Cadena SER",candidate,iso(latest) if latest else "no verified dates","trying next source")
+      last="SER: la página responde, pero no aporta publicaciones recientes verificadas"
+      continue
     return src,out,candidate,None
    last="0 artículos extraídos en "+candidate
   except Exception as e:last=str(e)
+ if src=="Cadena SER" and ser_stale_backup is not None:
+  # Best genuine publisher page rather than falsely reporting a dead source.
+  _,stale_rows,stale_url=ser_stale_backup
+  print("SOURCE_STALE_BACKUP","Cadena SER",stale_url,"no recent alternative available")
+  return src,stale_rows,stale_url,last
  return src,[],None,last
 
 def fetch_items():
