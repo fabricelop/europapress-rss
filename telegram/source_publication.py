@@ -164,7 +164,7 @@ def latest_official_feed(body, publisher_domain, now=None, news_only=False):
         if not lm or not tm:
             continue
         url = html.unescape(re.sub(r"<!\[CDATA\[|\]\]>", "", lm.group(1))).strip()
-        title = html.unescape(re.sub(r"<[^>]+>|<!\[CDATA\[|\]\]>", " ", tm.group(1)))
+        title = html.unescape(re.sub(r"<!\[CDATA\[|\]\]>|<[^>]+>", " ", tm.group(1)))
         title = re.sub(r"\s+", " ", title).strip()
         try:
             parts = urlsplit(url)
