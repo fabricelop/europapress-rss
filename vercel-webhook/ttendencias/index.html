@@ -452,7 +452,7 @@ function runVisual(s){
  if(r){
    const count=runIncidentCount(r),isError=r.status==="ERROR";
    head.textContent="Última ejecución · "+runTime(r.finished_at||r.updated_at)+" · "+(isError?"Error":count?"Terminada con "+count+" incidencia"+(count===1?"":"s"):"Terminada");
-   el.textContent=[runSummaryText(r),runSource(r.source||r.source_label)].filter(Boolean).join(" · ")||"Lista para ejecutar";
+   el.textContent=isError?(r.message||"No se completó la ejecución") : ([runSummaryText(r),runSource(r.source||r.source_label)].filter(Boolean).join(" · ")||"Lista para ejecutar");
    el.className=isError?"error":"done";
    if(count||isError){warn.hidden=false;warn.textContent=(isError?"✖ ":"⚠ ")+(count||1);warn.classList.toggle("severe",isError);warn.onclick=()=>showRunIncidents(s)}
  }else{
