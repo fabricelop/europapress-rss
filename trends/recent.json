@@ -1,32 +1,31 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T23:24:05+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-29T23:31:13+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
+    "getdaytrends",
     "tweets24",
-    "fowtools",
+    "superx",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
-  "reliability": "high",
+  "non_stale_source_count": 5,
+  "fresh_sources": [],
+  "reliability": "medium",
   "top10": [
     "Croacia",
     "Pubill",
-    "Fermin",
-    "Gonzalo Suárez",
-    "Alex Baena",
     "Euroliga",
-    "#RTXON",
     "#JuanjoBonaXNetflix",
+    "#NationsLeague",
+    "#RTXON",
+    "Gonzalo Suárez",
     "Macron",
-    "Efes"
+    "Lamine",
+    "Modric"
   ],
   "items": [
     {
@@ -41,83 +40,52 @@
     },
     {
       "rank": 3,
-      "name": "Fermin",
-      "entered_top10_at": "2026-09-29T22:50:57+02:00"
-    },
-    {
-      "rank": 4,
-      "name": "Gonzalo Suárez",
-      "entered_top10_at": "2026-09-29T19:01:38+02:00"
-    },
-    {
-      "rank": 5,
-      "name": "Alex Baena",
-      "entered_top10_at": "2026-09-29T22:50:57+02:00"
-    },
-    {
-      "rank": 6,
       "name": "Euroliga",
       "entered_top10_at": "2026-09-29T22:50:57+02:00"
     },
     {
-      "rank": 7,
-      "name": "#RTXON",
-      "entered_top10_at": "2026-09-29T20:31:11+02:00"
-    },
-    {
-      "rank": 8,
+      "rank": 4,
       "name": "#JuanjoBonaXNetflix",
       "entered_top10_at": "2026-09-29T21:31:08+02:00"
     },
     {
-      "rank": 9,
+      "rank": 5,
+      "name": "#NationsLeague",
+      "entered_top10_at": "2026-09-29T23:31:13+02:00"
+    },
+    {
+      "rank": 6,
+      "name": "#RTXON",
+      "entered_top10_at": "2026-09-29T20:31:11+02:00"
+    },
+    {
+      "rank": 7,
+      "name": "Gonzalo Suárez",
+      "entered_top10_at": "2026-09-29T19:01:38+02:00"
+    },
+    {
+      "rank": 8,
       "name": "Macron",
       "entered_top10_at": "2026-09-29T22:50:57+02:00"
     },
     {
+      "rank": 9,
+      "name": "Lamine",
+      "entered_top10_at": "2026-09-29T23:31:13+02:00"
+    },
+    {
       "rank": 10,
-      "name": "Efes",
-      "entered_top10_at": "2026-09-29T22:50:57+02:00"
+      "name": "Modric",
+      "entered_top10_at": "2026-09-29T23:31:13+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "#NationsLeague",
+    "Lamine",
+    "Modric"
+  ],
   "upcoming": [
-    {
-      "name": "Manchester City",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T22:50:57+02:00",
-      "news_source_count": 12,
-      "news_event_id": "3fb3fbcc01e2",
-      "news_title": "La Premier League confirma la culpabilidad del Manchester City mientras el club reitera que es \"inocente\" y que recurrirá - Telecinco",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-29T18:24:36.628218Z"
-    },
-    {
-      "name": "Isabel Rodríguez",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 18.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T23:01:25+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
     {
       "name": "Cubarsí",
       "social_source_count": 3,
@@ -127,7 +95,7 @@
         "tweets24"
       ],
       "best_observed_rank": 17,
-      "mean_observed_rank": 17.7,
+      "mean_observed_rank": 18.3,
       "movement": "flat",
       "first_detected_at": "2026-09-29T23:01:25+02:00",
       "news_source_count": 0,
@@ -137,84 +105,118 @@
       "news_first_seen": null
     },
     {
-      "name": "Lamine Yamal",
-      "social_source_count": 2,
+      "name": "Isabel Rodríguez",
+      "social_source_count": 3,
       "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T22:11:39+02:00",
-      "news_source_count": 3,
-      "news_event_id": "3fabad766c66",
-      "news_title": "Lamine Yamal enciende Sevilla y España firma otra noche de campeona",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T21:22:56.762664Z"
-    },
-    {
-      "name": "#NationsLeague",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T22:50:57+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Campazzo",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T22:11:39+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Mariona",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T22:50:57+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Estambul",
-      "social_source_count": 2,
-      "social_sources": [
+        "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 18,
-      "mean_observed_rank": 18.5,
-      "movement": "flat",
+      "mean_observed_rank": 19.3,
+      "movement": "down",
       "first_detected_at": "2026-09-29T23:01:25+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Fermin",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T23:31:13+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Pizjuán",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 16,
+      "mean_observed_rank": 16.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T23:31:13+02:00",
+      "news_source_count": 2,
+      "news_event_id": "38db2806d70e",
+      "news_title": "Ovación de gala a Luka Modric en el Sánchez-Pizjuán durante el España-Croacia",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T20:53:35.619362Z"
+    },
+    {
+      "name": "Alex Baena",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T23:31:13+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "#lamine yamal",
+      "social_source_count": 1,
+      "social_sources": [
+        "trendswe"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-29T22:11:39+02:00",
+      "news_source_count": 4,
+      "news_event_id": "cb1c426d52cb",
+      "news_title": "España-Croacia: la goleada y el doblete de Lamine Yamal en imágenes",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T21:13:36.962127Z"
+    },
+    {
+      "name": "Baskonia",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 18,
+      "mean_observed_rank": 18.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T23:31:13+02:00",
+      "news_source_count": 1,
+      "news_event_id": "19ad1de2dff9",
+      "news_title": "Valencia Basket - Baskonia: resultado y resumen | Euroliga de baloncesto: jornada 2",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T20:42:55.560200Z"
+    },
+    {
+      "name": "Efes",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 17,
+      "mean_observed_rank": 17.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T23:31:13+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -222,7 +224,14 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "#NationsLeague",
+      "first_detected_at": "2026-09-29T22:50:57+02:00",
+      "entered_top10_at": "2026-09-29T23:31:13+02:00",
+      "lead_minutes": 40
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -253,7 +262,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T23:24:05+02:00"
+      "fetched_at": "2026-09-29T23:31:13+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -278,37 +287,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T23:24:06+02:00"
+      "fetched_at": "2026-09-29T23:31:13+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
+        "Lamine",
         "Croacia",
         "Pubill",
-        "Fermin",
-        "Gonzalo Suárez",
-        "Alex Baena",
+        "Modric",
+        "#FirstDates29S",
+        "Nico Williams",
+        "Juan Carlos Rivero",
         "Euroliga",
-        "#RTXON",
-        "#JuanjoBonaXNetflix",
-        "Macron",
-        "Efes",
-        "Manchester City",
-        "Lamine Yamal",
         "#NationsLeague",
-        "Campazzo",
-        "Mariona",
-        "Isabel Rodríguez",
+        "#JuanjoBonaXNetflix",
+        "Fermin",
+        "#RTXON",
+        "Macron",
+        "Alex Baena",
+        "Gonzalo Suárez",
+        "Pizjuán",
+        "Efes",
+        "Baskonia",
         "Cubarsí",
-        "Estambul",
-        "Repsol",
-        "Pyme"
+        "Isabel Rodríguez"
       ],
       "error": null,
-      "update_hint": "Updated 36 minutes ago",
-      "age_minutes": 36.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-29T23:24:06+02:00"
+      "update_hint": "Updated 59 seconds ago Live Twitter Trending Topics in Spain 1 Lamine Explore why Lamine",
+      "age_minutes": null,
+      "freshness": "unknown",
+      "fetched_at": "2026-09-29T23:31:14+02:00"
     },
     "superx": {
       "ok": true,
@@ -338,16 +347,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T23:24:07+02:00"
+      "fetched_at": "2026-09-29T23:31:15+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790717047",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790717475",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T23:24:07+02:00"
+      "fetched_at": "2026-09-29T23:31:15+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -375,9 +384,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 20:00 UTC",
-      "age_minutes": 84.1,
-      "freshness": "aging",
-      "fetched_at": "2026-09-29T23:24:07+02:00"
+      "age_minutes": 91.3,
+      "freshness": "stale",
+      "fetched_at": "2026-09-29T23:31:15+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -405,18 +414,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 09:00 PM # Trend Type Actions 1 Croacia Topic 2 Pubill Top",
-      "age_minutes": 144.1,
+      "age_minutes": 151.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T23:24:07+02:00"
+      "fetched_at": "2026-09-29T23:31:16+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790717048",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790717477",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T23:24:08+02:00"
+      "fetched_at": "2026-09-29T23:31:17+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -425,7 +434,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T23:24:08+02:00"
+      "fetched_at": "2026-09-29T23:31:18+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -455,16 +464,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T23:24:08+02:00"
+      "fetched_at": "2026-09-29T23:31:19+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790717050",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790717481",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T23:24:10+02:00"
+      "fetched_at": "2026-09-29T23:31:21+02:00"
     }
   }
 }
