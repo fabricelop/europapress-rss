@@ -107,6 +107,23 @@ def update_source_telemetry(rows, statuses, previous, events, now):
             record["last_article_at"] = utc_iso(now)
             record["last_article_title"] = title
 
+    # A separately checked official publisher feed can supply a verified
+    # publication timestamp even when editorial headlines use Google News.
+    # Do not substitute the latter's syndication timestamp.
+    for status in statuses:
+        source = str(status.get("source") or "")
+        record = known.get(source)
+        if not record:
+            continue
+        published = parse_publication_date(status.get("verified_publisher_published_at"), now)
+        old = timestamp(record.get("last_published_at"))
+        if published and (old is None or published > old):
+            record["last_published_at"] = utc_iso(published)
+            record["last_published_title"] = status.get("verified_publisher_title") or ""
+            record["publication_date_source"] = (
+                status.get("verified_publisher_date_source") or "publisher_feed"
+            )
+
     # Keep seven days of fingerprints so a static homepage does not produce a
     # phantom "new article" every 24 h, while counting only the last 24 hours.
     for status in statuses:
@@ -178,6 +195,12 @@ def selftest():
     update_source_telemetry([{"source": "Europa Press", "title": "Futura",
       "published_at": "2026-09-30T17:00:00Z"}],status,state,[],t)
     assert status[0]["last_published_at"] == "2026-09-29T14:20:00Z"
+    from_feed = [{"source": "COPE", "ok": True, "verified_publisher_published_at": "2026-09-29T19:38:00Z",
+                  "verified_publisher_title": "Última noticia COPE",
+                  "verified_publisher_date_source": "publisher_feed"}]
+    update_source_telemetry([], from_feed, {}, [], t)
+    assert from_feed[0]["last_published_at"] == "2026-09-29T19:38:00Z"
+    assert from_feed[0]["last_published_title"] == "Última noticia COPE"
     print("TTITTULARES_SOURCE_TELEMETRY_SELFTEST_OK")
 
 
