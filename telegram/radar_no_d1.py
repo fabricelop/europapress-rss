@@ -1047,6 +1047,7 @@ rows,healthy,sport_healthy,source_failures,source_status,source_recovery=fetch_i
 publication_probes=(
  ("COPE","https://www.cope.es/rss/home.xml","cope.es",True),
  ("El HuffPost","https://www.huffingtonpost.es/feeds/index.xml","huffingtonpost.es",False),
+ ("AS","https://feeds.as.com/mrss-s/pages/as/site/as.com/section/futbol/portada/","as.com",False),
 )
 for publisher,feed,domain,only_news in publication_probes:
  status=next((x for x in source_status if x.get("source")==publisher),None)
