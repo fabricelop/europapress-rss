@@ -1,0 +1,22 @@
+name: Diagnosticar fechas de fuentes TTiTTulares
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/diagnose-ttittulares-publisher-dates.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Probe only, no editorial execution or write
+        run: python3 .github/scripts/diagnose-publisher-feeds.py
