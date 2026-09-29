@@ -56,12 +56,16 @@ def probe(label,url):
    body=f.read(900000).decode("utf-8","ignore");final=f.geturl();type=f.headers.get("content-type","")
   blocks=re.findall(r"<(?:item|entry)\b[\s\S]*?</(?:item|entry)>",body,re.I)
   dates=[feed_publication(b) for b in blocks[:5]]
+  news=[(feed_publication(b),re.search(r"<link[^>]*>([\\s\\S]*?)</link>",b,re.I).group(1).strip())
+        for b in blocks if re.search(r"<link[^>]*>([\\s\\S]*?)</link>",b,re.I)
+        and "/noticias/" in re.search(r"<link[^>]*>([\\s\\S]*?)</link>",b,re.I).group(1)]
+  news=[x for x in news if x[0]]
   links=Links();links.feed(body)
   from urllib.parse import urljoin,urlparse
   host=urlparse(final).hostname
   own=[urljoin(final,x) for x in links.urls if urlparse(urljoin(final,x)).hostname in [host,"www."+host if host else ""]]
   sample=[x for x in own if len(urlparse(x).path.split("/"))>=4][:5]
-  result={"source":label,"requested":url,"final":final,"http":"OK","type":type[:50],"bytes":len(body),"items":len(blocks),"feed_dates":dates,"links":len(links.urls),"sample_links":sample[:3],"page_own_meta":article_publication(body),"first_item":blocks[0][:950] if blocks else None}
+  result={"source":label,"requested":url,"final":final,"http":"OK","type":type[:50],"bytes":len(body),"items":len(blocks),"feed_dates":dates,"links":len(links.urls),"sample_links":sample[:3],"page_own_meta":article_publication(body),"first_item":blocks[0][:380] if blocks else None,"news_articles":len(news),"latest_news":sorted(news,reverse=True)[:2]}
   return result
  except Exception as e:
   return {"source":label,"requested":url,"error":str(e)[:180]}
