@@ -357,10 +357,9 @@ async function copyImageToClipboard(url){
   await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);toast("Imagen copiada");
  }catch(err){console.error("copy image",err);toast("No se pudo copiar la imagen")}
 }
-function mountRemateRating(host,variant){
- // Principal es factual: solo se valoran los remates A, B y C.
- const key=String(variant?.rating_key||""),label=String(variant?.label||variant?.name||"").toUpperCase();
- if(!/^titular-remate-v1:[a-f0-9]{24}$/.test(key)||!["A","B","C"].includes(label)){host.hidden=true;return}
+function mountRemateRating(host,tweet){
+ const key=String(tweet?.rating_key||"");
+ if(!/^titular-remate-v2:[a-f0-9]{24}$/.test(key)){host.hidden=true;return}
  host.hidden=false;
  let busy=false;
  const draw=()=>{
@@ -368,11 +367,11 @@ function mountRemateRating(host,variant){
   const title=document.createElement("div");title.className="ratingTitle";
   title.textContent="¿Qué te ha parecido este remate?";host.appendChild(title);
   const stars=document.createElement("div");stars.className="ratingStars";
-  const selected=Number(variant.remate_rating)||0;
+  const selected=Number(tweet.remate_rating)||0;
   for(let value=1;value<=5;value++){
    const star=document.createElement("button");star.type="button";
    star.textContent=value<=selected?"★":"☆";star.className=value<=selected?"filled":"";
-   star.title=value+" de 5";star.setAttribute("aria-label","Valorar remate "+label+": "+value+" de 5 estrellas");
+   star.title=value+" de 5";star.setAttribute("aria-label","Valorar remate: "+value+" de 5 estrellas");
    star.setAttribute("aria-pressed",String(value===selected));star.disabled=busy;
    star.onclick=async()=>{
     if(busy)return;
@@ -380,8 +379,8 @@ function mountRemateRating(host,variant){
     busy=true;draw();
     try{
      const answer=await api("rate-remate",{rating_key:key,rating:value});
-     variant.remate_rating=answer.rating;variant.remate_rated_at=answer.rated_at;
-     toast("Remate "+label+" · "+answer.rating+"/5 guardado");
+     tweet.remate_rating=answer.rating;tweet.remate_rated_at=answer.rated_at;
+     toast("Remate · "+answer.rating+"/5 guardado");
     }catch(e){toast(e.message||"No se pudo guardar la puntuación")}
     finally{busy=false;draw()}
    };
@@ -393,11 +392,10 @@ function mountRemateRating(host,variant){
  };
  draw();
 }
-function variants(item){
- if(Array.isArray(item.variants)&&item.variants.length)return item.variants;
- const out=[];if(item.primary?.text)out.push({label:"Principal",text:item.primary.text,url:item.primary.url,remate:""});
- for(const [i,a] of (item.alternatives||[]).entries())out.push({label:String.fromCharCode(65+i),text:a.tweet_text||a.text||"",url:a.url,remate:a.remate||"",rating_key:a.rating_key||null,remate_rating:a.remate_rating??null,remate_rated_at:a.remate_rated_at||null});
- return out
+function tweetFor(item){
+ if(item?.tweet?.text)return item.tweet;
+ const legacy=Array.isArray(item?.variants)?item.variants:[];
+ return legacy.find(v=>String(v?.label||"").toUpperCase()==="A")||legacy.find(v=>String(v?.remate||"").trim())||null
 }
 function setView(next){view=next;document.querySelectorAll(".stat").forEach(x=>x.classList.toggle("active",x.dataset.view===view));renderList()}
 function sourceTypeLabel(t){return t==="general"?"Generales":t==="sport"?"Deportes":t==="social"?"Social / tendencias":"Descubrimiento internacional"}
@@ -523,14 +521,12 @@ function renderReady(list){
     qlist.innerHTML='<div class="quoteEmpty">No se encontró un comentario suficientemente adecuado para citar automáticamente.</div>'
   }
   vh.before(quoteBox);
-  for(const v of variants(item)){
+  const v=tweetFor(item);
+  if(v){
     const box=document.createElement("div");box.className="variant";
     const text=String(v.text||"");
-    const isPrincipal=String(v.label||v.name||"").toLowerCase()==="principal";
-    const remate=String(v.remate||"");
-    const shown=isPrincipal?text:(remate.startsWith("🌶️")?remate:("🌶️ "+remate));
     box.innerHTML='<div class="vhead"><span class="vname"></span><span class="chars"></span></div><div class="tweet"></div><div class="remateRating" hidden></div><div class="actions"><a class="btn primary openx" target="_blank" rel="noopener">Abrir en X</a><a class="btn quoteX" target="_blank" rel="noopener">Citar elegido</a><button class="btn copy">Copiar</button></div>';
-    box.querySelector(".vname").textContent=v.label||v.name||"Versión";box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=shown;mountRemateRating(box.querySelector(".remateRating"),v);
+    box.querySelector(".vname").textContent="Tuit";box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=text;mountRemateRating(box.querySelector(".remateRating"),v);
     box.querySelector(".openx").href=v.url||intent(text);const qx=box.querySelector(".quoteX");qx.hidden=!selectedQuote;if(selectedQuote)qx.href=quoteIntent(text,selectedQuote);quoteLinks.push({a:qx,text});box.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado"));
     vh.appendChild(box)
   }

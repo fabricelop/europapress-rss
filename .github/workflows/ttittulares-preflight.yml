@@ -88,26 +88,24 @@ jobs:
               # verificación editorial de una noticia ya preparada.
               cited={str(c.get("source") or "").strip() for c in item.get("citations",[]) if isinstance(c,dict)}
               assert drafted >= 2 and len(cited-{''}) >= 2, f"{eid}: faltan dos fuentes editoriales independientes ({drafted})"
-              variants=item.get("variants") or []
-              assert [str(v.get("label") or v.get("name") or "") for v in variants] == ["Principal","A","B","C"], f"{eid}: deben existir Principal+A+B+C"
-              principal=str(variants[0].get("text") or "")
-              assert principal, f"{eid}: principal vacío"
-              for v in variants:
-                  text=str(v.get("text") or "")
-                  label=str(v.get("label") or v.get("name") or "")
-                  assert len(text) <= 280, f"{eid}/{label}: tuit >280"
-                  if label=="Principal":
-                      assert str(v.get("remate") or "")=="", f"{eid}: Principal no debe tener remate"
-                  else:
-                      remate=str(v.get("remate") or "")
-                      assert remate, f"{eid}/{label}: remate vacío"
-                      assert text == principal+"\n\n"+remate, f"{eid}/{label}: el tuit debe ser Principal + remate"
-                      assert "\\n" not in text and "\\n" not in remate, f"{eid}/{label}: contiene barra invertida+n literal"
-                  url=str(v.get("url") or "")
+              tweet=item.get("tweet")
+              # Datos históricos pueden conservar variants; toda escritura nueva
+              # usa un único tweet y el backend mantiene la lectura compatible.
+              if isinstance(tweet,dict):
+                  text=str(tweet.get("text") or "")
+                  remate=str(tweet.get("remate") or "")
+                  assert text and len(text) <= 280, f"{eid}: tuit vacío o >280"
+                  assert remate.startswith("🌶️ "), f"{eid}: remate sin guindilla"
+                  assert text.endswith("\n\n"+remate), f"{eid}: el tuit debe terminar con su remate"
+                  assert "\\n" not in text and "\\n" not in remate, f"{eid}: contiene barra invertida+n literal"
+                  url=str(tweet.get("url") or "")
                   if url:
                       q=urllib.parse.urlparse(url)
                       got=urllib.parse.parse_qs(q.query).get("text",[""])[0]
-                      assert got == text, f"{eid}/{label}: enlace X no coincide con el texto"
+                      assert got == text, f"{eid}: enlace X no coincide con el texto"
+              else:
+                  variants=item.get("variants") or []
+                  assert any(str(v.get("label") or "").upper()=="A" and str(v.get("remate") or "").startswith("🌶️ ") for v in variants), f"{eid}: histórico sin variante publicable"
 
           healthy=status.get("healthy_source_count")
           total=status.get("configured_sources")

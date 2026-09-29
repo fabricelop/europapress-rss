@@ -29,7 +29,7 @@ No hay vista de noticias con 1, 2 o 3 fuentes.
 
 ## Bandeja `prepared.json`
 
-Cada elemento preparado contiene `event_id`, titular, URL, número de fuentes al redactarse, fuentes, fecha, base factual, revisión y las variantes de publicación.
+Cada elemento preparado contiene `event_id`, titular, URL, número de fuentes al redactarse, fuentes, fecha, base factual, revisión y un único objeto `tweet` con texto, remate y enlace de publicación. El lector conserva compatibilidad con datos históricos Principal/A/B/C, pero las escrituras nuevas ya no los generan.
 
 La app cruza `event_id` con `status.json` para mostrar **Redactada con 4 (6)**: 4 fuentes al redactarla y 6 fuentes actuales.
 
@@ -50,13 +50,7 @@ La app cruza `event_id` con `status.json` para mostrar **Redactada con 4 (6)**: 
 
 ## Formato editorial web
 
-La cola editorial procesa únicamente los items `PROCESSING`. Cada noticia genera:
-
-- una **Principal** factual;
-- tres remates **A/B/C**;
-- en la app se muestra la noticia una sola vez y, para A/B/C, únicamente `🌶️ remate`;
-- el enlace **Abrir en X** contiene siempre el tuit completo: `Principal + dos saltos de línea + remate`;
-- cada tuit completo debe ser <=280 caracteres.
+La cola editorial procesa únicamente los items `PROCESSING`. Cada noticia genera un único tuit: bloque factual, dos saltos de línea y un único remate prefijado `🌶️ `. La app muestra ese tuit y su puntuación de 1 a 5. El texto completo debe ser <=280 caracteres.
 
 ## Modo paralelo de prueba
 
@@ -100,5 +94,5 @@ Criterio editorial de candidatos:
 - no se usa la API de pago de X; la búsqueda se hace con web pública/indexada;
 - guardar siempre `quote_search` con la consulta y una URL de búsqueda Live de X como fallback manual.
 
-La app permite elegir uno de los candidatos y cada variante ofrece `Citar elegido`, además de `Publicar en X`. Si no hay candidato automático, se muestra `Buscar otro en X`.
+La app permite elegir uno de los candidatos y el tuit ofrece `Citar elegido`, además de `Publicar en X`. Si no hay candidato automático, se muestra `Buscar otro en X`.
 

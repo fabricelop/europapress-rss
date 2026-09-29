@@ -448,20 +448,31 @@ def evidence_title_eligible(title):
  tokens=fp(title);distinctive=tokens-GENERIC_MATCH
  lowered=" ".join(norm(title))
  # Etiquetas de sección, portadas y titulares temáticos genéricos no corroboran
- # por sí solos un acontecimiento concreto.
+ # por sí solos un acontecimiento concreto. "Última hora" sí puede encabezar
+ # un titular específico y no debe invalidar el resto de su evidencia.
  if len(tokens)<5 or len(distinctive)<3:return False
- if lowered.startswith(("portada ","noticias ","ultima hora ","guerra ")):return False
+ if lowered.startswith(("portada ","noticias ","guerra ")):return False
  return True
 
-def has_independent_evidence_clique(e,min_families):
- # Descubrir por similitud puede ser flexible; cruzar el umbral exige un núcleo
- # de familias independientes cuyas evidencias coincidan todas entre sí.
- # A≈B y B≈C no implica que A, B y C sean el mismo acontecimiento.
+def has_independent_evidence_consensus(e,min_families):
+ # Cruzar el umbral exige un subconjunto conectado de familias independientes,
+ # no una clique perfecta. Una clique bloqueaba paráfrasis inequívocas porque
+ # dos titulares periféricos pueden describir el mismo hecho con vocabularios
+ # distintos. Conservamos una barrera contra el efecto cadena: para cuatro
+ # fuentes exigimos al menos cuatro coincidencias, o una estrella completa con
+ # una ancla distintiva compartida por los cuatro titulares.
  apps=[a for a in e.get("appearances",[]) if a.get("source_type","general")=="general" and a.get("source") and evidence_title_eligible(a.get("title",""))]
  if len({source_family(a["source"]) for a in apps})<min_families:return False
  for group in combinations(apps,min_families):
   if len({source_family(a["source"]) for a in group})!=min_families:continue
-  if all(titles_match(a.get("title",""),b.get("title","")) for a,b in combinations(group,2)):return True
+  edges=[];degree=[0]*len(group)
+  for i,j in combinations(range(len(group)),2):
+   if titles_match(group[i].get("title",""),group[j].get("title","")):
+    edges.append((i,j));degree[i]+=1;degree[j]+=1
+  if len(edges)>=min_families:return True
+  if len(edges)==min_families-1 and max(degree)==min_families-1:
+   shared=set.intersection(*(set(fp(a.get("title","")))-GENERIC_MATCH for a in group))
+   if any(len(token)>=5 for token in shared):return True
  return False
 
 def run_grouping_regressions():
@@ -484,9 +495,30 @@ def run_grouping_regressions():
   ("Europa Press","El tiempo en La Rioja para hoy, lunes 28 de septiembre de 2026"),
   ("Antena 3 Noticias","Noticias de hoy, domingo 27 de septiembre de 2026"),
  ])
- if not has_independent_evidence_clique(ceuta,4):raise RuntimeError("Regresión: el caso Ceuta debería ser coherente")
- if has_independent_evidence_clique(kyiv,4):raise RuntimeError("Regresión: se mezclaron hechos distintos sobre Ucrania")
- if has_independent_evidence_clique(generic,4):raise RuntimeError("Regresión: se mezclaron portada, horóscopo y tiempo")
+ gabieto=event([
+  ("elDiario.es","Hallan muerto cerca del pico Gabieto a un montañero de Castellón desaparecido en Francia"),
+  ("ABC","Localizan el cadáver del montañero de Castellón desaparecido en el Pico Gabieto de Huesca"),
+  ("Telecinco Noticias","Encuentran muerto en el pico Gabieto a un montañero que desapareció en Francia"),
+  ("20minutos","Muere un montañero de 69 años tras caer desde 200 metros en el pico Gabieto"),
+ ])
+ ultima_hora=event([
+  ("20minutos","La Policía inicia el desalojo de la playa Benítez y el traslado de los inmigrantes"),
+  ("ABC","La Policía desmantela el asentamiento de inmigrantes en la playa de Benítez en Ceuta"),
+  ("Público","La Policía inicia el desalojo de los migrantes de la playa de Benítez en Ceuta"),
+  ("Antena 3 Noticias","Última hora de la crisis migratoria en Ceuta: comienza el desalojo de la playa Benítez"),
+ ])
+ mixed=event([
+  ("20minutos","Almeida celebra la vuelta de Maricarmen a su casa con intermediación del Ayuntamiento"),
+  ("COPE","Antonio Jiménez comenta la vuelta de Maricarmen a casa y critica a Sánchez, Almeida y Ayuso"),
+  ("Público","Activistas por la vivienda protestan contra Ayuso y Almeida en Madrid"),
+  ("Onda Cero","El Ayuntamiento de Madrid rechazó una vivienda ofrecida por Urbagestión"),
+ ])
+ if not has_independent_evidence_consensus(ceuta,4):raise RuntimeError("Regresión: el caso Ceuta debería ser coherente")
+ if not has_independent_evidence_consensus(gabieto,4):raise RuntimeError("Regresión: las paráfrasis de Gabieto deberían ser coherentes")
+ if not has_independent_evidence_consensus(ultima_hora,4):raise RuntimeError("Regresión: un prefijo de última hora no invalida evidencia específica")
+ if has_independent_evidence_consensus(kyiv,4):raise RuntimeError("Regresión: se mezclaron hechos distintos sobre Ucrania")
+ if has_independent_evidence_consensus(generic,4):raise RuntimeError("Regresión: se mezclaron portada, horóscopo y tiempo")
+ if has_independent_evidence_consensus(mixed,4):raise RuntimeError("Regresión: se mezclaron ángulos distintos de vivienda")
 
 run_grouping_regressions()
 
@@ -1071,7 +1103,7 @@ new_processed=[]
 for e in list(events):
  n=e.get("source_count",0)
  status=e.get("status")
- if status=="WAITING" and n>=REVIEW_MIN and has_independent_evidence_clique(e,REVIEW_MIN):
+ if status=="WAITING" and n>=REVIEW_MIN and has_independent_evidence_consensus(e,REVIEW_MIN):
   if web_mode:
    e["status"]="ELIGIBLE"
    e["eligible_at"]=e.get("eligible_at") or iso(now)
@@ -1082,7 +1114,7 @@ for e in list(events):
     if did_send: sent+=1
    e["status"]="SENT_REVIEW";e["notified"]=True
    new_processed.append(processed_snapshot(e,"SENT_REVIEW",now))
- elif (not web_mode) and status=="WAITING" and n==FAST_TRACK_MIN and has_independent_evidence_clique(e,FAST_TRACK_MIN) and not e.get("fast_track_notified") and not e.get("notified"):
+ elif (not web_mode) and status=="WAITING" and n==FAST_TRACK_MIN and has_independent_evidence_consensus(e,FAST_TRACK_MIN) and not e.get("fast_track_notified") and not e.get("notified"):
   mins=fast_track_minutes(e)
   if mins is not None and mins<=FAST_TRACK_WINDOW_MIN:
    # FAST_TRACK y revisión normal son una sola notificación editorial.
@@ -1094,7 +1126,7 @@ for e in list(events):
    e["fast_track_minutes"]=round(mins,1)
    new_processed.append(processed_snapshot(e,"FAST_TRACK_ALERT",now))
    if did_send: sent+=1
- elif status=="UPDATE_WAITING" and n>=REVIEW_MIN and has_independent_evidence_clique(e,REVIEW_MIN):
+ elif status=="UPDATE_WAITING" and n>=REVIEW_MIN and has_independent_evidence_consensus(e,REVIEW_MIN):
   if web_mode:
    e["status"]="ELIGIBLE_UPDATE"
    e["eligible_at"]=e.get("eligible_at") or iso(now)

@@ -27,12 +27,7 @@ def save(p,o):
     p.write_text(json.dumps(o,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 
 def normalize_variants(raw):
-    """Accept the compact outbox forms and return the canonical four records.
-
-    Work comments have historically represented variants either as a list of
-    records or as a label-to-content object.  This is a transport detail, not
-    an editorial distinction: the web state always stores four records.
-    """
+    """Read the historical Principal/A/B/C envelope for migration only."""
     if isinstance(raw, dict):
         raw=[{"label":label, **(value if isinstance(value,dict) else {"text":value})}
              for label,value in raw.items()]
@@ -45,54 +40,48 @@ def normalize_variants(raw):
         result.append(dict(value))
     return result
 
+def normalize_tweet(item):
+    """Return the one canonical tweet, accepting the old four-variant shape."""
+    raw=item.get("tweet")
+    legacy=raw in (None,"")
+    if legacy:
+        variants=normalize_variants(item.get("variants") or [])
+        # Historical compatibility is deterministic: A was the first complete
+        # publishable tweet. Principal had no closer and is never selected.
+        raw=next((v for v in variants if str(v.get("label") or v.get("key") or v.get("name") or "").upper()=="A"),None)
+        if raw is None:
+            raw=next((v for v in variants if str(v.get("remate") or "").strip()),None)
+        if raw is None: raise ValueError("tweet único ausente")
+    if isinstance(raw,str): raw={"text":raw}
+    if not isinstance(raw,dict): raise ValueError("tweet inválido")
+    tweet=dict(raw)
+    text=str(tweet.get("text") or tweet.get("tweet_text") or "").strip()
+    remate=str(tweet.get("remate") or "").strip()
+    if not remate and "\n\n🌶️ " in text:
+        remate="🌶️ "+text.rsplit("\n\n🌶️ ",1)[1].strip()
+    if legacy and remate and not remate.startswith("🌶️ "):
+        remate="🌶️ "+remate.lstrip()
+    if not text or len(text)>280: raise ValueError("tweet vacío o >280")
+    if "\\n" in text or "\\n" in remate: raise ValueError("saltos visibles prohibidos")
+    if not remate.startswith("🌶️ ") or len(remate)<=3:
+        raise ValueError("el remate único debe empezar por 🌶️ ")
+    if legacy:
+        principal=str((next((v for v in variants if str(v.get("label") or "").lower()=="principal"),{}) or {}).get("text") or "").strip()
+        if text==remate and principal: text=principal+"\n\n"+remate
+        elif principal and not text.startswith(principal+"\n\n"): text=principal+"\n\n"+remate
+    if not text.endswith("\n\n"+remate):
+        raise ValueError("el tweet debe terminar con dos saltos y su remate 🌶️")
+    tweet={"text":text,"remate":remate,"url":"https://twitter.com/intent/tweet?text="+urllib.parse.quote(text,safe="")}
+    return tweet
+
 def validate_ready(payload):
     item=payload.get("prepared_item") or {}
     if not isinstance(item,dict): raise ValueError("prepared_item inválido")
     if not str(item.get("event_id") or ""): raise ValueError("prepared_item sin event_id")
-    variants=normalize_variants(item.get("variants") or [])
-    labels=[str(v.get("label") or v.get("key") or v.get("name") or "") for v in variants]
-    if labels != ["Principal","A","B","C"]:
-        raise ValueError("variants debe ser Principal/A/B/C")
-    for v,label in zip(variants,labels):
-        v["label"]=label
-    for i,v in enumerate(variants):
-        text=str(v.get("text") or "")
-        remate=str(v.get("remate") or "")
-        if not text or len(text)>280: raise ValueError("text vacío o >280")
-        if "\\n" in text or "\\n" in remate: raise ValueError("saltos visibles prohibidos")
-        if i==0:
-            if remate!="": raise ValueError("Principal remate no vacío")
-        else:
-            principal=str(variants[0].get("text") or "")
-            # A/B/C may arrive as their compact remate, or as the full text.
-            # Canonicalize the envelope without changing the written remate.
-            inferred_remate=False
-            if not remate and text.startswith(principal+"\n\n"):
-                remate=text[len(principal)+2:]
-                inferred_remate=True
-            elif not remate:
-                remate=text
-                inferred_remate=True
-            if not remate.startswith("🌶️ "):
-                remate="🌶️ "+remate.lstrip()
-            v["remate"]=remate
-            expected_text=principal+"\n\n"+remate
-            # Tolerancia de transporte: algunos ejecutores envían en A/B/C solo el
-            # remate aunque `remate` sea correcto. Normalízalo aquí sin inventar
-            # contenido. Cualquier otra discrepancia sigue siendo un error real.
-            if text == remate:
-                text=expected_text
-                v["text"]=text
-            elif inferred_remate:
-                text=expected_text
-                v["text"]=text
-            elif text != expected_text:
-                raise ValueError("text alternativo no coincide")
-        v["text"]=text
-        expected="https://twitter.com/intent/tweet?text="+urllib.parse.quote(text,safe="")
-        v["url"]=expected
-        v.pop("tweet_url",None)
-    item["variants"]=variants
+    item["tweet"]=normalize_tweet(item)
+    item.pop("variants",None)
+    item.pop("primary",None)
+    item.pop("alternatives",None)
     normalize_image(item)
     validate_image(item)
     return item
@@ -404,17 +393,21 @@ def main():
     return 0
 
 def selftest_images():
-    compact={
-        "prepared_item":{"event_id":"selftest","revision":1,"variants":{
-            "Principal":"Titular de prueba",
-            "A":"Remate compacto",
-            "B":{"text":"Titular de prueba\n\nOtro remate"},
-            "C":{"text":"🌶️ Remate ya marcado","remate":"🌶️ Remate ya marcado"},
-        }}
-    }
-    normalized=validate_ready(compact)
-    assert [v["label"] for v in normalized["variants"]]==["Principal","A","B","C"]
-    assert all(v["text"].startswith("Titular de prueba\n\n🌶️ ") for v in normalized["variants"][1:])
+    current={"prepared_item":{"event_id":"selftest","revision":1,"tweet":{
+        "text":"Titular de prueba\n\n🌶️ Remate único.","remate":"🌶️ Remate único."
+    }}}
+    normalized=validate_ready(current)
+    assert normalized["tweet"]["text"]=="Titular de prueba\n\n🌶️ Remate único."
+    assert "variants" not in normalized
+    legacy={"prepared_item":{"event_id":"legacy","revision":1,"variants":[
+        {"label":"Principal","text":"Titular antiguo","remate":""},
+        {"label":"A","text":"Titular antiguo\n\n🌶️ Primer remate","remate":"🌶️ Primer remate"},
+        {"label":"B","text":"Titular antiguo\n\n🌶️ Segundo remate","remate":"🌶️ Segundo remate"},
+        {"label":"C","text":"Titular antiguo\n\n🌶️ Tercer remate","remate":"🌶️ Tercer remate"},
+    ]}}
+    migrated=validate_ready(legacy)
+    assert migrated["tweet"]["remate"]=="🌶️ Primer remate"
+    assert "variants" not in migrated
     flat={"title":"Prueba","image":"https://cdn.example.test/photo.jpg","image_source":"Fuente","image_source_url":"https://example.test/story"}
     image=normalize_image(flat)
     assert image["url"]=="https://cdn.example.test/photo.jpg"

@@ -441,11 +441,11 @@ async function backendStatus(){
   ]);
   return {ok:config.ok&&status.ok,status:config.ok&&status.ok?200:503}
 }
-// Persist one editable score for the exact prepared variant and revision. No client-supplied text.
+// Persist one editable score for the exact prepared tweet and revision. No client-supplied text.
 async function rateTitularRemate(key, score){
   const ratingKey=String(key||"").trim(),rating=Number(score);
-  if(!/^titular-remate-v1:[a-f0-9]{24}$/.test(ratingKey)||!Number.isInteger(rating)||rating<1||rating>5){
-    const error=new Error("Envía un remate A/B/C válido y una valoración entera de 1 a 5.");error.statusCode=400;throw error;
+  if(!/^titular-remate-v2:[a-f0-9]{24}$/.test(ratingKey)||!Number.isInteger(rating)||rating<1||rating>5){
+    const error=new Error("Envía el remate del tuit y una valoración entera de 1 a 5.");error.statusCode=400;throw error;
   }
   const {doc:prepared}=await readJson(PREPARED);
   let item=null,variant=null;
@@ -455,7 +455,7 @@ async function rateTitularRemate(key, score){
   }
   if(!item){const error=new Error("Esta variante ya no está disponible o su texto ha cambiado.");error.statusCode=409;throw error}
   const now=new Date().toISOString();let saved;
-  await mutateJson(REMATE_RATINGS,"TTiTTulares: valorar remate A/B/C",doc=>{
+  await mutateJson(REMATE_RATINGS,"TTiTTulares: valorar remate único",doc=>{
     doc.project||="TTiTTulares";doc.version||=1;doc.items||=[];
     let record=doc.items.find(r=>r.key===ratingKey);
     if(record&&record.rating===rating){saved=record;return doc}

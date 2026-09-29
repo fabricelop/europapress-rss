@@ -185,20 +185,22 @@ function renderReady(list){
       }
     });
 
-    for(const v of x.variants||[]){
+    const legacy=Array.isArray(x.variants)?x.variants:[];
+    const tweet=x.tweet?.text?x.tweet:(legacy.find(v=>String(v?.label||'').toUpperCase()==='A')||legacy.find(v=>String(v?.remate||'').trim()));
+    if(tweet){
       const d=document.createElement('div');
       d.className='variant';
       const title=document.createElement('strong');
-      title.textContent=v.label||v.name||'Opción';
+      title.textContent='Tuit';
       const p=document.createElement('p');
-      p.textContent=v.text||'';
+      p.textContent=tweet.text||'';
       const links=document.createElement('div');
       links.className='variant-links';
 
       const publish=document.createElement('a');
       publish.target='_blank';
       publish.rel='noopener';
-      publish.href=v.url||v.tweet_url||'#';
+      publish.href=tweet.url||tweet.tweet_url||'#';
       publish.textContent='Publicar en X';
       links.appendChild(publish);
 
@@ -208,8 +210,8 @@ function renderReady(list){
       quote.className='quote-action';
       quote.textContent='Citar elegido';
       quote.hidden=!selectedQuote;
-      if(selectedQuote)quote.href=quoteIntent(v.text||'',selectedQuote);
-      quoteLinks.push({a:quote,text:v.text||''});
+      if(selectedQuote)quote.href=quoteIntent(tweet.text||'',selectedQuote);
+      quoteLinks.push({a:quote,text:tweet.text||''});
       links.appendChild(quote);
 
       d.append(title,p,links);

@@ -77,7 +77,11 @@ jobs:
               dst=Path(f"/tmp/joint-release-{i}.js");dst.write_text("\n".join(scripts))
               subprocess.run(["node","--check",str(dst)],check=True)
           assert "renderRemateRating" in Path(pages[1]).read_text()
-          assert "mountRemateRating" in Path(pages[2]).read_text()
+          tt_page=Path(pages[2]).read_text()
+          tt_lib=Path("vercel-webhook/lib/ttittulares-remate-ratings.js").read_text()
+          assert "mountRemateRating" in tt_page and "function tweetFor" in tt_page
+          assert "titular-remate-v2" in tt_page and "titular-remate-v2" in tt_lib
+          assert "Principal es factual" not in tt_page
           print("JOINT_RELEASE_VERIFIED")
           PY
       - name: Publicar ambos proyectos mediante UNA solicitud REST Vercel
