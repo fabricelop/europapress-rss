@@ -11,6 +11,7 @@ import hashlib
 import re
 import unicodedata
 from datetime import datetime, timedelta, timezone
+from source_publication import parse_publication_date
 
 
 def timestamp(value):
@@ -59,6 +60,10 @@ def update_source_telemetry(rows, statuses, previous, events, now):
         if "last_article_at" not in record:
             record["last_article_at"] = None
             record["last_article_title"] = None
+        # Separate clocks: first retrieval != the publisher's publication date.
+        record.setdefault("last_published_at", None)
+        record.setdefault("last_published_title", None)
+        record.setdefault("publication_date_source", None)
 
     if not metrics:
         # Preserve the first-seen time of headlines already in the rolling
@@ -89,6 +94,14 @@ def update_source_telemetry(rows, statuses, previous, events, now):
         if source not in new_sources or not key:
             continue
         record = known[source]
+        # Trust a timezone-aware date directly from the publisher's RSS or
+        # original article metadata. Never infer publication from polling.
+        published = parse_publication_date(row.get("published_at"), now)
+        prev = timestamp(record.get("last_published_at"))
+        if published and (prev is None or published > prev):
+            record["last_published_at"] = utc_iso(published)
+            record["last_published_title"] = title
+            record["publication_date_source"] = row.get("publication_date_source") or "publisher"
         if key not in record["seen"]:
             record["seen"][key] = utc_iso(now)
             record["last_article_at"] = utc_iso(now)
@@ -107,6 +120,9 @@ def update_source_telemetry(rows, statuses, previous, events, now):
                                      if (t := timestamp(value)) is not None and t >= cutoff)
         status["last_article_at"] = record.get("last_article_at")
         status["last_article_title"] = record.get("last_article_title")
+        status["last_published_at"] = record.get("last_published_at")
+        status["last_published_title"] = record.get("last_published_title")
+        status["publication_date_source"] = record.get("publication_date_source")
         status["articles_24h_window_started_at"] = state["started_at"]
 
     # Sources no longer configured must not accumulate indefinitely.
@@ -145,6 +161,23 @@ def selftest():
     assert status[0]["articles_24h"] == 1
     assert status[0]["last_article_at"] == utc_iso(t - timedelta(hours=17))
     assert article_key("MÁLAGA: una noticia") == article_key("Malaga una noticia")
+    assert status[0]["last_published_at"] is None, "First discovery must not pretend to be publication"
+    dated = [
+        {"source": "Europa Press", "title": "Noticia publicada a las 14:20",
+         "published_at": "2026-09-29T14:20:00Z", "publication_date_source": "publisher_feed"},
+        {"source": "Europa Press", "title": "Reimpresión de una noticia antigua",
+         "published_at": "2026-09-27T14:00:00Z", "publication_date_source": "publisher_feed"},
+    ]
+    state = update_source_telemetry(dated,status,seeded,[],t)
+    assert status[0]["last_published_at"] == "2026-09-29T14:20:00Z"
+    assert status[0]["publication_date_source"] == "publisher_feed"
+    # Repeated retrieval later must NOT advance the publisher timestamp.
+    update_source_telemetry(dated,status,state,[],t + timedelta(hours=2))
+    assert status[0]["last_published_at"] == "2026-09-29T14:20:00Z"
+    # A publisher date from the future cannot advance the clock.
+    update_source_telemetry([{"source": "Europa Press", "title": "Futura",
+      "published_at": "2026-09-30T17:00:00Z"}],status,state,[],t)
+    assert status[0]["last_published_at"] == "2026-09-29T14:20:00Z"
     print("TTITTULARES_SOURCE_TELEMETRY_SELFTEST_OK")
 
 
