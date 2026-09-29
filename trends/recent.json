@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T20:41:35+02:00",
+  "captured_at": "2026-09-29T20:51:20+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -12,8 +12,7 @@
   "source_count": 7,
   "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24",
-    "snaplytics"
+    "tweets24"
   ],
   "reliability": "high",
   "top10": [
@@ -80,29 +79,9 @@
       "entered_top10_at": "2026-09-29T20:31:11+02:00"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Premier League"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
-    {
-      "name": "Sindicato de Inquilinas",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "superx",
-        "trendswe"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 13.7,
-      "movement": "up",
-      "first_detected_at": "2026-09-29T18:51:43+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
     {
       "name": "El City",
       "social_source_count": 3,
@@ -115,11 +94,11 @@
       "mean_observed_rank": 13.3,
       "movement": "flat",
       "first_detected_at": "2026-09-29T20:10:50+02:00",
-      "news_source_count": 1,
-      "news_event_id": "f2f215a60495",
-      "news_title": "El Manchester City insiste en su inocencia y apelará",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T17:42:09.735545Z"
+      "news_source_count": 9,
+      "news_event_id": "a51866b63472",
+      "news_title": "Nueve años de infracciones Oficial: la Premier League declara culpable al Manchester City \"de todos los cargos\" Guillermo Álvarez 29 de septiembre de 2026, 18:36",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-29T18:42:40.211160Z"
     },
     {
       "name": "Urbagestión",
@@ -131,13 +110,31 @@
       ],
       "best_observed_rank": 18,
       "mean_observed_rank": 18.7,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T20:31:11+02:00",
-      "news_source_count": 3,
+      "news_source_count": 8,
       "news_event_id": "8ca142ac63b0-r2",
-      "news_title": "Así es el acuerdo alcanzado con Urbagestión por el que Maricarmen podrá volver a su casa: ocho años de duración y una renta \"similar\"",
-      "news_status": "UPDATE_WAITING",
+      "news_title": "Maricarmen acepta el acuerdo con Urbagestión y volverá a su casa cuando reciba el alta",
+      "news_status": "ELIGIBLE_UPDATE",
       "news_first_seen": "2026-09-29T18:33:49.481047Z"
+    },
+    {
+      "name": "Sindicato de Inquilinas",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "trendswe"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 13.7,
+      "movement": "flat",
+      "first_detected_at": "2026-09-29T18:51:43+02:00",
+      "news_source_count": 1,
+      "news_event_id": "a9cf137a2a06",
+      "news_title": "El Sindicato de Inquilinas reclama a los sindicatos la convocatoria de una huelga general: \"Ahora hay camino\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T18:42:40.211160Z"
     },
     {
       "name": "Miguel Román",
@@ -149,7 +146,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T20:41:35+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -212,21 +209,21 @@
       "news_first_seen": null
     },
     {
-      "name": "El Gobierno",
+      "name": "Decreto",
       "social_source_count": 2,
       "social_sources": [
-        "trends24",
-        "tweets24"
+        "snaplytics",
+        "trendswe"
       ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 17.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T19:50:57+02:00",
-      "news_source_count": 7,
-      "news_event_id": "ce64eee8fdcc-r2",
-      "news_title": "Mohamed VI nombra a Fatima-Zahra El Mansouri la primera mujer jefa de Gobierno en Marruecos - Telecinco",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-09-29T18:33:49.481047Z"
+      "best_observed_rank": 13,
+      "mean_observed_rank": 14.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T20:51:20+02:00",
+      "news_source_count": 4,
+      "news_event_id": "7b2a3c6175d3",
+      "news_title": "Los colectivos de vivienda que mantienen una acampada en Madrid consideran insuficiente el denominado 'Decreto Maricarmen' que el Gobierno prev aprobar y reclaman medidas ms amplias para hacer frente al problema del acceso a la vivienda",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-29T18:24:36.628218Z"
     }
   ],
   "anticipated_entries": [],
@@ -260,7 +257,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T20:41:35+02:00"
+      "fetched_at": "2026-09-29T20:51:20+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -285,7 +282,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T20:41:36+02:00"
+      "fetched_at": "2026-09-29T20:51:21+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -312,10 +309,10 @@
         "Ada Colau"
       ],
       "error": null,
-      "update_hint": "Updated 10 minutes ago",
-      "age_minutes": 10.0,
+      "update_hint": "Updated 20 minutes ago",
+      "age_minutes": 20.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-29T20:41:37+02:00"
+      "fetched_at": "2026-09-29T20:51:21+02:00"
     },
     "superx": {
       "ok": true,
@@ -345,16 +342,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T20:41:38+02:00"
+      "fetched_at": "2026-09-29T20:51:22+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790707298",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790707883",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T20:41:38+02:00"
+      "fetched_at": "2026-09-29T20:51:23+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -382,9 +379,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 18:00 UTC",
-      "age_minutes": 41.6,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-29T20:41:38+02:00"
+      "age_minutes": 51.4,
+      "freshness": "aging",
+      "fetched_at": "2026-09-29T20:51:23+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -412,18 +409,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 06:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 Alm",
-      "age_minutes": 161.6,
+      "age_minutes": 171.4,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T20:41:38+02:00"
+      "fetched_at": "2026-09-29T20:51:24+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790707300",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790707886",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T20:41:40+02:00"
+      "fetched_at": "2026-09-29T20:51:26+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -432,7 +429,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T20:41:40+02:00"
+      "fetched_at": "2026-09-29T20:51:26+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -462,16 +459,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T20:41:40+02:00"
+      "fetched_at": "2026-09-29T20:51:26+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790707303",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790707889",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T20:41:43+02:00"
+      "fetched_at": "2026-09-29T20:51:29+02:00"
     }
   }
 }
