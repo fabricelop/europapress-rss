@@ -21,13 +21,13 @@ URLS={
   "https://www.huffingtonpost.es/feeds/index.xml","https://www.huffingtonpost.es/"
  ],
  "Telecinco":[
-  "https://www.telecinco.es/noticias/","https://www.telecinco.es/rss/"
+  "https://www.telecinco.es/noticias/","https://www.telecinco.es/rss/","https://www.telecinco.es/rss.xml"
  ],
  "Cuatro":[
-  "https://www.cuatro.com/noticias/","https://www.cuatro.com/rss/"
+  "https://www.cuatro.com/noticias/","https://www.cuatro.com/rss/","https://www.cuatro.com/rss.xml"
  ],
  "AS":[
-  "https://as.com/ultimas-noticias/","https://as.com/rss/",
+  "https://as.com/ultimas-noticias/","https://as.com/rss/","https://as.com/rss-de-ascom-n/","https://as.com/rss/portada.xml",
  ],
  "Reuters":[
   "https://www.reuters.com/arc/outboundfeeds/rss/",
@@ -65,7 +65,7 @@ def probe(label,url):
   host=urlparse(final).hostname
   own=[urljoin(final,x) for x in links.urls if urlparse(urljoin(final,x)).hostname in [host,"www."+host if host else ""]]
   sample=[x for x in own if len(urlparse(x).path.split("/"))>=4][:5]
-  result={"source":label,"requested":url,"final":final,"http":"OK","type":type[:50],"bytes":len(body),"items":len(blocks),"feed_dates":dates,"links":len(links.urls),"sample_links":sample[:3],"page_own_meta":article_publication(body),"first_item":blocks[0][:380] if blocks else None,"news_articles":len(news),"latest_news":sorted(news,reverse=True)[:2]}
+  result={"source":label,"requested":url,"final":final,"http":"OK","type":type[:50],"bytes":len(body),"items":len(blocks),"feed_dates":dates,"links":len(links.urls),"sample_links":sample[:3],"page_own_meta":article_publication(body),"first_item":blocks[0][:380] if blocks else None,"news_articles":len(news),"latest_news":sorted(news,reverse=True)[:2],"rss_links":[x for x in links.urls if (".xml" in x or "rss" in x or "/feed" in x)][:18]}
   return result
  except Exception as e:
   return {"source":label,"requested":url,"error":str(e)[:180]}
