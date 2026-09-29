@@ -3,6 +3,7 @@ from functools import lru_cache
 from itertools import combinations
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
+from source_telemetry import update_source_telemetry
 
 SOURCES=[
 ("Europa Press","https://www.europapress.es/noticias/","html"),
@@ -992,6 +993,12 @@ cutoff=now-timedelta(hours=WAIT_HOURS)
 events=[e for e in events if e.get("status") not in {"WAITING","UPDATE_WAITING"} or dtv(e.get("first_seen"))>=cutoff]
 
 rows,healthy,sport_healthy,source_failures,source_status,source_recovery=fetch_items()
+# Telemetry ONLY. Count DISTINCT newly observed headlines per source in a rolling
+# 24h window. A repeated article does not reset the time since last news.
+# Persist within events.json, already written by both normal radar workflows.
+source_article_telemetry=update_source_telemetry(
+ rows,source_status,events_doc.get("source_article_telemetry"),events,now
+)
 print("SOURCES_OK",len(set(healthy)),sorted(set(healthy)))
 print("SPORT_SOURCES_OK",len(set(sport_healthy)),sorted(set(sport_healthy)))
 print("SOURCES_CONFIGURED",TOTAL_SOURCES)
@@ -1182,7 +1189,7 @@ events_doc={"version":6,"configured_sources":TOTAL_SOURCES,"configured_source_fa
             "healthy_sources":sorted(set(healthy)),"healthy_source_count":len(set(healthy)),
             "healthy_source_families":healthy_families,"healthy_source_family_count":len(healthy_families),
             "healthy_sport_sources":sorted(set(sport_healthy)),"source_failures":source_failures,
-            "source_status":source_status,"source_recovery":source_recovery,"discovery_sources":[x[0] for x in DISCOVERY_SOURCES],"events":events}
+            "source_status":source_status,"source_article_telemetry":source_article_telemetry,"source_recovery":source_recovery,"discovery_sources":[x[0] for x in DISCOVERY_SOURCES],"events":events}
 processed_doc={"version":1,"updated_at":iso(now),"events":processed}
 save(EVENTS,events_doc);save(PROCESSED,processed_doc)
 print("RESULT rows",len(rows),"active_events",len(events),"review_sent",sent,"auto_queued",0,"expired",expired)
