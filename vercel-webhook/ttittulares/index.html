@@ -526,8 +526,9 @@ function renderList(){
  if(view==="tremending"){
   const signature=JSON.stringify([model.tremending?.items||[],[...tremendingOpen]]);
   if(lastRenderedView==="tremending"&&lastTremendingRendering===signature)return;
+  const sameView=lastRenderedView==="tremending";
   lastRenderedView="tremending";lastTremendingRendering=signature;lastReadyRendering=null;
-  list.innerHTML="";renderTremending(list);return;
+  if(!sameView)list.innerHTML="";renderTremending(list);return;
  }
  lastRenderedView=view;lastReadyRendering=null;lastTremendingRendering=null;
  list.innerHTML="";
@@ -539,9 +540,15 @@ function renderTremending(list){
  $("viewTitle").textContent="Bandeja Tremending";
  const items=[...(model.tremending?.items||[])].filter(x=>!["discarded","sent"].includes(x.status)).sort((a,b)=>(a.status==="postponed")-(b.status==="postponed")||String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
  if(!items.length){list.innerHTML='<div class="empty">No hay entradas Tremending pendientes. Las enviadas y descartadas salen de esta bandeja.</div>';return}
+ const previousCards=new Map([...list.querySelectorAll("article.tremendingCard[data-tremending-id]")].map(node=>[node.dataset.tremendingId,node]));
+ const desired=[];
  for(const item of items){
+  const key=String(item.id),itemSignature=JSON.stringify([item,tremendingOpen.has(key)]),oldCard=previousCards.get(key);
+  if(oldCard&&oldCard.dataset.renderSignature===itemSignature){desired.push(oldCard);continue}
   const card=document.createElement("article");card.className="queuecard tremendingCard"+(item.status==="postponed"?" postponed":"");
-  const head=document.createElement("div");head.className="head";const titleBox=document.createElement("div"),title=document.createElement("div"),meta=document.createElement("div"),badge=document.createElement("div");title.className="title";title.textContent=item.title;meta.className="tremendingMeta";meta.textContent="Público · Tremending · "+fmt(item.published_at||item.first_seen_at)+(item.status==="postponed"?" · pospuesta":item.destinations?.length?" · enviada a "+item.destinations.join(" y "):"");badge.className="count";badge.textContent=(item.tweets||[]).length+" tuits";titleBox.append(title,meta);const id=String(item.id),expanded=tremendingOpen.has(id),aside=document.createElement("div"),toggle=document.createElement("button");aside.className="tremendingHeadActions";toggle.className="btn tremendingToggle";toggle.textContent=expanded?"Cerrar":"Abrir";toggle.setAttribute("aria-expanded",String(expanded));toggle.onclick=()=>{if(tremendingOpen.has(id))tremendingOpen.delete(id);else tremendingOpen.add(id);persistUiState();renderList()};aside.append(badge,toggle);head.append(titleBox,aside);card.appendChild(head);if(!expanded){list.appendChild(card);continue}
+  card.dataset.tremendingId=key;card.dataset.renderSignature=itemSignature;
+  if(oldCard)oldCard.replaceWith(card);
+  const head=document.createElement("div");head.className="head";const titleBox=document.createElement("div"),title=document.createElement("div"),meta=document.createElement("div"),badge=document.createElement("div");title.className="title";title.textContent=item.title;meta.className="tremendingMeta";meta.textContent="Público · Tremending · "+fmt(item.published_at||item.first_seen_at)+(item.status==="postponed"?" · pospuesta":item.destinations?.length?" · enviada a "+item.destinations.join(" y "):"");badge.className="count";badge.textContent=(item.tweets||[]).length+" tuits";titleBox.append(title,meta);const id=String(item.id),expanded=tremendingOpen.has(id),aside=document.createElement("div"),toggle=document.createElement("button");aside.className="tremendingHeadActions";toggle.className="btn tremendingToggle";toggle.textContent=expanded?"Cerrar":"Abrir";toggle.setAttribute("aria-expanded",String(expanded));toggle.onclick=()=>{if(tremendingOpen.has(id))tremendingOpen.delete(id);else tremendingOpen.add(id);persistUiState();renderList()};aside.append(badge,toggle);head.append(titleBox,aside);card.appendChild(head);if(!expanded){desired.push(card);continue}
   if(item.description){const desc=document.createElement("div");desc.className="facts";desc.textContent=item.description;card.appendChild(desc)}
   const source=document.createElement("a");source.className="btn";source.target="_blank";source.rel="noopener";source.href=item.url;source.textContent="Abrir artículo";
   const actions=document.createElement("div");actions.className="actions";actions.appendChild(source);
@@ -558,8 +565,11 @@ function renderTremending(list){
   const postpone=document.createElement("button");postpone.className="btn";postpone.textContent=item.status==="postponed"?"Reactivar":"Posponer";postpone.title="Aplazar la decisión: queda al final de la bandeja sin descartarse";postpone.onclick=async()=>{try{await api(item.status==="postponed"?"reactivate-tremending":"postpone-tremending",{entry_id:item.id});tremendingOpen.delete(id);persistUiState();await load(true);toast(item.status==="postponed"?"Reactivada":"Pospuesta para después")}catch(e){toast(e.message)}};actions.appendChild(postpone);
   const discard=document.createElement("button");discard.className="btn danger";discard.textContent="Descartar";discard.onclick=async()=>{if(!confirm("¿Descartar esta entrada de forma persistente?"))return;try{await api("discard-tremending",{entry_id:item.id});tremendingOpen.delete(id);persistUiState();await load(true)}catch(e){toast(e.message)}};actions.appendChild(discard);card.appendChild(actions);
   if(item.image?.url){const img=document.createElement("img");img.className="tremendingImage imagePreview";img.src=API+"?view=image-proxy&url="+encodeURIComponent(item.image.url);img.alt="Captura del tuit elegido";img.loading="lazy";img.decoding="async";const imageLink=document.createElement("a");imageLink.href=item.image.url;imageLink.target="_blank";imageLink.rel="noopener";imageLink.title="Ampliar imagen";imageLink.appendChild(img);card.appendChild(imageLink);const imgActions=document.createElement("div");imgActions.className="actions";const copy=document.createElement("button");copy.className="btn";copy.textContent="Copiar imagen";copy.onclick=()=>copyImageToClipboard(item.image.url,copy,img);imgActions.appendChild(copy);card.appendChild(imgActions)}
-  list.appendChild(card)
+  desired.push(card)
  }
+ const keep=new Set(desired);
+ for(const node of [...list.children])if(!keep.has(node))node.remove();
+ desired.forEach((node,i)=>{if(list.children[i]!==node)list.insertBefore(node,list.children[i]||null)});
 }
 function renderReady(list,preservedImages=new Map()){
  $("viewTitle").textContent="Noticias listas";
