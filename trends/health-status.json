@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-09-29T13:59:07.492199+00:00",
-  "ok": true,
+  "checked_at": "2026-09-29T19:19:06.011035+00:00",
+  "ok": false,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -41,8 +41,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 4,
-      "captured_age_minutes": 0.2,
+      "non_stale_sources": 6,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -55,7 +55,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 0.8,
-      "run_id": 36579088708,
+      "run_id": 36618200808,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,25 +75,51 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 4,
+      "overdue_count": 3,
+      "oldest_age_minutes": 88.0,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "d0ec9dd0dbf2",
+          "name": "Repsol",
+          "status": "preparing",
+          "age_minutes": 88.0
+        },
+        {
+          "id": "d6b652b7d172",
+          "name": "#RTXON",
+          "status": "preparing",
+          "age_minutes": 47.8
+        },
+        {
+          "id": "a8644022152b",
+          "name": "Pyme",
+          "status": "preparing",
+          "age_minutes": 38.6
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "7ea2bf3ac132",
+        "d0ec9dd0dbf2",
+        "d6b652b7d172",
+        "a8644022152b"
+      ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
-  "blocking": [],
+  "blocking": [
+    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 88.0 min"
+  ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": ""
+  "last_alert_signature": "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 88.0 min"
 }
