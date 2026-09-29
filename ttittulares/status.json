@@ -1,32 +1,66 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-09-29T05:12:27.635035Z",
+  "updated_at": "2026-09-29T05:14:05.931159Z",
   "radar_at": "2026-09-29T05:12:12.094906Z",
-  "processing_count": 4,
+  "processing_count": 3,
   "processing_items": [
     {
-      "event_id": "bc1ded603ef6",
-      "title": "Trump anuncia en Iowa la mayor planta siderúrgica de EE.UU. por 15.000 millones de dólares",
-      "url": "https://efe.com/mundo/2026-09-29/trump-planta-siderurgica-iowa-eeuu/",
-      "selected_at": "2026-09-29T02:53:44.749407Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 4,
+      "event_id": "trendnews-banderas-20260928",
+      "title": "Antonio Banderas recibe un reconocimiento en Málaga y defiende el teatro como refugio ante la IA",
+      "url": "https://efe.com/cultura/2026-09-28/antonio-banderas-premiado/",
       "sources": [
-        "20minutos",
         "EFE",
-        "EL PAÍS",
-        "Europa Press"
-      ]
+        "Europa Press",
+        "Mahou San Miguel"
+      ],
+      "source_count": 3,
+      "drafted_source_count": 3,
+      "source_evidence": [
+        {
+          "source": "EFE",
+          "title": "Antonio Banderas recibe un premio y reivindica el teatro ante la IA",
+          "url": "https://efe.com/cultura/2026-09-28/antonio-banderas-premiado/",
+          "first_seen": "2026-09-28T21:42:10Z"
+        },
+        {
+          "source": "Europa Press",
+          "title": "Antonio Banderas asegura que el teatro es refugio para la verdad ante el avance de la IA",
+          "url": "https://www.europapress.es/andalucia/malaga-00356/noticia-antonio-banderas-asegura-teatro-refugio-verdad-avance-ia-20260928171043.html",
+          "first_seen": "2026-09-28T21:42:10Z"
+        },
+        {
+          "source": "Mahou San Miguel",
+          "title": "Mahou San Miguel reconoce a Antonio Banderas por su contribución a Málaga",
+          "url": "https://www.mahou-sanmiguel.com/es-es/sala-de-prensa/notas-de-prensa/mahou-san-miguel-reconoce-a-antonio-banderas-ayuntamiento-de-malaga-unicaja-manuel-villafaina",
+          "first_seen": "2026-09-28T21:42:10Z"
+        }
+      ],
+      "selected_at": "2026-09-28T21:42:10Z",
+      "status": "PROCESSING",
+      "selection_mode": "TTENDENCIAS_AUTO",
+      "trend_origin": true,
+      "trend_names": [
+        "Antonio Banderas"
+      ],
+      "trend_context": [
+        {
+          "name": "Antonio Banderas",
+          "rank": 9
+        }
+      ],
+      "trend_group_id": "grp-antonio-banderas-homenaje-20260928",
+      "revision": 0,
+      "parent_event_id": null,
+      "update_context": null,
+      "with_image": true,
+      "image_mode": "existing_web_image",
+      "image_instruction": "Imagen editorial real del acto obtenida por TTiTTulares. TTendencias no genera imágenes.",
+      "automatic_redaction_requested_at": "2026-09-29T00:23:13.539192+00:00"
     },
     {
       "event_id": "900494e8b7e2",
       "title": "La nave Starship ameriza horas antes de lo previsto y Musk lo celebra como un \"enorme hito\" de SpaceX",
       "url": "https://www.lasexta.com/noticias/ciencia-tecnologia/musk-logra-poner-orbita-starship-nave-espacial-mas-grande-historia_202609286aba73df82932a3cf91c4833.html",
-      "selected_at": "2026-09-29T01:43:49.341684Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 8,
       "sources": [
         "EFE",
         "EL PAÍS",
@@ -37,41 +71,125 @@
         "RTVE",
         "Telecinco Noticias",
         "laSexta Noticias"
-      ]
-    },
-    {
-      "event_id": "trendnews-banderas-20260928",
-      "title": "Antonio Banderas recibe un reconocimiento en Málaga y defiende el teatro como refugio ante la IA",
-      "url": "https://efe.com/cultura/2026-09-28/antonio-banderas-premiado/",
-      "selected_at": "2026-09-28T21:42:10Z",
-      "selection_mode": "TTENDENCIAS_AUTO",
-      "rewrite_version": null,
-      "source_count": 3,
-      "sources": [
-        "EFE",
-        "Europa Press",
-        "Mahou San Miguel"
-      ]
-    },
-    {
-      "event_id": "f4f73a8421f4",
-      "title": "León XIV: «Tenemos que exigir a los líderes políticos que busquen una solución al problema de la vivienda»",
-      "url": "https://www.abc.es/sociedad/leon-xiv-exigir-lideres-politicos-busquen-solucion-20260928230214-nt.html",
-      "selected_at": "2026-09-28T21:32:16.036010Z",
+      ],
+      "source_count": 8,
+      "drafted_source_count": 8,
+      "source_evidence": [
+        {
+          "source": "La Vanguardia",
+          "title": "SpaceX pone en órbita terrestre por primera vez el Starship, en su decimocuarta prueba",
+          "url": "https://www.lavanguardia.com/ciencia/20260928/11645928/spacex-pone-orbita-terrestre-primera-vez-starship-decimocuarta-prueba.html",
+          "first_seen": "2026-09-28T23:33:39.389780Z"
+        },
+        {
+          "source": "El Mundo",
+          "title": "El megacohete de SpaceX Starship alcanza la rbita terrestre por primera vez y explota durante el amerizaje",
+          "url": "https://www.elmundo.es/ciencia/2026/09/28/6aba6d92fc6c832f2b8b4597.html",
+          "first_seen": "2026-09-28T23:33:39.389780Z"
+        },
+        {
+          "source": "Onda Cero",
+          "title": "El vídeo del momento exacto en el que 'Starship', el megacohete de Elon Musk, explota durante el amerizaje",
+          "url": "https://www.ondacero.es/noticias/ciencia-tecnologia/video-momento-exacto-que-starship-megacohete-elon-musk-explota-amerizaje_202609286abaaa4ca520494aafd8b349.html",
+          "first_seen": "2026-09-28T23:33:39.389780Z"
+        },
+        {
+          "source": "RTVE",
+          "title": "La nave Starship de Space X alcanza la rbita terrestre por primera vez pese a un fallo en los motores",
+          "url": "https://www.rtve.es/noticias/20260928/nave-starship-space-regresa-con-exito-a-tierra-tras-alcanzar-orbita-terrestre-por-primera-vez/17244606.shtml",
+          "first_seen": "2026-09-28T23:33:39.389780Z"
+        },
+        {
+          "source": "EFE",
+          "title": "La nave Starship de SpaceX ameriza con éxito después de su primer viaje orbital - efe.com",
+          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNSDVxUjlMX3JIN1hBOHFXeFMzcjlMZGxncGhDWUh2YS1tVTdNTk9HUWIxSHpCUi11UmpkTTFqWDlTTlV6SFBraVJMTlNwcXBoSHNOc3ZFMVpGZnlpM3VWUXM0cTQzRGZ5bEFMZk4xTjJpcm85bnk4OE51aTNoWnpkNTlFNV9scVVqRHNCdThLX1o3NzFPaGRoczJXcGpTQQ?oc=5",
+          "first_seen": "2026-09-29T01:32:43.299256Z"
+        },
+        {
+          "source": "laSexta Noticias",
+          "title": "La nave Starship ameriza horas antes de lo previsto y Musk lo celebra como un \"enorme hito\" de SpaceX",
+          "url": "https://www.lasexta.com/noticias/ciencia-tecnologia/musk-logra-poner-orbita-starship-nave-espacial-mas-grande-historia_202609286aba73df82932a3cf91c4833.html",
+          "first_seen": "2026-09-29T01:32:43.299256Z"
+        },
+        {
+          "source": "Telecinco Noticias",
+          "title": "'Starship', la nave más grande de la historia, llega a la órbita terrestre: el triunfo de Elon Musk - Telecinco",
+          "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxONDMtMEw5M1NHV2lSVHJOZkhldFRTX0lZRkxzaXYwSDhoR3gyX1JPQnVmNm5tekJMRGx6S3U3T25vSHd4aDZNekY3NGVadThfck01OGxqSk5Ha1lsdWpLT0ZhdHFTSXI4OG9MbFRheHZjclg3R3NBcy1TXzdEd2NwVUotc0V3VlRRTVNROEE5RWF0OGV6bnhLNGNocjdxT0tYRFYwNmpHRzQ4Nlp3V3dfQ21fdGNQTVo2N1d1NlpnMjBwQnI4MUVnUS1wS08tZm9iZUZlY3IwS0FCckR1c29pR2xhT3ptRjFhVVYxOGNKOTFnRDA?oc=5",
+          "first_seen": "2026-09-29T01:32:43.299256Z"
+        },
+        {
+          "source": "EL PAÍS",
+          "title": "Starship culmina su primer vuelo orbital: Musk amplía su poder con la nave espacial más grande de la historia",
+          "url": "https://elpais.com/ciencia/2026-09-28/lanzamiento-del-cohete-starship-de-elon-musk-la-nave-espacial-mas-grande-de-la-historia.html",
+          "first_seen": "2026-09-29T01:43:33.555692Z"
+        },
+        {
+          "source": "Público",
+          "title": "Musk amplia su dominio espacial con el primer vuelo orbital de Starship, la nave más grande de la historia",
+          "url": "https://www.publico.es/internacional/eeuu/musk-amplia-dominio-espacial-primer-vuelo-orbital-starship-nave-grande-historia.html",
+          "first_seen": "2026-09-29T01:43:33.555692Z"
+        }
+      ],
+      "selected_at": "2026-09-29T01:43:49.341684Z",
+      "status": "PROCESSING",
       "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 6,
+      "revision": 1,
+      "parent_event_id": null,
+      "update_context": null,
+      "parallel_source_claimed_at": null,
+      "with_image": true,
+      "image_mode": "existing_web_image"
+    },
+    {
+      "event_id": "bc1ded603ef6",
+      "title": "Trump anuncia en Iowa la mayor planta siderúrgica de EE.UU. por 15.000 millones de dólares",
+      "url": "https://efe.com/mundo/2026-09-29/trump-planta-siderurgica-iowa-eeuu/",
       "sources": [
-        "ABC",
-        "COPE",
+        "20minutos",
         "EFE",
-        "Europa Press",
-        "La Vanguardia",
-        "Telecinco Noticias"
-      ]
+        "EL PAÍS",
+        "Europa Press"
+      ],
+      "source_count": 4,
+      "drafted_source_count": 4,
+      "source_evidence": [
+        {
+          "source": "EL PAÍS",
+          "title": "Trump anuncia que Iowa acogerá la mayor planta siderúrgica de Estados Unidos con una inversión de 15.000 millones",
+          "url": "https://elpais.com/us/2026-09-28/trump-anuncia-que-iowa-acogera-la-mayor-planta-siderurgica-de-estados-unidos-con-una-inversion-de-15000-millones.html",
+          "first_seen": "2026-09-28T21:52:18.630739Z"
+        },
+        {
+          "source": "Europa Press",
+          "title": "Trump anuncia \"la mayor planta siderúrgica de la historia del país\" a un mes de las elecciones de medio mandato",
+          "url": "https://www.europapress.es/internacional/noticia-trump-anuncia-mayor-planta-siderurgica-historia-pais-mes-elecciones-medio-mandato-20260929022650.html",
+          "first_seen": "2026-09-29T00:32:08.529676Z"
+        },
+        {
+          "source": "EFE",
+          "title": "Trump anuncia en Iowa la mayor planta siderúrgica de EE.UU. por 15.000 millones de dólares",
+          "url": "https://efe.com/mundo/2026-09-29/trump-planta-siderurgica-iowa-eeuu/",
+          "first_seen": "2026-09-29T02:12:07.601379Z"
+        },
+        {
+          "source": "20minutos",
+          "title": "Trump anuncia una inversión récord de 15.000 millones para levantar en Iowa la mayor planta siderúrgica de EEUU",
+          "url": "https://www.20minutos.es/internacional/trump-anuncia-una-inversion-record-15-000-millones-para-levantar-iowa-mayor-planta-siderurgica-eeuu_7042471_0.html",
+          "first_seen": "2026-09-29T02:53:29.798262Z"
+        }
+      ],
+      "selected_at": "2026-09-29T02:53:44.749407Z",
+      "status": "PROCESSING",
+      "selection_mode": "AUTO_WEB",
+      "revision": 1,
+      "parent_event_id": null,
+      "update_context": null,
+      "parallel_source_claimed_at": null,
+      "with_image": true,
+      "image_mode": "existing_web_image"
     }
   ],
-  "ready_count": 1,
+  "ready_count": 2,
   "problematic_count": 1,
   "problematic_items": [
     {
