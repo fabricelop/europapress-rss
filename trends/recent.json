@@ -1,20 +1,20 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T15:31:13+02:00",
+  "captured_at": "2026-09-29T15:41:00+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
-    "getdaytrends",
     "tweets24",
     "snaplytics",
     "trendswe"
   ],
-  "source_count": 7,
+  "source_count": 6,
   "non_stale_source_count": 5,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
   "reliability": "medium",
   "top10": [
@@ -88,57 +88,19 @@
       "name": "PSOE y Sumar",
       "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
+        "snaplytics",
         "trends24",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "down",
+      "mean_observed_rank": 12.3,
+      "movement": "flat",
       "first_detected_at": "2026-09-29T14:40:57+02:00",
       "news_source_count": 8,
       "news_event_id": "e26960fb9a22-r2",
       "news_title": "PSOE y Sumar llegan a un acuerdo para sacar adelante el decreto de vivienda en el Consejo de Ministros - El HuffPost",
       "news_status": "ELIGIBLE_UPDATE",
       "news_first_seen": "2026-09-29T13:22:23.855695Z"
-    },
-    {
-      "name": "SORTEO",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.8,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T15:01:27+02:00",
-      "news_source_count": 1,
-      "news_event_id": "016391105c8a",
-      "news_title": "Sorteo del Niño comprobar número - La Verdad",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T13:03:43.819430Z"
-    },
-    {
-      "name": "Antonio Banderas",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 15.2,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T15:21:11+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     },
     {
       "name": "Yanes",
@@ -149,7 +111,7 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 14.3,
+      "mean_observed_rank": 14.0,
       "movement": "flat",
       "first_detected_at": "2026-09-29T14:51:01+02:00",
       "news_source_count": 0,
@@ -159,34 +121,34 @@
       "news_first_seen": null
     },
     {
-      "name": "Honda",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.3,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T15:21:11+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "#DíaMundialDelCorazón",
+      "name": "SORTEO",
       "social_source_count": 3,
       "social_sources": [
         "trends24",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.0,
-      "movement": "flat",
+      "best_observed_rank": 13,
+      "mean_observed_rank": 15.3,
+      "movement": "down",
+      "first_detected_at": "2026-09-29T15:01:27+02:00",
+      "news_source_count": 1,
+      "news_event_id": "016391105c8a",
+      "news_title": "Sorteo del Niño comprobar número - La Verdad",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T13:03:43.819430Z"
+    },
+    {
+      "name": "Antonio Banderas",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 15.3,
+      "movement": "down",
       "first_detected_at": "2026-09-29T15:21:11+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -195,17 +157,52 @@
       "news_first_seen": null
     },
     {
-      "name": "#CarrefourConFC27",
+      "name": "olga",
       "social_source_count": 3,
       "social_sources": [
-        "trends24",
+        "snaplytics",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 17,
-      "mean_observed_rank": 19.0,
+      "mean_observed_rank": 17.7,
       "movement": "new",
-      "first_detected_at": "2026-09-29T15:31:13+02:00",
+      "first_detected_at": "2026-09-29T15:41:00+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Latre",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 19,
+      "mean_observed_rank": 19.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T15:41:00+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Sindicato de Inquilinas",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 16.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T15:41:00+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -219,57 +216,41 @@
     "trends24": {
       "ok": true,
       "trends": [
+        "#HONORMagicV6",
         "Ancelotti",
         "Fernando Alonso",
         "Aston Martin",
-        "#HONORMagicV6",
         "#Mañaneros29S",
         "#EnBocaDeTodos",
-        "Mataró",
-        "BUT NOT YET",
-        "Almeida",
         "Senegal",
+        "Mataró",
+        "Aldo Comas",
+        "BUT NOT YET",
         "PSOE y Sumar",
+        "Almeida",
+        "Isabel Rodríguez",
         "Junts",
-        "SORTEO",
-        "Honda",
-        "#DíaMundialDelCorazón",
         "Yanes",
         "Antonio Banderas",
-        "olga",
-        "Latre",
-        "#CarrefourConFC27"
+        "SORTEO",
+        "Hondarribia",
+        "IRPF",
+        "Latre"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T15:31:13+02:00"
+      "fetched_at": "2026-09-29T15:41:00+02:00"
     },
     "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "Ancelotti",
-        "#HONORMagicV6",
-        "Fernando Alonso",
-        "#Mañaneros29S",
-        "Aston Martin",
-        "#EnBocaDeTodos",
-        "Mataró",
-        "Senegal",
-        "BUT NOT YET",
-        "Almeida",
-        "PSOE y Sumar",
-        "Junts",
-        "Sorteo",
-        "Antonio Banderas",
-        "Honda"
-      ],
-      "error": null,
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790689261",
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-29T15:31:14+02:00"
+      "freshness": "error",
+      "fetched_at": "2026-09-29T15:41:01+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -296,10 +277,10 @@
         "#CarrefourConFC27"
       ],
       "error": null,
-      "update_hint": "Updated 11 minutes ago",
-      "age_minutes": 11.0,
+      "update_hint": "Updated 21 minutes ago",
+      "age_minutes": 21.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-29T15:31:16+02:00"
+      "fetched_at": "2026-09-29T15:41:01+02:00"
     },
     "superx": {
       "ok": true,
@@ -329,16 +310,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T15:31:16+02:00"
+      "fetched_at": "2026-09-29T15:41:02+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790688677",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790689263",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T15:31:17+02:00"
+      "fetched_at": "2026-09-29T15:41:03+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -346,29 +327,29 @@
         "Puerta del Sol",
         "Almeida",
         "#LaIslaDeLasTentaciones7",
-        "Ancelotti",
-        "#FelizMartes",
-        "#Mañaneros29S",
-        "Fernando Alonso",
-        "Antonio Banderas",
-        "Raphinha",
-        "Aston Martin",
-        "Junts",
         "#HONORMagicV6",
+        "#FelizMartes",
+        "Raphinha",
+        "Ancelotti",
+        "Antonio Banderas",
+        "Junts",
+        "#Mañaneros29S",
         "#EnBocaDeTodos",
+        "Fernando Alonso",
+        "Aston Martin",
         "Sindicato de Inquilinas",
+        "PSOE y Sumar",
+        "Decreto",
+        "Olga",
         "Mataró",
         "Ndongo",
-        "PSOE y Sumar",
-        "Ortega Smith",
-        "Olga",
-        "Decreto"
+        "Consejo de Ministros"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 29, 2026 12:00 UTC",
-      "age_minutes": 91.3,
-      "freshness": "stale",
-      "fetched_at": "2026-09-29T15:31:17+02:00"
+      "update_hint": "Trending now Sep 29, 2026 13:00 UTC",
+      "age_minutes": 41.1,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-29T15:41:03+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -396,27 +377,27 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 12:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 #La",
-      "age_minutes": 211.3,
+      "age_minutes": 221.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T15:31:17+02:00"
+      "fetched_at": "2026-09-29T15:41:04+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends.cyberkendra.com/spain/?_=1790688678",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790689265",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T15:31:18+02:00"
+      "fetched_at": "2026-09-29T15:41:05+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
       "trends": [],
-      "error": "ConnectionError: HTTPSConnectionPool(host='globaltwittertrends.com', port=443): Max retries exceeded with url: /spain/?_=1790688679 (Caused by NewConnectionError(\"HTTPSConnection(host='globaltwittertrends.com', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))",
-      "update_hint": null,
-      "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-09-29T15:31:19+02:00"
+      "error": "Lista no válida (1 elementos parseados)",
+      "update_hint": "updated 30 minutes ago",
+      "age_minutes": 30.0,
+      "freshness": "invalid",
+      "fetched_at": "2026-09-29T15:41:07+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -446,16 +427,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T15:32:19+02:00"
+      "fetched_at": "2026-09-29T15:41:37+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790688742",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790689301",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T15:32:22+02:00"
+      "fetched_at": "2026-09-29T15:41:41+02:00"
     }
   }
 }
