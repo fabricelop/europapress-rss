@@ -1,13 +1,14 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T17:51:03+02:00",
+  "captured_at": "2026-09-29T18:01:23+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
+    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
@@ -96,11 +97,11 @@
       "mean_observed_rank": 12.8,
       "movement": "flat",
       "first_detected_at": "2026-09-29T17:31:18+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "news_source_count": 1,
+      "news_event_id": "e63b373b7c48",
+      "news_title": "El alucinante comunicado de Urbagestión: ahora \"siente en el alma\" lo ocurrido con Maricarmen y da todo el mérito a Almeida - huffingtonpost.es",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T15:52:09.291719Z"
     },
     {
       "name": "Antonio Banderas",
@@ -159,6 +160,41 @@
       "news_first_seen": "2026-09-29T12:03:10.050763Z"
     },
     {
+      "name": "Yanes",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 17,
+      "mean_observed_rank": 18.3,
+      "movement": "flat",
+      "first_detected_at": "2026-09-29T14:51:01+02:00",
+      "news_source_count": 5,
+      "news_event_id": "f67f38b7a8a7",
+      "news_title": "El juez rechaza la petición de Zapatero de apartar de la nueva tasación de las joyas a la joyería Yanes",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-29T15:32:31.176750Z"
+    },
+    {
+      "name": "PSOE y Sumar",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "trendswe"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T18:01:23+02:00",
+      "news_source_count": 9,
+      "news_event_id": "e26960fb9a22-r2",
+      "news_title": "PSOE y Sumar llegan a un acuerdo para sacar adelante el decreto de vivienda en el Consejo de Ministros - huffingtonpost.es",
+      "news_status": "ELIGIBLE_UPDATE",
+      "news_first_seen": "2026-09-29T15:52:09.291719Z"
+    },
+    {
       "name": "Hondarribia",
       "social_source_count": 3,
       "social_sources": [
@@ -172,7 +208,7 @@
       "first_detected_at": "2026-09-29T17:31:18+02:00",
       "news_source_count": 2,
       "news_event_id": "da51c9d8619b",
-      "news_title": "Un policía local mata de un disparo a un hombre que amenazó a una ertzaina con un cuchillo en Hondarribia - Telecinco",
+      "news_title": "Un policía local mata de un disparo a un hombre que amenazó a una ertzaina con un cuchillo en Hondarribia - telecinco.es",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-28T19:41:03.510337Z"
     },
@@ -188,42 +224,6 @@
       "mean_observed_rank": 16.0,
       "movement": "flat",
       "first_detected_at": "2026-09-29T17:31:18+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Junts",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 18.7,
-      "movement": "new",
-      "first_detected_at": "2026-09-29T17:51:03+02:00",
-      "news_source_count": 1,
-      "news_event_id": "4b54fd823748",
-      "news_title": "El Gobierno confía en que Junts apruebe los decretos de vivienda y destaca \"su trabajo y generosidad\"",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T14:42:17.701087Z"
-    },
-    {
-      "name": "Yanes",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 18.3,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T14:51:01+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -262,7 +262,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T17:51:03+02:00"
+      "fetched_at": "2026-09-29T18:01:23+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -287,7 +287,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T17:51:04+02:00"
+      "fetched_at": "2026-09-29T18:01:24+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -314,10 +314,10 @@
         "Junts"
       ],
       "error": null,
-      "update_hint": "Updated 22 minutes ago",
-      "age_minutes": 22.0,
+      "update_hint": "Updated 32 minutes ago",
+      "age_minutes": 32.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-29T17:51:05+02:00"
+      "fetched_at": "2026-09-29T18:01:24+02:00"
     },
     "superx": {
       "ok": true,
@@ -347,16 +347,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T17:51:06+02:00"
+      "fetched_at": "2026-09-29T18:01:25+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790697066",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790697685",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T17:51:06+02:00"
+      "fetched_at": "2026-09-29T18:01:25+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -384,48 +384,48 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 15:00 UTC",
-      "age_minutes": 51.1,
+      "age_minutes": 61.4,
       "freshness": "aging",
-      "fetched_at": "2026-09-29T17:51:06+02:00"
+      "fetched_at": "2026-09-29T18:01:26+02:00"
     },
     "fowtools": {
       "ok": true,
       "trends": [
-        "Puerta del Sol",
-        "#LaIslaDeLasTentaciones7",
-        "Almeida",
-        "#Mañaneros29S",
-        "#FelizMartes",
+        "#TEM29S",
         "#HONORMagicV6",
-        "PSOE y Sumar",
-        "Antonio Banderas",
+        "Ancelotti",
+        "Fernando Alonso",
+        "Isabel Rodríguez",
+        "Miguel Román",
+        "Aston Martin",
+        "El Gobierno",
+        "Nogueras",
         "Mataró",
+        "Aldo Comas",
+        "Almeida",
+        "Antonio Banderas",
+        "Senegal",
+        "BUT NOT YET",
+        "Yanes",
+        "Hondarribia",
         "Junts",
-        "#LaHora29S",
-        "Ndongo",
-        "Sorteo",
-        "Sindicato de Inquilinas",
-        "Ortega Smith",
-        "Decreto",
-        "Olga",
-        "Consejo de Ministros",
-        "El IPC",
-        "Patriotismo"
+        "Digna",
+        "#Mañaneros29S"
       ],
       "error": null,
-      "update_hint": "Updated: September 29, 2026 at 12:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 #La",
-      "age_minutes": 351.1,
+      "update_hint": "Updated: September 29, 2026 at 04:00 PM # Trend Type Actions 1 #TEM29S Hashtag 2 #HONORMa",
+      "age_minutes": 121.4,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T17:51:06+02:00"
+      "fetched_at": "2026-09-29T18:01:26+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790697068",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790697687",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T17:51:08+02:00"
+      "fetched_at": "2026-09-29T18:01:27+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -434,7 +434,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T17:51:09+02:00"
+      "fetched_at": "2026-09-29T18:01:28+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -464,16 +464,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T17:51:09+02:00"
+      "fetched_at": "2026-09-29T18:01:28+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790697071",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790697690",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T17:51:11+02:00"
+      "fetched_at": "2026-09-29T18:01:30+02:00"
     }
   }
 }
