@@ -1,31 +1,31 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T22:31:19+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-29T22:50:57+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
-    "tweets24",
-    "superx",
-    "trendswe"
+    "tweets24"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
-  "fresh_sources": [],
-  "reliability": "medium",
+  "non_stale_source_count": 6,
+  "fresh_sources": [
+    "tweets24"
+  ],
+  "reliability": "high",
   "top10": [
     "Croacia",
+    "Pubill",
+    "Fermin",
     "Gonzalo Suárez",
+    "Alex Baena",
+    "Euroliga",
     "#RTXON",
     "#JuanjoBonaXNetflix",
-    "Manchester City",
-    "#NationsLeague",
-    "Isabel Rodríguez",
-    "Mariona",
-    "Repsol",
-    "Pyme"
+    "Macron",
+    "Efes"
   ],
   "items": [
     {
@@ -35,196 +35,204 @@
     },
     {
       "rank": 2,
+      "name": "Pubill",
+      "entered_top10_at": "2026-09-29T22:50:57+02:00"
+    },
+    {
+      "rank": 3,
+      "name": "Fermin",
+      "entered_top10_at": "2026-09-29T22:50:57+02:00"
+    },
+    {
+      "rank": 4,
       "name": "Gonzalo Suárez",
       "entered_top10_at": "2026-09-29T19:01:38+02:00"
     },
     {
-      "rank": 3,
+      "rank": 5,
+      "name": "Alex Baena",
+      "entered_top10_at": "2026-09-29T22:50:57+02:00"
+    },
+    {
+      "rank": 6,
+      "name": "Euroliga",
+      "entered_top10_at": "2026-09-29T22:50:57+02:00"
+    },
+    {
+      "rank": 7,
       "name": "#RTXON",
       "entered_top10_at": "2026-09-29T20:31:11+02:00"
     },
     {
-      "rank": 4,
+      "rank": 8,
       "name": "#JuanjoBonaXNetflix",
       "entered_top10_at": "2026-09-29T21:31:08+02:00"
     },
     {
-      "rank": 5,
-      "name": "Manchester City",
-      "entered_top10_at": "2026-09-29T20:31:11+02:00"
-    },
-    {
-      "rank": 6,
-      "name": "#NationsLeague",
-      "entered_top10_at": "2026-09-29T21:31:08+02:00"
-    },
-    {
-      "rank": 7,
-      "name": "Isabel Rodríguez",
-      "entered_top10_at": "2026-09-29T16:50:58+02:00"
-    },
-    {
-      "rank": 8,
-      "name": "Mariona",
-      "entered_top10_at": "2026-09-29T22:31:19+02:00"
-    },
-    {
       "rank": 9,
-      "name": "Repsol",
-      "entered_top10_at": "2026-09-29T22:31:19+02:00"
+      "name": "Macron",
+      "entered_top10_at": "2026-09-29T22:50:57+02:00"
     },
     {
       "rank": 10,
-      "name": "Pyme",
-      "entered_top10_at": "2026-09-29T22:31:19+02:00"
+      "name": "Efes",
+      "entered_top10_at": "2026-09-29T22:50:57+02:00"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Mariona",
-    "Repsol",
-    "Pyme"
+    "Pubill",
+    "Fermin",
+    "Alex Baena",
+    "Euroliga",
+    "Macron",
+    "Efes"
   ],
   "upcoming": [
     {
-      "name": "El City",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T21:31:08+02:00",
-      "news_source_count": 9,
-      "news_event_id": "a51866b63472",
-      "news_title": "La Premier League declara culpable al Manchester City por todos los cargos relacionados con infracciones financieras durante nueve temporadas - COPE",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-29T20:30:47.965730Z"
-    },
-    {
-      "name": "Lamine Yamal",
-      "social_source_count": 2,
+      "name": "Manchester City",
+      "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
-        "trends24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T22:11:39+02:00",
-      "news_source_count": 7,
-      "news_event_id": "e00c459fa6ec",
-      "news_title": "22:09 España - Croacia en directo: ¡gol de Lamine Yamal! | Última hora de UEFA Nations League en vivo hoy",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-29T20:30:47.965730Z"
-    },
-    {
-      "name": "Premier League",
-      "social_source_count": 1,
-      "social_sources": [
+        "trends24",
         "tweets24"
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
       "movement": "new",
-      "first_detected_at": "2026-09-29T22:31:19+02:00",
-      "news_source_count": 9,
+      "first_detected_at": "2026-09-29T22:50:57+02:00",
+      "news_source_count": 10,
       "news_event_id": "a51866b63472",
-      "news_title": "La Premier League declara culpable al Manchester City por todos los cargos relacionados con infracciones financieras durante nueve temporadas - COPE",
+      "news_title": "Oficial: la Premier League declara culpable al Manchester City de irregularidades financieras",
       "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-29T20:30:47.965730Z"
+      "news_first_seen": "2026-09-29T20:42:55.560200Z"
     },
     {
-      "name": "Spotify",
-      "social_source_count": 2,
+      "name": "Lamine Yamal",
+      "social_source_count": 3,
       "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-29T22:11:39+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Mariona",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 17.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T21:31:08+02:00",
-      "news_source_count": 1,
-      "news_event_id": "e8bdaa16c409",
-      "news_title": "Caída de Spotify: la plataforma de streaming sufre problemas en España",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T14:12:34.475983Z"
+      "best_observed_rank": 11,
+      "mean_observed_rank": 13.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T22:50:57+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Campazzo",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
         "getdaytrends",
-        "trends24"
+        "trends24",
+        "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 14.5,
-      "movement": "flat",
+      "mean_observed_rank": 14.3,
+      "movement": "up",
       "first_detected_at": "2026-09-29T22:11:39+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Miguel Román",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T20:41:35+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Aldo Comas",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 18.5,
-      "movement": "new",
-      "first_detected_at": "2026-09-29T22:31:19+02:00",
-      "news_source_count": 1,
-      "news_event_id": "609708b48d32",
-      "news_title": "Una entrevistada da plantón en directo a Joaquín Prat en 'El Tiempo Justo' por las mofas de Aldo Comas: \"Os dan por...\" - El Televisero",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T17:12:28.459859Z"
-    }
-  ],
-  "anticipated_entries": [
-    {
-      "name": "Mariona",
-      "first_detected_at": "2026-09-29T22:11:39+02:00",
-      "entered_top10_at": "2026-09-29T22:31:19+02:00",
-      "lead_minutes": 20
     },
     {
       "name": "Repsol",
-      "first_detected_at": "2026-09-29T21:31:08+02:00",
-      "entered_top10_at": "2026-09-29T22:31:19+02:00",
-      "lead_minutes": 60
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 16.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T22:50:57+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "#NationsLeague",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T22:50:57+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Pyme",
-      "first_detected_at": "2026-09-29T20:01:26+02:00",
-      "entered_top10_at": "2026-09-29T22:31:19+02:00",
-      "lead_minutes": 150
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 17.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T22:50:57+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "#El City",
+      "social_source_count": 1,
+      "social_sources": [
+        "trendswe"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-29T21:31:08+02:00",
+      "news_source_count": 10,
+      "news_event_id": "a51866b63472",
+      "news_title": "Oficial: la Premier League declara culpable al Manchester City de irregularidades financieras",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-29T20:42:55.560200Z"
     }
   ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -255,7 +263,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T22:31:19+02:00"
+      "fetched_at": "2026-09-29T22:50:57+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -280,37 +288,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T22:31:20+02:00"
+      "fetched_at": "2026-09-29T22:50:58+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "Croacia",
+        "Pubill",
+        "Fermin",
         "Gonzalo Suárez",
+        "Alex Baena",
+        "Euroliga",
         "#RTXON",
         "#JuanjoBonaXNetflix",
+        "Macron",
+        "Efes",
         "Manchester City",
-        "#TEM29S",
-        "Fermin",
+        "Lamine Yamal",
         "#NationsLeague",
-        "Isabel Rodríguez",
+        "Campazzo",
         "Mariona",
-        "Premier League",
-        "Pyme",
+        "Isabel Rodríguez",
+        "Cubarsí",
+        "Estambul",
         "Repsol",
-        "El City",
-        "Miguel Román",
-        "Ministra de Vivienda",
-        "Man City",
-        "Aldo Comas",
-        "#HONORMagicV6",
-        "Spotify"
+        "Pyme"
       ],
       "error": null,
-      "update_hint": "Updated 1 hour ago",
-      "age_minutes": 60.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-29T22:31:20+02:00"
+      "update_hint": "Updated 3 minutes ago",
+      "age_minutes": 3.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-29T22:50:58+02:00"
     },
     "superx": {
       "ok": true,
@@ -340,46 +348,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T22:31:21+02:00"
+      "fetched_at": "2026-09-29T22:50:59+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790713881",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790715059",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T22:31:21+02:00"
+      "fetched_at": "2026-09-29T22:50:59+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
-        "Puerta del Sol",
         "Lamine",
+        "Puerta del Sol",
         "Almeida",
         "Croacia",
+        "Pubill",
         "Huijsen",
         "#LaIslaDeLasTentaciones7",
+        "Baena",
         "#HONORMagicV6",
-        "Pubill",
+        "#Horizonte",
         "Antonio Banderas",
         "#TEM29S",
-        "Junts",
-        "#RTXON",
         "Gonzalo Suárez",
-        "Baena",
+        "Junts",
+        "Juan Carlos Rivero",
         "#FelizMartes",
+        "Fermin",
         "Euroliga",
         "Olga",
-        "Sindicato de Inquilinas",
-        "Consejo de Ministros",
-        "Decreto"
+        "Consejo de Ministros"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 29, 2026 19:00 UTC",
-      "age_minutes": 91.4,
-      "freshness": "stale",
-      "fetched_at": "2026-09-29T22:31:21+02:00"
+      "update_hint": "Trending now Sep 29, 2026 20:00 UTC",
+      "age_minutes": 51.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-29T22:50:59+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -407,18 +415,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 08:00 PM # Trend Type Actions 1 Croacia Topic 2 Gonzalo Su",
-      "age_minutes": 151.4,
+      "age_minutes": 171.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T22:31:22+02:00"
+      "fetched_at": "2026-09-29T22:51:00+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790713882",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790715061",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T22:31:22+02:00"
+      "fetched_at": "2026-09-29T22:51:01+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -427,7 +435,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T22:31:24+02:00"
+      "fetched_at": "2026-09-29T22:51:02+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -457,16 +465,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T22:31:24+02:00"
+      "fetched_at": "2026-09-29T22:51:03+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790713885",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790715065",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T22:31:25+02:00"
+      "fetched_at": "2026-09-29T22:51:05+02:00"
     }
   }
 }
