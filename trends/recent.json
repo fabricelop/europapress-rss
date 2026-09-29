@@ -1,75 +1,73 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T03:10:57+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-29T03:19:14+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
+    "superx",
     "snaplytics",
-    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
-    "#LaIslaDeLasTentaciones7",
     "Puerta del Sol",
+    "#ConexiónHonduras3",
+    "Ndongo",
+    "#FelizLunes",
+    "#LaIslaDeLasTentaciones7",
     "Kico",
-    "Rubén",
-    "Sandra",
-    "Juanpi",
-    "Nacho",
     "Gema",
+    "Sandra",
     "#MCCLegends",
-    "Almeida"
+    "Nacho"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "#LaIslaDeLasTentaciones7",
-      "entered_top10_at": "2026-09-29T01:11:39+02:00"
-    },
-    {
-      "rank": 2,
       "name": "Puerta del Sol",
       "entered_top10_at": "2026-09-28T03:40:49+02:00"
     },
     {
+      "rank": 2,
+      "name": "#ConexiónHonduras3",
+      "entered_top10_at": "2026-09-29T03:19:14+02:00"
+    },
+    {
       "rank": 3,
+      "name": "Ndongo",
+      "entered_top10_at": "2026-09-29T03:19:14+02:00"
+    },
+    {
+      "rank": 4,
+      "name": "#FelizLunes",
+      "entered_top10_at": "2026-09-29T03:19:14+02:00"
+    },
+    {
+      "rank": 5,
+      "name": "#LaIslaDeLasTentaciones7",
+      "entered_top10_at": "2026-09-29T01:11:39+02:00"
+    },
+    {
+      "rank": 6,
       "name": "Kico",
       "entered_top10_at": "2026-09-29T01:11:39+02:00"
     },
     {
-      "rank": 4,
-      "name": "Rubén",
-      "entered_top10_at": "2026-09-29T01:50:57+02:00"
-    },
-    {
-      "rank": 5,
-      "name": "Sandra",
-      "entered_top10_at": "2026-09-29T02:40:59+02:00"
-    },
-    {
-      "rank": 6,
-      "name": "Juanpi",
-      "entered_top10_at": "2026-09-29T01:11:39+02:00"
-    },
-    {
       "rank": 7,
-      "name": "Nacho",
-      "entered_top10_at": "2026-09-29T02:40:59+02:00"
+      "name": "Gema",
+      "entered_top10_at": "2026-09-29T01:50:57+02:00"
     },
     {
       "rank": 8,
-      "name": "Gema",
-      "entered_top10_at": "2026-09-29T01:50:57+02:00"
+      "name": "Sandra",
+      "entered_top10_at": "2026-09-29T02:40:59+02:00"
     },
     {
       "rank": 9,
@@ -78,12 +76,16 @@
     },
     {
       "rank": 10,
-      "name": "Almeida",
-      "entered_top10_at": "2026-09-29T00:31:12+02:00"
+      "name": "Nacho",
+      "entered_top10_at": "2026-09-29T02:40:59+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "#ConexiónHonduras3",
+    "Ndongo",
+    "#FelizLunes"
+  ],
   "upcoming": [
     {
       "name": "Sergio",
@@ -96,34 +98,14 @@
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 13.0,
-      "movement": "up",
+      "mean_observed_rank": 12.8,
+      "movement": "flat",
       "first_detected_at": "2026-09-29T02:01:26+02:00",
       "news_source_count": 1,
       "news_event_id": "2ef100e186da",
       "news_title": "'Al cielo con ella' vuelve a La 1 con una \"imagen renovada\" y Sergio Peris-Mencheta y Pilar Eyre como invitados",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-28T19:33:23.252734Z"
-    },
-    {
-      "name": "#ConexiónHonduras3",
-      "social_source_count": 5,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.8,
-      "movement": "up",
-      "first_detected_at": "2026-09-29T01:50:57+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     },
     {
       "name": "Ortega Smith",
@@ -136,68 +118,9 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 17.2,
+      "mean_observed_rank": 17.0,
       "movement": "flat",
       "first_detected_at": "2026-09-28T23:50:36+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Ndongo",
-      "social_source_count": 5,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.4,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T01:50:57+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "#FelizLunes",
-      "social_source_count": 5,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.4,
-      "movement": "new",
-      "first_detected_at": "2026-09-29T03:10:57+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Paola",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T02:40:59+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -214,7 +137,7 @@
         "tweets24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 16.0,
+      "mean_observed_rank": 15.8,
       "movement": "flat",
       "first_detected_at": "2026-09-29T02:40:59+02:00",
       "news_source_count": 0,
@@ -233,7 +156,7 @@
         "tweets24"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 16.8,
+      "mean_observed_rank": 17.2,
       "movement": "flat",
       "first_detected_at": "2026-09-29T01:11:39+02:00",
       "news_source_count": 0,
@@ -241,9 +164,100 @@
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
+    },
+    {
+      "name": "Nataly",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 18,
+      "mean_observed_rank": 19.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T03:19:14+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Paola",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-29T02:40:59+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "#ChiringuitoNegreira",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T03:19:14+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "#LaNoche24h",
+      "social_source_count": 2,
+      "social_sources": [
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 20,
+      "mean_observed_rank": 20.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T03:19:14+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "#ConexiónHonduras3",
+      "first_detected_at": "2026-09-29T01:50:57+02:00",
+      "entered_top10_at": "2026-09-29T03:19:14+02:00",
+      "lead_minutes": 88
+    },
+    {
+      "name": "Ndongo",
+      "first_detected_at": "2026-09-29T01:50:57+02:00",
+      "entered_top10_at": "2026-09-29T03:19:14+02:00",
+      "lead_minutes": 88
+    },
+    {
+      "name": "#FelizLunes",
+      "first_detected_at": "2026-09-29T03:10:57+02:00",
+      "entered_top10_at": "2026-09-29T03:19:14+02:00",
+      "lead_minutes": 8
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -253,28 +267,28 @@
         "Puerta del Sol",
         "Kico",
         "Rubén",
-        "Sandra",
-        "Juanpi",
-        "Nacho",
         "Gema",
         "#MCCLegends",
+        "Sandra",
+        "Nacho",
         "Almeida",
         "Paola",
         "#ConexiónHonduras3",
         "Sergio",
+        "#ChiringuitoNegreira",
         "Ndongo",
         "#FelizLunes",
-        "Galapagar",
         "Irini",
         "Ortega Smith",
-        "Nataly",
-        "#LaNoche24h"
+        "Galapagar",
+        "Juanpi",
+        "Nataly"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T03:10:57+02:00"
+      "fetched_at": "2026-09-29T03:19:14+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -299,7 +313,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T03:10:57+02:00"
+      "fetched_at": "2026-09-29T03:19:15+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -326,10 +340,10 @@
         "#LaNoche24h"
       ],
       "error": null,
-      "update_hint": "Updated 38 minutes ago",
-      "age_minutes": 38.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-29T03:10:58+02:00"
+      "update_hint": "Updated 46 minutes ago",
+      "age_minutes": 46.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-29T03:19:15+02:00"
     },
     "superx": {
       "ok": true,
@@ -359,16 +373,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T03:10:59+02:00"
+      "fetched_at": "2026-09-29T03:19:16+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790644259",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790644757",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T03:10:59+02:00"
+      "fetched_at": "2026-09-29T03:19:17+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -396,9 +410,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 00:00 UTC",
-      "age_minutes": 71.0,
+      "age_minutes": 79.3,
       "freshness": "aging",
-      "fetched_at": "2026-09-29T03:10:59+02:00"
+      "fetched_at": "2026-09-29T03:19:17+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -426,18 +440,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 01:00 AM # Trend Type Actions 1 #LaIslaDeLasTentaciones7 H",
-      "age_minutes": 131.0,
+      "age_minutes": 139.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T03:10:59+02:00"
+      "fetched_at": "2026-09-29T03:19:17+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790644261",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790644758",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T03:11:01+02:00"
+      "fetched_at": "2026-09-29T03:19:18+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -446,7 +460,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T03:11:02+02:00"
+      "fetched_at": "2026-09-29T03:19:20+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -476,16 +490,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T03:11:03+02:00"
+      "fetched_at": "2026-09-29T03:19:20+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790644266",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790644763",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T03:11:06+02:00"
+      "fetched_at": "2026-09-29T03:19:23+02:00"
     }
   }
 }
