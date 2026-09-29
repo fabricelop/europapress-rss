@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T23:41:04+02:00",
+  "captured_at": "2026-09-29T23:50:53+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -14,8 +14,7 @@
   "source_count": 7,
   "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24",
-    "snaplytics"
+    "tweets24"
   ],
   "reliability": "high",
   "top10": [
@@ -82,31 +81,9 @@
       "entered_top10_at": "2026-09-29T21:31:08+02:00"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "#FirstDates29S",
-    "Nico Williams",
-    "Juan Carlos Rivero"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
-    {
-      "name": "Macron",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-29T23:41:04+02:00",
-      "news_source_count": 10,
-      "news_event_id": "1870704a9151-r2",
-      "news_title": "El PP tumba en el Senado el tratado de amistad con Francia en plena visita de Macron a España",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-09-29T21:32:23.337864Z"
-    },
     {
       "name": "Gonzalo Suárez",
       "social_source_count": 4,
@@ -118,13 +95,31 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.8,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T23:41:04+02:00",
       "news_source_count": 1,
       "news_event_id": "4d6b713dd863",
       "news_title": "‘Martín Girard’, el yo futbolero de Gonzalo Suárez",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-29T16:53:20.293187Z"
+    },
+    {
+      "name": "Macron",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
+      "movement": "flat",
+      "first_detected_at": "2026-09-29T23:41:04+02:00",
+      "news_source_count": 2,
+      "news_event_id": "60401b705ba6",
+      "news_title": "Macron reclama en su primer día en España una IA europea soberana para no perder el control tecnológico",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T18:24:36.628218Z"
     },
     {
       "name": "#RTXON",
@@ -136,7 +131,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T23:41:04+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -181,22 +176,6 @@
       "news_first_seen": null
     },
     {
-      "name": "#Manchester City",
-      "social_source_count": 1,
-      "social_sources": [
-        "trendswe"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-29T23:41:04+02:00",
-      "news_source_count": 8,
-      "news_event_id": "a51866b63472",
-      "news_title": "La Premier League confirma la culpabilidad del Manchester City mientras el club reitera que es \"inocente\" y que recurrirá - Telecinco",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-29T21:32:23.337864Z"
-    },
-    {
       "name": "Fermin",
       "social_source_count": 2,
       "social_sources": [
@@ -207,11 +186,11 @@
       "mean_observed_rank": 11.0,
       "movement": "flat",
       "first_detected_at": "2026-09-29T23:31:13+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "news_source_count": 1,
+      "news_event_id": "c4fcd354ba31",
+      "news_title": "Fermín López: \"Ha sido un verano duro, no hay mejor cosa que estar jugando con tu país\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T21:43:46.934202Z"
     },
     {
       "name": "Pizjuán",
@@ -229,6 +208,23 @@
       "news_title": "Ovación de gala a Luka Modric en el Sánchez-Pizjuán durante el España-Croacia",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-29T20:53:35.619362Z"
+    },
+    {
+      "name": "Alex Baena",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T23:50:53+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -262,7 +258,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T23:41:04+02:00"
+      "fetched_at": "2026-09-29T23:50:53+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -287,7 +283,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T23:41:05+02:00"
+      "fetched_at": "2026-09-29T23:50:54+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -314,10 +310,10 @@
         "Isabel Rodríguez"
       ],
       "error": null,
-      "update_hint": "Updated 10 minutes ago",
-      "age_minutes": 10.0,
+      "update_hint": "Updated 20 minutes ago",
+      "age_minutes": 20.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-29T23:41:05+02:00"
+      "fetched_at": "2026-09-29T23:50:55+02:00"
     },
     "superx": {
       "ok": true,
@@ -347,16 +343,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T23:41:06+02:00"
+      "fetched_at": "2026-09-29T23:50:55+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790718066",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790718656",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T23:41:06+02:00"
+      "fetched_at": "2026-09-29T23:50:56+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -384,9 +380,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 21:00 UTC",
-      "age_minutes": 41.1,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-29T23:41:06+02:00"
+      "age_minutes": 50.9,
+      "freshness": "aging",
+      "fetched_at": "2026-09-29T23:50:56+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -414,18 +410,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 09:00 PM # Trend Type Actions 1 Croacia Topic 2 Pubill Top",
-      "age_minutes": 161.1,
+      "age_minutes": 170.9,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T23:41:07+02:00"
+      "fetched_at": "2026-09-29T23:50:56+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790718068",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790718657",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T23:41:08+02:00"
+      "fetched_at": "2026-09-29T23:50:57+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -434,7 +430,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T23:41:09+02:00"
+      "fetched_at": "2026-09-29T23:50:59+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -464,16 +460,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T23:41:09+02:00"
+      "fetched_at": "2026-09-29T23:50:59+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790718072",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790718661",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T23:41:12+02:00"
+      "fetched_at": "2026-09-29T23:51:01+02:00"
     }
   }
 }
