@@ -234,3 +234,24 @@ jobs:
 
           echo "ERROR: no se pudo guardar el estado editorial tras 4 recálculos seguros."
           exit 1
+
+      - name: Escanear avisos Top 10 TTendencias
+        if: always()
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          curl --fail-with-body --silent --show-error --max-time 25 \
+            --header "Authorization: Bearer $GITHUB_TOKEN" \
+            https://europapress-rss.vercel.app/api/ttendencias-top10-push \
+            --output /tmp/ttendencias-push-result.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          result = json.loads(Path("/tmp/ttendencias-push-result.json").read_text(encoding="utf-8"))
+          print("Resultado avisos TTendencias:", json.dumps(result, ensure_ascii=False))
+          if not result.get("ok"):
+              raise SystemExit("El escáner de avisos TTendencias devolvió un estado no válido")
+          PY

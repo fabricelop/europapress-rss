@@ -56,6 +56,25 @@ function authorized(req) {
   const digest = Buffer.from(crypto.createHash("sha256").update(got).digest("hex"));
   return CONTROL_TOKEN_HASHES.some(hash => crypto.timingSafeEqual(digest, Buffer.from(hash)));
 }
+async function authorizedGitHubWorkflow(req) {
+  const got = authToken(req);
+  if (!got) return false;
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}`, {
+      headers: {
+        accept: "application/vnd.github+json",
+        authorization: `Bearer ${got}`,
+        "x-github-api-version": "2022-11-28",
+        "user-agent": "ttendencias-push-trigger",
+      },
+    });
+    if (!r.ok) return false;
+    const repo = await r.json();
+    return String(repo.full_name || "") === REPO && Boolean(repo.permissions?.push);
+  } catch (_) {
+    return false;
+  }
+}
 async function gh(path, options = {}) {
   const token = process.env.GITHUB_TOKEN;
   const r = await fetch(`https://api.github.com/repos/${REPO}/${path}`, {
@@ -910,6 +929,9 @@ export default async function handler(req, res) {
         return res.status(200).json({ ok: true, publicKey: vapidKeys().publicKey });
       }
       if (String(req.query?.view || "") === "push-scan") {
+        if (!authorized(req) && !(await authorizedGitHubWorkflow(req))) {
+          return res.status(401).json({ ok: false, error: "No autorizado" });
+        }
         return res.status(200).json(await scanPush());
       }
       const backend = await backendStatus();
