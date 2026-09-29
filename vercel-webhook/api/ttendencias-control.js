@@ -180,6 +180,7 @@ async function syncEditorialQueue() {
       anticipated_entered_top10_at: req.anticipated_entered_top10_at || null,
       tremending_origin: Boolean(req.tremending_origin),
       tremending_id: req.tremending_id || null,
+      article_title: req.article_title || null,
       source_url: req.source_url || null,
       selected_tweet: req.selected_tweet || null,
     }))
@@ -891,8 +892,12 @@ async function proxyPreparedImage(rawUrl, res, format = "") {
   let parsed;
   try { parsed = new URL(url); } catch (_) { throw new Error("URL de imagen no válida"); }
   if (parsed.protocol !== "https:") throw new Error("Solo se permiten imágenes HTTPS");
-  const { doc: prepared } = await readJson(PREPARED);
-  const allowed = new Set((prepared.items || []).map(x => x?.image?.url || x?.image_url).filter(Boolean).map(String));
+  const [{ doc: prepared }, { doc: explained }] = await Promise.all([readJson(PREPARED),readJson(EXPLAINED)]);
+  const allowed = new Set([
+    ...(prepared.items || []),
+    ...(explained.items || []),
+  ].filter(x => x?.image_status === "ready" || x?.image?.url)
+   .map(x => x?.image?.url || x?.image_url).filter(Boolean).map(String));
   if (!allowed.has(url)) throw new Error("Imagen no autorizada");
   const r = await fetch(url, { headers: { "user-agent": "TTendencias-Image-Proxy/1.0", accept: "image/*" } });
   if (!r.ok) throw new Error(`No se pudo descargar la imagen: ${r.status}`);
