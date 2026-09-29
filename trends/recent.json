@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T02:01:26+02:00",
+  "captured_at": "2026-09-29T02:10:59+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -9,9 +9,10 @@
     "getdaytrends",
     "tweets24",
     "snaplytics",
+    "fowtools",
     "trendswe"
   ],
-  "source_count": 6,
+  "source_count": 7,
   "non_stale_source_count": 6,
   "fresh_sources": [
     "tweets24"
@@ -85,26 +86,6 @@
   "new_entries": [],
   "upcoming": [
     {
-      "name": "#ConexiónHonduras3",
-      "social_source_count": 5,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.2,
-      "movement": "up",
-      "first_detected_at": "2026-09-29T01:50:57+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "Ortega Smith",
       "social_source_count": 5,
       "social_sources": [
@@ -125,6 +106,26 @@
       "news_first_seen": null
     },
     {
+      "name": "#ConexiónHonduras3",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.2,
+      "movement": "flat",
+      "first_detected_at": "2026-09-29T01:50:57+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
       "name": "Ndongo",
       "social_source_count": 5,
       "social_sources": [
@@ -136,7 +137,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 15.2,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T01:50:57+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -174,7 +175,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 15.5,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T00:31:12+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -193,7 +194,7 @@
       ],
       "best_observed_rank": 17,
       "mean_observed_rank": 17.8,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T01:11:39+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -211,7 +212,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 12.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T02:01:26+02:00",
       "news_source_count": 1,
       "news_event_id": "2ef100e186da",
@@ -269,7 +270,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T02:01:26+02:00"
+      "fetched_at": "2026-09-29T02:10:59+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -294,7 +295,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T02:01:27+02:00"
+      "fetched_at": "2026-09-29T02:11:00+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -321,10 +322,10 @@
         "Ortega Smith"
       ],
       "error": null,
-      "update_hint": "Updated 11 minutes ago",
-      "age_minutes": 11.0,
+      "update_hint": "Updated 21 minutes ago",
+      "age_minutes": 21.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-29T02:01:27+02:00"
+      "fetched_at": "2026-09-29T02:11:01+02:00"
     },
     "superx": {
       "ok": true,
@@ -354,16 +355,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T02:01:28+02:00"
+      "fetched_at": "2026-09-29T02:11:02+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790640089",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790640662",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T02:01:29+02:00"
+      "fetched_at": "2026-09-29T02:11:02+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -391,27 +392,48 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 28, 2026 23:00 UTC",
-      "age_minutes": 61.5,
+      "age_minutes": 71.1,
       "freshness": "aging",
-      "fetched_at": "2026-09-29T02:01:29+02:00"
+      "fetched_at": "2026-09-29T02:11:03+02:00"
     },
     "fowtools": {
-      "ok": false,
-      "trends": [],
-      "error": "ReadTimeout: HTTPSConnectionPool(host='fowtools.com', port=443): Read timed out. (read timeout=30)",
-      "update_hint": null,
-      "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-09-29T02:01:29+02:00"
+      "ok": true,
+      "trends": [
+        "#LaIslaDeLasTentaciones7",
+        "Puerta del Sol",
+        "#Horizonte",
+        "#FirstDates28S",
+        "Juanpi",
+        "Almeida",
+        "Kico",
+        "#ConexiónHonduras3",
+        "morata",
+        "IRINI",
+        "Ndongo",
+        "Olise",
+        "Nataly",
+        "Galapagar",
+        "#FelizLunes",
+        "Castellón",
+        "Ortega Smith",
+        "Paola",
+        "Antonio Banderas",
+        "Patriotismo"
+      ],
+      "error": null,
+      "update_hint": "Updated: September 28, 2026 at 11:00 PM # Trend Type Actions 1 #LaIslaDeLasTentaciones7 H",
+      "age_minutes": 191.1,
+      "freshness": "stale",
+      "fetched_at": "2026-09-29T02:11:03+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790640119",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790640665",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T02:01:59+02:00"
+      "fetched_at": "2026-09-29T02:11:05+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -420,7 +442,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T02:02:00+02:00"
+      "fetched_at": "2026-09-29T02:11:06+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -450,16 +472,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T02:02:00+02:00"
+      "fetched_at": "2026-09-29T02:11:13+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790640122",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790640674",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T02:02:02+02:00"
+      "fetched_at": "2026-09-29T02:11:14+02:00"
     }
   }
 }
