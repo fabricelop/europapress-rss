@@ -6,8 +6,13 @@ import { explanationCopyIdentity, explanationTrendNames } from "./ttendencias-co
 export function remateText(item) {
   const explanation = String(item?.explanation || "").trim();
   if (!explanation) return "";
-  const explicit = String(item?.closer_text || item?.remate || "").trim();
-  if (explicit && explanation.includes(explicit)) return explicit;
+  // Una explicación nueva con closer_text explícitamente vacío no tiene chiste puntuable.
+  if (Object.prototype.hasOwnProperty.call(item || {}, "closer_text")) {
+    const explicit = String(item.closer_text || "").trim();
+    return explicit && explanation.endsWith(explicit) ? explicit : "";
+  }
+  const legacy = String(item?.remate || "").trim();
+  if (legacy && explanation.endsWith(legacy)) return legacy;
   return explanation.split(/(?<=[.!?])\s+/u).at(-1).trim();
 }
 
