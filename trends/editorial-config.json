@@ -3,7 +3,7 @@
   "editorial": {
     "alternatives_target": 0,
     "alternatives_block_send": false,
-    "images_enabled_in_web_control": false,
+    "images_enabled_in_web_control": true,
     "schedule_minutes": [
       15
     ],
@@ -21,12 +21,12 @@
     "delay_warning_after_minutes": 30,
     "problematic_only_on_editorial_failure": true,
     "image_policy": {
-      "enabled": false,
-      "mode": "disabled",
+      "enabled": true,
+      "mode": "existing_web_image",
       "always_generate": false,
-      "display_in_web_control": false,
-      "queue_instruction": "TTendencias no genera imágenes. Investiga y guarda únicamente una explicación factual y clasifica si existe una noticia para TTiTTulares.",
-      "note": "Toda redacción final e imagen de noticias derivadas pertenece exclusivamente a TTiTTulares."
+      "display_in_web_control": true,
+      "queue_instruction": "Publicar explicación sin esperar foto. GitHub Actions incorpora una foto web real verificable desde metadatos de fuentes; para Tremending la captura del tuit elegido tiene prioridad. Sin foto: image_status=none. Nunca generar imágenes por IA.",
+      "note": "La imagen acompaña la explicación pero nunca condiciona su entrega ni la presencia del remate."
     },
     "queue_consumer_only": true,
     "queue_states": [
@@ -93,13 +93,13 @@
       "try_specific_final_chascarrillo": true,
       "allow_respectful_no_joke_on_sensitive_events": true,
       "validate_before_persist": true,
-      "note": "En explanation_only, una explicación factual verificada debe salir siempre aunque no se logre un chascarrillo; closer_text vacío no bloquea la publicación, no marca problematic ni retiene la cola. No generar imágenes ni alternativas.",
+      "note": "No repetir cabecera al mostrar o copiar; captura Tremending priorizada, foto web normal añadida sin bloqueo.",
       "closing_format": "single_self_contained_sentence_one_comic_idea",
       "ban_two_part_contrast_punchlines": true,
       "positive_style_reference": "Le recetó una vaselina que no se vende en farmacias.",
       "negative_style_reference": "El caso tiene puerta; el decreto aún busca llave.",
       "mandatory_prefix": "TT#N ",
-      "mandatory_sentence": "TT#N <nombre literal> es tendencia por <motivo> | TT#N <nombre literal> es tendencia porque <motivo>",
+      "mandatory_sentence": "TT#N <nombre literal> es tendencia por <motivo>; para Tremending sin rango real: <nombre corto> es tendencia por <motivo>, sin TT#0",
       "rank_source": "current_top10_rank_or_anticipated_best_observed_rank",
       "strictly_less_than_280": true,
       "copy_exact_explanation_without_duplicate_app_header": true,
