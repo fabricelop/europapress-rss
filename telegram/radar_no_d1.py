@@ -4,7 +4,7 @@ from itertools import combinations
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
 from source_telemetry import update_source_telemetry
-from source_publication import feed_publication, enrich_html_rows
+from source_publication import feed_publication, enrich_html_rows, latest_official_feed
 
 SOURCES=[
 ("Europa Press","https://www.europapress.es/noticias/","html"),
@@ -1033,6 +1033,39 @@ cutoff=now-timedelta(hours=WAIT_HOURS)
 events=[e for e in events if e.get("status") not in {"WAITING","UPDATE_WAITING"} or dtv(e.get("first_seen"))>=cutoff]
 
 rows,healthy,sport_healthy,source_failures,source_status,source_recovery=fetch_items()
+# Source freshness is independent from the editorial source of headlines.
+# Google News gives coverage when direct feeds fail but its own dates are not
+# the publishers' dates. Check the official, accessible publisher RSS in a
+# separate, short, nonblocking pass. This cannot create an extra editorial vote.
+publication_probes=(
+ ("COPE","https://www.cope.es/rss/home.xml","cope.es",True),
+ ("El HuffPost","https://www.huffingtonpost.es/feeds/index.xml","huffingtonpost.es",False),
+)
+for publisher,feed,domain,only_news in publication_probes:
+ status=next((x for x in source_status if x.get("source")==publisher),None)
+ if status is None:continue
+ try:
+  probe=latest_official_feed(get(feed,timeout=7),domain,now,news_only=only_news)
+  if probe:
+   status["verified_publisher_published_at"]=probe["published_at"]
+   status["verified_publisher_title"]=probe["title"]
+   status["verified_publisher_date_source"]="publisher_feed"
+   print("SOURCE_PUBLISHER_DATE",publisher,probe["published_at"],probe["title"][:85])
+  else:print("SOURCE_PUBLISHER_DATE_UNAVAILABLE",publisher,"no validated news publication")
+ except Exception as exc:
+  print("SOURCE_PUBLISHER_DATE_UNAVAILABLE",publisher,str(exc)[:110])
+# Tremending is a separate genuine publisher list already timestamped by its
+# own collector; never use its first_seen_at instead of published_at.
+social=next((x for x in source_status if x.get("source")=="Público · Tremending"),None)
+if social:
+ posts=load(Path("ttittulares/tremending/items.json"),{"items":[]}).get("items") or []
+ dated=[(dtv(x.get("published_at")),x) for x in posts if x.get("published_at")]
+ dated=[(date,x) for date,x in dated if datetime(2000,1,1,tzinfo=timezone.utc)<date<=now+timedelta(minutes=5)]
+ if dated:
+  date,item=max(dated,key=lambda pair:pair[0])
+  social["verified_publisher_published_at"]=iso(date)
+  social["verified_publisher_title"]=item.get("title") or ""
+  social["verified_publisher_date_source"]="tremending_original_publication"
 # Telemetry ONLY. Count DISTINCT newly observed headlines per source in a rolling
 # 24h window. A repeated article does not reset the time since last news.
 # Persist within events.json, already written by both normal radar workflows.
