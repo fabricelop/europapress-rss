@@ -171,19 +171,22 @@ function renderGrowing(list){
  }
 }
 function intent(text){return "https://twitter.com/intent/tweet?text="+encodeURIComponent(text||"")}
-function isPostUrl(u){return /^https:\/\/(?:www\.)?(?:x|twitter)\.com\/[^/]+\/status\/\d+/i.test(String(u||""))}
-function quoteCandidates(item){return (item.quote_candidates||[]).filter(c=>isPostUrl(c?.url)).slice(0,3)}
-function quoteSearchUrl(item){
- const saved=String(item.quote_search?.url||"").trim();
- if(/^https:\/\/(?:www\.)?x\.com\/search\?/i.test(saved))return saved;
- const q=String(item.quote_search?.query||item.title||"").trim();
- return "https://x.com/search?q="+encodeURIComponent(q)+"&src=typed_query&f=live"
+function newsSearchKeywords(item){
+ const raw=String(item?.quote_search?.query||item?.title||"").replace(/https?:\/\/\S+/g,"");
+ const words=raw.match(/[\p{L}\p{N}]+/gu)||[];
+ const stop=new Set("el la los las un una unos unas de del al en a ante por para con sin sobre entre que quien quienes como cual cuales su sus y e o u es son ha han fue ser se le les lo este esta estos estas ese esa esos esas tras desde hasta durante muy mas más hoy ayer mañana ultima última ultimas últimas hora directo noticia noticias actualidad cuenta explica explican anuncia anunciaron nueva nuevo nuevas nuevos ahora segundo primera primero".split(" "));
+ const normalized=w=>w.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ const good=[];
+ for(const word of words){
+   const n=normalized(word);
+   if(n.length<3||stop.has(n)||/^\d+$/.test(n)||good.some(x=>normalized(x)===n))continue;
+   good.push(word);
+   if(good.length===3)break;
+ }
+ return good.join(" ")||String(item?.title||"noticias").split(/\s+/).filter(Boolean).slice(0,2).join(" ");
 }
-function quoteIntent(text,postUrl){return "https://twitter.com/intent/tweet?text="+encodeURIComponent(text||"")+"&url="+encodeURIComponent(postUrl||"")}
-function interactionLabel(c){
- if(c.interaction_hint)return String(c.interaction_hint);
- const m=c.metrics_observed||{},nums=["likes","reposts","replies","quotes"].map(k=>Number(m[k])).filter(Number.isFinite);
- return nums.length?nums.reduce((a,b)=>a+b,0)+" interacciones observadas":"Interacción no disponible"
+function quoteSearchUrl(item){
+ return "https://x.com/search?q="+encodeURIComponent(newsSearchKeywords(item))+"&src=typed_query&f=live";
 }
 function runDuration(s){if(s==null||!Number.isFinite(+s))return "";s=Math.max(0,Math.round(+s));if(s<60)return s+" s";return Math.floor(s/60)+" min "+(s%60)+" s"}
 function runTime(v){if(!v)return "—";let d=new Date(v);if(Number.isNaN(d.getTime()))return "—";if(d.getTime()>Date.now()+15000)d=new Date();return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(d)}
@@ -671,7 +674,7 @@ function renderReady(list,preservedImages=new Map()){
   const current=Number(events[item.event_id]?.source_count||item.current_source_count||item.drafted_source_count||0);
   const drafted=Number(item.drafted_source_count||item.source_count||0);
   const card=document.createElement("article");card.className="card";card.dataset.eventId=String(item.event_id||"");
-  card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="actions"><button class="btn primary expand">Abrir</button><button class="btn primary published">Ya publicada</button><button class="btn danger dismiss">Desestimar</button></div><div class="details"><div class="facts"></div><div class="imagebox" hidden><img class="imagePreview" hidden loading="lazy" style="display:block;width:100%;max-height:480px;object-fit:contain;border-radius:9px;margin-bottom:9px"><div class="imageTitle">Imagen sugerida</div><div class="imageMeta"></div><div class="imageActions"><a class="btn imgOpen" target="_blank" rel="noopener">Abrir imagen</a><button class="btn imgCopy">Copiar imagen</button><a class="btn imgSource" target="_blank" rel="noopener">Abrir fuente</a></div></div><div class="variants"></div><div class="actions"><button class="btn rework">Rehacer</button><button class="btn danger dismiss2">Desestimar</button></div></div>';
+  card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="actions"><button class="btn primary expand">Abrir</button><button class="btn primary published">Ya publicada</button><button class="btn danger dismiss">Desestimar</button></div><div class="details"><div class="facts"></div><div class="imagebox" hidden><img class="imagePreview" hidden loading="lazy" style="display:block;width:100%;max-height:480px;object-fit:contain;border-radius:9px;margin-bottom:9px"><div class="imageTitle">Imagen sugerida</div><div class="imageMeta"></div><div class="imageActions"><a class="btn imgOpen" target="_blank" rel="noopener">Abrir imagen</a><button class="btn imgCopy">Copiar imagen</button><a class="btn imgSource" target="_blank" rel="noopener">🔎 Buscar en X</a></div></div><div class="variants"></div><div class="actions"><button class="btn rework">Rehacer</button><button class="btn danger dismiss2">Desestimar</button></div></div>';
   card.querySelector(".title").textContent=item.title||"Noticia sin título";
   card.querySelector(".sources").textContent="Redactada con "+drafted+" ("+current+") · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
@@ -702,43 +705,24 @@ function renderReady(list,preservedImages=new Map()){
    card.querySelector(".imageMeta").textContent=[imgSource,imgRights].filter(Boolean).join(" · ")||(img.generated?"TTiTTulares · imagen original":"Imagen externa sugerida");
    card.querySelector(".imgOpen").href=imgUrl;
    const copyButton=card.querySelector(".imgCopy");copyButton.onclick=()=>copyImageToClipboard(imgUrl,copyButton,preview);
-   const src=card.querySelector(".imgSource");if(imgPage)src.href=imgPage;else src.style.display="none";
+
   }else{
    card.querySelector(".imageMeta").textContent=imageState==="telegram"?"Foto enviada al bot de Telegram. Ya puedes publicar.":imageState==="working"?"Se está buscando y validando una imagen real del acontecimiento.":imageState==="pending"?"La noticia está redactada, pero la imagen todavía está pendiente. No publiques todavía.":imageState==="retry"?"La imagen necesita un nuevo intento. No publiques todavía.":imageState==="none"?"La ejecución terminó sin imagen. Ya puedes publicar sin imagen.":"La noticia está lista.";
-   card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";card.querySelector(".imgSource").style.display="none";
+   card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";
   }
   const photo=document.createElement("button");photo.className="btn photoStatus"+(imageReady?" imageReadyStatus":"")+(imageState==="telegram"?" telegramStatus":"");photo.textContent="📷 "+imageLabel;photo.onclick=()=>{det.classList.add("open");openCards.add(String(item.event_id||""));persistUiState();card.querySelector(".expand").textContent="Cerrar";imgBox.scrollIntoView({block:"nearest",behavior:"smooth"})};card.querySelector(".actions").appendChild(photo);
   const vh=card.querySelector(".variants");
-  const candidates=quoteCandidates(item),quoteLinks=[];
-  let selectedQuote=candidates[0]?.url||"";
-  const quoteBox=document.createElement("div");quoteBox.className="quoteBox";
-  quoteBox.innerHTML='<div class="quoteTitle">💬 Tuit para citar</div><div class="quoteHint">Conversación relacionada · priorizamos muy poca interacción</div><div class="quoteCandidates"></div><div class="quoteActions"><a class="btn quoteSearch" target="_blank" rel="noopener">🔎 Buscar otro en X</a></div>';
-  const qlist=quoteBox.querySelector(".quoteCandidates"),qsearch=quoteBox.querySelector(".quoteSearch");qsearch.href=quoteSearchUrl(item);
-  function syncQuoteLinks(){for(const q of quoteLinks){q.a.hidden=!selectedQuote;if(selectedQuote)q.a.href=quoteIntent(q.text,selectedQuote)}}
-  if(candidates.length){
-    candidates.forEach((c,i)=>{
-      const row=document.createElement("label");row.className="quoteCandidate"+(i===0?" selected":"");
-      const radio=document.createElement("input");radio.type="radio";radio.name="quote-"+String(item.event_id||"");radio.checked=i===0;
-      const body=document.createElement("div"),open=document.createElement("a");
-      body.innerHTML='<div class="quoteText"></div><div class="quoteMeta"></div><div class="quoteReason"></div>';
-      body.querySelector(".quoteText").textContent=(c.author||c.account||"Cuenta de X")+" · "+(c.text_excerpt||c.text||"Abrir publicación");
-      body.querySelector(".quoteMeta").textContent=[interactionLabel(c),c.published_at?fmt(c.published_at):""].filter(Boolean).join(" · ");
-      body.querySelector(".quoteReason").textContent=c.reason||"";
-      open.className="btn";open.target="_blank";open.rel="noopener";open.href=c.url;open.textContent="Ver";
-      radio.onchange=()=>{selectedQuote=c.url;quoteBox.querySelectorAll(".quoteCandidate").forEach(x=>x.classList.remove("selected"));row.classList.add("selected");syncQuoteLinks()};
-      row.append(radio,body,open);qlist.appendChild(row)
-    })
-  }else{
-    qlist.innerHTML='<div class="quoteEmpty">No se encontró un comentario suficientemente adecuado para citar automáticamente.</div>'
-  }
-  vh.before(quoteBox);
+  const search=card.querySelector(".imgSource");
+  search.href=quoteSearchUrl(item);
+  search.title="Buscar en X: "+newsSearchKeywords(item);
+  search.style.display="";
   const v=tweetFor(item);
   if(v){
     const box=document.createElement("div");box.className="variant";
     const text=String(v.text||"");
-    box.innerHTML='<div class="vhead"><span class="vname"></span><span class="chars"></span></div><div class="tweet"></div><div class="remateRating" hidden></div><div class="actions"><a class="btn primary openx" target="_blank" rel="noopener">Abrir en X</a><a class="btn quoteX" target="_blank" rel="noopener">Citar elegido</a><button class="btn copy">Copiar</button><button class="btn published-inline">✓ Ya publicado</button></div>';
+    box.innerHTML='<div class="vhead"><span class="vname"></span><span class="chars"></span></div><div class="tweet"></div><div class="remateRating" hidden></div><div class="actions"><a class="btn primary openx" target="_blank" rel="noopener">Abrir en X</a><button class="btn copy">Copiar</button><button class="btn published-inline">✓ Ya publicado</button></div>';
     box.querySelector(".vname").textContent="Tuit";box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=text;mountRemateRating(box.querySelector(".remateRating"),v);
-    box.querySelector(".openx").href=v.url||intent(text);const qx=box.querySelector(".quoteX");qx.hidden=!selectedQuote;if(selectedQuote)qx.href=quoteIntent(text,selectedQuote);quoteLinks.push({a:qx,text});box.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado"));
+    box.querySelector(".openx").href=v.url||intent(text);box.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado"));
     box.querySelector(".published-inline").onclick=()=>close("published",imageInFlight?"¿Confirmas que quieres publicarla sin esperar la imagen? Se cancelará cualquier búsqueda o reintento pendiente.":"¿Confirmas que ya has publicado esta noticia?");
     vh.appendChild(box)
   }
