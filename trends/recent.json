@@ -1,32 +1,34 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T13:10:56+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-29T13:20:57+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "superx",
     "snaplytics",
+    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "tweets24"
+  ],
   "reliability": "high",
   "top10": [
     "Puerta del Sol",
-    "Ndongo",
-    "Ortega Smith",
-    "Sindicato de Inquilinas",
     "#LaIslaDeLasTentaciones7",
     "Almeida",
     "#FelizMartes",
     "#HONORMagicV6",
     "#Mañaneros29S",
-    "PSOE y Sumar"
+    "PSOE y Sumar",
+    "Antonio Banderas",
+    "Mataró",
+    "Junts"
   ],
   "items": [
     {
@@ -36,58 +38,119 @@
     },
     {
       "rank": 2,
-      "name": "Ndongo",
-      "entered_top10_at": "2026-09-29T13:10:56+02:00"
-    },
-    {
-      "rank": 3,
-      "name": "Ortega Smith",
-      "entered_top10_at": "2026-09-29T13:10:56+02:00"
-    },
-    {
-      "rank": 4,
-      "name": "Sindicato de Inquilinas",
-      "entered_top10_at": "2026-09-29T13:10:56+02:00"
-    },
-    {
-      "rank": 5,
       "name": "#LaIslaDeLasTentaciones7",
       "entered_top10_at": "2026-09-29T01:11:39+02:00"
     },
     {
-      "rank": 6,
+      "rank": 3,
       "name": "Almeida",
       "entered_top10_at": "2026-09-29T04:01:23+02:00"
     },
     {
-      "rank": 7,
+      "rank": 4,
       "name": "#FelizMartes",
       "entered_top10_at": "2026-09-29T06:50:57+02:00"
     },
     {
-      "rank": 8,
+      "rank": 5,
       "name": "#HONORMagicV6",
       "entered_top10_at": "2026-09-29T11:20:54+02:00"
     },
     {
-      "rank": 9,
+      "rank": 6,
       "name": "#Mañaneros29S",
       "entered_top10_at": "2026-09-29T13:10:56+02:00"
     },
     {
-      "rank": 10,
+      "rank": 7,
       "name": "PSOE y Sumar",
       "entered_top10_at": "2026-09-29T12:31:12+02:00"
+    },
+    {
+      "rank": 8,
+      "name": "Antonio Banderas",
+      "entered_top10_at": "2026-09-29T13:20:57+02:00"
+    },
+    {
+      "rank": 9,
+      "name": "Mataró",
+      "entered_top10_at": "2026-09-29T13:20:57+02:00"
+    },
+    {
+      "rank": 10,
+      "name": "Junts",
+      "entered_top10_at": "2026-09-29T13:20:57+02:00"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Ndongo",
-    "Ortega Smith",
-    "Sindicato de Inquilinas",
-    "#Mañaneros29S"
+    "Antonio Banderas",
+    "Mataró",
+    "Junts"
   ],
   "upcoming": [
+    {
+      "name": "Sindicato de Inquilinas",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 14.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T13:20:57+02:00",
+      "news_source_count": 3,
+      "news_event_id": "455b24013ff7",
+      "news_title": "Quien es el portavoz de Sindicato de Inquilinas, nieto del exministro y premio Príncipe de Asturias, Aurelio Menéndez",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-28T21:13:53.587728Z"
+    },
+    {
+      "name": "Ndongo",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.8,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T13:20:57+02:00",
+      "news_source_count": 8,
+      "news_event_id": "1e3c546aad35",
+      "news_title": "El agitador ultra Bertrand Ndongo ha acudido este lunes a la Puerta del Sol, en Madrid, donde cientos de personas permanecen concentradas desde este sbado para protestar por la situacin de la vivienda en el pas.",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-29T11:13:33.436950Z"
+    },
+    {
+      "name": "Ortega Smith",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 13.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T13:20:57+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
     {
       "name": "SORTEO",
       "social_source_count": 5,
@@ -100,7 +163,7 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 13.8,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T12:01:19+02:00",
       "news_source_count": 1,
       "news_event_id": "016391105c8a",
@@ -119,13 +182,13 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 16.2,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T12:10:58+02:00",
-      "news_source_count": 7,
-      "news_event_id": "e26960fb9a22-r2",
-      "news_title": "Sumar y otras formaciones a la izquierda del PSOE reclaman que el decreto de vivienda incluya el fin de los desahucios, la prrroga de los alquileres en vigor y la regulacin de los alquileres de temporada y por habitaciones.",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-09-29T11:03:53.221309Z"
+      "news_source_count": 3,
+      "news_event_id": "f99b8c026129",
+      "news_title": "Feijo cree que \"ocho aos de rumbo equivocado en vivienda\" no se solucionar con el decreto que prepara el Gobierno",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T08:32:41.919714Z"
     },
     {
       "name": "El IPC",
@@ -138,13 +201,13 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 17.8,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T12:40:56+02:00",
-      "news_source_count": 1,
-      "news_event_id": "81efb0241885",
-      "news_title": "La Comunidad alerta del repunte del IPC y las dificultades para llegar a fin de mes: \"Estamos francamente preocupados\"",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T11:03:53.221309Z"
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Consejo de Ministros",
@@ -157,7 +220,7 @@
       ],
       "best_observed_rank": 18,
       "mean_observed_rank": 18.2,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T12:20:58+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -175,71 +238,16 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T13:10:56+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Olga",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 17.7,
-      "movement": "new",
-      "first_detected_at": "2026-09-29T13:10:56+02:00",
-      "news_source_count": 1,
-      "news_event_id": "ae62dabb5769",
-      "news_title": "Bermdez: \"Vicky Lpez est bien; Olga y Aitana estn recuperndose de sus lesiones\"",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T11:03:53.221309Z"
-    },
-    {
-      "name": "Patriotismo",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 20,
-      "mean_observed_rank": 20.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-29T13:10:56+02:00",
-      "news_source_count": 1,
-      "news_event_id": "f54a8fe526f9",
-      "news_title": "Sánchez: “Patriotismo es evitar que una anciana acabe en la calle”",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T05:12:12.094906Z"
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Ndongo",
-      "first_detected_at": "2026-09-29T12:31:12+02:00",
-      "entered_top10_at": "2026-09-29T13:10:56+02:00",
-      "lead_minutes": 40
-    },
-    {
-      "name": "Ortega Smith",
-      "first_detected_at": "2026-09-29T11:20:54+02:00",
-      "entered_top10_at": "2026-09-29T13:10:56+02:00",
-      "lead_minutes": 110
-    },
-    {
-      "name": "Sindicato de Inquilinas",
-      "first_detected_at": "2026-09-29T11:20:54+02:00",
-      "entered_top10_at": "2026-09-29T13:10:56+02:00",
-      "lead_minutes": 110
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -270,7 +278,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T13:10:56+02:00"
+      "fetched_at": "2026-09-29T13:20:57+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -295,7 +303,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T13:10:57+02:00"
+      "fetched_at": "2026-09-29T13:20:57+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -322,10 +330,10 @@
         "Patriotismo"
       ],
       "error": null,
-      "update_hint": "Updated 4 seconds ago Live Twitter Trending Topics in Spain 1 Puerta del Sol Explore why",
-      "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-29T13:10:58+02:00"
+      "update_hint": "Updated 10 minutes ago",
+      "age_minutes": 10.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-29T13:20:58+02:00"
     },
     "superx": {
       "ok": true,
@@ -355,16 +363,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T13:10:58+02:00"
+      "fetched_at": "2026-09-29T13:20:58+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790680258",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790680859",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T13:10:58+02:00"
+      "fetched_at": "2026-09-29T13:20:59+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -392,9 +400,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 10:00 UTC",
-      "age_minutes": 71.0,
+      "age_minutes": 81.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-29T13:10:58+02:00"
+      "fetched_at": "2026-09-29T13:20:59+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -422,18 +430,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 11:00 AM # Trend Type Actions 1 Puerta del Sol Topic 2 #La",
-      "age_minutes": 131.0,
+      "age_minutes": 141.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T13:10:59+02:00"
+      "fetched_at": "2026-09-29T13:20:59+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790680260",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790680860",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T13:11:00+02:00"
+      "fetched_at": "2026-09-29T13:21:00+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -442,7 +450,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T13:11:01+02:00"
+      "fetched_at": "2026-09-29T13:21:01+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -472,16 +480,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T13:11:01+02:00"
+      "fetched_at": "2026-09-29T13:21:02+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790680263",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790680864",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T13:11:03+02:00"
+      "fetched_at": "2026-09-29T13:21:04+02:00"
     }
   }
 }
