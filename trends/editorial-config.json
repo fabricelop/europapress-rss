@@ -85,7 +85,7 @@
     },
     "explanation_style": {
       "mode": "tweet_ready_with_optional_witty_closer",
-      "max_x_weighted_characters": 280,
+      "max_x_weighted_characters": 279,
       "preferred_final_characters": "230-250",
       "fallback_max_unicode_codepoints": 250,
       "count_full_copied_text_including_header": true,
@@ -93,11 +93,17 @@
       "try_specific_final_chascarrillo": true,
       "allow_respectful_no_joke_on_sensitive_events": true,
       "validate_before_persist": true,
-      "note": "Solo aplica a explanation en explanation_only; preserva bridge, agrupación, estados, ausencia de imágenes y alternativas.",
+      "note": "Solo aplica a explanation en explanation_only: el campo almacena un tuit completo TT#N nombre es tendencia por/porque..., <280 caracteres. Conserva bridge, agrupación, estados y ausencia de imágenes y alternativas.",
       "closing_format": "single_self_contained_sentence_one_comic_idea",
       "ban_two_part_contrast_punchlines": true,
       "positive_style_reference": "Le recetó una vaselina que no se vende en farmacias.",
-      "negative_style_reference": "El caso tiene puerta; el decreto aún busca llave."
+      "negative_style_reference": "El caso tiene puerta; el decreto aún busca llave.",
+      "mandatory_prefix": "TT#N ",
+      "mandatory_sentence": "TT#N <nombre literal> es tendencia por <motivo> | TT#N <nombre literal> es tendencia porque <motivo>",
+      "rank_source": "current_top10_rank_or_anticipated_best_observed_rank",
+      "strictly_less_than_280": true,
+      "copy_exact_explanation_without_duplicate_app_header": true,
+      "allow_leading_icon": false
     }
   },
   "delivery": {
