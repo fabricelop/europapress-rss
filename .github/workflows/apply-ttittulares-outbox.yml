@@ -7,6 +7,8 @@ on:
     paths:
       - "ttittulares/editorial-outbox/**"
       - "ttittulares/apply-trigger.txt"
+      - "ttittulares/reconcile_confirmed_stale.py"
+      - ".github/workflows/apply-ttittulares-outbox.yml"
   schedule:
     - cron: "*/10 * * * *"
 
@@ -39,9 +41,21 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
+            # Guardrails before modifying repository state; never run editorial.
+            python3 ttittulares/reconcile_confirmed_stale.py --selftest
+            python3 ttittulares/auto_queue.py --selftest
+            python3 ttittulares/apply_editorial_outbox.py --selftest-duplicate
             python3 ttittulares/apply_editorial_outbox.py
 
-            git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json
+            # The reviewed 29 September backlog is one-off and idempotent.
+            # When it changes the queue, refresh the compact queue and status.
+            python3 ttittulares/reconcile_confirmed_stale.py --apply
+            if ! git diff --quiet -- telegram/editorial-processing.json; then
+              python3 ttittulares/apply_editorial_outbox.py
+              python3 ttittulares/build_status.py
+            fi
+
+            git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json ttittulares/execution-errors.json
             git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
             if git diff --cached --quiet; then
               echo "Sin outbox pendiente."

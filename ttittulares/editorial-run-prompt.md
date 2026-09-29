@@ -51,8 +51,12 @@ Publica cada resultado editorial mediante un comentario del PR #2:
 `TTITTULARES_OUTBOX_V1`
 `<base64 del JSON UTF-8 en una línea>`
 
-El `prepared_item` debe ser completo. No escribas directamente en `ttittulares/editorial-outbox/**`. Confirma que el outbox se materializó en Listas antes de considerar terminado el item. Cada incidencia se añade a `ttittulares/execution-errors.json` mediante el mismo transporte cuando esté disponible.
+Si la entrada es el mismo acontecimiento que otro ya PUBLICADO y no aporta novedad sustantiva, o repite exactamente uno DESESTIMADO por el usuario, ciérrala también por outbox (no basta con escribir "duplicado" en el resumen). Envía el payload
+`{"event_id":"ID_actual","revision":1,"status":"duplicate","duplicate_of_event_id":"ID_original","reason":"justificación concreta basada en hechos","no_material_update":true}`.
+`no_material_update:true` es obligatorio al referenciar un PUBLISHED y jamás se declara si hay actualización independiente. El aplicador comprueba la decisión del original y marca SKIPPED_DUPLICATE o DISMISSED; nunca crea un READY ni una imagen en ese caso. No ocultes una noticia materializada, reescrita o con revisión diferente; ante duda, conserva PROCESSING e informa de la incidencia. Confirma que cada resultado pasó a estado terminal real en la cola antes de darlo por cerrado.
+
+El `prepared_item` de un resultado ready debe ser completo. No escribas directamente en `ttittulares/editorial-outbox/**`. Confirma que un ready se materializó en Listas antes de considerar terminado el item. Cada incidencia se añade a `ttittulares/execution-errors.json` mediante el mismo transporte cuando esté disponible.
 
 ## Cierre
 
-Relee cola, prepared y status. Informa noticias tratadas, imágenes reales encontradas y noticias sin imagen. DONE puede ser parcial si queda trabajo; no pauses, sustituyas ni recrees automatizaciones.
+Relee cola, prepared y status, incluyendo PROCESSING anteriores. Informa noticias tratadas, imágenes reales encontradas y noticias sin imagen. Declara `partial:true` y el número de pendientes si queda trabajo; no presentes un DONE parcial como una reconciliación completa. No pauses, sustituyas ni recrees automatizaciones.

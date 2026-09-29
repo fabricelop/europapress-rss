@@ -14,6 +14,7 @@ PREP=TT/"prepared.json"
 STATUS=TT/"status.json"
 EVENTS=TG/"events.json"
 ERRORS=TT/"execution-errors.json"
+DECISIONS=TT/"decisions.json"
 
 def record_error(errors, event_id, phase, reason, now):
     errors.append({"at":now,"event_id":event_id,"phase":phase,"reason":str(reason)[:1000],
@@ -281,6 +282,44 @@ def sync_compact(q):
     })
     return True
 
+def resolve_duplicate(payload, eid, previous, queue, decisions):
+    """A reviewed duplicate is terminal only against an actual user decision."""
+    if previous is not None:
+        raise ValueError("un duplicado no puede ocultar una noticia ya materializada")
+    original_id=str(payload.get("duplicate_of_event_id") or "").strip()
+    reason=str(payload.get("reason") or "").strip()
+    if not original_id or original_id==eid or len(reason)<12:
+        raise ValueError("referencia o justificación de duplicidad inválida")
+    original=next((x for x in queue.get("items",[]) if str(x.get("event_id") or "")==original_id),None)
+    decision=next((x for x in reversed(decisions.get("items",[]))
+                   if str(x.get("event_id") or "")==original_id),None)
+    if original is None:
+        raise ValueError("el acontecimiento original no existe en la cola")
+    state=str((decision or {}).get("status") or original.get("status") or "").upper()
+    if state not in {"PUBLISHED","DISMISSED"}:
+        raise ValueError("la noticia original no consta publicada ni descartada por el usuario")
+    if state=="PUBLISHED" and payload.get("no_material_update") is not True:
+        raise ValueError("falta confirmar explícitamente ausencia de novedad material")
+    return ("SKIPPED_DUPLICATE" if state=="PUBLISHED" else "DISMISSED"),original_id,reason
+
+
+def selftest_duplicate():
+    queue={"items":[{"event_id":"old","status":"PUBLISHED"},{"event_id":"dismissed","status":"DISMISSED"}]}
+    decisions={"items":[{"event_id":"old","status":"published"},{"event_id":"dismissed","status":"dismissed"}]}
+    payload={"duplicate_of_event_id":"old","reason":"Mismo hecho sin información adicional","no_material_update":True}
+    assert resolve_duplicate(payload,"new",None,queue,decisions)[0]=="SKIPPED_DUPLICATE"
+    assert resolve_duplicate({**payload,"duplicate_of_event_id":"dismissed"},"new",None,queue,decisions)[0]=="DISMISSED"
+    for invalid in ({**payload,"no_material_update":False},{**payload,"duplicate_of_event_id":"unknown"}):
+        try: resolve_duplicate(invalid,"new",None,queue,decisions)
+        except ValueError: pass
+        else: raise AssertionError("duplicado inseguro aceptado")
+    try: resolve_duplicate(payload,"new",{"event_id":"new"},queue,decisions)
+    except ValueError: pass
+    else: raise AssertionError("se ocultó un READY")
+    print("OUTBOX_DUPLICATE_SELFTEST_OK")
+    return 0
+
+
 def main():
     q=load(QUEUE,{"items":[]})
     p=load(PREP,{"project":"TTiTTulares","items":[]})
@@ -351,6 +390,13 @@ def main():
                     item.setdefault("problematic_attempts_before_ready",previous_attempts)
                 row["status"]="READY";row["delivered_at"]=item.get("prepared_at") or now;row["delivery_confirmation"]="prepared_web"
                 row.pop("problem_reason",None);row.pop("problematic_at",None);row.pop("problematic_attempts",None);row.pop("verification_hint",None);row.pop("verification_hint_at",None);row.pop("user_validated",None);row.pop("user_validated_at",None);row.pop("user_validation_source",None);row.pop("user_validation_version",None)
+            elif st=="duplicate":
+                target,original_id,reason=resolve_duplicate(
+                    payload,eid,previous,q,load(DECISIONS,{"items":[]}))
+                row["status"]=target
+                row["reconciled_from_event_id"]=original_id
+                row["reconciliation_reason"]=reason
+                row["reconciled_at"]=now
             elif st=="problematic":
                 reason=str(payload.get("problem_reason") or "").strip()
                 if not reason: raise ValueError("problematic sin razón")
@@ -425,5 +471,7 @@ def selftest_images():
 
 if "--selftest-images" in sys.argv:
     raise SystemExit(selftest_images())
+if "--selftest-duplicate" in sys.argv:
+    raise SystemExit(selftest_duplicate())
 if __name__=="__main__":
     raise SystemExit(main())

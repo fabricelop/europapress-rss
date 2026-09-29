@@ -66,7 +66,7 @@ def same_story(a,b):
 def duplicate_against_existing(event, processing_items, prepared_items):
     candidate={"title":str(event.get("canonical_title") or event.get("title") or ""),"url":str(event.get("url") or "")}
     for item in list(prepared_items or [])+list(processing_items or []):
-        if str(item.get("status") or "") in {"DISMISSED"}:
+        if str(item.get("status") or "") in {"DISMISSED", "SKIPPED_DUPLICATE"}:
             continue
         if same_story(candidate,item):
             return str(item.get("event_id") or ""), str(item.get("status") or ("READY" if item in (prepared_items or []) else ""))
@@ -117,7 +117,7 @@ def queue_eligible(events_doc, processing, decisions, minimum, stamp, mode="web"
             continue
 
         current = existing.get(event_id)
-        if current and str(current.get("status") or "") in {"PROCESSING", "READY", "PUBLISHED", "DISMISSED", "PROBLEMATIC"}:
+        if current and str(current.get("status") or "") in {"PROCESSING", "READY", "PUBLISHED", "DISMISSED", "PROBLEMATIC", "SKIPPED_DUPLICATE"}:
             continue
 
         duplicate_id,duplicate_status=duplicate_against_existing(event,items,prepared_items)
@@ -202,6 +202,9 @@ def selftest():
         events,out_parallel,decisions,4,stamp,"parallel","2026-09-22T22:00:00Z",prepared=prepared
     )
     assert queued2==[], queued2
+    terminal={"items":[{"event_id":"web-ok","status":"SKIPPED_DUPLICATE","revision":1}]}
+    _,terminal_queued=queue_eligible({"events":[events["events"][1]]},terminal,decisions,4,stamp,"web")
+    assert terminal_queued==[], terminal_queued
     print("AUTO_QUEUE_SELFTEST_OK",queued_web,queued_parallel)
     return 0
 

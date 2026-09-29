@@ -71,7 +71,7 @@ def main() -> int:
     if revision < 1 or revision > 9999:
         return fail("revision fuera de rango")
     status = str(payload.get("status") or "")
-    if status not in {"ready", "problematic"}:
+    if status not in {"ready", "problematic", "duplicate"}:
         return fail("status inválido")
 
     # Evita transportar un outbox ready que no corresponda al item.
@@ -83,6 +83,13 @@ def main() -> int:
             return fail("prepared_item.event_id no coincide")
         if int(item.get("revision") or revision) != revision:
             return fail("prepared_item.revision no coincide")
+
+    if status == "duplicate":
+        original_id = str(payload.get("duplicate_of_event_id") or "")
+        if not EVENT_RE.fullmatch(original_id) or original_id == event_id:
+            return fail("duplicate_of_event_id inválido")
+        if len(str(payload.get("reason") or "").strip()) < 12:
+            return fail("razón de duplicidad ausente o insuficiente")
 
     OUTBOX.mkdir(parents=True, exist_ok=True)
     path = OUTBOX / f"{event_id}-r{revision}.json"
