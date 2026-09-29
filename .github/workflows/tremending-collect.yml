@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "7,22,37,52 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "ttittulares/tremending/refresh-trigger.txt"
 
 permissions:
   contents: write
@@ -17,14 +21,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python ttittulares/tremending/update_tremending.py
-      - name: Guardar solo la bandeja Tremending
+      - name: Recoger y guardar Tremending sin perder decisiones recientes
         run: |
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ttittulares/tremending/items.json
-          git diff --cached --quiet || (git commit -m "Actualizar bandeja Tremending" && git push)
+          for attempt in 1 2 3 4; do
+            python ttittulares/tremending/update_tremending.py
+            git add ttittulares/tremending/items.json
+            if git diff --cached --quiet; then
+              echo "Bandeja sin cambios"
+              exit 0
+            fi
+            git commit -m "Actualizar bandeja Tremending"
+            if git push origin HEAD:main; then
+              echo "Bandeja actualizada"
+              exit 0
+            fi
+            echo "Main ha cambiado: releer estado antes de reintentar ($attempt/4)"
+            git fetch origin main
+            git reset --hard origin/main
+          done
+          echo "No se pudo guardar la bandeja sin riesgo de pisar cambios" >&2
+          exit 1
