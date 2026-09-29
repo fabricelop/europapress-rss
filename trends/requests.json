@@ -3006,10 +3006,10 @@
     {
       "id": "9986911fa8ce",
       "name": "Manchester City",
-      "revision": 0,
-      "status": "explained",
-      "requested_at": "2026-09-25T16:35:17.915Z",
-      "rank": 5,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-09-29T20:31:21+02:00",
+      "rank": 6,
       "with_image": false,
       "alternatives_target": 0,
       "anticipated": true,
@@ -3026,7 +3026,19 @@
       "ready_at": "2026-09-25T19:40:00+02:00",
       "delivery_confirmation": "prepared_web",
       "editorial_engine": "chatgpt-automation-outbox",
-      "explained_at": "2026-09-25T19:49:51.318Z"
+      "reexplain": true,
+      "captured_with": [
+        "Gonzalo Suárez",
+        "#TEM29S",
+        "#HONORMagicV6",
+        "Isabel Rodríguez",
+        "#RTXON",
+        "Manchester City",
+        "Repsol",
+        "Spotify",
+        "Croacia",
+        "Miguel Román"
+      ]
     },
     {
       "id": "e271549ce993",
@@ -9281,7 +9293,47 @@
         "Repsol"
       ],
       "auto_queued": true
+    },
+    {
+      "id": "d6b652b7d172",
+      "name": "#RTXON",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-09-29T20:31:21+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "alternatives_target": 0,
+      "batch_id": "537995abeaeb",
+      "requested_together": [
+        "#RTXON"
+      ],
+      "captured_with": [
+        "#RTXON",
+        "Croacia"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "2cf07ed453b6",
+      "name": "Croacia",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-09-29T20:31:21+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": false,
+      "alternatives_target": 0,
+      "batch_id": "537995abeaeb",
+      "requested_together": [
+        "Croacia"
+      ],
+      "captured_with": [
+        "#RTXON",
+        "Croacia"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-09-29T18:15:38.730Z"
+  "updated_at": "2026-09-29T20:31:21+02:00"
 }
