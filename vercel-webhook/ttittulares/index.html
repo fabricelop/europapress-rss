@@ -14,7 +14,27 @@
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 60%)}button,a{font:inherit}
 .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:9px;padding:13px max(12px,env(safe-area-inset-left));background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36}.brand{font-size:19px;font-weight:850}.sub{font-size:11px;color:#8f9bad}.spacer{flex:1}.iconbtn,.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:11px;padding:9px 11px;font-weight:760;text-decoration:none}.iconbtn{height:42px}
-main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 4px}.meta{font-size:12px;color:#909cad;line-height:1.45}.timing{display:grid;gap:3px;margin-top:5px}.three-go{border:1px solid #40526a;background:#18212f;color:#eef3fa;border-radius:9px;min-width:36px;min-height:34px;font-weight:850}.timing .ok{color:#9fabc0}.timing .late{color:#ffb36b;font-weight:750}.health{border:1px solid #354255;border-radius:999px;padding:7px 10px;font-size:12px;color:#cbd7e8;white-space:nowrap;cursor:pointer;background:#101721}.health.bad{border-color:#6e3439;color:#ff9ca5}.sourceList{display:grid;gap:8px;max-height:58vh;overflow:auto;margin-top:12px}.sourceGroup{font-size:11px;font-weight:850;text-transform:uppercase;color:#91a0b4;margin:10px 2px 2px}.sourceRow{border:1px solid #2f3947;border-radius:12px;padding:10px;background:#0c1118}.sourceTop{display:flex;gap:8px;align-items:center}.sourceName{font-weight:800;min-width:0;flex:1}.sourceState{font-size:11px;font-weight:800}.sourceState.ok{color:#8ee6a8}.sourceState.bad{color:#ff9ca5}.sourceMeta{font-size:11px;color:#8f9bad;margin-top:4px;line-height:1.4}.sourceLast{font-size:12px;color:#cbd7e8;margin-top:5px;line-height:1.35}
+main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 4px}.meta{font-size:12px;color:#909cad;line-height:1.45}.timing{display:grid;gap:3px;margin-top:5px}.three-go{border:1px solid #40526a;background:#18212f;color:#eef3fa;border-radius:9px;min-width:36px;min-height:34px;font-weight:850}.timing .ok{color:#9fabc0}.timing .late{color:#ffb36b;font-weight:750}.health{border:1px solid #354255;border-radius:999px;padding:7px 10px;font-size:12px;color:#cbd7e8;white-space:nowrap;cursor:pointer;background:#101721}.health.bad{border-color:#6e3439;color:#ff9ca5}#sourcesSheet .panel{max-width:750px;padding:15px 13px calc(15px + env(safe-area-inset-bottom))}
+#sourcesSheet .panel p{margin:6px 0 4px;line-height:1.38}
+.sourceLegend{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:#b7c4d8;margin:8px 0 4px}
+.sourceLegend b{border-radius:5px;font-weight:850;padding:2px 5px}
+.sourceList{display:block;max-height:62vh;overflow-y:auto;overflow-x:hidden;margin-top:10px;border:1px solid #354052;border-radius:11px;background:#0c1118}
+.sourceTable{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;line-height:1.35}
+.sourceTable th,.sourceTable td{padding:7px 6px;text-align:left;border-bottom:1px solid #26313e;overflow-wrap:anywhere;vertical-align:middle}
+.sourceTable thead th{position:sticky;top:0;z-index:2;background:#202a38;color:#aab9cc;font-weight:800;font-size:11px}
+.sourceTable th:nth-child(1){width:43%}.sourceTable th:nth-child(2){width:20%}.sourceTable th:nth-child(3){width:15%;text-align:center}.sourceTable th:nth-child(4){width:22%}
+.sourceTable td:nth-child(3){text-align:center;font-weight:850;font-variant-numeric:tabular-nums}
+.sourceTable tbody tr:nth-child(2n){background:#101722}
+.sourceGroupRow th{background:#172233;color:#a7bdd8;font-size:10px;text-transform:uppercase;letter-spacing:.06em;text-align:left!important;padding:6px 8px}
+.sourceName{font-weight:750;color:#eaf1fb}
+.sourceAge{display:inline-block;min-width:53px;border-radius:6px;padding:3px 5px;text-align:center;font-size:11px;font-weight:850;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sourceAge.fresh,.sourceLegend .fresh{background:#17452f;color:#9cf0b8}
+.sourceAge.warning,.sourceLegend .warning{background:#583912;color:#ffd392}
+.sourceAge.stale,.sourceLegend .stale{background:#592328;color:#ffadb2}
+.sourceAge.unknown{background:#25303d;color:#a1acba}
+.sourceStateCompact{font-size:10px;font-weight:850;white-space:nowrap}
+.sourceStateCompact.ok{color:#8ee6a8}.sourceStateCompact.fallback{color:#ffce86}.sourceStateCompact.bad{color:#ff9ca5}
+@media(max-width:560px){#sourcesSheet .panel{padding:13px 9px calc(15px + env(safe-area-inset-bottom))}.sourceTable{font-size:11px}.sourceTable th,.sourceTable td{padding:7px 4px}.sourceAge{min-width:48px;padding:3px 3px;font-size:10px}.sourceStateCompact{font-size:10px}.sourceLegend{gap:6px;font-size:10px}}
 .runbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #354255;background:#101721;border-radius:14px;padding:11px 12px;margin:0 0 14px;min-height:68px}.runmain{display:grid;gap:4px;min-width:0;flex:1}.runline{display:flex;align-items:center;gap:8px;min-width:0}.runbar strong{font-size:13px;min-width:0}.runbar span{font-size:11px;color:#8f9bad;line-height:1.35}.runbar span.running{color:#ffc178}.runbar span.done{color:#8ee6a8}.runbar span.error{color:#ff9ca5}.runbar .btn:disabled{opacity:.45;cursor:not-allowed}.runbar .btn[hidden]{display:none}#runNow{display:none!important}.runbar.active{align-items:stretch}.runbar.active .runmain{width:100%}.runprogress{height:5px;background:#252f3c;border-radius:999px;overflow:hidden;margin-top:4px}.runprogress[hidden]{display:none}.runprogress i{display:block;height:100%;width:0;background:#6f8fb8;border-radius:999px;transition:width .35s ease}.incidentBtn{border:1px solid #7b5b25;background:#2a2114;color:#ffc178;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:850;cursor:pointer;white-space:nowrap}.incidentBtn.severe{border-color:#7d3038;background:#2a171a;color:#ff9ca5}.diag{white-space:pre-wrap;word-break:break-word;background:#090d13;border:1px solid #2d3745;border-radius:11px;padding:11px;max-height:44vh;overflow:auto;color:#cbd7e8;font:11px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace}
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0 14px}.stat{border:1px solid #2e3744;background:#111720;border-radius:13px;padding:10px 12px;color:#aab5c5;text-align:left;cursor:pointer}.stat b{display:block;color:#eef3fa;font-size:21px}.stat.active{border-color:#607796;background:#18212f}
 .list{display:grid;gap:10px}.card,.queuecard{background:#11161e;border:1px solid #29313d;border-radius:16px;padding:13px}.head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}.title{font-size:16px;font-weight:800;line-height:1.28}.sources{font-size:12px;color:#8fa0b5;margin-top:6px}.count{border:1px solid #354255;border-radius:999px;padding:6px 9px;font-size:11px;color:#cbd7e8;white-space:nowrap}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.actions .btn{min-height:40px}.btn.primary{background:#1c2737}.btn.danger{color:#ff9ca5}.btn.photoStatus.imageReadyStatus{background:#5a171d;border-color:#a83b46;color:#ffd6da;box-shadow:inset 0 0 0 1px #7e2932}.btn.photoStatus.telegramStatus{background:#f3cf54;border-color:#ffe58a;color:#312400;font-weight:800}.btn.rework{color:#d2bdff}.btn.check{color:#9fd7ff}.problem-reason{font-size:13px;line-height:1.4;color:#ffbd91;margin-top:9px}.verification-hint{font-size:12px;line-height:1.4;color:#9fd7ff;margin-top:8px}.details{display:none;border-top:1px solid #29313d;margin-top:12px;padding-top:12px}.details.open{display:block}.facts{font-size:14px;line-height:1.45;color:#cbd3df;white-space:pre-wrap;margin-bottom:12px}.imagebox{background:#0b1017;border:1px solid #324052;border-radius:13px;padding:10px 11px;margin:0 0 12px}.imageTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9cacbf;margin-bottom:5px}.imageMeta{font-size:12px;color:#aeb9c9}.imageActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.variant{background:#0b1017;border:1px solid #2c3543;border-radius:13px;padding:11px;margin:9px 0}.vhead{display:flex;align-items:center;gap:8px;margin-bottom:7px}.vname{font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.04em;color:#9cacbf}.chars{margin-left:auto;font-size:11px;color:#77869a}.tweet{white-space:pre-wrap;line-height:1.4;font-size:14px}.quoteBox{background:#0b1017;border:1px solid #324052;border-radius:13px;padding:10px 11px;margin:0 0 12px}.quoteTitle{font-size:11px;font-weight:850;text-transform:uppercase;color:#9cacbf;margin-bottom:4px}.quoteHint{font-size:11px;color:#7f8da0;margin-bottom:8px}.quoteCandidates{display:grid;gap:7px}.quoteCandidate{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:start;border:1px solid #2c3543;border-radius:10px;padding:8px;background:#101721}.quoteCandidate input{margin-top:3px}.quoteCandidate.selected{border-color:#607796;background:#18212f}.quoteText{font-size:12px;line-height:1.35;color:#dce5f1}.quoteMeta{font-size:10px;color:#8391a3;margin-top:3px}.quoteReason{font-size:10px;color:#98a4b5;font-style:italic;margin-top:3px}.quoteActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.quoteEmpty{font-size:12px;color:#8f9bad;margin:4px 0}.quoteX[hidden]{display:none}.queuecard .sources-list{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.chip{font-size:11px;background:#0b1017;border:1px solid #2c3543;border-radius:999px;padding:5px 8px;color:#9eabba}.empty{text-align:center;color:#98a4b5;padding:50px 10px}
@@ -81,6 +101,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 </div></div>
 <div class="sheet" id="sourcesSheet"><div class="panel">
  <h2>Fuentes del radar</h2><p id="sourcesSummary">Estado de las fuentes.</p>
+ <div class="sourceLegend" aria-label="Leyenda de antigüedad"><span><b class="fresh">Verde</b> menos de 12 h</span><span><b class="warning">Naranja</b> 12–24 h</span><span><b class="stale">Rojo</b> 24 h o más</span></div>
  <div class="sourceList" id="sourcesList"></div>
  <div class="actions"><button class="btn primary" id="sourcesClose">Cerrar</button></div>
 </div></div>
@@ -458,39 +479,70 @@ function tweetFor(item){
 }
 function setView(next){view=next;document.querySelectorAll(".stat").forEach(x=>x.classList.toggle("active",x.dataset.view===view));renderList()}
 function sourceTypeLabel(t){return t==="general"?"Generales":t==="sport"?"Deportes":t==="social"?"Social / tendencias":"Descubrimiento internacional"}
+function sourceAgeInfo(value,nowMs=Date.now()){
+ const at=value?Date.parse(value):NaN;
+ if(!Number.isFinite(at)||at>nowMs+300000)return {text:"—",level:"unknown",minutes:null};
+ const minutes=Math.max(0,Math.floor((nowMs-at)/60000));
+ return {
+   text:String(Math.floor(minutes/60)).padStart(2,"0")+":"+String(minutes%60).padStart(2,"0"),
+   level:minutes<720?"fresh":minutes<1440?"warning":"stale",
+   minutes
+ };
+}
 function renderSourcesSheet(){
- const s=model.status||{},rows=[...(s.source_status||[])];
+ const s=model.status||{},rows=[...(s.source_status||[])],box=$("sourcesList");
+ const healthy=Number(s.healthy_source_count),configured=Number(s.configured_sources);
  const hf=Number(s.healthy_source_family_count),tf=Number(s.configured_source_families);
- $("sourcesSummary").textContent=(Number.isFinite(hf)&&Number.isFinite(tf)?hf+"/"+tf+" familias independientes · ":"")+"el umbral editorial sigue siendo 4 familias independientes.";
- const box=$("sourcesList");box.innerHTML="";
- const order=["general","sport","social","discovery"];
- for(const type of order){
+ const started=Date.parse(s.source_metrics_started_at||"");
+ const warming=Number.isFinite(started)&&Date.now()-started<24*3600000;
+ const sourceSummary=[
+   (Number.isFinite(healthy)&&Number.isFinite(configured)?healthy+"/"+configured+" fuentes":""),
+   (Number.isFinite(hf)&&Number.isFinite(tf)?hf+"/"+tf+" familias independientes":""),
+   "Artículos distintos detectados en las últimas 24 h"+(warming?" (contador en acumulación)":"")
+ ].filter(Boolean).join(" · ");
+ $("sourcesSummary").textContent=sourceSummary;
+ const previousScroll=box.scrollTop;box.replaceChildren();
+ if(!rows.length){const empty=document.createElement("div");empty.className="empty";empty.textContent="Todavía no hay diagnóstico detallado de fuentes.";box.appendChild(empty);return}
+ const table=document.createElement("table");table.className="sourceTable";
+ table.setAttribute("aria-label","Fuentes: antigüedad de la última noticia, artículos en 24 horas y estado");
+ const thead=document.createElement("thead"),header=document.createElement("tr");
+ for(const value of ["Fuente","Hace hh:mm","Art. 24 h","Estado"]){
+   const th=document.createElement("th");th.scope="col";th.textContent=value;header.appendChild(th);
+ }
+ thead.appendChild(header);table.appendChild(thead);
+ const tbody=document.createElement("tbody");
+ for(const type of ["general","sport","social","discovery"]){
    const group=rows.filter(x=>String(x.type||"general")===type);
    if(!group.length)continue;
-   const label=document.createElement("div");label.className="sourceGroup";label.textContent=sourceTypeLabel(type);box.appendChild(label);
+   const groupTr=document.createElement("tr");groupTr.className="sourceGroupRow";
+   const heading=document.createElement("th");heading.scope="rowgroup";heading.colSpan=4;
+   heading.textContent=sourceTypeLabel(type);groupTr.appendChild(heading);tbody.appendChild(groupTr);
    for(const x of group){
-     const row=document.createElement("div");row.className="sourceRow";
-     row.innerHTML='<div class="sourceTop"><div class="sourceName"></div><div class="sourceState"></div></div><div class="sourceMeta"></div><div class="sourceLast"></div>';
-     row.querySelector(".sourceName").textContent=x.source||"Fuente";
-     const state=row.querySelector(".sourceState");state.textContent=x.ok?"● OK":"● ERROR";state.className="sourceState "+(x.ok?"ok":"bad");
-     const bits=[];
-     if(type==="general"){
-       if(x.family&&x.family!==x.source)bits.push("Familia "+x.family+" · máximo 1 voto conjunto");
-       else bits.push("1 voto independiente");
-     }else if(x.family&&x.family!==x.source)bits.push("Familia "+x.family);
-     if(type==="general"&&!x.counts_for_threshold)bits.push("No cuenta para el umbral");
-     else if(type==="social")bits.push("Señal social · no suma voto independiente");
-     else if(type==="discovery")bits.push("Descubrimiento · no suma voto independiente");
-     if(Number.isFinite(Number(x.items)))bits.push(Number(x.items)+" artículos en el último barrido");
-     if(x.recovered)bits.push("vía fallback");
-     row.querySelector(".sourceMeta").textContent=bits.join(" · ");
-     const last=row.querySelector(".sourceLast");
-     last.textContent=x.last_contribution_at?"Última aportación "+fmt(x.last_contribution_at)+(x.last_event_title?" · "+x.last_event_title:""):"Sin aportación registrada en la ventana actual";
-     if(x.error&&!x.ok)last.textContent=(last.textContent?last.textContent+" · ":"")+String(x.error);
-     box.appendChild(row);
+     const tr=document.createElement("tr");
+     const name=document.createElement("td");name.className="sourceName";name.textContent=String(x.source||"Fuente");
+     const title=String(x.last_article_title||x.last_event_title||"");
+     if(title)name.title="Última noticia: "+title;
+     if(x.family&&x.family!==x.source)name.title+=(name.title?" · ":"")+"Familia: "+x.family;
+     tr.appendChild(name);
+     const ageCell=document.createElement("td");
+     const age=sourceAgeInfo(x.last_article_at||x.last_contribution_at);
+     const badge=document.createElement("span");badge.className="sourceAge "+age.level;badge.textContent=age.text;
+     badge.title=age.minutes===null?"Sin fecha disponible":"Tiempo desde la última noticia nueva recuperada (no desde el último refresco)";
+     ageCell.appendChild(badge);tr.appendChild(ageCell);
+     const countCell=document.createElement("td");
+     const count=x.articles_24h!=null?Number(x.articles_24h):NaN;
+     countCell.textContent=Number.isFinite(count)&&count>=0?String(count):"—";
+     countCell.title=Number.isFinite(count)?"Titulares distintos recuperados por esta fuente dentro de la ventana móvil de 24 h":"Métrica disponible tras el próximo barrido";
+     tr.appendChild(countCell);
+     const stateCell=document.createElement("td"),state=document.createElement("span");
+     state.className="sourceStateCompact "+(!x.ok?"bad":x.recovered?"fallback":"ok");
+     state.textContent=!x.ok?"● Error":x.recovered?"● Altern.":"● OK";
+     state.title=!x.ok?String(x.error||"La fuente no respondió correctamente"):x.recovered?"Fuente recuperada mediante URL alternativa":"Fuente accesible en el último barrido";
+     stateCell.appendChild(state);tr.appendChild(stateCell);
+     tbody.appendChild(tr);
    }
  }
- if(!rows.length)box.innerHTML='<div class="empty">Todavía no hay diagnóstico detallado de fuentes.</div>';
+ table.appendChild(tbody);box.appendChild(table);box.scrollTop=previousScroll;
 }
 function render(){
  const s=model.status||{},healthy=Number(s.healthy_source_count),total=Number(s.configured_sources);
@@ -498,7 +550,7 @@ function render(){
  renderTiming();
  $("health").textContent=(Number.isFinite(healthy)?healthy:"—")+"/"+(Number.isFinite(total)?total:"—")+" fuentes funcionando";
  $("health").classList.toggle("bad",Number.isFinite(healthy)&&Number.isFinite(total)&&healthy<total);
- renderList();badge()
+ renderList();badge();if($("sourcesSheet").classList.contains("show"))renderSourcesSheet()
 }
 let lastRenderedView="",lastReadyRendering=null,lastTremendingRendering=null;
 function renderList(){
