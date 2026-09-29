@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   deploy-both:
-    if: "github.event.head_commit.message == 'Deploy conjunto de puntuaciones TTendencias y TTiTTulares' || github.event.head_commit.message == 'Desplegar notificaciones TTendencias y TTiTTulares'"
+    if: "github.event.head_commit.message == 'Deploy conjunto de puntuaciones TTendencias y TTiTTulares' || github.event.head_commit.message == 'Desplegar notificaciones TTendencias y TTiTTulares' || github.event.head_commit.message == 'Desplegar correccion de imagen TTiTTulares'"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -62,6 +62,7 @@ jobs:
           node --check vercel-webhook/lib/ttendencias-remate-ratings.js
           node --check vercel-webhook/lib/ttittulares-remate-ratings.js
           node --test vercel-webhook/test/ttendencias-remate-ratings.test.js vercel-webhook/test/ttittulares-remate-ratings.test.js
+          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs
           python3 - <<'PY'
           import re,subprocess
           from pathlib import Path
