@@ -174,7 +174,7 @@ function intent(text){return "https://twitter.com/intent/tweet?text="+encodeURIC
 function newsSearchKeywords(item){
  const raw=String(item?.quote_search?.query||item?.title||"").replace(/https?:\/\/\S+/g,"");
  const words=raw.match(/[\p{L}\p{N}]+/gu)||[];
- const stop=new Set("el la los las un una unos unas de del al en a ante por para con sin sobre entre que quien quienes como cual cuales su sus y e o u es son ha han fue ser se le les lo este esta estos estas ese esa esos esas tras desde hasta durante muy mas más hoy ayer mañana ultima última ultimas últimas hora directo noticia noticias actualidad cuenta explica explican anuncia anunciaron nueva nuevo nuevas nuevos ahora segundo primera primero".split(" "));
+ const stop=new Set("el la los las un una unos unas de del al en a ante por para con sin sobre entre que quien quienes como cual cuales su sus y e o u es son ha han fue ser se le les lo este esta estos estas ese esa esos esas tras desde hasta durante muy mas más hoy ayer mañana ultima última ultimas últimas hora directo noticia noticias actualidad cuenta explica explican anuncia anunciaron nueva nuevo nuevas nuevos ahora segundo primera primero centenar personas persona hombres mujeres supera supero superó supera supera desvela reactiva aprueba confirma detiene investiga consigue gana pierde critica pide asegura publica celebran acampa robar ocurrido denuncian anunció anuncia anuncia".split(" "));
  const normalized=w=>w.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
  const good=[];
  for(const word of words){
