@@ -123,6 +123,7 @@ out = {
     "healthy_source_family_count":events_doc.get("healthy_source_family_count"),
     "configured_source_families":events_doc.get("configured_source_families"),
     "source_status":events_doc.get("source_status", []),
+    "source_metrics_started_at":(events_doc.get("source_article_telemetry") or {}).get("started_at"),
     "source_failures":events_doc.get("source_failures", []),
     "events":event_map,
 }
