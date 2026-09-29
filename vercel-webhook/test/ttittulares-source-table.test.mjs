@@ -24,7 +24,8 @@ test("elapsed time shows HH:MM with precise green/orange/red thresholds",()=>{
 });
 test("table uses persisted 24h count, not the current sweep count",()=>{
  assert.match(inline,/x\.articles_24h!=null\?Number\(x\.articles_24h\):NaN/);
- assert.match(inline,/const age=sourceAgeInfo\(x\.last_article_at\|\|x\.last_contribution_at\)/);
+ assert.match(inline,/const age=sourceAgeInfo\(x\.last_published_at\)/);
+ assert.doesNotMatch(inline,/sourceAgeInfo\(x\.last_article_at/,"Recovery time must never stand in for publication");
  assert.match(inline,/for\(const value of \["Fuente","Hace hh:mm","Art\. 24 h","Estado"\]\)/);
  assert.match(inline,/table\.setAttribute\("aria-label"/);
  assert.match(inline,/x\.recovered\?"● Altern\.":"● OK"/);
