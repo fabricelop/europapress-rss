@@ -61,7 +61,7 @@ def probe(label,url):
   host=urlparse(final).hostname
   own=[urljoin(final,x) for x in links.urls if urlparse(urljoin(final,x)).hostname in [host,"www."+host if host else ""]]
   sample=[x for x in own if len(urlparse(x).path.split("/"))>=4][:5]
-  result={"source":label,"requested":url,"final":final,"http":"OK","type":type[:50],"bytes":len(body),"items":len(blocks),"feed_dates":dates,"links":len(links.urls),"sample_links":sample[:3],"page_own_meta":article_publication(body)}
+  result={"source":label,"requested":url,"final":final,"http":"OK","type":type[:50],"bytes":len(body),"items":len(blocks),"feed_dates":dates,"links":len(links.urls),"sample_links":sample[:3],"page_own_meta":article_publication(body),"first_item":blocks[0][:950] if blocks else None}
   return result
  except Exception as e:
   return {"source":label,"requested":url,"error":str(e)[:180]}
