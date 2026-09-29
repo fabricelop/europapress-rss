@@ -54,7 +54,7 @@ def probe(label,url):
   })
   with urllib.request.urlopen(q,timeout=9) as f:
    body=f.read(900000).decode("utf-8","ignore");final=f.geturl();type=f.headers.get("content-type","")
-  blocks=re.findall(r"<(?:item|entry)\\b[\\s\\S]*?</(?:item|entry)>",body,re.I)
+  blocks=re.findall(r"<(?:item|entry)\b[\s\S]*?</(?:item|entry)>",body,re.I)
   dates=[feed_publication(b) for b in blocks[:5]]
   links=Links();links.feed(body)
   from urllib.parse import urljoin,urlparse
