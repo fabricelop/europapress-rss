@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T00:40:53+02:00",
+  "captured_at": "2026-09-30T00:50:58+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -14,8 +14,7 @@
   "source_count": 7,
   "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24",
-    "snaplytics"
+    "tweets24"
   ],
   "reliability": "high",
   "top10": [
@@ -86,44 +85,6 @@
   "new_entries": [],
   "upcoming": [
     {
-      "name": "Macron",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 14.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T23:41:04+02:00",
-      "news_source_count": 11,
-      "news_event_id": "1870704a9151-r2",
-      "news_title": "El PP tumba en el Senado el tratado de amistad con Francia en plena visita de Macron a España",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-09-29T22:32:27.012239Z"
-    },
-    {
-      "name": "Gonzalo Suárez",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 14.5,
-      "movement": "up",
-      "first_detected_at": "2026-09-29T23:41:04+02:00",
-      "news_source_count": 1,
-      "news_event_id": "4d6b713dd863",
-      "news_title": "‘Martín Girard’, el yo futbolero de Gonzalo Suárez",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T16:53:20.293187Z"
-    },
-    {
       "name": "Fermín",
       "social_source_count": 4,
       "social_sources": [
@@ -141,6 +102,44 @@
       "news_title": "Fermín López: \"Ha sido un verano duro, no hay mejor cosa que estar jugando con tu país\"",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-29T21:43:46.934202Z"
+    },
+    {
+      "name": "Macron",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 14.0,
+      "movement": "flat",
+      "first_detected_at": "2026-09-29T23:41:04+02:00",
+      "news_source_count": 2,
+      "news_event_id": "60401b705ba6",
+      "news_title": "Macron reclama en su primer día en España una IA europea soberana para no perder el control tecnológico",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T18:24:36.628218Z"
+    },
+    {
+      "name": "Gonzalo Suárez",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 14.5,
+      "movement": "flat",
+      "first_detected_at": "2026-09-29T23:41:04+02:00",
+      "news_source_count": 1,
+      "news_event_id": "4d6b713dd863",
+      "news_title": "‘Martín Girard’, el yo futbolero de Gonzalo Suárez",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T16:53:20.293187Z"
     },
     {
       "name": "#NationsLeague",
@@ -264,7 +263,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T00:40:53+02:00"
+      "fetched_at": "2026-09-30T00:50:58+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -289,7 +288,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T00:40:54+02:00"
+      "fetched_at": "2026-09-30T00:50:59+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -316,10 +315,10 @@
         "Efes"
       ],
       "error": null,
-      "update_hint": "Updated 28 minutes ago",
-      "age_minutes": 28.0,
+      "update_hint": "Updated 38 minutes ago",
+      "age_minutes": 38.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-30T00:40:55+02:00"
+      "fetched_at": "2026-09-30T00:51:00+02:00"
     },
     "superx": {
       "ok": true,
@@ -349,16 +348,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T00:40:55+02:00"
+      "fetched_at": "2026-09-30T00:51:00+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790721656",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790722261",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T00:40:56+02:00"
+      "fetched_at": "2026-09-30T00:51:01+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -386,9 +385,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 22:00 UTC",
-      "age_minutes": 40.9,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-30T00:40:56+02:00"
+      "age_minutes": 51.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-30T00:51:01+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -416,18 +415,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 10:00 PM # Trend Type Actions 1 Lamine Topic 2 Croacia Top",
-      "age_minutes": 160.9,
+      "age_minutes": 171.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T00:40:56+02:00"
+      "fetched_at": "2026-09-30T00:51:01+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790721657",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790722263",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T00:40:57+02:00"
+      "fetched_at": "2026-09-30T00:51:03+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -436,7 +435,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T00:40:58+02:00"
+      "fetched_at": "2026-09-30T00:51:03+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -466,16 +465,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T00:40:58+02:00"
+      "fetched_at": "2026-09-30T00:51:03+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790721660",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790722266",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T00:41:00+02:00"
+      "fetched_at": "2026-09-30T00:51:06+02:00"
     }
   }
 }
