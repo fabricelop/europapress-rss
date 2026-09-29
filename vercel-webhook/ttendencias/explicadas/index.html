@@ -67,7 +67,11 @@ function rankFor(x,requests){
  const fallback=Number(rows[0]?.rank);
  return Number.isFinite(fallback)&&fallback>=1&&fallback<=20?fallback:null;
 }
-function hasTweetReadyFormat(x){return /^TT#(?:[1-9]|1[0-9]|20)\s+\S/u.test(String(x.explanation||"").trim())}
+function hasTweetReadyFormat(x){
+ const content=String(x.explanation||"").trim();
+ if(/^TT#(?:0|[1-9]|1[0-9]|20)\s+\S/u.test(content))return true; // Legacy TT#0: never duplicate header.
+ return Boolean(x.tremending_origin && /^.{2,65} es tendencia (?:por|porque)\b/iu.test(content));
+}
 function tweetBody(x){
  const full=String(x.explanation||"").trim();
  const closer=String(x.closer_text||"").trim();
@@ -164,7 +168,7 @@ function render(){
   if(x.copied)card.classList.add("copied");
   const name=displayName(x),route=routeLabel(x);
   const labelled=groupRankLabel(x);
-  card.innerHTML='<div class="head"><div class="name"></div><div class="when"></div></div><div class="explanation"></div><div class="closer" hidden></div><div class="rating"></div><div class="meta"></div><div class="actions"></div>';
+  card.innerHTML='<div class="head"><div class="name"></div><div class="when"></div></div><div class="explanation"></div><div class="closer" hidden></div><div class="imagebox" hidden></div><div class="rating"></div><div class="meta"></div><div class="actions"></div>';
   const heading=card.querySelector(".name");
   heading.textContent=labelled;
   if(hasTweetReadyFormat(x))heading.hidden=true; // El tuit ya lleva TT#N Nombre.
@@ -173,6 +177,16 @@ function render(){
   card.querySelector(".explanation").textContent=parts.fact;
   const closer=card.querySelector(".closer");
   if(parts.closer){closer.hidden=false;closer.textContent=parts.closer;}
+  const picture=card.querySelector(".imagebox"),image=x.image||{},imageUrl=String(image.url||"");
+  if(x.image_status==="ready"&&/^https:\/\//i.test(imageUrl)){
+    picture.hidden=false;
+    const thumb=document.createElement("img");thumb.alt=String(image.alt||"Imagen de "+name);thumb.loading="lazy";thumb.decoding="async";
+    thumb.src=API+"?view=image-proxy&url="+encodeURIComponent(imageUrl);
+    thumb.style.cssText="display:block;width:100%;max-height:155px;object-fit:contain;border-radius:10px;background:#0c121c;cursor:zoom-in";
+    const full=document.createElement("a");full.href=imageUrl;full.target="_blank";full.rel="noopener noreferrer";full.title="Ver foto a tamaño completo";full.appendChild(thumb);picture.appendChild(full);
+    const credit=document.createElement("div");credit.style.cssText="font-size:11px;color:#94a3b8;padding-top:4px";credit.textContent=String(image.source||"Imagen del acontecimiento");picture.appendChild(credit);
+    picture.style.cssText="margin:9px 0 5px;max-width:100%;overflow:hidden";
+  }
   const rating=card.querySelector(".rating");
   if(parts.closer)renderRemateRating(rating,x);else rating.hidden=true;
   const meta=card.querySelector(".meta");
@@ -180,6 +194,22 @@ function render(){
   const actions=card.querySelector(".actions");
   const copy=document.createElement("button");copy.className="btn";copy.type="button";copy.textContent="Copiar";copy.onclick=()=>copyItem(x,copy);actions.appendChild(copy);
   const a=document.createElement("a");a.className="btn";a.target="_blank";a.rel="noopener noreferrer";const searchNames=(Array.isArray(x.trend_names)&&x.trend_names.length?x.trend_names:[name]).join(" ");a.href="https://x.com/search?q="+encodeURIComponent(searchNames)+"&src=typed_query&f=live";a.textContent="Buscar en X";actions.appendChild(a);
+  if(x.image_status==="ready"&&/^https:\/\//i.test(imageUrl)){
+    const imageLink=document.createElement("a");imageLink.className="btn";imageLink.target="_blank";imageLink.rel="noopener noreferrer";imageLink.href=imageUrl;imageLink.textContent="Ver foto";actions.appendChild(imageLink);
+    const clip=document.createElement("button");clip.className="btn";clip.type="button";clip.textContent="Copiar foto";
+    clip.onclick=async()=>{
+      const previous=clip.textContent;clip.disabled=true;clip.textContent="Copiando…";
+      try{
+        if(!navigator.clipboard?.write||typeof ClipboardItem==="undefined")throw Error("El navegador no admite copiar imágenes.");
+        const rr=await fetch(API+"?view=image-proxy&format=png&url="+encodeURIComponent(imageUrl),{cache:"no-store"});
+        if(!rr.ok)throw Error("No se pudo recuperar la fotografía.");
+        await navigator.clipboard.write([new ClipboardItem({"image/png":await rr.blob()})]);
+        clip.textContent="Copiada ✓";
+      }catch(error){clip.textContent=previous;alert(error.message||"No se pudo copiar la fotografía.");}
+      finally{clip.disabled=false;if(clip.textContent==="Copiada ✓")setTimeout(()=>clip.textContent=previous,1400);}
+    };
+    actions.appendChild(clip);
+  }
   list.appendChild(card);
  }
 }
