@@ -27,7 +27,7 @@ URLS={
   "https://www.cuatro.com/noticias/","https://www.cuatro.com/rss/","https://www.cuatro.com/rss.xml"
  ],
  "AS":[
-  "https://as.com/ultimas-noticias/","https://as.com/rss/","https://as.com/rss-de-ascom-n/","https://as.com/rss/portada.xml",
+  "https://as.com/ultimas-noticias/","https://as.com/rss/","https://as.com/rss-de-ascom-n/","https://as.com/rss/portada.xml","https://feeds.as.com/mrss-s/pages/as/site/as.com/section/futbol/portada/",
  ],
  "Reuters":[
   "https://www.reuters.com/arc/outboundfeeds/rss/",
