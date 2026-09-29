@@ -22,6 +22,7 @@ const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const READY_MARKER="TTENDENCIAS WORK COMMIT TRIGGER READY";
 const STALE_MS=20*60*1000;
+const START_ACK_MS=3*60*1000;
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -112,10 +113,16 @@ function manualFallback(items,request){
   if(!command_id||!requested_at)return null;
   const marks=items.filter(c=>String(c.body||"").startsWith(STATUS_PREFIX+command_id+"\n"));
   const last=marks.at(-1);
-  const status=last?field(last.body,"status")||"REQUESTED":"REQUESTED";
+  const rawStatus=last?field(last.body,"status")||"REQUESTED":"REQUESTED";
   const started=marks.find(c=>field(c.body,"status")==="RUNNING");
   const started_at=started?(field(started.body,"started_at")||started.created_at):null;
-  const finished_at=["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null;
+  const noStart=rawStatus==="REQUESTED"&&!started_at&&Date.now()-stamp(requested_at)>=START_ACK_MS;
+  const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(last?.updated_at||last?.created_at||requested_at)>=STALE_MS;
+  const status=(noStart||staleRunning)?"ERROR":rawStatus;
+  const finished_at=noStart||staleRunning?new Date().toISOString():(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
+  const timeoutMessage=noStart
+    ?"No se ha recibido RUNNING: ningún ejecutor ha recogido el activador. El commit del PR #7 no inicia la elaboración por sí solo."
+    :staleRunning?"La ejecución no actualiza su estado desde hace más de 20 minutos.":null;
   return {
     run_id:command_id,command_id,source:"manual",source_label:"Manual",status,
     phase:status==="REQUESTED"?"preparing":status==="RUNNING"?"running":status==="DONE"?"closing":"error",
@@ -123,7 +130,7 @@ function manualFallback(items,request){
     updated_at:last?.updated_at||last?.created_at||requested_at,finished_at,
     start_delay_seconds:started_at?seconds(requested_at,started_at):null,
     duration_seconds:started_at&&finished_at?seconds(started_at,finished_at):null,
-    message:last?field(last.body,"message"):null,summary:null,incident_count:0,incidents:[]
+    message:timeoutMessage||(last?field(last.body,"message"):null),summary:null,incident_count:0,incidents:[]
   }
 }
 
@@ -139,8 +146,11 @@ export default async function handler(req,res){
 
     if(latest&&["REQUESTED","RUNNING"].includes(latest.status)){
       const age=Date.now()-stamp(latest.updated_at||latest.started_at||latest.requested_at);
-      if(Number.isFinite(age)&&age>=0&&age<STALE_MS)active=latest;
-      else latest={...latest,status:"ERROR",finished_at:latest.updated_at||new Date().toISOString(),message:latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos."}
+      const deadline=latest.status==="REQUESTED"?START_ACK_MS:STALE_MS;
+      if(Number.isFinite(age)&&age>=0&&age<deadline)active=latest;
+      else latest={...latest,status:"ERROR",finished_at:new Date().toISOString(),message:latest.status==="REQUESTED"
+        ?"No se ha recibido RUNNING: ningún ejecutor ha recogido el activador en 3 minutos."
+        :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")}
     }
     if(!active&&fallback&&["REQUESTED","RUNNING"].includes(fallback.status)){
       const age=Date.now()-stamp(fallback.updated_at||fallback.started_at||fallback.requested_at);
@@ -149,11 +159,11 @@ export default async function handler(req,res){
 
     if(active)return res.status(200).json({ok:true,enabled,active:true,...active,last_run:null,can_run:enabled&&authorized(req)});
 
-    let last_run=null;
     const terminal=traces.map(normalizeTrace).filter(t=>["DONE","ERROR"].includes(t.status));
-    if(terminal.length)last_run=terminal.at(-1);
-    else if(latest&&["DONE","ERROR"].includes(latest.status))last_run=latest;
-    else if(fallback&&["DONE","ERROR"].includes(fallback.status))last_run=fallback;
+    if(latest&&["DONE","ERROR"].includes(latest.status))terminal.push(latest);
+    if(fallback&&["DONE","ERROR"].includes(fallback.status))terminal.push(fallback);
+    terminal.sort((a,b)=>stamp(a.requested_at||a.started_at||a.updated_at)-stamp(b.requested_at||b.started_at||b.updated_at));
+    const last_run=terminal.at(-1)||null;
 
     return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,can_run:enabled&&authorized(req)})
   }catch(e){
