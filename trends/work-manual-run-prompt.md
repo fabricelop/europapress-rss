@@ -2,6 +2,9 @@
 
 Este archivo contiene SOLO la activación y telemetría específicas del botón `Ejecutar ahora`. La lógica editorial común está en `trends/editorial-run-prompt.md` y no debe duplicarse aquí.
 
+**Ámbito exclusivo:** este envoltorio se usa únicamente cuando una automatización Work realmente conectada recibe el evento `synchronize` del PR #7. No debe utilizarse como sustituto de la orden «Ejecuta TTendencias» recibida directamente en un chat o enviada por `Ejecutar.js` desde el PC. En esos casos, ejecutar `trends/editorial-run-prompt.md` en el chat, sin crear un commit-trigger que nadie consuma. El marcador `WORK COMMIT TRIGGER READY` del PR es una marca de configuración, NO una confirmación de que haya un ejecutor activo. Nunca considerar una solicitud `REQUESTED` como una pasada iniciada ni terminada.
+
+
 ## Activación
 
 La ejecución de producción se activa por una actualización de commits del PR #7.
