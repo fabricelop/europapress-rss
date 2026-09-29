@@ -530,7 +530,8 @@ function renderSourcesSheet(){
      const ageCell=document.createElement("td");
      const age=sourceAgeInfo(x.last_published_at);
      const badge=document.createElement("span");badge.className="sourceAge "+age.level;badge.textContent=age.text;
-     badge.title=age.minutes===null?"No hay fecha de publicación verificable en RSS o artículo":"Tiempo desde la publicación en el medio (no desde la recuperación ni el refresco)";
+     const aggregator=/^https:\/\/news\.google\.com\//i.test(String(x.url||""));
+     badge.title=age.minutes===null?(aggregator?"Fecha de publicación no contrastable: llegan noticias por respaldo, pero no podemos verificar la fecha original del medio":"La fuente no ofrece una fecha de publicación verificable"):"Tiempo desde la publicación en el medio (no desde la recuperación ni el refresco)";
      ageCell.appendChild(badge);tr.appendChild(ageCell);
      const countCell=document.createElement("td");
      const count=x.articles_24h!=null?Number(x.articles_24h):NaN;
@@ -539,8 +540,8 @@ function renderSourcesSheet(){
      tr.appendChild(countCell);
      const stateCell=document.createElement("td"),state=document.createElement("span");
      state.className="sourceStateCompact "+(!x.ok?"bad":x.recovered?"fallback":"ok");
-     state.textContent=!x.ok?"● Error":x.recovered?"● Altern.":"● OK";
-     state.title=!x.ok?String(x.error||"La fuente no respondió correctamente"):x.recovered?"Fuente recuperada mediante URL alternativa":"Fuente accesible en el último barrido";
+     state.textContent=!x.ok?"● Error":x.recovered?"● Respaldo":"● OK";
+     state.title=!x.ok?String(x.error||"La fuente no respondió correctamente"):x.recovered?"La URL principal no ha aportado artículos: se utiliza una fuente alternativa. Esto no supone otro voto editorial.":"Fuente accesible en el último barrido";
      stateCell.appendChild(state);tr.appendChild(stateCell);
      tbody.appendChild(tr);
    }
