@@ -8,9 +8,11 @@ on:
       - ".github/workflows/ttittulares-preflight.yml"
       - "ttittulares/**"
       - "telegram/radar_no_d1.py"
+      - "telegram/source_telemetry.py"
       - "telegram/autocheck_ttittulares.py"
       - "vercel-webhook/ttittulares/**"
       - "vercel-webhook/test/ttittulares-image-ui.test.mjs"
+      - "vercel-webhook/test/ttittulares-source-table.test.mjs"
       - "vercel-webhook/api/ttittulares-control.js"
       - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
@@ -24,9 +26,11 @@ on:
       - ".github/workflows/ttittulares-preflight.yml"
       - "ttittulares/**"
       - "telegram/radar_no_d1.py"
+      - "telegram/source_telemetry.py"
       - "telegram/autocheck_ttittulares.py"
       - "vercel-webhook/ttittulares/**"
       - "vercel-webhook/test/ttittulares-image-ui.test.mjs"
+      - "vercel-webhook/test/ttittulares-source-table.test.mjs"
       - "vercel-webhook/api/ttittulares-control.js"
       - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
@@ -49,8 +53,9 @@ jobs:
 
       - name: Validar Python
         run: |
-          python3 -m py_compile telegram/radar_no_d1.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py ttittulares/build_editorial_queue.py ttittulares/apply_editorial_outbox.py ttittulares/ingest_pr_outbox_comment.py ttittulares/reconcile_confirmed_stale.py ttittulares/tremending/update_tremending.py
+          python3 -m py_compile telegram/radar_no_d1.py telegram/source_telemetry.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py ttittulares/build_editorial_queue.py ttittulares/apply_editorial_outbox.py ttittulares/ingest_pr_outbox_comment.py ttittulares/reconcile_confirmed_stale.py ttittulares/tremending/update_tremending.py
           python3 telegram/radar_no_d1.py --selftest-dedupe
+          python3 telegram/source_telemetry.py
           python3 ttittulares/auto_queue.py --selftest
           python3 ttittulares/apply_editorial_outbox.py --selftest-images
           python3 ttittulares/tremending/update_tremending.py --selftest
@@ -145,7 +150,7 @@ jobs:
           node --check vercel-webhook/api/ttittulares-run-status.js
           node --check ttittulares/tremending/capture_tweet.mjs
           node --check vercel-webhook/ttittulares/sw.js
-          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs
+          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs vercel-webhook/test/ttittulares-source-table.test.mjs
 
       - name: Resultado
         run: echo "TTiTTulares listo para preview técnico sin cambiar control-mode"
