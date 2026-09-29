@@ -1,33 +1,32 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T18:11:11+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-29T18:21:14+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "fowtools",
+    "superx",
+    "snaplytics",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
     "#TEM29S",
     "#HONORMagicV6",
     "Fernando Alonso",
     "Ancelotti",
+    "Mataró",
+    "Antonio Banderas",
     "Isabel Rodríguez",
     "Miguel Román",
     "El Gobierno",
-    "Aston Martin",
-    "Mataró",
-    "Nogueras"
+    "Aston Martin"
   ],
   "items": [
     {
@@ -52,37 +51,39 @@
     },
     {
       "rank": 5,
-      "name": "Isabel Rodríguez",
-      "entered_top10_at": "2026-09-29T16:50:58+02:00"
-    },
-    {
-      "rank": 6,
-      "name": "Miguel Román",
-      "entered_top10_at": "2026-09-29T17:31:18+02:00"
-    },
-    {
-      "rank": 7,
-      "name": "El Gobierno",
-      "entered_top10_at": "2026-09-29T17:31:18+02:00"
-    },
-    {
-      "rank": 8,
-      "name": "Aston Martin",
-      "entered_top10_at": "2026-09-29T14:40:57+02:00"
-    },
-    {
-      "rank": 9,
       "name": "Mataró",
       "entered_top10_at": "2026-09-29T15:21:11+02:00"
     },
     {
-      "rank": 10,
-      "name": "Nogueras",
+      "rank": 6,
+      "name": "Antonio Banderas",
+      "entered_top10_at": "2026-09-29T18:21:14+02:00"
+    },
+    {
+      "rank": 7,
+      "name": "Isabel Rodríguez",
+      "entered_top10_at": "2026-09-29T16:50:58+02:00"
+    },
+    {
+      "rank": 8,
+      "name": "Miguel Román",
       "entered_top10_at": "2026-09-29T17:31:18+02:00"
+    },
+    {
+      "rank": 9,
+      "name": "El Gobierno",
+      "entered_top10_at": "2026-09-29T17:31:18+02:00"
+    },
+    {
+      "rank": 10,
+      "name": "Aston Martin",
+      "entered_top10_at": "2026-09-29T14:40:57+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Antonio Banderas"
+  ],
   "upcoming": [
     {
       "name": "Aldo Comas",
@@ -94,8 +95,8 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.5,
-      "movement": "up",
+      "mean_observed_rank": 12.2,
+      "movement": "flat",
       "first_detected_at": "2026-09-29T17:31:18+02:00",
       "news_source_count": 1,
       "news_event_id": "609708b48d32",
@@ -104,78 +105,40 @@
       "news_first_seen": "2026-09-29T12:03:10.050763Z"
     },
     {
+      "name": "Digna",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 15.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-29T18:11:11+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
       "name": "Hondarribia",
-      "social_source_count": 4,
+      "social_source_count": 3,
       "social_sources": [
         "snaplytics",
-        "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 15.5,
-      "movement": "up",
+      "mean_observed_rank": 16.3,
+      "movement": "down",
       "first_detected_at": "2026-09-29T17:31:18+02:00",
       "news_source_count": 2,
       "news_event_id": "da51c9d8619b",
-      "news_title": "Un policía local mata de un disparo a un hombre que amenazó a una ertzaina con un cuchillo en Hondarribia - Telecinco",
+      "news_title": "Un policía local mata de un disparo a un hombre que amenazó a una ertzaina con un cuchillo en Hondarribia - telecinco.es",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-28T19:41:03.510337Z"
-    },
-    {
-      "name": "Antonio Banderas",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T15:21:11+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Almeida",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.3,
-      "movement": "down",
-      "first_detected_at": "2026-09-29T17:31:18+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Yanes",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 18.0,
-      "movement": "up",
-      "first_detected_at": "2026-09-29T14:51:01+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     },
     {
       "name": "Senegal",
@@ -196,35 +159,66 @@
       "news_first_seen": null
     },
     {
-      "name": "BUT NOT YET",
-      "social_source_count": 3,
+      "name": "Nogueras",
+      "social_source_count": 2,
       "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
+        "getdaytrends",
+        "trends24"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 17.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-29T16:50:58+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T18:21:14+02:00",
+      "news_source_count": 3,
+      "news_event_id": "53633ac9818d",
+      "news_title": "Rifirrafe entre Miriam Nogueras y Silvia Intxaurrondo en 'La Hora de la 1': \"Le emplazo a otra entrevista donde responda a las preguntas\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T08:52:39.926384Z"
     },
     {
-      "name": "Digna",
-      "social_source_count": 3,
+      "name": "Junts",
+      "social_source_count": 2,
       "social_sources": [
-        "trends24",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.3,
+      "best_observed_rank": 18,
+      "mean_observed_rank": 19.0,
       "movement": "new",
-      "first_detected_at": "2026-09-29T18:11:11+02:00",
+      "first_detected_at": "2026-09-29T18:21:14+02:00",
+      "news_source_count": 6,
+      "news_event_id": "b3449a0fc439",
+      "news_title": "Acampada en Sol por la vivienda, en directo | Junts y Podemos no aclaran el sentido de su voto sobre los decretos de vivienda",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-29T16:04:10.874614Z"
+    },
+    {
+      "name": "PSOE y Sumar",
+      "social_source_count": 1,
+      "social_sources": [
+        "snaplytics"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T18:21:14+02:00",
+      "news_source_count": 9,
+      "news_event_id": "e26960fb9a22-r2",
+      "news_title": "PSOE y Sumar llegan a un acuerdo para sacar adelante el decreto de vivienda en el Consejo de Ministros - El HuffPost",
+      "news_status": "ELIGIBLE_UPDATE",
+      "news_first_seen": "2026-09-29T16:12:17.526895Z"
+    },
+    {
+      "name": "Almeida",
+      "social_source_count": 2,
+      "social_sources": [
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.0,
+      "movement": "down",
+      "first_detected_at": "2026-09-29T17:31:18+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -232,38 +226,45 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Antonio Banderas",
+      "first_detected_at": "2026-09-29T15:21:11+02:00",
+      "entered_top10_at": "2026-09-29T18:21:14+02:00",
+      "lead_minutes": 180
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
       "ok": true,
       "trends": [
         "#TEM29S",
+        "Gonzalo Suárez",
+        "Isabel Rodríguez",
         "#HONORMagicV6",
         "Fernando Alonso",
         "Ancelotti",
-        "Isabel Rodríguez",
+        "Emilio Delgado",
         "Miguel Román",
         "El Gobierno",
+        "Urbagestion",
+        "Digna",
         "Aston Martin",
-        "Mataró",
         "Nogueras",
         "Aldo Comas",
-        "Antonio Banderas",
-        "Hondarribia",
-        "Almeida",
-        "Digna",
-        "Urbagestión",
+        "Mataró",
+        "Ada Colau",
         "Senegal",
-        "BUT NOT YET",
-        "Yanes",
-        "Junts"
+        "Antonio Banderas",
+        "Vivienda",
+        "Repsol"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T18:11:11+02:00"
+      "fetched_at": "2026-09-29T18:21:14+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -288,7 +289,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T18:11:12+02:00"
+      "fetched_at": "2026-09-29T18:21:15+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -315,10 +316,10 @@
         "Junts"
       ],
       "error": null,
-      "update_hint": "Updated 42 minutes ago",
-      "age_minutes": 42.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-29T18:11:13+02:00"
+      "update_hint": "Updated 52 minutes ago",
+      "age_minutes": 52.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-29T18:21:16+02:00"
     },
     "superx": {
       "ok": true,
@@ -348,16 +349,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T18:11:14+02:00"
+      "fetched_at": "2026-09-29T18:21:17+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790698274",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790698877",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T18:11:14+02:00"
+      "fetched_at": "2026-09-29T18:21:17+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -385,9 +386,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 15:00 UTC",
-      "age_minutes": 71.2,
+      "age_minutes": 81.3,
       "freshness": "aging",
-      "fetched_at": "2026-09-29T18:11:14+02:00"
+      "fetched_at": "2026-09-29T18:21:17+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -415,18 +416,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 04:00 PM # Trend Type Actions 1 #TEM29S Hashtag 2 #HONORMa",
-      "age_minutes": 131.2,
+      "age_minutes": 141.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T18:11:14+02:00"
+      "fetched_at": "2026-09-29T18:21:18+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790698276",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790698881",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T18:11:16+02:00"
+      "fetched_at": "2026-09-29T18:21:21+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -435,7 +436,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T18:11:16+02:00"
+      "fetched_at": "2026-09-29T18:21:22+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -465,16 +466,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T18:11:16+02:00"
+      "fetched_at": "2026-09-29T18:21:22+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790698279",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790698884",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T18:11:19+02:00"
+      "fetched_at": "2026-09-29T18:21:24+02:00"
     }
   }
 }
