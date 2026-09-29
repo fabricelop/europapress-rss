@@ -1,32 +1,34 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T11:01:29+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-29T11:20:54+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "superx",
     "snaplytics",
+    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "tweets24"
+  ],
   "reliability": "high",
   "top10": [
     "Puerta del Sol",
-    "Ndongo",
-    "Ortega Smith",
-    "Sindicato de Inquilinas",
     "#LaIslaDeLasTentaciones7",
     "#FelizMartes",
-    "#LaHora29S",
     "Almeida",
+    "#LaHora29S",
+    "#HONORMagicV6",
     "Gabriel y Rafael",
-    "El IPC"
+    "#DíaMundialDelCorazón",
+    "Ndongo",
+    "San Miguel"
   ],
   "items": [
     {
@@ -36,55 +38,99 @@
     },
     {
       "rank": 2,
-      "name": "Ndongo",
-      "entered_top10_at": "2026-09-29T05:31:09+02:00"
-    },
-    {
-      "rank": 3,
-      "name": "Ortega Smith",
-      "entered_top10_at": "2026-09-29T10:51:02+02:00"
-    },
-    {
-      "rank": 4,
-      "name": "Sindicato de Inquilinas",
-      "entered_top10_at": "2026-09-29T10:51:02+02:00"
-    },
-    {
-      "rank": 5,
       "name": "#LaIslaDeLasTentaciones7",
       "entered_top10_at": "2026-09-29T01:11:39+02:00"
     },
     {
-      "rank": 6,
+      "rank": 3,
       "name": "#FelizMartes",
       "entered_top10_at": "2026-09-29T06:50:57+02:00"
     },
     {
-      "rank": 7,
-      "name": "#LaHora29S",
-      "entered_top10_at": "2026-09-29T09:40:57+02:00"
-    },
-    {
-      "rank": 8,
+      "rank": 4,
       "name": "Almeida",
       "entered_top10_at": "2026-09-29T04:01:23+02:00"
     },
     {
-      "rank": 9,
+      "rank": 5,
+      "name": "#LaHora29S",
+      "entered_top10_at": "2026-09-29T09:40:57+02:00"
+    },
+    {
+      "rank": 6,
+      "name": "#HONORMagicV6",
+      "entered_top10_at": "2026-09-29T11:20:54+02:00"
+    },
+    {
+      "rank": 7,
       "name": "Gabriel y Rafael",
       "entered_top10_at": "2026-09-29T08:21:08+02:00"
     },
     {
+      "rank": 8,
+      "name": "#DíaMundialDelCorazón",
+      "entered_top10_at": "2026-09-29T11:20:54+02:00"
+    },
+    {
+      "rank": 9,
+      "name": "Ndongo",
+      "entered_top10_at": "2026-09-29T05:31:09+02:00"
+    },
+    {
       "rank": 10,
-      "name": "El IPC",
-      "entered_top10_at": "2026-09-29T11:01:29+02:00"
+      "name": "San Miguel",
+      "entered_top10_at": "2026-09-29T11:20:54+02:00"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "El IPC"
+    "#HONORMagicV6",
+    "#DíaMundialDelCorazón",
+    "San Miguel"
   ],
   "upcoming": [
+    {
+      "name": "Sindicato de Inquilinas",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 14.7,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T11:20:54+02:00",
+      "news_source_count": 3,
+      "news_event_id": "455b24013ff7",
+      "news_title": "Quien es el portavoz de Sindicato de Inquilinas, nieto del exministro y premio Príncipe de Asturias, Aurelio Menéndez",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-28T21:13:53.587728Z"
+    },
+    {
+      "name": "Ortega Smith",
+      "social_source_count": 6,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.8,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T11:20:54+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
     {
       "name": "Junts",
       "social_source_count": 5,
@@ -96,33 +142,14 @@
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 17.0,
-      "movement": "up",
+      "mean_observed_rank": 16.6,
+      "movement": "flat",
       "first_detected_at": "2026-09-29T09:31:16+02:00",
       "news_source_count": 1,
       "news_event_id": "4edecbfa2601",
       "news_title": "Contratos indefinidos o rebajas fiscales para caseros: lo que exige la acampada frente a lo que pide Junts - El HuffPost",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-28T19:53:28.654593Z"
-    },
-    {
-      "name": "Antonio Banderas",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.8,
-      "movement": "down",
-      "first_detected_at": "2026-09-29T04:40:50+02:00",
-      "news_source_count": 3,
-      "news_event_id": "6432aaa8e735",
-      "news_title": "Antonio Banderas, sobre el desahucio de Maricarmen, en COPE Málaga: \"A mí me interesa toda la realidad, no una específica para un uso político\" - COPE",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T08:52:39.926384Z"
     },
     {
       "name": "Galapagar",
@@ -133,9 +160,9 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 14.2,
-      "movement": "new",
+      "best_observed_rank": 14,
+      "mean_observed_rank": 15.0,
+      "movement": "down",
       "first_detected_at": "2026-09-29T11:01:29+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -144,7 +171,7 @@
       "news_first_seen": null
     },
     {
-      "name": "Kico",
+      "name": "Morata",
       "social_source_count": 4,
       "social_sources": [
         "snaplytics",
@@ -152,15 +179,15 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 17.0,
+      "best_observed_rank": 19,
+      "mean_observed_rank": 19.5,
       "movement": "up",
-      "first_detected_at": "2026-09-29T10:31:08+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "first_detected_at": "2026-09-29T11:01:29+02:00",
+      "news_source_count": 1,
+      "news_event_id": "3e565dd08a4f",
+      "news_title": "La noche más dura de Álvaro Morata en el Leganés: dos goles cantados fallados contra el Castellón y pitada de parte de Butarque",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T07:13:34.694539Z"
     },
     {
       "name": "Latre",
@@ -173,7 +200,7 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 17.2,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T09:01:21+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -182,66 +209,43 @@
       "news_first_seen": null
     },
     {
-      "name": "Morata",
+      "name": "Antonio Banderas",
       "social_source_count": 3,
       "social_sources": [
         "snaplytics",
-        "trends24",
-        "trendswe"
-      ],
-      "best_observed_rank": 19,
-      "mean_observed_rank": 19.7,
-      "movement": "new",
-      "first_detected_at": "2026-09-29T11:01:29+02:00",
-      "news_source_count": 1,
-      "news_event_id": "3e565dd08a4f",
-      "news_title": "La noche más dura de Álvaro Morata en el Leganés: dos goles cantados fallados contra el Castellón y pitada de parte de Butarque",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T07:13:34.694539Z"
-    },
-    {
-      "name": "Gelabert",
-      "social_source_count": 2,
-      "social_sources": [
-        "superx",
+        "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 16.0,
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.7,
       "movement": "down",
-      "first_detected_at": "2026-09-29T06:10:55+02:00",
+      "first_detected_at": "2026-09-29T04:40:50+02:00",
+      "news_source_count": 3,
+      "news_event_id": "6432aaa8e735",
+      "news_title": "Antonio Banderas, sobre el desahucio de Maricarmen, en COPE Málaga: \"A mí me interesa toda la realidad, no una específica para un uso político\" - COPE",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T09:04:03.965343Z"
+    },
+    {
+      "name": "Kico",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 17,
+      "mean_observed_rank": 17.3,
+      "movement": "down",
+      "first_detected_at": "2026-09-29T10:31:08+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Decreto",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 19,
-      "mean_observed_rank": 19.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T10:51:02+02:00",
-      "news_source_count": 1,
-      "news_event_id": "32d396390c1e",
-      "news_title": "Consulta aquí el borrador provisional del real decreto de vivienda del Gobierno",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-28T19:41:03.510337Z"
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "El IPC",
-      "first_detected_at": "2026-09-29T10:51:02+02:00",
-      "entered_top10_at": "2026-09-29T11:01:29+02:00",
-      "lead_minutes": 10
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -249,30 +253,30 @@
       "trends": [
         "Puerta del Sol",
         "#LaIslaDeLasTentaciones7",
-        "#FelizMartes",
-        "Almeida",
         "#LaHora29S",
+        "Almeida",
+        "#FelizMartes",
         "#HONORMagicV6",
-        "Gabriel y Rafael",
-        "#DíaMundialDelCorazón",
-        "Ndongo",
-        "San Miguel",
+        "#CarrefourConFC27",
         "Antonio Banderas",
+        "Ndongo",
         "El IPC",
+        "SORTEO",
         "Ortega Smith",
         "Sindicato de Inquilinas",
-        "Galapagar",
-        "Latre",
-        "Kico",
+        "Gabriel y Rafael",
         "Junts",
+        "Galapagar",
+        "Nogueras",
+        "Latre",
         "Morata",
-        "Decreto"
+        "Patriotismo"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T11:01:29+02:00"
+      "fetched_at": "2026-09-29T11:20:54+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -297,37 +301,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T11:01:29+02:00"
+      "fetched_at": "2026-09-29T11:20:54+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
-        "#FelizMartes",
         "Puerta del Sol",
         "#LaIslaDeLasTentaciones7",
-        "#LaHora29S",
+        "#FelizMartes",
         "Almeida",
+        "#LaHora29S",
+        "#HONORMagicV6",
         "Gabriel y Rafael",
-        "San Miguel",
-        "#BuenosDías",
+        "#DíaMundialDelCorazón",
         "Ndongo",
-        "#ConexiónHonduras3",
-        "Ortega Smith",
+        "San Miguel",
         "Antonio Banderas",
-        "Galapagar",
-        "Sindicato de Inquilinas",
         "El IPC",
+        "Ortega Smith",
+        "Sindicato de Inquilinas",
+        "Galapagar",
+        "Latre",
         "Kico",
         "Junts",
-        "Latre",
-        "Patriotismo",
-        "Gelabert"
+        "Morata",
+        "Decreto"
       ],
       "error": null,
-      "update_hint": "Updated 1 hour ago",
-      "age_minutes": 60.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-29T11:01:30+02:00"
+      "update_hint": "Updated 17 minutes ago",
+      "age_minutes": 17.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-29T11:20:55+02:00"
     },
     "superx": {
       "ok": true,
@@ -357,16 +361,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T11:01:31+02:00"
+      "fetched_at": "2026-09-29T11:20:56+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790672491",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790673656",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T11:01:31+02:00"
+      "fetched_at": "2026-09-29T11:20:56+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -394,9 +398,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 08:00 UTC",
-      "age_minutes": 61.5,
+      "age_minutes": 80.9,
       "freshness": "aging",
-      "fetched_at": "2026-09-29T11:01:31+02:00"
+      "fetched_at": "2026-09-29T11:20:56+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -424,18 +428,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 09:00 AM # Trend Type Actions 1 Puerta del Sol Topic 2 #La",
-      "age_minutes": 121.5,
+      "age_minutes": 141.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T11:01:31+02:00"
+      "fetched_at": "2026-09-29T11:20:57+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790672492",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790673658",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T11:01:32+02:00"
+      "fetched_at": "2026-09-29T11:20:58+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -444,7 +448,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T11:01:32+02:00"
+      "fetched_at": "2026-09-29T11:21:00+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -474,16 +478,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T11:01:32+02:00"
+      "fetched_at": "2026-09-29T11:21:01+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790672494",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790673663",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T11:01:34+02:00"
+      "fetched_at": "2026-09-29T11:21:03+02:00"
     }
   }
 }
