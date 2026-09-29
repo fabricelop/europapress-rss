@@ -224,6 +224,16 @@ def update_state(state: dict, session: requests.Session, recent_pages: int, max_
         if item.get("article_status") != "ready" or not isinstance(item.get("tweets"), list)
     ]
     pending_fetch.sort(key=lambda item: (item.get("article_status") == "ready", item.get("first_seen_at") or ""), reverse=False)
+    # A no-news scan should not create a Git commit (or trigger an unnecessary
+    # deployment) just to update last_run_at. GitHub Actions records the run.
+    current_error = "; ".join(page_errors)[:1000] if page_errors else None
+    if (
+        not bootstrap and not discovered and not pending_fetch
+        and observed_urls.issubset(seen_urls)
+        and scan.get("last_error") == current_error
+    ):
+        print("Tremending: sin nuevas entradas; estado editorial sin cambios")
+        return state
     for item in pending_fetch[:max_articles]:
         try:
             article = extract_article(fetch(session, item["url"]), item["url"])
