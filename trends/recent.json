@@ -1,20 +1,20 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T22:01:24+02:00",
-  "primary_source": "tweets24",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-29T22:11:39+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
+    "getdaytrends",
     "tweets24",
-    "fowtools",
+    "superx",
+    "snaplytics",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [
-    "tweets24"
-  ],
+  "fresh_sources": [],
   "reliability": "high",
   "top10": [
     "Croacia",
@@ -22,11 +22,11 @@
     "#RTXON",
     "#JuanjoBonaXNetflix",
     "Manchester City",
-    "#TEM29S",
-    "Fermin",
     "#NationsLeague",
-    "Isabel Rodríguez",
-    "Mariona"
+    "Pubill",
+    "#TEM29S",
+    "Euroliga",
+    "Isabel Rodríguez"
   ],
   "items": [
     {
@@ -56,32 +56,35 @@
     },
     {
       "rank": 6,
-      "name": "#TEM29S",
-      "entered_top10_at": "2026-09-29T16:50:58+02:00"
-    },
-    {
-      "rank": 7,
-      "name": "Fermin",
-      "entered_top10_at": "2026-09-29T21:31:08+02:00"
-    },
-    {
-      "rank": 8,
       "name": "#NationsLeague",
       "entered_top10_at": "2026-09-29T21:31:08+02:00"
     },
     {
-      "rank": 9,
-      "name": "Isabel Rodríguez",
+      "rank": 7,
+      "name": "Pubill",
+      "entered_top10_at": "2026-09-29T22:11:39+02:00"
+    },
+    {
+      "rank": 8,
+      "name": "#TEM29S",
       "entered_top10_at": "2026-09-29T16:50:58+02:00"
     },
     {
+      "rank": 9,
+      "name": "Euroliga",
+      "entered_top10_at": "2026-09-29T22:11:39+02:00"
+    },
+    {
       "rank": 10,
-      "name": "Mariona",
-      "entered_top10_at": "2026-09-29T21:31:08+02:00"
+      "name": "Isabel Rodríguez",
+      "entered_top10_at": "2026-09-29T16:50:58+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Pubill",
+    "Euroliga"
+  ],
   "upcoming": [
     {
       "name": "Pyme",
@@ -92,8 +95,8 @@
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 12.3,
-      "movement": "down",
+      "mean_observed_rank": 15.0,
+      "movement": "flat",
       "first_detected_at": "2026-09-29T20:01:26+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -110,7 +113,7 @@
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 12.7,
+      "mean_observed_rank": 14.7,
       "movement": "flat",
       "first_detected_at": "2026-09-29T21:31:08+02:00",
       "news_source_count": 0,
@@ -120,10 +123,43 @@
       "news_first_seen": null
     },
     {
-      "name": "El City",
-      "social_source_count": 3,
+      "name": "Lamine Yamal",
+      "social_source_count": 2,
+      "social_sources": [
+        "getdaytrends",
+        "trends24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T22:11:39+02:00",
+      "news_source_count": 3,
+      "news_event_id": "e00c459fa6ec",
+      "news_title": "22:08 España - Croacia en directo: ¡gol de Lamine Yamal! | Última hora de UEFA Nations League en vivo hoy",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T20:09:36.959034Z"
+    },
+    {
+      "name": "Mariona",
+      "social_source_count": 2,
       "social_sources": [
         "trends24",
+        "trendswe"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 13.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T22:11:39+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "El City",
+      "social_source_count": 2,
+      "social_sources": [
         "trendswe",
         "tweets24"
       ],
@@ -139,15 +175,14 @@
     },
     {
       "name": "Spotify",
-      "social_source_count": 3,
+      "social_source_count": 2,
       "social_sources": [
-        "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 18.3,
-      "movement": "flat",
+      "mean_observed_rank": 17.5,
+      "movement": "down",
       "first_detected_at": "2026-09-29T21:31:08+02:00",
       "news_source_count": 1,
       "news_event_id": "e8bdaa16c409",
@@ -156,17 +191,16 @@
       "news_first_seen": "2026-09-29T14:12:34.475983Z"
     },
     {
-      "name": "Miguel Román",
-      "social_source_count": 3,
+      "name": "Campazzo",
+      "social_source_count": 2,
       "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
+        "getdaytrends",
+        "trends24"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.3,
-      "movement": "down",
-      "first_detected_at": "2026-09-29T20:41:35+02:00",
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T22:11:39+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -174,35 +208,16 @@
       "news_first_seen": null
     },
     {
-      "name": "Aldo Comas",
-      "social_source_count": 3,
+      "name": "Miguel Román",
+      "social_source_count": 2,
       "social_sources": [
-        "trends24",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 18.3,
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.5,
       "movement": "down",
-      "first_detected_at": "2026-09-29T21:01:29+02:00",
-      "news_source_count": 1,
-      "news_event_id": "609708b48d32",
-      "news_title": "Una entrevistada da plantón en directo a Joaquín Prat en 'El Tiempo Justo' por las mofas de Aldo Comas: \"Os dan por...\" - El Televisero",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T17:12:28.459859Z"
-    },
-    {
-      "name": "Man City",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 17.3,
-      "movement": "down",
-      "first_detected_at": "2026-09-29T20:10:50+02:00",
+      "first_detected_at": "2026-09-29T20:41:35+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -217,31 +232,31 @@
       "ok": true,
       "trends": [
         "Croacia",
+        "Pubill",
+        "Fermin",
         "Gonzalo Suárez",
+        "Alex Baena",
+        "Euroliga",
         "#RTXON",
         "#JuanjoBonaXNetflix",
+        "Macron",
+        "Efes",
         "Manchester City",
-        "#TEM29S",
-        "Fermin",
+        "Lamine Yamal",
         "#NationsLeague",
-        "Isabel Rodríguez",
+        "Campazzo",
         "Mariona",
-        "Premier League",
-        "Pyme",
+        "Isabel Rodríguez",
+        "Cubarsí",
+        "Estambul",
         "Repsol",
-        "El City",
-        "Miguel Román",
-        "Ministra de Vivienda",
-        "Man City",
-        "Aldo Comas",
-        "#HONORMagicV6",
-        "Spotify"
+        "Pyme"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T22:01:24+02:00"
+      "fetched_at": "2026-09-29T22:11:39+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -266,7 +281,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T22:01:24+02:00"
+      "fetched_at": "2026-09-29T22:11:40+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -293,10 +308,10 @@
         "Spotify"
       ],
       "error": null,
-      "update_hint": "Updated 39 minutes ago",
-      "age_minutes": 39.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-29T22:01:25+02:00"
+      "update_hint": "Updated 49 minutes ago",
+      "age_minutes": 49.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-29T22:11:41+02:00"
     },
     "superx": {
       "ok": true,
@@ -326,16 +341,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T22:01:26+02:00"
+      "fetched_at": "2026-09-29T22:11:41+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790712086",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790712701",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T22:01:26+02:00"
+      "fetched_at": "2026-09-29T22:11:41+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -363,9 +378,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 19:00 UTC",
-      "age_minutes": 61.5,
+      "age_minutes": 71.7,
       "freshness": "aging",
-      "fetched_at": "2026-09-29T22:01:27+02:00"
+      "fetched_at": "2026-09-29T22:11:42+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -393,18 +408,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 08:00 PM # Trend Type Actions 1 Croacia Topic 2 Gonzalo Su",
-      "age_minutes": 121.5,
+      "age_minutes": 131.7,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T22:01:27+02:00"
+      "fetched_at": "2026-09-29T22:11:42+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790712090",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790712703",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T22:01:30+02:00"
+      "fetched_at": "2026-09-29T22:11:43+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -413,7 +428,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T22:01:31+02:00"
+      "fetched_at": "2026-09-29T22:11:43+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -443,16 +458,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T22:01:31+02:00"
+      "fetched_at": "2026-09-29T22:11:44+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790712093",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790712706",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T22:01:33+02:00"
+      "fetched_at": "2026-09-29T22:11:46+02:00"
     }
   }
 }
