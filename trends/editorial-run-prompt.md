@@ -13,13 +13,13 @@ Cuando el envoltorio haya creado un comentario `TTENDENCIAS_RUNTRACE_V1`, actual
 
 Usa el conector GitHub disponible para `fabricelop/europapress-rss`. Trabaja EXCLUSIVAMENTE con TTendencias y con estado fresco de la rama `main`.
 
-GitHub es la única persistencia/estado del flujo. Web se usa para investigar por qué una tendencia es tendencia AHORA y verificar hechos actuales. La imagen final de TTendencias debe ser original generada; no uses imágenes encontradas en Internet como imagen final.
+GitHub es la única persistencia/estado del flujo. Web se usa para investigar por qué una tendencia es tendencia AHORA y verificar hechos actuales. La imagen de TTendencias se obtiene de fuentes web verificables y, en Tremending, de la captura del tuit elegido. No generes imágenes por IA.
 
 No uses Telegram. No proceses TTiTTulares ni SeLoRecordamos. No despliegues Vercel. No cambies radar, fuentes, umbrales ni ninguna programación/automatización.
 
 ## Formato vigente de explicaciones para un tuit (prioridad de redacción)
 
-Cuando `trends/editorial-config.json.editorial.mode` sea `explanation_only` (o `explanation_only:true`), esta sección prevalece sobre cualquier formato heredado de Principal/A/B/C, imágenes o remates de la sección «Redacción». **No cambia el flujo, la verificación factual, los estados, la agrupación, el puente a TTiTTulares ni la persistencia existente**: solo cambia el texto de `explanation`. En este modo se redacta UNA explicación por acontecimiento/grupo, sin alternativas ni imágenes, conforme a la configuración vigente.
+Cuando `trends/editorial-config.json.editorial.mode` sea `explanation_only` (o `explanation_only:true`), esta sección prevalece sobre cualquier formato heredado de Principal/A/B/C, imágenes o remates de la sección «Redacción». **No cambia el flujo, la verificación factual, los estados, la agrupación, el puente a TTiTTulares ni la persistencia existente**. En este modo se redacta UNA explicación por acontecimiento/grupo, sin alternativas ni generación de imágenes; las fotos web se incorporan posteriormente sin bloquearla.
 
 **Regla prioritaria de salida no bloqueante (prevalece sobre cualquier regla posterior que sugiera que el remate es obligatorio):** El chascarrillo es deseable, pero NUNCA un requisito para cerrar o sacar una tendencia cuya explicación factual ya esté verificada. Intenta hasta DOS propuestas breves de remate concreto y adecuado. Si ninguna sirve, resulta inapropiado por sensibilidad, falla su generación o no cabe en el tuit, persiste inmediatamente la explicación factual completa con `closer_text:""`, sin línea `🌶️`, sin estrellas y con estado editorial normal `explained`. No reintentes indefinidamente, no esperes otra generación, no bloquees la cola ni las siguientes tendencias y NUNCA marques `problematic`, `preparing` o `update` exclusivamente por falta de remate. La verificación factual y el límite del tuit siguen siendo obligatorios; si no se verifica el hecho, aplica el tratamiento normal de hechos no verificados. Registra una incidencia editorial no bloqueante cuando falte el remate por un fallo de generación, no cuando su omisión sea deliberada por sensibilidad. El orden de dos líneas y la presencia de `🌶️` de las reglas siguientes solo se exigen CUANDO EXISTA un remate válido.
 
@@ -32,6 +32,14 @@ Cuando `trends/editorial-config.json.editorial.mode` sea `explanation_only` (o `
 - Política/controversias: hechos neutrales y atribución de afirmaciones disputadas; el chascarrillo, si cabe, versa sobre circunstancias concretas, no es una consigna partidista. No hagas humor de víctimas, tragedias, sufrimiento, abusos ni colectivos vulnerables. Si un remate no resulta respetuoso o distorsiona los hechos, termina sin chiste: **«intenta» no autoriza forzarlo**.
 - **Validación obligatoria justo antes de persistir**: construye exactamente el texto que el botón Copiar compartirá (incluido cualquier prefijo que añada la app) y mide su longitud con el contador ponderado de X/twitter-text si está disponible. Si no lo está, usa un margen conservador de hasta 250 puntos de código Unicode para el texto final, evita URLs y trata emojis compuestos como caracteres adicionales. Si alcanza 280 o hay duda, reescribe y vuelve a contar; no cortes a ciegas al carácter 279 ni publiques una explicación incompleta. Si la app añade un encabezado dinámico, descuenta su longitud del presupuesto de `explanation`.
 - Ejemplo de tono (solo ilustrativo, no reutilizable): «El programa amplía su emisión hasta las 14:00. La actualidad ya está echando horas extra». No uses el mismo remate en otras tendencias.
+
+### Público/Tremending: título corto y rango no inventado
+
+Cuando `tremending_origin:true`, esta entrada no es una tendencia clasificada por el radar: NO inventes `TT#0` ni pegues el titular completo de Público en el campo `name`. Usa el `name` corto recibido (o acórtalo todavía más, sin perder el acontecimiento) y comienza el tuit completo por `<nombre corto> es tendencia por/porque <hecho comprobado>`. Sigue, si procede, con UN salto de línea y `🌶️ <único remate de una frase>`. NO agregues otro encabezado de título antes de esa frase ni dentro de la explicación: se muestra y se copia una sola vez. `closer_text` contiene el remate exacto con 🌶️ o queda vacío cuando no procede. Conserva en la ficha `tremending_origin`, `tremending_id`, `article_title`, `source_url`, `selected_tweet` y `verification_sources`. El tuit seleccionado es contexto/opinión de su autor, no fuente para afirmar hechos. Su captura real tendrá prioridad como imagen y se incorporará sin bloquear la explicación.
+
+### Foto real posterior y no bloqueante para TODAS las tendencias
+
+En `explanation_only`, publica primero el texto factual y su remate opcional, sin esperar imágenes. No generes imágenes por IA. GitHub Actions agrega después una fotografía verificable desde metadatos `og:image`/`twitter:image` de `verification_sources` del mismo acontecimiento; una entrada Tremending usa primero la captura del tuit que eligió el usuario. Conserva URLs concretas de fuentes fiables en cada registro. Si no se encuentra foto, `image_status:"none"` es terminal para esa versión y el tuit sigue disponible. Si la captura Tremending aún está elaborándose, `image_status:"pending_capture"` tampoco retiene la explicación. Esta regla prevalece sobre cualquier bloque antiguo de imagen generada incluido más abajo.
 
 ## Aprendizaje editorial de remates mediante estrellas
 
@@ -108,11 +116,11 @@ Los remates deben ser específicos del detonante real y evitar plantillas genér
 
 Genera para principal y A/B/C una URL `https://twitter.com/intent/tweet?text=` con el texto exacto correctamente codificado.
 
-## Imagen — obligatoria y generada
+## Imagen generada — legado INACTIVO en `explanation_only`
 
-Sigue SIEMPRE `trends/editorial-config.json.editorial.image_policy`. La imagen es obligatoria para cualquier item `ready`.
+Sigue SIEMPRE `trends/editorial-config.json.editorial.image_policy`. Esta sección solo aplica al modo legado con generación visual, no a `explanation_only` con fotos web no bloqueantes.
 
-Genera una imagen editorial ORIGINAL en PNG, WebP o JPEG. No sustituyas esta generación por una búsqueda web y no uses SVG.
+Solo en el modo legado: genera una imagen editorial ORIGINAL en PNG, WebP o JPEG. No sustituyas esta generación por una búsqueda web y no uses SVG.
 
 Línea visual aprobada: `editorial-scene-v2-cleveland`.
 
