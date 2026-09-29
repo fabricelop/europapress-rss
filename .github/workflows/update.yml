@@ -238,9 +238,12 @@ jobs:
       - name: Escanear avisos Top 10 TTendencias
         if: always()
         continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -e
           curl --fail-with-body --silent --show-error --max-time 25 \
+            --header "Authorization: Bearer $GITHUB_TOKEN" \
             https://europapress-rss.vercel.app/api/ttendencias-top10-push \
             --output /tmp/ttendencias-push-result.json
           python3 - <<'PY'
