@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T16:11:15+02:00",
+  "captured_at": "2026-09-29T16:21:14+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -80,10 +80,8 @@
       "entered_top10_at": "2026-09-29T15:21:11+02:00"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Aldo Comas"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "PSOE y Sumar",
@@ -96,13 +94,13 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 12.0,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T14:40:57+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "news_source_count": 7,
+      "news_event_id": "e26960fb9a22-r2",
+      "news_title": "Claves del acuerdo de vivienda | El PSOE y Sumar pactan prohibir los desahucios a personas vulnerables hasta 2030 y la prórroga de los alquileres hasta 2028 - Telecinco",
+      "news_status": "ELIGIBLE_UPDATE",
+      "news_first_seen": "2026-09-29T14:12:34.475983Z"
     },
     {
       "name": "SORTEO",
@@ -114,7 +112,7 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 15.7,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T15:01:27+02:00",
       "news_source_count": 1,
       "news_event_id": "016391105c8a",
@@ -132,7 +130,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 15.3,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T15:21:11+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -150,7 +148,7 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 15.3,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T14:51:01+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -168,7 +166,7 @@
       ],
       "best_observed_rank": 19,
       "mean_observed_rank": 19.7,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T16:11:15+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -185,7 +183,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T16:11:15+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -202,7 +200,7 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 13.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T16:11:15+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -242,16 +240,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T16:11:15+02:00"
+      "fetched_at": "2026-09-29T16:21:14+02:00"
     },
     "getdaytrends": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790691076",
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790691674",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T16:11:16+02:00"
+      "fetched_at": "2026-09-29T16:21:14+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -278,10 +276,10 @@
         "Latre"
       ],
       "error": null,
-      "update_hint": "Updated 8 minutes ago",
-      "age_minutes": 8.0,
+      "update_hint": "Updated 18 minutes ago",
+      "age_minutes": 18.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-29T16:11:16+02:00"
+      "fetched_at": "2026-09-29T16:21:15+02:00"
     },
     "superx": {
       "ok": true,
@@ -311,16 +309,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T16:11:17+02:00"
+      "fetched_at": "2026-09-29T16:21:15+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790691078",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790691675",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T16:11:18+02:00"
+      "fetched_at": "2026-09-29T16:21:15+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -348,9 +346,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 29, 2026 13:00 UTC",
-      "age_minutes": 71.3,
+      "age_minutes": 81.3,
       "freshness": "aging",
-      "fetched_at": "2026-09-29T16:11:18+02:00"
+      "fetched_at": "2026-09-29T16:21:16+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -378,27 +376,27 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 12:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 #La",
-      "age_minutes": 251.3,
+      "age_minutes": 261.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T16:11:19+02:00"
+      "fetched_at": "2026-09-29T16:21:16+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790691080",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790691677",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T16:11:20+02:00"
+      "fetched_at": "2026-09-29T16:21:17+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
       "trends": [],
-      "error": "Lista no válida (1 elementos parseados)",
-      "update_hint": "updated 30 minutes ago",
-      "age_minutes": 30.0,
-      "freshness": "invalid",
-      "fetched_at": "2026-09-29T16:11:21+02:00"
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://globaltwittertrends.com/spain/?_=1790691678",
+      "update_hint": null,
+      "age_minutes": null,
+      "freshness": "error",
+      "fetched_at": "2026-09-29T16:21:18+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -428,16 +426,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T16:11:22+02:00"
+      "fetched_at": "2026-09-29T16:21:18+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790691086",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790691682",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T16:11:26+02:00"
+      "fetched_at": "2026-09-29T16:21:22+02:00"
     }
   }
 }
