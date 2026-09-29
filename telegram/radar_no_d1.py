@@ -164,7 +164,12 @@ def get(url,timeout=12):
  }
  r=urllib.request.Request(url,headers=headers)
  return urllib.request.urlopen(r,timeout=timeout).read().decode("utf-8","ignore")
-def clean(s): return re.sub(r"\s+"," ",html.unescape(re.sub("<[^>]+>"," ",str(s)))).strip()
+def clean(s):
+ # Preserve RSS CDATA content BEFORE removing HTML tags. Previously
+ # "<![CDATA[headline]]>" was mistaken for one HTML tag and wiped out,
+ # breaking official feeds such as COPE and HuffPost (Google fallback).
+ value=re.sub(r"<!\[CDATA\[([\s\S]*?)\]\]>",lambda m:m.group(1),str(s))
+ return re.sub(r"\s+"," ",html.unescape(re.sub(r"<[^>]+>"," ",value))).strip()
 # Regression guard: Macklemore/Free Palestine vs protesta de Ed Sheeran (2026-09-24)
 TOKEN_ALIASES={
  "frontera":"frontera","fronteras":"frontera","fronterizo":"frontera","fronteriza":"frontera","fronterizos":"frontera","fronterizas":"frontera",
@@ -839,6 +844,8 @@ def send_review(e,token,chat,fast=False):
  return True
 
 if "--selftest-dedupe" in sys.argv:
+ assert clean("<![CDATA[La noticia de prueba]]>")=="La noticia de prueba","El RSS CDATA perdió el título"
+ assert clean("<![CDATA[La noticia <b>importante</b>]]>")=="La noticia importante"
  tests=[
   (
    'Donald Trump y Delcy Rodriguez se reunen por primera vez en Nueva York',
