@@ -42,7 +42,7 @@ function groupRankLabel(x){
  const ctx=(Array.isArray(x.trend_context)?x.trend_context:[])
    .filter(t=>t&&t.name)
    .sort((a,b)=>Number(a.rank||99)-Number(b.rank||99));
- if(ctx.length>1)return ctx.map(t=>(Number(t.rank)>=1&&Number(t.rank)<=20?"TT#"+Number(t.rank)+" ":"")+t.name).join(" · ");
+ if(ctx.length>1){const leader=Number(x._rank)||Number(ctx[0].rank);return (leader>=1&&leader<=20?"TT#"+leader+" ":"")+(x.name||displayName(x))+" · "+ctx.length+" tendencias";}
  const rank=Number(x._rank),name=displayName(x);
  return (rank>=1&&rank<=20?"TT#"+rank+" ":"")+name
 }
@@ -73,8 +73,17 @@ function copyText(x){
  if(hasTweetReadyFormat(x))return value;
  return groupRankLabel(x)+"\n\n"+value;
 }
+function displayedExplanation(x){
+ const full=String(x.explanation||"").trim();
+ if(!hasTweetReadyFormat(x))return full;
+ const rank=Number(x._rank),literal=String(x.name||"").trim();
+ const prefix="TT#"+rank+" "+literal;
+ if(Number.isFinite(rank)&&literal&&full.startsWith(prefix+" "))return full.slice(prefix.length).trimStart();
+ const match=full.match(/^TT#(?:[1-9]|1[0-9]|20)\s+.+?\s+(?=es tendencia (?:por|porque)\b)/u);
+ return match?full.slice(match[0].length).trimStart():full;
+}
 function splitExplainedText(x){
- const full=String(x.explanation||"").trim(),closer=String(x.closer_text||"").trim();
+ const full=displayedExplanation(x),closer=String(x.closer_text||"").trim();
  if(!closer||!full.endsWith(closer))return {fact:full,closer:""};
  const fact=full.slice(0,-closer.length).trimEnd();
  if(!fact)return {fact:full,closer:""};
@@ -172,7 +181,7 @@ async function load(){
  const d=await r.json();if(!r.ok||!d?.ok)throw new Error(d?.error||"No se pudo leer TTendencias");
  const requests=d.requests?.requests||[];
  allItems=[...(d.explained?.items||[])]
-   .filter(x=>String(x.explanation||"").trim())
+   .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
    .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||"")))
    .slice(0,100)
    .map(x=>({...x,_rank:rankFor(x,requests)}));
