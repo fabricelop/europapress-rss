@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-29T01:19:28.448420+00:00",
+  "checked_at": "2026-09-29T07:02:50.159239+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.8,
-      "run_id": 36507289355,
+      "age_minutes": 0.7,
+      "run_id": 36534280395,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,101 +75,25 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 12,
-      "overdue_count": 12,
-      "oldest_age_minutes": 208.7,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "fc1e4bc8ee32",
-          "name": "#MCCLegends",
-          "status": "preparing",
-          "age_minutes": 38.3
-        },
-        {
-          "id": "c1e5fdc8cf2a",
-          "name": "Kico",
-          "status": "preparing",
-          "age_minutes": 158.5
-        },
-        {
-          "id": "23be980f29a1",
-          "name": "Gema",
-          "status": "preparing",
-          "age_minutes": 88.4
-        },
-        {
-          "id": "4b85f530992d",
-          "name": "Puerta del Sol",
-          "status": "preparing",
-          "age_minutes": 158.5
-        },
-        {
-          "id": "378649592d5e",
-          "name": "#LaIslaDeLasTentaciones7",
-          "status": "preparing",
-          "age_minutes": 208.7
-        },
-        {
-          "id": "0a26ce3ac7cf",
-          "name": "Olise",
-          "status": "preparing",
-          "age_minutes": 208.7
-        },
-        {
-          "id": "66baf38b979a",
-          "name": "Juanpi",
-          "status": "preparing",
-          "age_minutes": 158.5
-        },
-        {
-          "id": "1b4b1a7f2126",
-          "name": "Rubén",
-          "status": "preparing",
-          "age_minutes": 88.4
-        },
-        {
-          "id": "bfdbf85e08c0",
-          "name": "Irini",
-          "status": "preparing",
-          "age_minutes": 88.4
-        },
-        {
-          "id": "1e03ad2efe6a",
-          "name": "Paola",
-          "status": "preparing",
-          "age_minutes": 88.4
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "fc1e4bc8ee32",
-        "c1e5fdc8cf2a",
-        "23be980f29a1",
-        "4b85f530992d",
-        "378649592d5e",
-        "0a26ce3ac7cf",
-        "66baf38b979a",
-        "1b4b1a7f2126",
-        "bfdbf85e08c0",
-        "1e03ad2efe6a",
-        "1f02e917fd21",
-        "179ac7f4ce3a"
-      ],
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [],
-  "warnings": [
-    "cola de explicaciones retrasada: 12 pendiente(s) superan 30 min; más antigua 208.7 min"
-  ],
+  "warnings": [],
   "alert_sent": false,
   "last_alert_signature": ""
 }
