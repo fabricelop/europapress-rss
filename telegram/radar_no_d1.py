@@ -4,6 +4,7 @@ from itertools import combinations
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
 from source_telemetry import update_source_telemetry
+from source_publication import feed_publication, enrich_html_rows
 
 SOURCES=[
 ("Europa Press","https://www.europapress.es/noticias/","html"),
@@ -155,14 +156,14 @@ def save(path,obj):
  tmp=path.with_suffix(path.suffix+".tmp")
  tmp.write_text(data,encoding="utf-8")
  tmp.replace(path)
-def get(url):
+def get(url,timeout=12):
  headers={
   "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36",
   "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
   "Accept-Language":"es-ES,es;q=0.9,en;q=0.7"
  }
  r=urllib.request.Request(url,headers=headers)
- return urllib.request.urlopen(r,timeout=12).read().decode("utf-8","ignore")
+ return urllib.request.urlopen(r,timeout=timeout).read().decode("utf-8","ignore")
 def clean(s): return re.sub(r"\s+"," ",html.unescape(re.sub("<[^>]+>"," ",str(s)))).strip()
 # Regression guard: Macklemore/Free Palestine vs protesta de Ed Sheeran (2026-09-24)
 TOKEN_ALIASES={
@@ -339,7 +340,16 @@ def parse_source(src,url,kind,sport=False,recovery=False):
       t=clean(tm.group(1));u=clean(lm.group(1))
       if "news.google.com" in candidate:
        t=re.sub(r"\\s+-\\s+[^-]{2,80}$","",t).strip()
-      if t and u and (not sport or sport_important(t)):out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"})
+      if t and u and (not sport or sport_important(t)):
+       row={"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"}
+       # Google News's pubDate is an aggregation timestamp, not the publisher's.
+       # Only use date metadata in a direct publisher RSS/Atom feed.
+       if urllib.parse.urlparse(candidate).hostname not in {"news.google.com"}:
+        published=feed_publication(b)
+        if published:
+         row["published_at"]=published
+         row["publication_date_source"]="publisher_feed"
+       out.append(row)
    else:
     n=0
     for u,t in re.findall(r"<a[^>]+href=[\"']([^\"']+)[\"'][^>]*>([\s\S]*?)</a>",body,re.I):
@@ -350,6 +360,11 @@ def parse_source(src,url,kind,sport=False,recovery=False):
        out.append({"source":src,"title":t,"url":u,"source_type":"sport" if sport else "general"});n+=1
       if n>=80:break
    if out:
+    # For publisher HTML listings, retrieve the original publication metadata
+    # of up to three directly linked articles. Never use the listing poll time.
+    # Failure here is telemetry-only and cannot block article retrieval.
+    if effective_kind=="html":
+     enrich_html_rows(out,SOURCE_DOMAINS.get(src),get,limit=3)
     return src,out,candidate,None
    last="0 artículos extraídos en "+candidate
   except Exception as e:last=str(e)
