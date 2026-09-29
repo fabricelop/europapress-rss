@@ -498,7 +498,7 @@ function renderSourcesSheet(){
  const sourceSummary=[
    (Number.isFinite(healthy)&&Number.isFinite(configured)?healthy+"/"+configured+" fuentes":""),
    (Number.isFinite(hf)&&Number.isFinite(tf)?hf+"/"+tf+" familias independientes":""),
-   "Artículos distintos detectados en las últimas 24 h"+(warming?" (contador en acumulación)":"")
+   "Artículos distintos recuperados en 24 h"+(warming?" (contador en acumulación)":"")+" · Hace = hora de publicación del medio"
  ].filter(Boolean).join(" · ");
  $("sourcesSummary").textContent=sourceSummary;
  const previousScroll=box.scrollTop;box.replaceChildren();
@@ -520,14 +520,14 @@ function renderSourcesSheet(){
    for(const x of group){
      const tr=document.createElement("tr");
      const name=document.createElement("td");name.className="sourceName";name.textContent=String(x.source||"Fuente");
-     const title=String(x.last_article_title||x.last_event_title||"");
-     if(title)name.title="Última noticia: "+title;
+     const title=String(x.last_published_title||"");
+     if(title)name.title="Última noticia publicada con fecha verificable: "+title;
      if(x.family&&x.family!==x.source)name.title+=(name.title?" · ":"")+"Familia: "+x.family;
      tr.appendChild(name);
      const ageCell=document.createElement("td");
-     const age=sourceAgeInfo(x.last_article_at||x.last_contribution_at);
+     const age=sourceAgeInfo(x.last_published_at);
      const badge=document.createElement("span");badge.className="sourceAge "+age.level;badge.textContent=age.text;
-     badge.title=age.minutes===null?"Sin fecha disponible":"Tiempo desde la última noticia nueva recuperada (no desde el último refresco)";
+     badge.title=age.minutes===null?"No hay fecha de publicación verificable en RSS o artículo":"Tiempo desde la publicación en el medio (no desde la recuperación ni el refresco)";
      ageCell.appendChild(badge);tr.appendChild(ageCell);
      const countCell=document.createElement("td");
      const count=x.articles_24h!=null?Number(x.articles_24h):NaN;
