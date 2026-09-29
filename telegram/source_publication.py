@@ -142,6 +142,48 @@ def enrich_html_rows(rows, publisher_domain, fetch, limit=3, now=None):
     return rows
 
 
+
+def latest_official_feed(body, publisher_domain, now=None, news_only=False):
+    """Most recent *publisher* publication from an actual official RSS feed.
+
+    For COPE, exclude podcast episodes, program promotions and videos by
+    requiring a /noticias/ article URL. A Google News feed is never valid here.
+    """
+    domain = str(publisher_domain or "").lower()
+    if not domain:
+        return None
+    blocks = re.findall(r"<(?:item|entry)\b[\s\S]*?</(?:item|entry)>",
+                        str(body or ""), re.I)
+    best = None
+    for block in blocks[:400]:
+        published = feed_publication(block, now)
+        if not published:
+            continue
+        lm = re.search(r"<link(?:\s[^>]*)?>([\s\S]*?)</link>", block, re.I)
+        tm = re.search(r"<title(?:\s[^>]*)?>([\s\S]*?)</title>", block, re.I)
+        if not lm or not tm:
+            continue
+        url = html.unescape(re.sub(r"<!\[CDATA\[|\]\]>", "", lm.group(1))).strip()
+        title = html.unescape(re.sub(r"<[^>]+>|<!\[CDATA\[|\]\]>", " ", tm.group(1)))
+        title = re.sub(r"\s+", " ", title).strip()
+        try:
+            parts = urlsplit(url)
+            host = str(parts.hostname or "").lower()
+            if (parts.scheme != "https" or
+                    not (host == domain or host.endswith("." + domain))):
+                continue
+            if news_only and "/noticias/" not in parts.path:
+                continue
+        except ValueError:
+            continue
+        if not title:
+            continue
+        if best is None or published > best["published_at"]:
+            best = {"published_at": published, "title": title, "url": url,
+                    "publication_date_source": "publisher_feed"}
+    return best
+
+
 def selftest():
     clock = datetime(2026, 9, 29, 21, tzinfo=timezone.utc)
     assert feed_publication(
@@ -171,6 +213,17 @@ def selftest():
     rows = [{"url":"https://www.example.com/es/actualidad/noticia-123","title":"Noticia"}]
     enrich_html_rows(rows,"example.com",fake,now=clock)
     assert rows[0]["published_at"] == "2026-09-29T19:00:00Z"
+    sample = """<rss><channel>
+      <item><title>Programa radio</title><link>https://www.cope.es/programas/radio/podcast</link>
+      <pubDate>Tue, 29 Sep 2026 20:30:00 GMT</pubDate></item>
+      <item><title><![CDATA[Noticia publicada]]></title>
+      <link>https://www.cope.es/actualidad/espana/noticias/ejemplo.html</link>
+      <pubDate>Tue, 29 Sep 2026 19:38:00 GMT</pubDate></item>
+    </channel></rss>"""
+    fresh = latest_official_feed(sample, "cope.es", clock, news_only=True)
+    assert fresh and fresh["published_at"] == "2026-09-29T19:38:00Z"
+    assert fresh["title"] == "Noticia publicada"
+    assert latest_official_feed(sample, "efe.com", clock) is None
     print("TTITTULARES_PUBLISHER_DATES_SELFTEST_OK")
 
 
