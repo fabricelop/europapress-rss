@@ -70,7 +70,7 @@ function rankFor(x,requests){
 function hasTweetReadyFormat(x){
  const content=String(x.explanation||"").trim();
  if(/^TT#(?:0|[1-9]|1[0-9]|20)\s+\S/u.test(content))return true; // Legacy TT#0: never duplicate header.
- return Boolean(x.tremending_origin && /^.{2,65} es tendencia (?:por|porque)\b/iu.test(content));
+ return Boolean(x.tremending_origin && /^(?:TT 🗯️ )?.{2,65} es tendencia (?:por|porque)\b/iu.test(content));
 }
 function tweetBody(x){
  const full=String(x.explanation||"").trim();
