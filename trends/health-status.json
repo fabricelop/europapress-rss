@@ -1,13 +1,13 @@
 {
-  "checked_at": "2026-09-29T19:19:06.011035+00:00",
+  "checked_at": "2026-09-29T23:03:07.019757+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
-      "ok": true,
+      "ok": false,
       "mode": "explanation_only",
       "alternatives_target": 0,
       "alternatives_block_send": false,
-      "images_enabled": false
+      "images_enabled": true
     },
     "control_mode": {
       "ok": true,
@@ -42,7 +42,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 6,
-      "captured_age_minutes": 0.3,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -55,7 +55,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 0.8,
-      "run_id": 36618200808,
+      "run_id": 36642994503,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -76,28 +76,64 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 4,
-      "overdue_count": 3,
-      "oldest_age_minutes": 88.0,
+      "pending_count": 9,
+      "overdue_count": 9,
+      "oldest_age_minutes": 312.1,
       "warning_after_minutes": 30,
       "overdue_items": [
+        {
+          "id": "8e250d6dfae4",
+          "name": "#Codigo10",
+          "status": "preparing",
+          "age_minutes": 41.8
+        },
         {
           "id": "d0ec9dd0dbf2",
           "name": "Repsol",
           "status": "preparing",
-          "age_minutes": 88.0
+          "age_minutes": 312.1
         },
         {
           "id": "d6b652b7d172",
           "name": "#RTXON",
           "status": "preparing",
-          "age_minutes": 47.8
+          "age_minutes": 271.8
         },
         {
-          "id": "a8644022152b",
-          "name": "Pyme",
+          "id": "ce27c96e786b",
+          "name": "#JuanjoBonaXNetflix",
           "status": "preparing",
-          "age_minutes": 38.6
+          "age_minutes": 211.9
+        },
+        {
+          "id": "2d56fd6b6950",
+          "name": "Mariona",
+          "status": "preparing",
+          "age_minutes": 211.9
+        },
+        {
+          "id": "8fe42f499182",
+          "name": "Campazzo",
+          "status": "preparing",
+          "age_minutes": 151.3
+        },
+        {
+          "id": "7d40b695877f",
+          "name": "Alex Baena",
+          "status": "preparing",
+          "age_minutes": 132.0
+        },
+        {
+          "id": "5be067509b82",
+          "name": "Cubarsí",
+          "status": "preparing",
+          "age_minutes": 101.5
+        },
+        {
+          "id": "c010e0621343",
+          "name": "Juan Carlos Rivero",
+          "status": "preparing",
+          "age_minutes": 81.9
         }
       ],
       "repairable": false
@@ -107,19 +143,25 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "7ea2bf3ac132",
+        "8e250d6dfae4",
         "d0ec9dd0dbf2",
         "d6b652b7d172",
-        "a8644022152b"
+        "ce27c96e786b",
+        "2d56fd6b6950",
+        "8fe42f499182",
+        "7d40b695877f",
+        "5be067509b82",
+        "c010e0621343"
       ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 88.0 min"
+    "config TTendencias incompatible con el modo activo",
+    "cola de explicaciones retrasada: 9 pendiente(s) superan 30 min; más antigua 312.1 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 88.0 min"
+  "last_alert_signature": "cola de explicaciones retrasada: 9 pendiente(s) superan 30 min; más antigua 312.1 min | config TTendencias incompatible con el modo activo"
 }
