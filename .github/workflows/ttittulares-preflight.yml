@@ -130,6 +130,7 @@ jobs:
           node --check vercel-webhook/api/ttittulares-widget.js
           node --check vercel-webhook/api/ttittulares-run-status.js
           node --check vercel-webhook/ttittulares/sw.js
+          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs
 
       - name: Resultado
         run: echo "TTiTTulares listo para preview técnico sin cambiar control-mode"

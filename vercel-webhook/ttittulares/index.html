@@ -343,19 +343,60 @@ async function enablePush(){
  }
 }
 async function badge(){const n=(model.prepared||[]).length;try{if("setAppBadge" in navigator){if(n)await navigator.setAppBadge(n);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}}
-async function copyImageToClipboard(url){
+async function imagePngBlob(url){
+ const r=await fetch(API+"?view=image-proxy&url="+encodeURIComponent(url),{cache:"no-store"});
+ if(!r.ok)throw new Error("Descarga de imagen: HTTP "+r.status);
+ const blob=await r.blob();
+ if(blob.type.split(";")[0].toLowerCase()==="image/png")return blob;
+ // Convertir íntegramente JPEG/WebP a PNG; si createImageBitmap falla, usar Image.
+ let drawable=null,objectUrl="";
  try{
-  if(!navigator.clipboard?.write||typeof ClipboardItem==="undefined")throw new Error("clipboard");
-  const r=await fetch(API+"?view=image-proxy&url="+encodeURIComponent(url),{cache:"no-store"});
-  if(!r.ok)throw new Error("download");
-  let blob=await r.blob();
-  if(blob.type!=="image/png"){
-   const bmp=await createImageBitmap(blob),canvas=document.createElement("canvas");canvas.width=bmp.width;canvas.height=bmp.height;
-   canvas.getContext("2d").drawImage(bmp,0,0);
-   blob=await new Promise((resolve,reject)=>canvas.toBlob(x=>x?resolve(x):reject(new Error("png")),"image/png"));
+  if(typeof createImageBitmap==="function"){
+   try{drawable=await createImageBitmap(blob)}catch(_){}
   }
-  await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);toast("Imagen copiada");
- }catch(err){console.error("copy image",err);toast("No se pudo copiar la imagen")}
+  if(!drawable){
+   objectUrl=URL.createObjectURL(blob);
+   drawable=await new Promise((resolve,reject)=>{
+    const image=new Image();
+    image.onload=()=>resolve(image);
+    image.onerror=()=>reject(new Error("Formato de imagen no compatible"));
+    image.src=objectUrl;
+   });
+  }
+  const canvas=document.createElement("canvas");
+  canvas.width=drawable.width||drawable.naturalWidth;canvas.height=drawable.height||drawable.naturalHeight;
+  if(!canvas.width||!canvas.height)throw new Error("La imagen está vacía");
+  const context=canvas.getContext("2d");
+  if(!context)throw new Error("No se pudo convertir la imagen");
+  context.drawImage(drawable,0,0);
+  return await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error("No se pudo convertir a PNG")),"image/png"));
+ }finally{
+  if(drawable&&typeof drawable.close==="function")drawable.close();
+  if(objectUrl)URL.revokeObjectURL(objectUrl);
+ }
+}
+function copyImageToClipboard(url,button){
+ if(!navigator.clipboard?.write||typeof ClipboardItem==="undefined"){
+  toast("Este navegador no permite copiar imágenes. Usa Abrir imagen.");
+  return;
+ }
+ if(button?.disabled)return;
+ const label=button?.textContent||"Copiar imagen";
+ if(button){button.disabled=true;button.textContent="Copiando…"}
+ // Es imprescindible pedir acceso al portapapeles EN el clic, sin un await previo.
+ // La descarga/conversión posterior se resuelve por la promesa de ClipboardItem.
+ const pngPromise=imagePngBlob(url);
+ let writing;
+ try{
+  writing=navigator.clipboard.write([new ClipboardItem({"image/png":pngPromise})]);
+ }catch(err){
+  pngPromise.catch(()=>{});
+  writing=Promise.reject(err);
+ }
+ Promise.resolve(writing).then(()=>toast("Imagen completa copiada (PNG)")).catch(err=>{
+  console.error("copy image",err);
+  toast("No se pudo copiar la imagen. Usa Abrir imagen o vuelve a intentarlo.");
+ }).finally(()=>{if(button){button.disabled=false;button.textContent=label}});
 }
 function mountRemateRating(host,tweet){
  const key=String(tweet?.rating_key||"");
@@ -441,14 +482,39 @@ function render(){
  $("health").classList.toggle("bad",Number.isFinite(healthy)&&Number.isFinite(total)&&healthy<total);
  renderList();badge()
 }
+let lastRenderedView="",lastReadyRendering=null;
 function renderList(){
- const list=$("list");list.innerHTML="";
+ const list=$("list");
+ if(view==="ready"){
+  const events=(model.status||{}).events||{};
+  const current=(model.prepared||[]).filter(x=>!pendingClosed.has(String(x.event_id||"")));
+  const signature=JSON.stringify([current,current.map(x=>[
+   String(x.event_id||""),
+   Number(events[x.event_id]?.source_count||x.current_source_count||x.drafted_source_count||0)
+  ])]);
+  // Un sondeo sin cambios no debe desmontar las imágenes ni las tarjetas abiertas.
+  if(lastRenderedView==="ready"&&lastReadyRendering===signature)return;
+  const preservedImages=new Map();
+  if(lastRenderedView==="ready"){
+   for(const card of list.querySelectorAll("article.card[data-event-id]")){
+    const preview=card.querySelector(".imagePreview"),url=card.dataset.imageUrl||"";
+    if(preview&&url&&preview.complete&&preview.naturalWidth>0){
+     preservedImages.set(JSON.stringify([card.dataset.eventId,url]),preview);
+    }
+   }
+  }
+  list.innerHTML="";
+  renderReady(list,preservedImages);
+  lastRenderedView="ready";lastReadyRendering=signature;
+  return;
+ }
+ lastRenderedView=view;lastReadyRendering=null;
+ list.innerHTML="";
  if(view==="processing"){renderProcessing(list);return}
  if(view==="problematic"){renderProblematic(list);return}
  if(view==="growing"){renderGrowing(list);return}
- renderReady(list)
 }
-function renderReady(list){
+function renderReady(list,preservedImages=new Map()){
  $("viewTitle").textContent="Noticias listas";
  const status=model.status||{},events=status.events||{},prepared=[...(model.prepared||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
  prepared.sort((a,b)=>{
@@ -487,16 +553,24 @@ function renderReady(list){
   imgBox.hidden=false;
   card.querySelector(".imageTitle").textContent=imageLabel;
   if(imageReady){
-   const preview=card.querySelector(".imagePreview");preview.hidden=false;preview.alt=img.alt||item.title||"Imagen de la noticia";preview.src=API+"?view=image-proxy&url="+encodeURIComponent(imgUrl);
-   preview.onerror=()=>{preview.hidden=true;card.querySelector(".imageMeta").textContent="No se pudo cargar la imagen. Se reintentará en la siguiente ejecución.";card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none"};
+   card.dataset.imageUrl=imgUrl;
+   const proxySrc=API+"?view=image-proxy&url="+encodeURIComponent(imgUrl);
+   let preview=card.querySelector(".imagePreview");
+   const previous=preservedImages.get(JSON.stringify([String(item.event_id||""),imgUrl]));
+   // Mover el IMG que ya estaba cargado: reasignar src provoca un destello.
+   if(previous&&previous.getAttribute("src")===proxySrc){preview.replaceWith(previous);preview=previous}
+   preview.hidden=false;preview.alt=img.alt||item.title||"Imagen de la noticia";
+   preview.onerror=()=>{lastReadyRendering=null;preview.hidden=true;card.querySelector(".imageMeta").textContent="No se pudo cargar la imagen. Se reintentará al actualizar.";card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none"};
+   if(preview.getAttribute("src")!==proxySrc)preview.src=proxySrc;
    card.querySelector(".imageMeta").textContent=[imgSource,imgRights].filter(Boolean).join(" · ")||(img.generated?"TTiTTulares · imagen original":"Imagen externa sugerida");
-   card.querySelector(".imgOpen").href=imgUrl;card.querySelector(".imgCopy").onclick=()=>copyImageToClipboard(imgUrl);
+   card.querySelector(".imgOpen").href=imgUrl;
+   const copyButton=card.querySelector(".imgCopy");copyButton.onclick=()=>copyImageToClipboard(imgUrl,copyButton);
    const src=card.querySelector(".imgSource");if(imgPage)src.href=imgPage;else src.style.display="none";
   }else{
    card.querySelector(".imageMeta").textContent=imageState==="telegram"?"Foto enviada al bot de Telegram. Ya puedes publicar.":imageState==="working"?"Se está buscando y validando una imagen real del acontecimiento.":imageState==="pending"?"La noticia está redactada, pero la imagen todavía está pendiente. No publiques todavía.":imageState==="retry"?"La imagen necesita un nuevo intento. No publiques todavía.":imageState==="none"?"La ejecución terminó sin imagen. Ya puedes publicar sin imagen.":"La noticia está lista.";
    card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";card.querySelector(".imgSource").style.display="none";
   }
-  const photo=document.createElement("button");photo.className="btn photoStatus"+(imageReady?" imageReadyStatus":"")+(imageState==="telegram"?" telegramStatus":"");photo.textContent="📷 "+imageLabel;photo.onclick=()=>{det.classList.add("open");openCards.add(String(item.event_id||""));card.querySelector(".expand").textContent="Cerrar";imgBox.scrollIntoView({block:"nearest",behavior:"smooth"})};card.querySelector(".actions").appendChild(photo);
+  const photo=document.createElement("button");photo.className="btn photoStatus"+(imageReady?" imageReadyStatus":"")+(imageState==="telegram"?" telegramStatus":"");photo.textContent="📷 "+imageLabel;photo.onclick=()=>{det.classList.add("open");openCards.add(String(item.event_id||""));persistUiState();card.querySelector(".expand").textContent="Cerrar";imgBox.scrollIntoView({block:"nearest",behavior:"smooth"})};card.querySelector(".actions").appendChild(photo);
   const vh=card.querySelector(".variants");
   const candidates=quoteCandidates(item),quoteLinks=[];
   let selectedQuote=candidates[0]?.url||"";
