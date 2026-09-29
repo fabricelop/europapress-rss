@@ -289,17 +289,16 @@ if isinstance(requests_doc, dict):
             f"cola de explicaciones retrasada: {len(overdue)} pendiente(s) superan {warn_after} min; "
             f"más antigua {max(ages):.1f} min"
         )
-        if explanation_only:
-            warnings.append(queue_message)
-        else:
-            blocking.append(queue_message)
+        # Retraso editorial real: también bloqueante en explanation_only.
+        # Nunca confundas radar sano con elaboración editorial sana.
+        blocking.append(queue_message)
 
     # El runtime no puede declarar success mientras existan solicitudes
     # preparing/update. Eso ocultaba fallos de hand-off (sin outbox/prepared).
     if explanation_only:
         modules["editorial_runtime"] = {
-            "ok": True,
-            "status": "not-required",
+            "ok": not bool(overdue),
+            "status": "overdue" if overdue else "not-required",
             "queue_complete": not bool(active),
             "remaining_active_ids": [x.get("id") for x in active],
             "contradictory_success": False,
