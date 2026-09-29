@@ -56,9 +56,9 @@ def probe(label,url):
    body=f.read(900000).decode("utf-8","ignore");final=f.geturl();type=f.headers.get("content-type","")
   blocks=re.findall(r"<(?:item|entry)\b[\s\S]*?</(?:item|entry)>",body,re.I)
   dates=[feed_publication(b) for b in blocks[:5]]
-  news=[(feed_publication(b),re.search(r"<link[^>]*>([\\s\\S]*?)</link>",b,re.I).group(1).strip())
-        for b in blocks if re.search(r"<link[^>]*>([\\s\\S]*?)</link>",b,re.I)
-        and "/noticias/" in re.search(r"<link[^>]*>([\\s\\S]*?)</link>",b,re.I).group(1)]
+  news=[(feed_publication(b),re.search(r"<link[^>]*>([\s\S]*?)</link>",b,re.I).group(1).strip())
+        for b in blocks if re.search(r"<link[^>]*>([\s\S]*?)</link>",b,re.I)
+        and "/noticias/" in re.search(r"<link[^>]*>([\s\S]*?)</link>",b,re.I).group(1)]
   news=[x for x in news if x[0]]
   links=Links();links.feed(body)
   from urllib.parse import urljoin,urlparse
