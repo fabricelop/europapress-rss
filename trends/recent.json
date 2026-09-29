@@ -1,18 +1,19 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T16:31:17+02:00",
+  "captured_at": "2026-09-29T16:41:10+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "tweets24",
-    "snaplytics"
+    "trendswe"
   ],
-  "source_count": 5,
-  "non_stale_source_count": 3,
+  "source_count": 6,
+  "non_stale_source_count": 5,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
   "reliability": "medium",
   "top10": [
@@ -83,33 +84,105 @@
   "new_entries": [],
   "upcoming": [
     {
-      "name": "Yanes",
-      "social_source_count": 2,
-      "social_sources": [
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 17.5,
-      "movement": "down",
-      "first_detected_at": "2026-09-29T14:51:01+02:00",
-      "news_source_count": 5,
-      "news_event_id": "1d845a60ffae",
-      "news_title": "El juez rechaza la recusación planteada por Zapatero contra la joyería Yanes - EFE - Agencia de noticias",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-29T13:52:56.614475Z"
-    },
-    {
       "name": "PSOE y Sumar",
-      "social_source_count": 2,
+      "social_source_count": 4,
       "social_sources": [
+        "snaplytics",
         "trends24",
+        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 15.0,
-      "movement": "down",
+      "mean_observed_rank": 14.0,
+      "movement": "up",
       "first_detected_at": "2026-09-29T14:40:57+02:00",
+      "news_source_count": 8,
+      "news_event_id": "e26960fb9a22-r2",
+      "news_title": "Claves del acuerdo de vivienda | El PSOE y Sumar pactan prohibir los desahucios a personas vulnerables hasta 2030 y la prórroga de los alquileres hasta 2028 - Telecinco",
+      "news_status": "ELIGIBLE_UPDATE",
+      "news_first_seen": "2026-09-29T14:32:28.985538Z"
+    },
+    {
+      "name": "Antonio Banderas",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.7,
+      "movement": "up",
+      "first_detected_at": "2026-09-29T15:21:11+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Yanes",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 17.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-29T14:51:01+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Ortega Smith",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 15.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T16:41:10+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "SORTEO",
+      "social_source_count": 2,
+      "social_sources": [
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 15.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T16:41:10+02:00",
+      "news_source_count": 1,
+      "news_event_id": "016391105c8a",
+      "news_title": "Sorteo del Niño comprobar número - La Verdad",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T13:03:43.819430Z"
+    },
+    {
+      "name": "Olga",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "trendswe"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 15.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T16:41:10+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -125,46 +198,13 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 16.5,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T16:31:17+02:00",
       "news_source_count": 2,
       "news_event_id": "da51c9d8619b",
       "news_title": "Un policía local mata de un disparo a un hombre que amenazó a una ertzaina con un cuchillo en Hondarribia - Telecinco",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-28T19:41:03.510337Z"
-    },
-    {
-      "name": "Antonio Banderas",
-      "social_source_count": 2,
-      "social_sources": [
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 15.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-29T15:21:11+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Decretos",
-      "social_source_count": 1,
-      "social_sources": [
-        "trends24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 18.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-29T16:31:17+02:00",
-      "news_source_count": 6,
-      "news_event_id": "934202cea0c0",
-      "news_title": "Acuerdo por los decretos de vivienda, acampada en la Puerta del Sol de Madrid y caso Maricarmen: última hora de hoy, en directo",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-28T17:32:26.084404Z"
     }
   ],
   "anticipated_entries": [],
@@ -198,16 +238,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T16:31:17+02:00"
+      "fetched_at": "2026-09-29T16:41:10+02:00"
     },
     "getdaytrends": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790692277",
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790692870",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T16:31:17+02:00"
+      "fetched_at": "2026-09-29T16:41:10+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -234,10 +274,10 @@
         "Latre"
       ],
       "error": null,
-      "update_hint": "Updated 28 minutes ago",
-      "age_minutes": 28.0,
+      "update_hint": "Updated 38 minutes ago",
+      "age_minutes": 38.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-29T16:31:18+02:00"
+      "fetched_at": "2026-09-29T16:41:11+02:00"
     },
     "superx": {
       "ok": true,
@@ -267,16 +307,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T16:31:18+02:00"
+      "fetched_at": "2026-09-29T16:41:11+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790692279",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790692872",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T16:31:19+02:00"
+      "fetched_at": "2026-09-29T16:41:12+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -284,29 +324,29 @@
         "Puerta del Sol",
         "Almeida",
         "#LaIslaDeLasTentaciones7",
+        "#TEM29S",
         "#HONORMagicV6",
+        "Antonio Banderas",
         "#FelizMartes",
+        "Junts",
         "Raphinha",
         "Ancelotti",
-        "Antonio Banderas",
-        "Junts",
         "#Mañaneros29S",
-        "#EnBocaDeTodos",
-        "Fernando Alonso",
-        "Aston Martin",
-        "Sindicato de Inquilinas",
-        "PSOE y Sumar",
-        "Decreto",
         "Olga",
         "Mataró",
+        "Sindicato de Inquilinas",
+        "PSOE y Sumar",
+        "Fernando Alonso",
+        "Decreto",
+        "Consejo de Ministros",
         "Ndongo",
-        "Consejo de Ministros"
+        "Ortega Smith"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 29, 2026 13:00 UTC",
-      "age_minutes": 91.3,
-      "freshness": "stale",
-      "fetched_at": "2026-09-29T16:31:19+02:00"
+      "update_hint": "Trending now Sep 29, 2026 14:00 UTC",
+      "age_minutes": 41.2,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-29T16:41:12+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -334,18 +374,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 12:00 PM # Trend Type Actions 1 Puerta del Sol Topic 2 #La",
-      "age_minutes": 271.3,
+      "age_minutes": 281.2,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T16:31:19+02:00"
+      "fetched_at": "2026-09-29T16:41:12+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790692281",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790692873",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T16:31:21+02:00"
+      "fetched_at": "2026-09-29T16:41:13+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -354,25 +394,46 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T16:31:22+02:00"
+      "fetched_at": "2026-09-29T16:41:14+02:00"
     },
     "trendswe": {
-      "ok": false,
-      "trends": [],
-      "error": "Lista no válida (6 elementos parseados)",
+      "ok": true,
+      "trends": [
+        "#Ancelotti",
+        "#HONORMagicV6",
+        "#Fernando Alonso",
+        "#Mañaneros29S",
+        "#Aston Martin",
+        "#EnBocaDeTodos",
+        "#Mataró",
+        "#Senegal",
+        "#BUT NOT YET",
+        "#Almeida",
+        "#PSOE y Sumar",
+        "#Junts",
+        "#Sorteo",
+        "#Antonio Banderas",
+        "#Honda",
+        "#Yanes",
+        "#DíaMundialDelCorazón",
+        "#Olga",
+        "#Latre",
+        "#CarrefourConFC27"
+      ],
+      "error": null,
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "invalid",
-      "fetched_at": "2026-09-29T16:31:22+02:00"
+      "freshness": "unknown",
+      "fetched_at": "2026-09-29T16:41:15+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790692284",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790692878",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T16:31:24+02:00"
+      "fetched_at": "2026-09-29T16:41:18+02:00"
     }
   }
 }
