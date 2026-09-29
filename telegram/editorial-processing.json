@@ -11543,7 +11543,7 @@
         }
       ],
       "selected_at": "2026-09-29T10:22:59.601383Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
       "parent_event_id": null,
@@ -11551,7 +11551,9 @@
       "parallel_source_claimed_at": null,
       "with_image": true,
       "image_mode": "existing_web_image",
-      "automatic_redaction_requested_at": "2026-09-29T13:21:44.574313+00:00"
+      "automatic_redaction_requested_at": "2026-09-29T13:21:44.574313+00:00",
+      "reconciled_from_event_id": "905ccb3cbb37",
+      "reconciliation_reason": "already_published_no_material_update"
     },
     {
       "event_id": "abfdc09fcd34",
@@ -12864,14 +12866,16 @@
       "source_count": 3,
       "drafted_source_count": 3,
       "selected_at": "2026-09-29T14:41:38.983Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "selection_mode": "MANUAL_WEB_3S",
       "revision": 1,
       "parent_event_id": null,
       "update_context": null,
       "with_image": true,
       "image_mode": "existing_web_image",
-      "automatic_redaction_requested_at": "2026-09-29T18:53:25.131439+00:00"
+      "automatic_redaction_requested_at": "2026-09-29T18:53:25.131439+00:00",
+      "reconciled_from_event_id": "5cd174f703c1",
+      "reconciliation_reason": "already_published_no_material_update"
     },
     {
       "event_id": "04f36c93e5c9",
@@ -13486,7 +13490,7 @@
         }
       ],
       "selected_at": "2026-09-29T16:04:25.850076Z",
-      "status": "PROCESSING",
+      "status": "DISMISSED",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
       "parent_event_id": null,
@@ -13494,7 +13498,9 @@
       "parallel_source_claimed_at": null,
       "with_image": true,
       "image_mode": "existing_web_image",
-      "automatic_redaction_requested_at": "2026-09-29T18:53:25.131439+00:00"
+      "automatic_redaction_requested_at": "2026-09-29T18:53:25.131439+00:00",
+      "reconciled_from_event_id": "b16da169bfc3",
+      "reconciliation_reason": "inherited_user_dismissal"
     },
     {
       "event_id": "402d92233e8b",
@@ -13991,5 +13997,5 @@
       "image_mode": "existing_web_image"
     }
   ],
-  "updated_at": "2026-09-29T19:12:25.913515Z"
+  "updated_at": "2026-09-29T19:19:11.640098Z"
 }
