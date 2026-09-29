@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-29T19:31:10+02:00",
+  "captured_at": "2026-09-29T19:41:00+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -11,11 +11,12 @@
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "#TEM29S",
     "Gonzalo Suárez",
@@ -84,6 +85,43 @@
   "new_entries": [],
   "upcoming": [
     {
+      "name": "Mataró",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-29T19:01:38+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Sindicato de Inquilinas",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 13.7,
+      "movement": "up",
+      "first_detected_at": "2026-09-29T18:51:43+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
       "name": "Aldo Comas",
       "social_source_count": 3,
       "social_sources": [
@@ -120,22 +158,21 @@
       "news_first_seen": null
     },
     {
-      "name": "Mataró",
-      "social_source_count": 3,
+      "name": "Decreto",
+      "social_source_count": 2,
       "social_sources": [
         "getdaytrends",
-        "trendswe",
-        "tweets24"
+        "snaplytics"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.3,
-      "movement": "down",
-      "first_detected_at": "2026-09-29T19:01:38+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-29T19:41:00+02:00",
+      "news_source_count": 6,
+      "news_event_id": "e26960fb9a22-r2",
+      "news_title": "Sumar y otras formaciones a la izquierda del PSOE reclaman que el decreto de vivienda incluya el fin de los desahucios, la prrroga de los alquileres en vigor y la regulacin de los alquileres de temporada y por habitaciones.",
+      "news_status": "ELIGIBLE_UPDATE",
+      "news_first_seen": "2026-09-29T17:32:30.774719Z"
     },
     {
       "name": "Nogueras",
@@ -172,23 +209,6 @@
       "news_first_seen": null
     },
     {
-      "name": "Sindicato de Inquilinas",
-      "social_source_count": 2,
-      "social_sources": [
-        "getdaytrends",
-        "superx"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 14.5,
-      "movement": "down",
-      "first_detected_at": "2026-09-29T18:51:43+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "#Mañaneros29S",
       "social_source_count": 2,
       "social_sources": [
@@ -197,25 +217,8 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 16.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-29T18:51:43+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Antonio Banderas",
-      "social_source_count": 2,
-      "social_sources": [
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.5,
-      "movement": "new",
-      "first_detected_at": "2026-09-29T19:31:10+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -254,7 +257,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T19:31:10+02:00"
+      "fetched_at": "2026-09-29T19:41:00+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -279,7 +282,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T19:31:11+02:00"
+      "fetched_at": "2026-09-29T19:41:00+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -306,10 +309,10 @@
         "Repsol"
       ],
       "error": null,
-      "update_hint": "Updated 33 minutes ago",
-      "age_minutes": 33.0,
+      "update_hint": "Updated 43 minutes ago",
+      "age_minutes": 43.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-29T19:31:13+02:00"
+      "fetched_at": "2026-09-29T19:41:01+02:00"
     },
     "superx": {
       "ok": true,
@@ -339,46 +342,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T19:31:14+02:00"
+      "fetched_at": "2026-09-29T19:41:02+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790703074",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790703662",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T19:31:14+02:00"
+      "fetched_at": "2026-09-29T19:41:02+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "Puerta del Sol",
         "Almeida",
-        "#TEM29S",
         "#LaIslaDeLasTentaciones7",
-        "Gonzalo Suárez",
+        "#TEM29S",
         "#HONORMagicV6",
+        "Gonzalo Suárez",
         "Antonio Banderas",
         "Junts",
+        "#RTXON",
         "#FelizMartes",
         "Olga",
         "Sindicato de Inquilinas",
-        "#Mañaneros29S",
-        "Mataró",
         "Decreto",
-        "PSOE y Sumar",
+        "Mataró",
         "Consejo de Ministros",
+        "PSOE y Sumar",
+        "La Premier League",
+        "Manchester City",
         "Hondarribia",
-        "Latre",
-        "Sorteo",
-        "Risto"
+        "Croacia"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 29, 2026 16:00 UTC",
-      "age_minutes": 91.3,
-      "freshness": "stale",
-      "fetched_at": "2026-09-29T19:31:16+02:00"
+      "update_hint": "Trending now Sep 29, 2026 17:00 UTC",
+      "age_minutes": 41.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-29T19:41:02+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -406,18 +409,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 29, 2026 at 05:00 PM # Trend Type Actions 1 #TEM29S Hashtag 2 Gonzalo",
-      "age_minutes": 151.3,
+      "age_minutes": 161.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-29T19:31:20+02:00"
+      "fetched_at": "2026-09-29T19:41:03+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790703081",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790703664",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T19:31:21+02:00"
+      "fetched_at": "2026-09-29T19:41:04+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -426,7 +429,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-29T19:31:23+02:00"
+      "fetched_at": "2026-09-29T19:41:06+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -456,16 +459,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-29T19:31:23+02:00"
+      "fetched_at": "2026-09-29T19:41:06+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790703085",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790703668",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-29T19:31:25+02:00"
+      "fetched_at": "2026-09-29T19:41:08+02:00"
     }
   }
 }
