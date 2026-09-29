@@ -99,7 +99,7 @@
       "positive_style_reference": "Le recetó una vaselina que no se vende en farmacias.",
       "negative_style_reference": "El caso tiene puerta; el decreto aún busca llave.",
       "mandatory_prefix": "TT#N ",
-      "mandatory_sentence": "TT#N <nombre literal> es tendencia por <motivo>; para Tremending sin rango real: <nombre corto> es tendencia por <motivo>, sin TT#0",
+      "mandatory_sentence": "TT#N <nombre literal> es tendencia por <motivo>; para Tremending sin rango real: TT 🗯️ <nombre corto> es tendencia por <motivo>, sin TT#0",
       "rank_source": "current_top10_rank_or_anticipated_best_observed_rank",
       "strictly_less_than_280": true,
       "copy_exact_explanation_without_duplicate_app_header": true,
@@ -124,7 +124,9 @@
         "closer_text_on_failure": "",
         "never_mark_problematic_for_closer_failure": true,
         "do_not_delay_next_trend": true
-      }
+      },
+      "tremending_prefix": "TT 🗯️ ",
+      "tremending_prefix_once": true
     }
   },
   "delivery": {
