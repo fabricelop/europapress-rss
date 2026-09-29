@@ -21,7 +21,7 @@ from urllib.request import Request, build_opener, HTTPRedirectHandler
 ROOT = Path(__file__).resolve().parents[1]
 EXPLAINED = ROOT / "trends" / "telegram-manual-explained.json"
 TREMENDING = ROOT / "ttittulares" / "tremending" / "items.json"
-MAX_ITEMS_PER_PASS = 12
+MAX_ITEMS_PER_PASS = 90  # Covers the whole recent 48h window in a single triggered run.
 USER_AGENT = "TTendencias-RealPhoto/1.0 (+https://github.com/fabricelop/europapress-rss)"
 
 
