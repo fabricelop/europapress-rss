@@ -103,7 +103,14 @@
       "rank_source": "current_top10_rank_or_anticipated_best_observed_rank",
       "strictly_less_than_280": true,
       "copy_exact_explanation_without_duplicate_app_header": true,
-      "allow_leading_icon": false
+      "allow_leading_icon": false,
+      "layout": "first_line_TT_hash_rank_name_fact_then_newline_one_sentence_closer_then_rating_ui",
+      "closer_separate_line": true,
+      "closer_text_required_even_when_empty": true,
+      "rating_ui_below_closer": true,
+      "rating_scale": "1-5",
+      "rating_persistence": "trends/remate-ratings.json",
+      "rating_excluded_from_copied_tweet": true
     }
   },
   "delivery": {
