@@ -14,6 +14,10 @@ on:
       - "vercel-webhook/api/ttittulares-control.js"
       - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
+      - "vercel-webhook/api/ttendencias-control.js"
+      - "ttittulares/tremending/**"
+      - ".github/workflows/tremending-collect.yml"
+      - ".github/workflows/tremending-capture.yml"
   pull_request:
     branches: [main]
     paths:
@@ -26,6 +30,10 @@ on:
       - "vercel-webhook/api/ttittulares-control.js"
       - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
+      - "vercel-webhook/api/ttendencias-control.js"
+      - "ttittulares/tremending/**"
+      - ".github/workflows/tremending-collect.yml"
+      - ".github/workflows/tremending-capture.yml"
 
 permissions:
   contents: read
@@ -38,10 +46,11 @@ jobs:
 
       - name: Validar Python
         run: |
-          python3 -m py_compile telegram/radar_no_d1.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py ttittulares/build_editorial_queue.py ttittulares/apply_editorial_outbox.py ttittulares/ingest_pr_outbox_comment.py
+          python3 -m py_compile telegram/radar_no_d1.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py ttittulares/build_editorial_queue.py ttittulares/apply_editorial_outbox.py ttittulares/ingest_pr_outbox_comment.py ttittulares/reconcile_confirmed_stale.py ttittulares/tremending/update_tremending.py
           python3 telegram/radar_no_d1.py --selftest-dedupe
           python3 ttittulares/auto_queue.py --selftest
           python3 ttittulares/apply_editorial_outbox.py --selftest-images
+          python3 ttittulares/tremending/update_tremending.py --selftest
 
       - name: Validar JSON y reglas
         run: |
@@ -131,6 +140,7 @@ jobs:
           node --check vercel-webhook/api/ttittulares-control.js
           node --check vercel-webhook/api/ttittulares-widget.js
           node --check vercel-webhook/api/ttittulares-run-status.js
+          node --check ttittulares/tremending/capture_tweet.mjs
           node --check vercel-webhook/ttittulares/sw.js
           node --test vercel-webhook/test/ttittulares-image-ui.test.mjs
 

@@ -178,6 +178,10 @@ async function syncEditorialQueue() {
       anticipated_news_source_count: req.anticipated_news_source_count || 0,
       anticipated_news_title: req.anticipated_news_title || "",
       anticipated_entered_top10_at: req.anticipated_entered_top10_at || null,
+      tremending_origin: Boolean(req.tremending_origin),
+      tremending_id: req.tremending_id || null,
+      source_url: req.source_url || null,
+      selected_tweet: req.selected_tweet || null,
     }))
     .sort((a, b) => String(a.requested_at || "").localeCompare(String(b.requested_at || "")));
   const now = new Date().toISOString();

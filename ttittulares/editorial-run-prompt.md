@@ -27,6 +27,17 @@ ANTES de redactar el tuit, lee siempre **desde la rama main actual**, no de una 
 
 ## Imagen real del acontecimiento
 
+### Excepción Tremending elegida por el usuario
+
+Cuando `telegram/editorial-processing.json` incluya `tremending_origin:true`,
+`tremending_tweet` y `image_mode:"tremending_tweet_capture"`, no busques ni
+generes otra imagen. Conserva esos campos al preparar la noticia y deja la
+noticia lista aunque `image_status:"pending_capture"`: la GitHub Action de
+captura oficial de X adjunta después el PNG estático elegido. El usuario ha
+elegido el tuit y el enfoque; úsalo únicamente como acompañamiento visual, no
+como prueba factual ni señal para tomar una posición partidista. La información
+debe seguir separando hechos comprobados de opiniones atribuidas.
+
 TTiTTulares no genera imágenes por IA. No llames ImageGen, no construyas briefs visuales, no transportes raster/base64 y no uses Telegram como fallback de imagen.
 
 El READY inicial usa `image_strategy:"existing_web_image"` e `image_status:"pending"`. La Action que aplica el outbox recupera de forma determinista una imagen real desde las páginas de las fuentes del mismo acontecimiento: primero fuente oficial/primaria y después medio fiable, mediante metadatos `og:image`/`twitter:image`. Valida HTTPS, MIME, raster y dimensiones. Guarda URL externa, fuente, página de origen, alt y `rights_status:"unverified"`.
