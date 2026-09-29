@@ -68,26 +68,31 @@ function rankFor(x,requests){
  return Number.isFinite(fallback)&&fallback>=1&&fallback<=20?fallback:null;
 }
 function hasTweetReadyFormat(x){return /^TT#(?:[1-9]|1[0-9]|20)\s+\S/u.test(String(x.explanation||"").trim())}
+function tweetBody(x){
+ const full=String(x.explanation||"").trim();
+ const closer=String(x.closer_text||"").trim();
+ // Dar una guindilla también al histórico sin cambiar sus valoraciones guardadas.
+ if(!closer||closer.startsWith("🌶️")||!full.endsWith(closer))return full;
+ const candidate=full.slice(0,-closer.length)+"🌶️ "+closer;
+ const heading=hasTweetReadyFormat(x)?"":groupRankLabel(x)+"\n\n";
+ // Incluye el encabezado legado en el presupuesto total si sigue utilizándose.
+ return [...(heading+candidate)].length<280?candidate:full;
+}
 function copyText(x){
- const value=String(x.explanation||"").trim();
- if(hasTweetReadyFormat(x))return value;
- return groupRankLabel(x)+"\n\n"+value;
+ const value=tweetBody(x);
+ return hasTweetReadyFormat(x)?value:groupRankLabel(x)+"\n\n"+value;
 }
 function displayedExplanation(x){
- const full=String(x.explanation||"").trim();
- if(!hasTweetReadyFormat(x))return full;
- const rank=Number(x._rank),literal=String(x.name||"").trim();
- const prefix="TT#"+rank+" "+literal;
- if(Number.isFinite(rank)&&literal&&full.startsWith(prefix+" "))return full.slice(prefix.length).trimStart();
- const match=full.match(/^TT#(?:[1-9]|1[0-9]|20)\s+.+?\s+(?=es tendencia (?:por|porque)\b)/u);
- return match?full.slice(match[0].length).trimStart():full;
+ // TT#N ya viene dentro del tuit nuevo: conservar la cadena completa.
+ return tweetBody(x);
 }
 function splitExplainedText(x){
  const full=displayedExplanation(x),closer=String(x.closer_text||"").trim();
  if(!closer||!full.endsWith(closer))return {fact:full,closer:""};
- const fact=full.slice(0,-closer.length).trimEnd();
+ let fact=full.slice(0,-closer.length).trimEnd();
+ if(fact.endsWith("🌶️"))fact=fact.slice(0,-"🌶️".length).trimEnd();
  if(!fact)return {fact:full,closer:""};
- return {fact,closer};
+ return {fact,closer:closer.startsWith("🌶️")?closer:"🌶️ "+closer};
 }
 async function copyItem(x,button){
  try{
@@ -160,7 +165,9 @@ function render(){
   const name=displayName(x),route=routeLabel(x);
   const labelled=groupRankLabel(x);
   card.innerHTML='<div class="head"><div class="name"></div><div class="when"></div></div><div class="explanation"></div><div class="closer" hidden></div><div class="rating"></div><div class="meta"></div><div class="actions"></div>';
-  card.querySelector(".name").textContent=labelled;
+  const heading=card.querySelector(".name");
+  heading.textContent=labelled;
+  if(hasTweetReadyFormat(x))heading.hidden=true; // El tuit ya lleva TT#N Nombre.
   card.querySelector(".when").textContent=fmt(x.explained_at);
   const parts=splitExplainedText(x);
   card.querySelector(".explanation").textContent=parts.fact;
