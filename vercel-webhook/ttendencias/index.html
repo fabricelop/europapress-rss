@@ -190,7 +190,7 @@ function explanationNames(x){
 }
 function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,editorialQueue){
  const requests=Array.isArray(requestDoc.requests)?requestDoc.requests:[],local=localState();
- const explainedByName={};for(const x of (explained.items||[]))for(const name of explanationNames(x))explainedByName[nrm(name)]=x;
+ const explainedByName={};for(const x of (explained.items||[])){if(x.status==="grouped")continue;for(const name of explanationNames(x))explainedByName[nrm(name)]=x;}
  const explainedSet=new Set(Object.keys(explainedByName));
  const anticipatedByName={};for(const x of (recent.anticipated_entries||[]))anticipatedByName[nrm(x.name)]=x;
  const latestFor=name=>[...requests].reverse().find(x=>nrm(x.name)===nrm(name));
@@ -291,7 +291,7 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
    return Number.isFinite(fallback)&&fallback>=1&&fallback<=20?fallback:null;
  };
  const explainedRecent=[...(explained.items||[])]
-   .filter(x=>String(x.explanation||"").trim())
+   .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
    .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||"")))
    .slice(0,100)
    .map(x=>({...x,_rank:rankAtExplanation(x)}));
