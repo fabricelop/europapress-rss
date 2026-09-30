@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T17:04:02+02:00",
+  "captured_at": "2026-09-30T17:11:01+02:00",
   "primary_source": "snaplytics",
   "selection_method": "aging-anchor",
   "sources_used": [
@@ -78,10 +78,8 @@
       "entered_top10_at": "2026-09-30T16:40:51+02:00"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "#TEM30S"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "El BOE",
@@ -94,7 +92,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T17:04:02+02:00",
       "news_source_count": 3,
       "news_event_id": "c598c1681ca2-r2",
@@ -214,21 +212,21 @@
       "news_first_seen": null
     },
     {
-      "name": "Antonio Banderas",
+      "name": "Flydubai",
       "social_source_count": 2,
       "social_sources": [
         "snaplytics",
-        "trendswe"
+        "trends24"
       ],
       "best_observed_rank": 19,
       "mean_observed_rank": 19.5,
-      "movement": "flat",
-      "first_detected_at": "2026-09-30T16:51:12+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "movement": "new",
+      "first_detected_at": "2026-09-30T17:11:01+02:00",
+      "news_source_count": 1,
+      "news_event_id": "79fd54447460",
+      "news_title": "El ministro de Defensa israelí tilda de «intento de atentado yihadista» el suceso de FlyDubai - efe.com",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-30T15:05:00.181543Z"
     }
   ],
   "anticipated_entries": [],
@@ -262,7 +260,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T17:04:02+02:00"
+      "fetched_at": "2026-09-30T17:11:01+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -287,7 +285,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T17:04:04+02:00"
+      "fetched_at": "2026-09-30T17:11:02+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -317,7 +315,7 @@
       "update_hint": "Updated 4 hours ago",
       "age_minutes": 240.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T17:04:04+02:00"
+      "fetched_at": "2026-09-30T17:11:02+02:00"
     },
     "superx": {
       "ok": true,
@@ -347,16 +345,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T17:04:05+02:00"
+      "fetched_at": "2026-09-30T17:11:03+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790780646",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790781063",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T17:04:06+02:00"
+      "fetched_at": "2026-09-30T17:11:03+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -384,9 +382,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 14:00 UTC",
-      "age_minutes": 64.1,
+      "age_minutes": 71.1,
       "freshness": "aging",
-      "fetched_at": "2026-09-30T17:04:06+02:00"
+      "fetched_at": "2026-09-30T17:11:04+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -414,18 +412,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 03:00 PM # Trend Type Actions 1 #LaFreidoraDeLidl Hashtag",
-      "age_minutes": 124.1,
+      "age_minutes": 131.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T17:04:06+02:00"
+      "fetched_at": "2026-09-30T17:11:04+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 520 Server Error: <none> for url: https://trends.cyberkendra.com/spain/?_=1790780648",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790781066",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T17:04:08+02:00"
+      "fetched_at": "2026-09-30T17:11:06+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -434,7 +432,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T17:04:19+02:00"
+      "fetched_at": "2026-09-30T17:11:07+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -464,16 +462,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T17:04:20+02:00"
+      "fetched_at": "2026-09-30T17:11:07+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790780662",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790781070",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T17:04:22+02:00"
+      "fetched_at": "2026-09-30T17:11:10+02:00"
     }
   }
 }
