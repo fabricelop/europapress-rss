@@ -59,7 +59,9 @@ jobs:
       - name: Validar ambos proyectos y sus remates
         run: |
           node --check vercel-webhook/api/ttendencias-control.js
+          node --check vercel-webhook/api/ttendencias-run-status.js
           node --check vercel-webhook/api/ttittulares-control.js
+          python3 -m py_compile trends/auto_queue_new.py
           node --check vercel-webhook/lib/ttendencias-remate-ratings.js
           node --check vercel-webhook/lib/ttittulares-remate-ratings.js
           node --test vercel-webhook/test/ttendencias-remate-ratings.test.js vercel-webhook/test/ttittulares-remate-ratings.test.js
