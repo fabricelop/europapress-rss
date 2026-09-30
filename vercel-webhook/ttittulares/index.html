@@ -51,7 +51,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 .remateRating .ratingHint{font-size:11px;color:#97a9c1;margin-left:5px}
 .tremendingCard{border-left:3px solid #d95f8d}.tremendingCard.postponed{opacity:.84}.tremendingMeta{font-size:12px;color:#9cacbf;margin-top:6px}.tremendingHeadActions{display:flex;align-items:center;gap:7px}.tremendingToggle{min-width:67px}
 /* The list is a compact selector: render only one iframe on explicit preview. */
-.tweetPicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.tweetEmbed{min-width:0;display:flex;align-items:stretch;border:1px solid #354257;border-radius:10px;overflow:hidden;background:#101721}.tweetEmbed.selected{border-color:#d95f8d;box-shadow:inset 0 0 0 1px #d95f8d}.tweetEmbed.previewing{background:#1c2a3c;border-color:#7c9abd}.tweetEmbed label{display:flex;flex:1;min-width:0;align-items:center;gap:6px;padding:8px 7px;color:#eef2f8;font-size:12px;font-weight:750;cursor:pointer}.tweetEmbed label span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tweetEmbed input[type=radio]{width:16px;height:16px;flex:0 0 16px;margin:0;accent-color:#d95f8d}.tweetEmbed .previewTweet{flex-shrink:0;border:0;border-left:1px solid #354257;background:#1c2b3b;color:#d3e3fb;font-size:11px;font-weight:800;padding:7px 11px;cursor:pointer}.tweetEmbed .previewTweet[aria-expanded=true]{background:#324b67;color:#fff}.tweetPreview{margin-top:10px;border:1px solid #40516b;border-radius:12px;padding:8px;background:#0e141d}.tweetPreviewHead{display:flex;align-items:center;gap:8px;justify-content:space-between;margin-bottom:8px;color:#c9d9ed;font-size:12px;font-weight:800}.tweetPreviewHead a{color:#c6dfff;font-size:11px;text-decoration:none}.tweetPreview iframe{display:block;width:100%;height:min(340px,48vh);border:0;border-radius:8px;background:#fff}.tweetPreviewHint{font-size:11px;color:#9aabc2;margin-top:6px}.tremendingImage{width:min(100%,250px);max-height:155px;object-fit:contain;display:block;border-radius:10px;border:1px solid #354255;margin-top:9px}
+.tweetPicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.tweetEmbed{min-width:0;display:flex;align-items:stretch;border:1px solid #354257;border-radius:10px;overflow:hidden;background:#101721}.tweetEmbed.selected{border-color:#d95f8d;box-shadow:inset 0 0 0 1px #d95f8d}.tweetEmbed.previewing{background:#1c2a3c;border-color:#7c9abd}.tweetEmbed label{display:flex;flex:1;min-width:0;align-items:center;gap:6px;padding:8px 7px;color:#eef2f8;font-size:12px;font-weight:750;cursor:pointer}.tweetEmbed label span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tweetEmbed input[type=radio]{width:16px;height:16px;flex:0 0 16px;margin:0;accent-color:#d95f8d}.tweetEmbed .previewTweet{flex-shrink:0;border:0;border-left:1px solid #354257;background:#1c2b3b;color:#d3e3fb;font-size:11px;font-weight:800;padding:7px 11px;cursor:pointer}.tweetEmbed .previewTweet[aria-expanded=true]{background:#324b67;color:#fff}.tweetPreview{grid-column:1/-1;margin-top:0;border:1px solid #40516b;border-radius:12px;padding:8px;background:#0e141d}.tweetPreviewHead{display:flex;align-items:center;gap:8px;justify-content:space-between;margin-bottom:8px;color:#c9d9ed;font-size:12px;font-weight:800}.tweetPreviewHead a{color:#c6dfff;font-size:11px;text-decoration:none}.tweetPreview iframe{display:block;width:100%;height:min(340px,48vh);border:0;border-radius:8px;background:#fff}.tweetPreviewHint{font-size:11px;color:#9aabc2;margin-top:6px}.tremendingImage{width:min(100%,250px);max-height:155px;object-fit:contain;display:block;border-radius:10px;border:1px solid #354255;margin-top:9px}
 @media(max-width:560px){.tweetPicker{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.tweetEmbed{flex-direction:column}.tweetEmbed label{font-size:11px;padding:7px 6px;min-height:34px}.tweetEmbed .previewTweet{border-left:0;border-top:1px solid #354257;padding:5px 7px;min-height:28px}.tweetPreview iframe{height:min(300px,43vh)}.tremendingHeadActions{flex-direction:column;align-items:end}.tremendingImage{width:min(100%,225px);max-height:145px}}
 </style>
 </head>
@@ -627,23 +627,22 @@ function renderTremending(list){
    previewButton.onclick=()=>{if(isPreview)tremendingPreview.delete(key);else tremendingPreview.set(key,tweetId);renderList()};
    wrap.appendChild(previewButton);
    radio.onchange=async()=>{radio.disabled=true;try{await api("select-tremending-tweet",{entry_id:item.id,tweet_id:tweet.id});tremendingPreview.set(key,tweetId);toast("Tuit elegido; la captura estática se prepara en segundo plano");await load(true)}catch(e){radio.disabled=false;toast(e.message);await load(true)}};
-   picker.appendChild(wrap)
+   picker.appendChild(wrap);
+   if(isPreview){
+    const preview=document.createElement("div");preview.className="tweetPreview";
+    const previewHead=document.createElement("div");previewHead.className="tweetPreviewHead";
+    const who=document.createElement("span");who.textContent=(tweet.author||"Cuenta de X")+(tweetId===selected?" · seleccionado":"");
+    const link=document.createElement("a");link.href=tweet.url;link.target="_blank";link.rel="noopener";link.textContent="Abrir en X ↗";
+    previewHead.append(who,link);preview.appendChild(previewHead);
+    const frame=document.createElement("iframe");frame.loading="lazy";frame.title="Vista previa del tuit de "+(tweet.author||"X");
+    frame.src=tweet.embed_url||("https://platform.twitter.com/embed/Tweet.html?id="+encodeURIComponent(tweet.id)+"&dnt=true");
+    preview.appendChild(frame);
+    const hint=document.createElement("div");hint.className="tweetPreviewHint";hint.textContent="Para utilizarlo, marca su círculo en el selector. Puedes ampliar el tuit en X.";
+    preview.appendChild(hint);picker.appendChild(preview)
+   }
   }
   if(!item.tweets?.length){const empty=document.createElement("div");empty.className="verification-hint";empty.textContent=item.article_status==="retry"?"El artículo se volverá a intentar: aún no se pudieron extraer sus tuits.":"Este artículo no contiene embeds de X seleccionables.";picker.appendChild(empty)}
   card.appendChild(picker);
-  const previewTweet=(item.tweets||[]).find(tweet=>String(tweet.id)===previewId);
-  if(previewTweet){
-   const preview=document.createElement("div");preview.className="tweetPreview";
-   const previewHead=document.createElement("div");previewHead.className="tweetPreviewHead";
-   const who=document.createElement("span");who.textContent=(previewTweet.author||"Cuenta de X")+(previewId===selected?" · seleccionado":"");
-   const link=document.createElement("a");link.href=previewTweet.url;link.target="_blank";link.rel="noopener";link.textContent="Abrir en X ↗";
-   previewHead.append(who,link);preview.appendChild(previewHead);
-   const frame=document.createElement("iframe");frame.loading="lazy";frame.title="Vista previa del tuit de "+(previewTweet.author||"X");
-   frame.src=previewTweet.embed_url||("https://platform.twitter.com/embed/Tweet.html?id="+encodeURIComponent(previewTweet.id)+"&dnt=true");
-   preview.appendChild(frame);
-   const hint=document.createElement("div");hint.className="tweetPreviewHint";hint.textContent="Para utilizarlo, marca su círculo en el selector de arriba. Puedes ampliar el tuit en X.";
-   preview.appendChild(hint);card.appendChild(preview)
-  }
   const send=(destination,label)=>{const b=document.createElement("button");b.className="btn primary";b.textContent=label;b.disabled=!selected;b.title=selected?"":"Elige antes el tuit";b.onclick=async()=>{try{const r=await api("send-tremending",{entry_id:item.id,destination});tremendingOpen.delete(id);persistUiState();setView("ready");toast(r.news_queued||r.trend_queued?"Enviada a elaboración":"Ya estaba cerrada");await load(true)}catch(e){toast(e.message)}};actions.appendChild(b)};
   send("news","→ TTiTTulares");send("trend","→ TTendencias");
   const postpone=document.createElement("button");postpone.className="btn";postpone.textContent=item.status==="postponed"?"Reactivar":"Posponer";postpone.title="Aplazar la decisión: queda al final de la bandeja sin descartarse";postpone.onclick=async()=>{try{await api(item.status==="postponed"?"reactivate-tremending":"postpone-tremending",{entry_id:item.id});tremendingOpen.delete(id);persistUiState();await load(true);toast(item.status==="postponed"?"Reactivada":"Pospuesta para después")}catch(e){toast(e.message)}};actions.appendChild(postpone);
