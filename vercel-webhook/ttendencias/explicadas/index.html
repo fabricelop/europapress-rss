@@ -218,8 +218,17 @@ async function load(){
  const d=await r.json();if(!r.ok||!d?.ok)throw new Error(d?.error||"No se pudo leer TTendencias");
  const requests=d.requests?.requests||[];
  allItems=[...(d.explained?.items||[])]
+   .map((x,_sourceOrder)=>({...x,_sourceOrder}))
    .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
-   .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||"")))
+   .sort((a,b)=>{
+     const ta=Date.parse(a.explained_at||""),tb=Date.parse(b.explained_at||"");
+     const va=Number.isFinite(ta),vb=Number.isFinite(tb);
+     if(va&&vb&&ta!==tb)return tb-ta;
+     if(va!==vb)return vb?1:-1;
+     // Históricos sin explained_at válido: conservar un fallback determinista
+     // basado en el orden de persistencia, mostrando primero los más recientes.
+     return Number(b._sourceOrder||0)-Number(a._sourceOrder||0);
+   })
    .slice(0,100)
    .map(x=>({...x,_rank:rankFor(x,requests)}));
  render();
