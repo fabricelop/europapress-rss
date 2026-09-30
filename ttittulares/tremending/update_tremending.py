@@ -21,7 +21,8 @@ STATE_PATH = ROOT / "ttittulares" / "tremending" / "items.json"
 BASE_URL = "https://www.publico.es/tremending"
 USER_AGENT = "TTiTTulares-Tremending/1.0 (+https://github.com/fabricelop/europapress-rss)"
 STATUS_RE = re.compile(r"https?://(?:www\.)?(?:x|twitter)\.com/([^/?#]+)/status/(\d+)", re.I)
-CAPTURE_FROM_DEFAULT = "2026-09-29T22:00:00Z"  # 30/09/2026 00:00 Europe/Madrid (CEST)
+CAPTURE_FROM_DEFAULT = "2026-09-29T22:00:00Z"  # frontera UTC equivalente
+CAPTURE_LOCAL_DATE_DEFAULT = "2026-09-30"  # fecha visible de Público en Europe/Madrid
 
 
 def parse_iso(value: str | None) -> datetime | None:
@@ -153,7 +154,7 @@ def default_state() -> dict:
         "source": "Público · Tremending",
         "version": 1,
         "updated_at": None,
-        "scan": {"last_run_at": None, "last_success_at": None, "recent_pages": 8, "recovery_page": None, "capture_from": CAPTURE_FROM_DEFAULT, "last_error": None},
+        "scan": {"last_run_at": None, "last_success_at": None, "recent_pages": 8, "recovery_page": None, "capture_from": CAPTURE_FROM_DEFAULT, "capture_local_date": CAPTURE_LOCAL_DATE_DEFAULT, "last_error": None},
         "items": [],
     }
 
@@ -204,6 +205,8 @@ def update_state(state: dict, session: requests.Session, recent_pages: int, max_
     capture_from_changed = scan.get("capture_from") != capture_from
     scan["capture_from"] = capture_from
     cutoff = parse_iso(capture_from)
+    capture_local_date = str(scan.get("capture_local_date") or CAPTURE_LOCAL_DATE_DEFAULT)
+    scan["capture_local_date"] = capture_local_date
     if cutoff is None:
         raise ValueError(f"capture_from inválido: {capture_from}")
 
@@ -251,12 +254,15 @@ def update_state(state: dict, session: requests.Session, recent_pages: int, max_
                 try:
                     article = extract_article(fetch(session, url), url)
                     evaluated += 1
-                    published = parse_iso(article.get("published_at"))
-                    if published is None:
+                    published_raw = str(article.get("published_at") or "")
+                    published = parse_iso(published_raw)
+                    if published is None or len(published_raw) < 10:
                         candidate_errors.append(f"{url}: sin fecha de publicación verificable")
                         continue
 
-                    if published < cutoff:
+                    # Público muestra la hora editorial en Madrid; para la frontera
+                    # de medianoche manda la fecha local visible del artículo.
+                    if published_raw[:10] < capture_local_date:
                         newly_seen.add(url)
                         filtered_before_cutoff += 1
                         continue
@@ -329,6 +335,7 @@ def update_state(state: dict, session: requests.Session, recent_pages: int, max_
         "recent_pages": recent_pages,
         "recovery_page": None,
         "capture_from": capture_from,
+        "capture_local_date": capture_local_date,
         "last_error": current_error,
         "last_discovered_count": len(discovered),
         "last_evaluated_count": evaluated,
