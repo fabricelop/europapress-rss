@@ -9,7 +9,12 @@ const candidatesDir = path.join(baseDir, 'candidates');
 const readJson = (file, fallback) => { try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch (_) { return fallback; } };
 const writeJson = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 2) + '\n', 'utf8');
 const normalizeText = (text) => String(text || '').toLocaleLowerCase('es-ES').replace(/\s+/g, ' ').trim();
-const rejectReason = (text) => normalizeText(text).includes('me recuerden por') ? 'excluded_phrase_me_recuerden_por' : null;
+const rejectReason = (text) => {
+  const normalized = normalizeText(text);
+  if (normalized.includes('me recuerden por')) return 'excluded_phrase_me_recuerden_por';
+  if (normalized.includes('los que me recuerden')) return 'excluded_phrase_los_que_me_recuerden';
+  return null;
+};
 
 const result = readJson(resultsFile, null);
 if (!result) process.exit(0);
