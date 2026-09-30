@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T10:52:08+02:00",
+  "captured_at": "2026-09-30T11:01:23+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -20,15 +20,15 @@
   "reliability": "high",
   "top10": [
     "#TierraDeNadie3",
-    "#FelizMiércoles",
     "Puerta del Sol",
+    "#FelizMiércoles",
     "Almeida",
     "Croacia",
-    "#LaHora30S",
     "Daniel Guzmán",
+    "#LaHora30S",
     "Amnistía Internacional",
-    "#BuenosDías",
-    "#FelizMartes"
+    "El BOE",
+    "#HONORMagicV6"
   ],
   "items": [
     {
@@ -38,13 +38,13 @@
     },
     {
       "rank": 2,
-      "name": "#FelizMiércoles",
-      "entered_top10_at": "2026-09-30T08:10:56+02:00"
+      "name": "Puerta del Sol",
+      "entered_top10_at": "2026-09-30T03:40:50+02:00"
     },
     {
       "rank": 3,
-      "name": "Puerta del Sol",
-      "entered_top10_at": "2026-09-30T03:40:50+02:00"
+      "name": "#FelizMiércoles",
+      "entered_top10_at": "2026-09-30T08:10:56+02:00"
     },
     {
       "rank": 4,
@@ -58,12 +58,12 @@
     },
     {
       "rank": 6,
-      "name": "#LaHora30S",
+      "name": "Daniel Guzmán",
       "entered_top10_at": "2026-09-30T10:11:03+02:00"
     },
     {
       "rank": 7,
-      "name": "Daniel Guzmán",
+      "name": "#LaHora30S",
       "entered_top10_at": "2026-09-30T10:11:03+02:00"
     },
     {
@@ -73,17 +73,20 @@
     },
     {
       "rank": 9,
-      "name": "#BuenosDías",
-      "entered_top10_at": "2026-09-30T09:31:18+02:00"
+      "name": "El BOE",
+      "entered_top10_at": "2026-09-30T11:01:23+02:00"
     },
     {
       "rank": 10,
-      "name": "#FelizMartes",
-      "entered_top10_at": "2026-09-30T07:21:17+02:00"
+      "name": "#HONORMagicV6",
+      "entered_top10_at": "2026-09-30T11:01:23+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "El BOE",
+    "#HONORMagicV6"
+  ],
   "upcoming": [
     {
       "name": "Junts",
@@ -96,14 +99,34 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 12.4,
+      "mean_observed_rank": 11.4,
       "movement": "flat",
       "first_detected_at": "2026-09-30T07:31:07+02:00",
-      "news_source_count": 3,
+      "news_source_count": 4,
       "news_event_id": "af4cac6946d2",
       "news_title": "Junts pedirá reprobar a Illa en el Parlament: «El peor presidente que ha tenido Cataluña»",
-      "news_status": "WAITING",
+      "news_status": "ELIGIBLE",
       "news_first_seen": "2026-09-30T08:12:07.868518Z"
+    },
+    {
+      "name": "Lamine",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-30T10:11:03+02:00",
+      "news_source_count": 2,
+      "news_event_id": "f97c3a6a4b4f",
+      "news_title": "Lamine Yamal: \"Hace un mes decíais que estaba mal y en cualquier momento diréis lo mismo\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T21:22:56.762664Z"
     },
     {
       "name": "Gonzalo Suárez",
@@ -115,9 +138,9 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 12,
+      "best_observed_rank": 13,
       "mean_observed_rank": 13.6,
-      "movement": "flat",
+      "movement": "down",
       "first_detected_at": "2026-09-30T09:31:18+02:00",
       "news_source_count": 1,
       "news_event_id": "d65af7ab67d3",
@@ -135,9 +158,9 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 13.8,
-      "movement": "flat",
+      "best_observed_rank": 15,
+      "mean_observed_rank": 15.0,
+      "movement": "down",
       "first_detected_at": "2026-09-30T10:11:03+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -156,7 +179,7 @@
         "tweets24"
       ],
       "best_observed_rank": 18,
-      "mean_observed_rank": 18.8,
+      "mean_observed_rank": 18.6,
       "movement": "flat",
       "first_detected_at": "2026-09-30T09:11:11+02:00",
       "news_source_count": 1,
@@ -164,44 +187,6 @@
       "news_title": "Alicante tendrá sindicato de inquilinas y València convoca manifestación para el sábado",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-30T05:22:24.182928Z"
-    },
-    {
-      "name": "Lamine",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.8,
-      "movement": "flat",
-      "first_detected_at": "2026-09-30T10:11:03+02:00",
-      "news_source_count": 2,
-      "news_event_id": "f97c3a6a4b4f",
-      "news_title": "Lamine Yamal: \"Hace un mes decíais que estaba mal y en cualquier momento diréis lo mismo\"",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T21:22:56.762664Z"
-    },
-    {
-      "name": "Jordi",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 16.2,
-      "movement": "flat",
-      "first_detected_at": "2026-09-30T09:31:18+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     },
     {
       "name": "Consejo de Ministros",
@@ -213,7 +198,7 @@
         "tweets24"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 16.8,
+      "mean_observed_rank": 16.5,
       "movement": "flat",
       "first_detected_at": "2026-09-30T04:00:57+02:00",
       "news_source_count": 3,
@@ -223,7 +208,7 @@
       "news_first_seen": "2026-09-30T08:33:51.736079Z"
     },
     {
-      "name": "San Jerónimo",
+      "name": "Jordi",
       "social_source_count": 4,
       "social_sources": [
         "snaplytics",
@@ -232,9 +217,28 @@
         "tweets24"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 17.8,
-      "movement": "flat",
-      "first_detected_at": "2026-09-30T09:40:48+02:00",
+      "mean_observed_rank": 18.5,
+      "movement": "down",
+      "first_detected_at": "2026-09-30T09:31:18+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Peligroso",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 17,
+      "mean_observed_rank": 17.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T11:01:23+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -273,7 +277,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T10:52:08+02:00"
+      "fetched_at": "2026-09-30T11:01:23+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -298,37 +302,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T10:52:08+02:00"
+      "fetched_at": "2026-09-30T11:01:24+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "#TierraDeNadie3",
-        "#FelizMiércoles",
         "Puerta del Sol",
+        "#FelizMiércoles",
         "Almeida",
         "Croacia",
-        "#LaHora30S",
         "Daniel Guzmán",
+        "#LaHora30S",
         "Amnistía Internacional",
-        "#BuenosDías",
-        "#FelizMartes",
-        "Jordi",
+        "El BOE",
+        "#HONORMagicV6",
+        "Junts",
+        "#tem29s",
+        "Gonzalo Suárez",
         "Lamine",
         "Antonio Banderas",
-        "Junts",
-        "Gonzalo Suárez",
-        "El BOE",
-        "San Jerónimo",
         "Consejo de Ministros",
         "Peligroso",
-        "Sindicato de Inquilinas"
+        "Sindicato de Inquilinas",
+        "Jordi",
+        "San Jerónimo"
       ],
       "error": null,
-      "update_hint": "Updated 42 minutes ago",
-      "age_minutes": 42.0,
+      "update_hint": "Updated 3 minutes ago",
+      "age_minutes": 3.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-30T10:52:09+02:00"
+      "fetched_at": "2026-09-30T11:01:25+02:00"
     },
     "superx": {
       "ok": true,
@@ -358,16 +362,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T10:52:10+02:00"
+      "fetched_at": "2026-09-30T11:01:26+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790758330",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790758886",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T10:52:10+02:00"
+      "fetched_at": "2026-09-30T11:01:26+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -395,9 +399,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 08:00 UTC",
-      "age_minutes": 52.2,
+      "age_minutes": 61.4,
       "freshness": "aging",
-      "fetched_at": "2026-09-30T10:52:11+02:00"
+      "fetched_at": "2026-09-30T11:01:26+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -406,46 +410,46 @@
         "#FelizMiércoles",
         "Puerta del Sol",
         "Almeida",
-        "Croacia",
-        "Amnistía Internacional",
         "#LaHora30S",
-        "#FelizMartes",
-        "#Buenosdías",
-        "Lamine",
-        "Antonio Banderas",
-        "Gonzalo Suárez",
+        "Croacia",
         "Daniel Guzmán",
+        "Amnistía Internacional",
+        "El BOE",
+        "#Buenosdías",
+        "#HONORMagicV6",
         "Junts",
+        "Lamine",
+        "Gonzalo Suárez",
+        "Antonio Banderas",
         "Jordi",
         "San Jerónimo",
         "Consejo de Ministros",
-        "'Delcygate'",
-        "Sindicato de Inquilinas",
-        "Olga"
+        "Peligroso",
+        "Sindicato de Inquilinas"
       ],
       "error": null,
-      "update_hint": "Updated: September 30, 2026 at 08:00 AM # Trend Type Actions 1 #TierraDeNadie3 Hashtag 2",
-      "age_minutes": 172.2,
+      "update_hint": "Updated: September 30, 2026 at 09:00 AM # Trend Type Actions 1 #TierraDeNadie3 Hashtag 2",
+      "age_minutes": 121.4,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T10:52:11+02:00"
+      "fetched_at": "2026-09-30T11:01:26+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends.cyberkendra.com/spain/?_=1790758332",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790758888",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T10:52:12+02:00"
+      "fetched_at": "2026-09-30T11:01:28+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
       "trends": [],
-      "error": "ConnectionError: HTTPSConnectionPool(host='globaltwittertrends.com', port=443): Max retries exceeded with url: /spain/?_=1790758333 (Caused by NewConnectionError(\"HTTPSConnection(host='globaltwittertrends.com', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))",
-      "update_hint": null,
-      "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-09-30T10:52:13+02:00"
+      "error": "Lista no válida (1 elementos parseados)",
+      "update_hint": "updated 30 minutes ago",
+      "age_minutes": 30.0,
+      "freshness": "invalid",
+      "fetched_at": "2026-09-30T11:01:29+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -454,37 +458,37 @@
         "#FelizMiércoles",
         "#Puerta del Sol",
         "#Almeida",
-        "#Croacia",
-        "#Amnistía Internacional",
         "#LaHora30S",
-        "#FelizMartes",
-        "#Buenosdías",
-        "#Lamine",
-        "#Antonio Banderas",
-        "#Gonzalo Suárez",
+        "#Croacia",
         "#Daniel Guzmán",
+        "#Amnistía Internacional",
+        "#El BOE",
+        "#Buenosdías",
+        "#HONORMagicV6",
         "#Junts",
+        "#Lamine",
+        "#Gonzalo Suárez",
+        "#Antonio Banderas",
         "#Jordi",
         "#San Jerónimo",
         "#Consejo de Ministros",
-        "#'Delcygate'",
-        "#Sindicato de Inquilinas",
-        "#Olga"
+        "#Peligroso",
+        "#Sindicato de Inquilinas"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T10:53:13+02:00"
+      "fetched_at": "2026-09-30T11:01:29+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790758395",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790758892",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T10:53:15+02:00"
+      "fetched_at": "2026-09-30T11:01:32+02:00"
     }
   }
 }
