@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-30T08:21:20.275392+00:00",
+  "checked_at": "2026-09-30T08:36:21.800041+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.8,
-      "run_id": 36689092816,
+      "age_minutes": 0.9,
+      "run_id": 36690646732,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,81 +75,27 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 9,
-      "overdue_count": 7,
-      "oldest_age_minutes": 770.1,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "74e71453da5e",
-          "name": "Consejo de Ministros",
-          "status": "update",
-          "age_minutes": 32.5
-        },
-        {
-          "id": "ce27c96e786b",
-          "name": "#JuanjoBonaXNetflix",
-          "status": "preparing",
-          "age_minutes": 770.1
-        },
-        {
-          "id": "2d56fd6b6950",
-          "name": "Mariona",
-          "status": "preparing",
-          "age_minutes": 770.1
-        },
-        {
-          "id": "c010e0621343",
-          "name": "Juan Carlos Rivero",
-          "status": "preparing",
-          "age_minutes": 640.1
-        },
-        {
-          "id": "3ffa846e080e",
-          "name": "Amnistía Internacional",
-          "status": "preparing",
-          "age_minutes": 76.3
-        },
-        {
-          "id": "75c332dd6345",
-          "name": "Ferraz",
-          "status": "preparing",
-          "age_minutes": 69.5
-        },
-        {
-          "id": "4636004ffe98",
-          "name": "San Jerónimo",
-          "status": "preparing",
-          "age_minutes": 32.5
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "74e71453da5e",
-        "ce27c96e786b",
-        "2d56fd6b6950",
-        "c010e0621343",
-        "3ffa846e080e",
-        "75c332dd6345",
-        "4636004ffe98",
-        "b091b252b9ff",
-        "4a22db5d3474"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "config TTendencias incompatible con el modo activo",
-    "cola de explicaciones retrasada: 7 pendiente(s) superan 30 min; más antigua 770.1 min"
+    "config TTendencias incompatible con el modo activo"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 7 pendiente(s) superan 30 min; más antigua 770.1 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "config TTendencias incompatible con el modo activo"
 }
