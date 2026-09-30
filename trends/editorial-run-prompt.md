@@ -6,8 +6,33 @@ Este archivo es la ÚNICA fuente de verdad para la elaboración editorial de TTe
 
 Cuando el usuario envía «Ejecuta TTendencias» a una conversación de ChatGPT, es una orden de realizar **en esa misma conversación** la pasada editorial real sobre `main`, conforme a este contrato. No se satisface la orden actualizando únicamente `control/ttendencias-run-trigger` ni escribiendo `trends/run-now-trigger.json`: un commit en el PR #7 **no inicia ningún editor por sí mismo**. Esa delegación solo es válida si se ha comprobado que existe un consumidor Work de eventos activo y que la solicitud ha recibido confirmación `RUNNING`. Sin confirmación, informar del bloqueo, no simular que está en curso. Para la ejecución directa, usar el PR #7 exclusivamente como telemetría, ejecutar el ciclo editorial, persistir y releer para verificar las revisiones tratadas. No reactivar programaciones antiguas ni generar imágenes; respetar siempre `explanation_only`.
 
+### Telemetría obligatoria de TODA ejecución directa
 
-Cuando el envoltorio haya creado un comentario `TTENDENCIAS_RUNTRACE_V1`, actualízalo durante el ciclo para reflejar las fases `investigating`, `drafting`, `image_generating`, `image_checking`, `persisting`, `verifying` y `closing`, con `current/total`, `trend_id`, `title` e incidencias. Actualiza siempre el mismo comentario; nunca uses esa telemetría como activador.
+La ejecución directa —incluida la lanzada por la programación de Windows que escribe «Ejecuta TTendencias»— **debe dejar telemetría aunque procese 0 tendencias**.
+
+1. Antes de investigar, lee los comentarios del PR #7 y localiza el comentario canónico `TTENDENCIAS_RUNTRACE_V1` con `"canonical":true` (actualmente comment_id `5859532515`). Si no existe, créalo una sola vez. Actualiza ESE MISMO comentario a `RUNNING` con un `run_id` nuevo, `source:"chat"`, `started_at`, `updated_at`, `phase:"preparing"`, `current:0`, `total` real y resumen vacío. Nunca crees un comentario RUNTRACE nuevo por cada pasada.
+2. Actualiza ese comentario durante las fases reales `investigating`, `drafting`, `persisting`, `verifying` y `closing`. En `explanation_only` no inventes fases de imagen.
+3. Al terminar, incluso con cola vacía o con 0 explicaciones cerradas, cierra el mismo RUNTRACE como `DONE` (o `DONE_WITH_INCIDENTS` si hubo incidencias no globales; `ERROR` solo ante fallo global), con `finished_at`, `updated_at` y `summary` real.
+4. En el mismo cierre persiste `trends/editorial-runtime.json` como telemetría durable. Conserva compatibilidad con sus campos existentes y añade/actualiza:
+   - `project:"TTendencias"`, `engine:"chat-direct"`;
+   - `last_started_at`, `last_completed_at`, `updated_at`;
+   - `status:"success"` para DONE/DONE_WITH_INCIDENTS o `"failure"` para ERROR;
+   - `queue_complete` y `remaining_active_ids` calculados tras releer `trends/editorial-queue.json`;
+   - `error` solo en ERROR;
+   - `last_run` con el objeto terminal completo usado por RUNTRACE: `run_id,source,status,phase,started_at,updated_at,finished_at,current,total,summary,message,incident_count,incidents`.
+5. Si falla el comentario PR pero GitHub `main` sigue escribible, el runtime durable es obligatorio y permite que el panel muestre la ejecución. Si falla el runtime pero el comentario funciona, registra incidencia. No declares la pasada «verificada» si no quedó al menos una de las dos telemetrías y, para una ejecución directa normal, intenta dejar ambas.
+
+### Cierre transaccional e idempotente
+
+Una explicación **no está cerrada** por el mero hecho de existir en `trends/telegram-manual-explained.json`. Para cada explicación/grupo persistido debes completar y verificar, en este orden lógico:
+
+1. registro `status:"explained"` válido en `trends/telegram-manual-explained.json`;
+2. TODAS las revisiones cubiertas, identificadas por `(id, revision)`, pasan a `status:"explained"` en `trends/requests.json` con `explained_at`, `explanation`, `closer_text`, grupo y disposición correspondientes;
+3. solo entonces se retiran esas mismas revisiones de `trends/editorial-queue.json`;
+4. relee los tres archivos desde `main` y exige consistencia antes de contar el item como cerrado.
+
+Si una escritura intermedia falla, relee SHA y reintenta; no redactes de nuevo una explicación ya persistida. Antes de empezar trabajo nuevo y otra vez al cierre, reconcilia idempotentemente cualquier explicación `explained` ya persistida con su revisión exacta en requests/cola. Nunca uses solo el nombre para reconciliar revisiones.
+
 
 ## Ámbito y estado
 
