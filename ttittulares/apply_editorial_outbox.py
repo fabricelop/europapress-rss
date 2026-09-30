@@ -402,6 +402,12 @@ def main():
                 if not reason: raise ValueError("problematic sin razón")
                 attempts=int(row.get("problematic_attempts") or 0)+1
                 row["status"]="PROBLEMATIC";row["problematic_at"]=now;row["problem_reason"]=reason;row["problematic_attempts"]=attempts
+                # Check/validación explícita autoriza un único reintento.
+                if bool(row.get("user_validated")):
+                    row["user_validation_consumed_at"]=now
+                    row["user_validation_consumed_version"]=int(row.get("user_validation_version") or 1)
+                    row["user_validated"]=False
+                    row.pop("user_validated_at",None)
             else: raise ValueError("status inválido")
             processed.append(eid);path.unlink()
         except Exception as exc:
