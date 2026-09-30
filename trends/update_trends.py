@@ -667,6 +667,7 @@ def main():
 
     unchanged = [x.casefold() for x in top10] == [x.casefold() for x in previous]
     previous_keys = {term_key(x) for x in previous}
+    previous_rank_by_key = {term_key(name): i + 1 for i, name in enumerate(previous)}
     new_entries = [x for x in top10 if term_key(x) not in previous_keys]
     previous_items = {
         term_key(x.get("name")): x
@@ -692,6 +693,18 @@ def main():
             candidates.sort(key=lambda r: str(r.get("requested_at") or ""), reverse=True)
             return candidates[0]["requested_at"]
         return previous_doc.get("captured_at") or now.isoformat(timespec="seconds")
+
+    def top10_movement(name, current_rank):
+        previous_rank = previous_rank_by_key.get(term_key(name))
+        if previous_rank is None:
+            return "new", None, None
+        if current_rank < previous_rank:
+            movement = "up"
+        elif current_rank > previous_rank:
+            movement = "down"
+        else:
+            movement = "flat"
+        return movement, previous_rank, previous_rank - current_rank
 
     valid = [n for n, d in source_data.items() if d.get("ok")]
     non_stale = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") != "stale"]
@@ -721,6 +734,9 @@ def main():
                 "rank": i + 1,
                 "name": name,
                 "entered_top10_at": entered_top10_at(name),
+                "movement": top10_movement(name, i + 1)[0],
+                "previous_rank": top10_movement(name, i + 1)[1],
+                "rank_delta": top10_movement(name, i + 1)[2],
             }
             for i, name in enumerate(top10)
         ],
