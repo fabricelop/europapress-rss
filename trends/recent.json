@@ -1,29 +1,28 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T15:21:08+02:00",
+  "captured_at": "2026-09-30T15:31:18+02:00",
   "primary_source": "consensus",
   "selection_method": "consensus",
   "sources_used": [
     "trends24",
-    "superx",
-    "snaplytics"
+    "superx"
   ],
   "source_count": 5,
-  "non_stale_source_count": 3,
+  "non_stale_source_count": 2,
   "fresh_sources": [],
-  "reliability": "medium",
+  "reliability": "fallback",
   "top10": [
     "Puerta del Sol",
     "#EnBocaDeTodos",
     "#LaFreidoraDeLidl",
+    "#ConexiónHonduras3",
     "#TierraDeNadie3",
+    "Galapagar",
+    "#FelizLunes",
     "Almeida",
     "Fran García",
-    "Croacia",
-    "#Mañaneros30S",
-    "#FelizMiércoles",
-    "Amnistía Internacional"
+    "#Mañaneros28S"
   ],
   "items": [
     {
@@ -43,48 +42,52 @@
     },
     {
       "rank": 4,
+      "name": "#ConexiónHonduras3",
+      "entered_top10_at": "2026-09-30T15:31:18+02:00"
+    },
+    {
+      "rank": 5,
       "name": "#TierraDeNadie3",
       "entered_top10_at": "2026-09-30T00:21:11+02:00"
     },
     {
-      "rank": 5,
+      "rank": 6,
+      "name": "Galapagar",
+      "entered_top10_at": "2026-09-30T15:31:18+02:00"
+    },
+    {
+      "rank": 7,
+      "name": "#FelizLunes",
+      "entered_top10_at": "2026-09-30T15:31:18+02:00"
+    },
+    {
+      "rank": 8,
       "name": "Almeida",
       "entered_top10_at": "2026-09-30T03:40:50+02:00"
     },
     {
-      "rank": 6,
+      "rank": 9,
       "name": "Fran García",
       "entered_top10_at": "2026-09-30T15:03:53+02:00"
     },
     {
-      "rank": 7,
-      "name": "Croacia",
-      "entered_top10_at": "2026-09-29T20:31:11+02:00"
-    },
-    {
-      "rank": 8,
-      "name": "#Mañaneros30S",
-      "entered_top10_at": "2026-09-30T15:03:53+02:00"
-    },
-    {
-      "rank": 9,
-      "name": "#FelizMiércoles",
-      "entered_top10_at": "2026-09-30T08:10:56+02:00"
-    },
-    {
       "rank": 10,
-      "name": "Amnistía Internacional",
-      "entered_top10_at": "2026-09-30T10:11:03+02:00"
+      "name": "#Mañaneros28S",
+      "entered_top10_at": "2026-09-30T15:31:18+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "#ConexiónHonduras3",
+    "Galapagar",
+    "#FelizLunes",
+    "#Mañaneros28S"
+  ],
   "upcoming": [
     {
       "name": "Junts",
-      "social_source_count": 2,
+      "social_source_count": 1,
       "social_sources": [
-        "snaplytics",
         "trends24"
       ],
       "best_observed_rank": 11,
@@ -99,13 +102,12 @@
     },
     {
       "name": "El BOE",
-      "social_source_count": 2,
+      "social_source_count": 1,
       "social_sources": [
-        "snaplytics",
         "trends24"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 13.5,
+      "mean_observed_rank": 13.0,
       "movement": "down",
       "first_detected_at": "2026-09-30T15:03:53+02:00",
       "news_source_count": 4,
@@ -115,32 +117,14 @@
       "news_first_seen": "2026-09-30T12:32:33.259910Z"
     },
     {
-      "name": "Daniel Guzmán",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.5,
-      "movement": "up",
-      "first_detected_at": "2026-09-30T13:51:02+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "El Gobierno",
-      "social_source_count": 2,
+      "social_source_count": 1,
       "social_sources": [
-        "snaplytics",
         "trends24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 15.5,
-      "movement": "flat",
+      "mean_observed_rank": 15.0,
+      "movement": "down",
       "first_detected_at": "2026-09-30T12:01:28+02:00",
       "news_source_count": 4,
       "news_event_id": "e26960fb9a22-r2",
@@ -150,71 +134,19 @@
     },
     {
       "name": "Decreto",
-      "social_source_count": 2,
+      "social_source_count": 1,
       "social_sources": [
-        "snaplytics",
         "trends24"
       ],
       "best_observed_rank": 18,
-      "mean_observed_rank": 18.5,
-      "movement": "up",
+      "mean_observed_rank": 18.0,
+      "movement": "down",
       "first_detected_at": "2026-09-30T15:11:01+02:00",
       "news_source_count": 4,
       "news_event_id": "e26960fb9a22-r2",
       "news_title": "Publicado en el BOE: esto es lo que dice el primer decreto de vivienda aprobado por el Gobierno de PSOE y Sumar",
       "news_status": "ELIGIBLE_UPDATE",
       "news_first_seen": "2026-09-30T12:32:33.259910Z"
-    },
-    {
-      "name": "Gonzalo Suárez",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-30T15:01:31+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Flydubai",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-30T15:21:08+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Consejo de Ministros",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 18.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-30T14:51:00+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -248,16 +180,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T15:21:08+02:00"
+      "fetched_at": "2026-09-30T15:31:18+02:00"
     },
     "getdaytrends": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790774481",
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790775079",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T15:21:21+02:00"
+      "fetched_at": "2026-09-30T15:31:19+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -287,7 +219,7 @@
       "update_hint": "Updated 2 hours ago",
       "age_minutes": 120.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T15:21:21+02:00"
+      "fetched_at": "2026-09-30T15:31:19+02:00"
     },
     "superx": {
       "ok": true,
@@ -317,16 +249,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T15:21:22+02:00"
+      "fetched_at": "2026-09-30T15:31:20+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790774482",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790775080",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T15:21:22+02:00"
+      "fetched_at": "2026-09-30T15:31:20+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -354,9 +286,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 12:00 UTC",
-      "age_minutes": 81.4,
-      "freshness": "aging",
-      "fetched_at": "2026-09-30T15:21:22+02:00"
+      "age_minutes": 91.3,
+      "freshness": "stale",
+      "fetched_at": "2026-09-30T15:31:20+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -384,18 +316,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 01:00 PM # Trend Type Actions 1 #LaFreidoraDeLidl Hashtag",
-      "age_minutes": 141.4,
+      "age_minutes": 151.4,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T15:21:22+02:00"
+      "fetched_at": "2026-09-30T15:31:21+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790774483",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790775082",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T15:21:23+02:00"
+      "fetched_at": "2026-09-30T15:31:22+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -404,7 +336,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T15:21:24+02:00"
+      "fetched_at": "2026-09-30T15:31:23+02:00"
     },
     "trendswe": {
       "ok": false,
@@ -413,16 +345,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T15:21:24+02:00"
+      "fetched_at": "2026-09-30T15:31:24+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790774485",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790775085",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T15:21:25+02:00"
+      "fetched_at": "2026-09-30T15:31:25+02:00"
     }
   }
 }
