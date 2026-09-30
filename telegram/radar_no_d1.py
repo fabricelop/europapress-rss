@@ -672,7 +672,11 @@ def merge_duplicate_active_events(events):
    kept.append(e);continue
   target=None
   for k in kept:
-   if k.get("status") not in active: continue
+   # Un fragmento WAITING también debe poder consolidarse sobre un evento que
+   # ya alcanzó ELIGIBLE. Antes se buscaba destino solo entre eventos activos:
+   # en cuanto un bloque llegaba a 4 fuentes quedaba "congelado" y las nuevas
+   # cabeceras del mismo hecho formaban otro WAITING (4+3, 4+2, etc.).
+   if k.get("status") not in repairable: continue
    # No mezclar una revisión material con su noticia padre ni revisiones distintas.
    if bool(e.get("parent_event_id"))!=bool(k.get("parent_event_id")): continue
    if e.get("parent_event_id") and e.get("parent_event_id")!=k.get("parent_event_id"): continue
@@ -716,6 +720,34 @@ def merge_duplicate_active_events(events):
    recalc_event_sources(item)
  print("EVENT_MERGE_SUMMARY",merged,"outliers_pruned",pruned)
  return kept
+
+def run_active_merge_regressions():
+ # Regresión: un evento que ya alcanzó ELIGIBLE no puede quedar congelado.
+ # Una cabecera posterior del mismo hecho debe consolidarse en él y sumar fuente.
+ base={
+  "id":"test-eligible","canonical_title":"Illa anuncia un plan para comprar pisos a medias con mayores de 40 años en Cataluña",
+  "appearances":[
+   {"source":"RTVE","source_type":"general","title":"Illa lanza un plan para comprar pisos a medias con mayores de 40 años","first_seen":"2026-09-29T20:00:00Z","last_seen":"2026-09-29T20:00:00Z"},
+   {"source":"Cadena SER","source_type":"general","title":"Illa anuncia un plan para comprar pisos a medias con mayores de 40 años en Cataluña","first_seen":"2026-09-29T20:01:00Z","last_seen":"2026-09-29T20:01:00Z"},
+   {"source":"EL PAÍS","source_type":"general","title":"Qué es la propiedad compartida de pisos que impulsa Salvador Illa en Cataluña","first_seen":"2026-09-29T20:02:00Z","last_seen":"2026-09-29T20:02:00Z"},
+   {"source":"20minutos","source_type":"general","title":"Illa plantea comprar a medias la primera vivienda de mayores de 40 años","first_seen":"2026-09-29T20:03:00Z","last_seen":"2026-09-29T20:03:00Z"}
+  ],
+  "sources":["RTVE","Cadena SER","EL PAÍS","20minutos"],"source_count":4,"status":"ELIGIBLE",
+  "first_seen":"2026-09-29T20:00:00Z","last_seen":"2026-09-29T20:03:00Z","revision":1
+ }
+ fragment={
+  "id":"test-waiting","canonical_title":"Salvador Illa anuncia una fórmula de compra compartida de vivienda para mayores de 40 años",
+  "appearances":[
+   {"source":"Telecinco Noticias","source_type":"general","title":"Salvador Illa anuncia que la Generalitat pagará la mitad de la compra de un piso para personas mayores de 40 años","first_seen":"2026-09-29T20:10:00Z","last_seen":"2026-09-29T20:10:00Z"}
+  ],
+  "sources":["Telecinco Noticias"],"source_count":1,"status":"WAITING",
+  "first_seen":"2026-09-29T20:10:00Z","last_seen":"2026-09-29T20:10:00Z","revision":1
+ }
+ merged=merge_duplicate_active_events([base,fragment])
+ if len(merged)!=1 or merged[0].get("status")!="ELIGIBLE" or "Telecinco Noticias" not in merged[0].get("sources",[]):
+  raise RuntimeError("Regresión: WAITING no se consolidó sobre ELIGIBLE")
+
+run_active_merge_regressions()
 
 def source_gather_minutes(e,count=None):
  general=set(e.get("sources",[]))
