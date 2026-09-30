@@ -23,6 +23,9 @@ const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const READY_MARKER="TTENDENCIAS WORK COMMIT TRIGGER READY";
 const STALE_MS=20*60*1000;
 const START_ACK_MS=3*60*1000;
+const RUNTIME_PATH="trends/editorial-runtime.json";
+const EXPLAINED_PATH="trends/telegram-manual-explained.json";
+const MAIN_BRANCH="main";
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -62,6 +65,16 @@ async function readTrigger(){
   const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
   return {doc:JSON.parse(raw||"{}")}
 }
+async function readMainJson(path){
+  try{
+    const u="https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(MAIN_BRANCH);
+    const r=await gh(u);
+    if(!r.ok)return {};
+    const f=await r.json();
+    const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+    return JSON.parse(raw||"{}");
+  }catch(_){return {}}
+}
 function field(body,name){
   const m=String(body||"").match(new RegExp("^"+name+":\\s*(.+)$","mi"));
   return m?m[1].trim():null
@@ -80,9 +93,10 @@ function traceOf(comment){
 }
 function stamp(v){const n=Date.parse(v||"");return Number.isFinite(n)?n:0}
 function sourceLabel(v){return v==="manual"?"Manual":v==="scheduled"?"Automática":v==="chat"?"Chat":String(v||"")}
+function terminalStatus(v){return ["DONE","DONE_WITH_INCIDENTS","ERROR"].includes(String(v||""))}
 function normalizeTrace(t){
   const started=t.started_at||t.requested_at||t.updated_at||null;
-  const finished=t.finished_at||(["DONE","ERROR"].includes(t.status)?t.updated_at:null);
+  const finished=t.finished_at||(terminalStatus(t.status)?t.updated_at:null);
   const incidents=Array.isArray(t.incidents)?t.incidents.slice(-8):[];
   return {
     run_id:t.run_id||t.command_id||null,
@@ -106,6 +120,52 @@ function normalizeTrace(t){
     incident_count:Math.max(Number(t.incident_count||0),incidents.length),
     incidents
   }
+}
+function runtimeFallback(doc){
+  const stored=doc&&typeof doc.last_run==="object"&&doc.last_run?doc.last_run:null;
+  if(stored){
+    const normalized=normalizeTrace({...stored,source:stored.source||"chat"});
+    if(terminalStatus(normalized.status)&&stamp(normalized.finished_at||normalized.updated_at||normalized.started_at))return normalized;
+  }
+  const finished=doc?.last_completed_at||doc?.updated_at||null;
+  if(!finished||!stamp(finished))return null;
+  const failed=String(doc?.status||"").toLowerCase()==="failure";
+  return normalizeTrace({
+    run_id:"runtime-"+String(finished).replace(/[^0-9]/g,"").slice(0,14),
+    source:"chat",
+    status:failed?"ERROR":"DONE",
+    phase:failed?"error":"closing",
+    started_at:doc?.last_started_at||finished,
+    updated_at:doc?.updated_at||finished,
+    finished_at:finished,
+    summary:doc?.summary||null,
+    message:failed?(doc?.error||"Ejecución editorial fallida"):null
+  });
+}
+function persistedExplanationFallback(doc){
+  const items=(doc?.items||[]).filter(x=>
+    String(x?.status||"")==="explained" &&
+    String(x?.explanation||"").trim() &&
+    stamp(x?.explained_at)
+  );
+  if(!items.length)return null;
+  items.sort((a,b)=>stamp(a.explained_at)-stamp(b.explained_at));
+  const latest=items.at(-1);
+  const ts=latest.explained_at;
+  const same=items.filter(x=>Math.abs(stamp(x.explained_at)-stamp(ts))<1500);
+  return normalizeTrace({
+    run_id:"persisted-"+String(ts).replace(/[^0-9]/g,"").slice(0,14),
+    source:"chat",
+    status:"DONE",
+    phase:"closing",
+    started_at:ts,
+    updated_at:ts,
+    finished_at:ts,
+    current:same.length,
+    total:same.length,
+    summary:{trends_processed:same.length,trends_explained:same.length},
+    message:"Recuperada desde la persistencia editorial verificada en main."
+  });
 }
 function manualFallback(items,request){
   const command_id=String(request.command_id||"").trim();
@@ -138,7 +198,9 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
-    const [enabled,items,{doc:request}]=await Promise.all([triggerReady(),comments(),readTrigger()]);
+    const [enabled,items,{doc:request},runtimeDoc,explainedDoc]=await Promise.all([
+      triggerReady(),comments(),readTrigger(),readMainJson(RUNTIME_PATH),readMainJson(EXPLAINED_PATH)
+    ]);
     const traces=items.map(traceOf).filter(Boolean).sort((a,b)=>stamp(a.updated_at||a.comment_updated_at)-stamp(b.updated_at||b.comment_updated_at));
     let latest=traces.length?normalizeTrace(traces.at(-1)):null;
     const fallback=manualFallback(items,request);
@@ -159,10 +221,17 @@ export default async function handler(req,res){
 
     if(active)return res.status(200).json({ok:true,enabled,active:true,...active,last_run:null,can_run:enabled&&authorized(req)});
 
-    const terminal=traces.map(normalizeTrace).filter(t=>["DONE","ERROR"].includes(t.status));
-    if(latest&&["DONE","ERROR"].includes(latest.status))terminal.push(latest);
-    if(fallback&&["DONE","ERROR"].includes(fallback.status))terminal.push(fallback);
-    terminal.sort((a,b)=>stamp(a.requested_at||a.started_at||a.updated_at)-stamp(b.requested_at||b.started_at||b.updated_at));
+    const terminal=traces.map(normalizeTrace).filter(t=>terminalStatus(t.status));
+    if(latest&&terminalStatus(latest.status))terminal.push(latest);
+    if(fallback&&terminalStatus(fallback.status))terminal.push(fallback);
+    const runtime=runtimeFallback(runtimeDoc);
+    const persisted=persistedExplanationFallback(explainedDoc);
+    if(runtime)terminal.push(runtime);
+    if(persisted)terminal.push(persisted);
+    terminal.sort((a,b)=>
+      stamp(a.finished_at||a.updated_at||a.started_at||a.requested_at)-
+      stamp(b.finished_at||b.updated_at||b.started_at||b.requested_at)
+    );
     const last_run=terminal.at(-1)||null;
 
     return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,can_run:enabled&&authorized(req)})
