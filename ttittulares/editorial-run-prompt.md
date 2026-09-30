@@ -10,7 +10,7 @@ Una PROBLEMATIC antigua que no se intenta en la pasada permanece visible en «No
 
 ## Redacción
 
-Comprueba al menos dos fuentes independientes fiables que sostengan el hecho esencial. Usa web solo si la evidencia falta, es ambigua, antigua o contradictoria. Redacta exactamente un tuit informativo por noticia y ciérralo, tras dos saltos de línea, con un único remate que empiece por `🌶️ `. El tuit completo debe medir <=280 caracteres y se persiste en `tweet:{text,remate,url}`; no generes `Principal`, `A`, `B`, `C`, `variants`, `primary` ni `alternatives`.
+Comprueba al menos dos fuentes independientes fiables que sostengan el hecho esencial. Usa web solo si la evidencia falta, es ambigua, antigua o contradictoria. Redacta exactamente un tuit informativo por noticia y ciérralo, tras dos saltos de línea, con un único remate que empiece por `🌶️ `. El tuit completo debe medir <=280 caracteres y se persiste en `tweet:{text,remate,url}`. La salida pública y persistida contiene UN SOLO remate: no persistas ni muestres `Principal`, `A`, `B`, `C`, `variants`, `primary` ni `alternatives`. La generación de candidatos internos exigida por la sección de selección de remate es privada, efímera y no cuenta como variantes públicas.
 
 El remate consta de UNA sola frase AUTOCONTENIDA, con UNA idea cómica y un golpe final claro, en voz de monologuista de actualidad: ironía o sarcasmo mordaz, ágil y neutral. El ingenio debe nacer de un detalle específico, relevante y contrastado de esa noticia y cerrar con giro sorprendente. Evita frases bipartitas de contraste, aforismos, moralejas y fórmulas intercambiables del tipo «X tiene A; Y aún busca B», aunque sean gramaticalmente una oración. Ejemplo positivo de ritmo (nunca copiar): «Le recetó una vaselina que no se vende en farmacias». Ejemplo negativo (nunca reproducir): «El caso tiene puerta; el decreto aún busca llave». No expliques el chiste, no inventes hechos, no caricaturices colectivos. Si un tema sensible no admite remate respetuoso, prima la protección de víctimas y la veracidad.
 
@@ -26,6 +26,27 @@ ANTES de redactar el tuit, lee siempre **desde la rama main actual**, no de una 
 - Examina `remate` junto a `factual_summary` y `tweet_text` para identificar POR QUÉ funcionó el giro. **No copies jamás remates anteriores** ni reutilices frases, hechos, detalles o metáforas específicos de otra noticia. La señal mejora el estilo, no reemplaza la investigación factual ni permite inferir preferencias políticas.
 - Mantén un único bloque factual y un único remate independiente y evaluable. Mantén el tope de 280 caracteres para el tuit completo, atribución y neutralidad; nunca conviertas víctimas o colectivos en objeto de humor.
 - El historial solo se modifica desde la app por acción de puntuación; el flujo editorial lo lee y **nunca** lo sobrescribe. Rehacer una noticia genera una revisión/variante independiente cuya valoración anterior no se hereda.
+
+### Selección interna obligatoria del remate
+
+Las estrellas ya no son solo contexto de prompt: son una señal explícita de selección. Al comenzar la pasada y antes del primer `drafting`, lee una vez desde `main` `ttittulares/remate-ratings.json` y congela ese snapshot para TODA la ejecución. Conserva el **Git blob SHA** devuelto por GitHub, el `updated_at` del JSON, el número total de valoraciones y cuántas muestras recientes se han considerado. No cambies de snapshot a mitad de una pasada aunque el usuario puntúe algo nuevo; las estrellas nuevas entran en la siguiente ejecución.
+
+Para cada noticia que admita un remate respetuoso:
+
+1. Genera **5 candidatos internos** de una sola frase, todos basados únicamente en hechos verificados de ESA noticia. No los muestres en la app, no los incluyas en `tweet`, no los guardes en prepared/outbox y no los presentes al usuario.
+2. Descarta cualquier candidato que invente hechos, fuerce una lectura partidista, ataque a víctimas/colectivos, copie un remate histórico o incumpla longitud/formato.
+3. Puntúa los restantes en escala 0–10 con esta rúbrica, usando de verdad el snapshot de estrellas: `ratings_affinity` 0–2.5 (mecanismos favorecidos por 4–5 y alejamiento de patrones 1–2), `news_specificity` 0–2, `punch` 0–2, `originality` 0–1.5, `length_fit` 0–1 y `repetition_penalty` 0 a -2 por fórmulas/metáforas ya repetidas. Seguridad, factualidad y neutralidad son puertas de entrada, no puntos compensables.
+4. Selecciona el total mayor; en empate gana primero mayor `news_specificity`, luego mayor `ratings_affinity` y después el más breve. Solo el ganador pasa a `tweet.remate`.
+5. Si no queda ningún candidato válido por sensibilidad, factualidad o espacio, publica el bloque factual sin forzar humor según las reglas de protección existentes y registra selección nula con el motivo.
+
+### RUNTRACE de la selección
+
+Añade una fase real `remate_selection` inmediatamente después de `drafting` y antes de persistir el resultado. El `TTITTULARES_RUNTRACE_V1` debe conservar, además de sus campos actuales:
+
+- `ratings_snapshot:{path:"ttittulares/remate-ratings.json",blob_sha,updated_at,total_ratings,recent_considered}` con el snapshot congelado de esa ejecución;
+- `remate_selections`, una lista compacta con una entrada por noticia tratada: `{event_id,revision,candidate_count,candidates:[{id,total,ratings_affinity,news_specificity,punch,originality,length_fit,repetition_penalty}],selected_candidate,selected_score,no_remate_reason}`.
+
+No incluyas el texto de los candidatos descartados en RUNTRACE: el único remate visible sigue siendo el seleccionado. Mantén `remate_selections` en el cierre `DONE` para que pueda auditarse después qué peso tuvieron las estrellas y qué snapshot exacto se usó. Si la cola está vacía, conserva igualmente `ratings_snapshot` y usa `remate_selections:[]`.
 
 ## Imagen real del acontecimiento
 
