@@ -91,6 +91,85 @@ prepared_doc = load("prepared.json", {"items": []})
 
 requests = requests_doc.setdefault("requests", [])
 now_dt = datetime.now(MADRID)
+reconciled = False
+
+def _copy_if_present(dst, src, field):
+    if field in src:
+        dst[field] = src[field]
+
+def reconcile_persisted_explanations():
+    """Cierra de forma idempotente solicitudes cuya explicación ya existe.
+
+    La clave es SIEMPRE (id, revision). Así una explicación antigua nunca puede
+    cerrar por accidente una revisión nueva de la misma tendencia.
+    Los grupos usan grouped_member_revisions para cubrir a todos sus miembros.
+    """
+    coverage = {}
+    for entry in explained_doc.get("items", []) or []:
+        if str(entry.get("status") or "") != "explained":
+            continue
+        if not str(entry.get("explanation") or "").strip() or not entry.get("explained_at"):
+            continue
+        members = []
+        if entry.get("id"):
+            members.append({
+                "id": str(entry.get("id")),
+                "revision": int(entry.get("revision") or 0),
+            })
+        for member in entry.get("grouped_member_revisions") or []:
+            if isinstance(member, dict) and member.get("id"):
+                members.append({
+                    "id": str(member.get("id")),
+                    "revision": int(member.get("revision") or 0),
+                })
+        for member in members:
+            key = (member["id"], member["revision"])
+            previous = coverage.get(key)
+            current_ts = parse_timestamp(entry.get("explained_at"))
+            previous_ts = parse_timestamp((previous or {}).get("explained_at"))
+            if previous is None or (current_ts and (previous_ts is None or current_ts > previous_ts)):
+                coverage[key] = entry
+
+    repaired = 0
+    for req in requests:
+        key = (str(req.get("id") or ""), int(req.get("revision") or 0))
+        entry = coverage.get(key)
+        if not entry:
+            continue
+        status = str(req.get("status") or "")
+        if status == "explained":
+            continue
+        # No revivir ni sobreescribir una decisión explícita del usuario.
+        if status == "dismissed":
+            continue
+        if status not in {"preparing", "update", "problematic", "ready"}:
+            continue
+
+        req["status"] = "explained"
+        req["explained_at"] = entry.get("explained_at")
+        req["explanation"] = entry.get("explanation")
+        req["closer_text"] = entry.get("closer_text") or ""
+        req["trend_names"] = entry.get("trend_names") or [req.get("name")]
+        req["rank_at_explanation"] = entry.get("rank_at_explanation") or entry.get("rank") or req.get("rank")
+        req["group_leader_id"] = entry.get("group_leader_id") or entry.get("id") or req.get("id")
+        req["news_disposition"] = entry.get("news_disposition") or req.get("news_disposition") or "ignored"
+        req["source"] = entry.get("source") or req.get("source") or "editorial_reconciled"
+        req["with_image"] = False
+        for field in (
+            "group_id", "explanation_group_id", "group_title", "trend_context",
+            "verification_sources", "ttittulares_event_id", "duplicate_of",
+        ):
+            _copy_if_present(req, entry, field)
+        repaired += 1
+        print("Reconciliada explicación persistida:", req.get("name"), "r"+str(req.get("revision") or 0))
+
+    return repaired
+
+repaired_explanations = reconcile_persisted_explanations()
+if repaired_explanations:
+    reconciled = True
+    requests_doc["updated_at"] = now_dt.isoformat(timespec="seconds")
+
 explained = set()
 latest_explanation = {}
 
@@ -148,7 +227,6 @@ def explanation_expired(key):
     return bool(explained_at and now_dt - explained_at > EXPLANATION_TTL)
 
 to_queue = []
-reconciled = False
 for item in current:
     key = norm(item["name"])
     req = by_name.get(key)
