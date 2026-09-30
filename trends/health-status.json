@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-30T15:04:26.358549+00:00",
+  "checked_at": "2026-09-30T19:56:34.949243+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -41,8 +41,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 5,
-      "captured_age_minutes": 0.4,
+      "non_stale_sources": 4,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.0,
-      "run_id": 36733799332,
+      "age_minutes": 0.8,
+      "run_id": 36769046143,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,30 +75,45 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 2,
-      "overdue_count": 0,
-      "oldest_age_minutes": 8.5,
+      "ok": false,
+      "pending_count": 3,
+      "overdue_count": 2,
+      "oldest_age_minutes": 55.0,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "088a6db618ed",
+          "name": "Jorge Jesús",
+          "status": "preparing",
+          "age_minutes": 55.0
+        },
+        {
+          "id": "9d1e29cea1a7",
+          "name": "Cristiano Ronaldo",
+          "status": "preparing",
+          "age_minutes": 55.0
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "46d3fd21dd4a",
-        "d84c75bdc32d"
+        "088a6db618ed",
+        "9d1e29cea1a7",
+        "4c7de2c3da6d"
       ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "config TTendencias incompatible con el modo activo"
+    "config TTendencias incompatible con el modo activo",
+    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 55.0 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 55.0 min | config TTendencias incompatible con el modo activo"
 }
