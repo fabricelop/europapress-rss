@@ -96,7 +96,7 @@ jobs:
             python3 ttittulares/build_status.py
             python3 telegram/autocheck_ttittulares.py
 
-            git add telegram/events.json telegram/processed-events.json telegram/editorial-processing.json \
+            git add telegram/events.json telegram/event-seeds.json telegram/processed-events.json telegram/editorial-processing.json \
               telegram/autocheck-status.json telegram/autocheck-alert-state.json ttittulares/status.json ttittulares/prepared.json ttittulares/editorial-queue.json
             git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
 
@@ -113,6 +113,7 @@ jobs:
             if [ "$REMOTE" != "$BASE" ]; then
               if git diff --quiet "$BASE" "$REMOTE" -- \
                 telegram/events.json \
+                telegram/event-seeds.json \
                 telegram/processed-events.json \
                 telegram/editorial-processing.json \
                 telegram/autocheck-status.json \
