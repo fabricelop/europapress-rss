@@ -109,6 +109,17 @@ def parse_dt(value):
     except Exception:
         return None
 
+one_source_count = 0
+two_source_count = 0
+for event in events_doc.get("events", []):
+    if str(event.get("status") or "") not in {"WAITING", "UPDATE_WAITING"}:
+        continue
+    count = int(event.get("source_count") or 0)
+    if count == 1:
+        one_source_count += 1
+    elif count == 2:
+        two_source_count += 1
+
 three_source_items = []
 for event in events_doc.get("events", []):
     if int(event.get("source_count") or 0) != 3:
@@ -163,6 +174,8 @@ out = {
     "problematic_items":problematic_items,
     "trend_candidates_count":len(trend_candidates),
     "trend_candidates":trend_candidates,
+    "one_source_count":one_source_count,
+    "two_source_count":two_source_count,
     "three_source_count":len(three_source_items),
     "three_source_items":three_source_items,
     "healthy_source_count":events_doc.get("healthy_source_count"),
