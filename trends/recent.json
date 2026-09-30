@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T22:41:05+02:00",
+  "captured_at": "2026-09-30T22:51:14+02:00",
   "primary_source": "snaplytics",
-  "selection_method": "fresh-anchor",
+  "selection_method": "aging-anchor",
   "sources_used": [
     "getdaytrends",
     "snaplytics",
@@ -11,9 +11,7 @@
   ],
   "source_count": 5,
   "non_stale_source_count": 4,
-  "fresh_sources": [
-    "snaplytics"
-  ],
+  "fresh_sources": [],
   "reliability": "medium",
   "top10": [
     "#LaFreidoraDeLidl",
@@ -79,31 +77,9 @@
       "entered_top10_at": "2026-09-30T22:41:05+02:00"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Cristiano",
-    "Jorge Jesús",
-    "#firstdates30s"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
-    {
-      "name": "Croacia",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trendswe"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 13.0,
-      "movement": "up",
-      "first_detected_at": "2026-09-30T22:01:34+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
     {
       "name": "Junts",
       "social_source_count": 3,
@@ -114,13 +90,31 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.7,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T22:41:05+02:00",
       "news_source_count": 2,
       "news_event_id": "a2793942c588",
       "news_title": "Junts no desvela el sentido de su voto a los decretos de vivienda, pero Nogueras habla de \"preocupación y decepción\"",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-30T14:42:20.247374Z"
+    },
+    {
+      "name": "Croacia",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trendswe"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 13.0,
+      "movement": "flat",
+      "first_detected_at": "2026-09-30T22:01:34+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Flydubai",
@@ -131,13 +125,29 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 16.0,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T21:56:22+02:00",
-      "news_source_count": 4,
-      "news_event_id": "dba1f7f6644f",
-      "news_title": "Netanyahu apunta a que un piloto intentó estrellar el avión de FlyDubai tras apuñalar a su compañero",
+      "news_source_count": 8,
+      "news_event_id": "8daa966cd971",
+      "news_title": "Israel califica de \"ataque terrorista yihadista\" el incidente en el avión de Flydubai: \"Un piloto apuñaló al otro e intentó imitar el 11-S\"",
       "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-30T15:12:42.223300Z"
+      "news_first_seen": "2026-09-30T17:42:16.878373Z"
+    },
+    {
+      "name": "Amnistía Internacional",
+      "social_source_count": 1,
+      "social_sources": [
+        "snaplytics"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.0,
+      "movement": "flat",
+      "first_detected_at": "2026-09-30T22:41:05+02:00",
+      "news_source_count": 7,
+      "news_event_id": "bc1bd73387ea",
+      "news_title": "Amnistía Internacional denuncia torturas y vejaciones de militares a migrantes en Ceuta: Defensa la envía al juzgado",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-30T14:53:57.005436Z"
     },
     {
       "name": "El BOE",
@@ -148,29 +158,13 @@
       ],
       "best_observed_rank": 17,
       "mean_observed_rank": 18.5,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T17:51:00+02:00",
       "news_source_count": 4,
       "news_event_id": "c598c1681ca2-r2",
       "news_title": "El BOE publica el primer decreto sobre vivienda: ¿por qué se retrasa al jueves el segundo, sobre la renovación automática de los alquileres? - Telecinco",
       "news_status": "UPDATE_WAITING",
       "news_first_seen": "2026-09-30T14:42:20.247374Z"
-    },
-    {
-      "name": "Amnistía Internacional",
-      "social_source_count": 1,
-      "social_sources": [
-        "snaplytics"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-30T22:41:05+02:00",
-      "news_source_count": 7,
-      "news_event_id": "bc1bd73387ea",
-      "news_title": "Amnistía Internacional denuncia torturas y vejaciones de militares a migrantes en Ceuta: Defensa la envía al juzgado",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-30T14:53:57.005436Z"
     },
     {
       "name": "Piñeiro",
@@ -181,7 +175,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 13.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T22:41:05+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -198,7 +192,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 16.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T22:41:05+02:00",
       "news_source_count": 1,
       "news_event_id": "0afa95cdae6e",
@@ -230,11 +224,11 @@
     "trends24": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790800865",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790801474",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T22:41:05+02:00"
+      "fetched_at": "2026-09-30T22:51:14+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -259,7 +253,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T22:41:05+02:00"
+      "fetched_at": "2026-09-30T22:51:14+02:00"
     },
     "tweets24": {
       "ok": false,
@@ -268,7 +262,7 @@
       "update_hint": "Updated 1 hour ago",
       "age_minutes": 60.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T22:41:06+02:00"
+      "fetched_at": "2026-09-30T22:51:15+02:00"
     },
     "superx": {
       "ok": true,
@@ -298,16 +292,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T22:41:07+02:00"
+      "fetched_at": "2026-09-30T22:51:16+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790800867",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790801476",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T22:41:07+02:00"
+      "fetched_at": "2026-09-30T22:51:16+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -335,9 +329,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 20:00 UTC",
-      "age_minutes": 41.1,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-30T22:41:07+02:00"
+      "age_minutes": 51.3,
+      "freshness": "aging",
+      "fetched_at": "2026-09-30T22:51:17+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -365,18 +359,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 08:00 PM # Trend Type Actions 1 #RTXOn Hashtag 2 #LaFreido",
-      "age_minutes": 161.1,
+      "age_minutes": 171.3,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T22:41:08+02:00"
+      "fetched_at": "2026-09-30T22:51:17+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790800869",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790801478",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T22:41:09+02:00"
+      "fetched_at": "2026-09-30T22:51:18+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -385,7 +379,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T22:41:10+02:00"
+      "fetched_at": "2026-09-30T22:51:19+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -415,16 +409,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T22:41:10+02:00"
+      "fetched_at": "2026-09-30T22:51:19+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790800872",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790801481",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T22:41:12+02:00"
+      "fetched_at": "2026-09-30T22:51:21+02:00"
     }
   }
 }
