@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-30T02:01:12.276501+00:00",
+  "checked_at": "2026-09-30T08:21:20.275392+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.9,
-      "run_id": 36657772678,
+      "age_minutes": 0.8,
+      "run_id": 36689092816,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -76,70 +76,52 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 12,
-      "overdue_count": 12,
-      "oldest_age_minutes": 490.1,
+      "pending_count": 9,
+      "overdue_count": 7,
+      "oldest_age_minutes": 770.1,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "456ebcfdd8f1",
-          "name": "Belén",
-          "status": "preparing",
-          "age_minutes": 100.0
-        },
-        {
-          "id": "e6ee5d34c014",
-          "name": "Trapote",
-          "status": "preparing",
-          "age_minutes": 100.0
-        },
-        {
-          "id": "d0ec9dd0dbf2",
-          "name": "Repsol",
-          "status": "preparing",
-          "age_minutes": 490.1
-        },
-        {
-          "id": "d6b652b7d172",
-          "name": "#RTXON",
-          "status": "preparing",
-          "age_minutes": 449.9
+          "id": "74e71453da5e",
+          "name": "Consejo de Ministros",
+          "status": "update",
+          "age_minutes": 32.5
         },
         {
           "id": "ce27c96e786b",
           "name": "#JuanjoBonaXNetflix",
           "status": "preparing",
-          "age_minutes": 389.9
+          "age_minutes": 770.1
         },
         {
           "id": "2d56fd6b6950",
           "name": "Mariona",
           "status": "preparing",
-          "age_minutes": 389.9
-        },
-        {
-          "id": "8fe42f499182",
-          "name": "Campazzo",
-          "status": "preparing",
-          "age_minutes": 329.4
-        },
-        {
-          "id": "7d40b695877f",
-          "name": "Alex Baena",
-          "status": "preparing",
-          "age_minutes": 310.1
-        },
-        {
-          "id": "5be067509b82",
-          "name": "Cubarsí",
-          "status": "preparing",
-          "age_minutes": 279.6
+          "age_minutes": 770.1
         },
         {
           "id": "c010e0621343",
           "name": "Juan Carlos Rivero",
           "status": "preparing",
-          "age_minutes": 260.0
+          "age_minutes": 640.1
+        },
+        {
+          "id": "3ffa846e080e",
+          "name": "Amnistía Internacional",
+          "status": "preparing",
+          "age_minutes": 76.3
+        },
+        {
+          "id": "75c332dd6345",
+          "name": "Ferraz",
+          "status": "preparing",
+          "age_minutes": 69.5
+        },
+        {
+          "id": "4636004ffe98",
+          "name": "San Jerónimo",
+          "status": "preparing",
+          "age_minutes": 32.5
         }
       ],
       "repairable": false
@@ -149,18 +131,15 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "456ebcfdd8f1",
-        "e6ee5d34c014",
-        "d0ec9dd0dbf2",
-        "d6b652b7d172",
+        "74e71453da5e",
         "ce27c96e786b",
         "2d56fd6b6950",
-        "8fe42f499182",
-        "7d40b695877f",
-        "5be067509b82",
         "c010e0621343",
-        "5f70621d794b",
-        "c37c1d4055f0"
+        "3ffa846e080e",
+        "75c332dd6345",
+        "4636004ffe98",
+        "b091b252b9ff",
+        "4a22db5d3474"
       ],
       "contradictory_success": false
     }
@@ -168,9 +147,9 @@
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola de explicaciones retrasada: 12 pendiente(s) superan 30 min; más antigua 490.1 min"
+    "cola de explicaciones retrasada: 7 pendiente(s) superan 30 min; más antigua 770.1 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 12 pendiente(s) superan 30 min; más antigua 490.1 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola de explicaciones retrasada: 7 pendiente(s) superan 30 min; más antigua 770.1 min | config TTendencias incompatible con el modo activo"
 }
