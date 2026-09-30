@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T06:31:08+02:00",
+  "captured_at": "2026-09-30T06:40:57+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -13,22 +13,23 @@
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 5,
+  "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "#TierraDeNadie3",
     "Puerta del Sol",
     "Almeida",
     "Croacia",
-    "#Codigo10",
     "#HONORMagicV6",
-    "Jorge Javier",
     "#LaIslaDeLasTentaciones7",
     "Lamine",
-    "Antonio Banderas"
+    "Antonio Banderas",
+    "Junts",
+    "#TEM29S"
   ],
   "items": [
     {
@@ -53,50 +54,74 @@
     },
     {
       "rank": 5,
-      "name": "#Codigo10",
-      "entered_top10_at": "2026-09-30T00:21:11+02:00"
-    },
-    {
-      "rank": 6,
       "name": "#HONORMagicV6",
       "entered_top10_at": "2026-09-30T03:40:50+02:00"
     },
     {
-      "rank": 7,
-      "name": "Jorge Javier",
-      "entered_top10_at": "2026-09-30T02:31:11+02:00"
-    },
-    {
-      "rank": 8,
+      "rank": 6,
       "name": "#LaIslaDeLasTentaciones7",
       "entered_top10_at": "2026-09-30T03:40:50+02:00"
     },
     {
-      "rank": 9,
+      "rank": 7,
       "name": "Lamine",
       "entered_top10_at": "2026-09-29T23:31:13+02:00"
     },
     {
-      "rank": 10,
+      "rank": 8,
       "name": "Antonio Banderas",
       "entered_top10_at": "2026-09-30T06:01:16+02:00"
+    },
+    {
+      "rank": 9,
+      "name": "Junts",
+      "entered_top10_at": "2026-09-30T06:40:57+02:00"
+    },
+    {
+      "rank": 10,
+      "name": "#TEM29S",
+      "entered_top10_at": "2026-09-30T06:40:57+02:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Junts",
+    "#TEM29S"
+  ],
   "upcoming": [
     {
-      "name": "Gonzalo Suárez",
-      "social_source_count": 4,
+      "name": "Consejo de Ministros",
+      "social_source_count": 5,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.8,
-      "movement": "down",
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.4,
+      "movement": "up",
+      "first_detected_at": "2026-09-30T04:00:57+02:00",
+      "news_source_count": 4,
+      "news_event_id": "b198a8d9f557",
+      "news_title": "El Gobierno ha aprobado en Consejo de Ministros dos decretos con nuevas medidas de vivienda, aunque por el momento no cuenta con el apoyo de sus socios para convalidarlos en el Congreso.",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T22:42:24.589112Z"
+    },
+    {
+      "name": "Gonzalo Suárez",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.0,
+      "movement": "up",
       "first_detected_at": "2026-09-30T03:40:50+02:00",
       "news_source_count": 1,
       "news_event_id": "d65af7ab67d3",
@@ -105,55 +130,18 @@
       "news_first_seen": "2026-09-30T03:43:32.269153Z"
     },
     {
-      "name": "Sindicato de Inquilinas",
-      "social_source_count": 4,
-      "social_sources": [
-        "superx",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 18.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-30T04:50:58+02:00",
-      "news_source_count": 5,
-      "news_event_id": "e26960fb9a22-r2",
-      "news_title": "El Sindicato de Inquilinas seguirá con la acampada en Sol y rechaza que el 'decreto Maricarmen' se divida en dos: \"Es una farsa\"",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-09-30T04:23:35.562252Z"
-    },
-    {
-      "name": "Consejo de Ministros",
-      "social_source_count": 4,
-      "social_sources": [
-        "getdaytrends",
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 14.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-30T04:00:57+02:00",
-      "news_source_count": 1,
-      "news_event_id": "b198a8d9f557",
-      "news_title": "El Consejo de Ministros aprueba destinar 111 millones a la compra de munición de artillería, ametralladoras y misiles",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T22:42:24.589112Z"
-    },
-    {
       "name": "Olga",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 15.5,
-      "movement": "down",
+      "mean_observed_rank": 14.6,
+      "movement": "up",
       "first_detected_at": "2026-09-30T05:20:58+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -162,34 +150,56 @@
       "news_first_seen": null
     },
     {
-      "name": "Decreto",
-      "social_source_count": 3,
+      "name": "Sindicato de Inquilinas",
+      "social_source_count": 5,
       "social_sources": [
+        "snaplytics",
+        "superx",
         "trends24",
         "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 18.3,
-      "movement": "down",
+      "mean_observed_rank": 17.6,
+      "movement": "up",
+      "first_detected_at": "2026-09-30T04:50:58+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Decreto",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 16,
+      "mean_observed_rank": 17.0,
+      "movement": "up",
       "first_detected_at": "2026-09-30T06:20:58+02:00",
-      "news_source_count": 5,
-      "news_event_id": "e26960fb9a22-r2",
-      "news_title": "El Sindicato de Inquilinas seguirá con la acampada en Sol y rechaza que el 'decreto Maricarmen' se divida en dos: \"Es una farsa\"",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-09-30T04:23:35.562252Z"
+      "news_source_count": 3,
+      "news_event_id": "b94008b75124",
+      "news_title": "Junts confirma su rechazo al decreto de los alquileres indefinidos y critica medidas del segundo decreto",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T19:02:43.100267Z"
     },
     {
       "name": "Urbagestión",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 16.3,
-      "movement": "down",
+      "mean_observed_rank": 15.8,
+      "movement": "up",
       "first_detected_at": "2026-09-30T06:20:58+02:00",
       "news_source_count": 1,
       "news_event_id": "4d24d750065e",
@@ -198,33 +208,35 @@
       "news_first_seen": "2026-09-29T17:04:16.491385Z"
     },
     {
-      "name": "Junts",
-      "social_source_count": 2,
+      "name": "#FelizMartes",
+      "social_source_count": 3,
       "social_sources": [
+        "trends24",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.5,
-      "movement": "down",
-      "first_detected_at": "2026-09-30T03:40:50+02:00",
-      "news_source_count": 3,
-      "news_event_id": "b94008b75124",
-      "news_title": "Junts confirma su rechazo al decreto de los alquileres indefinidos y critica medidas del segundo decreto",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T19:02:43.100267Z"
-    },
-    {
-      "name": "#FelizMartes",
-      "social_source_count": 2,
-      "social_sources": [
-        "trends24",
-        "trendswe"
-      ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "new",
+      "movement": "up",
       "first_detected_at": "2026-09-30T06:31:08+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Hondarribia",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 16.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T06:40:57+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -232,7 +244,14 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Junts",
+      "first_detected_at": "2026-09-30T03:40:50+02:00",
+      "entered_top10_at": "2026-09-30T06:40:57+02:00",
+      "lead_minutes": 180
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -263,7 +282,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T06:31:08+02:00"
+      "fetched_at": "2026-09-30T06:40:57+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -288,7 +307,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T06:31:08+02:00"
+      "fetched_at": "2026-09-30T06:40:57+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -297,28 +316,28 @@
         "Puerta del Sol",
         "Almeida",
         "Croacia",
-        "#Codigo10",
         "#HONORMagicV6",
-        "Jorge Javier",
         "#LaIslaDeLasTentaciones7",
         "Lamine",
         "Antonio Banderas",
-        "Gonzalo Suárez",
-        "Asraf",
         "Junts",
         "#TEM29S",
+        "#FelizMartes",
+        "Gonzalo Suárez",
         "Consejo de Ministros",
-        "Belén",
         "Olga",
-        "Sindicato de Inquilinas",
         "Urbagestión",
-        "Decreto"
+        "Decreto",
+        "Hondarribia",
+        "Sindicato de Inquilinas",
+        "Mataró",
+        "Ferraz"
       ],
       "error": null,
-      "update_hint": "Updated 37 minutes ago",
-      "age_minutes": 37.0,
+      "update_hint": "Updated 4 minutes ago",
+      "age_minutes": 4.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-30T06:31:09+02:00"
+      "fetched_at": "2026-09-30T06:40:58+02:00"
     },
     "superx": {
       "ok": true,
@@ -348,16 +367,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T06:31:09+02:00"
+      "fetched_at": "2026-09-30T06:40:59+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790742670",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790743259",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T06:31:10+02:00"
+      "fetched_at": "2026-09-30T06:40:59+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -367,27 +386,27 @@
         "Almeida",
         "Croacia",
         "#HONORMagicV6",
-        "Jorge Javier",
-        "Lamine",
         "#LaIslaDeLasTentaciones7",
+        "Lamine",
         "Antonio Banderas",
         "#FelizMartes",
-        "Gonzalo Suárez",
-        "Asraf",
         "Junts",
         "#TEM29S",
+        "Gonzalo Suárez",
         "Consejo de Ministros",
         "Olga",
-        "Sindicato de Inquilinas",
-        "Urbagestión",
         "Hondarribia",
-        "Decreto"
+        "Sindicato de Inquilinas",
+        "Decreto",
+        "Urbagestión",
+        "Mataró",
+        "Ferraz"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 30, 2026 03:00 UTC",
-      "age_minutes": 91.2,
-      "freshness": "stale",
-      "fetched_at": "2026-09-30T06:31:10+02:00"
+      "update_hint": "Trending now Sep 30, 2026 04:00 UTC",
+      "age_minutes": 41.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-30T06:40:59+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -415,18 +434,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 04:00 AM # Trend Type Actions 1 #TierraDeNadie3 Hashtag 2",
-      "age_minutes": 151.2,
+      "age_minutes": 161.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T06:31:10+02:00"
+      "fetched_at": "2026-09-30T06:40:59+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790742671",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790743260",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T06:31:11+02:00"
+      "fetched_at": "2026-09-30T06:41:00+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -435,7 +454,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T06:31:13+02:00"
+      "fetched_at": "2026-09-30T06:41:02+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -465,16 +484,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T06:31:13+02:00"
+      "fetched_at": "2026-09-30T06:41:02+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790742675",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790743264",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T06:31:15+02:00"
+      "fetched_at": "2026-09-30T06:41:04+02:00"
     }
   }
 }
