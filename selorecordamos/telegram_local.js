@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const cp = require('child_process');
+const { acquireLock, deliverAssistantItem, recordAssistantDeliveryError } = require('./assistant_delivery');
 
 const baseDir = __dirname;
 const repoDir = path.join(baseDir, '..');
@@ -13,6 +14,8 @@ const discardedFile = path.join(baseDir, 'discarded.json');
 const assistantSentFile = path.join(runtimeDir, 'assistant-output-sent.json');
 const outputGroupsFile = path.join(runtimeDir, 'assistant-output-groups.json');
 const telegramSentFile = path.join(runtimeDir, 'telegram-sent.json');
+const assistantDeliveryStateFile = path.join(runtimeDir, 'assistant-delivery-state.json');
+const assistantDeliveryLockFile = path.join(runtimeDir, 'assistant-delivery.lock');
 const assistantOutputUrl = 'https://raw.githubusercontent.com/fabricelop/europapress-rss/main/selorecordamos/assistant-output.json';
 fs.mkdirSync(runtimeDir, { recursive: true });
 
@@ -220,47 +223,88 @@ async function loadAssistantOutputs() {
   }
 }
 async function sendAssistantOutputs() {
-  let data;
-  try { data = await loadAssistantOutputs(); }
-  catch (e) { console.error('No se pudo leer assistant-output.json:', e.message || e); return; }
-  const sent = readJson(assistantSentFile, {});
-  const groups = readJson(outputGroupsFile, {});
-  let changed = false, groupsChanged = false;
-  for (const item of data.outputs || []) {
-    const key = String(item.request_key || item.id || '');
-    if (!key || sent[key] || item.send_to_telegram === false) continue;
-    const alternatives = parseAlternatives(item);
-    const originalUrl = findOriginalUrl(item);
-    const header = evaluationHeader(item);
-    if (!header) continue;
-    const groupId = shortKey(key);
-    const messageIds = [];
-    const headMsg = await telegram('sendMessage', { chat_id: chatId, text: header, disable_web_page_preview: true });
-    messageIds.push(headMsg.message_id);
-    for (let i = 0; i < alternatives.length; i++) {
-      const alt = alternatives[i];
-      const letter = String.fromCharCode(65 + i);
-      const keyboard = [];
-      if (alt.length <= 256) keyboard.push([{ text: `📋 Copiar ${letter}`, copy_text: { text: alt } }]);
-      else console.error(`Alternativa ${letter} supera 256 caracteres (${alt.length}).`);
-      const m = await telegram('sendMessage', {
-        chat_id: chatId, text: `${letter}) ${alt}`, disable_web_page_preview: true,
-        reply_markup: keyboard.length ? { inline_keyboard: keyboard } : undefined
-      });
-      messageIds.push(m.message_id);
-    }
-    const footer = [];
-    if (originalUrl) footer.push([{ text: '🔗 Abrir original en X', url: originalUrl }]);
-    footer.push([{ text: '🗑️ Borrar', callback_data: `sr:outdelete:${groupId}` }]);
-    const footMsg = await telegram('sendMessage', { chat_id: chatId, text: 'Acciones:', disable_web_page_preview: true, reply_markup: { inline_keyboard: footer } });
-    messageIds.push(footMsg.message_id);
-    groups[groupId] = { key, message_ids: messageIds, alternatives, original_url: originalUrl };
-    groupsChanged = true;
-    sent[key] = { sent_at: new Date().toISOString() };
-    changed = true;
+  const lock = acquireLock(assistantDeliveryLockFile);
+  if (!lock) {
+    console.log('Otra instancia está entregando assistant-output; este ciclo no compite.');
+    return;
   }
-  if (changed) writeJson(assistantSentFile, sent);
-  if (groupsChanged) writeJson(outputGroupsFile, groups);
+  try {
+    let data;
+    try { data = await loadAssistantOutputs(); }
+    catch (e) { console.error('No se pudo leer assistant-output.json:', e.message || e); return; }
+    const groups = readJson(outputGroupsFile, {});
+    let groupsChanged = false;
+    for (const item of data.outputs || []) {
+      const key = String(item.request_key || item.id || '');
+      if (!key || item.send_to_telegram === false) continue;
+      try {
+        const alternatives = parseAlternatives(item);
+        const originalUrl = findOriginalUrl(item);
+        const header = evaluationHeader(item);
+        if (!header) throw new Error('cabecera de Telegram vacía');
+        const groupId = shortKey(key);
+        const steps = [{
+          payload: { chat_id: chatId, text: header, disable_web_page_preview: true }
+        }];
+        for (let i = 0; i < alternatives.length; i++) {
+          const alt = alternatives[i];
+          const letter = String.fromCharCode(65 + i);
+          if (alt.length > 256) throw new Error(`Alternativa ${letter} supera 256 caracteres (${alt.length}).`);
+          steps.push({
+            payload: {
+              chat_id: chatId,
+              text: `${letter}) ${alt}`,
+              disable_web_page_preview: true,
+              reply_markup: { inline_keyboard: [[{ text: `📋 Copiar ${letter}`, copy_text: { text: alt } }]] }
+            }
+          });
+        }
+        const footer = [];
+        if (originalUrl) footer.push([{ text: '🔗 Abrir original en X', url: originalUrl }]);
+        footer.push([{ text: '🗑️ Borrar', callback_data: `sr:outdelete:${groupId}` }]);
+        steps.push({
+          payload: {
+            chat_id: chatId,
+            text: 'Acciones:',
+            disable_web_page_preview: true,
+            reply_markup: { inline_keyboard: footer }
+          }
+        });
+
+        const result = await deliverAssistantItem({
+          key,
+          item,
+          steps,
+          stateFile: assistantDeliveryStateFile,
+          legacySentFile: assistantSentFile,
+          sendMessage: payload => telegram('sendMessage', payload)
+        });
+        if (result.status === 'delivered' && result.message_ids.length) {
+          groups[groupId] = {
+            key,
+            message_ids: result.message_ids,
+            alternatives,
+            original_url: originalUrl,
+            delivered_at: new Date().toISOString()
+          };
+          groupsChanged = true;
+        } else if (result.status !== 'delivered') {
+          console.error(`Entrega ${key} queda ${result.status}:`, result.error || result.next_retry_at || 'pendiente');
+        }
+      } catch (error) {
+        recordAssistantDeliveryError({
+          key,
+          item,
+          stateFile: assistantDeliveryStateFile,
+          error
+        });
+        console.error(`Salida ${key} inválida para Telegram; las demás continúan:`, error.message || error);
+      }
+    }
+    if (groupsChanged) writeJson(outputGroupsFile, groups);
+  } finally {
+    lock.release();
+  }
 }
 
 function gitPushFiles(files, message) {
@@ -369,7 +413,6 @@ async function pollOnce(timeoutSeconds = 25) {
     }
   }
   if (changed) { writeJson(requestsFile, queue); gitPushRequest(); }
-  await sendAssistantOutputs();
 }
 async function pollForever() {
   console.log('SeLoRecordamos Telegram activo. Escuchando botones, instrucciones y salidas...');
@@ -382,6 +425,7 @@ async function pollForever() {
         try { await sendOutbox(); }
         catch (e) { console.error('Error enviando/reintentando outbox:', e.message || e); }
       }
+      await sendAssistantOutputs();
       await pollOnce();
     }
     catch (e) { console.error('Error escuchando Telegram:', e.message || e); await sleep(3000); }

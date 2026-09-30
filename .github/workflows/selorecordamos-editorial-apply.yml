@@ -35,7 +35,7 @@ jobs:
       - name: Validar y aplicar paquete editorial
         env:
           SELORECORDAMOS_COMMENT_BODY: ${{ github.event.comment.body }}
-        run: python3 selorecordamos/apply_editorial_outbox.py
+        run: python3 selorecordamos/apply_editorial_outbox.py | tee "$RUNNER_TEMP/selorecordamos-apply-result.json"
 
       - name: Persistir en main
         run: |
@@ -54,4 +54,15 @@ jobs:
             sleep $((attempt * 2))
           done
           echo "No se pudo persistir el outbox tras 4 intentos." >&2
+          exit 1
+
+      - name: Señalar salidas inválidas sin deshacer las válidas
+        if: always()
+        run: |
+          test -s "$RUNNER_TEMP/selorecordamos-apply-result.json"
+          if jq -e '.errors | length == 0' "$RUNNER_TEMP/selorecordamos-apply-result.json" >/dev/null; then
+            exit 0
+          fi
+          echo "::error::Hay salidas editoriales inválidas pendientes de corregir."
+          jq '.errors' "$RUNNER_TEMP/selorecordamos-apply-result.json"
           exit 1
