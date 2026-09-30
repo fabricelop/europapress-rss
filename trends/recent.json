@@ -1,19 +1,19 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T03:40:50+02:00",
-  "primary_source": "snaplytics",
+  "captured_at": "2026-09-30T03:51:02+02:00",
+  "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
+    "tweets24",
     "snaplytics"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
   "fresh_sources": [
-    "tweets24",
-    "snaplytics"
+    "tweets24"
   ],
   "reliability": "high",
   "top10": [
@@ -22,8 +22,8 @@
     "Almeida",
     "Croacia",
     "#Codigo10",
-    "Jorge Javier",
     "#HONORMagicV6",
+    "Jorge Javier",
     "#LaIslaDeLasTentaciones7",
     "Lamine",
     "Trapote"
@@ -56,13 +56,13 @@
     },
     {
       "rank": 6,
-      "name": "Jorge Javier",
-      "entered_top10_at": "2026-09-30T02:31:11+02:00"
+      "name": "#HONORMagicV6",
+      "entered_top10_at": "2026-09-30T03:40:50+02:00"
     },
     {
       "rank": 7,
-      "name": "#HONORMagicV6",
-      "entered_top10_at": "2026-09-30T03:40:50+02:00"
+      "name": "Jorge Javier",
+      "entered_top10_at": "2026-09-30T02:31:11+02:00"
     },
     {
       "rank": 8,
@@ -81,13 +81,46 @@
     }
   ],
   "unchanged_from_previous": false,
-  "new_entries": [
-    "Puerta del Sol",
-    "Almeida",
-    "#HONORMagicV6",
-    "#LaIslaDeLasTentaciones7"
-  ],
+  "new_entries": [],
   "upcoming": [
+    {
+      "name": "Antonio Banderas",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.5,
+      "movement": "up",
+      "first_detected_at": "2026-09-30T03:40:50+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Gonzalo Suárez",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.8,
+      "movement": "up",
+      "first_detected_at": "2026-09-30T03:40:50+02:00",
+      "news_source_count": 1,
+      "news_event_id": "4d6b713dd863",
+      "news_title": "‘Martín Girard’, el yo futbolero de Gonzalo Suárez",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T16:53:20.293187Z"
+    },
     {
       "name": "Asraf",
       "social_source_count": 4,
@@ -98,8 +131,8 @@
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.8,
-      "movement": "up",
+      "mean_observed_rank": 12.0,
+      "movement": "flat",
       "first_detected_at": "2026-09-30T03:10:58+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -108,68 +141,16 @@
       "news_first_seen": null
     },
     {
-      "name": "Antonio Banderas",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.7,
-      "movement": "new",
-      "first_detected_at": "2026-09-30T03:40:50+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Gonzalo Suárez",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 14.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-30T03:40:50+02:00",
-      "news_source_count": 1,
-      "news_event_id": "4d6b713dd863",
-      "news_title": "‘Martín Girard’, el yo futbolero de Gonzalo Suárez",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T16:53:20.293187Z"
-    },
-    {
-      "name": "Belén",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.5,
-      "movement": "new",
-      "first_detected_at": "2026-09-30T03:40:50+02:00",
-      "news_source_count": 5,
-      "news_event_id": "6de448977455",
-      "news_title": "La Mesa del Congreso abre expediente sancionador a la diputada del PP Ana Belén Vázquez por mostrar un bote de gas pimienta",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-30T01:33:45.603052Z"
-    },
-    {
       "name": "Junts",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
         "snaplytics",
-        "trends24"
+        "trends24",
+        "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 15.5,
-      "movement": "new",
+      "mean_observed_rank": 15.3,
+      "movement": "up",
       "first_detected_at": "2026-09-30T03:40:50+02:00",
       "news_source_count": 3,
       "news_event_id": "b94008b75124",
@@ -178,16 +159,35 @@
       "news_first_seen": "2026-09-29T19:02:43.100267Z"
     },
     {
-      "name": "#FelizMartes",
-      "social_source_count": 2,
+      "name": "Belén",
+      "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
-        "snaplytics"
+        "snaplytics",
+        "trends24",
+        "tweets24"
       ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.0,
-      "movement": "new",
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.3,
+      "movement": "up",
       "first_detected_at": "2026-09-30T03:40:50+02:00",
+      "news_source_count": 2,
+      "news_event_id": "e5a94097159f",
+      "news_title": "Belén Esteban estará en el plató de '¡De viernes!': \"Quiero que me deis la oportunidad de escucharme una vez más\" - Telecinco",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-29T23:02:26.164236Z"
+    },
+    {
+      "name": "Laura Cuevas",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 16,
+      "mean_observed_rank": 16.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T03:51:02+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -195,33 +195,33 @@
       "news_first_seen": null
     },
     {
-      "name": "Nico Williams",
-      "social_source_count": 2,
+      "name": "#España",
+      "social_source_count": 1,
       "social_sources": [
-        "trendswe",
-        "tweets24"
+        "trendswe"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-30T02:21:01+02:00",
-      "news_source_count": 1,
-      "news_event_id": "788c44c7d467",
-      "news_title": "Nico Williams: \"Lamine Yamal es el mejor para el que sepa de fútbol\"",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T21:43:46.934202Z"
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T03:51:02+02:00",
+      "news_source_count": 10,
+      "news_event_id": "1870704a9151-r2",
+      "news_title": "El PP tumba en el Senado el tratado de amistad con Francia en plena visita de Macron a España",
+      "news_status": "ELIGIBLE_UPDATE",
+      "news_first_seen": "2026-09-30T01:42:03.295255Z"
     },
     {
-      "name": "#EnTierraLejana",
-      "social_source_count": 2,
+      "name": "Chayo",
+      "social_source_count": 3,
       "social_sources": [
-        "trendswe",
+        "snaplytics",
+        "trends24",
         "tweets24"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-30T02:21:01+02:00",
+      "best_observed_rank": 18,
+      "mean_observed_rank": 18.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T03:51:02+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -260,7 +260,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T03:40:50+02:00"
+      "fetched_at": "2026-09-30T03:51:02+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -285,37 +285,37 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T03:40:50+02:00"
+      "fetched_at": "2026-09-30T03:51:02+02:00"
     },
     "tweets24": {
       "ok": true,
       "trends": [
         "#TierraDeNadie3",
-        "#Codigo10",
-        "Jorge Javier",
-        "Belén",
-        "Trapote",
-        "Lamine",
+        "Puerta del Sol",
+        "Almeida",
         "Croacia",
-        "Supervivientes",
-        "Rosa Benito",
-        "Modric",
+        "#Codigo10",
+        "#HONORMagicV6",
+        "Jorge Javier",
+        "#LaIslaDeLasTentaciones7",
+        "Lamine",
+        "Trapote",
+        "Antonio Banderas",
         "Asraf",
-        "Pubill",
-        "#EnTierraLejana",
-        "Nico Williams",
-        "#RTXON",
-        "Cubarsi",
-        "Euroliga",
-        "Fermín",
-        "Macron",
-        "#JuanjoBonaXNetflix"
+        "Gonzalo Suárez",
+        "Belén",
+        "Junts",
+        "Laura Cuevas",
+        "#TEM29S",
+        "Chayo",
+        "Salvar Ivana",
+        "Consejo de Ministros"
       ],
       "error": null,
-      "update_hint": "Updated 37 minutes ago",
-      "age_minutes": 37.0,
+      "update_hint": "Updated 5 minutes ago",
+      "age_minutes": 5.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-30T03:40:51+02:00"
+      "fetched_at": "2026-09-30T03:51:03+02:00"
     },
     "superx": {
       "ok": true,
@@ -345,16 +345,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T03:40:52+02:00"
+      "fetched_at": "2026-09-30T03:51:04+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790732452",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790733064",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T03:40:52+02:00"
+      "fetched_at": "2026-09-30T03:51:04+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -382,9 +382,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 01:00 UTC",
-      "age_minutes": 40.9,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-30T03:40:53+02:00"
+      "age_minutes": 51.1,
+      "freshness": "aging",
+      "fetched_at": "2026-09-30T03:51:05+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -412,18 +412,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 01:00 AM # Trend Type Actions 1 #TierraDeNadie3 Hashtag 2",
-      "age_minutes": 160.9,
+      "age_minutes": 171.1,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T03:40:53+02:00"
+      "fetched_at": "2026-09-30T03:51:05+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790732454",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790733066",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T03:40:54+02:00"
+      "fetched_at": "2026-09-30T03:51:06+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -432,7 +432,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T03:40:55+02:00"
+      "fetched_at": "2026-09-30T03:51:07+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -462,16 +462,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T03:40:56+02:00"
+      "fetched_at": "2026-09-30T03:51:07+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790732458",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790733069",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T03:40:58+02:00"
+      "fetched_at": "2026-09-30T03:51:09+02:00"
     }
   }
 }
