@@ -38,17 +38,34 @@ def event_dt(e):
     return max(parsed) if parsed else datetime.min.replace(tzinfo=timezone.utc)
 
 active = [e for e in events if event_dt(e) >= cutoff]
-# events.json es estado operativo, no archivo histórico. Incluso con mucha
-# actividad en 24 h debe mantenerse acotado para no bloquear Git/Actions.
-# Conservamos los eventos más recientes; el histórico ya vive en archivos
-# separados y processed-events.json.
-active.sort(key=event_dt, reverse=True)
-doc["events"] = active[:MAX_ACTIVE_EVENTS]
+# events.json es estado operativo, no archivo histórico. El límite de 450
+# se aplica SOLO a eventos de una fuente. Los que ya acumularon 2+ familias,
+# o están en estados editoriales/revisión, deben sobrevivir las 24 h completas:
+# degradarlos haría que "Creciendo" perdiera fuentes entre barridos.
+protected_statuses = {"UPDATE_WAITING", "ELIGIBLE", "ELIGIBLE_UPDATE"}
+protected = [
+    e for e in active
+    if int(e.get("source_count") or 0) >= 2
+    or str(e.get("status") or "") in protected_statuses
+]
+single_source = [
+    e for e in active
+    if e not in protected
+]
+
+protected.sort(key=event_dt, reverse=True)
+single_source.sort(key=event_dt, reverse=True)
+
+# La memoria ligera de noticias de una fuente vive en event-seeds.json y permite
+# recuperar una noticia si suma una segunda fuente después de salir de este cap.
+doc["events"] = protected + single_source[:MAX_ACTIVE_EVENTS]
 doc["active_retention_hours"] = TTL_HOURS
 doc["active_event_cap"] = MAX_ACTIVE_EVENTS
+doc["protected_event_count"] = len(protected)
+doc["single_source_event_cap"] = MAX_ACTIVE_EVENTS
 doc["pruned_at"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 tmp = PATH.with_suffix(".json.tmp")
 tmp.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 tmp.replace(PATH)
-print(f"EVENTS_PRUNED {before} -> {len(doc['events'])}")
+print(f"EVENTS_PRUNED {before} -> {len(doc['events'])} protected={len(protected)} singles={min(len(single_source), MAX_ACTIVE_EVENTS)}")
