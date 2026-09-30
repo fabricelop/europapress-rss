@@ -1147,6 +1147,13 @@
       "phase": "outbox",
       "reason": "7b0177f17330-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 7b0177f17330-r1: 7b0177f17330-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T16:09:48.786938Z",
+      "event_id": "0f2e4a543e00-r1",
+      "phase": "outbox",
+      "reason": "0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0f2e4a543e00-r1: 0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
