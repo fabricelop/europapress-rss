@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-30T19:56:34.949243+00:00",
+  "checked_at": "2026-09-30T22:20:14.436062+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.8,
-      "run_id": 36769046143,
+      "age_minutes": 0.7,
+      "run_id": 36784674654,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,45 +75,27 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 3,
-      "overdue_count": 2,
-      "oldest_age_minutes": 55.0,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "088a6db618ed",
-          "name": "Jorge Jesús",
-          "status": "preparing",
-          "age_minutes": 55.0
-        },
-        {
-          "id": "9d1e29cea1a7",
-          "name": "Cristiano Ronaldo",
-          "status": "preparing",
-          "age_minutes": 55.0
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "088a6db618ed",
-        "9d1e29cea1a7",
-        "4c7de2c3da6d"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "config TTendencias incompatible con el modo activo",
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 55.0 min"
+    "config TTendencias incompatible con el modo activo"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 55.0 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "config TTendencias incompatible con el modo activo"
 }
