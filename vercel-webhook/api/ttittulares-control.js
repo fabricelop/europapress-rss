@@ -47,8 +47,22 @@ async function readJson(path){
     const r=await gh(`contents/${path}?ref=${encodeURIComponent(BRANCH)}&_=${Date.now()}-${attempt}`,{cache:"no-store"});
     if(!r.ok)throw new Error(`GitHub GET ${path}: ${r.status} ${await r.text()}`);
     const f=await r.json();
-    try{return {doc:JSON.parse(b64d(f.content)||"{}"),sha:f.sha}}
-    catch(e){
+    try{
+      let raw="";
+      if(f.content&&String(f.encoding||"base64")==="base64")raw=b64d(f.content);
+      else if(f.content&&String(f.encoding||"")==="utf-8")raw=String(f.content);
+      else if(f.sha){
+        // GitHub Contents deja content vacío/encoding:none para ficheros >1 MB.
+        // El blob API sí entrega hasta 100 MB y evita convertir events.json en {}.
+        const br=await gh(`git/blobs/${f.sha}`,{cache:"no-store"});
+        if(!br.ok)throw new Error(`GitHub BLOB ${path}: ${br.status} ${await br.text()}`);
+        const blob=await br.json();
+        if(blob.content&&String(blob.encoding||"base64")==="base64")raw=b64d(blob.content);
+        else if(blob.content)raw=String(blob.content);
+      }
+      if(!raw.trim())throw new Error(`Contenido vacío para ${path} (sha ${f.sha||"desconocido"})`);
+      return {doc:JSON.parse(raw),sha:f.sha}
+    }catch(e){
       lastError=e;
       console.error("JSON inválido temporal",path,"sha",f.sha,"intento",attempt,String(e));
       if(attempt<3)await new Promise(resolve=>setTimeout(resolve,attempt*250));
@@ -612,14 +626,18 @@ export default async function handler(req,res){
           origin:"TTendencias"
         }))
         .sort((a,b)=>String(b.detected_at||"").localeCompare(String(a.detected_at||"")));
-      const threeSourceItems=(events.doc?.events||[]).filter(e=>{
+      const visibleWaitingEvent=e=>{
         const id=String(e.id||e.event_id||"");
-        return Number(e.source_count||0)===3
-          &&["WAITING","UPDATE_WAITING"].includes(String(e.status||""))
+        return ["WAITING","UPDATE_WAITING"].includes(String(e.status||""))
           &&!processingIds.has(id)
           &&!preparedIds.has(id)
           &&!closedIds.has(id)
           &&!manualStories.some(m=>storyMatches(m,e))
+      };
+      const oneSourceCount=(events.doc?.events||[]).filter(e=>Number(e.source_count||0)===1&&visibleWaitingEvent(e)).length;
+      const twoSourceCount=(events.doc?.events||[]).filter(e=>Number(e.source_count||0)===2&&visibleWaitingEvent(e)).length;
+      const threeSourceItems=(events.doc?.events||[]).filter(e=>{
+        return Number(e.source_count||0)===3&&visibleWaitingEvent(e)
       }).map(e=>({
         event_id:String(e.id||e.event_id||""),
         title:String(e.canonical_title||e.title||""),
@@ -633,7 +651,7 @@ export default async function handler(req,res){
         const bv=Number.isFinite(b.source3_minutes)?b.source3_minutes:Number.MAX_SAFE_INTEGER;
         return av-bv||String(b.first_seen||"").localeCompare(String(a.first_seen||""))
       });
-      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,problematic_count:problematicItems.length+trendCandidateItems.length,problematic_items:problematicItems,trend_candidates_count:trendCandidateItems.length,trend_candidates:trendCandidateItems,ready_count:visiblePrepared.length,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
+      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,problematic_count:problematicItems.length+trendCandidateItems.length,problematic_items:problematicItems,trend_candidates_count:trendCandidateItems.length,trend_candidates:trendCandidateItems,ready_count:visiblePrepared.length,one_source_count:oneSourceCount,two_source_count:twoSourceCount,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
       const tremendingItems=(tremending.doc?.items||[]).map(x=>({
         id:tremendingEntryId(x.id),title:String(x.title||"Entrada sin título"),url:String(x.url||""),description:String(x.description||""),published_at:x.published_at||null,first_seen_at:x.first_seen_at||null,last_seen_at:x.last_seen_at||null,status:String(x.status||"pending"),destinations:Array.isArray(x.destinations)?x.destinations:[],tweets:Array.isArray(x.tweets)?x.tweets:[],selected_tweet_id:x.selected_tweet_id||null,image:x.image||{status:"not_selected"},article_status:x.article_status||"pending"
       })).filter(x=>x.id).sort((a,b)=>String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
