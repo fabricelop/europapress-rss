@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-10-01T00:40:50+02:00",
+  "captured_at": "2026-10-01T00:50:57+02:00",
   "primary_source": "snaplytics",
-  "selection_method": "fresh-anchor",
+  "selection_method": "aging-anchor",
   "sources_used": [
     "getdaytrends",
     "snaplytics",
@@ -11,9 +11,7 @@
   ],
   "source_count": 5,
   "non_stale_source_count": 4,
-  "fresh_sources": [
-    "snaplytics"
-  ],
+  "fresh_sources": [],
   "reliability": "medium",
   "top10": [
     "#LaIslaDeLasTentaciones8",
@@ -256,11 +254,11 @@
     "trends24": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790808050",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790808657",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T00:40:50+02:00"
+      "fetched_at": "2026-10-01T00:50:57+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -285,7 +283,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T00:40:50+02:00"
+      "fetched_at": "2026-10-01T00:50:57+02:00"
     },
     "tweets24": {
       "ok": false,
@@ -294,7 +292,7 @@
       "update_hint": "Updated 3 hours ago",
       "age_minutes": 180.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T00:40:51+02:00"
+      "fetched_at": "2026-10-01T00:50:58+02:00"
     },
     "superx": {
       "ok": true,
@@ -324,16 +322,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T00:40:52+02:00"
+      "fetched_at": "2026-10-01T00:50:59+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790808052",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790808659",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T00:40:52+02:00"
+      "fetched_at": "2026-10-01T00:50:59+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -361,9 +359,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 22:00 UTC",
-      "age_minutes": 40.9,
-      "freshness": "fresh",
-      "fetched_at": "2026-10-01T00:40:52+02:00"
+      "age_minutes": 51.0,
+      "freshness": "aging",
+      "fetched_at": "2026-10-01T00:50:59+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -391,18 +389,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 10:00 PM # Trend Type Actions 1 #LaFreidoraDeLidl Hashtag",
-      "age_minutes": 160.9,
+      "age_minutes": 171.0,
       "freshness": "stale",
-      "fetched_at": "2026-10-01T00:40:52+02:00"
+      "fetched_at": "2026-10-01T00:51:00+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790808053",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790808662",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T00:40:53+02:00"
+      "fetched_at": "2026-10-01T00:51:02+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -411,7 +409,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T00:40:54+02:00"
+      "fetched_at": "2026-10-01T00:51:03+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -441,16 +439,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T00:40:55+02:00"
+      "fetched_at": "2026-10-01T00:51:03+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790808057",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790808666",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T00:40:57+02:00"
+      "fetched_at": "2026-10-01T00:51:06+02:00"
     }
   }
 }
