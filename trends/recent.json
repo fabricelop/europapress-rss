@@ -1,31 +1,32 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T14:01:33+02:00",
+  "captured_at": "2026-09-30T14:10:55+02:00",
   "primary_source": "consensus",
   "selection_method": "consensus",
   "sources_used": [
     "trends24",
+    "getdaytrends",
     "tweets24",
     "superx",
     "snaplytics",
     "trendswe"
   ],
-  "source_count": 6,
-  "non_stale_source_count": 5,
+  "source_count": 7,
+  "non_stale_source_count": 6,
   "fresh_sources": [],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "Puerta del Sol",
-    "#TierraDeNadie3",
     "#LaFreidoraDeLidl",
+    "#TierraDeNadie3",
     "Almeida",
     "Croacia",
     "#FelizMiércoles",
     "Amnistía Internacional",
     "El BOE",
-    "#tem29s",
-    "Junts"
+    "Junts",
+    "Gonzalo Suárez"
   ],
   "items": [
     {
@@ -35,13 +36,13 @@
     },
     {
       "rank": 2,
-      "name": "#TierraDeNadie3",
-      "entered_top10_at": "2026-09-30T00:21:11+02:00"
+      "name": "#LaFreidoraDeLidl",
+      "entered_top10_at": "2026-09-30T14:01:33+02:00"
     },
     {
       "rank": 3,
-      "name": "#LaFreidoraDeLidl",
-      "entered_top10_at": "2026-09-30T14:01:33+02:00"
+      "name": "#TierraDeNadie3",
+      "entered_top10_at": "2026-09-30T00:21:11+02:00"
     },
     {
       "rank": 4,
@@ -70,22 +71,41 @@
     },
     {
       "rank": 9,
-      "name": "#tem29s",
-      "entered_top10_at": "2026-09-30T13:51:02+02:00"
+      "name": "Junts",
+      "entered_top10_at": "2026-09-30T13:10:59+02:00"
     },
     {
       "rank": 10,
-      "name": "Junts",
-      "entered_top10_at": "2026-09-30T13:10:59+02:00"
+      "name": "Gonzalo Suárez",
+      "entered_top10_at": "2026-09-30T14:10:55+02:00"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "#LaFreidoraDeLidl"
+    "Gonzalo Suárez"
   ],
   "upcoming": [
     {
-      "name": "Gonzalo Suárez",
+      "name": "Daniel Guzmán",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 15.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-30T13:51:02+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Consejo de Ministros",
       "social_source_count": 4,
       "social_sources": [
         "snaplytics",
@@ -93,15 +113,15 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.5,
-      "movement": "new",
-      "first_detected_at": "2026-09-30T14:01:33+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
+      "best_observed_rank": 17,
+      "mean_observed_rank": 18.8,
+      "movement": "flat",
+      "first_detected_at": "2026-09-30T04:00:57+02:00",
+      "news_source_count": 4,
+      "news_event_id": "945270b878b7-r2",
+      "news_title": "Sánchez asegura que el Gobierno \"ha escuchado a la gente\" y carga contra PP y Vox tras la aprobación de las medidas sobre vivienda por el Consejo de Ministros",
+      "news_status": "UPDATE_WAITING",
+      "news_first_seen": "2026-09-30T09:42:18.758034Z"
     },
     {
       "name": "Lamine",
@@ -114,7 +134,7 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 16.5,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T10:11:03+02:00",
       "news_source_count": 1,
       "news_event_id": "88982a661a77",
@@ -133,7 +153,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.5,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T10:11:03+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -142,54 +162,35 @@
       "news_first_seen": null
     },
     {
-      "name": "Consejo de Ministros",
-      "social_source_count": 4,
+      "name": "El Gobierno",
+      "social_source_count": 3,
       "social_sources": [
+        "getdaytrends",
         "snaplytics",
+        "tweets24"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 17.0,
+      "movement": "up",
+      "first_detected_at": "2026-09-30T12:01:28+02:00",
+      "news_source_count": 5,
+      "news_event_id": "42a82ff84b13",
+      "news_title": "Vivas declara a la jueza que intentó contactar con Sánchez diez veces antes de la crisis pero Moncloa le remitió a Delegación del Gobierno",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-30T09:54:02.056020Z"
+    },
+    {
+      "name": "#tem29s",
+      "social_source_count": 3,
+      "social_sources": [
         "trends24",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 18.8,
-      "movement": "down",
-      "first_detected_at": "2026-09-30T04:00:57+02:00",
-      "news_source_count": 2,
-      "news_event_id": "945270b878b7-r2",
-      "news_title": "El Gobierno ha aprobado en Consejo de Ministros dos decretos con nuevas medidas de vivienda, aunque por el momento no cuenta con el apoyo de sus socios para convalidarlos en el Congreso.",
-      "news_status": "UPDATE_WAITING",
-      "news_first_seen": "2026-09-30T09:42:18.758034Z"
-    },
-    {
-      "name": "Daniel Guzmán",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.7,
-      "movement": "up",
-      "first_detected_at": "2026-09-30T13:51:02+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Flydubai",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "trends24",
-        "trendswe"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 18.7,
-      "movement": "up",
-      "first_detected_at": "2026-09-30T13:51:02+02:00",
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T14:10:55+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -206,7 +207,7 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 18.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T09:11:11+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -215,24 +216,32 @@
       "news_first_seen": null
     },
     {
-      "name": "El Gobierno",
-      "social_source_count": 2,
+      "name": "Flydubai",
+      "social_source_count": 3,
       "social_sources": [
         "snaplytics",
-        "tweets24"
+        "trends24",
+        "trendswe"
       ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 18.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-30T12:01:28+02:00",
-      "news_source_count": 5,
-      "news_event_id": "42a82ff84b13",
-      "news_title": "Vivas declara a la jueza que intentó contactar con Sánchez diez veces antes de la crisis pero Moncloa le remitió a Delegación del Gobierno",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-30T09:54:02.056020Z"
+      "best_observed_rank": 17,
+      "mean_observed_rank": 18.7,
+      "movement": "flat",
+      "first_detected_at": "2026-09-30T13:51:02+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     }
   ],
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Gonzalo Suárez",
+      "first_detected_at": "2026-09-30T14:01:33+02:00",
+      "entered_top10_at": "2026-09-30T14:10:55+02:00",
+      "lead_minutes": 9
+    }
+  ],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -263,16 +272,32 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T14:01:33+02:00"
+      "fetched_at": "2026-09-30T14:10:55+02:00"
     },
     "getdaytrends": {
-      "ok": false,
-      "trends": [],
-      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790769694",
+      "ok": true,
+      "trends": [
+        "#LaFreidoraDeLidl",
+        "#TierraDeNadie3",
+        "Puerta del Sol",
+        "Fran García",
+        "Almeida",
+        "Croacia",
+        "#Mañaneros30S",
+        "#FelizMiércoles",
+        "#EnBocaDeTodos",
+        "Amnistía Internacional",
+        "Junts",
+        "El BOE",
+        "Gonzalo Suárez",
+        "Daniel Guzmán",
+        "El Gobierno"
+      ],
+      "error": null,
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-09-30T14:01:34+02:00"
+      "freshness": "unknown",
+      "fetched_at": "2026-09-30T14:10:56+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -299,10 +324,10 @@
         "Isabel Rodríguez"
       ],
       "error": null,
-      "update_hint": "Updated 58 minutes ago",
-      "age_minutes": 58.0,
+      "update_hint": "Updated 1 hour ago",
+      "age_minutes": 60.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-30T14:01:34+02:00"
+      "fetched_at": "2026-09-30T14:10:57+02:00"
     },
     "superx": {
       "ok": true,
@@ -332,16 +357,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T14:01:34+02:00"
+      "fetched_at": "2026-09-30T14:10:57+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790769695",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790770258",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T14:01:35+02:00"
+      "fetched_at": "2026-09-30T14:10:58+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -369,9 +394,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 11:00 UTC",
-      "age_minutes": 61.6,
+      "age_minutes": 71.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-30T14:01:35+02:00"
+      "fetched_at": "2026-09-30T14:10:58+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -399,18 +424,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 12:00 PM # Trend Type Actions 1 #LaFreidoraDeLidl Hashtag",
-      "age_minutes": 121.6,
+      "age_minutes": 131.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T14:01:35+02:00"
+      "fetched_at": "2026-09-30T14:10:58+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790769696",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790770259",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T14:01:36+02:00"
+      "fetched_at": "2026-09-30T14:10:59+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -419,7 +444,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T14:01:37+02:00"
+      "fetched_at": "2026-09-30T14:11:01+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -449,16 +474,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T14:01:37+02:00"
+      "fetched_at": "2026-09-30T14:11:01+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790769701",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790770264",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T14:01:41+02:00"
+      "fetched_at": "2026-09-30T14:11:04+02:00"
     }
   }
 }
