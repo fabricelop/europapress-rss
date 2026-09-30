@@ -179,7 +179,8 @@ function manualFallback(items,request){
   const noStart=rawStatus==="REQUESTED"&&!started_at&&Date.now()-stamp(requested_at)>=START_ACK_MS;
   const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(last?.updated_at||last?.created_at||requested_at)>=STALE_MS;
   const status=(noStart||staleRunning)?"ERROR":rawStatus;
-  const finished_at=noStart||staleRunning?new Date().toISOString():(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
+  const lastActivity=last?.updated_at||last?.created_at||requested_at;
+  const finished_at=noStart||staleRunning?lastActivity:(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
   const timeoutMessage=noStart
     ?"No se ha recibido RUNNING: ningún ejecutor ha recogido el activador. El commit del PR #7 no inicia la elaboración por sí solo."
     :staleRunning?"La ejecución no actualiza su estado desde hace más de 20 minutos.":null;
@@ -187,7 +188,7 @@ function manualFallback(items,request){
     run_id:command_id,command_id,source:"manual",source_label:"Manual",status,
     phase:status==="REQUESTED"?"preparing":status==="RUNNING"?"running":status==="DONE"?"closing":"error",
     current:0,total:0,trend_id:null,title:null,requested_at,started_at,
-    updated_at:last?.updated_at||last?.created_at||requested_at,finished_at,
+    updated_at:lastActivity,finished_at,
     start_delay_seconds:started_at?seconds(requested_at,started_at):null,
     duration_seconds:started_at&&finished_at?seconds(started_at,finished_at):null,
     message:timeoutMessage||(last?field(last.body,"message"):null),summary:null,incident_count:0,incidents:[]
@@ -207,10 +208,11 @@ export default async function handler(req,res){
     let active=null;
 
     if(latest&&["REQUESTED","RUNNING"].includes(latest.status)){
-      const age=Date.now()-stamp(latest.updated_at||latest.started_at||latest.requested_at);
+      const lastActivity=latest.updated_at||latest.started_at||latest.requested_at;
+      const age=Date.now()-stamp(lastActivity);
       const deadline=latest.status==="REQUESTED"?START_ACK_MS:STALE_MS;
       if(Number.isFinite(age)&&age>=0&&age<deadline)active=latest;
-      else latest={...latest,status:"ERROR",finished_at:new Date().toISOString(),message:latest.status==="REQUESTED"
+      else latest={...latest,status:"ERROR",finished_at:lastActivity||null,message:latest.status==="REQUESTED"
         ?"No se ha recibido RUNNING: ningún ejecutor ha recogido el activador en 3 minutos."
         :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")}
     }
