@@ -1,62 +1,60 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-09-30T18:44:32.472Z",
-  "last_completed_at": "2026-09-30T18:48:20.000Z",
+  "last_started_at": "2026-09-30T20:15:00Z",
+  "last_completed_at": "2026-09-30T20:21:00Z",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
-    "da534ef297a9"
+    "4c7de2c3da6d",
+    "9d1e29cea1a7",
+    "088a6db618ed"
   ],
   "remaining_ids": [],
   "error": null,
   "api_failover_enabled": false,
-  "updated_at": "2026-09-30T18:48:20.000Z",
+  "updated_at": "2026-09-30T20:21:00Z",
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "ce27c96e786b",
-    "2d56fd6b6950",
-    "c010e0621343"
-  ],
+  "remaining_problematic_ids": [],
   "last_run": {
-    "run_id": "chat-20260930T184432Z",
+    "run_id": "chat-20260930T201500Z",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-09-30T18:44:32.472Z",
-    "updated_at": "2026-09-30T18:48:20.000Z",
-    "finished_at": "2026-09-30T18:48:20.000Z",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-09-30T20:15:00Z",
+    "updated_at": "2026-09-30T20:21:00Z",
+    "finished_at": "2026-09-30T20:21:00Z",
+    "current": 3,
+    "total": 3,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
+      "trends_processed": 3,
+      "trends_explained": 3,
       "explanation_groups": 1,
+      "new_cards": 1,
       "trends_problematic": 0,
-      "news_processing": 0,
-      "news_candidates": 0,
-      "news_ignored": 1,
+      "news_duplicates_avoided": 1,
       "incidents": 0,
       "queue_remaining": 0,
       "images_generated": 0,
-      "vercel_deploys": 0
+      "vercel_deploys": 0,
+      "explanations_verified_under_280": 1
     },
-    "message": "Pasada directa verificada en main: Kaliningrado explicada como tendencia anticipada #18 con Reuters y AP; sin remate por sensibilidad; noticia ya publicada en TTiTTulares, sin duplicado; cola final 0.",
+    "message": "Pasada directa verificada en main: Portugal, Cristiano Ronaldo y Jorge Jesús agrupados en una sola explicación TT#4 sobre la salida de Cristiano de la concentración; 250 caracteres, Reuters/AP, sin duplicar la noticia ya publicada en TTiTTulares; cola final 0.",
     "incident_count": 0,
     "incidents": []
   },
   "summary": {
-    "trends_processed": 1,
-    "trends_explained": 1,
+    "trends_processed": 3,
+    "trends_explained": 3,
     "explanation_groups": 1,
+    "new_cards": 1,
     "trends_problematic": 0,
-    "news_processing": 0,
-    "news_candidates": 0,
-    "news_ignored": 1,
+    "news_duplicates_avoided": 1,
     "incidents": 0,
     "queue_remaining": 0,
     "images_generated": 0,
-    "vercel_deploys": 0
+    "vercel_deploys": 0,
+    "explanations_verified_under_280": 1
   }
 }
