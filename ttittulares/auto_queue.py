@@ -74,14 +74,16 @@ def duplicate_against_existing(event, processing_items, prepared_items):
 
 LOTTERY_GAME_TERMS = (
     "bonoloto", "euromillones", "la primitiva", "gordo de la primitiva",
-    "eurojackpot", "eurodreams", "loteria nacional", "cupon once",
+    "eurojackpot", "eurodreams", "loteria nacional", "loteria de navidad",
+    "loteria del nino", "cupon once", "cupon diario", "cuponazo", "sueldazo",
     "super once", "triplex", "mi dia", "lototurf", "quinigol", "quiniela",
 )
 
 ROUTINE_DRAW_TERMS = (
     "comprobar", "resultado", "resultados", "combinacion ganadora",
     "numero premiado", "numeros premiados", "numeros ganadores",
-    "sorteo de hoy", "sorteo hoy", "sorteo del", "premios de hoy",
+    "sorteo de hoy", "sorteo hoy", "sorteo del", "sorteo de la",
+    "combinacion del", "combinacion de", "premios de hoy",
 )
 
 MATERIAL_LOTTERY_NEWS_TERMS = (
@@ -204,6 +206,7 @@ def selftest():
         {"id":"revision-r2","canonical_title":"Actualización material","source_count":4,"status":"ELIGIBLE_UPDATE","sources":["A","B","C","D"],"revision":2,"parent_event_id":"revision"},
         {"id":"lottery-routine","canonical_title":"Bonoloto: comprobar resultado del sorteo de hoy","source_count":5,"status":"ELIGIBLE","sources":["A","B","C","D","E"]},
         {"id":"lottery-routine-2","canonical_title":"Euromillones: números premiados y resultado del sorteo de hoy","source_count":4,"status":"ELIGIBLE","sources":["A","B","C","D"]},
+        {"id":"lottery-routine-once","canonical_title":"Cupón Diario de la ONCE: resultado del sorteo de hoy","source_count":4,"status":"ELIGIBLE","sources":["A","B","C","D"]},
         {"id":"lottery-news","canonical_title":"Un acertante de la Primitiva gana 8 millones de euros en Valencia","source_count":4,"status":"ELIGIBLE","sources":["A","B","C","D"]},
     ]}
     decisions={"items":[{"event_id":"published","status":"published"}]}
@@ -219,6 +222,7 @@ def selftest():
     out_web,queued_web=queue_eligible(events,{"items":[]},decisions,4,stamp,"web",prepared=prepared)
     assert queued_web==["web-ok","revision-r2","lottery-news"], queued_web
     assert "lottery-routine" not in queued_web and "lottery-routine-2" not in queued_web
+    assert "lottery-routine-once" not in queued_web
 
     out_parallel,queued_parallel=queue_eligible(
         events,{"items":[]},decisions,4,stamp,"parallel","2026-09-22T22:00:00Z",prepared=prepared
