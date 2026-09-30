@@ -140,7 +140,7 @@ def default_state() -> dict:
         "source": "Público · Tremending",
         "version": 1,
         "updated_at": None,
-        "scan": {"last_run_at": None, "last_success_at": None, "recent_pages": 4, "recovery_page": 5, "last_error": None},
+        "scan": {"last_run_at": None, "last_success_at": None, "recent_pages": 8, "recovery_page": None, "capture_from": CAPTURE_FROM_DEFAULT, "last_error": None},
         "items": [],
     }
 
@@ -187,15 +187,31 @@ def merge_listing_item(existing: dict | None, candidate: dict, seen_at: str) -> 
 def update_state(state: dict, session: requests.Session, recent_pages: int, max_articles: int) -> dict:
     stamp = now_iso()
     scan = state.setdefault("scan", {})
-    # First run: display only the five newest listing entries. Later runs only admit
-    # URLs that have not appeared during previous scans; never backfill old pages.
-    bootstrap = not scan.get("bootstrap_completed_at")
+    capture_from = str(scan.get("capture_from") or CAPTURE_FROM_DEFAULT)
+    capture_from_changed = scan.get("capture_from") != capture_from
+    scan["capture_from"] = capture_from
+    cutoff = parse_iso(capture_from)
+    if cutoff is None:
+        raise ValueError(f"capture_from inválido: {capture_from}")
+
+    # Desde la activación controlada del 30/09/2026 solo se incorporan artículos
+    # publicados a partir de la frontera indicada. Las URLs históricas ya vistas
+    # se conservan como conocidas, pero una URL nueva no se marca como vista hasta
+    # haber sido incorporada o confirmada explícitamente como anterior al corte.
     seen_urls = set(scan.get("seen_urls") or [])
     pages = list(range(1, recent_pages + 1))
-    by_url = {canonical_article_url(item.get("url", "")): item for item in state.get("items", []) if canonical_article_url(item.get("url", ""))}
+    by_url = {
+        canonical_article_url(item.get("url", "")): item
+        for item in state.get("items", [])
+        if canonical_article_url(item.get("url", ""))
+    }
     discovered: list[str] = []
     observed_urls: set[str] = set()
-    page_errors = []
+    newly_seen: set[str] = set()
+    page_errors: list[str] = []
+    candidate_errors: list[str] = []
+    evaluated = 0
+    filtered_before_cutoff = 0
 
     for page in pages:
         try:
@@ -208,14 +224,44 @@ def update_state(state: dict, session: requests.Session, recent_pages: int, max_
                 if url in observed_urls:
                     continue
                 observed_urls.add(url)
-                if bootstrap:
-                    # Existing sent test entries remain untouched even outside the five.
-                    if len(observed_urls) > 5 and url not in by_url:
-                        continue
-                elif url in seen_urls or url in by_url:
+
+                # Decisiones editoriales existentes y URLs históricas confirmadas
+                # se preservan sin volver a introducirlas.
+                if url in by_url or url in seen_urls:
                     continue
-                by_url[url] = merge_listing_item(by_url.get(url), row, stamp)
-                discovered.append(url)
+
+                # Si se supera el presupuesto de artículos, la URL queda sin marcar
+                # y por tanto será reintentada en la siguiente pasada.
+                if evaluated >= max_articles:
+                    continue
+
+                try:
+                    article = extract_article(fetch(session, url), url)
+                    evaluated += 1
+                    published = parse_iso(article.get("published_at"))
+                    if published is None:
+                        candidate_errors.append(f"{url}: sin fecha de publicación verificable")
+                        continue
+
+                    if published < cutoff:
+                        newly_seen.add(url)
+                        filtered_before_cutoff += 1
+                        continue
+
+                    item = merge_listing_item(None, row, stamp)
+                    if article.get("title"):
+                        item["title"] = article["title"]
+                    item["description"] = article.get("description") or ""
+                    item["published_at"] = article.get("published_at")
+                    item["tweets"] = article["tweets"]
+                    item["tweet_count"] = article["tweet_count"]
+                    item["article_status"] = "ready"
+                    item["article_fetched_at"] = stamp
+                    by_url[url] = item
+                    discovered.append(url)
+                    newly_seen.add(url)
+                except Exception as exc:
+                    candidate_errors.append(f"{url}: {exc}")
         except Exception as exc:  # one listing failure must not erase or block the inbox
             page_errors.append(f"página {page}: {exc}")
 
@@ -223,18 +269,10 @@ def update_state(state: dict, session: requests.Session, recent_pages: int, max_
         item for item in by_url.values()
         if item.get("article_status") != "ready" or not isinstance(item.get("tweets"), list)
     ]
-    pending_fetch.sort(key=lambda item: (item.get("article_status") == "ready", item.get("first_seen_at") or ""), reverse=False)
-    # A no-news scan should not create a Git commit (or trigger an unnecessary
-    # deployment) just to update last_run_at. GitHub Actions records the run.
-    current_error = "; ".join(page_errors)[:1000] if page_errors else None
-    if (
-        not bootstrap and not discovered and not pending_fetch
-        and observed_urls.issubset(seen_urls)
-        and scan.get("last_error") == current_error
-    ):
-        print("Tremending: sin nuevas entradas; estado editorial sin cambios")
-        return state
-    for item in pending_fetch[:max_articles]:
+    pending_fetch.sort(key=lambda item: (item.get("article_status") == "ready", item.get("first_seen_at") or ""))
+
+    remaining_budget = max(0, max_articles - evaluated)
+    for item in pending_fetch[:remaining_budget]:
         try:
             article = extract_article(fetch(session, item["url"]), item["url"])
             if article.get("title"):
@@ -246,29 +284,45 @@ def update_state(state: dict, session: requests.Session, recent_pages: int, max_
             item["article_status"] = "ready"
             item["article_fetched_at"] = stamp
             item.pop("article_error", None)
+            newly_seen.add(item["url"])
         except Exception as exc:
             item["article_status"] = "retry"
             item["article_error"] = str(exc)[:500]
             item["article_last_attempt_at"] = stamp
 
+    all_errors = page_errors + candidate_errors
+    current_error = "; ".join(all_errors)[:1000] if all_errors else None
+
+    # No se escribe un commit vacío. La única excepción es la primera pasada tras
+    # introducir capture_from o cuando se ha confirmado alguna URL histórica nueva.
+    if (
+        not discovered
+        and not pending_fetch
+        and not newly_seen
+        and not capture_from_changed
+        and scan.get("last_error") == current_error
+    ):
+        print("Tremending: sin nuevas entradas dentro de la ventana; estado editorial sin cambios")
+        return state
+
     items = list(by_url.values())
     items.sort(key=lambda item: (item.get("published_at") or item.get("first_seen_at") or "", item.get("id") or ""), reverse=True)
     state["items"] = items
     state["updated_at"] = stamp
-    scan["seen_urls"] = sorted(seen_urls | observed_urls)
-    if bootstrap and not page_errors and len(observed_urls) >= 5:
-        scan["bootstrap_completed_at"] = stamp
+    scan["seen_urls"] = sorted(seen_urls | newly_seen | set(by_url.keys()))
     scan.update({
         "last_run_at": stamp,
         "last_success_at": stamp if not page_errors else scan.get("last_success_at"),
         "recent_pages": recent_pages,
-        "recovery_page": None,  # Historical recovery disabled after controlled activation.
-        "last_error": "; ".join(page_errors)[:1000] if page_errors else None,
+        "recovery_page": None,
+        "capture_from": capture_from,
+        "last_error": current_error,
         "last_discovered_count": len(discovered),
+        "last_evaluated_count": evaluated,
+        "last_filtered_before_cutoff": filtered_before_cutoff,
         "total_items": len(items),
     })
     return state
-
 
 def selftest() -> None:
     listing = """<h2><a href='/tremending/uno-largo.html'>Título suficientemente largo</a></h2>
@@ -287,13 +341,15 @@ def selftest() -> None:
     old = {"url": rows[0]["url"], "status": "postponed", "selected_tweet_id": "123"}
     merged = merge_listing_item(old, rows[0], now_iso())
     assert merged["status"] == "postponed" and merged["selected_tweet_id"] == "123"
+    assert parse_iso("2026-09-29T22:00:00Z") == parse_iso(CAPTURE_FROM_DEFAULT)
+    assert parse_iso("2026-09-30T00:00:00+02:00") == parse_iso(CAPTURE_FROM_DEFAULT)
     print("TREMENDING_SELFTEST_OK")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--state", type=Path, default=STATE_PATH)
-    parser.add_argument("--recent-pages", type=int, default=4)
+    parser.add_argument("--recent-pages", type=int, default=8)
     parser.add_argument("--max-articles", type=int, default=40)
     parser.add_argument("--article-url", help="Parse one article and print JSON without changing state")
     parser.add_argument("--selftest", action="store_true")
