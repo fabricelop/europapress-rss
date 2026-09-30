@@ -129,10 +129,12 @@ FAST_TRACK_WINDOW_MIN=30
 WAIT_HOURS=24
 MIN_HEALTHY_SOURCES=14
 MAX_PROCESSED=2000
+MAX_SEED_EVENTS=40000
 STOP=set("a al algo ante bajo con contra de del desde el ella en entre era es esta este esto ha hay la las lo los mas muy no o para pero por que se sin sobre su sus un una y ya".split())
 MATERIAL=set("muere muerto fallece fallecido dimite dimision detenido detencion sentencia condena absuelto absuelve gana ganador pierde derrota confirma confirmado acuerdo aprueba aprobado cancela cancelado rompe ruptura rescata rescatado desaparecido encontrado hospitalizado alta cesado cese nombrado nombramiento".split())
 
 EVENTS=Path("telegram/events.json")
+SEEDS=Path("telegram/event-seeds.json")
 PROCESSED=Path("telegram/processed-events.json")
 EDITORIAL_PROCESSING=Path("telegram/editorial-processing.json")
 PREPARED=Path("ttittulares/prepared.json")
@@ -489,6 +491,69 @@ def add_appearance(e,row,now):
 
 def titles_match(a,b):
  return score(a,b)>=0.50 or same_event_semantic(a,b)
+
+def seed_to_event(seed):
+ source=str(seed.get("source") or "")
+ title=str(seed.get("canonical_title") or seed.get("title") or "")
+ first=seed.get("first_seen")
+ if not source or not title or not first:return None
+ return {
+  "id":str(seed.get("id") or make_id(title)),
+  "canonical_title":title,
+  "url":str(seed.get("url") or ""),
+  "appearances":[{
+   "source":source,
+   "source_type":"general",
+   "title":str(seed.get("source_title") or title),
+   "url":str(seed.get("source_url") or seed.get("url") or ""),
+   "first_seen":first,
+   "last_seen":first,
+  }],
+  "sources":[source],
+  "source_count":1,
+  "percentage":round(100/TOTAL_SOURCE_FAMILIES,1),
+  "first_seen":first,
+  "last_seen":first,
+  "status":"WAITING",
+  "notified":False,
+  "revision":int(seed.get("revision") or 1),
+ }
+
+def seed_from_event(e):
+ if str(e.get("status") or "")!="WAITING" or int(e.get("source_count") or 0)!=1:
+  return None
+ general=[a for a in e.get("appearances",[]) if a.get("source_type","general")=="general" and a.get("source")]
+ if not general:return None
+ a=general[0]
+ return {
+  "id":str(e.get("id") or ""),
+  "canonical_title":str(e.get("canonical_title") or a.get("title") or ""),
+  "url":str(e.get("url") or a.get("url") or ""),
+  "source":str(a.get("source") or ""),
+  "source_title":str(a.get("title") or e.get("canonical_title") or ""),
+  "source_url":str(a.get("url") or e.get("url") or ""),
+  "first_seen":e.get("first_seen") or a.get("first_seen"),
+  "revision":int(e.get("revision") or 1),
+ }
+
+def run_seed_memory_regressions():
+ seed={
+  "id":"test-alonso-seed",
+  "canonical_title":"Fernando Alonso renueva con Aston Martin para 2027",
+  "source":"Telecinco Noticias",
+  "source_title":"Fernando Alonso renueva y correrá con Aston Martin en 2027",
+  "first_seen":"2026-09-30T08:00:00Z",
+  "revision":1,
+ }
+ e=seed_to_event(seed)
+ if not e:raise RuntimeError("Regresión seeds: no se pudo reconstruir el evento")
+ add_appearance(e,{
+  "source":"Cadena SER","source_type":"general",
+  "title":"Alonso seguirá con Aston Martin en 2027 tras renovar su contrato",
+  "url":"https://example.test/alonso"
+ },datetime(2026,9,30,8,30,tzinfo=timezone.utc))
+ if int(e.get("source_count") or 0)!=2:
+  raise RuntimeError("Regresión seeds: una noticia recuperada no sumó la segunda familia")
 
 def evidence_title_eligible(title):
  tokens=fp(title);distinctive=tokens-GENERIC_MATCH
@@ -1045,12 +1110,15 @@ if "--selftest-dedupe" in sys.argv:
  print("DEDUPE_CHAIN_SELFTEST OK")
  raise SystemExit(0)
 
+run_seed_memory_regressions()
+
 now=utcnow()
 events_doc=load(EVENTS,{"version":3,"events":[]})
 events=events_doc.get("events",[])
 initial_event_count=len(events)
 processed_doc=load(PROCESSED,{"version":1,"events":[]})
 processed=processed_doc.get("events",[])
+seeds_doc=load(SEEDS,{"version":1,"items":[]})
 
 # Migración suave de eventos antiguos.
 for e in events:
@@ -1070,6 +1138,17 @@ if not events_doc.get("fast_track_initialized"):
 # Los eventos que aún no han llegado al umbral caducan exactamente a las 24 h.
 cutoff=now-timedelta(hours=WAIT_HOURS)
 events=[e for e in events if e.get("status") not in {"WAITING","UPDATE_WAITING"} or dtv(e.get("first_seen"))>=cutoff]
+
+# Memoria ligera de eventos de una sola fuente. Es estado del radar, no un canal
+# de Telegram: la carpeta conserva el nombre histórico por compatibilidad.
+seed_items=[
+ x for x in (seeds_doc.get("items") or [])
+ if x.get("first_seen") and dtv(x.get("first_seen"))>=cutoff
+]
+seed_events=[]
+for seed in seed_items:
+ event=seed_to_event(seed)
+ if event:seed_events.append(event)
 
 rows,healthy,sport_healthy,source_failures,source_status,source_recovery=fetch_items()
 # Source freshness is independent from the editorial source of headlines.
@@ -1204,7 +1283,32 @@ for row in rows:
    events.append(upd)
   if upd:add_appearance(upd,row,now)
   continue
- # 3) evento nuevo.
+ # 3) recuperar primero una noticia de 1 fuente expulsada del estado operativo.
+ # Así el cap de events.json no puede hacer que una noticia vuelva a empezar de cero.
+ seed,seed_score=best_match(row["title"],seed_events,.50)
+ if seed:
+  seed_source=(seed.get("sources") or [""])[0]
+  if source_family(seed_source)==source_family(row["source"]):
+   # Es la misma familia reapareciendo: no creamos un duplicado.
+   continue
+  e=seed_to_event({
+   "id":seed.get("id"),
+   "canonical_title":seed.get("canonical_title"),
+   "url":seed.get("url"),
+   "source":seed_source,
+   "source_title":(seed.get("appearances") or [{}])[0].get("title"),
+   "source_url":(seed.get("appearances") or [{}])[0].get("url"),
+   "first_seen":seed.get("first_seen"),
+   "revision":seed.get("revision",1),
+  })
+  if e:
+   add_appearance(e,row,now)
+   events.append(e)
+   seed_events=[x for x in seed_events if str(x.get("id"))!=str(seed.get("id"))]
+   print("EVENT_REHYDRATED_FROM_SEED",e.get("id"),e.get("source_count"),e.get("sources"))
+   continue
+
+ # 4) evento realmente nuevo.
  eid=make_id(row["title"])
  if any(x.get("id")==eid for x in events):eid=hashlib.sha1((eid+row["url"]).encode()).hexdigest()[:12]
  e={"id":eid,"canonical_title":row["title"],"url":row["url"],"appearances":[],"sources":[],"source_count":0,"percentage":0,
@@ -1295,6 +1399,24 @@ for item in source_status:
  item["last_event_id"]=last.get("event_id")
 
 healthy_families=sorted({source_family(src) for src in healthy})
+# Actualizar la memoria ligera de 1 fuente. Conserva 24 h aunque el evento
+# completo salga de events.json por el cap operativo.
+seed_by_id={str(x.get("id")):x for x in seed_items if x.get("id")}
+for e in events:
+ eid=str(e.get("id") or "")
+ if not eid:continue
+ seed=seed_from_event(e)
+ if seed:
+  seed_by_id[eid]=seed
+ elif eid in seed_by_id:
+  # En cuanto suma una segunda familia o sale de WAITING ya no necesita seed.
+  del seed_by_id[eid]
+seed_items=list(seed_by_id.values())
+seed_items=[x for x in seed_items if x.get("first_seen") and dtv(x.get("first_seen"))>=cutoff]
+seed_items.sort(key=lambda x:dtv(x.get("first_seen")),reverse=True)
+seed_items=seed_items[:MAX_SEED_EVENTS]
+seeds_doc={"version":1,"updated_at":iso(now),"retention_hours":WAIT_HOURS,"max_items":MAX_SEED_EVENTS,"items":seed_items}
+
 events_doc={"version":6,"configured_sources":TOTAL_SOURCES,"configured_source_families":TOTAL_SOURCE_FAMILIES,"review_min_sources":REVIEW_MIN,
             "fast_track_min_sources":FAST_TRACK_MIN,"fast_track_window_minutes":FAST_TRACK_WINDOW_MIN,
             "fast_track_initialized":True,"fast_track_initialized_at":events_doc.get("fast_track_initialized_at") or iso(now),
@@ -1304,5 +1426,5 @@ events_doc={"version":6,"configured_sources":TOTAL_SOURCES,"configured_source_fa
             "healthy_sport_sources":sorted(set(sport_healthy)),"source_failures":source_failures,
             "source_status":source_status,"source_article_telemetry":source_article_telemetry,"source_recovery":source_recovery,"discovery_sources":[x[0] for x in DISCOVERY_SOURCES],"events":events}
 processed_doc={"version":1,"updated_at":iso(now),"events":processed}
-save(EVENTS,events_doc);save(PROCESSED,processed_doc)
-print("RESULT rows",len(rows),"active_events",len(events),"review_sent",sent,"auto_queued",0,"expired",expired)
+save(EVENTS,events_doc);save(SEEDS,seeds_doc);save(PROCESSED,processed_doc)
+print("RESULT rows",len(rows),"active_events",len(events),"seed_events",len(seed_items),"review_sent",sent,"auto_queued",0,"expired",expired)
