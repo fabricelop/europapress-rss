@@ -387,26 +387,85 @@ def choose_top10(source_data):
     if not good:
         return [], [], "none", "none"
 
+    def corroboration(item, pool):
+        name, data = item
+        return sum(
+            overlap(data["trends"], other["trends"])
+            for oname, other in pool.items()
+            if oname != name
+        )
+
     fresh = {n: d for n, d in good.items() if d.get("freshness") == "fresh"}
     if fresh:
-        # La frescura manda: elegimos la fuente fresca más corroborada por las demás.
-        def fresh_score(item):
-            name, data = item
-            return sum(overlap(data["trends"], other["trends"]) for oname, other in good.items() if oname != name)
-        anchor_name, anchor = max(fresh.items(), key=fresh_score)
+        # Una fuente fechada y fresca puede anclar el Top 10.
+        anchor_name, anchor = max(fresh.items(), key=lambda item: corroboration(item, good))
         supporters = [
             name for name, data in good.items()
-            if name == anchor_name or overlap(anchor["trends"], data["trends"]) >= 0.35
+            if name == anchor_name
+            or (
+                data.get("freshness") != "stale"
+                and overlap(anchor["trends"], data["trends"]) >= 0.35
+            )
         ]
         return anchor["trends"][:10], supporters, anchor_name, "fresh-anchor"
 
-    usable = {n: d["trends"] for n, d in good.items() if d.get("freshness") != "stale"}
-    if not usable:
-        usable = {n: d["trends"] for n, d in good.items()}
-    if len(usable) == 1:
-        name, trends = next(iter(usable.items()))
-        return trends[:10], [name], name, "fallback"
-    return consensus_fallback(usable), list(usable), "consensus", "consensus"
+    aging = {n: d for n, d in good.items() if d.get("freshness") == "aging"}
+    if aging:
+        # Si no hay fuente fresca, una fuente con hora conocida y <=90 min
+        # es preferible a una fuente sin marca temporal que podría estar cacheada.
+        anchor_name, anchor = max(
+            aging.items(),
+            key=lambda item: (
+                corroboration(item, good),
+                -float(item[1].get("age_minutes") or 9999),
+            ),
+        )
+        supporters = [
+            name for name, data in good.items()
+            if name == anchor_name
+            or (
+                data.get("freshness") != "stale"
+                and overlap(anchor["trends"], data["trends"]) >= 0.35
+            )
+        ]
+        return anchor["trends"][:10], supporters, anchor_name, "aging-anchor"
+
+    unknown = {n: d for n, d in good.items() if d.get("freshness") == "unknown"}
+    corroborated_unknown = {
+        name: data
+        for name, data in unknown.items()
+        if any(
+            oname != name and overlap(data["trends"], other["trends"]) >= 0.35
+            for oname, other in unknown.items()
+        )
+    }
+    if len(corroborated_unknown) >= 2:
+        return (
+            consensus_fallback({n: d["trends"] for n, d in corroborated_unknown.items()}),
+            list(corroborated_unknown),
+            "consensus",
+            "consensus",
+        )
+
+    # Nunca sustituir un Top 10 válido por una única fuente sin fecha.
+    # Si las fuentes actuales no se corroboran, conservamos el último Top 10
+    # y esperamos al siguiente barrido en vez de reintroducir tendencias viejas.
+    previous = previous_top10()
+    if len(previous) >= 10:
+        return previous[:10], [], "previous", "hold-last-good"
+
+    # Arranque en frío: si no existe snapshot previo, usamos la fuente obsoleta
+    # menos antigua solo como visualización. auto_queue_new.py impide encolarla.
+    stale = [
+        (name, data)
+        for name, data in good.items()
+        if data.get("freshness") == "stale" and data.get("age_minutes") is not None
+    ]
+    if stale:
+        name, data = min(stale, key=lambda item: float(item[1].get("age_minutes") or 9999))
+        return data["trends"][:10], [name], name, "stale-fallback"
+
+    return [], [], "none", "none"
 
 
 def load_json(path, default=None):
