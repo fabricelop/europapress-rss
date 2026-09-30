@@ -1,87 +1,58 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-09-30T20:45:00Z",
-  "last_completed_at": "2026-09-30T20:54:00Z",
+  "last_started_at": "2026-09-30T21:15:56.196Z",
+  "last_completed_at": "2026-09-30T21:16:17.559Z",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [
-    "4bf2961cf967",
-    "da1b6aaf7d73",
-    "f47eaf26f753",
-    "0496ce837dc3"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "error": null,
   "api_failover_enabled": false,
-  "updated_at": "2026-09-30T20:54:00Z",
+  "updated_at": "2026-09-30T21:16:17.559Z",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [
     "0496ce837dc3"
   ],
   "last_run": {
-    "run_id": "chat-20260930T204500Z",
+    "run_id": "chat-20260930T211556196Z",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-09-30T20:45:00Z",
-    "updated_at": "2026-09-30T20:54:00Z",
-    "finished_at": "2026-09-30T20:54:00Z",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-09-30T21:15:56.196Z",
+    "updated_at": "2026-09-30T21:16:17.559Z",
+    "finished_at": "2026-09-30T21:16:17.559Z",
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 4,
-      "trends_explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 2,
-      "grouped_into_existing_card": 1,
-      "trends_problematic": 1,
-      "news_duplicates_avoided": 2,
-      "incidents": 3,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "grouped_into_existing_card": 0,
+      "trends_problematic": 0,
+      "incidents": 0,
       "queue_remaining": 0,
       "images_generated": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2
+      "explanations_verified_under_280": 0
     },
-    "message": "Pasada directa verificada en main: #Flydubai explicado con la novedad del FZ1073 sin humor por sensibilidad; Cristiano enlazado a la tarjeta ya existente de Portugal/Cristiano Ronaldo/Jorge Jesús; #firstdates30s explicado; Piñeiro quedó problematic por detonante no verificable. Cola activa final 0.",
-    "incident_count": 3,
-    "incidents": [
-      {
-        "at": "2026-09-30T20:48:15Z",
-        "phase": "persisting",
-        "trend_id": "da1b6aaf7d73",
-        "title": "Cristiano",
-        "reason": "Conflicto SHA concurrente al actualizar requests.json; resuelto tras releer main y reintentar."
-      },
-      {
-        "at": "2026-09-30T20:49:50Z",
-        "phase": "persisting",
-        "trend_id": "f47eaf26f753",
-        "title": "#firstdates30s",
-        "reason": "Conflicto SHA concurrente al actualizar requests.json; resuelto tras releer main y reintentar."
-      },
-      {
-        "at": "2026-09-30T20:53:00Z",
-        "phase": "investigating",
-        "trend_id": "0496ce837dc3",
-        "title": "Piñeiro",
-        "reason": "Dos tandas de búsquedas no permiten identificar un detonante actual único y fiable; se marca problematic y no se inventa una explicación."
-      }
-    ]
+    "message": "Pasada directa verificada en main: editorial-queue.json está vacía (0 items); no se investigó ni se duplicó ninguna explicación. Telemetría actualizada.",
+    "incident_count": 0,
+    "incidents": []
   },
   "summary": {
-    "trends_processed": 4,
-    "trends_explained": 3,
-    "explanation_groups": 3,
-    "new_cards": 2,
-    "grouped_into_existing_card": 1,
-    "trends_problematic": 1,
-    "news_duplicates_avoided": 2,
-    "incidents": 3,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
+    "grouped_into_existing_card": 0,
+    "trends_problematic": 0,
+    "incidents": 0,
     "queue_remaining": 0,
     "images_generated": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 2
+    "explanations_verified_under_280": 0
   }
 }
