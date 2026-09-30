@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T23:51:03+02:00",
+  "captured_at": "2026-10-01T00:01:11+02:00",
   "primary_source": "snaplytics",
   "selection_method": "aging-anchor",
   "sources_used": [
@@ -152,6 +152,23 @@
       "news_first_seen": null
     },
     {
+      "name": "El BOE",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "trendswe"
+      ],
+      "best_observed_rank": 17,
+      "mean_observed_rank": 18.0,
+      "movement": "flat",
+      "first_detected_at": "2026-09-30T23:41:11+02:00",
+      "news_source_count": 4,
+      "news_event_id": "c598c1681ca2-r2",
+      "news_title": "El BOE publica el primer decreto sobre vivienda: ¿por qué se retrasa al jueves el segundo, sobre la renovación automática de los alquileres? - Telecinco",
+      "news_status": "UPDATE_WAITING",
+      "news_first_seen": "2026-09-30T14:42:20.247374Z"
+    },
+    {
       "name": "Piñeiro",
       "social_source_count": 2,
       "social_sources": [
@@ -167,23 +184,6 @@
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "El BOE",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "trendswe"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 18.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-30T23:41:11+02:00",
-      "news_source_count": 3,
-      "news_event_id": "c598c1681ca2-r2",
-      "news_title": "El Gobierno publicará mañana en el BOE el decreto de renovación automática de alquileres - efe.com",
-      "news_status": "UPDATE_WAITING",
-      "news_first_seen": "2026-09-30T14:42:20.247374Z"
     },
     {
       "name": "Mounir",
@@ -226,11 +226,11 @@
     "trends24": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790805063",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790805671",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T23:51:03+02:00"
+      "fetched_at": "2026-10-01T00:01:11+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -255,16 +255,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T23:51:03+02:00"
+      "fetched_at": "2026-10-01T00:01:11+02:00"
     },
     "tweets24": {
       "ok": false,
       "trends": [],
       "error": "Lista no válida (0 elementos parseados)",
-      "update_hint": "Updated 2 hours ago",
-      "age_minutes": 120.0,
+      "update_hint": "Updated 3 hours ago",
+      "age_minutes": 180.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T23:51:03+02:00"
+      "fetched_at": "2026-10-01T00:01:12+02:00"
     },
     "superx": {
       "ok": true,
@@ -294,16 +294,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T23:51:04+02:00"
+      "fetched_at": "2026-10-01T00:01:13+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790805065",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790805673",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T23:51:05+02:00"
+      "fetched_at": "2026-10-01T00:01:13+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -331,48 +331,48 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 21:00 UTC",
-      "age_minutes": 51.1,
+      "age_minutes": 61.2,
       "freshness": "aging",
-      "fetched_at": "2026-09-30T23:51:05+02:00"
+      "fetched_at": "2026-10-01T00:01:13+02:00"
     },
     "fowtools": {
       "ok": true,
       "trends": [
-        "#RTXOn",
         "#LaFreidoraDeLidl",
-        "Portugal",
-        "Puerta del Sol",
         "Cristiano",
-        "#TierraDeNadie3",
+        "Portugal",
+        "#RTXOn",
+        "Puerta del Sol",
         "#TEM30S",
+        "#TierraDeNadie3",
         "Almeida",
+        "#FirstDates30S",
         "Jorge Jesus",
         "Amnistía Internacional",
         "Junts",
-        "Piñeiro",
-        "Croacia",
         "Mounir",
-        "#FelizMiércoles",
-        "Daniel Guzmán",
+        "Croacia",
         "Flydubai",
+        "Daniel Guzmán",
+        "Piñeiro",
         "Fran García",
-        "El BOE",
-        "Decretos"
+        "MADROÑO",
+        "El BOE"
       ],
       "error": null,
-      "update_hint": "Updated: September 30, 2026 at 09:01 PM # Trend Type Actions 1 #RTXOn Hashtag 2 #LaFreido",
-      "age_minutes": 170.1,
+      "update_hint": "Updated: September 30, 2026 at 10:00 PM # Trend Type Actions 1 #LaFreidoraDeLidl Hashtag",
+      "age_minutes": 121.2,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T23:51:05+02:00"
+      "fetched_at": "2026-10-01T00:01:14+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790805066",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790805675",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T23:51:06+02:00"
+      "fetched_at": "2026-10-01T00:01:15+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -381,7 +381,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T23:51:07+02:00"
+      "fetched_at": "2026-10-01T00:01:16+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -411,16 +411,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T23:51:08+02:00"
+      "fetched_at": "2026-10-01T00:01:17+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790805070",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790805679",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T23:51:10+02:00"
+      "fetched_at": "2026-10-01T00:01:19+02:00"
     }
   }
 }
