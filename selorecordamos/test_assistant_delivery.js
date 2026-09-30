@@ -15,6 +15,7 @@ function fixture() {
     dir,
     stateFile: path.join(dir, 'state.json'),
     legacySentFile: path.join(dir, 'sent.json'),
+    key: 'evaluate:123',
     item: {
       request_key: 'evaluate:123',
       created_at: '2026-09-30T17:20:00.000Z',
