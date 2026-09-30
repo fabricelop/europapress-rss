@@ -211,6 +211,39 @@ for req in requests:
             for value in values:
                 remember_explanation(value, req.get("explained_at"))
 
+def capture_is_safe(doc):
+    """Evita encolar/reabrir tendencias desde snapshots sin respaldo actual."""
+    method = str(doc.get("selection_method") or "")
+    sources_used = list(doc.get("sources_used") or [])
+    source_data = doc.get("sources") or {}
+
+    if method in {"hold-last-good", "stale-fallback", "none"}:
+        return False
+    if method in {"fresh-anchor", "aging-anchor"}:
+        primary = str(doc.get("primary_source") or "")
+        freshness = str((source_data.get(primary) or {}).get("freshness") or "")
+        return freshness in {"fresh", "aging"}
+    if method == "consensus":
+        return len(sources_used) >= 2
+    if method == "fallback":
+        primary = str(doc.get("primary_source") or "")
+        freshness = str((source_data.get(primary) or {}).get("freshness") or "")
+        return freshness in {"fresh", "aging"}
+    return False
+
+if not capture_is_safe(recent):
+    if reconciled:
+        requests_doc["updated_at"] = now_dt.isoformat(timespec="seconds")
+        save("requests.json", requests_doc)
+    save_editorial_queue(requests_doc)
+    print(
+        "Snapshot TTendencias no fiable para encolar:",
+        recent.get("selection_method"),
+        recent.get("primary_source"),
+        recent.get("sources_used"),
+    )
+    raise SystemExit(0)
+
 current = []
 for item in (recent.get("items") or [])[:10]:
     name = str(item.get("name") or "").strip()
