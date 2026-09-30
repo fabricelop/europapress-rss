@@ -25,7 +25,7 @@ status: RUNNING
 started_at: <ISO-8601>
 ```
 
-No generes otro `RUN TTITTULARES`. El PR #2 puede recibir la telemetría `RUNSTATUS`, el comentario único `TTITTULARES_RUNTRACE_V1` y los comentarios `TTITTULARES_OUTBOX_V1` del flujo editorial. No modifiques, pauses, desactives, sustituyas ni recrees ninguna automatización.
+No generes otro `RUN TTITTULARES`. El PR #2 puede recibir la telemetría `RUNSTATUS`, el comentario único `TTITTULARES_RUNTRACE_V1` y los comentarios `TTITTULARES_OUTBOX_V1` del flujo editorial. No modifiques, pauses, desactives, sustituyas ni recrees ninguna automatización. Cuando el contrato editorial entre en `remate_selection`, actualiza ese mismo `TTITTULARES_RUNTRACE_V1` y conserva sus campos `ratings_snapshot` y `remate_selections` hasta el cierre; nunca publiques ni persistas los candidatos descartados.
 
 ## Smoke
 
