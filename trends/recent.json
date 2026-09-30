@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T08:31:10+02:00",
+  "captured_at": "2026-09-30T08:40:19+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -9,13 +9,13 @@
     "getdaytrends",
     "tweets24",
     "snaplytics",
-    "fowtools",
-    "trendswe"
+    "fowtools"
   ],
-  "source_count": 7,
+  "source_count": 6,
   "non_stale_source_count": 5,
   "fresh_sources": [
-    "tweets24"
+    "tweets24",
+    "snaplytics"
   ],
   "reliability": "medium",
   "top10": [
@@ -90,14 +90,14 @@
       "social_source_count": 5,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "superx",
         "trends24",
-        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 15.6,
-      "movement": "down",
+      "mean_observed_rank": 16.0,
+      "movement": "flat",
       "first_detected_at": "2026-09-30T04:50:58+02:00",
       "news_source_count": 1,
       "news_event_id": "a6c570830642",
@@ -110,13 +110,13 @@
       "social_source_count": 4,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
-        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "down",
+      "mean_observed_rank": 11.2,
+      "movement": "flat",
       "first_detected_at": "2026-09-30T03:40:50+02:00",
       "news_source_count": 1,
       "news_event_id": "d65af7ab67d3",
@@ -129,13 +129,13 @@
       "social_source_count": 4,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
-        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 12.2,
-      "movement": "down",
+      "mean_observed_rank": 12.5,
+      "movement": "flat",
       "first_detected_at": "2026-09-30T07:31:07+02:00",
       "news_source_count": 1,
       "news_event_id": "20028a4d0fc9",
@@ -148,12 +148,12 @@
       "social_source_count": 4,
       "social_sources": [
         "getdaytrends",
+        "snaplytics",
         "trends24",
-        "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 13.8,
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.5,
       "movement": "down",
       "first_detected_at": "2026-09-30T04:00:57+02:00",
       "news_source_count": 0,
@@ -166,12 +166,12 @@
       "name": "Olga",
       "social_source_count": 3,
       "social_sources": [
+        "snaplytics",
         "trends24",
-        "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 15.3,
+      "best_observed_rank": 16,
+      "mean_observed_rank": 16.7,
       "movement": "down",
       "first_detected_at": "2026-09-30T05:20:58+02:00",
       "news_source_count": 0,
@@ -181,34 +181,16 @@
       "news_first_seen": null
     },
     {
-      "name": "Decreto",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 17.0,
-      "movement": "down",
-      "first_detected_at": "2026-09-30T06:20:58+02:00",
-      "news_source_count": 2,
-      "news_event_id": "3c3a226e15d6",
-      "news_title": "Decreto Mari y Decreto Carmen: lo que sabemos por ahora de los dos acuerdos sobre vivienda aprobados por el Gobierno",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T20:42:55.560200Z"
-    },
-    {
       "name": "Urbagestión",
       "social_source_count": 3,
       "social_sources": [
+        "snaplytics",
         "trends24",
-        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 18,
-      "mean_observed_rank": 18.0,
-      "movement": "down",
+      "mean_observed_rank": 18.3,
+      "movement": "flat",
       "first_detected_at": "2026-09-30T06:20:58+02:00",
       "news_source_count": 1,
       "news_event_id": "4d24d750065e",
@@ -217,22 +199,39 @@
       "news_first_seen": "2026-09-29T17:04:16.491385Z"
     },
     {
-      "name": "Mataró",
+      "name": "Ferraz",
       "social_source_count": 3,
       "social_sources": [
+        "snaplytics",
         "trends24",
-        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 19,
-      "mean_observed_rank": 19.7,
-      "movement": "down",
-      "first_detected_at": "2026-09-30T07:40:57+02:00",
-      "news_source_count": 1,
-      "news_event_id": "ad0345d22107",
-      "news_title": "Desahuciada una familia vulnerable de Mataró pese a las protestas y la petición municipal",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T17:53:31.860949Z"
+      "mean_observed_rank": 19.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T08:40:19+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Jordi",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T08:40:19+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -266,7 +265,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T08:31:10+02:00"
+      "fetched_at": "2026-09-30T08:40:19+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -291,7 +290,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T08:31:10+02:00"
+      "fetched_at": "2026-09-30T08:40:20+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -318,10 +317,10 @@
         "Mataró"
       ],
       "error": null,
-      "update_hint": "Updated 29 minutes ago",
-      "age_minutes": 29.0,
+      "update_hint": "Updated 38 minutes ago",
+      "age_minutes": 38.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-30T08:31:11+02:00"
+      "fetched_at": "2026-09-30T08:40:20+02:00"
     },
     "superx": {
       "ok": true,
@@ -351,46 +350,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T08:31:12+02:00"
+      "fetched_at": "2026-09-30T08:40:21+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790749872",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790750422",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T08:31:12+02:00"
+      "fetched_at": "2026-09-30T08:40:22+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "#TierraDeNadie3",
+        "#FelizMiércoles",
         "Puerta del Sol",
         "Almeida",
-        "#FelizMiércoles",
         "Croacia",
-        "#LaIslaDeLasTentaciones7",
-        "Lamine",
+        "#laisladelastentaciones7",
         "#FelizMartes",
         "#HONORMagicV6",
+        "Lamine",
+        "Jordi",
         "Antonio Banderas",
         "Gonzalo Suárez",
         "Junts",
-        "Jordi",
+        "San Jerónimo",
+        "Amnistía Internacional",
         "Consejo de Ministros",
-        "Olga",
         "Sindicato de Inquilinas",
-        "Mataró",
-        "Decreto",
+        "Olga",
         "Urbagestión",
         "Ferraz"
       ],
       "error": null,
-      "update_hint": "Trending now Sep 30, 2026 05:00 UTC",
-      "age_minutes": 91.2,
-      "freshness": "stale",
-      "fetched_at": "2026-09-30T08:31:12+02:00"
+      "update_hint": "Trending now Sep 30, 2026 06:00 UTC",
+      "age_minutes": 40.4,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-30T08:40:22+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -418,18 +417,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 06:00 AM # Trend Type Actions 1 #TierraDeNadie3 Hashtag 2",
-      "age_minutes": 151.2,
+      "age_minutes": 160.4,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T08:31:12+02:00"
+      "fetched_at": "2026-09-30T08:40:22+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790749874",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790750423",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T08:31:14+02:00"
+      "fetched_at": "2026-09-30T08:40:23+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -438,46 +437,25 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T08:31:21+02:00"
+      "fetched_at": "2026-09-30T08:40:24+02:00"
     },
     "trendswe": {
-      "ok": true,
-      "trends": [
-        "#TierraDeNadie3",
-        "#Puerta del Sol",
-        "#Almeida",
-        "#Croacia",
-        "#FelizMiércoles",
-        "#LaIslaDeLasTentaciones7",
-        "#Lamine",
-        "#FelizMartes",
-        "#HONORMagicV6",
-        "#Antonio Banderas",
-        "#Gonzalo Suárez",
-        "#Junts",
-        "#Consejo de Ministros",
-        "#Olga",
-        "#Sindicato de Inquilinas",
-        "#Hondarribia",
-        "#Decreto",
-        "#Urbagestión",
-        "#Mataró",
-        "#Vivienda"
-      ],
-      "error": null,
+      "ok": false,
+      "trends": [],
+      "error": "Lista no válida (6 elementos parseados)",
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-30T08:31:21+02:00"
+      "freshness": "invalid",
+      "fetched_at": "2026-09-30T08:40:24+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790749883",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790750426",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T08:31:23+02:00"
+      "fetched_at": "2026-09-30T08:40:26+02:00"
     }
   }
 }
