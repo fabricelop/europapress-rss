@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T03:20:56+02:00",
+  "captured_at": "2026-09-30T03:31:08+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -11,11 +11,11 @@
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 6,
+  "non_stale_source_count": 5,
   "fresh_sources": [
     "tweets24"
   ],
-  "reliability": "high",
+  "reliability": "medium",
   "top10": [
     "#TierraDeNadie3",
     "#Codigo10",
@@ -83,6 +83,24 @@
   "unchanged_from_previous": true,
   "new_entries": [],
   "upcoming": [
+    {
+      "name": "Macron",
+      "social_source_count": 3,
+      "social_sources": [
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 19,
+      "mean_observed_rank": 19.0,
+      "movement": "flat",
+      "first_detected_at": "2026-09-29T23:41:04+02:00",
+      "news_source_count": 10,
+      "news_event_id": "1870704a9151-r2",
+      "news_title": "El PP tumba en el Senado el tratado de amistad con Francia mientras Macron visita España - EFE - Agencia de noticias",
+      "news_status": "ELIGIBLE_UPDATE",
+      "news_first_seen": "2026-09-30T01:22:26.365605Z"
+    },
     {
       "name": "Asraf",
       "social_source_count": 3,
@@ -156,24 +174,6 @@
       "news_first_seen": "2026-09-29T19:32:21.292722Z"
     },
     {
-      "name": "Macron",
-      "social_source_count": 3,
-      "social_sources": [
-        "trends24",
-        "trendswe",
-        "tweets24"
-      ],
-      "best_observed_rank": 19,
-      "mean_observed_rank": 19.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-29T23:41:04+02:00",
-      "news_source_count": 2,
-      "news_event_id": "60401b705ba6",
-      "news_title": "Macron reclama en su primer día en España una IA europea soberana para no perder el control tecnológico",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-09-29T18:24:36.628218Z"
-    },
-    {
       "name": "Fermín",
       "social_source_count": 3,
       "social_sources": [
@@ -192,6 +192,22 @@
       "news_first_seen": "2026-09-29T21:43:46.934202Z"
     },
     {
+      "name": "#España",
+      "social_source_count": 1,
+      "social_sources": [
+        "trendswe"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T03:31:08+02:00",
+      "news_source_count": 10,
+      "news_event_id": "1870704a9151-r2",
+      "news_title": "El PP tumba en el Senado el tratado de amistad con Francia mientras Macron visita España - EFE - Agencia de noticias",
+      "news_status": "ELIGIBLE_UPDATE",
+      "news_first_seen": "2026-09-30T01:22:26.365605Z"
+    },
+    {
       "name": "#JuanjoBonaXNetflix",
       "social_source_count": 3,
       "social_sources": [
@@ -203,23 +219,6 @@
       "mean_observed_rank": 19.3,
       "movement": "flat",
       "first_detected_at": "2026-09-30T02:45:51+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Pubill",
-      "social_source_count": 2,
-      "social_sources": [
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-30T03:20:56+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -258,7 +257,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T03:20:56+02:00"
+      "fetched_at": "2026-09-30T03:31:08+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -283,7 +282,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T03:20:56+02:00"
+      "fetched_at": "2026-09-30T03:31:08+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -310,10 +309,10 @@
         "#JuanjoBonaXNetflix"
       ],
       "error": null,
-      "update_hint": "Updated 18 minutes ago",
-      "age_minutes": 18.0,
+      "update_hint": "Updated 28 minutes ago",
+      "age_minutes": 28.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-30T03:20:57+02:00"
+      "fetched_at": "2026-09-30T03:31:09+02:00"
     },
     "superx": {
       "ok": true,
@@ -343,16 +342,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T03:20:58+02:00"
+      "fetched_at": "2026-09-30T03:31:10+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790731258",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790731870",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T03:20:58+02:00"
+      "fetched_at": "2026-09-30T03:31:10+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -380,9 +379,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 00:00 UTC",
-      "age_minutes": 81.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-30T03:20:58+02:00"
+      "age_minutes": 91.2,
+      "freshness": "stale",
+      "fetched_at": "2026-09-30T03:31:10+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -410,18 +409,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 01:00 AM # Trend Type Actions 1 #TierraDeNadie3 Hashtag 2",
-      "age_minutes": 141.0,
+      "age_minutes": 151.2,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T03:20:59+02:00"
+      "fetched_at": "2026-09-30T03:31:10+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790731260",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790731871",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T03:21:00+02:00"
+      "fetched_at": "2026-09-30T03:31:11+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -430,7 +429,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T03:21:01+02:00"
+      "fetched_at": "2026-09-30T03:31:12+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -460,16 +459,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T03:21:01+02:00"
+      "fetched_at": "2026-09-30T03:31:13+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790731263",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790731875",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T03:21:03+02:00"
+      "fetched_at": "2026-09-30T03:31:15+02:00"
     }
   }
 }
