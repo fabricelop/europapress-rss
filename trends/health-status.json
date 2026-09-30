@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-30T08:36:21.800041+00:00",
+  "checked_at": "2026-09-30T15:01:05.887368+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -41,8 +41,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 6,
-      "captured_age_minutes": 0.2,
+      "non_stale_sources": 5,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.9,
-      "run_id": 36690646732,
+      "age_minutes": 0.8,
+      "run_id": 36733398894,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -76,9 +76,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 0,
+      "pending_count": 1,
       "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "oldest_age_minutes": 5.2,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -86,8 +86,10 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "46d3fd21dd4a"
+      ],
       "contradictory_success": false
     }
   },
