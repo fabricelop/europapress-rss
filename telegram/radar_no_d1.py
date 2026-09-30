@@ -736,9 +736,9 @@ def run_active_merge_regressions():
   "first_seen":"2026-09-29T20:00:00Z","last_seen":"2026-09-29T20:03:00Z","revision":1
  }
  fragment={
-  "id":"test-waiting","canonical_title":"Salvador Illa anuncia una fórmula de compra compartida de vivienda para mayores de 40 años",
+  "id":"test-waiting","canonical_title":"Illa plantea comprar a medias la primera vivienda de mayores de 40 años en Cataluña",
   "appearances":[
-   {"source":"Telecinco Noticias","source_type":"general","title":"Salvador Illa anuncia que la Generalitat pagará la mitad de la compra de un piso para personas mayores de 40 años","first_seen":"2026-09-29T20:10:00Z","last_seen":"2026-09-29T20:10:00Z"}
+   {"source":"Telecinco Noticias","source_type":"general","title":"Illa plantea comprar a medias la primera vivienda de mayores de 40 años en Cataluña","first_seen":"2026-09-29T20:10:00Z","last_seen":"2026-09-29T20:10:00Z"}
   ],
   "sources":["Telecinco Noticias"],"source_count":1,"status":"WAITING",
   "first_seen":"2026-09-29T20:10:00Z","last_seen":"2026-09-29T20:10:00Z","revision":1
