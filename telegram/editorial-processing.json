@@ -16604,14 +16604,17 @@
         }
       ],
       "selected_at": "2026-09-30T14:24:05.517946Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
       "parent_event_id": null,
       "update_context": null,
       "parallel_source_claimed_at": null,
       "with_image": true,
-      "image_mode": "existing_web_image"
+      "image_mode": "existing_web_image",
+      "reconciled_from_event_id": "manual-0d7178d3d8bc",
+      "reconciliation_reason": "Es una reacción de Pep Guardiola a la declaración de culpabilidad del Manchester City ya publicada bajo manual-0d7178d3d8bc. Su mensaje de apoyo («Superaremos esto juntos») no añade una resolución, sanción ni otro hecho material nuevo del caso.",
+      "reconciled_at": "2026-09-30T14:34:48.970586Z"
     },
     {
       "event_id": "ab805ae780cc",
@@ -16662,5 +16665,5 @@
       "image_mode": "existing_web_image"
     }
   ],
-  "updated_at": "2026-09-30T14:34:07.940300Z"
+  "updated_at": "2026-09-30T14:34:48.970586Z"
 }
