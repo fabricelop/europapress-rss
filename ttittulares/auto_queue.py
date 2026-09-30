@@ -151,8 +151,22 @@ def queue_eligible(events_doc, processing, decisions, minimum, stamp, mode="web"
             continue
 
         current = existing.get(event_id)
-        if current and str(current.get("status") or "") in {"PROCESSING", "READY", "PUBLISHED", "DISMISSED", "PROBLEMATIC", "SKIPPED_DUPLICATE"}:
+        current_status=str((current or {}).get("status") or "")
+        material_revision=bool(
+            current and current_status=="PROBLEMATIC"
+            and int(event.get("revision") or 1) > int(current.get("revision") or 1)
+        )
+        if current and current_status in {"PROCESSING", "READY", "PUBLISHED", "DISMISSED", "PROBLEMATIC", "SKIPPED_DUPLICATE"} and not material_revision:
             continue
+        if material_revision:
+            # Una revisión superior del radar es novedad material y puede
+            # reabrir una problemática sin pulsar Check.
+            for key in (
+                "problem_reason","problematic_at","verification_hint","verification_hint_at",
+                "user_validated","user_validated_at","user_validation_source",
+                "user_validation_consumed_at","user_validation_consumed_version"
+            ):
+                current.pop(key,None)
 
         duplicate_id,duplicate_status=duplicate_against_existing(event,items,prepared_items)
         if duplicate_id and duplicate_id!=event_id:
@@ -236,6 +250,23 @@ def selftest():
     out_problematic,queued_problematic=queue_eligible(events,problematic_state,decisions,4,stamp,"web",prepared=prepared)
     assert queued_problematic==["revision-r2","lottery-news"], queued_problematic
     assert out_problematic["items"][0]["status"]=="PROBLEMATIC", out_problematic
+
+    # Una revisión material posterior sí reabre una problemática.
+    update_events={"events":[{
+        "id":"problematic-update","canonical_title":"Hecho actualizado con novedad material",
+        "source_count":4,"status":"ELIGIBLE_UPDATE","sources":["A","B","C","D"],
+        "revision":2,"parent_event_id":"problematic-update"
+    }]}
+    update_state={"items":[{
+        "event_id":"problematic-update","status":"PROBLEMATIC","revision":1,
+        "problem_reason":"evidencia insuficiente","problematic_at":"2026-09-22T21:00:00Z",
+        "user_validated":False
+    }]}
+    out_update,queued_update=queue_eligible(update_events,update_state,decisions,4,stamp,"web")
+    assert queued_update==["problematic-update"], queued_update
+    assert out_update["items"][0]["status"]=="PROCESSING", out_update
+    assert out_update["items"][0]["revision"]==2, out_update
+    assert "problem_reason" not in out_update["items"][0], out_update
 
     # Idempotencia: una segunda pasada no vuelve a encolar el mismo evento.
     out2,queued2=queue_eligible(
