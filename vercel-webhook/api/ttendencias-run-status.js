@@ -230,10 +230,15 @@ export default async function handler(req,res){
     const persisted=persistedExplanationFallback(explainedDoc);
     if(runtime)terminal.push(runtime);
     if(persisted)terminal.push(persisted);
-    terminal.sort((a,b)=>
-      stamp(a.finished_at||a.updated_at||a.started_at||a.requested_at)-
-      stamp(b.finished_at||b.updated_at||b.started_at||b.requested_at)
-    );
+    // El "último run" debe representar la ejecución más reciente iniciada/solicitada,
+    // no el comentario terminal actualizado más tarde. Un activador antiguo puede cerrarse
+    // con ERROR mucho después y no debe ocultar una ejecución real posterior.
+    terminal.sort((a,b)=>{
+      const aStarted=stamp(a.started_at||a.requested_at||a.finished_at||a.updated_at);
+      const bStarted=stamp(b.started_at||b.requested_at||b.finished_at||b.updated_at);
+      if(aStarted!==bStarted)return aStarted-bStarted;
+      return stamp(a.finished_at||a.updated_at)-stamp(b.finished_at||b.updated_at);
+    });
     const last_run=terminal.at(-1)||null;
 
     return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,can_run:enabled&&authorized(req)})
