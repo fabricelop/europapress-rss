@@ -21,6 +21,19 @@ STATE_PATH = ROOT / "ttittulares" / "tremending" / "items.json"
 BASE_URL = "https://www.publico.es/tremending"
 USER_AGENT = "TTiTTulares-Tremending/1.0 (+https://github.com/fabricelop/europapress-rss)"
 STATUS_RE = re.compile(r"https?://(?:www\.)?(?:x|twitter)\.com/([^/?#]+)/status/(\d+)", re.I)
+CAPTURE_FROM_DEFAULT = "2026-09-29T22:00:00Z"  # 30/09/2026 00:00 Europe/Madrid (CEST)
+
+
+def parse_iso(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).strip().replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return parsed.astimezone(timezone.utc)
+    except Exception:
+        return None
 
 
 def now_iso() -> str:
