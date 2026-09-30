@@ -1,0 +1,57 @@
+name: SeLoRecordamos editorial apply
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: read
+
+concurrency:
+  group: selorecordamos-editorial-apply
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    if: >-
+      github.event.issue.number == 16 &&
+      github.event.comment.user.login == 'fabricelop' &&
+      startsWith(github.event.comment.body, 'SELORECORDAMOS_OUTBOX_V1')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configurar Git
+        run: |
+          git config user.name "selorecordamos-editorial-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --rebase origin main
+
+      - name: Validar y aplicar paquete editorial
+        env:
+          SELORECORDAMOS_COMMENT_BODY: ${{ github.event.comment.body }}
+        run: python3 selorecordamos/apply_editorial_outbox.py
+
+      - name: Persistir en main
+        run: |
+          git add selorecordamos/assistant-output.json selorecordamos/assistant-state.json
+          if git diff --cached --quiet; then
+            echo "No hay cambios que persistir."
+            exit 0
+          fi
+          git commit -m "SeLoRecordamos: aplicar outbox editorial"
+          for attempt in 1 2 3 4; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push concurrente fallido (intento $attempt); rebasando y reintentando..."
+            git pull --rebase --autostash origin main
+            sleep $((attempt * 2))
+          done
+          echo "No se pudo persistir el outbox tras 4 intentos." >&2
+          exit 1
