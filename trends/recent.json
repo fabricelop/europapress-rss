@@ -1,49 +1,46 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T15:41:02+02:00",
-  "primary_source": "snaplytics",
-  "selection_method": "fresh-anchor",
+  "captured_at": "2026-09-30T15:50:57+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
     "trends24",
-    "getdaytrends",
-    "tweets24",
+    "superx",
     "snaplytics",
-    "fowtools"
+    "trendswe"
   ],
   "source_count": 6,
   "non_stale_source_count": 4,
-  "fresh_sources": [
-    "snaplytics"
-  ],
+  "fresh_sources": [],
   "reliability": "medium",
   "top10": [
+    "Puerta del Sol",
     "#LaFreidoraDeLidl",
     "#TierraDeNadie3",
-    "Puerta del Sol",
     "Almeida",
-    "Croacia",
     "Fran García",
+    "Croacia",
     "#FelizMiércoles",
-    "Amnistía Internacional",
-    "#tem29s",
-    "Junts"
+    "#EnBocaDeTodos",
+    "#Mañaneros30S",
+    "Amnistía Internacional"
   ],
   "items": [
     {
       "rank": 1,
+      "name": "Puerta del Sol",
+      "entered_top10_at": "2026-09-30T03:40:50+02:00"
+    },
+    {
+      "rank": 2,
       "name": "#LaFreidoraDeLidl",
       "entered_top10_at": "2026-09-30T14:01:33+02:00"
     },
     {
-      "rank": 2,
+      "rank": 3,
       "name": "#TierraDeNadie3",
       "entered_top10_at": "2026-09-30T00:21:11+02:00"
-    },
-    {
-      "rank": 3,
-      "name": "Puerta del Sol",
-      "entered_top10_at": "2026-09-30T03:40:50+02:00"
     },
     {
       "rank": 4,
@@ -52,13 +49,13 @@
     },
     {
       "rank": 5,
-      "name": "Croacia",
-      "entered_top10_at": "2026-09-30T15:41:02+02:00"
+      "name": "Fran García",
+      "entered_top10_at": "2026-09-30T15:03:53+02:00"
     },
     {
       "rank": 6,
-      "name": "Fran García",
-      "entered_top10_at": "2026-09-30T15:03:53+02:00"
+      "name": "Croacia",
+      "entered_top10_at": "2026-09-30T15:41:02+02:00"
     },
     {
       "rank": 7,
@@ -67,40 +64,37 @@
     },
     {
       "rank": 8,
-      "name": "Amnistía Internacional",
-      "entered_top10_at": "2026-09-30T15:41:02+02:00"
+      "name": "#EnBocaDeTodos",
+      "entered_top10_at": "2026-09-30T15:50:57+02:00"
     },
     {
       "rank": 9,
-      "name": "#tem29s",
-      "entered_top10_at": "2026-09-30T15:41:02+02:00"
+      "name": "#Mañaneros30S",
+      "entered_top10_at": "2026-09-30T15:50:57+02:00"
     },
     {
       "rank": 10,
-      "name": "Junts",
+      "name": "Amnistía Internacional",
       "entered_top10_at": "2026-09-30T15:41:02+02:00"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Croacia",
-    "#FelizMiércoles",
-    "Amnistía Internacional",
-    "#tem29s",
-    "Junts"
+    "#EnBocaDeTodos",
+    "#Mañaneros30S"
   ],
   "upcoming": [
     {
       "name": "El BOE",
       "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
         "snaplytics",
-        "trends24"
+        "trends24",
+        "trendswe"
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.3,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T15:03:53+02:00",
       "news_source_count": 4,
       "news_event_id": "e26960fb9a22-r2",
@@ -109,47 +103,12 @@
       "news_first_seen": "2026-09-30T12:32:33.259910Z"
     },
     {
-      "name": "Daniel Guzmán",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.7,
-      "movement": "new",
-      "first_detected_at": "2026-09-30T15:41:02+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Gonzalo Suárez",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trends24"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "new",
-      "first_detected_at": "2026-09-30T15:41:02+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "El Gobierno",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
         "snaplytics",
-        "trends24"
+        "trends24",
+        "trendswe"
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 15.0,
@@ -162,32 +121,34 @@
       "news_first_seen": "2026-09-30T12:32:33.259910Z"
     },
     {
-      "name": "Decreto",
-      "social_source_count": 2,
+      "name": "Gonzalo Suárez",
+      "social_source_count": 3,
       "social_sources": [
         "snaplytics",
-        "trends24"
+        "trends24",
+        "trendswe"
       ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 17.0,
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.7,
       "movement": "up",
-      "first_detected_at": "2026-09-30T15:11:01+02:00",
-      "news_source_count": 4,
-      "news_event_id": "e26960fb9a22-r2",
-      "news_title": "Publicado en el BOE: esto es lo que dice el primer decreto de vivienda aprobado por el Gobierno de PSOE y Sumar",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-09-30T12:32:33.259910Z"
+      "first_detected_at": "2026-09-30T15:41:02+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
-      "name": "Madroño",
-      "social_source_count": 2,
+      "name": "Daniel Guzmán",
+      "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
-        "trends24"
+        "snaplytics",
+        "trends24",
+        "trendswe"
       ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 15.5,
-      "movement": "new",
+      "best_observed_rank": 12,
+      "mean_observed_rank": 13.0,
+      "movement": "flat",
       "first_detected_at": "2026-09-30T15:41:02+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -197,14 +158,15 @@
     },
     {
       "name": "Consejo de Ministros",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
         "snaplytics",
-        "trends24"
+        "trends24",
+        "trendswe"
       ],
       "best_observed_rank": 17,
-      "mean_observed_rank": 18.0,
-      "movement": "new",
+      "mean_observed_rank": 17.7,
+      "movement": "up",
       "first_detected_at": "2026-09-30T15:41:02+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -214,15 +176,51 @@
     },
     {
       "name": "Flydubai",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
         "snaplytics",
-        "trends24"
+        "trends24",
+        "trendswe"
       ],
       "best_observed_rank": 17,
-      "mean_observed_rank": 17.5,
-      "movement": "new",
+      "mean_observed_rank": 18.3,
+      "movement": "up",
       "first_detected_at": "2026-09-30T15:41:02+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Junts",
+      "social_source_count": 2,
+      "social_sources": [
+        "trends24",
+        "trendswe"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T15:50:57+02:00",
+      "news_source_count": 4,
+      "news_event_id": "03734592fb1a",
+      "news_title": "Feijóo presiona a Junts y PNV para que no apoyen los decretos de vivienda: “Si quieren formar parte de una trampa, ellos sabrán por qué”",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-30T12:32:33.259910Z"
+    },
+    {
+      "name": "Antonio Banderas",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe"
+      ],
+      "best_observed_rank": 16,
+      "mean_observed_rank": 18.3,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T15:50:57+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -230,14 +228,7 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Junts",
-      "first_detected_at": "2026-09-30T15:03:53+02:00",
-      "entered_top10_at": "2026-09-30T15:41:02+02:00",
-      "lead_minutes": 37
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -268,32 +259,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T15:41:02+02:00"
+      "fetched_at": "2026-09-30T15:50:57+02:00"
     },
     "getdaytrends": {
-      "ok": true,
-      "trends": [
-        "#LaFreidoraDeLidl",
-        "#TierraDeNadie3",
-        "Puerta del Sol",
-        "Almeida",
-        "Fran García",
-        "Croacia",
-        "#Mañaneros30S",
-        "#FelizMiércoles",
-        "Amnistía Internacional",
-        "#EnBocaDeTodos",
-        "Junts",
-        "El BOE",
-        "Daniel Guzmán",
-        "Gonzalo Suárez",
-        "MADROÑO"
-      ],
-      "error": null,
+      "ok": false,
+      "trends": [],
+      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790776258",
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "unknown",
-      "fetched_at": "2026-09-30T15:41:03+02:00"
+      "freshness": "error",
+      "fetched_at": "2026-09-30T15:50:58+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -323,7 +298,7 @@
       "update_hint": "Updated 2 hours ago",
       "age_minutes": 120.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T15:41:06+02:00"
+      "fetched_at": "2026-09-30T15:50:58+02:00"
     },
     "superx": {
       "ok": true,
@@ -353,16 +328,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T15:41:07+02:00"
+      "fetched_at": "2026-09-30T15:50:59+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790775667",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790776259",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T15:41:07+02:00"
+      "fetched_at": "2026-09-30T15:50:59+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -390,9 +365,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 13:00 UTC",
-      "age_minutes": 41.1,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-30T15:41:07+02:00"
+      "age_minutes": 51.0,
+      "freshness": "aging",
+      "fetched_at": "2026-09-30T15:50:59+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -420,18 +395,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 01:00 PM # Trend Type Actions 1 #LaFreidoraDeLidl Hashtag",
-      "age_minutes": 161.1,
+      "age_minutes": 171.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T15:41:08+02:00"
+      "fetched_at": "2026-09-30T15:50:59+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790775669",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790776260",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T15:41:09+02:00"
+      "fetched_at": "2026-09-30T15:51:00+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -440,25 +415,46 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T15:41:11+02:00"
+      "fetched_at": "2026-09-30T15:51:01+02:00"
     },
     "trendswe": {
-      "ok": false,
-      "trends": [],
-      "error": "Lista no válida (6 elementos parseados)",
+      "ok": true,
+      "trends": [
+        "#LaFreidoraDeLidl",
+        "#TierraDeNadie3",
+        "#Puerta del Sol",
+        "#Fran García",
+        "#Almeida",
+        "#Croacia",
+        "#Mañaneros30S",
+        "#FelizMiércoles",
+        "#EnBocaDeTodos",
+        "#Amnistía Internacional",
+        "#Junts",
+        "#El BOE",
+        "#Gonzalo Suárez",
+        "#Daniel Guzmán",
+        "#El Gobierno",
+        "#Antonio Banderas",
+        "#Consejo de Ministros",
+        "#Lamine",
+        "#Sindicato de Inquilinas",
+        "#Flydubai"
+      ],
+      "error": null,
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "invalid",
-      "fetched_at": "2026-09-30T15:41:11+02:00"
+      "freshness": "unknown",
+      "fetched_at": "2026-09-30T15:51:02+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790775673",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790776266",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T15:41:13+02:00"
+      "fetched_at": "2026-09-30T15:51:06+02:00"
     }
   }
 }
