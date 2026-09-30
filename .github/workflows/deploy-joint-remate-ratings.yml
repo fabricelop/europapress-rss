@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy-both: || github.event.head_commit.message == 'Desplegar movimiento Top 10 TTendencias'
+  deploy-both:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
