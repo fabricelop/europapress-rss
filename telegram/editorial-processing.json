@@ -18148,13 +18148,16 @@
       "source_count": 3,
       "drafted_source_count": 3,
       "selected_at": "2026-09-30T20:34:05.884Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "selection_mode": "MANUAL_WEB_3S",
       "revision": 1,
       "parent_event_id": null,
       "update_context": null,
       "with_image": true,
-      "image_mode": "existing_web_image"
+      "image_mode": "existing_web_image",
+      "reconciled_from_event_id": "c15fbf8f4746",
+      "reconciliation_reason": "Es el mismo estudio del CIS ya publicado hoy; la propia entrada publicada ya incluía entre sus fuentes el dato de que siete de cada diez creen que el derecho a la vivienda solo está garantizado para algunos, sin novedad material posterior.",
+      "reconciled_at": "2026-09-30T21:07:53.384169Z"
     },
     {
       "event_id": "819fbe3b1272",
@@ -18279,5 +18282,5 @@
       "image_mode": "existing_web_image"
     }
   ],
-  "updated_at": "2026-09-30T21:06:14.815415Z"
+  "updated_at": "2026-09-30T21:07:53.384169Z"
 }
