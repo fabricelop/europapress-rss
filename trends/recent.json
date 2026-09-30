@@ -1,43 +1,45 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T05:10:48+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-09-30T05:20:58+02:00",
+  "primary_source": "tweets24",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "trends24",
     "getdaytrends",
     "tweets24",
-    "superx",
     "snaplytics",
+    "fowtools",
     "trendswe"
   ],
   "source_count": 7,
   "non_stale_source_count": 6,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "tweets24"
+  ],
   "reliability": "high",
   "top10": [
-    "Puerta del Sol",
     "#TierraDeNadie3",
+    "Puerta del Sol",
     "Almeida",
     "Croacia",
     "#Codigo10",
     "#HONORMagicV6",
     "Jorge Javier",
-    "Lamine",
+    "Trapote",
     "#LaIslaDeLasTentaciones7",
-    "Antonio Banderas"
+    "Lamine"
   ],
   "items": [
     {
       "rank": 1,
-      "name": "Puerta del Sol",
-      "entered_top10_at": "2026-09-30T03:40:50+02:00"
+      "name": "#TierraDeNadie3",
+      "entered_top10_at": "2026-09-30T00:21:11+02:00"
     },
     {
       "rank": 2,
-      "name": "#TierraDeNadie3",
-      "entered_top10_at": "2026-09-30T00:21:11+02:00"
+      "name": "Puerta del Sol",
+      "entered_top10_at": "2026-09-30T03:40:50+02:00"
     },
     {
       "rank": 3,
@@ -66,8 +68,8 @@
     },
     {
       "rank": 8,
-      "name": "Lamine",
-      "entered_top10_at": "2026-09-29T23:31:13+02:00"
+      "name": "Trapote",
+      "entered_top10_at": "2026-09-30T05:20:58+02:00"
     },
     {
       "rank": 9,
@@ -76,13 +78,13 @@
     },
     {
       "rank": 10,
-      "name": "Antonio Banderas",
-      "entered_top10_at": "2026-09-30T05:10:48+02:00"
+      "name": "Lamine",
+      "entered_top10_at": "2026-09-29T23:31:13+02:00"
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Antonio Banderas"
+    "Trapote"
   ],
   "upcoming": [
     {
@@ -96,7 +98,7 @@
         "tweets24"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 14.4,
+      "mean_observed_rank": 14.2,
       "movement": "flat",
       "first_detected_at": "2026-09-30T03:40:50+02:00",
       "news_source_count": 3,
@@ -116,7 +118,7 @@
         "tweets24"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 12.6,
+      "mean_observed_rank": 12.4,
       "movement": "flat",
       "first_detected_at": "2026-09-30T03:40:50+02:00",
       "news_source_count": 1,
@@ -124,6 +126,26 @@
       "news_title": "‘Martín Girard’, el yo futbolero de Gonzalo Suárez",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-29T16:53:20.293187Z"
+    },
+    {
+      "name": "Asraf",
+      "social_source_count": 5,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 13.6,
+      "movement": "down",
+      "first_detected_at": "2026-09-30T03:10:58+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Consejo de Ministros",
@@ -136,8 +158,8 @@
         "tweets24"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 17.6,
-      "movement": "up",
+      "mean_observed_rank": 17.2,
+      "movement": "flat",
       "first_detected_at": "2026-09-30T04:00:57+02:00",
       "news_source_count": 1,
       "news_event_id": "b198a8d9f557",
@@ -146,19 +168,37 @@
       "news_first_seen": "2026-09-29T22:42:24.589112Z"
     },
     {
-      "name": "Asraf",
-      "social_source_count": 5,
+      "name": "Sindicato de Inquilinas",
+      "social_source_count": 4,
       "social_sources": [
-        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trends24",
+        "tweets24"
+      ],
+      "best_observed_rank": 18,
+      "mean_observed_rank": 19.2,
+      "movement": "up",
+      "first_detected_at": "2026-09-30T04:50:58+02:00",
+      "news_source_count": 5,
+      "news_event_id": "e26960fb9a22-r2",
+      "news_title": "El Sindicato de Inquilinas seguirá con la acampada en Sol y rechaza que el 'decreto Maricarmen' se divida en dos: \"Es una farsa\"",
+      "news_status": "ELIGIBLE_UPDATE",
+      "news_first_seen": "2026-09-30T03:12:01.019957Z"
+    },
+    {
+      "name": "Antonio Banderas",
+      "social_source_count": 4,
+      "social_sources": [
         "snaplytics",
         "trends24",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 13.4,
-      "movement": "down",
-      "first_detected_at": "2026-09-30T03:10:58+02:00",
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.0,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T05:20:58+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -174,9 +214,9 @@
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 15.5,
-      "movement": "up",
+      "best_observed_rank": 16,
+      "mean_observed_rank": 16.0,
+      "movement": "down",
       "first_detected_at": "2026-09-30T04:21:11+02:00",
       "news_source_count": 2,
       "news_event_id": "e5a94097159f",
@@ -185,53 +225,18 @@
       "news_first_seen": "2026-09-29T23:02:26.164236Z"
     },
     {
-      "name": "#FelizMartes",
-      "social_source_count": 3,
-      "social_sources": [
-        "getdaytrends",
-        "snaplytics",
-        "trendswe"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.7,
-      "movement": "up",
-      "first_detected_at": "2026-09-30T04:31:08+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Sindicato de Inquilinas",
-      "social_source_count": 3,
+      "name": "Olga",
+      "social_source_count": 4,
       "social_sources": [
         "snaplytics",
-        "superx",
-        "trends24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 19.0,
-      "movement": "flat",
-      "first_detected_at": "2026-09-30T04:50:58+02:00",
-      "news_source_count": 6,
-      "news_event_id": "e26960fb9a22-r2",
-      "news_title": "El Sindicato de Inquilinas seguirá con la acampada en Sol y rechaza que el 'decreto Maricarmen' se divida en dos: \"Es una farsa\"",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-09-30T03:02:15.575916Z"
-    },
-    {
-      "name": "Chayo",
-      "social_source_count": 3,
-      "social_sources": [
         "trends24",
         "trendswe",
         "tweets24"
       ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 17.3,
+      "best_observed_rank": 18,
+      "mean_observed_rank": 19.0,
       "movement": "new",
-      "first_detected_at": "2026-09-30T05:10:48+02:00",
+      "first_detected_at": "2026-09-30T05:20:58+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -239,14 +244,7 @@
       "news_first_seen": null
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Antonio Banderas",
-      "first_detected_at": "2026-09-30T03:40:50+02:00",
-      "entered_top10_at": "2026-09-30T05:10:48+02:00",
-      "lead_minutes": 90
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
@@ -277,7 +275,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T05:10:48+02:00"
+      "fetched_at": "2026-09-30T05:20:58+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -302,7 +300,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T05:10:48+02:00"
+      "fetched_at": "2026-09-30T05:20:59+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -314,25 +312,25 @@
         "#Codigo10",
         "#HONORMagicV6",
         "Jorge Javier",
+        "Trapote",
         "#LaIslaDeLasTentaciones7",
         "Lamine",
-        "Trapote",
         "Antonio Banderas",
-        "Asraf",
         "Gonzalo Suárez",
-        "Belén",
+        "Asraf",
         "Junts",
-        "Laura Cuevas",
         "#TEM29S",
+        "Belén",
         "Chayo",
-        "Salvar Ivana",
-        "Consejo de Ministros"
+        "Consejo de Ministros",
+        "Olga",
+        "Sindicato de Inquilinas"
       ],
       "error": null,
-      "update_hint": "Updated 1 hour ago",
-      "age_minutes": 60.0,
-      "freshness": "aging",
-      "fetched_at": "2026-09-30T05:10:49+02:00"
+      "update_hint": "Updated 9 minutes ago",
+      "age_minutes": 9.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-09-30T05:20:59+02:00"
     },
     "superx": {
       "ok": true,
@@ -362,16 +360,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T05:10:50+02:00"
+      "fetched_at": "2026-09-30T05:21:00+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790737850",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790738460",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T05:10:50+02:00"
+      "fetched_at": "2026-09-30T05:21:00+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -399,9 +397,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 02:00 UTC",
-      "age_minutes": 70.8,
+      "age_minutes": 81.0,
       "freshness": "aging",
-      "fetched_at": "2026-09-30T05:10:50+02:00"
+      "fetched_at": "2026-09-30T05:21:00+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -429,18 +427,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 03:00 AM # Trend Type Actions 1 #TierraDeNadie3 Hashtag 2",
-      "age_minutes": 130.8,
+      "age_minutes": 141.0,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T05:10:50+02:00"
+      "fetched_at": "2026-09-30T05:21:01+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790737852",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790738462",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T05:10:52+02:00"
+      "fetched_at": "2026-09-30T05:21:02+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -449,7 +447,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T05:10:53+02:00"
+      "fetched_at": "2026-09-30T05:21:03+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -479,16 +477,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T05:10:53+02:00"
+      "fetched_at": "2026-09-30T05:21:03+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790737855",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790738465",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T05:10:55+02:00"
+      "fetched_at": "2026-09-30T05:21:05+02:00"
     }
   }
 }
