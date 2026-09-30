@@ -6,7 +6,7 @@ EVENTS=Path("telegram/events.json")
 PROC=Path("telegram/editorial-processing.json")
 PROCESSED=Path("telegram/processed-events.json")
 MIN_HEALTHY=10
-MAX_BYTES=900000
+MAX_BYTES_HARD=5000000
 ALERT_STATE=Path("telegram/autocheck-alert-state.json")
 
 def load(path, default):
@@ -42,7 +42,19 @@ def inspect():
     # Un fallo individual de fuente NO es bloqueante si el radar conserva
     # suficiente cobertura general. El propio radar aplica fallbacks/recuperación.
     # Solo alertar por degradación real: menos de MIN_HEALTHY fuentes sanas.
-    if EVENTS.exists() and EVENTS.stat().st_size>MAX_BYTES: problems.append("events_json_demasiado_grande")
+    events=d.get("events",[]) if isinstance(d,dict) and isinstance(d.get("events"),list) else []
+    protected_statuses={"UPDATE_WAITING","ELIGIBLE","ELIGIBLE_UPDATE"}
+    single_cap=int(d.get("single_source_event_cap") or d.get("active_event_cap") or 450) if isinstance(d,dict) else 450
+    single_count=sum(
+        1 for e in events
+        if int(e.get("source_count") or 0)<2
+        and str(e.get("status") or "") not in protected_statuses
+    )
+    # El tamaño ya no puede compararse con el antiguo fichero de 450 eventos:
+    # ahora 2+ fuentes se conservan 24 h. Vigilamos el cap real de una fuente y
+    # dejamos un límite duro de seguridad muy superior para detectar corrupción.
+    if single_count>single_cap: problems.append("eventos_una_fuente_sobre_cap")
+    if EVENTS.exists() and EVENTS.stat().st_size>MAX_BYTES_HARD: problems.append("events_json_demasiado_grande")
     p=load(PROC,{})
     if not isinstance(p,dict) or not isinstance(p.get("items"),list):
         problems.append("editorial_processing_invalido")
@@ -65,7 +77,7 @@ def inspect():
 
 before,problems=inspect()
 actions=[]
-if "events_json_demasiado_grande" in problems:
+if "events_json_demasiado_grande" in problems or "eventos_una_fuente_sobre_cap" in problems:
     p=run("python3","telegram/prune_events.py")
     actions.append("poda_events:"+str(p.returncode))
 
