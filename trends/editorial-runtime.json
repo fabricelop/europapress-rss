@@ -1,204 +1,70 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-09-30T21:45:00.000Z",
-  "last_completed_at": "2026-09-30T21:56:08.492Z",
+  "last_started_at": "2026-09-30T22:15:00.000Z",
+  "last_completed_at": "2026-09-30T22:16:00.000Z",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [
-    "9f7414929f5e",
-    "a7a05d7301ca",
-    "54e75fa9750c"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "error": null,
   "api_failover_enabled": false,
-  "updated_at": "2026-09-30T21:56:08.492Z",
+  "updated_at": "2026-09-30T22:16:00.000Z",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
-    "run_id": "chat-20260930T214500000Z",
+    "run_id": "chat-20260930T221500000Z",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-09-30T21:45:00.000Z",
-    "updated_at": "2026-09-30T21:56:08.492Z",
-    "finished_at": "2026-09-30T21:56:08.492Z",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-09-30T22:15:00.000Z",
+    "updated_at": "2026-09-30T22:16:00.000Z",
+    "finished_at": "2026-09-30T22:16:00.000Z",
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 2,
-      "revisions_updated": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "incidents": 0,
       "queue_remaining": 0,
       "images_generated": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 3,
-      "remates_selected": 2,
-      "remates_omitted": 1
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 0
     },
-    "message": "Pasada directa verificada en main: 3 revisiones tratadas, las 3 están explained y fuera de cola; cola activa vacía. Snapshot de 87 ratings congelado durante toda la pasada.",
+    "message": "Pasada directa verificada en main: la cola ya estaba vacía al releerla; no se duplicó ninguna explicación. Snapshot de 89 ratings congelado para esta ejecución.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
-      "blob_sha": "58a478138a8d957fe826fd1290b1fcedf288c3ef",
-      "updated_at": "2026-09-30T20:52:51.907Z",
-      "total_ratings": 87,
-      "recent_considered": 87
+      "blob_sha": "d35ded22fa45a427ba01fb1c96147a38a7f8b262",
+      "updated_at": "2026-09-30T21:53:25.661Z",
+      "total_ratings": 89,
+      "recent_considered": 89
     },
-    "remate_selections": [
-      {
-        "trend_id": "9f7414929f5e",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "m1",
-            "total": 8.4,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "m2",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "m3",
-            "total": 7.3,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 0.9,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "m4",
-            "total": 6.9,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1,
-            "length_fit": 0.9,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "m5",
-            "total": 6.4,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 0.9,
-            "length_fit": 0.8,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "m1",
-        "selected_score": 8.4,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "a7a05d7301ca",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "l1",
-            "total": 8.6,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.9,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "l2",
-            "total": 7.9,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "l3",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 0.9,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "l4",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "l5",
-            "total": 6.7,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1,
-            "length_fit": 0.9,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "l1",
-        "selected_score": 8.6,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "54e75fa9750c",
-        "revision": 1,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitivity_security_political_controversy"
-      }
-    ]
+    "remate_selections": []
   },
   "summary": {
-    "trends_processed": 3,
-    "trends_explained": 3,
-    "explanation_groups": 3,
-    "new_cards": 2,
-    "revisions_updated": 1,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
+    "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "incidents": 0,
     "queue_remaining": 0,
     "images_generated": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 3,
-    "remates_selected": 2,
-    "remates_omitted": 1
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
+    "remates_omitted": 0
   }
 }
