@@ -1,6 +1,5 @@
 name: Deploy conjunto remates TTendencias y TTiTTulares
 # Publicación conjunta web: TTiTTulares Buscar en X y diagnóstico de fechas de las fuentes.
-# Trigger operativo: despliegue de orden cronológico de TTendencias Explicadas.
 
 on:
   push:
@@ -17,7 +16,7 @@ concurrency:
 
 jobs:
   deploy-both:
-    if: "github.event.head_commit.message == 'Deploy conjunto de puntuaciones TTendencias y TTiTTulares' || github.event.head_commit.message == 'Desplegar notificaciones TTendencias y TTiTTulares' || github.event.head_commit.message == 'Desplegar correccion de imagen TTiTTulares' || github.event.head_commit.message == 'Desplegar bandeja compacta Tremending' || github.event.head_commit.message == 'Desplegar formato e imagenes TTendencias Tremending' || github.event.head_commit.message == 'Desplegar tabla de fuentes TTiTTulares' || github.event.head_commit.message == 'Desplegar orden cronologico TTendencias'
+    if: "github.event.head_commit.message == 'Deploy conjunto de puntuaciones TTendencias y TTiTTulares' || github.event.head_commit.message == 'Desplegar notificaciones TTendencias y TTiTTulares' || github.event.head_commit.message == 'Desplegar correccion de imagen TTiTTulares' || github.event.head_commit.message == 'Desplegar bandeja compacta Tremending' || github.event.head_commit.message == 'Desplegar formato e imagenes TTendencias Tremending' || github.event.head_commit.message == 'Desplegar tabla de fuentes TTiTTulares'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
