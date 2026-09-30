@@ -59,4 +59,8 @@ El `prepared_item` de un resultado ready debe ser completo. No escribas directam
 
 ## Cierre
 
-Relee cola, prepared y status, incluyendo PROCESSING anteriores. Informa noticias tratadas, imágenes reales encontradas y noticias sin imagen. Declara `partial:true` y el número de pendientes si queda trabajo; no presentes un DONE parcial como una reconciliación completa. No pauses, sustituyas ni recrees automatizaciones.
+Relee cola, prepared y status, incluyendo PROCESSING anteriores. Informa noticias tratadas, imágenes reales encontradas y noticias sin imagen.
+
+La semántica de `partial` se refiere exclusivamente al **trabajo editorial de esta pasada que queda sin cerrar**. Una noticia que, tras su revisión, termina o permanece en `PROBLEMATIC` es un resultado terminal de esa pasada: debe seguir figurando en incidencias/`problematic_remaining`, pero **por sí sola no pone `partial:true`**. Del mismo modo, una `PROBLEMATIC` histórica que ya existía al comenzar la ejecución no convierte la pasada en parcial aunque se vuelva a comprobar y continúe sin validación.
+
+Usa `partial:true` únicamente si queda algún `PROCESSING` pendiente de esta pasada, si un resultado que debía materializarse no alcanzó un estado terminal real, o si un fallo global impidió completar el lote inicial. Si `processing_remaining:0` y todos los items intentados terminaron en READY/PUBLISHED/DISMISSED/SKIPPED_DUPLICATE/PROBLEMATIC según corresponda, el resumen debe llevar `partial:false`, aunque `problematic_remaining` sea mayor que cero. No presentes un DONE realmente parcial como reconciliación completa. No pauses, sustituyas ni recrees automatizaciones.
