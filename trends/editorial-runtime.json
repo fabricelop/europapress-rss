@@ -1,30 +1,15 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-09-30T08:30:22.812Z",
-  "last_completed_at": "2026-09-30T08:36:49.678Z",
+  "last_started_at": "2026-09-30T18:16:44.140Z",
+  "last_completed_at": "2026-09-30T18:17:00.368Z",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [
-    "5c97a9186c32"
-  ],
-  "remaining_ids": [
-    "f5060a515233",
-    "72b636044cc9",
-    "9503ec979794",
-    "0c51edc1ef4b",
-    "6454422cbf4a",
-    "9cf1498400ce",
-    "ea3aa08d7383",
-    "456a845d1b0b",
-    "ae7f066f3c94",
-    "4b85f530992d",
-    "6e5f3712838f",
-    "a3a7e7773e0b"
-  ],
+  "processed_ids": [],
+  "remaining_ids": [],
   "error": null,
   "api_failover_enabled": false,
-  "updated_at": "2026-09-30T08:36:49.678Z",
+  "updated_at": "2026-09-30T18:17:00.368Z",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [
@@ -33,65 +18,41 @@
     "c010e0621343"
   ],
   "last_run": {
-    "run_id": "chat-20260930T083022812Z",
+    "run_id": "chat-20260930T181644Z",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-09-30T08:30:22.812Z",
-    "updated_at": "2026-09-30T08:36:49.678Z",
-    "finished_at": "2026-09-30T08:36:49.678Z",
-    "current": 10,
-    "total": 10,
+    "started_at": "2026-09-30T18:16:44.140Z",
+    "updated_at": "2026-09-30T18:17:00.368Z",
+    "finished_at": "2026-09-30T18:17:00.368Z",
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 10,
-      "trends_explained": 6,
-      "explanation_groups": 6,
-      "grouped_revisions": 1,
-      "trends_problematic": 3,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "trends_problematic": 0,
       "news_processing": 0,
       "news_candidates": 0,
-      "news_ignored": 6,
-      "incidents": 3,
+      "news_ignored": 0,
+      "incidents": 0,
       "queue_remaining": 0,
       "images_generated": 0,
       "vercel_deploys": 0
     },
-    "message": "Pasada directa verificada en main: 6 explicaciones/grupos persistidos, 7 revisiones cerradas, 3 términos problemáticos por detonante no verificable y cola final 0.",
-    "incident_count": 3,
-    "incidents": [
-      {
-        "at": "2026-09-30T08:36:49.678Z",
-        "phase": "investigating",
-        "trend_id": "ce27c96e786b",
-        "title": "#JuanjoBonaXNetflix",
-        "reason": "Dos búsquedas distintas no permiten verificar con una fuente fiable el detonante actual del hashtag."
-      },
-      {
-        "at": "2026-09-30T08:36:49.678Z",
-        "phase": "investigating",
-        "trend_id": "2d56fd6b6950",
-        "title": "Mariona",
-        "reason": "El término es ambiguo; no hay evidencia suficiente para atribuir con seguridad el pico actual."
-      },
-      {
-        "at": "2026-09-30T08:36:49.678Z",
-        "phase": "investigating",
-        "trend_id": "c010e0621343",
-        "title": "Juan Carlos Rivero",
-        "reason": "No se ha podido verificar que el pico actual se deba específicamente a su narración del España-Croacia."
-      }
-    ]
+    "message": "Pasada directa verificada en main: recent.json fresco y cola editorial vacía; no había tendencias nuevas que investigar ni persistir.",
+    "incident_count": 0,
+    "incidents": []
   },
   "summary": {
-    "trends_processed": 10,
-    "trends_explained": 6,
-    "explanation_groups": 6,
-    "grouped_revisions": 1,
-    "trends_problematic": 3,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "trends_problematic": 0,
     "news_processing": 0,
     "news_candidates": 0,
-    "news_ignored": 6,
-    "incidents": 3,
+    "news_ignored": 0,
+    "incidents": 0,
     "queue_remaining": 0,
     "images_generated": 0,
     "vercel_deploys": 0
