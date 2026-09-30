@@ -72,6 +72,35 @@ def duplicate_against_existing(event, processing_items, prepared_items):
             return str(item.get("event_id") or ""), str(item.get("status") or ("READY" if item in (prepared_items or []) else ""))
     return None,None
 
+LOTTERY_GAME_TERMS = (
+    "bonoloto", "euromillones", "la primitiva", "gordo de la primitiva",
+    "eurojackpot", "eurodreams", "loteria nacional", "cupon once",
+    "super once", "triplex", "mi dia", "lototurf", "quinigol", "quiniela",
+)
+
+ROUTINE_DRAW_TERMS = (
+    "comprobar", "resultado", "resultados", "combinacion ganadora",
+    "numero premiado", "numeros premiados", "numeros ganadores",
+    "sorteo de hoy", "sorteo hoy", "sorteo del", "premios de hoy",
+)
+
+MATERIAL_LOTTERY_NEWS_TERMS = (
+    "acertante", "un ganador", "una ganadora", "reparte", "repartido",
+    "vendido en", "cae en", "premio record", "record de", "fraude",
+    "estafa", "detenido", "detenida", "investiga", "investigacion",
+    "error", "fallo", "cancelado", "cancelada", "suspendido", "suspendida",
+    "cambio de reglas", "cambio normativo", "nueva norma", "nuevo sistema",
+)
+
+def is_routine_lottery_result(event):
+    """True para resultados/combinaciones rutinarios; conserva hechos noticiosos."""
+    title = norm_text(event.get("canonical_title") or event.get("title") or "")
+    if not title or not any(term in title for term in LOTTERY_GAME_TERMS):
+        return False
+    if any(term in title for term in MATERIAL_LOTTERY_NEWS_TERMS):
+        return False
+    return any(term in title for term in ROUTINE_DRAW_TERMS)
+
 def queue_eligible(events_doc, processing, decisions, minimum, stamp, mode="web", parallel_since=None, prepared=None):
     items = processing.setdefault("items", [])
     prepared_items=(prepared or {}).get("items", [])
@@ -94,6 +123,9 @@ def queue_eligible(events_doc, processing, decisions, minimum, stamp, mode="web"
     for event in events_doc.get("events", []):
         event_id = str(event.get("id") or "")
         if not event_id or int(event.get("source_count") or 0) < minimum:
+            continue
+        if is_routine_lottery_result(event):
+            print("AUTO_QUEUE_ROUTINE_DRAW_SKIPPED", event_id, str(event.get("canonical_title") or event.get("title") or ""))
             continue
 
         status = str(event.get("status") or "")
@@ -170,6 +202,9 @@ def selftest():
         {"id":"parallel-new","canonical_title":"Telegram nuevo","source_count":5,"status":"SENT_REVIEW","sources":["A","B","C","D","E"],"notification_claimed_at":"2026-09-22T22:01:00Z"},
         {"id":"published","canonical_title":"Ya publicada","source_count":5,"status":"ELIGIBLE","sources":["A","B","C","D","E"]},
         {"id":"revision-r2","canonical_title":"Actualización material","source_count":4,"status":"ELIGIBLE_UPDATE","sources":["A","B","C","D"],"revision":2,"parent_event_id":"revision"},
+        {"id":"lottery-routine","canonical_title":"Bonoloto: comprobar resultado del sorteo de hoy","source_count":5,"status":"ELIGIBLE","sources":["A","B","C","D","E"]},
+        {"id":"lottery-routine-2","canonical_title":"Euromillones: números premiados y resultado del sorteo de hoy","source_count":4,"status":"ELIGIBLE","sources":["A","B","C","D"]},
+        {"id":"lottery-news","canonical_title":"Un acertante de la Primitiva gana 8 millones de euros en Valencia","source_count":4,"status":"ELIGIBLE","sources":["A","B","C","D"]},
     ]}
     decisions={"items":[{"event_id":"published","status":"published"}]}
 
@@ -182,7 +217,8 @@ def selftest():
         {"id":"dup-peinado","canonical_title":"El juez Peinado se jubila este domingo tras enviar a juicio con jurado popular a Begoa Gmez","url":"https://example.test/peinado-otra","source_count":4,"status":"ELIGIBLE","sources":["A","B","C","D"]},
     ])
     out_web,queued_web=queue_eligible(events,{"items":[]},decisions,4,stamp,"web",prepared=prepared)
-    assert queued_web==["web-ok","revision-r2"], queued_web
+    assert queued_web==["web-ok","revision-r2","lottery-news"], queued_web
+    assert "lottery-routine" not in queued_web and "lottery-routine-2" not in queued_web
 
     out_parallel,queued_parallel=queue_eligible(
         events,{"items":[]},decisions,4,stamp,"parallel","2026-09-22T22:00:00Z",prepared=prepared
