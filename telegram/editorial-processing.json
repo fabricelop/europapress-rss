@@ -16710,7 +16710,7 @@
         }
       ],
       "selected_at": "2026-09-30T14:42:37.175954Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "selection_mode": "AUTO_WEB",
       "revision": 2,
       "parent_event_id": "9d78eade5230",
@@ -16721,8 +16721,11 @@
       },
       "parallel_source_claimed_at": null,
       "with_image": true,
-      "image_mode": "existing_web_image"
+      "image_mode": "existing_web_image",
+      "reconciled_from_event_id": "manual-0d7178d3d8bc",
+      "reconciliation_reason": "La revisión r2 repite la misma reacción de Pep Guardiola a la declaración de culpabilidad del Manchester City («Siempre he estado y siempre estaré» / «Superaremos esto juntos») ya evaluada en 9d78eade5230 y vinculada a la noticia publicada manual-0d7178d3d8bc. No añade sanción, resolución ni otro hecho material nuevo.",
+      "reconciled_at": "2026-09-30T15:02:33.883832Z"
     }
   ],
-  "updated_at": "2026-09-30T14:54:17.893156Z"
+  "updated_at": "2026-09-30T15:02:33.883832Z"
 }
