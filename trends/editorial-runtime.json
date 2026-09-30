@@ -1,33 +1,35 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-01T01:15:00+02:00",
-  "last_completed_at": "2026-10-01T01:16:00+02:00",
+  "last_started_at": "2026-10-01T01:45:00+02:00",
+  "last_completed_at": "2026-10-01T01:49:00+02:00",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "3d2bfcd082db"
+  ],
   "remaining_ids": [],
   "error": null,
   "api_failover_enabled": false,
-  "updated_at": "2026-10-01T01:16:00+02:00",
+  "updated_at": "2026-10-01T01:49:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
-    "run_id": "chat-20261001T011500+0200",
+    "run_id": "chat-20261001T014500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-01T01:15:00+02:00",
-    "updated_at": "2026-10-01T01:16:00+02:00",
-    "finished_at": "2026-10-01T01:16:00+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-01T01:45:00+02:00",
+    "updated_at": "2026-10-01T01:49:00+02:00",
+    "finished_at": "2026-10-01T01:49:00+02:00",
+    "current": 1,
+    "total": 1,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -35,11 +37,11 @@
       "queue_remaining": 0,
       "images_generated": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0
     },
-    "message": "Pasada directa completada con cola editorial vacía. recent.json estaba fresco (capturado 2026-10-01T01:10:58+02:00); no había preparing/update/problematic elegibles en la cola, así que no se investigó ni se duplicó ninguna explicación.",
+    "message": "Pasada directa completada: #LaPromesa (TT#6) quedó explicada y verificada con fuentes de RTVE, revisión 0 cerrada y retirada de la cola.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -49,13 +51,74 @@
       "total_ratings": 89,
       "recent_considered": 89
     },
-    "remate_selections": []
+    "remate_selections": [
+      {
+        "trend_id": "3d2bfcd082db",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 6,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.5,
+            "punch": 1.4,
+            "originality": 0.8,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c2",
+            "total": 7.1,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": -0.3
+          },
+          {
+            "id": "c3",
+            "total": 7.9,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c4",
+            "total": 8.6,
+            "ratings_affinity": 2.4,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c5",
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.9,
+            "punch": 1.5,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "c4",
+        "selected_score": 8.6,
+        "no_remate_reason": null
+      }
+    ]
   },
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "trends_processed": 1,
+    "trends_explained": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
@@ -63,8 +126,8 @@
     "queue_remaining": 0,
     "images_generated": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 0
   }
 }
