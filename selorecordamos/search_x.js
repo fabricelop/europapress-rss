@@ -40,6 +40,7 @@ const { chromium } = require('playwright');
   const rejectReason = (text) => {
     const normalized = normalizeText(text);
     if (normalized.includes('me recuerden por')) return 'excluded_phrase_me_recuerden_por';
+    if (normalized.includes('los que me recuerden')) return 'excluded_phrase_los_que_me_recuerden';
     return null;
   };
 
