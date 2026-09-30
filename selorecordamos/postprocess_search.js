@@ -12,6 +12,8 @@ const normalizeText = (text) => String(text || '').toLocaleLowerCase('es-ES').re
 const rejectReason = (text) => {
   const normalized = normalizeText(text);
   if (normalized.includes('me recuerden por')) return 'excluded_phrase_me_recuerden_por';
+  if (normalized.includes('me recuerden a')) return 'excluded_phrase_me_recuerden_a';
+  if (normalized.includes('me recuerde con')) return 'excluded_phrase_me_recuerde_con';
   if (normalized.includes('los que me recuerden')) return 'excluded_phrase_los_que_me_recuerden';
   return null;
 };
