@@ -229,7 +229,6 @@ export default async function handler(req,res){
     const runtime=runtimeFallback(runtimeDoc);
     const persisted=persistedExplanationFallback(explainedDoc);
     if(runtime)terminal.push(runtime);
-    if(persisted)terminal.push(persisted);
     // El "último run" debe representar la ejecución más reciente iniciada/solicitada,
     // no el comentario terminal actualizado más tarde. Un activador antiguo puede cerrarse
     // con ERROR mucho después y no debe ocultar una ejecución real posterior.
@@ -239,7 +238,14 @@ export default async function handler(req,res){
       if(aStarted!==bStarted)return aStarted-bStarted;
       return stamp(a.finished_at||a.updated_at)-stamp(b.finished_at||b.updated_at);
     });
-    const last_run=terminal.at(-1)||null;
+    let last_run=terminal.at(-1)||null;
+    // La explicación persistida es un respaldo de último recurso, no una ejecución.
+    // Solo la usamos si no hay telemetría real posterior que ya cubra esa persistencia.
+    if(persisted){
+      const persistedAt=stamp(persisted.finished_at||persisted.updated_at||persisted.started_at);
+      const realFinishedAt=stamp(last_run?.finished_at||last_run?.updated_at||last_run?.started_at);
+      if(!last_run||persistedAt>realFinishedAt)last_run=persisted;
+    }
 
     return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,can_run:enabled&&authorized(req)})
   }catch(e){
