@@ -1,60 +1,87 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-09-30T20:15:00Z",
-  "last_completed_at": "2026-09-30T20:21:00Z",
+  "last_started_at": "2026-09-30T20:45:00Z",
+  "last_completed_at": "2026-09-30T20:54:00Z",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
-    "4c7de2c3da6d",
-    "9d1e29cea1a7",
-    "088a6db618ed"
+    "4bf2961cf967",
+    "da1b6aaf7d73",
+    "f47eaf26f753",
+    "0496ce837dc3"
   ],
   "remaining_ids": [],
   "error": null,
   "api_failover_enabled": false,
-  "updated_at": "2026-09-30T20:21:00Z",
+  "updated_at": "2026-09-30T20:54:00Z",
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_problematic_ids": [
+    "0496ce837dc3"
+  ],
   "last_run": {
-    "run_id": "chat-20260930T201500Z",
+    "run_id": "chat-20260930T204500Z",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-09-30T20:15:00Z",
-    "updated_at": "2026-09-30T20:21:00Z",
-    "finished_at": "2026-09-30T20:21:00Z",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-09-30T20:45:00Z",
+    "updated_at": "2026-09-30T20:54:00Z",
+    "finished_at": "2026-09-30T20:54:00Z",
+    "current": 4,
+    "total": 4,
     "summary": {
-      "trends_processed": 3,
+      "trends_processed": 4,
       "trends_explained": 3,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "trends_problematic": 0,
-      "news_duplicates_avoided": 1,
-      "incidents": 0,
+      "explanation_groups": 3,
+      "new_cards": 2,
+      "grouped_into_existing_card": 1,
+      "trends_problematic": 1,
+      "news_duplicates_avoided": 2,
+      "incidents": 3,
       "queue_remaining": 0,
       "images_generated": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1
+      "explanations_verified_under_280": 2
     },
-    "message": "Pasada directa verificada en main: Portugal, Cristiano Ronaldo y Jorge Jesús agrupados en una sola explicación TT#4 sobre la salida de Cristiano de la concentración; 250 caracteres, Reuters/AP, sin duplicar la noticia ya publicada en TTiTTulares; cola final 0.",
-    "incident_count": 0,
-    "incidents": []
+    "message": "Pasada directa verificada en main: #Flydubai explicado con la novedad del FZ1073 sin humor por sensibilidad; Cristiano enlazado a la tarjeta ya existente de Portugal/Cristiano Ronaldo/Jorge Jesús; #firstdates30s explicado; Piñeiro quedó problematic por detonante no verificable. Cola activa final 0.",
+    "incident_count": 3,
+    "incidents": [
+      {
+        "at": "2026-09-30T20:48:15Z",
+        "phase": "persisting",
+        "trend_id": "da1b6aaf7d73",
+        "title": "Cristiano",
+        "reason": "Conflicto SHA concurrente al actualizar requests.json; resuelto tras releer main y reintentar."
+      },
+      {
+        "at": "2026-09-30T20:49:50Z",
+        "phase": "persisting",
+        "trend_id": "f47eaf26f753",
+        "title": "#firstdates30s",
+        "reason": "Conflicto SHA concurrente al actualizar requests.json; resuelto tras releer main y reintentar."
+      },
+      {
+        "at": "2026-09-30T20:53:00Z",
+        "phase": "investigating",
+        "trend_id": "0496ce837dc3",
+        "title": "Piñeiro",
+        "reason": "Dos tandas de búsquedas no permiten identificar un detonante actual único y fiable; se marca problematic y no se inventa una explicación."
+      }
+    ]
   },
   "summary": {
-    "trends_processed": 3,
+    "trends_processed": 4,
     "trends_explained": 3,
-    "explanation_groups": 1,
-    "new_cards": 1,
-    "trends_problematic": 0,
-    "news_duplicates_avoided": 1,
-    "incidents": 0,
+    "explanation_groups": 3,
+    "new_cards": 2,
+    "grouped_into_existing_card": 1,
+    "trends_problematic": 1,
+    "news_duplicates_avoided": 2,
+    "incidents": 3,
     "queue_remaining": 0,
     "images_generated": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 1
+    "explanations_verified_under_280": 2
   }
 }
