@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T20:21:12+02:00",
+  "captured_at": "2026-09-30T20:26:25+02:00",
   "primary_source": "tweets24",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -145,25 +145,6 @@
       "news_first_seen": null
     },
     {
-      "name": "Sindicato de Inquilinas",
-      "social_source_count": 4,
-      "social_sources": [
-        "snaplytics",
-        "superx",
-        "trends24",
-        "tweets24"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 19.5,
-      "movement": "up",
-      "first_detected_at": "2026-09-30T19:51:29+02:00",
-      "news_source_count": 7,
-      "news_event_id": "948072c1d49b",
-      "news_title": "Decreto de vivienda y última hora de la acampada en Sol, en directo | Podemos se reunirá este jueves con el Sindicato de Inquilinas y después decidirá si apoya o no los decretos",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-30T15:22:41.832029Z"
-    },
-    {
       "name": "Decreto",
       "social_source_count": 4,
       "social_sources": [
@@ -183,23 +164,23 @@
       "news_first_seen": "2026-09-30T15:22:41.832029Z"
     },
     {
-      "name": "Kaliningrado",
+      "name": "Sindicato de Inquilinas",
       "social_source_count": 4,
       "social_sources": [
         "snaplytics",
+        "superx",
         "trends24",
-        "trendswe",
         "tweets24"
       ],
       "best_observed_rank": 18,
-      "mean_observed_rank": 18.0,
-      "movement": "up",
-      "first_detected_at": "2026-09-30T20:01:36+02:00",
-      "news_source_count": 4,
-      "news_event_id": "62378a52236d",
-      "news_title": "Rusia amenaza por carta a la OTAN con usar \"armas nucleares\" si los aliados intentan aislar Kaliningrado",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-30T14:42:20.247374Z"
+      "mean_observed_rank": 19.5,
+      "movement": "flat",
+      "first_detected_at": "2026-09-30T19:51:29+02:00",
+      "news_source_count": 7,
+      "news_event_id": "948072c1d49b",
+      "news_title": "Decreto de vivienda y última hora de la acampada en Sol, en directo | Podemos se reunirá este jueves con el Sindicato de Inquilinas y después decidirá si apoya o no los decretos",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-30T15:22:41.832029Z"
     },
     {
       "name": "Flydubai",
@@ -219,6 +200,25 @@
       "news_title": "Netanyahu llama \"hroes\" a los que consiguieron neutralizar al piloto de Flydubai: \"Salvaron muchas vidas",
       "news_status": "WAITING",
       "news_first_seen": "2026-09-30T15:12:42.223300Z"
+    },
+    {
+      "name": "Kaliningrado",
+      "social_source_count": 4,
+      "social_sources": [
+        "snaplytics",
+        "trends24",
+        "trendswe",
+        "tweets24"
+      ],
+      "best_observed_rank": 18,
+      "mean_observed_rank": 18.0,
+      "movement": "flat",
+      "first_detected_at": "2026-09-30T20:01:36+02:00",
+      "news_source_count": 4,
+      "news_event_id": "62378a52236d",
+      "news_title": "Rusia amenaza por carta a la OTAN con usar \"armas nucleares\" si los aliados intentan aislar Kaliningrado",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-30T14:42:20.247374Z"
     },
     {
       "name": "Madroño",
@@ -271,7 +271,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T20:21:12+02:00"
+      "fetched_at": "2026-09-30T20:26:25+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -296,7 +296,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T20:21:13+02:00"
+      "fetched_at": "2026-09-30T20:26:26+02:00"
     },
     "tweets24": {
       "ok": true,
@@ -323,10 +323,10 @@
         "Sindicato de Inquilinas"
       ],
       "error": null,
-      "update_hint": "Updated 2 minutes ago",
-      "age_minutes": 2.0,
+      "update_hint": "Updated 8 minutes ago",
+      "age_minutes": 8.0,
       "freshness": "fresh",
-      "fetched_at": "2026-09-30T20:21:14+02:00"
+      "fetched_at": "2026-09-30T20:26:27+02:00"
     },
     "superx": {
       "ok": true,
@@ -356,16 +356,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T20:21:14+02:00"
+      "fetched_at": "2026-09-30T20:26:28+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790792474",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790792789",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T20:21:14+02:00"
+      "fetched_at": "2026-09-30T20:26:29+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -393,9 +393,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 17:00 UTC",
-      "age_minutes": 81.3,
+      "age_minutes": 86.5,
       "freshness": "aging",
-      "fetched_at": "2026-09-30T20:21:15+02:00"
+      "fetched_at": "2026-09-30T20:26:30+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -423,18 +423,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 06:01 PM # Trend Type Actions 1 #TEM30S Hashtag 2 #LaFreid",
-      "age_minutes": 140.3,
+      "age_minutes": 145.5,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T20:21:15+02:00"
+      "fetched_at": "2026-09-30T20:26:31+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790792476",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790792792",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T20:21:16+02:00"
+      "fetched_at": "2026-09-30T20:26:32+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -443,7 +443,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T20:21:17+02:00"
+      "fetched_at": "2026-09-30T20:26:33+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -473,16 +473,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T20:21:17+02:00"
+      "fetched_at": "2026-09-30T20:26:34+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790792479",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790792796",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T20:21:19+02:00"
+      "fetched_at": "2026-09-30T20:26:36+02:00"
     }
   }
 }
