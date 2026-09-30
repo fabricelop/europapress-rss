@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-09-30T21:41:00+02:00",
+  "captured_at": "2026-09-30T21:51:35+02:00",
   "primary_source": "snaplytics",
-  "selection_method": "fresh-anchor",
+  "selection_method": "aging-anchor",
   "sources_used": [
     "getdaytrends",
     "snaplytics",
@@ -11,9 +11,7 @@
   ],
   "source_count": 5,
   "non_stale_source_count": 4,
-  "fresh_sources": [
-    "snaplytics"
-  ],
+  "fresh_sources": [],
   "reliability": "medium",
   "top10": [
     "#RTXON",
@@ -79,12 +77,8 @@
       "entered_top10_at": "2026-09-30T16:40:51+02:00"
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Portugal",
-    "Cristiano Ronaldo",
-    "Jorge Jesús"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "Junts",
@@ -96,7 +90,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.3,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T21:41:00+02:00",
       "news_source_count": 2,
       "news_event_id": "a2793942c588",
@@ -114,7 +108,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.7,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T21:01:28+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -132,7 +126,7 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 14.3,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T17:51:00+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -150,7 +144,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.7,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T16:40:51+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -167,30 +161,13 @@
       ],
       "best_observed_rank": 18,
       "mean_observed_rank": 18.5,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-09-30T21:01:28+02:00",
       "news_source_count": 9,
       "news_event_id": "f768a0a1a88d",
       "news_title": "Sánchez es \"razonablemente optimista\" ante la convalidación de los decretos de vivienda",
       "news_status": "ELIGIBLE",
       "news_first_seen": "2026-09-30T12:44:23.129829Z"
-    },
-    {
-      "name": "El BOE",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "trendswe"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 16.0,
-      "movement": "up",
-      "first_detected_at": "2026-09-30T17:51:00+02:00",
-      "news_source_count": 4,
-      "news_event_id": "c598c1681ca2-r2",
-      "news_title": "El BOE publica el primer decreto sobre vivienda: ¿por qué se retrasa al jueves el segundo, sobre la renovación automática de los alquileres? - Telecinco",
-      "news_status": "UPDATE_WAITING",
-      "news_first_seen": "2026-09-30T14:42:20.247374Z"
     },
     {
       "name": "Sindicato de Inquilinas",
@@ -210,21 +187,38 @@
       "news_first_seen": "2026-09-30T15:22:41.832029Z"
     },
     {
-      "name": "Kaliningrado",
+      "name": "El BOE",
       "social_source_count": 2,
       "social_sources": [
         "snaplytics",
         "trendswe"
       ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 18.5,
-      "movement": "up",
-      "first_detected_at": "2026-09-30T21:31:20+02:00",
+      "best_observed_rank": 15,
+      "mean_observed_rank": 16.0,
+      "movement": "flat",
+      "first_detected_at": "2026-09-30T17:51:00+02:00",
       "news_source_count": 4,
-      "news_event_id": "62378a52236d",
-      "news_title": "Rusia amenaza por carta a la OTAN con usar \"armas nucleares\" si los aliados intentan aislar Kaliningrado",
-      "news_status": "PUBLISHED",
+      "news_event_id": "c598c1681ca2-r2",
+      "news_title": "El BOE publica el primer decreto sobre vivienda: ¿por qué se retrasa al jueves el segundo, sobre la renovación automática de los alquileres? - Telecinco",
+      "news_status": "UPDATE_WAITING",
       "news_first_seen": "2026-09-30T14:42:20.247374Z"
+    },
+    {
+      "name": "Croacia",
+      "social_source_count": 2,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.5,
+      "movement": "new",
+      "first_detected_at": "2026-09-30T21:51:35+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     }
   ],
   "anticipated_entries": [],
@@ -233,11 +227,11 @@
     "trends24": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790797260",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790797895",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T21:41:00+02:00"
+      "fetched_at": "2026-09-30T21:51:35+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -262,16 +256,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T21:41:00+02:00"
+      "fetched_at": "2026-09-30T21:51:35+02:00"
     },
     "tweets24": {
       "ok": false,
       "trends": [],
       "error": "Lista no válida (0 elementos parseados)",
-      "update_hint": "Updated 41 minutes ago",
-      "age_minutes": 41.0,
+      "update_hint": "Updated 51 minutes ago",
+      "age_minutes": 51.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T21:41:00+02:00"
+      "fetched_at": "2026-09-30T21:51:36+02:00"
     },
     "superx": {
       "ok": true,
@@ -301,16 +295,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T21:41:01+02:00"
+      "fetched_at": "2026-09-30T21:51:36+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790797261",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790797897",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T21:41:01+02:00"
+      "fetched_at": "2026-09-30T21:51:37+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -338,9 +332,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Sep 30, 2026 19:00 UTC",
-      "age_minutes": 41.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-09-30T21:41:01+02:00"
+      "age_minutes": 51.7,
+      "freshness": "aging",
+      "fetched_at": "2026-09-30T21:51:41+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -368,18 +362,18 @@
       ],
       "error": null,
       "update_hint": "Updated: September 30, 2026 at 07:01 PM # Trend Type Actions 1 #LaFreidoraDeLidl Hashtag",
-      "age_minutes": 160.0,
+      "age_minutes": 170.7,
       "freshness": "stale",
-      "fetched_at": "2026-09-30T21:41:02+02:00"
+      "fetched_at": "2026-09-30T21:51:42+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790797263",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790797903",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T21:41:03+02:00"
+      "fetched_at": "2026-09-30T21:51:43+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -388,7 +382,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-09-30T21:41:04+02:00"
+      "fetched_at": "2026-09-30T21:51:44+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -418,16 +412,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-09-30T21:41:04+02:00"
+      "fetched_at": "2026-09-30T21:51:44+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790797266",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790797907",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-09-30T21:41:06+02:00"
+      "fetched_at": "2026-09-30T21:51:47+02:00"
     }
   }
 }
