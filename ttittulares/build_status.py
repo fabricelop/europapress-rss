@@ -101,6 +101,56 @@ for item in trend_candidates_doc.get("items", []):
     })
 trend_candidates.sort(key=lambda x: str(x.get("detected_at") or ""), reverse=True)
 
+def parse_dt(value):
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except Exception:
+        return None
+
+three_source_items = []
+for event in events_doc.get("events", []):
+    if int(event.get("source_count") or 0) != 3:
+        continue
+    if str(event.get("status") or "") not in {"WAITING", "UPDATE_WAITING"}:
+        continue
+    event_id = str(event.get("id") or "")
+    if not event_id:
+        continue
+    sources = list(event.get("sources") or [])
+    source_times = []
+    for appearance in event.get("appearances") or []:
+        if str(appearance.get("source") or "") not in sources:
+            continue
+        dt = parse_dt(appearance.get("first_seen"))
+        if dt:
+            source_times.append(dt)
+    source3_minutes = None
+    if len(source_times) >= 3:
+        source_times.sort()
+        source3_minutes = max(0, round((source_times[2] - source_times[0]).total_seconds() / 60))
+    three_source_items.append({
+        "event_id": event_id,
+        "title": str(event.get("canonical_title") or event.get("title") or ""),
+        "url": str(event.get("url") or ""),
+        "status": str(event.get("status") or ""),
+        "revision": int(event.get("revision") or 1),
+        "source_count": 3,
+        "sources": sources,
+        "source3_minutes": source3_minutes,
+        "first_seen": event.get("first_seen"),
+        "last_seen": event.get("last_seen"),
+    })
+
+three_source_items.sort(
+    key=lambda x: (
+        str(x.get("last_seen") or ""),
+        str(x.get("first_seen") or ""),
+    ),
+    reverse=True,
+)
+
 stamp = datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
 out = {
     "project":"TTiTTulares",
@@ -113,11 +163,8 @@ out = {
     "problematic_items":problematic_items,
     "trend_candidates_count":len(trend_candidates),
     "trend_candidates":trend_candidates,
-    "three_source_count":sum(
-        1 for event in events_doc.get("events", [])
-        if int(event.get("source_count") or 0) == 3
-        and str(event.get("status") or "") in {"WAITING","UPDATE_WAITING"}
-    ),
+    "three_source_count":len(three_source_items),
+    "three_source_items":three_source_items,
     "healthy_source_count":events_doc.get("healthy_source_count"),
     "configured_sources":events_doc.get("configured_sources"),
     "healthy_source_family_count":events_doc.get("healthy_source_family_count"),
