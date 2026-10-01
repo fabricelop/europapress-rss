@@ -258,14 +258,23 @@ function render(){
  }
 }
 function collapseVisibleExplained(rows){
- const seenIds=new Set(),seenTexts=new Set(),out=[];
+ const seenIds=new Set(),textIndex=new Map(),out=[];
  for(const x of rows){
   const id=String(x.id||"").trim();
   const text=nrm(x.explanation);
-  // Conserva el histórico completo, pero evita revisiones y tarjetas idénticas repetidas en la vista.
-  if((id&&seenIds.has(id))||(text&&seenTexts.has(text)))continue;
+  // Una revisión anterior del mismo item nunca debe crear otra tarjeta visible.
+  if(id&&seenIds.has(id))continue;
   if(id)seenIds.add(id);
-  if(text)seenTexts.add(text);
+  // Si dos miembros de un grupo guardaron exactamente la misma explicación,
+  // conserva una sola tarjeta y prefiere el líder real del grupo.
+  if(text&&textIndex.has(text)){
+   const idx=textIndex.get(text),prev=out[idx];
+   const prevLeader=String(prev?.group_leader_id||"")&&String(prev?.id||"")===String(prev.group_leader_id);
+   const curLeader=String(x.group_leader_id||"")&&String(x.id||"")===String(x.group_leader_id);
+   if(curLeader&&!prevLeader)out[idx]=x;
+   continue;
+  }
+  if(text)textIndex.set(text,out.length);
   out.push(x);
  }
  return out;
