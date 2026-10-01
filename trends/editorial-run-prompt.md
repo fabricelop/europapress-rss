@@ -254,13 +254,17 @@ La salida es una miniatura para X/móvil. Prioriza velocidad:
 
 ### Persistencia
 
-Cuando ImageGen devuelve un attachment/fichero:
-1. identifica exclusivamente el archivo generado en el intento actual;
-2. materializa/lee sus bytes reales;
-3. normaliza programáticamente a JPEG/WebP ligero y calcula SHA-256;
-4. entrega el raster por el outbox visual para que Actions lo normalice en `trends/generated-images/<id>-r<revision>-ai<attempt>.jpg`;
-5. guarda la metadata bajo `ai_image`, nunca sustituyendo ni borrando `fallback_image`;
-6. si `ai_image` queda disponible, usa por defecto `image_choice:"ai"` e `image=ai_image`; si no y existe fallback, `image_choice:"fallback"`.
+Cuando ImageGen devuelve el raster, usa este **handoff binario operativo** antes de declarar fallo:
+
+1. Antes de ImageGen, anota la lista/IDs de imágenes ya presentes en los archivos de la conversación. Después de ImageGen, lista de nuevo los archivos de la conversación con los generados incluidos y elige únicamente la imagen nueva/model-generated del intento actual. No uses una captura subida por el usuario ni una imagen de otra tendencia.
+2. Materializa ese archivo generado en el contenedor como bytes reales. Si ImageGen devuelve un archivo directamente utilizable, usa ese mismo archivo.
+3. Normalízalo programáticamente a JPEG RGB ligero: lado largo 512–640 px, calidad aproximada 65–75 y objetivo <=60 KB cuando sea razonable. Verifica que el JPEG abre completo y que mide al menos 480×260.
+4. Calcula SHA-256 y Base64 de **ese fichero normalizado**. Si la salida Base64 es demasiado grande, reduce calidad/dimensiones una sola vez; esto es transporte, no un segundo ImageGen.
+5. Escribe con GitHub Contents un único `trends/image-outbox/<id>-r<revision>-ai<attempt>.json`, igual que los handoffs que ya funcionaron (p. ej. Sindicato de Inquilinas): `ai_image.url` debe ser `data:image/jpeg;base64,<BASE64_COMPLETO>`, con `provider:"chat-imagegen"`, `origin:"executing_chat"`, `source:"TTendencias / ChatGPT ImageGen"`, `generation_attempt`, `context_guard`, `sha256` y `alt`.
+6. Relee el outbox desde `main` y comprueba que la data URL no está truncada. El workflow `.github/workflows/ttendencias-ai-image-apply.yml` lo consume y materializa `trends/generated-images/<id>-r<revision>-ai<attempt>.jpg`.
+7. Guarda la metadata bajo `ai_image`, nunca sustituyendo ni borrando `fallback_image`. Si la IA queda disponible, usa por defecto `image_choice:"ai"`; si no y existe fallback, `image_choice:"fallback"`.
+
+**No declares `image_transport_unavailable` solo porque el conector GitHub no acepte una referencia binaria directa.** La ruta soportada es: archivo generado de la conversación → materializar bytes → normalizar/encodear → JSON textual con data URL → GitHub Contents. Solo marca `failed` si tampoco puedes obtener/materializar los bytes del archivo generado o si GitHub rechaza el outbox después de un reintento seguro por conflicto.
 
 Un fallo de transporte deja `ai_image_status:"failed"` con una razón breve y NO afecta a la explicación.
 
