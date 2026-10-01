@@ -28,13 +28,20 @@
       "ai_non_blocking": true,
       "fallback_enabled": true,
       "display_in_web_control": true,
-      "queue_instruction": "Genera una sola imagen IA por item apto en estilo TT_STYLE_A_V1 (caricatura satírica editorial, gag único fuerte, exageración y situación límite), siempre basada en la explicación verificada. Si el tema es sensible, marca disable_ai_image y usa solo archivo/fallback. Nunca bloquees la explicación, Explicadas ni la cola por imagen.",
+      "queue_instruction": "La ejecución editorial NO genera IA. Para todo item explicado que no sea Tremending ni tenga un bloqueo explícito actual, deja la IA pendiente para un chat de imagen independiente por item. No marques disable_ai_image solo por separar las ejecuciones. Un failed/none/disabled heredado sin ai_image_block_reason explícito se considera pendiente/reintentable.",
       "note": "IA y archivo/fallback son capas paralelas. READY/Explained no dependen de imagen. Sensibles: fallback_only. Un fallo/timeout visual es terminal para ese intento y no provoca reintento automático.",
       "style_id": "TT_STYLE_A_V1",
       "style": "Caricatura satírica editorial muy expresiva y exagerada: un solo gag visual fuerte, entendido de un vistazo, colores vivos, props absurdos y situación llevada al límite; evitar imagen neutra o meramente literal.",
       "sensitive_mode": "fallback_only",
       "sensitive_sets_disable_ai_image": true,
-      "max_visual_seconds": 120
+      "max_visual_seconds": 120,
+      "execution_mode": "separate_per_item_chat",
+      "editorial_run_generates_ai": false,
+      "editorial_run_should_queue_ai": true,
+      "legacy_failed_is_pending": true,
+      "legacy_none_is_pending": true,
+      "legacy_disable_requires_explicit_block_reason": true,
+      "manual_image_request_overrides_legacy_disable": true
     },
     "queue_consumer_only": true,
     "queue_states": [
@@ -135,6 +142,21 @@
       },
       "tremending_prefix": "TT 🗯️ ",
       "tremending_prefix_once": true
+    },
+    "progress_policy": {
+      "enabled": true,
+      "runtrace_status": "PROCESSING",
+      "update_before_each_item": true,
+      "update_after_each_item": true,
+      "current_semantics": "number_of_items_completed",
+      "total_semantics": "queue_snapshot_size",
+      "include_current_item": true,
+      "phases": [
+        "research",
+        "persisting",
+        "closing"
+      ],
+      "note": "Actualizar el RUNTRACE al empezar cada entrada y justo después de cerrarla para que la UI muestre 1/N, 2/N, etc. Una entrada difícil no debe ocultar el progreso de las demás."
     }
   },
   "delivery": {
