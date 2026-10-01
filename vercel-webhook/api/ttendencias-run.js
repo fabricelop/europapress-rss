@@ -147,20 +147,29 @@ async function requestImagePcAck(req,res){
   const command_id=String(req.body?.command_id||"").trim();
   const stage=String(req.body?.stage||"").toLowerCase();
   const worker_id=String(req.body?.worker_id||"ttendencias-dedicated-v1").trim().slice(0,120)||"ttendencias-dedicated-v1";
-  if(!command_id||!["picked_up","launched"].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
+  if(!command_id||!["picked_up","launched","cancelled"].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
   const terminal=["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase());
   if(terminal)return res.status(409).json({ok:false,error:"job ya terminal",status:job.status});
   const now=new Date().toISOString();
-  const next={...job,status:"RUNNING",phase:stage==="picked_up"?"pc_pickup":"pc_launch",updated_at:now,pc_worker_id:worker_id};
-  if(stage==="picked_up")next.pc_picked_up_at=job.pc_picked_up_at||now;
-  if(stage==="launched"){
-    next.pc_picked_up_at=job.pc_picked_up_at||now;
-    next.pc_launched_at=now;
+  const next={...job,updated_at:now,pc_worker_id:worker_id};
+  if(stage==="cancelled"){
+    next.status="CANCELLED";
+    next.phase="stale_target";
+    next.finished_at=now;
+    next.message=String(req.body?.reason||"La entrada ya no está pendiente o vigente.").slice(0,240);
+  }else{
+    next.status="RUNNING";
+    next.phase=stage==="picked_up"?"pc_pickup":"pc_launch";
+    if(stage==="picked_up")next.pc_picked_up_at=job.pc_picked_up_at||now;
+    if(stage==="launched"){
+      next.pc_picked_up_at=job.pc_picked_up_at||now;
+      next.pc_launched_at=now;
+    }
+    next.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":"PC ha abierto el chat de imagen; esperando inicio de generación.";
   }
-  next.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":"PC ha abierto el chat de imagen; esperando inicio de generación.";
   await writeControlJson(path,next,existing.sha,"PC Chat imagen ack TTendencias "+stage+" "+target_id+" "+command_id);
   return res.status(200).json({ok:true,...next})
 }
