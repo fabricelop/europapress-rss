@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T15:50:56.890703Z",
+  "updated_at": "2026-10-01T15:53:31.061819Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -571,7 +571,7 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
       "fallback_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001110908_690.jpg",
@@ -582,33 +582,60 @@
         "alt": "Juan Jesús Vivas y Juanma Moreno en Sevilla"
       },
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001110908_690.jpg",
-        "source": "Europa Press",
-        "source_url": "https://www.europapress.es/esandalucia/sevilla/noticia-moreno-promete-vivas-descuentos-25-ferrys-ceuta-conexion-maritima-regular-puerto-malaga-20261001110908.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Juan Jesús Vivas y Juanma Moreno en Sevilla"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5942b9591889-r1-ai2.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "event_id": "5942b9591889",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5942b9591889-r1-ai2.jpg",
+        "sha256": "7c73888b88c59e63b42b0ea5a3d96772a3230dded32b0a69c9578bb766054e32",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "Moreno promete a Vivas descuentos del 25% en los ferrys a Ceuta y una conexión marítima regular con el puerto de Málaga"
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
       "image_delivery": "app",
       "ai_image_attempt": 2,
-      "ai_image_last_attempt_status": "tool_called",
+      "ai_image_last_attempt_status": "ready",
       "ai_image_tool_called_at": "2026-10-01T15:45:00Z",
-      "ai_image_last_attempt_at": "2026-10-01T15:45:00Z",
+      "ai_image_last_attempt_at": "2026-10-01T15:53:31.061762Z",
       "ai_image_context_guard": {
         "version": 3,
         "event_id": "5942b9591889",
         "revision": 1,
         "scope": "current_item_only"
       },
-      "ai_image_regenerate_requested": true,
-      "ai_image_regenerate_requested_at": "2026-10-01T15:29:56.793Z",
-      "ai_image_regenerate_request_version": 1,
       "ai_image_regenerate_reason": "retry_after_compact_binary_handoff_fix",
-      "ai_image_previous_sha256": ""
+      "ai_image_previous_sha256": "",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5942b9591889-r1-ai2.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "event_id": "5942b9591889",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5942b9591889-r1-ai2.jpg",
+        "sha256": "7c73888b88c59e63b42b0ea5a3d96772a3230dded32b0a69c9578bb766054e32",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "Moreno promete a Vivas descuentos del 25% en los ferrys a Ceuta y una conexión marítima regular con el puerto de Málaga"
+      }
     },
     {
       "event_id": "23683a120922",
