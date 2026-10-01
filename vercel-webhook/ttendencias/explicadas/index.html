@@ -24,6 +24,9 @@ main{max-width:820px;margin:auto;padding:14px 10px 40px}.filter{width:100%;backg
 </main>
 <script>
 const API="/api/ttendencias-control", $=id=>document.getElementById(id);
+const ARCHIVED_LOCAL_KEY="ttendencias-explicadas-archived-v1";
+function localArchived(){try{return new Set(JSON.parse(localStorage.getItem(ARCHIVED_LOCAL_KEY)||"[]"))}catch(_){return new Set()}}
+function saveLocalArchived(set){try{localStorage.setItem(ARCHIVED_LOCAL_KEY,JSON.stringify([...set].slice(-300)))}catch(_){}}
 let allItems=[];
 async function updateUnreadBadge(){
  const unread=allItems.filter(x=>!x.copied).length;
@@ -116,6 +119,7 @@ async function markExplainedDone(x,button){
    const result=await response.json();
    if(!response.ok||!result?.ok)throw new Error(result?.error||"No se pudo pasar la tendencia al histórico.");
    x.copied=true;x.copied_at=result.copied_at||new Date().toISOString();
+   const archived=localArchived();archived.add(x.copy_key);saveLocalArchived(archived);
    updateUnreadBadge();render();
  }catch(error){button.textContent=old;button.disabled=false;alert(error?.message||"No se pudo pasar la tendencia al histórico.")}
 }
@@ -302,12 +306,20 @@ async function load(){
      // basado en el orden de persistencia, mostrando primero los más recientes.
      return Number(b._sourceOrder||0)-Number(a._sourceOrder||0);
    });
+ const archived=localArchived();
  allItems=collapseVisibleExplained(sorted)
-   .map(x=>({...x,_rank:rankFor(x,requests)}));
+   .map(x=>({...x,_rank:rankFor(x,requests)}))
+   .map(x=>archived.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
+ // Cuando el servidor ya confirma el archivado, mantener solo claves todavía
+ // útiles como protección frente a restauraciones/cachés móviles.
+ const confirmed=new Set(allItems.filter(x=>x.copied&&x.copy_source!=="local-archive-guard").map(x=>x.copy_key));
+ if(confirmed.size){const next=localArchived();for(const key of confirmed)next.delete(key);saveLocalArchived(next)}
  render();
 }
 $("filter").addEventListener("input",render);
 $("refresh").onclick=()=>load().catch(e=>alert(e.message));
+window.addEventListener("pageshow",event=>{if(event.persisted)load().catch(()=>{})});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)load().catch(()=>{})});
 load().catch(e=>{$("pendingList").innerHTML='<div class="empty">'+e.message+'</div>';$("historyList").innerHTML='';});
 </script>
 </body></html>
