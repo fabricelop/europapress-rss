@@ -120,14 +120,25 @@ Además de PROCESSING, al iniciar cada pasada revisa los items READY de `ttittul
 - limpia la solicitud incluso si falla y deja una razón breve;
 - no cambies READY ni el tuit.
 
-### Persistencia de bytes
+### Persistencia de bytes — canal separado del texto
 
-Cuando ImageGen produzca un fichero real, obtén sus bytes programáticamente, normaliza y materializa en:
-`ttittulares/generated-images/<event_id>-r<revision>-ai<attempt>.jpg`
+La imagen NUNCA viaja dentro del comentario `TTITTULARES_OUTBOX_V1`: ese comentario debe seguir siendo pequeño y cerrar el READY sin depender del raster.
 
-o usa el hand-off de outbox/Actions equivalente. No reconstruyas base64 manualmente.
+Cuando ImageGen produzca el único intento:
+1. deja que el resultado editorial de texto se publique/materialice normalmente en Listas; en ese READY usa `ai_image_status:"pending"` y `fallback_image_status:"pending"` si aún no están disponibles;
+2. identifica el fichero generado de ESTE item, lee sus bytes reales y normalízalo programáticamente a JPEG/WebP ligero, lado largo ~512 px y objetivo <=60 KB;
+3. calcula SHA-256 y base64 por código, nunca a mano;
+4. escribe por GitHub Contents un fichero UTF-8 independiente:
+   `ttittulares/image-outbox/<event_id>-r<revision>-ai<attempt>.json`
+   con `{"event_id","revision","attempt","status":"ready","ai_image":{...}}`, donde `ai_image.url` es la data URL real y lleva `generated:true`, `rights_status:"generated"`, `source:"TTiTTulares / ChatGPT"`, `generation_attempt` y el `context_guard` V3;
+5. `.github/workflows/ttittulares-ai-image-apply.yml` materializa el binario en `ttittulares/generated-images/` y actualiza SOLO los campos de imagen del READY.
+6. Si ImageGen o el puente de bytes falla, escribe en el mismo image-outbox `status:"failed"` con una razón técnica breve, sin data URL. El texto permanece READY.
 
-## Outbox
+Para **🔁 Rehacer** usa exactamente el mismo canal con `attempt = ai_image_attempt + 1`. No envíes un nuevo outbox editorial y no cambies el tuit.
+
+El fallback de archivo lo completa después de READY `.github/workflows/ttittulares-image-enrich.yml`; no esperes su descarga para cerrar el texto.
+
+## Outbox editorial
 
 Publica cada resultado editorial mediante un comentario del PR #2:
 
@@ -138,7 +149,7 @@ Si la entrada es el mismo acontecimiento que otro ya PUBLICADO y no aporta noved
 `{"event_id":"ID_actual","revision":1,"status":"duplicate","duplicate_of_event_id":"ID_original","reason":"justificación concreta basada en hechos","no_material_update":true}`.
 `no_material_update:true` es obligatorio al referenciar un PUBLISHED y jamás se declara si hay actualización independiente. El aplicador comprueba la decisión del original y marca SKIPPED_DUPLICATE o DISMISSED; nunca crea un READY ni una imagen en ese caso. No ocultes una noticia materializada, reescrita o con revisión diferente; ante duda, conserva PROCESSING e informa de la incidencia. Confirma que cada resultado pasó a estado terminal real en la cola antes de darlo por cerrado.
 
-El `prepared_item` de un resultado ready debe ser completo. No escribas directamente en `ttittulares/editorial-outbox/**`. Confirma que un ready se materializó en Listas antes de considerar terminado el item. Cada incidencia se añade a `ttittulares/execution-errors.json` mediante el mismo transporte cuando esté disponible.
+El `prepared_item` editorial debe ser completo en texto/tuit, pero NO debe contener data URLs ni bytes de imagen. Puede incluir únicamente estados pequeños como `ai_image_status:"pending"` y `fallback_image_status:"pending"`. No escribas directamente en `ttittulares/editorial-outbox/**`. Confirma que el texto se materializó en Listas antes de considerar terminado el item; la imagen continúa de forma independiente. Cada incidencia se añade a `ttittulares/execution-errors.json` mediante el mismo transporte cuando esté disponible.
 
 ## Cierre
 
