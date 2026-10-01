@@ -12,9 +12,17 @@ Una PROBLEMATIC antigua que no se intenta en la pasada permanece visible en «No
 
 ### Recuperación obligatoria de IA pendiente
 
-Al comenzar cada pasada crea también un `visual_backlog` con los READY de `ttittulares/prepared.json` que tengan `image_strategy:"ai_plus_fallback"`, no estén PUBLISHED/DISMISSED, no tengan `ai_image` válida y tengan `ai_image_status:"pending"`, o tengan `ai_image_regenerate_requested:true`.
+Al comenzar cada pasada, **antes de redactar nuevas noticias**, crea un `visual_backlog` con los READY de `ttittulares/prepared.json` que:
+- tengan `image_strategy:"ai_plus_fallback"` o `image_mode:"ai_plus_fallback"`;
+- no estén PUBLISHED/DISMISSED;
+- no tengan una `ai_image.url` válida;
+- y tengan `ai_image_status:"pending"`, estado vacío/ausente sin intento terminal previo, o `ai_image_regenerate_requested:true`.
 
-Estos items NO se reinvestigan ni se redactan de nuevo. Un `pending` solo representa un intento real si existe prueba durable de que ImageGen fue invocado para ese intento: `ai_image_tool_called_at` y `ai_image_last_attempt_status:"tool_called"` (o un resultado terminal `ready|failed`). Un estado histórico `started` sin `ai_image_tool_called_at` es un intento huérfano: NO consume el intento automático y debe recuperarse con exactamente una llamada real a ImageGen, manteniendo `attempt:1`. Solo una solicitud explícita `ai_image_regenerate_requested:true` cuya versión aún no esté consumida autoriza incrementar el intento. Nunca marques un intento como consumido antes de invocar realmente ImageGen. La capa visual es asíncrona y no impide cerrar la pasada editorial.
+Procesa ese `visual_backlog` de forma real en la misma pasada: para cada item elegible haz exactamente **una llamada real a ImageGen** y registra `ai_image_tool_called_at` inmediatamente después de la llamada. No basta con enumerarlo ni con marcar `started`. Si la llamada no llega a ocurrir, el item no puede seguir como `pending`: usa `failed:imagegen_not_invoked`.
+
+Estos items NO se reinvestigan ni se redactan de nuevo. Un `pending` solo representa un intento real si existe prueba durable de que ImageGen fue invocado para ese intento: `ai_image_tool_called_at` y `ai_image_last_attempt_status:"tool_called"` (o un resultado terminal `ready|failed`). Un estado histórico `started` sin `ai_image_tool_called_at` es un intento huérfano: NO consume el intento automático y debe recuperarse con exactamente una llamada real a ImageGen, manteniendo `attempt:1`. Solo una solicitud explícita `ai_image_regenerate_requested:true` cuya versión aún no esté consumida autoriza incrementar el intento. Nunca marques un intento como consumido antes de invocar realmente ImageGen. Los `failed` terminales NO se reintentan automáticamente: solo vuelven a ImageGen mediante Rehacer. La capa visual es asíncrona y no impide cerrar la pasada editorial.
+
+Antes del primer `drafting`, RUNTRACE debe reflejar `visual_backlog:<N>`. Al terminar la pasada, para cada ID del backlog debe existir uno de estos resultados verificables: `ai_image_status:"ready"`, `ai_image_status:"failed"` o `ai_image_last_attempt_status:"tool_called"` con outbox pendiente. No cierres una pasada dejando un READY elegible intacto y sin intento.
 
 ## Redacción
 
