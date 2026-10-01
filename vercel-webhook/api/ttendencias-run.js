@@ -25,6 +25,9 @@ const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const ACTIVE_MS=20*60*1000;
 const PROCESSING_ACTIVE_MS=5*60*1000;
+const MAIN_BRANCH="main";
+const EXPLAINED_PATH="trends/telegram-manual-explained.json";
+const EXPLAINED_COPY_STATE_PATH="trends/explained-copy-state.json";
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -86,6 +89,26 @@ async function readControlJson(path){
   const f=await r.json(),raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
   return {sha:f.sha,doc:JSON.parse(raw||"{}")}
 }
+async function readMainJson(path){
+  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(MAIN_BRANCH));
+  if(r.status===404)return {};
+  if(!r.ok)throw new Error("GitHub main GET "+path+": "+r.status+" "+await r.text());
+  const f=await r.json(),raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+  return JSON.parse(raw||"{}")
+}
+async function imageEligibility(targetId){
+  const [explained,copyState]=await Promise.all([readMainJson(EXPLAINED_PATH),readMainJson(EXPLAINED_COPY_STATE_PATH)]);
+  const rows=(explained.items||[]).filter(x=>String(x.id||"")===String(targetId)&&x.status!=="grouped"&&String(x.explanation||"").trim());
+  rows.sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||String(b.explained_at||"").localeCompare(String(a.explained_at||"")));
+  const row=rows[0]||null;
+  if(!row)return {eligible:false,reason:"not_pending_explained"};
+  const name=String(row.name||"").trim(),rev=Number(row.revision||0);
+  const archived=(copyState.items||[]).some(x=>Number(x.revision||0)===rev&&Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase()));
+  const blocked=Boolean(row.tremending_origin)||Boolean(String(row.ai_image_block_reason||row.image_block_reason||"").trim())||row.with_image===false;
+  const hasAi=Boolean(String(row.ai_image?.url||"").trim());
+  return {eligible:!archived&&!blocked&&!hasAi,reason:archived?"archived":blocked?"blocked":hasAi?"already_has_ai":"pending",row}
+}
+
 async function writeControlJson(path,doc,sha,message){
   const body={message,content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64"),branch:TRIGGER_BRANCH};
   if(sha)body.sha=sha;
@@ -153,6 +176,15 @@ async function requestImagePcAck(req,res){
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
   const terminal=["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase());
   if(terminal)return res.status(409).json({ok:false,error:"job ya terminal",status:job.status});
+  if(stage==="picked_up"){
+    const eligibility=await imageEligibility(target_id);
+    if(!eligibility.eligible){
+      const now=new Date().toISOString();
+      const cancelled={...job,status:"CANCELLED",phase:"stale_target",updated_at:now,finished_at:now,pc_worker_id:worker_id,message:"Cancelado antes de abrir chat: "+eligibility.reason};
+      await writeControlJson(path,cancelled,existing.sha,"Cancelar imagen IA obsoleta TTendencias "+target_id+" "+command_id);
+      return res.status(409).json({ok:false,error:"stale_target",reason:eligibility.reason,status:"CANCELLED",target_id,command_id})
+    }
+  }
   const now=new Date().toISOString();
   const next={...job,updated_at:now,pc_worker_id:worker_id};
   if(stage==="cancelled"){
