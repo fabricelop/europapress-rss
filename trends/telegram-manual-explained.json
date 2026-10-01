@@ -11384,15 +11384,16 @@
         }
       ],
       "news_disposition": "ignored",
-      "ai_image_status": "pending",
+      "ai_image_status": "disabled",
       "fallback_image_status": "none",
       "image_status": "none",
       "image_pending": false,
-      "disable_ai_image": false,
-      "image_strategy": "ai_plus_fallback",
+      "disable_ai_image": true,
+      "image_strategy": "fallback_only",
       "ai_image_regenerate_requested": true,
       "ai_image_regenerate_requested_at": "2026-10-01T23:03:58.440Z",
-      "ai_image_regenerate_request_version": 1
+      "ai_image_regenerate_request_version": 1,
+      "ai_image_block_reason": "political_actor"
     },
     {
       "id": "7375308f71a9",
@@ -11534,6 +11535,6 @@
       "image_failure_reason": "Fuente de archivo localizada; la imagen IA queda fuera de esta ejecución editorial."
     }
   ],
-  "updated_at": "2026-10-01T23:03:58.440Z",
+  "updated_at": "2026-10-01T23:34:14.115Z",
   "count": 392
 }
