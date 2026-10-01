@@ -175,7 +175,10 @@ async function syncEditorialQueue() {
       requested_at: req.requested_at,
       revision: Number(req.revision || 0),
       rewrite_instruction: req.rewrite_instruction || req.rewrite_request || "",
-      with_image: true,
+      with_image: req.with_image !== false,
+      disable_ai_image: Boolean(req.disable_ai_image),
+      image_strategy: req.image_strategy || null,
+      selected_tweet_image: req.selected_tweet_image || null,
       task: "explain",
       batch_id: req.batch_id || null,
       requested_together: Array.isArray(req.requested_together) ? req.requested_together : [req.name].filter(Boolean),
@@ -794,7 +797,9 @@ async function reworkNames(names, instruction) {
       req.reexplain = true;
       req.rewrite_instruction = text;
       req.with_image = true;
-      req.disable_ai_image = false;
+      req.disable_ai_image = Boolean(latest?.tremending_origin);
+      req.image_strategy = req.disable_ai_image ? "tweet_capture_only" : "ai_plus_fallback";
+      if (req.disable_ai_image && latest?.fallback_image) req.selected_tweet_image = latest.fallback_image;
       delete req.problem_reason;
       delete req.problematic_at;
       req.alternatives_target = 0;
