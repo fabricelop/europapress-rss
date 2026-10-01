@@ -18,7 +18,7 @@
     }
   },
   "git": {
-    "deploymentEnabled": false
+    "deploymentEnabled": true
   },
   "rewrites": [
     {
@@ -242,5 +242,6 @@
   ],
   "github": {
     "autoJobCancelation": false
-  }
+  },
+  "ignoreCommand": "exit 1"
 }
