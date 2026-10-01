@@ -10,7 +10,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from apply_editorial_outbox import TT, PREP, load, save, _materialize_ai_image, _select_image
+from apply_editorial_outbox import TT, PREP, DECISIONS, load, save, _materialize_ai_image, _select_image
 
 OUTBOX = TT / "image-outbox"
 
@@ -51,6 +51,7 @@ def selftest():
 
 def main():
     doc = load(PREP, {"project": "TTiTTulares", "items": []})
+    decisions = load(DECISIONS, {"items": []})
     files = sorted(OUTBOX.glob("*.json")) if OUTBOX.exists() else []
     if not files:
         print("TTITTULARES_AI_IMAGE_OUTBOX_EMPTY")
@@ -72,6 +73,14 @@ def main():
                      if str(x.get("event_id") or "") == eid
                      and int(x.get("revision") or 1) == revision), None)
         if item is None:
+            terminal = next((x for x in reversed(decisions.get("items", []))
+                             if str(x.get("event_id") or "") == eid
+                             and str(x.get("status") or "").lower() in {"published","dismissed"}), None)
+            if terminal:
+                path.unlink(missing_ok=True)
+                processed.append(eid + ":cancelled")
+                changed = True
+                continue
             waiting.append(path.name)
             continue
 
