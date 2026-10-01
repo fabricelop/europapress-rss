@@ -14888,7 +14888,7 @@
       "id": "049566b6b12d",
       "name": "Halloween",
       "revision": 1,
-      "status": "update",
+      "status": "problematic",
       "requested_at": "2026-10-01T22:31:47.019Z",
       "rank": 32,
       "with_image": true,
@@ -14903,14 +14903,24 @@
         "Halloween"
       ],
       "auto_queued": false,
-      "last_attempt_at": "2026-10-01T21:59:18.714Z",
+      "last_attempt_at": "2026-10-02T00:49:36+02:00",
       "source": "editorial_chat_direct",
       "disable_ai_image": true,
       "image_strategy": "none",
-      "ai_image_status": "disabled",
+      "ai_image_status": "none",
       "image_status": "none",
       "image_pending": false,
-      "reexplain": true
+      "reexplain": true,
+      "problem_reason": "«Halloween» mantiene señal social en España, pero no aparece un detonante único, concreto y actual que explique la tendencia; hay cobertura estacional dispersa por el inicio de octubre. Se conserva como problemática para no inventar una causa.",
+      "problematic_at": "2026-10-02T00:49:36+02:00",
+      "problematic_attempts": 1,
+      "verification_sources": [
+        {
+          "source": "Radar TTendencias · España · 2/10/2026",
+          "url": "https://twitter-trends.snaplytics.io/spain/"
+        }
+      ],
+      "fallback_image_status": "none"
     },
     {
       "id": "3dd01fb77d28",
@@ -14932,25 +14942,27 @@
         "Chiqui"
       ],
       "auto_queued": true,
-      "last_attempt_at": "2026-10-01T22:24:58.475Z",
-      "problem_reason": "«FUGAZ IS OUT» aparece como tendencia nueva en España, pero no se ha podido verificar con fuentes abiertas un detonante concreto y actual. Se conserva como problemática para no atribuirle una causa sin evidencia.",
+      "last_attempt_at": "2026-10-02T00:49:36+02:00",
+      "problem_reason": "«FUGAZ IS OUT» sigue como tendencia alta en España, pero las fuentes abiertas solo permiten asociarla de forma tentativa con el EP «Fugaz» de Karen Dió, publicado semanas atrás; no hay evidencia suficiente de que ese sea el detonante actual en España.",
       "source": "editorial_chat_direct",
       "verification_sources": [
         {
-          "source": "Trends24 España · 01/10/2026",
+          "source": "Radar TTendencias · España · 2/10/2026",
           "url": "https://trends24.in/spain/index.html"
         },
         {
-          "source": "Punktastic · 17/08/2026",
-          "url": "https://www.punktastic.com/album-reviews/karen-dio-fugaz/"
+          "source": "Karen Dió · Fugaz EP",
+          "url": "https://ffm.to/fugazep"
         }
       ],
       "disable_ai_image": true,
       "image_strategy": "none",
-      "ai_image_status": "disabled",
+      "ai_image_status": "none",
       "image_status": "none",
       "image_pending": false,
-      "problematic_at": "2026-10-01T22:24:58.475Z"
+      "problematic_at": "2026-10-02T00:49:36+02:00",
+      "problematic_attempts": 1,
+      "fallback_image_status": "none"
     },
     {
       "id": "15a8bb795fe3",
@@ -15036,9 +15048,9 @@
       "id": "28010971de9f",
       "name": "Mike James",
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-01T22:31:45.802Z",
-      "rank": 12,
+      "rank": 14,
       "with_image": true,
       "alternatives_target": 0,
       "anticipated": true,
@@ -15050,15 +15062,44 @@
       "requested_together": [
         "Mike James"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "last_attempt_at": "2026-10-02T00:49:36+02:00",
+      "source": "editorial_chat_direct",
+      "disable_ai_image": true,
+      "ai_image_status": "none",
+      "image_pending": false,
+      "explained_at": "2026-10-02T00:49:36+02:00",
+      "explanation": "TT#14 Mike James es tendencia tras retirarse en camilla ante Estrella Roja. El Anadolu Efes confirmó una lesión en la zona del tendón de Aquiles; falta conocer el alcance tras las pruebas médicas.",
+      "rank_at_explanation": 14,
+      "verification_sources": [
+        {
+          "source": "Gigantes del Basket · 1/10/2026",
+          "url": "https://www.gigantes.com/euroliga/mike-james-lesion-aquiles-anadolu-efes/"
+        },
+        {
+          "source": "ERT Sports · 2/10/2026",
+          "url": "https://www.ertsports.gr/mpasket/euroleague/traymatistike-ston-axilleio-o-maik-tzeims/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Tendencia deportiva explicada en TTendencias; no se abre una noticia paralela en esta pasada.",
+      "image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_source": {
+        "source": "Gigantes del Basket",
+        "source_url": "https://www.gigantes.com/euroliga/mike-james-lesion-aquiles-anadolu-efes/",
+        "alt": "Mike James tras lesionarse en el partido de Euroliga ante Estrella Roja"
+      },
+      "image_status": "none",
+      "image_failure_reason": "Fuente de archivo localizada; la imagen IA queda fuera de esta ejecución editorial."
     },
     {
       "id": "4252a9034d7e",
       "name": "Troy Parrott",
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-01T22:31:49.711Z",
-      "rank": 13,
+      "rank": 16,
       "with_image": true,
       "alternatives_target": 0,
       "anticipated": true,
@@ -15070,9 +15111,39 @@
       "requested_together": [
         "Troy Parrott"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "last_attempt_at": "2026-10-02T00:49:36+02:00",
+      "source": "editorial_chat_direct",
+      "disable_ai_image": true,
+      "ai_image_status": "none",
+      "image_pending": false,
+      "explained_at": "2026-10-02T00:49:36+02:00",
+      "explanation": "TT#16 Troy Parrott es tendencia tras marcar dos goles a Austria en la Nations League: abrió con una gran jugada individual y después anotó de penalti; Irlanda acabó empatando 2-2.\n🌶️ Parrott regateó a media Austria y el 2-0 se escapó por la aduana.",
+      "closer_text": "🌶️ Parrott regateó a media Austria y el 2-0 se escapó por la aduana.",
+      "rank_at_explanation": 16,
+      "verification_sources": [
+        {
+          "source": "The Irish Times · 1/10/2026",
+          "url": "https://www.irishtimes.com/sport/soccer/2026/10/01/paradonna-lights-up-the-aviva-with-a-twisty-turny-dribbly-nutmeggy-piece-of-art/"
+        },
+        {
+          "source": "AS · 2/10/2026",
+          "url": "https://as.com/futbol/videos/el-tanto-con-el-que-todo-nino-suena-marcar-parrott-y-un-golazo-de-no-creer-f202610-v/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Tendencia deportiva explicada en TTendencias; no se abre una noticia paralela en esta pasada.",
+      "image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_source": {
+        "source": "The Irish Times",
+        "source_url": "https://www.irishtimes.com/sport/soccer/2026/10/01/paradonna-lights-up-the-aviva-with-a-twisty-turny-dribbly-nutmeggy-piece-of-art/",
+        "alt": "Troy Parrott durante el partido de Irlanda ante Austria"
+      },
+      "image_status": "none",
+      "image_failure_reason": "Fuente de archivo localizada; la imagen IA queda fuera de esta ejecución editorial."
     }
   ],
-  "updated_at": "2026-10-01T22:31:49.711Z",
-  "count": 396
+  "updated_at": "2026-10-02T00:49:36+02:00",
+  "count": 401
 }
