@@ -165,7 +165,7 @@ async function syncEditorialQueue() {
       requested_at: req.requested_at,
       revision: Number(req.revision || 0),
       rewrite_instruction: req.rewrite_instruction || req.rewrite_request || "",
-      with_image: false,
+      with_image: true,
       task: "explain",
       batch_id: req.batch_id || null,
       requested_together: Array.isArray(req.requested_together) ? req.requested_together : [req.name].filter(Boolean),
@@ -436,7 +436,7 @@ async function queueNames(names) {
       if (existing) {
         existing.batch_id = batchId;
         existing.requested_together = unique;
-        existing.with_image = false;
+        existing.with_image = true;
         existing.alternatives_target = 0;
         existing.task = "explain";
         if (String(existing.status || "") === "ready") {
@@ -457,7 +457,7 @@ async function queueNames(names) {
           requested_at: now,
           revision: Number(previous?.revision || 0) + (reexplain ? 1 : 0),
           reexplain,
-          with_image: false,
+          with_image: true,
           alternatives_target: 0,
           batch_id: batchId,
           requested_together: unique,
@@ -517,7 +517,7 @@ async function queueUpcomingNames(names) {
         req.requested_at = now;
       }
       req.rank = Number(signal.best_observed_rank || 0);
-      req.with_image = false;
+      req.with_image = true;
       req.alternatives_target = 0;
       req.anticipated = true;
       req.anticipated_at = signal.first_detected_at || now;
@@ -706,7 +706,7 @@ async function discardNames(names) {
           name,
           rank: 0,
           revision: 0,
-          with_image: false,
+          with_image: true,
           alternatives_target: 0,
         };
         doc.requests.push(req);
@@ -752,7 +752,7 @@ async function reworkNames(names, instruction) {
           name,
           rank: 0,
           revision: 0,
-          with_image: false,
+          with_image: true,
           alternatives_target: 0,
         };
         doc.requests.push(req);
@@ -762,7 +762,7 @@ async function reworkNames(names, instruction) {
       req.revision = Number(req.revision || 0) + 1;
       req.reexplain = true;
       req.rewrite_instruction = text;
-      req.with_image = false;
+      req.with_image = true;
       delete req.problem_reason;
       delete req.problematic_at;
       req.alternatives_target = 0;
@@ -801,7 +801,7 @@ async function retryNames(names) {
           id: crypto.createHash("sha256").update(name).digest("hex").slice(0, 12),
           name,
           revision: 0,
-          with_image: false,
+          with_image: true,
           alternatives_target: 0,
         };
         doc.requests.push(req);
@@ -811,7 +811,7 @@ async function retryNames(names) {
       req.requested_at = now;
       req.revision = Number(req.revision || 0) + 1;
       req.reexplain = true;
-      req.with_image = false;
+      req.with_image = true;
       req.alternatives_target = 0;
       delete req.dismissed_at;
       delete req.dismissed_source;
