@@ -121,6 +121,8 @@ Si el canal ejecutor no puede escribir el `data:` URL completo en un único outb
 
 No esperes 4–6 para continuar con la siguiente noticia. Texto y cola editorial avanzan mientras el canal visual se resuelve por separado; el fallback real también continúa por su propio workflow.
 
+**Presupuesto visual operativo:** máximo **120 s por intento** incluyendo generación y handoff. Si no puede completarse dentro de ese presupuesto, registra fallo visual terminal para ese intento y continúa. Nunca esperes más ni hagas un segundo intento automático.
+
 ### Aislamiento de contexto V3
 
 El prompt de cada llamada comienza conceptualmente por:
@@ -130,10 +132,15 @@ Incluye exclusivamente:
 - `event_id`, revisión, titular y resumen factual verificado;
 - sujetos, lugar, objetos y acción que pertenecen inequívocamente a ESA noticia;
 - una sola escena narrativa, pocos elementos, composición 16:9 y detalle medio/bajo;
-- ilustración editorial clara; casi sin texto y, si aparece, breve y diegético;
+- **TT_STYLE_A_V1: caricatura satírica editorial muy expresiva, colorida y exagerada**, con un único gag visual dominante derivado del hecho verificado;
+- primero encuentra la idea cómica específica y después dibújala: expresiones claras, objetos/props sobredimensionados, escala absurda y consecuencias visuales que lleven la situación al límite cuando encaje;
+- el gag debe entenderse sin leer el tuit; evita retratos neutros, poses promocionales, imágenes meramente bonitas o ilustraciones literales del titular;
+- colores vivos, contraste fuerte, siluetas claras; casi sin texto y, si aparece, breve, grande, correcto y diegético;
 - sin collage, split-screen, multipanel, infografía ni UI.
 
-No reutilices prompts, semillas, imágenes ni elementos de otros items. En política usa una ilustración neutral y descriptiva, sin elogio, ataque ni persuasión. En tragedias, muertes, violencia o víctimas, sustituye el gag por una ilustración editorial sobria y no gráfica.
+**Filtro de sensibilidad antes de ImageGen:** si la noticia implica muerte, duelo, víctimas, violencia grave, abuso, menores en contexto sensible, catástrofe, desaparición, guerra/ataque con víctimas o sufrimiento humano comparable, persiste `disable_ai_image:true`, `ai_image_status:"disabled"`, `image_mode:"fallback_only"` e `image_strategy:"fallback_only"`. En esos casos **NO llames a ImageGen**: usa foto de archivo/fallback si existe o ninguna imagen.
+
+No reutilices prompts, semillas, imágenes ni elementos de otros items. En política puede existir sátira situacional neutral basada en hechos observables, pero nunca propaganda, elogio, ataque partidista, degradación dirigida ni persuasión a favor o en contra de un actor político.
 
 Un SVG técnico no es ImageGen: no puede persistirse como `ai_image`, usar `image_choice:"ai"` ni mostrarse como «Gag IA». El flujo vigente no genera SVG; cualquier artefacto histórico queda fuera de la selección visible y con procedencia técnica explícita.
 
@@ -164,7 +171,7 @@ Mantén:
 
 Si llega una IA válida, selecciónala por defecto. Si aún no llegó o falla, usa fallback cuando exista. Mantén ambos originales para la app.
 
-**Excepción Tremending:** si `tremending_origin:true`, `disable_ai_image:true` o `image_mode:"tweet_capture_only"`, NO llames a ImageGen, no crees `ai_image_status:"pending"` y no consumas intento IA. Usa exclusivamente la captura del tuit elegido como `image`/`fallback_image`; si aún está capturándose, deja solo `image_status:"pending_capture"` y continúa con el texto. La captura del tuit no se usa como prueba factual.
+**Excepción Tremending y fallback-only:** si `tremending_origin:true`, `disable_ai_image:true`, `image_mode:"tweet_capture_only"` o `image_mode:"fallback_only"`, NO llames a ImageGen, no crees `ai_image_status:"pending"` y no consumas intento IA. Tremending usa exclusivamente la captura del tuit elegido; los temas sensibles usan exclusivamente foto de archivo/fallback cuando exista. Si el recurso real aún está pendiente, conserva su estado visual pendiente y continúa con el texto. Ninguna captura/foto se usa como prueba factual.
 
 La imagen NUNCA viaja dentro de `TTITTULARES_OUTBOX_V1`; ese comentario sigue siendo pequeño y cierra READY independientemente del raster.
 
