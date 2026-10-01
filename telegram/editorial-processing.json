@@ -20326,16 +20326,130 @@
         }
       ],
       "selected_at": "2026-10-01T12:32:44.342362Z",
-      "status": "READY",
-      "selection_mode": "AUTO_WEB",
-      "revision": 1,
+      "status": "PROCESSING",
+      "selection_mode": "REWRITE",
+      "revision": 2,
       "parent_event_id": null,
       "update_context": null,
       "parallel_source_claimed_at": null,
       "with_image": true,
       "image_mode": "ai_plus_fallback",
-      "delivered_at": "2026-10-01T12:38:41.883938Z",
-      "delivery_confirmation": "prepared_web"
+      "delivery_confirmation": "prepared_web",
+      "previous_status": "READY",
+      "image_instruction": "Intenta una sola imagen IA rápida y conserva además una imagen de archivo/fallback. Ninguna imagen bloquea READY.",
+      "rewrite_scope": "remate_and_ai",
+      "reinvestigate": false,
+      "preserved_editorial": {
+        "event_id": "5c342a232471",
+        "title": "Jódar cae en Tokio y desaprovecha el favor de Munar con su hombrada ante Fritz",
+        "url": "https://www.abc.es/deportes/tenis/jodar-cae-tokio-desaprovecha-favor-munar-hombrada-20261001141038-nt.html",
+        "drafted_source_count": 3,
+        "sources_at_draft": [
+          "20minutos",
+          "AS",
+          "EFE"
+        ],
+        "factual_summary": "Rafael Jódar quedó eliminado en primera ronda del ATP 500 de Tokio tras perder ante el paraguayo Adolfo Daniel Vallejo por 6-1 y 6-3 en 67 minutos. Antes, Jaume Munar había eliminado a Taylor Fritz por 6-7(7), 6-4 y 6-3.",
+        "revision": 1,
+        "tweet": {
+          "text": "Rafa Jódar cae en su estreno en Tokio ante Daniel Vallejo por 6-1 y 6-3 en 67 minutos. Antes, Jaume Munar había eliminado a Taylor Fritz por 6-7(7), 6-4 y 6-3.\n\n🌶️ El favor de Munar venía con caducidad de 67 minutos.",
+          "remate": "🌶️ El favor de Munar venía con caducidad de 67 minutos.",
+          "url": "https://twitter.com/intent/tweet?text=Rafa%20J%C3%B3dar%20cae%20en%20su%20estreno%20en%20Tokio%20ante%20Daniel%20Vallejo%20por%206-1%20y%206-3%20en%2067%20minutos.%20Antes%2C%20Jaume%20Munar%20hab%C3%ADa%20eliminado%20a%20Taylor%20Fritz%20por%206-7%287%29%2C%206-4%20y%206-3.%0A%0A%F0%9F%8C%B6%EF%B8%8F%20El%20favor%20de%20Munar%20ven%C3%ADa%20con%20caducidad%20de%2067%20minutos."
+        },
+        "citations": [
+          {
+            "source": "20minutos",
+            "url": "https://www.20minutos.es/deportes/tenis/rafa-jodar-se-despide-tokio-su-estreno-tras-caer-con-contundencia-ante-daniel-vallejo_7043723_0.html"
+          },
+          {
+            "source": "AS",
+            "url": "https://as.com/tenis/mas_tenis/la-laver-cup-le-pasa-factura-a-jodar-y-a-otros-seis-jugadores-f202610-n/"
+          },
+          {
+            "source": "EFE",
+            "url": "https://efe.com/deportes/torneo-tenis-tokio-munar-alcaraz/"
+          }
+        ],
+        "quote_candidates": [],
+        "x_searches": [
+          {
+            "query": "Rafa Jódar Daniel Vallejo Tokio Munar Fritz",
+            "url": "https://x.com/search?q=Rafa%20J%C3%B3dar%20Daniel%20Vallejo%20Tokio%20Munar%20Fritz&src=typed_query&f=live"
+          }
+        ],
+        "trend_context": [],
+        "image_strategy": "ai_plus_fallback",
+        "ai_image_status": "ready",
+        "fallback_image_status": "ready",
+        "image_choice": "ai",
+        "image_status": "ready",
+        "image_pending": false,
+        "image_app_available": true,
+        "image_delivery": "app",
+        "fallback_image": {
+          "url": "https://s1.abcstatics.com/abc/www/multimedia/deportes/2026/10/01/1518129955-U36764635806GDm-1200x630@diario_abc.JPG",
+          "source": "www.abc.es",
+          "source_url": "https://www.abc.es/deportes/tenis/jodar-cae-tokio-desaprovecha-favor-munar-hombrada-20261001141038-nt.html",
+          "rights_status": "unverified",
+          "generated": false,
+          "alt": "Jódar cae en Tokio y desaprovecha el favor de Munar con su hombrada ante Fritz"
+        },
+        "fallback_image_search_attempted_at": "2026-10-01T12:38:42.970668Z",
+        "image": {
+          "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5c342a232471-r1-ai1.jpg",
+          "source": "TTiTTulares / ChatGPT ImageGen",
+          "rights_status": "generated",
+          "generated": true,
+          "provider": "chat-imagegen",
+          "origin": "executing_chat",
+          "generation_attempt": 1,
+          "context_guard": {
+            "version": 3,
+            "event_id": "5c342a232471",
+            "revision": 1,
+            "scope": "current_item_only"
+          },
+          "alt": "Ilustración editorial sobre la derrota de Rafa Jódar en Tokio tras la victoria previa de Jaume Munar.",
+          "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5c342a232471-r1-ai1.jpg",
+          "sha256": "f3053e9c0bd7b9656bae97482d5ec994f2b2f0aa537eddba83801122a903dcfa",
+          "handoff": "inline-outbox-materialized-by-actions"
+        },
+        "ai_image_attempt": 1,
+        "ai_image_last_attempt_status": "ready",
+        "ai_image_tool_called_at": "2026-10-01T12:40:30.941406Z",
+        "ai_image": {
+          "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5c342a232471-r1-ai1.jpg",
+          "source": "TTiTTulares / ChatGPT ImageGen",
+          "rights_status": "generated",
+          "generated": true,
+          "provider": "chat-imagegen",
+          "origin": "executing_chat",
+          "generation_attempt": 1,
+          "context_guard": {
+            "version": 3,
+            "event_id": "5c342a232471",
+            "revision": 1,
+            "scope": "current_item_only"
+          },
+          "alt": "Ilustración editorial sobre la derrota de Rafa Jódar en Tokio tras la victoria previa de Jaume Munar.",
+          "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5c342a232471-r1-ai1.jpg",
+          "sha256": "f3053e9c0bd7b9656bae97482d5ec994f2b2f0aa537eddba83801122a903dcfa",
+          "handoff": "inline-outbox-materialized-by-actions"
+        },
+        "ai_image_last_attempt_at": "2026-10-01T12:45:55.884886Z"
+      },
+      "factual_summary": "Rafael Jódar quedó eliminado en primera ronda del ATP 500 de Tokio tras perder ante el paraguayo Adolfo Daniel Vallejo por 6-1 y 6-3 en 67 minutos. Antes, Jaume Munar había eliminado a Taylor Fritz por 6-7(7), 6-4 y 6-3.",
+      "fallback_image": {
+        "url": "https://s1.abcstatics.com/abc/www/multimedia/deportes/2026/10/01/1518129955-U36764635806GDm-1200x630@diario_abc.JPG",
+        "source": "www.abc.es",
+        "source_url": "https://www.abc.es/deportes/tenis/jodar-cae-tokio-desaprovecha-favor-munar-hombrada-20261001141038-nt.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Jódar cae en Tokio y desaprovecha el favor de Munar con su hombrada ante Fritz"
+      },
+      "rewrite_request": "CONTRATO: conservar hechos, fuentes y texto factual de preserved_editorial sin cambios. NO buscar ni reinvestigar. Cambiar exclusivamente remate e imagen IA; un intento ImageGen desde el chat, nunca bloquear READY. Cambia solo el remate y genera una nueva imagen IA. Conserva exactamente hechos, fuentes y texto factual. No reinvestigues.",
+      "rewrite_requested_at": "2026-10-01T12:54:10.636Z",
+      "rewrite_version": 1
     },
     {
       "event_id": "b2a5b7064a04",
@@ -20480,5 +20594,5 @@
       "delivery_confirmation": "prepared_web"
     }
   ],
-  "updated_at": "2026-10-01T12:52:29.795087Z"
+  "updated_at": "2026-10-01T12:54:10.636Z"
 }
