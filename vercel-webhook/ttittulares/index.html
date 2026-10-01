@@ -677,7 +677,7 @@ function renderReady(list,preservedImages=new Map()){
   const current=Number(events[item.event_id]?.source_count||item.current_source_count||item.drafted_source_count||0);
   const drafted=Number(item.drafted_source_count||item.source_count||0);
   const card=document.createElement("article");card.className="card";card.dataset.eventId=String(item.event_id||"");
-  card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="facts"></div><div class="imagebox"><div class="imageTitle">Imágenes</div><div class="imageMeta"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:9px"><div class="aiChoice" hidden><div>IA</div><img class="aiPreview" style="width:100%;height:190px;object-fit:contain"></div><div class="archiveChoice" hidden><div>Archivo</div><img class="archivePreview" style="width:100%;height:190px;object-fit:contain"></div></div></div><div class="variants"></div><div class="actions"><button class="btn rework">🔁 Rehacer remate + IA</button><button class="btn copyTweet">📋 Copiar tuit</button><button class="btn copyAi" hidden>✨ Copiar imagen IA</button><button class="btn copyArchive" hidden>🖼️ Copiar imagen archivo</button><a class="btn searchX" target="_blank" rel="noopener">🔎 Buscar en X</a><button class="btn published">✓ Ya publicado</button><button class="btn danger dismiss">Desestimar</button></div>';
+  card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div><div class="imageCompact sources"></div></div><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end"><div class="count"></div><button class="btn expand" type="button">Abrir</button></div></div><div class="details"><div class="facts"></div><div class="imagebox"><div class="imageTitle">Imágenes</div><div class="imageMeta"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:9px"><div class="aiChoice" hidden><div>IA</div><img class="aiPreview" style="width:100%;height:190px;object-fit:contain"></div><div class="archiveChoice" hidden><div>Archivo</div><img class="archivePreview" style="width:100%;height:190px;object-fit:contain"></div></div></div><div class="variants"></div><div class="actions"><button class="btn rework">🔁 Rehacer remate + IA</button><button class="btn copyTweet">📋 Copiar tuit</button><button class="btn copyAi" hidden>✨ Copiar imagen IA</button><button class="btn copyArchive" hidden>🖼️ Copiar imagen archivo</button><a class="btn searchX" target="_blank" rel="noopener">🔎 Buscar en X</a><button class="btn published">✓ Ya publicado</button><button class="btn danger dismiss">Desestimar</button></div></div>';
   card.querySelector(".title").textContent=item.title||"Noticia sin título";
   card.querySelector(".sources").textContent="Redactada con "+drafted+" ("+current+") · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
@@ -686,7 +686,22 @@ function renderReady(list,preservedImages=new Map()){
   const fallback=item.fallback_image||(item.image&&!item.image.generated?item.image:{} )||{};
   const aiUrl=String(ai.url||""),fallbackUrl=String(fallback.url||"");
   const aiState=aiUrl?"lista":["failed","none","error"].includes(String(item.ai_image_status))?"falló":"pendiente";
-  card.querySelector(".imageMeta").textContent="IA "+aiState+" · archivo "+(fallbackUrl?"disponible":"no disponible");
+  const visualStatus="IA "+aiState+" · archivo "+(fallbackUrl?"disponible":"no disponible");
+  card.querySelector(".imageMeta").textContent=visualStatus;
+  card.querySelector(".imageCompact").textContent=visualStatus;
+  const cardKey=String(item.event_id||"");
+  const det=card.querySelector(".details"),expand=card.querySelector(".expand");
+  const syncExpanded=()=>{
+    const opened=openCards.has(cardKey);
+    det.classList.toggle("open",opened);
+    expand.textContent=opened?"Cerrar":"Abrir";
+    expand.setAttribute("aria-expanded",String(opened));
+  };
+  expand.onclick=()=>{
+    if(openCards.has(cardKey))openCards.delete(cardKey);else openCards.add(cardKey);
+    persistUiState();syncExpanded();
+  };
+  syncExpanded();
   for(const [kind,url] of [["ai",aiUrl],["archive",fallbackUrl]]){
    let preview=card.querySelector("."+kind+"Preview");const choice=card.querySelector("."+kind+"Choice"),button=card.querySelector(kind==="ai"?".copyAi":".copyArchive");
    if(!url)continue;
