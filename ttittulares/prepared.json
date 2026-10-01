@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T11:31:38.454435Z",
+  "updated_at": "2026-10-01T11:33:38.771407Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -636,7 +636,7 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
@@ -659,7 +659,11 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Muere un bebé en Villanueva del Arzobispo, Jaén, tras llevarse a la boca un puñado de legumbres - Telecinco"
-      }
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T11:33:38.771317Z",
+      "ai_image_failure_reason": "ImageGen fue invocado una vez, pero devolvió una captura de interfaz de TTiTTulares sin relación con la noticia actual. Se rechaza por violar CURRENT_ITEM_ONLY; se conserva el fallback real y no se reintenta automáticamente."
     }
   ]
 }
