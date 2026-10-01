@@ -169,6 +169,104 @@ async function imageDecision(x,action,button){
   setTimeout(()=>load().catch(e=>alert(e.message)),500);
  }catch(error){button.textContent=old;button.disabled=false;alert(error?.message||"No se pudo guardar la decisión de imagen.");}
 }
+
+function normalAiEligible(x){
+ if(!x||x.copied||x.tremending_origin||x.disable_ai_image)return false;
+ const mode=String(x.image_mode||x.image_strategy||"").toLowerCase();
+ if(["fallback_only","archive_only","tweet_capture_only"].includes(mode))return false;
+ return String(x.ai_image_status||"").toLowerCase()!=="disabled"&&Boolean(String(x.id||""))
+}
+function imageRunActive(run){return ["REQUESTED","RUNNING","GENERATING","PERSISTING"].includes(String(run?.status||"").toUpperCase())}
+function liveImageRunState(x){
+ const run=imageRuns.get(String(x.id||"")),st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"");
+ if(st==="REQUESTED")return {aiCls:"aiRework",collapsed:"pending",text:"◷ IA solicitada · esperando al PC"};
+ if(st==="RUNNING")return {aiCls:"aiPending",collapsed:"pending",text:phase==="validating"?"● Chat IA abierto · validando":"● Chat IA abierto"};
+ if(st==="GENERATING")return {aiCls:"aiPending",collapsed:"pending",text:"● Generando IA ahora en ChatGPT"};
+ if(st==="PERSISTING")return {aiCls:"aiPending",collapsed:"pending",text:"● IA generada · guardando"};
+ if(st==="ERROR")return {aiCls:"aiFailed",collapsed:"failed",text:"✕ Error en generación IA · pulsa Rehacer"};
+ if(st==="CANCELLED")return {aiCls:"aiFailed",collapsed:"failed",text:"— Generación cancelada · entrada ya no vigente"};
+ if(st==="DONE")return {aiCls:"aiReady",collapsed:"ready",text:"✓ Generación IA terminada"};
+ return null
+}
+function pendingImageItems(){
+ return allItems.filter(x=>{
+   if(!normalAiEligible(x))return false;
+   const ai=isChatImageGen(x.ai_image)?x.ai_image:{},hasAi=Boolean(String(ai.url||""));
+   const raw=String(x.ai_image_status||"").toLowerCase();
+   if(x.ai_image_regenerate_requested)return true;
+   if(hasAi)return false;
+   if(["failed","error","none"].includes(raw))return false;
+   return true
+ })
+}
+function updateImageControl(){
+ const candidates=pendingImageItems();
+ const active=candidates.filter(x=>imageRunActive(imageRuns.get(String(x.id||"")))).length;
+ const pending=candidates.filter(x=>!imageRunActive(imageRuns.get(String(x.id||"")))).length;
+ const btn=$("runImages"),head=$("imageHeadline"),state=$("imageState");
+ if(!btn||!head||!state)return;
+ btn.textContent="✨ Imágenes IA"+(pending?" ("+pending+")":"");
+ btn.disabled=pending===0;
+ head.textContent=active?("Imágenes IA · "+active+" en curso"):"Imágenes IA";
+ state.textContent=active?(active+" generándose en paralelo · "+pending+" en cola · máximo 4 simultáneas"):(pending?pending+" pendiente"+(pending===1?"":"s")+" de generar":"Sin imágenes IA pendientes");
+ state.className="imageControlState "+(active||pending?"running":"done")
+}
+async function markImageRegenerate(x){
+ const controlToken=localStorage.getItem("ttendencias-control-token")||"";
+ if(!controlToken)throw new Error("Guarda primero el token de control desde Ajustes.");
+ const response=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+controlToken},body:JSON.stringify({action:"regenerate-image",names:[x.name||displayName(x)]})});
+ const result=await response.json().catch(()=>({}));
+ if(!response.ok||!result?.ok)throw new Error(result?.error||"No se pudo solicitar la regeneración.");
+ x.ai_image_regenerate_requested=true
+}
+async function requestImageRun(x,{markRegenerate=false,silent=false}={}){
+ const controlToken=localStorage.getItem("ttendencias-control-token")||"";
+ if(!controlToken){if(!silent)alert("Guarda primero el token de control desde Ajustes en la pantalla principal.");throw new Error("Falta acceso")}
+ const id=String(x.id||"");if(!id)throw new Error("La tendencia no tiene id");
+ if(imageRunActive(imageRuns.get(id))){if(!silent)alert("Esa imagen ya se está generando.");return false}
+ if(markRegenerate&&!x.ai_image_regenerate_requested)await markImageRegenerate(x);
+ const response=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+controlToken},body:JSON.stringify({
+   task:"images",target_id:id,id,target_name:x.name||displayName(x),revision:Number(x.revision||0)
+ })});
+ const result=await response.json().catch(()=>({}));
+ if(response.status===409&&result.error==="image_run_in_progress"){if(!silent)alert("Esa imagen ya tiene un chat en curso.");return false}
+ if(!response.ok||!result?.ok)throw new Error(result?.error||"No se pudo solicitar la imagen IA.");
+ imageRuns.set(id,{...result,status:"REQUESTED",phase:"queued",updated_at:result.requested_at});
+ render();updateImageControl();scheduleImageRunPoll(true);
+ if(!silent)alert("Imagen IA enviada a un chat independiente.");
+ return true
+}
+async function requestPendingImages(){
+ const items=pendingImageItems().filter(x=>!imageRunActive(imageRuns.get(String(x.id||""))));
+ if(!items.length){alert("No hay imágenes IA pendientes.");return}
+ if(!confirm("¿Lanzar "+items.length+" imagen"+(items.length===1?"":"es")+" IA? Se abrirán chats independientes y hasta 4 generarán en paralelo."))return;
+ $("runImages").disabled=true;let ok=0,errors=0;
+ for(const x of items){try{if(await requestImageRun(x,{silent:true}))ok++}catch(_){errors++}}
+ updateImageControl();
+ alert(errors?(ok+" solicitadas · "+errors+" con error"):(ok+" imagen"+(ok===1?"":"es")+" solicitada"+(ok===1?"":"s")))
+}
+function scheduleImageRunPoll(fast){clearTimeout(imageRunPoll);imageRunPoll=setTimeout(refreshImageRuns,fast?4000:15000)}
+async function refreshImageRuns(){
+ const pendingSet=new Set(pendingImageItems().map(x=>String(x.id||"")));
+ const items=allItems.filter(normalAiEligible).filter(x=>pendingSet.has(String(x.id||""))||imageRuns.has(String(x.id||"")));
+ let changed=false,terminal=false;
+ await Promise.all(items.map(async x=>{
+   const id=String(x.id||""),before=imageRuns.get(id);
+   try{
+     const r=await fetch(IMAGE_RUN_RAW+encodeURIComponent(id)+".json?t="+Date.now(),{cache:"no-store"});
+     if(!r.ok){if(r.status===404&&before){imageRuns.delete(id);changed=true}return}
+     const d=await r.json();
+     if(JSON.stringify(before||null)!==JSON.stringify(d)){
+       imageRuns.set(id,d);changed=true;
+       if(["DONE","ERROR","CANCELLED"].includes(String(d.status||"").toUpperCase()))terminal=true
+     }
+   }catch(_){}
+ }));
+ if(changed)render();else updateImageControl();
+ scheduleImageRunPoll([...imageRuns.values()].some(imageRunActive));
+ if(terminal)load().catch(()=>{})
+}
+
 function isChatImageGen(image){
  const guard=image?.context_guard||{};
  return image?.generated===true&&image?.provider==="chat-imagegen"&&image?.origin==="executing_chat"&&Number(guard.version)===3&&guard.scope==="current_item_only";
