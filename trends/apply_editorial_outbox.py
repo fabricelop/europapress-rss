@@ -89,7 +89,13 @@ def validate_generated_image(item, expected_id=None, expected_revision=None):
     url = str(image.get("url") or "").strip()
     if str(image.get("rights_status") or "") != "generated":
         raise ValueError("imagen generada sin rights_status=generated")
-    if str(image.get("source") or "") != "TTendencias / ChatGPT":
+    source = str(image.get("source") or "")
+    allowed_sources = {
+        "TTendencias / ChatGPT",
+        "TTendencias / Vercel AI Gateway / OpenAI",
+        "TTendencias / Editorial SVG IA",
+    }
+    if source not in allowed_sources:
         raise ValueError("imagen generada sin source esperado")
     guard = image.get("context_guard") or {}
     guard_version = int(guard.get("version") or 0)
