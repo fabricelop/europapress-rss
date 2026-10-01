@@ -250,20 +250,24 @@ export default async function handler(req,res){
       return res.status(200).json({ok:true,enabled,active:true,...active,last_run,can_run:enabled&&authorized(req)})
     }
 
-    let last_run=null;
-    if(latest&&["DONE","ERROR"].includes(latest.status))last_run=latest;
-    else{
-      const terminalTraces=traces.filter(t=>["DONE","ERROR"].includes(t.status)).sort((a,b)=>terminalOrder(a)-terminalOrder(b));
-      if(terminalTraces.length){
-        const raw=terminalTraces.at(-1);
-        if(Number(raw.incident_count||0)>0&&!errors.length)errors=await readErrors();
-        last_run=normalizeTrace(raw,errors)
-      }else if(fallback&&["DONE","ERROR"].includes(fallback.status)){
-        if(!errors.length)errors=await readErrors();
-        const inc=incidentsFor(errors,fallback.started_at||fallback.requested_at,fallback.finished_at);
-        last_run={...fallback,incidents:inc,incident_count:inc.length}
-      }
+    const terminalCandidates=[];
+    for(const raw of traces.filter(t=>["DONE","ERROR"].includes(t.status))){
+      if(Number(raw.incident_count||0)>0&&!errors.length)errors=await readErrors();
+      terminalCandidates.push(normalizeTrace(raw,errors))
     }
+    if(latest&&["DONE","ERROR"].includes(latest.status))terminalCandidates.push(latest);
+    if(fallback&&["DONE","ERROR"].includes(fallback.status)){
+      if(!errors.length)errors=await readErrors();
+      const inc=incidentsFor(errors,fallback.started_at||fallback.requested_at,fallback.finished_at);
+      terminalCandidates.push({...fallback,incidents:inc,incident_count:inc.length})
+    }
+    terminalCandidates.sort((a,b)=>{
+      const aStarted=stamp(a.started_at||a.requested_at||a.finished_at||a.updated_at);
+      const bStarted=stamp(b.started_at||b.requested_at||b.finished_at||b.updated_at);
+      if(aStarted!==bStarted)return aStarted-bStarted;
+      return stamp(a.finished_at||a.updated_at)-stamp(b.finished_at||b.updated_at)
+    });
+    const last_run=terminalCandidates.at(-1)||null;
     return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,debug:{server_now:new Date().toISOString(),trace_count:traces.length,latest_run_id:latest?.run_id||null,latest_status:latest?.status||null,last_run_id:last_run?.run_id||null,last_run_finished_at:last_run?.finished_at||null},can_run:enabled&&authorized(req)})
   }catch(e){
     console.error(e);
