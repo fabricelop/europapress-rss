@@ -98,6 +98,7 @@ export default async function handler(req,res){
   if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
   if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
   try{
+    const task=String(req.body?.task||"editorial").toLowerCase()==="images"?"images":"editorial";
     const [{doc:current,sha},items]=await Promise.all([readTrigger(),comments()]);
     if(activeTrace(items))return res.status(409).json({ok:false,error:"run_in_progress"});
     const currentId=String(current.command_id||"").trim();
@@ -114,14 +115,14 @@ export default async function handler(req,res){
 
     const requested_at=new Date().toISOString();
     const command_id=`tt-${Date.now()}-${crypto.randomBytes(3).toString("hex")}`;
-    const doc={version:2,command_id,requested_at,mode:"manual_pc_chat",executor:"pc_chat",project:"ttittulares",launcher_arg:"titulares",auto_image_followup:true};
+    const doc={version:2,command_id,requested_at,mode:"manual_pc_chat",executor:"pc_chat",project:"ttittulares",launcher_arg:"titulares",task,auto_image_followup:false};
     let saved;
     try{saved=await writeTrigger(doc,sha)}
     catch(e){
       if(!String(e.message||e).includes("409")&&!String(e.message||e).includes("422"))throw e;
       const fresh=await readTrigger();saved=await writeTrigger(doc,fresh.sha)
     }
-    return res.status(200).json({ok:true,command_id,requested_at,commit_sha:saved?.commit?.sha||null,trace_comment_id:null,trigger:"pc_chat_poll"})
+    return res.status(200).json({ok:true,command_id,requested_at,commit_sha:saved?.commit?.sha||null,trace_comment_id:null,trigger:"pc_chat_poll",task})
   }catch(e){
     console.error(e);
     return res.status(500).json({ok:false,error:String(e.message||e)})
