@@ -660,6 +660,11 @@ function isChatImageGen(image){
 function renderReady(list,preservedImages=new Map()){
  $("viewTitle").textContent="Noticias listas";
  const status=model.status||{},events=status.events||{},prepared=[...(model.prepared||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
+ if(openCards.size>1){
+   const visible=[...openCards].filter(id=>prepared.some(x=>String(x.event_id||"")===String(id)));
+   const keep=visible.length?visible[visible.length-1]:null;
+   openCards.clear();if(keep)openCards.add(String(keep));persistUiState();
+ }
  prepared.sort((a,b)=>{
    const imageReadyRank=item=>{
      const img=item.image||{},url=String(img.url||item.image_url||"");
