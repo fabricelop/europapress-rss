@@ -91,28 +91,23 @@ def validate_generated_image(item, expected_id=None, expected_revision=None):
         raise ValueError("imagen generada sin rights_status=generated")
     if str(image.get("source") or "") != "TTendencias / ChatGPT":
         raise ValueError("imagen generada sin source esperado")
-    style = str(image.get("style_version") or "")
-    check = image.get("style_check") or {}
-    required_checks = [
-        "reviewed_after_generation",
-        "single_narrative_scene",
-        "visual_gag_without_text",
-        "no_infographic_layout",
-        "no_diagram_arrows_or_connectors",
-        "no_ui_or_scoreboard_layout",
-        "low_text",
-        "depth_lighting_texture",
-        "correct_event_subject",
-        "single_current_event_only",
-        "no_cross_item_context",
-        "no_multipanel_or_collage",
-    ]
-    if style != "editorial-scene-v2-cleveland" or not all(check.get(k) is True for k in required_checks):
-        raise ValueError("imagen generada sin control visual/editorial/aislamiento completo")
-
     guard = image.get("context_guard") or {}
-    if int(guard.get("version") or 0) != 2:
-        raise ValueError("imagen generada sin context_guard v2")
+    guard_version = int(guard.get("version") or 0)
+    if guard_version not in {2, 3}:
+        raise ValueError("imagen generada sin context_guard compatible")
+    # V2 histórico exigía una inspección semántica automática. V3 entrega el
+    # primer raster íntegro para revisión humana y por tanto no bloquea por estilo.
+    if guard_version == 2:
+        style = str(image.get("style_version") or "")
+        check = image.get("style_check") or {}
+        required_checks = [
+            "reviewed_after_generation","single_narrative_scene","visual_gag_without_text",
+            "no_infographic_layout","no_diagram_arrows_or_connectors","no_ui_or_scoreboard_layout",
+            "low_text","depth_lighting_texture","correct_event_subject","single_current_event_only",
+            "no_cross_item_context","no_multipanel_or_collage",
+        ]
+        if style != "editorial-scene-v2-cleveland" or not all(check.get(k) is True for k in required_checks):
+            raise ValueError("imagen V2 sin control visual/editorial completo")
     if str(guard.get("scope") or "") != "current_item_only":
         raise ValueError("imagen generada sin scope current_item_only")
     if expected_id is not None and str(guard.get("trend_id") or "") != str(expected_id):
@@ -205,7 +200,8 @@ def materialize_inline_generated_image(item, req_id: str, revision: int):
 
     generated_dir = TRENDS / "generated-images"
     generated_dir.mkdir(parents=True, exist_ok=True)
-    filename = f"{req_id}-r{revision}{ext}"
+    attempt = int(image.get("generation_attempt") or 1)
+    filename = f"{req_id}-r{revision}-ai{attempt}{ext}"
     path = generated_dir / filename
     path.write_bytes(data)
 
@@ -240,14 +236,43 @@ def checkpoint_image(payload, req_id, revision):
     materialize_inline_generated_image(holder, req_id, revision)
     validate_generated_image(holder, req_id, revision)
     image = holder["image"]
-    expected = f"{req_id}-r{revision}"
-    if Path(image["url"]).stem != expected:
+    expected_prefix = f"{req_id}-r{revision}-ai"
+    if not Path(image["url"]).stem.startswith(expected_prefix):
         raise ValueError("imagen de otro id/revision; no se puede reutilizar")
     cache_path.parent.mkdir(parents=True, exist_ok=True)
     save(cache_path, {"id": req_id, "revision": revision, "image": image})
     item["image"] = image
     payload["prepared_item"] = item
     return image
+
+
+def checkpoint_ai_image(payload, req_id, revision):
+    item = payload.get("prepared_item") or {}
+    ai = item.get("ai_image")
+    if not ai:
+        return None
+    holder = {"image": dict(ai)}
+    try:
+        validate_generated_image(holder, req_id, revision)
+        materialize_inline_generated_image(holder, req_id, revision)
+        validate_generated_image(holder, req_id, revision)
+        ai = holder["image"]
+        item["ai_image"] = ai
+        item["ai_image_status"] = "ready"
+        item["ai_image_attempt"] = int(ai.get("generation_attempt") or item.get("ai_image_attempt") or 1)
+        item.pop("ai_image_failure_reason", None)
+        if str(item.get("image_choice") or "") != "fallback":
+            item["image"] = dict(ai)
+            item["image_choice"] = "ai"
+            item["image_status"] = "ready"
+        payload["prepared_item"] = item
+        return ai
+    except Exception as exc:
+        item["ai_image_status"] = "failed"
+        item["ai_image_failure_reason"] = str(exc)[:500]
+        # El error visual nunca invalida el resultado editorial.
+        payload["prepared_item"] = item
+        return None
 
 
 def validate_ready(payload):
@@ -264,14 +289,7 @@ def validate_ready(payload):
     texts = [item["primary"]["text"]] + [a["tweet_text"] for a in alts]
     if any(len(t) > 280 for t in texts):
         raise ValueError("tuit de más de 280 caracteres")
-    image_pending = bool(item.get("image_pending"))
-    if image_pending:
-        if item.get("image"):
-            raise ValueError("image_pending no puede incluir una imagen parcial")
-        if not str(item.get("image_failure_reason") or "").strip():
-            raise ValueError("image_pending sin image_failure_reason")
-    else:
-        validate_generated_image(item, item.get("id"), item.get("revision"))
+    # La imagen es paralela y nunca bloquea la validez editorial del READY.
     return item
 
 def image_queue_policy():
@@ -383,22 +401,16 @@ def main():
 
             result_status = str(payload.get("status") or "")
             if result_status == "ready":
-                pending_image = bool((payload.get("prepared_item") or {}).get("image_pending"))
-                if not pending_image:
-                    checkpoint_image(payload, req_id, revision)
-                    # Keep the materialized URL even if text validation fails.
-                    save(path, payload)
+                # Best-effort: materializa la IA si llegó, pero cualquier fallo
+                # queda registrado dentro del item y no bloquea el texto.
+                checkpoint_ai_image(payload, req_id, revision)
+                save(path, payload)
                 item = validate_ready(payload)
                 item["id"] = req_id
                 item["revision"] = revision
                 item.setdefault("trend_name", req.get("name"))
-                if bool(req.get("with_image")) and not bool(item.get("image_pending")):
-                    image = item.get("image") or {}
-                    if not image.get("generated") or not str(image.get("url") or "").strip():
-                        raise ValueError("item ready sin imagen raster generada obligatoria")
-                    item.pop("image_search_status", None)
-                    item.pop("image_note", None)
-                    item.pop("image_generation_status", None)
+                # No existe requisito de imagen para cerrar el item.
+                item.pop("image_generation_status", None)
                 related = item.get("related_trends") or [req.get("name")]
                 related_norm = {norm(x) for x in related if x}
 
