@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Nonblocking real-photo enrichment of TTendencias explanations.
+"""Nonblocking fallback-photo enrichment of TTendencias explanations.
 
-No AI images or tweet rewriting. Never waits for a photo before explanation
-publication. A selected Tremending tweet capture always takes precedence.
-Safe to rerun: ready/none are terminal for the explained revision.
+AI images are handled independently by the editorial chat. This job only finds
+the archive/fallback image and never overwrites a ready AI image unless the
+user selected fallback. It never blocks explanation publication.
 """
 from __future__ import annotations
 
@@ -182,49 +182,60 @@ def tremending_photo(row, entry, exists=lambda p: p.is_file()):
     }
 
 
+def _select_fallback_if_needed(row, image):
+    ai_ready = str(row.get("ai_image_status") or "") == "ready" and bool((row.get("ai_image") or {}).get("url"))
+    choice = str(row.get("image_choice") or "")
+    if not ai_ready or choice == "fallback":
+        row["image"] = dict(image)
+        row["image_status"] = "ready"
+        row["image_choice"] = "fallback"
+        row["image_pending"] = False
+
+
 def enrich(row, by_tremending, photo_finder=page_photo, exists=lambda p: p.is_file()):
     if str(row.get("status") or "") != "explained" or not str(row.get("explanation") or "").strip():
         return False
-    if str(row.get("image_status") or "") in {"ready", "none"}:
+    if str(row.get("fallback_image_status") or "") in {"ready", "none"}:
         return False
     before = json.dumps(row, ensure_ascii=False, sort_keys=True)
     if row.get("tremending_origin"):
         entry = by_tremending.get(str(row.get("tremending_id") or ""))
         image = tremending_photo(row, entry, exists)
-        row["image_strategy"] = "tremending_tweet_capture"
+        row["fallback_image_strategy"] = "tremending_tweet_capture"
         if image:
-            row["image"] = image
-            row["image_status"] = "ready"
-            row["image_pending"] = False
-            row.pop("image_failure_reason", None)
+            row["fallback_image"] = image
+            row["fallback_image_status"] = "ready"
+            _select_fallback_if_needed(row, image)
+            row.pop("fallback_image_failure_reason", None)
         else:
-            row["image_status"] = "pending_capture"
-            row["image_pending"] = True
+            row["fallback_image_status"] = "pending_capture"
     else:
-        row["image_strategy"] = "existing_web_image"
-        row.pop("image", None)
+        row["fallback_image_strategy"] = "existing_web_image"
         for page, source in verified_source_pages(row):
             image_url = photo_finder(page)
             if not image_url or not safe_https(image_url):
                 continue
-            row["image"] = {
+            image = {
                 "url": image_url,
                 "source": source,
                 "source_url": page,
-                "alt": "Imagen relacionada con " + str(row.get("name") or "la tendencia"),
+                "alt": "Imagen de archivo relacionada con " + str(row.get("name") or "la tendencia"),
                 "rights_status": "unverified",
                 "generated": False,
             }
-            row["image_status"] = "ready"
-            row["image_pending"] = False
-            row.pop("image_failure_reason", None)
+            row["fallback_image"] = image
+            row["fallback_image_status"] = "ready"
+            _select_fallback_if_needed(row, image)
+            row.pop("fallback_image_failure_reason", None)
             break
         else:
-            row["image_status"] = "none"
-            row["image_pending"] = False
-            row["image_failure_reason"] = "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+            row["fallback_image_status"] = "none"
+            row["fallback_image_failure_reason"] = "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+            if not (row.get("image") or {}).get("url"):
+                row["image_status"] = "none"
+                row["image_choice"] = "none"
+                row["image_pending"] = False
     return json.dumps(row, ensure_ascii=False, sort_keys=True) != before
-
 
 def selftest():
     sample = {
@@ -233,21 +244,35 @@ def selftest():
         "tremending_origin": True, "tremending_id": "entry",
         "selected_tweet": {"id": "123", "url": "https://x.com/example/status/123"},
     }
-    assert enrich(sample, {}) and sample["image_status"] == "pending_capture"
+    assert enrich(sample, {}) and sample["fallback_image_status"] == "pending_capture"
     by_id = {"entry": {"image": {
         "status": "ready", "tweet_id": "123",
         "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/tremending-images/123.png",
         "static_path": "ttittulares/tremending-images/123.png"}}}
     assert enrich(sample, by_id, exists=lambda _: True)
-    assert sample["image_status"] == "ready" and sample["image"]["tweet_id"] == "123"
+    assert sample["fallback_image_status"] == "ready"
+    assert sample["fallback_image"]["tweet_id"] == "123"
+    assert sample["image_choice"] == "fallback"
     assert not enrich(sample, by_id, exists=lambda _: True)
-    normal = {"id": "normal", "name": "Tema", "status": "explained",
-              "explanation": "TT#1 Tema es tendencia por un acontecimiento.", "verification_sources": []}
-    assert enrich(normal, {}) and normal["image_status"] == "none"
-    assert not enrich(normal, {})
-    assert not safe_https("http://example.com") and not safe_https("https://127.0.0.1/photo.jpg")
-    print("TTENDENCIAS_REAL_PHOTO_SELFTEST_OK")
 
+    ai = {"url": "https://example.test/ai.jpg", "generated": True}
+    normal = {"id": "normal", "name": "Tema", "status": "explained",
+              "explanation": "TT#1 Tema es tendencia por un acontecimiento.",
+              "verification_sources": [{"source": "Fuente", "url": "https://example.test/story"}],
+              "ai_image": ai, "ai_image_status": "ready", "image": dict(ai),
+              "image_status": "ready", "image_choice": "ai"}
+    assert enrich(normal, {}, photo_finder=lambda _: "https://example.test/fallback.jpg")
+    assert normal["fallback_image_status"] == "ready"
+    assert normal["image_choice"] == "ai"
+    assert normal["image"]["url"] == ai["url"]
+
+    absent = {"id": "absent", "name": "Tema", "status": "explained",
+              "explanation": "TT#1 Tema es tendencia por un acontecimiento.", "verification_sources": []}
+    assert enrich(absent, {}) and absent["fallback_image_status"] == "none"
+    assert absent["image_status"] == "none"
+    assert not enrich(absent, {})
+    assert not safe_https("http://example.com") and not safe_https("https://127.0.0.1/photo.jpg")
+    print("TTENDENCIAS_FALLBACK_PHOTO_SELFTEST_OK")
 
 def main():
     parser = argparse.ArgumentParser()
@@ -264,7 +289,7 @@ def main():
     for row in reversed((doc.get("items") or [])[-90:]):
         if attempted >= MAX_ITEMS_PER_PASS:
             break
-        if row.get("image_status") in {"ready", "none"}:
+        if row.get("fallback_image_status") in {"ready", "none"}:
             continue
         try:
             at = datetime.fromisoformat(str(row.get("explained_at") or "").replace("Z", "+00:00"))
@@ -279,7 +304,7 @@ def main():
         attempted += 1
         if enrich(row, by_id):
             changed += 1
-        state_name = row.get("image_status")
+        state_name = row.get("fallback_image_status")
         ready += state_name == "ready"
         absent += state_name == "none"
         capture_pending += state_name == "pending_capture"
