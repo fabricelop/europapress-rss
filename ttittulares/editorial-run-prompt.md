@@ -48,24 +48,84 @@ Añade una fase real `remate_selection` inmediatamente después de `drafting` y 
 
 No incluyas el texto de los candidatos descartados en RUNTRACE: el único remate visible sigue siendo el seleccionado. Mantén `remate_selections` en el cierre `DONE` para que pueda auditarse después qué peso tuvieron las estrellas y qué snapshot exacto se usó. Si la cola está vacía, conserva igualmente `ratings_snapshot` y usa `remate_selections:[]`.
 
-## Imagen real del acontecimiento
+## Imágenes IA + archivo, siempre no bloqueantes
 
-### Excepción Tremending elegida por el usuario
+La imagen es una capa paralela. **Nunca retrasa ni impide que una noticia pase a READY/Listas**, nunca cambia una noticia verificada a PROBLEMATIC y nunca impide continuar con el resto del lote.
 
-Cuando `telegram/editorial-processing.json` incluya `tremending_origin:true`,
-`tremending_tweet` y `image_mode:"tremending_tweet_capture"`, no busques ni
-generes otra imagen. Conserva esos campos al preparar la noticia y deja la
-noticia lista aunque `image_status:"pending_capture"`: la GitHub Action de
-captura oficial de X adjunta después el PNG estático elegido. El usuario ha
-elegido el tuit y el enfoque; úsalo únicamente como acompañamiento visual, no
-como prueba factual ni señal para tomar una posición partidista. La información
-debe seguir separando hechos comprobados de opiniones atribuidas.
+### Intento inicial
 
-TTiTTulares no genera imágenes por IA. No llames ImageGen, no construyas briefs visuales, no transportes raster/base64 y no uses Telegram como fallback de imagen.
+Para cada noticia PROCESSING, tan pronto como el acontecimiento esté verificado y haya contexto factual suficiente:
+1. prepara el texto/tuit normalmente;
+2. intenta exactamente **UNA** imagen IA tipo gag editorial;
+3. en paralelo conserva el mecanismo actual de búsqueda de una fotografía real/archivo desde las fuentes;
+4. materializa el READY aunque una o ambas imágenes sigan pendientes o fallen.
 
-El READY inicial usa `image_strategy:"existing_web_image"` e `image_status:"pending"`. La Action que aplica el outbox recupera de forma determinista una imagen real desde las páginas de las fuentes del mismo acontecimiento: primero fuente oficial/primaria y después medio fiable, mediante metadatos `og:image`/`twitter:image`. Valida HTTPS, MIME, raster y dimensiones. Guarda URL externa, fuente, página de origen, alt y `rights_status:"unverified"`.
+No hagas un segundo intento automático. La primera IA con raster íntegro se entrega para revisión humana, aunque el encaje semántico pudiera ser imperfecto. Solo rechaza bytes corruptos/incompletos o imposibles de persistir.
 
-Si no existe una imagen verificable, la revisión termina en `image_status:"none"` con una razón concreta. `none` es terminal para esa revisión y no crea IMAGE_RETRY. Una revisión nueva puede volver a buscar imagen.
+### Aislamiento de contexto V3
+
+Antes de cada ImageGen crea un brief nuevo, autocontenido y exclusivamente del item actual, con:
+- `event_id`, `revision`, titular y resumen factual verificado;
+- sujetos, lugar, objetos y acción que pertenecen inequívocamente a ESA noticia;
+- nada de otras noticias del lote, imágenes anteriores, prompts anteriores ni elementos visibles de otros items.
+
+El brief debe comenzar conceptualmente por:
+`TTITTULARES_IMAGE_ISOLATION_V3 · CURRENT_ITEM_ONLY · <event_id> r<revision>`
+
+y pedir:
+- una sola escena narrativa;
+- gag visual claro, divertido y periodístico;
+- caricatura editorial, expresiones claras, pocos elementos;
+- sin collage, split-screen, multipanel, infografía ni UI;
+- casi sin texto; si aparece, breve y diegético;
+- detalle medio/bajo y generación rápida.
+
+No reutilices `image_id`, `gen_id`, `parent_gen_id`, `referenced_image_ids`, semilla ni raster anteriores.
+
+Guarda:
+- `ai_image` y `ai_image_status:"ready|failed|pending"`;
+- `fallback_image` y `fallback_image_status:"ready|none|pending"`;
+- `image_choice:"ai|fallback|none"`;
+- `image` como alias compatible de la imagen actualmente elegida.
+
+Si la IA queda disponible, selecciónala por defecto. Si no, usa fallback si existe. Mantén siempre ambos originales para que la app pueda mostrarlos a la vez.
+
+La metadata de IA incluye:
+`context_guard={"version":3,"event_id":"<event_id>","revision":<revision>,"scope":"current_item_only"}`
+y `generation_attempt:1`.
+
+### Rapidez
+
+La imagen solo acompañará un tuit:
+- normaliza a ~512 px de lado largo;
+- JPEG/WebP ligero, preferentemente <=150 KB;
+- pocos elementos y detalle medio/bajo;
+- nada de calidad premium o microdetalle.
+
+### Fallback de archivo
+
+Sigue recuperando una imagen real desde fuente oficial/primaria o medio fiable con `og:image`/`twitter:image`. Esa imagen se guarda como `fallback_image`, no debe sobrescribir `ai_image`.
+
+En Tremending, la captura del tuit elegido por el usuario sigue siendo el fallback prioritario. No la uses como prueba factual.
+
+### Rehacer desde la app
+
+Además de PROCESSING, al iniciar cada pasada revisa los items READY de `ttittulares/prepared.json` con `ai_image_regenerate_requested:true`. Para cada uno:
+- NO reabras ni reescribas la noticia;
+- haz exactamente un nuevo intento IA;
+- incrementa `ai_image_attempt`;
+- reemplaza solo `ai_image`;
+- conserva `fallback_image`;
+- selecciona la nueva IA por defecto si se persistió;
+- limpia la solicitud incluso si falla y deja una razón breve;
+- no cambies READY ni el tuit.
+
+### Persistencia de bytes
+
+Cuando ImageGen produzca un fichero real, obtén sus bytes programáticamente, normaliza y materializa en:
+`ttittulares/generated-images/<event_id>-r<revision>-ai<attempt>.jpg`
+
+o usa el hand-off de outbox/Actions equivalente. No reconstruyas base64 manualmente.
 
 ## Outbox
 
@@ -82,7 +142,7 @@ El `prepared_item` de un resultado ready debe ser completo. No escribas directam
 
 ## Cierre
 
-Relee cola, prepared y status, incluyendo PROCESSING anteriores. Informa noticias tratadas, imágenes reales encontradas y noticias sin imagen.
+Relee cola, prepared y status, incluyendo PROCESSING anteriores. Informa noticias tratadas y estado de IA/fallback por separado, sin considerar ninguna imagen requisito de cierre.
 
 La semántica de `partial` se refiere exclusivamente al **trabajo editorial de esta pasada que queda sin cerrar**. Una noticia realmente intentada en esta ejecución que termina o permanece en `PROBLEMATIC` es un resultado terminal de esa pasada: cuenta en `problematic_reviewed` y como incidencia de esa ejecución, pero **por sí sola no pone `partial:true`**. Una `PROBLEMATIC` histórica no reintentada puede seguir contando en `problematic_remaining`, pero NO cuenta como incidencia ni como revisada en esta pasada. En una ejecución sin PROCESSING ni problemáticas activadas por Check/revisión material, el diagnóstico debe cerrar 0/0, `problematic_reviewed:0` e incidencias 0 aunque existan elementos históricos en «No comprobadas».
 
