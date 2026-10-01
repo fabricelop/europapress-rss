@@ -54,7 +54,7 @@ function traceOf(comment){
   try{return {...JSON.parse(body.slice(TRACE_PREFIX.length).trim()),comment_id:comment.id,comment_updated_at:comment.updated_at||comment.created_at}}catch(_){return null}
 }
 function activeTrace(items){
-  const fresh=items.map(traceOf).filter(Boolean).filter(t=>["REQUESTED","RUNNING"].includes(String(t.status||""))).filter(t=>{
+  const fresh=items.map(traceOf).filter(Boolean).filter(t=>["REQUESTED","RUNNING","PROCESSING"].includes(String(t.status||"").toUpperCase())).filter(t=>{
     const age=Date.now()-stamp(t.comment_updated_at||t.updated_at||t.started_at||t.requested_at);
     return Number.isFinite(age)&&age>=0&&age<ACTIVE_MS
   });
