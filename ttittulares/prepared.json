@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T11:16:20.128Z",
+  "updated_at": "2026-10-01T11:17:20.947874Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -296,16 +296,16 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
       "image_delivery": "app",
       "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "started",
-      "ai_image_last_attempt_at": "2026-10-01T10:31:00Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T11:17:20.947824Z",
       "ai_image_context_guard": {
         "version": 3,
         "event_id": "374ef3fc3921",
@@ -322,11 +322,41 @@
       },
       "fallback_image_search_attempted_at": "2026-10-01T10:35:06.033699Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001121038_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/andalucia/noticia-moreno-urge-gobierno-meter-marcha-mas-marruecos-retorno-menores-ceuta-acaso-no-le-interesa-20261001121038.html",
-        "rights_status": "unverified",
-        "generated": false,
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "374ef3fc3921",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/374ef3fc3921-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/374ef3fc3921-r1-ai1.jpg",
+        "sha256": "f1d91cad72cd31bd9c2f7e2c0eb6bf950869b410cbe50d100c6946725830f50b",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "Moreno urge al Gobierno a \"meter una marcha más\" a Marruecos para retorno de menores de Ceuta: \"¿Acaso no le interesa?\""
+      },
+      "ai_image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "374ef3fc3921",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/374ef3fc3921-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/374ef3fc3921-r1-ai1.jpg",
+        "sha256": "f1d91cad72cd31bd9c2f7e2c0eb6bf950869b410cbe50d100c6946725830f50b",
+        "handoff": "inline-outbox-materialized-by-actions",
         "alt": "Moreno urge al Gobierno a \"meter una marcha más\" a Marruecos para retorno de menores de Ceuta: \"¿Acaso no le interesa?\""
       }
     },
