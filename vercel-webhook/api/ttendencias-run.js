@@ -24,6 +24,7 @@ const IMAGE_ACTIVE_MS=45*60*1000;
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const ACTIVE_MS=20*60*1000;
+const PROCESSING_ACTIVE_MS=5*60*1000;
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -56,7 +57,8 @@ function traceOf(comment){
 function activeTrace(items){
   const fresh=items.map(traceOf).filter(Boolean).filter(t=>["REQUESTED","RUNNING","PROCESSING"].includes(String(t.status||"").toUpperCase())).filter(t=>{
     const age=Date.now()-stamp(t.comment_updated_at||t.updated_at||t.started_at||t.requested_at);
-    return Number.isFinite(age)&&age>=0&&age<ACTIVE_MS
+    const limit=String(t.status||"").toUpperCase()==="PROCESSING"?PROCESSING_ACTIVE_MS:ACTIVE_MS;
+    return Number.isFinite(age)&&age>=0&&age<limit
   });
   fresh.sort((a,b)=>stamp(a.comment_updated_at||a.updated_at)-stamp(b.comment_updated_at||b.updated_at));
   return fresh.at(-1)||null
