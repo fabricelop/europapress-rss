@@ -2917,7 +2917,7 @@
       "id": "5f810de04443",
       "name": "#ElPerroAndaluzTVE",
       "rank": 4,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-02T00:12:23+02:00",
       "revision": 1,
       "reexplain": true,
@@ -2942,7 +2942,36 @@
       "auto_queued": true,
       "ready_at": "2026-09-25T01:08:05+02:00",
       "delivery_confirmation": "prepared_web",
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "explained_at": "2026-10-01T22:24:00Z",
+      "explanation": "TT#4 #ElPerroAndaluzTVE es tendencia por la emisión en directo en La 1 con David Bustamante y James Rhodes, con Manu Sánchez pendiente además de la actualidad de la Puerta del Sol.\n🌶️ La 1 puso un perro en directo y Twitter sacó la correa.",
+      "closer_text": "🌶️ La 1 puso un perro en directo y Twitter sacó la correa.",
+      "rank_at_explanation": 4,
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "RTVE · 30/09/2026",
+          "url": "https://www.rtve.es/rtve/20260930/perro-andaluz-mas-vivo-nunca-directo-david-bustamante-james-rhodes/17247422.shtml"
+        },
+        {
+          "source": "RTVE Play · 01/10/2026",
+          "url": "https://www.rtve.es/play/videos/directo/perro-andaluz-1-octubre/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Tendencia asociada a la emisión en directo del programa; no abre una noticia paralela en TTiTTulares.",
+      "disable_ai_image": true,
+      "image_strategy": "existing_web_image",
+      "ai_image_status": "disabled",
+      "fallback_image_status": "source_only",
+      "fallback_image_source": {
+        "source": "RTVE",
+        "source_url": "https://www.rtve.es/rtve/20260930/perro-andaluz-mas-vivo-nunca-directo-david-bustamante-james-rhodes/17247422.shtml",
+        "alt": "Manu Sánchez en El perro andaluz con David Bustamante y James Rhodes"
+      },
+      "image_status": "none",
+      "image_pending": false,
+      "image_failure_reason": "Fuente de archivo localizada; la imagen IA no bloquea el cierre editorial."
     },
     {
       "id": "af94c375f000",
@@ -14947,6 +14976,6 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-02T00:12:23+02:00",
+  "updated_at": "2026-10-01T22:24:00Z",
   "count": 396
 }
