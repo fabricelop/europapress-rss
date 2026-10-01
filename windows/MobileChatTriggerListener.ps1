@@ -318,8 +318,17 @@ function Mark-ImageCommand($State, [string]$Name, [string]$CommandId, [bool]$Act
 
 if (-not (Test-Path -LiteralPath $BaseDir)) { New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null }
 
-Write-Log "LISTENER START"
+Write-Log "LISTENER START pid=$PID"
 $state = Ensure-State
+Write-Log ("STATE ttittulares.last=" + [string]$state.ttittulares.last_command_id + " ttendencias.last=" + [string]$state.ttendencias.last_command_id)
+foreach ($probeName in $Targets.Keys) {
+  $probe = Read-JsonUrl $Targets[$probeName].TriggerUrl $false
+  if ($probe -and $probe.command_id) {
+    Write-Log ("TRIGGER PROBE " + $probeName + " remote=" + [string]$probe.command_id + " local=" + [string]$state.$probeName.last_command_id)
+  } else {
+    Write-Log ("TRIGGER PROBE FAILED " + $probeName)
+  }
+}
 $CustomMessageSupport = Enable-CustomChatMessages
 
 while ($true) {
@@ -349,6 +358,7 @@ while ($true) {
       $commandId = [string]$doc.command_id
       if ($commandId -eq [string]$state.$name.last_command_id) { continue }
 
+      Write-Log "TRIGGER NEW $name remote=$commandId local=$([string]$state.$name.last_command_id)"
       try { $requestedAt = [DateTimeOffset]::Parse([string]$doc.requested_at) } catch { $requestedAt = [DateTimeOffset]::UtcNow }
 
       # Acusar inmediatamente que ESTE PC ha visto la orden. El timeout web de 30 s
