@@ -24,6 +24,20 @@ Estos items NO se reinvestigan ni se redactan de nuevo. Un `pending` solo repres
 
 Antes del primer `drafting`, RUNTRACE debe reflejar `visual_backlog:<N>`. Al terminar la pasada, para cada ID del backlog debe existir uno de estos resultados verificables: `ai_image_status:"ready"`, `ai_image_status:"failed"` o `ai_image_last_attempt_status:"tool_called"` con outbox pendiente. No cierres una pasada dejando un READY elegible intacto y sin intento.
 
+### Recuperación obligatoria de reelaboraciones
+
+Al comenzar cada pasada, además de PROCESSING y del visual_backlog, lee los READY de `ttittulares/prepared.json` con `rewrite_pending:true`. Cada uno constituye una reelaboración **autoritativa** aunque no exista todavía una fila REWRITE en `telegram/editorial-processing.json`.
+
+Para cada `rewrite_pending`:
+- trátalo como `selection_mode:"REWRITE"`;
+- usa `rewrite_target_revision` como nueva revisión;
+- usa `rewrite_scope`, `reinvestigate` y `rewrite_request` guardados en prepared;
+- si `rewrite_scope:"remate_and_ai"`, conserva hechos, fuentes y bloque factual de la versión preparada y cambia solo remate + nueva IA;
+- no vuelvas a mostrar la versión antigua en READY mientras siga `rewrite_pending:true`;
+- elimina `rewrite_pending` únicamente cuando la nueva revisión haya quedado materializada en READY o cuando la reelaboración termine de forma terminal con error explícito.
+
+La ausencia de una fila en el fichero grande PROCESSING **no cancela** ni invalida una reelaboración solicitada desde la app.
+
 ## Redacción
 
 Comprueba al menos dos fuentes independientes fiables que sostengan el hecho esencial. Usa web solo si la evidencia falta, es ambigua, antigua o contradictoria. Redacta exactamente un tuit informativo por noticia y ciérralo, tras dos saltos de línea, con un único remate que empiece por `🌶️ `. El tuit completo debe medir <=280 caracteres y se persiste en `tweet:{text,remate,url}`. La salida pública y persistida contiene UN SOLO remate: no persistas ni muestres `Principal`, `A`, `B`, `C`, `variants`, `primary` ni `alternatives`. La generación de candidatos internos exigida por la sección de selección de remate es privada, efímera y no cuenta como variantes públicas.
