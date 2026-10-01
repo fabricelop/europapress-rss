@@ -720,6 +720,17 @@ async function requestImageRegeneration(names) {
     for (let i = doc.items.length - 1; i >= 0; i--) {
       const row = doc.items[i];
       if (!target.has(norm(row.name)) || found >= unique.length) continue;
+      if (row.tremending_origin) continue;
+      // Una petición manual de imagen pertenece al flujo nuevo y debe limpiar
+      // bloqueos heredados del antiguo generador inline. Solo un bloqueo
+      // explícito actual debe impedirla.
+      const blockReason = String(row.ai_image_block_reason || row.image_block_reason || "").trim();
+      if (!blockReason) {
+        row.disable_ai_image = false;
+        row.with_image = true;
+        row.image_strategy = "ai_plus_fallback";
+        if (!row.ai_image?.url) row.ai_image_status = "pending";
+      }
       row.ai_image_regenerate_requested = true;
       row.ai_image_regenerate_requested_at = now;
       row.ai_image_regenerate_request_version = Number(row.ai_image_regenerate_request_version || 0) + 1;
