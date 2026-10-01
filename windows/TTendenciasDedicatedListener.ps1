@@ -179,7 +179,7 @@ function Enable-CustomChatMessages {
   }
 }
 
-function Launch-ProjectChat([string]$Reason,[string]$Message = "") {
+function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$ExpectedMarker = "") {
   if (-not (Test-Path -LiteralPath $Launcher)) { throw "No existe $Launcher" }
 
   $beforeWrite = [DateTime]::MinValue
@@ -197,12 +197,20 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "") {
     if ($Message) {
       $bytes = [System.Text.Encoding]::UTF8.GetBytes($Message)
       $env:TT_CHAT_MESSAGE_B64 = [Convert]::ToBase64String($bytes)
+
+      # Para prompts personalizados (imágenes) evitar el salto por WScript:
+      # lanzar Node directamente garantiza la herencia de TT_CHAT_MESSAGE_B64.
+      $node = Get-Command node.exe -ErrorAction SilentlyContinue
+      if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
+      if (-not $node) { throw "Node no disponible para lanzar chat de imagen" }
+
+      Start-Process -FilePath $node.Source -ArgumentList @($Runner,"tendencias") -WindowStyle Hidden | Out-Null
+      Write-Log "PROCESS STARTED direct-node :: $Reason marker=$ExpectedMarker"
     } else {
       Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue
+      Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"tendencias") -WindowStyle Hidden | Out-Null
+      Write-Log "PROCESS STARTED wscript :: $Reason"
     }
-
-    Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"tendencias") -WindowStyle Hidden | Out-Null
-    Write-Log "PROCESS STARTED tendencias :: $Reason"
   } finally {
     if ($null -eq $old) { Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue }
     else { $env:TT_CHAT_MESSAGE_B64 = $old }
@@ -215,19 +223,23 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "") {
     try {
       $fi = Get-Item -LiteralPath $LauncherLogPath
       if ($fi.Length -le $beforeLen -and $fi.LastWriteTimeUtc -le $beforeWrite) { continue }
-      $tail = @(Get-Content -LiteralPath $LauncherLogPath -Tail 35 -ErrorAction Stop)
-      if ($tail -match "MENSAJE ENVIADO") {
-        Write-Log "CHAT MESSAGE CONFIRMED :: $Reason"
+
+      $tail = @(Get-Content -LiteralPath $LauncherLogPath -Tail 60 -ErrorAction Stop)
+      $joined = ($tail -join "`n")
+      $hasMarker = (-not $ExpectedMarker) -or $joined.Contains($ExpectedMarker)
+
+      if ($hasMarker -and $joined -match "MENSAJE ENVIADO") {
+        Write-Log "CHAT MESSAGE CONFIRMED :: $Reason marker=$ExpectedMarker"
         return $true
       }
-      if ($tail -match "ERROR:|ERROR ::|Timeout CDP") {
+      if ($joined -match "ERROR:|ERROR ::|Timeout CDP") {
         Write-Log "CHAT LAUNCH LOG ERROR :: $Reason :: $($tail[-1])"
         return $false
       }
     } catch {}
   }
 
-  Write-Log "CHAT MESSAGE TIMEOUT :: $Reason after=$($LaunchConfirmSeconds)s"
+  Write-Log "CHAT MESSAGE TIMEOUT :: $Reason marker=$ExpectedMarker after=$($LaunchConfirmSeconds)s"
   return $false
 }
 
@@ -286,6 +298,7 @@ function Build-ImageMessage($Job) {
   $commandId = [string]$Job.command_id
 
   return @"
+TT_IMAGE_JOB_V1 $commandId
 Ejecuta SOLO una imagen IA de TTendencias. Esta es una ejecución visual aislada, no una ejecución editorial general.
 
 CONTROL
@@ -456,7 +469,8 @@ while ($true) {
         }
 
         $message = Build-ImageMessage $job
-        $sent = Launch-ProjectChat "image command=$commandId target=$targetId" $message
+        $marker = "TT_IMAGE_JOB_V1 $commandId"
+        $sent = Launch-ProjectChat "image command=$commandId target=$targetId" $message $marker
 
         if ($sent) {
           Send-ImageAck $targetId $commandId "launched" | Out-Null
