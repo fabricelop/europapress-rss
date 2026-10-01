@@ -64,18 +64,61 @@ Cuando `tremending_origin:true`, esta entrada no es una tendencia clasificada po
 
 ### Imágenes paralelas y no bloqueantes para TODAS las tendencias
 
-En `explanation_only`, el texto se cierra en cuanto está verificado: **nunca esperes a una imagen para pasar a Explicadas ni para continuar con la siguiente tendencia**. En la misma ejecución, tan pronto exista contexto factual suficiente, intenta exactamente UNA generación IA y mantén en paralelo la recuperación de una foto de archivo/fallback desde `verification_sources`. Tremending conserva como fallback prioritario la captura del tuit elegida por el usuario.
+La imagen es una capa asíncrona separada del texto. En `explanation_only`, el texto se cierra en cuanto está verificado: **nunca esperes a una imagen para pasar a Explicadas ni para continuar con la siguiente tendencia**.
 
-Persistencia recomendada:
+### Generación IA mediante cola durable
+
+No uses el ImageGen interno de ChatGPT en este flujo y no intentes extraer bytes de una imagen de conversación. Ese puente no es durable. Para cada tendencia/grupo con `with_image:true` y contexto factual suficiente:
+
+1. persiste la explicación normalmente con `image_strategy:"ai_plus_fallback"` y `ai_image_status:"pending"`;
+2. crea exactamente UN fichero de trabajo:
+   `trends/image-jobs/<trend_id>-r<revision>-ai<attempt>.json`;
+3. el fichero contiene solo JSON UTF-8 pequeño:
+   `{"project":"ttendencias","id","revision","attempt","prompt","context_guard"}`;
+4. `.github/workflows/ai-image-generate.yml` obtiene identidad OIDC de GitHub, llama al generador privado de Vercel AI Gateway y escribe `trends/image-outbox/**`;
+5. `.github/workflows/ttendencias-ai-image-apply.yml` materializa el JPEG y actualiza SOLO los campos visuales de la tarjeta.
+
+La ejecución editorial NO espera ninguno de los pasos 4–5. Que la explicación esté en Explicadas y que la imagen siga `pending` es un estado correcto y temporal.
+
+### Prompt visual aislado V3
+
+Cada job debe llevar un prompt nuevo y autocontenido que empiece conceptualmente por:
+`TTENDENCIAS_IMAGE_ISOLATION_V3 · CURRENT_ITEM_ONLY · <trend_id> r<revision>`.
+
+Incluye únicamente:
+- nombre de la tendencia, explicación factual verificada y hechos/sujetos/lugar inequívocos de ESA tendencia;
+- una sola escena narrativa, pocos elementos, detalle medio/bajo y composición apta para 16:9;
+- estilo de ilustración editorial clara y rápida;
+- casi sin texto; si aparece, breve y diegético;
+- sin collage, split-screen, multipanel, infografía ni interfaz.
+
+No reutilices prompts, semillas, imágenes ni elementos de otras tendencias. En asuntos políticos, la imagen debe ser neutral y descriptiva: nada de elogiar, atacar o persuadir a favor o en contra de actores políticos. En tragedias, muerte, violencia o víctimas, evita el gag y pide una ilustración editorial sobria y no gráfica.
+
+El `context_guard` es:
+`{"version":3,"trend_id":"<trend_id>","revision":<revision>,"scope":"current_item_only"}`.
+
+### Un solo intento y recuperación
+
+El intento inicial usa `attempt:1`. No crees un segundo job automático tras un resultado `failed`. Solo **🔁 Rehacer** crea `attempt = ai_image_attempt + 1`.
+
+Al comenzar cada pasada revisa también Explicadas recientes:
+- si `ai_image_regenerate_requested:true`, crea el job de Rehacer si no existe ya;
+- si `ai_image_status:"pending"` y no existe `ai_image`, crea el job pendiente si no existe ya;
+- nunca reinvestigues ni reescribas la explicación para estos trabajos visuales.
+
+Un job existente cuenta como intento ya encolado: no dupliques el fichero ni incrementes `attempt` hasta que haya resultado. El consumidor visual limpia `ai_image_regenerate_requested` cuando aplica `ready` o `failed`.
+
+### IA + fallback
+
+Mantén de forma independiente:
 - `ai_image` + `ai_image_status:"ready|failed|pending"`;
 - `fallback_image` + `fallback_image_status:"ready|none|pending_capture"`;
 - `image_choice:"ai|fallback|none"`;
-- `image` sigue siendo el alias compatible de la imagen elegida para publicar. Si llega una IA válida en bytes, selecciónala por defecto; si no, usa fallback cuando exista.
-- `image_status` describe solo la imagen actualmente elegida y nunca el estado editorial del texto.
+- `image` como alias de la imagen elegida para publicar.
 
-La primera imagen IA íntegra se entrega al usuario **aunque el gag pudiera no ser semánticamente perfecto**: no hagas un segundo intento automático, no la rechaces por contexto y no retrases la pasada. Solo rechaza un raster corrupto/incompleto o que no pueda persistirse. La corrección semántica se resuelve con revisión humana en la app mediante **🔁 Rehacer**; **🖼️ Usar archivo/fallback** cambia la imagen elegida sin reabrir la explicación.
+Si llega IA válida, queda elegida por defecto. Si todavía no llegó o falla, usa fallback cuando exista. Conserva ambos originales. Tremending mantiene como fallback prioritario la captura del tuit seleccionado.
 
-Si la IA o el fallback fallan, registra el fallo de imagen y continúa. Nunca marques `problematic`, `preparing` o `update` exclusivamente por la imagen.
+Si IA o fallback fallan, registra solo el fallo visual; nunca cambies una explicación a `problematic`, `preparing` o `update` por la imagen.
 
 ## Aprendizaje editorial de remates mediante estrellas
 
@@ -114,7 +157,7 @@ No guardes en RUNTRACE el texto de candidatos descartados. Así la app sigue mos
 3. Si `trends/recent.json.captured_at` supera 20 minutos, actualiza `trends/refresh-trigger.txt` en `main` para pedir una captura fresca y después relee `trends/editorial-queue.json`, `trends/recent.json` y `trends/editorial-config.json`.
 4. Antes de considerar la pasada vacía, revisa también las Explicadas recientes con `ai_image_regenerate_requested:true`. Si no hay cola editorial NI solicitudes de Rehacer imagen, termina sin investigación web. Si solo hay solicitudes de imagen, procesa únicamente esos intentos visuales sin reabrir texto ni requests.
 5. Si hay pendientes, usa DOS fases de prioridad: primero TODOS los `preparing`/`update` del más antiguo al más reciente; solo después reintenta los `problematic` que sigan en Top 10. Un problematic antiguo NUNCA puede hacer starvation de tendencias nuevas.
-6. PROCESAMIENTO EDITORIAL SECUENCIAL, IMAGEN DESACOPLADA: para cada tendencia/grupo investiga → redacta/verifica → persiste y cierra el TEXTO → confirma requests/cola. En cuanto exista contexto factual suficiente haz, dentro de esa misma pasada, el único intento ImageGen, pero su persistencia usa `trends/image-outbox/**` y NUNCA condiciona el cierre del texto ni el paso al siguiente item. No acumules todas las imágenes para el final.
+6. PROCESAMIENTO EDITORIAL SECUENCIAL, IMAGEN DESACOPLADA: para cada tendencia/grupo investiga → redacta/verifica → persiste y cierra el TEXTO → confirma requests/cola. En cuanto exista contexto factual suficiente crea el único trabajo visual en `trends/image-jobs/**`; GitHub Actions genera y persiste la IA de forma asíncrona. La cola visual NUNCA condiciona el cierre del texto ni el paso al siguiente item. No intentes transportar bytes desde el chat ni llames al ImageGen de ChatGPT para este flujo.
 7. Una tendencia `problematic` se reintenta automáticamente mientras siga en el Top 10, pero siempre al final de la pasada. Si ya salió del Top 10, no se fuerza otro intento.
 8. Un fallo de un item no debe bloquear los siguientes: registra ese item pendiente/problematic según corresponda y continúa con el siguiente.
 9. Relee estado fresco antes de cada escritura. Ante conflicto, relee SHA y reintenta de forma segura.
