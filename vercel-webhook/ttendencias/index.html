@@ -328,6 +328,7 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
 function render(){
  if(!model)return;
  renderScheduleTiming();
+ updateMainImageControl();
  const rel={high:"alta",medium:"media",fallback:"baja",none:"sin datos"}[model.reliability]||model.reliability||"—";
  const total=Number(model.source_total||0),operativas=Number(model.source_count||0),actuales=Number(model.non_stale_source_count||0),problemas=Number(model.source_problem_count||0);
  const quality=$("quality");
@@ -522,6 +523,79 @@ async function requestRun(){
  }catch(e){showToast(e.message);await loadRunStatus()}
 }
 
+
+function mainChatAi(image){
+ const g=image?.context_guard||{};
+ return image?.generated===true&&image?.provider==="chat-imagegen"&&image?.origin==="executing_chat"&&Number(g.version)===3&&g.scope==="current_item_only"
+}
+function mainAiEligible(x){
+ if(!x||x.copied||x.tremending_origin||x.disable_ai_image||!String(x.id||""))return false;
+ const mode=String(x.image_mode||x.image_strategy||"").toLowerCase();
+ return !["fallback_only","archive_only","tweet_capture_only"].includes(mode)&&String(x.ai_image_status||"").toLowerCase()!=="disabled"
+}
+function mainImageRunActive(run){return ["REQUESTED","RUNNING","GENERATING","PERSISTING"].includes(String(run?.status||"").toUpperCase())}
+function mainPendingImages(){
+ return (model?.explainedRecent||[]).filter(x=>{
+   if(!mainAiEligible(x))return false;
+   const ai=mainChatAi(x.ai_image)?x.ai_image:{},hasAi=Boolean(String(ai.url||"")),raw=String(x.ai_image_status||"").toLowerCase();
+   if(x.ai_image_regenerate_requested)return true;
+   if(hasAi)return false;
+   if(["failed","error","none"].includes(raw))return false;
+   return true
+ })
+}
+function updateMainImageControl(){
+ const items=mainPendingImages();
+ const active=items.filter(x=>mainImageRunActive(imageRuns.get(String(x.id||"")))).length;
+ const pending=items.filter(x=>!mainImageRunActive(imageRuns.get(String(x.id||"")))).length;
+ const btn=$("runImages"),head=$("imageHeadline"),state=$("imageState"),bar=$("imageBar");
+ if(!btn||!head||!state)return;
+ btn.textContent="✨ Imágenes IA"+(pending?" ("+pending+")":"");
+ btn.disabled=pending===0;
+ head.textContent=active?("Imágenes IA · "+active+" en curso"):"Imágenes IA";
+ state.textContent=active?(active+" generándose en paralelo · "+pending+" en cola · máximo 4 simultáneas"):(pending?pending+" pendiente"+(pending===1?"":"s")+" de generar":"Sin imágenes IA pendientes");
+ state.className=active?"running":pending?"running":"done";
+ if(bar)bar.classList.toggle("active",active>0)
+}
+async function requestMainImageRun(x){
+ const id=String(x.id||"");if(!id)throw new Error("La tendencia no tiene id");
+ if(mainImageRunActive(imageRuns.get(id)))return false;
+ const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:JSON.stringify({
+   task:"images",target_id:id,id,target_name:x.name||x.display_name||"Tendencia",revision:Number(x.revision||0)
+ })});
+ const d=await r.json().catch(()=>({}));
+ if(r.status===409&&d.error==="image_run_in_progress")return false;
+ if(!r.ok||!d?.ok)throw new Error(d.error||"No se pudo solicitar la imagen IA");
+ imageRuns.set(id,{...d,status:"REQUESTED",phase:"queued",updated_at:d.requested_at});
+ updateMainImageControl();scheduleMainImagePoll(true);return true
+}
+async function requestMainPendingImages(){
+ if(!token()){$("settingsBtn").click();showToast("Guarda primero el acceso");return}
+ const items=mainPendingImages().filter(x=>!mainImageRunActive(imageRuns.get(String(x.id||""))));
+ if(!items.length){showToast("No hay imágenes IA pendientes");return}
+ if(!confirm("¿Lanzar "+items.length+" imagen"+(items.length===1?"":"es")+" IA? Se abrirán chats independientes y hasta 4 generarán en paralelo."))return;
+ $("runImages").disabled=true;let ok=0,errors=0;
+ for(const x of items){try{if(await requestMainImageRun(x))ok++}catch(_){errors++}}
+ updateMainImageControl();
+ showToast(errors?(ok+" solicitadas · "+errors+" con error"):(ok+" imagen"+(ok===1?"":"es")+" solicitada"+(ok===1?"":"s")))
+}
+function scheduleMainImagePoll(fast){clearTimeout(imageRunPoll);imageRunPoll=setTimeout(refreshMainImageRuns,fast?4000:15000)}
+async function refreshMainImageRuns(){
+ const items=mainPendingImages();let terminal=false;
+ await Promise.all(items.map(async x=>{
+   const id=String(x.id||""),before=imageRuns.get(id);
+   try{
+     const r=await fetch(IMAGE_RUN_RAW+encodeURIComponent(id)+".json?t="+Date.now(),{cache:"no-store"});
+     if(!r.ok)return;
+     const d=await r.json();imageRuns.set(id,d);
+     if(JSON.stringify(before||null)!==JSON.stringify(d)&&["DONE","ERROR","CANCELLED"].includes(String(d.status||"").toUpperCase()))terminal=true
+   }catch(_){}
+ }));
+ updateMainImageControl();
+ scheduleMainImagePoll([...imageRuns.values()].some(mainImageRunActive));
+ if(terminal)load(true)
+}
+
 async function api(action,names,extra={}){
  const t=token();if(!t){$("sheet").classList.add("show");throw new Error("Falta el token de control")}
  const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+t},body:JSON.stringify({action,names,...extra})});
@@ -588,6 +662,8 @@ async function load(silent=false){
   localStorage.setItem("ttendencias-last-model",JSON.stringify(model));render();
  }catch(e){if(model){const h=$("health");if(h){h.textContent="Datos en caché";h.classList.add("bad")}if(!silent)showToast("Mostrando la última copia válida")}else if(!silent)showToast("Datos temporalmente no disponibles")}
 }
+$("runNow").onclick=requestRun;
+$("runImages").onclick=requestMainPendingImages;
 $("cancelProblemRetry").onclick=()=>{$("problemRetrySheet").classList.remove("show");problemRetryItem=null};
 $("sendProblemRetry").onclick=sendProblemRetry;
 $("problemRetrySheet").addEventListener("click",e=>{if(e.target===$("problemRetrySheet")){$("problemRetrySheet").classList.remove("show");problemRetryItem=null}});
@@ -600,7 +676,7 @@ $("explainedSheet").addEventListener("click",e=>{if(e.target===$("explainedSheet
 $("incidentClose").onclick=()=>$("incidentSheet").classList.remove("show");
 $("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buildDiagnostic(lastRunTelemetry||{}));showToast("Diagnóstico copiado")}catch(_){showToast("No se pudo copiar el diagnóstico")}};
 $("incidentSheet").addEventListener("click",e=>{if(e.target===$("incidentSheet"))$("incidentSheet").classList.remove("show")});
-$("refreshBtn").onclick=()=>{showToast("Recargando datos");load();loadRunStatus()};
+$("refreshBtn").onclick=()=>{showToast("Recargando datos");load();loadRunStatus();refreshMainImageRuns()};
 $("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado":"Sin token guardado";$("sheet").classList.add("show");refreshPushStatus().catch(()=>{})};
 $("cancelToken").onclick=()=>$("sheet").classList.remove("show");
 $("testToken").onclick=async()=>{const v=$("tokenInput").value.trim();if(!v)return;$("accessStatus").textContent="Comprobando…";try{const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+v},body:JSON.stringify({action:"ping"})});const d=await r.json();$("accessStatus").textContent=r.ok&&d?.backend?.ok?"✓ Acceso correcto · GitHub operativo":r.status===401?"✕ Token no válido":"⚠ Backend no disponible"}catch(_){$("accessStatus").textContent="✕ No se pudo comprobar"}};
@@ -626,6 +702,6 @@ if("serviceWorker" in navigator){
    location.reload();
  });
 }
-if(model)render();if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();setInterval(()=>{if(!document.hidden)load(true)},15000);setInterval(()=>{if(!document.hidden&&model)renderScheduleTiming()},15000);
+if(model)render();if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshMainImageRuns();setInterval(()=>{if(!document.hidden)load(true)},15000);setInterval(()=>{if(!document.hidden&&model)renderScheduleTiming()},15000);
 </script>
 </body></html>
