@@ -9746,17 +9746,16 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "ai_image_attempt": 2,
       "ai_image_attempt_started_at": "2026-10-01T16:49:00+02:00",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "pending",
-      "ai_image_last_attempt_at": "2026-10-01T16:49:00+02:00",
-      "ai_image_failure_reason": "El raster se generó y normalizó correctamente en el chat ejecutor, pero el conector GitHub disponible en esta pasada no ofrece hand-off binario/file-reference hacia el outbox. No se reintenta automáticamente.",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T14:57:25.427483Z",
       "ai_image_generated_but_not_materialized": true,
       "ai_image_last_generated_gen_id": "b127b376-7a90-4a4c-9c1c-690514817ffa",
       "ai_image_last_generated_sha256": "25cbe7c8f7f141939b56ae52fce7d81cba7b12f1e5800073de42aff86be91ac2",
@@ -9774,19 +9773,48 @@
         "generated": false
       },
       "image": {
-        "url": "https://www.un.org/sites/un2.un.org/files/2021/10/older-woman-at-computer.jpg",
-        "source": "Naciones Unidas · Día Internacional de las Personas de Edad",
-        "source_url": "https://www.un.org/es/observances/older-persons-day",
-        "alt": "Imagen de archivo relacionada con Personas Mayores",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/8c3b67c3b720-r0-ai2.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "8c3b67c3b720",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "ddad8855-fdcb-430c-a8e7-50d076a912ac",
+        "alt": "Ilustración editorial amable sobre el Día Internacional de las Personas Mayores y la longevidad",
+        "sha256": "24972b825db0bf4584f6d3ee74385f1e864df7327ce88a191d7d3615805ffdc7",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/8c3b67c3b720-r0-ai2.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
-      "ai_image_regenerate_requested": true,
-      "ai_image_regenerate_requested_at": "2026-10-01T14:18:24.344Z",
-      "ai_image_regenerate_request_version": 1,
       "ai_image_regenerate_reason": "retry_after_binary_handoff_fix",
       "ai_image_regenerate_consumed_version": 1,
-      "ai_image_regenerate_consumed_at": "2026-10-01T16:49:00+02:00"
+      "ai_image_regenerate_consumed_at": "2026-10-01T16:49:00+02:00",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/8c3b67c3b720-r0-ai2.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "8c3b67c3b720",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "ddad8855-fdcb-430c-a8e7-50d076a912ac",
+        "alt": "Ilustración editorial amable sobre el Día Internacional de las Personas Mayores y la longevidad",
+        "sha256": "24972b825db0bf4584f6d3ee74385f1e864df7327ce88a191d7d3615805ffdc7",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/8c3b67c3b720-r0-ai2.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     },
     {
       "id": "29886869f011",
@@ -10135,6 +10163,6 @@
       "ai_image_last_attempt_at": "2026-10-01T14:55:20.708283Z"
     }
   ],
-  "updated_at": "2026-10-01T14:55:20.708356Z",
+  "updated_at": "2026-10-01T14:57:25.427571Z",
   "count": 373
 }
