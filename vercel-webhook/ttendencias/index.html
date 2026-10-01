@@ -38,7 +38,8 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
     <div><h1>Top 10 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima explicación —</div><div class="workingCount idle" id="workingCount">En elaboración: 0</div></div></div>
     <div class="badge" id="quality">—</div>
   </section>
-  <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="primary" id="runNow" type="button">▶ Ejecutar ahora</button></section>
+  <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Entradas</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="primary" id="runNow" type="button">▶ Entradas</button></section>
+  <section class="runbar" id="imageBar"><div class="runmain"><div class="runline"><strong id="imageHeadline">Imágenes IA</strong></div><span id="imageState">Comprobando cola…</span></div><button class="primary" id="runImages" type="button">✨ Imágenes IA</button></section>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
   <section class="radarBlock" id="radarBlock">
     <div class="radarHead"><div><h2>Próximas tendencias</h2><div class="meta">Señales todavía fuera del Top 10</div></div><div class="radarHint">Cruce social + TTiTTulares</div></div>
@@ -75,8 +76,9 @@ const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const SHELL_BUILD="ttendencias-rate-limit-cache-v8-20261001";
 const $=id=>document.getElementById(id);
 const DATA_CACHE_KEY="ttendencias-last-model",RUN_CACHE_KEY="ttendencias-last-run-status";
+const IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/";
 function loadLocalJson(key){try{return JSON.parse(localStorage.getItem(key)||"null")}catch(_){return null}}
-let model=loadLocalJson(DATA_CACHE_KEY),busy=new Set(),runPoll=null,problemRetryItem=null;
+let model=loadLocalJson(DATA_CACHE_KEY),busy=new Set(),runPoll=null,problemRetryItem=null,imageRuns=new Map(),imageRunPoll=null;
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
 function showToast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove("show"),2500)}
@@ -483,8 +485,8 @@ function runVisual(s){
  const r=s?.last_run||null;
  if(r){
     const count=runIncidentCount(r),isError=r.status==="ERROR",visual=Number(r.summary?.visual_backlog||0);
-    head.textContent=isError?("Última ejecución · "+runTime(r.finished_at||r.updated_at)+" · Error"):visual>0?("Texto terminado · "+visual+" imagen"+(visual===1?"":"es")+" pendiente"+(visual===1?"":"s")):("Última ejecución · "+runTime(r.finished_at||r.updated_at)+" · Terminada del todo");
-    el.textContent=isError?(r.message||"No se completó la ejecución"):([runSummaryText(r),visual>0?"Seguimiento de imágenes se lanzará automáticamente":null,runSource(r.source||r.source_label)].filter(Boolean).join(" · ")||"Lista para ejecutar");
+    head.textContent=isError?("Última ejecución editorial · "+runTime(r.finished_at||r.updated_at)+" · Error"):("Última ejecución editorial · "+runTime(r.finished_at||r.updated_at)+" · Terminada");
+    el.textContent=isError?(r.message||"No se completó la ejecución"):([runSummaryText(r),visual>0?(visual+" imagen"+(visual===1?"":"es")+" IA pendiente"+(visual===1?"":"s")+" en cola separada"):"sin imágenes IA pendientes",runSource(r.source||r.source_label)].filter(Boolean).join(" · ")||"Lista para ejecutar");
     el.className=isError?"error":visual>0?"running":"done";
    if(count||isError){warn.hidden=false;warn.textContent=(isError?"✖ ":"⚠ ")+(count||1);warn.classList.toggle("severe",isError);warn.onclick=()=>showRunIncidents(s)}
  }else{
@@ -507,10 +509,10 @@ async function loadRunStatus(){
 }
 async function requestRun(){
  if(!token()){$("settingsBtn").click();showToast("Guarda primero el acceso");return}
-  if(!confirm("¿Ejecutar TTendencias ahora desde el PC? Si quedan imágenes pendientes, se lanzará una segunda pasada automática al terminar."))return;
+  if(!confirm("¿Procesar ahora las entradas de TTendencias desde el PC? Las imágenes IA se gestionan por separado."))return;
  runVisual({ok:true,enabled:true,active:true,status:"REQUESTED",source:"mobile",phase:"preparing",current:0,total:0,requested_at:new Date().toISOString(),message:"Enviando solicitud…"});
  try{
-   const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:"{}"});
+   const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:JSON.stringify({task:"editorial"})});
    const d=await r.json().catch(()=>({}));
    if(r.status===401)throw new Error("Acceso no autorizado");
    if(r.status===429)throw new Error("Ya se solicitó una ejecución hace unos segundos");
