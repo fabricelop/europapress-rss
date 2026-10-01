@@ -70,6 +70,16 @@ async function readJson(path){
   }
   throw new Error(`JSON inválido en ${path} tras 3 lecturas: ${String(lastError?.message||lastError)}`)
 }
+async function readPublicJson(path){
+  const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
+  const url=`https://raw.githubusercontent.com/${REPO}/${encodeURIComponent(BRANCH)}/${clean}?t=${Date.now()}`;
+  const r=await fetch(url,{cache:"no-store",headers:{"user-agent":"ttittulares-web-read"}});
+  if(!r.ok)throw new Error(`GitHub RAW ${path}: ${r.status}`);
+  const raw=await r.text();
+  if(!raw.trim())throw new Error(`GitHub RAW ${path}: contenido vacío`);
+  return {doc:JSON.parse(raw),sha:null,source:"raw"}
+}
+
 async function mutateJson(path,message,fn){
   for(let attempt=1;attempt<=5;attempt++){
     const {doc,sha}=await readJson(path);const before=JSON.stringify(doc);const next=await fn(doc);
@@ -551,7 +561,7 @@ async function proxyPreparedImage(rawUrl,res){
   const url=String(rawUrl||"");let parsed;
   try{parsed=new URL(url)}catch(_){throw new Error("URL de imagen no válida")}
   if(parsed.protocol!=="https:")throw new Error("Solo se permiten imágenes HTTPS");
-  const [{doc:prepared},{doc:tremending}]=await Promise.all([readJson(PREPARED),readJson(TREMENDING)]);
+  const [{doc:prepared},{doc:tremending}]=await Promise.all([readPublicJson(PREPARED),readPublicJson(TREMENDING)]);
   const allowed=new Set([
     ...(prepared.items||[]).flatMap(x=>[x?.image?.url||x?.image_url,x?.ai_image?.url,x?.fallback_image?.url]),
     ...(tremending.items||[]).map(x=>x?.image?.url)
@@ -606,8 +616,8 @@ export default async function handler(req,res){
     if(req.method==="GET"){
       if(String(req.query?.view||"")==="image-proxy")return await proxyPreparedImage(req.query?.url,res);
       const [prepared,status,config,queue,events,decisions,manualArchive,trendCandidates,remateRatings,tremending]=await Promise.all([
-        readJson(PREPARED),readJson("ttittulares/status.json"),readJson("ttittulares/config.json"),
-        readJson(PROCESSING),readJson(EVENTS),readJson(DECISIONS),readJson(MANUAL_ARCHIVE),readJson(TREND_CANDIDATES),readJson(REMATE_RATINGS),readJson(TREMENDING)
+        readPublicJson(PREPARED),readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
+        readPublicJson(PROCESSING),readPublicJson(EVENTS),readPublicJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(TREND_CANDIDATES),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const closedIds=new Set((decisions.doc?.items||[])
