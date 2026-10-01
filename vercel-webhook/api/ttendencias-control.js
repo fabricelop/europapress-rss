@@ -40,6 +40,44 @@ function explanationNames(item) {
   for (const ctx of (Array.isArray(item?.trend_context) ? item.trend_context : [])) values.push(ctx?.name);
   return [...new Set(values.map(x => String(x || "").trim()).filter(Boolean))];
 }
+function reconcileExplainedView(explainedDoc, requestsDoc) {
+  const doc = {
+    ...(explainedDoc || {}),
+    items: (explainedDoc?.items || []).map(row => ({ ...row })),
+  };
+  const latestById = new Map();
+  const latestByName = new Map();
+  for (const req of (requestsDoc?.requests || [])) {
+    if (String(req?.status || "") !== "explained" || !String(req?.explanation || "").trim()) continue;
+    const id = String(req?.id || "").trim();
+    const name = norm(req?.name);
+    const choose = prev => {
+      if (!prev) return req;
+      const rr = Number(req?.revision || 0), pr = Number(prev?.revision || 0);
+      if (rr !== pr) return rr > pr ? req : prev;
+      return String(req?.explained_at || req?.requested_at || "") > String(prev?.explained_at || prev?.requested_at || "") ? req : prev;
+    };
+    if (id) latestById.set(id, choose(latestById.get(id)));
+    if (name) latestByName.set(name, choose(latestByName.get(name)));
+  }
+  doc.items = doc.items.map(row => {
+    const req = latestById.get(String(row?.id || "").trim()) || latestByName.get(norm(row?.name));
+    if (!req) return row;
+    const newerRevision = Number(req?.revision || 0) > Number(row?.revision || 0);
+    const completedAfterRewrite = Boolean(row?.rewrite_pending) &&
+      String(req?.explained_at || req?.requested_at || "") >= String(row?.rewrite_requested_at || "");
+    if (!newerRevision && !completedAfterRewrite) return row;
+    const merged = { ...row, ...req };
+    delete merged.rewrite_pending;
+    delete merged.rewrite_requested_at;
+    delete merged.rewrite_request_version;
+    delete merged.rewrite_instruction;
+    delete merged.reexplain;
+    return merged;
+  });
+  return doc;
+}
+
 function authToken(req) {
   const h = String(req.headers.authorization || "");
   return h.startsWith("Bearer ") ? h.slice(7).trim() : "";
@@ -979,7 +1017,7 @@ async function stateSnapshot() {
     fetched_at: new Date().toISOString(),
     recent: recent.doc,
     requests: requests.doc,
-    explained: annotateRemateRatings(annotateExplainedCopyState(explained.doc, explainedCopyState.doc), remateRatings.doc),
+    explained: annotateRemateRatings(annotateExplainedCopyState(reconcileExplainedView(explained.doc, requests.doc), explainedCopyState.doc), remateRatings.doc),
     explained_copy_state: explainedCopyState.doc,
     health: health.doc,
     prepared: prepared.doc,
