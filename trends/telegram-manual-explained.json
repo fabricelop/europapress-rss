@@ -8610,7 +8610,7 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "failed",
       "ai_image_attempt": 1,
-      "ai_image_failure_reason": "No se obtuvo un raster IA persistible en esta pasada; el texto se cerró sin bloqueo.",
+      "ai_image_failure_reason": "No se obtuvo un raster IA persistible en esta pasada; la capa visual no bloquea el cierre editorial.",
       "fallback_image_strategy": "tremending_tweet_capture",
       "fallback_image": {
         "source": "X · tuit seleccionado",
@@ -8621,7 +8621,9 @@
       "fallback_image_status": "pending_capture",
       "image_choice": "none",
       "image_status": "none",
-      "image_pending": false
+      "image_pending": false,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T07:27:49.631229Z"
     },
     {
       "id": "0f508660b269",
@@ -8666,13 +8668,15 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "failed",
       "ai_image_attempt": 1,
-      "ai_image_failure_reason": "No se obtuvo un raster IA persistible en esta pasada; el texto se cerró sin bloqueo.",
+      "ai_image_failure_reason": "No se obtuvo un raster IA persistible en esta pasada; la capa visual no bloquea el cierre editorial.",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "none",
       "image_choice": "none",
       "image_status": "none",
       "image_pending": false,
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T07:27:49.631112Z"
     },
     {
       "id": "5f9796eff0bb",
@@ -8709,15 +8713,17 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "failed",
       "ai_image_attempt": 1,
-      "ai_image_failure_reason": "No se obtuvo un raster IA persistible en esta pasada; el texto se cerró sin bloqueo.",
+      "ai_image_failure_reason": "No se obtuvo un raster IA persistible en esta pasada; la capa visual no bloquea el cierre editorial.",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "none",
       "fallback_image_failure_reason": "Etiqueta estacional sin una fotografía editorial específica verificada.",
       "image_choice": "none",
       "image_status": "none",
-      "image_pending": false
+      "image_pending": false,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T07:27:49.631186Z"
     }
   ],
-  "updated_at": "2026-10-01T07:26:49.119334Z",
+  "updated_at": "2026-10-01T07:27:49.631245Z",
   "count": 360
 }
