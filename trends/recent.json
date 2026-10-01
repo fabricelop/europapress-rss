@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-10-01T13:21:17+02:00",
+  "captured_at": "2026-10-01T13:41:01+02:00",
   "primary_source": "snaplytics",
-  "selection_method": "aging-anchor",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "getdaytrends",
     "superx",
@@ -12,19 +12,21 @@
   ],
   "source_count": 5,
   "non_stale_source_count": 4,
-  "fresh_sources": [],
+  "fresh_sources": [
+    "snaplytics"
+  ],
   "reliability": "medium",
   "top10": [
     "#LaIslaDeLasTentaciones8",
     "#RTXON",
     "Cristiano",
     "Portugal",
+    "Paiporta",
     "#LaFreidoraDeLidl",
     "Puerta del Sol",
     "#FelizJueves",
-    "Paiporta",
-    "#tem30s",
-    "Digi"
+    "#Mañaneros1O",
+    "Almeida"
   ],
   "items": [
     {
@@ -61,56 +63,77 @@
     },
     {
       "rank": 5,
-      "name": "#LaFreidoraDeLidl",
-      "entered_top10_at": "2026-09-30T16:40:51+02:00",
-      "movement": "flat",
-      "previous_rank": 5,
-      "rank_delta": 0
+      "name": "Paiporta",
+      "entered_top10_at": "2026-10-01T12:40:56+02:00",
+      "movement": "up",
+      "previous_rank": 8,
+      "rank_delta": 3
     },
     {
       "rank": 6,
-      "name": "Puerta del Sol",
-      "entered_top10_at": "2026-09-30T03:40:50+02:00",
-      "movement": "flat",
-      "previous_rank": 6,
-      "rank_delta": 0
+      "name": "#LaFreidoraDeLidl",
+      "entered_top10_at": "2026-09-30T16:40:51+02:00",
+      "movement": "down",
+      "previous_rank": 5,
+      "rank_delta": -1
     },
     {
       "rank": 7,
-      "name": "#FelizJueves",
-      "entered_top10_at": "2026-10-01T08:41:17+02:00",
-      "movement": "flat",
-      "previous_rank": 7,
-      "rank_delta": 0
+      "name": "Puerta del Sol",
+      "entered_top10_at": "2026-09-30T03:40:50+02:00",
+      "movement": "down",
+      "previous_rank": 6,
+      "rank_delta": -1
     },
     {
       "rank": 8,
-      "name": "Paiporta",
-      "entered_top10_at": "2026-10-01T12:40:56+02:00",
-      "movement": "flat",
-      "previous_rank": 8,
-      "rank_delta": 0
+      "name": "#FelizJueves",
+      "entered_top10_at": "2026-10-01T08:41:17+02:00",
+      "movement": "down",
+      "previous_rank": 7,
+      "rank_delta": -1
     },
     {
       "rank": 9,
-      "name": "#tem30s",
-      "entered_top10_at": "2026-10-01T12:40:56+02:00",
-      "movement": "flat",
-      "previous_rank": 9,
-      "rank_delta": 0
+      "name": "#Mañaneros1O",
+      "entered_top10_at": "2026-10-01T13:41:01+02:00",
+      "movement": "new",
+      "previous_rank": null,
+      "rank_delta": null
     },
     {
       "rank": 10,
-      "name": "Digi",
-      "entered_top10_at": "2026-10-01T12:40:56+02:00",
-      "movement": "flat",
-      "previous_rank": 10,
-      "rank_delta": 0
+      "name": "Almeida",
+      "entered_top10_at": "2026-10-01T13:41:01+02:00",
+      "movement": "new",
+      "previous_rank": null,
+      "rank_delta": null
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "#Mañaneros1O",
+    "Almeida"
+  ],
   "upcoming": [
+    {
+      "name": "Ceuta y Melilla",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.7,
+      "movement": "up",
+      "first_detected_at": "2026-10-01T13:11:59+02:00",
+      "news_source_count": 14,
+      "news_event_id": "9e135d580d19-r2",
+      "news_title": "Los Reyes visitarán Ceuta y Melilla los días 13 y 14 de octubre",
+      "news_status": "ELIGIBLE_UPDATE",
+      "news_first_seen": "2026-10-01T08:01:57.518770Z"
+    },
     {
       "name": "Amnistía Internacional",
       "social_source_count": 4,
@@ -120,15 +143,52 @@
         "superx",
         "trendswe"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.8,
-      "movement": "flat",
+      "best_observed_rank": 13,
+      "mean_observed_rank": 14.2,
+      "movement": "up",
       "first_detected_at": "2026-10-01T12:40:56+02:00",
       "news_source_count": 7,
       "news_event_id": "bc1bd73387ea",
       "news_title": "Amnistía Internacional denuncia torturas y vejaciones de militares a migrantes en Ceuta: Defensa la envía al juzgado",
       "news_status": "ELIGIBLE",
       "news_first_seen": "2026-09-30T14:53:57.005436Z"
+    },
+    {
+      "name": "Vivas",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.7,
+      "movement": "up",
+      "first_detected_at": "2026-10-01T13:11:59+02:00",
+      "news_source_count": 11,
+      "news_event_id": "6ff6e06a77a5-r2",
+      "news_title": "Vivas declara a la jueza que intentó contactar con Sánchez diez veces antes de la crisis pero Moncloa le remitió a Delegación del Gobierno",
+      "news_status": "ELIGIBLE_UPDATE",
+      "news_first_seen": "2026-09-30T14:42:20.247374Z"
+    },
+    {
+      "name": "Digi",
+      "social_source_count": 4,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "superx",
+        "trendswe"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 15.0,
+      "movement": "new",
+      "first_detected_at": "2026-10-01T13:41:01+02:00",
+      "news_source_count": 3,
+      "news_event_id": "342a5926252c",
+      "news_title": "DIGI y Movistar sufren una incidencia en su conexión: cómo afecta a los usuarios y qué hacer en caso de sufrirla - Telecinco",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-10-01T10:02:32.300100Z"
     },
     {
       "name": "Sindicato de Inquilinas",
@@ -138,9 +198,9 @@
         "superx",
         "trendswe"
       ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 18.3,
-      "movement": "flat",
+      "best_observed_rank": 18,
+      "mean_observed_rank": 18.7,
+      "movement": "down",
       "first_detected_at": "2026-10-01T10:51:13+02:00",
       "news_source_count": 9,
       "news_event_id": "948072c1d49b",
@@ -156,9 +216,9 @@
         "superx",
         "trendswe"
       ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 16.3,
-      "movement": "flat",
+      "best_observed_rank": 17,
+      "mean_observed_rank": 17.7,
+      "movement": "down",
       "first_detected_at": "2026-10-01T04:41:01+02:00",
       "news_source_count": 8,
       "news_event_id": "8daa966cd971",
@@ -167,37 +227,22 @@
       "news_first_seen": "2026-09-30T17:42:16.878373Z"
     },
     {
-      "name": "Vivas",
-      "social_source_count": 2,
+      "name": "Día Internacional",
+      "social_source_count": 3,
       "social_sources": [
-        "getdaytrends",
-        "snaplytics"
+        "snaplytics",
+        "superx",
+        "trendswe"
       ],
-      "best_observed_rank": 14,
+      "best_observed_rank": 16,
       "mean_observed_rank": 16.0,
-      "movement": "flat",
-      "first_detected_at": "2026-10-01T13:11:59+02:00",
-      "news_source_count": 11,
-      "news_event_id": "6ff6e06a77a5-r2",
-      "news_title": "Vivas declara a la jueza que intentó contactar con Sánchez diez veces antes de la crisis pero Moncloa le remitió a Delegación del Gobierno",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-09-30T14:42:20.247374Z"
-    },
-    {
-      "name": "Ceuta y Melilla",
-      "social_source_count": 1,
-      "social_sources": [
-        "getdaytrends"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "flat",
-      "first_detected_at": "2026-10-01T13:11:59+02:00",
-      "news_source_count": 14,
-      "news_event_id": "9e135d580d19-r2",
-      "news_title": "Los Reyes visitarán Ceuta y Melilla los días 13 y 14 de octubre",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-10-01T08:01:57.518770Z"
+      "movement": "new",
+      "first_detected_at": "2026-10-01T13:41:01+02:00",
+      "news_source_count": 4,
+      "news_event_id": "7cbc4eecec91",
+      "news_title": "Sobre el Día Internacional de las Personas Mayores - cadenaser.com",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-09-30T17:23:41.769906Z"
     },
     {
       "name": "Jorge Jesús",
@@ -207,42 +252,9 @@
         "superx"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 12.0,
+      "mean_observed_rank": 11.0,
       "movement": "flat",
       "first_detected_at": "2026-10-01T09:31:32+02:00",
-      "news_source_count": 7,
-      "news_event_id": "c5dbdfc21463",
-      "news_title": "¿Será su final en la selección? Cristiano Ronaldo abandona la concentración de Portugal tras la 'rajada' de Jorge Jesus laSexta Deportes 30 de septiembre de 2026, 19:31",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-30T10:43:35.556797Z"
-    },
-    {
-      "name": "Los Reyes",
-      "social_source_count": 1,
-      "social_sources": [
-        "snaplytics"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.0,
-      "movement": "flat",
-      "first_detected_at": "2026-10-01T12:40:56+02:00",
-      "news_source_count": 14,
-      "news_event_id": "9e135d580d19-r2",
-      "news_title": "Los Reyes visitarán Ceuta y Melilla los días 13 y 14 de octubre",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-10-01T08:01:57.518770Z"
-    },
-    {
-      "name": "Jorge Jesus",
-      "social_source_count": 2,
-      "social_sources": [
-        "getdaytrends",
-        "trendswe"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.0,
-      "movement": "flat",
-      "first_detected_at": "2026-10-01T10:01:31+02:00",
       "news_source_count": 7,
       "news_event_id": "c5dbdfc21463",
       "news_title": "¿Será su final en la selección? Cristiano Ronaldo abandona la concentración de Portugal tras la 'rajada' de Jorge Jesus laSexta Deportes 30 de septiembre de 2026, 19:31",
@@ -256,11 +268,11 @@
     "trends24": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790853677",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790854861",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T13:21:17+02:00"
+      "fetched_at": "2026-10-01T13:41:01+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -285,7 +297,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T13:21:17+02:00"
+      "fetched_at": "2026-10-01T13:41:01+02:00"
     },
     "tweets24": {
       "ok": false,
@@ -294,46 +306,46 @@
       "update_hint": "Updated 16 hours ago",
       "age_minutes": 960.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T13:21:18+02:00"
+      "fetched_at": "2026-10-01T13:41:02+02:00"
     },
     "superx": {
       "ok": true,
       "trends": [
         "#LaIslaDeLasTentaciones8",
-        "#FelizJueves",
         "#RTXON",
-        "#LaFreidoraDeLidl",
-        "Portugal",
-        "Puerta del Sol",
         "Cristiano",
-        "#tierradenadie3",
+        "Portugal",
+        "Paiporta",
+        "#LaFreidoraDeLidl",
+        "Puerta del Sol",
+        "#FelizJueves",
+        "#Mañaneros1O",
         "Almeida",
-        "Christa Pike",
         "Jorge Jesús",
-        "Tennessee",
-        "Bienvenido Octubre",
+        "Vivas",
+        "Ceuta y Melilla",
         "Amnistía Internacional",
-        "Náyades",
+        "Personas Mayores",
+        "Día Internacional",
+        "Digi",
         "Flydubai",
-        "Gema",
-        "Daniel Guzmán",
-        "Junts",
-        "Sindicato de Inquilinas"
+        "Sindicato de Inquilinas",
+        "Junts"
       ],
       "error": null,
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T13:21:19+02:00"
+      "fetched_at": "2026-10-01T13:41:02+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790853679",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790854863",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T13:21:19+02:00"
+      "fetched_at": "2026-10-01T13:41:03+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -342,28 +354,28 @@
         "#RTXON",
         "Cristiano",
         "Portugal",
+        "Paiporta",
         "#LaFreidoraDeLidl",
         "Puerta del Sol",
         "#FelizJueves",
-        "Paiporta",
-        "#tem30s",
-        "Digi",
+        "#Mañaneros1O",
         "Almeida",
-        "Los Reyes",
         "Jorge Jesús",
-        "Es-Alert",
+        "Vivas",
         "Amnistía Internacional",
+        "Ceuta y Melilla",
+        "Personas Mayores",
+        "Día Internacional",
+        "Digi",
         "Flydubai",
         "Sindicato de Inquilinas",
-        "Vivas",
-        "Personas Mayores",
         "Junts"
       ],
       "error": null,
-      "update_hint": "Trending now Oct 1, 2026 10:00 UTC",
-      "age_minutes": 81.3,
-      "freshness": "aging",
-      "fetched_at": "2026-10-01T13:21:19+02:00"
+      "update_hint": "Trending now Oct 1, 2026 11:00 UTC",
+      "age_minutes": 41.1,
+      "freshness": "fresh",
+      "fetched_at": "2026-10-01T13:41:03+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -391,18 +403,18 @@
       ],
       "error": null,
       "update_hint": "Updated: October 01, 2026 at 11:00 AM # Trend Type Actions 1 #LaIslaDeLasTentaciones8 Has",
-      "age_minutes": 141.3,
+      "age_minutes": 161.1,
       "freshness": "stale",
-      "fetched_at": "2026-10-01T13:21:19+02:00"
+      "fetched_at": "2026-10-01T13:41:03+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790853681",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790854864",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T13:21:21+02:00"
+      "fetched_at": "2026-10-01T13:41:04+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -411,7 +423,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T13:21:22+02:00"
+      "fetched_at": "2026-10-01T13:41:05+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -441,16 +453,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T13:21:22+02:00"
+      "fetched_at": "2026-10-01T13:41:06+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790853684",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790854868",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T13:21:24+02:00"
+      "fetched_at": "2026-10-01T13:41:08+02:00"
     }
   }
 }
