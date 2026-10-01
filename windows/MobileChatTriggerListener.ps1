@@ -108,7 +108,7 @@ function Ensure-State {
   if ($isNew) { $state = New-StateObject }
 
   foreach ($name in $Targets.Keys) {
-    Ensure-ProjectState $state $name $true
+    Ensure-ProjectState $state $name $false
     if ($isNew) {
       $doc = Read-JsonUrl $Targets[$name].TriggerUrl $true
       if ($doc -and $doc.command_id) { $state.$name.last_command_id = [string]$doc.command_id }
