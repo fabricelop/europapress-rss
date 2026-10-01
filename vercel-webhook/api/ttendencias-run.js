@@ -65,7 +65,10 @@ function newerRunAfter(items,requestedAt){
   const t=stamp(requestedAt);
   if(!t)return null;
   return items.map(traceOf).filter(Boolean)
-    .filter(x=>stamp(x.started_at||x.requested_at||x.comment_updated_at)>t+1000)
+    // El RUNTRACE que consume un trigger puede conservar exactamente el mismo
+    // requested_at que la orden móvil. Aceptamos el mismo ciclo (±2 s) además
+    // de ejecuciones claramente posteriores.
+    .filter(x=>stamp(x.started_at||x.requested_at||x.comment_updated_at)>=t-2000)
     .sort((a,b)=>stamp(a.started_at||a.requested_at)-stamp(b.started_at||b.requested_at))
     .at(-1)||null
 }
