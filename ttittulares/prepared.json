@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T17:52:17.966Z",
+  "updated_at": "2026-10-01T17:54:32.059460Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -296,9 +296,9 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -313,13 +313,46 @@
       },
       "fallback_image_search_attempted_at": "2026-10-01T17:40:14.668209Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001163109_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/madrid/noticia-muere-ahogada-mujer-80-anos-caer-accidentalmente-piscina-casa-pozuelo-20261001163109.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Muere ahogada una mujer de 80 años tras caer accidentalmente a la piscina de su casa en Pozuelo"
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/ecb38b1ab93a-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "ecb38b1ab93a",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "alt": "Imagen editorial sobria y no gráfica de una piscina residencial con servicios de emergencia al fondo.",
+        "sha256": "fc3ca2a4633b7d7389803121ef10eb834c0b1550bc4320074bc4b2fc38149f39",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/ecb38b1ab93a-r1-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/ecb38b1ab93a-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "ecb38b1ab93a",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "alt": "Imagen editorial sobria y no gráfica de una piscina residencial con servicios de emergencia al fondo.",
+        "sha256": "fc3ca2a4633b7d7389803121ef10eb834c0b1550bc4320074bc4b2fc38149f39",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/ecb38b1ab93a-r1-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T17:54:32.059428Z"
     },
     {
       "event_id": "5159628af91c",
@@ -357,7 +390,7 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
@@ -380,7 +413,11 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Felipe VI pide renovar el orden mundial y Sánchez defiende el multilateralismo en el Foro La Toja"
-      }
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T17:54:32.042948Z",
+      "ai_image_failure_reason": "No se pudo materializar la imagen IA."
     }
   ],
   "count": 10
