@@ -102,7 +102,7 @@ while ($true) {
       $project = [string]$doc.project
 
       if ($commandId -ne [string]$state.last_command_id -and
-          $executor -eq "pc_chat" -and
+          $executor -eq "pc_chat_ttendencias_dedicated" -and
           $project -eq "ttendencias" -and
           ($task -eq "editorial" -or -not $task)) {
 
