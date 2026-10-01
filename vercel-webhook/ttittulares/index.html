@@ -118,11 +118,14 @@ const RUN_API="/api/ttittulares-run";
 const RUN_STATUS_API="/api/ttittulares-run-status";
 const $=id=>document.getElementById(id);
 const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards",TREMENDING_OPEN_KEY="ttittulares-open-tremending";
+const DATA_CACHE_KEY="ttittulares-last-model",RUN_CACHE_KEY="ttittulares-last-run-status";
+function loadLocalJson(key){try{return JSON.parse(localStorage.getItem(key)||"null")}catch(_){return null}}
 function loadUiSet(key){try{return new Set((JSON.parse(sessionStorage.getItem(key)||"[]")||[]).map(String))}catch(_){return new Set()}}
 function persistUiState(){try{sessionStorage.setItem(PENDING_KEY,JSON.stringify([...pendingClosed]));sessionStorage.setItem(OPEN_KEY,JSON.stringify([...openCards]));sessionStorage.setItem(TREMENDING_OPEN_KEY,JSON.stringify([...tremendingOpen]))}catch(_){}}
 const REQUESTED_VIEW=new URLSearchParams(location.search).get("view");
 const INITIAL_VIEW=["ready","processing","problematic","growing","tremending"].includes(REQUESTED_VIEW)?REQUESTED_VIEW:"ready";
-let model={prepared:[],status:{},config:{},tremending:{items:[]}},reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),tremendingOpen=loadUiSet(TREMENDING_OPEN_KEY),tremendingPreview=new Map(),loadSeq=0,runPoll=null;
+const cachedModel=loadLocalJson(DATA_CACHE_KEY);
+let model=cachedModel||{prepared:[],status:{},config:{},tremending:{items:[]}},hasGoodState=Boolean(cachedModel),reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),tremendingOpen=loadUiSet(TREMENDING_OPEN_KEY),tremendingPreview=new Map(),loadSeq=0,runPoll=null;
 const LINKED_EVENT_ID=new URLSearchParams(location.search).get("event_id");
 const ACCESS_KEY="ttittulares-control-token";
 const bootAccess=new URLSearchParams(location.search).get("access");
@@ -255,7 +258,7 @@ function buildDiagnostic(s){
  }
  return lines.join("\n")
 }
-let lastRunTelemetry=null;
+let lastRunTelemetry=loadLocalJson(RUN_CACHE_KEY);
 function showRunIncidents(s){
  const r=s?.active?s:(s?.last_run||s||{}),count=runIncidentCount(r);
  $("incidentSummary").textContent=count?(count+" incidencia"+(count===1?"":"s")+" registrada"+(count===1?"":"s")+". Puedes copiar este diagnóstico y pegarlo en ChatGPT."):"No hay incidencias registradas.";
@@ -291,16 +294,22 @@ function runVisual(s){
    head.textContent="Ejecución";el.textContent=s?.enabled===false?"Trigger de Work no disponible":"Lista para ejecutar";
  }
 }
-function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?5000:30000)}
+function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?5000:60000)}
+function friendlyRunError(value,retryAt){
+ const raw=String(value||"");
+ const when=retryAt?new Date(retryAt):null;
+ return (/rate limit|temporalmente limitado/i.test(raw)?("GitHub temporalmente limitado"+(when&&!Number.isNaN(when.getTime())?" · reintento tras "+hhmm(when):"")+" · datos conservados"):(raw.slice(0,180)||"No se pudo consultar el estado de ejecución"));
+}
 async function loadRunStatus(){
  try{
    const headers={};if(token())headers.authorization="Bearer "+token();
    const r=await fetch(RUN_STATUS_API+"?t="+Date.now(),{cache:"no-store",headers});
    const d=await r.json().catch(()=>({}));
-   if(!r.ok)throw new Error(d.error||"No se pudo consultar el estado de ejecución");
-   runVisual(d);scheduleRunPoll(Boolean(d.active)||["REQUESTED","RUNNING"].includes(d.status))
+   if(!r.ok){const err=new Error(d.error||"No se pudo consultar el estado de ejecución");err.retry_at=d.retry_at;throw err}
+   localStorage.setItem(RUN_CACHE_KEY,JSON.stringify(d));runVisual(d);scheduleRunPoll(Boolean(d.active)||["REQUESTED","RUNNING"].includes(d.status))
  }catch(e){
-   $("runHeadline").textContent="Ejecución";$("runState").textContent=e.message||"No se pudo consultar el estado";$("runState").className="error";$("runNow").hidden=false;scheduleRunPoll(false)
+   const cached=loadLocalJson(RUN_CACHE_KEY);if(cached)runVisual(cached);
+   $("runHeadline").textContent=cached?$("runHeadline").textContent:"Ejecución";$("runState").textContent=friendlyRunError(e.message,e.retry_at);$("runState").className="running";$("runNow").hidden=false;scheduleRunPoll(false)
  }
 }
 async function requestRun(){
@@ -843,15 +852,14 @@ async function load(silent=false){
   const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),problematic_items:problematicRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),trend_candidates:trendCandidatesRaw.filter(x=>!pendingClosed.has(String(x.candidate_id||x.event_id||""))),three_source_items:growingRaw.filter(x=>!pendingClosed.has(String(x.event_id||"")))};
   status.processing_count=status.processing_items.length;status.problematic_count=status.problematic_items.length+status.trend_candidates.length;status.trend_candidates_count=status.trend_candidates.length;status.three_source_count=status.three_source_items.length;
   model={prepared:preparedRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),status,config:d.config||{},tremending:d.tremending||{items:[]}};
+  hasGoodState=true;localStorage.setItem(DATA_CACHE_KEY,JSON.stringify(model));
   if(LINKED_EVENT_ID&&model.prepared.some(x=>String(x.event_id)===LINKED_EVENT_ID)){view="ready";openCards.add(LINKED_EVENT_ID);persistUiState()}
   render();
   if(LINKED_EVENT_ID)requestAnimationFrame(()=>{const card=[...document.querySelectorAll("#list .card")].find(x=>x.dataset.eventId===LINKED_EVENT_ID);if(card)card.scrollIntoView({block:"start"})})
  }catch(e){
-  if(seq===loadSeq&&!silent){
-    toast(e.message);
-    const list=$("list");
-    if(list&&/Cargando/.test(list.textContent||""))list.innerHTML='<div class="empty"><b>No se pudieron cargar los datos.</b><br><button class="btn" id="retryLoad">Reintentar</button></div>';
-    const retry=$("retryLoad");if(retry)retry.onclick=()=>load();
+  if(seq===loadSeq){
+    if(hasGoodState){const h=$("health");if(h){h.textContent="Datos en caché · actualización temporalmente limitada";h.classList.add("bad")}if(!silent)toast("Mostrando la última copia válida");}
+    else if(!silent){toast("Datos temporalmente no disponibles");const list=$("list");if(list)list.innerHTML='<div class="empty"><b>Datos temporalmente no disponibles.</b><br><button class="btn" id="retryLoad">Reintentar</button></div>';const retry=$("retryLoad");if(retry)retry.onclick=()=>load();}
   }
  }
 }
@@ -905,7 +913,7 @@ $("reworkCancel").onclick=()=>{$("reworkSheet").classList.remove("show");reworkI
 $("reworkSend").onclick=async()=>{if(!reworkItem)return;const instruction=$("reworkInstruction").value.trim();if(!instruction){toast("Escribe qué quieres cambiar");return}if(!confirm("¿Mandar esta noticia de nuevo a elaboración con estas instrucciones?"))return;const old=[...model.prepared];model.prepared=model.prepared.filter(x=>x.event_id!==reworkItem.event_id);render();try{await api("rework",{event_id:reworkItem.event_id,instruction});$("reworkSheet").classList.remove("show");toast("Enviada a elaboración");reworkItem=null;setView("processing");setTimeout(()=>load(true),1000)}catch(e){model.prepared=old;render();toast(e.message)}};
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});window.addEventListener("pageshow",()=>load(true));
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttittulares/sw.js").then(()=>syncNotifyButton()).catch(()=>{});
-setView(view);load();loadRunStatus();setInterval(()=>{if(!document.hidden)load(true)},60000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
+if(hasGoodState)render();else setView(view);if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();setInterval(()=>{if(!document.hidden)load(true)},60000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
 </script>
 </body></html>
 <!-- quote-candidates: conversation-low-engagement-v1 -->
