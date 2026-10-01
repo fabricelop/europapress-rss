@@ -9746,16 +9746,16 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
-      "ai_image_attempt": 1,
-      "ai_image_attempt_started_at": "2026-10-01T15:49:30+02:00",
+      "ai_image_status": "pending",
+      "ai_image_attempt": 2,
+      "ai_image_attempt_started_at": "2026-10-01T16:49:00+02:00",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-01T15:51:00+02:00",
+      "ai_image_last_attempt_status": "pending",
+      "ai_image_last_attempt_at": "2026-10-01T16:49:00+02:00",
       "ai_image_failure_reason": "El raster se generó y normalizó correctamente en el chat ejecutor, pero el conector GitHub disponible en esta pasada no ofrece hand-off binario/file-reference hacia el outbox. No se reintenta automáticamente.",
       "ai_image_generated_but_not_materialized": true,
       "ai_image_last_generated_gen_id": "b127b376-7a90-4a4c-9c1c-690514817ffa",
@@ -9784,7 +9784,9 @@
       "ai_image_regenerate_requested": true,
       "ai_image_regenerate_requested_at": "2026-10-01T14:18:24.344Z",
       "ai_image_regenerate_request_version": 1,
-      "ai_image_regenerate_reason": "retry_after_binary_handoff_fix"
+      "ai_image_regenerate_reason": "retry_after_binary_handoff_fix",
+      "ai_image_regenerate_consumed_version": 1,
+      "ai_image_regenerate_consumed_at": "2026-10-01T16:49:00+02:00"
     },
     {
       "id": "29886869f011",
@@ -10037,8 +10039,68 @@
       "ai_image_failure_reason": "HTTP 502: AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits.",
       "grouped_into": "100a60621ef0",
       "grouped_at": "2026-10-01T14:11:02.098Z"
+    },
+    {
+      "id": "7591c30cd1ec",
+      "name": "El PNV",
+      "rank": 6,
+      "revision": 0,
+      "status": "explained",
+      "requested_at": "2026-10-01T16:31:40+02:00",
+      "explained_at": "2026-10-01T16:49:00+02:00",
+      "explanation": "TT#6 El PNV es tendencia porque apoyará el primer decreto de vivienda y rechazará el segundo, que prevé la prórroga automática de contratos, al considerar que perjudica a pequeños propietarios.\n🌶️ Dos decretos, dos papeletas y un voto partido por la mitad.",
+      "closer_text": "🌶️ Dos decretos, dos papeletas y un voto partido por la mitad.",
+      "rank_at_explanation": 6,
+      "news_disposition": "ignored",
+      "news_note": "Pasada editorial limitada a TTendencias; no se abre un puente adicional a TTiTTulares.",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Europa Press · 1/10/2026 16:10",
+          "url": "https://www.europapress.es/economia/construccion-y-vivienda-00342/noticia-pnv-apoyara-decreto-vivienda-ayudas-fiscales-rechazara-renovacion-alquiler-automatica-20261001144608.html"
+        },
+        {
+          "source": "RTVE · crisis de vivienda, 1/10/2026",
+          "url": "https://www.rtve.es/noticias/20261001/acampada-sol-vivienda-hoy-ultima-hora-cronica/17248350.shtml"
+        }
+      ],
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "5e129b21cb4b",
+      "requested_together": [
+        "El PNV"
+      ],
+      "captured_with": [
+        "El PNV"
+      ],
+      "auto_queued": true,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "ai_image_attempt": 1,
+      "ai_image_attempt_started_at": "2026-10-01T16:49:00+02:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "ready",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001144608_690.jpg",
+        "source": "Europa Press · Congreso",
+        "source_url": "https://www.europapress.es/economia/construccion-y-vivienda-00342/noticia-pnv-apoyara-decreto-vivienda-ayudas-fiscales-rechazara-renovacion-alquiler-automatica-20261001144608.html",
+        "alt": "La portavoz del PNV en el Congreso, Maribel Vaquero, junto a otros diputados en el hemiciclo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001144608_690.jpg",
+        "source": "Europa Press · Congreso",
+        "source_url": "https://www.europapress.es/economia/construccion-y-vivienda-00342/noticia-pnv-apoyara-decreto-vivienda-ayudas-fiscales-rechazara-renovacion-alquiler-automatica-20261001144608.html",
+        "alt": "La portavoz del PNV en el Congreso, Maribel Vaquero, junto a otros diputados en el hemiciclo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-01T14:18:24.344Z",
-  "count": 369
+  "updated_at": "2026-10-01T16:49:00+02:00",
+  "count": 373
 }
