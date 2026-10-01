@@ -67,7 +67,7 @@ No uses el ImageGen interno de ChatGPT para este flujo y no intentes extraer byt
 3. crea exactamente UN trabajo visual:
    `ttittulares/image-jobs/<event_id>-r<revision>-ai<attempt>.json`;
 4. su JSON pequeño contiene:
-   `{"project":"ttittulares","event_id","revision","attempt","prompt","context_guard"}`;
+   `{"project":"ttittulares","event_id","revision","attempt","prompt","svg","context_guard"}`;
 5. `.github/workflows/ai-image-generate.yml` llama al generador privado de Vercel AI Gateway mediante OIDC y escribe `ttittulares/image-outbox/**`;
 6. `.github/workflows/ttittulares-ai-image-apply.yml` materializa el JPEG y actualiza SOLO los campos visuales del READY.
 
@@ -86,6 +86,17 @@ Incluye exclusivamente:
 - sin collage, split-screen, multipanel, infografía ni UI.
 
 No reutilices prompts, semillas, imágenes ni elementos de otros items. En política usa una ilustración neutral y descriptiva, sin elogio, ataque ni persuasión. En tragedias, muertes, violencia o víctimas, sustituye el gag por una ilustración editorial sobria y no gráfica.
+
+### SVG editorial IA de respaldo obligatorio
+
+Incluye también en el job un campo `svg` con una representación vectorial de ESA misma idea. Es el respaldo durable si el generador raster externo no está disponible. Reglas:
+- raíz `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 432">`;
+- fondo y 3–8 elementos claros, con composición de viñeta editorial;
+- solo primitivas SVG (`rect`, `circle`, `ellipse`, `path`, `line`, `polyline`, `polygon`, `text`, `g`);
+- prohibidos `script`, `foreignObject`, `image`, `iframe`, eventos `on*`, enlaces, URLs, `data:`, recursos externos y CSS importado;
+- texto opcional de 1–3 palabras como máximo; nunca el tuit completo;
+- no reutilices objetos o metáforas de otra noticia.
+GitHub Actions rasteriza este SVG a PNG y mantiene el mismo `context_guard`.
 
 El `context_guard` es:
 `{"version":3,"event_id":"<event_id>","revision":<revision>,"scope":"current_item_only"}`.
