@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';import crypto from 'node:crypto';
+const s=fs.readFileSync(new URL('../api/ttittulares-control.js',import.meta.url),'utf8');
+test('identificador manual determinista y deduplicación de texto corto',()=>{const c={crypto};vm.createContext(c);vm.runInContext(s.slice(s.indexOf('function canonicalUrl('),s.indexOf('function tremendingEntryId(')),c);assert.equal(c.manualEventId('',' NOTICIA  breve '),c.manualEventId('','noticia breve'));assert.notEqual(c.manualEventId('','noticia breve'),c.manualEventId('','otra noticia'));assert.equal(c.storyMatches({title:'Noticia breve'},{title:' NOTICIA breve '}),true)});
+test('API Noticia obligatoria y reinvestigación expresa',()=>{assert.match(s,/if\(!cleanTitle\)/);assert.match(s,/manualEventId\(cleanUrl,cleanTitle\)/);assert.match(s,/body\.reinvestigate===true/)});

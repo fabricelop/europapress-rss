@@ -18,7 +18,7 @@ test("Gag IA exige procedencia real de ImageGen en el chat",()=>{
  assert.match(inline,/provider==="chat-imagegen"/);
  assert.match(inline,/origin==="executing_chat"/);
  assert.match(inline,/Number\(guard\.version\)===3/);
- assert.match(inline,/ai=isChatImageGen\(rawAi\)\?rawAi:\{\}/);
+ assert.match(inline,/ai=isChatImageGen\(item.ai_image\)\?item.ai_image/);
  const start=inline.indexOf("function isChatImageGen(image){");
  const end=inline.indexOf("function renderReady(",start);
  const context={};vm.createContext(context);vm.runInContext(inline.slice(start,end),context);
@@ -91,3 +91,4 @@ test("La copia usa los píxeles visibles sin repetir la descarga remota",async()
  assert.equal(blob.type,"image/png");
  assert.deepEqual(calls,[["draw",1600,900,0,0],["blob",1600,900,"image/png"]]);
 });
+

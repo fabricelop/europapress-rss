@@ -73,3 +73,7 @@ message: <causa concreta y breve>
 ```
 
 La telemetría `RUNSTATUS` pertenece únicamente a este envoltorio Work. El archivo editorial común no debe escribirla.
+
+
+## Revisión exclusiva de remate e IA
+Si rewrite_scope=remate_and_ai y reinvestigate no es true: no investigar ni buscar fuentes. Usar preserved_editorial como contenido factual inmutable. Conservar fuentes, hechos, título, resumen y texto anterior al remate. Cambiar solo remate e imagen IA; una única tentativa ImageGen desde el chat con contexto del evento actual y nueva revisión. Conservar fallback existente. El fallo de imagen nunca bloquea READY. Investigar de nuevo solo con reinvestigate=true solicitado expresamente.

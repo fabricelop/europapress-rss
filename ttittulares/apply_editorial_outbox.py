@@ -75,6 +75,22 @@ def normalize_tweet(item):
     tweet={"text":text,"remate":remate,"url":"https://twitter.com/intent/tweet?text="+urllib.parse.quote(text,safe="")}
     return tweet
 
+def preserve_rework(item, row):
+    if row.get("rewrite_scope") != "remate_and_ai" or row.get("reinvestigate"):
+        return item
+    original = row.get("preserved_editorial") or {}
+    if not original:
+        raise ValueError("Revisión sin contenido factual conservado")
+    remate = item["tweet"]["remate"]
+    original_tweet = normalize_tweet(original)
+    factual = original_tweet["text"].rsplit("\n\n", 1)[0]
+    for key in ("title", "url", "factual_summary", "explanation", "sources_at_draft", "source_evidence", "drafted_source_count", "source_count", "fallback_image", "fallback_image_status"):
+        if key in original:
+            item[key] = original[key]
+    text = factual + "\n\n" + remate
+    item["tweet"] = {"text": text, "remate": remate, "url": "https://twitter.com/intent/tweet?text=" + urllib.parse.quote(text, safe="")}
+    return item
+
 def validate_ready(payload):
     item=payload.get("prepared_item") or {}
     if not isinstance(item,dict): raise ValueError("prepared_item inválido")
@@ -405,6 +421,7 @@ def sync_compact(q):
             "sources":x.get("sources") or [],"source_count":int(x.get("source_count") or 0),
             "selected_at":x.get("selected_at"),"selection_mode":x.get("selection_mode") or "",
             "revision":int(x.get("revision") or 1),
+            "rewrite_scope":x.get("rewrite_scope"),"reinvestigate":bool(x.get("reinvestigate")),"preserved_editorial":x.get("preserved_editorial"),
             "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
             "parent_event_id":x.get("parent_event_id"),"update_context":x.get("update_context"),
             "with_image":True,"image_mode":"ai_plus_fallback",
@@ -490,7 +507,7 @@ def main():
                 path.unlink()
                 continue
             if st=="ready":
-                item=validate_ready(payload)
+                item=preserve_rework(validate_ready(payload), row)
                 # READY se materializa sin búsquedas de red. IA y fallback
                 # continúan por Actions independientes.
                 _initialize_parallel_images(item)
@@ -602,3 +619,4 @@ if "--selftest-duplicate" in sys.argv:
     raise SystemExit(selftest_duplicate())
 if __name__=="__main__":
     raise SystemExit(main())
+

@@ -102,7 +102,7 @@ function storyMatches(a,b){
   const au=canonicalUrl(a?.url||a?.canonical_url),bu=canonicalUrl(b?.url||b?.canonical_url);
   if(au&&bu&&au===bu)return true;
   const at=normalizedTitle(a?.title||a?.canonical_title||a?.normalized_title),bt=normalizedTitle(b?.title||b?.canonical_title||b?.normalized_title);
-  return at.length>=20&&bt.length>=20&&at===bt
+  return Boolean(at&&bt&&at===bt)
 }
 function manualEventId(url,title){
   const base=canonicalUrl(url)||normalizedTitle(title);
@@ -303,12 +303,13 @@ async function useFallbackImage(eventId){
   return {ok:true,event_id:id,image_choice:"fallback"}
 }
 
-async function rework(eventId,instruction){
-  const id=idOf(eventId),text=String(instruction||"").trim();
+async function rework(eventId,instruction,reinvestigate=false){
+  const id=idOf(eventId),text=String(instruction||"Cambia solo el remate y genera una nueva imagen IA. Conserva exactamente hechos, fuentes y texto factual. No reinvestigues.").trim();
   if(!id)throw new Error("Falta event_id");if(!text)throw new Error("Escribe las instrucciones para rehacer.");
   const now=new Date().toISOString();
   const {doc:prepared}=await readJson(PREPARED);
-  const source=(prepared.items||[]).find(x=>idOf(x.event_id)===id)||{};
+  const source=(prepared.items||[]).find(x=>idOf(x.event_id)===id);
+  if(!source)throw new Error("La noticia ya no está en Listas");
   await mutateJson(PROCESSING,"Rehacer noticia TTiTTulares desde web",doc=>{
     doc.items||=[];let item=[...doc.items].reverse().find(x=>idOf(x.event_id)===id);
     if(!item){
@@ -316,7 +317,8 @@ async function rework(eventId,instruction){
       doc.items.push(item)
     }
     item.previous_status=item.status;item.status="PROCESSING";item.selection_mode="REWRITE";item.with_image=true;item.image_mode="ai_plus_fallback";item.image_instruction="Intenta una sola imagen IA rápida y conserva además una imagen de archivo/fallback. Ninguna imagen bloquea READY.";
-    item.rewrite_request=text;item.rewrite_requested_at=now;item.rewrite_version=Number(item.rewrite_version||0)+1;
+    item.rewrite_scope=reinvestigate?"full":"remate_and_ai";item.reinvestigate=reinvestigate;item.preserved_editorial=structuredClone(source);item.factual_summary=source.factual_summary||source.explanation||"";item.fallback_image=source.fallback_image||null;
+    item.rewrite_request=reinvestigate?text:"CONTRATO: conservar hechos, fuentes y texto factual de preserved_editorial sin cambios. NO buscar ni reinvestigar. Cambiar exclusivamente remate e imagen IA; un intento ImageGen desde el chat, nunca bloquear READY. "+text;item.rewrite_requested_at=now;item.rewrite_version=Number(item.rewrite_version||0)+1;
     item.revision=Number(item.revision||source.revision||1)+1;delete item.delivered_at;delete item.published_at;delete item.dismissed_at;
     doc.updated_at=now;return doc
   });
@@ -336,7 +338,7 @@ async function rework(eventId,instruction){
 }
 async function submitManualStory(url,title,instruction){
   const cleanUrl=canonicalUrl(url),cleanTitle=String(title||"").trim(),note=String(instruction||"").trim();
-  if(!cleanUrl&&!cleanTitle)throw new Error("Pega un enlace o escribe un titular");
+  if(!cleanTitle){const e=new Error("Noticia es obligatoria");e.statusCode=400;throw e;}
   const now=new Date().toISOString();
   const [eventsR,queueR,preparedR,decisionsR,archiveR]=await Promise.all([
     readJson(EVENTS),readJson(PROCESSING),readJson(PREPARED),readJson(DECISIONS),readJson(MANUAL_ARCHIVE)
@@ -703,7 +705,7 @@ export default async function handler(req,res){
     if(action==="rate-remate")return res.status(200).json(await rateTitularRemate(body.rating_key,body.rating));
     if(action==="published")return res.status(200).json(await closePrepared(body.event_id,"published"));
     if(action==="dismiss")return res.status(200).json(await closePrepared(body.event_id,"dismissed"));
-    if(action==="rework")return res.status(200).json(await rework(body.event_id,body.instruction));
+    if(action==="rework")return res.status(200).json(await rework(body.event_id,body.instruction,body.reinvestigate===true));
     if(action==="regenerate-image")return res.status(200).json(await requestImageRegeneration(body.event_id));
     if(action==="use-fallback-image")return res.status(200).json(await useFallbackImage(body.event_id));
     if(action==="check")return res.status(200).json(await markUserValidated(body.event_id));
@@ -719,3 +721,4 @@ export default async function handler(req,res){
     return res.status(400).json({ok:false,error:"Acción no válida"})
   }catch(e){console.error(e);return res.status(Number(e?.statusCode)||500).json({ok:false,error:String(e.message||e)})}
 }
+

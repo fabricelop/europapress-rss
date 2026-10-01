@@ -28,5 +28,6 @@ test("no selected tweet quotation panel, source button becomes Buscar en X",()=>
  assert.doesNotMatch(script,/Abrir fuente/);
  assert.match(script,/Buscar en X/);
  assert.match(script,/search.href=quoteSearchUrl\(item\)/);
- assert.match(script,/card.querySelector\("\.imgSource"\)/);
+ assert.match(script,/card.querySelector\("\.searchX"\)/);
 });
+

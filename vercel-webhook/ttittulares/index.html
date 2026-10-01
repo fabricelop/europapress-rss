@@ -85,9 +85,8 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 
 <div class="sheet" id="submitSheet"><div class="panel">
  <h2>Mandar noticia a elaborar</h2>
- <p>Pega el enlace de la noticia. El título y las instrucciones son opcionales. Antes de crearla se comprobará si ya existe en el radar, la cola o el archivo.</p>
- <input id="submitUrl" type="url" inputmode="url" autocomplete="off" placeholder="https://…">
- <input id="submitTitle" type="text" autocomplete="off" placeholder="Título opcional" style="margin-top:9px">
+ <p>Escribe la noticia. Las instrucciones son opcionales. Antes de crearla se comprobará si ya existe en el radar, la cola o el archivo.</p>
+ <input id="submitTitle" type="text" autocomplete="off" placeholder="Noticia" required aria-label="Noticia" style="margin-top:9px">
  <textarea id="submitInstruction" placeholder="Instrucciones opcionales: enfoque, dato a comprobar, remate…" style="margin-top:9px"></textarea>
  <div class="actions"><button class="btn" id="submitCancel">Cancelar</button><button class="btn primary" id="submitSend">Enviar a elaboración</button></div>
  <div class="meta" id="submitStatus" style="margin-top:9px"></div>
@@ -571,10 +570,10 @@ function renderList(){
   const preservedImages=new Map();
   if(lastRenderedView==="ready"){
    for(const card of list.querySelectorAll("article.card[data-event-id]")){
-    const preview=card.querySelector(".imagePreview"),url=card.dataset.imageUrl||"";
+    for(const preview of card.querySelectorAll(".aiPreview,.archivePreview")){const url=preview.dataset.url||"";
     if(preview&&url&&preview.complete&&preview.naturalWidth>0){
      preservedImages.set(JSON.stringify([card.dataset.eventId,url]),preview);
-    }
+    }}
    }
   }
   list.innerHTML="";
@@ -678,74 +677,30 @@ function renderReady(list,preservedImages=new Map()){
   const current=Number(events[item.event_id]?.source_count||item.current_source_count||item.drafted_source_count||0);
   const drafted=Number(item.drafted_source_count||item.source_count||0);
   const card=document.createElement("article");card.className="card";card.dataset.eventId=String(item.event_id||"");
-  card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="actions"><button class="btn primary expand">Abrir</button><button class="btn primary published">Ya publicada</button><button class="btn danger dismiss">Desestimar</button></div><div class="details"><div class="facts"></div><div class="imagebox" hidden><div class="imageTitle">Imágenes</div><div class="imageMeta"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;margin:9px 0"><div class="selectedImageChoice" hidden style="border:1px solid #334155;border-radius:10px;padding:8px"><div class="selectedImageLabel" style="font-size:12px;font-weight:800;margin-bottom:6px"></div><img class="imagePreview" hidden loading="lazy" style="display:block;width:100%;height:190px;object-fit:contain;border-radius:9px;background:#0b1018"></div><div class="alternateImageChoice" hidden style="border:1px solid #334155;border-radius:10px;padding:8px"><div class="alternateImageLabel" style="font-size:12px;font-weight:800;margin-bottom:6px"></div><img class="alternateImagePreview" hidden loading="lazy" style="display:block;width:100%;height:190px;object-fit:contain;border-radius:9px;background:#0b1018"></div></div><div class="imageActions"><button class="btn imgRedo">🔁 Rehacer</button><button class="btn imgFallback">🖼️ Usar archivo/fallback</button><a class="btn imgOpen" target="_blank" rel="noopener">Abrir imagen</a><button class="btn imgCopy">Copiar imagen</button><a class="btn imgSource" target="_blank" rel="noopener">🔎 Buscar en X</a></div></div><div class="variants"></div><div class="actions"><button class="btn rework">Rehacer texto</button><button class="btn danger dismiss2">Desestimar</button></div></div>';
+  card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="facts"></div><div class="imagebox"><div class="imageTitle">Imágenes</div><div class="imageMeta"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:9px"><div class="aiChoice" hidden><div>IA</div><img class="aiPreview" style="width:100%;height:190px;object-fit:contain"></div><div class="archiveChoice" hidden><div>Archivo</div><img class="archivePreview" style="width:100%;height:190px;object-fit:contain"></div></div></div><div class="variants"></div><div class="actions"><button class="btn rework">🔁 Rehacer remate + IA</button><button class="btn copyTweet">📋 Copiar tuit</button><button class="btn copyAi" hidden>✨ Copiar imagen IA</button><button class="btn copyArchive" hidden>🖼️ Copiar imagen archivo</button><a class="btn searchX" target="_blank" rel="noopener">🔎 Buscar en X</a><button class="btn published">✓ Ya publicado</button><button class="btn danger dismiss">Desestimar</button></div>';
   card.querySelector(".title").textContent=item.title||"Noticia sin título";
   card.querySelector(".sources").textContent="Redactada con "+drafted+" ("+current+") · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
-  const det=card.querySelector(".details");card.querySelector(".facts").textContent=item.factual_summary||item.explanation||"";if(openCards.has(String(item.event_id||""))){det.classList.add("open");card.querySelector(".expand").textContent="Cerrar"}
-   const rawAi=item.ai_image||{},ai=isChatImageGen(rawAi)?rawAi:{},fallback=item.fallback_image||{};
+  card.querySelector(".facts").textContent=item.factual_summary||item.explanation||"";
+  const ai=isChatImageGen(item.ai_image)?item.ai_image:isChatImageGen(item.image)?item.image:{};
+  const fallback=item.fallback_image||(item.image&&!item.image.generated?item.image:{} )||{};
   const aiUrl=String(ai.url||""),fallbackUrl=String(fallback.url||"");
-   let imageChoice=String(item.image_choice||"");
-   if(imageChoice==="ai"&&!aiUrl)imageChoice=fallbackUrl?"fallback":"none";
-   let img=imageChoice==="ai"?ai:imageChoice==="fallback"?fallback:{},imgUrl=String(img.url||"");
-  if(!imgUrl&&aiUrl){img=ai;imgUrl=aiUrl;imageChoice="ai"}
-  else if(!imgUrl&&fallbackUrl){img=fallback;imgUrl=fallbackUrl;imageChoice="fallback"}
-   if(!imageChoice&&imgUrl)imageChoice=img===ai?"ai":"fallback";
-  const imgSource=img.source||item.image_source||"",imgRights=img.rights_status||item.image_rights_status||"",imgBox=card.querySelector(".imagebox");
-  const imageState=String(item.image_status||(imgUrl?"ready":"none")).toLowerCase();
-  const imageReady=imageState==="ready"&&!!imgUrl;
-  const anyImage=Boolean(aiUrl||fallbackUrl||imgUrl);
-  const imageLabel=imageChoice==="ai"?"Gag IA en uso":imageChoice==="fallback"?"Archivo / fallback en uso":anyImage?"Imagen disponible":"Sin imagen";
-  const imageInFlight=false; // La imagen nunca bloquea ni retrasa la publicación.
-  const publishBtn=card.querySelector(".published");
-  publishBtn.disabled=false;
-  publishBtn.textContent="Ya publicada";
-  publishBtn.title="Marca la noticia como publicada; la imagen nunca bloquea este paso.";
-  imgBox.hidden=false;
-  card.querySelector(".imageTitle").textContent=imageLabel;
-  const selectedChoice=card.querySelector(".selectedImageChoice");
-  const selectedLabel=card.querySelector(".selectedImageLabel");
-  let preview=card.querySelector(".imagePreview");
-  if(imageReady){
-   card.dataset.imageUrl=imgUrl;
-   const proxySrc=API+"?view=image-proxy&url="+encodeURIComponent(imgUrl);
-   const previous=preservedImages.get(JSON.stringify([String(item.event_id||""),imgUrl]));
+  const aiState=aiUrl?"lista":["failed","none","error"].includes(String(item.ai_image_status))?"falló":"pendiente";
+  card.querySelector(".imageMeta").textContent="IA "+aiState+" · archivo "+(fallbackUrl?"disponible":"no disponible");
+  for(const [kind,url] of [["ai",aiUrl],["archive",fallbackUrl]]){
+   let preview=card.querySelector("."+kind+"Preview");const choice=card.querySelector("."+kind+"Choice"),button=card.querySelector(kind==="ai"?".copyAi":".copyArchive");
+   if(!url)continue;
+   choice.hidden=false;preview.alt=(kind==="ai"?"Imagen IA: ":"Imagen de archivo: ")+(item.title||"");
+   const proxySrc=API+"?view=image-proxy&url="+encodeURIComponent(url);
+   const previous=preservedImages.get(JSON.stringify([String(item.event_id||""),url]));
    if(previous&&previous.getAttribute("src")===proxySrc){preview.replaceWith(previous);preview=previous}
-   selectedChoice.hidden=false;selectedLabel.textContent=(imageChoice==="ai"?"Gag IA":"Archivo / fallback")+" · EN USO";
-   preview.hidden=false;preview.alt=img.alt||item.title||"Imagen de la noticia";
-   preview.onerror=()=>{lastReadyRendering=null;preview.hidden=true;card.querySelector(".imageMeta").textContent="No se pudo cargar la imagen seleccionada; la noticia sigue lista para publicar."};
-   if(preview.getAttribute("src")!==proxySrc)preview.src=proxySrc;
-   card.querySelector(".imgOpen").href=imgUrl;
-   const copyButton=card.querySelector(".imgCopy");copyButton.onclick=()=>copyImageToClipboard(imgUrl,copyButton,preview);
-  }else{
-   selectedChoice.hidden=true;preview.hidden=true;
-   card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";
+   preview.dataset.url=url;if(preview.getAttribute("src")!==proxySrc)preview.src=proxySrc;button.hidden=false;
+   preview.onerror=()=>{button.hidden=true;preview.hidden=true;};
+   button.onclick=()=>copyImageToClipboard(url,button,preview);
   }
-
-  const alternateChoice=card.querySelector(".alternateImageChoice"),alternateLabel=card.querySelector(".alternateImageLabel"),alternatePreview=card.querySelector(".alternateImagePreview");
-  const altImage=imageChoice==="ai"?fallback:imageChoice==="fallback"?ai:(aiUrl?ai:fallback);
-  const altUrl=String(altImage?.url||"");
-  if(altUrl&&altUrl!==imgUrl){
-   alternateChoice.hidden=false;
-   alternateLabel.textContent=imageChoice==="ai"?"Archivo / fallback":"Gag IA";
-   alternatePreview.hidden=false;alternatePreview.alt=altImage.alt||item.title||"Imagen alternativa";
-   alternatePreview.src=API+"?view=image-proxy&url="+encodeURIComponent(altUrl);
-  }else{alternateChoice.hidden=true;alternatePreview.hidden=true}
-
-   const aiState=String(aiUrl?"ready":item.ai_image_status==="ready"?"failed":item.ai_image_status||"pending");
-  const fallbackState=String(item.fallback_image_status|| (fallbackUrl?"ready":"pending"));
-  card.querySelector(".imageMeta").textContent="IA: "+(aiState==="ready"?"lista":aiState==="failed"?"falló":aiState==="pending"?"pendiente":aiState)+" · archivo: "+(fallbackState==="ready"?"listo":fallbackState==="none"?"no encontrado":fallbackState==="pending_capture"?"pendiente":fallbackState);
-  const redo=card.querySelector(".imgRedo");
-  redo.disabled=Boolean(item.ai_image_regenerate_requested);
-  redo.textContent=item.ai_image_regenerate_requested?"Rehacer solicitado ✓":"🔁 Rehacer";
-  redo.onclick=async()=>{redo.disabled=true;try{await api("regenerate-image",{event_id:item.event_id});toast("Se intentará un nuevo gag IA sin tocar el texto");await load(true)}catch(e){redo.disabled=false;toast(e.message)}};
-  const useFallback=card.querySelector(".imgFallback");
-  useFallback.disabled=!fallbackUrl||imageChoice==="fallback";
-  useFallback.onclick=async()=>{useFallback.disabled=true;try{await api("use-fallback-image",{event_id:item.event_id});toast("Imagen de archivo seleccionada");await load(true)}catch(e){useFallback.disabled=false;toast(e.message)}};
-
-  const photo=document.createElement("button");photo.className="btn photoStatus"+(imageReady?" imageReadyStatus":"")+(imageState==="telegram"?" telegramStatus":"");photo.textContent="📷 "+imageLabel;photo.onclick=()=>{det.classList.add("open");openCards.add(String(item.event_id||""));persistUiState();card.querySelector(".expand").textContent="Cerrar";imgBox.scrollIntoView({block:"nearest",behavior:"smooth"})};card.querySelector(".actions").appendChild(photo);
+  const imageInFlight=false;
   const vh=card.querySelector(".variants");
-  const search=card.querySelector(".imgSource");
+  const search=card.querySelector(".searchX");
   search.href=quoteSearchUrl(item);
   search.title="Buscar en X: "+newsSearchKeywords(item);
   search.style.display="";
@@ -753,17 +708,15 @@ function renderReady(list,preservedImages=new Map()){
   if(v){
     const box=document.createElement("div");box.className="variant";
     const text=String(v.text||"");
-    box.innerHTML='<div class="vhead"><span class="vname"></span><span class="chars"></span></div><div class="tweet"></div><div class="remateRating" hidden></div><div class="actions"><a class="btn primary openx" target="_blank" rel="noopener">Abrir en X</a><button class="btn copy">Copiar</button><button class="btn published-inline">✓ Ya publicado</button></div>';
-    box.querySelector(".vname").textContent="Tuit";box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=text;mountRemateRating(box.querySelector(".remateRating"),v);
-    box.querySelector(".openx").href=v.url||intent(text);box.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado"));
-    box.querySelector(".published-inline").onclick=()=>close("published","¿Confirmas que ya has publicado esta noticia?");
+    box.innerHTML='<div class="vhead"><span class="vname">Tuit</span><span class="chars"></span></div><div class="tweet"></div><div class="remateRating" hidden></div>';
+    box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=text;mountRemateRating(box.querySelector(".remateRating"),v);
+    card.querySelector(".copyTweet").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado")).catch(e=>toast(e.message));
     vh.appendChild(box)
   }
-  card.querySelector(".expand").onclick=()=>{det.classList.toggle("open");const id=String(item.event_id||"");if(det.classList.contains("open"))openCards.add(id);else openCards.delete(id);persistUiState();card.querySelector(".expand").textContent=det.classList.contains("open")?"Cerrar":"Abrir"};
   async function close(action,question){if(!confirm(question))return;const id=String(item.event_id||""),old=[...model.prepared];pendingClosed.add(id);openCards.delete(id);persistUiState();model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();try{await api(action,{event_id:item.event_id});toast(action==="published"?(imageInFlight?"Publicada; imagen pendiente cancelada":"Marcada como publicada"):"Noticia desestimada");await load(true)}catch(e){pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message)}}
   card.querySelector(".published").onclick=()=>close("published","¿Confirmas que ya has publicado esta noticia?");
-  card.querySelector(".dismiss").onclick=card.querySelector(".dismiss2").onclick=()=>close("dismiss","¿Desestimar esta noticia?");
-  card.querySelector(".rework").onclick=()=>{reworkItem=item;$("reworkTitle").textContent=item.title||"";$("reworkInstruction").value="";$("reworkSheet").classList.add("show");$("reworkInstruction").focus()};
+  card.querySelector(".dismiss").onclick=()=>close("dismiss","¿Desestimar esta noticia?");
+  card.querySelector(".rework").onclick=async()=>{const button=card.querySelector(".rework");button.disabled=true;try{await api("rework",{event_id:item.event_id});toast("Nueva revisión de remate e IA solicitada");await load(true)}catch(e){button.disabled=false;toast(e.message)}};
   list.appendChild(card)
  }
 }
@@ -880,16 +833,16 @@ $("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buil
 $("notify").onclick=enablePush;
 $("refresh").onclick=()=>{toast("Recargando");load();loadRunStatus()};
 $("submitNews").onclick=()=>{
- $("submitUrl").value="";$("submitTitle").value="";$("submitInstruction").value="";$("submitStatus").textContent="";
- $("submitSheet").classList.add("show");$("submitUrl").focus()
+ $("submitTitle").value="";$("submitInstruction").value="";$("submitStatus").textContent="";
+ $("submitSheet").classList.add("show");$("submitTitle").focus()
 };
 $("submitCancel").onclick=()=>$("submitSheet").classList.remove("show");
 $("submitSend").onclick=async()=>{
- const url=$("submitUrl").value.trim(),title=$("submitTitle").value.trim(),instruction=$("submitInstruction").value.trim();
- if(!url&&!title){$("submitStatus").textContent="Pega un enlace o escribe un titular";return}
+ const title=$("submitTitle").value.trim(),instruction=$("submitInstruction").value.trim();
+ if(!title){$("submitStatus").textContent="Escribe la noticia";return}
  $("submitStatus").textContent="Comprobando archivo y cola…";
  try{
-   const d=await api("submit",{url,title,instruction});
+   const d=await api("submit",{title,instruction});
    const messages={PROCESSING:d.duplicate?"Ya existía: está en elaboración":"Enviada a elaboración",READY:"Ya estaba elaborada y lista",PUBLISHED:"Ya estaba publicada",DISMISSED:"Ya estaba desestimada"};
    $("submitStatus").textContent=messages[d.status]||d.message||"Procesada";
    await load(true);
@@ -928,4 +881,5 @@ setView(view);load();loadRunStatus();setInterval(()=>{if(!document.hidden)load(t
 </body></html>
 <!-- quote-candidates: conversation-low-engagement-v1 -->
 <!-- deploy-sync: 20260924-1823-final -->
+
 
