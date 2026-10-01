@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T08:08:37.800Z",
+  "updated_at": "2026-10-01T08:12:04.138543Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -575,9 +575,9 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -592,13 +592,46 @@
       },
       "fallback_image_search_attempted_at": "2026-10-01T08:08:55.499311Z",
       "image": {
-        "url": "https://static.eldiario.es/clip/31c8d7dc-5da4-4708-90ef-84233905f344_facebook-aspect-ratio-1200-675_default_0_x649y391.jpg",
-        "source": "elDiario.es",
-        "source_url": "https://www.eldiario.es/madrid/somos/almeida-envia-foto-cuchillo-pan-cortado-hummus-probar-violencia-acampados-sol_1_13552249.html",
-        "rights_status": "unverified",
-        "generated": false,
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5e2a4850f849-r1-ai1.jpg",
+        "source": "TTiTTulares / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "5e2a4850f849",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "a73e1f38143f385efa5b83f042bf6eb27904658d4d2c7b0e436bf6524c32a51e",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5e2a4850f849-r1-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions",
         "alt": "Cuchillos para hummus y adoquines contra el viento: los peligros que Almeida detecta en Sol"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5e2a4850f849-r1-ai1.jpg",
+        "source": "TTiTTulares / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "5e2a4850f849",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "a73e1f38143f385efa5b83f042bf6eb27904658d4d2c7b0e436bf6524c32a51e",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5e2a4850f849-r1-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "Cuchillos para hummus y adoquines contra el viento: los peligros que Almeida detecta en Sol"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T08:12:04.138464Z"
     }
   ]
 }
