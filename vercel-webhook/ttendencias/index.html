@@ -533,10 +533,13 @@ function mainChatAi(image){
  const g=image?.context_guard||{};
  return image?.generated===true&&image?.provider==="chat-imagegen"&&image?.origin==="executing_chat"&&Number(g.version)===3&&g.scope==="current_item_only"
 }
+function mainExplicitAiBlockReason(x){
+ if(!x||x.tremending_origin)return "tremending";
+ return String(x.ai_image_block_reason||x.image_block_reason||"").trim()
+}
 function mainAiEligible(x){
- if(!x||x.copied||x.tremending_origin||x.disable_ai_image||!String(x.id||""))return false;
- const mode=String(x.image_mode||x.image_strategy||"").toLowerCase();
- return !["fallback_only","archive_only","tweet_capture_only"].includes(mode)&&String(x.ai_image_status||"").toLowerCase()!=="disabled"
+ if(!x||x.copied||x.tremending_origin||!String(x.id||""))return false;
+ return !mainExplicitAiBlockReason(x)
 }
 function mainImagePickupTimedOut(run){
  const st=String(run?.status||"").toUpperCase();if(st!=="REQUESTED")return false;
@@ -550,11 +553,9 @@ function mainImageRunActive(run){
 function mainPendingImages(){
  return (model?.explainedRecent||[]).filter(x=>{
    if(!mainAiEligible(x))return false;
-   const ai=mainChatAi(x.ai_image)?x.ai_image:{},hasAi=Boolean(String(ai.url||"")),raw=String(x.ai_image_status||"").toLowerCase();
+   const ai=mainChatAi(x.ai_image)?x.ai_image:{},hasAi=Boolean(String(ai.url||""));
    if(x.ai_image_regenerate_requested)return true;
-   if(hasAi)return false;
-   if(["failed","error","none"].includes(raw))return false;
-   return true
+   return !hasAi
  })
 }
 function updateMainImageControl(){
@@ -573,6 +574,20 @@ function updateMainImageControl(){
 async function requestMainImageRun(x){
  const id=String(x.id||"");if(!id)throw new Error("La tendencia no tiene id");
  if(mainImageRunActive(imageRuns.get(id)))return false;
+ const ai=mainChatAi(x.ai_image)?x.ai_image:{};
+ const hasAi=Boolean(String(ai.url||""));
+ if(!hasAi&&!x.ai_image_regenerate_requested){
+   const controlToken=localStorage.getItem("ttendencias-control-token")||"";
+   if(!controlToken)throw new Error("Guarda primero el token de control desde Ajustes.");
+   const rr=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+controlToken},body:JSON.stringify({action:"regenerate-image",names:[x.name||x.display_name||""]})});
+   const rd=await rr.json().catch(()=>({}));
+   if(!rr.ok||!rd?.ok)throw new Error(rd?.error||"No se pudo preparar la imagen IA.");
+   x.ai_image_regenerate_requested=true;
+   x.disable_ai_image=false;
+   x.with_image=true;
+   x.image_strategy="ai_plus_fallback";
+   x.ai_image_status="pending";
+ }
  const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:JSON.stringify({
    task:"images",target_id:id,id,target_name:x.name||x.display_name||"Tendencia",revision:Number(x.revision||0)
  })});
