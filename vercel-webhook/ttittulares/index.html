@@ -700,8 +700,10 @@ function renderReady(list,preservedImages=new Map()){
   const aiUrl=String(ai.url||""),fallbackUrl=String(fallback.url||"");
   const aiRaw=String(item.ai_image_status||"").toLowerCase();
   const aiRegenerating=Boolean(item.ai_image_regenerate_requested);
+  const aiRegenerationError=String(item.ai_image_regeneration_error||"");
   let aiClass="aiNone",aiText="— IA no solicitada";
   if(aiRegenerating){aiClass="aiRework";aiText="↻ Nueva IA solicitada · espera antes de publicar"}
+  else if(aiRegenerationError){aiClass="aiFailed";aiText="✕ Nueva IA falló · se mantiene la anterior · Rehacer para intentar otra"}
   else if(aiUrl){aiClass="aiReady";aiText="✓ IA lista"}
   else if(["failed","none","error"].includes(aiRaw)){aiClass="aiFailed";aiText="✕ IA fallida · no llegará salvo Rehacer"}
   else if(["pending","started","tool_called"].includes(aiRaw)||String(item.image_strategy||"")==="ai_plus_fallback"){aiClass="aiPending";aiText="● IA generándose · puede llegar · espera antes de publicar"}
@@ -734,7 +736,7 @@ function renderReady(list,preservedImages=new Map()){
   for(const [kind,url] of [["ai",aiUrl],["archive",fallbackUrl]]){
    let preview=card.querySelector("."+kind+"Preview");const choice=card.querySelector("."+kind+"Choice"),button=card.querySelector(kind==="ai"?".copyAi":".copyArchive");
    if(!url)continue;
-   choice.hidden=false;preview.alt=(kind==="ai"?"Imagen IA: ":"Imagen de archivo: ")+(item.title||"");
+   choice.hidden=false;if(kind==="ai"&&(aiRegenerating||aiRegenerationError)){const label=choice.querySelector("div");if(label)label.textContent="IA anterior"}preview.alt=(kind==="ai"?"Imagen IA: ":"Imagen de archivo: ")+(item.title||"");
    const proxySrc=API+"?view=image-proxy&url="+encodeURIComponent(url);
    const previous=preservedImages.get(JSON.stringify([String(item.event_id||""),url]));
    if(previous&&previous.getAttribute("src")===proxySrc){preview.replaceWith(previous);preview=previous}
