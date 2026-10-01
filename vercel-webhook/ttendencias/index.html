@@ -78,6 +78,8 @@ const $=id=>document.getElementById(id);
 const DATA_CACHE_KEY="ttendencias-last-model",RUN_CACHE_KEY="ttendencias-last-run-status";
 const IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/";
 function loadLocalJson(key){try{return JSON.parse(localStorage.getItem(key)||"null")}catch(_){return null}}
+const ARCHIVED_LOCAL_KEY="ttendencias-explicadas-archived-v1";
+function localArchived(){try{return new Set(JSON.parse(localStorage.getItem(ARCHIVED_LOCAL_KEY)||"[]"))}catch(_){return new Set()}}
 let model=loadLocalJson(DATA_CACHE_KEY),busy=new Set(),runPoll=null,problemRetryItem=null,imageRuns=new Map(),imageRunPoll=null;
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
@@ -316,11 +318,13 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
    const fallback=Number(rows[0]?.rank);
    return Number.isFinite(fallback)&&fallback>=1&&fallback<=20?fallback:null;
  };
+ const archivedLocal=localArchived();
  const explainedRecent=collapseVisibleExplained([...(explained.items||[])]
    .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
    .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||""))))
    .slice(0,100)
-   .map(x=>({...x,_rank:rankAtExplanation(x)}));
+   .map(x=>({...x,_rank:rankAtExplanation(x)}))
+   .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
  const sourceTotal=Object.keys(recent.sources||{}).length;
  const sourceProblemCount=Math.max(0,sourceTotal-Number(recent.source_count||0));
  return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,source_total:sourceTotal,source_problem_count:sourceProblemCount,items,upcoming,progress,prepared:preparedItems,explainedRecent,health,editorial_config:editorialConfig||{},editorial_queue:editorialQueue||{items:[]}};
