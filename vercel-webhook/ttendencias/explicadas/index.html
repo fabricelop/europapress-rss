@@ -8,13 +8,13 @@
 <title>TTendencias · Pendientes</title>
 <style>
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
-*{box-sizing:border-box}body{margin:0;background:#0b0e14;min-height:100vh}button,a{font:inherit}
+*{box-sizing:border-box}html,body{width:100%;max-width:100%;overflow-x:hidden}body{margin:0;background:#0b0e14;min-height:100vh}button,a{font:inherit}
 .top{position:sticky;top:0;z-index:20;background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36;padding:13px max(12px,env(safe-area-inset-left));display:flex;align-items:center;gap:10px}.back{color:#89b8ff;text-decoration:none;font-weight:750}.title{font-weight:850;font-size:18px}.spacer{flex:1}.count{font-size:12px;color:#9ba7b8;border:1px solid #303846;border-radius:999px;padding:6px 9px}.iconbtn{border:1px solid #303846;background:#141a24;color:#edf3ff;border-radius:10px;padding:8px 10px;font-weight:750;text-decoration:none;white-space:nowrap}
-main{max-width:560px;margin:auto;padding:14px 10px 40px}.filter{width:100%;background:#0d131c;color:#eef2f8;border:1px solid #303b4a;border-radius:12px;padding:11px 12px;font:inherit;margin:0 0 14px;outline:none}.filter:focus{border-color:#5d7da8}.list{display:grid;gap:9px;max-width:100%}.card{background:#11161e;border:1px solid #29313d;border-radius:15px;padding:13px;max-width:100%}#pendingList{justify-items:start}.sectionCount{font-weight:850;color:#c7d5e8;margin-left:5px}.aiStatusBadge{display:inline-flex;align-items:center;gap:5px;width:max-content;max-width:100%;border:1px solid #465467;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800;line-height:1.25;margin:8px 0 2px}.aiStatusBadge.aiPending{background:#102b46;border-color:#2f7cc0;color:#9fd7ff}.aiStatusBadge.aiReady{background:#102d20;border-color:#2f8f5b;color:#9ee6b8}.aiStatusBadge.aiFailed{background:#38171a;border-color:#a83b46;color:#ffadb5}.aiStatusBadge.aiRework{background:#3a2b0d;border-color:#a77b1b;color:#ffd978}.aiStatusBadge.aiNone{background:#202630;border-color:#4b5563;color:#aeb9c9}.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.name{font-size:16px;font-weight:820}.when{font-size:11px;color:#7f8b9c;white-space:nowrap}.explanation{font-size:14px;line-height:1.48;color:#d7e0ec;margin:9px 0 3px;white-space:pre-line}.closer{font-size:14px;line-height:1.48;color:#f0d9b1;margin:9px 0 5px;font-weight:650}.meta{font-size:11px;color:#8795a8;margin-top:5px}.route{display:inline-block;border:1px solid #39526f;background:#152235;color:#bcd5f3;border-radius:999px;padding:4px 8px;margin-top:4px}.rating{margin:10px 0 12px;padding:11px;background:#101a25;border:1px solid #334358;border-radius:11px}.rating-title{font-size:12px;font-weight:800;color:#c8d8ec}.rating-quote{font-size:12px;color:#a8b9ce;margin:5px 0 7px;line-height:1.4}.rating-stars{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.rating-star{width:37px;height:37px;border:1px solid #455268;background:#1a2635;color:#97a9c1;font-size:24px;border-radius:9px;cursor:pointer;line-height:1}.rating-star.filled{color:#ffce69;border-color:#997441;background:#342918}.rating-star[aria-pressed="true"]{outline:2px solid #ffce69;outline-offset:1px}.rating-star:disabled{opacity:.55;cursor:wait}.rating-hint{color:#96a8bf;font-size:11px;margin-left:6px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:10px;padding:8px 10px;font-weight:760;text-decoration:none}.empty{text-align:center;color:#9aa6b7;padding:50px 10px}.section{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#7f8b9c;margin:18px 2px 8px}
+main{width:100%;max-width:560px;margin:0 auto;padding:14px 10px 40px;overflow-x:hidden}.filter{width:100%;background:#0d131c;color:#eef2f8;border:1px solid #303b4a;border-radius:12px;padding:11px 12px;font:inherit;margin:0 0 14px;outline:none}.filter:focus{border-color:#5d7da8}.list{display:grid;gap:9px;max-width:100%}.card{background:#11161e;border:1px solid #29313d;border-radius:15px;padding:13px;max-width:100%}#pendingList{justify-items:start}.sectionCount{font-weight:850;color:#c7d5e8;margin-left:5px}.aiStatusBadge{display:inline-flex;align-items:center;gap:5px;width:max-content;max-width:100%;border:1px solid #465467;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800;line-height:1.25;margin:8px 0 2px}.aiStatusBadge.aiPending{background:#102b46;border-color:#2f7cc0;color:#9fd7ff}.aiStatusBadge.aiReady{background:#102d20;border-color:#2f8f5b;color:#9ee6b8}.aiStatusBadge.aiFailed{background:#38171a;border-color:#a83b46;color:#ffadb5}.aiStatusBadge.aiRework{background:#3a2b0d;border-color:#a77b1b;color:#ffd978}.aiStatusBadge.aiNone{background:#202630;border-color:#4b5563;color:#aeb9c9}.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.name{font-size:16px;font-weight:820}.when{font-size:11px;color:#7f8b9c;white-space:nowrap}.explanation{font-size:14px;line-height:1.48;color:#d7e0ec;margin:9px 0 3px;white-space:pre-line}.closer{font-size:14px;line-height:1.48;color:#f0d9b1;margin:9px 0 5px;font-weight:650}.meta{font-size:11px;color:#8795a8;margin-top:5px}.route{display:inline-block;border:1px solid #39526f;background:#152235;color:#bcd5f3;border-radius:999px;padding:4px 8px;margin-top:4px}.rating{margin:10px 0 12px;padding:11px;background:#101a25;border:1px solid #334358;border-radius:11px}.rating-title{font-size:12px;font-weight:800;color:#c8d8ec}.rating-quote{font-size:12px;color:#a8b9ce;margin:5px 0 7px;line-height:1.4}.rating-stars{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.rating-star{width:37px;height:37px;border:1px solid #455268;background:#1a2635;color:#97a9c1;font-size:24px;border-radius:9px;cursor:pointer;line-height:1}.rating-star.filled{color:#ffce69;border-color:#997441;background:#342918}.rating-star[aria-pressed="true"]{outline:2px solid #ffce69;outline-offset:1px}.rating-star:disabled{opacity:.55;cursor:wait}.rating-hint{color:#96a8bf;font-size:11px;margin-left:6px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:10px;padding:8px 10px;font-weight:760;text-decoration:none}.empty{text-align:center;color:#9aa6b7;padding:50px 10px}.section{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#7f8b9c;margin:18px 2px 8px}.top{padding:8px max(8px,env(safe-area-inset-left));display:block}.nav3{width:100%;max-width:560px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.navbtn{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:40px;padding:8px 5px;border:1px solid #303846;background:#141a24;color:#dce7f7;border-radius:10px;text-decoration:none;font-size:13px;font-weight:800;white-space:nowrap}.navbtn.active{border-color:#5e789d;background:#202a39;color:#fff}.navbtn.pending{border-color:#347fb9;background:#103150;color:#b9e1ff}.navbtn.pending.active{background:#174d79;border-color:#64b6f2;color:#fff}.navBadge{display:none;margin-left:5px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#ffcf5d;color:#17120a;align-items:center;justify-content:center;font-size:11px;font-weight:900}.navBadge.show{display:inline-flex}.collapsedCard{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:9px;padding:11px 12px}.collapsedName{font-size:15px;font-weight:820;line-height:1.25;overflow-wrap:anywhere}.openPending{min-width:70px;text-align:center}.card,.list,.imagebox,.actions{min-width:0;max-width:100%}@media(max-width:430px){.navbtn{font-size:12px;padding:8px 3px}.navBadge{min-width:18px;height:18px;font-size:10px}.card{padding:11px}.actions .btn{flex:1 1 44%;min-width:0;white-space:normal;text-align:center}}
 </style>
 </head>
 <body>
-<header class="top"><a class="back" href="/ttendencias/">‹ Top 10</a><div class="title">Pendientes</div><div class="spacer"></div><a class="iconbtn" href="/ttendencias/historico/">Histórico</a><button class="iconbtn" id="refresh">↻</button><div class="count" id="count">0</div></header>
+<header class="top"><nav class="nav3"><a class="navbtn" href="/ttendencias/">TOP 10</a><a class="navbtn pending active" href="/ttendencias/explicadas/">Pendientes <span class="navBadge" id="navPendingBadge"></span></a><a class="navbtn" href="/ttendencias/historico/">Histórico</a></nav></header>
 <main>
 <input class="filter" id="filter" type="search" inputmode="search" autocomplete="off" placeholder="Buscar en pendientes…">
 <div class="section">Pendientes de publicar <span class="sectionCount" id="pendingCount">0</span></div>
@@ -25,9 +25,10 @@ const API="/api/ttendencias-control", $=id=>document.getElementById(id);
 const ARCHIVED_LOCAL_KEY="ttendencias-explicadas-archived-v1";
 function localArchived(){try{return new Set(JSON.parse(localStorage.getItem(ARCHIVED_LOCAL_KEY)||"[]"))}catch(_){return new Set()}}
 function saveLocalArchived(set){try{localStorage.setItem(ARCHIVED_LOCAL_KEY,JSON.stringify([...set].slice(-300)))}catch(_){}}
-let allItems=[];
+let allItems=[];let openPendingKey=null;
 async function updateUnreadBadge(){
  const unread=allItems.filter(x=>!x.copied).length;
+ const badge=$("navPendingBadge");if(badge){badge.textContent=unread>99?"99+":String(unread);badge.classList.toggle("show",unread>0)}
  try{
    if(unread&&"setAppBadge" in navigator)await navigator.setAppBadge(unread);
    else if(!unread&&"clearAppBadge" in navigator)await navigator.clearAppBadge();
@@ -263,14 +264,30 @@ function renderCard(x,pending){
  if(pending){const done=document.createElement("button");done.className="btn";done.type="button";done.textContent="✓ Ya explicado";done.onclick=()=>markExplainedDone(x,done);actions.appendChild(done)}
  return card
 }
+function pendingKey(x){return String(x.id||x.name||"")+":r"+String(x.revision||0)}
+function renderCollapsedPending(x){
+ const card=document.createElement("article");card.className="card collapsedCard";
+ const name=document.createElement("div");name.className="collapsedName";name.textContent=displayName(x);
+ const open=document.createElement("button");open.className="btn openPending";open.type="button";open.textContent="Abrir";
+ open.onclick=()=>{openPendingKey=pendingKey(x);render()};
+ card.append(name,open);return card;
+}
+function renderExpandedPending(x){
+ const card=renderCard(x,true);
+ const close=document.createElement("button");close.className="btn";close.type="button";close.textContent="Cerrar";
+ close.onclick=()=>{openPendingKey=null;render()};
+ const actions=card.querySelector(".actions");if(actions)actions.prepend(close);
+ return card;
+}
 function render(){
  const q=nrm($("filter").value);
  const visible=q?allItems.filter(x=>nrm(displayName(x)).includes(q)||nrm((x.trend_names||[]).join(" ")).includes(q)||nrm(x.explanation).includes(q)):allItems;
  const pendingAll=allItems.filter(x=>!x.copied),pending=visible.filter(x=>!x.copied);
- $("count").textContent=String(pendingAll.length);$("pendingCount").textContent=String(pending.length);updateUnreadBadge();
+ $("pendingCount").textContent=String(pending.length);updateUnreadBadge();
+ if(openPendingKey&&!pending.some(x=>pendingKey(x)===openPendingKey))openPendingKey=null;
  const pendingList=$("pendingList");pendingList.innerHTML="";
  if(!pending.length)pendingList.innerHTML='<div class="empty">'+(q?"No hay pendientes que coincidan.":"No tienes tendencias pendientes de publicar.")+'</div>';
- else for(const x of pending)pendingList.appendChild(renderCard(x,true));
+ else for(const x of pending)pendingList.appendChild(pendingKey(x)===openPendingKey?renderExpandedPending(x):renderCollapsedPending(x));
 }
 function collapseVisibleExplained(rows){
  const seenIds=new Set(),textIndex=new Map(),out=[];
