@@ -356,9 +356,18 @@ function normalAiEligible(item){
  if(["fallback_only","archive_only","tweet_capture_only"].includes(mode))return false;
  return String(item.ai_image_status||"").toLowerCase()!=="disabled"
 }
-function imageRunActive(run){return ["REQUESTED","RUNNING","GENERATING","PERSISTING"].includes(String(run?.status||"").toUpperCase())}
+function imageRunPickupTimedOut(run){
+ const st=String(run?.status||"").toUpperCase();if(st!=="REQUESTED")return false;
+ const at=Date.parse(run?.requested_at||run?.updated_at||"");return Number.isFinite(at)&&Date.now()-at>=30000
+}
+function imageRunActive(run){
+ const st=String(run?.status||"").toUpperCase();
+ if(st==="REQUESTED")return !imageRunPickupTimedOut(run);
+ return ["RUNNING","GENERATING","PERSISTING"].includes(st)
+}
 function imageRunText(run){
  const st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"");
+ if(st==="REQUESTED"&&imageRunPickupTimedOut(run))return {cls:"aiFailed",text:"✕ El PC no recogió la imagen en 30 s · vuelve a generarla"};
  if(st==="REQUESTED")return {cls:"aiRework",text:"◷ IA solicitada · esperando al PC"};
  if(st==="RUNNING")return {cls:"aiPending",text:phase==="validating"?"● Chat IA abierto · validando entrada":"● Chat IA abierto"};
  if(st==="GENERATING")return {cls:"aiPending",text:"● Generando IA ahora en ChatGPT"};
@@ -388,7 +397,7 @@ function updateImageControl(){
  btn.textContent="✨ Imágenes IA"+(pending?" ("+pending+")":"");
  btn.disabled=pending===0;
  head.textContent=active?("Imágenes IA · "+active+" en curso"):"Imágenes IA";
- state.textContent=active?(active+" generándose en paralelo · "+pending+" en cola · máximo 4 simultáneas"):(pending?pending+" pendiente"+(pending===1?"":"s")+" de generar":"Sin imágenes IA pendientes");
+ state.textContent=active?(active+" en ejecución · "+pending+" en cola · máximo 4 simultáneas"):(pending?pending+" pendiente"+(pending===1?"":"s")+" de generar o reintentar":"Sin imágenes IA pendientes");
  state.className=active?"running":pending?"running":"done";
  if(bar)bar.classList.toggle("active",active>0)
 }
