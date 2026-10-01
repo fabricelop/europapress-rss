@@ -846,7 +846,7 @@ async function retryNames(names) {
   return { ok: true, retried: unique };
 }
 
-async function markExplanationCopied(copyKey) {
+async function markExplanationCopied(copyKey, source = "copy-button") {
   const key = String(copyKey || "").trim();
   if (!/^explanation-v1:[a-f0-9]{24}$/.test(key)) throw new Error("Explicación no válida.");
   const { doc: explained } = await readJson(EXPLAINED);
@@ -854,19 +854,20 @@ async function markExplanationCopied(copyKey) {
   if (!item) throw new Error("La explicación ya no existe o pertenece a otra revisión.");
   const now = new Date().toISOString();
   let record;
-  await mutateJson(EXPLAINED_COPY_STATE, "Marcar explicación TTendencias como copiada", doc => {
+  await mutateJson(EXPLAINED_COPY_STATE, source === "archive-button" ? "Pasar explicación TTendencias a histórico" : "Marcar explicación TTendencias como copiada", doc => {
     doc.project ||= "TTendencias";
     doc.version ||= 1;
     doc.items ||= [];
     record = doc.items.find(entry => entry?.key === key) || null;
     if (!record) {
       record = buildCopyRecord(item, now);
+      record.source = source;
       doc.items.push(record);
       doc.updated_at = now;
     }
     return doc;
   });
-  return { ok: true, copy_key: key, copied: true, copied_at: record?.copied_at || now };
+  return { ok: true, copy_key: key, copied: true, copied_at: record?.copied_at || now, source: record?.source || source };
 }
 
 // Una sola valoración editable por versión exacta de explicación/remate.
@@ -1050,6 +1051,7 @@ export default async function handler(req, res) {
     if (action === "queue-upcoming") return res.status(200).json(await queueUpcomingNames(body.names));
     if (action === "explained") return res.status(200).json(await markExplained(body.names));
     if (action === "copy-explained") return res.status(200).json(await markExplanationCopied(body.copy_key));
+    if (action === "archive-explained") return res.status(200).json(await markExplanationCopied(body.copy_key, "archive-button"));
     if (action === "rate-remate") {
       if (!/^remate-v1:[a-f0-9]{24}$/.test(String(body.rating_key || "")) ||
           !Number.isInteger(body.rating) || body.rating < 1 || body.rating > 5) {
