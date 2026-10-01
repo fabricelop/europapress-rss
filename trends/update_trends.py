@@ -22,7 +22,7 @@ HEADERS = {
     "Pragma": "no-cache",
 }
 SOURCES = {
-    "trends24": "https://trends24.in/spain/",
+    "trends24": "https://trends24.in/spain/index.html",
     "getdaytrends": "https://getdaytrends.com/es/spain/",
     "tweets24": "https://tweets24.com/trending-on-twitter-in-spain",
     "superx": "https://superx.so/twitter-trends/spain",
@@ -32,7 +32,7 @@ SOURCES = {
     "cyberkendra": "https://trends.cyberkendra.com/spain/",
     "xtrendsiamrohit": "https://xtrends.iamrohit.in/spain",
     "trendswe": "https://trendswe.com/twitter/spain/",
-    "twittertrending": "https://www.twitter-trending.com/spain/es",
+    "xtrendssaroj": "https://xtrends.sarojmeher.com/spain",
 }
 
 def clean(text):
@@ -260,9 +260,10 @@ def parse_ranked_table(html):
             if len(cells) < 2:
                 continue
             first = clean(cells[0].get_text(" ", strip=True)).lstrip("#")
-            if not first.isdigit():
+            rank_match = re.match(r"^(\d{1,3})[.)]?$", first)
+            if not rank_match:
                 continue
-            rank = int(first)
+            rank = int(rank_match.group(1))
             if not 1 <= rank <= 100:
                 continue
             name = clean(cells[1].get_text(" ", strip=True))
