@@ -29,6 +29,8 @@ jobs:
         run: python3 -m pip install --disable-pip-version-check --quiet Pillow
       - name: Validar consumidor
         run: python3 -m py_compile ttittulares/apply_ai_image_outbox.py ttittulares/apply_editorial_outbox.py
+      - name: Probar puente raster aislado
+        run: python3 ttittulares/apply_ai_image_outbox.py --selftest
       - name: Materializar IA sin tocar el texto
         run: |
           set -euo pipefail
