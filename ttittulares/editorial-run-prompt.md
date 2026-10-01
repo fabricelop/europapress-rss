@@ -155,3 +155,5 @@ Usa `partial:true` únicamente si queda algún `PROCESSING` pendiente de esta pa
 
 ## Revisión exclusiva de remate e IA
 Si rewrite_scope=remate_and_ai y reinvestigate no es true: no investigar ni buscar fuentes. Usar preserved_editorial como contenido factual inmutable. Conservar fuentes, hechos, título, resumen y texto anterior al remate. Cambiar solo remate e imagen IA; una única tentativa ImageGen desde el chat con contexto del evento actual y nueva revisión. Conservar fallback existente. El fallo de imagen nunca bloquea READY. Investigar de nuevo solo con reinvestigate=true solicitado expresamente.
+
+En una revisión REWRITE, la IA anterior de preserved_editorial es **histórica**: no copies ni reutilices `ai_image`, `image` generada, URL, SHA ni bytes anteriores como resultado de la nueva revisión. El nuevo READY debe usar la revisión indicada por la cola y comenzar la nueva IA como `pending` hasta que exista una llamada real a ImageGen. Si `ai_image_regenerate_requested:true`, incrementa el intento exactamente una vez y genera un raster nuevo; nunca presentes el raster anterior como si fuera la regeneración.
