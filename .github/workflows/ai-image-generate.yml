@@ -121,7 +121,8 @@ jobs:
                           low = svg.casefold()
                           forbidden = (
                               "<script", "<foreignobject", "javascript:", "onload=", "onerror=",
-                              "onclick=", "http://", "https://", "data:", "@import", "<image", "<iframe",
+                              "onclick=", "onmouseover=", "href=", "xlink:href=", "@import",
+                              "<image", "<iframe", "<a ", "<use", "<style", "url(",
                           )
                           if len(svg.encode("utf-8")) > 120_000:
                               raise ValueError("svg_too_large")
