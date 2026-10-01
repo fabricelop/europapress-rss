@@ -9431,7 +9431,7 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
+      "ai_image_status": "ready",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T12:52:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -9444,20 +9444,51 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image": {
-        "url": "https://archivos.elperiodic.com/archivos/imagenes/noticias/2024/10/30/gbic2glw4aa4dje.jpeg",
-        "source": "ElPeriodic · archivo DANA 2024",
-        "source_url": "https://www.elperiodic.com/paiporta/desmienten-falso-aviso-evacuacion-pueblos-lhorta-crecidas-agua_986360",
-        "alt": "Imagen de archivo de las inundaciones de 2024 en Paiporta",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/34ed3ecf6720-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "34ed3ecf6720",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "ed8c2f32-c35a-4305-ba41-5800ab245c98",
+        "alt": "Imagen editorial generada por IA para Paiporta",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/34ed3ecf6720-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "sha256": "7416819eef91371c138bbd99a2a10790e20bdbb8339f701c5bf5f71b278b2fc7"
       },
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-01T11:02:21.904005Z",
-      "ai_image_failure_reason": "data URL raster inválida: Invalid base64-encoded string: number of data characters (13321) cannot be 1 more than a multiple of 4"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T11:07:33.008096Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/34ed3ecf6720-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "34ed3ecf6720",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "ed8c2f32-c35a-4305-ba41-5800ab245c98",
+        "alt": "Imagen editorial generada por IA para Paiporta",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/34ed3ecf6720-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "sha256": "7416819eef91371c138bbd99a2a10790e20bdbb8339f701c5bf5f71b278b2fc7"
+      }
     },
     {
       "id": "b79a16e0b2ed",
@@ -9556,6 +9587,6 @@
       "ai_image_last_attempt_at": "2026-10-01T11:04:06.282870Z"
     }
   ],
-  "updated_at": "2026-10-01T11:04:06.282972Z",
+  "updated_at": "2026-10-01T11:07:33.008156Z",
   "count": 368
 }
