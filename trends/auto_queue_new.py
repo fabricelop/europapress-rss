@@ -93,6 +93,48 @@ requests = requests_doc.setdefault("requests", [])
 now_dt = datetime.now(MADRID)
 reconciled = False
 
+def canonicalize_explained_groups():
+    """Mantiene una sola tarjeta visible por grupo editorial.
+
+    Si una carrera o una pasada editorial añade miembros del mismo group_id
+    como explained independientes, conserva el líder y marca el resto grouped.
+    """
+    groups = {}
+    for entry in explained_doc.get("items", []) or []:
+        if str(entry.get("status") or "") != "explained":
+            continue
+        group = str(entry.get("explanation_group_id") or entry.get("group_id") or "").strip()
+        if group:
+            groups.setdefault(group, []).append(entry)
+    changed = 0
+    for group, entries in groups.items():
+        if len(entries) < 2:
+            continue
+        leader_id = ""
+        for entry in entries:
+            candidate = str(entry.get("group_leader_id") or "").strip()
+            if candidate:
+                leader_id = candidate
+                break
+        leader = next((x for x in entries if str(x.get("id") or "") == leader_id), None)
+        if leader is None:
+            leader = min(entries, key=lambda x: str(x.get("explained_at") or "9999"))
+            leader_id = str(leader.get("id") or "")
+        for entry in entries:
+            if entry is leader:
+                entry["status"] = "explained"
+                continue
+            entry["status"] = "grouped"
+            entry["group_leader_id"] = leader_id
+            entry["grouped_into"] = leader_id
+            entry["grouped_at"] = now_dt.isoformat(timespec="seconds")
+            changed += 1
+    if changed:
+        explained_doc["updated_at"] = now_dt.isoformat(timespec="seconds")
+    return changed
+
+canonicalized_groups = canonicalize_explained_groups()
+
 def _copy_if_present(dst, src, field):
     if field in src:
         dst[field] = src[field]
@@ -169,6 +211,9 @@ repaired_explanations = reconcile_persisted_explanations()
 if repaired_explanations:
     reconciled = True
     requests_doc["updated_at"] = now_dt.isoformat(timespec="seconds")
+if canonicalized_groups:
+    save("telegram-manual-explained.json", explained_doc)
+    print("Grupos duplicados consolidados:", canonicalized_groups)
 
 explained = set()
 latest_explanation = {}
