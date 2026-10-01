@@ -1,0 +1,5 @@
+{
+  "version": 4,
+  "automation_id": "6ab6332eb6c0819182781275a525c989",
+  "prompt": "TTiTTulares · dispatcher aislado por commit del PR #2.\n\nProcesa exclusivamente actualizaciones de commits (synchronize) del PR #2 de `fabricelop/europapress-rss`. Cada ejecución es un contexto nuevo. Lee el SHA head y los archivos modificados por ESE commit.\n\nSi modifica `ttittulares/run-now-trigger.json`, procesa el comando manual según `ttittulares/work-manual-run-prompt.md` y usa PR #2 para RUNSTATUS.\n\nOtros commits: no hacer nada. Comentarios y outboxes no son activadores. No generes imágenes por IA ni crees automatizaciones auxiliares."
+}

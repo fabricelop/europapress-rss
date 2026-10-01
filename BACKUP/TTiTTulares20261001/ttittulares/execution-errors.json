@@ -1,0 +1,1285 @@
+{
+  "items": [
+    {
+      "at": "2026-09-26T14:56:57.454585Z",
+      "event_id": "9f874ea16149-r1",
+      "phase": "outbox",
+      "reason": "9f874ea16149-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 9f874ea16149-r1: 9f874ea16149-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-26T14:57:38.419401Z",
+      "event_id": "9f874ea16149-r1",
+      "phase": "outbox",
+      "reason": "9f874ea16149-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 9f874ea16149-r1: 9f874ea16149-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-26T16:15:07.303313Z",
+      "event_id": "2725cc94958d",
+      "phase": "imagen",
+      "reason": "No se encontró una imagen de archivo del mismo acontecimiento que pudiera validarse en HTTPS y cumpliera la resolución mínima requerida; no se genera imagen por tratarse de una noticia sensible con una víctima mortal.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 2725cc94958d: No se encontró una imagen de archivo del mismo acontecimiento que pudiera validarse en HTTPS y cumpliera la resolución mínima requerida; no se genera imagen por tratarse de una noticia sensible con una víctima mortal.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-26T17:16:21.718024Z",
+      "event_id": "0e56644d99d2-r1",
+      "phase": "outbox",
+      "reason": "0e56644d99d2-r1.json: ValueError: data URL raster inválida: Invalid base64-encoded string: number of data characters (14153) cannot be 1 more than a multiple of 4",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0e56644d99d2-r1: 0e56644d99d2-r1.json: ValueError: data URL raster inválida: Invalid base64-encoded string: number of data characters (14153) cannot be 1 more than a multiple of 4. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-26T17:24:05.689994Z",
+      "event_id": "8bc8065703e0",
+      "phase": "imagen",
+      "reason": "No se encontró una imagen existente verificable del mismo acontecimiento. Las imágenes disponibles en las fuentes consultadas son fotografías genéricas de archivo de la Policía, no del caso concreto; no se genera imagen por tratarse de una agresión sexual.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 8bc8065703e0: No se encontró una imagen existente verificable del mismo acontecimiento. Las imágenes disponibles en las fuentes consultadas son fotografías genéricas de archivo de la Policía, no del caso concreto; no se genera imagen por tratarse de una agresión sexual.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-26T17:25:20.705105Z",
+      "event_id": "8bc8065703e0",
+      "phase": "imagen",
+      "reason": "No se encontró una imagen existente verificable del mismo acontecimiento. Las imágenes disponibles en las fuentes consultadas son fotografías genéricas de archivo de la Policía, no del caso concreto; no se genera imagen por tratarse de una agresión sexual.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 8bc8065703e0: No se encontró una imagen existente verificable del mismo acontecimiento. Las imágenes disponibles en las fuentes consultadas son fotografías genéricas de archivo de la Policía, no del caso concreto; no se genera imagen por tratarse de una agresión sexual.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-26T20:57:19.149464Z",
+      "event_id": "72e56a93d911",
+      "phase": "imagen",
+      "reason": "Raster generated and semantically accepted, but inline PR outbox transport exceeded the practical payload limit; no authenticated Telegram fallback was available in this execution.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 72e56a93d911: Raster generated and semantically accepted, but inline PR outbox transport exceeded the practical payload limit; no authenticated Telegram fallback was available in this execution.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-26T20:59:50.415077Z",
+      "event_id": "8e352d02544b",
+      "phase": "imagen",
+      "reason": "No exact same-event archive image could be validated without using contextual photos from earlier days or risking exposure of the minor; no image was used.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 8e352d02544b: No exact same-event archive image could be validated without using contextual photos from earlier days or risking exposure of the minor; no image was used.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T07:08:56.313841Z",
+      "event_id": "88f85ce466ac",
+      "phase": "imagen",
+      "reason": "No se encontró una imagen HTTPS verificable del mismo acontecimiento; las disponibles eran antiguas o meramente contextuales y, por tratarse de tensión militar, no procede generar un gag.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 88f85ce466ac: No se encontró una imagen HTTPS verificable del mismo acontecimiento; las disponibles eran antiguas o meramente contextuales y, por tratarse de tensión militar, no procede generar un gag.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T08:12:31.845Z",
+      "event_id": "98d76da183ec",
+      "phase": "verifying",
+      "reason": "La ejecución dejó de emitir telemetría después de persistir correctamente la imagen de Alcaraz. El raster quedó materializado en main, pero el run no avanzó de verifying 1/11 ni cerró el RUNTRACE. Se conserva el trabajo realizado; los items de imagen restantes deben continuar en una ejecución posterior.",
+      "remediation_prompt": "Evita esperas indefinidas en verifying: limita la verificación a relecturas acotadas, avanza si el estado ya es ready/app o PUBLISHED/DISMISSED, reserva tiempo para cerrar siempre el RUNTRACE y registra el detalle de cada incidencia."
+    },
+    {
+      "at": "2026-09-27T09:36:31.152224Z",
+      "event_id": "80628f366caa-r1",
+      "phase": "outbox",
+      "reason": "80628f366caa-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 80628f366caa-r1: 80628f366caa-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T09:58:56.117398Z",
+      "event_id": "d87bac0874cd",
+      "phase": "imagen",
+      "reason": "La imagen generated_gag se generó y validó visualmente, pero no se pudo garantizar un transporte íntegro de los bytes al aplicador desde esta ejecución y no había fallback Telegram autenticado disponible.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento d87bac0874cd: La imagen generated_gag se generó y validó visualmente, pero no se pudo garantizar un transporte íntegro de los bytes al aplicador desde esta ejecución y no había fallback Telegram autenticado disponible.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T09:36:31Z",
+      "event_id": "80628f366caa",
+      "phase": "drafting",
+      "reason": "El outbox heredado fue rechazado por text alternativo no coincide; se reconstruyó con Principal + dos saltos + remate y se aplicó correctamente.",
+      "remediation_prompt": "Mantener la validación de variantes antes de publicar cada outbox y aplicar los outboxes de texto secuencialmente."
+    },
+    {
+      "at": "2026-09-27T09:58:20Z",
+      "event_id": "d87bac0874cd",
+      "phase": "image_persisting",
+      "reason": "La imagen generated_gag de Mbappé fue generada y validada, pero no se pudo garantizar un puente de bytes íntegro hacia el comentario PR; se evitó enviar un base64 dudoso y se cerró la imagen como none al no existir fallback Telegram autenticado.",
+      "remediation_prompt": "Usar un puente binario programático de extremo a extremo entre el archivo generado y el comentario PR, sin transcripción del base64 por el modelo."
+    },
+    {
+      "at": "2026-09-27T10:33:23.207638Z",
+      "event_id": "67fced92d0ee",
+      "phase": "imagen",
+      "reason": "No se encontró una imagen HTTPS verificable del mismo acontecimiento actual; se descartaron resultados antiguos o no inequívocamente vinculados.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 67fced92d0ee: No se encontró una imagen HTTPS verificable del mismo acontecimiento actual; se descartaron resultados antiguos o no inequívocamente vinculados.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T10:34:48.975561Z",
+      "event_id": "8a7053b7113b",
+      "phase": "imagen",
+      "reason": "Se localizó una imagen atribuida al mismo accidente, pero el raster HTTPS directo no pudo abrirse ni validarse; no se adjunta material no comprobado.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 8a7053b7113b: Se localizó una imagen atribuida al mismo accidente, pero el raster HTTPS directo no pudo abrirse ni validarse; no se adjunta material no comprobado.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T10:51:59.630Z",
+      "event_id": "2415cb1fe713",
+      "phase": "verifying",
+      "reason": "El outbox de imagen de archivo se publicó con una URL HTTPS validada del mismo acontecimiento, pero tras las dos relecturas acotadas prepared seguía pending; se conserva para la siguiente ejecución.",
+      "remediation_prompt": "Revisar la ingestión del comentario outbox image-only y reaplicar idempotentemente sin cambiar los textos."
+    },
+    {
+      "at": "2026-09-27T11:01:33.548Z",
+      "event_id": "1cf7fefb4370",
+      "phase": "verifying",
+      "reason": "El outbox image-only que cerraba el incendio de Igualeja como sin imagen no se reflejó en prepared tras las dos relecturas acotadas; se conserva pending para la siguiente ejecución.",
+      "remediation_prompt": "Revisar la ingestión del comentario outbox image-only 5855248114 y reaplicarlo idempotentemente sin cambiar los textos."
+    },
+    {
+      "at": "2026-09-27T11:03:20.620777Z",
+      "event_id": "1cf7fefb4370",
+      "phase": "imagen",
+      "reason": "Se localizó una fotonoticia del incendio de Igualeja atribuida a Plan Infoca, pero no una URL HTTPS directa del raster que pudiera validarse y persistirse con seguridad; archive_sensitive no permite recreación.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 1cf7fefb4370: Se localizó una fotonoticia del incendio de Igualeja atribuida a Plan Infoca, pero no una URL HTTPS directa del raster que pudiera validarse y persistirse con seguridad; archive_sensitive no permite recreación.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T11:08:01.854645Z",
+      "event_id": "80628f366caa",
+      "phase": "imagen",
+      "reason": "Se verificó el acontecimiento en varias fuentes, pero no se obtuvo una URL HTTPS directa y validable de una imagen del mismo momento de las declaraciones; archive_sensitive no permite recreación.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 80628f366caa: Se verificó el acontecimiento en varias fuentes, pero no se obtuvo una URL HTTPS directa y validable de una imagen del mismo momento de las declaraciones; archive_sensitive no permite recreación.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T11:33:21.949300Z",
+      "event_id": "20639dafe8eb",
+      "phase": "imagen",
+      "reason": "No se encontró una imagen HTTPS verificable del desalojo actual junto a la desaladora de Ceuta; los resultados disponibles correspondían a operativos anteriores o eran meramente contextuales.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 20639dafe8eb: No se encontró una imagen HTTPS verificable del desalojo actual junto a la desaladora de Ceuta; los resultados disponibles correspondían a operativos anteriores o eran meramente contextuales.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T11:34:29.839452Z",
+      "event_id": "7d64ac536bad",
+      "phase": "imagen",
+      "reason": "No se encontró una fotografía HTTPS verificable del mismo suceso de La Campana; las imágenes disponibles eran genéricas de archivo de Guardia Civil, emergencias o del municipio. Por tratarse de violencia machista, no se genera una recreación.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 7d64ac536bad: No se encontró una fotografía HTTPS verificable del mismo suceso de La Campana; las imágenes disponibles eran genéricas de archivo de Guardia Civil, emergencias o del municipio. Por tratarse de violencia machista, no se genera una recreación.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T12:45:38.330436Z",
+      "event_id": "3c9796650440",
+      "phase": "imagen",
+      "reason": "Se verificó el hecho en varias fuentes actuales. No apareció un raster HTTPS inequívoco del mismo acontecimiento; la vía generated_gag no dispone en esta ejecución de un puente de bytes íntegro hacia el aplicador, por lo que se cierra sin imagen sin bloquear la cola.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 3c9796650440: Se verificó el hecho en varias fuentes actuales. No apareció un raster HTTPS inequívoco del mismo acontecimiento; la vía generated_gag no dispone en esta ejecución de un puente de bytes íntegro hacia el aplicador, por lo que se cierra sin imagen sin bloquear la cola.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T12:45:52.887330Z",
+      "event_id": "3a551d1258a1",
+      "phase": "imagen",
+      "reason": "Se confirmó el acontecimiento y se localizaron fotografías actuales de la gala, pero esta ejecución no obtuvo una URL HTTPS directa del raster ni un puente de bytes íntegro hacia el aplicador. Se cierra sin imagen sin bloquear la cola.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 3a551d1258a1: Se confirmó el acontecimiento y se localizaron fotografías actuales de la gala, pero esta ejecución no obtuvo una URL HTTPS directa del raster ni un puente de bytes íntegro hacia el aplicador. Se cierra sin imagen sin bloquear la cola.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T12:46:07.322281Z",
+      "event_id": "d7441528e76a",
+      "phase": "imagen",
+      "reason": "Se confirmaron fotografías del mismo acontecimiento en EFE, RTVE y otros medios, pero no se obtuvo una URL HTTPS directa del raster que pudiera validarse y persistirse de forma segura. Al ser archive_sensitive no se genera recreación.",
+      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento d7441528e76a: Se confirmaron fotografías del mismo acontecimiento en EFE, RTVE y otros medios, pero no se obtuvo una URL HTTPS directa del raster que pudiera validarse y persistirse de forma segura. Al ser archive_sensitive no se genera recreación.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T13:22:50.823485Z",
+      "event_id": "c753d2413a91-r1",
+      "phase": "outbox",
+      "reason": "c753d2413a91-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento c753d2413a91-r1: c753d2413a91-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T13:23:06.566794Z",
+      "event_id": "c753d2413a91-r1",
+      "phase": "outbox",
+      "reason": "c753d2413a91-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento c753d2413a91-r1: c753d2413a91-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T13:23:06.566794Z",
+      "event_id": "d56bf61848ec-r1",
+      "phase": "outbox",
+      "reason": "d56bf61848ec-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d56bf61848ec-r1: d56bf61848ec-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T13:29:17.149021Z",
+      "event_id": "d56bf61848ec-r1",
+      "phase": "outbox",
+      "reason": "d56bf61848ec-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d56bf61848ec-r1: d56bf61848ec-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T13:29:30.133819Z",
+      "event_id": "d56bf61848ec-r1",
+      "phase": "outbox",
+      "reason": "d56bf61848ec-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d56bf61848ec-r1: d56bf61848ec-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T14:52:55.636469Z",
+      "event_id": "7ba1316091b6-r1",
+      "phase": "outbox",
+      "reason": "7ba1316091b6-r1.json: ValueError: sin imagen requiere razón",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 7ba1316091b6-r1: 7ba1316091b6-r1.json: ValueError: sin imagen requiere razón. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:34:03.564551Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:35:37.991881Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:35:37.991881Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:04.049713Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:04.049713Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:04.049713Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:06.654318Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:06.654318Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:06.654318Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:06.654318Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:08.871092Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:08.871092Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:08.871092Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:08.871092Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:08.871092Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:11.072687Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:11.072687Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:11.072687Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:11.072687Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:11.072687Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:11.072687Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:14.688258Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:14.688258Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:14.688258Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:14.688258Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:14.688258Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:14.688258Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:14.688258Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:19.089992Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:19.089992Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:19.089992Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:19.089992Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:19.089992Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:19.089992Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:19.089992Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T21:37:19.089992Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:40.020044Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:40.020044Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:40.020044Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:40.020044Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:40.020044Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:40.020044Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:40.020044Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:40.020044Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:44.455587Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:44.455587Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:44.455587Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:44.455587Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:44.455587Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:44.455587Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:44.455587Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:44.455587Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:54.235474Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:54.235474Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:54.235474Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:54.235474Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:54.235474Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:54.235474Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:54.235474Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:54.235474Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:56.577859Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:56.577859Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:56.577859Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:56.577859Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:56.577859Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:56.577859Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:56.577859Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:56.577859Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:59.095126Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:59.095126Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:59.095126Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:59.095126Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:59.095126Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:59.095126Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:59.095126Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:15:59.095126Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:03.797485Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:03.797485Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:03.797485Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:03.797485Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:03.797485Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:03.797485Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:03.797485Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:03.797485Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:08.305842Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:08.305842Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:08.305842Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:08.305842Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:08.305842Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:08.305842Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:08.305842Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:08.305842Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:10.192692Z",
+      "event_id": "0ec9b53c91e8-r1",
+      "phase": "outbox",
+      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:10.192692Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:10.192692Z",
+      "event_id": "4da79a83822c-r1",
+      "phase": "outbox",
+      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:10.192692Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:10.192692Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:10.192692Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:10.192692Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-27T22:16:10.192692Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:34.301902Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:37.480314Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:37.480314Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:42.453290Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:42.453290Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:42.453290Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:49.099229Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:49.099229Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:49.099229Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:49.099229Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:58.637945Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:58.637945Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:58.637945Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:19:58.637945Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:20:09.645579Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:20:09.645579Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:20:09.645579Z",
+      "event_id": "d5dd0d45c380-r1",
+      "phase": "outbox",
+      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:20:09.645579Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:21:11.483685Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:21:11.483685Z",
+      "event_id": "8fd0789c3798-r1",
+      "phase": "outbox",
+      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:21:11.483685Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:21:17.679873Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:21:17.679873Z",
+      "event_id": "dab5ca1ae833-r1",
+      "phase": "outbox",
+      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:21:24.907241Z",
+      "event_id": "5d1e980f4304-r1",
+      "phase": "outbox",
+      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:24:06.119342Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: text vacío o >280",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: text vacío o >280. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:24:59.343564Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: text vacío o >280",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: text vacío o >280. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:26:23.043163Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: text vacío o >280",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: text vacío o >280. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:26:27.531048Z",
+      "event_id": "3e4fa144266f-r1",
+      "phase": "outbox",
+      "reason": "3e4fa144266f-r1.json: ValueError: text vacío o >280",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: text vacío o >280. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T05:26:27.531048Z",
+      "event_id": "af49af5583b9-r1",
+      "phase": "outbox",
+      "reason": "af49af5583b9-r1.json: ValueError: text vacío o >280",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: text vacío o >280. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-28T10:36:53.045798Z",
+      "event_id": "7f3de54279f0-r1",
+      "phase": "outbox",
+      "reason": "7f3de54279f0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 7f3de54279f0-r1: 7f3de54279f0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T14:34:07.940300Z",
+      "event_id": "7b0177f17330-r1",
+      "phase": "outbox",
+      "reason": "7b0177f17330-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 7b0177f17330-r1: 7b0177f17330-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T14:34:48.970586Z",
+      "event_id": "7b0177f17330-r1",
+      "phase": "outbox",
+      "reason": "7b0177f17330-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 7b0177f17330-r1: 7b0177f17330-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T14:34:54.990958Z",
+      "event_id": "7b0177f17330-r1",
+      "phase": "outbox",
+      "reason": "7b0177f17330-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 7b0177f17330-r1: 7b0177f17330-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T16:09:48.786938Z",
+      "event_id": "0f2e4a543e00-r1",
+      "phase": "outbox",
+      "reason": "0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0f2e4a543e00-r1: 0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T16:10:27.400018Z",
+      "event_id": "0f2e4a543e00-r1",
+      "phase": "outbox",
+      "reason": "0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0f2e4a543e00-r1: 0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T16:11:10.340679Z",
+      "event_id": "0f2e4a543e00-r1",
+      "phase": "outbox",
+      "reason": "0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0f2e4a543e00-r1: 0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T16:11:59.747738Z",
+      "event_id": "0f2e4a543e00-r1",
+      "phase": "outbox",
+      "reason": "0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0f2e4a543e00-r1: 0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T16:14:01.271960Z",
+      "event_id": "0f2e4a543e00-r1",
+      "phase": "outbox",
+      "reason": "0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0f2e4a543e00-r1: 0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T16:15:43.977398Z",
+      "event_id": "0f2e4a543e00-r1",
+      "phase": "outbox",
+      "reason": "0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0f2e4a543e00-r1: 0f2e4a543e00-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T17:38:11.870258Z",
+      "event_id": "84cf3ad4b27a-r1",
+      "phase": "outbox",
+      "reason": "84cf3ad4b27a-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 84cf3ad4b27a-r1: 84cf3ad4b27a-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T18:34:16.649906Z",
+      "event_id": "ed514f26936e-r1",
+      "phase": "outbox",
+      "reason": "ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento ed514f26936e-r1: ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T18:34:32.252487Z",
+      "event_id": "ed514f26936e-r1",
+      "phase": "outbox",
+      "reason": "ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento ed514f26936e-r1: ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T18:34:37.914050Z",
+      "event_id": "141e9ee0cdf0-r1",
+      "phase": "outbox",
+      "reason": "141e9ee0cdf0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 141e9ee0cdf0-r1: 141e9ee0cdf0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T18:34:37.914050Z",
+      "event_id": "ed514f26936e-r1",
+      "phase": "outbox",
+      "reason": "ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento ed514f26936e-r1: ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T18:35:29.260142Z",
+      "event_id": "141e9ee0cdf0-r1",
+      "phase": "outbox",
+      "reason": "141e9ee0cdf0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 141e9ee0cdf0-r1: 141e9ee0cdf0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T18:35:29.260142Z",
+      "event_id": "ed514f26936e-r1",
+      "phase": "outbox",
+      "reason": "ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento ed514f26936e-r1: ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T19:03:56.164274Z",
+      "event_id": "141e9ee0cdf0-r1",
+      "phase": "outbox",
+      "reason": "141e9ee0cdf0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 141e9ee0cdf0-r1: 141e9ee0cdf0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T19:03:56.164274Z",
+      "event_id": "ed514f26936e-r1",
+      "phase": "outbox",
+      "reason": "ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento ed514f26936e-r1: ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T19:04:20.144865Z",
+      "event_id": "141e9ee0cdf0-r1",
+      "phase": "outbox",
+      "reason": "141e9ee0cdf0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 141e9ee0cdf0-r1: 141e9ee0cdf0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T19:04:20.144865Z",
+      "event_id": "ed514f26936e-r1",
+      "phase": "outbox",
+      "reason": "ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento ed514f26936e-r1: ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T19:05:33.285714Z",
+      "event_id": "141e9ee0cdf0-r1",
+      "phase": "outbox",
+      "reason": "141e9ee0cdf0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 141e9ee0cdf0-r1: 141e9ee0cdf0-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-09-30T19:05:33.285714Z",
+      "event_id": "ed514f26936e-r1",
+      "phase": "outbox",
+      "reason": "ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento ed514f26936e-r1: ed514f26936e-r1.json: ValueError: image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    }
+  ]
+}

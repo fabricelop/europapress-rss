@@ -1,0 +1,98 @@
+# TTiTTulares · control web
+
+Esta carpeta es independiente de TTendencias y contiene el estado de la futura app web de TTiTTulares.
+
+## Flujo previsto
+
+- Radar: :10 y :40, cinco minutos antes de la redacción.
+- Redacción: :15 y :45.
+- Umbral editorial fijo: **mínimo 4 fuentes generales distintas**.
+- Las noticias con menos de 4 fuentes permanecen únicamente en el radar y no aparecen en la app.
+- Si una noticia no llega a 4 fuentes en 24 horas desde su primera detección, desaparece del proceso.
+- Al alcanzar 4 fuentes entra automáticamente en elaboración.
+- Antes de redactar se mantiene la verificación editorial actual.
+- Una novedad material del mismo asunto se crea como un evento/revisión nueva; no reabre la noticia anterior.
+- TTiTTulares funciona en modo web. Telegram está retirado del flujo.
+
+## Fuentes
+
+La app muestra **fuentes funcionando / fuentes configuradas**, por ejemplo `14/14`.
+
+La comprobación y recuperación de cada fuente se realiza dentro de su propio worker concurrente: origen principal, fallbacks específicos y, si hace falta, fallback adicional. Una fuente fallida no bloquea ni invalida el barrido; el radar continúa con las restantes. No existe una segunda fase bloqueante dedicada a reparar fuentes.
+
+## Vistas de la app
+
+- **Listas**: noticias ya redactadas y pendientes de decisión/publicación.
+- **En elaboración**: noticias que ya alcanzaron al menos 4 fuentes y están en la cola editorial.
+
+No hay vista de noticias con 1, 2 o 3 fuentes.
+
+## Bandeja `prepared.json`
+
+Cada elemento preparado contiene `event_id`, titular, URL, número de fuentes al redactarse, fuentes, fecha, base factual, revisión y un único objeto `tweet` con texto, remate y enlace de publicación. El lector conserva compatibilidad con datos históricos Principal/A/B/C, pero las escrituras nuevas ya no los generan.
+
+La app cruza `event_id` con `status.json` para mostrar **Redactada con 4 (6)**: 4 fuentes al redactarla y 6 fuentes actuales.
+
+## Acciones web
+
+- **Ya publicada**: retira de la bandeja y registra `published`.
+- **Desestimar**: retira de la bandeja y registra `dismissed`.
+- **Rehacer**: pide instrucciones y devuelve la noticia a `PROCESSING` con `selection_mode=REWRITE`.
+
+## Imágenes reales del acontecimiento
+
+- No se generan imágenes por IA.
+- Al aplicar cada READY se examinan las páginas de las fuentes del mismo acontecimiento.
+- Se prioriza una fuente oficial/primaria y después un medio fiable.
+- Se validan URL HTTPS, tipo de contenido, raster y dimensiones.
+- Solo se guarda la URL externa, la fuente, la página de origen, el texto alternativo y el estado de derechos.
+- Si no existe una imagen verificable, la revisión queda cerrada como `none`; no se crea un reintento infinito.
+
+## Formato editorial web
+
+La cola editorial procesa únicamente los items `PROCESSING`. Cada noticia genera un único tuit: bloque factual, dos saltos de línea y un único remate prefijado `🌶️ `. La app muestra ese tuit y su puntuación de 1 a 5. El texto completo debe ser <=280 caracteres.
+
+## Modo paralelo de prueba
+
+Mientras `control-mode.json` esté en `parallel`:
+
+- Telegram sigue funcionando como hasta ahora.
+- Solo las noticias que alcancen por primera vez el umbral de 4 fuentes después de `parallel_since` se espejan automáticamente a `PROCESSING`.
+- El backlog anterior de `SENT_REVIEW` no se importa.
+- La redacción :15/:45 escribe también `prepared.json`, por lo que la app se puede probar con noticias reales sin cortar Telegram.
+- Al pasar finalmente a `web`, Telegram deja de ser el canal de control.
+
+
+## Estado actual de prueba
+
+Telegram está temporalmente cortado mediante `control-mode=web`. Se han recuperado manualmente tres noticias anteriores con >=4 fuentes para probar el circuito real de `En elaboración` y `Listas` sin importar todo el backlog.
+
+
+## Estado definitivo
+
+TTiTTulares queda en `control-mode=web`. Telegram no se utiliza para candidatos, redacción ni publicación. Las automatizaciones editoriales de :15/:45 tienen una única responsabilidad: vaciar la cola `PROCESSING` hacia `prepared.json`, marcar los items como `READY` y actualizar `status.json`.
+
+
+## Operación 24 horas
+
+- Radar: todos los días, 24 h, a :10 y :40.
+- Elaboración: todos los días, 24 h, a :15 y :45.
+- La app muestra último radar, próximo radar con cuenta atrás y aviso de retraso, y próxima elaboración.
+- La instalación móvil usa una URL estable; la clave de control se guarda localmente en el primer acceso y no se vuelve a pedir.
+
+## Citas en X
+
+Cada noticia preparada puede incluir `quote_candidates` con hasta tres publicaciones públicas de X relacionadas con el mismo acontecimiento. El objetivo no es citar a otro medio que publique la misma noticia, sino una conversación complementaria: reacción, pregunta, comentario u opinión que permita aportar la información de TTiTTulares.
+
+Criterio editorial de candidatos:
+
+- excluir medios/agregadores y cuentas que estén reproduciendo sustancialmente el mismo titular;
+- preferir publicaciones recientes y directamente relacionadas con el hecho;
+- priorizar fuertemente poca interacción: 0–5 ideal, 6–20 buena, 21–100 aceptable solo si no hay opciones mejores; penalizar conversación ya viral;
+- preferir conversación humana/nicho frente a anuncios oficiales;
+- nunca inventar una URL ni un texto de X: si no hay candidato verificable, dejar la lista vacía;
+- no se usa la API de pago de X; la búsqueda se hace con web pública/indexada;
+- guardar siempre `quote_search` con la consulta y una URL de búsqueda Live de X como fallback manual.
+
+La app permite elegir uno de los candidatos y el tuit ofrece `Citar elegido`, además de `Publicar en X`. Si no hay candidato automático, se muestra `Buscar otro en X`.
+

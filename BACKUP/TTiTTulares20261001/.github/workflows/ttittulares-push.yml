@@ -1,0 +1,27 @@
+name: TTiTTulares push notifications
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ttittulares/prepared.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ttittulares-push
+  cancel-in-progress: false
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify installed TTiTTulares apps
+        run: |
+          curl --fail-with-body --retry 3 --retry-delay 5 \
+            -X POST \
+            -H 'content-type: application/json' \
+            --data '{"action":"drain"}' \
+            https://europapress-rss.vercel.app/api/ttittulares-push

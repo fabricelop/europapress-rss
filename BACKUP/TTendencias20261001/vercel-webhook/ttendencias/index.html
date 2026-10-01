@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101522">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TTendencias">
+<link rel="manifest" href="/ttendencias/manifest.webmanifest">
+<link rel="icon" href="/ttendencias/icon.svg?v=tt2" type="image/svg+xml">
+<title>TTendencias Control</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 55%)}button{font:inherit}
+.top{position:sticky;top:0;z-index:20;background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36;padding:13px max(12px,env(safe-area-inset-left));display:flex;align-items:center;gap:10px}.brand{font-size:19px;font-weight:850}.sub{font-size:11px;color:#8f9bad}.spacer{flex:1}
+.iconbtn{border:1px solid #303846;background:#141a24;color:#edf3ff;border-radius:11px;height:42px;padding:0 12px;font-weight:750}.iconbtn b{margin-left:3px}.iconbtn.tweets{min-width:92px;position:relative}.iconbtn.tweets.hasReady{background:#631d27;border-color:#b64b59;color:#fff}.unreadBadge{display:none;position:absolute;top:-7px;right:-7px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#c63e4d;color:#fff;border:2px solid #0b0e14;font-size:11px;font-weight:900;align-items:center;justify-content:center;line-height:1}.unreadBadge.show{display:inline-flex}
+main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 5px}.meta{color:#8f9bad;font-size:12px;line-height:1.45}.badge{border:1px solid #343c4a;background:#131923;border-radius:999px;padding:7px 10px;font-size:11px;color:#c7d1df}.scheduleTiming{line-height:1.55}.scheduleTiming .late{color:#ff8d99}.scheduleTiming .ok{color:#9fdfbb}
+
+.runbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #354255;background:#101721;border-radius:14px;padding:11px 12px;margin:0 0 14px;min-height:68px}.runmain{display:grid;gap:4px;min-width:0;flex:1}.runline{display:flex;align-items:center;gap:8px;min-width:0}.runbar strong{font-size:13px;min-width:0}.runbar span{font-size:11px;color:#8f9bad;line-height:1.35}.runbar span.running{color:#ffc178}.runbar span.done{color:#8ee6a8}.runbar span.error{color:#ff9ca5}.runbar .primary:disabled{opacity:.45;cursor:not-allowed}.runbar .primary[hidden]{display:none}.runbar.active{align-items:stretch}.runbar.active .runmain{width:100%}.runprogress{height:5px;background:#252f3c;border-radius:999px;overflow:hidden;margin-top:4px}.runprogress[hidden]{display:none}.runprogress i{display:block;height:100%;width:0;background:#6f8fb8;border-radius:999px;transition:width .35s ease}.incidentBtn{border:1px solid #7b5b25;background:#2a2114;color:#ffc178;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:850;cursor:pointer;white-space:nowrap}.incidentBtn.severe{border-color:#7d3038;background:#2a171a;color:#ff9ca5}.diag{white-space:pre-wrap;word-break:break-word;background:#090d13;border:1px solid #2d3745;border-radius:11px;padding:11px;max-height:44vh;overflow:auto;color:#cbd7e8;font:11px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace}
+.list{display:grid;gap:9px}.card{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:11px;background:#11161e;border:1px solid #262e3a;border-radius:15px;padding:12px 13px;min-height:72px}.card.pending{background:#2a1418;border-color:#7a3039}.card.inprogress{background:#2a2412;border-color:#7b6728}.card.explained{background:#102a47;border-color:#2d5b88}.card.problematic{background:#24172f;border-color:#66417f}.card.dismissed{background:#171b21;border-color:#3e4650}.card.explaining{background:#13281d;border-color:#376d4c}.card.novelty{background:#2e1f11;border-color:#8a5727}.entryTime{font-size:11px;color:#8fa4bd;margin-left:auto;white-space:nowrap;text-align:right;line-height:1.25}.entryAge{display:block;color:#6f86a1;margin-top:2px}.rank{font-weight:900;font-size:20px;color:#778399;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}.rankMove{font-size:14px;line-height:1;margin-top:5px;font-weight:950}.rankMove.up{color:#54d881}.rankMove.down{color:#ff7180}.rankMove.flat{color:#9aa6b7}.rankMove.new{color:#72a7ff;font-size:10px;letter-spacing:.04em}.nameLine{display:flex;align-items:center;gap:8px;min-width:0}.name{font-weight:790;font-size:16px;line-height:1.2;overflow-wrap:anywhere}.infoBtn{display:none;width:24px;height:24px;min-width:24px;border-radius:50%;border:1px solid #4b5c72;background:#18212f;color:#b9c9dc;font-size:13px;font-weight:900;align-items:center;justify-content:center;padding:0}.infoBtn.show{display:inline-flex}.problemInfo{display:none;margin-top:7px;padding:8px 9px;border:1px solid #5d4932;border-radius:9px;background:#17130f;color:#e0c7a1;font-size:11px;line-height:1.4}.problemInfo.show{display:block}.state{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:6px;color:#aab5c5}.state .explainable{cursor:pointer;color:#8ee6a8;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}.dot{width:8px;height:8px;border-radius:50%}.dot.pending{background:#ff6574}.dot.inprogress{background:#f1c94d}.dot.explained{background:#4b91ff}.dot.dismissed{background:#778399}.dot.problematic{background:#a66be2}.dot.explaining{background:#42c879}.dot.novelty{background:#ff993d}.detail{font-size:11px;color:#7f8b9c;margin-top:4px}.slot{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:7px;min-width:112px}.slot .action{width:100%}.action{border:1px solid #38465a;background:#18212f;color:#dce7f7;border-radius:10px;padding:8px 10px;font-weight:750;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.action.xsearch{color:#eef5ff;border-color:#3b5878}.action.prepare{border-color:#5576a6;background:#1b2d46;color:#dcecff}.action:disabled{opacity:.55;cursor:default}.action.warn{color:#ffd18b}
+.radarBlock{margin-top:24px;padding-top:18px;border-top:1px solid #252d38}.radarHead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:10px}.radarHead h2{font-size:19px;margin:0}.radarHint{font-size:11px;color:#8491a3;text-align:right}.radarCard{border-color:#3a4657}.radarCard .rank{font-size:17px}.signal{color:#9fc7ff}.empty{padding:42px 10px;text-align:center;color:#9aa6b7}
+.sheet{position:fixed;inset:0;background:#0009;z-index:50;display:none;align-items:flex-end}.sheet.show{display:flex}.panel{width:100%;max-width:560px;margin:0 auto;background:#111720;border:1px solid #354052;border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom))}.panel h2{margin:0 0 8px}.panel p{font-size:13px;color:#9eabba;line-height:1.45}#explainedText{white-space:pre-line}.panel input{width:100%;background:#0a0f16;border:1px solid #364153;color:#eef3fa;border-radius:11px;padding:12px;font:inherit;margin-bottom:11px}.panel textarea{width:100%;min-height:130px;background:#0a0f16;border:1px solid #364153;color:#eef3fa;border-radius:11px;padding:12px;font:inherit;margin:10px 0 11px;resize:vertical}.row{display:flex;gap:8px}.row button{flex:1}.primary,.secondary{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:11px;padding:10px 11px;font-weight:760}.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;transition:.2s;background:#1a2330;border:1px solid #3b485b;border-radius:10px;padding:9px 12px;z-index:80;max-width:90vw;text-align:center;font-size:12px}.toast.show{opacity:1;transform:translateX(-50%)}
+@media(max-width:560px){.top{padding-top:max(10px,env(safe-area-inset-top))}.brand{font-size:17px}main{padding:12px 9px 30px}.summary{grid-template-columns:1fr}.card{grid-template-columns:34px minmax(0,1fr) auto;padding:11px 9px}.rank{font-size:17px}.name{font-size:15px}.action{padding:7px 8px;font-size:12px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">TTendencias</div>
+  <div class="spacer"></div><button class="iconbtn tweets" id="preparedBtn" title="Ver tendencias explicadas">Explicadas<span class="unreadBadge" id="unreadExplainedBadge"></span></button>
+  <button class="iconbtn" id="refreshBtn" title="Recargar datos">↻</button>
+  <button class="iconbtn" id="settingsBtn" title="Acceso">⚙</button>
+</header>
+<main>
+  <section class="summary">
+    <div><h1>Top 10 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima explicación —</div></div></div>
+    <div class="badge" id="quality">—</div>
+  </section>
+  <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="primary" id="runNow" type="button" style="display:none" aria-hidden="true" tabindex="-1">▶ Ejecutar ahora</button></section>
+  <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
+  <section class="radarBlock" id="radarBlock">
+    <div class="radarHead"><div><h2>Próximas tendencias</h2><div class="meta">Señales todavía fuera del Top 10</div></div><div class="radarHint">Cruce social + TTiTTulares</div></div>
+    <section class="list" id="upcomingList"><div class="empty">Calculando señales…</div></section>
+  </section>
+</main>
+
+<div class="sheet" id="sheet"><div class="panel">
+  <h2>Acceso</h2>
+  <p>Las acciones de control requieren el token privado. Puedes activar avisos silenciosos y agrupados cuando entren nuevas tendencias en el Top 10.</p>
+  <input id="tokenInput" type="password" autocomplete="off" placeholder="Token de control">
+  <div class="row"><button class="secondary" id="cancelToken">Cancelar</button><button class="secondary" id="testToken">Probar</button><button class="primary" id="saveToken">Guardar</button></div>
+  <div class="meta" id="accessStatus" style="margin-top:10px"></div>
+  <button class="secondary" id="badgeBtn" type="button" style="width:100%;margin-top:14px">Activar avisos de nuevos TT</button>
+  <button class="secondary" id="pushTestBtn" type="button" style="width:100%;margin-top:8px;display:none">Enviar aviso de prueba</button>
+  <div class="meta" id="badgeStatus" style="margin-top:8px"></div>
+</div></div>
+<div class="sheet" id="problemRetrySheet"><div class="panel">
+  <h2>Reintentar tendencia problemática</h2>
+  <p id="problemRetryName"></p>
+  <p>Escribe qué has encontrado y por qué crees que esta tendencia está siendo comentada. Este contexto se enviará como instrucción para reelaborarla.</p>
+  <textarea id="problemRetryText" placeholder="Ej.: Según mis búsquedas, es tendencia porque…"></textarea>
+  <div class="row"><button class="secondary" id="cancelProblemRetry">Cancelar</button><button class="primary" id="sendProblemRetry">Reintentar y elaborar</button></div>
+</div></div>
+<div class="sheet" id="explainedSheet"><div class="panel"><h2 id="explainedTitle">Tendencia explicada</h2><p id="explainedText"></p><div class="row"><button class="primary" id="explainedClose">Cerrar</button></div></div></div>
+<div class="sheet" id="incidentSheet"><div class="panel"><h2>Diagnóstico de ejecución</h2><p id="incidentSummary">Información técnica de la ejecución.</p><pre class="diag" id="incidentDetails"></pre><div class="row"><button class="secondary" id="incidentClose">Cerrar</button><button class="primary" id="incidentCopy">Copiar diagnóstico</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const API="/api/ttendencias-control";
+const RUN_API="/api/ttendencias-run";
+const RUN_STATUS_API="/api/ttendencias-run-status";
+const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
+const SHELL_BUILD="ttendencias-ui-backend-copied-v7-20260928";
+const $=id=>document.getElementById(id);
+let model=null,busy=new Set(),runPoll=null,problemRetryItem=null;
+const token=()=>localStorage.getItem("ttendencias-control-token")||"";
+function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
+function showToast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove("show"),2500)}
+function fmtDate(v){if(!v)return "Sin hora";const d=new Date(v);if(Number.isNaN(d.getTime()))return v;return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}).format(d)}
+function fmtRadar(v){if(!v)return "—";const d=new Date(v);if(Number.isNaN(d.getTime()))return v;return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",day:"numeric",month:"numeric",hour:"2-digit",minute:"2-digit"}).format(d)}
+function hhmm(d){return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit"}).format(d)}
+function nextSlot(now,minutes){const d=new Date(now);d.setSeconds(0,0);for(let i=0;i<180;i++){const x=new Date(d.getTime()+i*60000);if(minutes.includes(x.getMinutes())&&x>now)return x}return null}
+function renderScheduleTiming(){
+ if(!model)return;
+ const cfg=model.editorial_config?.editorial||{},now=new Date();
+ const radarMinutes=(cfg.detection_schedule_minutes||[7,17,27,37,47,57]).map(Number);
+ const editorialMinutes=(cfg.schedule_minutes||[15]).map(Number);
+ const nextR=nextSlot(now,radarMinutes),nextE=nextSlot(now,editorialMinutes);
+ const healthChecked=new Date(model.health?.checked_at||0);
+ const healthFresh=!Number.isNaN(healthChecked.getTime())&&(Date.now()-healthChecked.getTime())<=25*60000;
+ const refresh=model.health?.modules?.refresh||{};
+ const topHealth=model.health?.modules?.top10||{};
+ let radarIssue="";
+ if(healthFresh&&refresh.ok===false)radarIssue=refresh.reason||"problema en el refresco del radar";
+ else if(healthFresh&&topHealth.ok===false)radarIssue="Top 10 desactualizado o no fiable";
+ $("lastRadar").textContent="Último radar "+fmtRadar(model.captured_at)+(radarIssue?" · ⚠ "+radarIssue:"");
+ const rm=nextR?Math.ceil((nextR-now)/60000):null;
+ $("nextRadar").textContent="Próximo radar "+(nextR?hhmm(nextR):"—")+(rm!==null?" · en "+rm+" min":"");
+ const em=nextE?Math.ceil((nextE-now)/60000):null;
+ $("nextEditorial").textContent="Próxima explicación "+(nextE?hhmm(nextE):"—")+(em!==null?" · en "+em+" min":"");
+}
+
+function localState(){
+ let m={};try{m=JSON.parse(localStorage.getItem("ttendencias-local-state")||"{}")}catch(_){}
+ // Migración única: el antiguo mapa local de "explicadas" no debe volver a
+ // imponerse sobre el estado real del servidor.
+ let old={};try{old=JSON.parse(localStorage.getItem("ttendencias-local-explained")||"{}")}catch(_){}
+ for(const [k,v] of Object.entries(old))if(!m[k])m[k]={status:"explained",ts:Number(v)||Date.now()};
+ localStorage.removeItem("ttendencias-local-explained");
+ const cutoff=Date.now()-2*60*60*1000;
+ for(const [k,v] of Object.entries(m))if(Number(v?.ts||0)<cutoff)delete m[k];
+ localStorage.setItem("ttendencias-local-state",JSON.stringify(m));return m
+}
+function clearLocal(names){const m=localState();for(const name of names||[])delete m[nrm(name)];localStorage.setItem("ttendencias-local-state",JSON.stringify(m))}
+function freshnessText(v){
+ if(!v)return "";const d=new Date(v);if(Number.isNaN(d.getTime()))return "";
+ const mins=Math.max(0,Math.round((Date.now()-d.getTime())/60000));
+ if(mins<=18)return "● Actualizado hace "+mins+" min";
+ if(mins<=30)return "● Atención: "+mins+" min sin nueva captura";
+ return "● Desactualizado: "+mins+" min";
+}
+async function updateBadge(unread=0){
+ const n=Math.max(0,Number(unread)||0);
+ try{
+   if(n&&"setAppBadge" in navigator)await navigator.setAppBadge(n);
+   else if(!n&&"clearAppBadge" in navigator)await navigator.clearAppBadge();
+ }catch(_){}
+ document.title=(n?"("+n+") ":"")+"TTendencias Control";
+}
+
+function appServerKey(value){
+ const s=String(value||"").replace(/-/g,"+").replace(/_/g,"/");
+ const raw=atob(s+"=".repeat((4-s.length%4)%4)),out=new Uint8Array(raw.length);
+ for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);
+ return out;
+}
+async function currentPushSubscription(){
+ if(!("serviceWorker" in navigator)||!("PushManager" in window))return null;
+ const reg=await navigator.serviceWorker.ready;
+ return reg.pushManager.getSubscription();
+}
+async function refreshPushStatus(){
+ const s=$("badgeStatus"),b=$("badgeBtn"),t=$("pushTestBtn");
+ if(!("serviceWorker" in navigator)||!("PushManager" in window)||typeof Notification==="undefined"){
+   s.textContent="Web Push no está disponible aquí. En iPhone, abre la app instalada desde la pantalla de inicio.";
+   b.textContent="Avisos no disponibles";b.disabled=true;t.style.display="none";return;
+ }
+ b.disabled=false;
+ const sub=await currentPushSubscription().catch(()=>null);
+ if(Notification.permission==="denied"){
+   s.textContent="Avisos bloqueados en los ajustes del sistema/navegador.";
+   b.textContent="Avisos bloqueados";b.disabled=true;t.style.display="none";return;
+ }
+ if(sub){
+   s.textContent="✓ Avisos de nuevos TT · silenciosos · agrupados";
+   b.textContent="Desactivar avisos";t.style.display="block";return;
+ }
+ s.textContent=Notification.permission==="granted"?"Permiso concedido, pero este dispositivo aún no está suscrito.":"Avisos al móvil desactivados.";
+ b.textContent="Activar avisos de nuevos TT";t.style.display="none";
+}
+async function activatePush(){
+ if(!token()){showToast("Guarda primero el token de control");$("tokenInput").focus();return}
+ if(!("serviceWorker" in navigator)||!("PushManager" in window)||typeof Notification==="undefined"){showToast("Web Push no disponible en este dispositivo");return}
+ let permission=Notification.permission;
+ if(permission==="default")permission=await Notification.requestPermission();
+ if(permission!=="granted"){showToast("Permiso de notificaciones no concedido");await refreshPushStatus();return}
+ const reg=await navigator.serviceWorker.ready;
+ let sub=await reg.pushManager.getSubscription();
+ if(!sub){
+   const r=await fetch(API+"?view=push-key&t="+Date.now(),{cache:"no-store"});
+   const d=await r.json();
+   if(!r.ok||!d?.publicKey)throw new Error(d?.error||"No se pudo obtener la clave Web Push");
+   sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:appServerKey(d.publicKey)});
+ }
+ await api("push-subscribe",[],{subscription:sub.toJSON()});
+ await updateBadge(model?.explainedRecent?.filter(x=>!x.copied).length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
+}
+async function deactivatePush(){
+ const sub=await currentPushSubscription();
+ if(!sub){await refreshPushStatus();return}
+ await api("push-unsubscribe",[],{subscription:sub.toJSON()});
+ await sub.unsubscribe();
+ showToast("Avisos desactivados");await refreshPushStatus();
+}
+
+function explanationNames(x){
+ const values=[x?.name,...(Array.isArray(x?.trend_names)?x.trend_names:[])];
+ for(const ctx of (Array.isArray(x?.trend_context)?x.trend_context:[]))values.push(ctx?.name);
+ return [...new Set(values.map(v=>String(v||"").trim()).filter(Boolean))]
+}
+function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,editorialQueue){
+ const requests=Array.isArray(requestDoc.requests)?requestDoc.requests:[],local=localState();
+ const explainedByName={};for(const x of (explained.items||[])){if(x.status==="grouped")continue;for(const name of explanationNames(x))explainedByName[nrm(name)]=x;}
+ const explainedSet=new Set(Object.keys(explainedByName));
+ const anticipatedByName={};for(const x of (recent.anticipated_entries||[]))anticipatedByName[nrm(x.name)]=x;
+ const latestFor=name=>[...requests].reverse().find(x=>nrm(x.name)===nrm(name));
+ const items=(recent.items||[]).slice(0,10).map(item=>{
+   const req=latestFor(item.name),s=String(req?.status||"");
+   const explainedEntry=explainedByName[nrm(item.name)]||null;
+   const ls=local[nrm(item.name)],localValid=!req&&!!ls;
+   let status="pending",label="Pendiente",detail="Pendiente de explicación automática",ready=false;
+   // El servidor manda siempre que exista una solicitud. El estado local es
+   // solo optimista mientras aún no existe confirmación remota.
+   if(s==="dismissed"){status="pending";label="Pendiente";detail="Sin explicación activa"}
+   else if(s==="problematic"){status="problematic";label="Sin explicación fiable";detail=req?.problem_reason||"No se pudo determinar el motivo con suficiente fiabilidad"}
+   else if(s==="explained"||(!req&&explainedSet.has(nrm(item.name)))){status="explained";label="Explicada";detail=""}
+   else if(s==="ready"){status="explained";label="Explicada";detail="Explicación disponible";ready=false}
+   else if(localValid&&ls.status==="explained"){status="explained";label="Explicada";detail=""}
+   else if(localValid&&ls.status==="dismissed"){status="dismissed";label="Desestimada";detail=""}
+   else if(s==="preparing"||s==="update"){
+     const age=req?.requested_at?Math.max(0,Math.floor((Date.now()-new Date(req.requested_at).getTime())/60000)):0;
+     status="inprogress";label="En curso";
+     detail=age>=30?"Procesando · retraso de "+age+" min":"Procesando · "+age+" min";
+   }
+   const anticipated=anticipatedByName[nrm(item.name)];if(anticipated&&Number.isFinite(Number(anticipated.lead_minutes))){detail+=(detail?" · ":"")+"Radar: "+Number(anticipated.lead_minutes)+" min antes"}
+   return {rank:Number(item.rank),name:String(item.name),entered_top10_at:item.entered_top10_at||null,movement:String(item.movement||""),previous_rank:Number.isFinite(Number(item.previous_rank))?Number(item.previous_rank):null,status,label,detail,ready,requested_at:req?.requested_at||null,internal_status:s,explanation:String(explainedEntry?.explanation||"").trim(),explained_closer_text:String(explainedEntry?.closer_text||"").trim(),explained_title:String(explainedEntry?.news_title||"").trim(),explanation_group_title:String(explainedEntry?.group_title||"").trim(),explanation_trend_names:explanationNames(explainedEntry||{})};
+ });
+ const requestByName={};for(const req of requests)requestByName[nrm(req.name)]=req;
+ const preparedItems=(prepared.items||[]).filter(p=>{
+   const rel=((p.related_trends||[]).length?p.related_trends:[p.trend_name]).map(nrm);
+   return !rel.some(name=>{
+     const req=requestByName[name];
+     return req&&["explained","dismissed"].includes(String(req.status||""));
+   });
+ });
+ const upcoming=(recent.upcoming||[]).map(x=>{
+   const req=latestFor(x.name),s=String(req?.status||""),previous=explainedByName[nrm(x.name)];
+   const already=s==="explained"||explainedSet.has(nrm(x.name)),dismissed=s==="dismissed";
+   // Para decidir si una señal cerrada puede reaparecer por novedad material,
+   // manda la acción de cierre más reciente. Si el usuario acaba de desestimar
+   // la señal, no debemos compararla con una explicación antigua y resucitarla
+   // en el siguiente refresco.
+   const closedAt=dismissed?(req?.dismissed_at||req?.explained_at||previous?.explained_at||null):(req?.explained_at||previous?.explained_at||null);
+   const firstSeen=x.news_first_seen||null;
+   const closedMs=closedAt?new Date(closedAt).getTime():0,firstMs=firstSeen?new Date(firstSeen).getTime():0;
+   const previousTitle=String(previous?.news_title||previous?.explanation||"");
+   const currentTitle=String(x.news_title||"");
+   const words=v=>new Set(nrm(v).split(/[^a-z0-9áéíóúüñ]+/i).filter(w=>w.length>=4&&!["para","como","porque","sobre","desde","entre","tras","este","esta","unos","unas"].includes(w)));
+   const a=words(previousTitle),b=words(currentTitle),common=[...a].filter(w=>b.has(w)).length;
+   const sameStory=Boolean(previousTitle&&currentTitle&&common>=3&&common/Math.max(1,Math.min(a.size,b.size))>=0.45);
+   const materialNovelty=(already||dismissed)&&Number(x.news_source_count||0)>=4&&firstMs>0&&closedMs>0&&firstMs>closedMs+10*60*1000&&!sameStory;
+   if((already||dismissed)&&!materialNovelty)return null;
+   return {name:String(x.name||""),social_source_count:Number(x.social_source_count||0),best_observed_rank:Number(x.best_observed_rank||0),mean_observed_rank:Number(x.mean_observed_rank||0),movement:String(x.movement||"flat"),news_source_count:Number(x.news_source_count||0),news_title:String(x.news_title||""),news_first_seen:firstSeen,first_detected_at:x.first_detected_at||null,request_status:s,anticipated_request:Boolean(req?.anticipated),requested_at:req?.requested_at||null,problem_reason:String(req?.problem_reason||""),already_explained:already,previously_dismissed:dismissed,material_novelty:materialNovelty};
+ }).filter(Boolean);
+ const topNames=new Set((recent.items||[]).slice(0,10).map(x=>nrm(x.name)));
+ const radarNames=new Set(upcoming.map(x=>nrm(x.name)));
+ const processingStates=new Set(["preparing","update"]);
+ const preparedGroup=p=>{
+   const rel=((p.related_trends||[]).length?p.related_trends:[p.trend_name]).map(nrm);
+   const req=latestFor(p.trend_name||rel[0]||"");
+   if(rel.some(name=>topNames.has(name)))return "top";
+   if(Boolean(p.anticipated)||Boolean(req?.anticipated)||rel.some(name=>radarNames.has(name)))return "radar";
+   return "ex";
+ };
+ const groupedPrepared={
+   top:preparedItems.filter(p=>preparedGroup(p)==="top"),
+   radar:preparedItems.filter(p=>preparedGroup(p)==="radar"),
+   ex:preparedItems.filter(p=>preparedGroup(p)==="ex")
+ };
+ const preparedNamesByGroup={top:new Set(),radar:new Set(),ex:new Set()};
+ for(const [group,arr] of Object.entries(groupedPrepared)){
+   for(const p of arr){
+     const rel=((p.related_trends||[]).length?p.related_trends:[p.trend_name]).map(nrm);
+     for(const name of rel)preparedNamesByGroup[group].add(name);
+   }
+ }
+ const processing=requests.filter(x=>processingStates.has(String(x.status||"")));
+ const topProcessing=processing.filter(x=>topNames.has(nrm(x.name))&&!preparedNamesByGroup.top.has(nrm(x.name)));
+ const radarProcessing=processing.filter(x=>!topNames.has(nrm(x.name))&&Boolean(x.anticipated)&&radarNames.has(nrm(x.name))&&!preparedNamesByGroup.radar.has(nrm(x.name)));
+ const exProcessing=processing.filter(x=>!topNames.has(nrm(x.name))&&!(Boolean(x.anticipated)&&radarNames.has(nrm(x.name)))&&!preparedNamesByGroup.ex.has(nrm(x.name)));
+ const progress={
+   top_ready:groupedPrepared.top.length,top_total:groupedPrepared.top.length+topProcessing.length,
+   radar_ready:groupedPrepared.radar.length,radar_total:groupedPrepared.radar.length+radarProcessing.length,
+   ex_ready:groupedPrepared.ex.length,ex_total:groupedPrepared.ex.length+exProcessing.length,
+   ready_total:preparedItems.length,
+   tweet_ready:preparedItems.length,
+   tweet_total:preparedItems.length+processing.length
+ };
+ const rankAtExplanation=x=>{
+   const direct=Number(x.rank_at_explanation);
+   if(Number.isFinite(direct)&&direct>=1&&direct<=20)return direct;
+   const target=Date.parse(x.explained_at||"");
+   const rows=requests.filter(r=>nrm(r.name)===nrm(x.name||x.display_name||x.term_normalized||"")&&Number.isFinite(Number(r.rank)));
+   rows.sort((a,b)=>{
+     const ad=Date.parse(a.explained_at||a.requested_at||""),bd=Date.parse(b.explained_at||b.requested_at||"");
+     const da=Number.isFinite(target)&&Number.isFinite(ad)?Math.abs(ad-target):Number.MAX_SAFE_INTEGER;
+     const db=Number.isFinite(target)&&Number.isFinite(bd)?Math.abs(bd-target):Number.MAX_SAFE_INTEGER;
+     return da-db;
+   });
+   const fallback=Number(rows[0]?.rank);
+   return Number.isFinite(fallback)&&fallback>=1&&fallback<=20?fallback:null;
+ };
+ const explainedRecent=[...(explained.items||[])]
+   .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
+   .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||"")))
+   .slice(0,100)
+   .map(x=>({...x,_rank:rankAtExplanation(x)}));
+ return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,items,upcoming,progress,prepared:preparedItems,explainedRecent,health,editorial_config:editorialConfig||{},editorial_queue:editorialQueue||{items:[]}};
+}
+function render(){
+ if(!model)return;
+ renderScheduleTiming();
+ const rel={high:"alta",medium:"media",fallback:"baja",none:"sin datos"}[model.reliability]||model.reliability||"—";
+ $("quality").textContent=(model.source_count||0)+" válidas · "+(model.non_stale_source_count||0)+" actuales · fiabilidad "+rel;
+ const unread=(model.explainedRecent||[]).filter(x=>!x.copied).length;
+ const unreadBadge=$("unreadExplainedBadge");
+ unreadBadge.textContent=unread>99?"99+":String(unread);
+ unreadBadge.classList.toggle("show",unread>0);
+ $("preparedBtn").classList.toggle("hasReady",unread>0);
+ updateBadge(unread);
+ const list=$("list");list.innerHTML="";
+ for(const item of model.items||[]){
+   const card=document.createElement("div");card.className="card "+item.status;
+   const move={up:{symbol:"↑",label:"Sube"},down:{symbol:"↓",label:"Baja"},flat:{symbol:"→",label:"Se mantiene"},new:{symbol:"N",label:"Nueva"}}[item.movement]||{symbol:"·",label:"Sin comparación"};
+   card.innerHTML='<div class="rank"><span>T'+item.rank+'</span><span class="rankMove '+(item.movement||"new")+'" title="'+move.label+'" aria-label="'+move.label+'">'+move.symbol+'</span></div><div><div class="nameLine"><div class="name"></div><div class="entryTime"></div><button class="infoBtn" type="button" aria-label="Ver información">i</button></div><div class="state"><i class="dot '+item.status+'"></i><span class="label"></span></div><div class="detail"></div><div class="problemInfo"></div></div><div class="slot"></div>';
+   card.querySelector(".name").textContent=item.name;
+   if(item.entered_top10_at){
+     const entered=new Date(item.entered_top10_at),mins=Math.max(0,Math.floor((Date.now()-entered.getTime())/60000));
+     const h=Math.floor(mins/60),m=mins%60;
+     card.querySelector(".entryTime").innerHTML='<span>Entró '+fmtDate(item.entered_top10_at)+'</span><span class="entryAge">'+(h>0?h+' h '+m+' min':m+' min')+'</span>';
+   }else card.querySelector(".entryTime").textContent="Entrada —";
+   const labelEl=card.querySelector(".label");labelEl.textContent=item.label;
+   if(item.status==="explained"&&item.explanation){labelEl.classList.add("explainable");labelEl.title="Ver explicación";labelEl.onclick=()=>openExplained(item)}
+   const detail=card.querySelector(".detail"),info=card.querySelector(".problemInfo"),infoBtn=card.querySelector(".infoBtn");
+   if(item.status==="problematic"&&item.detail){
+     detail.style.display="none";info.textContent=item.detail;infoBtn.classList.add("show");infoBtn.onclick=()=>info.classList.toggle("show");
+   }else{detail.textContent=item.detail||"";detail.style.display=item.detail?"block":"none"}
+   const slot=card.querySelector(".slot");
+   const x=document.createElement("a");x.className="action xsearch";x.textContent="Buscar en X";x.href="https://x.com/search?q="+encodeURIComponent(item.name)+"&src=typed_query&f=live";x.target="_blank";x.rel="noopener noreferrer";x.setAttribute("aria-label","Buscar "+item.name+" en X");slot.appendChild(x);
+
+   list.appendChild(card);
+ }
+ if(!(model.items||[]).length)list.innerHTML='<div class="empty">No hay tendencias disponibles.</div>';
+ const upcomingList=$("upcomingList");upcomingList.innerHTML="";
+ const movementLabel={new:"Nueva señal",up:"Ganando señal",flat:"Estable",down:"Perdiendo señal"};
+ for(const item of model.upcoming||[]){
+   const queued=["preparing","update"].includes(item.request_status),ready=item.request_status==="ready"&&item.anticipated_request,explained=Boolean(item.already_explained);
+   const visualState=item.material_novelty?"novelty":ready?"explained":queued?"explaining":item.request_status==="problematic"?"problematic":"radar";
+   const card=document.createElement("div");card.className="card radarCard "+visualState;
+   const bits=[item.social_source_count+" fuentes sociales",item.best_observed_rank?"mejor puesto "+item.best_observed_rank:"",item.news_source_count?"TTiTTulares: "+item.news_source_count+" medios":""].filter(Boolean);
+   card.innerHTML='<div class="rank signal">↗</div><div><div class="nameLine"><div class="name"></div><button class="infoBtn" type="button" aria-label="Ver información">i</button></div><div class="state"><i class="dot '+visualState+'"></i><span class="label"></span></div><div class="detail"></div><div class="problemInfo"></div></div><div class="slot"></div>';
+   card.querySelector(".name").textContent=item.name;
+   card.querySelector(".label").textContent=item.material_novelty?"Ya explicada pero con novedad":ready?"Explicada":queued?"Explicando":item.request_status==="problematic"?"Sin explicación fiable":movementLabel[item.movement]||"Señal detectada";
+   const d=card.querySelector(".detail");d.textContent=bits.join(" · ");if(item.news_title)d.title=item.news_title;
+   if(item.request_status==="problematic"&&item.problem_reason){
+     const info=card.querySelector(".problemInfo"),btn=card.querySelector(".infoBtn");info.textContent=item.problem_reason;btn.classList.add("show");btn.onclick=()=>info.classList.toggle("show");
+   }
+   const slot=card.querySelector(".slot");
+   const x=document.createElement("a");x.className="action xsearch";x.textContent="Buscar en X";x.href="https://x.com/search?q="+encodeURIComponent(item.name)+"&src=typed_query&f=live";x.target="_blank";x.rel="noopener noreferrer";slot.appendChild(x);
+   const p=document.createElement("button");p.className="action prepare";p.disabled=busy.has(item.name)||queued;
+   p.textContent=item.material_novelty?"Preparar novedad":queued?"Preparando…":"Preparar";
+   p.onclick=()=>prepareUpcoming(item);slot.appendChild(p);
+   upcomingList.appendChild(card);
+ }
+ if(!(model.upcoming||[]).length)upcomingList.innerHTML='<div class="empty">No hay señales anticipadas con suficiente respaldo ahora mismo.</div>';
+}
+
+function openExplained(item){
+ const grouped=Array.isArray(item.explanation_trend_names)&&item.explanation_trend_names.length>1;
+ const original=String(item.explanation||"").trim(),closer=String(item.explained_closer_text||"").trim();
+ const alreadyPrefixed=/^TT#(?:[1-9]|1[0-9]|20)\s+\S/u.test(original);
+ $("explainedTitle").textContent=alreadyPrefixed?"Tendencia explicada":(item.explanation_group_title||(grouped?item.explanation_trend_names.join(" · "):item.name)||"Tendencia explicada");
+ const candidate=closer&&!closer.startsWith("🌶️")&&original.endsWith(closer)?original.slice(0,-closer.length)+"🌶️ "+closer:original;
+ $("explainedText").textContent=(candidate!==original&&[...candidate].length<280?candidate:original)||"No hay explicación factual guardada para esta tendencia.";
+ $("explainedSheet").classList.add("show")
+}
+
+function runDuration(s){if(s==null||!Number.isFinite(+s))return "";s=Math.max(0,Math.round(+s));if(s<60)return s+" s";return Math.floor(s/60)+" min "+(s%60)+" s"}
+function runTime(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?"—":new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(d)}
+function runSource(v){return v==="manual"?"Manual":v==="scheduled"?"Automática":v==="chat"?"Chat":(v||"")}
+function runPhaseLabel(s){
+ const n=Number(s.current||0),t=Number(s.total||0),pos=n>0&&t>0?" "+n+" de "+t:"";
+ const p=String(s.phase||"").toLowerCase();
+ if(["preparing","prepare"].includes(p))return "Preparando ejecución";
+ if(["refreshing","radar_refresh"].includes(p))return "Actualizando tendencias";
+ if(["investigating","research"].includes(p))return "Investigando tendencia"+pos;
+ if(["drafting","redacting","writing"].includes(p))return "Redactando explicación"+pos;
+ if(["classifying","classification"].includes(p))return "Clasificando posible noticia"+pos;
+ if(["persisting","outbox"].includes(p))return "Guardando explicación"+pos;
+ if(["verifying","verification"].includes(p))return "Verificando tendencia"+pos;
+ if(["closing","finalizing"].includes(p))return "Cerrando ejecución";
+ if(p==="error")return "Ejecución con error";
+ return s.status==="REQUESTED"?"Preparando ejecución":"Ejecutando TTendencias"
+}
+function runProgressValue(s){
+ const n=Number(s.current||0),t=Math.max(1,Number(s.total||0)),f=Math.max(0,Math.min(1,n/t));
+ const p=String(s.phase||"").toLowerCase();
+ if(["preparing","prepare","refreshing","radar_refresh"].includes(p))return 5;
+ if(["investigating","research"].includes(p))return 7+18*f;
+ if(["drafting","redacting","writing"].includes(p))return 26+20*f;
+ if(["classifying","classification"].includes(p))return 47+20*f;
+ if(["persisting","outbox"].includes(p))return 68+18*f;
+ if(["verifying","verification"].includes(p))return 87+10*f;
+ if(["closing","finalizing"].includes(p))return 99;
+ return 12
+}
+function runIncidentCount(s){return Math.max(Number(s?.incident_count||0),Array.isArray(s?.incidents)?s.incidents.length:0)}
+function runSummaryText(r){
+ const x=r?.summary||{},parts=[];
+ const processed=Number(x.trends_processed??x.items_processed);if(Number.isFinite(processed)&&processed>0)parts.push(processed+" tendencias procesadas");
+ const ready=Number(x.trends_ready??x.ready);if(Number.isFinite(ready)&&ready>0)parts.push(ready+" listas");
+ const prob=Number(x.trends_problematic??x.problematic);if(Number.isFinite(prob)&&prob>0)parts.push(prob+" problemáticas");
+ const candidates=Number(x.news_candidates);if(Number.isFinite(candidates)&&candidates>0)parts.push(candidates+" a TTiTTulares · Tendencias");
+ const processing=Number(x.news_processing);if(Number.isFinite(processing)&&processing>0)parts.push(processing+" a En elaboración");
+ if(r?.duration_seconds!=null)parts.push(runDuration(r.duration_seconds));
+ return parts.join(" · ")
+}
+function buildDiagnostic(s){
+ const r=s?.active?s:(s?.last_run||s||{}),lines=[
+  "TTendencias · Diagnóstico de ejecución",
+  "Run ID: "+(r.run_id||r.command_id||"—"),
+  "Origen: "+(runSource(r.source||r.source_label)||"—"),
+  "Estado: "+(r.status||"—"),
+  "Fase: "+(r.phase||"—"),
+  "Progreso: "+(r.current||0)+" / "+(r.total||0),
+  "Tendencia ID: "+(r.trend_id||"—"),
+  "Tendencia: "+(r.title||"—"),
+  "Inicio: "+(r.started_at||r.requested_at||"—"),
+  "Última actualización: "+(r.updated_at||"—"),
+  "Final: "+(r.finished_at||"—"),
+  "Incidencias: "+runIncidentCount(r)
+ ];
+ if(r.message)lines.push("Mensaje: "+r.message);
+ if(r.summary)lines.push("Resumen: "+JSON.stringify(r.summary));
+ for(const [i,e] of (r.incidents||[]).entries())lines.push("", "["+(i+1)+"] "+(e.at||"—")+" · "+(e.phase||"sin fase")+" · "+(e.trend_id||e.event_id||"sin tendencia"),String(e.reason||""));
+ return lines.join("\n")
+}
+let lastRunTelemetry=null;
+function showRunIncidents(s){
+ const r=s?.active?s:(s?.last_run||s||{}),count=runIncidentCount(r);
+ $("incidentSummary").textContent=count?(count+" incidencia"+(count===1?"":"s")+" registrada"+(count===1?"":"s")+". Puedes copiar este diagnóstico y pegarlo en ChatGPT."):"No hay incidencias registradas.";
+ $("incidentDetails").textContent=buildDiagnostic(s);
+ $("incidentSheet").classList.add("show")
+}
+function runVisual(s){
+ lastRunTelemetry=s;
+ const bar=$("runBar"),head=$("runHeadline"),el=$("runState"),btn=$("runNow"),warn=$("runIncident"),prog=$("runProgress"),fill=$("runProgressFill");
+ const active=Boolean(s?.active)||["REQUESTED","RUNNING"].includes(String(s?.status||""));
+ bar.classList.toggle("active",active);btn.hidden=active;btn.disabled=s?.enabled===false||((s?.can_run===false)&&!!token());
+ el.className="";warn.hidden=true;warn.classList.remove("severe");prog.hidden=!active;
+ if(active){
+   const count=runIncidentCount(s);head.textContent=runPhaseLabel(s);
+   const elapsed=s.started_at?runDuration((Date.now()-new Date(s.started_at).getTime())/1000):"";
+   el.textContent=[s.title,runSource(s.source||s.source_label),elapsed].filter(Boolean).join(" · ")||(s.status==="REQUESTED"?"Esperando a ChatGPT Work":"Ejecución en curso");
+   el.className="running";fill.style.width=Math.max(3,Math.min(99,runProgressValue(s)))+"%";
+   if(count){warn.hidden=false;warn.textContent="⚠ "+count;warn.onclick=()=>showRunIncidents(s)}
+   return
+ }
+ prog.hidden=true;fill.style.width="0%";btn.hidden=false;
+ const r=s?.last_run||null;
+ if(r){
+   const count=runIncidentCount(r),isError=r.status==="ERROR";
+   head.textContent="Última ejecución · "+runTime(r.finished_at||r.updated_at)+" · "+(isError?"Error":count?"Terminada con "+count+" incidencia"+(count===1?"":"s"):"Terminada");
+   el.textContent=isError?(r.message||"No se completó la ejecución") : ([runSummaryText(r),runSource(r.source||r.source_label)].filter(Boolean).join(" · ")||"Lista para ejecutar");
+   el.className=isError?"error":"done";
+   if(count||isError){warn.hidden=false;warn.textContent=(isError?"✖ ":"⚠ ")+(count||1);warn.classList.toggle("severe",isError);warn.onclick=()=>showRunIncidents(s)}
+ }else{
+   head.textContent="Ejecución";el.textContent=s?.enabled===false?"Trigger de Work no disponible":"Lista para ejecutar";
+ }
+}
+function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?3000:30000)}
+async function loadRunStatus(){
+ try{
+   const headers={};if(token())headers.authorization="Bearer "+token();
+   const r=await fetch(RUN_STATUS_API+"?t="+Date.now(),{cache:"no-store",headers});
+   const d=await r.json().catch(()=>({}));
+   if(!r.ok)throw new Error(d.error||"No se pudo consultar el estado de ejecución");
+   runVisual(d);scheduleRunPoll(Boolean(d.active)||["REQUESTED","RUNNING"].includes(d.status))
+ }catch(e){$("runHeadline").textContent="Ejecución";$("runState").textContent=e.message||"No se pudo consultar el estado";$("runState").className="error";$("runNow").hidden=false;scheduleRunPoll(false)}
+}
+async function requestRun(){
+ if(!token()){$("settingsBtn").click();showToast("Guarda primero el acceso");return}
+ if(!confirm("¿Explicar ahora las tendencias pendientes? Esta acción consumirá cuota de ChatGPT Work."))return;
+ runVisual({ok:true,enabled:true,active:true,status:"REQUESTED",source:"manual",phase:"preparing",current:0,total:0,requested_at:new Date().toISOString(),message:"Enviando solicitud…"});
+ try{
+   const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:"{}"});
+   const d=await r.json().catch(()=>({}));
+   if(r.status===401)throw new Error("Acceso no autorizado");
+   if(r.status===429)throw new Error("Ya se solicitó una ejecución hace unos segundos");
+   if(r.status===409)throw new Error("Ya hay una ejecución en curso");
+   if(r.status===503&&d.error==="work_trigger_not_ready")throw new Error("El trigger de Work todavía no está activado");
+   if(!r.ok)throw new Error(d.error||"No se pudo solicitar la ejecución");
+   runVisual({ok:true,enabled:true,active:true,status:"REQUESTED",run_id:d.command_id,command_id:d.command_id,source:"manual",phase:"preparing",current:0,total:0,requested_at:d.requested_at,updated_at:d.requested_at,message:"Solicitud recibida; esperando a ChatGPT Work."});scheduleRunPoll(true)
+ }catch(e){showToast(e.message);await loadRunStatus()}
+}
+
+async function api(action,names,extra={}){
+ const t=token();if(!t){$("sheet").classList.add("show");throw new Error("Falta el token de control")}
+ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+t},body:JSON.stringify({action,names,...extra})});
+ let d={};try{d=await r.json()}catch(_){}
+ if(r.status===401){localStorage.removeItem("ttendencias-control-token");throw new Error("Token incorrecto")}
+ if(!r.ok)throw new Error(d.error||"No se pudo aplicar la acción");return d
+}
+async function discardUpcoming(item){
+ if(!confirm("¿Desestimar "+item.name+" del Radar?"))return;
+ busy.add(item.name);
+ try{
+  await api("discard",[item.name]);
+  model.upcoming=(model.upcoming||[]).filter(x=>nrm(x.name)!==nrm(item.name));
+  showToast(item.name+" desestimada");render();
+ }catch(e){showToast(e.message);await load(true)}
+ finally{busy.delete(item.name)}
+}
+async function prepareUpcoming(item){
+ busy.add(item.name);item.request_status="preparing";render();
+ try{
+  await api("queue-upcoming",[item.name]);
+  showToast(item.name+" enviada a explicación");
+  setTimeout(()=>load(true),1200);
+ }catch(e){
+  showToast(e.message);await load(true);
+ }finally{busy.delete(item.name);render()}
+}
+function openProblemRetry(item){
+ problemRetryItem=item;
+ $("problemRetryName").textContent=item.name;
+ $("problemRetryText").value="";
+ $("problemRetrySheet").classList.add("show");
+ setTimeout(()=>$("problemRetryText").focus(),50);
+}
+async function sendProblemRetry(){
+ const item=problemRetryItem;if(!item)return;
+ const instruction=$("problemRetryText").value.trim();
+ if(!instruction){showToast("Escribe primero el motivo o contexto que has encontrado");return}
+ busy.add(item.name);
+ $("sendProblemRetry").disabled=true;
+ try{
+   await api("rework",[item.name],{instruction});
+   clearLocal([item.name]);
+   $("problemRetrySheet").classList.remove("show");
+   problemRetryItem=null;
+   showToast("Contexto enviado · vuelve a explicación");
+   await load(true);
+ }catch(e){showToast(e.message)}
+ finally{$("sendProblemRetry").disabled=false;busy.delete(item.name);render()}
+}
+async function retry(item){
+ if(item.status==="problematic"){openProblemRetry(item);return}
+ if(!confirm("¿Volver a mandar "+item.name+" a elaboración?"))return;
+ busy.add(item.name);clearLocal([item.name]);item.status="active";item.label="En curso";item.detail="Explicando";item.requested_at=new Date().toISOString();render();
+ try{await api("retry",[item.name]);showToast("Enviada a explicación");setTimeout(()=>load(true),1200)}catch(e){showToast(e.message);await load(true)}finally{busy.delete(item.name);render()}
+}
+async function load(silent=false){
+ try{
+  const r=await fetch(API+"?view=state&t="+Date.now(),{cache:"no-store"});
+  if(!r.ok)throw new Error("No se pudieron leer los datos");
+  const d=await r.json();
+  if(!d?.ok)throw new Error(d?.error||"Estado TTendencias no disponible");
+  model=buildModel(d.recent||{},d.requests||{},d.explained||{},d.health||{},d.prepared||{items:[]},d.editorial_config||{},d.editorial_queue||{items:[]});
+  localStorage.setItem("ttendencias-last-model",JSON.stringify(model));render();
+ }catch(e){if(!silent)showToast(e.message)}
+}
+$("cancelProblemRetry").onclick=()=>{$("problemRetrySheet").classList.remove("show");problemRetryItem=null};
+$("sendProblemRetry").onclick=sendProblemRetry;
+$("problemRetrySheet").addEventListener("click",e=>{if(e.target===$("problemRetrySheet")){$("problemRetrySheet").classList.remove("show");problemRetryItem=null}});
+$("preparedBtn").onclick=()=>location.href="/ttendencias/explicadas/";
+$("explainedClose").onclick=()=>$("explainedSheet").classList.remove("show");
+$("explainedSheet").addEventListener("click",e=>{if(e.target===$("explainedSheet"))$("explainedSheet").classList.remove("show")});
+
+$("incidentClose").onclick=()=>$("incidentSheet").classList.remove("show");
+$("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buildDiagnostic(lastRunTelemetry||{}));showToast("Diagnóstico copiado")}catch(_){showToast("No se pudo copiar el diagnóstico")}};
+$("incidentSheet").addEventListener("click",e=>{if(e.target===$("incidentSheet"))$("incidentSheet").classList.remove("show")});
+$("refreshBtn").onclick=()=>{showToast("Recargando datos");load();loadRunStatus()};
+$("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado":"Sin token guardado";$("sheet").classList.add("show");refreshPushStatus().catch(()=>{})};
+$("cancelToken").onclick=()=>$("sheet").classList.remove("show");
+$("testToken").onclick=async()=>{const v=$("tokenInput").value.trim();if(!v)return;$("accessStatus").textContent="Comprobando…";try{const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+v},body:JSON.stringify({action:"ping"})});const d=await r.json();$("accessStatus").textContent=r.ok&&d?.backend?.ok?"✓ Acceso correcto · GitHub operativo":r.status===401?"✕ Token no válido":"⚠ Backend no disponible"}catch(_){$("accessStatus").textContent="✕ No se pudo comprobar"}};
+$("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado");refreshPushStatus().catch(()=>{});loadRunStatus()};
+$("badgeBtn").onclick=async()=>{try{const sub=await currentPushSubscription();if(sub)await deactivatePush();else await activatePush()}catch(e){showToast(e.message||"No se pudieron cambiar los avisos");await refreshPushStatus().catch(()=>{})}};
+$("pushTestBtn").onclick=async()=>{try{showToast("Enviando aviso de prueba…");const d=await api("push-test",[]);showToast(d.delivered>0?"Aviso de prueba enviado":"No se pudo entregar el aviso")}catch(e){showToast(e.message||"Falló el aviso de prueba")}};
+$("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
+async function refreshShellIfNeeded(){
+ try{
+  const r=await fetch("/ttendencias/index.html?shellcheck="+Date.now(),{cache:"no-store"});
+  const html=await r.text();
+  const m=html.match(/const SHELL_BUILD="([^"]+)"/);
+  if(m&&m[1]!==SHELL_BUILD){location.reload();return true}
+ }catch(_){}
+ return false
+}
+document.addEventListener("visibilitychange",async()=>{if(!document.hidden){if(!(await refreshShellIfNeeded()))load(true)}});window.addEventListener("pageshow",async()=>{if(!(await refreshShellIfNeeded()))load(true)});window.addEventListener("focus",()=>load(true));window.addEventListener("storage",e=>{if(e.key==="ttendencias-last-action")load(true)});
+if("serviceWorker" in navigator){
+ navigator.serviceWorker.register("/ttendencias/sw.js",{updateViaCache:"none"}).then(reg=>reg.update().catch(()=>{})).catch(()=>{});
+ navigator.serviceWorker.addEventListener("controllerchange",()=>{
+   if(sessionStorage.getItem("ttendencias-sw-reloaded")==="1")return;
+   sessionStorage.setItem("ttendencias-sw-reloaded","1");
+   location.reload();
+ });
+}
+load();loadRunStatus();setInterval(()=>{if(!document.hidden)load(true)},15000);setInterval(()=>{if(!document.hidden&&model)renderScheduleTiming()},15000);
+</script>
+</body></html>

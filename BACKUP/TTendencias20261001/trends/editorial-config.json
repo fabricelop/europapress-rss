@@ -1,0 +1,141 @@
+{
+  "project": "TTendencias",
+  "editorial": {
+    "alternatives_target": 0,
+    "alternatives_block_send": false,
+    "images_enabled_in_web_control": true,
+    "schedule_minutes": [
+      15
+    ],
+    "daytime_max_wait_minutes": 30,
+    "schedule_timezone": "Europe/Madrid",
+    "detection_schedule_minutes": [
+      7,
+      17,
+      27,
+      37,
+      47,
+      57
+    ],
+    "auto_queue_new_trends": true,
+    "delay_warning_after_minutes": 30,
+    "problematic_only_on_editorial_failure": true,
+    "image_policy": {
+      "enabled": true,
+      "mode": "existing_web_image",
+      "always_generate": false,
+      "display_in_web_control": true,
+      "queue_instruction": "Publicar explicación sin esperar foto. GitHub Actions incorpora una foto web real verificable desde metadatos de fuentes; para Tremending la captura del tuit elegido tiene prioridad. Sin foto: image_status=none. Nunca generar imágenes por IA.",
+      "note": "La imagen acompaña la explicación pero nunca condiciona su entrega ni la presencia del remate."
+    },
+    "queue_consumer_only": true,
+    "queue_states": [
+      "preparing",
+      "update",
+      "problematic"
+    ],
+    "output_file": "trends/telegram-manual-explained.json",
+    "ready_after_persist": false,
+    "api_failover": {
+      "enabled": false,
+      "grace_minutes": 8,
+      "model": "gpt-5.6"
+    },
+    "early_trend_radar": {
+      "enabled": true,
+      "social_rank_window": [
+        11,
+        20
+      ],
+      "min_social_sources": 2,
+      "accept_one_social_source_when_ttittulares_sources_at_least": 4,
+      "max_candidates": 8,
+      "use_ttittulares": true,
+      "auto_queue_for_editorial": false,
+      "track_first_detection": true,
+      "track_entry_into_top10": true,
+      "note": "Radar informativo: muestra señales observadas, no una probabilidad."
+    },
+    "mode": "explanation_only",
+    "explanation_only": true,
+    "news_bridge": {
+      "enabled": true,
+      "candidate_file": "ttittulares/trend-candidates.json",
+      "direct_processing_file": "telegram/editorial-processing.json",
+      "rules": {
+        "direct_to_processing": "Acontecimiento concreto, reciente, no duplicado y verificado por al menos 2 fuentes fiables independientes.",
+        "to_trends": "Hay indicios razonables de noticia, pero falta contexto o verificación suficiente para enviarla directamente a elaboración.",
+        "ignore": "Conversación genérica, programa/hashtag sin hecho nuevo, fandom, meme, promoción, tendencia ambigua o duplicado."
+      }
+    },
+    "grouping_policy": {
+      "enabled": true,
+      "mode": "same_event_or_topic",
+      "single_explanation_per_group": true,
+      "require_unambiguous_relation": true,
+      "canonical_name": "best_ranked_trend",
+      "persist_fields": [
+        "group_id",
+        "group_title",
+        "trend_names",
+        "trend_context"
+      ],
+      "request_link_field": "explanation_group_id",
+      "note": "Si varias tendencias describen inequívocamente el mismo acontecimiento o tema, se investigan y explican como un único grupo. Cada request individual queda cerrado contra el mismo group_id; no se duplican explicaciones."
+    },
+    "explanation_style": {
+      "mode": "tweet_ready_with_optional_witty_closer",
+      "max_x_weighted_characters": 279,
+      "preferred_final_characters": "230-250",
+      "fallback_max_unicode_codepoints": 250,
+      "count_full_copied_text_including_header": true,
+      "require_factual_trigger": true,
+      "try_specific_final_chascarrillo": true,
+      "allow_respectful_no_joke_on_sensitive_events": true,
+      "validate_before_persist": true,
+      "note": "No repetir cabecera al mostrar o copiar; captura Tremending priorizada, foto web normal añadida sin bloqueo.",
+      "closing_format": "single_self_contained_sentence_one_comic_idea",
+      "ban_two_part_contrast_punchlines": true,
+      "positive_style_reference": "Le recetó una vaselina que no se vende en farmacias.",
+      "negative_style_reference": "El caso tiene puerta; el decreto aún busca llave.",
+      "mandatory_prefix": "TT#N ",
+      "mandatory_sentence": "TT#N <nombre literal> es tendencia por <motivo>; para Tremending sin rango real: TT 🗯️ <nombre corto> es tendencia por <motivo>, sin TT#0",
+      "rank_source": "current_top10_rank_or_anticipated_best_observed_rank",
+      "strictly_less_than_280": true,
+      "copy_exact_explanation_without_duplicate_app_header": true,
+      "allow_leading_icon": false,
+      "layout": "first_line_TT_hash_rank_name_fact_then_newline_one_sentence_closer_then_rating_ui",
+      "closer_separate_line": true,
+      "closer_text_required_even_when_empty": true,
+      "rating_ui_below_closer": true,
+      "rating_scale": "1-5",
+      "rating_persistence": "trends/remate-ratings.json",
+      "rating_excluded_from_copied_tweet": true,
+      "closer_prefix": "🌶️ ",
+      "separator_before_closer": "\n",
+      "closer_text_includes_prefix": true,
+      "ui_show_tweet_header_once": true,
+      "ui_stars_immediately_below_closer": true,
+      "closer_generation": {
+        "preferred": true,
+        "max_attempts": 2,
+        "non_blocking": true,
+        "on_failure": "publish_verified_factual_explanation",
+        "closer_text_on_failure": "",
+        "never_mark_problematic_for_closer_failure": true,
+        "do_not_delay_next_trend": true
+      },
+      "tremending_prefix": "TT 🗯️ ",
+      "tremending_prefix_once": true
+    }
+  },
+  "delivery": {
+    "channel": "web",
+    "telegram_is_control_surface": false
+  },
+  "notifications": {
+    "channel": "app",
+    "badge_enabled": true,
+    "telegram_enabled": false
+  }
+}

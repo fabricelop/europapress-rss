@@ -1,0 +1,134 @@
+name: Actualizar Top 10 TTendencias
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,17,27,37,47,57 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - "trends/refresh-trigger.txt"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: ttendencias-refresh-quarter-hour
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Actualizar Top 10 y cola web
+        run: |
+          git config user.name "ttendencias-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --rebase --autostash origin main
+          cp trends/editorial-queue.json /tmp/tt-queue-before.json 2>/dev/null || printf '{"items":[]}\n' >/tmp/tt-queue-before.json
+
+          python3 trends/update_trends.py
+          python3 trends/auto_queue_new.py
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          def load(p):
+              try: return json.loads(Path(p).read_text(encoding="utf-8"))
+              except Exception: return {"items":[]}
+          before=load("/tmp/tt-queue-before.json")
+          after=load("trends/editorial-queue.json")
+          def keys(doc):
+              return {(str(x.get("id") or ""),int(x.get("revision") or 0))
+                      for x in doc.get("items",[])
+                      if str(x.get("status") or "") in {"preparing","update","problematic"}}
+          new=sorted(keys(after)-keys(before))
+          Path("/tmp/tt-new-explanations.json").write_text(json.dumps(new),encoding="utf-8")
+          print("Nuevas explicaciones pendientes:",new)
+          PY
+
+
+          MODE="$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          try:
+              print(str(json.loads(Path("trends/control-mode.json").read_text(encoding="utf-8")).get("mode") or "telegram").strip().lower())
+          except Exception:
+              print("telegram")
+          PY
+          )"
+          echo "Modo TTendencias: $MODE"
+
+          if [ "$MODE" != "web" ]; then
+            python3 trends/telegram_bot.py sync
+            git add trends/telegram-bot-state.json
+          else
+            echo "Control web activo: no se sincroniza el panel Telegram"
+          fi
+
+          git add trends/recent.json trends/checkpoint.json trends/requests.json trends/editorial-queue.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Actualizar Top 10 TTendencias"
+          git pull --rebase --autostash origin main
+          git push origin HEAD:main
+
+          # Las nuevas tendencias se explican en la ejecución horaria de TTendencias.
+          # Ya no se crea un trigger separado de ChatGPT Work por cada entrada nueva.
+
+      - name: Avisar nuevos Trending Topics
+        if: always()
+        continue-on-error: true
+        run: |
+          curl -fsS --max-time 20 "https://europapress-rss.vercel.app/api/ttendencias-top10-push" || true
+
+      - name: Comprobar salud TTendencias
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+        run: python3 trends/healthcheck.py
+
+      - name: Guardar estado de salud
+        if: always()
+        run: |
+          git config user.name "ttendencias-health"
+          git config user.email "actions@users.noreply.github.com"
+
+          # El repositorio recibe muchas escrituras concurrentes desde la web y
+          # otros workflows. Rebasar y reintentar evita que health-status quede
+          # congelado durante horas por una carrera de push.
+          git pull --rebase --autostash origin main || true
+          git add trends/health-status.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Actualizar salud TTendencias"
+
+          for attempt in 1 2 3 4; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push health-status falló (intento $attempt); rebasando y reintentando"
+            git pull --rebase origin main || {
+              git rebase --abort || true
+              exit 1
+            }
+            sleep $((attempt * 2))
+          done
+
+          echo "No se pudo persistir health-status tras 4 intentos" >&2
+          exit 1

@@ -1,0 +1,54 @@
+{
+  "project": "TTiTTulares",
+  "radar": {
+    "minimum_sources": 4,
+    "waiting_ttl_hours": 24,
+    "schedule_minutes": [
+      10,
+      40
+    ],
+    "timezone": "Europe/Madrid",
+    "source_repair": "inline_parallel_fallback"
+  },
+  "editorial": {
+    "schedule_minutes": [
+      0,
+      30
+    ],
+    "timezone": "Europe/Madrid",
+    "tweets_per_story": 1,
+    "verify_before_draft": true
+  },
+  "updates": {
+    "material_change_creates_new_story": true,
+    "reopen_previous_story": false
+  },
+  "display": {
+    "sort_ready_by": "current_source_count_desc_then_prepared_at_desc",
+    "show_current_sources": true,
+    "show_source_health": true,
+    "source_label_format": "Redactada con {drafted} ({current})"
+  },
+  "delivery": {
+    "channel": "web",
+    "enabled": true,
+    "telegram_enabled_until_cutover": false,
+    "parallel_new_items_only": false
+  },
+  "images": {
+    "enabled": true,
+    "mode": "existing_web_image",
+    "generate": false,
+    "non_blocking": true,
+    "source_preference": [
+      "official_or_primary",
+      "reputable_media"
+    ],
+    "require_source_page": true,
+    "store": "external_url_only",
+    "rights_status_default": "unverified",
+    "explicit_not_found": true,
+    "validate_https": true,
+    "policy": "Recuperar una imagen real del mismo acontecimiento desde una página de fuente oficial/primaria o de un medio fiable. No generar, recrear ni sintetizar imágenes."
+  }
+}

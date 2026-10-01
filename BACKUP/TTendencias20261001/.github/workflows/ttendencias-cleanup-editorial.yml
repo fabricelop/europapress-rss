@@ -1,0 +1,79 @@
+name: Limpiar bloques editoriales TTendencias
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "trends/cleanup-editorial.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttendencias-editorial-cleanup
+  cancel-in-progress: true
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Borrar bloques editoriales antiguos
+        env:
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+        run: |
+          python3 <<'PY'
+          import json, os, urllib.request
+          from pathlib import Path
+
+          root = Path("trends")
+          cfg = json.loads((root/"cleanup-editorial.json").read_text(encoding="utf-8"))
+          state_path = root/"telegram-bot-state.json"
+          requests_path = root/"requests.json"
+          state = json.loads(state_path.read_text(encoding="utf-8"))
+          requests = json.loads(requests_path.read_text(encoding="utf-8"))
+          chat_id = state.get("chat_id")
+          token = os.environ["TTENDENCIAS_BOT_TOKEN"]
+
+          def call(method,payload):
+              req=urllib.request.Request(
+                  f"https://api.telegram.org/bot{token}/{method}",
+                  data=json.dumps(payload).encode("utf-8"),
+                  headers={"Content-Type":"application/json"},
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      return json.loads(r.read().decode("utf-8"))
+              except Exception:
+                  return None
+
+          panel_id = int(state.get("panel_message_id") or 0)
+          for mid in cfg.get("message_ids", []):
+              mid = int(mid)
+              if mid and mid != panel_id:
+                  call("deleteMessage", {"chat_id": chat_id, "message_id": mid})
+
+          # Limpiar índice de bloques y devolver a preparing solo los que aún no están explained.
+          state["pending"] = {}
+          for req in requests.get("requests", []):
+              if req.get("status") == "ready":
+                  req["status"] = "preparing"
+                  req.pop("telegram_message_id", None)
+
+          state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+          requests_path.write_text(json.dumps(requests, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+          PY
+
+      - name: Guardar limpieza
+        run: |
+          git config user.name "ttendencias-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add trends/telegram-bot-state.json trends/requests.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Limpiar bloques editoriales TTendencias"
+            git pull --rebase --autostash origin main
+            git push origin HEAD:main
+          fi

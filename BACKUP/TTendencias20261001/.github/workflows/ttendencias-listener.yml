@@ -1,0 +1,110 @@
+name: TTendencias Telegram continuo
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "trends/telegram_bot.py"
+      - ".github/workflows/ttendencias-listener.yml"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: ttendencias-telegram-continuo
+  cancel-in-progress: true
+
+jobs:
+  listener:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Instalar dependencias de actualización
+        run: python3 -m pip install -q requests beautifulsoup4
+
+      - name: Detectar modo de control
+        id: control_mode
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path("trends/control-mode.json")
+          mode="telegram"
+          if p.exists():
+              try:
+                  mode=str(json.loads(p.read_text(encoding="utf-8")).get("mode") or "telegram").strip().lower()
+              except Exception:
+                  pass
+          with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as fh:
+              fh.write(f"mode={mode}\n")
+          print(f"Modo TTendencias: {mode}")
+          PY
+
+      - name: Sincronizar panel sin persistir
+        if: steps.control_mode.outputs.mode != 'web'
+        env:
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+        run: python3 trends/telegram_bot.py sync
+
+      - name: Escuchar bot TTendencias
+        if: steps.control_mode.outputs.mode != 'web'
+        env:
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+          TTENDENCIAS_LISTEN_SECONDS: "1500"
+          # Fallback de frescura: el cron de GitHub puede retrasarse. Mientras
+          # siga activo el modo Telegram, el listener garantiza otra captura
+          # al arrancar y cada 15 minutos.
+          TTENDENCIAS_REFRESH_SECONDS: "900"
+        run: python3 trends/telegram_bot.py listen
+
+      - name: Encadenar siguiente listener
+        if: always() && steps.control_mode.outputs.mode != 'web'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sleep 2
+          git fetch origin main --quiet || true
+          python3 - <<'PY'
+          import json, os, subprocess, urllib.request
+
+          # Releer el modo desde origin/main justo antes de encadenar. Así,
+          # si durante estos 25 minutos se activó el control web, este listener
+          # termina sin lanzar siquiera una ejecución adicional.
+          mode="telegram"
+          try:
+              raw=subprocess.check_output(
+                  ["git","show","origin/main:trends/control-mode.json"],
+                  text=True,
+              )
+              mode=str(json.loads(raw).get("mode") or "telegram").strip().lower()
+          except Exception:
+              pass
+          if mode == "web":
+              print("Control web activo: no se encadena otro listener TTendencias")
+              raise SystemExit(0)
+
+          repo=os.environ["GITHUB_REPOSITORY"]
+          url=f"https://api.github.com/repos/{repo}/actions/workflows/ttendencias-listener.yml/dispatches"
+          req=urllib.request.Request(
+              url,
+              method="POST",
+              data=json.dumps({"ref":"main"}).encode(),
+              headers={
+                  "Accept":"application/vnd.github+json",
+                  "Authorization":f"Bearer {os.environ['GH_TOKEN']}",
+                  "X-GitHub-Api-Version":"2022-11-28",
+                  "User-Agent":"ttendencias-listener-chain",
+                  "Content-Type":"application/json",
+              },
+          )
+          with urllib.request.urlopen(req, timeout=30) as r:
+              if r.status != 204:
+                  raise SystemExit(f"dispatch inesperado: {r.status}")
+          print("Siguiente listener TTendencias encolado")
+          PY

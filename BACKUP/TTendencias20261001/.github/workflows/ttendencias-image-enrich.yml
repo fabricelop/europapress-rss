@@ -1,0 +1,89 @@
+name: TTendencias · fotos reales sin bloqueo
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "trends/telegram-manual-explained.json"
+      - "ttittulares/tremending/items.json"
+      - "trends/enrich_explained_images.py"
+      - ".github/workflows/ttendencias-image-enrich.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttendencias-real-images
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Preparar validador raster
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow
+
+      - name: Verificar regresiones de Tremending, interfaz e imágenes
+        run: |
+          set -euo pipefail
+          python3 -m py_compile trends/enrich_explained_images.py trends/auto_queue_new.py
+          python3 trends/enrich_explained_images.py --selftest
+          node --check vercel-webhook/api/ttittulares-control.js
+          node --check vercel-webhook/api/ttendencias-control.js
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          import vm from 'node:vm';
+          const backend=fs.readFileSync('vercel-webhook/api/ttittulares-control.js','utf8');
+          const f=backend.match(/function shortTremendingTrendTitle\(title\)\{[\s\S]*?\n\}\nasync function sendTremending/);
+          assert.ok(f,'Función de título corto ausente');
+          const short=vm.runInNewContext(f[0].replace(/\nasync function sendTremending$/,'')+
+            '\nshortTremendingTrendTitle("Rifirrafe entre Miriam Nogueras y Silvia Intxaurrondo en La Hora de la 1: Le emplazo")');
+          assert.equal(short,'Nogueras e Intxaurrondo');
+          const page=fs.readFileSync('vercel-webhook/ttendencias/explicadas/index.html','utf8');
+          const script=page.match(/<script>([\s\S]*?)<\/script>/i);
+          assert.ok(script,'Falta script de Explicadas');
+          new vm.Script(script[1],{filename:'explicadas.inline.js'});
+          const format=script[1].match(/function hasTweetReadyFormat\(x\)\{[\s\S]*?\n\}\nfunction tweetBody/);
+          assert.ok(format,'Falta detector anti-duplicación');
+          const code=format[0].replace(/\nfunction tweetBody$/,'');
+          const valid=vm.runInNewContext(code+'\nhasTweetReadyFormat({tremending_origin:true,explanation:"TT 🗯️ Nogueras e Intxaurrondo es tendencia por la entrevista."})');
+          const legacy=vm.runInNewContext(code+'\nhasTweetReadyFormat({tremending_origin:true,explanation:"TT#0 Tremending · Entrada es tendencia por la entrevista."})');
+          assert.ok(valid&&legacy,'Se repetiría encabezado Tremending');
+          const data=JSON.parse(fs.readFileSync('trends/telegram-manual-explained.json','utf8'));
+          const row=data.items.find(x=>x.id==='tremending-5f69baea2a47');
+          assert.ok(row&&!row.explanation.includes('TT#0')&&row.explanation.startsWith('TT 🗯️ '+row.name+' es tendencia'));
+          assert.equal(row.explanation.split(row.name).length-1,1,'Título duplicado en explicación');
+          console.log('TTENDENCIAS_TREMENDING_UI_SELFTEST_OK');
+          JS
+
+      - name: Adjuntar fotos sin generar ni bloquear explicaciones
+        run: |
+          set -euo pipefail
+          git config user.name "ttendencias-photo-bot"
+          git config user.email "actions@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 trends/enrich_explained_images.py
+            git add trends/telegram-manual-explained.json
+            if git diff --cached --quiet; then
+              echo "TTENDENCIAS_IMAGES_UP_TO_DATE"
+              exit 0
+            fi
+            git commit -m "Adjuntar fotos reales a TTendencias sin bloqueo editorial"
+            if git push origin HEAD:main; then
+              echo "TTENDENCIAS_IMAGES_PERSISTED"
+              exit 0
+            fi
+            echo "Cambio concurrente; recalculando sobre main ($attempt/5)"
+            sleep $((attempt * 2))
+          done
+          echo "No se pudo persistir la foto tras cinco intentos" >&2
+          exit 1

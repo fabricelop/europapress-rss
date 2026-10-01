@@ -1,0 +1,14 @@
+/* TTendencias UI v3: cabecera compacta, contador de tuits y detalle de explicadas */
+.progressMini,#editorialTiming{display:none!important}
+#preparedBtn{min-width:104px;padding:0 15px}
+#preparedBtn.tt-ready{border-color:#a94753;background:#3a171d;color:#ffe2e5}
+#preparedBtn.tt-ready:active{background:#4a1c24}
+.scheduleTiming .tt-warn{color:#ff8d99}
+.state.tt-explained-click{cursor:pointer;width:max-content;border-radius:8px;padding:2px 4px;margin-left:-4px}
+.state.tt-explained-click:active{background:#1b2a24;color:#d8f7e5}
+#ttExplanationSheet{position:fixed;inset:0;background:#0009;z-index:70;display:none;align-items:flex-end}
+#ttExplanationSheet.show{display:flex}
+#ttExplanationSheet .tt-panel{width:100%;max-width:560px;margin:0 auto;background:#111720;border:1px solid #354052;border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom))}
+#ttExplanationSheet h2{margin:0 0 8px}
+#ttExplanationSheet p{font-size:14px;color:#c1ccda;line-height:1.5;white-space:pre-wrap}
+#ttExplanationSheet button{width:100%;border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:11px;padding:10px 11px;font-weight:760}
