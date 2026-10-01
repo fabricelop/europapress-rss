@@ -22,11 +22,14 @@
     "problematic_only_on_editorial_failure": true,
     "image_policy": {
       "enabled": true,
-      "mode": "existing_web_image",
-      "always_generate": false,
+      "mode": "ai_plus_fallback",
+      "always_generate": true,
+      "max_ai_attempts_initial": 1,
+      "ai_non_blocking": true,
+      "fallback_enabled": true,
       "display_in_web_control": true,
-      "queue_instruction": "Publicar explicación sin esperar foto. GitHub Actions incorpora una foto web real verificable desde metadatos de fuentes; para Tremending la captura del tuit elegido tiene prioridad. Sin foto: image_status=none. Nunca generar imágenes por IA.",
-      "note": "La imagen acompaña la explicación pero nunca condiciona su entrega ni la presencia del remate."
+      "queue_instruction": "Genera una sola imagen IA editorial rápida por item con aislamiento current_item_only y conserva además una imagen real/fallback verificable. Nunca bloquees la explicación por imagen; la app decide entre IA, rehacer o fallback.",
+      "note": "La IA y el archivo/fallback son capas paralelas. READY/Explained no dependen de ninguna imagen."
     },
     "queue_consumer_only": true,
     "queue_states": [
