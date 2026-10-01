@@ -10378,7 +10378,7 @@
       "captured_with": [],
       "auto_queued": false,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T17:10:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -10391,22 +10391,54 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001160432_690.jpg",
-        "source": "Europa Press · Cultura",
-        "source_url": "https://www.europapress.es/cultura/cine-00128/noticia-woody-allen-recuerda-madrid-no-director-politico-carga-contra-fascismo-tambien-forma-censura-20261001160432.html",
-        "alt": "Woody Allen posa en Madrid durante la presentación del rodaje de su nueva película",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/75f572510033-r1-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "75f572510033",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "gen_id": "6daa1dfd-92ad-4857-8ac1-253140b2f19d",
+        "alt": "Ilustración editorial de Woody Allen preparando un rodaje de seis semanas por más de 30 localizaciones de Madrid y Aranjuez",
+        "sha256": "2b1eb707dff28904d69b1ec42ee389ee043c384fd04134eabf87a77d9be6a04f",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/75f572510033-r1-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "pending",
-      "ai_image_last_attempt_at": "2026-10-01T17:10:00+02:00",
-      "rewrite_instruction": "Rehaz el remate manteniendo los hechos y el formato del tuit, con un giro más específico. Genera también una nueva imagen IA."
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T15:16:14.628599Z",
+      "rewrite_instruction": "Rehaz el remate manteniendo los hechos y el formato del tuit, con un giro más específico. Genera también una nueva imagen IA.",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/75f572510033-r1-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "75f572510033",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "gen_id": "6daa1dfd-92ad-4857-8ac1-253140b2f19d",
+        "alt": "Ilustración editorial de Woody Allen preparando un rodaje de seis semanas por más de 30 localizaciones de Madrid y Aranjuez",
+        "sha256": "2b1eb707dff28904d69b1ec42ee389ee043c384fd04134eabf87a77d9be6a04f",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/75f572510033-r1-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     }
   ],
-  "updated_at": "2026-10-01T15:12:34.151434Z",
+  "updated_at": "2026-10-01T15:16:14.628704Z",
   "count": 376
 }
