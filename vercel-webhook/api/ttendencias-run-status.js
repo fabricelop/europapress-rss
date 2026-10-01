@@ -18,6 +18,7 @@ const REPO=process.env.GITHUB_REPO||"fabricelop/europapress-rss";
 const PR=7;
 const TRIGGER_BRANCH="control/ttendencias-run-trigger";
 const TRIGGER_PATH="trends/run-now-trigger.json";
+const ACK_PATH="trends/run-ack.json";
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const TRACE_COMMENT_ID=5859532515;
@@ -53,6 +54,14 @@ async function readTrigger(){
     if(!r.ok)return {doc:{}};
     return {doc:JSON.parse(await r.text()||"{}")}
   }catch(_){return {doc:{}}}
+}
+async function readAck(){
+  try{
+    const u="https://raw.githubusercontent.com/"+REPO+"/"+TRIGGER_BRANCH+"/"+ACK_PATH+"?t="+Date.now();
+    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttendencias-run-status-read"}});
+    if(!r.ok)return {};
+    return JSON.parse(await r.text()||"{}")
+  }catch(_){return {}}
 }
 async function readMainJson(path){
   try{
@@ -154,7 +163,7 @@ function persistedExplanationFallback(doc){
     message:"Recuperada desde la persistencia editorial verificada en main."
   });
 }
-function manualFallback(items,request){
+function manualFallback(items,request,ack){
   const command_id=String(request.command_id||"").trim();
   const requested_at=String(request.requested_at||"").trim();
   if(!command_id||!requested_at)return null;
@@ -163,22 +172,54 @@ function manualFallback(items,request){
   const rawStatus=last?field(last.body,"status")||"REQUESTED":"REQUESTED";
   const started=marks.find(c=>field(c.body,"status")==="RUNNING");
   const started_at=started?(field(started.body,"started_at")||started.created_at):null;
-  const noStart=rawStatus==="REQUESTED"&&!started_at&&Date.now()-stamp(requested_at)>=START_ACK_MS;
-  const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(last?.updated_at||last?.created_at||requested_at)>=STALE_MS;
-  const status=(noStart||staleRunning)?"ERROR":rawStatus;
   const lastActivity=last?.updated_at||last?.created_at||requested_at;
-  const finished_at=noStart||staleRunning?new Date().toISOString():(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
-  const timeoutMessage=noStart
-    ?"No se ha recibido RUNNING en 30 segundos: el PC no ha recogido la orden móvil."
-    :staleRunning?"La ejecución no actualiza su estado desde hace más de 20 minutos.":null;
+  const ackMatches=String(ack?.command_id||"")===command_id;
+  const ackStage=ackMatches?String(ack?.stage||"").toLowerCase():"";
+  const pickedAt=ackMatches?(ack?.picked_up_at||ack?.updated_at||null):null;
+  const launchedAt=ackMatches?(ack?.launched_at||null):null;
+  const noPickup=rawStatus==="REQUESTED"&&!started_at&&!ackMatches&&Date.now()-stamp(requested_at)>=START_ACK_MS;
+  const pickupButNoLaunch=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="picked_up"&&Date.now()-stamp(pickedAt)>=START_ACK_MS;
+  const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(lastActivity)>=STALE_MS;
+
+  let status=rawStatus,phase=status==="REQUESTED"?"preparing":status==="RUNNING"?"running":status==="DONE"?"closing":"error";
+  let message=last?field(last.body,"message"):null;
+  let effectiveStarted=started_at;
+  let updated_at=lastActivity;
+
+  if(rawStatus==="REQUESTED"&&!started_at&&ackMatches){
+    status="RUNNING";
+    phase=ackStage==="launched"?"chat_launch":"pc_ack";
+    effectiveStarted=pickedAt||requested_at;
+    updated_at=ack?.updated_at||pickedAt||requested_at;
+    message=ackStage==="launched"
+      ?"PC ha recogido la orden y ha lanzado el chat; esperando confirmación editorial."
+      :"PC ha recogido la orden; preparando el lanzamiento del chat.";
+  }
+  if(noPickup||pickupButNoLaunch||staleRunning){
+    status="ERROR";phase="error";
+    message=noPickup
+      ?"El PC no ha recogido la orden en 30 segundos."
+      :pickupButNoLaunch
+        ?"El PC recogió la orden, pero no confirmó el lanzamiento del chat en 30 segundos."
+        :"La ejecución no actualiza su estado desde hace más de 20 minutos.";
+  }
+
+  const finished_at=noPickup
+    ?new Date(stamp(requested_at)+START_ACK_MS).toISOString()
+    :pickupButNoLaunch
+      ?new Date(stamp(pickedAt)+START_ACK_MS).toISOString()
+      :staleRunning?new Date().toISOString()
+      :(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
+
   return {
-    run_id:command_id,command_id,source:"mobile",source_label:"Móvil→PC",status,
-    phase:status==="REQUESTED"?"preparing":status==="RUNNING"?"running":status==="DONE"?"closing":"error",
-    current:0,total:0,trend_id:null,title:null,requested_at,started_at,
-    updated_at:lastActivity,finished_at,
-    start_delay_seconds:started_at?seconds(requested_at,started_at):null,
-    duration_seconds:started_at&&finished_at?seconds(started_at,finished_at):null,
-    message:timeoutMessage||(last?field(last.body,"message"):"Orden móvil registrada; esperando al PC para abrir el chat (máx. 30 s)."),summary:null,incident_count:0,incidents:[]
+    run_id:command_id,command_id,source:"mobile",source_label:"Móvil→PC",status,phase,
+    current:0,total:0,trend_id:null,title:null,requested_at,started_at:effectiveStarted,
+    updated_at,finished_at,
+    start_delay_seconds:effectiveStarted?seconds(requested_at,effectiveStarted):null,
+    duration_seconds:effectiveStarted&&finished_at?seconds(effectiveStarted,finished_at):null,
+    message:message||"Orden móvil registrada; esperando al PC para recogerla (máx. 30 s).",
+    summary:null,incident_count:0,incidents:[],
+    pc_ack_stage:ackStage||null,pc_picked_up_at:pickedAt||null,pc_launched_at:launchedAt||null
   }
 }
 
@@ -186,12 +227,12 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
-    const [enabled,items,{doc:request},runtimeDoc,explainedDoc]=await Promise.all([
-      triggerReady(),comments(),readTrigger(),readMainJson(RUNTIME_PATH),readMainJson(EXPLAINED_PATH)
+    const [enabled,items,{doc:request},ack,runtimeDoc,explainedDoc]=await Promise.all([
+      triggerReady(),comments(),readTrigger(),readAck(),readMainJson(RUNTIME_PATH),readMainJson(EXPLAINED_PATH)
     ]);
     const traces=items.map(traceOf).filter(Boolean).sort((a,b)=>stamp(a.updated_at||a.comment_updated_at)-stamp(b.updated_at||b.comment_updated_at));
     let latest=traces.length?normalizeTrace(traces.at(-1)):null;
-    const fallback=manualFallback(items,request);
+    const fallback=manualFallback(items,request,ack);
     let active=null;
 
     if(latest&&["REQUESTED","RUNNING"].includes(latest.status)){
