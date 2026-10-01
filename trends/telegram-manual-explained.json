@@ -10214,7 +10214,7 @@
       "captured_with": [],
       "auto_queued": false,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T16:57:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -10227,19 +10227,53 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001160432_690.jpg",
-        "source": "Europa Press · Cultura",
-        "source_url": "https://www.europapress.es/cultura/cine-00128/noticia-woody-allen-recuerda-madrid-no-director-politico-carga-contra-fascismo-tambien-forma-censura-20261001160432.html",
-        "alt": "Woody Allen posa en Madrid durante la presentación del rodaje de su nueva película",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/75f572510033-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "75f572510033",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "7916770a-f0bc-4567-a769-de4ab2129a26",
+        "alt": "Ilustración editorial sobre Woody Allen preparando el rodaje de una nueva película en Madrid",
+        "sha256": "24972b825db0bf4584f6d3ee74385f1e864df7327ce88a191d7d3615805ffdc7",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/75f572510033-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/75f572510033-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "75f572510033",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "7916770a-f0bc-4567-a769-de4ab2129a26",
+        "alt": "Ilustración editorial sobre Woody Allen preparando el rodaje de una nueva película en Madrid",
+        "sha256": "24972b825db0bf4584f6d3ee74385f1e864df7327ce88a191d7d3615805ffdc7",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/75f572510033-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T15:02:24.950253Z"
     }
   ],
-  "updated_at": "2026-10-01T17:02:22+02:00",
+  "updated_at": "2026-10-01T15:02:24.950323Z",
   "count": 374
 }
