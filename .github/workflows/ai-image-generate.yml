@@ -44,12 +44,14 @@ jobs:
         run: |
           set -euo pipefail
           python3 <<'PY'
+          import base64
           import hashlib
           import json
           import os
           import subprocess
           import time
           import urllib.error
+          import urllib.parse
           import urllib.request
           from pathlib import Path
 
@@ -106,6 +108,52 @@ jobs:
               except Exception as exc:
                   failure = str(exc)[:500]
 
+              # Segundo carril sin credenciales: el endpoint legado de Pollinations
+              # se usa solo si Vercel/OpenAI no ha producido una imagen. Es best-effort:
+              # cualquier respuesta no-raster se rechaza y queda registrada como fallo.
+              if not (response and response.get("ok") and str(response.get("data_url") or "").startswith("data:image/")):
+                  try:
+                      seed = int(hashlib.sha256(f"{project}:{ident}:{revision}:{attempt}".encode()).hexdigest()[:8], 16)
+                      prompt = urllib.parse.quote(str(job.get("prompt") or ""), safe="")
+                      poll_url = (
+                          "https://image.pollinations.ai/prompt/" + prompt
+                          + f"?width=768&height=432&nologo=true&seed={seed}&model=flux"
+                      )
+                      poll_req = urllib.request.Request(
+                          poll_url,
+                          headers={"User-Agent": "tt-image-github-action/1"},
+                      )
+                      with urllib.request.urlopen(poll_req, timeout=120) as handle:
+                          raw = handle.read()
+                          ctype = str(handle.headers.get("Content-Type") or "").split(";", 1)[0].lower()
+                      if len(raw) < 4096:
+                          raise ValueError("pollinations_too_few_bytes")
+                      if raw.startswith(b"\xff\xd8\xff"):
+                          media = "image/jpeg"
+                      elif raw.startswith(b"\x89PNG\r\n\x1a\n"):
+                          media = "image/png"
+                      elif raw[:4] == b"RIFF" and raw[8:12] == b"WEBP":
+                          media = "image/webp"
+                      else:
+                          raise ValueError(f"pollinations_non_raster:{ctype or 'unknown'}")
+                      response = {
+                          "ok": True,
+                          "data_url": f"{media};base64," + base64.b64encode(raw).decode("ascii"),
+                          "model": "pollinations/flux-legacy",
+                          "provider": "pollinations-legacy",
+                          "sha256": hashlib.sha256(raw).hexdigest(),
+                          "context_guard": job.get("context_guard"),
+                      }
+                      # Corregir prefijo data URL.
+                      response["data_url"] = "data:" + response["data_url"]
+                      print("TT_IMAGE_POLLINATIONS_FALLBACK_OK", ident, len(raw))
+                      failure = None
+                  except Exception as poll_exc:
+                      poll_failure = str(poll_exc).replace("\n", " ")[:300]
+                      failure = ((failure + " | ") if failure else "") + "fallback: " + poll_failure
+                      failure = failure[:500]
+                      print("TT_IMAGE_POLLINATIONS_FALLBACK_FAILED", ident, poll_failure)
+
               guard = (response or {}).get("context_guard") or job.get("context_guard") or {
                   "version": 3,
                   ("event_id" if project == "ttittulares" else "trend_id"): ident,
@@ -113,14 +161,16 @@ jobs:
                   "scope": "current_item_only",
               }
 
+              provider = str((response or {}).get("provider") or "vercel-openai")
+              source_suffix = "Pollinations fallback" if provider == "pollinations-legacy" else "Vercel AI Gateway / OpenAI"
               if project == "ttittulares":
                   outbox_rel = f"ttittulares/image-outbox/{ident}-r{revision}-ai{attempt}.json"
                   id_key = "event_id"
-                  source = "TTiTTulares / Vercel AI Gateway"
+                  source = "TTiTTulares / " + source_suffix
               else:
                   outbox_rel = f"trends/image-outbox/{ident}-r{revision}-ai{attempt}.json"
                   id_key = "id"
-                  source = "TTendencias / Vercel AI Gateway"
+                  source = "TTendencias / " + source_suffix
 
               if response and response.get("ok") and str(response.get("data_url") or "").startswith("data:image/"):
                   payload = {
@@ -136,6 +186,7 @@ jobs:
                           "generation_attempt": attempt,
                           "context_guard": guard,
                           "model": response.get("model"),
+                          "provider": response.get("provider") or "vercel-openai",
                           "sha256": response.get("sha256"),
                       },
                   }
