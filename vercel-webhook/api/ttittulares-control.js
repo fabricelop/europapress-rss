@@ -315,7 +315,7 @@ async function rework(eventId,instruction){
       item={event_id:id,title:source.title||"",url:source.url||"",sources:source.sources_at_draft||[],source_count:Number(source.drafted_source_count||0),selected_at:now};
       doc.items.push(item)
     }
-    item.previous_status=item.status;item.status="PROCESSING";item.selection_mode="REWRITE";item.with_image=true;item.image_mode="existing_web_image";item.image_instruction="Intenta una sola imagen IA rápida y conserva además una imagen de archivo/fallback. Ninguna imagen bloquea READY.";
+    item.previous_status=item.status;item.status="PROCESSING";item.selection_mode="REWRITE";item.with_image=true;item.image_mode="ai_plus_fallback";item.image_instruction="Intenta una sola imagen IA rápida y conserva además una imagen de archivo/fallback. Ninguna imagen bloquea READY.";
     item.rewrite_request=text;item.rewrite_requested_at=now;item.rewrite_version=Number(item.rewrite_version||0)+1;
     item.revision=Number(item.revision||source.revision||1)+1;delete item.delivered_at;delete item.published_at;delete item.dismissed_at;
     doc.updated_at=now;return doc
