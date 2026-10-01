@@ -9431,7 +9431,7 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T12:52:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -9454,7 +9454,10 @@
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T11:02:21.904005Z",
+      "ai_image_failure_reason": "data URL raster inválida: Invalid base64-encoded string: number of data characters (13321) cannot be 1 more than a multiple of 4"
     },
     {
       "id": "b79a16e0b2ed",
@@ -9519,6 +9522,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-01T12:52:00+02:00",
+  "updated_at": "2026-10-01T11:02:21.904062Z",
   "count": 368
 }
