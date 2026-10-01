@@ -576,12 +576,29 @@
       "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-01T07:48:22Z",
       "ai_image_failure_reason": "ImageGen produjo el raster aislado, pero este canal no dispone de un puente de archivo transferible desde el raster local al GitHub Contents API.",
-      "fallback_image_status": "pending",
-      "image_choice": "none",
-      "image_status": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none"
+      "image_app_available": true,
+      "image_delivery": "app",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001093507_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/nacional/noticia-reyes-visitaran-ceuta-melilla-13-14-octubre-20261001093507.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Los Reyes visitarán Ceuta y Melilla los días 13 y 14 de octubre"
+      },
+      "fallback_image_search_attempted_at": "2026-10-01T07:49:03.740249Z",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001093507_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/nacional/noticia-reyes-visitaran-ceuta-melilla-13-14-octubre-20261001093507.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Los Reyes visitarán Ceuta y Melilla los días 13 y 14 de octubre"
+      }
     }
   ]
 }
