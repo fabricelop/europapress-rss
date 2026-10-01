@@ -22,9 +22,7 @@ const TRIGGER_PATH="ttittulares/run-now-trigger.json";
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
 const TRACE_COMMENT_ID=5859738015;
-const READY_MARKER="TTITTULARES WORK COMMIT TRIGGER READY";
 const STALE_MS=20*60*1000;
-let readyCache={at:0,value:null};
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -74,15 +72,7 @@ async function comments(){
     seen.add(id);return true
   })
 }
-async function triggerReady(){
-  if(readyCache.value!==null&&Date.now()-readyCache.at<10*60*1000)return readyCache.value;
-  const r=await gh(`https://api.github.com/repos/${REPO}/pulls/${PR}`);
-  if(!r.ok)throw new Error(`GitHub PR: ${r.status} ${await r.text()}`);
-  const pr=await r.json();
-  const value=String(pr.body||"").includes(READY_MARKER);
-  readyCache={at:Date.now(),value};
-  return value
-}
+async function triggerReady(){return true}
 async function readTrigger(){
   try{
     const u=`https://raw.githubusercontent.com/${REPO}/${TRIGGER_BRANCH}/${TRIGGER_PATH}?t=${Date.now()}`;
@@ -116,7 +106,7 @@ function traceOf(comment){
   }catch(_){return null}
 }
 function stamp(v){const n=Date.parse(v||"");return Number.isFinite(n)?n:0}
-function sourceLabel(v){return v==="manual"?"Manual":v==="scheduled"?"Automática":v==="chat"?"Chat":String(v||"")}
+function sourceLabel(v){return v==="manual"?"Manual":v==="mobile"?"Móvil→PC":v==="scheduled"?"Automática":v==="chat"?"Chat":String(v||"")}
 function incidentsFor(errors,start,finish){
   const a=stamp(start),b=finish?stamp(finish)+120000:Date.now()+120000;
   if(!a)return [];
@@ -185,12 +175,12 @@ function manualFallback(items,request){
   const started_at=started?(field(started.body,"started_at")||started.created_at):null;
   const finished_at=["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null;
   return {
-    run_id:command_id,command_id,source:"manual",source_label:"Manual",status,
+    run_id:command_id,command_id,source:"mobile",source_label:"Móvil→PC",status,
     phase:status==="REQUESTED"?"preparing":status==="RUNNING"?"running":status==="DONE"?"closing":"error",
     current:0,total:0,event_id:null,title:null,requested_at,started_at,updated_at:last?.updated_at||last?.created_at||requested_at,finished_at,
     start_delay_seconds:started_at?seconds(requested_at,started_at):null,
     duration_seconds:started_at&&finished_at?seconds(started_at,finished_at):null,
-    message:last?field(last.body,"message"):null,summary:null,incident_count:0,incidents:[]
+    message:last?field(last.body,"message"):"Orden móvil registrada; esperando al PC para abrir el chat.",summary:null,incident_count:0,incidents:[]
   }
 }
 
