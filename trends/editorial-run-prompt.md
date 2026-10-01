@@ -112,9 +112,9 @@ No guardes en RUNTRACE el texto de candidatos descartados. Así la app sigue mos
 1. Lee SIEMPRE `trends/editorial-queue.json` desde `main`.
 2. Lee `trends/recent.json` y `trends/editorial-config.json`.
 3. Si `trends/recent.json.captured_at` supera 20 minutos, actualiza `trends/refresh-trigger.txt` en `main` para pedir una captura fresca y después relee `trends/editorial-queue.json`, `trends/recent.json` y `trends/editorial-config.json`.
-4. Si la cola queda vacía, termina el flujo editorial sin investigación web ni escrituras adicionales.
+4. Antes de considerar la pasada vacía, revisa también las Explicadas recientes con `ai_image_regenerate_requested:true`. Si no hay cola editorial NI solicitudes de Rehacer imagen, termina sin investigación web. Si solo hay solicitudes de imagen, procesa únicamente esos intentos visuales sin reabrir texto ni requests.
 5. Si hay pendientes, usa DOS fases de prioridad: primero TODOS los `preparing`/`update` del más antiguo al más reciente; solo después reintenta los `problematic` que sigan en Top 10. Un problematic antiguo NUNCA puede hacer starvation de tendencias nuevas.
-6. PROCESAMIENTO ESTRICTAMENTE SECUENCIAL END-TO-END: para cada tendencia/grupo completa TODO su ciclo antes de empezar la siguiente: investigar → redactar Principal/A/B/C → generar y revisar imagen → persistir un ÚNICO outbox READY con texto+imagen → esperar/verificar aplicación → confirmar que está en `prepared.json` y fuera de cola. Solo entonces pasa al siguiente item. NO investigues todas primero ni generes todas las imágenes al final.
+6. PROCESAMIENTO EDITORIAL SECUENCIAL, IMAGEN DESACOPLADA: para cada tendencia/grupo investiga → redacta/verifica → persiste y cierra el TEXTO → confirma requests/cola. En cuanto exista contexto factual suficiente haz, dentro de esa misma pasada, el único intento ImageGen, pero su persistencia usa `trends/image-outbox/**` y NUNCA condiciona el cierre del texto ni el paso al siguiente item. No acumules todas las imágenes para el final.
 7. Una tendencia `problematic` se reintenta automáticamente mientras siga en el Top 10, pero siempre al final de la pasada. Si ya salió del Top 10, no se fuerza otro intento.
 8. Un fallo de un item no debe bloquear los siguientes: registra ese item pendiente/problematic según corresponda y continúa con el siguiente.
 9. Relee estado fresco antes de cada escritura. Ante conflicto, relee SHA y reintenta de forma segura.
@@ -245,13 +245,29 @@ Al inicio de cada pasada, además de la cola normal, revisa las Explicadas recie
 
 El fallback nunca se borra al rehacer una IA.
 
-## Outbox
+## Outbox de imagen V3 — separado y no bloqueante
+
+En `explanation_only`, la explicación se persiste primero mediante el mecanismo textual vigente y se cierra sin esperar al raster. **Nunca metas la data URL IA dentro de un outbox editorial de texto.**
+
+Después del único intento ImageGen:
+1. identifica exclusivamente el fichero generado para ese item;
+2. normaliza sus bytes reales a JPEG/WebP ligero, lado largo ~512 px y objetivo <=60 KB;
+3. calcula SHA-256 y base64 programáticamente;
+4. escribe por GitHub Contents:
+   `trends/image-outbox/<id>-r<revision>-ai<attempt>.json`
+   con `{"id","revision","attempt","status":"ready","ai_image":{...}}`; `ai_image.url` contiene la data URL real y su metadata V3;
+5. `.github/workflows/ttendencias-ai-image-apply.yml` materializa el raster y actualiza SOLO la imagen de `trends/telegram-manual-explained.json`;
+6. ante fallo técnico de ImageGen/transporte, escribe `status:"failed"` y una razón breve en ese image-outbox. La explicación queda igualmente cerrada.
+
+Para **🔁 Rehacer**, incrementa `attempt`, genera exactamente una vez y usa este mismo image-outbox. No escribas otro texto, no cambies la revisión editorial y conserva siempre `fallback_image`.
+
+La foto de archivo/fallback sigue siendo posterior y no bloqueante mediante `ttendencias-image-enrich.yml`.
+
+## Outbox editorial legado
 
 ### Persistencia textual obligatoria
 
-El outbox JSON es el ÚNICO hand-off que escribe directamente la automatización. Escríbelo con las operaciones normales para texto UTF-8 del conector GitHub (`create_file` si no existe; `update_file` con SHA fresco si existe). Ante conflicto, relee SHA y reintenta una vez.
-
-No uses `create_blob/create_tree/create_commit/update_ref` desde la automatización editorial. La imagen viaja dentro del JSON como data URL base64 pequeña y GitHub Actions se encarga de materializar el binario.
+Esta subsección solo aplica al modo legado que todavía use `trends/editorial-outbox/**`. El outbox editorial contiene texto/metadatos; la imagen V3 usa SIEMPRE `trends/image-outbox/**`.
 
 Después de escribir el outbox, reléelo desde `main` y confirma `id/revision/status`. Si el outbox existe pero no se aplica, inspecciona/reintenta el workflow existente antes de pasar al siguiente item.
 
@@ -269,7 +285,7 @@ con raíz `id,name,revision,status:"ready"` y `prepared_item` completo, incluyen
 - `search_terms`
 - `generated_at`
 - `revision`
-- `image`
+- estados/metadatos de imagen pequeños, nunca data URLs V3
 - metadatos `anticipated*` cuando existan.
 
 `alternatives[].remate` contiene solo el remate `🌶️ ...`; `tweet_text` contiene el tuit completo una sola vez.
