@@ -70,9 +70,11 @@ const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
 const RUN_STATUS_API="/api/ttendencias-run-status";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="ttendencias-ui-backend-copied-v7-20260928";
+const SHELL_BUILD="ttendencias-rate-limit-cache-v8-20261001";
 const $=id=>document.getElementById(id);
-let model=null,busy=new Set(),runPoll=null,problemRetryItem=null;
+const DATA_CACHE_KEY="ttendencias-last-model",RUN_CACHE_KEY="ttendencias-last-run-status";
+function loadLocalJson(key){try{return JSON.parse(localStorage.getItem(key)||"null")}catch(_){return null}}
+let model=loadLocalJson(DATA_CACHE_KEY),busy=new Set(),runPoll=null,problemRetryItem=null;
 const token=()=>localStorage.getItem("ttendencias-control-token")||"";
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
 function showToast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove("show"),2500)}
@@ -425,7 +427,7 @@ function buildDiagnostic(s){
  for(const [i,e] of (r.incidents||[]).entries())lines.push("", "["+(i+1)+"] "+(e.at||"—")+" · "+(e.phase||"sin fase")+" · "+(e.trend_id||e.event_id||"sin tendencia"),String(e.reason||""));
  return lines.join("\n")
 }
-let lastRunTelemetry=null;
+let lastRunTelemetry=loadLocalJson(RUN_CACHE_KEY);
 function showRunIncidents(s){
  const r=s?.active?s:(s?.last_run||s||{}),count=runIncidentCount(r);
  $("incidentSummary").textContent=count?(count+" incidencia"+(count===1?"":"s")+" registrada"+(count===1?"":"s")+". Puedes copiar este diagnóstico y pegarlo en ChatGPT."):"No hay incidencias registradas.";
@@ -458,15 +460,19 @@ function runVisual(s){
    head.textContent="Ejecución";el.textContent=s?.enabled===false?"Trigger de Work no disponible":"Lista para ejecutar";
  }
 }
-function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?3000:30000)}
+function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?3000:60000)}
+function friendlyRunError(value,retryAt){
+ const raw=String(value||"");const when=retryAt?new Date(retryAt):null;
+ return (/rate limit|temporalmente limitado/i.test(raw)?("GitHub temporalmente limitado"+(when&&!Number.isNaN(when.getTime())?" · reintento tras "+hhmm(when):"")+" · datos conservados"):(raw.slice(0,180)||"No se pudo consultar el estado de ejecución"));
+}
 async function loadRunStatus(){
  try{
    const headers={};if(token())headers.authorization="Bearer "+token();
    const r=await fetch(RUN_STATUS_API+"?t="+Date.now(),{cache:"no-store",headers});
    const d=await r.json().catch(()=>({}));
-   if(!r.ok)throw new Error(d.error||"No se pudo consultar el estado de ejecución");
-   runVisual(d);scheduleRunPoll(Boolean(d.active)||["REQUESTED","RUNNING"].includes(d.status))
- }catch(e){$("runHeadline").textContent="Ejecución";$("runState").textContent=e.message||"No se pudo consultar el estado";$("runState").className="error";$("runNow").hidden=false;scheduleRunPoll(false)}
+   if(!r.ok){const err=new Error(d.error||"No se pudo consultar el estado de ejecución");err.retry_at=d.retry_at;throw err}
+   localStorage.setItem(RUN_CACHE_KEY,JSON.stringify(d));runVisual(d);scheduleRunPoll(Boolean(d.active)||["REQUESTED","RUNNING"].includes(d.status))
+ }catch(e){const cached=loadLocalJson(RUN_CACHE_KEY);if(cached)runVisual(cached);$("runHeadline").textContent=cached?$("runHeadline").textContent:"Ejecución";$("runState").textContent=friendlyRunError(e.message,e.retry_at);$("runState").className="running";$("runNow").hidden=false;scheduleRunPoll(false)}
 }
 async function requestRun(){
  if(!token()){$("settingsBtn").click();showToast("Guarda primero el acceso");return}
@@ -548,7 +554,7 @@ async function load(silent=false){
   if(!d?.ok)throw new Error(d?.error||"Estado TTendencias no disponible");
   model=buildModel(d.recent||{},d.requests||{},d.explained||{},d.health||{},d.prepared||{items:[]},d.editorial_config||{},d.editorial_queue||{items:[]});
   localStorage.setItem("ttendencias-last-model",JSON.stringify(model));render();
- }catch(e){if(!silent)showToast(e.message)}
+ }catch(e){if(model){const h=$("health");if(h){h.textContent="Datos en caché";h.classList.add("bad")}if(!silent)showToast("Mostrando la última copia válida")}else if(!silent)showToast("Datos temporalmente no disponibles")}
 }
 $("cancelProblemRetry").onclick=()=>{$("problemRetrySheet").classList.remove("show");problemRetryItem=null};
 $("sendProblemRetry").onclick=sendProblemRetry;
@@ -586,6 +592,6 @@ if("serviceWorker" in navigator){
    location.reload();
  });
 }
-load();loadRunStatus();setInterval(()=>{if(!document.hidden)load(true)},15000);setInterval(()=>{if(!document.hidden&&model)renderScheduleTiming()},15000);
+if(model)render();if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();setInterval(()=>{if(!document.hidden)load(true)},15000);setInterval(()=>{if(!document.hidden&&model)renderScheduleTiming()},15000);
 </script>
 </body></html>
