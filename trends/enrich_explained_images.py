@@ -205,8 +205,7 @@ def enrich(row, by_tremending, photo_finder=page_photo, exists=lambda p: p.is_fi
         current = row.get("fallback_image") or {}
         current_url = str(current.get("url") or "")
         if current_url and raster_validator(current_url):
-            row["fallback_image_verified_at"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-            return json.dumps(row, ensure_ascii=False, sort_keys=True) != before
+            return False
         row.pop("fallback_image", None)
         row.pop("fallback_image_verified_at", None)
         row["fallback_image_status"] = "pending"
