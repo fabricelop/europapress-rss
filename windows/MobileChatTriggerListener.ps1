@@ -248,7 +248,7 @@ function Refresh-ActiveImages($State, [string]$Name, $Index) {
       continue
     }
     try {
-      $at = [DateTimeOffset]::Parse([string]($statusDoc.updated_at ?? $statusDoc.requested_at))
+      $at = [DateTimeOffset]::Parse([string]($(if ($statusDoc.updated_at) { $statusDoc.updated_at } else { $statusDoc.requested_at })))
       if (([DateTimeOffset]::UtcNow - $at).TotalMinutes -gt $ImageStaleMinutes) {
         Write-Log "IMAGE STALE $Name command=$cmd status=$status"
         continue
