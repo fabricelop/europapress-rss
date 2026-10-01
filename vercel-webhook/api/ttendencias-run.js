@@ -91,23 +91,45 @@ async function writeControlJson(path,doc,sha,message){
 async function requestPcAck(req,res){
   const command_id=String(req.body?.command_id||"").trim();
   const stage=String(req.body?.stage||"").toLowerCase();
+  const worker_id=String(req.body?.worker_id||"legacy-shared-listener").trim().slice(0,120)||"legacy-shared-listener";
   if(!command_id||!["picked_up","launched"].includes(stage))return res.status(400).json({ok:false,error:"Ack no válido"});
   const {doc:trigger}=await readTrigger();
   if(String(trigger.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es el actual"});
   const requested_at=String(trigger.requested_at||"");
   const age=Date.now()-stamp(requested_at);
   if(!stamp(requested_at)||age<0||age>10*60*1000)return res.status(409).json({ok:false,error:"Trigger fuera de ventana"});
+
   const existing=await readControlJson(ACK_PATH);
+  const previous=existing.doc||{};
+  const same=String(previous.command_id||"")===command_id;
+  const previousWorker=String(previous.worker_id||"");
+  const previousStage=String(previous.stage||"").toLowerCase();
+  const previousPickedAt=stamp(previous.picked_up_at||previous.updated_at);
+  const claimFresh=same&&previousPickedAt&&Date.now()-previousPickedAt<30000;
+  const launchedByOther=same&&previousStage==="launched"&&previousWorker&&previousWorker!==worker_id;
+  const freshClaimByOther=same&&claimFresh&&previousWorker&&previousWorker!==worker_id;
+
+  if(stage==="picked_up"&&(launchedByOther||freshClaimByOther)){
+    return res.status(409).json({
+      ok:false,error:"claimed_by_other_worker",command_id,
+      worker_id:previousWorker,stage:previousStage||"picked_up",
+      picked_up_at:previous.picked_up_at||null,launched_at:previous.launched_at||null
+    })
+  }
+  if(stage==="launched"&&same&&previousWorker&&previousWorker!==worker_id){
+    return res.status(409).json({ok:false,error:"claim_not_owned",command_id,worker_id:previousWorker})
+  }
+
   const now=new Date().toISOString();
-  const same=String(existing.doc?.command_id||"")===command_id;
+  const preservePickup=same&&previousWorker===worker_id&&previous.picked_up_at;
   const doc={
-    version:1,command_id,requested_at,stage,
-    picked_up_at:same&&existing.doc?.picked_up_at?existing.doc.picked_up_at:now,
-    launched_at:stage==="launched"?now:(same?existing.doc?.launched_at||null:null),
+    version:2,command_id,requested_at,worker_id,stage,
+    picked_up_at:preservePickup?previous.picked_up_at:now,
+    launched_at:stage==="launched"?now:(same&&previousWorker===worker_id?previous.launched_at||null:null),
     updated_at:now
   };
-  await writeControlJson(ACK_PATH,doc,existing.sha,"PC Chat ack TTendencias "+stage+" "+command_id);
-  return res.status(200).json({ok:true,...doc})
+  await writeControlJson(ACK_PATH,doc,existing.sha,"PC Chat ack TTendencias "+stage+" "+command_id+" "+worker_id);
+  return res.status(200).json({ok:true,claimed:true,...doc})
 }
 
 function safeTargetId(v){
