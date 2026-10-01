@@ -96,7 +96,18 @@ La única fuente principal admitida para el gag IA es una llamada real a **Image
 
 #### Transporte del raster: mismo patrón probado de TTendencias
 
-Para un resultado `status:"ready"`, usa **un único archivo JSON** `ttittulares/image-outbox/<event_id>-r<revision>-ai<attempt>.json` y escribe el raster completo directamente en `ai_image.url` como `data:image/jpeg;base64,<BASE64_COMPLETO>` (o PNG/WebP raster equivalente), igual que el handoff que funciona en TTendencias. El objeto debe conservar `provider:"chat-imagegen"`, `origin:"executing_chat"`, `source:"TTiTTulares / ChatGPT ImageGen"`, `generation_attempt` y el `context_guard` V3 exacto.
+Usa el **mismo handoff que ya funciona en TTendencias**:
+1. justo antes de llamar a ImageGen, toma inventario de PNG/JPG/WebP existentes en `/mnt/data`;
+2. inmediatamente después de ImageGen, vuelve a inspeccionar `/mnt/data` y selecciona exclusivamente el raster nuevo de ESE intento;
+3. si no aparece automáticamente, localiza/materializa el adjunto generado de esta conversación en `/mnt/data`;
+4. valida que el raster abre completo;
+5. normalízalo programáticamente a JPEG ligero, **lado largo ~512 px y objetivo <=60 KB**;
+6. calcula SHA-256 y Base64 de esos bytes normalizados;
+7. escribe el outbox por GitHub Contents y reléelo desde `main` antes de dar el transporte por hecho.
+
+Para un resultado `status:"ready"`, usa **un único archivo JSON** `ttittulares/image-outbox/<event_id>-r<revision>-ai<attempt>.json` y escribe el raster completo directamente en `ai_image.url` como `data:image/jpeg;base64,<BASE64_COMPLETO>` (o PNG/WebP raster equivalente). El objeto debe conservar `provider:"chat-imagegen"`, `origin:"executing_chat"`, `source:"TTiTTulares / ChatGPT ImageGen"`, `generation_attempt` y el `context_guard` V3 exacto.
+
+No cuentes una imagen como generada/entregada en RUNTRACE hasta que el outbox completo haya sido releído desde `main`.
 
 **No trocees la imagen.** No uses `comment_chunks`, comentarios de PR, `chunk_files`, directorios `.parts`, concatenación manual de Base64 ni SHA transportados por un canal separado para nuevas generaciones. Esos puentes han provocado Base64 truncado y desajustes SHA. El consumidor ya acepta el `data:` URL directo y su selftest valida esa ruta.
 
@@ -145,7 +156,9 @@ Mantén:
 - `image_choice:"ai|fallback|none"`;
 - `image` como alias de la imagen elegida.
 
-Si llega una IA válida, selecciónala por defecto. Si aún no llegó o falla, usa fallback cuando exista. Mantén ambos originales para la app. En Tremending, la captura del tuit elegido sigue siendo el fallback prioritario y no se usa como prueba factual.
+Si llega una IA válida, selecciónala por defecto. Si aún no llegó o falla, usa fallback cuando exista. Mantén ambos originales para la app.
+
+**Excepción Tremending:** si `tremending_origin:true`, `disable_ai_image:true` o `image_mode:"tweet_capture_only"`, NO llames a ImageGen, no crees `ai_image_status:"pending"` y no consumas intento IA. Usa exclusivamente la captura del tuit elegido como `image`/`fallback_image`; si aún está capturándose, deja solo `image_status:"pending_capture"` y continúa con el texto. La captura del tuit no se usa como prueba factual.
 
 La imagen NUNCA viaja dentro de `TTITTULARES_OUTBOX_V1`; ese comentario sigue siendo pequeño y cierra READY independientemente del raster.
 
