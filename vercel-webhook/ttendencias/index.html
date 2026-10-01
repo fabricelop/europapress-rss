@@ -538,7 +538,15 @@ function mainAiEligible(x){
  const mode=String(x.image_mode||x.image_strategy||"").toLowerCase();
  return !["fallback_only","archive_only","tweet_capture_only"].includes(mode)&&String(x.ai_image_status||"").toLowerCase()!=="disabled"
 }
-function mainImageRunActive(run){return ["REQUESTED","RUNNING","GENERATING","PERSISTING"].includes(String(run?.status||"").toUpperCase())}
+function mainImagePickupTimedOut(run){
+ const st=String(run?.status||"").toUpperCase();if(st!=="REQUESTED")return false;
+ const at=Date.parse(run?.requested_at||run?.updated_at||"");return Number.isFinite(at)&&Date.now()-at>=30000
+}
+function mainImageRunActive(run){
+ const st=String(run?.status||"").toUpperCase();
+ if(st==="REQUESTED")return !mainImagePickupTimedOut(run);
+ return ["RUNNING","GENERATING","PERSISTING"].includes(st)
+}
 function mainPendingImages(){
  return (model?.explainedRecent||[]).filter(x=>{
    if(!mainAiEligible(x))return false;
@@ -558,7 +566,7 @@ function updateMainImageControl(){
  btn.textContent="✨ Imágenes IA"+(pending?" ("+pending+")":"");
  btn.disabled=pending===0;
  head.textContent=active?("Imágenes IA · "+active+" en curso"):"Imágenes IA";
- state.textContent=active?(active+" generándose en paralelo · "+pending+" en cola · máximo 4 simultáneas"):(pending?pending+" pendiente"+(pending===1?"":"s")+" de generar":"Sin imágenes IA pendientes");
+ state.textContent=active?(active+" en ejecución · "+pending+" en cola · máximo 4 simultáneas"):(pending?pending+" pendiente"+(pending===1?"":"s")+" de generar o reintentar":"Sin imágenes IA pendientes");
  state.className=active?"running":pending?"running":"done";
  if(bar)bar.classList.toggle("active",active>0)
 }
