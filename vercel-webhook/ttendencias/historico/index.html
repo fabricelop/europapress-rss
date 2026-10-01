@@ -143,7 +143,7 @@ async function reworkExplained(x,button){
    const response=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+controlToken},body:JSON.stringify({
      action:"rework",
      names:[x.name||displayName(x)],
-     instruction:"Rehaz el remate manteniendo los hechos y el formato del tuit, con un giro más específico. Genera también una nueva imagen IA."
+     instruction:x.tremending_origin?"Rehaz solo el remate manteniendo los hechos y el formato del tuit. Conserva la captura del tuit seleccionado y no generes imagen IA.":"Rehaz el remate manteniendo los hechos y el formato del tuit, con un giro más específico. Genera también una nueva imagen IA."
    })});
    const result=await response.json();
    if(!response.ok||!result?.ok)throw new Error(result?.error||"No se pudo solicitar la nueva revisión.");
@@ -255,7 +255,7 @@ function renderCard(x,pending){
  const rating=card.querySelector(".rating");if(parts.closer)renderRemateRating(rating,x);else rating.hidden=true;
  const meta=card.querySelector(".meta");if(route){const routeEl=document.createElement("span");routeEl.className="route";routeEl.textContent=route;meta.appendChild(routeEl)}
  const actions=card.querySelector(".actions");
- const redo=document.createElement("button");redo.className="btn";redo.type="button";redo.textContent="🔁 Rehacer remate + IA";redo.onclick=()=>reworkExplained(x,redo);actions.appendChild(redo);
+ const redo=document.createElement("button");redo.className="btn";redo.type="button";redo.textContent=x.tremending_origin?"🔁 Rehacer remate":"🔁 Rehacer remate + IA";redo.onclick=()=>reworkExplained(x,redo);actions.appendChild(redo);
  const copy=document.createElement("button");copy.className="btn";copy.type="button";copy.textContent="📋 Copiar tuit";copy.onclick=()=>copyItem(x,copy);actions.appendChild(copy);
  if(/^https:\/\//i.test(aiUrl)){const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="✨ Copiar imagen IA";b.onclick=()=>copyImageUrl(aiUrl,b);actions.appendChild(b)}
  if(/^https:\/\//i.test(fallbackUrl)){const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="🖼️ Copiar imagen archivo";b.onclick=()=>copyImageUrl(fallbackUrl,b);actions.appendChild(b)}
