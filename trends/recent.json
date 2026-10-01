@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-10-01T04:41:01+02:00",
+  "captured_at": "2026-10-01T04:50:58+02:00",
   "primary_source": "snaplytics",
-  "selection_method": "fresh-anchor",
+  "selection_method": "aging-anchor",
   "sources_used": [
     "getdaytrends",
     "snaplytics",
@@ -11,9 +11,7 @@
   ],
   "source_count": 5,
   "non_stale_source_count": 4,
-  "fresh_sources": [
-    "snaplytics"
-  ],
+  "fresh_sources": [],
   "reliability": "medium",
   "top10": [
     "#LaIslaDeLasTentaciones8",
@@ -88,31 +86,29 @@
       "rank": 8,
       "name": "Mara",
       "entered_top10_at": "2026-10-01T04:31:16+02:00",
-      "movement": "up",
-      "previous_rank": 9,
-      "rank_delta": 1
+      "movement": "flat",
+      "previous_rank": 8,
+      "rank_delta": 0
     },
     {
       "rank": 9,
       "name": "#tem30s",
       "entered_top10_at": "2026-10-01T04:31:16+02:00",
-      "movement": "up",
-      "previous_rank": 10,
-      "rank_delta": 1
+      "movement": "flat",
+      "previous_rank": 9,
+      "rank_delta": 0
     },
     {
       "rank": 10,
       "name": "#TierraDeNadie3",
       "entered_top10_at": "2026-10-01T04:41:01+02:00",
-      "movement": "new",
-      "previous_rank": null,
-      "rank_delta": null
+      "movement": "flat",
+      "previous_rank": 10,
+      "rank_delta": 0
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "#TierraDeNadie3"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "Almeida",
@@ -124,7 +120,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 12.7,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T01:40:59+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -142,30 +138,13 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.7,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T02:40:58+02:00",
       "news_source_count": 1,
       "news_event_id": "4f1a98344a63",
       "news_title": "Nacho Duato cuenta por qué dejó de hablar con Miguel Bosé después de años de amistad: \"Ahí dije que no\"",
       "news_status": "WAITING",
       "news_first_seen": "2026-10-01T00:23:41.047824Z"
-    },
-    {
-      "name": "Amnistía Internacional",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "trendswe"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 17.0,
-      "movement": "up",
-      "first_detected_at": "2026-10-01T00:37:09+02:00",
-      "news_source_count": 6,
-      "news_event_id": "bc1bd73387ea",
-      "news_title": "Amnistía Internacional denuncia torturas y vejaciones de militares a migrantes en Ceuta: Defensa la envía al juzgado",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-30T14:53:57.005436Z"
     },
     {
       "name": "Jorge Jesus",
@@ -185,6 +164,23 @@
       "news_first_seen": "2026-09-30T10:43:35.556797Z"
     },
     {
+      "name": "Amnistía Internacional",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "trendswe"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 17.0,
+      "movement": "flat",
+      "first_detected_at": "2026-10-01T00:37:09+02:00",
+      "news_source_count": 6,
+      "news_event_id": "bc1bd73387ea",
+      "news_title": "Amnistía Internacional denuncia torturas y vejaciones de militares a migrantes en Ceuta: Defensa la envía al juzgado",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-30T14:53:57.005436Z"
+    },
+    {
       "name": "Jorge Jesús",
       "social_source_count": 1,
       "social_sources": [
@@ -192,7 +188,7 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 13.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T04:41:01+02:00",
       "news_source_count": 7,
       "news_event_id": "c5dbdfc21463",
@@ -209,7 +205,7 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 15.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T04:41:01+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -225,7 +221,7 @@
       ],
       "best_observed_rank": 18,
       "mean_observed_rank": 18.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T04:41:01+02:00",
       "news_source_count": 8,
       "news_event_id": "8daa966cd971",
@@ -250,24 +246,17 @@
       "news_first_seen": "2026-09-30T15:22:41.832029Z"
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "#TierraDeNadie3",
-      "first_detected_at": "2026-10-01T02:40:58+02:00",
-      "entered_top10_at": "2026-10-01T04:41:01+02:00",
-      "lead_minutes": 120
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790822461",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790823058",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T04:41:01+02:00"
+      "fetched_at": "2026-10-01T04:50:58+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -292,7 +281,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T04:41:01+02:00"
+      "fetched_at": "2026-10-01T04:50:58+02:00"
     },
     "tweets24": {
       "ok": false,
@@ -301,7 +290,7 @@
       "update_hint": "Updated 7 hours ago",
       "age_minutes": 420.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T04:41:01+02:00"
+      "fetched_at": "2026-10-01T04:50:59+02:00"
     },
     "superx": {
       "ok": true,
@@ -331,16 +320,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T04:41:02+02:00"
+      "fetched_at": "2026-10-01T04:51:00+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790822462",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790823060",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T04:41:02+02:00"
+      "fetched_at": "2026-10-01T04:51:00+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -368,9 +357,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Oct 1, 2026 02:00 UTC",
-      "age_minutes": 41.1,
-      "freshness": "fresh",
-      "fetched_at": "2026-10-01T04:41:03+02:00"
+      "age_minutes": 51.0,
+      "freshness": "aging",
+      "fetched_at": "2026-10-01T04:51:00+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -398,18 +387,18 @@
       ],
       "error": null,
       "update_hint": "Updated: October 01, 2026 at 02:00 AM # Trend Type Actions 1 #LaIslaDeLasTentaciones8 Has",
-      "age_minutes": 161.1,
+      "age_minutes": 171.0,
       "freshness": "stale",
-      "fetched_at": "2026-10-01T04:41:03+02:00"
+      "fetched_at": "2026-10-01T04:51:00+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790822465",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790823062",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T04:41:05+02:00"
+      "fetched_at": "2026-10-01T04:51:02+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -418,7 +407,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T04:41:06+02:00"
+      "fetched_at": "2026-10-01T04:51:02+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -448,16 +437,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T04:41:06+02:00"
+      "fetched_at": "2026-10-01T04:51:03+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790822468",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790823065",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T04:41:08+02:00"
+      "fetched_at": "2026-10-01T04:51:05+02:00"
     }
   }
 }
