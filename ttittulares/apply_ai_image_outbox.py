@@ -201,9 +201,15 @@ def main():
             }
             try:
                 _materialize_ai_image(holder)
+                new_sha = str((holder.get("ai_image") or {}).get("sha256") or "").lower()
+                if new_sha:
+                    collision = next((row for row in doc.get("items", [])
+                                      if str(row.get("event_id") or "") != eid
+                                      and str((row.get("ai_image") or {}).get("sha256") or "").lower() == new_sha), None)
+                    if collision is not None:
+                        raise ValueError("cross_context_raster_reuse: el mismo raster IA ya pertenece a otra noticia")
                 if item.get("ai_image_regenerate_requested"):
                     old_sha = str(previous_ai.get("sha256") or item.get("ai_image_previous_sha256") or "").lower()
-                    new_sha = str((holder.get("ai_image") or {}).get("sha256") or "").lower()
                     if old_sha and new_sha and old_sha == new_sha:
                         raise ValueError("La regeneración IA devolvió exactamente el mismo raster anterior")
                 item["ai_image"] = holder["ai_image"]
