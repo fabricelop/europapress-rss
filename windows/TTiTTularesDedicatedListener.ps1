@@ -9,7 +9,7 @@ $StatePath = Join-Path $BaseDir "ttittulares-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
-$TriggerApiUrl = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/run-now-trigger.json?ref=control%2Fttittulares-run-trigger-v2"
+$TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
 $WorkerId = "ttittulares-dedicated-v1"
 $PollSeconds = 3
@@ -30,13 +30,11 @@ function Read-Trigger {
   try {
     $r = Invoke-RestMethod -Uri (CacheBust $TriggerApiUrl) -Headers @{
       "Cache-Control" = "no-cache"
-      "Accept" = "application/vnd.github+json"
       "User-Agent" = "TTiTTulares-Dedicated-Listener"
     } -TimeoutSec 12
-    if (-not $r.content) { throw "GitHub API devolvió trigger sin content" }
-    $b64 = ([string]$r.content) -replace "\s",""
-    $json = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($b64))
-    return ($json | ConvertFrom-Json)
+    if (-not $r.ok) { throw "Endpoint trigger devolvio ok=false" }
+    if ($r.trigger) { return $r.trigger }
+    return $r
   } catch {
     Write-Log "TRIGGER ERROR :: $($_.Exception.Message)"
     return $null
