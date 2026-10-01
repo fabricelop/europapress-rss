@@ -28,9 +28,9 @@ SOURCES = {
     "superx": "https://superx.so/twitter-trends/spain",
     "twtdata": "https://twtdata.com/twitter-trends/spain/",
     "snaplytics": "https://twitter-trends.snaplytics.io/spain/",
-    "fowtools": "https://fowtools.com/x-trends/spain",
+    "whatstrends": "https://whatstrends.com/spain/",
     "cyberkendra": "https://trends.cyberkendra.com/spain/",
-    "globaltwittertrends": "https://globaltwittertrends.com/spain/",
+    "xtrendsiamrohit": "https://xtrends.iamrohit.in/spain",
     "trendswe": "https://trendswe.com/twitter/spain/",
     "twittertrending": "https://www.twitter-trending.com/spain/es",
 }
@@ -42,6 +42,7 @@ def clean_term(text):
     text = clean(text)
     text = re.sub(r"\s+N/?A$", "", text, flags=re.I)
     text = re.sub(r"\s+(?:Less than )?\d+(?:[.,]\d+)?[KMB]?\s+(?:tweets|posts)$", "", text, flags=re.I)
+    text = re.sub(r"\s+(?:View posts on X|Open on X|Copy)$", "", text, flags=re.I)
     return text.strip()
 
 def term_key(text):
