@@ -25,6 +25,8 @@ const IMAGE_RUN_DIR="ttittulares/image-runs/jobs";
 const IMAGE_ACTIVE_MS=45*60*1000;
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
+const ACTIVE_MS=20*60*1000;
+const PROCESSING_ACTIVE_MS=5*60*1000;
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
