@@ -237,6 +237,10 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
+    if(String(req.query?.view||"").toLowerCase()==="trigger"){
+      const {doc}=await readTrigger();
+      return res.status(200).json({ok:true,...doc});
+    }
     const [enabled,items,{doc:request},ack,runtimeDoc,explainedDoc]=await Promise.all([
       triggerReady(),comments(),readTrigger(),readAck(),readMainJson(RUNTIME_PATH),readMainJson(EXPLAINED_PATH)
     ]);
