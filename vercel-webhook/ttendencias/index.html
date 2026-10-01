@@ -190,6 +190,26 @@ function explanationNames(x){
  for(const ctx of (Array.isArray(x?.trend_context)?x.trend_context:[]))values.push(ctx?.name);
  return [...new Set(values.map(v=>String(v||"").trim()).filter(Boolean))]
 }
+function collapseVisibleExplained(rows){
+ const seenIds=new Set(),groupIndex=new Map(),textIndex=new Map(),out=[];
+ for(const x of rows){
+   const id=String(x.id||"").trim(),group=String(x.explanation_group_id||x.group_id||"").trim(),text=nrm(x.explanation);
+   if(id&&seenIds.has(id))continue;
+   if(id)seenIds.add(id);
+   const existingIndex=group&&groupIndex.has(group)?groupIndex.get(group):(text&&textIndex.has(text)?textIndex.get(text):-1);
+   if(existingIndex>=0){
+     const prev=out[existingIndex];
+     const prevLeader=String(prev?.group_leader_id||"")&&String(prev?.id||"")===String(prev.group_leader_id);
+     const curLeader=String(x.group_leader_id||"")&&String(x.id||"")===String(x.group_leader_id);
+     if(curLeader&&!prevLeader)out[existingIndex]=x;
+     continue;
+   }
+   const idx=out.length;out.push(x);
+   if(group)groupIndex.set(group,idx);
+   if(text)textIndex.set(text,idx);
+ }
+ return out
+}
 function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,editorialQueue){
  const requests=Array.isArray(requestDoc.requests)?requestDoc.requests:[],local=localState();
  const explainedByName={};for(const x of (explained.items||[])){if(x.status==="grouped")continue;for(const name of explanationNames(x))explainedByName[nrm(name)]=x;}
@@ -292,9 +312,9 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
    const fallback=Number(rows[0]?.rank);
    return Number.isFinite(fallback)&&fallback>=1&&fallback<=20?fallback:null;
  };
- const explainedRecent=[...(explained.items||[])]
+ const explainedRecent=collapseVisibleExplained([...(explained.items||[])]
    .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
-   .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||"")))
+   .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||""))))
    .slice(0,100)
    .map(x=>({...x,_rank:rankAtExplanation(x)}));
  const sourceTotal=Object.keys(recent.sources||{}).length;
