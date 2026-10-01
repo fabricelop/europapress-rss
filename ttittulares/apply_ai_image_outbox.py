@@ -14,7 +14,7 @@ from urllib.request import Request, urlopen
 from datetime import datetime, timezone
 from pathlib import Path
 
-from apply_editorial_outbox import TT, PREP, DECISIONS, load, save, _materialize_ai_image, _select_image
+from apply_editorial_outbox import TT, PREP, DECISIONS, load, save, _materialize_ai_image, _select_image, _ai_image_disabled
 
 OUTBOX = TT / "image-outbox"
 
@@ -171,6 +171,18 @@ def main():
                 changed = True
                 continue
             waiting.append(path.name)
+            continue
+
+        if _ai_image_disabled(item):
+            item.pop("ai_image", None)
+            item["disable_ai_image"] = True
+            item["ai_image_status"] = "disabled"
+            item["image_mode"] = "fallback_only"
+            item["image_strategy"] = "fallback_only"
+            _select_image(item)
+            path.unlink(missing_ok=True)
+            processed.append(eid + ":disabled")
+            changed = True
             continue
 
         current_attempt = int(item.get("ai_image_attempt") or 0)
