@@ -255,7 +255,7 @@ function renderCard(x,pending){
  const rating=card.querySelector(".rating");if(parts.closer)renderRemateRating(rating,x);else rating.hidden=true;
  const meta=card.querySelector(".meta");if(route){const routeEl=document.createElement("span");routeEl.className="route";routeEl.textContent=route;meta.appendChild(routeEl)}
  const actions=card.querySelector(".actions");
- const redo=document.createElement("button");redo.className="btn";redo.type="button";redo.textContent=x.tremending_origin?"🔁 Rehacer remate":"🔁 Rehacer remate + IA";redo.onclick=()=>reworkExplained(x,redo);actions.appendChild(redo);
+ const redo=document.createElement("button");redo.className="btn";redo.type="button";redo.disabled=Boolean(x.rewrite_pending);redo.textContent=x.rewrite_pending?"Reelaborando…":(x.tremending_origin?"🔁 Rehacer remate":"🔁 Rehacer remate + IA");redo.onclick=()=>reworkExplained(x,redo);actions.appendChild(redo);
  const copy=document.createElement("button");copy.className="btn";copy.type="button";copy.textContent="📋 Copiar tuit";copy.onclick=()=>copyItem(x,copy);actions.appendChild(copy);
  if(/^https:\/\//i.test(aiUrl)){const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="✨ Copiar imagen IA";b.onclick=()=>copyImageUrl(aiUrl,b);actions.appendChild(b)}
  if(/^https:\/\//i.test(fallbackUrl)){const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="🖼️ Copiar imagen archivo";b.onclick=()=>copyImageUrl(fallbackUrl,b);actions.appendChild(b)}
@@ -268,8 +268,9 @@ function pendingKey(x){return String(x.id||x.name||"")+":r"+String(x.revision||0
 function renderCollapsedPending(x){
  const card=document.createElement("article");card.className="card collapsedCard";
  const name=document.createElement("div");name.className="collapsedName";name.textContent=displayName(x);
- const open=document.createElement("button");open.className="btn openPending";open.type="button";open.textContent="Abrir";
- open.onclick=()=>{openPendingKey=pendingKey(x);render()};
+ const open=document.createElement("button");open.className="btn openPending";open.type="button";open.textContent=x.rewrite_pending?"Reelaborando…":"Abrir";
+ open.disabled=Boolean(x.rewrite_pending);
+ open.onclick=()=>{if(x.rewrite_pending)return;openPendingKey=pendingKey(x);render()};
  card.append(name,open);return card;
 }
 function renderExpandedPending(x){
