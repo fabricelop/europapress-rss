@@ -129,25 +129,54 @@ async function copyImage(url,btn){
   }catch(_){alert('El navegador no permite copiar esta imagen directamente. Usa Descargar imagen.');}
 }
 function renderImagePanel(host,x){
-  const im=x.image||{};const url=String(im.url||'').trim();
-  const state=String(x.image_status||(x.image_pending?'working':url?'ready':'')).toLowerCase();
-  if(!url||state!=='ready'){
-    if(!state)return;
-    const box=document.createElement('section');box.className='image-panel image-status';
-    const meta=document.createElement('div');meta.className='image-meta';
-    const labels={pending:'⏳ Buscando imagen real',working:'⏳ Buscando imagen real',retry:'⏳ Buscando imagen real',ready:'✅ Imagen lista',telegram:'Imagen histórica',none:'— Sin imagen',error:'— Sin imagen'};
-    meta.innerHTML='<strong>'+esc(labels[state]||'— Sin imagen')+'</strong><span>'+(state==='working'?'Se está buscando una imagen real del acontecimiento.':state==='pending'||state==='retry'?'La recuperación se completará al aplicar el resultado editorial.':state==='none'||state==='error'?'No se encontró una imagen verificable para esta revisión.':state==='telegram'?'Entrega histórica conservada.':'')+'</span>';
-    box.append(meta);host.appendChild(box);return;
-  }
+  const ai=x.ai_image||{},fallback=x.fallback_image||{},selected=x.image||{};
+  const aiUrl=String(ai.url||'').trim(),fallbackUrl=String(fallback.url||'').trim(),selectedUrl=String(selected.url||'').trim();
   const box=document.createElement('section');box.className='image-panel';
-  const img=document.createElement('img');img.src=url;img.alt=im.alt||'Imagen de la noticia';img.loading='lazy';
-  const meta=document.createElement('div');meta.className='image-meta';
-  meta.innerHTML='<strong>🖼️ Imagen del acontecimiento</strong><span>'+esc('Fuente: '+(im.source||'medio'))+'</span>';
-  const actions=document.createElement('div');actions.className='image-actions';
-  const copy=document.createElement('button');copy.type='button';copy.textContent='Copiar imagen';copy.onclick=()=>copyImage(url,copy);
-  const open=document.createElement('a');open.href=url;open.target='_blank';open.rel='noopener';open.textContent='Abrir imagen';
-  const dl=document.createElement('a');dl.href=url;dl.download='ttittulares-'+(x.event_id||'imagen')+(url.includes('.png')?'.png':url.includes('.jpg')||url.includes('.jpeg')?'.jpg':'.webp');dl.textContent='Descargar imagen';
-  actions.append(copy,open,dl);box.append(img,meta,actions);host.appendChild(box);
+
+  const head=document.createElement('div');head.className='image-meta';
+  const choice=String(x.image_choice|| (aiUrl?'ai':fallbackUrl?'fallback':'none'));
+  head.innerHTML='<strong>🖼️ Imágenes</strong><span>'+(choice==='ai'?'Usando gag IA':choice==='fallback'?'Usando archivo/fallback':'Puedes publicar también sin imagen')+'</span>';
+  box.appendChild(head);
+
+  const grid=document.createElement('div');
+  grid.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:8px';
+  function addPreview(image,label,isSelected){
+    const url=String(image?.url||'').trim();if(!url)return false;
+    const card=document.createElement('div');card.style.cssText='border:1px solid #334155;border-radius:10px;padding:8px;min-width:0';
+    const lab=document.createElement('div');lab.style.cssText='display:flex;justify-content:space-between;font-size:12px;font-weight:800;margin-bottom:6px';
+    lab.textContent=label;
+    if(isSelected){const b=document.createElement('span');b.textContent='EN USO';b.style.cssText='color:#f5c451';lab.appendChild(b)}
+    const img=document.createElement('img');
+    img.src='/api/ttittulares-control?view=image-proxy&url='+encodeURIComponent(url);
+    img.alt=image.alt||label;img.loading='lazy';img.style.cssText='display:block;width:100%;height:150px;object-fit:contain;border-radius:8px;background:#0b1018';
+    const open=document.createElement('a');open.href=url;open.target='_blank';open.rel='noopener';open.appendChild(img);
+    const src=document.createElement('small');src.textContent=image.source||label;src.style.cssText='display:block;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#94a3b8';
+    card.append(lab,open,src);grid.appendChild(card);return true;
+  }
+  addPreview(ai,'Gag IA',choice==='ai');
+  addPreview(fallback,'Archivo / fallback',choice==='fallback');
+  if(!grid.children.length){
+    const state=document.createElement('div');state.style.cssText='grid-column:1/-1;padding:10px;border:1px solid #334155;border-radius:10px;color:#94a3b8';
+    state.textContent=x.ai_image_regenerate_requested?'Rehacer solicitado · se intentará en la próxima pasada.':'Las imágenes todavía no están disponibles; la noticia sigue lista para publicar.';
+    grid.appendChild(state);
+  }
+  box.appendChild(grid);
+
+  const decisions=document.createElement('div');decisions.className='image-actions';decisions.style.marginTop='8px';
+  const redo=document.createElement('button');redo.type='button';redo.textContent=x.ai_image_regenerate_requested?'Rehacer solicitado ✓':'🔁 Rehacer';redo.disabled=Boolean(x.ai_image_regenerate_requested);
+  redo.onclick=()=>send('regenerate-image',x,'');
+  const useFallback=document.createElement('button');useFallback.type='button';useFallback.textContent='🖼️ Usar archivo/fallback';useFallback.disabled=!fallbackUrl||choice==='fallback';
+  useFallback.onclick=()=>send('use-fallback-image',x,'');
+  decisions.append(redo,useFallback);box.appendChild(decisions);
+
+  if(selectedUrl){
+    const actions=document.createElement('div');actions.className='image-actions';
+    const copy=document.createElement('button');copy.type='button';copy.textContent='Copiar imagen';copy.onclick=()=>copyImage('/api/ttittulares-control?view=image-proxy&url='+encodeURIComponent(selectedUrl),copy);
+    const open=document.createElement('a');open.href=selectedUrl;open.target='_blank';open.rel='noopener';open.textContent='Abrir imagen';
+    const dl=document.createElement('a');dl.href=selectedUrl;dl.download='ttittulares-'+(x.event_id||'imagen')+'.jpg';dl.textContent='Descargar imagen';
+    actions.append(copy,open,dl);box.appendChild(actions);
+  }
+  host.appendChild(box);
 }
 
 function renderReady(list){
