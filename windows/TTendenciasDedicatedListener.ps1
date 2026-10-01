@@ -7,7 +7,7 @@ $BaseDir = "C:\TTiTTulares"
 $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
 $StatePath = Join-Path $BaseDir "ttendencias-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttendencias-mobile-trigger.log"
-$TriggerUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/refs/heads/control/ttendencias-run-trigger/trends/run-now-trigger.json"
+$TriggerApiUrl = "https://api.github.com/repos/fabricelop/europapress-rss/contents/trends/run-now-trigger.json?ref=control%2Fttendencias-run-trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttendencias-run"
 $WorkerId = "ttendencias-dedicated-v1"
 $PollSeconds = 3
@@ -26,7 +26,15 @@ function CacheBust([string]$Url) {
 
 function Read-Trigger {
   try {
-    return Invoke-RestMethod -Uri (CacheBust $TriggerUrl) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 12
+    $r = Invoke-RestMethod -Uri (CacheBust $TriggerApiUrl) -Headers @{
+      "Cache-Control" = "no-cache"
+      "Accept" = "application/vnd.github+json"
+      "User-Agent" = "TTendencias-Dedicated-Listener"
+    } -TimeoutSec 12
+    if (-not $r.content) { throw "GitHub API devolvió trigger sin content" }
+    $b64 = ([string]$r.content) -replace "\s",""
+    $json = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($b64))
+    return ($json | ConvertFrom-Json)
   } catch {
     Write-Log "TRIGGER ERROR :: $($_.Exception.Message)"
     return $null
