@@ -9,6 +9,7 @@ $StatePath = Join-Path $BaseDir "ttittulares-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
+$ProjectChatPrefix = "https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db-proyectos-app/c/"
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
 $WorkerId = "ttittulares-dedicated-v1"
@@ -87,42 +88,65 @@ function Send-Ack([string]$CommandId,[string]$Stage) {
   }
 }
 
+function Read-NewLauncherText([long]$Offset) {
+  if (-not (Test-Path -LiteralPath $LauncherLogPath)) { return "" }
+  try {
+    $fs = [System.IO.File]::Open($LauncherLogPath,[System.IO.FileMode]::Open,[System.IO.FileAccess]::Read,[System.IO.FileShare]::ReadWrite)
+    try {
+      if ($Offset -gt $fs.Length) { $Offset = 0 }
+      [void]$fs.Seek($Offset,[System.IO.SeekOrigin]::Begin)
+      $sr = New-Object System.IO.StreamReader($fs,[System.Text.Encoding]::UTF8,$true,4096,$true)
+      try { return $sr.ReadToEnd() } finally { $sr.Dispose() }
+    } finally { $fs.Dispose() }
+  } catch { return "" }
+}
+
 function Launch-TTiTTulares([string]$CommandId) {
   if (-not (Test-Path -LiteralPath $Launcher)) { throw "No existe $Launcher" }
 
-  $beforeWrite = [DateTime]::MinValue
   $beforeLen = 0L
   if (Test-Path -LiteralPath $LauncherLogPath) {
-    try {
-      $fi = Get-Item -LiteralPath $LauncherLogPath
-      $beforeWrite = $fi.LastWriteTimeUtc
-      $beforeLen = $fi.Length
-    } catch {}
+    try { $beforeLen = (Get-Item -LiteralPath $LauncherLogPath).Length } catch {}
   }
 
   Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"titulares") -WindowStyle Hidden | Out-Null
   Write-Log "PROCESS STARTED titulares command=$CommandId"
 
   $deadline = (Get-Date).AddSeconds($LaunchConfirmSeconds)
+  $sawMessage = $false
+
   while ((Get-Date) -lt $deadline) {
     Start-Sleep -Seconds 1
-    if (-not (Test-Path -LiteralPath $LauncherLogPath)) { continue }
-    try {
-      $fi = Get-Item -LiteralPath $LauncherLogPath
-      if ($fi.Length -le $beforeLen -and $fi.LastWriteTimeUtc -le $beforeWrite) { continue }
-      $tail = @(Get-Content -LiteralPath $LauncherLogPath -Tail 30 -ErrorAction Stop)
-      if ($tail -match "MENSAJE ENVIADO") {
-        Write-Log "CHAT MESSAGE CONFIRMED titulares command=$CommandId"
-        return $true
-      }
-      if ($tail -match "ERROR:|ERROR ::|Timeout CDP") {
-        Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $($tail[-1])"
+    $newText = Read-NewLauncherText $beforeLen
+    if (-not $newText) { continue }
+
+    if ($newText -match "ERROR:|ERROR ::|Timeout CDP") {
+      $last = ($newText -split "\r?\n" | Where-Object { $_ -match "ERROR:|ERROR ::|Timeout CDP" } | Select-Object -Last 1)
+      Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $last"
+      return $false
+    }
+
+    if ($newText -match "MENSAJE ENVIADO") { $sawMessage = $true }
+
+    $m = [regex]::Match($newText,'CHAT NUEVO:\s*(https://chatgpt\.com/\S+)')
+    if ($m.Success) {
+      $chatUrl = $m.Groups[1].Value.Trim()
+      if (-not $chatUrl.StartsWith($ProjectChatPrefix,[System.StringComparison]::OrdinalIgnoreCase)) {
+        Write-Log "CHAT OUTSIDE PROJECT command=$CommandId url=$chatUrl"
         return $false
       }
-    } catch {}
+      if ($sawMessage) {
+        Write-Log "CHAT MESSAGE CONFIRMED IN PROJECT command=$CommandId url=$chatUrl"
+        return $true
+      }
+    }
   }
 
-  Write-Log ("CHAT MESSAGE TIMEOUT command=" + $CommandId + " after=" + $LaunchConfirmSeconds + "s")
+  if ($sawMessage) {
+    Write-Log "CHAT MESSAGE SEEN BUT PROJECT URL NOT CONFIRMED command=$CommandId"
+  } else {
+    Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId after=$($LaunchConfirmSeconds)s"
+  }
   return $false
 }
 
