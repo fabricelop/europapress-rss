@@ -938,13 +938,13 @@ async function rateRemate(ratingKey, rating) {
 async function stateSnapshot() {
   const [recent, requests, explained, explainedCopyState, health, prepared, editorialConfig, editorialQueue, remateRatings] = await Promise.all([
     readPublicJson(RECENT),
-    readPublicJson(REQUESTS),
-    readPublicJson(EXPLAINED),
-    readPublicJson(EXPLAINED_COPY_STATE),
+    readJson(REQUESTS),
+    readJson(EXPLAINED),
+    readJson(EXPLAINED_COPY_STATE),
     readPublicJson(HEALTH),
-    readPublicJson(PREPARED),
+    readJson(PREPARED),
     readPublicJson(EDITORIAL_CONFIG),
-    readPublicJson(EDITORIAL_QUEUE),
+    readJson(EDITORIAL_QUEUE),
     readPublicJson(REMATE_RATINGS),
   ]);
 
