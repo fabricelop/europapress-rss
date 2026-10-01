@@ -10075,7 +10075,7 @@
       ],
       "auto_queued": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T16:49:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -10088,19 +10088,53 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001144608_690.jpg",
-        "source": "Europa Press · Congreso",
-        "source_url": "https://www.europapress.es/economia/construccion-y-vivienda-00342/noticia-pnv-apoyara-decreto-vivienda-ayudas-fiscales-rechazara-renovacion-alquiler-automatica-20261001144608.html",
-        "alt": "La portavoz del PNV en el Congreso, Maribel Vaquero, junto a otros diputados en el hemiciclo",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/7591c30cd1ec-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "7591c30cd1ec",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "84fb5622-31ed-4690-95f0-b76f43edfe72",
+        "alt": "Ilustración editorial neutral sobre la votación diferenciada del PNV a dos decretos de vivienda",
+        "sha256": "28be3d6ac1cd1cb9766c21e4a77483de32e12c442e9cb2beb5b8e8ed482d0e3d",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/7591c30cd1ec-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/7591c30cd1ec-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "7591c30cd1ec",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "84fb5622-31ed-4690-95f0-b76f43edfe72",
+        "alt": "Ilustración editorial neutral sobre la votación diferenciada del PNV a dos decretos de vivienda",
+        "sha256": "28be3d6ac1cd1cb9766c21e4a77483de32e12c442e9cb2beb5b8e8ed482d0e3d",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/7591c30cd1ec-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T14:55:20.708283Z"
     }
   ],
-  "updated_at": "2026-10-01T16:49:00+02:00",
+  "updated_at": "2026-10-01T14:55:20.708356Z",
   "count": 373
 }
