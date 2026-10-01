@@ -74,7 +74,7 @@ No uses el ImageGen interno de ChatGPT en este flujo y no intentes extraer bytes
 2. crea exactamente UN fichero de trabajo:
    `trends/image-jobs/<trend_id>-r<revision>-ai<attempt>.json`;
 3. el fichero contiene solo JSON UTF-8 pequeño:
-   `{"project":"ttendencias","id","revision","attempt","prompt","context_guard"}`;
+   `{"project":"ttendencias","id","revision","attempt","prompt","svg","context_guard"}`;
 4. `.github/workflows/ai-image-generate.yml` obtiene identidad OIDC de GitHub, llama al generador privado de Vercel AI Gateway y escribe `trends/image-outbox/**`;
 5. `.github/workflows/ttendencias-ai-image-apply.yml` materializa el JPEG y actualiza SOLO los campos visuales de la tarjeta.
 
@@ -93,6 +93,17 @@ Incluye únicamente:
 - sin collage, split-screen, multipanel, infografía ni interfaz.
 
 No reutilices prompts, semillas, imágenes ni elementos de otras tendencias. En asuntos políticos, la imagen debe ser neutral y descriptiva: nada de elogiar, atacar o persuadir a favor o en contra de actores políticos. En tragedias, muerte, violencia o víctimas, evita el gag y pide una ilustración editorial sobria y no gráfica.
+
+### SVG editorial IA de respaldo obligatorio
+
+Además del `prompt`, genera en el mismo job un campo `svg` que represente ESA misma idea visual. Es el respaldo durable si el generador raster externo no está disponible. Debe ser SVG autocontenido y seguro:
+- raíz `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 432">`;
+- ilustración vectorial editorial sencilla pero expresiva, con fondo, 3–8 elementos visuales y jerarquía clara;
+- usa solo primitivas SVG (`rect`, `circle`, `ellipse`, `path`, `line`, `polyline`, `polygon`, `text`, `g`);
+- nada de `script`, `foreignObject`, `image`, `iframe`, eventos `on*`, enlaces, URLs, `data:`, recursos externos ni CSS importado;
+- texto opcional muy corto (1–3 palabras) y solo si ayuda al gag; no metas el tuit ni párrafos;
+- no copies elementos de otras tendencias.
+El SVG lo crea la IA editorial; GitHub Actions lo rasteriza a PNG y lo somete al mismo `context_guard`.
 
 El `context_guard` es:
 `{"version":3,"trend_id":"<trend_id>","revision":<revision>,"scope":"current_item_only"}`.
