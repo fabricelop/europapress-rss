@@ -102,6 +102,16 @@ def main():
                 materialize_inline_generated_image(holder, tid, revision)
                 validate_generated_image(holder, tid, revision)
                 ai = holder["image"]
+                new_sha = str(ai.get("sha256") or "").lower()
+                if new_sha:
+                    collision = next((row for row in doc.get("items", [])
+                                      if str(row.get("id") or "") != tid
+                                      and str((row.get("ai_image") or {}).get("sha256") or "").lower() == new_sha), None)
+                    if collision is not None:
+                        raise ValueError("cross_context_raster_reuse: el mismo raster IA ya pertenece a otra tendencia")
+                    old_sha = str(previous_ai.get("sha256") or "").lower()
+                    if item.get("ai_image_regenerate_requested") and old_sha and old_sha == new_sha:
+                        raise ValueError("regeneration_reused_previous_raster")
                 item["ai_image"] = ai
                 item["ai_image_status"] = "ready"
                 item["ai_image_attempt"] = attempt
