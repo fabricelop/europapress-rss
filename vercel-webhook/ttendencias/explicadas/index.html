@@ -257,11 +257,24 @@ function render(){
   list.appendChild(card);
  }
 }
+function collapseVisibleExplained(rows){
+ const seenIds=new Set(),seenTexts=new Set(),out=[];
+ for(const x of rows){
+  const id=String(x.id||"").trim();
+  const text=nrm(x.explanation);
+  // Conserva el histórico completo, pero evita revisiones y tarjetas idénticas repetidas en la vista.
+  if((id&&seenIds.has(id))||(text&&seenTexts.has(text)))continue;
+  if(id)seenIds.add(id);
+  if(text)seenTexts.add(text);
+  out.push(x);
+ }
+ return out;
+}
 async function load(){
  const r=await fetch(API+"?view=state&t="+Date.now(),{cache:"no-store"});
  const d=await r.json();if(!r.ok||!d?.ok)throw new Error(d?.error||"No se pudo leer TTendencias");
  const requests=d.requests?.requests||[];
- allItems=[...(d.explained?.items||[])]
+ const sorted=[...(d.explained?.items||[])]
    .map((x,_sourceOrder)=>({...x,_sourceOrder}))
    .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
    .sort((a,b)=>{
@@ -272,7 +285,8 @@ async function load(){
      // Históricos sin explained_at válido: conservar un fallback determinista
      // basado en el orden de persistencia, mostrando primero los más recientes.
      return Number(b._sourceOrder||0)-Number(a._sourceOrder||0);
-   })
+   });
+ allItems=collapseVisibleExplained(sorted)
    .slice(0,100)
    .map(x=>({...x,_rank:rankFor(x,requests)}));
  render();
