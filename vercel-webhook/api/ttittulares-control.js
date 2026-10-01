@@ -221,41 +221,43 @@ async function closePrepared(eventId,status){
     else doc.items.push({event_id:id,status,updated_at:now,...(cancelPendingImage?{image_cancelled_by_publication:true,image_cancelled_at:now,image_cancel_reason:"published_before_image_complete"}:{})});
     doc.updated_at=now;return doc
   });
-  await mutateJson(PREPARED,"Retirar noticia cerrada de TTiTTulares web",doc=>{
-    doc.items=(doc.items||[]).filter(x=>idOf(x.event_id)!==id);doc.updated_at=now;return doc
-  });
-  await mutateJson(PROCESSING,"Actualizar cierre web TTiTTulares",doc=>{
-    for(const item of doc.items||[])if(idOf(item.event_id)===id){
-      item.status=status==="published"?"PUBLISHED":"DISMISSED";
-      item[status==="published"?"published_at":"dismissed_at"]=now;
-      if(cancelPendingImage){
-        item.image_cancelled_by_publication=true;
-        item.image_cancelled_at=now;
-        item.image_cancel_reason="published_before_image_complete";
-        item.image_pending=false
+  await Promise.all([
+    mutateJson(PREPARED,"Retirar noticia cerrada de TTiTTulares web",doc=>{
+      doc.items=(doc.items||[]).filter(x=>idOf(x.event_id)!==id);doc.updated_at=now;return doc
+    }),
+    mutateJson(PROCESSING,"Actualizar cierre web TTiTTulares",doc=>{
+      for(const item of doc.items||[])if(idOf(item.event_id)===id){
+        item.status=status==="published"?"PUBLISHED":"DISMISSED";
+        item[status==="published"?"published_at":"dismissed_at"]=now;
+        if(cancelPendingImage){
+          item.image_cancelled_by_publication=true;
+          item.image_cancelled_at=now;
+          item.image_cancel_reason="published_before_image_complete";
+          item.image_pending=false
+        }
       }
-    }
-    doc.updated_at=now;return doc
-  });
-  await mutateJson(EVENTS,"Cerrar evento TTiTTulares desde web",doc=>{
-    for(const event of doc.events||[])if(idOf(event.id||event.event_id)===id){
-      event.status=status==="published"?"PUBLISHED":"DISMISSED";
-      event[status==="published"?"published_at":"dismissed_at"]=now;
-      if(cancelPendingImage){
-        event.image_cancelled_by_publication=true;
-        event.image_cancelled_at=now;
-        event.image_cancel_reason="published_before_image_complete"
+      doc.updated_at=now;return doc
+    }),
+    mutateJson(EVENTS,"Cerrar evento TTiTTulares desde web",doc=>{
+      for(const event of doc.events||[])if(idOf(event.id||event.event_id)===id){
+        event.status=status==="published"?"PUBLISHED":"DISMISSED";
+        event[status==="published"?"published_at":"dismissed_at"]=now;
+        if(cancelPendingImage){
+          event.image_cancelled_by_publication=true;
+          event.image_cancelled_at=now;
+          event.image_cancel_reason="published_before_image_complete"
+        }
       }
-    }
-    doc.updated_at=now;return doc
-  });
-  await mutateJson(MANUAL_ARCHIVE,"Actualizar archivo manual TTiTTulares",doc=>{
-    doc.items||=[];
-    for(const item of doc.items)if(idOf(item.event_id)===id){
-      item.status=status.toUpperCase();item.updated_at=now
-    }
-    doc.updated_at=now;return doc
-  });
+      doc.updated_at=now;return doc
+    }),
+    mutateJson(MANUAL_ARCHIVE,"Actualizar archivo manual TTiTTulares",doc=>{
+      doc.items||=[];
+      for(const item of doc.items)if(idOf(item.event_id)===id){
+        item.status=status.toUpperCase();item.updated_at=now
+      }
+      doc.updated_at=now;return doc
+    })
+  ]);
   return {ok:true,event_id:id,status}
 }
 async function markUserValidated(eventId){
@@ -320,37 +322,39 @@ async function rework(eventId,instruction,reinvestigate=false){
   const {doc:prepared}=await readJson(PREPARED);
   const source=(prepared.items||[]).find(x=>idOf(x.event_id)===id);
   if(!source)throw new Error("La noticia ya no está en Listas");
-  await mutateJson(PROCESSING,"Rehacer noticia TTiTTulares desde web",doc=>{
-    doc.items||=[];let item=[...doc.items].reverse().find(x=>idOf(x.event_id)===id);
-    if(!item){
-      item={event_id:id,title:source.title||"",url:source.url||"",sources:source.sources_at_draft||[],source_count:Number(source.drafted_source_count||0),selected_at:now};
-      doc.items.push(item)
-    }
-    item.previous_status=item.status;item.status="PROCESSING";item.selection_mode="REWRITE";item.with_image=true;item.image_mode="ai_plus_fallback";item.image_instruction="Intenta una sola imagen IA rápida y conserva además una imagen de archivo/fallback. Ninguna imagen bloquea READY.";
-    item.rewrite_scope=reinvestigate?"full":"remate_and_ai";item.reinvestigate=reinvestigate;item.preserved_editorial=structuredClone(source);item.factual_summary=source.factual_summary||source.explanation||"";item.fallback_image=source.fallback_image||null;
-    item.rewrite_request=reinvestigate?text:"CONTRATO: conservar hechos, fuentes y texto factual de preserved_editorial sin cambios. NO buscar ni reinvestigar. Cambiar exclusivamente remate e imagen IA; un intento ImageGen desde el chat, nunca bloquear READY. "+text;item.rewrite_requested_at=now;item.rewrite_version=Number(item.rewrite_version||0)+1;
-    item.revision=Number(item.revision||source.revision||1)+1;delete item.delivered_at;delete item.published_at;delete item.dismissed_at;
-    doc.updated_at=now;return doc
-  });
-  await mutateJson(PREPARED,"Marcar versión anterior en rehacer TTiTTulares",doc=>{
-    doc.items||=[];
-    for(const preparedItem of doc.items){
-      if(idOf(preparedItem.event_id)!==id)continue;
-      preparedItem.rewrite_pending=true;
-      preparedItem.rewrite_requested_at=now;
-      preparedItem.rewrite_target_revision=Number(source.revision||1)+1;
-    }
-    doc.updated_at=now;return doc
-  });
-  await mutateJson(DECISIONS,"Reabrir noticia TTiTTulares desde web",doc=>{
-    doc.items=(doc.items||[]).filter(x=>idOf(x.event_id)!==id);doc.updated_at=now;return doc
-  });
-  await mutateJson(EVENTS,"Marcar noticia TTiTTulares en elaboración",doc=>{
-    for(const event of doc.events||[])if(idOf(event.id||event.event_id)===id){
-      event.status="PROCESSING";event.processing_at=now
-    }
-    doc.updated_at=now;return doc
-  });
+  await Promise.all([
+    mutateJson(PROCESSING,"Rehacer noticia TTiTTulares desde web",doc=>{
+      doc.items||=[];let item=[...doc.items].reverse().find(x=>idOf(x.event_id)===id);
+      if(!item){
+        item={event_id:id,title:source.title||"",url:source.url||"",sources:source.sources_at_draft||[],source_count:Number(source.drafted_source_count||0),selected_at:now};
+        doc.items.push(item)
+      }
+      item.previous_status=item.status;item.status="PROCESSING";item.selection_mode="REWRITE";item.with_image=true;item.image_mode="ai_plus_fallback";item.image_instruction="Intenta una sola imagen IA rápida y conserva además una imagen de archivo/fallback. Ninguna imagen bloquea READY.";
+      item.rewrite_scope=reinvestigate?"full":"remate_and_ai";item.reinvestigate=reinvestigate;item.preserved_editorial=structuredClone(source);item.factual_summary=source.factual_summary||source.explanation||"";item.fallback_image=source.fallback_image||null;
+      item.rewrite_request=reinvestigate?text:"CONTRATO: conservar hechos, fuentes y texto factual de preserved_editorial sin cambios. NO buscar ni reinvestigar. Cambiar exclusivamente remate e imagen IA; un intento ImageGen desde el chat, nunca bloquear READY. "+text;item.rewrite_requested_at=now;item.rewrite_version=Number(item.rewrite_version||0)+1;
+      item.revision=Number(item.revision||source.revision||1)+1;delete item.delivered_at;delete item.published_at;delete item.dismissed_at;
+      doc.updated_at=now;return doc
+    }),
+    mutateJson(PREPARED,"Marcar versión anterior en rehacer TTiTTulares",doc=>{
+      doc.items||=[];
+      for(const preparedItem of doc.items){
+        if(idOf(preparedItem.event_id)!==id)continue;
+        preparedItem.rewrite_pending=true;
+        preparedItem.rewrite_requested_at=now;
+        preparedItem.rewrite_target_revision=Number(source.revision||1)+1;
+      }
+      doc.updated_at=now;return doc
+    }),
+    mutateJson(DECISIONS,"Reabrir noticia TTiTTulares desde web",doc=>{
+      doc.items=(doc.items||[]).filter(x=>idOf(x.event_id)!==id);doc.updated_at=now;return doc
+    }),
+    mutateJson(EVENTS,"Marcar noticia TTiTTulares en elaboración",doc=>{
+      for(const event of doc.events||[])if(idOf(event.id||event.event_id)===id){
+        event.status="PROCESSING";event.processing_at=now
+      }
+      doc.updated_at=now;return doc
+    })
+  ]);
   return {ok:true,event_id:id,status:"PROCESSING"}
 }
 async function submitManualStory(url,title,instruction){
@@ -624,7 +628,7 @@ export default async function handler(req,res){
       if(String(req.query?.view||"")==="image-proxy")return await proxyPreparedImage(req.query?.url,res);
       const [prepared,status,config,queue,events,decisions,manualArchive,trendCandidates,remateRatings,tremending]=await Promise.all([
         readPublicJson(PREPARED),readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
-        readPublicJson(PROCESSING),readPublicJson(EVENTS),readPublicJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(TREND_CANDIDATES),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
+        readPublicJson(PROCESSING),readPublicJson(EVENTS),readJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(TREND_CANDIDATES),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const closedIds=new Set((decisions.doc?.items||[])
