@@ -9496,7 +9496,7 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T12:52:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -9509,19 +9509,53 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image": {
-        "url": "https://sta.articulo14.es/main-files/uploads/2026/07/Digi-2-1200x675.jpg",
-        "source": "Artículo14 · archivo Digi",
-        "source_url": "https://www.articulo14.es/economia/que-ha-pasado-con-digi-movistar-y-o2-caida-masiva-de-la-red-20261001.html",
-        "alt": "Imagen de archivo de Digi",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/b79a16e0b2ed-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "b79a16e0b2ed",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "fa9d12c6-50d2-4076-8524-75b62233746a",
+        "alt": "Imagen editorial generada por IA para Digi",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/b79a16e0b2ed-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "sha256": "9efebf37482d34b80f3958ff64c0b632aa6abd9d0927b42bf1f5cc43ecb8e441"
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/b79a16e0b2ed-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "b79a16e0b2ed",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "fa9d12c6-50d2-4076-8524-75b62233746a",
+        "alt": "Imagen editorial generada por IA para Digi",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/b79a16e0b2ed-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "sha256": "9efebf37482d34b80f3958ff64c0b632aa6abd9d0927b42bf1f5cc43ecb8e441"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T11:04:06.282870Z"
     }
   ],
-  "updated_at": "2026-10-01T11:02:21.904062Z",
+  "updated_at": "2026-10-01T11:04:06.282972Z",
   "count": 368
 }
