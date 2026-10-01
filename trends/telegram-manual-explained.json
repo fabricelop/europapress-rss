@@ -9134,10 +9134,10 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "pending",
-      "ai_image_last_attempt_at": "2026-10-01T09:19:09.217Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T09:26:02.687300Z",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
       "fallback_image": {
@@ -9148,19 +9148,49 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20260928175939_690.jpg",
-        "source": "Europa Press · archivo de la acampada en Puerta del Sol",
-        "source_url": "https://www.europapress.es/madrid/noticia-sindicato-inquilinas-avisa-acampada-sol-seguira-mas-alla-alcance-acuerdo-maricarmen-20260928175939.html",
-        "alt": "Tiendas de campaña en la Puerta del Sol durante la protesta por la vivienda",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/df30c371946b-r2-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "df30c371946b",
+          "revision": 2,
+          "scope": "current_item_only"
+        },
+        "sha256": "3248525cb5f3953a9d988627438b7354bf78063d4ef1ea9035584b6fe8ae74c7",
+        "alt": "Caricatura editorial de una tienda de campaña participando en una mesa de negociación sobre vivienda.",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/df30c371946b-r2-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "image_status": "ready",
-      "image_pending": true
+      "image_pending": false,
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/df30c371946b-r2-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "df30c371946b",
+          "revision": 2,
+          "scope": "current_item_only"
+        },
+        "sha256": "3248525cb5f3953a9d988627438b7354bf78063d4ef1ea9035584b6fe8ae74c7",
+        "alt": "Caricatura editorial de una tienda de campaña participando en una mesa de negociación sobre vivienda.",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/df30c371946b-r2-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     }
   ],
-  "updated_at": "2026-10-01T09:19:09.217Z",
+  "updated_at": "2026-10-01T09:26:02.687391Z",
   "count": 365
 }
