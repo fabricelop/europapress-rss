@@ -7,6 +7,10 @@ on:
     paths:
       - ".github/workflows/ttendencias-preflight.yml"
       - "trends/update_trends.py"
+      - "trends/editorial-config.json"
+      - "trends/auto_queue_new.py"
+      - "trends/enrich_explained_images.py"
+      - "trends/apply_editorial_outbox.py"
       - "trends/telegram-manual-explained.json"
       - "vercel-webhook/ttendencias/**"
       - "vercel-webhook/api/ttendencias-control.js"
@@ -24,7 +28,8 @@ jobs:
 
       - name: Validar Python y JSON
         run: |
-          python3 -m py_compile trends/update_trends.py
+          python3 -m py_compile trends/update_trends.py trends/auto_queue_new.py trends/enrich_explained_images.py trends/apply_editorial_outbox.py
+          python3 trends/enrich_explained_images.py --selftest
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -62,9 +67,14 @@ jobs:
           top=Path("vercel-webhook/ttendencias/index.html").read_text(encoding="utf-8")
           exp=Path("vercel-webhook/ttendencias/explicadas/index.html").read_text(encoding="utf-8")
           assert "entered_top10_at" in py
-          assert "recentEntry" in top and "entryTime" in top
+          assert "entered_top10_at" in top and "entryTime" in top and "rankMove" in top
           assert ".slice(0,100)" in exp
           assert "Copiar" in exp and 'id="filter"' in exp
           assert "TT#" in exp
+          assert "Gag IA" in exp and "Archivo / fallback" in exp
+          assert "🔁 Rehacer" in exp and "🖼️ Usar archivo/fallback" in exp
+          api=Path("vercel-webhook/api/ttendencias-control.js").read_text(encoding="utf-8")
+          assert 'action === "regenerate-image"' in api
+          assert 'action === "use-fallback-image"' in api
           print("CONTRACT_OK")
           PY
