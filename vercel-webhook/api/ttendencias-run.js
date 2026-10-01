@@ -20,7 +20,8 @@ const TRIGGER_PATH="trends/run-now-trigger.json";
 const ACK_PATH="trends/run-ack.json";
 const IMAGE_RUN_INDEX_PATH="trends/image-runs/index.json";
 const IMAGE_RUN_DIR="trends/image-runs/jobs";
-const IMAGE_ACTIVE_MS=45*60*1000;
+const IMAGE_HANDOFF_ACTIVE_MS=45*1000;
+const IMAGE_GENERATION_ACTIVE_MS=150*1000;
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const ACTIVE_MS=20*60*1000;
@@ -216,9 +217,12 @@ async function requestImageRun(req,res){
   const previousStatus=String(previous.status||"").toUpperCase();
   const previousAt=stamp(previous.updated_at||previous.finished_at||previous.requested_at);
   const previousAge=previousAt?Date.now()-previousAt:Infinity;
+  const previousPhase=String(previous.phase||"").toLowerCase();
   const previousStillActive=previousStatus==="REQUESTED"
     ?previousAge<30000
-    :["RUNNING","GENERATING","PERSISTING"].includes(previousStatus)&&previousAge<IMAGE_ACTIVE_MS;
+    :previousStatus==="RUNNING"&&["pc_pickup","pc_launch"].includes(previousPhase)
+      ?previousAge<IMAGE_HANDOFF_ACTIVE_MS
+      :["RUNNING","GENERATING","PERSISTING"].includes(previousStatus)&&previousAge<IMAGE_GENERATION_ACTIVE_MS;
   if(previousStillActive){
     return res.status(409).json({ok:false,error:"image_run_in_progress",command_id:previous.command_id||null,target_id,status:previousStatus})
   }
