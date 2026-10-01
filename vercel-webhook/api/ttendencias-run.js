@@ -185,7 +185,7 @@ async function requestImageRun(req,res){
   const command_id="tr-img-"+Date.now()+"-"+crypto.randomBytes(3).toString("hex");
   const doc={
     version:1,command_id,requested_at,updated_at:requested_at,status:"REQUESTED",phase:"queued",
-    mode:"manual_pc_chat_image",executor:"pc_chat",project:"ttendencias",launcher_arg:"tendencias",
+    mode:"manual_pc_chat_image",executor:"pc_chat_ttendencias_dedicated",project:"ttendencias",launcher_arg:"tendencias",
     task:"image",target_id,trend_id:target_id,target_name,revision,
     message:"Solicitud registrada; esperando al PC para abrir un chat de imagen."
   };
@@ -196,7 +196,7 @@ async function requestImageRun(req,res){
     const idx=await readControlJson(IMAGE_RUN_INDEX_PATH);
     const base=idx.doc&&Array.isArray(idx.doc.jobs)?idx.doc:{version:1,jobs:[]};
     const jobs=base.jobs.filter(x=>String(x.command_id||"")!==command_id&&String(x.target_id||"")!==target_id);
-    jobs.push({command_id,target_id,trend_id:target_id,target_name,revision,requested_at,status_path:jobPath});
+    jobs.push({command_id,target_id,trend_id:target_id,target_name,revision,requested_at,status_path:jobPath,executor:"pc_chat_ttendencias_dedicated"});
     const indexDoc={version:1,updated_at:requested_at,jobs:jobs.slice(-60)};
     try{
       await writeControlJson(IMAGE_RUN_INDEX_PATH,indexDoc,idx.sha,"Actualizar cola de imágenes IA TTendencias");
