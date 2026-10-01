@@ -11384,10 +11384,15 @@
         }
       ],
       "news_disposition": "ignored",
-      "ai_image_status": "none",
+      "ai_image_status": "pending",
       "fallback_image_status": "none",
       "image_status": "none",
-      "image_pending": false
+      "image_pending": false,
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_regenerate_requested": true,
+      "ai_image_regenerate_requested_at": "2026-10-01T23:03:58.440Z",
+      "ai_image_regenerate_request_version": 1
     },
     {
       "id": "7375308f71a9",
@@ -11529,6 +11534,6 @@
       "image_failure_reason": "Fuente de archivo localizada; la imagen IA queda fuera de esta ejecución editorial."
     }
   ],
-  "updated_at": "2026-10-02T00:49:36+02:00",
+  "updated_at": "2026-10-01T23:03:58.440Z",
   "count": 392
 }
