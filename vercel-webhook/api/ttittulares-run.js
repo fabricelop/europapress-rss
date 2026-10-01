@@ -21,7 +21,6 @@ const TRIGGER_BRANCH="control/ttittulares-run-trigger-v2";
 const TRIGGER_PATH="ttittulares/run-now-trigger.json";
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
-const READY_MARKER="TTITTULARES WORK COMMIT TRIGGER READY";
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -46,12 +45,7 @@ async function comments(){
   }
   return items
 }
-async function triggerReady(){
-  const r=await gh(`https://api.github.com/repos/${REPO}/pulls/${PR}`);
-  if(!r.ok)throw new Error(`GitHub PR: ${r.status} ${await r.text()}`);
-  const pr=await r.json();
-  return String(pr.body||"").includes(READY_MARKER)
-}
+async function triggerReady(){return true}
 async function readTrigger(){
   const u=`https://api.github.com/repos/${REPO}/contents/${TRIGGER_PATH}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`;
   const r=await gh(u);
@@ -78,9 +72,17 @@ function activeTrace(items){
   fresh.sort((a,b)=>stamp(a.comment_updated_at||a.updated_at)-stamp(b.comment_updated_at||b.updated_at));
   return fresh.at(-1)||null
 }
+function newerRunAfter(items,requestedAt){
+  const t=stamp(requestedAt);
+  if(!t)return null;
+  return items.map(traceOf).filter(Boolean)
+    .filter(x=>stamp(x.started_at||x.requested_at||x.comment_updated_at)>t+1000)
+    .sort((a,b)=>stamp(a.started_at||a.requested_at)-stamp(b.started_at||b.requested_at))
+    .at(-1)||null
+}
 async function writeTrigger(doc,sha){
   const body={
-    message:`Solicitar ejecución manual TTiTTulares ${doc.command_id}`,
+    message:`Solicitar ejecución PC Chat TTiTTulares ${doc.command_id}`,
     content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64"),
     sha,
     branch:TRIGGER_BRANCH
@@ -91,50 +93,35 @@ async function writeTrigger(doc,sha){
   if(!r.ok)throw new Error(`GitHub trigger PUT: ${r.status} ${await r.text()}`);
   return r.json()
 }
-async function createTrace(doc){
-  const trace={
-    version:1,run_id:doc.command_id,command_id:doc.command_id,source:"manual",status:"REQUESTED",phase:"preparing",
-    current:0,total:0,event_id:null,title:null,requested_at:doc.requested_at,started_at:null,updated_at:doc.requested_at,finished_at:null,
-    incident_count:0,summary:null,message:"Solicitud recibida; esperando a ChatGPT Work."
-  };
-  const r=await gh(`https://api.github.com/repos/${REPO}/issues/${PR}/comments`,{
-    method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({body:TRACE_PREFIX+JSON.stringify(trace)})
-  });
-  if(!r.ok)throw new Error(`GitHub trace POST: ${r.status} ${await r.text()}`);
-  return r.json()
-}
-
 export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
   if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
   try{
-    if(!(await triggerReady()))return res.status(503).json({ok:false,error:"work_trigger_not_ready"});
     const [{doc:current,sha},items]=await Promise.all([readTrigger(),comments()]);
     if(activeTrace(items))return res.status(409).json({ok:false,error:"run_in_progress"});
     const currentId=String(current.command_id||"").trim();
     const currentRequested=String(current.requested_at||"").trim();
     if(currentId&&currentRequested){
       const age=Date.now()-new Date(currentRequested).getTime();
+      const consumedBy=newerRunAfter(items,currentRequested);
       const marks=items.filter(c=>String(c.body||"").startsWith(STATUS_PREFIX+currentId+"\n"));
       const last=marks.at(-1);
       const st=last?field(last.body,"status"):"REQUESTED";
-      if(Number.isFinite(age)&&age<45000)return res.status(429).json({ok:false,error:"recent_request",retry_after_seconds:Math.ceil((45000-age)/1000)});
-      if(Number.isFinite(age)&&age<20*60*1000&&!["DONE","ERROR"].includes(st||"REQUESTED"))return res.status(409).json({ok:false,error:"run_in_progress"})
+      if(!consumedBy&&Number.isFinite(age)&&age<45000)return res.status(429).json({ok:false,error:"recent_request",retry_after_seconds:Math.ceil((45000-age)/1000)});
+      if(!consumedBy&&Number.isFinite(age)&&age<20*60*1000&&!["DONE","ERROR"].includes(st||"REQUESTED"))return res.status(409).json({ok:false,error:"run_in_progress"})
     }
 
     const requested_at=new Date().toISOString();
     const command_id=`tt-${Date.now()}-${crypto.randomBytes(3).toString("hex")}`;
-    const doc={version:1,command_id,requested_at,mode:"manual"};
+    const doc={version:2,command_id,requested_at,mode:"manual_pc_chat",executor:"pc_chat",project:"ttittulares",launcher_arg:"titulares",auto_image_followup:true};
     let saved;
     try{saved=await writeTrigger(doc,sha)}
     catch(e){
       if(!String(e.message||e).includes("409")&&!String(e.message||e).includes("422"))throw e;
       const fresh=await readTrigger();saved=await writeTrigger(doc,fresh.sha)
     }
-    let trace_comment_id=null;
-    try{trace_comment_id=(await createTrace(doc)).id||null}catch(e){console.error("trace",e)}
-    return res.status(200).json({ok:true,command_id,requested_at,commit_sha:saved?.commit?.sha||null,trace_comment_id,trigger:"pull_request_commit_update"})
+    return res.status(200).json({ok:true,command_id,requested_at,commit_sha:saved?.commit?.sha||null,trace_comment_id:null,trigger:"pc_chat_poll"})
   }catch(e){
     console.error(e);
     return res.status(500).json({ok:false,error:String(e.message||e)})
