@@ -14,6 +14,7 @@ $RunTimeoutMinutes = 35
 $MaxParallelImageChats = 4
 $ImageStaleMinutes = 45
 $StatusBase = "https://europapress-rss.vercel.app"
+$AckUrl = "$StatusBase/api/tt-run-ack"
 $RepoRaw = "https://raw.githubusercontent.com/fabricelop/europapress-rss"
 
 $Targets = [ordered]@{
@@ -56,6 +57,18 @@ function Read-JsonUrl([string]$Url, [bool]$Quiet = $false) {
 
 function Save-State($State) {
   $State | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $StatePath -Encoding UTF8
+}
+
+function Send-RunAck([string]$Project, [string]$CommandId, [string]$Stage) {
+  try {
+    $payload = @{ project=$Project; command_id=$CommandId; stage=$Stage } | ConvertTo-Json -Compress
+    Invoke-RestMethod -Method Post -Uri $AckUrl -ContentType "application/json" -Body $payload -TimeoutSec 12 | Out-Null
+    Write-Log "ACK $Project command=$CommandId stage=$Stage"
+    return $true
+  } catch {
+    Write-Log "ACK ERROR $Project command=$CommandId stage=$Stage :: $($_.Exception.Message)"
+    return $false
+  }
 }
 
 function Load-State {
@@ -335,12 +348,20 @@ while ($true) {
       $commandId = [string]$doc.command_id
       if ($commandId -eq [string]$state.$name.last_command_id) { continue }
 
+      try { $requestedAt = [DateTimeOffset]::Parse([string]$doc.requested_at) } catch { $requestedAt = [DateTimeOffset]::UtcNow }
+
+      # Acusar inmediatamente que ESTE PC ha visto la orden. El timeout web de 30 s
+      # mide este acuse, no el tiempo que tarde ChatGPT en publicar su RUNNING.
+      Send-RunAck $name $commandId "picked_up" | Out-Null
+
+      Invoke-ProjectChat $target.LauncherArg "mobile editorial command $commandId"
+
+      # Solo después de lanzar correctamente el proceso consideramos consumida la orden.
+      # Si el lanzamiento lanza excepción, el siguiente ciclo volverá a intentarlo.
+      Send-RunAck $name $commandId "launched" | Out-Null
       $state.$name.last_command_id = $commandId
       $state.$name.followup_for = ""
       Save-State $state
-
-      try { $requestedAt = [DateTimeOffset]::Parse([string]$doc.requested_at) } catch { $requestedAt = [DateTimeOffset]::UtcNow }
-      Invoke-ProjectChat $target.LauncherArg "mobile editorial command $commandId"
 
       # Compatibilidad con triggers antiguos. Los nuevos usan auto_image_followup=false.
       if ($doc.auto_image_followup -eq $true) {
