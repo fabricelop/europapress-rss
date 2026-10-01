@@ -8,6 +8,12 @@ Cuando el usuario envía «Ejecuta TTiTTulares» a una conversación, esa misma 
 
 Lee `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `telegram/editorial-processing.json`, `telegram/events.json`, `ttittulares/prepared.json` y `ttittulares/execution-errors.json`. Procesa todas las noticias PROCESSING. Las PROBLEMATIC históricas NO se reintentan automáticamente: solo entran en esta pasada si `user_validated:true` (botón **Check**/validación explícita) o si el radar las ha reabierto como PROCESSING por una revisión material posterior. Relee estado fresco antes de cada operación. Una incidencia individual no detiene el resto del lote. RUNTRACE muestra únicamente items realmente intentados y avanza después de cada intento. ERROR se reserva para un fallo global.
 
+### Barrera JIT obligatoria por entrada
+
+El lote inicial es solo una lista de candidatos. **Justo antes de tratar CADA entrada** —antes de web, drafting, selección de remate, fallback o ImageGen— relee desde `main` su estado autoritativo por `(event_id, revision)` en `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `ttittulares/prepared.json` y `ttittulares/decisions.json` cuando corresponda. No reutilices para esta decisión el snapshot leído al inicio de la pasada.
+
+Si en esa relectura la revisión ya está `PUBLISHED`, `DISMISSED`, `SKIPPED_DUPLICATE`, ya no figura como trabajo activo de la cola, o fue sustituida por una revisión más nueva, **sáltala inmediatamente y continúa con la siguiente**. No hagas búsquedas, no redactes, no selecciones remate, no llames a ImageGen y no la cuentes como intentada/tratada ni como incidencia. Esto también se aplica al `visual_backlog` y a `rewrite_pending`: antes de cada intento visual o reelaboración vuelve a comprobar que la entrada sigue siendo elegible. Una acción del usuario en el panel mientras la ejecución está en marcha prevalece siempre sobre el lote inicial.
+
 Una PROBLEMATIC antigua que no se intenta en la pasada permanece visible en «No comprobadas», pero no cuenta como noticia tratada, `problematic_reviewed` ni incidencia de esa ejecución. No hagas búsquedas web ni escribas RUNTRACE `investigating` para ella. Si se pulsa **Check**, consume esa validación en un único intento editorial; si vuelve a terminar PROBLEMATIC, queda de nuevo en espera hasta otro Check o una revisión material nueva.
 
 ### Recuperación obligatoria de IA pendiente
