@@ -19,30 +19,53 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
       - run: npm install --no-save playwright@1.55.0
       - run: npx playwright install --with-deps chromium
-      - run: node ttittulares/tremending/capture_tweet.mjs
-      - name: Persistir captura y propagarla sin bloquear la noticia
+
+      - name: Capturar, persistir y reintentar ante cambios concurrentes
         id: persist
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ttittulares/tremending/items.json ttittulares/tremending-images/ telegram/editorial-processing.json ttittulares/prepared.json
-          if git diff --cached --quiet; then
-            echo "Sin captura nueva."
-            exit 0
-          fi
-          git commit -m "Guardar captura Tremending elegida"
-          git push
-          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+
+            node ttittulares/tremending/capture_tweet.mjs
+
+            git add ttittulares/tremending/items.json                     ttittulares/tremending-images/                     telegram/editorial-processing.json                     ttittulares/prepared.json
+
+            if git diff --cached --quiet; then
+              echo "Sin captura nueva que persistir."
+              exit 0
+            fi
+
+            git commit -m "Guardar captura Tremending elegida"
+            if git push origin HEAD:main; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            echo "Cambio concurrente al persistir captura; reintentando sobre main fresco ($attempt/5)"
+            sleep $((attempt * 2))
+          done
+
+          echo "No se pudo persistir la captura tras cinco intentos" >&2
+          exit 1
+
       - name: Propagar captura elegida también a TTendencias
         if: steps.persist.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # A push with GITHUB_TOKEN cannot trigger another push workflow.
-          # workflow_dispatch explicitly wakes the nonblocking photo enricher.
+          # Un push con GITHUB_TOKEN no dispara otro workflow de push.
+          # workflow_dispatch despierta explícitamente el enriquecedor no bloqueante.
           gh workflow run ttendencias-image-enrich.yml --ref main || echo "Aviso: reintento de foto pendiente; la explicación no se bloquea."
