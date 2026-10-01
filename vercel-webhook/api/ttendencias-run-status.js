@@ -22,7 +22,7 @@ const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const TRACE_COMMENT_ID=5859532515;
 const STALE_MS=20*60*1000;
-const START_ACK_MS=3*60*1000;
+const START_ACK_MS=30*1000;
 const RUNTIME_PATH="trends/editorial-runtime.json";
 const EXPLAINED_PATH="trends/telegram-manual-explained.json";
 const MAIN_BRANCH="main";
@@ -167,9 +167,9 @@ function manualFallback(items,request){
   const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(last?.updated_at||last?.created_at||requested_at)>=STALE_MS;
   const status=(noStart||staleRunning)?"ERROR":rawStatus;
   const lastActivity=last?.updated_at||last?.created_at||requested_at;
-  const finished_at=noStart||staleRunning?lastActivity:(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
+  const finished_at=noStart||staleRunning?new Date().toISOString():(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
   const timeoutMessage=noStart
-    ?"No se ha recibido RUNNING: el PC no ha recogido todavía la orden móvil."
+    ?"No se ha recibido RUNNING en 30 segundos: el PC no ha recogido la orden móvil."
     :staleRunning?"La ejecución no actualiza su estado desde hace más de 20 minutos.":null;
   return {
     run_id:command_id,command_id,source:"mobile",source_label:"Móvil→PC",status,
@@ -178,7 +178,7 @@ function manualFallback(items,request){
     updated_at:lastActivity,finished_at,
     start_delay_seconds:started_at?seconds(requested_at,started_at):null,
     duration_seconds:started_at&&finished_at?seconds(started_at,finished_at):null,
-    message:timeoutMessage||(last?field(last.body,"message"):"Orden móvil registrada; esperando al PC para abrir el chat."),summary:null,incident_count:0,incidents:[]
+    message:timeoutMessage||(last?field(last.body,"message"):"Orden móvil registrada; esperando al PC para abrir el chat (máx. 30 s)."),summary:null,incident_count:0,incidents:[]
   }
 }
 
@@ -200,7 +200,7 @@ export default async function handler(req,res){
       const deadline=latest.status==="REQUESTED"?START_ACK_MS:STALE_MS;
       if(Number.isFinite(age)&&age>=0&&age<deadline)active=latest;
       else latest={...latest,status:"ERROR",finished_at:lastActivity||null,message:latest.status==="REQUESTED"
-        ?"No se ha recibido RUNNING: el PC no ha recogido la orden móvil en 3 minutos."
+        ?"No se ha recibido RUNNING en 30 segundos: el PC no ha recogido la orden móvil."
         :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")}
     }
     if(!active&&fallback&&["REQUESTED","RUNNING"].includes(fallback.status)){
