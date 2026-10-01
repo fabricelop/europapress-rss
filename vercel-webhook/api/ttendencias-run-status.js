@@ -19,6 +19,8 @@ const PR=7;
 const TRIGGER_BRANCH="control/ttendencias-run-trigger";
 const TRIGGER_PATH="trends/run-now-trigger.json";
 const ACK_PATH="trends/run-ack.json";
+const IMAGE_RUN_INDEX_PATH="trends/image-runs/index.json";
+const IMAGE_RUN_DIR="trends/image-runs/jobs";
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const TRACE_COMMENT_ID=5859532515;
@@ -71,6 +73,14 @@ async function readControlBranchJson(path){
 async function readTrigger(){
   return {doc:await readControlBranchJson(TRIGGER_PATH)}
 }
+async function readControlJson(path){
+  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(TRIGGER_BRANCH));
+  if(r.status===404)return {sha:null,doc:null};
+  if(!r.ok)throw new Error("GitHub control GET "+path+": "+r.status+" "+await r.text());
+  const f=await r.json(),raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+  return {sha:f.sha,doc:JSON.parse(raw||"{}")}
+}
+
 async function readAck(){
   return readControlBranchJson(ACK_PATH)
 }
@@ -239,8 +249,20 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
-    if(String(req.query?.view||"").toLowerCase()==="trigger"){
+    const view=String(req.query?.view||"").toLowerCase();
+    if(view==="trigger"){
       const {doc}=await readTrigger();
+      return res.status(200).json({ok:true,...doc});
+    }
+    if(view==="image-index"){
+      const {doc}=await readControlJson(IMAGE_RUN_INDEX_PATH);
+      return res.status(200).json({ok:true,...((doc&&typeof doc==="object")?doc:{version:1,jobs:[]})});
+    }
+    if(view==="image-job"){
+      const id=String(req.query?.id||"").trim();
+      if(!/^[A-Za-z0-9._-]{3,160}$/.test(id))return res.status(400).json({ok:false,error:"id inválido"});
+      const {doc}=await readControlJson(IMAGE_RUN_DIR+"/"+id+".json");
+      if(!doc)return res.status(404).json({ok:false,error:"job no encontrado"});
       return res.status(200).json({ok:true,...doc});
     }
     const [enabled,items,{doc:request},ack,runtimeDoc,explainedDoc]=await Promise.all([
