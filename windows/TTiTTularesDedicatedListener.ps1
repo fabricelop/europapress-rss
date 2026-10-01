@@ -9,7 +9,7 @@ $StatePath = Join-Path $BaseDir "ttittulares-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
-$TriggerApiUrl = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/run-now-trigger.json?ref=control%2Fttittulares-run-trigger"
+$TriggerApiUrl = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/run-now-trigger.json?ref=control%2Fttittulares-run-trigger-v2"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
 $WorkerId = "ttittulares-dedicated-v1"
 $PollSeconds = 3
