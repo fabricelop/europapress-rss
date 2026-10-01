@@ -264,6 +264,45 @@ async function markUserValidated(eventId){
   });
   return {ok:true,event_id:id,status:"PROBLEMATIC",user_validated:true,user_validated_at:now}
 }
+async function requestImageRegeneration(eventId){
+  const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
+  const now=new Date().toISOString();let found=false;
+  await mutateJson(PREPARED,"Solicitar regeneración de imagen IA TTiTTulares",doc=>{
+    doc.items||=[];
+    for(const item of doc.items){
+      if(idOf(item.event_id)!==id)continue;
+      found=true;
+      item.ai_image_regenerate_requested=true;
+      item.ai_image_regenerate_requested_at=now;
+      item.ai_image_regenerate_request_version=Number(item.ai_image_regenerate_request_version||0)+1;
+    }
+    doc.updated_at=now;return doc
+  });
+  if(!found)throw new Error("La noticia ya no está en Listas");
+  return {ok:true,event_id:id,image_regeneration:true}
+}
+async function useFallbackImage(eventId){
+  const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
+  const now=new Date().toISOString();let changed=false;
+  await mutateJson(PREPARED,"Usar imagen de archivo TTiTTulares",doc=>{
+    doc.items||=[];
+    for(const item of doc.items){
+      if(idOf(item.event_id)!==id)continue;
+      const fallback=item.fallback_image||{};
+      if(!/^https:\/\//i.test(String(fallback.url||"")))throw new Error("Todavía no hay imagen de archivo/fallback disponible");
+      item.image={...fallback};
+      item.image_choice="fallback";
+      item.image_status="ready";
+      item.image_pending=false;
+      item.image_selected_at=now;
+      changed=true
+    }
+    doc.updated_at=now;return doc
+  });
+  if(!changed)throw new Error("La noticia ya no está en Listas");
+  return {ok:true,event_id:id,image_choice:"fallback"}
+}
+
 async function rework(eventId,instruction){
   const id=idOf(eventId),text=String(instruction||"").trim();
   if(!id)throw new Error("Falta event_id");if(!text)throw new Error("Escribe las instrucciones para rehacer.");
@@ -512,7 +551,7 @@ async function proxyPreparedImage(rawUrl,res){
   if(parsed.protocol!=="https:")throw new Error("Solo se permiten imágenes HTTPS");
   const [{doc:prepared},{doc:tremending}]=await Promise.all([readJson(PREPARED),readJson(TREMENDING)]);
   const allowed=new Set([
-    ...(prepared.items||[]).map(x=>x?.image?.url||x?.image_url),
+    ...(prepared.items||[]).flatMap(x=>[x?.image?.url||x?.image_url,x?.ai_image?.url,x?.fallback_image?.url]),
     ...(tremending.items||[]).map(x=>x?.image?.url)
   ].filter(Boolean).map(String));
   if(!allowed.has(url))throw new Error("Imagen no autorizada");
@@ -665,6 +704,8 @@ export default async function handler(req,res){
     if(action==="published")return res.status(200).json(await closePrepared(body.event_id,"published"));
     if(action==="dismiss")return res.status(200).json(await closePrepared(body.event_id,"dismissed"));
     if(action==="rework")return res.status(200).json(await rework(body.event_id,body.instruction));
+    if(action==="regenerate-image")return res.status(200).json(await requestImageRegeneration(body.event_id));
+    if(action==="use-fallback-image")return res.status(200).json(await useFallbackImage(body.event_id));
     if(action==="check")return res.status(200).json(await markUserValidated(body.event_id));
     if(action==="select-tremending-tweet")return res.status(200).json(await selectTremendingTweet(body.entry_id,body.tweet_id));
     if(action==="send-tremending")return res.status(200).json(await sendTremending(body.entry_id,body.destination));
