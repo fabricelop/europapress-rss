@@ -159,6 +159,12 @@ No guardes en RUNTRACE el texto de candidatos descartados. Así la app sigue mos
 8. Un fallo de un item no debe bloquear los siguientes: registra ese item pendiente/problematic según corresponda y continúa con el siguiente.
 9. Relee estado fresco antes de cada escritura. Ante conflicto, relee SHA y reintenta de forma segura.
 
+### Barrera JIT obligatoria por entrada
+
+El lote inicial y los grupos son solo candidatos. **Justo antes de tratar CADA tendencia/revisión** —antes de investigación web, drafting, selección de remate, persistencia editorial o ImageGen— relee desde `main` `trends/editorial-queue.json`, `trends/requests.json` y, cuando corresponda, `trends/telegram-manual-explained.json`. Valida por `(id, revision)`; no uses solo el nombre ni el snapshot inicial para decidir si sigue pendiente.
+
+Si la revisión ya está `explained`, publicada/desestimada por la acción equivalente del panel, ya no aparece como trabajo activo en la cola, o existe una revisión posterior que la sustituye, **sáltala inmediatamente y continúa con la siguiente**. No investigues, no redactes, no selecciones remate, no generes imagen y no la cuentes como tratada ni como incidencia. Si era miembro de un grupo, elimina de la ejecución solo ese miembro y vuelve a evaluar los miembros restantes; si no queda ninguno, salta el grupo completo. La misma barrera se repite justo antes de cualquier solicitud visual de Rehacer. Una acción del usuario en el panel durante una ejecución prevalece siempre sobre el lote/grupo calculado al comienzo.
+
 ## Agrupación
 
 Agrupa ANTES de investigar y redactar cuando sea inequívoco que varios términos describen el MISMO acontecimiento real, emisión concreta o episodio del mismo día. La `revision` es propia de cada tendencia y NO impide agrupar revisiones distintas: conserva para cada miembro su `(id, revision)` original y enlázalos a un único `group_id` determinista por hecho/episodio/fecha. Nunca juntes ediciones distintas de un reality ni temas diferentes por compartir lote o programa.
