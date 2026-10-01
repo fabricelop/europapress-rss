@@ -1,0 +1,47 @@
+name: TTiTTulares · fallback de archivo sin bloqueo
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "ttittulares/prepared.json"
+      - "ttittulares/enrich_prepared_images.py"
+      - "ttittulares/apply_editorial_outbox.py"
+      - ".github/workflows/ttittulares-image-enrich.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-fallback-images
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preparar raster
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow
+      - name: Buscar fallback después de READY
+        run: |
+          set -euo pipefail
+          git config user.name "ttittulares-fallback-bot"
+          git config user.email "actions@users.noreply.github.com"
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 -m py_compile ttittulares/enrich_prepared_images.py ttittulares/apply_editorial_outbox.py
+            python3 ttittulares/enrich_prepared_images.py
+            git add ttittulares/prepared.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Adjuntar fallback de archivo a TTiTTulares"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep $((attempt * 2))
+          done
+          echo "No se pudo persistir el fallback" >&2
+          exit 1
