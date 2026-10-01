@@ -84,7 +84,7 @@ def preserve_rework(item, row):
     remate = item["tweet"]["remate"]
     original_tweet = normalize_tweet(original)
     factual = original_tweet["text"].rsplit("\n\n", 1)[0]
-    for key in ("title", "url", "factual_summary", "explanation", "sources_at_draft", "source_evidence", "drafted_source_count", "source_count", "fallback_image", "fallback_image_status"):
+    for key in ("title", "url", "factual_summary", "explanation", "sources_at_draft", "source_evidence", "drafted_source_count", "source_count", "fallback_image", "fallback_image_status", "disable_ai_image", "image_mode", "image_strategy", "sensitive_image_reason"):
         if key in original:
             item[key] = original[key]
     text = factual + "\n\n" + remate
@@ -354,6 +354,12 @@ def _select_image(item):
     item["image_delivery"]="app" if item["image_app_available"] else "none"
 
 
+def _ai_image_disabled(item):
+    """True cuando editorialmente la entrada debe usar solo archivo/fallback."""
+    mode=str(item.get("image_mode") or item.get("image_strategy") or "").strip().casefold()
+    return bool(item.get("disable_ai_image")) or mode in {"fallback_only","archive_only","tweet_capture_only"} or str(item.get("ai_image_status") or "").casefold()=="disabled"
+
+
 def _initialize_parallel_images(item):
     """Inicializa IA/fallback sin I/O de red; READY no espera a ninguna foto."""
     legacy=item.get("image")
@@ -364,6 +370,18 @@ def _initialize_parallel_images(item):
         except Exception as exc:
             item["fallback_image_status"]="none"
             item["fallback_image_failure_reason"]=str(exc)[:500]
+    if _ai_image_disabled(item):
+        item.pop("ai_image",None)
+        item["disable_ai_image"]=True
+        item["ai_image_status"]="disabled"
+        item["image_mode"]="fallback_only"
+        item["image_strategy"]="fallback_only"
+        item.pop("ai_image_regenerate_requested",None)
+        item.pop("ai_image_regenerate_requested_at",None)
+        if not item.get("fallback_image_status"):
+            item["fallback_image_status"]="pending"
+        _select_image(item)
+        return item
     if item.get("ai_image"):
         item.pop("ai_image",None)
         item["ai_image_status"]="pending"
@@ -380,6 +398,21 @@ def _initialize_parallel_images(item):
 
 def _finish_archive_image(item,row,events):
     """Completa solo el fallback; ImageGen llega después por image-outbox V3."""
+    if _ai_image_disabled(item):
+        item.pop("ai_image",None)
+        item["disable_ai_image"]=True
+        item["ai_image_status"]="disabled"
+        item["image_mode"]="fallback_only"
+        item["image_strategy"]="fallback_only"
+        try:
+            if str(item.get("fallback_image_status") or "") not in {"ready","none"}:
+                _recover_fallback_image(item,row,events)
+        except Exception as exc:
+            item["fallback_image_status"]="none";item["fallback_image_failure_reason"]=str(exc)[:500]
+        _select_image(item)
+        item.pop("ai_image_regenerate_requested",None)
+        item.pop("ai_image_regenerate_requested_at",None)
+        return item["image_app_available"]
     if item.get("ai_image"):
         item.pop("ai_image",None)
         item["ai_image_inline_rejected"]=True
@@ -610,6 +643,12 @@ def selftest_images():
     _initialize_parallel_images(inline)
     assert "ai_image" not in inline and inline["ai_image_inline_rejected"] is True
     assert inline["image_choice"]=="fallback"
+    sensitive={"event_id":"sensitive","revision":1,"disable_ai_image":True,"image_mode":"fallback_only",
+               "fallback_image":{"url":"https://example.test/archive.jpg","source":"Fuente","source_url":"https://example.test/story","rights_status":"unverified","generated":False},
+               "fallback_image_status":"ready"}
+    _initialize_parallel_images(sensitive)
+    assert sensitive["ai_image_status"]=="disabled" and sensitive["image_strategy"]=="fallback_only"
+    assert sensitive["image_choice"]=="fallback" and sensitive["image"]["generated"] is False
     print("DUAL_IMAGE_SELFTEST_OK")
     return 0
 
