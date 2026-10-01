@@ -72,6 +72,14 @@ La única fuente principal admitida para el gag IA es una llamada real a **Image
 6. si ImageGen no llega a invocarse, NO dejes `pending`: persiste `ai_image_status:"failed"` con razón `imagegen_not_invoked` y no cuentes ningún intento;
 7. `.github/workflows/ttittulares-ai-image-apply.yml` materializa el raster y actualiza SOLO los campos visuales del READY.
 
+#### Transporte del raster: mismo patrón probado de TTendencias
+
+Para un resultado `status:"ready"`, usa **un único archivo JSON** `ttittulares/image-outbox/<event_id>-r<revision>-ai<attempt>.json` y escribe el raster completo directamente en `ai_image.url` como `data:image/jpeg;base64,<BASE64_COMPLETO>` (o PNG/WebP raster equivalente), igual que el handoff que funciona en TTendencias. El objeto debe conservar `provider:"chat-imagegen"`, `origin:"executing_chat"`, `source:"TTiTTulares / ChatGPT ImageGen"`, `generation_attempt` y el `context_guard` V3 exacto.
+
+**No trocees la imagen.** No uses `comment_chunks`, comentarios de PR, `chunk_files`, directorios `.parts`, concatenación manual de Base64 ni SHA transportados por un canal separado para nuevas generaciones. Esos puentes han provocado Base64 truncado y desajustes SHA. El consumidor ya acepta el `data:` URL directo y su selftest valida esa ruta.
+
+Si el canal ejecutor no puede escribir el `data:` URL completo en un único outbox, registra el intento como `failed` con razón técnica `image_transport_unavailable`; no inventes un puente alternativo ni dejes un `pending` ficticio. Una siguiente generación solo se hará mediante **🔁 Rehacer**.
+
 No esperes 4–6 para continuar con la siguiente noticia. Texto y cola editorial avanzan mientras el canal visual se resuelve por separado; el fallback real también continúa por su propio workflow.
 
 ### Aislamiento de contexto V3
