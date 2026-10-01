@@ -198,7 +198,9 @@ function runSource(v){return v==="manual"?"Manual":v==="mobile"?"Móvil→PC":v=
 function runPhaseLabel(s){
  const n=Number(s.current||0),t=Number(s.total||0),pos=n>0&&t>0?" "+n+" de "+t:"";
  const p=String(s.phase||"").toLowerCase();
- if(["preparing","prepare"].includes(p))return s.status==="REQUESTED"?"Preparando ejecución":"Preparando ejecución";
+ if(["preparing","prepare"].includes(p))return s.status==="REQUESTED"?"Esperando al PC":"Preparando ejecución";
+ if(p==="pc_ack")return "PC ha recogido la orden";
+ if(p==="chat_launch")return "Chat lanzado";
  if(["investigating","research","verifying_news"].includes(p))return "Investigando noticia"+pos;
  if(["drafting","redacting","writing"].includes(p))return "Redactando noticia"+pos;
  if(["image_generating","image_generate","generating_image"].includes(p))return "Buscando imagen real"+pos;
@@ -296,7 +298,10 @@ function runVisual(s){
    const heartbeat=Number(s.heartbeat_age_seconds);
    const stalled=Number.isFinite(heartbeat)&&heartbeat>=120?("sin heartbeat "+runDuration(heartbeat)):"";
    const pending=Number(s.total||0)>0&&Number(s.current||0)>0?Math.max(0,Number(s.total)-Number(s.current))+" pendientes":"";
-   el.textContent=[s.title,s.message,pending,runSource(s.source||s.source_label),elapsed,stalled].filter(Boolean).join(" · ")||(s.status==="REQUESTED"?"Esperando al PC para abrir el chat":"Ejecución en curso");
+   const requestedMs=Date.parse(s.requested_at||"");
+   const remaining=s.status==="REQUESTED"&&Number.isFinite(requestedMs)?Math.max(0,30-Math.floor((Date.now()-requestedMs)/1000)):null;
+   const liveMessage=remaining!=null?("Esperando al PC para recoger la orden · "+remaining+" s"):s.message;
+   el.textContent=[s.title,liveMessage,pending,runSource(s.source||s.source_label),elapsed,stalled].filter(Boolean).join(" · ")||(s.status==="REQUESTED"?"Esperando al PC":"Ejecución en curso");
    el.className=stalled?"error":"running";fill.style.width=Math.max(3,Math.min(99,runProgressValue(s)))+"%";
    if(count){warn.hidden=false;warn.textContent="⚠ "+count;warn.onclick=()=>showRunIncidents(s)}
    return
@@ -342,7 +347,7 @@ async function requestRun(){
    if(r.status===429)throw new Error("Ya se solicitó una ejecución hace unos segundos");
    if(r.status===409)throw new Error("Ya hay una ejecución en curso");
    if(!r.ok)throw new Error(d.error||"No se pudo solicitar la ejecución");
-   runVisual({ok:true,enabled:true,active:true,status:"REQUESTED",run_id:d.command_id,command_id:d.command_id,source:"mobile",phase:"preparing",current:0,total:0,requested_at:d.requested_at,updated_at:d.requested_at,message:"Orden móvil registrada; esperando al PC para abrir el chat."});scheduleRunPoll(true)
+   runVisual({ok:true,enabled:true,active:true,status:"REQUESTED",run_id:d.command_id,command_id:d.command_id,source:"mobile",phase:"preparing",current:0,total:0,requested_at:d.requested_at,updated_at:d.requested_at,message:"Orden móvil registrada; esperando al PC para recogerla."});scheduleRunPoll(true)
  }catch(e){toast(e.message);await loadRunStatus()}
 }
 function normalAiEligible(item){
