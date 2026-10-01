@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  issues: read
 
 concurrency:
   group: ttittulares-ai-image-apply
@@ -32,6 +33,9 @@ jobs:
       - name: Probar puente raster aislado
         run: python3 ttittulares/apply_ai_image_outbox.py --selftest
       - name: Materializar IA sin tocar el texto
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           set -euo pipefail
           git config user.name "ttittulares-image-bot"
