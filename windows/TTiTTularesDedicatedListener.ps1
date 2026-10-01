@@ -9,7 +9,6 @@ $StatePath = Join-Path $BaseDir "ttittulares-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
-$ProjectChatPrefix = "https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db-proyectos-app/c/"
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
 $WorkerId = "ttittulares-dedicated-v1"
@@ -129,16 +128,10 @@ function Launch-TTiTTulares([string]$CommandId) {
     if ($newText -match "MENSAJE ENVIADO") { $sawMessage = $true }
 
     $m = [regex]::Match($newText,'CHAT NUEVO:\s*(https://chatgpt\.com/\S+)')
-    if ($m.Success) {
+    if ($m.Success -and $sawMessage) {
       $chatUrl = $m.Groups[1].Value.Trim()
-      if (-not $chatUrl.StartsWith($ProjectChatPrefix,[System.StringComparison]::OrdinalIgnoreCase)) {
-        Write-Log "CHAT OUTSIDE PROJECT command=$CommandId url=$chatUrl"
-        return $false
-      }
-      if ($sawMessage) {
-        Write-Log "CHAT MESSAGE CONFIRMED IN PROJECT command=$CommandId url=$chatUrl"
-        return $true
-      }
+      Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId url=$chatUrl"
+      return $true
     }
   }
 
