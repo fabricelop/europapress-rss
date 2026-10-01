@@ -237,9 +237,10 @@ function renderCard(x,pending){
  const picture=card.querySelector(".imagebox");
  const rawAi=x.ai_image||{},ai=isChatImageGen(rawAi)?rawAi:{},fallback=x.fallback_image||{};
  const aiUrl=String(ai.url||""),fallbackUrl=String(fallback.url||"");
- const aiRaw=String(x.ai_image_status||"").toLowerCase(),aiRegenerating=Boolean(x.ai_image_regenerate_requested);
+ const aiRaw=String(x.ai_image_status||"").toLowerCase(),aiRegenerating=Boolean(x.ai_image_regenerate_requested),aiRegenerationError=String(x.ai_image_regeneration_error||"");
  let aiClass="aiNone",aiText="— IA no solicitada";
  if(aiRegenerating){aiClass="aiRework";aiText="↻ Nueva IA solicitada · espera antes de publicar"}
+ else if(aiRegenerationError){aiClass="aiFailed";aiText="✕ Nueva IA falló · se mantiene la anterior · Rehacer para intentar otra"}
  else if(aiUrl){aiClass="aiReady";aiText="✓ IA lista"}
  else if(["failed","none","error"].includes(aiRaw)){aiClass="aiFailed";aiText="✕ IA fallida · no llegará salvo Rehacer"}
  else if(["pending","started","tool_called"].includes(aiRaw)){aiClass="aiPending";aiText="● IA generándose · puede llegar · espera antes de publicar"}
