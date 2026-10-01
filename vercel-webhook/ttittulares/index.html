@@ -686,7 +686,8 @@ function renderList(){
   const current=(model.prepared||[]).filter(x=>!pendingClosed.has(String(x.event_id||"")));
   const signature=JSON.stringify([current,current.map(x=>[
    String(x.event_id||""),
-   Number(events[x.event_id]?.source_count||x.current_source_count||x.drafted_source_count||0)
+   Number(events[x.event_id]?.source_count||x.current_source_count||x.drafted_source_count||0),
+   imageRuns.get(String(x.event_id||""))||null
   ])]);
   // Un sondeo sin cambios no debe desmontar las imágenes ni las tarjetas abiertas.
   if(lastRenderedView==="ready"&&lastReadyRendering===signature)return;
@@ -805,7 +806,7 @@ function renderReady(list,preservedImages=new Map()){
   const current=Number(events[item.event_id]?.source_count||item.current_source_count||item.drafted_source_count||0);
   const drafted=Number(item.drafted_source_count||item.source_count||0);
   const card=document.createElement("article");card.className="card";card.dataset.eventId=String(item.event_id||"");
-  card.innerHTML='<div class="head readyHead"><div class="title"></div><div class="readyMetaRow"><div class="sources"></div><div class="count"></div><button class="btn expand" type="button">Abrir</button><button class="btn danger quickDismiss" type="button">Desestimar</button></div><div class="imageCompact aiStatusBadge"></div></div><div class="details"><div class="variants"></div><div class="imagebox"><div class="imageTitle">Imágenes</div><div class="imageMeta aiStatusBadge"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:9px"><div class="aiChoice" hidden><div>IA</div><img class="aiPreview" style="width:100%;height:190px;object-fit:contain"></div><div class="archiveChoice" hidden><div>Archivo</div><img class="archivePreview" style="width:100%;height:190px;object-fit:contain"></div></div></div><div class="actions"><button class="btn rework">🔁 Rehacer remate + IA</button><button class="btn copyTweet">📋 Copiar tuit</button><button class="btn copyAi" hidden>✨ Copiar imagen IA</button><button class="btn copyArchive" hidden>🖼️ Copiar imagen archivo</button><a class="btn openX" target="_blank" rel="noopener" hidden>↗ Abrir en X</a><a class="btn searchX" target="_blank" rel="noopener">🔎 Buscar en X</a><button class="btn published">✓ Ya publicado</button></div></div>';
+  card.innerHTML='<div class="head readyHead"><div class="title"></div><div class="readyMetaRow"><div class="sources"></div><div class="count"></div><button class="btn expand" type="button">Abrir</button><button class="btn danger quickDismiss" type="button">Desestimar</button></div><div class="imageCompact aiStatusBadge"></div></div><div class="details"><div class="variants"></div><div class="imagebox"><div class="imageTitle">Imágenes</div><div class="imageMeta aiStatusBadge"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:9px"><div class="aiChoice" hidden><div>IA</div><img class="aiPreview" style="width:100%;height:190px;object-fit:contain"></div><div class="archiveChoice" hidden><div>Archivo</div><img class="archivePreview" style="width:100%;height:190px;object-fit:contain"></div></div></div><div class="actions"><button class="btn generateAi">✨ Generar IA</button><button class="btn rework">🔁 Rehacer remate + IA</button><button class="btn copyTweet">📋 Copiar tuit</button><button class="btn copyAi" hidden>✨ Copiar imagen IA</button><button class="btn copyArchive" hidden>🖼️ Copiar imagen archivo</button><a class="btn openX" target="_blank" rel="noopener" hidden>↗ Abrir en X</a><a class="btn searchX" target="_blank" rel="noopener">🔎 Buscar en X</a><button class="btn published">✓ Ya publicado</button></div></div>';
   card.querySelector(".title").textContent=item.title||"Noticia sin título";
   card.querySelector(".sources").textContent="Red. "+drafted+" · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
@@ -826,6 +827,8 @@ function renderReady(list,preservedImages=new Map()){
   else if(aiLast==="tool_called"&&aiAgeMin!==null&&aiAgeMin>10){aiClass="aiFailed";aiText="✕ IA no llegó · no esperes · pulsa Rehacer"}
   else if(aiLast==="tool_called"){aiClass="aiPending";aiText="● IA materializándose · todavía puede llegar · espera unos minutos"}
   else if(["pending","started"].includes(aiRaw)||String(item.image_strategy||"")==="ai_plus_fallback"){aiClass="aiRework";aiText="↻ IA en cola · aún no se está generando"}
+  const liveImageRun=imageRuns.get(String(item.event_id||"")),liveUi=imageRunText(liveImageRun);
+  if(liveUi&&(imageRunActive(liveImageRun)||["ERROR","CANCELLED"].includes(String(liveImageRun.status||"").toUpperCase()))){aiClass=liveUi.cls;aiText=liveUi.text}
   const archiveText=fallbackUrl?" · archivo disponible":" · sin archivo";
   for(const el of [card.querySelector(".imageMeta"),card.querySelector(".imageCompact")]){
     el.className=el.className.replace(/ai(?:Pending|Ready|Failed|Rework|None)/g,"").trim()+" "+aiClass;
@@ -863,7 +866,7 @@ function renderReady(list,preservedImages=new Map()){
    preview.onerror=()=>{button.hidden=true;preview.hidden=true;};
    button.onclick=()=>copyImageToClipboard(url,button,preview);
   }
-  const imageInFlight=aiRegenerating||(!aiUrl&&aiLast==="tool_called"&&(aiAgeMin===null||aiAgeMin<=10));
+  const imageInFlight=imageRunActive(liveImageRun)||aiRegenerating||(!aiUrl&&aiLast==="tool_called"&&(aiAgeMin===null||aiAgeMin<=10));
   const vh=card.querySelector(".variants");
   const search=card.querySelector(".searchX");
   search.href=quoteSearchUrl(item);
@@ -880,6 +883,17 @@ function renderReady(list,preservedImages=new Map()){
     vh.appendChild(box)
   }
   async function close(action,question){if(!confirm(question))return;const id=String(item.event_id||""),old=[...model.prepared];pendingClosed.add(id);openCards.delete(id);persistUiState();model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();try{await api(action,{event_id:item.event_id});toast(action==="published"?(imageInFlight?"Publicada; imagen pendiente cancelada":"Marcada como publicada"):"Noticia desestimada");await load(true)}catch(e){pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message)}}
+  const generateAi=card.querySelector(".generateAi");
+  generateAi.textContent=aiUrl?"✨ Rehacer IA":"✨ Generar IA";
+  generateAi.disabled=imageRunActive(liveImageRun);
+  generateAi.onclick=async()=>{
+    generateAi.disabled=true;
+    try{
+      const retry=Boolean(aiUrl)||["failed","none","error"].includes(aiRaw);
+      await requestSingleImageRun(item,{markRegenerate:retry})
+    }catch(e){toast(e.message)}
+    finally{generateAi.disabled=imageRunActive(imageRuns.get(String(item.event_id||"")))}
+  };
   card.querySelector(".published").onclick=()=>close("published","¿Confirmas que ya has publicado esta noticia?");
   card.querySelector(".quickDismiss").onclick=()=>close("dismiss","¿Desestimar esta noticia?");
   card.querySelector(".rework").onclick=async()=>{
