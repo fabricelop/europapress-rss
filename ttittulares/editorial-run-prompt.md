@@ -14,7 +14,7 @@ Una PROBLEMATIC antigua que no se intenta en la pasada permanece visible en «No
 
 Al comenzar cada pasada crea también un `visual_backlog` con los READY de `ttittulares/prepared.json` que tengan `image_strategy:"ai_plus_fallback"`, no estén PUBLISHED/DISMISSED, no tengan `ai_image` válida y tengan `ai_image_status:"pending"`, o tengan `ai_image_regenerate_requested:true`.
 
-Estos items NO se reinvestigan ni se redactan de nuevo. Un `pending` con `ai_image_attempt>=1` ya consumió su intento automático y no vuelve a generar. Solo una solicitud explícita `ai_image_regenerate_requested:true` cuya versión aún no esté consumida autoriza una nueva llamada. Marca durablemente la versión como consumida antes de llamar a ImageGen. La capa visual es asíncrona y no impide cerrar la pasada editorial.
+Estos items NO se reinvestigan ni se redactan de nuevo. Un `pending` solo representa un intento real si existe prueba durable de que ImageGen fue invocado para ese intento: `ai_image_tool_called_at` y `ai_image_last_attempt_status:"tool_called"` (o un resultado terminal `ready|failed`). Un estado histórico `started` sin `ai_image_tool_called_at` es un intento huérfano: NO consume el intento automático y debe recuperarse con exactamente una llamada real a ImageGen, manteniendo `attempt:1`. Solo una solicitud explícita `ai_image_regenerate_requested:true` cuya versión aún no esté consumida autoriza incrementar el intento. Nunca marques un intento como consumido antes de invocar realmente ImageGen. La capa visual es asíncrona y no impide cerrar la pasada editorial.
 
 ## Redacción
 
@@ -64,12 +64,13 @@ La imagen es una capa asíncrona. **Nunca retrasa ni impide que una noticia pase
 
 La única fuente principal admitida para el gag IA es una llamada real a **ImageGen desde esta misma conversación ejecutora**. No crees `ttittulares/image-jobs/**`, no llames a Vercel AI Gateway ni a otro generador y no construyas/rasterices SVG como sustituto. Para cada noticia PROCESSING verificada:
 
-1. prepara y persiste el texto/tuit normalmente, con `image_strategy:"ai_plus_fallback"` y `ai_image_status:"pending"`;
-2. antes de generar, registra durablemente `ai_image_attempt:1`, estado de intento iniciado y el `context_guard` V3;
-3. cierra y verifica READY/Listas sin esperar a la imagen;
-4. llama exactamente UNA vez a ImageGen en este chat;
-5. entrega el raster real por `ttittulares/image-outbox/<event_id>-r<revision>-ai<attempt>.json` con estado `ready`, o escribe `failed` si falla ImageGen/transporte;
-6. `.github/workflows/ttittulares-ai-image-apply.yml` materializa el raster y actualiza SOLO los campos visuales del READY.
+1. prepara y persiste el texto/tuit normalmente, con `image_strategy:"ai_plus_fallback"` y `ai_image_status:"pending"`, pero NO escribas todavía `ai_image_attempt` ni estado `started`;
+2. cierra y verifica READY/Listas sin esperar a la imagen;
+3. llama exactamente UNA vez a ImageGen en este chat; esa llamada real, y no un marcador previo, es lo que consume el intento;
+4. inmediatamente después de que la llamada haya sido realmente invocada, persiste `ai_image_attempt:1`, `ai_image_last_attempt_status:"tool_called"`, `ai_image_tool_called_at` y el `context_guard` V3;
+5. entrega el raster real por `ttittulares/image-outbox/<event_id>-r<revision>-ai<attempt>.json` con estado `ready`; si ImageGen o el transporte falla, escribe un resultado `failed` con motivo técnico;
+6. si ImageGen no llega a invocarse, NO dejes `pending`: persiste `ai_image_status:"failed"` con razón `imagegen_not_invoked` y no cuentes ningún intento;
+7. `.github/workflows/ttittulares-ai-image-apply.yml` materializa el raster y actualiza SOLO los campos visuales del READY.
 
 No esperes 4–6 para continuar con la siguiente noticia. Texto y cola editorial avanzan mientras el canal visual se resuelve por separado; el fallback real también continúa por su propio workflow.
 
@@ -97,9 +98,10 @@ El `context_guard` es:
 El intento inicial es `attempt:1`. No hagas un segundo intento automático tras `failed`, timeout, interrupción o fallo de transporte. **🔁 Rehacer** es la única acción que autoriza `attempt = ai_image_attempt + 1`; no reabre investigación, texto ni tuit.
 
 Al iniciar cada pasada:
-- si un READY tiene `ai_image_regenerate_requested:true` y su `ai_image_regenerate_request_version` aún no fue consumida, marca esa versión como consumida y haz una sola llamada de Rehacer;
-- si tiene `ai_image_status:"pending"` sin `ai_image` pero `ai_image_attempt>=1`, no generes otra vez: ese intento ya fue iniciado;
-- si no existe `ai_image_attempt`, puede iniciarse una sola vez el intento 1 y debe registrarse antes de llamar.
+- si un READY tiene `ai_image_regenerate_requested:true` y su `ai_image_regenerate_request_version` aún no fue consumida, haz una sola llamada de Rehacer; marca esa versión como consumida únicamente cuando la llamada real haya sido invocada;
+- si tiene `ai_image_status:"pending"` sin `ai_image` y existe `ai_image_tool_called_at` para su intento actual, no generes otra vez: ese intento sí fue realmente invocado;
+- si tiene `ai_image_status:"pending"`, `ai_image_attempt>=1` pero NO existe `ai_image_tool_called_at` (incluido `ai_image_last_attempt_status:"started"`), considéralo un marcador huérfano y recupera exactamente UNA llamada real sin incrementar el número de intento;
+- si no existe `ai_image_attempt`, puede iniciarse una sola vez el intento 1, pero el número de intento se registra únicamente después de invocar ImageGen.
 
 El consumidor visual limpia la solicitud de Rehacer cuando aplica un resultado `ready` o `failed`. El outbox `ready` debe incluir `provider:"chat-imagegen"`, `origin:"executing_chat"`, `source:"TTiTTulares / ChatGPT ImageGen"`, `generation_attempt` y el `context_guard` V3 exacto. Cualquier otra procedencia se rechaza como IA visible.
 
@@ -133,6 +135,8 @@ El `prepared_item` editorial debe ser completo en texto/tuit, pero NO debe conte
 ## Cierre
 
 Relee cola, prepared y status, incluyendo PROCESSING anteriores. Informa noticias tratadas y estado de IA/fallback por separado, sin considerar ninguna imagen requisito de cierre.
+
+Antes de escribir RUNTRACE `DONE`, reconcilia la trazabilidad visual. Un item solo puede quedar `ai_image_status:"pending"` si para ESE intento existe `ai_image_tool_called_at` y `ai_image_last_attempt_status:"tool_called"`, es decir, si hubo una llamada real y solo queda pendiente transporte/materialización. Si no existe esa prueba, invoca ImageGen en ese mismo chat o marca `failed:imagegen_not_invoked`; jamás cierres con un `pending` ficticio. `summary.imagegen_calls` cuenta exclusivamente llamadas reales a la herramienta y `summary.ai_attempts_registered` no puede ser mayor que `imagegen_calls`. Si difieren, registra una incidencia y corrige los estados antes de DONE.
 
 La semántica de `partial` se refiere exclusivamente al **trabajo editorial de esta pasada que queda sin cerrar**. Una noticia realmente intentada en esta ejecución que termina o permanece en `PROBLEMATIC` es un resultado terminal de esa pasada: cuenta en `problematic_reviewed` y como incidencia de esa ejecución, pero **por sí sola no pone `partial:true`**. Una `PROBLEMATIC` histórica no reintentada puede seguir contando en `problematic_remaining`, pero NO cuenta como incidencia ni como revisada en esta pasada. En una ejecución sin PROCESSING ni problemáticas activadas por Check/revisión material, el diagnóstico debe cerrar 0/0, `problematic_reviewed:0` e incidencias 0 aunque existan elementos históricos en «No comprobadas».
 
