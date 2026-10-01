@@ -193,16 +193,32 @@ def _materialize_ai_image(item):
 def normalize_image(item):
     """Compatibilidad: normaliza la imagen elegida sin eliminar IA/fallback."""
     raw=item.get("image")
-    if not raw:
-        return {}
-    if isinstance(raw,dict) and raw.get("generated"):
+    aliases={
+        "image_url":"url","image_source":"source","image_source_url":"source_url",
+        "image_alt":"alt","image_rights_status":"rights_status",
+    }
+    if isinstance(raw,dict):
         image=dict(raw)
+    elif isinstance(raw,str) and raw.strip():
+        image={"url":raw.strip()}
+    else:
+        image={}
+    for old,new in aliases.items():
+        value=item.get(old)
+        if value not in (None,"") and not image.get(new):
+            image[new]=value
+    for old in aliases:
+        item.pop(old,None)
+    if not image:
+        item.pop("image",None)
+        return {}
+    if image.get("generated"):
         url=_image_url(image)
         if url and not (url.startswith("https://") or url.startswith("data:image/")):
             raise ValueError("imagen IA seleccionada inválida")
         item["image"]=image
         return image
-    image=_normalize_external_image(raw,item)
+    image=_normalize_external_image(image,item)
     if image:item["image"]=image
     else:item.pop("image",None)
     return image
