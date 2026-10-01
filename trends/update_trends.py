@@ -132,7 +132,7 @@ def parse_tweets24(html):
         if 1 <= rank <= 50 and name:
             vals.append((rank, name))
     vals.sort(key=lambda x: x[0])
-    return unique(name for _, name in vals)[:20]
+    return unique(name for _, name in vals)[:50]
 
 
 def parse_x_search_links(html):
@@ -295,7 +295,7 @@ def parse_ranked_text(html):
         if name and len(name) <= 100:
             vals.append((rank, name))
     vals.sort(key=lambda x: x[0])
-    return unique(name for _, name in vals)[:20]
+    return unique(name for _, name in vals)[:50]
 
 def parse_generic_ranked(html):
     vals = parse_ranked_table(html)
@@ -579,7 +579,7 @@ def build_upcoming(source_data, top10, previous_doc, status_doc, full_events, no
         # los datos observados (fuentes, posición y cobertura), no una probabilidad.
         score = (
             social_count * 20
-            + max(0, 21 - int(row["best_observed_rank"])) * 2
+            + max(0, 51 - int(row["best_observed_rank"])) * 2
             + min(news_count, 14) * 3
             + (6 if movement == "up" else 0)
         )
