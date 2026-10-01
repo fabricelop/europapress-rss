@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T16:55:32.083Z",
+  "updated_at": "2026-10-01T16:56:00Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -455,9 +455,9 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -472,22 +472,53 @@
       },
       "fallback_image_search_attempted_at": "2026-10-01T16:44:33.303976Z",
       "image": {
-        "url": "https://s1.abcstatics.com/abc/www/multimedia/economia/2026/10/01/Apagon-kHJG--1200x630@diario_abc.JPG",
-        "source": "www.abc.es",
-        "source_url": "https://www.abc.es/economia/bruselas-expedienta-espana-actualizar-plan-respuesta-ante-20261001164845-nt.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Bruselas expedienta a España por no actualizar su plan de respuesta ante apagones y crisis eléctricas"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/50c6383052d4-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/50c6383052d4-r1-ai1.jpg",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "50c6383052d4",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "alt": "Ilustración editorial neutral sobre el plan español de preparación ante crisis eléctricas y el expediente de la UE.",
+        "sha256": "b20dbb5a8583dc08ee2f3c89944891b4a37079638e8568e445eb846447f2dd13",
+        "handoff": "direct-materialized-by-executing-chat"
       },
       "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "tool_called",
+      "ai_image_last_attempt_status": "ready",
       "ai_image_tool_called_at": "2026-10-01T16:47:00Z",
       "ai_image_context_guard": {
         "version": 3,
         "event_id": "50c6383052d4",
         "revision": 1,
         "scope": "current_item_only"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/50c6383052d4-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/50c6383052d4-r1-ai1.jpg",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "50c6383052d4",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "alt": "Ilustración editorial neutral sobre el plan español de preparación ante crisis eléctricas y el expediente de la UE.",
+        "sha256": "b20dbb5a8583dc08ee2f3c89944891b4a37079638e8568e445eb846447f2dd13",
+        "handoff": "direct-materialized-by-executing-chat"
+      },
+      "ai_image_last_attempt_at": "2026-10-01T16:56:00Z"
     }
   ],
   "count": 6
