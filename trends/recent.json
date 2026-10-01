@@ -1,27 +1,27 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-10-01T15:21:13+02:00",
-  "primary_source": "snaplytics",
-  "selection_method": "aging-anchor",
+  "captured_at": "2026-10-01T15:31:15+02:00",
+  "primary_source": "consensus",
+  "selection_method": "consensus",
   "sources_used": [
+    "getdaytrends",
     "superx",
-    "snaplytics",
     "trendswe"
   ],
-  "source_count": 3,
+  "source_count": 4,
   "non_stale_source_count": 3,
   "fresh_sources": [],
   "reliability": "medium",
   "top10": [
     "#LaIslaDeLasTentaciones8",
-    "#RTXON",
-    "Portugal",
+    "#RTXOn",
     "Cristiano",
+    "Portugal",
     "Paiporta",
-    "#Mañaneros1O",
     "Puerta del Sol",
-    "#FelizJueves",
+    "#felizjueves",
+    "#Mañaneros1O",
     "#LaFreidoraDeLidl",
     "Almeida"
   ],
@@ -36,7 +36,7 @@
     },
     {
       "rank": 2,
-      "name": "#RTXON",
+      "name": "#RTXOn",
       "entered_top10_at": "2026-09-30T21:01:28+02:00",
       "movement": "flat",
       "previous_rank": 2,
@@ -44,19 +44,19 @@
     },
     {
       "rank": 3,
-      "name": "Portugal",
-      "entered_top10_at": "2026-09-30T21:41:00+02:00",
-      "movement": "flat",
-      "previous_rank": 3,
-      "rank_delta": 0
+      "name": "Cristiano",
+      "entered_top10_at": "2026-09-30T22:41:05+02:00",
+      "movement": "up",
+      "previous_rank": 4,
+      "rank_delta": 1
     },
     {
       "rank": 4,
-      "name": "Cristiano",
-      "entered_top10_at": "2026-09-30T22:41:05+02:00",
-      "movement": "flat",
-      "previous_rank": 4,
-      "rank_delta": 0
+      "name": "Portugal",
+      "entered_top10_at": "2026-09-30T21:41:00+02:00",
+      "movement": "down",
+      "previous_rank": 3,
+      "rank_delta": -1
     },
     {
       "rank": 5,
@@ -68,27 +68,27 @@
     },
     {
       "rank": 6,
-      "name": "#Mañaneros1O",
-      "entered_top10_at": "2026-10-01T14:50:59+02:00",
-      "movement": "flat",
-      "previous_rank": 6,
-      "rank_delta": 0
+      "name": "Puerta del Sol",
+      "entered_top10_at": "2026-09-30T03:40:50+02:00",
+      "movement": "up",
+      "previous_rank": 7,
+      "rank_delta": 1
     },
     {
       "rank": 7,
-      "name": "Puerta del Sol",
-      "entered_top10_at": "2026-09-30T03:40:50+02:00",
-      "movement": "flat",
-      "previous_rank": 7,
-      "rank_delta": 0
+      "name": "#felizjueves",
+      "entered_top10_at": "2026-10-01T08:41:17+02:00",
+      "movement": "up",
+      "previous_rank": 8,
+      "rank_delta": 1
     },
     {
       "rank": 8,
-      "name": "#FelizJueves",
-      "entered_top10_at": "2026-10-01T08:41:17+02:00",
-      "movement": "flat",
-      "previous_rank": 8,
-      "rank_delta": 0
+      "name": "#Mañaneros1O",
+      "entered_top10_at": "2026-10-01T14:50:59+02:00",
+      "movement": "down",
+      "previous_rank": 6,
+      "rank_delta": -2
     },
     {
       "rank": 9,
@@ -107,19 +107,19 @@
       "rank_delta": 0
     }
   ],
-  "unchanged_from_previous": true,
+  "unchanged_from_previous": false,
   "new_entries": [],
   "upcoming": [
     {
       "name": "Vivas",
       "social_source_count": 3,
       "social_sources": [
-        "snaplytics",
+        "getdaytrends",
         "superx",
         "trendswe"
       ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 12.0,
+      "best_observed_rank": 12,
+      "mean_observed_rank": 12.7,
       "movement": "down",
       "first_detected_at": "2026-10-01T14:50:59+02:00",
       "news_source_count": 11,
@@ -132,13 +132,13 @@
       "name": "Personas Mayores",
       "social_source_count": 3,
       "social_sources": [
-        "snaplytics",
+        "getdaytrends",
         "superx",
         "trendswe"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 12.3,
-      "movement": "down",
+      "mean_observed_rank": 11.7,
+      "movement": "flat",
       "first_detected_at": "2026-10-01T14:01:35+02:00",
       "news_source_count": 5,
       "news_event_id": "0c73d31c41f5",
@@ -150,13 +150,13 @@
       "name": "Amnistía Internacional",
       "social_source_count": 3,
       "social_sources": [
-        "snaplytics",
+        "getdaytrends",
         "superx",
         "trendswe"
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T12:40:56+02:00",
       "news_source_count": 7,
       "news_event_id": "bc1bd73387ea",
@@ -165,16 +165,32 @@
       "news_first_seen": "2026-09-30T14:53:57.005436Z"
     },
     {
-      "name": "Flydubai",
-      "social_source_count": 3,
+      "name": "Jorge Jesus",
+      "social_source_count": 2,
       "social_sources": [
-        "snaplytics",
+        "getdaytrends",
+        "trendswe"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 11.5,
+      "movement": "new",
+      "first_detected_at": "2026-10-01T15:31:15+02:00",
+      "news_source_count": 10,
+      "news_event_id": "26a630004165",
+      "news_title": "¿Será su final en la selección? Cristiano Ronaldo abandona la concentración de Portugal tras la 'rajada' de Jorge Jesus laSexta Deportes 30 de septiembre de 2026, 19:31",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-30T19:22:31.287827Z"
+    },
+    {
+      "name": "Flydubai",
+      "social_source_count": 2,
+      "social_sources": [
         "superx",
         "trendswe"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 16.3,
-      "movement": "flat",
+      "mean_observed_rank": 16.5,
+      "movement": "down",
       "first_detected_at": "2026-10-01T04:41:01+02:00",
       "news_source_count": 8,
       "news_event_id": "8daa966cd971",
@@ -183,15 +199,14 @@
       "news_first_seen": "2026-09-30T17:42:16.878373Z"
     },
     {
-      "name": "Melilla",
-      "social_source_count": 2,
+      "name": "#Melilla",
+      "social_source_count": 1,
       "social_sources": [
-        "snaplytics",
         "trendswe"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 16.0,
-      "movement": "flat",
+      "mean_observed_rank": 15.0,
+      "movement": "down",
       "first_detected_at": "2026-10-01T14:31:13+02:00",
       "news_source_count": 14,
       "news_event_id": "f47d6784c957",
@@ -200,56 +215,38 @@
       "news_first_seen": "2026-10-01T09:22:44.551135Z"
     },
     {
-      "name": "Jorge Jesús",
-      "social_source_count": 2,
+      "name": "Día Internacional",
+      "social_source_count": 3,
       "social_sources": [
-        "snaplytics",
+        "getdaytrends",
+        "superx",
+        "trendswe"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 16.0,
+      "movement": "new",
+      "first_detected_at": "2026-10-01T15:31:15+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Jorge Jesús",
+      "social_source_count": 1,
+      "social_sources": [
         "superx"
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
-      "movement": "flat",
+      "movement": "down",
       "first_detected_at": "2026-10-01T09:31:32+02:00",
       "news_source_count": 10,
       "news_event_id": "26a630004165",
       "news_title": "¿Será su final en la selección? Cristiano Ronaldo abandona la concentración de Portugal tras la 'rajada' de Jorge Jesus laSexta Deportes 30 de septiembre de 2026, 19:31",
       "news_status": "ELIGIBLE",
       "news_first_seen": "2026-09-30T19:22:31.287827Z"
-    },
-    {
-      "name": "Junts",
-      "social_source_count": 3,
-      "social_sources": [
-        "snaplytics",
-        "superx",
-        "trendswe"
-      ],
-      "best_observed_rank": 16,
-      "mean_observed_rank": 18.7,
-      "movement": "new",
-      "first_detected_at": "2026-10-01T15:21:13+02:00",
-      "news_source_count": 4,
-      "news_event_id": "03734592fb1a-r2",
-      "news_title": "Decretos de vivienda Podemos votará 'sí' a los decretos de vivienda y allana el camino a la espera de la decisión de Junts laSexta.com 01 de octubre de 2026, 09:49",
-      "news_status": "ELIGIBLE_UPDATE",
-      "news_first_seen": "2026-10-01T11:12:19.674762Z"
-    },
-    {
-      "name": "Christa Pike",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "superx"
-      ],
-      "best_observed_rank": 19,
-      "mean_observed_rank": 19.5,
-      "movement": "new",
-      "first_detected_at": "2026-10-01T15:21:13+02:00",
-      "news_source_count": 10,
-      "news_event_id": "16a7aa97e036",
-      "news_title": "Christa Pike, primera mujer que iba a ser ejecutada en 200 aos en Tennesse, sobrevive a dos inyecciones letales",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-10-01T05:41:54.650091Z"
     }
   ],
   "anticipated_entries": [],
@@ -258,20 +255,36 @@
     "trends24": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790860873",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790861475",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T15:21:13+02:00"
+      "fetched_at": "2026-10-01T15:31:15+02:00"
     },
     "getdaytrends": {
-      "ok": false,
-      "trends": [],
-      "error": "HTTPError: 502 Server Error: Bad Gateway for url: https://getdaytrends.com/es/spain/?_=1790860873",
+      "ok": true,
+      "trends": [
+        "#LaIslaDeLasTentaciones8",
+        "#RTXOn",
+        "Cristiano",
+        "Portugal",
+        "Paiporta",
+        "#felizjueves",
+        "Puerta del Sol",
+        "#LaFreidoraDeLidl",
+        "#Mañaneros1O",
+        "Almeida",
+        "Personas Mayores",
+        "Jorge Jesus",
+        "Vivas",
+        "Amnistía Internacional",
+        "Día Internacional"
+      ],
+      "error": null,
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-10-01T15:21:13+02:00"
+      "freshness": "unknown",
+      "fetched_at": "2026-10-01T15:31:15+02:00"
     },
     "tweets24": {
       "ok": false,
@@ -280,7 +293,7 @@
       "update_hint": "Updated 18 hours ago",
       "age_minutes": 1080.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T15:21:13+02:00"
+      "fetched_at": "2026-10-01T15:31:16+02:00"
     },
     "superx": {
       "ok": true,
@@ -310,16 +323,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T15:21:14+02:00"
+      "fetched_at": "2026-10-01T15:31:17+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790860874",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790861477",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T15:21:14+02:00"
+      "fetched_at": "2026-10-01T15:31:17+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -347,9 +360,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Oct 1, 2026 12:00 UTC",
-      "age_minutes": 81.2,
-      "freshness": "aging",
-      "fetched_at": "2026-10-01T15:21:14+02:00"
+      "age_minutes": 91.3,
+      "freshness": "stale",
+      "fetched_at": "2026-10-01T15:31:17+02:00"
     },
     "fowtools": {
       "ok": false,
@@ -358,16 +371,16 @@
       "update_hint": "Updated: October 01, 2026 at 01:00 PM No trend data available for this region right now.",
       "age_minutes": null,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T15:21:14+02:00"
+      "fetched_at": "2026-10-01T15:31:18+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790860876",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790861479",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T15:21:16+02:00"
+      "fetched_at": "2026-10-01T15:31:19+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -376,7 +389,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T15:21:17+02:00"
+      "fetched_at": "2026-10-01T15:31:20+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -406,16 +419,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T15:21:18+02:00"
+      "fetched_at": "2026-10-01T15:31:20+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790860881",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790861482",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T15:21:21+02:00"
+      "fetched_at": "2026-10-01T15:31:22+02:00"
     }
   }
 }
