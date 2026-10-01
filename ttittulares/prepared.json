@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T17:04:28Z",
+  "updated_at": "2026-10-01T17:00:00Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -562,9 +562,9 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -579,23 +579,53 @@
       },
       "fallback_image_search_attempted_at": "2026-10-01T17:02:19.935135Z",
       "image": {
-        "url": "https://cadenaser.com/resizer/v2/7ACOHK7ND5B6JNUZGLGHYDJEZI.jpg?auth=db33ff515aef82ece4a643fe82c97e922c540a19b740693a4db1b6b94fa4643e&quality=70&width=1200&height=675&focal=594,885",
-        "source": "cadenaser.com",
-        "source_url": "https://cadenaser.com/comunitat-valenciana/2026/10/01/renfe-suspende-la-circulacion-de-los-trenes-del-servicio-de-cercanias-de-valencia-debido-a-las-condiciones-meteorologicas-radio-valencia/",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Renfe suspende la circulación de los trenes del servicio de Cercanías de València debido a las condiciones meteorológicas"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/b8d0ae411a75-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/b8d0ae411a75-r1-ai1.jpg",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "b8d0ae411a75",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "alt": "Gag editorial de un tren de Cercanías bajo un paraguas gigante durante la alerta roja de lluvias en València.",
+        "sha256": "eabf759c4ed48cf28a5c40b0c9e7f439f850baaaf98c04645eb0d9a7ac7835a9",
+        "handoff": "direct-materialized-by-executing-chat"
       },
       "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "tool_called",
-      "ai_image_tool_called_at": "2026-10-01T17:04:28Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_tool_called_at": "2026-10-01T16:59:00Z",
       "ai_image_context_guard": {
         "version": 3,
         "event_id": "b8d0ae411a75",
         "revision": 1,
         "scope": "current_item_only"
       },
-      "ai_image_last_attempt_at": "2026-10-01T17:04:28Z"
+      "ai_image_last_attempt_at": "2026-10-01T17:00:00Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/b8d0ae411a75-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/b8d0ae411a75-r1-ai1.jpg",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "b8d0ae411a75",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "alt": "Gag editorial de un tren de Cercanías bajo un paraguas gigante durante la alerta roja de lluvias en València.",
+        "sha256": "eabf759c4ed48cf28a5c40b0c9e7f439f850baaaf98c04645eb0d9a7ac7835a9",
+        "handoff": "direct-materialized-by-executing-chat"
+      }
     }
   ],
   "count": 6
