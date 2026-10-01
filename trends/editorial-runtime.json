@@ -1,19 +1,21 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-01T22:21:07.932Z",
-  "last_completed_at": "2026-10-01T22:25:37.472Z",
+  "last_started_at": "2026-10-02T00:43:00+02:00",
+  "last_completed_at": "2026-10-02T00:49:36+02:00",
   "last_slot": null,
   "status": "success_with_incidents",
   "processed_ids": [
-    "5f810de04443",
-    "3dd01fb77d28",
-    "15a8bb795fe3",
-    "7375308f71a9"
+    "28010971de9f",
+    "4252a9034d7e",
+    "049566b6b12d",
+    "3dd01fb77d28"
   ],
-  "remaining_ids": [],
+  "remaining_ids": [
+    "3dd01fb77d28"
+  ],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-01T22:25:37.472Z",
+  "updated_at": "2026-10-02T00:49:36+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [
@@ -22,63 +24,89 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "chat-20261002T0021+0200",
+    "run_id": "chat-20261002T0043+0200",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-01T22:21:07.932Z",
-    "updated_at": "2026-10-01T22:25:37.472Z",
-    "finished_at": "2026-10-01T22:25:37.472Z",
+    "started_at": "2026-10-02T00:43:00+02:00",
+    "updated_at": "2026-10-02T00:49:36+02:00",
+    "finished_at": "2026-10-02T00:49:36+02:00",
     "current": 4,
     "total": 4,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-01T22:21:07.932Z",
+    "requested_at": "2026-10-02T00:43:00+02:00",
     "partial": false,
     "summary": {
       "trends_processed": 4,
-      "trends_explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 3,
-      "revisions_updated": 1,
+      "trends_explained": 2,
+      "explanation_groups": 2,
+      "new_cards": 2,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 1,
-      "incidents": 1,
+      "trends_problematic": 2,
+      "incidents": 2,
       "queue_remaining": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
+      "archive_sources_located": 2,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 3,
-      "remates_selected": 3,
-      "remates_omitted": 1
+      "explanations_verified_under_280": 2,
+      "remates_selected": 1,
+      "remates_omitted": 3
     },
-    "incident_count": 1,
+    "incident_count": 2,
     "incidents": [
+      {
+        "trend_id": "049566b6b12d",
+        "title": "Halloween",
+        "reason": "«Halloween» mantiene señal social en España, pero no aparece un detonante único, concreto y actual que explique la tendencia; hay cobertura estacional dispersa por el inicio de octubre. Se conserva como problemática para no inventar una causa."
+      },
       {
         "trend_id": "3dd01fb77d28",
         "title": "FUGAZ IS OUT",
-        "reason": "Tendencia confirmada en España, pero sin detonante concreto y actual verificable en fuentes abiertas."
+        "reason": "«FUGAZ IS OUT» sigue como tendencia alta en España, pero las fuentes abiertas solo permiten asociarla de forma tentativa con el EP «Fugaz» de Karen Dió, publicado semanas atrás; no hay evidencia suficiente de que ese sea el detonante actual en España."
       }
     ],
-    "message": "Cola recuperada desde este chat tras fallo del lanzador local: #ElPerroAndaluzTVE, Puigdemont y Chiqui explicadas; FUGAZ IS OUT queda problemática; cola final 0."
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "8068d4ee8d1b7928fbdecd077c55c5e538037403",
+      "recent_considered": 100
+    },
+    "remate_selections": [
+      {
+        "trend_id": "4252a9034d7e",
+        "name": "Troy Parrott",
+        "closer_text": "🌶️ Parrott regateó a media Austria y el 2-0 se escapó por la aduana."
+      }
+    ],
+    "radar": {
+      "captured_at": "2026-10-02T00:40:57+02:00",
+      "recent_sha": "6685c1b9c36f6525db7585e36456d4ccf0b3f7c2",
+      "queue_sha": "dd30b634e5ba3974a57ca63817440b5fd38684ae",
+      "queue_count": 1,
+      "new_entries": []
+    },
+    "message": "Pasada directa completada: Mike James y Troy Parrott explicados; Halloween y FUGAZ IS OUT quedan problemáticas por falta de detonante actual suficientemente verificable. No se forzó ninguna causa dudosa."
   },
   "summary": {
     "trends_processed": 4,
-    "trends_explained": 3,
-    "explanation_groups": 3,
-    "new_cards": 3,
-    "revisions_updated": 1,
+    "trends_explained": 2,
+    "explanation_groups": 2,
+    "new_cards": 2,
+    "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "trends_problematic": 1,
-    "incidents": 1,
+    "trends_problematic": 2,
+    "incidents": 2,
     "queue_remaining": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
     "fallback_images_ready": 0,
+    "archive_sources_located": 2,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 3,
-    "remates_selected": 3,
-    "remates_omitted": 1
+    "explanations_verified_under_280": 2,
+    "remates_selected": 1,
+    "remates_omitted": 3
   }
 }
