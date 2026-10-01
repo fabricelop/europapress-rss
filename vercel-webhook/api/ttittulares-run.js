@@ -148,7 +148,11 @@ async function requestImageRun(req,res){
   const previous=existing.doc||{};
   const previousStatus=String(previous.status||"").toUpperCase();
   const previousAt=stamp(previous.updated_at||previous.finished_at||previous.requested_at);
-  if(["REQUESTED","RUNNING","GENERATING","PERSISTING"].includes(previousStatus)&&previousAt&&Date.now()-previousAt<IMAGE_ACTIVE_MS){
+  const previousAge=previousAt?Date.now()-previousAt:Infinity;
+  const previousStillActive=previousStatus==="REQUESTED"
+    ?previousAge<30000
+    :["RUNNING","GENERATING","PERSISTING"].includes(previousStatus)&&previousAge<IMAGE_ACTIVE_MS;
+  if(previousStillActive){
     return res.status(409).json({ok:false,error:"image_run_in_progress",command_id:previous.command_id||null,target_id,status:previousStatus})
   }
   const requested_at=new Date().toISOString();
