@@ -10312,7 +10312,7 @@
       ],
       "auto_queued": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T17:06:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -10335,7 +10335,10 @@
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T15:12:34.151370Z",
+      "ai_image_failure_reason": "imagen raster inline: raster corrupto o truncado: broken data stream when reading image file"
     },
     {
       "id": "75f572510033",
@@ -10404,6 +10407,6 @@
       "rewrite_instruction": "Rehaz el remate manteniendo los hechos y el formato del tuit, con un giro más específico. Genera también una nueva imagen IA."
     }
   ],
-  "updated_at": "2026-10-01T17:10:00+02:00",
+  "updated_at": "2026-10-01T15:12:34.151434Z",
   "count": 376
 }
