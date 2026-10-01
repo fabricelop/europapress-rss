@@ -38,7 +38,8 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             python3 ttittulares/apply_ai_image_outbox.py
-            git add -A ttittulares/prepared.json ttittulares/generated-images ttittulares/image-outbox
+            git add -A ttittulares/prepared.json ttittulares/generated-images
+            if [ -d ttittulares/image-outbox ]; then git add -A ttittulares/image-outbox; fi
             if ! git diff --cached --quiet; then
               git commit -m "Adjuntar imagen IA a TTiTTulares"
               if git push origin HEAD:main; then exit 0; fi
