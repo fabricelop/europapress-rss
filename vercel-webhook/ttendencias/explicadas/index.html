@@ -178,10 +178,29 @@ function normalAiEligible(x){
  if(!x||x.copied||x.tremending_origin||!Boolean(String(x.id||"")))return false;
  return !explicitAiBlockReason(x)
 }
-function imageRunActive(run){return ["REQUESTED","RUNNING","GENERATING","PERSISTING"].includes(String(run?.status||"").toUpperCase())}
+function imageHandoffTimedOut(run){
+ const st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"").toLowerCase();
+ if(st!=="RUNNING"||!["pc_pickup","pc_launch"].includes(phase))return false;
+ const at=Date.parse(run?.updated_at||run?.pc_launched_at||run?.pc_picked_up_at||"");
+ return Number.isFinite(at)&&Date.now()-at>=45000
+}
+function imageGenerationTimedOut(run){
+ const st=String(run?.status||"").toUpperCase();
+ if(!["RUNNING","GENERATING","PERSISTING"].includes(st)||imageHandoffTimedOut(run))return false;
+ const at=Date.parse(run?.updated_at||"");
+ return Number.isFinite(at)&&Date.now()-at>=150000
+}
+function imageRunActive(run){
+ const st=String(run?.status||"").toUpperCase();
+ if(st==="REQUESTED")return true;
+ if(imageHandoffTimedOut(run)||imageGenerationTimedOut(run))return false;
+ return ["RUNNING","GENERATING","PERSISTING"].includes(st)
+}
 function liveImageRunState(x){
  const run=imageRuns.get(String(x.id||"")),st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"");
  if(st==="REQUESTED")return {aiCls:"aiRework",collapsed:"requested",text:"◷ IA solicitada · esperando al PC"};
+ if(imageHandoffTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ El chat IA no arrancó en 45 s · Rehacer"};
+ if(imageGenerationTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ La generación superó 150 s · Rehacer"};
  if(st==="RUNNING")return {aiCls:"aiPending",collapsed:"pending",text:phase==="pc_pickup"?"● PC ha recogido la imagen":phase==="pc_launch"?"● Chat IA abierto · esperando respuesta":phase==="validating"?"● Chat IA abierto · validando":"● Chat IA abierto"};
  if(st==="GENERATING")return {aiCls:"aiPending",collapsed:"pending",text:"● Generando IA ahora en ChatGPT"};
  if(st==="PERSISTING")return {aiCls:"aiPending",collapsed:"pending",text:"● IA generada · guardando"};
