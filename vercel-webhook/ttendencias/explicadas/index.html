@@ -194,7 +194,7 @@ function appendImagePreview(host,image,label,badge){
  title.textContent=label;
  if(badge){const b=document.createElement("span");b.textContent="EN USO";b.style.cssText="color:#ffce69";title.appendChild(b)}
  const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";
- const img=document.createElement("img");img.src=API+"?view=image-proxy&url="+encodeURIComponent(url);img.alt=String(image.alt||label);img.loading="lazy";img.decoding="async";img.style.cssText="display:block;width:100%;height:auto;max-height:320px;object-fit:contain;border-radius:8px;background:#090d13";
+ const img=document.createElement("img");img.src=url;img.alt=String(image.alt||label);img.loading="lazy";img.decoding="async";img.style.cssText="display:block;width:100%;height:auto;max-height:320px;object-fit:contain;border-radius:8px;background:#090d13";
  a.appendChild(img);wrap.append(title,a);
  const source=document.createElement("div");source.style.cssText="font-size:10px;color:#8090a4;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis";source.textContent=String(image.source||label);wrap.appendChild(source);
  host.appendChild(wrap);return true;
