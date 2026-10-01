@@ -7,7 +7,7 @@ const ISSUER = "https://token.actions.githubusercontent.com";
 const AUDIENCE = "tt-image-generator-v1";
 const REPOSITORY = "fabricelop/europapress-rss";
 const WORKFLOW_SUFFIX = "/.github/workflows/ai-image-generate.yml@refs/heads/main";
-const MODEL = "prodia/flux-fast-schnell";
+const MODEL = "openai/gpt-image-2";
 const JWKS = createRemoteJWKSet(new URL(ISSUER + "/.well-known/jwks"));
 
 function reply(res, status, body) {
