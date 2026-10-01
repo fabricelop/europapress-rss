@@ -1,51 +1,77 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-01T09:16:43+02:00",
-  "last_completed_at": "2026-10-01T09:17:15+02:00",
+  "last_started_at": "2026-10-01T09:20:30+02:00",
+  "last_completed_at": "2026-10-01T09:28:00+02:00",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "tremending-de5e65a408c5",
+    "0f508660b269",
+    "5f9796eff0bb"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-01T09:17:15+02:00",
+  "updated_at": "2026-10-01T09:28:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "chat-20261001T091643+0200",
+    "run_id": "chat-20261001T092030+0200",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-01T09:16:43+02:00",
-    "updated_at": "2026-10-01T09:17:15+02:00",
-    "finished_at": "2026-10-01T09:17:15+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-01T09:20:30+02:00",
+    "updated_at": "2026-10-01T09:28:00+02:00",
+    "finished_at": "2026-10-01T09:28:00+02:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-01T09:16:43+02:00",
+    "requested_at": "2026-10-01T09:20:30+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 3,
+      "trends_explained": 3,
+      "explanation_groups": 3,
+      "new_cards": 3,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
-      "incidents": 0,
+      "incidents": 3,
       "queue_remaining": 0,
       "images_generated": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 0
+      "explanations_verified_under_280": 3,
+      "remates_selected": 2,
+      "remates_omitted": 1
     },
-    "incident_count": 0,
-    "incidents": [],
+    "incident_count": 3,
+    "incidents": [
+      {
+        "at": "2026-10-01T09:26:30+02:00",
+        "phase": "image_persisting",
+        "trend_id": "tremending-de5e65a408c5",
+        "title": "Almeida denuncia que en la acampada de Sol hay",
+        "reason": "No se obtuvo un raster IA persistible; texto cerrado sin bloqueo."
+      },
+      {
+        "at": "2026-10-01T09:26:30+02:00",
+        "phase": "image_persisting",
+        "trend_id": "0f508660b269",
+        "title": "Tennessee",
+        "reason": "No se obtuvo un raster IA persistible; texto cerrado sin bloqueo."
+      },
+      {
+        "at": "2026-10-01T09:26:30+02:00",
+        "phase": "image_persisting",
+        "trend_id": "5f9796eff0bb",
+        "title": "Bienvenido Octubre",
+        "reason": "No se obtuvo un raster IA persistible; texto cerrado sin bloqueo."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "d454e29b00d196bd6a9789208d58fff25449d63a",
@@ -53,23 +79,153 @@
       "total_ratings": 94,
       "recent_considered": 94
     },
-    "remate_selections": [],
-    "message": "Pasada directa de control completada: recent.json seguía fresco (09:11 CEST), editorial-queue estaba vacía y no había solicitudes 🔁 Rehacer pendientes. No hubo investigación web, imágenes, Work ni despliegues."
+    "remate_selections": [
+      {
+        "trend_id": "tremending-de5e65a408c5",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.6,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.8,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 0.9,
+            "repetition_penalty": 0.6
+          },
+          {
+            "id": "c2",
+            "total": 7.9,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 0.9,
+            "repetition_penalty": 0.6
+          },
+          {
+            "id": "c3",
+            "total": 8.7,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0.4
+          },
+          {
+            "id": "c4",
+            "total": 7.3,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.7,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0.6
+          },
+          {
+            "id": "c5",
+            "total": 8.1,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.9,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 0.9,
+            "repetition_penalty": 0.5
+          }
+        ],
+        "selected_candidate": "c3",
+        "selected_score": 8.7,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "0f508660b269",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_topic"
+      },
+      {
+        "trend_id": "5f9796eff0bb",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.1,
+            "ratings_affinity": 1.6,
+            "trend_specificity": 1.5,
+            "punch": 1.4,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": 0.6
+          },
+          {
+            "id": "c2",
+            "total": 8.4,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0.5
+          },
+          {
+            "id": "c3",
+            "total": 7.8,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0.5
+          },
+          {
+            "id": "c4",
+            "total": 7.5,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0.5
+          },
+          {
+            "id": "c5",
+            "total": 7.2,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.5,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0.5
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.4,
+        "no_remate_reason": null
+      }
+    ],
+    "message": "Pasada directa completada y verificada: 3/3 explicaciones cerradas y cola final vacía. Los tres intentos visuales no produjeron raster IA persistible y quedaron registrados como fallos no bloqueantes; Almeida conserva fallback de captura pendiente. Sin Work ni despliegues Vercel."
   },
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "trends_processed": 3,
+    "trends_explained": 3,
+    "explanation_groups": 3,
+    "new_cards": 3,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
-    "incidents": 0,
+    "incidents": 3,
     "queue_remaining": 0,
     "images_generated": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
-    "remates_omitted": 0
+    "explanations_verified_under_280": 3,
+    "remates_selected": 2,
+    "remates_omitted": 1
   }
 }
