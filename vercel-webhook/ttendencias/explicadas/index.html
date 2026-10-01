@@ -170,11 +170,13 @@ async function imageDecision(x,action,button){
  }catch(error){button.textContent=old;button.disabled=false;alert(error?.message||"No se pudo guardar la decisión de imagen.");}
 }
 
+function explicitAiBlockReason(x){
+ if(!x||x.tremending_origin)return "tremending";
+ return String(x.ai_image_block_reason||x.image_block_reason||"").trim()
+}
 function normalAiEligible(x){
- if(!x||x.copied||x.tremending_origin||x.disable_ai_image)return false;
- const mode=String(x.image_mode||x.image_strategy||"").toLowerCase();
- if(["fallback_only","archive_only","tweet_capture_only"].includes(mode))return false;
- return String(x.ai_image_status||"").toLowerCase()!=="disabled"&&Boolean(String(x.id||""))
+ if(!x||x.copied||x.tremending_origin||!Boolean(String(x.id||"")))return false;
+ return !explicitAiBlockReason(x)
 }
 function imageRunActive(run){return ["REQUESTED","RUNNING","GENERATING","PERSISTING"].includes(String(run?.status||"").toUpperCase())}
 function liveImageRunState(x){
@@ -192,11 +194,8 @@ function pendingImageItems(){
  return allItems.filter(x=>{
    if(!normalAiEligible(x))return false;
    const ai=isChatImageGen(x.ai_image)?x.ai_image:{},hasAi=Boolean(String(ai.url||""));
-   const raw=String(x.ai_image_status||"").toLowerCase();
    if(x.ai_image_regenerate_requested)return true;
-   if(hasAi)return false;
-   if(["failed","error","none"].includes(raw))return false;
-   return true
+   return !hasAi
  })
 }
 function updateImageControl(){
@@ -224,7 +223,8 @@ async function requestImageRun(x,{markRegenerate=false,silent=false}={}){
  if(!controlToken){if(!silent)alert("Guarda primero el token de control desde Ajustes en la pantalla principal.");throw new Error("Falta acceso")}
  const id=String(x.id||"");if(!id)throw new Error("La tendencia no tiene id");
  if(imageRunActive(imageRuns.get(id))){if(!silent)alert("Esa imagen ya se está generando.");return false}
- if(markRegenerate&&!x.ai_image_regenerate_requested)await markImageRegenerate(x);
+ const hasAi=Boolean(String((isChatImageGen(x.ai_image)?x.ai_image:{}).url||""));
+ if((markRegenerate||!hasAi)&&!x.ai_image_regenerate_requested)await markImageRegenerate(x);
  const response=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+controlToken},body:JSON.stringify({
    task:"images",target_id:id,id,target_name:x.name||displayName(x),revision:Number(x.revision||0)
  })});
@@ -284,12 +284,12 @@ function collapsedImageState(x){
  }
  if(live&&(imageRunActive(imageRuns.get(String(x.id||"")))||["ERROR","CANCELLED"].includes(String(imageRuns.get(String(x.id||""))?.status||"").toUpperCase())))return {text:live.text+(fallbackUrl?" · archivo disponible":""),cls:live.collapsed};
  if(aiRegenerating)return {text:"↻ Nueva IA solicitada"+(fallbackUrl?" · archivo disponible":""),cls:"pending"};
- if(aiRegenerationError)return {text:"✕ Nueva IA falló"+(fallbackUrl?" · archivo disponible":""),cls:fallbackUrl?"fallback":"failed"};
+ if(aiRegenerationError)return {text:"◷ Pendiente IA · fallo anterior"+(fallbackUrl?" · archivo disponible":""),cls:"pending"};
  if(/^https:\/\//i.test(aiUrl))return {text:"✓ IA lista"+(fallbackUrl?" · archivo disponible":""),cls:"ready"};
- if(["pending","started","tool_called"].includes(aiRaw))return {text:"● IA generándose"+(fallbackUrl?" · archivo disponible":""),cls:"pending"};
- if(["failed","none","error"].includes(aiRaw))return {text:fallbackUrl?"✕ IA fallida · archivo disponible":"✕ IA fallida",cls:fallbackUrl?"fallback":"failed"};
- if(/^https:\/\//i.test(fallbackUrl))return {text:"🖼️ Solo archivo disponible",cls:"fallback"};
- return {text:"— Sin imagen",cls:"failed"};
+ if(["pending","started","tool_called"].includes(aiRaw))return {text:"● IA pendiente/generándose"+(fallbackUrl?" · archivo disponible":""),cls:"pending"};
+ if(["failed","none","error","disabled",""].includes(aiRaw))return {text:"◷ Pendiente IA"+(["failed","error"].includes(aiRaw)?" · fallo anterior":"")+(fallbackUrl?" · archivo disponible":""),cls:"pending"};
+ if(/^https:\/\//i.test(fallbackUrl))return {text:"◷ Pendiente IA · archivo disponible",cls:"pending"};
+ return {text:"◷ Pendiente IA",cls:"pending"};
 }
 function appendImagePreview(host,image,label,badge){
  const url=String(image?.url||"");if(!/^https:\/\//i.test(url))return false;
@@ -361,10 +361,10 @@ function renderCard(x,pending){
  const aiRaw=String(x.ai_image_status||"").toLowerCase(),aiRegenerating=Boolean(x.ai_image_regenerate_requested),aiRegenerationError=String(x.ai_image_regeneration_error||"");
  let aiClass="aiNone",aiText="— IA no solicitada";
  if(aiRegenerating){aiClass="aiRework";aiText="↻ Nueva IA solicitada · espera antes de publicar"}
- else if(aiRegenerationError){aiClass="aiFailed";aiText="✕ Nueva IA falló · se mantiene la anterior · Rehacer para intentar otra"}
+ else if(aiRegenerationError){aiClass="aiPending";aiText="◷ Pendiente IA · fallo anterior"}
  else if(aiUrl){aiClass="aiReady";aiText="✓ IA lista"}
- else if(["failed","none","error"].includes(aiRaw)){aiClass="aiFailed";aiText="✕ IA fallida · no llegará salvo Rehacer"}
- else if(["pending","started","tool_called"].includes(aiRaw)){aiClass="aiPending";aiText="● IA generándose · puede llegar · espera antes de publicar"}
+ else if(["failed","none","error","disabled",""].includes(aiRaw)){aiClass="aiPending";aiText="◷ Pendiente IA"+(["failed","error"].includes(aiRaw)?" · fallo anterior":"")}
+ else if(["pending","started","tool_called"].includes(aiRaw)){aiClass="aiPending";aiText="● IA pendiente/generándose"}
  const liveRun=liveImageRunState(x);
  if(liveRun&&(imageRunActive(imageRuns.get(String(x.id||"")))||["ERROR","CANCELLED"].includes(String(imageRuns.get(String(x.id||""))?.status||"").toUpperCase()))){aiClass=liveRun.aiCls;aiText=liveRun.text}
  const aiStatus=card.querySelector(".aiStatusBadge");aiStatus.classList.add(aiClass);aiStatus.textContent=aiText+(fallbackUrl?" · archivo disponible":" · sin archivo");
