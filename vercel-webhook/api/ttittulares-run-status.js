@@ -48,8 +48,21 @@ async function comments(){
   const out=[];
   if(direct.ok)out.push(await direct.json());
   if(recent.ok){
-    for(const x of await recent.json()){
+    const firstPage=await recent.json();
+    for(const x of firstPage){
       if(String(x.body||"").startsWith(TRACE_PREFIX))out.push(x)
+    }
+    // La lista de comentarios es ascendente. Si hay más de 100 comentarios en
+    // la ventana, la ejecución más reciente estará en la última página.
+    const link=String(recent.headers.get("link")||"");
+    const lastUrl=(link.match(/<([^>]+)>;\s*rel="last"/)||[])[1];
+    if(lastUrl){
+      const last=await gh(lastUrl);
+      if(last.ok){
+        for(const x of await last.json()){
+          if(String(x.body||"").startsWith(TRACE_PREFIX))out.push(x)
+        }
+      }
     }
   }else if(!direct.ok){
     throw new Error(`GitHub RUNTRACE: ${recent.status} ${await recent.text()}`)
