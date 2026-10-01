@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T07:40:00Z",
+  "updated_at": "2026-10-01T07:40:36.661142Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -378,7 +378,7 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "none",
       "image_choice": "none",
       "image_status": "none",
@@ -386,7 +386,11 @@
       "image_app_available": false,
       "image_delivery": "none",
       "fallback_image_search_attempted_at": "2026-10-01T07:39:19.346546Z",
-      "fallback_image_failure_reason": "No se encontró una imagen HTTPS verificable en las páginas de las fuentes del acontecimiento."
+      "fallback_image_failure_reason": "No se encontró una imagen HTTPS verificable en las páginas de las fuentes del acontecimiento.",
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T07:40:36.661075Z",
+      "ai_image_failure_reason": "ImageGen produjo el raster y se normalizaron sus bytes localmente, pero este canal de ejecución no dispone de un puente de archivo transferible desde el raster local al GitHub Contents API. READY se conserva; no hay fallback HTTPS verificable para este elemento."
     }
   ]
 }
