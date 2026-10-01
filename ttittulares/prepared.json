@@ -360,12 +360,29 @@
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_choice": "none",
-      "image_status": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none"
+      "image_app_available": true,
+      "image_delivery": "app",
+      "fallback_image": {
+        "url": "https://e01-phantom-elmundo.uecdn.es/f1f6040f782270aa9c1ae9fd0b4be8a7/resize/1200/f/webp/assets/multimedia/imagenes/2022/09/22/16638324043331.jpg",
+        "source": "www.elmundo.es",
+        "source_url": "https://www.elmundo.es/yodona/horoscopo/2026/10/01/6ab256f4fc6c83551f8b4593.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Horóscopo de hoy jueves 1 de octubre de 2026"
+      },
+      "fallback_image_search_attempted_at": "2026-10-01T07:36:15.611178Z",
+      "image": {
+        "url": "https://e01-phantom-elmundo.uecdn.es/f1f6040f782270aa9c1ae9fd0b4be8a7/resize/1200/f/webp/assets/multimedia/imagenes/2022/09/22/16638324043331.jpg",
+        "source": "www.elmundo.es",
+        "source_url": "https://www.elmundo.es/yodona/horoscopo/2026/10/01/6ab256f4fc6c83551f8b4593.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Horóscopo de hoy jueves 1 de octubre de 2026"
+      }
     }
   ]
 }
