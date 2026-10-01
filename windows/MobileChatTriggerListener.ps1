@@ -401,6 +401,8 @@ while ($true) {
 
         foreach ($job in $jobs) {
           if ($slots -le 0) { break }
+          # TTendencias v2 asigna sus imágenes al listener dedicado.
+          if ($name -eq "ttendencias" -and [string]$job.executor -eq "pc_chat_ttendencias_dedicated") { continue }
           $commandId = [string]$job.command_id
           if (-not $commandId -or (Seen-ImageCommand $state $name $commandId)) { continue }
 
