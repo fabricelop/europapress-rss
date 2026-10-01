@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T09:48:41.817Z",
+  "updated_at": "2026-10-01T09:54:13.523685Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -588,7 +588,7 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
@@ -596,8 +596,8 @@
       "image_app_available": true,
       "image_delivery": "app",
       "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "started",
-      "ai_image_last_attempt_at": "2026-10-01T09:35:00Z",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T09:54:13.523582Z",
       "ai_image_context_guard": {
         "version": 3,
         "event_id": "98d9a921b598",
@@ -620,7 +620,8 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "El Corte Inglés recompra a Tool Factory el 25% de su filial de viajes y se hace con el 100% del grupo"
-      }
+      },
+      "ai_image_failure_reason": "Invalid base64-encoded string: number of data characters (25161) cannot be 1 more than a multiple of 4"
     },
     {
       "event_id": "manual-18820eb5fc8e",
