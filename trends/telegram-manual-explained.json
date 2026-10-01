@@ -8712,8 +8712,8 @@
       ],
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "failed",
-      "ai_image_attempt": 1,
-      "ai_image_failure_reason": "No se obtuvo un raster IA persistible en esta pasada; la capa visual no bloquea el cierre editorial.",
+      "ai_image_attempt": 3,
+      "ai_image_failure_reason": "HTTP 502: AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits. | fallback: HTTP Error 500: Internal Server Error",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "none",
       "fallback_image_failure_reason": "Etiqueta estacional sin una fotografía editorial específica verificada.",
@@ -8721,7 +8721,7 @@
       "image_status": "none",
       "image_pending": false,
       "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-01T07:27:49.631186Z"
+      "ai_image_last_attempt_at": "2026-10-01T07:58:14.812163Z"
     },
     {
       "id": "228b125cc507",
@@ -8758,7 +8758,7 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
@@ -8780,7 +8780,10 @@
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T07:58:14.811683Z",
+      "ai_image_failure_reason": "HTTP 502: AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits."
     },
     {
       "id": "e1360403525d",
@@ -8821,7 +8824,7 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
@@ -8843,9 +8846,12 @@
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T07:58:14.812338Z",
+      "ai_image_failure_reason": "HTTP 502: AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits. | fallback: HTTP Error 500: Internal Server Error"
     }
   ],
-  "updated_at": "2026-10-01T09:55:10+02:00",
+  "updated_at": "2026-10-01T07:58:14.813457Z",
   "count": 362
 }
