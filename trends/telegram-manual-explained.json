@@ -10672,13 +10672,13 @@
       "auto_queued": true,
       "batch_id": "70cc9e93328c",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T18:21:00+02:00",
       "ai_image_tool_called_at": "2026-10-01T18:21:00+02:00",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "fallback_image": {
@@ -10690,15 +10690,49 @@
         "generated": false
       },
       "image": {
-        "url": "https://cadenaser.com/resizer/v2/7A34DSSYZBEGRNSMYA424IWIY4.jpg?auth=85aa3346793a4bdc5d3c4bf47d5c1eeb1d4844521f20a96f22949501877ad450&quality=70&width=1200&height=675&smart=true",
-        "source": "Cadena SER · 1/10/2026",
-        "source_url": "https://cadenaser.com/nacional/2026/10/01/la-uefa-confirma-que-el-real-madrid-le-ha-enviado-documentacion-sobre-el-caso-negreira-cadena-ser/",
-        "alt": "Imagen de archivo relacionada con Uefa",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/5738d6468612-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "5738d6468612",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "db08ad1c-9ebe-4825-806f-ab8409846983",
+        "alt": "Ilustración editorial de una autoridad del fútbol europeo reabriendo un gran expediente rodeado de documentos, un balón y tarjetas arbitrales",
+        "sha256": "987f93c050d8ca018384e073390283e5ac55aaf289a1d2a4f95d3d3c4d3ec5af",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/5738d6468612-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/5738d6468612-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "5738d6468612",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "db08ad1c-9ebe-4825-806f-ab8409846983",
+        "alt": "Ilustración editorial de una autoridad del fútbol europeo reabriendo un gran expediente rodeado de documentos, un balón y tarjetas arbitrales",
+        "sha256": "987f93c050d8ca018384e073390283e5ac55aaf289a1d2a4f95d3d3c4d3ec5af",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/5738d6468612-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T16:27:27.783071Z"
     }
   ],
-  "updated_at": "2026-10-01T16:23:07.664210Z",
+  "updated_at": "2026-10-01T16:27:27.783165Z",
   "count": 380
 }
