@@ -1,0 +1,56 @@
+name: TTendencias · aplicar imagen IA sin bloqueo
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "trends/image-outbox/**"
+      - "trends/apply_ai_image_outbox.py"
+      - "trends/apply_editorial_outbox.py"
+      - ".github/workflows/ttendencias-ai-image-apply.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttendencias-ai-image-apply
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preparar raster
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow
+      - name: Validar consumidor
+        run: python3 -m py_compile trends/apply_ai_image_outbox.py trends/apply_editorial_outbox.py
+      - name: Materializar IA sin tocar la explicación
+        run: |
+          set -euo pipefail
+          git config user.name "ttendencias-ai-image-bot"
+          git config user.email "actions@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 trends/apply_ai_image_outbox.py
+            git add -A trends/telegram-manual-explained.json trends/generated-images trends/image-outbox
+            if ! git diff --cached --quiet; then
+              git commit -m "Adjuntar imagen IA a TTendencias"
+              if git push origin HEAD:main; then exit 0; fi
+              sleep $((attempt * 2))
+              continue
+            fi
+            if compgen -G "trends/image-outbox/*.json" > /dev/null; then
+              echo "Explicación aún no visible; reintentando ($attempt/5)"
+              sleep $((attempt * 2))
+              continue
+            fi
+            exit 0
+          done
+          echo "No se pudo aplicar la imagen IA tras cinco intentos" >&2
+          exit 1
