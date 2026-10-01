@@ -277,10 +277,12 @@ function collapsedImageState(x){
  const aiRaw=String(x.ai_image_status||"").toLowerCase();
  const aiRegenerating=Boolean(x.ai_image_regenerate_requested),aiRegenerationError=String(x.ai_image_regeneration_error||"");
 
+ const live=liveImageRunState(x);
  if(x.tremending_origin){
    if(/^https:\/\//i.test(selectedUrl)||/^https:\/\//i.test(fallbackUrl))return {text:"✓ Imagen del tuit lista",cls:"ready"};
    return {text:"— Imagen del tuit no disponible",cls:"failed"};
  }
+ if(live&&(imageRunActive(imageRuns.get(String(x.id||"")))||["ERROR","CANCELLED"].includes(String(imageRuns.get(String(x.id||""))?.status||"").toUpperCase())))return {text:live.text+(fallbackUrl?" · archivo disponible":""),cls:live.collapsed};
  if(aiRegenerating)return {text:"↻ Nueva IA solicitada"+(fallbackUrl?" · archivo disponible":""),cls:"pending"};
  if(aiRegenerationError)return {text:"✕ Nueva IA falló"+(fallbackUrl?" · archivo disponible":""),cls:fallbackUrl?"fallback":"failed"};
  if(/^https:\/\//i.test(aiUrl))return {text:"✓ IA lista"+(fallbackUrl?" · archivo disponible":""),cls:"ready"};
@@ -363,6 +365,8 @@ function renderCard(x,pending){
  else if(aiUrl){aiClass="aiReady";aiText="✓ IA lista"}
  else if(["failed","none","error"].includes(aiRaw)){aiClass="aiFailed";aiText="✕ IA fallida · no llegará salvo Rehacer"}
  else if(["pending","started","tool_called"].includes(aiRaw)){aiClass="aiPending";aiText="● IA generándose · puede llegar · espera antes de publicar"}
+ const liveRun=liveImageRunState(x);
+ if(liveRun&&(imageRunActive(imageRuns.get(String(x.id||"")))||["ERROR","CANCELLED"].includes(String(imageRuns.get(String(x.id||""))?.status||"").toUpperCase()))){aiClass=liveRun.aiCls;aiText=liveRun.text}
  const aiStatus=card.querySelector(".aiStatusBadge");aiStatus.classList.add(aiClass);aiStatus.textContent=aiText+(fallbackUrl?" · archivo disponible":" · sin archivo");
  let imageChoice=String(x.image_choice||"");if(imageChoice==="ai"&&!aiUrl)imageChoice=fallbackUrl?"fallback":"none";
  if(/^https:\/\//i.test(aiUrl)||/^https:\/\//i.test(fallbackUrl)||x.ai_image_status||x.fallback_image_status){
@@ -375,6 +379,19 @@ function renderCard(x,pending){
  const rating=card.querySelector(".rating");if(parts.closer)renderRemateRating(rating,x);else rating.hidden=true;
  const meta=card.querySelector(".meta");if(route){const routeEl=document.createElement("span");routeEl.className="route";routeEl.textContent=route;meta.appendChild(routeEl)}
  const actions=card.querySelector(".actions");
+ if(!x.tremending_origin){
+   const generate=document.createElement("button");generate.className="btn";generate.type="button";
+   const currentAi=isChatImageGen(x.ai_image)?x.ai_image:{},hasAi=Boolean(String(currentAi.url||""));
+   generate.textContent=hasAi?"✨ Rehacer IA":"✨ Generar IA";
+   generate.disabled=imageRunActive(imageRuns.get(String(x.id||"")));
+   generate.onclick=async()=>{
+     generate.disabled=true;
+     try{await requestImageRun(x,{markRegenerate:hasAi||["failed","none","error"].includes(String(x.ai_image_status||"").toLowerCase())})}
+     catch(error){alert(error?.message||"No se pudo solicitar la imagen IA.")}
+     finally{generate.disabled=imageRunActive(imageRuns.get(String(x.id||"")))}
+   };
+   actions.appendChild(generate)
+ }
  const redo=document.createElement("button");redo.className="btn";redo.type="button";redo.disabled=Boolean(x.rewrite_pending);redo.textContent=x.rewrite_pending?"Reelaborando…":(x.tremending_origin?"🔁 Rehacer remate":"🔁 Rehacer remate + IA");redo.onclick=()=>reworkExplained(x,redo);actions.appendChild(redo);
  const copy=document.createElement("button");copy.className="btn";copy.type="button";copy.textContent="📋 Copiar tuit";copy.onclick=()=>copyItem(x,copy);actions.appendChild(copy);
  if(/^https:\/\//i.test(aiUrl)){const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="✨ Copiar imagen IA";b.onclick=()=>copyImageUrl(aiUrl,b);actions.appendChild(b)}
@@ -408,7 +425,7 @@ function render(){
  const q=nrm($("filter").value);
  const visible=q?allItems.filter(x=>nrm(displayName(x)).includes(q)||nrm((x.trend_names||[]).join(" ")).includes(q)||nrm(x.explanation).includes(q)):allItems;
  const pendingAll=allItems.filter(x=>!x.copied),pending=visible.filter(x=>!x.copied);
- $("pendingCount").textContent=String(pending.length);updateUnreadBadge();
+ $("pendingCount").textContent=String(pending.length);updateUnreadBadge();updateImageControl();
  if(openPendingKey&&!pending.some(x=>pendingKey(x)===openPendingKey))openPendingKey=null;
  const pendingList=$("pendingList");pendingList.innerHTML="";
  if(!pending.length)pendingList.innerHTML='<div class="empty">'+(q?"No hay pendientes que coincidan.":"No tienes tendencias pendientes de publicar.")+'</div>';
@@ -461,11 +478,14 @@ async function load(){
  const confirmed=new Set(allItems.filter(x=>x.copied&&x.copy_source!=="local-archive-guard").map(x=>x.copy_key));
  if(confirmed.size){const next=localArchived();for(const key of confirmed)next.delete(key);saveLocalArchived(next)}
  render();
+ refreshImageRuns();
 }
 $("filter").addEventListener("input",render);
+$("runImages").onclick=requestPendingImages;
 const refreshBtn=$("refresh");if(refreshBtn)refreshBtn.onclick=()=>load().catch(e=>alert(e.message));
 window.addEventListener("pageshow",event=>{if(event.persisted)load().catch(()=>{})});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load().catch(()=>{})});
 load().catch(e=>{$("pendingList").innerHTML='<div class="empty">'+e.message+'</div>';});
+setInterval(()=>{if(!document.hidden)load().catch(()=>{})},15000);
 </script>
 </body></html>
