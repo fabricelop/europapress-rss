@@ -915,9 +915,16 @@ async function retryNames(names) {
 async function markExplanationCopied(copyKey, source = "copy-button") {
   const key = String(copyKey || "").trim();
   if (!/^explanation-v1:[a-f0-9]{24}$/.test(key)) throw new Error("Explicación no válida.");
-  const { doc: explained } = await readJson(EXPLAINED);
-  const item = (explained.items || []).find(entry => explanationCopyIdentity(entry) === key);
-  if (!item) throw new Error("La explicación ya no existe o pertenece a otra revisión.");
+  const [{ doc: explained }, { doc: requests }] = await Promise.all([
+    readJson(EXPLAINED),
+    readJson(REQUESTS),
+  ]);
+  // El panel muestra la vista reconciliada: una request explicada más reciente puede
+  // sustituir la revisión persistida en EXPLAINED. El botón debe validar contra esa
+  // misma vista, no contra el histórico crudo, o genera falsos "otra revisión".
+  const reconciled = reconcileExplainedView(explained, requests);
+  const item = (reconciled.items || []).find(entry => explanationCopyIdentity(entry) === key);
+  if (!item) throw new Error("La explicación ya no está disponible; recarga la bandeja.");
   const now = new Date().toISOString();
   let record;
   await mutateJson(EXPLAINED_COPY_STATE, source === "archive-button" ? "Pasar explicación TTendencias a histórico" : "Marcar explicación TTendencias como copiada", doc => {
@@ -945,9 +952,13 @@ async function rateRemate(ratingKey, rating) {
       !Number.isInteger(value) || value < 1 || value > 5) {
     throw new Error("Clave o valoración de remate no válida.");
   }
-  const { doc: explained } = await readJson(EXPLAINED);
-  const item = (explained.items || []).find(entry => remateRatingIdentity(entry) === key);
-  if (!item) throw new Error("Esta versión de la explicación ya no está disponible.");
+  const [{ doc: explained }, { doc: requests }] = await Promise.all([
+    readJson(EXPLAINED),
+    readJson(REQUESTS),
+  ]);
+  const reconciled = reconcileExplainedView(explained, requests);
+  const item = (reconciled.items || []).find(entry => remateRatingIdentity(entry) === key);
+  if (!item) throw new Error("Esta versión de la explicación ya no está disponible; recarga la bandeja.");
   const now = new Date().toISOString();
   let saved;
   await mutateJson(REMATE_RATINGS, "TTendencias: valorar remate editorial", doc => {
