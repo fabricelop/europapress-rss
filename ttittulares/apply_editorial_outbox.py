@@ -83,35 +83,23 @@ def validate_ready(payload):
     item.pop("variants",None)
     item.pop("primary",None)
     item.pop("alternatives",None)
-    normalize_image(item)
-    validate_image(item)
+    # La imagen es una capa paralela: nunca valida ni bloquea el READY.
     return item
 
 
-def normalize_image(item):
-    """Normaliza formatos históricos y conserva solo imágenes reales externas."""
-    raw=item.get("image")
+def _image_url(image):
+    return str((image or {}).get("url") or "").strip()
+
+
+def _normalize_external_image(raw, item):
     image=dict(raw) if isinstance(raw,dict) else {}
     if isinstance(raw,str) and raw.strip():
         image["url"]=raw.strip()
-    aliases={
-        "image_url":"url","image_source":"source","image_source_url":"source_url",
-        "image_alt":"alt","image_rights_status":"rights_status",
-    }
-    for old,new in aliases.items():
-        value=item.get(old)
-        if value not in (None,"") and not image.get(new):
-            image[new]=value
-    url=str(image.get("url") or "").strip()
-    for old in aliases:
-        item.pop(old,None)
+    url=_image_url(image)
     if not url:
-        item.pop("image",None)
         return {}
     if not url.startswith("https://"):
-        raise ValueError("la imagen debe usar HTTPS")
-    if image.get("generated") or str(image.get("rights_status") or "").lower()=="generated" or "chatgpt" in str(image.get("source") or "").lower():
-        raise ValueError("las imágenes generadas por IA no están permitidas")
+        raise ValueError("la imagen de archivo debe usar HTTPS")
     image["url"]=url
     image["source"]=str(image.get("source") or _host(image.get("source_url") or url))
     source_url=str(image.get("source_url") or "").strip()
@@ -119,21 +107,113 @@ def normalize_image(item):
         raise ValueError("la página de origen debe usar HTTPS")
     image["source_url"]=source_url
     image["rights_status"]=str(image.get("rights_status") or "unverified")
+    image["generated"]=False
     image["alt"]=str(image.get("alt") or item.get("title") or "Imagen del acontecimiento")
-    for key in ("generated","style_version","style_check","handoff"):
-        image.pop(key,None)
-    item["image"]=image
+    return image
+
+
+def _validate_raster_integrity(data, label):
+    from PIL import Image, UnidentifiedImageError
+    if len(data)<4096:
+        raise ValueError(f"{label}: raster demasiado pequeño")
+    try:
+        with Image.open(io.BytesIO(data)) as probe:
+            probe.verify()
+        with Image.open(io.BytesIO(data)) as image:
+            image.load();w,h=image.size
+            if w<320 or h<180:
+                raise ValueError(f"{label}: dimensiones insuficientes ({w}x{h})")
+    except (UnidentifiedImageError,OSError,SyntaxError) as exc:
+        raise ValueError(f"{label}: raster corrupto: {exc}")
+
+
+def _materialize_ai_image(item):
+    import base64, hashlib
+    from PIL import Image, ImageOps
+    ai=dict(item.get("ai_image") or {})
+    if not ai or not _image_url(ai):
+        return False
+    eid=str(item.get("event_id") or "")
+    rev=int(item.get("revision") or 1)
+    attempt=int(item.get("ai_image_attempt") or ai.get("generation_attempt") or 1)
+    guard=ai.get("context_guard") or {}
+    if int(guard.get("version") or 0) not in {2,3}:
+        raise ValueError("ai_image sin context_guard compatible")
+    if str(guard.get("scope") or "")!="current_item_only":
+        raise ValueError("ai_image sin scope current_item_only")
+    guard_id=str(guard.get("event_id") or guard.get("trend_id") or "")
+    if guard_id and guard_id!=eid:
+        raise ValueError("ai_image pertenece a otro acontecimiento")
+    if guard.get("revision") is not None and int(guard.get("revision"))!=rev:
+        raise ValueError("ai_image pertenece a otra revisión")
+    if ai.get("generated") is not True or str(ai.get("rights_status") or "")!="generated":
+        raise ValueError("ai_image sin metadata generated")
+    url=_image_url(ai)
+    if url.startswith("data:image/"):
+        header,payload=url.split(",",1)
+        if ";base64" not in header:
+            raise ValueError("data URL IA no base64")
+        mime=header[5:].split(";",1)[0].casefold()
+        if mime not in {"image/png","image/jpeg","image/webp"}:
+            raise ValueError("mime IA no permitido")
+        data=base64.b64decode(payload,validate=True)
+        if len(data)>12_000_000:
+            raise ValueError("raster IA demasiado grande")
+        _validate_raster_integrity(data,"imagen IA")
+        with Image.open(io.BytesIO(data)) as original:
+            img=ImageOps.exif_transpose(original).convert("RGB")
+            img.thumbnail((640,640),Image.Resampling.LANCZOS)
+            out=io.BytesIO()
+            for quality in (78,68,58,48):
+                out.seek(0);out.truncate(0)
+                img.save(out,format="JPEG",quality=quality,optimize=True)
+                if len(out.getvalue())<=180_000:break
+            data=out.getvalue()
+        _validate_raster_integrity(data,"imagen IA normalizada")
+        outdir=TT/"generated-images";outdir.mkdir(parents=True,exist_ok=True)
+        filename=f"{eid}-r{rev}-ai{attempt}.jpg"
+        (outdir/filename).write_bytes(data)
+        ai["url"]=f"https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/{filename}"
+        ai["source_url"]=f"https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/{filename}"
+        ai["sha256"]=hashlib.sha256(data).hexdigest()
+        ai["handoff"]="inline-outbox-materialized-by-actions"
+    elif not url.startswith("https://"):
+        raise ValueError("ai_image sin URL válida")
+    ai["source"]=str(ai.get("source") or "TTiTTulares / ChatGPT")
+    ai["rights_status"]="generated";ai["generated"]=True
+    ai["alt"]=str(ai.get("alt") or item.get("title") or "Gag editorial de la noticia")
+    ai["generation_attempt"]=attempt
+    item["ai_image"]=ai
+    item["ai_image_attempt"]=attempt
+    item["ai_image_status"]="ready"
+    item.pop("ai_image_failure_reason",None)
+    return True
+
+
+def normalize_image(item):
+    """Compatibilidad: normaliza la imagen elegida sin eliminar IA/fallback."""
+    raw=item.get("image")
+    if not raw:
+        return {}
+    if isinstance(raw,dict) and raw.get("generated"):
+        image=dict(raw)
+        url=_image_url(image)
+        if url and not (url.startswith("https://") or url.startswith("data:image/")):
+            raise ValueError("imagen IA seleccionada inválida")
+        item["image"]=image
+        return image
+    image=_normalize_external_image(raw,item)
+    if image:item["image"]=image
+    else:item.pop("image",None)
     return image
 
 
 def validate_image(item):
     image=normalize_image(item)
-    if not image:
-        return
-    if not str(image.get("url") or "").startswith("https://"):
-        raise ValueError("imagen externa sin URL HTTPS")
-    if not str(image.get("source_url") or "").startswith("https://"):
-        raise ValueError("imagen externa sin página de origen HTTPS")
+    if not image:return
+    url=_image_url(image)
+    if not (url.startswith("https://") or url.startswith("data:image/")):
+        raise ValueError("imagen seleccionada sin URL válida")
 
 
 class _MetaImageParser(HTMLParser):
@@ -146,63 +226,60 @@ class _MetaImageParser(HTMLParser):
         if key in {"og:image","og:image:secure_url","twitter:image","twitter:image:src"} and a.get("content"):
             self.images.append(a["content"].strip())
 
+
 def _host(url):
     try:return urllib.parse.urlparse(url).hostname or "Fuente"
     except Exception:return "Fuente"
 
+
 def _valid_external_image(url,referer=""):
     try:
-        headers={"User-Agent":"Mozilla/5.0 (compatible; TTiTTularesImage/2.0)","Accept":"image/*"}
+        headers={"User-Agent":"Mozilla/5.0 (compatible; TTiTTularesImage/3.0)","Accept":"image/*"}
         if referer: headers["Referer"]=referer
         req=urllib.request.Request(url,headers=headers)
         with urllib.request.urlopen(req,timeout=10) as r:
             if not str(r.geturl()).startswith("https://"): return False
             if not str(r.headers.get("content-type") or "").lower().startswith("image/"): return False
             data=r.read(12*1024*1024+1)
-        if len(data)<4096 or len(data)>12*1024*1024: return False
-        from PIL import Image, UnidentifiedImageError
-        try:
-            with Image.open(io.BytesIO(data)) as probe: probe.verify()
-            with Image.open(io.BytesIO(data)) as image:
-                image.load(); w,h=image.size
-                return w>=320 and h>=180
-        except (UnidentifiedImageError,OSError,SyntaxError):
-            return False
+        if len(data)<4096 or len(data)>12*1024*1024:return False
+        _validate_raster_integrity(data,"fallback")
+        return True
     except Exception:
         return False
 
 
 def _fetch_meta_image(page_url):
     try:
-        req=urllib.request.Request(page_url,headers={"User-Agent":"Mozilla/5.0 (compatible; TTiTTularesImage/2.0)","Accept":"text/html,application/xhtml+xml"})
+        req=urllib.request.Request(page_url,headers={"User-Agent":"Mozilla/5.0 (compatible; TTiTTularesImage/3.0)","Accept":"text/html,application/xhtml+xml"})
         with urllib.request.urlopen(req,timeout=10) as r:
             ctype=str(r.headers.get("content-type") or "").lower()
             if "html" not in ctype:return None
-            final=r.geturl(); raw=r.read(1500000)
-        parser=_MetaImageParser(); parser.feed(raw.decode("utf-8","ignore"))
+            final=r.geturl();raw=r.read(1500000)
+        parser=_MetaImageParser();parser.feed(raw.decode("utf-8","ignore"))
         seen=set()
         for value in parser.images:
             url=urllib.parse.urljoin(final,value)
             if not url.startswith("https://") or url in seen:continue
             seen.add(url)
-            if _valid_external_image(url,final):
-                return url
-    except Exception:
-        return None
+            if _valid_external_image(url,final):return url
+    except Exception:return None
     return None
 
 
-def _recover_image(item,row,events):
-    image=normalize_image(item)
-    if str(image.get("url") or "").strip():
-        if _valid_external_image(str(image["url"]),str(image.get("source_url") or "")):
-            item["image_search_status"]="found"; return True
-        item.pop("image",None)
-    pages=[]; seen=set()
+def _recover_fallback_image(item,row,events):
+    current=item.get("fallback_image") or {}
+    if _image_url(current):
+        try:
+            image=_normalize_external_image(current,item)
+            if _valid_external_image(image["url"],image.get("source_url") or ""):
+                item["fallback_image"]=image;item["fallback_image_status"]="ready";return True
+        except Exception:
+            pass
+    pages=[];seen=set()
     def add(url,source=""):
         url=str(url or "").strip()
         if not url.startswith("https://") or url in seen:return
-        seen.add(url); pages.append((url,source or _host(url)))
+        seen.add(url);pages.append((url,source or _host(url)))
     add(item.get("url") or row.get("url"),"")
     eid=str(item.get("event_id") or row.get("event_id") or "")
     parent=str(row.get("parent_event_id") or "")
@@ -214,47 +291,71 @@ def _recover_image(item,row,events):
     for page,source in pages[:4]:
         img=_fetch_meta_image(page)
         if not img:continue
-        item["image"]={"url":img,"source":source,"source_url":page,"rights_status":"unverified","alt":str(item.get("title") or "Imagen relacionada con la noticia")}
-        item["image_search_status"]="found"; item["image_search_attempted_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
-        item.pop("image_note",None); return True
-    item["image_search_status"]="not_found"; item["image_search_attempted_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
-    item["image_note"]="No se encontró una imagen verificable en los metadatos de la noticia ni de sus fuentes alternativas."
+        item["fallback_image"]={"url":img,"source":source,"source_url":page,"rights_status":"unverified","generated":False,"alt":str(item.get("title") or "Imagen de archivo relacionada con la noticia")}
+        item["fallback_image_status"]="ready";item["fallback_image_search_attempted_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+        item.pop("fallback_image_failure_reason",None);return True
+    item["fallback_image_status"]="none";item["fallback_image_search_attempted_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+    item["fallback_image_failure_reason"]="No se encontró una imagen HTTPS verificable en las páginas de las fuentes del acontecimiento."
     return False
 
-def _finish_archive_image(item,row,events):
-    for key in ("image_generation_attempts","image_persistence_attempts","image_semantic_rejections",
-                "image_worker_id","image_worker_status","image_worker_dispatched_at",
-                "image_telegram_delivered","image_telegram_delivered_at","image_telegram_message_id",
-                "image_telegram_headline_message_id","image_telegram_sha256"):
-        item.pop(key,None)
-    item["image_strategy"]="existing_web_image"
-    found=_recover_image(item,row,events)
-    item["image_pending"]=False
-    item["image_app_available"]=bool(found)
-    if found:
-        item["image_status"]="ready";item["image_delivery"]="app"
-        item.pop("image_failure_reason",None)
+
+def _select_image(item):
+    ai_ready=str(item.get("ai_image_status") or "")=="ready" and bool(_image_url(item.get("ai_image")))
+    fallback_ready=str(item.get("fallback_image_status") or "")=="ready" and bool(_image_url(item.get("fallback_image")))
+    choice=str(item.get("image_choice") or "")
+    if choice=="fallback" and fallback_ready:
+        item["image"]=dict(item["fallback_image"]);item["image_choice"]="fallback";item["image_status"]="ready"
+    elif ai_ready:
+        item["image"]=dict(item["ai_image"]);item["image_choice"]="ai";item["image_status"]="ready"
+    elif fallback_ready:
+        item["image"]=dict(item["fallback_image"]);item["image_choice"]="fallback";item["image_status"]="ready"
     else:
-        item.pop("image",None)
-        item["image_status"]="none";item["image_delivery"]="none"
-        item["image_failure_reason"]="No se encontró una imagen HTTPS verificable en las páginas de las fuentes del acontecimiento."
-    return found
+        item.pop("image",None);item["image_choice"]="none";item["image_status"]="none"
+    item["image_pending"]=False
+    item["image_app_available"]=bool((item.get("image") or {}).get("url"))
+    item["image_delivery"]="app" if item["image_app_available"] else "none"
+
+
+def _finish_archive_image(item,row,events):
+    """Best-effort AI materialization + archive fallback. Never raises to block READY."""
+    try:
+        if item.get("ai_image"):
+            _materialize_ai_image(item)
+        elif not item.get("ai_image_status"):
+            item["ai_image_status"]="failed"
+            item["ai_image_failure_reason"]="No se recibió imagen IA en este intento."
+    except Exception as exc:
+        item["ai_image_status"]="failed"
+        item["ai_image_failure_reason"]=str(exc)[:500]
+        # Keep a previous usable AI on image-only refresh failures.
+        if not _image_url(item.get("ai_image")):
+            item.pop("ai_image",None)
+    try:
+        if str(item.get("fallback_image_status") or "") not in {"ready","none"}:
+            _recover_fallback_image(item,row,events)
+    except Exception as exc:
+        item["fallback_image_status"]="none";item["fallback_image_failure_reason"]=str(exc)[:500]
+    _select_image(item)
+    item["image_strategy"]="ai_plus_fallback"
+    item.pop("ai_image_regenerate_requested",None)
+    item.pop("ai_image_regenerate_requested_at",None)
+    return item["image_app_available"]
 
 
 def _enrich_prepared_images(p,q,events):
-    """Cierra búsquedas pendientes sin volver a introducir trabajo en ChatGPT Work."""
+    """Completa únicamente el fallback pendiente sin alterar READY ni la IA."""
     changed=False
     rows={(str(x.get("event_id") or ""),int(x.get("revision") or 1)):x for x in q.get("items",[]) or []}
     for item in p.get("items",[]) or []:
-        state=str(item.get("image_status") or "")
-        if state in {"ready","none"}:
-            continue
+        if str(item.get("fallback_image_status") or "") in {"ready","none"}:continue
         eid=str(item.get("event_id") or "");revision=int(item.get("revision") or 1)
         before=json.dumps(item,ensure_ascii=False,sort_keys=True)
-        _finish_archive_image(item,rows.get((eid,revision),{}),events)
+        try:_recover_fallback_image(item,rows.get((eid,revision),{}),events)
+        except Exception as exc:
+            item["fallback_image_status"]="none";item["fallback_image_failure_reason"]=str(exc)[:500]
+        _select_image(item)
         changed=changed or before!=json.dumps(item,ensure_ascii=False,sort_keys=True)
     return changed
-
 
 def sync_compact(q):
     active=[]
@@ -267,8 +368,8 @@ def sync_compact(q):
             "revision":int(x.get("revision") or 1),
             "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
             "parent_event_id":x.get("parent_event_id"),"update_context":x.get("update_context"),
-            "with_image":True,"image_mode":"existing_web_image",
-            "image_instruction":"Recupera una imagen real del mismo acontecimiento desde una fuente oficial/primaria o un medio fiable. No generes imágenes.",
+            "with_image":True,"image_mode":"ai_plus_fallback",
+            "image_instruction":"Intenta una sola imagen IA editorial rápida y conserva además una imagen real/fallback de las fuentes. Ninguna imagen puede bloquear READY.",
         })
     # La imagen se resuelve de forma determinista al aplicar el READY; nunca crea IMAGE_RETRY.
     active.sort(key=lambda x:(0 if x.get("selection_mode")=="IMAGE_RETRY" else 1, str(x.get("selected_at") or "")))
@@ -348,39 +449,16 @@ def main():
             if image_retry:
                 if st!="ready": raise ValueError("image retry no puede cambiar el estado READY")
                 incoming=payload.get("prepared_item") or {}
-                normalize_image(incoming)
-                state=str(incoming.get("image_status") or "")
-                if state not in {"ready","none"}: raise ValueError("image-only requiere imagen de archivo con URL o Sin imagen con razón; pending no resuelve el intento")
-                patch_keys={"image","image_status","image_delivery","image_app_available","image_pending","image_failure_reason","image_none_reason","image_strategy","image_search_status","image_search_attempted_at"}
+                patch_keys={"ai_image","ai_image_status","ai_image_attempt","ai_image_failure_reason",
+                            "fallback_image","fallback_image_status","fallback_image_failure_reason",
+                            "image_choice","image","image_status","image_pending"}
                 item={**previous,**{k:v for k,v in incoming.items() if k in patch_keys}}
-                if state=="none" and not item.get("image_failure_reason") and item.get("image_none_reason"):
-                    item["image_failure_reason"]=item.get("image_none_reason")
-                item.pop("image_none_reason",None)
-                item["image_pending"]=state in {"pending","working"}
-                item["image_delivery"]={"ready":"app","none":"none"}[state]
-                item["image_app_available"]=state=="ready"
-                if state=="ready" and not (item.get("image") or {}).get("url"): raise ValueError("imagen lista sin URL")
-                if state=="none" and not item.get("image_failure_reason"): raise ValueError("sin imagen requiere razón")
-                if state=="none":
-                    item.pop("image",None) # Nunca mostrar una URL no accesible como imagen lista.
-                if state=="none" and (str(previous.get("image_status") or "")!="none" or str(previous.get("image_failure_reason") or "")!=str(item.get("image_failure_reason") or "")):
-                    ledger=load(ERRORS,{"items":[]})
-                    record_error(ledger.setdefault("items",[]),eid,"imagen",item["image_failure_reason"],now)
-                    ledger["items"]=ledger["items"][-200:];save(ERRORS,ledger)
+                item["tweet"]=previous.get("tweet")
                 payload["prepared_item"]=item
             if st=="ready":
                 item=validate_ready(payload)
-                item["image_strategy"]="existing_web_image"
-                if bool(row.get("with_image",True)):
-                    if image_retry:
-                        state=str(item.get("image_status") or "")
-                        if state=="ready":
-                            validate_image(item)
-                            item["image_pending"]=False;item["image_delivery"]="app";item["image_app_available"]=True
-                        elif state=="none":
-                            item.pop("image",None);item["image_pending"]=False;item["image_delivery"]="none";item["image_app_available"]=False
-                    else:
-                        _finish_archive_image(item,row,events)
+                # IA y fallback se procesan en best-effort y jamás bloquean READY.
+                _finish_archive_image(item,row,events)
                 p["items"]=[x for x in p.get("items",[]) if str(x.get("event_id") or "")!=eid]
                 p["items"].append(item);p["updated_at"]=item.get("prepared_at") or now
                 if image_retry:
@@ -465,14 +543,17 @@ def selftest_images():
     assert image["url"]=="https://cdn.example.test/photo.jpg"
     assert image["source"]=="Fuente" and image["rights_status"]=="unverified"
     assert "image_url" not in flat and isinstance(flat["image"],dict)
-    generated={"image":{"url":"https://example.test/generated.jpg","source":"TTiTTulares / ChatGPT","rights_status":"generated","generated":True}}
-    try:
-        normalize_image(generated)
-    except ValueError:
-        pass
-    else:
-        raise AssertionError("una imagen generada debe rechazarse")
-    print("ARCHIVE_IMAGE_SELFTEST_OK")
+    dual={"event_id":"dual","revision":1,"title":"Prueba",
+          "ai_image":{"url":"https://example.test/generated.jpg","source":"TTiTTulares / ChatGPT","rights_status":"generated","generated":True,
+                      "context_guard":{"version":3,"event_id":"dual","revision":1,"scope":"current_item_only"}},
+          "ai_image_status":"ready",
+          "fallback_image":{"url":"https://example.test/archive.jpg","source":"Fuente","source_url":"https://example.test/story","rights_status":"unverified","generated":False},
+          "fallback_image_status":"ready"}
+    _select_image(dual)
+    assert dual["image_choice"]=="ai" and dual["image"]["generated"] is True
+    dual["image_choice"]="fallback";_select_image(dual)
+    assert dual["image_choice"]=="fallback" and dual["image"]["generated"] is False
+    print("DUAL_IMAGE_SELFTEST_OK")
     return 0
 
 if "--selftest-images" in sys.argv:
