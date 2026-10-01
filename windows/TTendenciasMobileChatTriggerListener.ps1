@@ -12,6 +12,7 @@ $RunUrl = "https://europapress-rss.vercel.app/api/ttendencias-run"
 $WorkerId = "ttendencias-dedicated-v1"
 $PollSeconds = 3
 $ClaimRetrySeconds = 38
+$MaxTriggerAgeSeconds = 90
 
 function Write-Log([string]$Text) {
   $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $Text"
@@ -104,6 +105,24 @@ while ($true) {
           $executor -eq "pc_chat" -and
           $project -eq "ttendencias" -and
           ($task -eq "editorial" -or -not $task)) {
+
+        # No reproducir al instalar/reiniciar una orden antigua que ya expiró en la app.
+        $isFresh = $false
+        try {
+          $requestedAt = [DateTimeOffset]::Parse([string]$doc.requested_at)
+          $ageSeconds = ([DateTimeOffset]::UtcNow - $requestedAt).TotalSeconds
+          $isFresh = ($ageSeconds -ge -10 -and $ageSeconds -le $MaxTriggerAgeSeconds)
+        } catch {}
+
+        if (-not $isFresh) {
+          Write-Log "STALE TRIGGER BASELINED command=$commandId requested_at=$($doc.requested_at)"
+          $state.last_command_id = $commandId
+          $state.conflict_command_id = ""
+          $state.conflict_first_at = ""
+          Save-State $state
+          Start-Sleep -Seconds $PollSeconds
+          continue
+        }
 
         $ack = Send-Ack $commandId "picked_up"
 
