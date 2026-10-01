@@ -201,6 +201,11 @@ def main():
             }
             try:
                 _materialize_ai_image(holder)
+                if item.get("ai_image_regenerate_requested"):
+                    old_sha = str(previous_ai.get("sha256") or "").lower()
+                    new_sha = str((holder.get("ai_image") or {}).get("sha256") or "").lower()
+                    if old_sha and new_sha and old_sha == new_sha:
+                        raise ValueError("La regeneración IA devolvió exactamente el mismo raster anterior")
                 item["ai_image"] = holder["ai_image"]
                 item["ai_image_status"] = "ready"
                 item["ai_image_attempt"] = attempt
