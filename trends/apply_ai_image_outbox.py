@@ -84,6 +84,28 @@ def main():
             waiting.append(path.name)
             continue
 
+        image_mode = str(item.get("image_mode") or item.get("image_strategy") or "").strip().casefold()
+        ai_disabled = bool(item.get("disable_ai_image")) or image_mode in {"fallback_only","archive_only","tweet_capture_only"} or str(item.get("ai_image_status") or "").casefold()=="disabled"
+        if ai_disabled:
+            item.pop("ai_image", None)
+            item["disable_ai_image"] = True
+            item["ai_image_status"] = "disabled"
+            item["image_strategy"] = "fallback_only"
+            fallback = item.get("fallback_image") or {}
+            if str(fallback.get("url") or "").startswith("https://"):
+                item["image"] = dict(fallback)
+                item["image_choice"] = "fallback"
+                item["image_status"] = "ready"
+                item["image_pending"] = False
+            elif not (item.get("image") or {}).get("url"):
+                item["image_choice"] = "none"
+                item["image_status"] = "none"
+                item["image_pending"] = False
+            path.unlink(missing_ok=True)
+            processed.append(tid + ":disabled")
+            changed = True
+            continue
+
         current_attempt = int(item.get("ai_image_attempt") or 0)
         expected_attempt = current_attempt or 1
         if attempt != expected_attempt:
