@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T15:53:31.061819Z",
+  "updated_at": "2026-10-01T15:54:25.070532Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -388,7 +388,7 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "fallback_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001163236_690.jpg",
@@ -412,20 +412,18 @@
       "image_app_available": true,
       "image_delivery": "app",
       "ai_image_attempt": 2,
-      "ai_image_last_attempt_status": "tool_called",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_tool_called_at": "2026-10-01T15:45:00Z",
-      "ai_image_last_attempt_at": "2026-10-01T15:45:00Z",
+      "ai_image_last_attempt_at": "2026-10-01T15:54:25.070449Z",
       "ai_image_context_guard": {
         "version": 3,
         "event_id": "e39a0800c696",
         "revision": 1,
         "scope": "current_item_only"
       },
-      "ai_image_regenerate_requested": true,
-      "ai_image_regenerate_requested_at": "2026-10-01T15:29:56.793Z",
-      "ai_image_regenerate_request_version": 1,
       "ai_image_regenerate_reason": "retry_after_compact_binary_handoff_fix",
-      "ai_image_previous_sha256": ""
+      "ai_image_previous_sha256": "",
+      "ai_image_failure_reason": "imagen IA: raster corrupto: broken data stream when reading image file"
     },
     {
       "event_id": "488d735bcfbe",
