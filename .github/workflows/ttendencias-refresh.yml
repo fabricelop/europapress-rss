@@ -80,7 +80,7 @@ jobs:
             echo "Control web activo: no se sincroniza el panel Telegram"
           fi
 
-          git add trends/recent.json trends/checkpoint.json trends/requests.json trends/editorial-queue.json
+          git add trends/recent.json trends/checkpoint.json trends/requests.json trends/editorial-queue.json trends/telegram-manual-explained.json
           if git diff --cached --quiet; then
             exit 0
           fi
