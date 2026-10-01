@@ -28,8 +28,13 @@
       "ai_non_blocking": true,
       "fallback_enabled": true,
       "display_in_web_control": true,
-      "queue_instruction": "Genera una sola imagen IA editorial rápida por item con aislamiento current_item_only y conserva además una imagen real/fallback verificable. Nunca bloquees la explicación por imagen; la app decide entre IA, rehacer o fallback.",
-      "note": "La IA y el archivo/fallback son capas paralelas. READY/Explained no dependen de ninguna imagen."
+      "queue_instruction": "Genera una sola imagen IA por item apto en estilo TT_STYLE_A_V1 (caricatura satírica editorial, gag único fuerte, exageración y situación límite), siempre basada en la explicación verificada. Si el tema es sensible, marca disable_ai_image y usa solo archivo/fallback. Nunca bloquees la explicación, Explicadas ni la cola por imagen.",
+      "note": "IA y archivo/fallback son capas paralelas. READY/Explained no dependen de imagen. Sensibles: fallback_only. Un fallo/timeout visual es terminal para ese intento y no provoca reintento automático.",
+      "style_id": "TT_STYLE_A_V1",
+      "style": "Caricatura satírica editorial muy expresiva y exagerada: un solo gag visual fuerte, entendido de un vistazo, colores vivos, props absurdos y situación llevada al límite; evitar imagen neutra o meramente literal.",
+      "sensitive_mode": "fallback_only",
+      "sensitive_sets_disable_ai_image": true,
+      "max_visual_seconds": 120
     },
     "queue_consumer_only": true,
     "queue_states": [
