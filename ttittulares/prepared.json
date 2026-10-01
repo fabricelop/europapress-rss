@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T15:34:00Z",
+  "updated_at": "2026-10-01T15:39:09Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -301,7 +301,7 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
+      "ai_image_status": "pending",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
@@ -325,17 +325,16 @@
         "generated": false,
         "alt": "El Banco de España confirma que el Euríbor cerró septiembre en el 3,247%, su nivel más alto desde julio 2024"
       },
-      "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_tool_called_at": "2026-10-01T15:12:31.582Z",
-      "ai_image_last_attempt_at": "2026-10-01T15:21:37.230994Z",
+      "ai_image_attempt": 2,
+      "ai_image_last_attempt_status": "tool_called",
+      "ai_image_tool_called_at": "2026-10-01T15:39:09Z",
+      "ai_image_last_attempt_at": "2026-10-01T15:39:09Z",
       "ai_image_context_guard": {
         "version": 3,
         "event_id": "c692356682ac",
         "revision": 2,
         "scope": "current_item_only"
       },
-      "ai_image_failure_reason": "image_transport_unavailable: ImageGen generó el raster en el chat ejecutor, pero esta ejecución no dispone de un puente binario directo hacia el image-outbox de GitHub; se conserva el fallback y el intento queda terminal.",
       "ai_image_regenerate_requested": true,
       "ai_image_regenerate_requested_at": "2026-10-01T15:29:56.793Z",
       "ai_image_regenerate_request_version": 1,
