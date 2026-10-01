@@ -19,6 +19,7 @@ const REPO=process.env.GITHUB_REPO||"fabricelop/europapress-rss";
 const PR=2;
 const TRIGGER_BRANCH="control/ttittulares-run-trigger-v2";
 const TRIGGER_PATH="ttittulares/run-now-trigger.json";
+const ACK_PATH="ttittulares/run-ack.json";
 const IMAGE_RUN_INDEX_PATH="ttittulares/image-runs/index.json";
 const IMAGE_RUN_DIR="ttittulares/image-runs/jobs";
 const IMAGE_ACTIVE_MS=45*60*1000;
@@ -111,6 +112,28 @@ async function writeControlJson(path,doc,sha,message){
   if(!r.ok)throw new Error("GitHub control PUT "+path+": "+r.status+" "+await r.text());
   return r.json()
 }
+async function requestPcAck(req,res){
+  const command_id=String(req.body?.command_id||"").trim();
+  const stage=String(req.body?.stage||"").toLowerCase();
+  if(!command_id||!["picked_up","launched"].includes(stage))return res.status(400).json({ok:false,error:"Ack no válido"});
+  const {doc:trigger}=await readTrigger();
+  if(String(trigger.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es el actual"});
+  const requested_at=String(trigger.requested_at||"");
+  const age=Date.now()-stamp(requested_at);
+  if(!stamp(requested_at)||age<0||age>10*60*1000)return res.status(409).json({ok:false,error:"Trigger fuera de ventana"});
+  const existing=await readControlJson(ACK_PATH);
+  const now=new Date().toISOString();
+  const same=String(existing.doc?.command_id||"")===command_id;
+  const doc={
+    version:1,command_id,requested_at,stage,
+    picked_up_at:same&&existing.doc?.picked_up_at?existing.doc.picked_up_at:now,
+    launched_at:stage==="launched"?now:(same?existing.doc?.launched_at||null:null),
+    updated_at:now
+  };
+  await writeControlJson(ACK_PATH,doc,existing.sha,"PC Chat ack TTiTTulares "+stage+" "+command_id);
+  return res.status(200).json({ok:true,...doc})
+}
+
 function safeTargetId(v){
   const id=String(v||"").trim();
   if(!/^[A-Za-z0-9._-]{3,160}$/.test(id))throw new Error("target_id inválido");
@@ -158,9 +181,14 @@ async function requestImageRun(req,res){
 export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
+  const rawTask=String(req.body?.task||"editorial").toLowerCase();
+  if(rawTask==="pc_ack"){
+    try{return await requestPcAck(req,res)}
+    catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
+  }
   if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
   try{
-    const task=String(req.body?.task||"editorial").toLowerCase()==="images"?"images":"editorial";
+    const task=rawTask==="images"?"images":"editorial";
     if(task==="images")return await requestImageRun(req,res);
     const [{doc:current,sha},items]=await Promise.all([readTrigger(),comments()]);
     if(activeTrace(items))return res.status(409).json({ok:false,error:"run_in_progress"});
