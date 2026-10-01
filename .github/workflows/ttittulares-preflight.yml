@@ -22,6 +22,8 @@ on:
       - "ttittulares/tremending/**"
       - ".github/workflows/tremending-collect.yml"
       - ".github/workflows/tremending-capture.yml"
+      - ".github/workflows/ai-image-generate.yml"
+      - ".github/workflows/ttittulares-ai-image-apply.yml"
   pull_request:
     branches: [main]
     paths:
@@ -42,6 +44,8 @@ on:
       - "ttittulares/tremending/**"
       - ".github/workflows/tremending-collect.yml"
       - ".github/workflows/tremending-capture.yml"
+      - ".github/workflows/ai-image-generate.yml"
+      - ".github/workflows/ttittulares-ai-image-apply.yml"
 
 permissions:
   contents: read
@@ -57,12 +61,13 @@ jobs:
 
       - name: Validar Python
         run: |
-          python3 -m py_compile telegram/radar_no_d1.py telegram/source_telemetry.py telegram/source_publication.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py ttittulares/build_editorial_queue.py ttittulares/apply_editorial_outbox.py ttittulares/ingest_pr_outbox_comment.py ttittulares/reconcile_confirmed_stale.py ttittulares/tremending/update_tremending.py
+          python3 -m py_compile telegram/radar_no_d1.py telegram/source_telemetry.py telegram/source_publication.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py ttittulares/build_editorial_queue.py ttittulares/apply_editorial_outbox.py ttittulares/apply_ai_image_outbox.py ttittulares/ingest_pr_outbox_comment.py ttittulares/reconcile_confirmed_stale.py ttittulares/tremending/update_tremending.py
           python3 telegram/radar_no_d1.py --selftest-dedupe
           python3 telegram/source_telemetry.py
           python3 telegram/source_publication.py
           python3 ttittulares/auto_queue.py --selftest
           python3 ttittulares/apply_editorial_outbox.py --selftest-images
+          python3 ttittulares/apply_ai_image_outbox.py --selftest
           python3 ttittulares/tremending/update_tremending.py --selftest
 
       - name: Validar JSON y reglas
@@ -107,15 +112,24 @@ jobs:
           assert "Gag IA" in appjs and "Archivo / fallback" in appjs
           assert "🔁 Rehacer" in appjs and "🖼️ Usar archivo/fallback" in appjs
           assert "Gag IA" in html and "Archivo / fallback" in html
+          assert 'provider==="chat-imagegen"' in html and 'origin==="executing_chat"' in html
           assert "🔁 Rehacer" in html and "🖼️ Usar archivo/fallback" in html
           assert "imageInFlight=false" in html, "La imagen no debe bloquear la publicación"
           assert manifest["start_url"] == "/ttittulares/"
+          prompt=Path("ttittulares/editorial-run-prompt.md").read_text(encoding="utf-8")
+          assert "misma conversación ejecutora" in prompt and "provider:\"chat-imagegen\"" in prompt
+          assert "No uses el ImageGen interno" not in prompt and "crea exactamente UN trabajo visual" not in prompt
 
           ids=set()
           for item in prepared.get("items",[]):
               eid=str(item.get("event_id") or "")
               assert eid and eid not in ids, f"event_id duplicado: {eid}"
               ids.add(eid)
+              ai=item.get("ai_image") or {}
+              if ai:
+                  assert ai.get("provider")=="chat-imagegen" and ai.get("origin")=="executing_chat", f"{eid}: ai_image sin procedencia de chat"
+                  assert int((ai.get("context_guard") or {}).get("version") or 0)==3, f"{eid}: ai_image sin V3"
+              assert not (item.get("image_choice")=="ai" and not ai), f"{eid}: image_choice ai sin ImageGen válido"
               drafted=int(item.get("drafted_source_count") or 0)
               # El umbral de 4 rige la selección automática del radar, no la
               # verificación editorial de una noticia ya preparada.

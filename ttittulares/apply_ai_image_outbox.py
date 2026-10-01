@@ -34,7 +34,8 @@ def selftest():
         "ai_image_attempt":1,
         "ai_image":{
             "url":"data:image/jpeg;base64,"+data,
-            "source":"TTiTTulares / ChatGPT","rights_status":"generated","generated":True,
+            "source":"TTiTTulares / ChatGPT ImageGen","rights_status":"generated","generated":True,
+            "provider":"chat-imagegen","origin":"executing_chat",
             "generation_attempt":1,
             "context_guard":{"version":3,"event_id":"selftest-ai","revision":1,"scope":"current_item_only"},
         },
@@ -45,6 +46,13 @@ def selftest():
     path=TT/"generated-images"/"selftest-ai-r1-ai1.jpg"
     assert path.is_file() and path.stat().st_size>4096
     path.unlink()
+    rejected={**item,"ai_image":dict(item["ai_image"],provider="chat-svg")}
+    try:
+        _materialize_ai_image(rejected)
+    except ValueError as exc:
+        assert "provider" in str(exc)
+    else:
+        raise AssertionError("chat-svg no puede aceptarse como ai_image")
     print("TTITTULARES_AI_IMAGE_SELFTEST_OK")
     return 0
 
@@ -82,6 +90,14 @@ def main():
                 changed = True
                 continue
             waiting.append(path.name)
+            continue
+
+        current_attempt = int(item.get("ai_image_attempt") or 0)
+        expected_attempt = current_attempt or 1
+        if attempt != expected_attempt:
+            path.unlink(missing_ok=True)
+            processed.append(eid + ":attempt-mismatch")
+            changed = True
             continue
 
         status = str(payload.get("status") or "").lower()

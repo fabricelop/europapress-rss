@@ -14,6 +14,19 @@ test("El refresco no destruye imágenes que ya están cargadas",()=>{
  assert.match(inline,/preview\.replaceWith\(previous\)/);
  assert.match(inline,/preview\.getAttribute\("src"\)!==proxySrc\)preview\.src=proxySrc/);
 });
+test("Gag IA exige procedencia real de ImageGen en el chat",()=>{
+ assert.match(inline,/provider==="chat-imagegen"/);
+ assert.match(inline,/origin==="executing_chat"/);
+ assert.match(inline,/Number\(guard\.version\)===3/);
+ assert.match(inline,/ai=isChatImageGen\(rawAi\)\?rawAi:\{\}/);
+ const start=inline.indexOf("function isChatImageGen(image){");
+ const end=inline.indexOf("function renderReady(",start);
+ const context={};vm.createContext(context);vm.runInContext(inline.slice(start,end),context);
+ const guard={version:3,scope:"current_item_only"};
+ assert.equal(context.isChatImageGen({generated:true,provider:"chat-imagegen",origin:"executing_chat",context_guard:guard}),true);
+ assert.equal(context.isChatImageGen({generated:true,provider:"chat-svg",origin:"executing_chat",context_guard:guard}),false);
+ assert.equal(context.isChatImageGen({generated:true,provider:"chat-imagegen",origin:"external",context_guard:guard}),false);
+});
 test("La petición al portapapeles sucede antes de acabar la descarga",async()=>{
  assert.ok(clipStart>=0&&clipEnd>clipStart);
  const calls=[],messages=[];

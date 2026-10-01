@@ -128,13 +128,20 @@ async function copyImage(url,btn){
     const old=btn.textContent;btn.textContent='✓ Imagen copiada';setTimeout(()=>btn.textContent=old,1600);
   }catch(_){alert('El navegador no permite copiar esta imagen directamente. Usa Descargar imagen.');}
 }
+function isChatImageGen(image){
+  const guard=image?.context_guard||{};
+  return image?.generated===true&&image?.provider==='chat-imagegen'&&image?.origin==='executing_chat'&&Number(guard.version)===3&&guard.scope==='current_item_only';
+}
 function renderImagePanel(host,x){
-  const ai=x.ai_image||{},fallback=x.fallback_image||{},selected=x.image||{};
-  const aiUrl=String(ai.url||'').trim(),fallbackUrl=String(fallback.url||'').trim(),selectedUrl=String(selected.url||'').trim();
+  const rawAi=x.ai_image||{},ai=isChatImageGen(rawAi)?rawAi:{},fallback=x.fallback_image||{};
+  const aiUrl=String(ai.url||'').trim(),fallbackUrl=String(fallback.url||'').trim();
   const box=document.createElement('section');box.className='image-panel';
 
   const head=document.createElement('div');head.className='image-meta';
-  const choice=String(x.image_choice|| (aiUrl?'ai':fallbackUrl?'fallback':'none'));
+  let choice=String(x.image_choice|| (aiUrl?'ai':fallbackUrl?'fallback':'none'));
+  if(choice==='ai'&&!aiUrl)choice=fallbackUrl?'fallback':'none';
+  const selected=choice==='ai'?ai:choice==='fallback'?fallback:{};
+  const selectedUrl=String(selected.url||'').trim();
   head.innerHTML='<strong>🖼️ Imágenes</strong><span>'+(choice==='ai'?'Usando gag IA':choice==='fallback'?'Usando archivo/fallback':'Puedes publicar también sin imagen')+'</span>';
   box.appendChild(head);
 

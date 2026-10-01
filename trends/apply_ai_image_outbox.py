@@ -7,7 +7,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from apply_editorial_outbox import (
-    TRENDS, load, save, validate_generated_image, materialize_inline_generated_image
+    TRENDS, load, save, validate_generated_image, materialize_inline_generated_image,
+    checkpoint_ai_image,
 )
 
 OUTBOX = TRENDS / "image-outbox"
@@ -30,7 +31,8 @@ def selftest():
     data=base64.b64encode(raw.getvalue()).decode("ascii")
     holder={"image":{
         "url":"data:image/jpeg;base64,"+data,
-        "source":"TTendencias / ChatGPT","rights_status":"generated","generated":True,
+        "source":"TTendencias / ChatGPT ImageGen","rights_status":"generated","generated":True,
+        "provider":"chat-imagegen","origin":"executing_chat",
         "generation_attempt":1,
         "context_guard":{"version":3,"trend_id":"selftest-ai","revision":0,"scope":"current_item_only"},
     }}
@@ -40,6 +42,17 @@ def selftest():
     path=TRENDS/"generated-images"/"selftest-ai-r0-ai1.jpg"
     assert path.is_file() and path.stat().st_size>4096
     path.unlink()
+    rejected={"image":dict(holder["image"],provider="chat-svg")}
+    try:
+        validate_generated_image(rejected,"selftest-ai",0)
+    except ValueError as exc:
+        assert "provider" in str(exc)
+    else:
+        raise AssertionError("chat-svg no puede aceptarse como ai_image")
+    inline={"prepared_item":{"ai_image":dict(holder["image"]),"image":dict(holder["image"]),"image_choice":"ai"}}
+    assert checkpoint_ai_image(inline,"selftest-ai",0) is None
+    assert "ai_image" not in inline["prepared_item"]
+    assert inline["prepared_item"]["ai_image_inline_rejected"] is True
     print("TTENDENCIAS_AI_IMAGE_SELFTEST_OK")
     return 0
 
@@ -69,6 +82,14 @@ def main():
                      and int(x.get("revision") or 0) == revision), None)
         if item is None:
             waiting.append(path.name)
+            continue
+
+        current_attempt = int(item.get("ai_image_attempt") or 0)
+        expected_attempt = current_attempt or 1
+        if attempt != expected_attempt:
+            path.unlink(missing_ok=True)
+            processed.append(tid + ":attempt-mismatch")
+            changed = True
             continue
 
         previous_ai = dict(item.get("ai_image") or {})

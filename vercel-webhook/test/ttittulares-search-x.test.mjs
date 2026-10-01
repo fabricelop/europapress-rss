@@ -7,7 +7,7 @@ const html=fs.readFileSync(new URL("../ttittulares/index.html",import.meta.url),
 const script=html.match(/<script>([\s\S]*?)<\/script>/)?.[1]||"";
 assert.ok(script);
 new vm.Script(script,{filename:"ttittulares-inline"});
-const part=script.match(/function newsSearchKeywords\(item\)\{[\s\S]*?\n\}\nfunction quoteSearchUrl\(item\)\{[\s\S]*?\n\}/);
+const part=script.match(/function newsSearchKeywords\(item\)\{[\s\S]*?\r?\n\}\r?\nfunction quoteSearchUrl\(item\)\{[\s\S]*?\r?\n\}/);
 assert.ok(part,"Missing concise X search");
 const context=vm.createContext({String,Set,encodeURIComponent});
 vm.runInContext(part[0],context);

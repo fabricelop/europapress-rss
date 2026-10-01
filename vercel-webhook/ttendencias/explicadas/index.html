@@ -127,6 +127,10 @@ async function imageDecision(x,action,button){
   setTimeout(()=>load().catch(e=>alert(e.message)),500);
  }catch(error){button.textContent=old;button.disabled=false;alert(error?.message||"No se pudo guardar la decisión de imagen.");}
 }
+function isChatImageGen(image){
+ const guard=image?.context_guard||{};
+ return image?.generated===true&&image?.provider==="chat-imagegen"&&image?.origin==="executing_chat"&&Number(guard.version)===3&&guard.scope==="current_item_only";
+}
 function appendImagePreview(host,image,label,badge){
  const url=String(image?.url||"");if(!/^https:\/\//i.test(url))return false;
  const wrap=document.createElement("div");wrap.style.cssText="flex:1 1 260px;min-width:0;border:1px solid #29384a;border-radius:11px;padding:8px;background:#0d131c";
@@ -204,14 +208,18 @@ function render(){
   card.querySelector(".explanation").textContent=parts.fact;
   const closer=card.querySelector(".closer");
   if(parts.closer){closer.hidden=false;closer.textContent=parts.closer;}
-  const picture=card.querySelector(".imagebox"),image=x.image||{},imageUrl=String(image.url||"");
-  const ai=x.ai_image||{},fallback=x.fallback_image||{};
+  const picture=card.querySelector(".imagebox");
+  const rawAi=x.ai_image||{},ai=isChatImageGen(rawAi)?rawAi:{},fallback=x.fallback_image||{};
   const aiUrl=String(ai.url||""),fallbackUrl=String(fallback.url||"");
+  let imageChoice=String(x.image_choice||"");
+  if(imageChoice==="ai"&&!aiUrl)imageChoice=fallbackUrl?"fallback":"none";
+  const image=imageChoice==="ai"?ai:imageChoice==="fallback"?fallback:{};
+  const imageUrl=String(image.url||"");
   if(/^https:\/\//i.test(aiUrl)||/^https:\/\//i.test(fallbackUrl)||x.ai_image_status||x.fallback_image_status){
     picture.hidden=false;picture.style.cssText="margin:9px 0 5px;max-width:100%;overflow:hidden";
     const grid=document.createElement("div");grid.style.cssText="display:flex;gap:8px;flex-wrap:wrap";
-    appendImagePreview(grid,ai,"Gag IA",x.image_choice==="ai");
-    appendImagePreview(grid,fallback,"Archivo / fallback",x.image_choice==="fallback");
+    appendImagePreview(grid,ai,"Gag IA",imageChoice==="ai");
+    appendImagePreview(grid,fallback,"Archivo / fallback",imageChoice==="fallback");
     if(!grid.children.length){
       const state=document.createElement("div");state.style.cssText="font-size:11px;color:#94a3b8;padding:8px;border:1px solid #29384a;border-radius:10px;width:100%";
       state.textContent=x.ai_image_regenerate_requested?"Rehacer solicitado · se intentará una imagen en la próxima pasada.":"Imagen IA/fallback todavía no disponible.";
@@ -220,7 +228,7 @@ function render(){
     picture.appendChild(grid);
     const controls=document.createElement("div");controls.className="actions";controls.style.marginTop="8px";
     const redo=document.createElement("button");redo.className="btn";redo.type="button";redo.textContent=x.ai_image_regenerate_requested?"Rehacer solicitado ✓":"🔁 Rehacer";redo.disabled=Boolean(x.ai_image_regenerate_requested);redo.onclick=()=>imageDecision(x,"regenerate-image",redo);controls.appendChild(redo);
-    const useFallback=document.createElement("button");useFallback.className="btn";useFallback.type="button";useFallback.textContent="🖼️ Usar archivo/fallback";useFallback.disabled=!/^https:\/\//i.test(fallbackUrl)||x.image_choice==="fallback";useFallback.onclick=()=>imageDecision(x,"use-fallback-image",useFallback);controls.appendChild(useFallback);
+    const useFallback=document.createElement("button");useFallback.className="btn";useFallback.type="button";useFallback.textContent="🖼️ Usar archivo/fallback";useFallback.disabled=!/^https:\/\//i.test(fallbackUrl)||imageChoice==="fallback";useFallback.onclick=()=>imageDecision(x,"use-fallback-image",useFallback);controls.appendChild(useFallback);
     picture.appendChild(controls);
   }
   const rating=card.querySelector(".rating");

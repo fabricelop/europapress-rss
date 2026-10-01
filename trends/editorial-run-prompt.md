@@ -66,23 +66,15 @@ Cuando `tremending_origin:true`, esta entrada no es una tendencia clasificada po
 
 La imagen es una capa asíncrona separada del texto. En `explanation_only`, el texto se cierra en cuanto está verificado: **nunca esperes a una imagen para pasar a Explicadas ni para continuar con la siguiente tendencia**.
 
-### Generación IA mediante cola durable
+### Generación IA en el mismo chat ejecutor
 
-No uses el ImageGen interno de ChatGPT en este flujo y no intentes extraer bytes de una imagen de conversación. Ese puente no es durable. Para cada tendencia/grupo con `with_image:true` y contexto factual suficiente:
+La única fuente principal admitida para el gag IA es una llamada real a **ImageGen desde esta misma conversación**. No crees `trends/image-jobs/**`, no llames a un endpoint/generador externo y no construyas ni rasterices SVG como sustituto. Para cada tendencia/grupo con `with_image:true` y contexto factual suficiente, persiste primero la explicación con `image_strategy:"ai_plus_fallback"`, `ai_image_status:"pending"` y el intento que va a comenzar; después llama una sola vez a ImageGen y entrega su raster por `trends/image-outbox/**`. El consumidor de ese outbox actualiza solo la capa visual.
 
-1. persiste la explicación normalmente con `image_strategy:"ai_plus_fallback"` y `ai_image_status:"pending"`;
-2. crea exactamente UN fichero de trabajo:
-   `trends/image-jobs/<trend_id>-r<revision>-ai<attempt>.json`;
-3. el fichero contiene solo JSON UTF-8 pequeño:
-   `{"project":"ttendencias","id","revision","attempt","prompt","svg","context_guard"}`;
-4. `.github/workflows/ai-image-generate.yml` obtiene identidad OIDC de GitHub, llama al generador privado de Vercel AI Gateway y escribe `trends/image-outbox/**`;
-5. `.github/workflows/ttendencias-ai-image-apply.yml` materializa el JPEG y actualiza SOLO los campos visuales de la tarjeta.
-
-La ejecución editorial NO espera ninguno de los pasos 4–5. Que la explicación esté en Explicadas y que la imagen siga `pending` es un estado correcto y temporal.
+La escritura y verificación del texto nunca espera la llamada, el transporte ni la aplicación de la imagen. Que la explicación esté en Explicadas y la imagen siga `pending` o termine `failed` es un estado correcto. La búsqueda de archivo/fallback continúa por su canal independiente.
 
 ### Prompt visual aislado V3
 
-Cada job debe llevar un prompt nuevo y autocontenido que empiece conceptualmente por:
+Cada llamada a ImageGen debe usar un prompt nuevo y autocontenido que empiece conceptualmente por:
 `TTENDENCIAS_IMAGE_ISOLATION_V3 · CURRENT_ITEM_ONLY · <trend_id> r<revision>`.
 
 Incluye únicamente:
@@ -94,30 +86,16 @@ Incluye únicamente:
 
 No reutilices prompts, semillas, imágenes ni elementos de otras tendencias. En asuntos políticos, la imagen debe ser neutral y descriptiva: nada de elogiar, atacar o persuadir a favor o en contra de actores políticos. En tragedias, muerte, violencia o víctimas, evita el gag y pide una ilustración editorial sobria y no gráfica.
 
-### SVG editorial IA de respaldo obligatorio
-
-Además del `prompt`, genera en el mismo job un campo `svg` que represente ESA misma idea visual. Es el respaldo durable si el generador raster externo no está disponible. Debe ser SVG autocontenido y seguro:
-- raíz `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 432">`;
-- ilustración vectorial editorial sencilla pero expresiva, con fondo, 3–8 elementos visuales y jerarquía clara;
-- usa solo primitivas SVG (`rect`, `circle`, `ellipse`, `path`, `line`, `polyline`, `polygon`, `text`, `g`);
-- nada de `script`, `foreignObject`, `image`, `iframe`, eventos `on*`, enlaces, URLs, `data:`, recursos externos ni CSS importado;
-- texto opcional muy corto (1–3 palabras) y solo si ayuda al gag; no metas el tuit ni párrafos;
-- no copies elementos de otras tendencias.
-El SVG lo crea la IA editorial; GitHub Actions lo rasteriza a PNG y lo somete al mismo `context_guard`.
+Un SVG técnico no es ImageGen: no puede guardarse en `ai_image`, elegir `image_choice:"ai"` ni mostrarse como «Gag IA». El flujo vigente no crea SVG. Un artefacto histórico de ese tipo se mantiene, como máximo, fuera de la selección visible y con procedencia técnica explícita.
 
 El `context_guard` es:
 `{"version":3,"trend_id":"<trend_id>","revision":<revision>,"scope":"current_item_only"}`.
 
 ### Un solo intento y recuperación
 
-El intento inicial usa `attempt:1`. No crees un segundo job automático tras un resultado `failed`. Solo **🔁 Rehacer** crea `attempt = ai_image_attempt + 1`.
+El intento inicial usa `attempt:1`. Antes de llamar a ImageGen registra de forma durable `ai_image_attempt:1` y el inicio del intento. No hagas una segunda llamada automática tras `failed`, timeout, interrupción o transporte incompleto. Solo **🔁 Rehacer** autoriza `attempt = ai_image_attempt + 1`.
 
-Al comenzar cada pasada revisa también Explicadas recientes:
-- si `ai_image_regenerate_requested:true`, crea el job de Rehacer si no existe ya;
-- si `ai_image_status:"pending"` y no existe `ai_image`, crea el job pendiente si no existe ya;
-- nunca reinvestigues ni reescribas la explicación para estos trabajos visuales.
-
-Un job existente cuenta como intento ya encolado: no dupliques el fichero ni incrementes `attempt` hasta que haya resultado. El consumidor visual limpia `ai_image_regenerate_requested` cuando aplica `ready` o `failed`.
+Al comenzar cada pasada revisa también Explicadas recientes. Una solicitud `ai_image_regenerate_requested:true` se consume una sola vez por su `ai_image_regenerate_request_version`: marca esa versión como consumida antes de llamar y ejecuta un único ImageGen sin reinvestigar ni reescribir. Un `ai_image_status:"pending"` con `ai_image_attempt>=1` significa que el intento automático ya se inició y **no se repite**. Si falta el resultado, conserva o marca el fallo visual; espera a **🔁 Rehacer** para cualquier nueva generación.
 
 ### IA + fallback
 
@@ -168,7 +146,7 @@ No guardes en RUNTRACE el texto de candidatos descartados. Así la app sigue mos
 3. Si `trends/recent.json.captured_at` supera 20 minutos, actualiza `trends/refresh-trigger.txt` en `main` para pedir una captura fresca y después relee `trends/editorial-queue.json`, `trends/recent.json` y `trends/editorial-config.json`.
 4. Antes de considerar la pasada vacía, revisa también las Explicadas recientes con `ai_image_regenerate_requested:true`. Si no hay cola editorial NI solicitudes de Rehacer imagen, termina sin investigación web. Si solo hay solicitudes de imagen, procesa únicamente esos intentos visuales sin reabrir texto ni requests.
 5. Si hay pendientes, usa DOS fases de prioridad: primero TODOS los `preparing`/`update` del más antiguo al más reciente; solo después reintenta los `problematic` que sigan en Top 10. Un problematic antiguo NUNCA puede hacer starvation de tendencias nuevas.
-6. PROCESAMIENTO EDITORIAL SECUENCIAL, IMAGEN DESACOPLADA: para cada tendencia/grupo investiga → redacta/verifica → persiste y cierra el TEXTO → confirma requests/cola. En cuanto exista contexto factual suficiente crea el único trabajo visual en `trends/image-jobs/**`; GitHub Actions genera y persiste la IA de forma asíncrona. La cola visual NUNCA condiciona el cierre del texto ni el paso al siguiente item. No intentes transportar bytes desde el chat ni llames al ImageGen de ChatGPT para este flujo.
+6. PROCESAMIENTO EDITORIAL SECUENCIAL, IMAGEN DESACOPLADA: para cada tendencia/grupo investiga → redacta/verifica → persiste y cierra el TEXTO → confirma requests/cola. Con contexto factual suficiente registra el intento visual y llama una sola vez a ImageGen desde este chat; su raster viaja después por `trends/image-outbox/**`. La capa visual NUNCA condiciona el cierre del texto ni el paso al siguiente item.
 7. Una tendencia `problematic` se reintenta automáticamente mientras siga en el Top 10, pero siempre al final de la pasada. Si ya salió del Top 10, no se fuerza otro intento.
 8. Un fallo de un item no debe bloquear los siguientes: registra ese item pendiente/problematic según corresponda y continúa con el siguiente.
 9. Relee estado fresco antes de cada escritura. Ante conflicto, relee SHA y reintenta de forma segura.
@@ -264,7 +242,7 @@ y ordenar:
 
 Añade a `ai_image`:
 `context_guard={"version":3,"trend_id":"<id>","revision":<revision>,"scope":"current_item_only"}`
-y `generation_attempt:1`.
+y `generation_attempt:<attempt>`, `provider:"chat-imagegen"`, `origin:"executing_chat"` y `source:"TTendencias / ChatGPT ImageGen"`. El consumidor rechaza cualquier otro proveedor u origen como IA visible.
 
 ### Rapidez y tamaño
 
@@ -280,7 +258,7 @@ Cuando ImageGen devuelve un attachment/fichero:
 1. identifica exclusivamente el archivo generado en el intento actual;
 2. materializa/lee sus bytes reales;
 3. normaliza programáticamente a JPEG/WebP ligero y calcula SHA-256;
-4. persiste el binario en `trends/generated-images/<id>-r<revision>-ai<attempt>.jpg` o mediante el hand-off Actions existente;
+4. entrega el raster por el outbox visual para que Actions lo normalice en `trends/generated-images/<id>-r<revision>-ai<attempt>.jpg`;
 5. guarda la metadata bajo `ai_image`, nunca sustituyendo ni borrando `fallback_image`;
 6. si `ai_image` queda disponible, usa por defecto `image_choice:"ai"` e `image=ai_image`; si no y existe fallback, `image_choice:"fallback"`.
 
@@ -313,7 +291,7 @@ Después del único intento ImageGen:
 5. `.github/workflows/ttendencias-ai-image-apply.yml` materializa el raster y actualiza SOLO la imagen de `trends/telegram-manual-explained.json`;
 6. ante fallo técnico de ImageGen/transporte, escribe `status:"failed"` y una razón breve en ese image-outbox. La explicación queda igualmente cerrada.
 
-Para **🔁 Rehacer**, incrementa `attempt`, genera exactamente una vez y usa este mismo image-outbox. No escribas otro texto, no cambies la revisión editorial y conserva siempre `fallback_image`.
+Para **🔁 Rehacer**, incrementa `attempt`, marca primero como consumida la versión concreta de la solicitud, genera exactamente una vez y usa este mismo image-outbox. No escribas otro texto, no cambies la revisión editorial y conserva siempre `fallback_image`. Una pasada normal no puede crear ai2/ai3/ai4 por recuperación.
 
 La foto de archivo/fallback sigue siendo posterior y no bloqueante mediante `ttendencias-image-enrich.yml`.
 

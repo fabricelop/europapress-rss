@@ -654,6 +654,10 @@ function renderTremending(list){
  for(const node of [...list.children])if(!keep.has(node))node.remove();
  desired.forEach((node,i)=>{if(list.children[i]!==node)list.insertBefore(node,list.children[i]||null)});
 }
+function isChatImageGen(image){
+ const guard=image?.context_guard||{};
+ return image?.generated===true&&image?.provider==="chat-imagegen"&&image?.origin==="executing_chat"&&Number(guard.version)===3&&guard.scope==="current_item_only";
+}
 function renderReady(list,preservedImages=new Map()){
  $("viewTitle").textContent="Noticias listas";
  const status=model.status||{},events=status.events||{},prepared=[...(model.prepared||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
@@ -679,13 +683,14 @@ function renderReady(list,preservedImages=new Map()){
   card.querySelector(".sources").textContent="Redactada con "+drafted+" ("+current+") · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
   const det=card.querySelector(".details");card.querySelector(".facts").textContent=item.factual_summary||item.explanation||"";if(openCards.has(String(item.event_id||""))){det.classList.add("open");card.querySelector(".expand").textContent="Cerrar"}
-  const ai=item.ai_image||{},fallback=item.fallback_image||{};
+   const rawAi=item.ai_image||{},ai=isChatImageGen(rawAi)?rawAi:{},fallback=item.fallback_image||{};
   const aiUrl=String(ai.url||""),fallbackUrl=String(fallback.url||"");
-  let img=item.image||{},imgUrl=String(img.url||item.image_url||"");
-  let imageChoice=String(item.image_choice||"");
+   let imageChoice=String(item.image_choice||"");
+   if(imageChoice==="ai"&&!aiUrl)imageChoice=fallbackUrl?"fallback":"none";
+   let img=imageChoice==="ai"?ai:imageChoice==="fallback"?fallback:{},imgUrl=String(img.url||"");
   if(!imgUrl&&aiUrl){img=ai;imgUrl=aiUrl;imageChoice="ai"}
   else if(!imgUrl&&fallbackUrl){img=fallback;imgUrl=fallbackUrl;imageChoice="fallback"}
-  if(!imageChoice&&imgUrl)imageChoice=img.generated?"ai":"fallback";
+   if(!imageChoice&&imgUrl)imageChoice=img===ai?"ai":"fallback";
   const imgSource=img.source||item.image_source||"",imgRights=img.rights_status||item.image_rights_status||"",imgBox=card.querySelector(".imagebox");
   const imageState=String(item.image_status||(imgUrl?"ready":"none")).toLowerCase();
   const imageReady=imageState==="ready"&&!!imgUrl;
@@ -727,7 +732,7 @@ function renderReady(list,preservedImages=new Map()){
    alternatePreview.src=API+"?view=image-proxy&url="+encodeURIComponent(altUrl);
   }else{alternateChoice.hidden=true;alternatePreview.hidden=true}
 
-  const aiState=String(item.ai_image_status|| (aiUrl?"ready":"pending"));
+   const aiState=String(aiUrl?"ready":item.ai_image_status==="ready"?"failed":item.ai_image_status||"pending");
   const fallbackState=String(item.fallback_image_status|| (fallbackUrl?"ready":"pending"));
   card.querySelector(".imageMeta").textContent="IA: "+(aiState==="ready"?"lista":aiState==="failed"?"falló":aiState==="pending"?"pendiente":aiState)+" · archivo: "+(fallbackState==="ready"?"listo":fallbackState==="none"?"no encontrado":fallbackState==="pending_capture"?"pendiente":fallbackState);
   const redo=card.querySelector(".imgRedo");

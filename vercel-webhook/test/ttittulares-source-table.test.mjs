@@ -7,7 +7,7 @@ const html=fs.readFileSync(new URL("../ttittulares/index.html", import.meta.url)
 const inline=html.match(/<script>([\s\S]*?)<\/script>/i)?.[1];
 assert.ok(inline,"TTiTTulares inline script must exist");
 new vm.Script(inline,{filename:"ttittulares/index.inline.js"});
-const functionMatch=inline.match(/function sourceAgeInfo\(value,nowMs=Date\.now\(\)\)\{[\s\S]*?\n\}(?=\nfunction renderSourcesSheet)/);
+const functionMatch=inline.match(/function sourceAgeInfo\(value,nowMs=Date\.now\(\)\)\{[\s\S]*?\r?\n\}(?=\r?\nfunction renderSourcesSheet)/);
 assert.ok(functionMatch,"Source elapsed time formatter missing");
 const sourceAge=vm.runInNewContext(functionMatch[0]+"\nsourceAgeInfo",{Date,Number,Math,String});
 

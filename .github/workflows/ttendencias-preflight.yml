@@ -11,8 +11,14 @@ on:
       - "trends/auto_queue_new.py"
       - "trends/enrich_explained_images.py"
       - "trends/apply_editorial_outbox.py"
+      - "trends/apply_ai_image_outbox.py"
+      - "trends/migrate_legacy_chat_svg.py"
+      - "trends/editorial-run-prompt.md"
       - "trends/telegram-manual-explained.json"
+      - ".github/workflows/ai-image-generate.yml"
+      - ".github/workflows/ttendencias-ai-image-apply.yml"
       - "vercel-webhook/ttendencias/**"
+      - "vercel-webhook/test/ttendencias-image-ui.test.mjs"
       - "vercel-webhook/api/ttendencias-control.js"
       - "vercel-webhook/api/ttendencias-top10-push.js"
 
@@ -28,12 +34,19 @@ jobs:
 
       - name: Validar Python y JSON
         run: |
-          python3 -m py_compile trends/update_trends.py trends/auto_queue_new.py trends/enrich_explained_images.py trends/apply_editorial_outbox.py
+          python3 -m py_compile trends/update_trends.py trends/auto_queue_new.py trends/enrich_explained_images.py trends/apply_editorial_outbox.py trends/apply_ai_image_outbox.py trends/migrate_legacy_chat_svg.py
           python3 trends/enrich_explained_images.py --selftest
+          python3 trends/migrate_legacy_chat_svg.py --check
           python3 - <<'PY'
           import json
           from pathlib import Path
-          json.loads(Path("trends/telegram-manual-explained.json").read_text(encoding="utf-8"))
+          explained=json.loads(Path("trends/telegram-manual-explained.json").read_text(encoding="utf-8"))
+          for item in explained.get("items",[]):
+              ai=item.get("ai_image") or {}
+              if ai:
+                  assert ai.get("provider")=="chat-imagegen" and ai.get("origin")=="executing_chat"
+                  assert int((ai.get("context_guard") or {}).get("version") or 0)==3
+              assert not (item.get("image_choice")=="ai" and not ai), "image_choice ai sin ImageGen válido"
           json.loads(Path("vercel-webhook/vercel.json").read_text(encoding="utf-8"))
           print("JSON_OK")
           PY
@@ -58,6 +71,7 @@ jobs:
           node --check vercel-webhook/api/ttendencias-control.js
           node --check vercel-webhook/api/ttendencias-top10-push.js
           node --check vercel-webhook/ttendencias/sw.js
+          node --test vercel-webhook/test/ttendencias-image-ui.test.mjs
 
       - name: Validar contrato nuevo
         run: |
@@ -73,8 +87,15 @@ jobs:
           assert "TT#" in exp
           assert "Gag IA" in exp and "Archivo / fallback" in exp
           assert "🔁 Rehacer" in exp and "🖼️ Usar archivo/fallback" in exp
+          assert 'provider==="chat-imagegen"' in exp and 'origin==="executing_chat"' in exp
           api=Path("vercel-webhook/api/ttendencias-control.js").read_text(encoding="utf-8")
           assert 'action === "regenerate-image"' in api
           assert 'action === "use-fallback-image"' in api
+          prompt=Path("trends/editorial-run-prompt.md").read_text(encoding="utf-8")
+          assert "misma conversación" in prompt and "provider:\"chat-imagegen\"" in prompt
+          assert "No uses el ImageGen interno" not in prompt
+          legacy=Path(".github/workflows/ai-image-generate.yml").read_text(encoding="utf-8")
+          assert "LEGACY_AI_IMAGE_GENERATOR_DISABLED" in legacy
+          assert "TT_IMAGE_ENDPOINT" not in legacy and "cairosvg" not in legacy and '"provider": "chat-svg"' not in legacy
           print("CONTRACT_OK")
           PY

@@ -1,4 +1,4 @@
-name: Generar imágenes IA TT
+name: Rechazar generador IA legado
 
 on:
   workflow_dispatch:
@@ -10,263 +10,26 @@ on:
       - ".github/workflows/ai-image-generate.yml"
 
 permissions:
-  contents: write
-  actions: write
-  id-token: write
-
-concurrency:
-  group: tt-ai-image-generate
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  generate:
+  reject-legacy-jobs:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Preparar rasterizador SVG
-        run: python3 -m pip install --disable-pip-version-check --quiet cairosvg
-
-      - name: Obtener identidad OIDC de GitHub
-        id: oidc
+      - name: Verificar que no se usa el generador legado
         shell: bash
         run: |
           set -euo pipefail
-          url="${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=tt-image-generator-v1"
-          token="$(curl --fail --silent --show-error             -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}"             "$url" | python3 -c 'import json,sys; print(json.load(sys.stdin)["value"])')"
-          test -n "$token"
-          echo "::add-mask::$token"
-          echo "token=$token" >> "$GITHUB_OUTPUT"
+          shopt -s nullglob
+          jobs=(trends/image-jobs/*.json ttittulares/image-jobs/*.json)
+          if ((${#jobs[@]})); then
+            printf 'Los jobs visuales heredados ya no se procesan. ImageGen debe ejecutarse en el mismo chat editorial y entregar un image-outbox V3.\n' >&2
+            printf 'Job legado: %s\n' "${jobs[@]}" >&2
+            exit 1
+          fi
+          echo "LEGACY_AI_IMAGE_GENERATOR_DISABLED"
 
-      - name: Generar y publicar resultados visuales
-        env:
-          TT_IMAGE_OIDC_TOKEN: ${{ steps.oidc.outputs.token }}
-          TT_IMAGE_ENDPOINT: https://europapress-rss.vercel.app/api/ai-image
-        run: |
-          set -euo pipefail
-          python3 <<'PY'
-          import base64
-          import hashlib
-          import json
-          import os
-          import subprocess
-          import time
-          import urllib.error
-          import urllib.request
-          from pathlib import Path
-
-          ROOT = Path.cwd()
-          TMP = Path("/tmp/tt-image-results")
-          TMP.mkdir(parents=True, exist_ok=True)
-          endpoint = os.environ["TT_IMAGE_ENDPOINT"]
-          token = os.environ["TT_IMAGE_OIDC_TOKEN"]
-
-          jobs = sorted((ROOT / "trends" / "image-jobs").glob("*.json")) if (ROOT / "trends" / "image-jobs").exists() else []
-          jobs += sorted((ROOT / "ttittulares" / "image-jobs").glob("*.json")) if (ROOT / "ttittulares" / "image-jobs").exists() else []
-
-          if not jobs:
-              print("TT_IMAGE_JOBS_EMPTY")
-              raise SystemExit(0)
-
-          results = []
-          for job_path in jobs:
-              rel = job_path.relative_to(ROOT).as_posix()
-              try:
-                  job = json.loads(job_path.read_text(encoding="utf-8"))
-              except Exception as exc:
-                  print("TT_IMAGE_BAD_JOB", rel, exc)
-                  continue
-
-              project = str(job.get("project") or "").lower().strip()
-              ident = str(job.get("id") or job.get("event_id") or "").strip()
-              revision = int(job.get("revision") or (1 if project == "ttittulares" else 0))
-              attempt = max(1, int(job.get("attempt") or 1))
-              request = urllib.request.Request(
-                  endpoint,
-                  method="POST",
-                  data=json.dumps(job, ensure_ascii=False).encode("utf-8"),
-                  headers={
-                      "Authorization": f"Bearer {token}",
-                      "Content-Type": "application/json",
-                      "User-Agent": "tt-image-github-action/1",
-                  },
-              )
-
-              response = None
-              failure = None
-              try:
-                  with urllib.request.urlopen(request, timeout=110) as handle:
-                      response = json.loads(handle.read().decode("utf-8"))
-              except urllib.error.HTTPError as exc:
-                  body = exc.read().decode("utf-8", "replace")
-                  try:
-                      detail = json.loads(body)
-                      failure = str(detail.get("detail") or detail.get("error") or body)
-                  except Exception:
-                      failure = body
-                  failure = f"HTTP {exc.code}: {failure}"[:500]
-              except Exception as exc:
-                  failure = str(exc)[:500]
-
-              # Fallback durable sin cuentas externas: SVG editorial creado por
-              # la misma IA que redacta el item. Viaja como texto seguro en el job
-              # y Actions lo rasteriza; nunca se ejecuta SVG recibido del exterior.
-              if not (response and response.get("ok") and str(response.get("data_url") or "").startswith("data:image/")):
-                  svg = str(job.get("svg") or "").strip()
-                  if svg:
-                      try:
-                          import cairosvg
-                          low = svg.casefold()
-                          forbidden = (
-                              "<script", "<foreignobject", "javascript:", "onload=", "onerror=",
-                              "onclick=", "onmouseover=", "href=", "xlink:href=", "@import",
-                              "<image", "<iframe", "<a ", "<use", "<style", "url(",
-                          )
-                          if len(svg.encode("utf-8")) > 120_000:
-                              raise ValueError("svg_too_large")
-                          if "<svg" not in low or any(token in low for token in forbidden):
-                              raise ValueError("svg_unsafe_or_invalid")
-                          raw = cairosvg.svg2png(
-                              bytestring=svg.encode("utf-8"),
-                              output_width=768,
-                              output_height=432,
-                          )
-                          if len(raw) < 4096 or not raw.startswith(b"\x89PNG\r\n\x1a\n"):
-                              raise ValueError("svg_rasterization_failed")
-                          response = {
-                              "ok": True,
-                              "data_url": "data:image/png;base64," + base64.b64encode(raw).decode("ascii"),
-                              "model": "editorial-svg-v1",
-                              "provider": "chat-svg",
-                              "sha256": hashlib.sha256(raw).hexdigest(),
-                              "context_guard": job.get("context_guard"),
-                          }
-                          print("TT_IMAGE_SVG_FALLBACK_OK", ident, len(raw))
-                          failure = None
-                      except Exception as svg_exc:
-                          svg_failure = str(svg_exc).replace("\n", " ")[:300]
-                          failure = ((failure + " | ") if failure else "") + "svg: " + svg_failure
-                          failure = failure[:500]
-                          print("TT_IMAGE_SVG_FALLBACK_FAILED", ident, svg_failure)
-
-              guard = (response or {}).get("context_guard") or job.get("context_guard") or {
-                  "version": 3,
-                  ("event_id" if project == "ttittulares" else "trend_id"): ident,
-                  "revision": revision,
-                  "scope": "current_item_only",
-              }
-
-              provider = str((response or {}).get("provider") or "vercel-openai")
-              source_suffix = "Editorial SVG IA" if provider == "chat-svg" else "Vercel AI Gateway / OpenAI"
-              if project == "ttittulares":
-                  outbox_rel = f"ttittulares/image-outbox/{ident}-r{revision}-ai{attempt}.json"
-                  id_key = "event_id"
-                  source = "TTiTTulares / " + source_suffix
-              else:
-                  outbox_rel = f"trends/image-outbox/{ident}-r{revision}-ai{attempt}.json"
-                  id_key = "id"
-                  source = "TTendencias / " + source_suffix
-
-              if response and response.get("ok") and str(response.get("data_url") or "").startswith("data:image/"):
-                  payload = {
-                      id_key: ident,
-                      "revision": revision,
-                      "attempt": attempt,
-                      "status": "ready",
-                      "ai_image": {
-                          "url": response["data_url"],
-                          "source": source,
-                          "rights_status": "generated",
-                          "generated": True,
-                          "generation_attempt": attempt,
-                          "context_guard": guard,
-                          "model": response.get("model"),
-                          "provider": response.get("provider") or "vercel-openai",
-                          "sha256": response.get("sha256"),
-                      },
-                  }
-              else:
-                  payload = {
-                      id_key: ident,
-                      "revision": revision,
-                      "attempt": attempt,
-                      "status": "failed",
-                      "reason": (failure or "El generador IA no devolvió bytes utilizables.")[:500],
-                      "context_guard": guard,
-                  }
-
-              key = hashlib.sha256(rel.encode("utf-8")).hexdigest()[:16]
-              result_path = TMP / f"{key}.json"
-              result_path.write_text(json.dumps({
-                  "job_rel": rel,
-                  "outbox_rel": outbox_rel,
-                  "payload": payload,
-              }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-              results.append(result_path)
-
-          if not results:
-              print("TT_IMAGE_NO_VALID_JOBS")
-              raise SystemExit(0)
-
-          def run(*args, check=True):
-              return subprocess.run(args, cwd=ROOT, text=True, check=check, capture_output=True)
-
-          run("git", "config", "user.name", "tt-image-bot")
-          run("git", "config", "user.email", "actions@users.noreply.github.com")
-
-          failures = []
-          for result_path in results:
-              result = json.loads(result_path.read_text(encoding="utf-8"))
-              job_rel = result["job_rel"]
-              outbox_rel = result["outbox_rel"]
-              payload = result["payload"]
-              persisted = False
-
-              for push_attempt in range(1, 6):
-                  run("git", "fetch", "origin", "main")
-                  run("git", "reset", "--hard", "origin/main")
-                  job_live = ROOT / job_rel
-                  if not job_live.exists():
-                      print("TT_IMAGE_JOB_ALREADY_CONSUMED", job_rel)
-                      persisted = True
-                      break
-
-                  outbox_path = ROOT / outbox_rel
-                  outbox_path.parent.mkdir(parents=True, exist_ok=True)
-                  outbox_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-                  job_live.unlink()
-                  run("git", "add", "-A", job_rel, outbox_rel)
-                  diff = run("git", "diff", "--cached", "--quiet", check=False)
-                  if diff.returncode == 0:
-                      persisted = True
-                      break
-
-                  status = str(payload.get("status") or "")
-                  ident = str(payload.get("event_id") or payload.get("id") or "")
-                  run("git", "commit", "-m", f"IA {status} para {ident}")
-                  pushed = run("git", "push", "origin", "HEAD:main", check=False)
-                  if pushed.returncode == 0:
-                      print("TT_IMAGE_RESULT_PERSISTED", ident, status)
-                      persisted = True
-                      break
-
-                  print("TT_IMAGE_PUSH_RETRY", job_rel, push_attempt)
-                  time.sleep(push_attempt * 2)
-
-              if not persisted:
-                  failures.append(job_rel)
-
-          if failures:
-              raise SystemExit("No se pudieron persistir: " + ", ".join(failures))
-          PY
-
-      - name: Despertar consumidores de imagen
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh workflow run ttendencias-ai-image-apply.yml --ref main || echo "TTendencias consumer dispatch pendiente"
-          gh workflow run ttittulares-ai-image-apply.yml --ref main || echo "TTiTTulares consumer dispatch pendiente"
+# Barrera de seguridad: no llama a Vercel/OpenAI, no rasteriza SVG y no escribe
+# ai_image. Solo se admite ImageGen desde el chat ejecutor mediante image-outbox V3.

@@ -90,30 +90,16 @@ def validate_generated_image(item, expected_id=None, expected_revision=None):
     if str(image.get("rights_status") or "") != "generated":
         raise ValueError("imagen generada sin rights_status=generated")
     source = str(image.get("source") or "")
-    allowed_sources = {
-        "TTendencias / ChatGPT",
-        "TTendencias / Vercel AI Gateway / OpenAI",
-        "TTendencias / Editorial SVG IA",
-    }
-    if source not in allowed_sources:
-        raise ValueError("imagen generada sin source esperado")
+    if source != "TTendencias / ChatGPT ImageGen":
+        raise ValueError("ai_image debe proceder de ChatGPT ImageGen")
+    if str(image.get("provider") or "") != "chat-imagegen":
+        raise ValueError("ai_image con provider no admitido")
+    if str(image.get("origin") or "") != "executing_chat":
+        raise ValueError("ai_image no generado en el chat ejecutor")
     guard = image.get("context_guard") or {}
     guard_version = int(guard.get("version") or 0)
-    if guard_version not in {2, 3}:
-        raise ValueError("imagen generada sin context_guard compatible")
-    # V2 histórico exigía una inspección semántica automática. V3 entrega el
-    # primer raster íntegro para revisión humana y por tanto no bloquea por estilo.
-    if guard_version == 2:
-        style = str(image.get("style_version") or "")
-        check = image.get("style_check") or {}
-        required_checks = [
-            "reviewed_after_generation","single_narrative_scene","visual_gag_without_text",
-            "no_infographic_layout","no_diagram_arrows_or_connectors","no_ui_or_scoreboard_layout",
-            "low_text","depth_lighting_texture","correct_event_subject","single_current_event_only",
-            "no_cross_item_context","no_multipanel_or_collage",
-        ]
-        if style != "editorial-scene-v2-cleveland" or not all(check.get(k) is True for k in required_checks):
-            raise ValueError("imagen V2 sin control visual/editorial completo")
+    if guard_version != 3:
+        raise ValueError("ai_image requiere context_guard V3")
     if str(guard.get("scope") or "") != "current_item_only":
         raise ValueError("imagen generada sin scope current_item_only")
     if expected_id is not None and str(guard.get("trend_id") or "") != str(expected_id):
@@ -253,32 +239,22 @@ def checkpoint_image(payload, req_id, revision):
 
 
 def checkpoint_ai_image(payload, req_id, revision):
+    """Rechaza IA inline: la imagen solo puede llegar por image-outbox V3."""
     item = payload.get("prepared_item") or {}
     ai = item.get("ai_image")
-    if not ai:
+    selected = item.get("image") or {}
+    if not ai and not (isinstance(selected, dict) and selected.get("generated") is True):
         return None
-    holder = {"image": dict(ai)}
-    try:
-        validate_generated_image(holder, req_id, revision)
-        materialize_inline_generated_image(holder, req_id, revision)
-        validate_generated_image(holder, req_id, revision)
-        ai = holder["image"]
-        item["ai_image"] = ai
-        item["ai_image_status"] = "ready"
-        item["ai_image_attempt"] = int(ai.get("generation_attempt") or item.get("ai_image_attempt") or 1)
-        item.pop("ai_image_failure_reason", None)
-        if str(item.get("image_choice") or "") != "fallback":
-            item["image"] = dict(ai)
-            item["image_choice"] = "ai"
-            item["image_status"] = "ready"
-        payload["prepared_item"] = item
-        return ai
-    except Exception as exc:
-        item["ai_image_status"] = "failed"
-        item["ai_image_failure_reason"] = str(exc)[:500]
-        # El error visual nunca invalida el resultado editorial.
-        payload["prepared_item"] = item
-        return None
+    item.pop("ai_image", None)
+    item["ai_image_status"] = "pending"
+    item["ai_image_inline_rejected"] = True
+    item["ai_image_failure_reason"] = "La IA inline se descartó; debe llegar por trends/image-outbox V3."
+    if str(item.get("image_choice") or "") == "ai" or (isinstance(selected, dict) and selected.get("generated") is True):
+        item.pop("image", None)
+        item["image_choice"] = "none"
+        item["image_status"] = "none"
+    payload["prepared_item"] = item
+    return None
 
 
 def validate_ready(payload):
@@ -407,8 +383,8 @@ def main():
 
             result_status = str(payload.get("status") or "")
             if result_status == "ready":
-                # Best-effort: materializa la IA si llegó, pero cualquier fallo
-                # queda registrado dentro del item y no bloquea el texto.
+                # El texto se cierra aunque un productor antiguo intente incluir
+                # IA inline; el raster solo se admite por image-outbox V3.
                 checkpoint_ai_image(payload, req_id, revision)
                 save(path, payload)
                 item = validate_ready(payload)

@@ -137,8 +137,14 @@ def _materialize_ai_image(item):
     rev=int(item.get("revision") or 1)
     attempt=int(item.get("ai_image_attempt") or ai.get("generation_attempt") or 1)
     guard=ai.get("context_guard") or {}
-    if int(guard.get("version") or 0) not in {2,3}:
-        raise ValueError("ai_image sin context_guard compatible")
+    if str(ai.get("provider") or "")!="chat-imagegen":
+        raise ValueError("ai_image con provider no admitido")
+    if str(ai.get("origin") or "")!="executing_chat":
+        raise ValueError("ai_image no generado en el chat ejecutor")
+    if str(ai.get("source") or "")!="TTiTTulares / ChatGPT ImageGen":
+        raise ValueError("ai_image debe proceder de ChatGPT ImageGen")
+    if int(guard.get("version") or 0)!=3:
+        raise ValueError("ai_image requiere context_guard V3")
     if str(guard.get("scope") or "")!="current_item_only":
         raise ValueError("ai_image sin scope current_item_only")
     guard_id=str(guard.get("event_id") or guard.get("trend_id") or "")
@@ -179,7 +185,7 @@ def _materialize_ai_image(item):
         ai["handoff"]="inline-outbox-materialized-by-actions"
     elif not url.startswith("https://"):
         raise ValueError("ai_image sin URL válida")
-    ai["source"]=str(ai.get("source") or "TTiTTulares / ChatGPT")
+    ai["source"]="TTiTTulares / ChatGPT ImageGen"
     ai["rights_status"]="generated";ai["generated"]=True
     ai["alt"]=str(ai.get("alt") or item.get("title") or "Gag editorial de la noticia")
     ai["generation_attempt"]=attempt
@@ -343,14 +349,10 @@ def _initialize_parallel_images(item):
             item["fallback_image_status"]="none"
             item["fallback_image_failure_reason"]=str(exc)[:500]
     if item.get("ai_image"):
-        try:
-            # Compatibilidad con productores antiguos. El flujo nuevo usa image-outbox separado.
-            _materialize_ai_image(item)
-        except Exception as exc:
-            item["ai_image_status"]="failed"
-            item["ai_image_failure_reason"]=str(exc)[:500]
-            if not _image_url(item.get("ai_image")):
-                item.pop("ai_image",None)
+        item.pop("ai_image",None)
+        item["ai_image_status"]="pending"
+        item["ai_image_inline_rejected"]=True
+        item["ai_image_failure_reason"]="La IA inline se descartó; debe llegar por ttittulares/image-outbox V3."
     elif not item.get("ai_image_status"):
         item["ai_image_status"]="pending"
     if not item.get("fallback_image_status"):
@@ -361,19 +363,12 @@ def _initialize_parallel_images(item):
 
 
 def _finish_archive_image(item,row,events):
-    """Best-effort AI materialization + archive fallback. Never raises to block READY."""
-    try:
-        if item.get("ai_image"):
-            _materialize_ai_image(item)
-        elif not item.get("ai_image_status"):
-            item["ai_image_status"]="failed"
-            item["ai_image_failure_reason"]="No se recibió imagen IA en este intento."
-    except Exception as exc:
-        item["ai_image_status"]="failed"
-        item["ai_image_failure_reason"]=str(exc)[:500]
-        # Keep a previous usable AI on image-only refresh failures.
-        if not _image_url(item.get("ai_image")):
-            item.pop("ai_image",None)
+    """Completa solo el fallback; ImageGen llega después por image-outbox V3."""
+    if item.get("ai_image"):
+        item.pop("ai_image",None)
+        item["ai_image_inline_rejected"]=True
+    if not item.get("ai_image_status"):
+        item["ai_image_status"]="pending"
     try:
         if str(item.get("fallback_image_status") or "") not in {"ready","none"}:
             _recover_fallback_image(item,row,events)
@@ -491,14 +486,9 @@ def main():
                 path.unlink(); continue
             st=str(payload.get("status") or "")
             if image_retry:
-                if st!="ready": raise ValueError("image retry no puede cambiar el estado READY")
-                incoming=payload.get("prepared_item") or {}
-                patch_keys={"ai_image","ai_image_status","ai_image_attempt","ai_image_failure_reason",
-                            "fallback_image","fallback_image_status","fallback_image_failure_reason",
-                            "image_choice","image","image_status","image_pending"}
-                item={**previous,**{k:v for k,v in incoming.items() if k in patch_keys}}
-                item["tweet"]=previous.get("tweet")
-                payload["prepared_item"]=item
+                processed.append(eid+":legacy-editorial-image-retry-rejected")
+                path.unlink()
+                continue
             if st=="ready":
                 item=validate_ready(payload)
                 # READY se materializa sin búsquedas de red. IA y fallback
@@ -589,7 +579,8 @@ def selftest_images():
     assert image["source"]=="Fuente" and image["rights_status"]=="unverified"
     assert "image_url" not in flat and isinstance(flat["image"],dict)
     dual={"event_id":"dual","revision":1,"title":"Prueba",
-          "ai_image":{"url":"https://example.test/generated.jpg","source":"TTiTTulares / ChatGPT","rights_status":"generated","generated":True,
+          "ai_image":{"url":"https://example.test/generated.jpg","source":"TTiTTulares / ChatGPT ImageGen","rights_status":"generated","generated":True,
+                      "provider":"chat-imagegen","origin":"executing_chat",
                       "context_guard":{"version":3,"event_id":"dual","revision":1,"scope":"current_item_only"}},
           "ai_image_status":"ready",
           "fallback_image":{"url":"https://example.test/archive.jpg","source":"Fuente","source_url":"https://example.test/story","rights_status":"unverified","generated":False},
@@ -598,6 +589,10 @@ def selftest_images():
     assert dual["image_choice"]=="ai" and dual["image"]["generated"] is True
     dual["image_choice"]="fallback";_select_image(dual)
     assert dual["image_choice"]=="fallback" and dual["image"]["generated"] is False
+    inline={**dual,"ai_image":dict(dual["ai_image"]),"image_choice":"ai","image":dict(dual["ai_image"])}
+    _initialize_parallel_images(inline)
+    assert "ai_image" not in inline and inline["ai_image_inline_rejected"] is True
+    assert inline["image_choice"]=="fallback"
     print("DUAL_IMAGE_SELFTEST_OK")
     return 0
 
