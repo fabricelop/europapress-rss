@@ -106,6 +106,9 @@ jobs:
           appjs=Path("ttittulares/app.js").read_text(encoding="utf-8")
           assert "Gag IA" in appjs and "Archivo / fallback" in appjs
           assert "🔁 Rehacer" in appjs and "🖼️ Usar archivo/fallback" in appjs
+          assert "Gag IA" in html and "Archivo / fallback" in html
+          assert "🔁 Rehacer" in html and "🖼️ Usar archivo/fallback" in html
+          assert "imageInFlight=false" in html, "La imagen no debe bloquear la publicación"
           assert manifest["start_url"] == "/ttittulares/"
 
           ids=set()
