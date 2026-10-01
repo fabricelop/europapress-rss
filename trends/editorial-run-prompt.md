@@ -60,7 +60,9 @@ Cuando `trends/editorial-config.json.editorial.mode` sea `explanation_only` (o `
 
 ### Público/Tremending: título corto y rango no inventado
 
-Cuando `tremending_origin:true`, esta entrada no es una tendencia clasificada por el radar: NO inventes `TT#0` ni pegues el titular completo de Público en el campo `name`. Usa el `name` corto recibido (o acórtalo todavía más, sin perder el acontecimiento) y comienza el tuit completo por `TT 🗯️ <nombre corto> es tendencia por/porque <hecho comprobado>` (prefijo literal `TT 🗯️ ` solo para entradas Tremending, una sola vez). Sigue, si procede, con UN salto de línea y `🌶️ <único remate de una frase>`. NO agregues otro encabezado de título antes de esa frase ni dentro de la explicación: se muestra y se copia una sola vez. `closer_text` contiene el remate exacto con 🌶️ o queda vacío cuando no procede. Conserva en la ficha `tremending_origin`, `tremending_id`, `article_title`, `source_url`, `selected_tweet` y `verification_sources`. El tuit seleccionado es contexto/opinión de su autor, no fuente para afirmar hechos. Su captura real tendrá prioridad como imagen y se incorporará sin bloquear la explicación.
+Cuando `tremending_origin:true`, esta entrada no es una tendencia clasificada por el radar: NO inventes `TT#0` ni pegues el titular completo de Público en el campo `name`. Usa el `name` corto recibido (o acórtalo todavía más, sin perder el acontecimiento) y comienza el tuit completo por `TT 🗯️ <nombre corto> es tendencia por/porque <hecho comprobado>` (prefijo literal `TT 🗯️ ` solo para entradas Tremending, una sola vez). Sigue, si procede, con UN salto de línea y `🌶️ <único remate de una frase>`. NO agregues otro encabezado de título antes de esa frase ni dentro de la explicación: se muestra y se copia una sola vez. `closer_text` contiene el remate exacto con 🌶️ o queda vacío cuando no procede. Conserva en la ficha `tremending_origin`, `tremending_id`, `article_title`, `source_url`, `selected_tweet`, `selected_tweet_image` y `verification_sources`. El tuit seleccionado es contexto/opinión de su autor, no fuente para afirmar hechos.
+
+**Tremending NO usa ImageGen.** Si `tremending_origin:true` o `disable_ai_image:true`, no llames a ImageGen y no crees `ai_image`. Usa exclusivamente la captura real del tuit seleccionado como `image`/`fallback_image` cuando esté disponible; si la captura aún está pendiente, conserva `image_status:"pending_capture"` sin bloquear el texto.
 
 ### Imágenes paralelas y no bloqueantes para TODAS las tendencias
 
@@ -68,7 +70,7 @@ La imagen es una capa asíncrona separada del texto. En `explanation_only`, el t
 
 ### Generación IA en el mismo chat ejecutor
 
-La única fuente principal admitida para el gag IA es una llamada real a **ImageGen desde esta misma conversación**. No crees `trends/image-jobs/**`, no llames a un endpoint/generador externo y no construyas ni rasterices SVG como sustituto. Para cada tendencia/grupo con `with_image:true` y contexto factual suficiente, persiste primero la explicación con `image_strategy:"ai_plus_fallback"`, `ai_image_status:"pending"` y el intento que va a comenzar; después llama una sola vez a ImageGen y entrega su raster por `trends/image-outbox/**`. El consumidor de ese outbox actualiza solo la capa visual.
+La única fuente principal admitida para el gag IA es una llamada real a **ImageGen desde esta misma conversación**. No crees `trends/image-jobs/**`, no llames a un endpoint/generador externo y no construyas ni rasterices SVG como sustituto. Para cada tendencia/grupo con `with_image:true`, contexto factual suficiente y **sin** `disable_ai_image:true` ni `tremending_origin:true`, persiste primero la explicación con `image_strategy:"ai_plus_fallback"`, `ai_image_status:"pending"` y el intento que va a comenzar; después llama una sola vez a ImageGen y entrega su raster por `trends/image-outbox/**`. El consumidor de ese outbox actualiza solo la capa visual.
 
 La escritura y verificación del texto nunca espera la llamada, el transporte ni la aplicación de la imagen. Que la explicación esté en Explicadas y la imagen siga `pending` o termine `failed` es un estado correcto. La búsqueda de archivo/fallback continúa por su canal independiente.
 
@@ -95,7 +97,13 @@ El `context_guard` es:
 
 El intento inicial usa `attempt:1`. Antes de llamar a ImageGen registra de forma durable `ai_image_attempt:1` y el inicio del intento. No hagas una segunda llamada automática tras `failed`, timeout, interrupción o transporte incompleto. Solo **🔁 Rehacer** autoriza `attempt = ai_image_attempt + 1`.
 
-Al comenzar cada pasada revisa también Explicadas recientes. Una solicitud `ai_image_regenerate_requested:true` se consume una sola vez por su `ai_image_regenerate_request_version`: marca esa versión como consumida antes de llamar y ejecuta un único ImageGen sin reinvestigar ni reescribir. Un `ai_image_status:"pending"` con `ai_image_attempt>=1` significa que el intento automático ya se inició y **no se repite**. Si falta el resultado, conserva o marca el fallo visual; espera a **🔁 Rehacer** para cualquier nueva generación.
+Al comenzar cada pasada revisa también Explicadas recientes. Una solicitud `ai_image_regenerate_requested:true` se consume una sola vez por su `ai_image_regenerate_request_version`: marca esa versión como consumida antes de llamar y ejecuta un único ImageGen sin reinvestigar ni reescribir.
+
+Para un `ai_image_status:"pending"` distingue dos casos:
+- si existe `ai_image_tool_called_at` para el intento actual, la llamada real ya ocurrió y no debes repetirla automáticamente;
+- si **NO existe** `ai_image_tool_called_at` (aunque haya `ai_image_attempt:1`, `started` o `pending`), es un intento huérfano: haz exactamente UNA llamada real a ImageGen con el mismo número de intento y registra `tool_called_at`. No incrementes `attempt`.
+
+Si el transporte no se materializa tras el intento real, marca fallo visual y espera a **🔁 Rehacer** para una nueva generación.
 
 ### IA + fallback
 
@@ -162,6 +170,18 @@ Si la relación no es inequívoca, no agrupes; verifica primero el detonante con
 ## Contexto aportado por el usuario
 
 Si un item trae `rewrite_instruction`, trátalo como CONTEXTO APORTADO POR EL USUARIO para explicar por qué la tendencia está activa. Debes leerlo antes de investigar y usarlo como pista prioritaria para orientar las búsquedas y la reelaboración. No lo ignores ni lo sustituyas por la explicación anterior problemática. Verifica con fuentes actuales todo dato factual verificable antes de publicarlo; si el texto del usuario contiene una interpretación u opinión, úsala como contexto editorial sin presentarla como hecho no comprobado.
+
+## Recuperación de Rehacer desde la app
+
+Al comenzar cada pasada revisa también las Explicadas recientes con `rewrite_pending:true`. Esa marca es autoritativa aunque `trends/requests.json` o `trends/editorial-queue.json` hayan sufrido una carrera. Para cada una:
+- crea o repara la request `status:"update"` con una revisión estrictamente mayor que la última explicada;
+- usa `rewrite_instruction` guardada;
+- rehace remate + IA sin reutilizar ningún raster/URL/SHA anterior;
+- mantén el fallback;
+- al materializar la nueva revisión, elimina `rewrite_pending` de la revisión anterior;
+- si la nueva revisión queda terminalmente fallida, conserva una razón explícita y limpia igualmente la marca para no crear un bucle.
+
+Nunca descartes un `rewrite_pending:true` porque la cola textual esté vacía.
 
 ## Investigación y verificación
 
