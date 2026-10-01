@@ -1,41 +1,38 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-01T09:46:27+02:00",
-  "last_completed_at": "2026-10-01T09:56:25+02:00",
+  "last_started_at": "2026-10-01T10:15:00+02:00",
+  "last_completed_at": "2026-10-01T10:16:00+02:00",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [
-    "228b125cc507",
-    "e1360403525d"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-01T09:56:25+02:00",
+  "updated_at": "2026-10-01T10:16:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "chat-20261001T094627+0200",
+    "run_id": "chat-20261001T101500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-01T09:46:27+02:00",
-    "updated_at": "2026-10-01T09:56:25+02:00",
-    "finished_at": "2026-10-01T09:56:25+02:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-01T10:15:00+02:00",
+    "updated_at": "2026-10-01T10:16:00+02:00",
+    "finished_at": "2026-10-01T10:16:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-01T09:46:27+02:00",
+    "requested_at": "2026-10-01T10:15:00+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 2,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -43,97 +40,27 @@
       "queue_remaining": 0,
       "images_generated": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 1,
-      "remates_omitted": 1
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 0
     },
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
-      "blob_sha": "38403c71fee523ff5ab998ac084ba723b54c682e",
-      "updated_at": "2026-10-01T07:31:53.057Z",
-      "total_ratings": 96,
-      "recent_considered": 96
+      "blob_sha": "e691792f35c76575a84220d46a7603c376f4d187",
+      "updated_at": "2026-10-01T07:53:10.814Z",
+      "total_ratings": 97,
+      "recent_considered": 97
     },
-    "remate_selections": [
-      {
-        "trend_id": "228b125cc507",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.5,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0.4
-          },
-          {
-            "id": "c2",
-            "total": 7.7,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0.5
-          },
-          {
-            "id": "c3",
-            "total": 6.9,
-            "ratings_affinity": 1.5,
-            "trend_specificity": 1.6,
-            "punch": 1.2,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0.5
-          },
-          {
-            "id": "c4",
-            "total": 7.3,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.7,
-            "punch": 1.3,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": 0.5
-          },
-          {
-            "id": "c5",
-            "total": 7.8,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0.5
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.5,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "e1360403525d",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitive_topic"
-      }
-    ],
-    "message": "Pasada directa completada y verificada. Durante la comprobación final entraron #LaHora1O r0 y Día Internacional r0; ambas se cerraron sin duplicados. Cola final vacía, dos jobs IA V3 encolados y fallback listo en ambas tarjetas. Sin Work ni despliegues Vercel."
+    "remate_selections": [],
+    "message": "Pasada directa completada: recent.json estaba fresco (10:01 CEST), la cola editorial permaneció vacía en las dos lecturas y no había solicitudes 🔁 Rehacer ni imágenes IA pendientes sin resultado en Explicadas. Sin investigación web, Work ni despliegues Vercel."
   },
   "summary": {
-    "trends_processed": 2,
-    "trends_explained": 2,
-    "explanation_groups": 2,
-    "new_cards": 2,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
@@ -141,8 +68,8 @@
     "queue_remaining": 0,
     "images_generated": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 1,
-    "remates_omitted": 1
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
+    "remates_omitted": 0
   }
 }
