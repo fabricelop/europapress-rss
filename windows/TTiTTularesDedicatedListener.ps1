@@ -103,7 +103,7 @@ function Launch-TTiTTulares([string]$CommandId) {
   }
 
   Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"titulares") -WindowStyle Hidden | Out-Null
-  Write-Log "PROCESS STARTED tendencias command=$CommandId"
+  Write-Log "PROCESS STARTED titulares command=$CommandId"
 
   $deadline = (Get-Date).AddSeconds($LaunchConfirmSeconds)
   while ((Get-Date) -lt $deadline) {
@@ -114,7 +114,7 @@ function Launch-TTiTTulares([string]$CommandId) {
       if ($fi.Length -le $beforeLen -and $fi.LastWriteTimeUtc -le $beforeWrite) { continue }
       $tail = @(Get-Content -LiteralPath $LauncherLogPath -Tail 30 -ErrorAction Stop)
       if ($tail -match "MENSAJE ENVIADO") {
-        Write-Log "CHAT MESSAGE CONFIRMED tendencias command=$CommandId"
+        Write-Log "CHAT MESSAGE CONFIRMED titulares command=$CommandId"
         return $true
       }
       if ($tail -match "ERROR:|ERROR ::|Timeout CDP") {
