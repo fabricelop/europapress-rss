@@ -6,6 +6,7 @@ un fallo de imagen nunca cambia el texto, el tuit ni el estado READY.
 """
 from __future__ import annotations
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -16,6 +17,36 @@ OUTBOX = TT / "image-outbox"
 
 def now():
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def selftest():
+    import base64, io
+    from PIL import Image
+    im=Image.new("RGB",(640,360))
+    px=im.load()
+    for y in range(360):
+        for x in range(640):
+            px[x,y]=((x*3+y)%256,(y*5+x//2)%256,(x+y*2)%256)
+    raw=io.BytesIO();im.save(raw,format="JPEG",quality=88)
+    data=base64.b64encode(raw.getvalue()).decode("ascii")
+    item={
+        "event_id":"selftest-ai","revision":1,"title":"Selftest",
+        "ai_image_attempt":1,
+        "ai_image":{
+            "url":"data:image/jpeg;base64,"+data,
+            "source":"TTiTTulares / ChatGPT","rights_status":"generated","generated":True,
+            "generation_attempt":1,
+            "context_guard":{"version":3,"event_id":"selftest-ai","revision":1,"scope":"current_item_only"},
+        },
+    }
+    assert _materialize_ai_image(item)
+    url=item["ai_image"]["url"]
+    assert url.endswith("/ttittulares/generated-images/selftest-ai-r1-ai1.jpg")
+    path=TT/"generated-images"/"selftest-ai-r1-ai1.jpg"
+    assert path.is_file() and path.stat().st_size>4096
+    path.unlink()
+    print("TTITTULARES_AI_IMAGE_SELFTEST_OK")
+    return 0
 
 
 def main():
@@ -103,4 +134,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        raise SystemExit(selftest())
     raise SystemExit(main())
