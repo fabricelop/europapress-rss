@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T07:46:00Z",
+  "updated_at": "2026-10-01T07:47:38.367848Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -501,7 +501,7 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
@@ -524,7 +524,11 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Los Reyes visitarán Ceuta y Melilla los días 13 y 14 de octubre"
-      }
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T07:47:38.367814Z",
+      "ai_image_failure_reason": "ImageGen produjo el raster aislado para la visita a Ceuta y Melilla, pero este canal no dispone de un puente de archivo transferible desde el raster local al GitHub Contents API. READY y el fallback real se conservan."
     },
     {
       "event_id": "278990e5dcf8",
@@ -567,7 +571,7 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
@@ -590,7 +594,11 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "El BOE cita a Mari Carmen Abascal en el preámbulo del Real Decreto-ley 26/2026"
-      }
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T07:47:38.367714Z",
+      "ai_image_failure_reason": "ImageGen produjo un raster, pero además de no existir un puente transferible de bytes locales al GitHub Contents API, la imagen generada introdujo texto no presente en el BOE. Se descarta por integridad editorial; READY y el fallback real se conservan."
     }
   ]
 }
