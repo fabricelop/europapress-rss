@@ -202,7 +202,7 @@ export default async function handler(req,res){
       if(!consumedBy&&Number.isFinite(age)&&age<45000)return res.status(429).json({ok:false,error:"recent_request",retry_after_seconds:Math.ceil((45000-age)/1000)});
       if(!consumedBy&&Number.isFinite(age)&&age<ACTIVE_MS&&!["DONE","ERROR"].includes(st||"REQUESTED"))return res.status(409).json({ok:false,error:"run_in_progress"})
     }
-    const requested_at=new Date().toISOString(),command_id="tr-"+Date.now()+"-"+crypto.randomBytes(3).toString("hex"),doc={version:2,command_id,requested_at,mode:"manual_pc_chat",executor:"pc_chat",project:"ttendencias",launcher_arg:"tendencias",task,auto_image_followup:false};
+    const requested_at=new Date().toISOString(),command_id="tr-"+Date.now()+"-"+crypto.randomBytes(3).toString("hex"),doc={version:2,command_id,requested_at,mode:"manual_pc_chat",executor:"pc_chat_ttendencias_dedicated",project:"ttendencias",launcher_arg:"tendencias",task,auto_image_followup:false};
     let saved;try{saved=await writeTrigger(doc,sha)}catch(e){if(!String(e.message||e).includes("409")&&!String(e.message||e).includes("422"))throw e;const fresh=await readTrigger();saved=await writeTrigger(doc,fresh.sha)}
     return res.status(200).json({ok:true,command_id,requested_at,commit_sha:saved?.commit?.sha||null,trace_comment_id:null,trigger:"pc_chat_poll",task})
   }catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
