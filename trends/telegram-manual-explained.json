@@ -8711,17 +8711,52 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
-      "ai_image_attempt": 3,
-      "ai_image_failure_reason": "HTTP 502: AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits. | fallback: HTTP Error 500: Internal Server Error",
+      "ai_image_status": "ready",
+      "ai_image_attempt": 4,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "none",
       "fallback_image_failure_reason": "Etiqueta estacional sin una fotografía editorial específica verificada.",
-      "image_choice": "none",
-      "image_status": "none",
+      "image_choice": "ai",
+      "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-01T07:58:14.812163Z"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T08:01:20.759152Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/5f9796eff0bb-r0-ai4.jpg",
+        "source": "TTendencias / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 4,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "5f9796eff0bb",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "31f09de9fee936f52333c537ed96e8bb1546580347246de3c5fa0012bb535dc1",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/5f9796eff0bb-r0-ai4.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/5f9796eff0bb-r0-ai4.jpg",
+        "source": "TTendencias / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 4,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "5f9796eff0bb",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "31f09de9fee936f52333c537ed96e8bb1546580347246de3c5fa0012bb535dc1",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/5f9796eff0bb-r0-ai4.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     },
     {
       "id": "228b125cc507",
@@ -8852,6 +8887,6 @@
       "ai_image_failure_reason": "HTTP 502: AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits. | fallback: HTTP Error 500: Internal Server Error"
     }
   ],
-  "updated_at": "2026-10-01T07:58:14.813457Z",
+  "updated_at": "2026-10-01T08:01:20.759223Z",
   "count": 362
 }
