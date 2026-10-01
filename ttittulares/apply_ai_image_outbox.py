@@ -57,6 +57,44 @@ def selftest():
     return 0
 
 
+def _hydrate_chunked_ai(payload):
+    """Reconstruye un data URL desde partes de texto dentro de image-outbox.
+
+    Permite transportar el mismo raster generado por ChatGPT sin incrustar decenas
+    de KB de Base64 en un único JSON. No crea un nuevo intento de generación.
+    """
+    ai = payload.get("ai_image")
+    if not isinstance(ai, dict):
+        return []
+    refs = ai.pop("chunk_files", None)
+    if not refs:
+        return []
+    if not isinstance(refs, list) or not refs or len(refs) > 64:
+        raise ValueError("chunk_files IA inválido")
+    root = OUTBOX.resolve()
+    files = []
+    parts = []
+    for ref in refs:
+        rel = Path(str(ref or ""))
+        if rel.is_absolute() or ".." in rel.parts:
+            raise ValueError("ruta de chunk IA inválida")
+        part = (OUTBOX / rel).resolve()
+        if part.parent != root and root not in part.parents:
+            raise ValueError("chunk IA fuera de image-outbox")
+        if not part.is_file():
+            raise ValueError("falta chunk IA: " + rel.as_posix())
+        text = part.read_text(encoding="ascii").strip()
+        if not text:
+            raise ValueError("chunk IA vacío: " + rel.as_posix())
+        files.append(part)
+        parts.append(text)
+    mime = str(ai.pop("chunk_mime", "image/jpeg") or "image/jpeg").casefold()
+    if mime not in {"image/jpeg", "image/png", "image/webp"}:
+        raise ValueError("mime de chunks IA no permitido")
+    ai["url"] = f"data:{mime};base64," + "".join(parts)
+    return files
+
+
 def main():
     doc = load(PREP, {"project": "TTiTTulares", "items": []})
     decisions = load(DECISIONS, {"items": []})
@@ -102,6 +140,13 @@ def main():
 
         status = str(payload.get("status") or "").lower()
         previous_ai = dict(item.get("ai_image") or {})
+        chunk_files = []
+        if status == "ready" and isinstance(payload.get("ai_image"), dict):
+            try:
+                chunk_files = _hydrate_chunked_ai(payload)
+            except Exception as exc:
+                status = "failed"
+                payload["reason"] = str(exc)[:500]
         if status == "ready" and isinstance(payload.get("ai_image"), dict):
             holder = {
                 "event_id": eid,
@@ -148,6 +193,8 @@ def main():
         item.pop("ai_image_regenerate_requested_at", None)
         item.pop("ai_image_regenerate_request_version", None)
         path.unlink(missing_ok=True)
+        for chunk_path in chunk_files:
+            chunk_path.unlink(missing_ok=True)
         processed.append(eid)
         changed = True
 
