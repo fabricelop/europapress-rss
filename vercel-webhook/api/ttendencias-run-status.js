@@ -23,6 +23,7 @@ const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const TRACE_COMMENT_ID=5859532515;
 const STALE_MS=20*60*1000;
+const PROCESSING_STALE_MS=5*60*1000;
 const START_ACK_MS=30*1000;
 const RUNTIME_PATH="trends/editorial-runtime.json";
 const EXPLAINED_PATH="trends/telegram-manual-explained.json";
@@ -253,11 +254,14 @@ export default async function handler(req,res){
     if(latest&&activeStatus(latest.status)){
       const lastActivity=latest.updated_at||latest.started_at||latest.requested_at;
       const age=Date.now()-stamp(lastActivity);
-      const deadline=String(latest.status||"").toUpperCase()==="REQUESTED"?START_ACK_MS:STALE_MS;
+      const latestStatus=String(latest.status||"").toUpperCase();
+      const deadline=latestStatus==="REQUESTED"?START_ACK_MS:latestStatus==="PROCESSING"?PROCESSING_STALE_MS:STALE_MS;
       if(Number.isFinite(age)&&age>=0&&age<deadline)active=latest;
       else latest={...latest,status:"ERROR",finished_at:lastActivity||null,message:latest.status==="REQUESTED"
         ?"No se ha recibido RUNNING en 30 segundos: el PC no ha recogido la orden móvil."
-        :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")}
+        :latestStatus==="PROCESSING"
+          ?"La ejecución lleva más de 5 minutos sin actualizar progreso durante la investigación."
+          :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")}
     }
     if(!active&&fallback&&activeStatus(fallback.status)){
       const reqAt=stamp(fallback.requested_at||fallback.started_at);
