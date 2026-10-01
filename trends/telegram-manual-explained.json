@@ -9027,7 +9027,37 @@
       "image_pending": false,
       "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-01T08:55:28.667104Z",
-      "ai_image_failure_reason": "HTTP 502: AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits."
+      "ai_image_failure_reason": "HTTP 502: AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits.",
+      "group_id": "grp-los-reyes-ceuta-melilla-20261001",
+      "explanation_group_id": "grp-los-reyes-ceuta-melilla-20261001",
+      "group_title": "Visita de los Reyes a Ceuta y Melilla el 13 y 14 de octubre",
+      "group_leader_id": "100a60621ef0",
+      "trend_names": [
+        "Los Reyes",
+        "Ceuta y Melilla"
+      ],
+      "trend_context": [
+        {
+          "name": "Los Reyes",
+          "rank": 9
+        },
+        {
+          "name": "Ceuta y Melilla",
+          "rank": 17
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "100a60621ef0",
+          "name": "Los Reyes",
+          "revision": 0
+        },
+        {
+          "id": "ddc5c3413995",
+          "name": "Ceuta y Melilla",
+          "revision": 0
+        }
+      ]
     },
     {
       "id": "24b16e906a60",
@@ -9189,8 +9219,102 @@
         "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/df30c371946b-r2-ai1.jpg",
         "handoff": "inline-outbox-materialized-by-actions"
       }
+    },
+    {
+      "id": "ddc5c3413995",
+      "name": "Ceuta y Melilla",
+      "revision": 0,
+      "status": "explained",
+      "requested_at": "2026-10-01T10:14:49.013Z",
+      "rank": 17,
+      "with_image": true,
+      "alternatives_target": 0,
+      "anticipated": true,
+      "anticipated_at": "2026-10-01T12:11:01+02:00",
+      "anticipated_best_rank": 17,
+      "anticipated_social_source_count": 2,
+      "anticipated_news_source_count": 14,
+      "anticipated_news_title": "Los Reyes visitarán Ceuta y Melilla los días 13 y 14 de octubre",
+      "requested_together": [
+        "Ceuta y Melilla"
+      ],
+      "auto_queued": false,
+      "explained_at": "2026-10-01T12:16:30+02:00",
+      "explanation": "TT#9 Los Reyes es tendencia porque Felipe VI y Letizia visitarán Ceuta y Melilla los días 13 y 14 de octubre, en su primer viaje a ambas ciudades autónomas desde que Felipe VI llegó al trono en 2014.\n🌶️ Octubre les ha reservado dos casillas seguidas en la agenda.",
+      "closer_text": "🌶️ Octubre les ha reservado dos casillas seguidas en la agenda.",
+      "rank_at_explanation": 9,
+      "group_id": "grp-los-reyes-ceuta-melilla-20261001",
+      "explanation_group_id": "grp-los-reyes-ceuta-melilla-20261001",
+      "group_title": "Visita de los Reyes a Ceuta y Melilla el 13 y 14 de octubre",
+      "group_leader_id": "100a60621ef0",
+      "trend_names": [
+        "Los Reyes",
+        "Ceuta y Melilla"
+      ],
+      "trend_context": [
+        {
+          "name": "Los Reyes",
+          "rank": 9
+        },
+        {
+          "name": "Ceuta y Melilla",
+          "rank": 17
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "100a60621ef0",
+          "name": "Los Reyes",
+          "revision": 0
+        },
+        {
+          "id": "ddc5c3413995",
+          "name": "Ceuta y Melilla",
+          "revision": 0
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Mismo acontecimiento ya cubierto por la tarjeta Los Reyes; se enlaza al grupo existente sin duplicar explicación, imagen ni puente.",
+      "source": "editorial_group_reuse",
+      "verification_sources": [
+        {
+          "source": "Europa Press",
+          "url": "https://www.europapress.es/nacional/noticia-reyes-visitaran-ceuta-melilla-13-14-octubre-20261001093507.html"
+        },
+        {
+          "source": "Cadena SER",
+          "url": "https://cadenaser.com/nacional/2026/10/01/los-reyes-visitaran-ceuta-y-melilla-el-13-y-el-14-de-octubre-cadena-ser/"
+        }
+      ],
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "failed",
+      "ai_image_attempt": 1,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "ready",
+      "fallback_image": {
+        "url": "https://d149c83oxdwrq1.cloudfront.net/filesedc/uploads/image/post/EuropaPress_7760659_09_september_2026_norway_oslo_king_felipe_and_queen_letizia_of_spain_walk_42d0e116f747.webp",
+        "source": "EDATV / Europa Press · archivo",
+        "source_url": "https://edatv.news/realeza/reyes-felipe-vi-letizia-viajaran-ceuta-melilla-dias-13-14-octubre",
+        "alt": "Felipe VI y Letizia en imagen de archivo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback",
+      "image": {
+        "url": "https://d149c83oxdwrq1.cloudfront.net/filesedc/uploads/image/post/EuropaPress_7760659_09_september_2026_norway_oslo_king_felipe_and_queen_letizia_of_spain_walk_42d0e116f747.webp",
+        "source": "EDATV / Europa Press · archivo",
+        "source_url": "https://edatv.news/realeza/reyes-felipe-vi-letizia-viajaran-ceuta-melilla-dias-13-14-octubre",
+        "alt": "Felipe VI y Letizia en imagen de archivo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_pending": false,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T08:55:28.667104Z",
+      "ai_image_failure_reason": "HTTP 502: AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits."
     }
   ],
-  "updated_at": "2026-10-01T09:26:02.687391Z",
-  "count": 365
+  "updated_at": "2026-10-01T12:16:30+02:00",
+  "count": 366
 }
