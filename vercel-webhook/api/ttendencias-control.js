@@ -581,9 +581,22 @@ async function markExplained(names) {
   for (const name of unique) {
     const key = norm(name), signal = recentSignals.get(key), preparedItem = preparedByName.get(key), requestItem = requestByName.get(key);
     explainedContext.set(key, {
+      id: preparedItem?.id || requestItem?.id || undefined,
+      revision: preparedItem?.revision ?? requestItem?.revision ?? 0,
       news_event_id: signal?.news_event_id || requestItem?.anticipated_news_event_id || null,
       news_title: signal?.news_title || requestItem?.anticipated_news_title || "",
       explanation: preparedItem?.explanation || "",
+      closer_text: preparedItem?.closer_text || "",
+      verification_sources: preparedItem?.verification_sources || requestItem?.verification_sources || [],
+      ai_image: preparedItem?.ai_image,
+      ai_image_status: preparedItem?.ai_image_status,
+      ai_image_attempt: preparedItem?.ai_image_attempt,
+      fallback_image: preparedItem?.fallback_image,
+      fallback_image_status: preparedItem?.fallback_image_status,
+      image_choice: preparedItem?.image_choice,
+      image: preparedItem?.image,
+      image_status: preparedItem?.image_status,
+      image_pending: preparedItem?.image_pending,
     });
   }
 
@@ -625,6 +638,56 @@ async function markExplained(names) {
   });
   await syncEditorialQueue();
   return { ok: true, explained: unique };
+}
+
+async function requestImageRegeneration(names) {
+  const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
+  if (!unique.length) throw new Error("No hay tendencias seleccionadas.");
+  const target = new Set(unique.map(norm));
+  const now = new Date().toISOString();
+  let found = 0;
+  await mutateJson(EXPLAINED, "Solicitar regeneración de imagen IA TTendencias", doc => {
+    doc.items ||= [];
+    for (let i = doc.items.length - 1; i >= 0; i--) {
+      const row = doc.items[i];
+      if (!target.has(norm(row.name)) || found >= unique.length) continue;
+      row.ai_image_regenerate_requested = true;
+      row.ai_image_regenerate_requested_at = now;
+      row.ai_image_regenerate_request_version = Number(row.ai_image_regenerate_request_version || 0) + 1;
+      found++;
+    }
+    doc.updated_at = now;
+    return doc;
+  });
+  if (!found) throw new Error("No se encontró la tendencia explicada.");
+  return { ok: true, requested: unique, image_regeneration: true };
+}
+
+async function useFallbackImage(names) {
+  const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
+  if (!unique.length) throw new Error("No hay tendencias seleccionadas.");
+  const target = new Set(unique.map(norm));
+  const now = new Date().toISOString();
+  let changed = 0;
+  await mutateJson(EXPLAINED, "Usar imagen de archivo en TTendencias", doc => {
+    doc.items ||= [];
+    for (let i = doc.items.length - 1; i >= 0; i--) {
+      const row = doc.items[i];
+      if (!target.has(norm(row.name)) || changed >= unique.length) continue;
+      const fallback = row.fallback_image || {};
+      if (!/^https:\/\//i.test(String(fallback.url || ""))) continue;
+      row.image = { ...fallback };
+      row.image_choice = "fallback";
+      row.image_status = "ready";
+      row.image_pending = false;
+      row.image_selected_at = now;
+      changed++;
+    }
+    doc.updated_at = now;
+    return doc;
+  });
+  if (!changed) throw new Error("Todavía no hay imagen de archivo/fallback disponible.");
+  return { ok: true, selected: unique, image_choice: "fallback" };
 }
 
 async function discardNames(names) {
@@ -896,8 +959,11 @@ async function proxyPreparedImage(rawUrl, res, format = "") {
   const allowed = new Set([
     ...(prepared.items || []),
     ...(explained.items || []),
-  ].filter(x => x?.image_status === "ready" || x?.image?.url)
-   .map(x => x?.image?.url || x?.image_url).filter(Boolean).map(String));
+  ].flatMap(x => [
+    x?.image?.url || x?.image_url,
+    x?.ai_image?.url,
+    x?.fallback_image?.url,
+  ]).filter(Boolean).map(String));
   if (!allowed.has(url)) throw new Error("Imagen no autorizada");
   const r = await fetch(url, { headers: { "user-agent": "TTendencias-Image-Proxy/1.0", accept: "image/*" } });
   if (!r.ok) throw new Error(`No se pudo descargar la imagen: ${r.status}`);
@@ -984,6 +1050,8 @@ export default async function handler(req, res) {
     if (action === "discard") return res.status(200).json(await discardNames(body.names));
     if (action === "retry") return res.status(200).json(await retryNames(body.names));
     if (action === "rework") return res.status(200).json(await reworkNames(body.names, body.instruction));
+    if (action === "regenerate-image") return res.status(200).json(await requestImageRegeneration(body.names));
+    if (action === "use-fallback-image") return res.status(200).json(await useFallbackImage(body.names));
     return res.status(400).json({ ok: false, error: "Acción no válida" });
   } catch (e) {
     console.error(e);
