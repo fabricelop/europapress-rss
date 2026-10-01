@@ -318,44 +318,26 @@ async function useFallbackImage(eventId){
 async function rework(eventId,instruction,reinvestigate=false){
   const id=idOf(eventId),text=String(instruction||"Cambia solo el remate y genera una nueva imagen IA. Conserva exactamente hechos, fuentes y texto factual. No reinvestigues.").trim();
   if(!id)throw new Error("Falta event_id");if(!text)throw new Error("Escribe las instrucciones para rehacer.");
-  const now=new Date().toISOString();
-  const {doc:prepared}=await readJson(PREPARED);
-  const source=(prepared.items||[]).find(x=>idOf(x.event_id)===id);
-  if(!source)throw new Error("La noticia ya no está en Listas");
-  await Promise.all([
-    mutateJson(PROCESSING,"Rehacer noticia TTiTTulares desde web",doc=>{
-      doc.items||=[];let item=[...doc.items].reverse().find(x=>idOf(x.event_id)===id);
-      if(!item){
-        item={event_id:id,title:source.title||"",url:source.url||"",sources:source.sources_at_draft||[],source_count:Number(source.drafted_source_count||0),selected_at:now};
-        doc.items.push(item)
-      }
-      item.previous_status=item.status;item.status="PROCESSING";item.selection_mode="REWRITE";item.with_image=true;item.image_mode="ai_plus_fallback";item.image_instruction="Intenta una sola imagen IA rápida y conserva además una imagen de archivo/fallback. Ninguna imagen bloquea READY.";
-      item.rewrite_scope=reinvestigate?"full":"remate_and_ai";item.reinvestigate=reinvestigate;item.preserved_editorial=structuredClone(source);item.factual_summary=source.factual_summary||source.explanation||"";item.fallback_image=source.fallback_image||null;
-      item.rewrite_request=reinvestigate?text:"CONTRATO: conservar hechos, fuentes y texto factual de preserved_editorial sin cambios. NO buscar ni reinvestigar. Cambiar exclusivamente remate e imagen IA; un intento ImageGen desde el chat, nunca bloquear READY. "+text;item.rewrite_requested_at=now;item.rewrite_version=Number(item.rewrite_version||0)+1;
-      item.revision=Number(item.revision||source.revision||1)+1;delete item.delivered_at;delete item.published_at;delete item.dismissed_at;
-      doc.updated_at=now;return doc
-    }),
-    mutateJson(PREPARED,"Marcar versión anterior en rehacer TTiTTulares",doc=>{
-      doc.items||=[];
-      for(const preparedItem of doc.items){
-        if(idOf(preparedItem.event_id)!==id)continue;
-        preparedItem.rewrite_pending=true;
-        preparedItem.rewrite_requested_at=now;
-        preparedItem.rewrite_target_revision=Number(source.revision||1)+1;
-      }
-      doc.updated_at=now;return doc
-    }),
-    mutateJson(DECISIONS,"Reabrir noticia TTiTTulares desde web",doc=>{
-      doc.items=(doc.items||[]).filter(x=>idOf(x.event_id)!==id);doc.updated_at=now;return doc
-    }),
-    mutateJson(EVENTS,"Marcar noticia TTiTTulares en elaboración",doc=>{
-      for(const event of doc.events||[])if(idOf(event.id||event.event_id)===id){
-        event.status="PROCESSING";event.processing_at=now
-      }
-      doc.updated_at=now;return doc
-    })
-  ]);
-  return {ok:true,event_id:id,status:"PROCESSING"}
+  const now=new Date().toISOString();let found=false,targetRevision=0;
+  await mutateJson(PREPARED,"Solicitar reelaboración TTiTTulares desde web",doc=>{
+    doc.items||=[];
+    for(const item of doc.items){
+      if(idOf(item.event_id)!==id)continue;
+      found=true;
+      targetRevision=Number(item.revision||1)+1;
+      item.rewrite_pending=true;
+      item.rewrite_requested_at=now;
+      item.rewrite_target_revision=targetRevision;
+      item.rewrite_request_version=Number(item.rewrite_request_version||0)+1;
+      item.rewrite_scope=reinvestigate?"full":"remate_and_ai";
+      item.reinvestigate=reinvestigate;
+      item.rewrite_request=reinvestigate?text:"CONTRATO: conservar hechos, fuentes y texto factual sin cambios. NO buscar ni reinvestigar. Cambiar exclusivamente remate e imagen IA; un intento ImageGen desde el chat, nunca bloquear READY. "+text;
+    }
+    if(found)doc.updated_at=now;
+    return doc
+  });
+  if(!found)throw new Error("La noticia ya no está en Listas");
+  return {ok:true,event_id:id,status:"PROCESSING",rewrite_pending:true,target_revision:targetRevision}
 }
 async function submitManualStory(url,title,instruction){
   const cleanUrl=canonicalUrl(url),cleanTitle=String(title||"").trim(),note=String(instruction||"").trim();
@@ -634,16 +616,23 @@ export default async function handler(req,res){
       const closedIds=new Set((decisions.doc?.items||[])
         .filter(x=>["published","dismissed"].includes(String(x.status||"").toLowerCase()))
         .map(x=>String(x.event_id||"")));
-      const processingIds=new Set((queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING").map(x=>String(x.event_id||"")));
-      const activeRewriteIds=new Set((queue.doc?.items||[])
-        .filter(x=>String(x.status||"")==="PROCESSING"&&String(x.selection_mode||"")==="REWRITE")
-        .map(x=>String(x.event_id||"")));
-      // Una versión anterior puede seguir físicamente en prepared mientras se
-      // rehace. No debe volver a mostrarse ni publicarse como si fuera la nueva.
-      const visiblePrepared=(prepared.doc?.items||[]).filter(x=>!closedIds.has(String(x.event_id||""))&&!activeRewriteIds.has(String(x.event_id||"")));
+      const rewritePendingPrepared=(prepared.doc?.items||[]).filter(x=>Boolean(x.rewrite_pending)&&!closedIds.has(String(x.event_id||"")));
+      const rewritePendingIds=new Set(rewritePendingPrepared.map(x=>String(x.event_id||"")));
+      const processingIds=new Set([
+        ...(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING").map(x=>String(x.event_id||"")),
+        ...rewritePendingIds
+      ]);
+      const activeRewriteIds=new Set([
+        ...(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING"&&String(x.selection_mode||"")==="REWRITE").map(x=>String(x.event_id||"")),
+        ...rewritePendingIds
+      ]);
+      // rewrite_pending en prepared es autoritativo: si la escritura del gran
+      // fichero PROCESSING falla, la reelaboración sigue existiendo y debe
+      // mostrarse en En elaboración, nunca volver a Listas.
+      const visiblePrepared=(prepared.doc?.items||[]).filter(x=>!closedIds.has(String(x.event_id||""))&&!activeRewriteIds.has(String(x.event_id||""))&&!x.rewrite_pending);
       const preparedIds=new Set(visiblePrepared.map(x=>String(x.event_id||"")));
       const manualStories=manualArchive.doc?.items||[];
-      const processingItems=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING"&&!preparedIds.has(String(x.event_id||""))&&!closedIds.has(String(x.event_id||""))).map(x=>{
+      const queueProcessing=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING"&&!preparedIds.has(String(x.event_id||""))&&!closedIds.has(String(x.event_id||""))).map(x=>{
         const ev=eventMap.get(String(x.event_id||""))||{};
         return {
           event_id:String(x.event_id||""),
@@ -658,6 +647,23 @@ export default async function handler(req,res){
           sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
         }
       });
+      const queueProcessingIds=new Set(queueProcessing.map(x=>String(x.event_id||"")));
+      const syntheticRewrites=rewritePendingPrepared
+        .filter(x=>!queueProcessingIds.has(String(x.event_id||"")))
+        .map(x=>({
+          event_id:String(x.event_id||""),
+          title:String(x.title||""),
+          url:String(x.url||""),
+          selected_at:x.rewrite_requested_at||x.prepared_at||null,
+          selection_mode:"REWRITE",
+          rewrite_version:Number(x.rewrite_request_version||x.rewrite_version||1),
+          trend_origin:Boolean(x.trend_origin),
+          trend_names:Array.isArray(x.trend_names)?x.trend_names:[],
+          source_count:Number(x.drafted_source_count||0),
+          sources:Array.isArray(x.sources_at_draft)?x.sources_at_draft:[],
+          rewrite_pending_source:"prepared"
+        }));
+      const processingItems=[...queueProcessing,...syntheticRewrites];
       const problematicItems=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROBLEMATIC"&&!preparedIds.has(String(x.event_id||""))&&!closedIds.has(String(x.event_id||""))).map(x=>{
         const ev=eventMap.get(String(x.event_id||""))||{};
         return {
