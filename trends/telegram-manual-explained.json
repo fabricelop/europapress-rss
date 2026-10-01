@@ -10312,7 +10312,7 @@
       ],
       "auto_queued": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
+      "ai_image_status": "ready",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T17:06:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -10325,20 +10325,51 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image": {
-        "url": "https://album.mediaset.es/eimg/2026/09/30/beatriz-payo-manifestante-en-sol-responde-a-almeida-y-al-ultimatum-de-ayuso-16-9-aspect-ratio-defaul_da39.jpg?w=1024",
-        "source": "Cuatro · Todo es mentira",
-        "source_url": "https://www.cuatro.com/todoesmentira/",
-        "alt": "Captura de Todo es mentira durante la cobertura de la acampada por la vivienda en Puerta del Sol",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/7a6276fb2b07-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "7a6276fb2b07",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "f15a6447-3372-4c39-b3c0-2ec7cc3961d2",
+        "alt": "Ilustración editorial de un programa televisivo comentando la crisis de vivienda y la acampada de Sol",
+        "sha256": "6219ba4dc12b8e66cb5cad5973c0c616534e3338ca2edbec6e28e2821fc19a68",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/7a6276fb2b07-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-01T15:12:34.151370Z",
-      "ai_image_failure_reason": "imagen raster inline: raster corrupto o truncado: broken data stream when reading image file"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T15:18:48.002568Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/7a6276fb2b07-r0-ai1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "7a6276fb2b07",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "gen_id": "f15a6447-3372-4c39-b3c0-2ec7cc3961d2",
+        "alt": "Ilustración editorial de un programa televisivo comentando la crisis de vivienda y la acampada de Sol",
+        "sha256": "6219ba4dc12b8e66cb5cad5973c0c616534e3338ca2edbec6e28e2821fc19a68",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/7a6276fb2b07-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     },
     {
       "id": "75f572510033",
@@ -10439,6 +10470,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-01T15:16:14.628704Z",
+  "updated_at": "2026-10-01T15:18:48.002648Z",
   "count": 376
 }
