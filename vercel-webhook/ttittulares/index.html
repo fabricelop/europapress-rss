@@ -65,7 +65,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <button class="iconbtn" id="settings" title="Ajustes">⚙</button>
 </header>
 <main>
- <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima elaboración —</div><div class="sourceCounters"><span title="Noticias activas detectadas en dos fuentes"><b id="twoSourceCount">0</b> 2 fuentes</span><span title="Noticias activas detectadas en una sola fuente"><b id="oneSourceCount">0</b> 1 fuente</span></div></div></div><div class="health" id="health" role="button" tabindex="0" aria-label="Ver estado de las fuentes">—</div></section>
+ <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="lastEditorial">Última elaboración —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima elaboración —</div><div class="sourceCounters"><span title="Noticias activas detectadas en dos fuentes"><b id="twoSourceCount">0</b> 2 fuentes</span><span title="Noticias activas detectadas en una sola fuente"><b id="oneSourceCount">0</b> 1 fuente</span></div></div></div><div class="health" id="health" role="button" tabindex="0" aria-label="Ver estado de las fuentes">—</div></section>
  <div class="stats">
   <button class="stat active" data-view="ready"><b id="readyCount">0</b>Listas</button>
   <button class="stat" data-view="processing"><b id="processingCount">0</b>En elaboración</button>
@@ -267,8 +267,23 @@ function showRunIncidents(s){
 }
 function runVisual(s){
  lastRunTelemetry=s;
- const bar=$("runBar"),head=$("runHeadline"),el=$("runState"),btn=$("runNow"),warn=$("runIncident"),prog=$("runProgress"),fill=$("runProgressFill");
- const active=Boolean(s?.active)||["REQUESTED","RUNNING"].includes(String(s?.status||""));
+ const bar=$("runBar"),head=$("runHeadline"),el=$("runState"),btn=$("runNow"),warn=$("runIncident"),prog=$("runProgress"),fill=$("runProgressFill"),lastEditorial=$("lastEditorial");
+  const active=Boolean(s?.active)||["REQUESTED","RUNNING"].includes(String(s?.status||""));
+  const previous=s?.last_run||null;
+  if(lastEditorial){
+    if(active){
+      const started=runTime(s.started_at||s.requested_at);
+      const previousTime=previous?runTime(previous.started_at||previous.requested_at||previous.finished_at||previous.updated_at):null;
+      lastEditorial.textContent="Elaboración en curso "+started+(previousTime?" · última terminada "+previousTime:"");
+      lastEditorial.className="running";
+    }else if(previous){
+      lastEditorial.textContent="Última elaboración "+runTime(previous.started_at||previous.requested_at||previous.finished_at||previous.updated_at);
+      lastEditorial.className=previous.status==="ERROR"?"late":"ok";
+    }else{
+      lastEditorial.textContent="Última elaboración —";
+      lastEditorial.className="";
+    }
+  }
  bar.classList.toggle("active",active);btn.hidden=active;btn.disabled=!s?.enabled;
  el.className="";warn.hidden=true;warn.classList.remove("severe");prog.hidden=!active;
  if(active){
