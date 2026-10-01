@@ -332,6 +332,34 @@ def _select_image(item):
     item["image_delivery"]="app" if item["image_app_available"] else "none"
 
 
+def _initialize_parallel_images(item):
+    """Inicializa IA/fallback sin I/O de red; READY no espera a ninguna foto."""
+    legacy=item.get("image")
+    if legacy and not item.get("fallback_image") and not (isinstance(legacy,dict) and legacy.get("generated")):
+        try:
+            item["fallback_image"]=_normalize_external_image(legacy,item)
+            item["fallback_image_status"]="ready" if _image_url(item["fallback_image"]) else "pending"
+        except Exception as exc:
+            item["fallback_image_status"]="none"
+            item["fallback_image_failure_reason"]=str(exc)[:500]
+    if item.get("ai_image"):
+        try:
+            # Compatibilidad con productores antiguos. El flujo nuevo usa image-outbox separado.
+            _materialize_ai_image(item)
+        except Exception as exc:
+            item["ai_image_status"]="failed"
+            item["ai_image_failure_reason"]=str(exc)[:500]
+            if not _image_url(item.get("ai_image")):
+                item.pop("ai_image",None)
+    elif not item.get("ai_image_status"):
+        item["ai_image_status"]="pending"
+    if not item.get("fallback_image_status"):
+        item["fallback_image_status"]="pending"
+    _select_image(item)
+    item["image_strategy"]="ai_plus_fallback"
+    return item
+
+
 def _finish_archive_image(item,row,events):
     """Best-effort AI materialization + archive fallback. Never raises to block READY."""
     try:
@@ -473,8 +501,9 @@ def main():
                 payload["prepared_item"]=item
             if st=="ready":
                 item=validate_ready(payload)
-                # IA y fallback se procesan en best-effort y jamás bloquean READY.
-                _finish_archive_image(item,row,events)
+                # READY se materializa sin búsquedas de red. IA y fallback
+                # continúan por Actions independientes.
+                _initialize_parallel_images(item)
                 p["items"]=[x for x in p.get("items",[]) if str(x.get("event_id") or "")!=eid]
                 p["items"].append(item);p["updated_at"]=item.get("prepared_at") or now
                 if image_retry:
