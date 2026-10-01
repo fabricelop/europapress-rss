@@ -37,13 +37,29 @@ async function gh(url,options={}){
   }})
 }
 async function comments(){
-  const direct=await gh(`https://api.github.com/repos/${REPO}/issues/comments/${TRACE_COMMENT_ID}`);
-  if(direct.ok)return [await direct.json()];
-  // Respaldo para una eventual recreación del comentario canónico.
+  // Lee SIEMPRE el comentario canónico y también los RUNTRACE recientes. Durante
+  // la transición algunos ejecutores han creado un comentario por pasada en vez
+  // de actualizar el canónico; el panel no debe quedarse ciego por ello.
   const since=new Date(Date.now()-24*60*60*1000).toISOString();
-  const r=await gh(`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100&since=${encodeURIComponent(since)}`);
-  if(!r.ok)throw new Error(`GitHub RUNTRACE: ${r.status} ${await r.text()}`);
-  return (await r.json()).filter(x=>String(x.body||"").startsWith(TRACE_PREFIX));
+  const [direct,recent]=await Promise.all([
+    gh(`https://api.github.com/repos/${REPO}/issues/comments/${TRACE_COMMENT_ID}`),
+    gh(`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100&since=${encodeURIComponent(since)}`)
+  ]);
+  const out=[];
+  if(direct.ok)out.push(await direct.json());
+  if(recent.ok){
+    for(const x of await recent.json()){
+      if(String(x.body||"").startsWith(TRACE_PREFIX))out.push(x)
+    }
+  }else if(!direct.ok){
+    throw new Error(`GitHub RUNTRACE: ${recent.status} ${await recent.text()}`)
+  }
+  const seen=new Set();
+  return out.filter(x=>{
+    const id=String(x.id||"");
+    if(!id||seen.has(id))return false;
+    seen.add(id);return true
+  })
 }
 async function triggerReady(){
   if(readyCache.value!==null&&Date.now()-readyCache.at<10*60*1000)return readyCache.value;
@@ -211,7 +227,12 @@ export default async function handler(req,res){
       }
       active.incidents=merged;
       active.incident_count=Math.max(Number(active.incident_count||0),merged.length);
-      return res.status(200).json({ok:true,enabled,active:true,...active,last_run:null,can_run:enabled&&authorized(req)})
+      const terminalBefore=traces
+        .filter(t=>["DONE","ERROR"].includes(t.status)&&runOrder(t)<runOrder(latestRaw||active))
+        .sort((a,b)=>terminalOrder(a)-terminalOrder(b))
+        .at(-1)||null;
+      const last_run=terminalBefore?normalizeTrace(terminalBefore,errors):null;
+      return res.status(200).json({ok:true,enabled,active:true,...active,last_run,can_run:enabled&&authorized(req)})
     }
 
     let last_run=null;
