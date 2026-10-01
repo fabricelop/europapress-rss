@@ -38,7 +38,8 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             python3 trends/apply_ai_image_outbox.py
-            git add -A trends/telegram-manual-explained.json trends/generated-images trends/image-outbox
+            git add -A trends/telegram-manual-explained.json trends/generated-images
+            if [ -d trends/image-outbox ]; then git add -A trends/image-outbox; fi
             if ! git diff --cached --quiet; then
               git commit -m "Adjuntar imagen IA a TTendencias"
               if git push origin HEAD:main; then exit 0; fi
