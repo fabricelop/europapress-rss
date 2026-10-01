@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-10-01T12:40:56+02:00",
+  "captured_at": "2026-10-01T12:51:11+02:00",
   "primary_source": "snaplytics",
-  "selection_method": "fresh-anchor",
+  "selection_method": "aging-anchor",
   "sources_used": [
     "getdaytrends",
     "superx",
@@ -12,9 +12,7 @@
   ],
   "source_count": 5,
   "non_stale_source_count": 4,
-  "fresh_sources": [
-    "snaplytics"
-  ],
+  "fresh_sources": [],
   "reliability": "medium",
   "top10": [
     "#LaIslaDeLasTentaciones8",
@@ -49,9 +47,9 @@
       "rank": 3,
       "name": "Cristiano",
       "entered_top10_at": "2026-09-30T22:41:05+02:00",
-      "movement": "up",
-      "previous_rank": 6,
-      "rank_delta": 3
+      "movement": "flat",
+      "previous_rank": 3,
+      "rank_delta": 0
     },
     {
       "rank": 4,
@@ -73,49 +71,45 @@
       "rank": 6,
       "name": "Puerta del Sol",
       "entered_top10_at": "2026-09-30T03:40:50+02:00",
-      "movement": "up",
-      "previous_rank": 7,
-      "rank_delta": 1
+      "movement": "flat",
+      "previous_rank": 6,
+      "rank_delta": 0
     },
     {
       "rank": 7,
       "name": "#FelizJueves",
       "entered_top10_at": "2026-10-01T08:41:17+02:00",
-      "movement": "down",
-      "previous_rank": 3,
-      "rank_delta": -4
+      "movement": "flat",
+      "previous_rank": 7,
+      "rank_delta": 0
     },
     {
       "rank": 8,
       "name": "Paiporta",
       "entered_top10_at": "2026-10-01T12:40:56+02:00",
-      "movement": "new",
-      "previous_rank": null,
-      "rank_delta": null
+      "movement": "flat",
+      "previous_rank": 8,
+      "rank_delta": 0
     },
     {
       "rank": 9,
       "name": "#tem30s",
       "entered_top10_at": "2026-10-01T12:40:56+02:00",
-      "movement": "new",
-      "previous_rank": null,
-      "rank_delta": null
+      "movement": "flat",
+      "previous_rank": 9,
+      "rank_delta": 0
     },
     {
       "rank": 10,
       "name": "Digi",
       "entered_top10_at": "2026-10-01T12:40:56+02:00",
-      "movement": "new",
-      "previous_rank": null,
-      "rank_delta": null
+      "movement": "flat",
+      "previous_rank": 10,
+      "rank_delta": 0
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Paiporta",
-    "#tem30s",
-    "Digi"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "Amnistía Internacional",
@@ -128,7 +122,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 14.8,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T12:40:56+02:00",
       "news_source_count": 6,
       "news_event_id": "bc1bd73387ea",
@@ -146,30 +140,13 @@
       ],
       "best_observed_rank": 16,
       "mean_observed_rank": 16.7,
-      "movement": "up",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T04:41:01+02:00",
       "news_source_count": 8,
       "news_event_id": "8daa966cd971",
       "news_title": "Israel califica de \"ataque terrorista yihadista\" el incidente en el avión de Flydubai: \"Un piloto apuñaló al otro e intentó imitar el 11-S\"",
       "news_status": "ELIGIBLE",
       "news_first_seen": "2026-09-30T17:42:16.878373Z"
-    },
-    {
-      "name": "Jorge Jesús",
-      "social_source_count": 2,
-      "social_sources": [
-        "snaplytics",
-        "superx"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 12.0,
-      "movement": "up",
-      "first_detected_at": "2026-10-01T09:31:32+02:00",
-      "news_source_count": 7,
-      "news_event_id": "c5dbdfc21463",
-      "news_title": "¿Será su final en la selección? Cristiano Ronaldo abandona la concentración de Portugal tras la 'rajada' de Jorge Jesus laSexta Deportes 30 de septiembre de 2026, 19:31",
-      "news_status": "PUBLISHED",
-      "news_first_seen": "2026-09-30T10:43:35.556797Z"
     },
     {
       "name": "Almeida",
@@ -180,7 +157,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T12:40:56+02:00",
       "news_source_count": 7,
       "news_event_id": "da8c768bfb50",
@@ -189,21 +166,21 @@
       "news_first_seen": "2026-09-30T15:22:41.832029Z"
     },
     {
-      "name": "Sindicato de Inquilinas",
+      "name": "Jorge Jesús",
       "social_source_count": 2,
       "social_sources": [
         "snaplytics",
         "superx"
       ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 18.5,
-      "movement": "up",
-      "first_detected_at": "2026-10-01T10:51:13+02:00",
-      "news_source_count": 9,
-      "news_event_id": "948072c1d49b",
-      "news_title": "Decreto de vivienda y última hora de la acampada en Sol, en directo | Podemos se reunirá este jueves con el Sindicato de Inquilinas y después decidirá si apoya o no los decretos",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-30T15:22:41.832029Z"
+      "best_observed_rank": 11,
+      "mean_observed_rank": 12.0,
+      "movement": "flat",
+      "first_detected_at": "2026-10-01T09:31:32+02:00",
+      "news_source_count": 7,
+      "news_event_id": "c5dbdfc21463",
+      "news_title": "¿Será su final en la selección? Cristiano Ronaldo abandona la concentración de Portugal tras la 'rajada' de Jorge Jesus laSexta Deportes 30 de septiembre de 2026, 19:31",
+      "news_status": "PUBLISHED",
+      "news_first_seen": "2026-09-30T10:43:35.556797Z"
     },
     {
       "name": "Los Reyes",
@@ -213,7 +190,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T12:40:56+02:00",
       "news_source_count": 14,
       "news_event_id": "9e135d580d19-r2",
@@ -239,21 +216,37 @@
       "news_first_seen": "2026-09-30T10:43:35.556797Z"
     },
     {
-      "name": "ES-Alert",
+      "name": "Sindicato de Inquilinas",
       "social_source_count": 2,
       "social_sources": [
-        "getdaytrends",
-        "snaplytics"
+        "snaplytics",
+        "superx"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "new",
-      "first_detected_at": "2026-10-01T12:40:56+02:00",
-      "news_source_count": 7,
-      "news_event_id": "2ce50fc02cfc",
-      "news_title": "Alerta roja por lluvias torrenciales en Tarragona, Castellón y Valencia: Protección Civil envía un Es-Alert - Telecinco",
+      "best_observed_rank": 17,
+      "mean_observed_rank": 18.5,
+      "movement": "flat",
+      "first_detected_at": "2026-10-01T10:51:13+02:00",
+      "news_source_count": 9,
+      "news_event_id": "67882f60caa6",
+      "news_title": "Crisis de la vivienda El Sindicato de Inquilinas acusa a Feijóo de representar \"a los rentistas\": \"Votar contra estos decretos es votar contra la gente\" laSexta.com 30 de septiembre de 2026, 13:30",
       "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-30T12:22:10.522702Z"
+      "news_first_seen": "2026-09-30T15:05:00.181543Z"
+    },
+    {
+      "name": "#Valencia y Castellón",
+      "social_source_count": 1,
+      "social_sources": [
+        "trendswe"
+      ],
+      "best_observed_rank": 17,
+      "mean_observed_rank": 17.0,
+      "movement": "new",
+      "first_detected_at": "2026-10-01T12:51:11+02:00",
+      "news_source_count": 12,
+      "news_event_id": "ec60ef60d0d0",
+      "news_title": "La Aemet activa el aviso rojo por lluvias torrenciales en Castellón, Tarragona y Valencia",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-30T19:02:44.425189Z"
     }
   ],
   "anticipated_entries": [],
@@ -262,11 +255,11 @@
     "trends24": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790851256",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790851871",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T12:40:56+02:00"
+      "fetched_at": "2026-10-01T12:51:11+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -291,7 +284,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T12:40:56+02:00"
+      "fetched_at": "2026-10-01T12:51:11+02:00"
     },
     "tweets24": {
       "ok": false,
@@ -300,7 +293,7 @@
       "update_hint": "Updated 15 hours ago",
       "age_minutes": 900.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T12:40:57+02:00"
+      "fetched_at": "2026-10-01T12:51:12+02:00"
     },
     "superx": {
       "ok": true,
@@ -330,16 +323,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T12:40:58+02:00"
+      "fetched_at": "2026-10-01T12:51:12+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790851258",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790851873",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T12:40:58+02:00"
+      "fetched_at": "2026-10-01T12:51:13+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -367,9 +360,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Oct 1, 2026 10:00 UTC",
-      "age_minutes": 41.0,
-      "freshness": "fresh",
-      "fetched_at": "2026-10-01T12:40:58+02:00"
+      "age_minutes": 51.2,
+      "freshness": "aging",
+      "fetched_at": "2026-10-01T12:51:13+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -397,18 +390,18 @@
       ],
       "error": null,
       "update_hint": "Updated: October 01, 2026 at 10:00 AM # Trend Type Actions 1 #LaIslaDeLasTentaciones8 Has",
-      "age_minutes": 161.0,
+      "age_minutes": 171.2,
       "freshness": "stale",
-      "fetched_at": "2026-10-01T12:40:58+02:00"
+      "fetched_at": "2026-10-01T12:51:13+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790851260",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790851874",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T12:41:00+02:00"
+      "fetched_at": "2026-10-01T12:51:14+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -417,7 +410,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T12:41:01+02:00"
+      "fetched_at": "2026-10-01T12:51:16+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -447,16 +440,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T12:41:01+02:00"
+      "fetched_at": "2026-10-01T12:51:16+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790851264",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790851878",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T12:41:04+02:00"
+      "fetched_at": "2026-10-01T12:51:18+02:00"
     }
   }
 }
