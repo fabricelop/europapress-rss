@@ -29,7 +29,7 @@ const $=id=>document.getElementById(id);
 const ARCHIVED_LOCAL_KEY="ttendencias-explicadas-archived-v1";
 function localArchived(){try{return new Set(JSON.parse(localStorage.getItem(ARCHIVED_LOCAL_KEY)||"[]"))}catch(_){return new Set()}}
 function saveLocalArchived(set){try{localStorage.setItem(ARCHIVED_LOCAL_KEY,JSON.stringify([...set].slice(-300)))}catch(_){}}
-let allItems=[];let openPendingKey=null;let imageRuns=new Map(),imageRunPoll=null;
+let allItems=[];let openPendingKey=null;let imageRuns=new Map(),imageRunPoll=null;let lastRenderFingerprint="";
 async function updateUnreadBadge(){
  const unread=allItems.filter(x=>!x.copied).length;
  const badge=$("navPendingBadge");if(badge){badge.textContent=unread>99?"99+":String(unread);badge.classList.toggle("show",unread>0)}
@@ -470,14 +470,19 @@ async function load(){
      return Number(b._sourceOrder||0)-Number(a._sourceOrder||0);
    });
  const archived=localArchived();
- allItems=collapseVisibleExplained(sorted)
+ const nextItems=collapseVisibleExplained(sorted)
    .map(x=>({...x,_rank:rankFor(x,requests)}))
    .map(x=>archived.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
+ // Evitar reconstruir las tarjetas (y recargar las imágenes) cada 15 s si no cambió nada.
+ const fingerprint=JSON.stringify(nextItems);
+ const changed=fingerprint!==lastRenderFingerprint;
+ allItems=nextItems;
+ if(changed){lastRenderFingerprint=fingerprint;render()}
+ else{updateUnreadBadge();updateImageControl()}
  // Cuando el servidor ya confirma el archivado, mantener solo claves todavía
  // útiles como protección frente a restauraciones/cachés móviles.
  const confirmed=new Set(allItems.filter(x=>x.copied&&x.copy_source!=="local-archive-guard").map(x=>x.copy_key));
  if(confirmed.size){const next=localArchived();for(const key of confirmed)next.delete(key);saveLocalArchived(next)}
- render();
  refreshImageRuns();
 }
 $("filter").addEventListener("input",render);
