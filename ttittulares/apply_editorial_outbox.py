@@ -458,7 +458,7 @@ def sync_compact(q):
             "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
             "parent_event_id":x.get("parent_event_id"),"update_context":x.get("update_context"),
             "with_image":True,"image_mode":"ai_plus_fallback",
-            "image_instruction":"Intenta una sola imagen IA editorial rápida y conserva además una imagen real/fallback de las fuentes. Ninguna imagen puede bloquear READY.",
+            "image_instruction":"TT_STYLE_A_V1: una sola caricatura satírica editorial, gag visual fuerte y exagerado acorde con el hecho; si el tema es sensible usa fallback_only. Ninguna imagen puede bloquear READY.",
         })
     # La imagen se resuelve de forma determinista al aplicar el READY; nunca crea IMAGE_RETRY.
     active.sort(key=lambda x:(0 if x.get("selection_mode")=="IMAGE_RETRY" else 1, str(x.get("selected_at") or "")))
