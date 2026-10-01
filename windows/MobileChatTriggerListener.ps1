@@ -14,13 +14,13 @@ $RunTimeoutMinutes = 35
 $MaxParallelImageChats = 4
 $ImageStaleMinutes = 45
 $StatusBase = "https://europapress-rss.vercel.app"
-$AckUrl = "$StatusBase/api/tt-run-ack"
 $RepoRaw = "https://raw.githubusercontent.com/fabricelop/europapress-rss"
 
 $Targets = [ordered]@{
   ttittulares = @{
     TriggerUrl = "$RepoRaw/control/ttittulares-run-trigger-v2/ttittulares/run-now-trigger.json"
     RunStatusUrl = "$StatusBase/api/ttittulares-run-status"
+    RunUrl = "$StatusBase/api/ttittulares-run"
     LauncherArg = "titulares"
     ProjectLabel = "TTiTTulares"
     ControlBranch = "control/ttittulares-run-trigger-v2"
@@ -29,6 +29,7 @@ $Targets = [ordered]@{
   ttendencias = @{
     TriggerUrl = "$RepoRaw/control/ttendencias-run-trigger/trends/run-now-trigger.json"
     RunStatusUrl = "$StatusBase/api/ttendencias-run-status"
+    RunUrl = "$StatusBase/api/ttendencias-run"
     LauncherArg = "tendencias"
     ProjectLabel = "TTendencias"
     ControlBranch = "control/ttendencias-run-trigger"
@@ -59,10 +60,10 @@ function Save-State($State) {
   $State | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $StatePath -Encoding UTF8
 }
 
-function Send-RunAck([string]$Project, [string]$CommandId, [string]$Stage) {
+function Send-RunAck([string]$RunUrl, [string]$Project, [string]$CommandId, [string]$Stage) {
   try {
-    $payload = @{ project=$Project; command_id=$CommandId; stage=$Stage } | ConvertTo-Json -Compress
-    Invoke-RestMethod -Method Post -Uri $AckUrl -ContentType "application/json" -Body $payload -TimeoutSec 12 | Out-Null
+    $payload = @{ task="pc_ack"; command_id=$CommandId; stage=$Stage } | ConvertTo-Json -Compress
+    Invoke-RestMethod -Method Post -Uri $RunUrl -ContentType "application/json" -Body $payload -TimeoutSec 12 | Out-Null
     Write-Log "ACK $Project command=$CommandId stage=$Stage"
     return $true
   } catch {
@@ -352,13 +353,13 @@ while ($true) {
 
       # Acusar inmediatamente que ESTE PC ha visto la orden. El timeout web de 30 s
       # mide este acuse, no el tiempo que tarde ChatGPT en publicar su RUNNING.
-      Send-RunAck $name $commandId "picked_up" | Out-Null
+      Send-RunAck $target.RunUrl $name $commandId "picked_up" | Out-Null
 
       Invoke-ProjectChat $target.LauncherArg "mobile editorial command $commandId"
 
       # Solo después de lanzar correctamente el proceso consideramos consumida la orden.
       # Si el lanzamiento lanza excepción, el siguiente ciclo volverá a intentarlo.
-      Send-RunAck $name $commandId "launched" | Out-Null
+      Send-RunAck $target.RunUrl $name $commandId "launched" | Out-Null
       $state.$name.last_command_id = $commandId
       $state.$name.followup_for = ""
       Save-State $state
