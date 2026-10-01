@@ -192,15 +192,25 @@ export default async function handler(req,res){
   try{
     const task=rawTask==="images"?"images":"editorial";
     if(task==="images")return await requestImageRun(req,res);
-    const [{doc:current,sha},items]=await Promise.all([readTrigger(),comments()]);
+    const [{doc:current,sha},items,ackState]=await Promise.all([readTrigger(),comments(),readControlJson(ACK_PATH)]);
     if(activeTrace(items))return res.status(409).json({ok:false,error:"run_in_progress"});
     const currentId=String(current.command_id||"").trim(),currentRequested=String(current.requested_at||"").trim();
     if(currentId&&currentRequested){
       const age=Date.now()-new Date(currentRequested).getTime();
       const consumedBy=newerRunAfter(items,currentRequested);
       const marks=items.filter(c=>String(c.body||"").startsWith(STATUS_PREFIX+currentId+"\n")),last=marks.at(-1),st=last?field(last.body,"status"):"REQUESTED";
+      const ack=ackState.doc||{};
+      const ackMatches=String(ack.command_id||"")===currentId;
+      const ackStage=ackMatches?String(ack.stage||"").toLowerCase():"";
+      const ackAt=ackMatches?stamp(ack.updated_at||ack.launched_at||ack.picked_up_at):0;
+      const ackFresh=ackMatches&&ackAt&&Date.now()-ackAt<ACTIVE_MS;
+
+      // 45 s cubre holgadamente el SLA visual de 30 s. Si pasado ese tiempo no hay
+      // ACK ni RUNNING, la orden anterior está muerta y una pulsación nueva debe poder
+      // reemplazarla; no la bloqueamos 20 minutos.
       if(!consumedBy&&Number.isFinite(age)&&age<45000)return res.status(429).json({ok:false,error:"recent_request",retry_after_seconds:Math.ceil((45000-age)/1000)});
-      if(!consumedBy&&Number.isFinite(age)&&age<ACTIVE_MS&&!["DONE","ERROR"].includes(st||"REQUESTED"))return res.status(409).json({ok:false,error:"run_in_progress"})
+      if(!consumedBy&&String(st||"").toUpperCase()==="RUNNING")return res.status(409).json({ok:false,error:"run_in_progress"});
+      if(!consumedBy&&ackFresh&&["picked_up","launched"].includes(ackStage))return res.status(409).json({ok:false,error:"run_in_progress"});
     }
     const requested_at=new Date().toISOString(),command_id="tr-"+Date.now()+"-"+crypto.randomBytes(3).toString("hex"),doc={version:2,command_id,requested_at,mode:"manual_pc_chat",executor:"pc_chat_ttendencias_dedicated",project:"ttendencias",launcher_arg:"tendencias",task,auto_image_followup:false};
     let saved;try{saved=await writeTrigger(doc,sha)}catch(e){if(!String(e.message||e).includes("409")&&!String(e.message||e).includes("422"))throw e;const fresh=await readTrigger();saved=await writeTrigger(doc,fresh.sha)}
