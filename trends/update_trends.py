@@ -19,6 +19,7 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124 Safari/537.36",
     "Accept-Language": "es-ES,es;q=0.9,en;q=0.7",
     "Cache-Control": "no-cache",
+    "Pragma": "no-cache",
 }
 SOURCES = {
     "trends24": "https://trends24.in/spain/",
@@ -61,7 +62,9 @@ def unique(values):
     return out
 
 def get(url):
-    r = requests.get(url, headers=HEADERS, timeout=30, params={"_": int(datetime.now().timestamp())})
+    # No añadir parámetros artificiales a URLs de terceros: varias fuentes
+    # rechazan ?_=timestamp con 403/404 aunque la URL canónica funcione.
+    r = requests.get(url, headers=HEADERS, timeout=30)
     r.raise_for_status()
     return r.content.decode("utf-8", errors="replace")
 
