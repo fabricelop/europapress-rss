@@ -53,7 +53,7 @@ def save_editorial_queue(requests_doc):
             "requested_at": req.get("requested_at"),
             "revision": int(req.get("revision") or 0),
             "rewrite_instruction": req.get("rewrite_instruction") or req.get("rewrite_request") or "",
-            "with_image": False,  # Images enriched asynchronously; no editorial generation.
+            "with_image": True,  # IA + fallback en paralelo; nunca bloquean la explicación.
             "task": "explain",
             "tremending_origin": bool(req.get("tremending_origin")),
             "tremending_id": req.get("tremending_id"),
@@ -154,7 +154,7 @@ def reconcile_persisted_explanations():
         req["group_leader_id"] = entry.get("group_leader_id") or entry.get("id") or req.get("id")
         req["news_disposition"] = entry.get("news_disposition") or req.get("news_disposition") or "ignored"
         req["source"] = entry.get("source") or req.get("source") or "editorial_reconciled"
-        req["with_image"] = False
+        req["with_image"] = True
         for field in (
             "group_id", "explanation_group_id", "group_title", "trend_context",
             "verification_sources", "ttittulares_event_id", "duplicate_of",
@@ -272,7 +272,7 @@ for item in current:
             req["requested_at"] = reopened_at
             req["revision"] = int(req.get("revision") or 0) + 1
             req["reexplain"] = True
-            req["with_image"] = False
+            req["with_image"] = True
             req["requested_together"] = [item["name"]]
             req["captured_with"] = [x["name"] for x in current]
             req.pop("explained_at", None)
@@ -292,7 +292,7 @@ for item in current:
                     req["requested_at"] = now_entered
                     req["revision"] = int(req.get("revision") or 0) + 1
                     req["reexplain"] = True
-                    req["with_image"] = False
+                    req["with_image"] = True
                     req["anticipated_entered_top10_at"] = req.get("anticipated_entered_top10_at") or now_entered
                     req["rewrite_instruction"] = "Ha entrado en el Top 10: actualiza el encabezado al puesto real y verifica que el motivo siga siendo actual. Reutiliza la preparación del Radar si sigue siendo válida."
                     req.pop("ready_at", None)
@@ -359,7 +359,7 @@ for item in to_queue:
         "requested_at": now,
         "revision": int((req or {}).get("revision") or 0),
         "reexplain": False,
-        "with_image": False,
+        "with_image": True,
         "alternatives_target": 0,
         "batch_id": batch_id,
         # Auto-queueing at the same capture time is NOT evidence that trends
