@@ -10,9 +10,9 @@ Una PROBLEMATIC antigua que no se intenta en la pasada permanece visible en «No
 
 ### Recuperación obligatoria de IA pendiente
 
-Al comenzar cada pasada crea también un `visual_backlog` con los items READY de `ttittulares/prepared.json` que cumplan **todas** estas condiciones: `image_strategy:"ai_plus_fallback"`, no estén PUBLISHED/DISMISSED según el estado/decisiones fresco, no tengan `ai_image` válida y tengan `ai_image_status:"pending"` (o falte ese campo). Estos items visuales NO se reinvestigan, NO se redactan de nuevo y NO vuelven a la cola editorial: únicamente reciben el intento IA pendiente.
+Al comenzar cada pasada crea también un `visual_backlog` con los READY de `ttittulares/prepared.json` que tengan `image_strategy:"ai_plus_fallback"`, no estén PUBLISHED/DISMISSED, no tengan `ai_image` válida y tengan `ai_image_status:"pending"`, o tengan `ai_image_regenerate_requested:true`.
 
-La pasada puede cerrar texto y continuar con noticias nuevas sin esperar al raster, pero NO puede terminar dejando intacto un `pending` del `visual_backlog` ni de una noticia creada en esa misma pasada. Cada uno debe registrar exactamente un intento real y acabar con un outbox visual `ready` o `failed`. `pending` es un estado transitorio, nunca un resultado terminal de una ejecución.
+Estos items NO se reinvestigan ni se redactan de nuevo. Solo asegúrate de que exista su job visual correspondiente en `ttittulares/image-jobs/**`. Un job existente no se duplica. La cola visual es asíncrona y no impide cerrar la pasada editorial.
 
 ## Redacción
 
@@ -56,106 +56,64 @@ No incluyas el texto de los candidatos descartados en RUNTRACE: el único remate
 
 ## Imágenes IA + archivo, siempre no bloqueantes
 
-La imagen es una capa paralela. **Nunca retrasa ni impide que una noticia pase a READY/Listas**, nunca cambia una noticia verificada a PROBLEMATIC y nunca impide continuar con el resto del lote.
+La imagen es una capa asíncrona. **Nunca retrasa ni impide que una noticia pase a READY/Listas**, nunca cambia una noticia verificada a PROBLEMATIC y nunca impide continuar con el resto del lote.
 
-### Intento inicial
+### Generación IA mediante cola durable
 
-Para cada noticia PROCESSING, tan pronto como el acontecimiento esté verificado y haya contexto factual suficiente:
-1. prepara el texto/tuit normalmente;
-2. intenta exactamente **UNA** imagen IA tipo gag editorial;
-3. en paralelo conserva el mecanismo actual de búsqueda de una fotografía real/archivo desde las fuentes;
-4. materializa el READY aunque una o ambas imágenes sigan pendientes o fallen.
+No uses el ImageGen interno de ChatGPT para este flujo y no intentes extraer bytes de una imagen de conversación. Para cada noticia PROCESSING verificada:
 
-No hagas un segundo intento automático. La primera IA con raster íntegro se entrega para revisión humana, aunque el encaje semántico pudiera ser imperfecto. Solo rechaza bytes corruptos/incompletos o imposibles de persistir.
+1. prepara y persiste texto/tuit normalmente;
+2. deja el READY con `image_strategy:"ai_plus_fallback"` y `ai_image_status:"pending"`;
+3. crea exactamente UN trabajo visual:
+   `ttittulares/image-jobs/<event_id>-r<revision>-ai<attempt>.json`;
+4. su JSON pequeño contiene:
+   `{"project":"ttittulares","event_id","revision","attempt","prompt","context_guard"}`;
+5. `.github/workflows/ai-image-generate.yml` llama al generador privado de Vercel AI Gateway mediante OIDC y escribe `ttittulares/image-outbox/**`;
+6. `.github/workflows/ttittulares-ai-image-apply.yml` materializa el JPEG y actualiza SOLO los campos visuales del READY.
 
-### Intento IA obligatorio, sin bloquear el texto
-
-`AI_ATTEMPT_REQUIRED_BEFORE_RUN_CLOSE`: para cada noticia elegible el intento IA **no es opcional**. En cuanto el texto esté verificado puedes materializar READY/Listas y seguir avanzando, pero dentro de la misma pasada debes ejecutar exactamente una llamada real a ImageGen para ese `event_id`/revisión, o registrar explícitamente que la herramienta no estuvo disponible.
-
-Después de cada intento:
-- si ImageGen devuelve raster utilizable, crea inmediatamente `ttittulares/image-outbox/<event_id>-r<revision>-ai<attempt>.json` con `status:"ready"`;
-- si ImageGen falla, no está disponible o no permite recuperar bytes íntegros, crea igualmente ese fichero con `status:"failed"` y una razón técnica breve;
-- solo tras existir uno de esos dos resultados puede contarse ese intento visual como resuelto;
-- el fallback puede estar ya visible y seguir seleccionado mientras llega la IA, pero nunca sustituye ni cancela el intento IA obligatorio;
-- incrementa `summary.imagegen_calls` **solo** cuando se haya realizado la llamada real; si no pudo realizarse, registra incidencia visual y `status:"failed"`, nunca dejes `pending` silencioso.
-
-No esperes a que el workflow que consume `image-outbox` termine para continuar con la siguiente noticia. La no-bloqueabilidad significa «el texto y el siguiente item continúan», no «la IA se puede omitir».
+No esperes 5–6 para continuar con la siguiente noticia. La no-bloqueabilidad significa que texto y cola editorial avanzan mientras el job visual se resuelve por separado.
 
 ### Aislamiento de contexto V3
 
-Antes de cada ImageGen crea un brief nuevo, autocontenido y exclusivamente del item actual, con:
-- `event_id`, `revision`, titular y resumen factual verificado;
+El prompt de cada job comienza conceptualmente por:
+`TTITTULARES_IMAGE_ISOLATION_V3 · CURRENT_ITEM_ONLY · <event_id> r<revision>`.
+
+Incluye exclusivamente:
+- `event_id`, revisión, titular y resumen factual verificado;
 - sujetos, lugar, objetos y acción que pertenecen inequívocamente a ESA noticia;
-- nada de otras noticias del lote, imágenes anteriores, prompts anteriores ni elementos visibles de otros items.
+- una sola escena narrativa, pocos elementos, composición 16:9 y detalle medio/bajo;
+- ilustración editorial clara; casi sin texto y, si aparece, breve y diegético;
+- sin collage, split-screen, multipanel, infografía ni UI.
 
-El brief debe comenzar conceptualmente por:
-`TTITTULARES_IMAGE_ISOLATION_V3 · CURRENT_ITEM_ONLY · <event_id> r<revision>`
+No reutilices prompts, semillas, imágenes ni elementos de otros items. En política usa una ilustración neutral y descriptiva, sin elogio, ataque ni persuasión. En tragedias, muertes, violencia o víctimas, sustituye el gag por una ilustración editorial sobria y no gráfica.
 
-y pedir:
-- una sola escena narrativa;
-- gag visual claro, divertido y periodístico;
-- caricatura editorial, expresiones claras, pocos elementos;
-- sin collage, split-screen, multipanel, infografía ni UI;
-- casi sin texto; si aparece, breve y diegético;
-- detalle medio/bajo y generación rápida.
+El `context_guard` es:
+`{"version":3,"event_id":"<event_id>","revision":<revision>,"scope":"current_item_only"}`.
 
-No reutilices `image_id`, `gen_id`, `parent_gen_id`, `referenced_image_ids`, semilla ni raster anteriores.
+### Un solo intento
 
-Guarda:
+El intento inicial es `attempt:1`. No hagas un segundo intento automático tras `failed`. **🔁 Rehacer** crea exclusivamente otro job visual con `attempt = ai_image_attempt + 1`; no reabre investigación, texto ni tuit.
+
+Al iniciar cada pasada:
+- si un READY tiene `ai_image_regenerate_requested:true`, crea el job de Rehacer si no existe;
+- si tiene `ai_image_status:"pending"` sin `ai_image`, crea el job pendiente si no existe;
+- un job existente significa que el intento ya está encolado: no lo dupliques ni incrementes `attempt`.
+
+El consumidor visual limpia la solicitud de Rehacer cuando aplica un resultado `ready` o `failed`.
+
+### IA + fallback
+
+Conserva en paralelo la búsqueda de fotografía real/archivo desde fuentes. No esperes al fallback para cerrar el texto.
+
+Mantén:
 - `ai_image` y `ai_image_status:"ready|failed|pending"`;
 - `fallback_image` y `fallback_image_status:"ready|none|pending"`;
 - `image_choice:"ai|fallback|none"`;
-- `image` como alias compatible de la imagen actualmente elegida.
+- `image` como alias de la imagen elegida.
 
-Si la IA queda disponible, selecciónala por defecto. Si no, usa fallback si existe. Mantén siempre ambos originales para que la app pueda mostrarlos a la vez.
+Si llega una IA válida, selecciónala por defecto. Si aún no llegó o falla, usa fallback cuando exista. Mantén ambos originales para la app. En Tremending, la captura del tuit elegido sigue siendo el fallback prioritario y no se usa como prueba factual.
 
-La metadata de IA incluye:
-`context_guard={"version":3,"event_id":"<event_id>","revision":<revision>,"scope":"current_item_only"}`
-y `generation_attempt:1`.
-
-### Rapidez
-
-La imagen solo acompañará un tuit:
-- normaliza a ~512 px de lado largo;
-- JPEG/WebP ligero, preferentemente <=150 KB;
-- pocos elementos y detalle medio/bajo;
-- nada de calidad premium o microdetalle.
-
-### Fallback de archivo
-
-Sigue recuperando una imagen real desde fuente oficial/primaria o medio fiable con `og:image`/`twitter:image`. Esa imagen se guarda como `fallback_image`, no debe sobrescribir `ai_image`.
-
-En Tremending, la captura del tuit elegido por el usuario sigue siendo el fallback prioritario. No la uses como prueba factual.
-
-### Rehacer desde la app
-
-Además de PROCESSING, al iniciar cada pasada revisa los items READY de `ttittulares/prepared.json` con `ai_image_regenerate_requested:true`. Para cada uno:
-- NO reabras ni reescribas la noticia;
-- haz exactamente un nuevo intento IA;
-- incrementa `ai_image_attempt`;
-- reemplaza solo `ai_image`;
-- conserva `fallback_image`;
-- selecciona la nueva IA por defecto si se persistió;
-- limpia la solicitud incluso si falla y deja una razón breve;
-- no cambies READY ni el tuit.
-
-### Persistencia de bytes — canal separado del texto
-
-La imagen NUNCA viaja dentro del comentario `TTITTULARES_OUTBOX_V1`: ese comentario debe seguir siendo pequeño y cerrar el READY sin depender del raster.
-
-Cuando ImageGen produzca el único intento:
-1. deja que el resultado editorial de texto se publique/materialice normalmente en Listas; en ese READY usa `ai_image_status:"pending"` y `fallback_image_status:"pending"` si aún no están disponibles;
-2. identifica el fichero generado de ESTE item, lee sus bytes reales y normalízalo programáticamente a JPEG/WebP ligero, lado largo ~512 px y objetivo <=60 KB;
-3. calcula SHA-256 y base64 por código, nunca a mano;
-4. escribe por GitHub Contents un fichero UTF-8 independiente:
-   `ttittulares/image-outbox/<event_id>-r<revision>-ai<attempt>.json`
-   con `{"event_id","revision","attempt","status":"ready","ai_image":{...}}`, donde `ai_image.url` es la data URL real y lleva `generated:true`, `rights_status:"generated"`, `source:"TTiTTulares / ChatGPT"`, `generation_attempt` y el `context_guard` V3;
-5. `.github/workflows/ttittulares-ai-image-apply.yml` materializa el binario en `ttittulares/generated-images/` y actualiza SOLO los campos de imagen del READY.
-6. Si ImageGen o el puente de bytes falla, escribe en el mismo image-outbox `status:"failed"` con una razón técnica breve, sin data URL. El texto permanece READY.
-
-Para **🔁 Rehacer** usa exactamente el mismo canal con `attempt = ai_image_attempt + 1`. No envíes un nuevo outbox editorial y no cambies el tuit.
-
-El fallback de archivo lo completa después de READY `.github/workflows/ttittulares-image-enrich.yml`; no esperes su descarga para cerrar el texto.
+La imagen NUNCA viaja dentro de `TTITTULARES_OUTBOX_V1`; ese comentario sigue siendo pequeño y cierra READY independientemente del raster.
 
 ## Outbox editorial
 
