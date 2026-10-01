@@ -95,6 +95,16 @@ async function readJson(path) {
   const file = await r.json();
   return { doc: JSON.parse(b64decode(file.content) || "{}"), sha: file.sha };
 }
+async function readPublicJson(path) {
+  const clean = String(path || "").split("/").map(encodeURIComponent).join("/");
+  const url = `https://raw.githubusercontent.com/${REPO}/${encodeURIComponent(BRANCH)}/${clean}?t=${Date.now()}`;
+  const r = await fetch(url, { cache: "no-store", headers: { "user-agent": "ttendencias-web-read" } });
+  if (!r.ok) throw new Error(`GitHub RAW ${path}: ${r.status}`);
+  const raw = await r.text();
+  if (!raw.trim()) throw new Error(`GitHub RAW ${path}: contenido vacío`);
+  return { doc: JSON.parse(raw), sha: null, source: "raw" };
+}
+
 async function readText(path) {
   const r = await gh(`contents/${path}?ref=${encodeURIComponent(BRANCH)}`);
   if (r.status === 404) return { text: "", sha: null };
@@ -898,15 +908,15 @@ async function rateRemate(ratingKey, rating) {
 
 async function stateSnapshot() {
   const [recent, requests, explained, explainedCopyState, health, prepared, editorialConfig, editorialQueue, remateRatings] = await Promise.all([
-    readJson(RECENT),
-    readJson(REQUESTS),
-    readJson(EXPLAINED),
-    readJson(EXPLAINED_COPY_STATE),
-    readJson(HEALTH),
-    readJson(PREPARED),
-    readJson(EDITORIAL_CONFIG),
-    readJson(EDITORIAL_QUEUE),
-    readJson(REMATE_RATINGS),
+    readPublicJson(RECENT),
+    readPublicJson(REQUESTS),
+    readPublicJson(EXPLAINED),
+    readPublicJson(EXPLAINED_COPY_STATE),
+    readPublicJson(HEALTH),
+    readPublicJson(PREPARED),
+    readPublicJson(EDITORIAL_CONFIG),
+    readPublicJson(EDITORIAL_QUEUE),
+    readPublicJson(REMATE_RATINGS),
   ]);
 
   // Autorreparación del refresco: si GitHub retrasa o pierde ejecuciones cron,
@@ -955,7 +965,7 @@ async function proxyPreparedImage(rawUrl, res, format = "") {
   let parsed;
   try { parsed = new URL(url); } catch (_) { throw new Error("URL de imagen no válida"); }
   if (parsed.protocol !== "https:") throw new Error("Solo se permiten imágenes HTTPS");
-  const [{ doc: prepared }, { doc: explained }] = await Promise.all([readJson(PREPARED),readJson(EXPLAINED)]);
+  const [{ doc: prepared }, { doc: explained }] = await Promise.all([readPublicJson(PREPARED),readPublicJson(EXPLAINED)]);
   const allowed = new Set([
     ...(prepared.items || []),
     ...(explained.items || []),
