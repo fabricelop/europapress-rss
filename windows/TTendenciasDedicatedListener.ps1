@@ -7,6 +7,8 @@ $BaseDir = "C:\TTiTTulares"
 $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
 $StatePath = Join-Path $BaseDir "ttendencias-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttendencias-mobile-trigger.log"
+$LauncherLogPath = Join-Path $BaseDir "tendencias.log"
+$LaunchConfirmSeconds = 30
 $TriggerApiUrl = "https://api.github.com/repos/fabricelop/europapress-rss/contents/trends/run-now-trigger.json?ref=control%2Fttendencias-run-trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttendencias-run"
 $WorkerId = "ttendencias-dedicated-v1"
@@ -89,8 +91,41 @@ function Send-Ack([string]$CommandId,[string]$Stage) {
 
 function Launch-TTendencias([string]$CommandId) {
   if (-not (Test-Path -LiteralPath $Launcher)) { throw "No existe $Launcher" }
+
+  $beforeWrite = [DateTime]::MinValue
+  $beforeLen = 0L
+  if (Test-Path -LiteralPath $LauncherLogPath) {
+    try {
+      $fi = Get-Item -LiteralPath $LauncherLogPath
+      $beforeWrite = $fi.LastWriteTimeUtc
+      $beforeLen = $fi.Length
+    } catch {}
+  }
+
   Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"tendencias") -WindowStyle Hidden | Out-Null
-  Write-Log "LAUNCHED tendencias command=$CommandId"
+  Write-Log "PROCESS STARTED tendencias command=$CommandId"
+
+  $deadline = (Get-Date).AddSeconds($LaunchConfirmSeconds)
+  while ((Get-Date) -lt $deadline) {
+    Start-Sleep -Seconds 1
+    if (-not (Test-Path -LiteralPath $LauncherLogPath)) { continue }
+    try {
+      $fi = Get-Item -LiteralPath $LauncherLogPath
+      if ($fi.Length -le $beforeLen -and $fi.LastWriteTimeUtc -le $beforeWrite) { continue }
+      $tail = @(Get-Content -LiteralPath $LauncherLogPath -Tail 30 -ErrorAction Stop)
+      if ($tail -match "MENSAJE ENVIADO") {
+        Write-Log "CHAT MESSAGE CONFIRMED tendencias command=$CommandId"
+        return $true
+      }
+      if ($tail -match "ERROR:|ERROR ::|Timeout CDP") {
+        Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $($tail[-1])"
+        return $false
+      }
+    } catch {}
+  }
+
+  Write-Log ("CHAT MESSAGE TIMEOUT command=" + $CommandId + " after=" + $LaunchConfirmSeconds + "s")
+  return $false
 }
 
 if (-not (Test-Path -LiteralPath $BaseDir)) { New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null }
@@ -147,11 +182,17 @@ while ($true) {
 
         if ($ack -eq "OK") {
           try {
-            Launch-TTendencias $commandId
-            $launched = Send-Ack $commandId "launched"
-            if ($launched -ne "OK") {
-              Write-Log "LAUNCH ACK WARNING command=$commandId result=$launched"
+            $messageSent = Launch-TTendencias $commandId
+            if ($messageSent) {
+              $launched = Send-Ack $commandId "launched"
+              if ($launched -ne "OK") {
+                Write-Log "LAUNCH ACK WARNING command=$commandId result=$launched"
+              }
+            } else {
+              Write-Log "LAUNCH NOT CONFIRMED command=$commandId; no launched ACK"
             }
+            # Consumir esta orden aunque el lanzamiento falle: evita abrir chats
+            # repetidamente cada 3 segundos. Una nueva pulsación crea otro command_id.
             $state.last_command_id = $commandId
             $state.conflict_command_id = ""
             $state.conflict_first_at = ""
