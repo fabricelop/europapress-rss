@@ -25,6 +25,7 @@ const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
 const TRACE_COMMENT_ID=5859738015;
 const STALE_MS=20*60*1000;
 const START_ACK_MS=30*1000;
+const CHAT_CONFIRM_MS=45*1000;
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -186,6 +187,7 @@ function manualFallback(items,request,ack){
   const launchedAt=ackMatches?(ack?.launched_at||null):null;
   const noPickup=rawStatus==="REQUESTED"&&!started_at&&!ackMatches&&Date.now()-stamp(requested_at)>=START_ACK_MS;
   const pickupButNoLaunch=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="picked_up"&&Date.now()-stamp(pickedAt)>=START_ACK_MS;
+  const launchButNoEditorial=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="launched"&&launchedAt&&Date.now()-stamp(launchedAt)>=CHAT_CONFIRM_MS;
   const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(lastActivity)>=STALE_MS;
 
   let status=rawStatus,phase=status==="REQUESTED"?"preparing":status==="RUNNING"?"running":status==="DONE"?"closing":"error";
@@ -202,19 +204,23 @@ function manualFallback(items,request,ack){
       ?"PC ha recogido la orden y ha lanzado el chat; esperando confirmación editorial."
       :"PC ha recogido la orden; preparando el lanzamiento del chat.";
   }
-  if(noPickup||pickupButNoLaunch||staleRunning){
+  if(noPickup||pickupButNoLaunch||launchButNoEditorial||staleRunning){
     status="ERROR";phase="error";
     message=noPickup
       ?"El PC no ha recogido la orden en 30 segundos."
       :pickupButNoLaunch
         ?"El PC recogió la orden, pero no confirmó el lanzamiento del chat en 30 segundos."
-        :"La ejecución no actualiza su estado desde hace más de 20 minutos.";
+        :launchButNoEditorial
+          ?"El chat fue lanzado, pero no comenzó la ejecución editorial en 45 segundos."
+          :"La ejecución no actualiza su estado desde hace más de 20 minutos.";
   }
   const finished_at=noPickup
     ?new Date(stamp(requested_at)+START_ACK_MS).toISOString()
     :pickupButNoLaunch
       ?new Date(stamp(pickedAt)+START_ACK_MS).toISOString()
-      :staleRunning?new Date().toISOString()
+      :launchButNoEditorial
+        ?new Date(stamp(launchedAt)+CHAT_CONFIRM_MS).toISOString()
+        :staleRunning?new Date().toISOString()
       :(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
 
   return {
