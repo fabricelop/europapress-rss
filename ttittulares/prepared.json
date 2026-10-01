@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T12:41:52.068Z",
+  "updated_at": "2026-10-01T12:45:55.884971Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -300,9 +300,9 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -317,16 +317,47 @@
       },
       "fallback_image_search_attempted_at": "2026-10-01T12:38:42.970668Z",
       "image": {
-        "url": "https://s1.abcstatics.com/abc/www/multimedia/deportes/2026/10/01/1518129955-U36764635806GDm-1200x630@diario_abc.JPG",
-        "source": "www.abc.es",
-        "source_url": "https://www.abc.es/deportes/tenis/jodar-cae-tokio-desaprovecha-favor-munar-hombrada-20261001141038-nt.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Jódar cae en Tokio y desaprovecha el favor de Munar con su hombrada ante Fritz"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5c342a232471-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "5c342a232471",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "alt": "Ilustración editorial sobre la derrota de Rafa Jódar en Tokio tras la victoria previa de Jaume Munar.",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5c342a232471-r1-ai1.jpg",
+        "sha256": "f3053e9c0bd7b9656bae97482d5ec994f2b2f0aa537eddba83801122a903dcfa",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "tool_called",
-      "ai_image_tool_called_at": "2026-10-01T12:40:30.941406Z"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_tool_called_at": "2026-10-01T12:40:30.941406Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5c342a232471-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "5c342a232471",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "alt": "Ilustración editorial sobre la derrota de Rafa Jódar en Tokio tras la victoria previa de Jaume Munar.",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5c342a232471-r1-ai1.jpg",
+        "sha256": "f3053e9c0bd7b9656bae97482d5ec994f2b2f0aa537eddba83801122a903dcfa",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image_last_attempt_at": "2026-10-01T12:45:55.884886Z"
     }
   ]
 }
