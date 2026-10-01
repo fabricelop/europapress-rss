@@ -192,12 +192,31 @@ def _select_fallback_if_needed(row, image):
         row["image_pending"] = False
 
 
-def enrich(row, by_tremending, photo_finder=page_photo, exists=lambda p: p.is_file()):
+def enrich(row, by_tremending, photo_finder=page_photo, exists=lambda p: p.is_file(), raster_validator=raster_ok):
     if str(row.get("status") or "") != "explained" or not str(row.get("explanation") or "").strip():
         return False
-    if str(row.get("fallback_image_status") or "") in {"ready", "none"}:
-        return False
     before = json.dumps(row, ensure_ascii=False, sort_keys=True)
+
+    # Una URL externa puede caducar después de haber sido guardada. En las
+    # explicaciones recientes no confíes solo en fallback_image_status=ready:
+    # valida el raster real y, si murió, busca un reemplazo.
+    fallback_status = str(row.get("fallback_image_status") or "")
+    if fallback_status == "ready":
+        current = row.get("fallback_image") or {}
+        current_url = str(current.get("url") or "")
+        if current_url and raster_validator(current_url):
+            row["fallback_image_verified_at"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+            return json.dumps(row, ensure_ascii=False, sort_keys=True) != before
+        row.pop("fallback_image", None)
+        row.pop("fallback_image_verified_at", None)
+        row["fallback_image_status"] = "pending"
+        if str(row.get("image_choice") or "") == "fallback":
+            row.pop("image", None)
+            row["image_status"] = "pending"
+            row["image_choice"] = "none"
+            row["image_pending"] = True
+    elif fallback_status == "none":
+        return False
     if row.get("tremending_origin"):
         entry = by_tremending.get(str(row.get("tremending_id") or ""))
         image = tremending_photo(row, entry, exists)
@@ -253,7 +272,15 @@ def selftest():
     assert sample["fallback_image_status"] == "ready"
     assert sample["fallback_image"]["tweet_id"] == "123"
     assert sample["image_choice"] == "fallback"
-    assert not enrich(sample, by_id, exists=lambda _: True)
+    assert not enrich(sample, by_id, exists=lambda _: True, raster_validator=lambda _: True)
+
+    stale = {"id":"stale","name":"Tema","status":"explained","explanation":"TT#1 Tema es tendencia.",
+             "verification_sources":[{"source":"Fuente","url":"https://example.test/story"}],
+             "fallback_image_status":"ready","fallback_image":{"url":"https://example.test/dead.jpg"},
+             "image_choice":"fallback","image":{"url":"https://example.test/dead.jpg"},"image_status":"ready"}
+    assert enrich(stale, {}, photo_finder=lambda _: "https://example.test/new.jpg",
+                  raster_validator=lambda url: not url.endswith("dead.jpg"))
+    assert stale["fallback_image_status"]=="ready" and stale["fallback_image"]["url"].endswith("new.jpg")
 
     ai = {"url": "https://example.test/ai.jpg", "generated": True}
     normal = {"id": "normal", "name": "Tema", "status": "explained",
@@ -289,7 +316,7 @@ def main():
     for row in reversed((doc.get("items") or [])[-90:]):
         if attempted >= MAX_ITEMS_PER_PASS:
             break
-        if row.get("fallback_image_status") in {"ready", "none"}:
+        if row.get("fallback_image_status") == "none":
             continue
         try:
             at = datetime.fromisoformat(str(row.get("explained_at") or "").replace("Z", "+00:00"))
