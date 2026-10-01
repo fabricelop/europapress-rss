@@ -14916,7 +14916,7 @@
       "id": "3dd01fb77d28",
       "name": "FUGAZ IS OUT",
       "rank": 5,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-02T00:12:23+02:00",
       "revision": 0,
       "reexplain": false,
@@ -14931,7 +14931,25 @@
         "Puigdemont",
         "Chiqui"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "last_attempt_at": "2026-10-01T22:24:15Z",
+      "problem_reason": "«FUGAZ IS OUT» está confirmado como tendencia en varias fuentes del radar español, pero no se ha podido verificar con suficiente fiabilidad qué lanzamiento, artista o evento concreto origina el pico actual. Se evita atribuirlo al EP «Fugaz» de Karen Dió porque ese lanzamiento es de agosto y no explica por sí solo el repunte del 2 de octubre.",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Trends24 España · 01/10/2026",
+          "url": "https://trends24.in/spain/index.html"
+        },
+        {
+          "source": "Punktastic · 17/08/2026",
+          "url": "https://www.punktastic.com/album-reviews/karen-dio-fugaz/"
+        }
+      ],
+      "disable_ai_image": true,
+      "image_strategy": "none",
+      "ai_image_status": "disabled",
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "15a8bb795fe3",
@@ -14976,6 +14994,6 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-01T22:24:00Z",
+  "updated_at": "2026-10-01T22:24:15Z",
   "count": 396
 }
