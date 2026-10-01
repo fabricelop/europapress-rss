@@ -60,6 +60,7 @@ jobs:
           node --check vercel-webhook/api/ttendencias-control.js
           node --check vercel-webhook/api/ttendencias-run-status.js
           node --check vercel-webhook/api/ttittulares-control.js
+          node --check vercel-webhook/api/ai-image.js
           python3 -m py_compile trends/auto_queue_new.py
           node --check vercel-webhook/lib/ttendencias-remate-ratings.js
           node --check vercel-webhook/lib/ttittulares-remate-ratings.js
