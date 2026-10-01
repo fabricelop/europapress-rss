@@ -57,6 +57,25 @@ test("Copiar persiste la clave exacta y no marca otra revisión", () => {
   assert.equal(result.items[1].copied, false);
 });
 
+test("un grupo ya tratado no resucita si después añade aliases", () => {
+  const original = {
+    name: "Los Reyes",
+    trend_names: ["Los Reyes", "Ceuta y Melilla"],
+    group_title: "Visita de los Reyes a Ceuta y Melilla el 13 y 14 de octubre",
+    revision: 0,
+    explained_at: "2026-10-01T10:53:30+02:00",
+  };
+  const expanded = {
+    ...original,
+    name: "#Melilla",
+    trend_names: ["#Melilla", "Melilla", "Los Reyes", "Ceuta y Melilla"],
+    explained_at: "2026-10-01T15:49:30+02:00",
+  };
+  const record = buildCopyRecord(original, "2026-10-01T14:40:32Z");
+  const result = annotateExplainedCopyState({items:[expanded]},{items:[record]});
+  assert.equal(result.items[0].copied,true);
+});
+
 test("la migración deja a cero todas las explicaciones existentes", () => {
   const explained = JSON.parse(fs.readFileSync(new URL("../../trends/telegram-manual-explained.json", import.meta.url), "utf8"));
   const copyState = JSON.parse(fs.readFileSync(new URL("../../trends/explained-copy-state.json", import.meta.url), "utf8"));
