@@ -2,6 +2,7 @@
 """Materializa un intento IA de TTendencias sin tocar el estado editorial."""
 from __future__ import annotations
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -15,6 +16,32 @@ EXPLAINED = TRENDS / "telegram-manual-explained.json"
 
 def now():
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def selftest():
+    import base64, io
+    from PIL import Image
+    im=Image.new("RGB",(640,360))
+    px=im.load()
+    for y in range(360):
+        for x in range(640):
+            px[x,y]=((x*2+y*3)%256,(x+y*4)%256,(x*5+y)%256)
+    raw=io.BytesIO();im.save(raw,format="JPEG",quality=88)
+    data=base64.b64encode(raw.getvalue()).decode("ascii")
+    holder={"image":{
+        "url":"data:image/jpeg;base64,"+data,
+        "source":"TTendencias / ChatGPT","rights_status":"generated","generated":True,
+        "generation_attempt":1,
+        "context_guard":{"version":3,"trend_id":"selftest-ai","revision":0,"scope":"current_item_only"},
+    }}
+    validate_generated_image(holder,"selftest-ai",0)
+    assert materialize_inline_generated_image(holder,"selftest-ai",0)
+    validate_generated_image(holder,"selftest-ai",0)
+    path=TRENDS/"generated-images"/"selftest-ai-r0-ai1.jpg"
+    assert path.is_file() and path.stat().st_size>4096
+    path.unlink()
+    print("TTENDENCIAS_AI_IMAGE_SELFTEST_OK")
+    return 0
 
 
 def main():
@@ -108,4 +135,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        raise SystemExit(selftest())
     raise SystemExit(main())
