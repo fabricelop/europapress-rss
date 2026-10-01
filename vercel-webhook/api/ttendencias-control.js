@@ -1032,10 +1032,15 @@ async function proxyPreparedImage(rawUrl, res, format = "") {
   let parsed;
   try { parsed = new URL(url); } catch (_) { throw new Error("URL de imagen no válida"); }
   if (parsed.protocol !== "https:") throw new Error("Solo se permiten imágenes HTTPS");
-  const [{ doc: prepared }, { doc: explained }] = await Promise.all([readPublicJson(PREPARED),readPublicJson(EXPLAINED)]);
+  const [{ doc: prepared }, { doc: explained }, { doc: requests }] = await Promise.all([
+    readPublicJson(PREPARED),
+    readPublicJson(EXPLAINED),
+    readJson(REQUESTS),
+  ]);
   const allowed = new Set([
     ...(prepared.items || []),
     ...(explained.items || []),
+    ...(requests.requests || []),
   ].flatMap(x => [
     x?.image?.url || x?.image_url,
     x?.ai_image?.url,
