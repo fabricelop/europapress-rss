@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T17:45:41.457898Z",
+  "updated_at": "2026-10-01T17:48:41.015392Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -296,11 +296,11 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
-      "image_pending": true,
+      "image_pending": false,
       "image_app_available": true,
       "image_delivery": "app",
       "fallback_image": {
@@ -313,16 +313,49 @@
       },
       "fallback_image_search_attempted_at": "2026-10-01T15:36:34.435527Z",
       "image": {
-        "url": "https://album.mediaset.es/eimg/2026/10/01/angel-garcia-seoane-exigio-con-insultos-que-le-devolvieran-el-vehiculo-16-9-aspect-ratio-default-105_da39.jpg",
-        "source": "www.telecinco.es",
-        "source_url": "https://www.telecinco.es/noticias/galicia/20261001/alcalde-oleiros-coruna-insulta-policia-local-tonta_18_020319463.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "El alcalde de Oleiros, A Coruña, insulta a una policía tras retirar la grúa el coche de su mujer: “Eres tonta o gilipollas” - Telecinco"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/23683a120922-r3-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "23683a120922",
+          "revision": 3,
+          "scope": "current_item_only"
+        },
+        "alt": "Gag editorial neutral sobre una grúa municipal, una llamada telefónica y una denuncia policial en Oleiros.",
+        "sha256": "3aa4baf930510f1f312cdf1553f84ae82fd2173f29aec7c18136d158cf48a18d",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/23683a120922-r3-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "rewrite_completed_at": "2026-10-01T17:32:00Z",
       "rewrite_source_revision": 2,
-      "rewrite_request_version_consumed": 1
+      "rewrite_request_version_consumed": 1,
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/23683a120922-r3-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "23683a120922",
+          "revision": 3,
+          "scope": "current_item_only"
+        },
+        "alt": "Gag editorial neutral sobre una grúa municipal, una llamada telefónica y una denuncia policial en Oleiros.",
+        "sha256": "3aa4baf930510f1f312cdf1553f84ae82fd2173f29aec7c18136d158cf48a18d",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/23683a120922-r3-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T17:48:41.015330Z"
     },
     {
       "event_id": "c692356682ac",
