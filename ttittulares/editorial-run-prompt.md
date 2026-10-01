@@ -8,6 +8,12 @@ Lee `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `telegram/edi
 
 Una PROBLEMATIC antigua que no se intenta en la pasada permanece visible en «No comprobadas», pero no cuenta como noticia tratada, `problematic_reviewed` ni incidencia de esa ejecución. No hagas búsquedas web ni escribas RUNTRACE `investigating` para ella. Si se pulsa **Check**, consume esa validación en un único intento editorial; si vuelve a terminar PROBLEMATIC, queda de nuevo en espera hasta otro Check o una revisión material nueva.
 
+### Recuperación obligatoria de IA pendiente
+
+Al comenzar cada pasada crea también un `visual_backlog` con los items READY de `ttittulares/prepared.json` que cumplan **todas** estas condiciones: `image_strategy:"ai_plus_fallback"`, no estén PUBLISHED/DISMISSED según el estado/decisiones fresco, no tengan `ai_image` válida y tengan `ai_image_status:"pending"` (o falte ese campo). Estos items visuales NO se reinvestigan, NO se redactan de nuevo y NO vuelven a la cola editorial: únicamente reciben el intento IA pendiente.
+
+La pasada puede cerrar texto y continuar con noticias nuevas sin esperar al raster, pero NO puede terminar dejando intacto un `pending` del `visual_backlog` ni de una noticia creada en esa misma pasada. Cada uno debe registrar exactamente un intento real y acabar con un outbox visual `ready` o `failed`. `pending` es un estado transitorio, nunca un resultado terminal de una ejecución.
+
 ## Redacción
 
 Comprueba al menos dos fuentes independientes fiables que sostengan el hecho esencial. Usa web solo si la evidencia falta, es ambigua, antigua o contradictoria. Redacta exactamente un tuit informativo por noticia y ciérralo, tras dos saltos de línea, con un único remate que empiece por `🌶️ `. El tuit completo debe medir <=280 caracteres y se persiste en `tweet:{text,remate,url}`. La salida pública y persistida contiene UN SOLO remate: no persistas ni muestres `Principal`, `A`, `B`, `C`, `variants`, `primary` ni `alternatives`. La generación de candidatos internos exigida por la sección de selección de remate es privada, efímera y no cuenta como variantes públicas.
@@ -61,6 +67,19 @@ Para cada noticia PROCESSING, tan pronto como el acontecimiento esté verificado
 4. materializa el READY aunque una o ambas imágenes sigan pendientes o fallen.
 
 No hagas un segundo intento automático. La primera IA con raster íntegro se entrega para revisión humana, aunque el encaje semántico pudiera ser imperfecto. Solo rechaza bytes corruptos/incompletos o imposibles de persistir.
+
+### Intento IA obligatorio, sin bloquear el texto
+
+`AI_ATTEMPT_REQUIRED_BEFORE_RUN_CLOSE`: para cada noticia elegible el intento IA **no es opcional**. En cuanto el texto esté verificado puedes materializar READY/Listas y seguir avanzando, pero dentro de la misma pasada debes ejecutar exactamente una llamada real a ImageGen para ese `event_id`/revisión, o registrar explícitamente que la herramienta no estuvo disponible.
+
+Después de cada intento:
+- si ImageGen devuelve raster utilizable, crea inmediatamente `ttittulares/image-outbox/<event_id>-r<revision>-ai<attempt>.json` con `status:"ready"`;
+- si ImageGen falla, no está disponible o no permite recuperar bytes íntegros, crea igualmente ese fichero con `status:"failed"` y una razón técnica breve;
+- solo tras existir uno de esos dos resultados puede contarse ese intento visual como resuelto;
+- el fallback puede estar ya visible y seguir seleccionado mientras llega la IA, pero nunca sustituye ni cancela el intento IA obligatorio;
+- incrementa `summary.imagegen_calls` **solo** cuando se haya realizado la llamada real; si no pudo realizarse, registra incidencia visual y `status:"failed"`, nunca dejes `pending` silencioso.
+
+No esperes a que el workflow que consume `image-outbox` termine para continuar con la siguiente noticia. La no-bloqueabilidad significa «el texto y el siguiente item continúan», no «la IA se puede omitir».
 
 ### Aislamiento de contexto V3
 
