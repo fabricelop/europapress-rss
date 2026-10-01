@@ -37,8 +37,22 @@ export function explanationCopyIdentity(item) {
 
 export function explanationIsCopied(item, copyState) {
   const key = explanationCopyIdentity(item);
-  const record = (copyState?.items || []).find(entry => entry?.key === key);
+  const records = copyState?.items || [];
+  const record = records.find(entry => entry?.key === key);
   if (record) return { copied: true, copied_at: record.copied_at || null, source: record.source || "copy" };
+
+  // Un mismo hecho puede reaparecer con más aliases del grupo y, por tanto,
+  // con otra copy_key. Si el título editorial y la revisión coinciden, un
+  // registro ya tratado se aplica a todo el grupo para que no "resucite".
+  const groupTitle = normalizeTrendName(item?.group_title || "");
+  const revision = Number.isFinite(Number(item?.revision)) ? Number(item.revision) : 0;
+  if (groupTitle) {
+    const groupRecord = records.find(entry =>
+      normalizeTrendName(entry?.group_title || "") === groupTitle &&
+      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === revision
+    );
+    if (groupRecord) return { copied: true, copied_at: groupRecord.copied_at || null, source: groupRecord.source || "group-copy" };
+  }
 
   const explainedAt = Date.parse(item?.explained_at || "");
   const initializedThrough = Date.parse(copyState?.initialized_through || "");
@@ -69,6 +83,7 @@ export function buildCopyRecord(item, copiedAt = new Date().toISOString()) {
     key: explanationCopyIdentity(item),
     trend_names: explanationTrendNames(item),
     group_title: String(item?.group_title || "").trim() || null,
+    explanation_group_id: String(item?.explanation_group_id || item?.group_id || "").trim() || null,
     revision: Number.isFinite(Number(item?.revision)) ? Number(item.revision) : 0,
     explained_at: String(item?.explained_at || "").trim() || null,
     copied_at: copiedAt,
