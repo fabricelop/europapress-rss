@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
   id-token: write
 
 concurrency:
@@ -261,3 +262,11 @@ jobs:
           if failures:
               raise SystemExit("No se pudieron persistir: " + ", ".join(failures))
           PY
+
+      - name: Despertar consumidores de imagen
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run ttendencias-ai-image-apply.yml --ref main || echo "TTendencias consumer dispatch pendiente"
+          gh workflow run ttittulares-ai-image-apply.yml --ref main || echo "TTiTTulares consumer dispatch pendiente"
