@@ -82,11 +82,15 @@ Cada llamada a ImageGen debe usar un prompt nuevo y autocontenido que empiece co
 Incluye únicamente:
 - nombre de la tendencia, explicación factual verificada y hechos/sujetos/lugar inequívocos de ESA tendencia;
 - una sola escena narrativa, pocos elementos, detalle medio/bajo y composición apta para 16:9;
-- estilo de ilustración editorial clara y rápida;
-- casi sin texto; si aparece, breve y diegético;
+- **TT_STYLE_A_V1: caricatura satírica editorial muy expresiva, colorida y exagerada**, con un único gag visual dominante que se entienda de un vistazo;
+- primero inventa el gag a partir del hecho verificado y después compón la escena: expresiones faciales claras, objetos/props absurdamente sobredimensionados, consecuencias visuales del hecho y una situación llevada al límite cuando encaje;
+- el humor debe funcionar incluso sin leer el tuit: evita retratos neutros, poses promocionales, escenas meramente bonitas, ilustración literal del titular o estética fotográfica genérica;
+- colores vivos, contraste fuerte y composición limpia pese al caos cómico; casi sin texto y, si aparece, que sea breve, grande, correcto y diegético;
 - sin collage, split-screen, multipanel, infografía ni interfaz.
 
-No reutilices prompts, semillas, imágenes ni elementos de otras tendencias. En asuntos políticos, la imagen debe ser neutral y descriptiva: nada de elogiar, atacar o persuadir a favor o en contra de actores políticos. En tragedias, muerte, violencia o víctimas, evita el gag y pide una ilustración editorial sobria y no gráfica.
+**Filtro de sensibilidad antes de ImageGen:** si el hecho implica muerte, duelo, víctimas, violencia grave, abuso, menores en contexto sensible, catástrofe, desaparición, guerra/ataque con víctimas o sufrimiento humano comparable, marca `disable_ai_image:true`, `ai_image_status:"disabled"`, `image_strategy:"fallback_only"` y usa únicamente foto de archivo/fallback si existe. **No generes una versión IA sobria como sustituto**: en estos casos la opción correcta es archivo o ninguna imagen.
+
+No reutilices prompts, semillas, imágenes ni elementos de otras tendencias. En asuntos políticos no hagas propaganda ni ataques partidistas: puede haber sátira situacional neutral basada en el hecho verificable (burocracia, puesta en escena, contradicción pública, objetos o contexto), pero nunca elogio, degradación dirigida, llamada al voto o persuasión a favor o en contra de un actor político.
 
 Un SVG técnico no es ImageGen: no puede guardarse en `ai_image`, elegir `image_choice:"ai"` ni mostrarse como «Gag IA». El flujo vigente no crea SVG. Un artefacto histórico de ese tipo se mantiene, como máximo, fuera de la selección visible y con procedencia técnica explícita.
 
@@ -241,6 +245,7 @@ Para CADA tendencia nueva, cuando ya conozcas el detonante factual pero sin espe
 3. En paralelo conserva/obtén una foto de archivo/fallback del mismo acontecimiento mediante el mecanismo existente.
 4. Persiste la explicación y cierra sus estados exactamente igual aunque la imagen IA siga pendiente, falle o sea dudosa.
 5. Continúa inmediatamente con la siguiente tendencia. La imagen jamás determina `queue_complete`, SUCCESS/ERROR ni la salida de Explicadas.
+6. Presupuesto visual operativo: **máximo 120 s por intento incluyendo generación + handoff**. Si no puede completarse dentro de ese presupuesto, termina ese intento como fallo visual y continúa; no hagas espera adicional ni segundo intento automático.
 
 ### AISLAMIENTO DE CONTEXTO V3 — mejor esfuerzo, no bloqueante
 
@@ -259,10 +264,12 @@ y ordenar:
 - crear desde cero, sin reutilizar rasters, referencias, gen_id, parent_gen_id ni elementos de imágenes anteriores;
 - ignorar cualquier imagen, tendencia, noticia, persona, objeto, lugar o gag de otros items de la conversación;
 - una sola escena narrativa;
-- gag visual inmediatamente comprensible y ligado al hecho actual;
+- **TT_STYLE_A_V1**: caricatura satírica editorial, viva y exagerada, con un solo gag visual inmediatamente comprensible y ligado al hecho actual;
+- llevar la peculiaridad real del acontecimiento a una situación límite cómica mediante expresiones, escala, props y consecuencias visuales; el chiste debe entenderse antes de leer texto;
+- evitar por defecto el retrato neutro, la pose, el póster bonito y la ilustración meramente literal;
 - sin collage, split-screen, multipanel, infografía ni estética de interfaz;
-- casi sin texto; si existe, que sea breve y diegético;
-- caricatura editorial con expresiones claras, pocos elementos y detalle medio/bajo.
+- casi sin texto; si existe, que sea breve, grande, correcto y diegético;
+- pocos elementos principales, siluetas claras, contraste alto y detalle medio/bajo para que funcione como miniatura.
 
 **No hagas inspección semántica bloqueante.** Si el fichero raster es íntegro, persístelo y entrégalo para revisión humana aunque sospeches que el contexto visual no sea perfecto. La app es el control final. Solo descarta un resultado si los bytes están corruptos, incompletos o no pueden materializarse.
 
