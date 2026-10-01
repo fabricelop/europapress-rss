@@ -75,22 +75,18 @@ async function comments(){
   })
 }
 async function triggerReady(){return true}
-async function readTrigger(){
+async function readControl(path){
   try{
-    const u=`https://raw.githubusercontent.com/${REPO}/${TRIGGER_BRANCH}/${TRIGGER_PATH}?t=${Date.now()}`;
-    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttittulares-run-status-read"}});
-    if(!r.ok)return {doc:{}};
-    return {doc:JSON.parse(await r.text()||"{}")}
-  }catch(_){return {doc:{}}}
-}
-async function readAck(){
-  try{
-    const u=`https://raw.githubusercontent.com/${REPO}/${TRIGGER_BRANCH}/${ACK_PATH}?t=${Date.now()}`;
-    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttittulares-run-status-read"}});
+    const r=await gh(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`);
+    if(r.status===404)return {};
     if(!r.ok)return {};
-    return JSON.parse(await r.text()||"{}")
+    const f=await r.json();
+    const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+    return JSON.parse(raw||"{}")
   }catch(_){return {}}
 }
+async function readTrigger(){return {doc:await readControl(TRIGGER_PATH)}}
+async function readAck(){return await readControl(ACK_PATH)}
 async function readErrors(){
   try{
     const u=`https://raw.githubusercontent.com/${REPO}/main/ttittulares/execution-errors.json?t=${Date.now()}`;
@@ -236,6 +232,10 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
+    if(String(req.query?.view||"").toLowerCase()==="trigger"){
+      const [{doc:request},ack]=await Promise.all([readTrigger(),readAck()]);
+      return res.status(200).json({ok:true,trigger:request||{},ack:ack||{},server_now:new Date().toISOString()})
+    }
     const [enabled,items,{doc:request},ack]=await Promise.all([triggerReady(),comments(),readTrigger(),readAck()]);
     const traces=items.map(traceOf).filter(Boolean);
     // Un RUNTRACE se crea una vez y se actualiza in-place. comment.updated_at mide
