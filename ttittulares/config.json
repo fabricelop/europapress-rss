@@ -37,18 +37,20 @@
   },
   "images": {
     "enabled": true,
-    "mode": "existing_web_image",
-    "generate": false,
+    "mode": "ai_plus_fallback",
+    "generate": true,
+    "ai_attempts_initial": 1,
     "non_blocking": true,
+    "fallback_enabled": true,
     "source_preference": [
       "official_or_primary",
       "reputable_media"
     ],
     "require_source_page": true,
-    "store": "external_url_only",
+    "store": "generated_repo_plus_external_fallback",
     "rights_status_default": "unverified",
     "explicit_not_found": true,
     "validate_https": true,
-    "policy": "Recuperar una imagen real del mismo acontecimiento desde una página de fuente oficial/primaria o de un medio fiable. No generar, recrear ni sintetizar imágenes."
+    "policy": "Intentar una sola imagen IA editorial rápida por noticia con aislamiento current_item_only y conservar además una imagen real/fallback verificable. Nunca bloquear READY ni la cola por imagen."
   }
 }
