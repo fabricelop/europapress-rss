@@ -39,29 +39,39 @@ async function gh(url,options={}){
   }})
 }
 async function comments(){
+  // El proyecto ha usado tanto un comentario canónico como RUNTRACE nuevos por ejecución.
+  // Leer ambos y deduplicar: quedarse solo con el comentario fijo oculta ejecuciones recientes.
+  const out=[];
   const direct=await gh("https://api.github.com/repos/"+REPO+"/issues/comments/"+TRACE_COMMENT_ID);
-  if(direct.ok)return [await direct.json()];
+  if(direct.ok)out.push(await direct.json());
   const since=new Date(Date.now()-24*60*60*1000).toISOString();
   const r=await gh("https://api.github.com/repos/"+REPO+"/issues/"+PR+"/comments?per_page=100&since="+encodeURIComponent(since));
   if(!r.ok)throw new Error("GitHub RUNTRACE: "+r.status+" "+await r.text());
-  return (await r.json()).filter(x=>String(x.body||"").startsWith(TRACE_PREFIX))
+  out.push(...(await r.json()).filter(x=>String(x.body||"").startsWith(TRACE_PREFIX)));
+  const seen=new Set();
+  return out.filter(x=>{
+    if(!String(x.body||"").startsWith(TRACE_PREFIX))return false;
+    const id=String(x.id||"");
+    if(id&&seen.has(id))return false;
+    if(id)seen.add(id);
+    return true;
+  })
 }
 async function triggerReady(){return true}
-async function readTrigger(){
+async function readControlBranchJson(path){
   try{
-    const u="https://raw.githubusercontent.com/"+REPO+"/"+TRIGGER_BRANCH+"/"+TRIGGER_PATH+"?t="+Date.now();
-    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttendencias-run-status-read"}});
-    if(!r.ok)return {doc:{}};
-    return {doc:JSON.parse(await r.text()||"{}")}
-  }catch(_){return {doc:{}}}
+    const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(TRIGGER_BRANCH),{cache:"no-store"});
+    if(!r.ok)return {};
+    const f=await r.json();
+    const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+    return JSON.parse(raw||"{}")
+  }catch(_){return {}}
+}
+async function readTrigger(){
+  return {doc:await readControlBranchJson(TRIGGER_PATH)}
 }
 async function readAck(){
-  try{
-    const u="https://raw.githubusercontent.com/"+REPO+"/"+TRIGGER_BRANCH+"/"+ACK_PATH+"?t="+Date.now();
-    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttendencias-run-status-read"}});
-    if(!r.ok)return {};
-    return JSON.parse(await r.text()||"{}")
-  }catch(_){return {}}
+  return readControlBranchJson(ACK_PATH)
 }
 async function readMainJson(path){
   try{
