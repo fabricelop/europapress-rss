@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T11:47:24.900976Z",
+  "updated_at": "2026-10-01T11:53:52.637692Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -711,9 +711,9 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -728,17 +728,46 @@
       },
       "fallback_image_search_attempted_at": "2026-10-01T11:35:49.320987Z",
       "image": {
-        "url": "https://image.ondacero.es/clipping/cmsimages02/2026/10/01/3D709011-4FB0-4720-B6A8-0E8604732596/imagen-archivo-woody-allen_69.jpg?crop=2523,1419,x0,y0&width=1280&height=720&optimize=low&format=webply",
-        "source": "www.ondacero.es",
-        "source_url": "https://www.ondacero.es/noticias/cultura/woody-allen-presenta-rodaje-nueva-pelicula-madrid-presencia-ayuso-almeida_202610016abe3d05fb43da4b7c3136e2.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Woody Allen presenta el rodaje de su nueva película en Madrid con la presencia de Ayuso y Almeida"
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/3995ee56476e-r1-ai1.jpg",
+        "generated": true,
+        "rights_status": "generated",
+        "alt": "Woody Allen durante un rodaje cinematográfico en Madrid",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "3995ee56476e",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/3995ee56476e-r1-ai1.jpg",
+        "sha256": "e7370f882f2b8cbe0df5131be9ed2644a346339cc0bf6c75acecec2e52bf88f4",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-01T11:47:24.900839Z",
-      "ai_image_failure_reason": "SHA-256 de imagen IA no coincide"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T11:53:52.637626Z",
+      "ai_image": {
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/3995ee56476e-r1-ai1.jpg",
+        "generated": true,
+        "rights_status": "generated",
+        "alt": "Woody Allen durante un rodaje cinematográfico en Madrid",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "3995ee56476e",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/3995ee56476e-r1-ai1.jpg",
+        "sha256": "e7370f882f2b8cbe0df5131be9ed2644a346339cc0bf6c75acecec2e52bf88f4",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     }
   ]
 }
