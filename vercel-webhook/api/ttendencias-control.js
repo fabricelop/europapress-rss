@@ -751,34 +751,57 @@ async function reworkNames(names, instruction) {
   if (!text) throw new Error("Añade una instrucción para rehacer la explicación.");
   const target = new Set(unique.map(norm));
   const now = new Date().toISOString();
+  const { doc: explained } = await readJson(EXPLAINED);
+  const latestByName = new Map();
+  for (const row of explained.items || []) {
+    const key = norm(row.name);
+    if (!target.has(key)) continue;
+    const prev = latestByName.get(key);
+    if (!prev || Number(row.revision || 0) > Number(prev.revision || 0) ||
+        (Number(row.revision || 0) === Number(prev.revision || 0) && String(row.explained_at || "") > String(prev.explained_at || ""))) {
+      latestByName.set(key, row);
+    }
+  }
+
+  await mutateJson(EXPLAINED, "Marcar reelaboración pendiente TTendencias desde web", doc => {
+    doc.items ||= [];
+    for (const name of unique) {
+      const candidates = doc.items.filter(row => norm(row.name) === norm(name));
+      if (!candidates.length) continue;
+      candidates.sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||String(b.explained_at||"").localeCompare(String(a.explained_at||"")));
+      const row=candidates[0];
+      row.rewrite_pending=true;
+      row.rewrite_requested_at=now;
+      row.rewrite_request_version=Number(row.rewrite_request_version||0)+1;
+      row.rewrite_instruction=text;
+    }
+    doc.updated_at=now;
+    return doc;
+  });
 
   await mutateJson(REQUESTS, "Reelaborar TTendencias con instrucciones desde web", doc => {
     doc.requests ||= [];
     for (const name of unique) {
+      const latest = latestByName.get(norm(name));
       let req = [...doc.requests].reverse().find(x => norm(x.name) === norm(name));
       if (!req) {
-        req = {
-          id: crypto.createHash("sha256").update(name).digest("hex").slice(0, 12),
-          name,
-          rank: 0,
-          revision: 0,
-          with_image: true,
-          alternatives_target: 0,
-        };
+        req = { id: crypto.createHash("sha256").update(name).digest("hex").slice(0, 12), name, rank: 0, revision: 0, with_image: true, alternatives_target: 0 };
         doc.requests.push(req);
       }
       req.status = "update";
       req.requested_at = now;
-      req.revision = Number(req.revision || 0) + 1;
+      req.revision = Math.max(Number(req.revision || 0), Number(latest?.revision || 0)) + 1;
       req.reexplain = true;
       req.rewrite_instruction = text;
       req.with_image = true;
+      req.disable_ai_image = false;
       delete req.problem_reason;
       delete req.problematic_at;
       req.alternatives_target = 0;
       delete req.telegram_message_id;
       delete req.explained_at;
     }
+    doc.updated_at=now;
     return doc;
   });
 
@@ -791,7 +814,7 @@ async function reworkNames(names, instruction) {
     return doc;
   });
   await syncEditorialQueue();
-  return { ok: true, rework: unique, instruction: text };
+  return { ok: true, rework: unique, instruction: text, rewrite_pending: true };
 }
 async function retryNames(names) {
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
