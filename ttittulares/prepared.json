@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T17:42:26.751Z",
+  "updated_at": "2026-10-01T17:45:41.457898Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -365,11 +365,11 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
-      "image_pending": true,
+      "image_pending": false,
       "image_app_available": true,
       "image_delivery": "app",
       "fallback_image": {
@@ -391,7 +391,11 @@
       },
       "rewrite_completed_at": "2026-10-01T17:31:00Z",
       "rewrite_source_revision": 3,
-      "rewrite_request_version_consumed": 1
+      "rewrite_request_version_consumed": 1,
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T17:45:41.457795Z",
+      "ai_image_failure_reason": "Excess data after padding"
     },
     {
       "event_id": "ecb38b1ab93a",
