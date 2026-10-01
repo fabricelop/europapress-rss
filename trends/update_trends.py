@@ -74,12 +74,12 @@ def parse_trends24(html):
     for selector in (".trend-card__list li a", ".trend-card li a", ".trend-card ol li a"):
         vals = unique(a.get_text(" ", strip=True) for a in soup.select(selector))
         if len(vals) >= 10:
-            return vals[:20]
+            return vals[:50]
     card = soup.select_one(".trend-card")
     if card:
         vals = unique(a.get_text(" ", strip=True) for a in card.find_all("a"))
         if len(vals) >= 10:
-            return vals[:20]
+            return vals[:50]
     return []
 
 def parse_getdaytrends(html):
@@ -96,7 +96,7 @@ def parse_getdaytrends(html):
                 if name:
                     rows.append(name)
         if len(rows) >= 10:
-            return unique(rows)[:20]
+            return unique(rows)[:50]
     return []
 
 def parse_tweets24(html):
@@ -118,7 +118,7 @@ def parse_tweets24(html):
             ranked.append((rank, name))
     if len(ranked) >= 10:
         ranked.sort(key=lambda x: x[0])
-        return unique(name for _, name in ranked)[:20]
+        return unique(name for _, name in ranked)[:50]
 
     # Fallback defensivo para cambios menores de HTML.
     text = clean(soup.get_text(" ", strip=True))
@@ -175,9 +175,9 @@ def parse_x_search_links(html):
         ranked.sort(key=lambda x: x[0])
         vals = unique(name for _, name in ranked)
         if len(vals) >= 10:
-            return vals[:20]
+            return vals[:50]
     vals = unique(fallback)
-    return vals[:20] if len(vals) >= 10 else []
+    return vals[:50] if len(vals) >= 10 else []
 
 
 def parse_superx(html):
@@ -204,7 +204,7 @@ def parse_snaplytics(html):
         if name:
             rows.append((rank, name))
     rows.sort(key=lambda x: x[0])
-    return unique(name for _, name in rows)[:20]
+    return unique(name for _, name in rows)[:50]
 
 
 def page_update_hint(html):
@@ -276,7 +276,7 @@ def parse_ranked_table(html):
         return []
     rows = max(candidates, key=len)
     rows.sort(key=lambda x: x[0])
-    return unique(name for _, name in rows)[:20]
+    return unique(name for _, name in rows)[:50]
 
 def parse_ranked_text(html):
     soup = BeautifulSoup(html, "html.parser")
@@ -312,7 +312,7 @@ def sane_trend_list(trends):
         r"|^Explore why\b|\bis trending\s+[—-]\s+latest viral tweets\b|\breal-time buzz from Twitter\b",
         flags=re.I,
     )
-    for item in trends[:20]:
+    for item in trends[:50]:
         if noise.search(item):
             bad += 1
     return bad == 0
@@ -375,7 +375,7 @@ def overlap(a, b, limit=20):
 def consensus_fallback(good):
     stats = {}
     for source, trends in good.items():
-        for idx, term in enumerate(trends[:20], 1):
+        for idx, term in enumerate(trends[:50], 1):
             key = term_key(term)
             row = stats.setdefault(key, {"name": term, "support": 0, "score": 0, "best_rank": 999})
             row["support"] += 1
@@ -526,7 +526,7 @@ def lower_rank_stats(source_data, top10):
     for source, data in source_data.items():
         if not data.get("ok") or data.get("freshness") in {"stale", "invalid", "error"}:
             continue
-        for rank, term in enumerate((data.get("trends") or [])[:20], 1):
+        for rank, term in enumerate((data.get("trends") or [])[:50], 1):
             if rank <= 10:
                 continue
             key = term_key(term)
@@ -559,6 +559,13 @@ def build_upcoming(source_data, top10, previous_doc, status_doc, full_events, no
         prev = previous.get(key)
         previous_rank = int((prev or {}).get("best_observed_rank") or 999)
         previous_support = int((prev or {}).get("social_source_count") or 0)
+        previous_history = list((prev or {}).get("rank_history") or [])
+        current_observation = {
+            "captured_at": now.isoformat(timespec="seconds"),
+            "best_rank": int(row["best_observed_rank"]),
+            "source_count": social_count,
+        }
+        rank_history = (previous_history + [current_observation])[-8:]
         if prev is None:
             movement = "new"
         elif row["best_observed_rank"] < previous_rank or social_count > previous_support:
@@ -583,6 +590,8 @@ def build_upcoming(source_data, top10, previous_doc, status_doc, full_events, no
             "best_observed_rank": int(row["best_observed_rank"]),
             "mean_observed_rank": round(sum(row["ranks"]) / max(1, len(row["ranks"])), 1),
             "movement": movement,
+            "rank_history": rank_history,
+            "observations": len(rank_history),
             "first_detected_at": (prev or {}).get("first_detected_at") or now.isoformat(timespec="seconds"),
             "news_source_count": news_count,
             "news_event_id": (news or {}).get("event_id"),
@@ -595,7 +604,7 @@ def build_upcoming(source_data, top10, previous_doc, status_doc, full_events, no
     rows.sort(key=lambda x: (-x["_score"], -x["social_source_count"], x["best_observed_rank"], x["name"].casefold()))
     for row in rows:
         row.pop("_score", None)
-    return rows[:8]
+    return rows[:20]
 
 def filter_dismissed_upcoming(rows, requests_doc):
     """No resucitar en Radar una señal que el usuario acaba de desestimar.
@@ -749,7 +758,7 @@ def main():
         "new_entries": new_entries,
         "upcoming": upcoming,
         "anticipated_entries": anticipated,
-        "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
+        "upcoming_method": "social-ranks-11-50 + temporal momentum + TTiTTulares coverage",
         "sources": source_data,
     }
     RECENT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
