@@ -8608,9 +8608,8 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
-      "ai_image_attempt": 1,
-      "ai_image_failure_reason": "No se obtuvo un raster IA persistible en esta pasada; la capa visual no bloquea el cierre editorial.",
+      "ai_image_status": "ready",
+      "ai_image_attempt": 2,
       "fallback_image_strategy": "tremending_tweet_capture",
       "fallback_image": {
         "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/tremending-images/2105407526908862708.png",
@@ -8623,20 +8622,46 @@
         "generated": false
       },
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-01T07:27:49.631229Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T08:10:39.105247Z",
       "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/tremending-images/2105407526908862708.png",
-        "source": "Público · Tremending / tuit elegido",
-        "source_url": "https://x.com/MichaelPoolSnc1/status/2105407526908862708",
-        "alt": "Captura del tuit seleccionado para Almeida denuncia que en la acampada de Sol hay",
-        "kind": "tremending_tweet_capture",
-        "tweet_id": "2105407526908862708",
-        "rights_status": "third_party_unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/tremending-de5e65a408c5-r0-ai2.jpg",
+        "source": "TTendencias / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "tremending-de5e65a408c5",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "271fa7ef73fa7342498435fbcef4897427362244d62dd61732210c603e2329ad",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/tremending-de5e65a408c5-r0-ai2.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/tremending-de5e65a408c5-r0-ai2.jpg",
+        "source": "TTendencias / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "tremending-de5e65a408c5",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "271fa7ef73fa7342498435fbcef4897427362244d62dd61732210c603e2329ad",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/tremending-de5e65a408c5-r0-ai2.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
       }
     },
     {
@@ -8680,17 +8705,52 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
-      "ai_image_attempt": 1,
-      "ai_image_failure_reason": "No se obtuvo un raster IA persistible en esta pasada; la capa visual no bloquea el cierre editorial.",
+      "ai_image_status": "ready",
+      "ai_image_attempt": 2,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "none",
-      "image_choice": "none",
-      "image_status": "none",
+      "image_choice": "ai",
+      "image_status": "ready",
       "image_pending": false,
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-01T07:27:49.631112Z"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T08:10:38.788388Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/0f508660b269-r0-ai2.jpg",
+        "source": "TTendencias / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "0f508660b269",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "16d22f19d296fbba419457f1f6d1ff859f928a32ba2cbc579236b0fd3d7d5696",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/0f508660b269-r0-ai2.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/0f508660b269-r0-ai2.jpg",
+        "source": "TTendencias / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "0f508660b269",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "16d22f19d296fbba419457f1f6d1ff859f928a32ba2cbc579236b0fd3d7d5696",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/0f508660b269-r0-ai2.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     },
     {
       "id": "5f9796eff0bb",
@@ -8807,8 +8867,8 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
-      "ai_image_attempt": 1,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 2,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
       "fallback_image": {
@@ -8819,20 +8879,47 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image": {
-        "url": "https://img2.rtve.es/n/17212038?w=1600",
-        "source": "RTVE",
-        "source_url": "https://www.rtve.es/rtve/20260904/silvia-intxaurrondo-cumple-cinco-anos-frente-hora-1-programa-lider-mananas/17212038.shtml",
-        "alt": "Imagen de archivo de La Hora de La 1",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/228b125cc507-r0-ai2.jpg",
+        "source": "TTendencias / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "228b125cc507",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "e919d5bfebb94440f7f232a6eb9ad5c31fe55c74178eb42f64e23f8972454a98",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/228b125cc507-r0-ai2.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-01T07:58:14.811683Z",
-      "ai_image_failure_reason": "HTTP 502: AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits."
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T08:10:38.893402Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/228b125cc507-r0-ai2.jpg",
+        "source": "TTendencias / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "228b125cc507",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "e919d5bfebb94440f7f232a6eb9ad5c31fe55c74178eb42f64e23f8972454a98",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/228b125cc507-r0-ai2.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     },
     {
       "id": "e1360403525d",
@@ -8873,8 +8960,8 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
-      "ai_image_attempt": 1,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 2,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
       "fallback_image": {
@@ -8885,22 +8972,49 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image": {
-        "url": "https://cloudfront-eu-central-1.images.arcpublishing.com/prisaradio/PYNVP66L2ZA7HC43MUZO5S32U4.jpg",
-        "source": "Cadena SER",
-        "source_url": "https://cadenaser.com/castillayleon/2026/09/30/sobre-el-dia-internacional-de-las-personas-mayores-radio-palencia/",
-        "alt": "Imagen de archivo relacionada con el Día Internacional de las Personas Mayores",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/e1360403525d-r0-ai2.jpg",
+        "source": "TTendencias / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "e1360403525d",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "7e4575da4417f40e0e92f6391cd30d46eada95f9ab9928f8f198dc0d6aec5e55",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/e1360403525d-r0-ai2.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-01T07:58:14.812338Z",
-      "ai_image_failure_reason": "HTTP 502: AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits. | fallback: HTTP Error 500: Internal Server Error"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T08:10:38.999375Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/e1360403525d-r0-ai2.jpg",
+        "source": "TTendencias / Editorial SVG IA",
+        "rights_status": "generated",
+        "generated": true,
+        "generation_attempt": 2,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "e1360403525d",
+          "revision": 0,
+          "scope": "current_item_only"
+        },
+        "model": "editorial-svg-v1",
+        "provider": "chat-svg",
+        "sha256": "7e4575da4417f40e0e92f6391cd30d46eada95f9ab9928f8f198dc0d6aec5e55",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/e1360403525d-r0-ai2.jpg",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     }
   ],
-  "updated_at": "2026-10-01T08:05:06.702062Z",
+  "updated_at": "2026-10-01T08:10:39.105349Z",
   "count": 362
 }
