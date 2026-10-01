@@ -339,7 +339,7 @@ async function load(){
  render();
 }
 $("filter").addEventListener("input",render);
-$("refresh").onclick=()=>load().catch(e=>alert(e.message));
+const refreshBtn=$("refresh");if(refreshBtn)refreshBtn.onclick=()=>load().catch(e=>alert(e.message));
 window.addEventListener("pageshow",event=>{if(event.persisted)load().catch(()=>{})});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load().catch(()=>{})});
 load().catch(e=>{$("pendingList").innerHTML='<div class="empty">'+e.message+'</div>';});
