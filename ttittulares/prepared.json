@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T16:34:00Z",
+  "updated_at": "2026-10-01T16:35:00Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -296,7 +296,7 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
@@ -322,7 +322,18 @@
       },
       "rewrite_completed_at": "2026-10-01T16:34:00Z",
       "rewrite_source_revision": 1,
-      "rewrite_request_version_consumed": 1
+      "rewrite_request_version_consumed": 1,
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_tool_called_at": "2026-10-01T16:35:00Z",
+      "ai_image_last_attempt_at": "2026-10-01T16:35:00Z",
+      "ai_image_context_guard": {
+        "version": 3,
+        "event_id": "23683a120922",
+        "revision": 2,
+        "scope": "current_item_only"
+      },
+      "ai_image_failure_reason": "image_context_mismatch: generated raster did not represent the current Oleiros item"
     },
     {
       "event_id": "c692356682ac",
