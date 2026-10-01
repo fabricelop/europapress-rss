@@ -73,7 +73,8 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
   <button class="stat" data-view="growing"><b id="growingCount">0</b>Creciendo</button>
   <button class="stat" data-view="tremending"><b id="tremendingCount">0</b>Tremending</button>
  </div>
- <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Entradas</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="btn primary" id="runNow" type="button">▶ Entradas</button></section>\n <section class="runbar" id="imageBar"><div class="runmain"><div class="runline"><strong id="imageHeadline">Imágenes IA</strong></div><span id="imageState">Comprobando cola…</span></div><button class="btn primary" id="runImages" type="button">✨ Imágenes IA</button></section>
+ <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Entradas</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="btn primary" id="runNow" type="button">▶ Entradas</button></section>
+ <section class="runbar" id="imageBar"><div class="runmain"><div class="runline"><strong id="imageHeadline">Imágenes IA</strong></div><span id="imageState">Comprobando cola…</span></div><button class="btn primary" id="runImages" type="button">✨ Imágenes IA</button></section>
  <section class="list" id="list"><div class="empty">Cargando…</div></section>
 </main>
 
@@ -115,7 +116,8 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttittulares-control";
 const RUN_API="/api/ttittulares-run";
-const RUN_STATUS_API="/api/ttittulares-run-status";\nconst IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttittulares-run-trigger-v2/ttittulares/image-runs/jobs/";
+const RUN_STATUS_API="/api/ttittulares-run-status";
+const IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttittulares-run-trigger-v2/ttittulares/image-runs/jobs/";
 const $=id=>document.getElementById(id);
 const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards",TREMENDING_OPEN_KEY="ttittulares-open-tremending";
 const DATA_CACHE_KEY="ttittulares-last-model",RUN_CACHE_KEY="ttittulares-last-run-status";
@@ -441,7 +443,8 @@ async function refreshImageRuns(){
  scheduleImageRunPoll([...imageRuns.values()].some(imageRunActive));
  if(terminalChanged)load(true)
 }
-\nasync function api(action,extra={}){
+
+async function api(action,extra={}){
  const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
  const r=await fetch(API,{method:"POST",headers,body:JSON.stringify({action,...extra})});
  let d={};try{d=await r.json()}catch(_){}
@@ -1018,7 +1021,8 @@ async function load(silent=false){
  }
 }
 document.querySelectorAll(".stat[data-view]").forEach(x=>x.onclick=()=>setView(x.dataset.view));
-$("runNow").onclick=requestRun;\n$("runImages").onclick=requestPendingImages;
+$("runNow").onclick=requestRun;
+$("runImages").onclick=requestPendingImages;
 $("incidentClose").onclick=()=>$("incidentSheet").classList.remove("show");
 $("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buildDiagnostic(lastRunTelemetry||{}));toast("Diagnóstico copiado")}catch(_){toast("No se pudo copiar el diagnóstico")}};
 $("notify").onclick=enablePush;
