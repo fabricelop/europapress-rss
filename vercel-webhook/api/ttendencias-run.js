@@ -17,6 +17,9 @@ const REPO=process.env.GITHUB_REPO||"fabricelop/europapress-rss";
 const PR=7;
 const TRIGGER_BRANCH="control/ttendencias-run-trigger";
 const TRIGGER_PATH="trends/run-now-trigger.json";
+const IMAGE_RUN_INDEX_PATH="trends/image-runs/index.json";
+const IMAGE_RUN_DIR="trends/image-runs/jobs";
+const IMAGE_ACTIVE_MS=45*60*1000;
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const ACTIVE_MS=20*60*1000;
@@ -69,12 +72,72 @@ async function writeTrigger(doc,sha){
   const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+TRIGGER_PATH,{method:"PUT",headers:{"content-type":"application/json"},body:JSON.stringify({message:"Solicitar ejecución PC Chat TTendencias "+doc.command_id,content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64"),sha,branch:TRIGGER_BRANCH})});
   if(!r.ok)throw new Error("GitHub trigger PUT: "+r.status+" "+await r.text());return r.json()
 }
+
+async function readControlJson(path){
+  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(TRIGGER_BRANCH));
+  if(r.status===404)return {sha:null,doc:null};
+  if(!r.ok)throw new Error("GitHub control GET "+path+": "+r.status+" "+await r.text());
+  const f=await r.json(),raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+  return {sha:f.sha,doc:JSON.parse(raw||"{}")}
+}
+async function writeControlJson(path,doc,sha,message){
+  const body={message,content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64"),branch:TRIGGER_BRANCH};
+  if(sha)body.sha=sha;
+  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path,{method:"PUT",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error("GitHub control PUT "+path+": "+r.status+" "+await r.text());
+  return r.json()
+}
+function safeTargetId(v){
+  const id=String(v||"").trim();
+  if(!/^[A-Za-z0-9._-]{3,160}$/.test(id))throw new Error("target_id inválido");
+  return id
+}
+async function requestImageRun(req,res){
+  const target_id=safeTargetId(req.body?.target_id||req.body?.id);
+  const target_name=String(req.body?.target_name||req.body?.title||req.body?.name||"").trim().slice(0,240);
+  const revision=Math.max(0,Number.parseInt(req.body?.revision??0,10)||0);
+  const jobPath=IMAGE_RUN_DIR+"/"+target_id+".json";
+  const existing=await readControlJson(jobPath);
+  const previous=existing.doc||{};
+  const previousStatus=String(previous.status||"").toUpperCase();
+  const previousAt=stamp(previous.updated_at||previous.finished_at||previous.requested_at);
+  if(["REQUESTED","RUNNING","GENERATING","PERSISTING"].includes(previousStatus)&&previousAt&&Date.now()-previousAt<IMAGE_ACTIVE_MS){
+    return res.status(409).json({ok:false,error:"image_run_in_progress",command_id:previous.command_id||null,target_id,status:previousStatus})
+  }
+  const requested_at=new Date().toISOString();
+  const command_id="tr-img-"+Date.now()+"-"+crypto.randomBytes(3).toString("hex");
+  const doc={
+    version:1,command_id,requested_at,updated_at:requested_at,status:"REQUESTED",phase:"queued",
+    mode:"manual_pc_chat_image",executor:"pc_chat",project:"ttendencias",launcher_arg:"tendencias",
+    task:"image",target_id,trend_id:target_id,target_name,revision,
+    message:"Solicitud registrada; esperando al PC para abrir un chat de imagen."
+  };
+  let saved=await writeControlJson(jobPath,doc,existing.sha,"Solicitar imagen IA TTendencias "+target_id+" "+command_id);
+
+  // Índice de descubrimiento: pequeño y acotado. El estado autoritativo sigue siendo el fichero individual.
+  for(let attempt=0;attempt<3;attempt++){
+    const idx=await readControlJson(IMAGE_RUN_INDEX_PATH);
+    const base=idx.doc&&Array.isArray(idx.doc.jobs)?idx.doc:{version:1,jobs:[]};
+    const jobs=base.jobs.filter(x=>String(x.command_id||"")!==command_id&&String(x.target_id||"")!==target_id);
+    jobs.push({command_id,target_id,trend_id:target_id,target_name,revision,requested_at,status_path:jobPath});
+    const indexDoc={version:1,updated_at:requested_at,jobs:jobs.slice(-60)};
+    try{
+      await writeControlJson(IMAGE_RUN_INDEX_PATH,indexDoc,idx.sha,"Actualizar cola de imágenes IA TTendencias");
+      break
+    }catch(e){
+      if(attempt===2||(!String(e.message||e).includes("409")&&!String(e.message||e).includes("422")))throw e
+    }
+  }
+  return res.status(200).json({ok:true,task:"images",image_run:true,command_id,requested_at,target_id,target_name,revision,status_path:jobPath,commit_sha:saved?.commit?.sha||null})
+}
+
 export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
   if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
   try{
     const task=String(req.body?.task||"editorial").toLowerCase()==="images"?"images":"editorial";
+    if(task==="images")return await requestImageRun(req,res);
     const [{doc:current,sha},items]=await Promise.all([readTrigger(),comments()]);
     if(activeTrace(items))return res.status(409).json({ok:false,error:"run_in_progress"});
     const currentId=String(current.command_id||"").trim(),currentRequested=String(current.requested_at||"").trim();
