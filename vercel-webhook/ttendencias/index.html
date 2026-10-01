@@ -27,7 +27,8 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
 <body>
 <header class="top">
   <div class="brand">TTendencias</div>
-  <div class="spacer"></div><button class="iconbtn tweets" id="preparedBtn" title="Ver tendencias explicadas">Explicadas<span class="unreadBadge" id="unreadExplainedBadge"></span></button>
+  <div class="spacer"></div><button class="iconbtn tweets" id="preparedBtn" title="Ver pendientes de publicar">Pendientes<span class="unreadBadge" id="unreadExplainedBadge"></span></button>
+  <button class="iconbtn" id="historyBtn" title="Ver histórico">Histórico</button>
   <button class="iconbtn" id="refreshBtn" title="Recargar datos">↻</button>
   <button class="iconbtn" id="settingsBtn" title="Acceso">⚙</button>
 </header>
@@ -588,6 +589,7 @@ $("cancelProblemRetry").onclick=()=>{$("problemRetrySheet").classList.remove("sh
 $("sendProblemRetry").onclick=sendProblemRetry;
 $("problemRetrySheet").addEventListener("click",e=>{if(e.target===$("problemRetrySheet")){$("problemRetrySheet").classList.remove("show");problemRetryItem=null}});
 $("preparedBtn").onclick=()=>location.href="/ttendencias/explicadas/";
+$("historyBtn").onclick=()=>location.href="/ttendencias/historico/";
 $("explainedClose").onclick=()=>$("explainedSheet").classList.remove("show");
 $("explainedSheet").addEventListener("click",e=>{if(e.target===$("explainedSheet"))$("explainedSheet").classList.remove("show")});
 
