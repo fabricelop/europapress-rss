@@ -550,8 +550,11 @@ function mainImagePickupTimedOut(run){
  const at=Date.parse(run?.requested_at||run?.updated_at||"");return Number.isFinite(at)&&Date.now()-at>=30000
 }
 function mainImageRunActive(run){
- const st=String(run?.status||"").toUpperCase();
+ const st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"").toLowerCase();
  if(st==="REQUESTED")return !mainImagePickupTimedOut(run);
+ const at=Date.parse(run?.updated_at||run?.pc_launched_at||run?.pc_picked_up_at||"");
+ if(st==="RUNNING"&&["pc_pickup","pc_launch"].includes(phase)&&Number.isFinite(at)&&Date.now()-at>=45000)return false;
+ if(["RUNNING","GENERATING","PERSISTING"].includes(st)&&Number.isFinite(at)&&Date.now()-at>=150000)return false;
  return ["RUNNING","GENERATING","PERSISTING"].includes(st)
 }
 function mainPendingImages(){
