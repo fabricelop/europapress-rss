@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-01T11:20:46.739662Z",
+  "updated_at": "2026-10-01T11:23:36.020138Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -401,9 +401,9 @@
       ],
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -418,13 +418,46 @@
       },
       "fallback_image_search_attempted_at": "2026-10-01T11:04:56.254683Z",
       "image": {
-        "url": "https://www.publico.es/files/og_thumbnail/files/fp/uploads/2026/10/01/6abdfd0a41531.r_d.960-640-0.jpeg",
-        "source": "www.publico.es",
-        "source_url": "https://www.publico.es/sociedad/ultima-hora-acampada-sol-decretos-vivienda-directo_1050.html",
-        "rights_status": "unverified",
-        "generated": false,
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "917e43a30705",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/917e43a30705-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/917e43a30705-r1-ai1.jpg",
+        "sha256": "38cf749fb2f17697ba7431e5b90416719ff342523d4145249028418a19470106",
+        "handoff": "inline-outbox-materialized-by-actions",
         "alt": "Suspendido el desahucio de una mujer en Barcelona por un recurso sobre los nuevos decretos"
-      }
+      },
+      "ai_image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "917e43a30705",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/917e43a30705-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/917e43a30705-r1-ai1.jpg",
+        "sha256": "38cf749fb2f17697ba7431e5b90416719ff342523d4145249028418a19470106",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "Suspendido el desahucio de una mujer en Barcelona por un recurso sobre los nuevos decretos"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-01T11:23:36.020061Z"
     },
     {
       "event_id": "53c54f2d367f",
