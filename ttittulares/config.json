@@ -51,6 +51,11 @@
     "rights_status_default": "unverified",
     "explicit_not_found": true,
     "validate_https": true,
-    "policy": "Intentar una sola imagen IA editorial rápida por noticia con aislamiento current_item_only y conservar además una imagen real/fallback verificable. Nunca bloquear READY ni la cola por imagen."
+    "policy": "Intentar una sola imagen IA por noticia apta en estilo TT_STYLE_A_V1, siempre acorde con el resumen factual. Sensibles: disable_ai_image + fallback_only. Imagen, fallback, timeout o fallo nunca bloquean READY, Listas ni la cola.",
+    "style_id": "TT_STYLE_A_V1",
+    "style": "Caricatura satírica editorial muy expresiva y exagerada: un solo gag visual fuerte, entendido de un vistazo, colores vivos, props absurdos y situación llevada al límite; evitar imagen neutra o meramente literal.",
+    "sensitive_mode": "fallback_only",
+    "sensitive_sets_disable_ai_image": true,
+    "max_visual_seconds": 120
   }
 }
