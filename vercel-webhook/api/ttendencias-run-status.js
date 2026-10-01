@@ -29,6 +29,7 @@ const PROCESSING_STALE_MS=5*60*1000;
 const START_ACK_MS=30*1000;
 const RUNTIME_PATH="trends/editorial-runtime.json";
 const EXPLAINED_PATH="trends/telegram-manual-explained.json";
+const EXPLAINED_COPY_STATE_PATH="trends/explained-copy-state.json";
 const MAIN_BRANCH="main";
 
 async function gh(url,options={}){
@@ -264,6 +265,25 @@ export default async function handler(req,res){
       const {doc}=await readControlJson(IMAGE_RUN_DIR+"/"+id+".json");
       if(!doc)return res.status(404).json({ok:false,error:"job no encontrado"});
       return res.status(200).json({ok:true,...doc});
+    }
+    if(view==="image-eligibility"){
+      const id=String(req.query?.id||"").trim();
+      if(!/^[A-Za-z0-9._-]{3,160}$/.test(id))return res.status(400).json({ok:false,error:"id inválido"});
+      const [explained,copyState]=await Promise.all([readMainJson(EXPLAINED_PATH),readMainJson(EXPLAINED_COPY_STATE_PATH)]);
+      const rows=(explained.items||[]).filter(x=>String(x.id||"")===id&&x.status!=="grouped"&&String(x.explanation||"").trim());
+      rows.sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||String(b.explained_at||"").localeCompare(String(a.explained_at||"")));
+      const row=rows[0]||null;
+      if(!row)return res.status(200).json({ok:true,eligible:false,reason:"not_pending_explained"});
+      const name=String(row.name||"").trim();
+      const rev=Number(row.revision||0);
+      const archived=(copyState.items||[]).some(x=>Number(x.revision||0)===rev&&Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase()));
+      const blocked=Boolean(row.tremending_origin)||Boolean(String(row.ai_image_block_reason||row.image_block_reason||"").trim())||row.with_image===false;
+      const hasAi=Boolean(String(row.ai_image?.url||"").trim());
+      const eligible=!archived&&!blocked&&!hasAi;
+      return res.status(200).json({
+        ok:true,eligible,reason:archived?"archived":blocked?"blocked":hasAi?"already_has_ai":"pending",
+        target_id:id,name,revision:rev,explained_at:row.explained_at||null
+      });
     }
     const [enabled,items,{doc:request},ack,runtimeDoc,explainedDoc]=await Promise.all([
       triggerReady(),comments(),readTrigger(),readAck(),readMainJson(RUNTIME_PATH),readMainJson(EXPLAINED_PATH)
