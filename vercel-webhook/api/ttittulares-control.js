@@ -332,8 +332,15 @@ async function rework(eventId,instruction,reinvestigate=false){
     item.revision=Number(item.revision||source.revision||1)+1;delete item.delivered_at;delete item.published_at;delete item.dismissed_at;
     doc.updated_at=now;return doc
   });
-  await mutateJson(PREPARED,"Retirar versión antigua para rehacer TTiTTulares",doc=>{
-    doc.items=(doc.items||[]).filter(x=>idOf(x.event_id)!==id);doc.updated_at=now;return doc
+  await mutateJson(PREPARED,"Marcar versión anterior en rehacer TTiTTulares",doc=>{
+    doc.items||=[];
+    for(const preparedItem of doc.items){
+      if(idOf(preparedItem.event_id)!==id)continue;
+      preparedItem.rewrite_pending=true;
+      preparedItem.rewrite_requested_at=now;
+      preparedItem.rewrite_target_revision=Number(source.revision||1)+1;
+    }
+    doc.updated_at=now;return doc
   });
   await mutateJson(DECISIONS,"Reabrir noticia TTiTTulares desde web",doc=>{
     doc.items=(doc.items||[]).filter(x=>idOf(x.event_id)!==id);doc.updated_at=now;return doc
@@ -623,9 +630,14 @@ export default async function handler(req,res){
       const closedIds=new Set((decisions.doc?.items||[])
         .filter(x=>["published","dismissed"].includes(String(x.status||"").toLowerCase()))
         .map(x=>String(x.event_id||"")));
-      const visiblePrepared=(prepared.doc?.items||[]).filter(x=>!closedIds.has(String(x.event_id||"")));
-      const preparedIds=new Set(visiblePrepared.map(x=>String(x.event_id||"")));
       const processingIds=new Set((queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING").map(x=>String(x.event_id||"")));
+      const activeRewriteIds=new Set((queue.doc?.items||[])
+        .filter(x=>String(x.status||"")==="PROCESSING"&&String(x.selection_mode||"")==="REWRITE")
+        .map(x=>String(x.event_id||"")));
+      // Una versión anterior puede seguir físicamente en prepared mientras se
+      // rehace. No debe volver a mostrarse ni publicarse como si fuera la nueva.
+      const visiblePrepared=(prepared.doc?.items||[]).filter(x=>!closedIds.has(String(x.event_id||""))&&!activeRewriteIds.has(String(x.event_id||"")));
+      const preparedIds=new Set(visiblePrepared.map(x=>String(x.event_id||"")));
       const manualStories=manualArchive.doc?.items||[];
       const processingItems=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROCESSING"&&!preparedIds.has(String(x.event_id||""))&&!closedIds.has(String(x.event_id||""))).map(x=>{
         const ev=eventMap.get(String(x.event_id||""))||{};
