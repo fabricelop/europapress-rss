@@ -264,7 +264,17 @@ Cuando ImageGen devuelve el raster, usa este **handoff binario operativo** antes
 6. Relee el outbox desde `main` y comprueba que la data URL no está truncada. El workflow `.github/workflows/ttendencias-ai-image-apply.yml` lo consume y materializa `trends/generated-images/<id>-r<revision>-ai<attempt>.jpg`.
 7. Guarda la metadata bajo `ai_image`, nunca sustituyendo ni borrando `fallback_image`. Si la IA queda disponible, usa por defecto `image_choice:"ai"`; si no y existe fallback, `image_choice:"fallback"`.
 
-**No declares `image_transport_unavailable` solo porque el conector GitHub no acepte una referencia binaria directa.** La ruta soportada es: archivo generado de la conversación → materializar bytes → normalizar/encodear → JSON textual con data URL → GitHub Contents. Solo marca `failed` si tampoco puedes obtener/materializar los bytes del archivo generado o si GitHub rechaza el outbox después de un reintento seguro por conflicto.
+**No declares `image_transport_unavailable` solo porque el conector GitHub no acepte una referencia binaria directa.** La ruta soportada es: archivo generado de la conversación → materializar bytes → normalizar/encodear → JSON textual con data URL → GitHub Contents.
+
+Handoff obligatorio tras ImageGen:
+1. justo antes de llamar a ImageGen, toma un inventario de imágenes existentes en `/mnt/data` y, si hace falta, de adjuntos visibles de la conversación;
+2. inmediatamente después de ImageGen, vuelve a inspeccionar `/mnt/data` y selecciona exclusivamente el PNG/JPG/WebP nuevo del intento actual;
+3. si no aparece automáticamente, busca el adjunto generado de esta conversación y materialízalo en `/mnt/data`; no abandones por no disponer de una referencia binaria directa en GitHub;
+4. valida apertura completa del raster, normaliza a JPEG y genera SHA/Base64;
+5. escribe el image-outbox y reléelo desde `main`;
+6. **solo entonces** cuenta la imagen como entregada/generada en RUNTRACE.
+
+Si ImageGen devuelve visualmente una imagen pero no consigues escribir un outbox válido, el resultado terminal es `failed:image_transport_unavailable`, `generated:false`, `materialized:false`. No informes `generated:true` en ese caso: para TTendencias, una IA cuenta como generada únicamente cuando existe handoff persistido que el aplicador puede materializar.
 
 Un fallo de transporte deja `ai_image_status:"failed"` con una razón breve y NO afecta a la explicación.
 
