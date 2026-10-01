@@ -1,32 +1,32 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-01T19:15:00+02:00",
-  "last_completed_at": "2026-10-01T19:15:00+02:00",
+  "last_started_at": "2026-10-01T19:45:00+02:00",
+  "last_completed_at": "2026-10-01T19:45:00+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-01T19:15:00+02:00",
+  "updated_at": "2026-10-01T19:45:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "chat-20261001T191500+0200",
+    "run_id": "chat-20261001T194500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-01T19:15:00+02:00",
-    "updated_at": "2026-10-01T19:15:00+02:00",
-    "finished_at": "2026-10-01T19:15:00+02:00",
+    "started_at": "2026-10-01T19:45:00+02:00",
+    "updated_at": "2026-10-01T19:45:00+02:00",
+    "finished_at": "2026-10-01T19:45:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-01T19:15:00+02:00",
+    "requested_at": "2026-10-01T19:45:00+02:00",
     "partial": false,
     "summary": {
       "trends_processed": 0,
@@ -48,17 +48,22 @@
     },
     "incident_count": 0,
     "incidents": [],
-    "radar": {
-      "captured_at": "2026-10-01T19:12:35+02:00",
-      "recent_sha": "26e5e533362e726d286481f6c66f9d289198d464",
-      "queue_sha": "56603859400097adae14848c79155b55699d69c7",
-      "queue_count": 0,
-      "new_entries": [
-        "El PNV"
-      ],
-      "new_entries_already_explained": true
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "785769f650e32d7af20a60caa8f9dac53a48f4ba",
+      "updated_at": "2026-10-01T16:29:35.530Z",
+      "total_ratings": 107,
+      "recent_considered": 100
     },
-    "message": "Pasada directa completada sin trabajo editorial pendiente. El radar de 19:12:35 incorpora El PNV, pero ya estaba explicado y no se duplica la tarjeta. Cola editorial final 0. No se generan imágenes. Sin Work ni despliegues Vercel."
+    "remate_selections": [],
+    "radar": {
+      "captured_at": "2026-10-01T19:31:22+02:00",
+      "recent_sha": "298b234606d440ba8589d064d344aefeb5b093a4",
+      "queue_sha": "d6f50eefa78cb184212631b774fe0309acf4e3db",
+      "queue_count": 0,
+      "new_entries": []
+    },
+    "message": "Pasada directa completada sin trabajo editorial pendiente. Radar fresco de 19:31:22, cola editorial final 0 y sin solicitudes de rehacer texto o imagen. No se generan imágenes. Sin Work ni despliegues Vercel."
   },
   "summary": {
     "trends_processed": 0,
