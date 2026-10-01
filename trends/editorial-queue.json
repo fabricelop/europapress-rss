@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-01T17:31:45+02:00",
-  "count": 2,
+  "updated_at": "2026-10-01T15:34:07.860Z",
+  "count": 3,
   "items": [
     {
       "id": "75f572510033",
@@ -12,12 +12,10 @@
       "revision": 2,
       "rewrite_instruction": "Rehaz el remate manteniendo los hechos y el formato del tuit, con un giro más específico. Genera también una nueva imagen IA.",
       "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "explain",
-      "tremending_origin": false,
-      "tremending_id": null,
-      "article_title": null,
-      "source_url": null,
-      "selected_tweet": null,
       "batch_id": null,
       "requested_together": [
         "Woody Allen"
@@ -30,7 +28,12 @@
       "anticipated_social_source_count": 4,
       "anticipated_news_source_count": 4,
       "anticipated_news_title": "Woody Allen presenta el rodaje de su nueva película en Madrid con la presencia de Ayuso y Almeida",
-      "anticipated_entered_top10_at": null
+      "anticipated_entered_top10_at": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null
     },
     {
       "id": "tremending-6042292e4ace",
@@ -41,16 +44,17 @@
       "revision": 0,
       "rewrite_instruction": "Entrada seleccionada desde Público/Tremending. Titula con el nombre corto \"El alcalde de Málaga resume así la situación\" y redacta \"TT 🗯️ El alcalde de Málaga resume así la situación es tendencia por/porque ...\" con un remate opcional 🌶️ en la línea siguiente. No utilizar TT#0 ni repetir título, ni copiar el titular completo. Verifica los hechos y atribuye opiniones. Usa exclusivamente la captura del tuit seleccionado como imagen; NO generes imagen IA.",
       "with_image": true,
-      "task": "explain",
-      "tremending_origin": true,
-      "tremending_id": "tremending-b19a39265cf69253",
-      "article_title": "El alcalde de Málaga resume así la situación inmobiliaria y se queda tan ancho: \"Para los que tienen vivienda no es un problema\"",
-      "source_url": "https://www.publico.es/tremending/alcalde-malaga-resume-asi-situacion-inmobiliaria-queda-ancho-vivienda-problema.html",
-      "selected_tweet": {
-        "id": "2105337296404844724",
-        "url": "https://x.com/ivnrguez/status/2105337296404844724",
-        "author": "@ivnrguez"
+      "disable_ai_image": true,
+      "image_strategy": "tweet_capture_only",
+      "selected_tweet_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/tremending-images/2105337296404844724.png",
+        "source": "X / Tremending",
+        "source_url": "https://x.com/ivnrguez/status/2105337296404844724",
+        "rights_status": "tweet_capture",
+        "generated": false,
+        "alt": "Captura del tuit seleccionado para la entrada de Tremending sobre vivienda en Málaga"
       },
+      "task": "explain",
       "batch_id": null,
       "requested_together": [
         "El alcalde de Málaga resume así la situación"
@@ -63,7 +67,48 @@
       "anticipated_social_source_count": 0,
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
+      "anticipated_entered_top10_at": null,
+      "tremending_origin": true,
+      "tremending_id": "tremending-b19a39265cf69253",
+      "article_title": "El alcalde de Málaga resume así la situación inmobiliaria y se queda tan ancho: \"Para los que tienen vivienda no es un problema\"",
+      "source_url": "https://www.publico.es/tremending/alcalde-malaga-resume-asi-situacion-inmobiliaria-queda-ancho-vivienda-problema.html",
+      "selected_tweet": {
+        "id": "2105337296404844724",
+        "url": "https://x.com/ivnrguez/status/2105337296404844724",
+        "author": "@ivnrguez"
+      }
+    },
+    {
+      "id": "26adbeb8c036",
+      "name": "Amenaza",
+      "rank": 17,
+      "status": "preparing",
+      "requested_at": "2026-10-01T15:34:06.053Z",
+      "revision": 0,
+      "rewrite_instruction": "",
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": null,
+      "selected_tweet_image": null,
+      "task": "explain",
+      "batch_id": null,
+      "requested_together": [
+        "Amenaza"
+      ],
+      "captured_with": [],
+      "auto_queued": false,
+      "anticipated": true,
+      "anticipated_at": "2026-10-01T17:02:12+02:00",
+      "anticipated_best_rank": 17,
+      "anticipated_social_source_count": 3,
+      "anticipated_news_source_count": 10,
+      "anticipated_news_title": "Rusia amenaza por carta a la OTAN con usar armas nucleares si intenta aislar Kaliningrado",
+      "anticipated_entered_top10_at": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null
     }
   ]
 }
