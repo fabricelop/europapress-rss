@@ -21,8 +21,10 @@ const TRIGGER_BRANCH="control/ttittulares-run-trigger-v2";
 const TRIGGER_PATH="ttittulares/run-now-trigger.json";
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
+const TRACE_COMMENT_ID=5859738015;
 const READY_MARKER="TTITTULARES WORK COMMIT TRIGGER READY";
 const STALE_MS=20*60*1000;
+let readyCache={at:0,value:null};
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -35,44 +37,38 @@ async function gh(url,options={}){
   }})
 }
 async function comments(){
-  // El comentario de telemetría se crea una sola vez y se actualiza durante
-  // toda la ejecución, mientras los outboxes crean comentarios nuevos.
-  // Por eso NO basta con reemplazar la primera página por la última: al superar
-  // 100 comentarios el RUNTRACE activo puede quedar en una página anterior.
+  const direct=await gh(`https://api.github.com/repos/${REPO}/issues/comments/${TRACE_COMMENT_ID}`);
+  if(direct.ok)return [await direct.json()];
+  // Respaldo para una eventual recreación del comentario canónico.
   const since=new Date(Date.now()-24*60*60*1000).toISOString();
-  let url=`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100&since=${encodeURIComponent(since)}`;
-  const items=[];
-  for(let page=0;page<10&&url;page++){
-    const r=await gh(url);
-    if(!r.ok)throw new Error(`GitHub comments: ${r.status} ${await r.text()}`);
-    items.push(...await r.json());
-    const link=r.headers.get("link")||"";
-    const next=link.match(/<([^>]+)>;\s*rel="next"/);
-    url=next?next[1]:null
-  }
-  return items
+  const r=await gh(`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100&since=${encodeURIComponent(since)}`);
+  if(!r.ok)throw new Error(`GitHub RUNTRACE: ${r.status} ${await r.text()}`);
+  return (await r.json()).filter(x=>String(x.body||"").startsWith(TRACE_PREFIX));
 }
 async function triggerReady(){
+  if(readyCache.value!==null&&Date.now()-readyCache.at<10*60*1000)return readyCache.value;
   const r=await gh(`https://api.github.com/repos/${REPO}/pulls/${PR}`);
   if(!r.ok)throw new Error(`GitHub PR: ${r.status} ${await r.text()}`);
   const pr=await r.json();
-  return String(pr.body||"").includes(READY_MARKER)
+  const value=String(pr.body||"").includes(READY_MARKER);
+  readyCache={at:Date.now(),value};
+  return value
 }
 async function readTrigger(){
-  const u=`https://api.github.com/repos/${REPO}/contents/${TRIGGER_PATH}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`;
-  const r=await gh(u);
-  if(!r.ok)return {doc:{}};
-  const f=await r.json();
-  const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-  return {doc:JSON.parse(raw||"{}")}
+  try{
+    const u=`https://raw.githubusercontent.com/${REPO}/${TRIGGER_BRANCH}/${TRIGGER_PATH}?t=${Date.now()}`;
+    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttittulares-run-status-read"}});
+    if(!r.ok)return {doc:{}};
+    return {doc:JSON.parse(await r.text()||"{}")}
+  }catch(_){return {doc:{}}}
 }
 async function readErrors(){
-  const u=`https://api.github.com/repos/${REPO}/contents/ttittulares/execution-errors.json?ref=main`;
-  const r=await gh(u);
-  if(!r.ok)return [];
-  const f=await r.json();
-  const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-  try{return (JSON.parse(raw||"{}").items||[]).map(x=>({at:x.at||null,event_id:x.event_id||null,phase:x.phase||null,reason:String(x.reason||"").slice(0,1200)}))}catch(_){return []}
+  try{
+    const u=`https://raw.githubusercontent.com/${REPO}/main/ttittulares/execution-errors.json?t=${Date.now()}`;
+    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttittulares-run-status-read"}});
+    if(!r.ok)return [];
+    return (JSON.parse(await r.text()||"{}").items||[]).map(x=>({at:x.at||null,event_id:x.event_id||null,phase:x.phase||null,reason:String(x.reason||"").slice(0,1200)}))
+  }catch(_){return []}
 }
 function field(body,name){
   const m=String(body||"").match(new RegExp("^"+name+":\\s*(.+)$","mi"));
@@ -235,6 +231,10 @@ export default async function handler(req,res){
     return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,debug:{server_now:new Date().toISOString(),trace_count:traces.length,latest_run_id:latest?.run_id||null,latest_status:latest?.status||null,last_run_id:last_run?.run_id||null,last_run_finished_at:last_run?.finished_at||null},can_run:enabled&&authorized(req)})
   }catch(e){
     console.error(e);
-    return res.status(500).json({ok:false,error:String(e.message||e)})
+    const raw=String(e?.message||e);
+    const reset=raw.match(/resets at\s+(\d{9,})/i);
+    const retry_at=reset?new Date(Number(reset[1])*1000).toISOString():null;
+    const error=/rate limit exceeded/i.test(raw)?"GitHub temporalmente limitado; se conserva el último estado visible.":raw.slice(0,220);
+    return res.status(503).json({ok:false,error,retry_at,degraded:true})
   }
 }
