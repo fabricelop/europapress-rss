@@ -3607,7 +3607,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "ba0d62076a7d",
@@ -3630,7 +3634,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "9e7cae772854",
@@ -3662,12 +3670,23 @@
         "url": "https://fotografias.antena3.com/clipping/cmsimages01/2026/09/28/FF449AAF-1795-4F6F-9AA9-5E08C5439D78/carlos-latre-mete-piel-leire-diez-hace-reir-hormiguero_97.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
         "source": "Antena 3",
         "source_url": "https://amp.antena3.com/programas/el-hormiguero/que-fluyan-cosas-carlos-latre-mete-piel-leire-diez-hace-reir_202609286abad9cb5e0dc70596ae1733.html",
-        "alt": "Imagen relacionada con Latre",
+        "alt": "Imagen de archivo relacionada con Latre",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://fotografias.antena3.com/clipping/cmsimages01/2026/09/28/FF449AAF-1795-4F6F-9AA9-5E08C5439D78/carlos-latre-mete-piel-leire-diez-hace-reir-hormiguero_97.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
+        "source": "Antena 3",
+        "source_url": "https://amp.antena3.com/programas/el-hormiguero/que-fluyan-cosas-carlos-latre-mete-piel-leire-diez-hace-reir_202609286abad9cb5e0dc70596ae1733.html",
+        "alt": "Imagen de archivo relacionada con Latre",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "4f455c02e9e8",
@@ -3699,12 +3718,23 @@
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20260929085955_1200_v2.jpg",
         "source": "Europa Press / avance del INE",
         "source_url": "https://www.europapress.es/economia/macroeconomia-00338/noticia-ipc-dispara-49-septiembre-tasa-mas-alta-mas-tres-anos-gasolinas-20260929085955.html",
-        "alt": "Imagen relacionada con El IPC",
+        "alt": "Imagen de archivo relacionada con El IPC",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20260929085955_1200_v2.jpg",
+        "source": "Europa Press / avance del INE",
+        "source_url": "https://www.europapress.es/economia/macroeconomia-00338/noticia-ipc-dispara-49-septiembre-tasa-mas-alta-mas-tres-anos-gasolinas-20260929085955.html",
+        "alt": "Imagen de archivo relacionada con El IPC",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "84e20b8fe4a7",
@@ -3747,12 +3777,23 @@
         "url": "https://www.infobae.com/resizer/v2/LHAXZFU635H2JLRGD3E7MUWR34.jpg?auth=cbdc56dad09cd10c393fd9da74ce580548e649262b806c792934857736a3eef6&smart=true&width=1024&height=512&quality=85",
         "source": "Infobae",
         "source_url": "https://www.infobae.com/espana/cultura/2026/09/29/antonio-banderas-se-pronuncia-sobre-la-situacion-de-maricarmen-y-provoca-criticas-en-redes-a-mi-me-interesa-toda-la-realidad-completa/",
-        "alt": "Imagen relacionada con Antonio Banderas",
+        "alt": "Imagen de archivo relacionada con Antonio Banderas",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.infobae.com/resizer/v2/LHAXZFU635H2JLRGD3E7MUWR34.jpg?auth=cbdc56dad09cd10c393fd9da74ce580548e649262b806c792934857736a3eef6&smart=true&width=1024&height=512&quality=85",
+        "source": "Infobae",
+        "source_url": "https://www.infobae.com/espana/cultura/2026/09/29/antonio-banderas-se-pronuncia-sobre-la-situacion-de-maricarmen-y-provoca-criticas-en-redes-a-mi-me-interesa-toda-la-realidad-completa/",
+        "alt": "Imagen de archivo relacionada con Antonio Banderas",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "725b98fbd4a0",
@@ -3789,12 +3830,23 @@
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20260929111513_1200.jpg",
         "source": "Europa Press",
         "source_url": "https://www.europapress.es/nacional/noticia-psoe-sumar-alcanzan-acuerdo-aprobar-decreto-vivienda-consejo-ministros-20260929111513.html",
-        "alt": "Imagen relacionada con Decreto",
+        "alt": "Imagen de archivo relacionada con Decreto",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20260929111513_1200.jpg",
+        "source": "Europa Press",
+        "source_url": "https://www.europapress.es/nacional/noticia-psoe-sumar-alcanzan-acuerdo-aprobar-decreto-vivienda-consejo-ministros-20260929111513.html",
+        "alt": "Imagen de archivo relacionada con Decreto",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "15e6f35f9ce5",
@@ -3826,12 +3878,23 @@
         "url": "https://www.honor.com/content/dam/honor/common/product-list/product-series/honor-magic-v6/honor-magic-v5-list-gold.png",
         "source": "HONOR España producto",
         "source_url": "https://www.honor.com/es/phones/honor-magic-v6/",
-        "alt": "Imagen relacionada con #HONORMagicV6",
+        "alt": "Imagen de archivo relacionada con #HONORMagicV6",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.honor.com/content/dam/honor/common/product-list/product-series/honor-magic-v6/honor-magic-v5-list-gold.png",
+        "source": "HONOR España producto",
+        "source_url": "https://www.honor.com/es/phones/honor-magic-v6/",
+        "alt": "Imagen de archivo relacionada con #HONORMagicV6",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "fd5b0e1e93a3",
@@ -3863,12 +3926,23 @@
         "url": "https://world-heart-federation.org/wp-content/uploads/1-600x400.png",
         "source": "World Heart Federation (World Heart Day)",
         "source_url": "https://world-heart-federation.org/es/world-heart-day/",
-        "alt": "Imagen relacionada con #DíaMundialDelCorazón",
+        "alt": "Imagen de archivo relacionada con #DíaMundialDelCorazón",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://world-heart-federation.org/wp-content/uploads/1-600x400.png",
+        "source": "World Heart Federation (World Heart Day)",
+        "source_url": "https://world-heart-federation.org/es/world-heart-day/",
+        "alt": "Imagen de archivo relacionada con #DíaMundialDelCorazón",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "74e71453da5e",
@@ -3915,12 +3989,23 @@
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20260929104522_1200_v2.jpg",
         "source": "Europa Press",
         "source_url": "https://www.europapress.es/nacional/noticia-arranca-consejo-ministros-hora-retraso-negociaciones-decreto-vivienda-psoe-sumar-20260929104522.html",
-        "alt": "Imagen relacionada con PSOE y Sumar",
+        "alt": "Imagen de archivo relacionada con PSOE y Sumar",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20260929104522_1200_v2.jpg",
+        "source": "Europa Press",
+        "source_url": "https://www.europapress.es/nacional/noticia-arranca-consejo-ministros-hora-retraso-negociaciones-decreto-vivienda-psoe-sumar-20260929104522.html",
+        "alt": "Imagen de archivo relacionada con PSOE y Sumar",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "853f0f605fac",
@@ -3952,12 +4037,23 @@
         "url": "https://static.eldiario.es/clip/fbcad7f3-4ebf-4c3a-bd42-6e91e60f97a5_facebook-aspect-ratio-1200-675_default_0_x798y386.jpg",
         "source": "elDiario.es",
         "source_url": "https://www.eldiario.es/catalunya/desahuciada-mataro-familia-persona-discapacidad_1_13545734.amp.html",
-        "alt": "Imagen relacionada con Mataró",
+        "alt": "Imagen de archivo relacionada con Mataró",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://static.eldiario.es/clip/fbcad7f3-4ebf-4c3a-bd42-6e91e60f97a5_facebook-aspect-ratio-1200-675_default_0_x798y386.jpg",
+        "source": "elDiario.es",
+        "source_url": "https://www.eldiario.es/catalunya/desahuciada-mataro-familia-persona-discapacidad_1_13545734.amp.html",
+        "alt": "Imagen de archivo relacionada con Mataró",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "793cb584e684",
@@ -3989,12 +4085,23 @@
         "url": "https://img.rtve.es/imagenes/mananeros-360/01787317601398.jpg",
         "source": "RTVE Play: Mañaneros 360",
         "source_url": "https://www.rtve.es/play/videos/mananeros-360/",
-        "alt": "Imagen relacionada con #Mañaneros29S",
+        "alt": "Imagen de archivo relacionada con #Mañaneros29S",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/mananeros-360/01787317601398.jpg",
+        "source": "RTVE Play: Mañaneros 360",
+        "source_url": "https://www.rtve.es/play/videos/mananeros-360/",
+        "alt": "Imagen de archivo relacionada con #Mañaneros29S",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "725b98fbd4a0",
@@ -4033,12 +4140,23 @@
         "url": "https://cadenaser.com/resizer/v2/D5FVOAFPUFKJZASVL6FZKAUILA.jpg?auth=f246a72c503df34960d328a892284e73aa0b7dbfb620e79185027722600a38ed&quality=70&width=1200&height=675&smart=true",
         "source": "Cadena SER",
         "source_url": "https://cadenaser.com/nacional/2026/09/29/ultima-hora-del-decreto-de-vivienda-y-las-concentraciones-contra-la-especulacion-inmobiliaria-cadena-ser/",
-        "alt": "Imagen relacionada con Decreto",
+        "alt": "Imagen de archivo relacionada con Decreto",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/D5FVOAFPUFKJZASVL6FZKAUILA.jpg?auth=f246a72c503df34960d328a892284e73aa0b7dbfb620e79185027722600a38ed&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER",
+        "source_url": "https://cadenaser.com/nacional/2026/09/29/ultima-hora-del-decreto-de-vivienda-y-las-concentraciones-contra-la-especulacion-inmobiliaria-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Decreto",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "c11250dda950",
@@ -4071,12 +4189,23 @@
         "url": "https://cadenaser.com/resizer/v2/HLEIDDQMERD2ZNPDX7XHQDSHKI.jpg?auth=c8fd9eef83f9a66058c7bcc9d6adb403eb03cd7f5a5561ef33df10015997fbb7&quality=70&width=1200&height=675&smart=true",
         "source": "Cadena SER",
         "source_url": "https://cadenaser.com/nacional/2026/09/29/el-juez-calama-rechaza-suspender-el-peritaje-de-la-joyeria-yanes-porque-zapatero-no-justifico-enemistad-hacia-sus-intereses-cadena-ser/",
-        "alt": "Imagen relacionada con Yanes",
+        "alt": "Imagen de archivo relacionada con Yanes",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/HLEIDDQMERD2ZNPDX7XHQDSHKI.jpg?auth=c8fd9eef83f9a66058c7bcc9d6adb403eb03cd7f5a5561ef33df10015997fbb7&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER",
+        "source_url": "https://cadenaser.com/nacional/2026/09/29/el-juez-calama-rechaza-suspender-el-peritaje-de-la-joyeria-yanes-porque-zapatero-no-justifico-enemistad-hacia-sus-intereses-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Yanes",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "74d936730a36",
@@ -4152,12 +4281,23 @@
         "url": "https://assets.astonmartinf1.com/public/cms/74Bl0em46J4UzQw9OtgvKu/98791e6079b34121dfaa35f1e3c9646f/Announcement_list_image.jpg?w=1500&fit=fill",
         "source": "Aston Martin Aramco F1 (comunicado oficial)",
         "source_url": "https://www.astonmartinf1.com/en-GB/news/announcement/lance-stroll-and-fernando-alonso-commit-to-aston-martin-aramco",
-        "alt": "Imagen relacionada con Aston Martin",
+        "alt": "Imagen de archivo relacionada con Aston Martin",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://assets.astonmartinf1.com/public/cms/74Bl0em46J4UzQw9OtgvKu/98791e6079b34121dfaa35f1e3c9646f/Announcement_list_image.jpg?w=1500&fit=fill",
+        "source": "Aston Martin Aramco F1 (comunicado oficial)",
+        "source_url": "https://www.astonmartinf1.com/en-GB/news/announcement/lance-stroll-and-fernando-alonso-commit-to-aston-martin-aramco",
+        "alt": "Imagen de archivo relacionada con Aston Martin",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "847caa097a20",
@@ -4190,12 +4330,23 @@
         "url": "https://i.guim.co.uk/img/media/435e06c4958121ce07b21bcaf2bb7a535b7fe2c1/564_0_5072_4057/master/5072.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=e4b360e5723dad0ac4df17b09ec48ae9",
         "source": "The Guardian",
         "source_url": "https://www.theguardian.com/football/2026/sep/29/australia-go-down-fighting-to-brazil-in-fiery-4-2-friendly-defeat",
-        "alt": "Imagen relacionada con Ancelotti",
+        "alt": "Imagen de archivo relacionada con Ancelotti",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://i.guim.co.uk/img/media/435e06c4958121ce07b21bcaf2bb7a535b7fe2c1/564_0_5072_4057/master/5072.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=e4b360e5723dad0ac4df17b09ec48ae9",
+        "source": "The Guardian",
+        "source_url": "https://www.theguardian.com/football/2026/sep/29/australia-go-down-fighting-to-brazil-in-fiery-4-2-friendly-defeat",
+        "alt": "Imagen de archivo relacionada con Ancelotti",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "364e5f6525c7",
@@ -4227,12 +4378,23 @@
         "url": "https://www.beinsports.com/images/bein_logo_social.webp",
         "source": "beIN SPORTS",
         "source_url": "https://www.beinsports.com/es-us/football/copa-africana-de-naciones/articles/en-vivo-etiop%C3%ADa-vs-senegal-eliminatorias-afcon-2027-2026-09-29",
-        "alt": "Imagen relacionada con Senegal",
+        "alt": "Imagen de archivo relacionada con Senegal",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.beinsports.com/images/bein_logo_social.webp",
+        "source": "beIN SPORTS",
+        "source_url": "https://www.beinsports.com/es-us/football/copa-africana-de-naciones/articles/en-vivo-etiop%C3%ADa-vs-senegal-eliminatorias-afcon-2027-2026-09-29",
+        "alt": "Imagen de archivo relacionada con Senegal",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "2854db7abad5",
@@ -4284,12 +4446,23 @@
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20260928205630_1200.jpg",
         "source": "Europa Press",
         "source_url": "https://www.europapress.es/euskadi/noticia-fallece-hombre-gipuzkoa-disparo-agente-intentar-agredir-ertzaina-arma-20260928205630.html",
-        "alt": "Imagen relacionada con Hondarribia",
+        "alt": "Imagen de archivo relacionada con Hondarribia",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20260928205630_1200.jpg",
+        "source": "Europa Press",
+        "source_url": "https://www.europapress.es/euskadi/noticia-fallece-hombre-gipuzkoa-disparo-agente-intentar-agredir-ertzaina-arma-20260928205630.html",
+        "alt": "Imagen de archivo relacionada con Hondarribia",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "c3e46b60f876",
@@ -4341,12 +4514,23 @@
         "url": "https://www.elnacional.cat/enblau/uploads/s1/59/97/78/43/aldo-comas-t5_4_1258x630.jpeg",
         "source": "El Nacional",
         "source_url": "https://www.elnacional.cat/enblau/es/television/aldo-comas-tertuliano-catalan-ana-rosa-humilla-desahuciada-te-den-por-culo_1702351_102.html",
-        "alt": "Imagen relacionada con Aldo Comas",
+        "alt": "Imagen de archivo relacionada con Aldo Comas",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.elnacional.cat/enblau/uploads/s1/59/97/78/43/aldo-comas-t5_4_1258x630.jpeg",
+        "source": "El Nacional",
+        "source_url": "https://www.elnacional.cat/enblau/es/television/aldo-comas-tertuliano-catalan-ana-rosa-humilla-desahuciada-te-den-por-culo_1702351_102.html",
+        "alt": "Imagen de archivo relacionada con Aldo Comas",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "503cba4516e0",
@@ -4391,7 +4575,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "6ff5c38719c8",
@@ -4463,12 +4651,23 @@
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20260929111604_1200.jpg",
         "source": "Europa Press",
         "source_url": "https://www.europapress.es/catalunya/noticia-nogueras-junts-aun-ve-margen-acuerdo-insiste-proteger-pequeno-propietario-20260929111604.html",
-        "alt": "Imagen relacionada con Isabel Rodríguez",
+        "alt": "Imagen de archivo relacionada con Isabel Rodríguez",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20260929111604_1200.jpg",
+        "source": "Europa Press",
+        "source_url": "https://www.europapress.es/catalunya/noticia-nogueras-junts-aun-ve-margen-acuerdo-insiste-proteger-pequeno-propietario-20260929111604.html",
+        "alt": "Imagen de archivo relacionada con Isabel Rodríguez",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "71c69aabc30a",
@@ -4516,15 +4715,26 @@
       ],
       "image_strategy": "existing_web_image",
       "image": {
-        "url": "https://img.asmedia.epimg.net/resizer/v2/FVMU4AHSLRJKTLDPICOFFIFI2Y.jpg?auth=26d1aaafbff4f3763c080bd5826ded3311e7b5887295c48e3bdbfe09476cb6b9&width=1472&height=828&focal=1718%2C614",
-        "source": "AS",
-        "source_url": "https://as.com/futbol/primera/otro-mazazo-para-miguel-roman-f202609-n/",
-        "alt": "Imagen relacionada con Miguel Román",
+        "url": "https://cadenaser.com/resizer/v2/OIV4S2II2VJIDEOONMJF6DUJZI.jpg?auth=39d82100e24be36dada0b8f9e878085c4b4b5eb8a281af71a7b9a26f61fce8f4&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER",
+        "source_url": "https://cadenaser.com/galicia/2026/09/29/miguel-roman-podria-perderse-lo-que-resta-de-temporada-por-grave-lesion-de-rodilla-radio-vigo/",
+        "alt": "Imagen de archivo relacionada con Miguel Román",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/OIV4S2II2VJIDEOONMJF6DUJZI.jpg?auth=39d82100e24be36dada0b8f9e878085c4b4b5eb8a281af71a7b9a26f61fce8f4&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER",
+        "source_url": "https://cadenaser.com/galicia/2026/09/29/miguel-roman-podria-perderse-lo-que-resta-de-temporada-por-grave-lesion-de-rodilla-radio-vigo/",
+        "alt": "Imagen de archivo relacionada con Miguel Román",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "7ea2bf3ac132",
@@ -4574,7 +4784,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "c80bf18520f4",
@@ -4631,7 +4845,10 @@
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "26fef6810b07",
@@ -4680,7 +4897,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "82367a4c6152",
@@ -4712,12 +4933,23 @@
         "url": "https://i.guim.co.uk/img/media/8d3c9ebdd24f27bc803f2d1d82d256b52d187dd4/935_0_7217_5774/master/7217.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=1fa6b3627b952cfa5a3c316accc2202e",
         "source": "The Guardian",
         "source_url": "https://www.theguardian.com/football/2026/sep/29/manchester-city-found-guilty-all-premier-league-charges-rule-breaches",
-        "alt": "Imagen relacionada con Premier League",
+        "alt": "Imagen de archivo relacionada con Premier League",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://i.guim.co.uk/img/media/8d3c9ebdd24f27bc803f2d1d82d256b52d187dd4/935_0_7217_5774/master/7217.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=1fa6b3627b952cfa5a3c316accc2202e",
+        "source": "The Guardian",
+        "source_url": "https://www.theguardian.com/football/2026/sep/29/manchester-city-found-guilty-all-premier-league-charges-rule-breaches",
+        "alt": "Imagen de archivo relacionada con Premier League",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "7005c0064bda",
@@ -4743,7 +4975,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "9986911fa8ce",
@@ -4837,7 +5073,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "2cf07ed453b6",
@@ -4900,12 +5140,23 @@
         "url": "https://rfef.es/themes/custom/rfef/img/rfef-share.png",
         "source": "RFEF",
         "source_url": "https://rfef.es/es/noticias/seleccion-absoluta",
-        "alt": "Imagen relacionada con Croacia",
+        "alt": "Imagen de archivo relacionada con Croacia",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://rfef.es/themes/custom/rfef/img/rfef-share.png",
+        "source": "RFEF",
+        "source_url": "https://rfef.es/es/noticias/seleccion-absoluta",
+        "alt": "Imagen de archivo relacionada con Croacia",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "tremending-5f69baea2a47",
@@ -4962,7 +5213,20 @@
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "tremending_tweet_capture",
+      "fallback_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/tremending-images/2104852147833573688.png",
+        "source": "Público · Tremending / tuit elegido",
+        "source_url": "https://x.com/La_X_de_Tuiter/status/2104852147833573688",
+        "alt": "Captura del tuit seleccionado para Nogueras e Intxaurrondo",
+        "kind": "tremending_tweet_capture",
+        "tweet_id": "2104852147833573688",
+        "rights_status": "third_party_unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "a8644022152b",
@@ -5035,12 +5299,23 @@
         "url": "https://fotografias.antena3.com/clipping/cmsimages02/2026/07/19/F3DFFDD3-D64D-4064-B59F-5B6F5C3D0C1B/noticias-hoy-domingo-19-julio-2026_97.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
         "source": "Antena 3",
         "source_url": "https://amp.antena3.com/noticias/sociedad/noticias-hoy-martes-29-septiembre-2026_202609296abb6bf382932a3cf91cbecb.html",
-        "alt": "Imagen relacionada con Pyme",
+        "alt": "Imagen de archivo relacionada con Pyme",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://fotografias.antena3.com/clipping/cmsimages02/2026/07/19/F3DFFDD3-D64D-4064-B59F-5B6F5C3D0C1B/noticias-hoy-domingo-19-julio-2026_97.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
+        "source": "Antena 3",
+        "source_url": "https://amp.antena3.com/noticias/sociedad/noticias-hoy-martes-29-septiembre-2026_202609296abb6bf382932a3cf91cbecb.html",
+        "alt": "Imagen de archivo relacionada con Pyme",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "6454422cbf4a",
@@ -5112,12 +5387,23 @@
         "url": "https://rfef.es/themes/custom/rfef/img/rfef-share.png",
         "source": "RFEF",
         "source_url": "https://rfef.es/es/selecciones/seleccion-absoluta",
-        "alt": "Imagen relacionada con #NationsLeague",
+        "alt": "Imagen de archivo relacionada con #NationsLeague",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://rfef.es/themes/custom/rfef/img/rfef-share.png",
+        "source": "RFEF",
+        "source_url": "https://rfef.es/es/selecciones/seleccion-absoluta",
+        "alt": "Imagen de archivo relacionada con #NationsLeague",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "81fd5b53ecbf",
@@ -5171,12 +5457,23 @@
         "url": "https://assets.realmadrid.com/is/image/realmadrid/ND-SUPERCOPA-EUROPA-SEMIFINAL-DUBAI-RM-ALEGRIA-CAMPAZZO-CABARRROT_SG17909?wid=1200&hei=675",
         "source": "Real Madrid",
         "source_url": "https://www.realmadrid.com/es-ES/noticias/baloncesto/primer-equipo/previas/anadolu-efes-real-madrid-29-09-2026",
-        "alt": "Imagen relacionada con Euroliga",
+        "alt": "Imagen de archivo relacionada con Euroliga",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://assets.realmadrid.com/is/image/realmadrid/ND-SUPERCOPA-EUROPA-SEMIFINAL-DUBAI-RM-ALEGRIA-CAMPAZZO-CABARRROT_SG17909?wid=1200&hei=675",
+        "source": "Real Madrid",
+        "source_url": "https://www.realmadrid.com/es-ES/noticias/baloncesto/primer-equipo/previas/anadolu-efes-real-madrid-29-09-2026",
+        "alt": "Imagen de archivo relacionada con Euroliga",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "0aacc78d92bf",
@@ -5244,7 +5541,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "f439c9f01334",
@@ -5297,7 +5598,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "873c6a216d78",
@@ -5337,7 +5642,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "70915b4a47c4",
@@ -5388,12 +5697,23 @@
         "url": "https://cadenaser.com/resizer/v2/2ODW2RPDGJDNTPMXB5E3RDO6ZY.jpg?auth=f3495701c4985f03be64f161aa03a6f0e6e54a3eb8119130b8b39e760a85b1ee&quality=70&width=1200&height=675&smart=true",
         "source": "Cadena SER",
         "source_url": "https://cadenaser.com/nacional/2026/09/29/ovacion-de-gala-a-luka-modric-en-el-sanchez-pizjuan-durante-el-espana-croacia-cadena-ser/",
-        "alt": "Imagen relacionada con Modric",
+        "alt": "Imagen de archivo relacionada con Modric",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/2ODW2RPDGJDNTPMXB5E3RDO6ZY.jpg?auth=f3495701c4985f03be64f161aa03a6f0e6e54a3eb8119130b8b39e760a85b1ee&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER",
+        "source_url": "https://cadenaser.com/nacional/2026/09/29/ovacion-de-gala-a-luka-modric-en-el-sanchez-pizjuan-durante-el-espana-croacia-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Modric",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "478d599db653",
@@ -5456,12 +5776,23 @@
         "url": "https://cadenaser.com/resizer/v2/2ODW2RPDGJDNTPMXB5E3RDO6ZY.jpg?auth=f3495701c4985f03be64f161aa03a6f0e6e54a3eb8119130b8b39e760a85b1ee&quality=70&width=1200&height=675&smart=true",
         "source": "Cadena SER",
         "source_url": "https://cadenaser.com/nacional/2026/09/29/ovacion-de-gala-a-luka-modric-en-el-sanchez-pizjuan-durante-el-espana-croacia-cadena-ser/",
-        "alt": "Imagen relacionada con Nico Williams",
+        "alt": "Imagen de archivo relacionada con Nico Williams",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/2ODW2RPDGJDNTPMXB5E3RDO6ZY.jpg?auth=f3495701c4985f03be64f161aa03a6f0e6e54a3eb8119130b8b39e760a85b1ee&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER",
+        "source_url": "https://cadenaser.com/nacional/2026/09/29/ovacion-de-gala-a-luka-modric-en-el-sanchez-pizjuan-durante-el-espana-croacia-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Nico Williams",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "3faff0e62572",
@@ -5502,12 +5833,23 @@
         "url": "https://www.movistarplus.es/recorte/r/original/OG_movistar.png",
         "source": "Telecinco programación",
         "source_url": "https://www.movistarplus.es/programacion-tv/t5/2026-09-29",
-        "alt": "Imagen relacionada con #TierraDeNadie3",
+        "alt": "Imagen de archivo relacionada con #TierraDeNadie3",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.movistarplus.es/recorte/r/original/OG_movistar.png",
+        "source": "Telecinco programación",
+        "source_url": "https://www.movistarplus.es/programacion-tv/t5/2026-09-29",
+        "alt": "Imagen de archivo relacionada con #TierraDeNadie3",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "53bff326e789",
@@ -5550,12 +5892,23 @@
         "url": "https://www.movistarplus.es/recorte/r/original/OG_movistar.png",
         "source": "Movistar Plus programación",
         "source_url": "https://www.movistarplus.es/programacion-tv/t5/2026-09-29",
-        "alt": "Imagen relacionada con #FirstDates29S",
+        "alt": "Imagen de archivo relacionada con #FirstDates29S",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.movistarplus.es/recorte/r/original/OG_movistar.png",
+        "source": "Movistar Plus programación",
+        "source_url": "https://www.movistarplus.es/programacion-tv/t5/2026-09-29",
+        "alt": "Imagen de archivo relacionada con #FirstDates29S",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "8e250d6dfae4",
@@ -5605,12 +5958,23 @@
         "url": "https://www.movistarplus.es/recorte/r/original/OG_movistar.png",
         "source": "Movistar Plus programación",
         "source_url": "https://www.movistarplus.es/programacion-tv/c4/2026-09-29",
-        "alt": "Imagen relacionada con #Codigo10",
+        "alt": "Imagen de archivo relacionada con #Codigo10",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.movistarplus.es/recorte/r/original/OG_movistar.png",
+        "source": "Movistar Plus programación",
+        "source_url": "https://www.movistarplus.es/programacion-tv/c4/2026-09-29",
+        "alt": "Imagen de archivo relacionada con #Codigo10",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "d0ec9dd0dbf2",
@@ -5637,7 +6001,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "d6b652b7d172",
@@ -5664,7 +6032,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "8fe42f499182",
@@ -5695,10 +6067,21 @@
         "url": "https://assets.realmadrid.com/is/image/realmadrid/ND-EUROLIGA-EFES-RM-CABARROT?wid=1200&hei=675",
         "source": "Real Madrid",
         "source_url": "https://www.realmadrid.com/en-US/news/basket/first-team/reports/cronica-efes-real-madrid-29-09-2026",
-        "alt": "Imagen relacionada con Campazzo",
+        "alt": "Imagen de archivo relacionada con Campazzo",
         "rights_status": "unverified",
         "generated": false
-      }
+      },
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://assets.realmadrid.com/is/image/realmadrid/ND-EUROLIGA-EFES-RM-CABARROT?wid=1200&hei=675",
+        "source": "Real Madrid",
+        "source_url": "https://www.realmadrid.com/en-US/news/basket/first-team/reports/cronica-efes-real-madrid-29-09-2026",
+        "alt": "Imagen de archivo relacionada con Campazzo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "7d40b695877f",
@@ -5740,7 +6123,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "e6ee5d34c014",
@@ -5802,10 +6189,21 @@
         "url": "https://los40.com/resizer/v2/FNLQMRVVLBE3DBGDJLH6BJUCOI.jpg?auth=bf4775e22c3028df2502fb3c378958bbaadaa43e23e2f662e4cfd4378a8492d9&quality=70&width=1200&height=675&focal=970,402",
         "source": "LOS40",
         "source_url": "https://los40.com/2026/09/30/victor-janeiro-recorre-el-puente-de-las-emociones-en-supervivientes-all-stars-que-acaba-en-bronca-entre-jorge-javier-vazquez-y-beatriz-trapote/",
-        "alt": "Imagen relacionada con Trapote",
+        "alt": "Imagen de archivo relacionada con Trapote",
         "rights_status": "unverified",
         "generated": false
-      }
+      },
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://los40.com/resizer/v2/FNLQMRVVLBE3DBGDJLH6BJUCOI.jpg?auth=bf4775e22c3028df2502fb3c378958bbaadaa43e23e2f662e4cfd4378a8492d9&quality=70&width=1200&height=675&focal=970,402",
+        "source": "LOS40",
+        "source_url": "https://los40.com/2026/09/30/victor-janeiro-recorre-el-puente-de-las-emociones-en-supervivientes-all-stars-que-acaba-en-bronca-entre-jorge-javier-vazquez-y-beatriz-trapote/",
+        "alt": "Imagen de archivo relacionada con Trapote",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "5f70621d794b",
@@ -5871,7 +6269,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "6cc256e84877",
@@ -5917,7 +6319,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "4674513543ed",
@@ -5956,12 +6362,23 @@
         "url": "https://fotografias.lasexta.com/clipping/cmsimages02/2025/03/18/8C429E50-42DD-429B-98BB-5207651CD917/logo-lasexta_96.jpg?crop=3508,1973,x0,y0&width=1200&height=675&optimize=low&format=jpg",
         "source": "laSexta",
         "source_url": "https://www.lasexta.com/programas/lo-de-evole/",
-        "alt": "Imagen relacionada con Jordi",
+        "alt": "Imagen de archivo relacionada con Jordi",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://fotografias.lasexta.com/clipping/cmsimages02/2025/03/18/8C429E50-42DD-429B-98BB-5207651CD917/logo-lasexta_96.jpg?crop=3508,1973,x0,y0&width=1200&height=675&optimize=low&format=jpg",
+        "source": "laSexta",
+        "source_url": "https://www.lasexta.com/programas/lo-de-evole/",
+        "alt": "Imagen de archivo relacionada con Jordi",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "06c65b4fc214",
@@ -5997,7 +6414,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "3ffa846e080e",
@@ -6028,7 +6449,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "75c332dd6345",
@@ -6063,10 +6488,21 @@
         "url": "https://www.telemadrid.es/2026/09/29/noticias/madrid/_2930116976_56896981_1300x731.jpg",
         "source": "Telemadrid",
         "source_url": "https://www.telemadrid.es/noticias/madrid/Almeida-insiste-en-que-la-acampada-deberia-ser-levantada-ya-Que-vayan-a-la-Moncloa-0-2930106966--20260929100540.html",
-        "alt": "Imagen relacionada con Ferraz",
+        "alt": "Imagen de archivo relacionada con Ferraz",
         "rights_status": "unverified",
         "generated": false
-      }
+      },
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.telemadrid.es/2026/09/29/noticias/madrid/_2930116976_56896981_1300x731.jpg",
+        "source": "Telemadrid",
+        "source_url": "https://www.telemadrid.es/noticias/madrid/Almeida-insiste-en-que-la-acampada-deberia-ser-levantada-ya-Que-vayan-a-la-Moncloa-0-2930106966--20260929100540.html",
+        "alt": "Imagen de archivo relacionada con Ferraz",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "74e71453da5e",
@@ -6131,10 +6567,21 @@
         "url": "https://www.lamoncloa.gob.es/Theme/RLaMoncloa/img/yellow/logo-compartir_v2.png",
         "source": "La Moncloa",
         "source_url": "https://www.lamoncloa.gob.es/consejodeministros/referencias/Paginas/2026/20260929-referencia-rueda-de-prensa-ministros.aspx?mode=Light",
-        "alt": "Imagen relacionada con Consejo de Ministros",
+        "alt": "Imagen de archivo relacionada con Consejo de Ministros",
         "rights_status": "unverified",
         "generated": false
-      }
+      },
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.lamoncloa.gob.es/Theme/RLaMoncloa/img/yellow/logo-compartir_v2.png",
+        "source": "La Moncloa",
+        "source_url": "https://www.lamoncloa.gob.es/consejodeministros/referencias/Paginas/2026/20260929-referencia-rueda-de-prensa-ministros.aspx?mode=Light",
+        "alt": "Imagen de archivo relacionada con Consejo de Ministros",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "4636004ffe98",
@@ -6169,10 +6616,21 @@
         "url": "https://catholicindex.org/logo-og.jpg",
         "source": "Catholic Index",
         "source_url": "https://catholicindex.org/mx/daily-readings/2026-09-30",
-        "alt": "Imagen relacionada con San Jerónimo",
+        "alt": "Imagen de archivo relacionada con San Jerónimo",
         "rights_status": "unverified",
         "generated": false
-      }
+      },
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://catholicindex.org/logo-og.jpg",
+        "source": "Catholic Index",
+        "source_url": "https://catholicindex.org/mx/daily-readings/2026-09-30",
+        "alt": "Imagen de archivo relacionada con San Jerónimo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "4a22db5d3474",
@@ -6207,10 +6665,21 @@
         "url": "https://www.eldebate.com/files/article_social/files/fp/uploads/2026/09/30/6abc50a111340.r_d.287-502-7209.png",
         "source": "El Debate",
         "source_url": "https://www.eldebate.com/cine-tv-series/20260930/daniel-guzman-pronuncia-sobre-decretos-vivienda-especial-tve-son-tomadura-pelo_464281.html",
-        "alt": "Imagen relacionada con Daniel Guzmán",
+        "alt": "Imagen de archivo relacionada con Daniel Guzmán",
         "rights_status": "unverified",
         "generated": false
-      }
+      },
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.eldebate.com/files/article_social/files/fp/uploads/2026/09/30/6abc50a111340.r_d.287-502-7209.png",
+        "source": "El Debate",
+        "source_url": "https://www.eldebate.com/cine-tv-series/20260930/daniel-guzman-pronuncia-sobre-decretos-vivienda-especial-tve-son-tomadura-pelo_464281.html",
+        "alt": "Imagen de archivo relacionada con Daniel Guzmán",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "012a4789404e",
@@ -6245,10 +6714,21 @@
         "url": "https://trends24.in/img/t24-logo-512.png",
         "source": "Trends24",
         "source_url": "https://trends24.in/spain/madrid/",
-        "alt": "Imagen relacionada con #BuenosDías",
+        "alt": "Imagen de archivo relacionada con #BuenosDías",
         "rights_status": "unverified",
         "generated": false
-      }
+      },
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://trends24.in/img/t24-logo-512.png",
+        "source": "Trends24",
+        "source_url": "https://trends24.in/spain/madrid/",
+        "alt": "Imagen de archivo relacionada con #BuenosDías",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "tremending-dea2fe1a7b26",
@@ -6300,7 +6780,20 @@
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "tremending_tweet_capture",
+      "fallback_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/tremending-images/2104910003211829628.png",
+        "source": "Público · Tremending / tuit elegido",
+        "source_url": "https://x.com/Supertramp9713/status/2104910003211829628",
+        "alt": "Captura del tuit seleccionado para Indignación por la propuesta de Feijóo para que las",
+        "kind": "tremending_tweet_capture",
+        "tweet_id": "2104910003211829628",
+        "rights_status": "third_party_unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "7aaef8c4397f",
@@ -6338,12 +6831,23 @@
         "url": "https://www.flightradar24.com/blog/wp-content/uploads/2026/09/A6-FKF.jpg",
         "source": "Flightradar24",
         "source_url": "https://www.flightradar24.com/blog/flight-tracking-news/major-incident/flydubai-flight-to-tel-aviv-diverts-to-tabuk-amid-onboard-incident/",
-        "alt": "Imagen relacionada con Flydubai",
+        "alt": "Imagen de archivo relacionada con Flydubai",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.flightradar24.com/blog/wp-content/uploads/2026/09/A6-FKF.jpg",
+        "source": "Flightradar24",
+        "source_url": "https://www.flightradar24.com/blog/flight-tracking-news/major-incident/flydubai-flight-to-tel-aviv-diverts-to-tabuk-amid-onboard-incident/",
+        "alt": "Imagen de archivo relacionada con Flydubai",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "471b39ad0922",
@@ -6430,12 +6934,23 @@
         "url": "https://imagenes.20minutos.es/files/image_1920_1080/files/fp/uploads/imagenes/2026/09/30/6abcf2f650e564-59373143.r_d.2084-693-6400.jpeg",
         "source": "20minutos",
         "source_url": "https://www.20minutos.es/nacional/vivas-declara-jueza-que-intento-contactar-con-sanchez-diez-veces-antes-crisis-pero-moncloa-le-remitio-delegacion-gobierno_7043210_0.html",
-        "alt": "Imagen relacionada con El Gobierno",
+        "alt": "Imagen de archivo relacionada con El Gobierno",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://imagenes.20minutos.es/files/image_1920_1080/files/fp/uploads/imagenes/2026/09/30/6abcf2f650e564-59373143.r_d.2084-693-6400.jpeg",
+        "source": "20minutos",
+        "source_url": "https://www.20minutos.es/nacional/vivas-declara-jueza-que-intento-contactar-con-sanchez-diez-veces-antes-crisis-pero-moncloa-le-remitio-delegacion-gobierno_7043210_0.html",
+        "alt": "Imagen de archivo relacionada con El Gobierno",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "74e71453da5e",
@@ -6496,12 +7011,23 @@
         "url": "https://www.lamoncloa.gob.es/multimedia/fotos/consejoministros/PublishingImages/2026/290926-rueda-prensa-ministros1.jpg",
         "source": "La Moncloa",
         "source_url": "https://www.lamoncloa.gob.es/consejodeministros/resumenes/Paginas/2026/290926-rueda-prensa-ministros.aspx",
-        "alt": "Imagen relacionada con Consejo de Ministros",
+        "alt": "Imagen de archivo relacionada con Consejo de Ministros",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.lamoncloa.gob.es/multimedia/fotos/consejoministros/PublishingImages/2026/290926-rueda-prensa-ministros1.jpg",
+        "source": "La Moncloa",
+        "source_url": "https://www.lamoncloa.gob.es/consejodeministros/resumenes/Paginas/2026/290926-rueda-prensa-ministros.aspx",
+        "alt": "Imagen de archivo relacionada con Consejo de Ministros",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "tremending-97bc6107fe55",
@@ -6553,7 +7079,20 @@
         "tweet_id": "2105025674163753427",
         "rights_status": "third_party_unverified",
         "generated": false
-      }
+      },
+      "fallback_image_strategy": "tremending_tweet_capture",
+      "fallback_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/tremending-images/2105025674163753427.png",
+        "source": "Público · Tremending / tuit elegido",
+        "source_url": "https://x.com/YOTAMBIENCESHA/status/2105025674163753427",
+        "alt": "Captura del tuit seleccionado para El programa de Iker Jiménez saca (pixelado) a uno de",
+        "kind": "tremending_tweet_capture",
+        "tweet_id": "2105025674163753427",
+        "rights_status": "third_party_unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "59d44e9d257c",
@@ -6588,7 +7127,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "3cc1e0370a7b",
@@ -6630,12 +7173,23 @@
         "url": "https://d3ikwi7vygxzy7.cloudfront.net/articulos/articulos-366747.jpg",
         "source": "Muchodeporte",
         "source_url": "https://www.muchodeporte.com/real-betis/de-la-fuente-llama-a-fran-garcia/",
-        "alt": "Imagen relacionada con Fran García",
+        "alt": "Imagen de archivo relacionada con Fran García",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://d3ikwi7vygxzy7.cloudfront.net/articulos/articulos-366747.jpg",
+        "source": "Muchodeporte",
+        "source_url": "https://www.muchodeporte.com/real-betis/de-la-fuente-llama-a-fran-garcia/",
+        "alt": "Imagen de archivo relacionada con Fran García",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "759fa7935aa2",
@@ -6673,12 +7227,23 @@
         "url": "https://img.rtve.es/imagenes/actualidad-portada-play/01782471243201.jpg",
         "source": "RTVE",
         "source_url": "https://www.rtve.es/play/actualidad/",
-        "alt": "Imagen relacionada con #Mañaneros30S",
+        "alt": "Imagen de archivo relacionada con #Mañaneros30S",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/actualidad-portada-play/01782471243201.jpg",
+        "source": "RTVE",
+        "source_url": "https://www.rtve.es/play/actualidad/",
+        "alt": "Imagen de archivo relacionada con #Mañaneros30S",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "10aaa9a5458f",
@@ -6724,12 +7289,23 @@
         "url": "https://album.mediaset.es/eimg/2026/09/23/en-boca-de-todos-cambia-de-horario-a-partir-del-lunes-nos-vemos-a-las-10-00-horas-16-9-aspect-ratio_da39-3.jpg",
         "source": "Cuatro",
         "source_url": "https://www.cuatro.com/television/20260923/cambia-horario-partir-lunes-diez-horas_18_020250055.html",
-        "alt": "Imagen relacionada con #EnBocaDeTodos",
+        "alt": "Imagen de archivo relacionada con #EnBocaDeTodos",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://album.mediaset.es/eimg/2026/09/23/en-boca-de-todos-cambia-de-horario-a-partir-del-lunes-nos-vemos-a-las-10-00-horas-16-9-aspect-ratio_da39-3.jpg",
+        "source": "Cuatro",
+        "source_url": "https://www.cuatro.com/television/20260923/cambia-horario-partir-lunes-diez-horas_18_020250055.html",
+        "alt": "Imagen de archivo relacionada con #EnBocaDeTodos",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "66d918da0fc2",
@@ -6778,7 +7354,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "3d26c7597620",
@@ -6816,7 +7396,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "7baec0d311dd",
@@ -6854,7 +7438,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "14ea23b0ee77",
@@ -6898,7 +7486,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "3947a38f094f",
@@ -6936,7 +7528,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "4f7955cd2ad5",
@@ -6975,7 +7571,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "46d3fd21dd4a",
@@ -7017,12 +7617,23 @@
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20260930122417_1200.jpg",
         "source": "Europa Press",
         "source_url": "https://www.europapress.es/madrid/noticia-almeida-anuncia-policia-municipal-vallara-oso-madrono-vandalizado-pintadas-amenazantes-ayuso-20260930122417.html",
-        "alt": "Imagen relacionada con Madroño",
+        "alt": "Imagen de archivo relacionada con Madroño",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20260930122417_1200.jpg",
+        "source": "Europa Press",
+        "source_url": "https://www.europapress.es/madrid/noticia-almeida-anuncia-policia-municipal-vallara-oso-madrono-vandalizado-pintadas-amenazantes-ayuso-20260930122417.html",
+        "alt": "Imagen de archivo relacionada con Madroño",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "d84c75bdc32d",
@@ -7059,12 +7670,23 @@
         "url": "https://www.programacion-tv-hoy.es/images/social-programacion-tv-hoy.jpg",
         "source": "Programación Cuatro",
         "source_url": "https://www.programacion-tv-hoy.es/canal/cuatro/2026-09-30",
-        "alt": "Imagen relacionada con #TEM30S",
+        "alt": "Imagen de archivo relacionada con #TEM30S",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.programacion-tv-hoy.es/images/social-programacion-tv-hoy.jpg",
+        "source": "Programación Cuatro",
+        "source_url": "https://www.programacion-tv-hoy.es/canal/cuatro/2026-09-30",
+        "alt": "Imagen de archivo relacionada con #TEM30S",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "853c6fe1c29c",
@@ -7101,12 +7723,23 @@
         "url": "https://fotografias.antena3.com/clipping/cmsimages01/2026/09/29/B9746A3F-9BBA-4389-B006-57599B936990/capitulo-658-suenos-libertad-29-septiembre-gabriel-furioso-ser-testigo-carino-trabajadores-marta-andres_97.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
         "source": "Antena 3",
         "source_url": "https://www.antena3.com/videos/despedida-marta-andres-desata-rabia-gabriel-suenos-libertad_202609306abccebd2c5fd818d63e5eef.html",
-        "alt": "Imagen relacionada con #mafin",
+        "alt": "Imagen de archivo relacionada con #mafin",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://fotografias.antena3.com/clipping/cmsimages01/2026/09/29/B9746A3F-9BBA-4389-B006-57599B936990/capitulo-658-suenos-libertad-29-septiembre-gabriel-furioso-ser-testigo-carino-trabajadores-marta-andres_97.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
+        "source": "Antena 3",
+        "source_url": "https://www.antena3.com/videos/despedida-marta-andres-desata-rabia-gabriel-suenos-libertad_202609306abccebd2c5fd818d63e5eef.html",
+        "alt": "Imagen de archivo relacionada con #mafin",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "7432f9e8de00",
@@ -7143,12 +7776,23 @@
         "url": "https://www.catalunyapress.es/images/showid/8159813",
         "source": "CatalunyaPress",
         "source_url": "https://www.catalunyapress.es/articulo/sociedad/2026-09-29/6033108-video-risas-desahucios-abusos-franquismo-mediaset-sois-unos-sinverguenzas",
-        "alt": "Imagen relacionada con Roberto Sotomayor",
+        "alt": "Imagen de archivo relacionada con Roberto Sotomayor",
         "rights_status": "unverified",
         "generated": false
       },
       "image_status": "ready",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.catalunyapress.es/images/showid/8159813",
+        "source": "CatalunyaPress",
+        "source_url": "https://www.catalunyapress.es/articulo/sociedad/2026-09-29/6033108-video-risas-desahucios-abusos-franquismo-mediaset-sois-unos-sinverguenzas",
+        "alt": "Imagen de archivo relacionada con Roberto Sotomayor",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image_choice": "fallback"
     },
     {
       "id": "da534ef297a9",
@@ -7188,7 +7832,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "4c7de2c3da6d",
@@ -7277,9 +7925,28 @@
         }
       ],
       "image_strategy": "existing_web_image",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; no se incorporó foto en esta pasada directa."
+      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; no se incorporó foto en esta pasada directa.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.sportsnet.ca/wp-content/uploads/2026/06/Untitled-design-copy-2-3.jpg",
+        "source": "Associated Press / Sportsnet",
+        "source_url": "https://www.sportsnet.ca/soccer/article/ronaldo-announces-departure-from-portugals-national-team-camp/",
+        "alt": "Imagen de archivo relacionada con Portugal",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://www.sportsnet.ca/wp-content/uploads/2026/06/Untitled-design-copy-2-3.jpg",
+        "source": "Associated Press / Sportsnet",
+        "source_url": "https://www.sportsnet.ca/soccer/article/ronaldo-announces-departure-from-portugals-national-team-camp/",
+        "alt": "Imagen de archivo relacionada con Portugal",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "4bf2961cf967",
@@ -7321,7 +7988,11 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente."
+      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "f47eaf26f753",
@@ -7360,9 +8031,28 @@
         }
       ],
       "image_strategy": "existing_web_image",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente."
+      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img-prod-api2.mediasetplay.mediaset.it/api/images/mp/v5/esp/M740000200239700/image_keyframe_poster/1200/630?r=2O7CavFiGhSGTPRtwIwZkiofGc8=",
+        "source": "Mediaset Infinity",
+        "source_url": "https://www.mediasetinfinity.es/programas-tv/first-dates/temporada-8/episodios/programa-2397-40_020253665/player/",
+        "alt": "Imagen de archivo relacionada con #firstdates30s",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img-prod-api2.mediasetplay.mediaset.it/api/images/mp/v5/esp/M740000200239700/image_keyframe_poster/1200/630?r=2O7CavFiGhSGTPRtwIwZkiofGc8=",
+        "source": "Mediaset Infinity",
+        "source_url": "https://www.mediasetinfinity.es/programas-tv/first-dates/temporada-8/episodios/programa-2397-40_020253665/player/",
+        "alt": "Imagen de archivo relacionada con #firstdates30s",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "9f7414929f5e",
@@ -7405,9 +8095,28 @@
         }
       ],
       "image_strategy": "existing_web_image",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente."
+      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://e2.hespress.com/wp-content/overlay/2026/09/mounir_limouri.webp?v2",
+        "source": "Hespress",
+        "source_url": "https://en.hespress.com/146402-tangier-mayor-appears-before-prosecutor-over-ballot-papers-case.html",
+        "alt": "Imagen de archivo relacionada con Mounir",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://e2.hespress.com/wp-content/overlay/2026/09/mounir_limouri.webp?v2",
+        "source": "Hespress",
+        "source_url": "https://en.hespress.com/146402-tangier-mayor-appears-before-prosecutor-over-ballot-papers-case.html",
+        "alt": "Imagen de archivo relacionada con Mounir",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "a7a05d7301ca",
@@ -7444,7 +8153,7 @@
         }
       ],
       "image_strategy": "existing_web_image",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente.",
       "group_id": "grp-lidlt11-gala8-20260930",
@@ -7474,7 +8183,26 @@
           "name": "Gema",
           "revision": 2
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://album.mediaset.es/eimg/2026/09/29/lidlt11-pgm8-segunda-hoguera-chicas-3-16-9-aspect-ratio-default-1055807_da39.jpg",
+        "source": "Mediaset España",
+        "source_url": "https://www.mediaset.es/comunicacion/television/telecinco/20260929/isla-tentaciones-programa-ocho_18_020298741.html?amp=true",
+        "alt": "Imagen de archivo relacionada con #LaIslaDeLasTentaciones8",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://album.mediaset.es/eimg/2026/09/29/lidlt11-pgm8-segunda-hoguera-chicas-3-16-9-aspect-ratio-default-1055807_da39.jpg",
+        "source": "Mediaset España",
+        "source_url": "https://www.mediaset.es/comunicacion/television/telecinco/20260929/isla-tentaciones-programa-ocho_18_020298741.html?amp=true",
+        "alt": "Imagen de archivo relacionada con #LaIslaDeLasTentaciones8",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "54e75fa9750c",
@@ -7539,9 +8267,28 @@
         }
       ],
       "image_strategy": "existing_web_image",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente."
+      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/almeida-adoquines-cuchillos-acampada-sol-delegado-gobierno/01790765809800.jpg",
+        "source": "RTVE",
+        "source_url": "https://www.rtve.es/noticias/20260930/almeida-adoquines-cuchillos-acampada-sol-delegado-gobierno/17247256.shtml",
+        "alt": "Imagen de archivo relacionada con Almeida",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.rtve.es/imagenes/almeida-adoquines-cuchillos-acampada-sol-delegado-gobierno/01790765809800.jpg",
+        "source": "RTVE",
+        "source_url": "https://www.rtve.es/noticias/20260930/almeida-adoquines-cuchillos-acampada-sol-delegado-gobierno/17247256.shtml",
+        "alt": "Imagen de archivo relacionada con Almeida",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "3d2bfcd082db",
@@ -7579,9 +8326,28 @@
         }
       ],
       "image_strategy": "existing_web_image",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente."
+      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/llega-gran-dia-promesa-vive-noche-especial-1-con-boda-curro-angela-evento-del-ano/01790337870833.jpg",
+        "source": "RTVE",
+        "source_url": "https://www.rtve.es/rtve/20260925/llega-gran-dia-promesa-vive-noche-especial-1-con-boda-curro-angela-evento-del-ano/17240525.shtml",
+        "alt": "Imagen de archivo relacionada con #LaPromesa",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.rtve.es/imagenes/llega-gran-dia-promesa-vive-noche-especial-1-con-boda-curro-angela-evento-del-ano/01790337870833.jpg",
+        "source": "RTVE",
+        "source_url": "https://www.rtve.es/rtve/20260925/llega-gran-dia-promesa-vive-noche-especial-1-con-boda-curro-angela-evento-del-ano/17240525.shtml",
+        "alt": "Imagen de archivo relacionada con #LaPromesa",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "d48c6c588f9a",
@@ -7640,9 +8406,28 @@
         }
       ],
       "image_strategy": "existing_web_image",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente."
+      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://album.mediaset.es/eimg/2026/09/25/lidlt11-pgm7-2-16-9-aspect-ratio-default-1055512_da39.jpg",
+        "source": "Mediaset España",
+        "source_url": "https://www.mediaset.es/comunicacion/television/telecinco/20260925/isla-tentaciones-program-programa-siete_18_020270745.html",
+        "alt": "Imagen de archivo relacionada con Mara",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://album.mediaset.es/eimg/2026/09/25/lidlt11-pgm7-2-16-9-aspect-ratio-default-1055512_da39.jpg",
+        "source": "Mediaset España",
+        "source_url": "https://www.mediaset.es/comunicacion/television/telecinco/20260925/isla-tentaciones-program-programa-siete_18_020270745.html",
+        "alt": "Imagen de archivo relacionada con Mara",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "4b85f530992d",
@@ -7690,13 +8475,32 @@
         }
       ],
       "image_strategy": "existing_web_image",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente.",
       "trend_names": [
         "Puerta del Sol"
       ],
-      "group_leader_id": "4b85f530992d"
+      "group_leader_id": "4b85f530992d",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/acampada-sol-vivienda-hoy-ultima-hora-cronica/01790587632654.jpg",
+        "source": "RTVE",
+        "source_url": "https://www.rtve.es/noticias/20261001/acampada-sol-vivienda-hoy-ultima-hora-cronica/17248350.shtml",
+        "alt": "Imagen de archivo relacionada con Puerta del Sol",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.rtve.es/imagenes/acampada-sol-vivienda-hoy-ultima-hora-cronica/01790587632654.jpg",
+        "source": "RTVE",
+        "source_url": "https://www.rtve.es/noticias/20261001/acampada-sol-vivienda-hoy-ultima-hora-cronica/17248350.shtml",
+        "alt": "Imagen de archivo relacionada con Puerta del Sol",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "ff7da32ed7b2",
@@ -7751,9 +8555,13 @@
           "name": "#FelizJueves",
           "rank": 3
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     }
   ],
-  "updated_at": "2026-10-01T07:47:30+02:00",
+  "updated_at": "2026-10-01T06:22:17.366400Z",
   "count": 357
 }
