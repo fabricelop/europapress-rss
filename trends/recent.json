@@ -1,28 +1,31 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-10-01T05:31:16+02:00",
-  "primary_source": "consensus",
-  "selection_method": "consensus",
+  "captured_at": "2026-10-01T05:40:58+02:00",
+  "primary_source": "snaplytics",
+  "selection_method": "fresh-anchor",
   "sources_used": [
     "getdaytrends",
+    "snaplytics",
     "trendswe"
   ],
   "source_count": 5,
-  "non_stale_source_count": 3,
-  "fresh_sources": [],
+  "non_stale_source_count": 4,
+  "fresh_sources": [
+    "snaplytics"
+  ],
   "reliability": "medium",
   "top10": [
     "#LaIslaDeLasTentaciones8",
-    "#RTXOn",
-    "GEMA",
+    "#RTXON",
     "#LaFreidoraDeLidl",
     "Puerta del Sol",
     "Portugal",
-    "Paola",
     "Cristiano",
+    "#TierraDeNadie3",
     "#TEM30S",
-    "#TierraDeNadie3"
+    "Almeida",
+    "Jorge Jesús"
   ],
   "items": [
     {
@@ -35,82 +38,101 @@
     },
     {
       "rank": 2,
-      "name": "#RTXOn",
+      "name": "#RTXON",
       "entered_top10_at": "2026-09-30T21:01:28+02:00",
-      "movement": "up",
-      "previous_rank": 3,
-      "rank_delta": 1
+      "movement": "flat",
+      "previous_rank": 2,
+      "rank_delta": 0
     },
     {
       "rank": 3,
-      "name": "GEMA",
-      "entered_top10_at": "2026-10-01T01:40:59+02:00",
-      "movement": "down",
-      "previous_rank": 2,
-      "rank_delta": -1
+      "name": "#LaFreidoraDeLidl",
+      "entered_top10_at": "2026-09-30T16:40:51+02:00",
+      "movement": "up",
+      "previous_rank": 4,
+      "rank_delta": 1
     },
     {
       "rank": 4,
-      "name": "#LaFreidoraDeLidl",
-      "entered_top10_at": "2026-09-30T16:40:51+02:00",
-      "movement": "flat",
-      "previous_rank": 4,
-      "rank_delta": 0
+      "name": "Puerta del Sol",
+      "entered_top10_at": "2026-09-30T03:40:50+02:00",
+      "movement": "up",
+      "previous_rank": 5,
+      "rank_delta": 1
     },
     {
       "rank": 5,
-      "name": "Puerta del Sol",
-      "entered_top10_at": "2026-09-30T03:40:50+02:00",
-      "movement": "flat",
-      "previous_rank": 5,
-      "rank_delta": 0
+      "name": "Portugal",
+      "entered_top10_at": "2026-09-30T21:41:00+02:00",
+      "movement": "up",
+      "previous_rank": 6,
+      "rank_delta": 1
     },
     {
       "rank": 6,
-      "name": "Portugal",
-      "entered_top10_at": "2026-09-30T21:41:00+02:00",
-      "movement": "flat",
-      "previous_rank": 6,
-      "rank_delta": 0
+      "name": "Cristiano",
+      "entered_top10_at": "2026-09-30T22:41:05+02:00",
+      "movement": "up",
+      "previous_rank": 8,
+      "rank_delta": 2
     },
     {
       "rank": 7,
-      "name": "Paola",
-      "entered_top10_at": "2026-10-01T05:31:16+02:00",
+      "name": "#TierraDeNadie3",
+      "entered_top10_at": "2026-10-01T04:41:01+02:00",
+      "movement": "up",
+      "previous_rank": 10,
+      "rank_delta": 3
+    },
+    {
+      "rank": 8,
+      "name": "#TEM30S",
+      "entered_top10_at": "2026-10-01T04:31:16+02:00",
+      "movement": "up",
+      "previous_rank": 9,
+      "rank_delta": 1
+    },
+    {
+      "rank": 9,
+      "name": "Almeida",
+      "entered_top10_at": "2026-10-01T05:40:58+02:00",
       "movement": "new",
       "previous_rank": null,
       "rank_delta": null
     },
     {
-      "rank": 8,
-      "name": "Cristiano",
-      "entered_top10_at": "2026-09-30T22:41:05+02:00",
-      "movement": "down",
-      "previous_rank": 7,
-      "rank_delta": -1
-    },
-    {
-      "rank": 9,
-      "name": "#TEM30S",
-      "entered_top10_at": "2026-10-01T04:31:16+02:00",
-      "movement": "flat",
-      "previous_rank": 9,
-      "rank_delta": 0
-    },
-    {
       "rank": 10,
-      "name": "#TierraDeNadie3",
-      "entered_top10_at": "2026-10-01T04:41:01+02:00",
-      "movement": "flat",
-      "previous_rank": 10,
-      "rank_delta": 0
+      "name": "Jorge Jesús",
+      "entered_top10_at": "2026-10-01T05:40:58+02:00",
+      "movement": "new",
+      "previous_rank": null,
+      "rank_delta": null
     }
   ],
   "unchanged_from_previous": false,
   "new_entries": [
-    "Paola"
+    "Almeida",
+    "Jorge Jesús"
   ],
   "upcoming": [
+    {
+      "name": "Amnistía Internacional",
+      "social_source_count": 3,
+      "social_sources": [
+        "getdaytrends",
+        "snaplytics",
+        "trendswe"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 14.0,
+      "movement": "up",
+      "first_detected_at": "2026-10-01T00:37:09+02:00",
+      "news_source_count": 6,
+      "news_event_id": "bc1bd73387ea",
+      "news_title": "Amnistía Internacional denuncia torturas y vejaciones de militares a migrantes en Ceuta: Defensa la envía al juzgado",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-09-30T14:53:57.005436Z"
+    },
     {
       "name": "Jorge Jesus",
       "social_source_count": 2,
@@ -129,21 +151,21 @@
       "news_first_seen": "2026-09-30T10:43:35.556797Z"
     },
     {
-      "name": "Amnistía Internacional",
+      "name": "Flydubai",
       "social_source_count": 2,
       "social_sources": [
-        "getdaytrends",
+        "snaplytics",
         "trendswe"
       ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 15.0,
-      "movement": "down",
-      "first_detected_at": "2026-10-01T00:37:09+02:00",
-      "news_source_count": 6,
-      "news_event_id": "bc1bd73387ea",
-      "news_title": "Amnistía Internacional denuncia torturas y vejaciones de militares a migrantes en Ceuta: Defensa la envía al juzgado",
+      "best_observed_rank": 17,
+      "mean_observed_rank": 18.0,
+      "movement": "up",
+      "first_detected_at": "2026-10-01T04:41:01+02:00",
+      "news_source_count": 8,
+      "news_event_id": "8daa966cd971",
+      "news_title": "Israel califica de \"ataque terrorista yihadista\" el incidente en el avión de Flydubai: \"Un piloto apuñaló al otro e intentó imitar el 11-S\"",
       "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-30T14:53:57.005436Z"
+      "news_first_seen": "2026-09-30T17:42:16.878373Z"
     },
     {
       "name": "Nacho",
@@ -154,13 +176,47 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 14.0,
-      "movement": "down",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T02:40:58+02:00",
       "news_source_count": 1,
       "news_event_id": "4f1a98344a63",
       "news_title": "Nacho Duato cuenta por qué dejó de hablar con Miguel Bosé después de años de amistad: \"Ahí dije que no\"",
       "news_status": "WAITING",
       "news_first_seen": "2026-10-01T00:23:41.047824Z"
+    },
+    {
+      "name": "Sandra",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "trendswe"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 15.5,
+      "movement": "new",
+      "first_detected_at": "2026-10-01T05:40:58+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Daniel Guzmán",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "trendswe"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 17.0,
+      "movement": "new",
+      "first_detected_at": "2026-10-01T05:40:58+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
     },
     {
       "name": "Josue",
@@ -180,22 +236,6 @@
       "news_first_seen": null
     },
     {
-      "name": "#Flydubai",
-      "social_source_count": 1,
-      "social_sources": [
-        "trendswe"
-      ],
-      "best_observed_rank": 19,
-      "mean_observed_rank": 19.0,
-      "movement": "down",
-      "first_detected_at": "2026-10-01T04:41:01+02:00",
-      "news_source_count": 8,
-      "news_event_id": "8daa966cd971",
-      "news_title": "Israel califica de \"ataque terrorista yihadista\" el incidente en el avión de Flydubai: \"Un piloto apuñaló al otro e intentó imitar el 11-S\"",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-09-30T17:42:16.878373Z"
-    },
-    {
       "name": "Sindicato de Inquilinas",
       "social_source_count": 1,
       "social_sources": [
@@ -203,7 +243,7 @@
       ],
       "best_observed_rank": 18,
       "mean_observed_rank": 18.0,
-      "movement": "new",
+      "movement": "flat",
       "first_detected_at": "2026-10-01T05:31:16+02:00",
       "news_source_count": 7,
       "news_event_id": "948072c1d49b",
@@ -212,24 +252,17 @@
       "news_first_seen": "2026-09-30T15:22:41.832029Z"
     }
   ],
-  "anticipated_entries": [
-    {
-      "name": "Paola",
-      "first_detected_at": "2026-10-01T05:11:08+02:00",
-      "entered_top10_at": "2026-10-01T05:31:16+02:00",
-      "lead_minutes": 20
-    }
-  ],
+  "anticipated_entries": [],
   "upcoming_method": "social-ranks-11-20 + TTiTTulares coverage",
   "sources": {
     "trends24": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790825476",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://trends24.in/spain/?_=1790826058",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T05:31:16+02:00"
+      "fetched_at": "2026-10-01T05:40:58+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -254,7 +287,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T05:31:16+02:00"
+      "fetched_at": "2026-10-01T05:40:59+02:00"
     },
     "tweets24": {
       "ok": false,
@@ -263,7 +296,7 @@
       "update_hint": "Updated 8 hours ago",
       "age_minutes": 480.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T05:31:17+02:00"
+      "fetched_at": "2026-10-01T05:40:59+02:00"
     },
     "superx": {
       "ok": true,
@@ -293,46 +326,46 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T05:31:18+02:00"
+      "fetched_at": "2026-10-01T05:41:00+02:00"
     },
     "twtdata": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790825478",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://twtdata.com/twitter-trends/spain/?_=1790826060",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T05:31:18+02:00"
+      "fetched_at": "2026-10-01T05:41:00+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "#LaIslaDeLasTentaciones8",
-        "Gema",
         "#RTXON",
         "#LaFreidoraDeLidl",
         "Puerta del Sol",
         "Portugal",
         "Cristiano",
-        "Mara",
-        "#tem30s",
         "#TierraDeNadie3",
+        "#TEM30S",
         "Almeida",
-        "Paola",
         "Jorge Jesús",
-        "Nacho",
+        "Gema",
         "Amnistía Internacional",
-        "Josué",
         "Sandra",
-        "Flydubai",
+        "Daniel Guzmán",
         "Náyades",
-        "Daniel Guzmán"
+        "Junts",
+        "Flydubai",
+        "el boe",
+        "Madroño",
+        "Fran García"
       ],
       "error": null,
-      "update_hint": "Trending now Oct 1, 2026 02:00 UTC",
-      "age_minutes": 91.3,
-      "freshness": "stale",
-      "fetched_at": "2026-10-01T05:31:18+02:00"
+      "update_hint": "Trending now Oct 1, 2026 03:00 UTC",
+      "age_minutes": 41.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-10-01T05:41:01+02:00"
     },
     "fowtools": {
       "ok": true,
@@ -360,18 +393,18 @@
       ],
       "error": null,
       "update_hint": "Updated: October 01, 2026 at 03:00 AM # Trend Type Actions 1 #LaIslaDeLasTentaciones8 Has",
-      "age_minutes": 151.3,
+      "age_minutes": 161.0,
       "freshness": "stale",
-      "fetched_at": "2026-10-01T05:31:18+02:00"
+      "fetched_at": "2026-10-01T05:41:01+02:00"
     },
     "cyberkendra": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790825480",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://trends.cyberkendra.com/spain/?_=1790826062",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T05:31:20+02:00"
+      "fetched_at": "2026-10-01T05:41:02+02:00"
     },
     "globaltwittertrends": {
       "ok": false,
@@ -380,7 +413,7 @@
       "update_hint": "updated 30 minutes ago",
       "age_minutes": 30.0,
       "freshness": "invalid",
-      "fetched_at": "2026-10-01T05:31:21+02:00"
+      "fetched_at": "2026-10-01T05:41:03+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -410,16 +443,16 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-01T05:31:21+02:00"
+      "fetched_at": "2026-10-01T05:41:03+02:00"
     },
     "twittertrending": {
       "ok": false,
       "trends": [],
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790825484",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.twitter-trending.com/spain/es?_=1790826066",
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-01T05:31:24+02:00"
+      "fetched_at": "2026-10-01T05:41:06+02:00"
     }
   }
 }
