@@ -23,6 +23,7 @@ const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
 const TRACE_COMMENT_ID=5859738015;
 const STALE_MS=20*60*1000;
+const START_ACK_MS=30*1000;
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -170,17 +171,24 @@ function manualFallback(items,request){
   if(!command_id||!requested_at)return null;
   const marks=items.filter(c=>String(c.body||"").startsWith(STATUS_PREFIX+command_id+"\n"));
   const last=marks.at(-1);
-  const status=last?field(last.body,"status")||"REQUESTED":"REQUESTED";
+  const rawStatus=last?field(last.body,"status")||"REQUESTED":"REQUESTED";
   const started=marks.find(c=>field(c.body,"status")==="RUNNING");
   const started_at=started?(field(started.body,"started_at")||started.created_at):null;
-  const finished_at=["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null;
+  const lastActivity=last?.updated_at||last?.created_at||requested_at;
+  const noStart=rawStatus==="REQUESTED"&&!started_at&&Date.now()-stamp(requested_at)>=START_ACK_MS;
+  const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(lastActivity)>=STALE_MS;
+  const status=(noStart||staleRunning)?"ERROR":rawStatus;
+  const finished_at=(noStart||staleRunning)?new Date().toISOString():(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
+  const timeoutMessage=noStart
+    ?"No se ha recibido RUNNING en 30 segundos: el PC no ha recogido la orden móvil."
+    :staleRunning?"La ejecución no actualiza su estado desde hace más de 20 minutos.":null;
   return {
     run_id:command_id,command_id,source:"mobile",source_label:"Móvil→PC",status,
     phase:status==="REQUESTED"?"preparing":status==="RUNNING"?"running":status==="DONE"?"closing":"error",
-    current:0,total:0,event_id:null,title:null,requested_at,started_at,updated_at:last?.updated_at||last?.created_at||requested_at,finished_at,
+    current:0,total:0,event_id:null,title:null,requested_at,started_at,updated_at:lastActivity,finished_at,
     start_delay_seconds:started_at?seconds(requested_at,started_at):null,
     duration_seconds:started_at&&finished_at?seconds(started_at,finished_at):null,
-    message:last?field(last.body,"message"):"Orden móvil registrada; esperando al PC para abrir el chat.",summary:null,incident_count:0,incidents:[]
+    message:timeoutMessage||(last?field(last.body,"message"):"Orden móvil registrada; esperando al PC para abrir el chat (máx. 30 s)."),summary:null,incident_count:0,incidents:[]
   }
 }
 
@@ -205,8 +213,11 @@ export default async function handler(req,res){
     if(latest&&["REQUESTED","RUNNING"].includes(latest.status)){
       const freshAt=latest.telemetry_comment_updated_at||latest.updated_at||latest.started_at||latest.requested_at;
       const age=Date.now()-stamp(freshAt);
-      if(Number.isFinite(age)&&age<STALE_MS)active=latest;
-      else latest={...latest,status:"ERROR",finished_at:latest.updated_at||new Date().toISOString(),message:latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos."}
+      const deadline=latest.status==="REQUESTED"?START_ACK_MS:STALE_MS;
+      if(Number.isFinite(age)&&age>=0&&age<deadline)active=latest;
+      else latest={...latest,status:"ERROR",finished_at:new Date().toISOString(),message:latest.status==="REQUESTED"
+        ?"No se ha recibido RUNNING en 30 segundos: el PC no ha recogido la orden móvil."
+        :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")}
     }
 
     let fallback=null;
@@ -216,7 +227,8 @@ export default async function handler(req,res){
       if(fallback&&["REQUESTED","RUNNING"].includes(fallback.status)){
         const newer=!latest||stamp(fallback.requested_at)>stamp(latest.updated_at||latest.finished_at||latest.requested_at);
         const age=Date.now()-stamp(fallback.updated_at||fallback.started_at||fallback.requested_at);
-        if(newer&&Number.isFinite(age)&&age>=0&&age<20*60*1000)active=fallback
+        const deadline=fallback.status==="REQUESTED"?START_ACK_MS:STALE_MS;
+        if(newer&&Number.isFinite(age)&&age>=0&&age<deadline)active=fallback
       }
     }
 
