@@ -768,7 +768,19 @@ function renderReady(list,preservedImages=new Map()){
   async function close(action,question){if(!confirm(question))return;const id=String(item.event_id||""),old=[...model.prepared];pendingClosed.add(id);openCards.delete(id);persistUiState();model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();try{await api(action,{event_id:item.event_id});toast(action==="published"?(imageInFlight?"Publicada; imagen pendiente cancelada":"Marcada como publicada"):"Noticia desestimada");await load(true)}catch(e){pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message)}}
   card.querySelector(".published").onclick=()=>close("published","¿Confirmas que ya has publicado esta noticia?");
   card.querySelector(".quickDismiss").onclick=()=>close("dismiss","¿Desestimar esta noticia?");
-  card.querySelector(".rework").onclick=async()=>{const button=card.querySelector(".rework");button.disabled=true;try{await api("rework",{event_id:item.event_id});toast("Nueva revisión de remate e IA solicitada");await load(true)}catch(e){button.disabled=false;toast(e.message)}};
+  card.querySelector(".rework").onclick=async()=>{
+    const button=card.querySelector(".rework"),id=String(item.event_id||""),old=[...model.prepared];
+    button.disabled=true;button.textContent="Enviando…";toast("Enviando a reelaboración…");
+    pendingClosed.add(id);openCards.delete(id);persistUiState();model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();
+    try{
+      await api("rework",{event_id:item.event_id});
+      toast("Reelaboración enviada · remate + IA");
+      pendingClosed.delete(id);persistUiState();
+      await load(true)
+    }catch(e){
+      pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message)
+    }
+  };
   list.appendChild(card)
  }
 }
