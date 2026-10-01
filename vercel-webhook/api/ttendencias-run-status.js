@@ -20,12 +20,14 @@ const TRIGGER_BRANCH="control/ttendencias-run-trigger";
 const TRIGGER_PATH="trends/run-now-trigger.json";
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
+const TRACE_COMMENT_ID=5859532515;
 const READY_MARKER="TTENDENCIAS WORK COMMIT TRIGGER READY";
 const STALE_MS=20*60*1000;
 const START_ACK_MS=3*60*1000;
 const RUNTIME_PATH="trends/editorial-runtime.json";
 const EXPLAINED_PATH="trends/telegram-manual-explained.json";
 const MAIN_BRANCH="main";
+let readyCache={at:0,value:null};
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -38,41 +40,36 @@ async function gh(url,options={}){
   }})
 }
 async function comments(){
+  const direct=await gh("https://api.github.com/repos/"+REPO+"/issues/comments/"+TRACE_COMMENT_ID);
+  if(direct.ok)return [await direct.json()];
   const since=new Date(Date.now()-24*60*60*1000).toISOString();
-  let url="https://api.github.com/repos/"+REPO+"/issues/"+PR+"/comments?per_page=100&since="+encodeURIComponent(since);
-  const items=[];
-  for(let page=0;page<10&&url;page++){
-    const r=await gh(url);
-    if(!r.ok)throw new Error("GitHub comments: "+r.status+" "+await r.text());
-    items.push(...await r.json());
-    const link=r.headers.get("link")||"";
-    const next=link.match(/<([^>]+)>;\s*rel="next"/);
-    url=next?next[1]:null
-  }
-  return items
+  const r=await gh("https://api.github.com/repos/"+REPO+"/issues/"+PR+"/comments?per_page=100&since="+encodeURIComponent(since));
+  if(!r.ok)throw new Error("GitHub RUNTRACE: "+r.status+" "+await r.text());
+  return (await r.json()).filter(x=>String(x.body||"").startsWith(TRACE_PREFIX))
 }
 async function triggerReady(){
+  if(readyCache.value!==null&&Date.now()-readyCache.at<10*60*1000)return readyCache.value;
   const r=await gh("https://api.github.com/repos/"+REPO+"/pulls/"+PR);
   if(!r.ok)throw new Error("GitHub PR: "+r.status+" "+await r.text());
   const pr=await r.json();
-  return String(pr.body||"").includes(READY_MARKER)
+  const value=String(pr.body||"").includes(READY_MARKER);
+  readyCache={at:Date.now(),value};
+  return value
 }
 async function readTrigger(){
-  const u="https://api.github.com/repos/"+REPO+"/contents/"+TRIGGER_PATH+"?ref="+encodeURIComponent(TRIGGER_BRANCH);
-  const r=await gh(u);
-  if(!r.ok)return {doc:{}};
-  const f=await r.json();
-  const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-  return {doc:JSON.parse(raw||"{}")}
+  try{
+    const u="https://raw.githubusercontent.com/"+REPO+"/"+TRIGGER_BRANCH+"/"+TRIGGER_PATH+"?t="+Date.now();
+    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttendencias-run-status-read"}});
+    if(!r.ok)return {doc:{}};
+    return {doc:JSON.parse(await r.text()||"{}")}
+  }catch(_){return {doc:{}}}
 }
 async function readMainJson(path){
   try{
-    const u="https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(MAIN_BRANCH);
-    const r=await gh(u);
+    const u="https://raw.githubusercontent.com/"+REPO+"/"+MAIN_BRANCH+"/"+path+"?t="+Date.now();
+    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttendencias-run-status-read"}});
     if(!r.ok)return {};
-    const f=await r.json();
-    const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-    return JSON.parse(raw||"{}");
+    return JSON.parse(await r.text()||"{}")
   }catch(_){return {}}
 }
 function field(body,name){
@@ -250,6 +247,13 @@ export default async function handler(req,res){
     return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,can_run:enabled&&authorized(req)})
   }catch(e){
     console.error(e);
-    return res.status(500).json({ok:false,error:String(e.message||e)})
+    const raw=String(e?.message||e);
+    const reset=raw.match(/resets at\s+(\d{9,})/i);
+    const retry_at=reset?new Date(Number(reset[1])*1000).toISOString():null;
+    const runtime=runtimeFallback(await readMainJson(RUNTIME_PATH));
+    const persisted=persistedExplanationFallback(await readMainJson(EXPLAINED_PATH));
+    const last_run=runtime||persisted||null;
+    const error=/rate limit exceeded/i.test(raw)?"GitHub temporalmente limitado; se conserva el último estado visible.":raw.slice(0,220);
+    return res.status(503).json({ok:false,error,retry_at,degraded:true,last_run})
   }
 }
