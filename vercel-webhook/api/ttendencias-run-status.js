@@ -259,8 +259,22 @@ export default async function handler(req,res){
         :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")}
     }
     if(!active&&fallback&&["REQUESTED","RUNNING"].includes(fallback.status)){
-      const age=Date.now()-stamp(fallback.updated_at||fallback.started_at||fallback.requested_at);
-      if(Number.isFinite(age)&&age>=0&&age<20*60*1000)active=fallback
+      const reqAt=stamp(fallback.requested_at||fallback.started_at);
+      const terminalAfterRequest=traces
+        .map(normalizeTrace)
+        .filter(t=>terminalStatus(t.status))
+        .some(t=>stamp(t.finished_at||t.updated_at||t.started_at)>=reqAt);
+      const runtimeDone=runtimeFallback(runtimeDoc);
+      const runtimeAfterRequest=runtimeDone&&terminalStatus(runtimeDone.status)&&
+        stamp(runtimeDone.finished_at||runtimeDone.updated_at||runtimeDone.started_at)>=reqAt;
+
+      // Un ACK "launched" solo describe el hand-off al navegador. Si ya existe
+      // un cierre editorial posterior a esa solicitud, ese ACK no puede seguir
+      // manteniendo la ejecución artificialmente activa.
+      if(!terminalAfterRequest&&!runtimeAfterRequest){
+        const age=Date.now()-stamp(fallback.updated_at||fallback.started_at||fallback.requested_at);
+        if(Number.isFinite(age)&&age>=0&&age<20*60*1000)active=fallback
+      }
     }
 
     if(active)return res.status(200).json({ok:true,enabled,active:true,...active,last_run:null,can_run:enabled&&authorized(req)});
