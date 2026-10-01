@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["ttittulares/tremending/items.json"]
+    paths: ["ttittulares/tremending/items.json", ".github/workflows/tremending-capture.yml"]
 
 permissions:
   contents: write
