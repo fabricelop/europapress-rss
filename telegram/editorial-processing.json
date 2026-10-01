@@ -20636,7 +20636,7 @@
         }
       ],
       "selected_at": "2026-10-01T13:03:21.385468Z",
-      "status": "PROCESSING",
+      "status": "READY",
       "selection_mode": "REWRITE",
       "revision": 2,
       "parent_event_id": null,
@@ -20739,7 +20739,8 @@
       },
       "rewrite_request": "CONTRATO: conservar hechos, fuentes y texto factual de preserved_editorial sin cambios. NO buscar ni reinvestigar. Cambiar exclusivamente remate e imagen IA; un intento ImageGen desde el chat, nunca bloquear READY. Cambia solo el remate y genera una nueva imagen IA. Conserva exactamente hechos, fuentes y texto factual. No reinvestigues.",
       "rewrite_requested_at": "2026-10-01T14:51:26.679Z",
-      "rewrite_version": 1
+      "rewrite_version": 1,
+      "delivered_at": "2026-10-01T14:01:00Z"
     },
     {
       "event_id": "manual-49be1330c7fe",
@@ -21038,7 +21039,55 @@
       "rewrite_requested_at": "2026-10-01T14:34:11.279Z",
       "rewrite_version": 1,
       "delivered_at": "2026-10-01T14:40:00Z"
+    },
+    {
+      "event_id": "e39a0800c696",
+      "title": "Agencia Espacial Europea prueba en el desierto de Tabernas (Almería) el rover que preparará la búsqueda de vida en Marte",
+      "url": "https://www.europapress.es/andalucia/almeria-00350/noticia-desierto-tabernas-almeria-acoge-pruebas-simulacion-rover-mision-exomars-20261001163236.html",
+      "sources": [
+        "20minutos",
+        "ABC",
+        "EL PAÍS",
+        "Europa Press"
+      ],
+      "source_count": 4,
+      "drafted_source_count": 4,
+      "source_evidence": [
+        {
+          "source": "EL PAÍS",
+          "title": "La búsqueda de vida en Marte empieza con ‘Charlie’ en el desierto de Almería",
+          "url": "https://elpais.com/ciencia/2026-10-01/la-busqueda-de-vida-en-marte-empieza-con-charlie-en-el-desierto-de-almeria.html",
+          "first_seen": "2026-10-01T12:52:06.040121Z"
+        },
+        {
+          "source": "20minutos",
+          "title": "La Agencia Espacial Europea prueba con éxito en Almería el rover que preparará la búsqueda de vida en Marte",
+          "url": "https://www.20minutos.es/tecnologia/actualidad/agencia-espacial-europea-prueba-exito-almeria-rover-preparara-busqueda-vida-marte_7043793_0.html",
+          "first_seen": "2026-10-01T14:43:47.353263Z"
+        },
+        {
+          "source": "Europa Press",
+          "title": "Agencia Espacial Europea prueba en el desierto de Tabernas (Almería) el rover que preparará la búsqueda de vida en Marte",
+          "url": "https://www.europapress.es/andalucia/almeria-00350/noticia-desierto-tabernas-almeria-acoge-pruebas-simulacion-rover-mision-exomars-20261001163236.html",
+          "first_seen": "2026-10-01T14:43:47.353263Z"
+        },
+        {
+          "source": "ABC",
+          "title": "Tabernas ensaya la llegada a Marte: así se prepara el rover que buscará vida en el planeta rojo",
+          "url": "https://www.abc.es/espana/andalucia/almeria/tabernas-ensaya-llegada-marte-prepara-rover-buscara-20261001163257-nts.html",
+          "first_seen": "2026-10-01T14:52:42.631354Z"
+        }
+      ],
+      "selected_at": "2026-10-01T14:53:16.230806Z",
+      "status": "PROCESSING",
+      "selection_mode": "AUTO_WEB",
+      "revision": 1,
+      "parent_event_id": null,
+      "update_context": null,
+      "parallel_source_claimed_at": null,
+      "with_image": true,
+      "image_mode": "ai_plus_fallback"
     }
   ],
-  "updated_at": "2026-10-01T14:51:26.679Z"
+  "updated_at": "2026-10-01T14:53:18.059227Z"
 }
