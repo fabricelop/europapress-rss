@@ -142,6 +142,29 @@ function safeTargetId(v){
   if(!/^[A-Za-z0-9._-]{3,160}$/.test(id))throw new Error("target_id inválido");
   return id
 }
+async function requestImagePcAck(req,res){
+  const target_id=safeTargetId(req.body?.target_id||req.body?.id);
+  const command_id=String(req.body?.command_id||"").trim();
+  const stage=String(req.body?.stage||"").toLowerCase();
+  const worker_id=String(req.body?.worker_id||"ttendencias-dedicated-v1").trim().slice(0,120)||"ttendencias-dedicated-v1";
+  if(!command_id||!["picked_up","launched"].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
+  const path=IMAGE_RUN_DIR+"/"+target_id+".json";
+  const existing=await readControlJson(path),job=existing.doc||{};
+  if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
+  const terminal=["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase());
+  if(terminal)return res.status(409).json({ok:false,error:"job ya terminal",status:job.status});
+  const now=new Date().toISOString();
+  const next={...job,status:"RUNNING",phase:stage==="picked_up"?"pc_pickup":"pc_launch",updated_at:now,pc_worker_id:worker_id};
+  if(stage==="picked_up")next.pc_picked_up_at=job.pc_picked_up_at||now;
+  if(stage==="launched"){
+    next.pc_picked_up_at=job.pc_picked_up_at||now;
+    next.pc_launched_at=now;
+  }
+  next.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":"PC ha abierto el chat de imagen; esperando inicio de generación.";
+  await writeControlJson(path,next,existing.sha,"PC Chat imagen ack TTendencias "+stage+" "+target_id+" "+command_id);
+  return res.status(200).json({ok:true,...next})
+}
+
 async function requestImageRun(req,res){
   const target_id=safeTargetId(req.body?.target_id||req.body?.id);
   const target_name=String(req.body?.target_name||req.body?.title||req.body?.name||"").trim().slice(0,240);
@@ -191,6 +214,10 @@ export default async function handler(req,res){
   const rawTask=String(req.body?.task||"editorial").toLowerCase();
   if(rawTask==="pc_ack"){
     try{return await requestPcAck(req,res)}
+    catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
+  }
+  if(rawTask==="image_pc_ack"){
+    try{return await requestImagePcAck(req,res)}
     catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
   }
   if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
