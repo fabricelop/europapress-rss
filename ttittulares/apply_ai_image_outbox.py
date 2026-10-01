@@ -7,6 +7,10 @@ un fallo de imagen nunca cambia el texto, el tuit ni el estado READY.
 from __future__ import annotations
 import json
 import sys
+import os
+import base64
+import hashlib
+from urllib.request import Request, urlopen
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -55,6 +59,45 @@ def selftest():
         raise AssertionError("chat-svg no puede aceptarse como ai_image")
     print("TTITTULARES_AI_IMAGE_SELFTEST_OK")
     return 0
+
+
+
+def _hydrate_comment_chunked_ai(payload):
+    ai = payload.get("ai_image")
+    if not isinstance(ai, dict):
+        return False
+    refs = ai.pop("comment_chunks", None)
+    if not refs:
+        return False
+    if not isinstance(refs, list) or not refs or len(refs) > 64:
+        raise ValueError("comment_chunks IA inválido")
+    repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    token = os.environ.get("GITHUB_TOKEN", "").strip()
+    if not repo or not token:
+        raise ValueError("faltan credenciales GitHub para recuperar chunks IA")
+    eid = str(payload.get("event_id") or "")
+    rev = int(payload.get("revision") or 1)
+    attempt = max(1, int(payload.get("attempt") or 1))
+    parts = []
+    for idx, cid in enumerate(refs):
+        url = f"https://api.github.com/repos/{repo}/issues/comments/{int(cid)}"
+        req = Request(url, headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json", "User-Agent": "ttittulares-image-bot"})
+        with urlopen(req, timeout=20) as resp:
+            body = json.loads(resp.read().decode("utf-8")).get("body") or ""
+        marker = f"TTITTULARES_IMAGE_CHUNK_V1 {eid} r{rev} ai{attempt} {idx+1}/{len(refs)}"
+        if not body.startswith(marker + "\n"):
+            raise ValueError("marker de chunk IA no coincide")
+        parts.append(body.split("\n", 1)[1].strip())
+    joined = "".join(parts)
+    raw = base64.b64decode(joined, validate=True)
+    expected = str(ai.pop("chunk_sha256", "") or "").lower()
+    if expected and hashlib.sha256(raw).hexdigest().lower() != expected:
+        raise ValueError("SHA-256 de imagen IA no coincide")
+    mime = str(ai.pop("chunk_mime", "image/jpeg") or "image/jpeg").casefold()
+    if mime not in {"image/jpeg", "image/png", "image/webp"}:
+        raise ValueError("mime de chunks IA no permitido")
+    ai["url"] = f"data:{mime};base64," + joined
+    return True
 
 
 def _hydrate_chunked_ai(payload):
@@ -143,7 +186,8 @@ def main():
         chunk_files = []
         if status == "ready" and isinstance(payload.get("ai_image"), dict):
             try:
-                chunk_files = _hydrate_chunked_ai(payload)
+                if not _hydrate_comment_chunked_ai(payload):
+                    chunk_files = _hydrate_chunked_ai(payload)
             except Exception as exc:
                 status = "failed"
                 payload["reason"] = str(exc)[:500]
