@@ -232,7 +232,7 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "") {
 }
 
 function Is-TerminalImageStatus([string]$Status) {
-  return @("DONE","ERROR","CANCELLED","SUPERSEDED") -contains String($Status).ToUpperInvariant()
+  return @("DONE","ERROR","CANCELLED","SUPERSEDED") -contains ([string]$Status).ToUpperInvariant()
 }
 
 function Seen-ImageCommand($State,[string]$CommandId) {
