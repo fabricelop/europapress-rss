@@ -69,9 +69,10 @@ function traceOf(comment){
   try{return {...JSON.parse(body.slice(TRACE_PREFIX.length).trim()),comment_id:comment.id,comment_updated_at:comment.updated_at||comment.created_at}}catch(_){return null}
 }
 function activeTrace(items){
-  const fresh=items.map(traceOf).filter(Boolean).filter(t=>["REQUESTED","RUNNING"].includes(String(t.status||""))).filter(t=>{
+  const fresh=items.map(traceOf).filter(Boolean).filter(t=>["REQUESTED","RUNNING","PROCESSING"].includes(String(t.status||"").toUpperCase())).filter(t=>{
     const age=Date.now()-stamp(t.comment_updated_at||t.updated_at||t.started_at||t.requested_at);
-    return Number.isFinite(age)&&age>=0&&age<20*60*1000
+    const limit=String(t.status||"").toUpperCase()==="PROCESSING"?PROCESSING_ACTIVE_MS:ACTIVE_MS;
+    return Number.isFinite(age)&&age>=0&&age<limit
   });
   fresh.sort((a,b)=>stamp(a.comment_updated_at||a.updated_at)-stamp(b.comment_updated_at||b.updated_at));
   return fresh.at(-1)||null
@@ -80,7 +81,10 @@ function newerRunAfter(items,requestedAt){
   const t=stamp(requestedAt);
   if(!t)return null;
   return items.map(traceOf).filter(Boolean)
-    .filter(x=>stamp(x.started_at||x.requested_at||x.comment_updated_at)>t+1000)
+    // El RUNTRACE que consume un trigger puede conservar exactamente el mismo
+    // requested_at que la orden móvil. Aceptamos el mismo ciclo (±2 s) además
+    // de ejecuciones claramente posteriores.
+    .filter(x=>stamp(x.started_at||x.requested_at||x.comment_updated_at)>=t-2000)
     .sort((a,b)=>stamp(a.started_at||a.requested_at)-stamp(b.started_at||b.requested_at))
     .at(-1)||null
 }
@@ -115,23 +119,45 @@ async function writeControlJson(path,doc,sha,message){
 async function requestPcAck(req,res){
   const command_id=String(req.body?.command_id||"").trim();
   const stage=String(req.body?.stage||"").toLowerCase();
+  const worker_id=String(req.body?.worker_id||"legacy-shared-listener").trim().slice(0,120)||"legacy-shared-listener";
   if(!command_id||!["picked_up","launched"].includes(stage))return res.status(400).json({ok:false,error:"Ack no válido"});
   const {doc:trigger}=await readTrigger();
   if(String(trigger.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es el actual"});
   const requested_at=String(trigger.requested_at||"");
   const age=Date.now()-stamp(requested_at);
   if(!stamp(requested_at)||age<0||age>10*60*1000)return res.status(409).json({ok:false,error:"Trigger fuera de ventana"});
+
   const existing=await readControlJson(ACK_PATH);
+  const previous=existing.doc||{};
+  const same=String(previous.command_id||"")===command_id;
+  const previousWorker=String(previous.worker_id||"");
+  const previousStage=String(previous.stage||"").toLowerCase();
+  const previousPickedAt=stamp(previous.picked_up_at||previous.updated_at);
+  const claimFresh=same&&previousPickedAt&&Date.now()-previousPickedAt<30000;
+  const launchedByOther=same&&previousStage==="launched"&&previousWorker&&previousWorker!==worker_id;
+  const freshClaimByOther=same&&claimFresh&&previousWorker&&previousWorker!==worker_id;
+
+  if(stage==="picked_up"&&(launchedByOther||freshClaimByOther)){
+    return res.status(409).json({
+      ok:false,error:"claimed_by_other_worker",command_id,
+      worker_id:previousWorker,stage:previousStage||"picked_up",
+      picked_up_at:previous.picked_up_at||null,launched_at:previous.launched_at||null
+    })
+  }
+  if(stage==="launched"&&same&&previousWorker&&previousWorker!==worker_id){
+    return res.status(409).json({ok:false,error:"claim_not_owned",command_id,worker_id:previousWorker})
+  }
+
   const now=new Date().toISOString();
-  const same=String(existing.doc?.command_id||"")===command_id;
+  const preservePickup=same&&previousWorker===worker_id&&previous.picked_up_at;
   const doc={
-    version:1,command_id,requested_at,stage,
-    picked_up_at:same&&existing.doc?.picked_up_at?existing.doc.picked_up_at:now,
-    launched_at:stage==="launched"?now:(same?existing.doc?.launched_at||null:null),
+    version:2,command_id,requested_at,worker_id,stage,
+    picked_up_at:preservePickup?previous.picked_up_at:now,
+    launched_at:stage==="launched"?now:(same&&previousWorker===worker_id?previous.launched_at||null:null),
     updated_at:now
   };
-  await writeControlJson(ACK_PATH,doc,existing.sha,"PC Chat ack TTiTTulares "+stage+" "+command_id);
-  return res.status(200).json({ok:true,...doc})
+  await writeControlJson(ACK_PATH,doc,existing.sha,"PC Chat ack TTiTTulares "+stage+" "+command_id+" "+worker_id);
+  return res.status(200).json({ok:true,claimed:true,...doc})
 }
 
 function safeTargetId(v){
@@ -194,23 +220,29 @@ export default async function handler(req,res){
   try{
     const task=rawTask==="images"?"images":"editorial";
     if(task==="images")return await requestImageRun(req,res);
-    const [{doc:current,sha},items]=await Promise.all([readTrigger(),comments()]);
+    const [{doc:current,sha},items,ackState]=await Promise.all([readTrigger(),comments(),readControlJson(ACK_PATH)]);
     if(activeTrace(items))return res.status(409).json({ok:false,error:"run_in_progress"});
-    const currentId=String(current.command_id||"").trim();
-    const currentRequested=String(current.requested_at||"").trim();
+    const currentId=String(current.command_id||"").trim(),currentRequested=String(current.requested_at||"").trim();
     if(currentId&&currentRequested){
       const age=Date.now()-new Date(currentRequested).getTime();
       const consumedBy=newerRunAfter(items,currentRequested);
-      const marks=items.filter(c=>String(c.body||"").startsWith(STATUS_PREFIX+currentId+"\n"));
-      const last=marks.at(-1);
-      const st=last?field(last.body,"status"):"REQUESTED";
-      if(!consumedBy&&Number.isFinite(age)&&age<45000)return res.status(429).json({ok:false,error:"recent_request",retry_after_seconds:Math.ceil((45000-age)/1000)});
-      if(!consumedBy&&Number.isFinite(age)&&age<20*60*1000&&!["DONE","ERROR"].includes(st||"REQUESTED"))return res.status(409).json({ok:false,error:"run_in_progress"})
-    }
+      const marks=items.filter(c=>String(c.body||"").startsWith(STATUS_PREFIX+currentId+"\n")),last=marks.at(-1),st=last?field(last.body,"status"):"REQUESTED";
+      const ack=ackState.doc||{};
+      const ackMatches=String(ack.command_id||"")===currentId;
+      const ackStage=ackMatches?String(ack.stage||"").toLowerCase():"";
+      const ackAt=ackMatches?stamp(ack.updated_at||ack.launched_at||ack.picked_up_at):0;
+      const ackFresh=ackMatches&&ackAt&&Date.now()-ackAt<ACTIVE_MS;
 
+      // 45 s cubre holgadamente el SLA visual de 30 s. Si pasado ese tiempo no hay
+      // ACK ni RUNNING, la orden anterior está muerta y una pulsación nueva debe poder
+      // reemplazarla; no la bloqueamos 20 minutos.
+      if(!consumedBy&&Number.isFinite(age)&&age<45000)return res.status(429).json({ok:false,error:"recent_request",retry_after_seconds:Math.ceil((45000-age)/1000)});
+      if(!consumedBy&&String(st||"").toUpperCase()==="RUNNING")return res.status(409).json({ok:false,error:"run_in_progress"});
+      if(!consumedBy&&ackFresh&&["picked_up","launched"].includes(ackStage))return res.status(409).json({ok:false,error:"run_in_progress"});
+    }
     const requested_at=new Date().toISOString();
     const command_id=`tt-${Date.now()}-${crypto.randomBytes(3).toString("hex")}`;
-    const doc={version:2,command_id,requested_at,mode:"manual_pc_chat",executor:"pc_chat",project:"ttittulares",launcher_arg:"titulares",task,auto_image_followup:false};
+    const doc={version:2,command_id,requested_at,mode:"manual_pc_chat",executor:"pc_chat_ttittulares_dedicated",project:"ttittulares",launcher_arg:"titulares",task,auto_image_followup:false};
     let saved;
     try{saved=await writeTrigger(doc,sha)}
     catch(e){
