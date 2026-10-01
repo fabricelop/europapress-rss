@@ -75,6 +75,24 @@ function reconcileExplainedView(explainedDoc, requestsDoc) {
     delete merged.reexplain;
     return merged;
   });
+
+  // Autorreparación: una ejecución puede haber dejado la request en "explained"
+  // pero no haber persistido la tarjeta en EXPLAINED. Esas entradas no deben
+  // desaparecer de Elaboración sin aparecer en Pendientes.
+  const representedIds = new Set(doc.items.map(row => String(row?.id || "").trim()).filter(Boolean));
+  const representedNames = new Set(doc.items.map(row => norm(row?.name)).filter(Boolean));
+  const missing = [];
+  for (const req of (requestsDoc?.requests || [])) {
+    if (String(req?.status || "") !== "explained" || !String(req?.explanation || "").trim()) continue;
+    if (req?.grouped_into_existing_card) continue;
+    const id = String(req?.id || "").trim();
+    const name = norm(req?.name);
+    if ((id && representedIds.has(id)) || (name && representedNames.has(name))) continue;
+    missing.push({ ...req, _recovered_from_requests: true });
+    if (id) representedIds.add(id);
+    if (name) representedNames.add(name);
+  }
+  if (missing.length) doc.items.push(...missing);
   return doc;
 }
 
