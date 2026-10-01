@@ -488,7 +488,7 @@ function runVisual(s){
    return
  }
  prog.hidden=true;fill.style.width="0%";btn.hidden=false;
- const r=s?.last_run||null;
+ const r=String(s?.status||"")==="ERROR"?s:(s?.last_run||null);
  if(r){
     const count=runIncidentCount(r),isError=r.status==="ERROR",visual=Number(r.summary?.visual_backlog||0);
     head.textContent=isError?("Última ejecución editorial · "+runTime(r.finished_at||r.updated_at)+" · Error"):("Última ejecución editorial · "+runTime(r.finished_at||r.updated_at)+" · Terminada");
