@@ -674,42 +674,70 @@ function renderReady(list,preservedImages=new Map()){
   const current=Number(events[item.event_id]?.source_count||item.current_source_count||item.drafted_source_count||0);
   const drafted=Number(item.drafted_source_count||item.source_count||0);
   const card=document.createElement("article");card.className="card";card.dataset.eventId=String(item.event_id||"");
-  card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="actions"><button class="btn primary expand">Abrir</button><button class="btn primary published">Ya publicada</button><button class="btn danger dismiss">Desestimar</button></div><div class="details"><div class="facts"></div><div class="imagebox" hidden><img class="imagePreview" hidden loading="lazy" style="display:block;width:100%;max-height:480px;object-fit:contain;border-radius:9px;margin-bottom:9px"><div class="imageTitle">Imagen sugerida</div><div class="imageMeta"></div><div class="imageActions"><a class="btn imgOpen" target="_blank" rel="noopener">Abrir imagen</a><button class="btn imgCopy">Copiar imagen</button><a class="btn imgSource" target="_blank" rel="noopener">🔎 Buscar en X</a></div></div><div class="variants"></div><div class="actions"><button class="btn rework">Rehacer</button><button class="btn danger dismiss2">Desestimar</button></div></div>';
+  card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="actions"><button class="btn primary expand">Abrir</button><button class="btn primary published">Ya publicada</button><button class="btn danger dismiss">Desestimar</button></div><div class="details"><div class="facts"></div><div class="imagebox" hidden><div class="imageTitle">Imágenes</div><div class="imageMeta"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;margin:9px 0"><div class="selectedImageChoice" hidden style="border:1px solid #334155;border-radius:10px;padding:8px"><div class="selectedImageLabel" style="font-size:12px;font-weight:800;margin-bottom:6px"></div><img class="imagePreview" hidden loading="lazy" style="display:block;width:100%;height:190px;object-fit:contain;border-radius:9px;background:#0b1018"></div><div class="alternateImageChoice" hidden style="border:1px solid #334155;border-radius:10px;padding:8px"><div class="alternateImageLabel" style="font-size:12px;font-weight:800;margin-bottom:6px"></div><img class="alternateImagePreview" hidden loading="lazy" style="display:block;width:100%;height:190px;object-fit:contain;border-radius:9px;background:#0b1018"></div></div><div class="imageActions"><button class="btn imgRedo">🔁 Rehacer</button><button class="btn imgFallback">🖼️ Usar archivo/fallback</button><a class="btn imgOpen" target="_blank" rel="noopener">Abrir imagen</a><button class="btn imgCopy">Copiar imagen</button><a class="btn imgSource" target="_blank" rel="noopener">🔎 Buscar en X</a></div></div><div class="variants"></div><div class="actions"><button class="btn rework">Rehacer texto</button><button class="btn danger dismiss2">Desestimar</button></div></div>';
   card.querySelector(".title").textContent=item.title||"Noticia sin título";
   card.querySelector(".sources").textContent="Redactada con "+drafted+" ("+current+") · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
   const det=card.querySelector(".details");card.querySelector(".facts").textContent=item.factual_summary||item.explanation||"";if(openCards.has(String(item.event_id||""))){det.classList.add("open");card.querySelector(".expand").textContent="Cerrar"}
-  const img=item.image||{},imgUrl=String(img.url||item.image_url||""),imgSource=img.source||item.image_source||"",imgPage=img.source_url||img.page_url||item.image_source_url||"",imgRights=img.rights_status||item.image_rights_status||"",imgBox=card.querySelector(".imagebox");
-  const imageState=String(item.image_status||(item.image_pending?"working":imgUrl?"ready":"none")).toLowerCase();
+  const ai=item.ai_image||{},fallback=item.fallback_image||{};
+  const aiUrl=String(ai.url||""),fallbackUrl=String(fallback.url||"");
+  let img=item.image||{},imgUrl=String(img.url||item.image_url||"");
+  let imageChoice=String(item.image_choice||"");
+  if(!imgUrl&&aiUrl){img=ai;imgUrl=aiUrl;imageChoice="ai"}
+  else if(!imgUrl&&fallbackUrl){img=fallback;imgUrl=fallbackUrl;imageChoice="fallback"}
+  if(!imageChoice&&imgUrl)imageChoice=img.generated?"ai":"fallback";
+  const imgSource=img.source||item.image_source||"",imgRights=img.rights_status||item.image_rights_status||"",imgBox=card.querySelector(".imagebox");
+  const imageState=String(item.image_status||(imgUrl?"ready":"none")).toLowerCase();
   const imageReady=imageState==="ready"&&!!imgUrl;
-  const imageLabels={working:"Buscando imagen real",pending:"Esperando imagen",retry:"Esperando reintento",ready:"Imagen lista",telegram:"Disponible en Telegram",none:"Sin imagen",error:"Sin imagen"};
-  const imageLabel=imageLabels[imageState]||"Esperando imagen";
-  const imageTerminal=(imageState==="ready"&&!!imgUrl)||imageState==="telegram"||imageState==="none";
-  const imageInFlight=!imageTerminal;
+  const anyImage=Boolean(aiUrl||fallbackUrl||imgUrl);
+  const imageLabel=imageChoice==="ai"?"Gag IA en uso":imageChoice==="fallback"?"Archivo / fallback en uso":anyImage?"Imagen disponible":"Sin imagen";
+  const imageInFlight=false; // La imagen nunca bloquea ni retrasa la publicación.
   const publishBtn=card.querySelector(".published");
   publishBtn.disabled=false;
   publishBtn.textContent="Ya publicada";
-  publishBtn.title=imageInFlight?"Puedes publicarla sin esperar la imagen; al confirmarlo se cancelará la imagen pendiente.":"Marca la noticia como publicada";
+  publishBtn.title="Marca la noticia como publicada; la imagen nunca bloquea este paso.";
   imgBox.hidden=false;
   card.querySelector(".imageTitle").textContent=imageLabel;
+  const selectedChoice=card.querySelector(".selectedImageChoice");
+  const selectedLabel=card.querySelector(".selectedImageLabel");
+  let preview=card.querySelector(".imagePreview");
   if(imageReady){
    card.dataset.imageUrl=imgUrl;
    const proxySrc=API+"?view=image-proxy&url="+encodeURIComponent(imgUrl);
-   let preview=card.querySelector(".imagePreview");
    const previous=preservedImages.get(JSON.stringify([String(item.event_id||""),imgUrl]));
-   // Mover el IMG que ya estaba cargado: reasignar src provoca un destello.
    if(previous&&previous.getAttribute("src")===proxySrc){preview.replaceWith(previous);preview=previous}
+   selectedChoice.hidden=false;selectedLabel.textContent=(imageChoice==="ai"?"Gag IA":"Archivo / fallback")+" · EN USO";
    preview.hidden=false;preview.alt=img.alt||item.title||"Imagen de la noticia";
-   preview.onerror=()=>{lastReadyRendering=null;preview.hidden=true;card.querySelector(".imageMeta").textContent="No se pudo cargar la imagen. Se reintentará al actualizar.";card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none"};
+   preview.onerror=()=>{lastReadyRendering=null;preview.hidden=true;card.querySelector(".imageMeta").textContent="No se pudo cargar la imagen seleccionada; la noticia sigue lista para publicar."};
    if(preview.getAttribute("src")!==proxySrc)preview.src=proxySrc;
-   card.querySelector(".imageMeta").textContent=[imgSource,imgRights].filter(Boolean).join(" · ")||(img.generated?"TTiTTulares · imagen original":"Imagen externa sugerida");
    card.querySelector(".imgOpen").href=imgUrl;
    const copyButton=card.querySelector(".imgCopy");copyButton.onclick=()=>copyImageToClipboard(imgUrl,copyButton,preview);
-
   }else{
-   card.querySelector(".imageMeta").textContent=imageState==="telegram"?"Foto enviada al bot de Telegram. Ya puedes publicar.":imageState==="working"?"Se está buscando y validando una imagen real del acontecimiento.":imageState==="pending"?"La noticia está redactada, pero la imagen todavía está pendiente. No publiques todavía.":imageState==="retry"?"La imagen necesita un nuevo intento. No publiques todavía.":imageState==="none"?"La ejecución terminó sin imagen. Ya puedes publicar sin imagen.":"La noticia está lista.";
+   selectedChoice.hidden=true;preview.hidden=true;
    card.querySelector(".imgOpen").style.display="none";card.querySelector(".imgCopy").style.display="none";
   }
+
+  const alternateChoice=card.querySelector(".alternateImageChoice"),alternateLabel=card.querySelector(".alternateImageLabel"),alternatePreview=card.querySelector(".alternateImagePreview");
+  const altImage=imageChoice==="ai"?fallback:imageChoice==="fallback"?ai:(aiUrl?ai:fallback);
+  const altUrl=String(altImage?.url||"");
+  if(altUrl&&altUrl!==imgUrl){
+   alternateChoice.hidden=false;
+   alternateLabel.textContent=imageChoice==="ai"?"Archivo / fallback":"Gag IA";
+   alternatePreview.hidden=false;alternatePreview.alt=altImage.alt||item.title||"Imagen alternativa";
+   alternatePreview.src=API+"?view=image-proxy&url="+encodeURIComponent(altUrl);
+  }else{alternateChoice.hidden=true;alternatePreview.hidden=true}
+
+  const aiState=String(item.ai_image_status|| (aiUrl?"ready":"pending"));
+  const fallbackState=String(item.fallback_image_status|| (fallbackUrl?"ready":"pending"));
+  card.querySelector(".imageMeta").textContent="IA: "+(aiState==="ready"?"lista":aiState==="failed"?"falló":aiState==="pending"?"pendiente":aiState)+" · archivo: "+(fallbackState==="ready"?"listo":fallbackState==="none"?"no encontrado":fallbackState==="pending_capture"?"pendiente":fallbackState);
+  const redo=card.querySelector(".imgRedo");
+  redo.disabled=Boolean(item.ai_image_regenerate_requested);
+  redo.textContent=item.ai_image_regenerate_requested?"Rehacer solicitado ✓":"🔁 Rehacer";
+  redo.onclick=async()=>{redo.disabled=true;try{await api("regenerate-image",{event_id:item.event_id});toast("Se intentará un nuevo gag IA sin tocar el texto");await load(true)}catch(e){redo.disabled=false;toast(e.message)}};
+  const useFallback=card.querySelector(".imgFallback");
+  useFallback.disabled=!fallbackUrl||imageChoice==="fallback";
+  useFallback.onclick=async()=>{useFallback.disabled=true;try{await api("use-fallback-image",{event_id:item.event_id});toast("Imagen de archivo seleccionada");await load(true)}catch(e){useFallback.disabled=false;toast(e.message)}};
+
   const photo=document.createElement("button");photo.className="btn photoStatus"+(imageReady?" imageReadyStatus":"")+(imageState==="telegram"?" telegramStatus":"");photo.textContent="📷 "+imageLabel;photo.onclick=()=>{det.classList.add("open");openCards.add(String(item.event_id||""));persistUiState();card.querySelector(".expand").textContent="Cerrar";imgBox.scrollIntoView({block:"nearest",behavior:"smooth"})};card.querySelector(".actions").appendChild(photo);
   const vh=card.querySelector(".variants");
   const search=card.querySelector(".imgSource");
@@ -723,12 +751,12 @@ function renderReady(list,preservedImages=new Map()){
     box.innerHTML='<div class="vhead"><span class="vname"></span><span class="chars"></span></div><div class="tweet"></div><div class="remateRating" hidden></div><div class="actions"><a class="btn primary openx" target="_blank" rel="noopener">Abrir en X</a><button class="btn copy">Copiar</button><button class="btn published-inline">✓ Ya publicado</button></div>';
     box.querySelector(".vname").textContent="Tuit";box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=text;mountRemateRating(box.querySelector(".remateRating"),v);
     box.querySelector(".openx").href=v.url||intent(text);box.querySelector(".copy").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado"));
-    box.querySelector(".published-inline").onclick=()=>close("published",imageInFlight?"¿Confirmas que quieres publicarla sin esperar la imagen? Se cancelará cualquier búsqueda o reintento pendiente.":"¿Confirmas que ya has publicado esta noticia?");
+    box.querySelector(".published-inline").onclick=()=>close("published","¿Confirmas que ya has publicado esta noticia?");
     vh.appendChild(box)
   }
   card.querySelector(".expand").onclick=()=>{det.classList.toggle("open");const id=String(item.event_id||"");if(det.classList.contains("open"))openCards.add(id);else openCards.delete(id);persistUiState();card.querySelector(".expand").textContent=det.classList.contains("open")?"Cerrar":"Abrir"};
   async function close(action,question){if(!confirm(question))return;const id=String(item.event_id||""),old=[...model.prepared];pendingClosed.add(id);openCards.delete(id);persistUiState();model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();try{await api(action,{event_id:item.event_id});toast(action==="published"?(imageInFlight?"Publicada; imagen pendiente cancelada":"Marcada como publicada"):"Noticia desestimada");await load(true)}catch(e){pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message)}}
-  card.querySelector(".published").onclick=()=>close("published",imageInFlight?"¿Confirmas que quieres publicarla sin esperar la imagen? Se cancelará cualquier búsqueda o reintento pendiente.":"¿Confirmas que ya has publicado esta noticia?");
+  card.querySelector(".published").onclick=()=>close("published","¿Confirmas que ya has publicado esta noticia?");
   card.querySelector(".dismiss").onclick=card.querySelector(".dismiss2").onclick=()=>close("dismiss","¿Desestimar esta noticia?");
   card.querySelector(".rework").onclick=()=>{reworkItem=item;$("reworkTitle").textContent=item.title||"";$("reworkInstruction").value="";$("reworkSheet").classList.add("show");$("reworkInstruction").focus()};
   list.appendChild(card)
