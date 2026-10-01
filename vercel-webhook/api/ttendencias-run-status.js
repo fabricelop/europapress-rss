@@ -100,6 +100,7 @@ function traceOf(comment){
 function stamp(v){const n=Date.parse(v||"");return Number.isFinite(n)?n:0}
 function sourceLabel(v){return v==="manual"?"Manual":v==="mobile"?"Móvil→PC":v==="scheduled"?"Automática":v==="chat"?"Chat":String(v||"")}
 function terminalStatus(v){return ["DONE","DONE_WITH_INCIDENTS","ERROR"].includes(String(v||""))}
+function activeStatus(v){return ["REQUESTED","RUNNING","PROCESSING"].includes(String(v||"").toUpperCase())}
 function normalizeTrace(t){
   const started=t.started_at||t.requested_at||t.updated_at||null;
   const finished=t.finished_at||(terminalStatus(t.status)?t.updated_at:null);
@@ -249,16 +250,16 @@ export default async function handler(req,res){
     const fallback=manualFallback(items,request,ack);
     let active=null;
 
-    if(latest&&["REQUESTED","RUNNING"].includes(latest.status)){
+    if(latest&&activeStatus(latest.status)){
       const lastActivity=latest.updated_at||latest.started_at||latest.requested_at;
       const age=Date.now()-stamp(lastActivity);
-      const deadline=latest.status==="REQUESTED"?START_ACK_MS:STALE_MS;
+      const deadline=String(latest.status||"").toUpperCase()==="REQUESTED"?START_ACK_MS:STALE_MS;
       if(Number.isFinite(age)&&age>=0&&age<deadline)active=latest;
       else latest={...latest,status:"ERROR",finished_at:lastActivity||null,message:latest.status==="REQUESTED"
         ?"No se ha recibido RUNNING en 30 segundos: el PC no ha recogido la orden móvil."
         :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")}
     }
-    if(!active&&fallback&&["REQUESTED","RUNNING"].includes(fallback.status)){
+    if(!active&&fallback&&activeStatus(fallback.status)){
       const reqAt=stamp(fallback.requested_at||fallback.started_at);
       const terminalAfterRequest=traces
         .map(normalizeTrace)
