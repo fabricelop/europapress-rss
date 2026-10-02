@@ -84,7 +84,7 @@ jobs:
           exp=Path("vercel-webhook/ttendencias/explicadas/index.html").read_text(encoding="utf-8")
           assert "entered_top10_at" in py
           assert "entered_top10_at" in top and "entryTime" in top and "rankMove" in top
-          assert ".slice(0,100)" in exp
+          assert "collapseVisibleExplained" in exp and "const nextItems=collapseVisibleExplained(sorted)" in exp
           assert "Copiar" in exp and 'id="filter"' in exp
           assert "TT#" in exp
           assert "Gag IA" in exp and "Archivo / fallback" in exp
