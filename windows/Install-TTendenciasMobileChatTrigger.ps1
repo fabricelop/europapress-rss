@@ -8,14 +8,48 @@ $Listener = Join-Path $BaseDir "TTendenciasDedicatedListener.ps1"
 $StartupDir = [Environment]::GetFolderPath("Startup")
 $StartupCmd = Join-Path $StartupDir "TTendencias Mobile Trigger Listener.cmd"
 $RawUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TTendenciasDedicatedListener.ps1"
-$PatchUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/Patch-Ejecutar-ConfirmResponse.ps1"
 
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 Invoke-WebRequest -Uri ($RawUrl + "?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -OutFile $Listener -UseBasicParsing
 
-Write-Host "APLICANDO PARCHE EJECUTAR.JS V2" -ForegroundColor Cyan
-$patchText = (Invoke-WebRequest -Uri ($PatchUrl + "?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -UseBasicParsing).Content
-& ([scriptblock]::Create($patchText))
+Write-Host "RESTAURANDO EJECUTAR.JS CONOCIDO-BUENO PARA ENTRADAS" -ForegroundColor Cyan
+$Runner = Join-Path $BaseDir "Ejecutar.js"
+$KnownGoodExact = Join-Path $BaseDir "Ejecutar.js.before-ttendencias-image-chat-20261002_011820.bak"
+$KnownGood = $null
+
+if (Test-Path -LiteralPath $KnownGoodExact) {
+  $KnownGood = $KnownGoodExact
+} else {
+  $KnownGood = Get-ChildItem -LiteralPath $BaseDir -Filter "Ejecutar.js.before-ttendencias-image-chat-*.bak" -ErrorAction SilentlyContinue |
+    Sort-Object LastWriteTime |
+    Select-Object -First 1 -ExpandProperty FullName
+}
+
+if (-not $KnownGood -or -not (Test-Path -LiteralPath $KnownGood)) {
+  throw "No se encontró el backup conocido-bueno de Ejecutar.js anterior a imágenes."
+}
+
+if (Test-Path -LiteralPath $Runner) {
+  $safetyBackup = $Runner + ".before-editorial-restore-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
+  Copy-Item -LiteralPath $Runner -Destination $safetyBackup -Force
+  Write-Host "Backup de seguridad actual: $safetyBackup"
+}
+
+Copy-Item -LiteralPath $KnownGood -Destination $Runner -Force
+
+$node = Get-Command node.exe -ErrorAction SilentlyContinue
+if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
+if (-not $node) { throw "No encuentro node.exe para validar Ejecutar.js" }
+
+& $node.Source --check $Runner
+if ($LASTEXITCODE -ne 0) {
+  throw "El Ejecutar.js restaurado no supera node --check."
+}
+
+Write-Host "EJECUTAR.JS RESTAURADO Y VALIDADO" -ForegroundColor Green
+Write-Host "Origen conocido-bueno: $KnownGood"
+
+
 
 # Validar sintaxis antes de reiniciar nada.
 $tokens = $null
