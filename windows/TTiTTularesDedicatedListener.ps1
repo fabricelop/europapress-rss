@@ -12,7 +12,7 @@ $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 45
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v7"
+$WorkerId = "ttittulares-dedicated-v8"
 $PollSeconds = 5
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
@@ -153,11 +153,19 @@ function Launch-TTiTTulares([string]$CommandId) {
     return $false
   }
 
-  # Mantener LanzarOculto.vbs para que Ejecutar.js entre en ENVIO REAL,
-  # pero pasar un mensaje inequívoco para que el chat abierto NO cree
-  # un segundo trigger tt-chat-* y ejecute directamente la pasada editorial.
+  $beforeWrite = [DateTime]::MinValue
+  $beforeLen = 0L
+  if (Test-Path -LiteralPath $LauncherLogPath) {
+    try {
+      $fi = Get-Item -LiteralPath $LauncherLogPath
+      $beforeWrite = $fi.LastWriteTimeUtc
+      $beforeLen = $fi.Length
+    } catch {}
+  }
+
+  $marker = "TT_EDITORIAL_WORKER_V1 $CommandId"
   $message = @"
-TT_EDITORIAL_WORKER_V1 $CommandId
+$marker
 Ejecuta TTiTTulares directamente en este chat como worker editorial de la orden ya recogida por el PC.
 NO crees ni modifiques run-now-trigger.json.
 NO solicites otra ejecución y NO lances otro chat.
@@ -166,19 +174,15 @@ Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTular
 "@
 
   $old = $env:TT_CHAT_MESSAGE_B64
+  $proc = $null
   try {
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($message)
     $env:TT_CHAT_MESSAGE_B64 = [Convert]::ToBase64String($bytes)
 
-    $p = Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"titulares") -WindowStyle Hidden -PassThru
-    if (-not $p) { throw "Start-Process no devolvió proceso" }
+    $proc = Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"titulares") -WindowStyle Hidden -PassThru
+    if (-not $proc) { throw "Start-Process no devolvió proceso" }
 
-    Write-Log "EDITORIAL PROCESS STARTED via-vbs-custom pid=$($p.Id) command=$CommandId"
-    $launched = Send-Ack $CommandId "launched"
-    if ($launched -ne "OK") {
-      Write-Log "LAUNCHED ACK WARNING command=$CommandId result=$launched"
-    }
-    return $true
+    Write-Log "EDITORIAL PROCESS STARTED via-vbs-custom pid=$($proc.Id) command=$CommandId marker=$marker"
   } catch {
     $detail = "No se pudo lanzar LanzarOculto.vbs titulares: $($_.Exception.Message)"
     Write-Log "EDITORIAL PROCESS ERROR command=$CommandId :: $detail"
@@ -188,6 +192,47 @@ Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTular
     if ($null -eq $old) { Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue }
     else { $env:TT_CHAT_MESSAGE_B64 = $old }
   }
+
+  $deadline = (Get-Date).AddSeconds($LaunchConfirmSeconds)
+  while ((Get-Date) -lt $deadline) {
+    Start-Sleep -Seconds 1
+    if (-not (Test-Path -LiteralPath $LauncherLogPath)) { continue }
+
+    try {
+      $fi = Get-Item -LiteralPath $LauncherLogPath
+      if ($fi.Length -le $beforeLen -and $fi.LastWriteTimeUtc -le $beforeWrite) { continue }
+
+      $tail = @(Get-Content -LiteralPath $LauncherLogPath -Tail 80 -ErrorAction Stop)
+      $joined = ($tail -join "`n")
+      $hasMarker = $joined.Contains($marker)
+      $responseStarted = $joined -match '"generando"\s*:\s*true'
+      $messageSent = $joined -match "MENSAJE ENVIADO"
+      $executionLaunched = $joined -match "EJECUCION LANZADA"
+
+      if ($hasMarker -and ($messageSent -or $executionLaunched -or $responseStarted)) {
+        $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
+        Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId marker=$marker via=$why"
+        $launched = Send-Ack $CommandId "launched"
+        if ($launched -ne "OK") {
+          Write-Log "LAUNCHED ACK WARNING command=$CommandId result=$launched"
+        }
+        return $true
+      }
+
+      if ($hasMarker -and $joined -match "ERROR:|ERROR ::|Timeout CDP") {
+        $last = ($tail | Where-Object { $_ -match "ERROR:|ERROR ::|Timeout CDP" } | Select-Object -Last 1)
+        $detail = "Ejecutar.js: $last"
+        Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $detail"
+        [void](Send-Ack $CommandId "failed" $detail)
+        return $false
+      }
+    } catch {}
+  }
+
+  $detail = "VBS arrancó pero ChatGPT no confirmó el mensaje en $($LaunchConfirmSeconds)s"
+  Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId marker=$marker"
+  [void](Send-Ack $CommandId "failed" $detail)
+  return $false
 }
 
 if (-not (Test-Path -LiteralPath $BaseDir)) { New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null }
@@ -247,9 +292,9 @@ while ($true) {
           try {
             $messageSent = Launch-TTiTTulares $commandId
             if ($messageSent) {
-              Write-Log "LAUNCH CONFIRMED command=$commandId via=vbs"
+              Write-Log "LAUNCH CONFIRMED command=$commandId via=vbs-log"
             } else {
-              Write-Log "LAUNCH FAILED command=$commandId via=vbs"
+              Write-Log "LAUNCH FAILED command=$commandId via=vbs-log"
             }
             # Consumir esta orden aunque el lanzamiento falle: evita abrir chats
             # repetidamente cada 3 segundos. Una nueva pulsación crea otro command_id.
