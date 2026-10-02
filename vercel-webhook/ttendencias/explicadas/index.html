@@ -182,7 +182,7 @@ async function imageDecision(x,action,button){
   const response=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+controlToken},body:JSON.stringify({action,names:[x.name||displayName(x)]})});
   const result=await response.json();
   if(!response.ok||!result?.ok)throw new Error(result?.error||"No se pudo guardar la decisión de imagen.");
-  button.textContent=action==="regenerate-image"?"Rehacer solicitado ✓":"Usando archivo ✓";
+  button.textContent=action==="regenerate-image"?"Nueva IA solicitada ✓":"Usando archivo ✓";
   if(action==="regenerate-image")x.ai_image_regenerate_requested=true;
   if(action==="use-fallback-image"&&x.fallback_image?.url){x.image={...x.fallback_image};x.image_choice="fallback";x.image_status="ready";}
   setTimeout(()=>load().catch(e=>alert(e.message)),500);
@@ -218,12 +218,12 @@ function imageRunActive(run){
 function liveImageRunState(x){
  const run=imageRuns.get(String(x.id||"")),st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"");
  if(st==="REQUESTED")return {aiCls:"aiRework",collapsed:"requested",text:"◷ IA solicitada · esperando al PC"};
- if(imageHandoffTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ El chat IA no arrancó en 45 s · Rehacer"};
- if(imageGenerationTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ La generación superó 150 s · Rehacer"};
+ if(imageHandoffTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ El chat IA no arrancó en 45 s · pulsa Generar IA"};
+ if(imageGenerationTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ La generación superó 150 s · pulsa Generar IA"};
  if(st==="RUNNING")return {aiCls:"aiPending",collapsed:"pending",text:phase==="pc_pickup"?"● PC ha recogido la imagen":phase==="pc_launch"?"● Chat IA abierto · esperando respuesta":phase==="validating"?"● Chat IA abierto · validando":"● Chat IA abierto"};
  if(st==="GENERATING")return {aiCls:"aiPending",collapsed:"pending",text:"● Generando IA ahora en ChatGPT"};
  if(st==="PERSISTING")return {aiCls:"aiPending",collapsed:"pending",text:"● IA generada · guardando"};
- if(st==="ERROR")return {aiCls:"aiFailed",collapsed:"failed",text:"✕ Error en generación IA · pulsa Rehacer"};
+ if(st==="ERROR")return {aiCls:"aiFailed",collapsed:"failed",text:"✕ Error en generación IA · pulsa Generar IA"};
  if(st==="CANCELLED")return {aiCls:"aiFailed",collapsed:"failed",text:"— Generación cancelada · entrada ya no vigente"};
  if(st==="DONE")return {aiCls:"aiReady",collapsed:"ready",text:"✓ Generación IA terminada"};
  return null
@@ -411,7 +411,7 @@ function renderCard(x,pending){
    picture.hidden=false;picture.style.cssText="margin:9px 0 5px;max-width:100%;overflow:hidden";
    const grid=document.createElement("div");grid.style.cssText="display:flex;gap:8px;flex-wrap:wrap";
    appendImagePreview(grid,ai,"Gag IA",imageChoice==="ai");appendImagePreview(grid,fallback,"Archivo / fallback",imageChoice==="fallback");
-   if(!grid.children.length){const state=document.createElement("div");state.style.cssText="font-size:11px;color:#94a3b8;padding:8px;border:1px solid #29384a;border-radius:10px;width:100%";state.textContent=x.ai_image_regenerate_requested?"Rehacer solicitado · se intentará una imagen en la próxima pasada.":"Imagen IA/fallback todavía no disponible.";grid.appendChild(state)}
+   if(!grid.children.length){const state=document.createElement("div");state.style.cssText="font-size:11px;color:#94a3b8;padding:8px;border:1px solid #29384a;border-radius:10px;width:100%";state.textContent=x.ai_image_regenerate_requested?"Nueva IA solicitada · se intentará una imagen en la próxima pasada.":"Imagen IA/fallback todavía no disponible.";grid.appendChild(state)}
    picture.appendChild(grid);
  }
  const rating=card.querySelector(".rating");if(parts.closer)renderRemateRating(rating,x);else rating.hidden=true;
@@ -447,7 +447,7 @@ function renderCollapsedPending(x){
  const imageState=collapsedImageState(x);
  const status=document.createElement("div");status.className="collapsedImageStatus "+imageState.cls;status.textContent=imageState.text;
  info.append(name,status);
- const open=document.createElement("button");open.className="btn openPending";open.type="button";open.textContent=x.rewrite_pending?"Reelaborando…":"Abrir";
+ const open=document.createElement("button");open.className="btn openPending";open.type="button";open.textContent=x.rewrite_pending?"Reevaluando…":"Abrir";
  open.disabled=Boolean(x.rewrite_pending);
  open.onclick=()=>{if(x.rewrite_pending)return;openPendingKey=pendingKey(x);render()};
  card.append(info,open);return card;
