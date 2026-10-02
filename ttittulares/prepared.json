@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-02T17:41:52.449267Z",
+  "updated_at": "2026-10-02T17:46:29.986709Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -447,9 +447,9 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -464,13 +464,50 @@
       },
       "fallback_image_search_attempted_at": "2026-10-02T17:31:55.593288Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261002170347_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/economia/noticia-g7-confirma-liberacion-100-millones-barriles-petroleo-crudo-diesel-20261002170347.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "El G7 confirma la liberación de 100 millones de barriles de petróleo crudo y diésel"
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/75cf554d9c41-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "75cf554d9c41",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "alt": "Gag editorial neutral sobre reservas de diésel y crudo saliendo con urgencia logística",
+        "tool_called_at": "2026-10-02T17:42:41.573Z",
+        "source_raster_sha256": "169fe61e179569765d01e42071da61b19e03aa387435cd3350a600276e20a9c1",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/75cf554d9c41-r1-ai1.jpg",
+        "sha256": "647d70b354bcafe6fef5579376d5b989aa506d645eb1a86216dbf5c2b148f7fe",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/75cf554d9c41-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "context_guard": {
+          "version": 3,
+          "event_id": "75cf554d9c41",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "alt": "Gag editorial neutral sobre reservas de diésel y crudo saliendo con urgencia logística",
+        "tool_called_at": "2026-10-02T17:42:41.573Z",
+        "source_raster_sha256": "169fe61e179569765d01e42071da61b19e03aa387435cd3350a600276e20a9c1",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/75cf554d9c41-r1-ai1.jpg",
+        "sha256": "647d70b354bcafe6fef5579376d5b989aa506d645eb1a86216dbf5c2b148f7fe",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-02T17:46:29.986658Z"
     },
     {
       "event_id": "83118880bd34",
