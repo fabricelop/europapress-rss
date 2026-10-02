@@ -770,7 +770,12 @@ async function requestImageRegeneration(names) {
       // bloqueos heredados del antiguo generador inline. Solo un bloqueo
       // explícito actual debe impedirla.
       const blockReason = String(row.ai_image_block_reason || row.image_block_reason || "").trim();
-      if (!blockReason) {
+      const legacyPoliticalBlock = ["political_actor", "political_context"].includes(blockReason.toLowerCase());
+      if (!blockReason || legacyPoliticalBlock) {
+        if (legacyPoliticalBlock) {
+          delete row.ai_image_block_reason;
+          delete row.image_block_reason;
+        }
         row.disable_ai_image = false;
         row.with_image = true;
         row.image_strategy = "ai_plus_fallback";
