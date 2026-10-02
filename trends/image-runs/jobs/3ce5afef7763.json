@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-v9-1790967101962-latasa",
   "requested_at": "2026-10-02T18:51:41.958Z",
-  "updated_at": "2026-10-02T18:52:10.322Z",
-  "status": "RUNNING",
-  "phase": "pc_launch",
+  "updated_at": "2026-10-02T18:53:11.920Z",
+  "status": "PERSISTING",
+  "phase": "image_persist",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -22,9 +22,12 @@
     "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
     "lifecycle": "El chat solo genera. El puente local recoge el raster, lo valida y lo persiste."
   },
-  "message": "PC ha abierto el chat de imagen; esperando inicio de generación.",
+  "message": "Raster recibido y validado; enviando a image-outbox.",
   "pc_upload_secret_hash": "8bdfdd1ef6635d3fbb13f4fb434b619b5176d57db762df0d4fb9a1145d727543",
   "pc_worker_id": "ttendencias-dedicated-v8",
   "pc_picked_up_at": "2026-10-02T18:51:52.373Z",
-  "pc_launched_at": "2026-10-02T18:52:10.322Z"
+  "pc_launched_at": "2026-10-02T18:52:10.322Z",
+  "upload_received_at": "2026-10-02T18:53:11.920Z",
+  "upload_sha256": "5d1d0f2b6763b1648bdbac82a883174c3289cccc82127898556e03f81ce3962e",
+  "upload_bytes": 318033
 }
