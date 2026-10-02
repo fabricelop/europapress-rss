@@ -16,7 +16,7 @@ $ImageIndexUrl = "$StatusBase/api/ttendencias-run-status?view=image-index"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
 
-$WorkerId = "ttendencias-dedicated-v3"
+$WorkerId = "ttendencias-dedicated-v4"
 $PollSeconds = 5
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
@@ -194,25 +194,22 @@ function Launch-EditorialProcess([string]$CommandId) {
 }
 
 function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$ExpectedMarker = "") {
-  if (-not (Test-Path -LiteralPath $Launcher)) { throw "No existe $Launcher" }
+  if (-not (Test-Path -LiteralPath $Runner)) { throw "No existe $Runner" }
 
-  $beforeWrite = [DateTime]::MinValue
-  $beforeLen = 0L
-  if (Test-Path -LiteralPath $LauncherLogPath) {
-    try {
-      $fi = Get-Item -LiteralPath $LauncherLogPath
-      $beforeWrite = $fi.LastWriteTimeUtc
-      $beforeLen = $fi.Length
-    } catch {}
-  }
+  $safeReason = ($Reason -replace '[^A-Za-z0-9._-]','_')
+  if ($safeReason.Length -gt 80) { $safeReason = $safeReason.Substring(0,80) }
+  $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  $launchLog = Join-Path $BaseDir ("ttendencias-launch-" + $stamp + "-" + $safeReason + ".log")
+  $launchErr = Join-Path $BaseDir ("ttendencias-launch-" + $stamp + "-" + $safeReason + ".err.log")
+  Remove-Item -LiteralPath $launchLog,$launchErr -Force -ErrorAction SilentlyContinue
 
   $old = $env:TT_CHAT_MESSAGE_B64
+  $proc = $null
   try {
     if ($Message) {
       $bytes = [System.Text.Encoding]::UTF8.GetBytes($Message)
       $env:TT_CHAT_MESSAGE_B64 = [Convert]::ToBase64String($bytes)
     } else {
-      # Editorial: Ejecutar.js usará su mensaje por defecto "Ejecuta TTendencias".
       Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue
     }
 
@@ -220,8 +217,12 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$Expec
     if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
     if (-not $node) { throw "Node no disponible para lanzar TTendencias" }
 
-    Start-Process -FilePath $node.Source -ArgumentList @($Runner,"tendencias","--enviar") -WindowStyle Hidden | Out-Null
-    Write-Log "PROCESS STARTED direct-node-real :: $Reason marker=$ExpectedMarker"
+    $proc = Start-Process -FilePath $node.Source -ArgumentList @($Runner,"tendencias","--enviar") -WindowStyle Hidden -PassThru -RedirectStandardOutput $launchLog -RedirectStandardError $launchErr
+    if (-not $proc) { throw "Start-Process no devolvió proceso" }
+    Write-Log "PROCESS STARTED direct-node-real pid=$($proc.Id) :: $Reason marker=$ExpectedMarker stdout=$launchLog stderr=$launchErr"
+  } catch {
+    Write-Log "PROCESS START ERROR :: $Reason :: $($_.Exception.Message)"
+    return $false
   } finally {
     if ($null -eq $old) { Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue }
     else { $env:TT_CHAT_MESSAGE_B64 = $old }
@@ -229,40 +230,52 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$Expec
 
   $deadline = (Get-Date).AddSeconds($LaunchConfirmSeconds)
   while ((Get-Date) -lt $deadline) {
-    Start-Sleep -Seconds 1
-    if (-not (Test-Path -LiteralPath $LauncherLogPath)) { continue }
+    Start-Sleep -Milliseconds 500
+
+    $stdout = ""
+    $stderr = ""
+    try { if (Test-Path -LiteralPath $launchLog) { $stdout = Get-Content -LiteralPath $launchLog -Raw -ErrorAction SilentlyContinue } } catch {}
+    try { if (Test-Path -LiteralPath $launchErr) { $stderr = Get-Content -LiteralPath $launchErr -Raw -ErrorAction SilentlyContinue } } catch {}
+    $joined = [string]$stdout + "`n" + [string]$stderr
+
+    $hasMarker = (-not $ExpectedMarker) -or $joined.Contains($ExpectedMarker)
+
+    if ($joined -match "MODO:\s*PRUEBA") {
+      Write-Log "CHAT LAUNCH MODE ERROR :: $Reason :: Ejecutar.js arrancó en MODO PRUEBA"
+      return $false
+    }
+
+    $realMode = $joined -match "MODO:\s*ENVIO REAL"
+    $responseStarted = $joined -match '"generando"\s*:\s*true'
+    $messageSent = $joined -match "MENSAJE ENVIADO"
+    $executionLaunched = $joined -match "EJECUCION LANZADA"
+
+    if ($hasMarker -and $realMode -and ($messageSent -or $executionLaunched -or $responseStarted)) {
+      $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
+      Write-Log "CHAT MESSAGE CONFIRMED :: $Reason marker=$ExpectedMarker via=$why"
+      return $true
+    }
+
+    if ($joined -match "ERROR:|ERROR ::|Timeout CDP|ChatGPT no confirmó") {
+      $detail = (($stderr + " " + $stdout) -replace '\s+',' ').Trim()
+      if ($detail.Length -gt 700) { $detail = $detail.Substring([Math]::Max(0,$detail.Length-700)) }
+      Write-Log "CHAT LAUNCH LOG ERROR :: $Reason :: $detail"
+      return $false
+    }
+
     try {
-      $fi = Get-Item -LiteralPath $LauncherLogPath
-      if ($fi.Length -le $beforeLen -and $fi.LastWriteTimeUtc -le $beforeWrite) { continue }
-
-      $tail = @(Get-Content -LiteralPath $LauncherLogPath -Tail 60 -ErrorAction Stop)
-      $joined = ($tail -join "`n")
-      $hasMarker = (-not $ExpectedMarker) -or $joined.Contains($ExpectedMarker)
-
-      # Confirmación robusta: la propia telemetría de Ejecutar.js puede mostrar
-      # generando:true antes de que el DOM actualice el contador de mensajes o antes
-      # de que aparezca la línea MENSAJE ENVIADO. En ese caso ChatGPT ya aceptó el envío.
-      if ($joined -match "MODO:\s*PRUEBA") {
-        Write-Log "CHAT LAUNCH MODE ERROR :: $Reason :: Ejecutar.js arrancó en MODO PRUEBA"
-        return $false
-      }
-
-      $responseStarted = $joined -match '"generando"\s*:\s*true'
-      $messageSent = $joined -match "MENSAJE ENVIADO"
-      $executionLaunched = $joined -match "EJECUCION LANZADA"
-      if ($hasMarker -and ($messageSent -or $executionLaunched -or $responseStarted)) {
-        $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
-        Write-Log "CHAT MESSAGE CONFIRMED :: $Reason marker=$ExpectedMarker via=$why"
-        return $true
-      }
-      if ($joined -match "ERROR:|ERROR ::|Timeout CDP") {
-        Write-Log "CHAT LAUNCH LOG ERROR :: $Reason :: $($tail[-1])"
+      $proc.Refresh()
+      if ($proc.HasExited -and -not $messageSent -and -not $executionLaunched -and -not $responseStarted) {
+        $detail = (($stderr + " " + $stdout) -replace '\s+',' ').Trim()
+        if (-not $detail) { $detail = "Ejecutar.js terminó sin confirmar el envío. ExitCode=$($proc.ExitCode)" }
+        if ($detail.Length -gt 700) { $detail = $detail.Substring([Math]::Max(0,$detail.Length-700)) }
+        Write-Log "CHAT PROCESS EXITED :: $Reason :: $detail"
         return $false
       }
     } catch {}
   }
 
-  Write-Log "CHAT MESSAGE TIMEOUT :: $Reason marker=$ExpectedMarker after=$($LaunchConfirmSeconds)s"
+  Write-Log "CHAT MESSAGE TIMEOUT :: $Reason marker=$ExpectedMarker after=$($LaunchConfirmSeconds)s stdout=$launchLog stderr=$launchErr"
   return $false
 }
 
