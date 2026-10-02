@@ -17160,7 +17160,7 @@
       "id": "efad034bd296",
       "name": "Celia",
       "revision": 0,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-02T12:21:34.765Z",
       "rank": 21,
       "with_image": true,
@@ -17174,7 +17174,15 @@
       "requested_together": [
         "Celia"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "last_attempt_at": "2026-10-02T15:08:00+02:00",
+      "problem_reason": "La señal social de «Celia» está confirmada, pero tras búsquedas separadas no aparece un detonante único, actual y suficientemente verificable en España; no se fuerza una asociación con personas o contenidos homónimos.",
+      "source": "editorial_chat_direct",
+      "disable_ai_image": true,
+      "image_strategy": "none",
+      "ai_image_status": "disabled",
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "55182e295925",
@@ -17533,6 +17541,6 @@
       "reexplain": false
     }
   ],
-  "updated_at": "2026-10-02T15:06:00+02:00",
+  "updated_at": "2026-10-02T15:08:00+02:00",
   "count": 430
 }
