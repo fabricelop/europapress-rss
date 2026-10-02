@@ -12,7 +12,7 @@ $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v11"
+$WorkerId = "ttittulares-dedicated-v12"
 $PollSeconds = 5
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
@@ -72,20 +72,38 @@ function Enable-CustomChatMessages {
   }
   try {
     $text = Get-Content -LiteralPath $Runner -Raw -Encoding UTF8
-    if ($text.Contains("TT_CHAT_MESSAGE_B64")) {
-      Write-Log "CUSTOM MESSAGE support already present"
-      return $true
-    }
 
-    $exprTit = '(process.env.TT_CHAT_MESSAGE_B64 ? Buffer.from(process.env.TT_CHAT_MESSAGE_B64,"base64").toString("utf8") : "Ejecuta TTiTTulares")'
-    $next = $text.Replace('"Ejecuta TTiTTulares"', $exprTit).Replace("'Ejecuta TTiTTulares'", $exprTit)
-
-    if ($next -eq $text) {
-      Write-Log "CUSTOM MESSAGE DISABLED: no se encontró el literal Ejecuta TTiTTulares"
+    # MUY IMPORTANTE: este listener solo puede tocar la entrada 'titulares'.
+    # TTendencias comparte Ejecutar.js y su línea debe quedar byte-a-byte igual.
+    $tendenciasBefore = (($text -split "`r?`n") | Where-Object { $_ -match '^\s*tendencias\s*:' } | Select-Object -First 1)
+    if (-not $tendenciasBefore) {
+      Write-Log "CUSTOM MESSAGE DISABLED: no se encontró la línea tendencias; no se toca Ejecutar.js"
       return $false
     }
 
-    $backup = $Runner + ".before-ttittulares-editorial-marker-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
+    $exprTit = '(process.env.TT_CHAT_MESSAGE_B64 ? Buffer.from(process.env.TT_CHAT_MESSAGE_B64,"base64").toString("utf8") : "Ejecuta TTiTTulares")'
+    $signature = 'titulares: ' + $exprTit
+
+    if ($text.Contains($signature)) {
+      Write-Log "CUSTOM MESSAGE titulares support already present; tendencias preserved"
+      return $true
+    }
+
+    $next = $text.Replace('titulares: "Ejecuta TTiTTulares"', $signature)
+    $next = $next.Replace("titulares: 'Ejecuta TTiTTulares'", $signature)
+
+    if ($next -eq $text) {
+      Write-Log "CUSTOM MESSAGE DISABLED: no se encontró la entrada exacta titulares; no se toca TTendencias"
+      return $false
+    }
+
+    $tendenciasAfter = (($next -split "`r?`n") | Where-Object { $_ -match '^\s*tendencias\s*:' } | Select-Object -First 1)
+    if ($tendenciasAfter -cne $tendenciasBefore) {
+      Write-Log "CUSTOM MESSAGE ABORTED: la línea tendencias habría cambiado"
+      return $false
+    }
+
+    $backup = $Runner + ".before-ttittulares-editorial-v12-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
     Copy-Item -LiteralPath $Runner -Destination $backup -Force
     Set-Content -LiteralPath $Runner -Value $next -Encoding UTF8
 
@@ -100,7 +118,16 @@ function Enable-CustomChatMessages {
       }
     }
 
-    Write-Log "CUSTOM MESSAGE enabled; backup=$backup"
+    # Verificación final en disco: TTendencias debe seguir idéntico.
+    $written = Get-Content -LiteralPath $Runner -Raw -Encoding UTF8
+    $tendenciasWritten = (($written -split "`r?`n") | Where-Object { $_ -match '^\s*tendencias\s*:' } | Select-Object -First 1)
+    if ($tendenciasWritten -cne $tendenciasBefore) {
+      Copy-Item -LiteralPath $backup -Destination $Runner -Force
+      Write-Log "CUSTOM MESSAGE ABORTED: protección TTendencias activada; backup restaurado"
+      return $false
+    }
+
+    Write-Log "CUSTOM MESSAGE titulares enabled; TTendencias unchanged; backup=$backup"
     return $true
   } catch {
     Write-Log "CUSTOM MESSAGE ERROR :: $($_.Exception.Message)"
