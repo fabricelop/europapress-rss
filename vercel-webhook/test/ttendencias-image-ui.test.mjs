@@ -21,3 +21,48 @@ test("La vista filtra ai_image antes de mostrar la etiqueta Gag IA",()=>{
  assert.match(inline,/ai=isChatImageGen\(rawAi\)\?rawAi:\{\}/);
  assert.match(inline,/appendImagePreview\(grid,ai,"Gag IA",imageChoice==="ai"\)/);
 });
+
+
+const mainHtml=readFileSync(new URL("../ttendencias/index.html",import.meta.url),"utf8");
+const runApi=readFileSync(new URL("../api/ttendencias-run.js",import.meta.url),"utf8");
+const statusApi=readFileSync(new URL("../api/ttendencias-run-status.js",import.meta.url),"utf8");
+
+test("Pendientes selecciona manualmente los gags por id y revisión",()=>{
+ assert.match(html,/id="runImages"/);
+ assert.match(html,/ttendencias-image-selected-v1/);
+ assert.match(inline,/function imageSelectionKey\(x\)/);
+ assert.match(inline,/selected\.has\(imageSelectionKey\(x\)\)/);
+ assert.match(inline,/makeImageSelector\(x,false\)/);
+});
+
+test("El atajo Imágenes comparte la selección de Pendientes",()=>{
+ assert.match(mainHtml,/id="runImages"/);
+ assert.match(mainHtml,/ttendencias-image-selected-v1/);
+ assert.match(mainHtml,/selected\.has\(mainImageSelectionKey\(x\)\)/);
+ assert.match(mainHtml,/runImagesShortcut\.onclick=requestMainPendingImages/);
+});
+
+test("Política y meteorología sin víctimas no bloquean ImageGen",()=>{
+ for(const source of [html,mainHtml,runApi,statusApi]){
+   assert.match(source,/political_actor/);
+   assert.match(source,/political_context/);
+   assert.match(source,/safety_sensitive_weather/);
+ }
+ assert.doesNotMatch(runApi,/\|\|row\.with_image===false/);
+ assert.doesNotMatch(statusApi,/\|\|row\.with_image===false/);
+});
+
+test("El job manual congela explicación y remate",()=>{
+ assert.match(runApi,/context_snapshot=\{/);
+ assert.match(runApi,/explanation:String\(row\.explanation/);
+ assert.match(runApi,/closer_text:String\(row\.closer_text/);
+ assert.match(runApi,/chat_command_version:3/);
+ assert.match(runApi,/reason:"revision_changed"/);
+});
+
+test("Reexplicar desde Pendientes no fuerza with_image false",()=>{
+ const start=inline.indexOf("async function sendReexplain()");
+ const end=inline.indexOf("async function imageDecision",start);
+ const block=inline.slice(start,end);
+ assert.doesNotMatch(block,/with_image:false/);
+});
