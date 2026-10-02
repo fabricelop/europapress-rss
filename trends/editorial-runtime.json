@@ -1,169 +1,117 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-02T10:57:00+02:00",
-  "last_completed_at": "2026-10-02T11:04:30+02:00",
+  "last_started_at": "2026-10-02T12:09:00+02:00",
+  "last_completed_at": "2026-10-02T12:18:45+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
-    "1da3f5c2d417",
-    "b28dfbf627ab"
+    "76aea6cf66e7",
+    "4f5a0108da58"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-02T11:04:30+02:00",
+  "updated_at": "2026-10-02T12:18:45+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_problematic_ids": [
+    "4f5a0108da58"
+  ],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "chat-20261002T1057+0200",
+    "run_id": "chat-20261002T1209+0200",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-02T10:57:00+02:00",
-    "updated_at": "2026-10-02T11:04:30+02:00",
-    "finished_at": "2026-10-02T11:04:30+02:00",
+    "started_at": "2026-10-02T12:09:00+02:00",
+    "updated_at": "2026-10-02T12:18:45+02:00",
+    "finished_at": "2026-10-02T12:18:45+02:00",
     "current": 2,
     "total": 2,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-02T10:57:00+02:00",
+    "requested_at": "2026-10-02T12:08:47.778+02:00",
     "partial": false,
     "summary": {
       "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 2,
-      "revisions_updated": 0,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 0,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 0,
+      "trends_problematic": 1,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 2,
-      "archive_sources_located": 2,
+      "fallback_images_ready": 0,
+      "archive_sources_located": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 0,
       "remates_omitted": 1,
       "visual_backlog": 6,
-      "visual_backlog_current_run": 1
+      "visual_backlog_current_run": 0
     },
-    "incident_count": 0,
-    "incidents": [],
+    "incident_count": 1,
+    "incidents": [
+      {
+        "trend_id": "4f5a0108da58",
+        "title": "Rafa Vecina",
+        "reason": "«Rafa Vecina» sigue apareciendo en cinco fuentes sociales actuales del radar español (aprox. puestos 24–31), pero tras varias búsquedas actuales no se ha encontrado un hecho, declaración, homenaje o noticia reciente suficientemente fiable que explique el pico. Las fuentes abiertas localizadas son perfiles o referencias históricas; se conserva como problemática para no inventar el detonante."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
-      "blob_sha": "c10a2215bf3ab9ced6f7d29c20ab6c2c42a3823d",
-      "updated_at": "2026-10-02T06:36:54.187Z",
-      "total_ratings": 118,
+      "blob_sha": "668bc54060f56a0735904579c5e912d9680f3af0",
+      "updated_at": "2026-10-02T09:16:27.819Z",
+      "total_ratings": 119,
       "recent_considered": 100
     },
     "remate_selections": [
       {
-        "trend_id": "1da3f5c2d417",
-        "revision": 0,
+        "trend_id": "76aea6cf66e7",
+        "revision": 1,
         "candidate_count": 0,
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
         "no_remate_reason": "political_content"
-      },
-      {
-        "trend_id": "b28dfbf627ab",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c2",
-            "total": 8.1,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c3",
-            "total": 7.4,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c4",
-            "total": 7.4,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c5",
-            "total": 6.8,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "c2",
-        "selected_score": 8.1,
-        "no_remate_reason": null
       }
     ],
     "radar": {
-      "captured_at": "2026-10-02T10:51:06+02:00",
+      "captured_at": "2026-10-02T12:11:14+02:00",
       "processed": [
-        "Decretos",
-        "Santos Ángeles Custodios"
+        "Convoca",
+        "Rafa Vecina"
       ],
       "queue_count": 0
     },
-    "message": "Pasada directa completada 2/2. Decretos y Santos Ángeles Custodios quedaron explicadas y verificadas; cola editorial final 0. Decretos se cerró de forma factual y neutral, sin remate ni ImageGen por contexto político, con fallback de archivo. Santos Ángeles Custodios se cerró con remate y fallback oficial; su IA queda pendiente para el flujo de imagen independiente por item. No se usó Work ni se desplegó Vercel."
+    "message": "Pasada directa completada 2/2. Convoca r1 se reexplicó con el contexto actual de las movilizaciones por vivienda y el llamamiento a huelga general; se eliminó el visual anterior de Malvinas por quedar descontextualizado. Rafa Vecina sigue con señal social en varias fuentes, pero queda problemática al no poder verificarse un detonante actual fiable. Cola editorial final 0. Sin ImageGen, Work ni despliegues Vercel."
   },
   "summary": {
     "trends_processed": 2,
-    "trends_explained": 2,
-    "explanation_groups": 2,
-    "new_cards": 2,
-    "revisions_updated": 0,
+    "trends_explained": 1,
+    "explanation_groups": 1,
+    "new_cards": 0,
+    "revisions_updated": 1,
     "grouped_into_existing_card": 0,
-    "trends_problematic": 0,
+    "trends_problematic": 1,
     "trends_dismissed": 0,
-    "incidents": 0,
+    "incidents": 1,
     "queue_remaining": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
-    "fallback_images_ready": 2,
-    "archive_sources_located": 2,
+    "fallback_images_ready": 0,
+    "archive_sources_located": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 0,
     "remates_omitted": 1,
     "visual_backlog": 6,
-    "visual_backlog_current_run": 1
+    "visual_backlog_current_run": 0
   },
   "error": null
 }
