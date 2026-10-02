@@ -38,49 +38,35 @@ async function gh(url,options={}){
     ...(options.headers||{})
   }})
 }
+let commentsCache={at:0,items:[]};
 async function comments(){
-  // Lee SIEMPRE el comentario canónico y también los RUNTRACE recientes. Durante
-  // la transición algunos ejecutores han creado un comentario por pasada en vez
-  // de actualizar el canónico; el panel no debe quedarse ciego por ello.
-  const since=new Date(Date.now()-24*60*60*1000).toISOString();
-  const [direct,recent]=await Promise.all([
-    gh(`https://api.github.com/repos/${REPO}/issues/comments/${TRACE_COMMENT_ID}`),
-    gh(`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100&since=${encodeURIComponent(since)}`)
-  ]);
-  const out=[];
-  if(direct.ok)out.push(await direct.json());
-  if(recent.ok){
-    const firstPage=await recent.json();
-    for(const x of firstPage){
-      if(String(x.body||"").startsWith(TRACE_PREFIX))out.push(x)
-    }
-    // La lista de comentarios es ascendente. Si hay más de 100 comentarios en
-    // la ventana, la ejecución más reciente estará en la última página.
-    const link=String(recent.headers.get("link")||"");
-    const lastUrl=(link.match(/<([^>]+)>;\s*rel="last"/)||[])[1];
-    if(lastUrl){
-      const last=await gh(lastUrl);
-      if(last.ok){
-        for(const x of await last.json()){
-          if(String(x.body||"").startsWith(TRACE_PREFIX))out.push(x)
-        }
-      }
-    }
-  }else if(!direct.ok){
-    throw new Error(`GitHub RUNTRACE: ${recent.status} ${await recent.text()}`)
+  // RUNTRACE es detalle complementario. No consultar GitHub REST en cada polling:
+  // una sola lectura reciente como máximo cada 30 s por instancia caliente.
+  const now=Date.now();
+  if(now-commentsCache.at<30000)return commentsCache.items;
+  const since=new Date(now-12*60*60*1000).toISOString();
+  try{
+    const r=await gh(`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100&since=${encodeURIComponent(since)}`);
+    if(!r.ok)return commentsCache.items;
+    const items=(await r.json()).filter(x=>String(x.body||"").startsWith(TRACE_PREFIX));
+    commentsCache={at:now,items};
+    return items
+  }catch(_){
+    return commentsCache.items
   }
-  const seen=new Set();
-  return out.filter(x=>{
-    const id=String(x.id||"");
-    if(!id||seen.has(id))return false;
-    seen.add(id);return true
-  })
 }
 async function triggerReady(){return true}
 async function readControl(path){
+  // Lecturas frecuentes de trigger/ACK por RAW: no consumen el rate limit
+  // REST autenticado. REST queda únicamente como fallback de compatibilidad.
   try{
-    const r=await gh(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`);
-    if(r.status===404)return {};
+    const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
+    const u=`https://raw.githubusercontent.com/${REPO}/${encodeURIComponent(TRIGGER_BRANCH)}/${clean}?t=${Date.now()}`;
+    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttittulares-run-status-control-read"}});
+    if(r.ok)return JSON.parse(await r.text()||"{}")
+  }catch(_){}
+  try{
+    const r=await gh(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`,{cache:"no-store"});
     if(!r.ok)return {};
     const f=await r.json();
     const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
