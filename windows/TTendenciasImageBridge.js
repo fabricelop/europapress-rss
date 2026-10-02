@@ -118,22 +118,38 @@ async function ensureCommandSent(cdp,message){
     throw e
   }
 
-  const clicked=await cdp.eval("(()=>{const qs=['button[data-testid=\"send-button\"]','button[data-testid=\"composer-submit-button\"]','button[aria-label*=\"Send\"]','button[aria-label*=\"Enviar\"]'];for(const q of qs){const b=document.querySelector(q);if(b&&!b.disabled&&b.getAttribute('aria-disabled')!=='true'){b.click();return true}}return false})()");
-  if(!clicked){
-    await cdp.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+  async function submitComposer(){
+    return cdp.eval("(()=>{const el=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!el)return {ok:false,via:'no-composer'};const root=el.closest('form')||el.parentElement?.parentElement?.parentElement||document;const qs=['button[data-testid=\"send-button\"]','button[data-testid=\"composer-submit-button\"]','button[type=\"submit\"]','button[aria-label*=\"Send\" i]','button[aria-label*=\"Enviar\" i]','button[title*=\"Send\" i]','button[title*=\"Enviar\" i]'];for(const q of qs){const b=root.querySelector?.(q)||document.querySelector(q);if(b&&!b.disabled&&b.getAttribute('aria-disabled')!=='true'){b.click();return {ok:true,via:'click',selector:q,testid:b.getAttribute('data-testid')||'',aria:b.getAttribute('aria-label')||''}}}const form=el.closest('form');if(form&&typeof form.requestSubmit==='function'){const submit=[...form.querySelectorAll('button')].find(b=>!b.disabled&&b.getAttribute('aria-disabled')!=='true'&&(b.type==='submit'||/send|enviar/i.test((b.getAttribute('aria-label')||'')+' '+(b.getAttribute('data-testid')||'')+' '+(b.title||''))));try{form.requestSubmit(submit||undefined);return {ok:true,via:'requestSubmit'}}catch(_){}}const buttons=[...document.querySelectorAll('button')].slice(-40).map(b=>({testid:b.getAttribute('data-testid')||'',aria:b.getAttribute('aria-label')||'',title:b.title||'',type:b.type||'',disabled:Boolean(b.disabled||b.getAttribute('aria-disabled')==='true')}));return {ok:false,via:'no-submit',buttons}})()")
+  }
+
+  let submit=await submitComposer();
+  if(!submit?.ok){
+    await cdp.call("Input.dispatchKeyEvent",{type:"rawKeyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13,text:"\r",unmodifiedText:"\r"});
     await cdp.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
   }
 
   const deadline=Date.now()+30000;
+  let retried=false;
   while(Date.now()<deadline){
-    try{if(await hasUserCommand(cdp))return {already:false}}catch(e){
+    try{
+      if(await hasUserCommand(cdp))return {already:false,submit};
+      if(!retried&&Date.now()>deadline-22000){
+        retried=true;
+        submit=await submitComposer();
+        if(!submit?.ok){
+          await cdp.call("Input.dispatchKeyEvent",{type:"rawKeyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13,text:"\r",unmodifiedText:"\r"});
+          await cdp.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+        }
+      }
+    }catch(e){
       const er=Error("La pestaña de ChatGPT cambió durante el envío");
       er.code="CHAT_TARGET_CHANGED";
       throw er
     }
     await sleep(700)
   }
-  throw Error("El comando quedó en el compositor, pero no apareció como turno de usuario en 30 segundos")
+  const detail=submit&&submit.buttons?JSON.stringify(submit.buttons).slice(-900):JSON.stringify(submit||{});
+  throw Error("El comando quedó en el compositor, pero no apareció como turno de usuario en 30 segundos; submit="+detail)
 }
 async function attachAndEnsureCommand(message){
   let last=null;
