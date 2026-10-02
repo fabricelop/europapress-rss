@@ -67,20 +67,22 @@ async function comments(){
 }
 async function triggerReady(){return true}
 async function readControlBranchJson(path){
-  // El canal de control necesita consistencia fuerte: RAW puede devolver
-  // temporalmente un commit anterior aunque usemos cache-busting.
+  // Polling de estado: RAW primero para no consumir la cuota REST de GitHub.
+  // Cache-busting + no-store dan frescura suficiente para telemetría de UI.
   try{
-    const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(TRIGGER_BRANCH),{cache:"no-store"});
-    if(r.ok){
-      const f=await r.json();
+    const u="https://raw.githubusercontent.com/"+REPO+"/"+encodeURIComponent(TRIGGER_BRANCH)+"/"+path+"?t="+Date.now();
+    const rr=await fetch(u,{cache:"no-store",headers:{"cache-control":"no-cache","user-agent":"ttendencias-run-status-control-read"}});
+    if(rr.ok)return JSON.parse(await rr.text()||"{}");
+    if(rr.status===404)return {};
+  }catch(_){}
+  // REST queda como fallback excepcional, no como camino normal del polling.
+  try{
+    const rr=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(TRIGGER_BRANCH),{cache:"no-store"});
+    if(rr.ok){
+      const f=await rr.json();
       const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
       return JSON.parse(raw||"{}")
     }
-  }catch(_){}
-  try{
-    const u="https://raw.githubusercontent.com/"+REPO+"/"+encodeURIComponent(TRIGGER_BRANCH)+"/"+path+"?t="+Date.now();
-    const r=await fetch(u,{cache:"no-store",headers:{"cache-control":"no-cache","user-agent":"ttendencias-run-status-control-read"}});
-    if(r.ok)return JSON.parse(await r.text()||"{}");
   }catch(_){}
   return {}
 }
