@@ -1,27 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T07:08:56.313841Z",
-      "event_id": "88f85ce466ac",
-      "phase": "imagen",
-      "reason": "No se encontró una imagen HTTPS verificable del mismo acontecimiento; las disponibles eran antiguas o meramente contextuales y, por tratarse de tensión militar, no procede generar un gag.",
-      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 88f85ce466ac: No se encontró una imagen HTTPS verificable del mismo acontecimiento; las disponibles eran antiguas o meramente contextuales y, por tratarse de tensión militar, no procede generar un gag.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T08:12:31.845Z",
-      "event_id": "98d76da183ec",
-      "phase": "verifying",
-      "reason": "La ejecución dejó de emitir telemetría después de persistir correctamente la imagen de Alcaraz. El raster quedó materializado en main, pero el run no avanzó de verifying 1/11 ni cerró el RUNTRACE. Se conserva el trabajo realizado; los items de imagen restantes deben continuar en una ejecución posterior.",
-      "remediation_prompt": "Evita esperas indefinidas en verifying: limita la verificación a relecturas acotadas, avanza si el estado ya es ready/app o PUBLISHED/DISMISSED, reserva tiempo para cerrar siempre el RUNTRACE y registra el detalle de cada incidencia."
-    },
-    {
-      "at": "2026-09-27T09:36:31.152224Z",
-      "event_id": "80628f366caa-r1",
-      "phase": "outbox",
-      "reason": "80628f366caa-r1.json: ValueError: text alternativo no coincide",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 80628f366caa-r1: 80628f366caa-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-27T09:58:56.117398Z",
       "event_id": "d87bac0874cd",
       "phase": "imagen",
@@ -1399,6 +1378,27 @@
       "phase": "outbox",
       "reason": "f777d8d6138d-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento f777d8d6138d-r1: f777d8d6138d-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-02T14:09:41.346946Z",
+      "event_id": "33985cee9182-r1",
+      "phase": "outbox",
+      "reason": "33985cee9182-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 33985cee9182-r1: 33985cee9182-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-02T14:09:41.346946Z",
+      "event_id": "c4e77f73b1d0-r1",
+      "phase": "outbox",
+      "reason": "c4e77f73b1d0-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento c4e77f73b1d0-r1: c4e77f73b1d0-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-02T14:09:41.346946Z",
+      "event_id": "f351e06d89dd-r1",
+      "phase": "outbox",
+      "reason": "f351e06d89dd-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento f351e06d89dd-r1: f351e06d89dd-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
