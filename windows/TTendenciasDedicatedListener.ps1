@@ -179,6 +179,20 @@ function Enable-CustomChatMessages {
   }
 }
 
+function Launch-EditorialProcess([string]$CommandId) {
+  if (-not (Test-Path -LiteralPath $Launcher)) { throw "No existe $Launcher" }
+
+  try {
+    $p = Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"tendencias") -WindowStyle Hidden -PassThru
+    if (-not $p) { throw "Start-Process no devolvió proceso" }
+    Write-Log "EDITORIAL PROCESS STARTED pid=$($p.Id) command=$CommandId"
+    return $true
+  } catch {
+    Write-Log "EDITORIAL PROCESS ERROR command=$CommandId :: $($_.Exception.Message)"
+    return $false
+  }
+}
+
 function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$ExpectedMarker = "") {
   if (-not (Test-Path -LiteralPath $Launcher)) { throw "No existe $Launcher" }
 
@@ -384,7 +398,7 @@ while ($true) {
           $ack = Send-Ack $commandId "picked_up"
           if ($ack -eq "OK") {
             try {
-              $messageSent = Launch-ProjectChat "editorial command=$commandId"
+              $messageSent = Launch-EditorialProcess $commandId
               if ($messageSent) {
                 $launched = Send-Ack $commandId "launched"
                 if ($launched -ne "OK") { Write-Log "LAUNCH ACK WARNING command=$commandId result=$launched" }
