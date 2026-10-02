@@ -232,6 +232,8 @@ async function syncEditorialQueue() {
       requested_at: req.requested_at,
       revision: Number(req.revision || 0),
       rewrite_instruction: req.rewrite_instruction || req.rewrite_request || "",
+      reexplain: Boolean(req.reexplain),
+      rewrite_with_image: req.rewrite_with_image !== false,
       with_image: req.with_image !== false,
       disable_ai_image: Boolean(req.disable_ai_image),
       image_strategy: req.image_strategy || null,
