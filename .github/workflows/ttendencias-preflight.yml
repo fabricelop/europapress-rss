@@ -34,6 +34,7 @@ jobs:
 
       - name: Validar Python y JSON
         run: |
+          python3 -m pip install --disable-pip-version-check --quiet Pillow
           python3 -m py_compile trends/update_trends.py trends/auto_queue_new.py trends/enrich_explained_images.py trends/apply_editorial_outbox.py trends/apply_ai_image_outbox.py trends/migrate_legacy_chat_svg.py
           python3 trends/enrich_explained_images.py --selftest
           python3 trends/apply_ai_image_outbox.py --selftest
