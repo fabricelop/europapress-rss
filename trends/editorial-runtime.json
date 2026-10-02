@@ -1,17 +1,18 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-02T12:09:00+02:00",
-  "last_completed_at": "2026-10-02T12:18:45+02:00",
+  "last_started_at": "2026-10-02T12:38:00+02:00",
+  "last_completed_at": "2026-10-02T12:50:00+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
-    "76aea6cf66e7",
-    "4f5a0108da58"
+    "b14b8ad1e6c4",
+    "416aeeacafc3",
+    "5f320278ac86"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-02T12:18:45+02:00",
+  "updated_at": "2026-10-02T12:50:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [
@@ -20,49 +21,44 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "chat-20261002T1209+0200",
+    "run_id": "chat-20261002T1238+0200",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-02T12:09:00+02:00",
-    "updated_at": "2026-10-02T12:18:45+02:00",
-    "finished_at": "2026-10-02T12:18:45+02:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-02T12:38:00+02:00",
+    "updated_at": "2026-10-02T12:50:00+02:00",
+    "finished_at": "2026-10-02T12:50:00+02:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-02T12:08:47.778+02:00",
+    "requested_at": "2026-10-02T12:37:56.085+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 0,
+      "trends_processed": 3,
+      "trends_explained": 3,
+      "explanation_groups": 3,
+      "new_cards": 2,
       "revisions_updated": 1,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 1,
+      "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 0,
-      "archive_sources_located": 0,
+      "fallback_images_ready": 2,
+      "archive_sources_located": 2,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 3,
+      "remates_selected": 2,
       "remates_omitted": 1,
-      "visual_backlog": 6,
-      "visual_backlog_current_run": 0
+      "visual_backlog": 8,
+      "visual_backlog_current_run": 2,
+      "news_candidates": 1
     },
-    "incident_count": 1,
-    "incidents": [
-      {
-        "trend_id": "4f5a0108da58",
-        "title": "Rafa Vecina",
-        "reason": "«Rafa Vecina» sigue apareciendo en cinco fuentes sociales actuales del radar español (aprox. puestos 24–31), pero tras varias búsquedas actuales no se ha encontrado un hecho, declaración, homenaje o noticia reciente suficientemente fiable que explique el pico. Las fuentes abiertas localizadas son perfiles o referencias históricas; se conserva como problemática para no inventar el detonante."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "668bc54060f56a0735904579c5e912d9680f3af0",
@@ -72,46 +68,180 @@
     },
     "remate_selections": [
       {
-        "trend_id": "76aea6cf66e7",
+        "trend_id": "b14b8ad1e6c4",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.6,
+            "ratings_affinity": 2.4,
+            "trend_specificity": 1.9,
+            "punch": 1.9,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c2",
+            "total": 8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 8.1,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 7.3,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.6,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "416aeeacafc3",
         "revision": 1,
         "candidate_count": 0,
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
         "no_remate_reason": "political_content"
+      },
+      {
+        "trend_id": "5f320278ac86",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.3,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.8,
+            "punch": 1.8,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c2",
+            "total": 7.7,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.6,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 7.6,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.3,
+        "no_remate_reason": null
       }
     ],
     "radar": {
-      "captured_at": "2026-10-02T12:11:14+02:00",
+      "captured_at": "2026-10-02T12:42:15+02:00",
       "processed": [
-        "Convoca",
-        "Rafa Vecina"
+        "Ramón",
+        "Congreso",
+        "#Mañaneros2O"
       ],
-      "queue_count": 0
+      "queue_count": 0,
+      "top10": [
+        "Junts",
+        "#SVGala4",
+        "#Horizonte",
+        "Uefa",
+        "Congreso",
+        "#Mañaneros2O",
+        "Portugal",
+        "Puigdemont",
+        "Cristiano",
+        "Francia"
+      ]
     },
-    "message": "Pasada directa completada 2/2. Convoca r1 se reexplicó con el contexto actual de las movilizaciones por vivienda y el llamamiento a huelga general; se eliminó el visual anterior de Malvinas por quedar descontextualizado. Rafa Vecina sigue con señal social en varias fuentes, pero queda problemática al no poder verificarse un detonante actual fiable. Cola editorial final 0. Sin ImageGen, Work ni despliegues Vercel."
+    "message": "Pasada directa completada 3/3. Ramón se explicó por el nuevo sistema automatizado sin catéter del Hospital Ramón y Cajal, con fallback oficial e IA pendiente. Congreso r1 se reexplicó por el pleno y la votación por llamamiento de los decretos de vivienda, sin remate ni IA por contexto político y con fallback neutral. #Mañaneros2O se explicó por la emisión en directo de hoy de Mañaneros 360, con remate e IA pendiente. Cola editorial final 0. Sin Work, ImageGen ni despliegues Vercel."
   },
   "summary": {
-    "trends_processed": 2,
-    "trends_explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 0,
+    "trends_processed": 3,
+    "trends_explained": 3,
+    "explanation_groups": 3,
+    "new_cards": 2,
     "revisions_updated": 1,
     "grouped_into_existing_card": 0,
-    "trends_problematic": 1,
+    "trends_problematic": 0,
     "trends_dismissed": 0,
-    "incidents": 1,
+    "incidents": 0,
     "queue_remaining": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
-    "fallback_images_ready": 0,
-    "archive_sources_located": 0,
+    "fallback_images_ready": 2,
+    "archive_sources_located": 2,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 3,
+    "remates_selected": 2,
     "remates_omitted": 1,
-    "visual_backlog": 6,
-    "visual_backlog_current_run": 0
+    "visual_backlog": 8,
+    "visual_backlog_current_run": 2,
+    "news_candidates": 1
   },
   "error": null
 }
