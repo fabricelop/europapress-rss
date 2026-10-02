@@ -57,9 +57,10 @@ function buildMessage(job){
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
 const BRIDGE_MODE="capture-only-v9";
+const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp){
-  return cdp.eval("(()=>{const body=String(document.body&&document.body.innerText||'');const marker=body.includes("+JSON.stringify(commandId)+");const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\"conversation-turn-\"],article').length;return {hasMarker:marker,generating,turns,title:document.title||'',url:location.href}})()")
+  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const root=document.querySelector('main')||document.body;const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\"conversation-turn-\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<6000});const markerOutsideComposer=nodes.length>0;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\"conversation-turn-\"],article').length;return {hasMarker:markerOutsideComposer,composerMarker,generating,turns,title:document.title||'',url:location.href}})()")
 }
 
 async function findChat(){
@@ -92,16 +93,18 @@ function probeExpression(){
     "(async()=>{",
     "const command="+JSON.stringify(commandId)+";",
     "const root=document.querySelector('main')||document.body;",
+    "const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");",
     "const turnSel='[data-message-author-role],[data-testid^=\"conversation-turn-\"],article';",
     "const turnNodes=[...root.querySelectorAll(turnSel)];",
-    "let anchor=turnNodes.find(el=>String(el.innerText||el.textContent||'').includes(command))||null;",
+    "const outsideComposer=el=>!(composer&&(el===composer||el.contains(composer)||composer.contains(el)));",
+    "let anchor=turnNodes.find(el=>outsideComposer(el)&&String(el.innerText||el.textContent||'').includes(command))||null;",
     "if(!anchor){",
-    " const nodes=[...root.querySelectorAll('div,p,span')].filter(el=>{const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<5000});",
+    " const nodes=[...root.querySelectorAll('div,p,span')].filter(el=>{if(!outsideComposer(el))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<5000});",
     " nodes.sort((a,b)=>String(a.innerText||a.textContent||'').length-String(b.innerText||b.textContent||'').length);",
     " const leaf=nodes[0]||null;anchor=leaf?(leaf.closest(turnSel)||leaf):null;",
     "}",
     "const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));",
-    "if(!anchor)return {found:false,diag:{marker:false,turns:turnNodes.length,generating,imagesAfterMarker:0,candidates:0,canvases:0,assistantTail:''}};",
+    "if(!anchor){const ct=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');return {found:false,diag:{marker:false,composerMarker:ct.includes(command),turns:turnNodes.length,generating,imagesAfterMarker:0,candidates:0,canvases:0,assistantTail:''}};}",
     "const follows=el=>el!==anchor&&Boolean(anchor.compareDocumentPosition(el)&Node.DOCUMENT_POSITION_FOLLOWING);",
     "const afterTurns=turnNodes.filter(follows);",
     "const allImgs=[...document.querySelectorAll('img')].filter(follows);",
