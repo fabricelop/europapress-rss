@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-02T20:22:45.308256+00:00",
+  "checked_at": "2026-10-02T22:07:04.825216+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.9,
-      "run_id": 37060077670,
+      "age_minutes": 1.0,
+      "run_id": 37070632611,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,33 +75,103 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 5,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0.1,
+      "ok": false,
+      "pending_count": 13,
+      "overdue_count": 11,
+      "oldest_age_minutes": 104.4,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "03e6546dc5f6",
+          "name": "#MalasLenguasN",
+          "status": "preparing",
+          "age_minutes": 35.4
+        },
+        {
+          "id": "fdd1a3825803",
+          "name": "Omeprazol",
+          "status": "preparing",
+          "age_minutes": 104.4
+        },
+        {
+          "id": "68b1fa61df02",
+          "name": "Maroan",
+          "status": "preparing",
+          "age_minutes": 104.4
+        },
+        {
+          "id": "9767e3b44c3a",
+          "name": "Calero",
+          "status": "preparing",
+          "age_minutes": 104.4
+        },
+        {
+          "id": "ea144aa53f81",
+          "name": "#EldenseRealOviedo",
+          "status": "preparing",
+          "age_minutes": 104.4
+        },
+        {
+          "id": "5eaf524758db",
+          "name": "Samu",
+          "status": "preparing",
+          "age_minutes": 104.4
+        },
+        {
+          "id": "8090f1b1fec6",
+          "name": "Eldense",
+          "status": "preparing",
+          "age_minutes": 35.4
+        },
+        {
+          "id": "89a6eb26d71d",
+          "name": "#firstdates2o",
+          "status": "preparing",
+          "age_minutes": 35.4
+        },
+        {
+          "id": "f58b9810e347",
+          "name": "Andrés Jiménez",
+          "status": "preparing",
+          "age_minutes": 35.4
+        },
+        {
+          "id": "584f74c1663e",
+          "name": "Juan Cruz",
+          "status": "preparing",
+          "age_minutes": 35.4
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
+        "413c73f54712",
+        "03e6546dc5f6",
         "fdd1a3825803",
         "68b1fa61df02",
         "9767e3b44c3a",
         "ea144aa53f81",
-        "5eaf524758db"
+        "5eaf524758db",
+        "8090f1b1fec6",
+        "89a6eb26d71d",
+        "f58b9810e347",
+        "584f74c1663e",
+        "e883cdb753d6",
+        "6ab80fc5ad41"
       ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "config TTendencias incompatible con el modo activo"
+    "config TTendencias incompatible con el modo activo",
+    "cola de explicaciones retrasada: 11 pendiente(s) superan 30 min; más antigua 104.4 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola de explicaciones retrasada: 11 pendiente(s) superan 30 min; más antigua 104.4 min | config TTendencias incompatible con el modo activo"
 }
