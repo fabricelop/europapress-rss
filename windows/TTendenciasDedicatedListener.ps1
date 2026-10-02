@@ -18,7 +18,7 @@ $RunUrl = "$StatusBase/api/ttendencias-run"
 
 $WorkerId = "ttendencias-dedicated-v2"
 $PollSeconds = 5
-$LaunchConfirmSeconds = 45
+$LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
 $MaxParallelImageChats = 4
@@ -377,7 +377,9 @@ while ($true) {
           $ack = Send-Ack $commandId "picked_up"
           if ($ack -eq "OK") {
             try {
-              $messageSent = Launch-ProjectChat "editorial command=$commandId"
+              $editorialMarker = "TT_EDITORIAL_RUN_V1 $commandId"
+              $editorialMessage = "$editorialMarker`nEjecuta TTendencias"
+              $messageSent = Launch-ProjectChat "editorial command=$commandId" $editorialMessage $editorialMarker
               if ($messageSent) {
                 $launched = Send-Ack $commandId "launched"
                 if ($launched -ne "OK") { Write-Log "LAUNCH ACK WARNING command=$commandId result=$launched" }
