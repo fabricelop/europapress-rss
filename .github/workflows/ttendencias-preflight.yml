@@ -36,6 +36,7 @@ jobs:
         run: |
           python3 -m py_compile trends/update_trends.py trends/auto_queue_new.py trends/enrich_explained_images.py trends/apply_editorial_outbox.py trends/apply_ai_image_outbox.py trends/migrate_legacy_chat_svg.py
           python3 trends/enrich_explained_images.py --selftest
+          python3 trends/apply_ai_image_outbox.py --selftest
           python3 trends/migrate_legacy_chat_svg.py --check
           python3 - <<'PY'
           import json
@@ -86,7 +87,10 @@ jobs:
           assert "Copiar" in exp and 'id="filter"' in exp
           assert "TT#" in exp
           assert "Gag IA" in exp and "Archivo / fallback" in exp
-          assert "🔁 Rehacer" in exp and "🖼️ Usar archivo/fallback" in exp
+          assert "✨ Generar IA" in exp and "📝 Reexplicar" in exp
+          assert "🔁 Rehacer remate + IA" not in exp
+          assert "!x.copied&&!x.rewrite_pending" in exp
+          assert 'id="workingCount"' in top and 'id="workingSheet"' in top and "openWorkingSheet" in top
           assert 'provider==="chat-imagegen"' in exp and 'origin==="executing_chat"' in exp
           api=Path("vercel-webhook/api/ttendencias-control.js").read_text(encoding="utf-8")
           assert 'action === "regenerate-image"' in api
