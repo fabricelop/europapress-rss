@@ -53,7 +53,12 @@ def save_editorial_queue(requests_doc):
             "requested_at": req.get("requested_at"),
             "revision": int(req.get("revision") or 0),
             "rewrite_instruction": req.get("rewrite_instruction") or req.get("rewrite_request") or "",
-            "with_image": True,  # IA + fallback en paralelo; nunca bloquean la explicación.
+            "reexplain": bool(req.get("reexplain")),
+            "rewrite_with_image": bool(req.get("rewrite_with_image", req.get("with_image", True))),
+            "with_image": bool(req.get("with_image", True)),
+            "disable_ai_image": bool(req.get("disable_ai_image")),
+            "image_strategy": req.get("image_strategy"),
+            "selected_tweet_image": req.get("selected_tweet_image"),
             "task": "explain",
             "tremending_origin": bool(req.get("tremending_origin")),
             "tremending_id": req.get("tremending_id"),
