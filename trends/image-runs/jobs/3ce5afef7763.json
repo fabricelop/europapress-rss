@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-v8-1790966062930-latasa",
-  "requested_at": "2026-10-02T18:34:22.929Z",
-  "updated_at": "2026-10-02T18:41:50.653Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-v9-1790967101962-latasa",
+  "requested_at": "2026-10-02T18:51:41.958Z",
+  "updated_at": "2026-10-02T18:51:41.958Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -22,10 +22,5 @@
     "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
     "lifecycle": "El chat solo genera. El puente local recoge el raster, lo valida y lo persiste."
   },
-  "message": "No apareció un raster capturable en 7 minutos; sin diagnóstico DOM",
-  "pc_upload_secret_hash": "85cddfbf0292a408d3ae145d2998f52c3bb25d258427cd6f62bf79acee897f59",
-  "pc_worker_id": "ttendencias-image-bridge-v1",
-  "pc_picked_up_at": "2026-10-02T18:34:32.750Z",
-  "pc_launched_at": "2026-10-02T18:34:48.576Z",
-  "finished_at": "2026-10-02T18:41:50.653Z"
+  "message": "Prueba controlada v9 con Runtime.evaluate corregido y timeout de 2 minutos."
 }
