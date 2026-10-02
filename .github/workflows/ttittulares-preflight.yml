@@ -131,17 +131,18 @@ jobs:
           installer=Path("windows/Install-TTiTTularesMobileChatTrigger.ps1").read_text(encoding="utf-8")
           installer_v13=Path("windows/Install-TTiTTulares-v13.ps1").read_text(encoding="utf-8")
           installer_v14=Path("windows/Install-TTiTTulares-v14.ps1").read_text(encoding="utf-8")
+          installer_v15=Path("windows/Install-TTiTTulares-v15.ps1").read_text(encoding="utf-8")
           assert "const {doc:trigger}=await readTrigger();" in run_api
           assert "readControlJson(ACK_PATH)" in run_api
           assert "latestByRun" in run_api and "El estado autoritativo de cada run" in run_api
           assert "GitHub REST refleja el HEAD" in run_status
           assert "pc_worker_id" in run_status
           assert "readJson(PROCESSING)" in control_api
-          assert '$WorkerId = "ttittulares-dedicated-v14"' in listener
+          assert '$WorkerId = "ttittulares-dedicated-v15"' in listener
           assert "$LaunchConfirmSeconds = 30" in listener
           assert "direct-node" in listener
           assert "TTendencias unchanged" in listener and "tendenciasBefore" in listener and "tendenciasWritten" in listener
-          assert "EDITORIAL PROCESS STARTED direct-node-real" in listener and "MODO:\\s*ENVIO REAL" in listener
+          assert "EDITORIAL PROCESS STARTED direct-node-real-default-message" in listener and "MODO:\\s*ENVIO REAL" in listener
           assert 'ArgumentList @($Runner,"titulares","--enviar")' in listener
           assert "RedirectStandardOutput" in listener and "ttittulares-launch-" in listener
           assert "if ($realMode -and ($messageSent -or $executionLaunched -or $responseStarted))" in listener
@@ -149,6 +150,12 @@ jobs:
           assert 'node Ejecutar.js titulares --enviar' in installer_v14
           assert "TTendencias: NO MODIFICADO" in installer_v14
           assert "Ejecutar.js: validado, NO MODIFICADO" in installer_v14
+          assert "TTITTULARES V15 INSTALADO Y ACTIVO" in installer_v15
+          assert 'node Ejecutar.js titulares --enviar' in installer_v15
+          assert 'Mensaje editorial: Ejecuta TTiTTulares' in installer_v15
+          assert "TTendencias: NO MODIFICADO" in installer_v15
+          assert "Ejecutar.js: validado, NO MODIFICADO" in installer_v15
+          assert "97ada1f9e657e766a83fb375a42bbfe46bb3c588" in installer_v15
           assert "030e4277e89d12d0c7c158c86ca97779cd2f64b4" in installer_v14
           assert 'const enviar = process.argv.includes("--enviar");' in installer_v14
 
