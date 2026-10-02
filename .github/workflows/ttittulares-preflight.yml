@@ -130,24 +130,31 @@ jobs:
           listener=Path("windows/TTiTTularesDedicatedListener.ps1").read_text(encoding="utf-8")
           installer=Path("windows/Install-TTiTTularesMobileChatTrigger.ps1").read_text(encoding="utf-8")
           installer_v13=Path("windows/Install-TTiTTulares-v13.ps1").read_text(encoding="utf-8")
+          installer_v14=Path("windows/Install-TTiTTulares-v14.ps1").read_text(encoding="utf-8")
           assert "const {doc:trigger}=await readTrigger();" in run_api
           assert "readControlJson(ACK_PATH)" in run_api
           assert "latestByRun" in run_api and "El estado autoritativo de cada run" in run_api
           assert "GitHub REST refleja el HEAD" in run_status
           assert "pc_worker_id" in run_status
           assert "readJson(PROCESSING)" in control_api
-          assert '$WorkerId = "ttittulares-dedicated-v13"' in listener
+          assert '$WorkerId = "ttittulares-dedicated-v14"' in listener
           assert "$LaunchConfirmSeconds = 30" in listener
           assert "direct-node" in listener
           assert "TTendencias unchanged" in listener and "tendenciasBefore" in listener and "tendenciasWritten" in listener
-          assert "EDITORIAL PROCESS STARTED via-vbs" in listener and "MODO:\\s*ENVIO REAL" in listener
+          assert "EDITORIAL PROCESS STARTED direct-node-real" in listener and "MODO:\\s*ENVIO REAL" in listener
+          assert 'ArgumentList @($Runner,"titulares","--enviar")' in listener
+          assert "RedirectStandardOutput" in listener and "ttittulares-launch-" in listener
           assert "if ($realMode -and ($messageSent -or $executionLaunched -or $responseStarted))" in listener
-          assert "worker=ttittulares-dedicated-v13" in installer
+          assert "worker=ttittulares-dedicated-v14" in installer
           assert "Get-TTiTTularesListenerProcesses" in installer and "Exclusividad TTiTTulares fallida" in installer
           assert "Get-TTiTTularesListeners" in installer_v13
           assert "exactamente un listener TTiTTulares" in installer_v13 or "se esperaba 1 listener" in installer_v13
-          assert "worker=ttittulares-dedicated-v13 pid=" in installer_v13
+          assert "worker=ttittulares-dedicated-v14 pid=" in installer_v13
           assert "TTendencias: NO MODIFICADO" in installer_v13
+          assert "TTITTULARES V14 INSTALADO Y ACTIVO" in installer_v14
+          assert 'node Ejecutar.js titulares --enviar' in installer_v14
+          assert "TTendencias: NO MODIFICADO" in installer_v14
+          assert "Ejecutar.js: validado, NO MODIFICADO" in installer_v14
           assert "97c94650d6b552b564d201f1c8f496a112eae078" in installer_v13
 
           ids=set()
