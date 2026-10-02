@@ -8,6 +8,8 @@ $Listener = Join-Path $BaseDir "TTiTTularesDedicatedListener.ps1"
 $StartupDir = [Environment]::GetFolderPath("Startup")
 $StartupCmd = Join-Path $StartupDir "TTiTTulares Mobile Trigger Listener.cmd"
 $RawUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TTiTTularesDedicatedListener.ps1"
+$Patch = Join-Path $BaseDir "Patch-Ejecutar-ConfirmResponse.ps1"
+$PatchUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/Patch-Ejecutar-ConfirmResponse.ps1"
 
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 Invoke-WebRequest -Uri ($RawUrl + "?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -OutFile $Listener -UseBasicParsing
@@ -24,6 +26,24 @@ if ($parseErrors.Count -gt 0) {
 
 if (-not (Test-Path (Join-Path $BaseDir "LanzarOculto.vbs"))) {
   throw "No se encuentra C:\TTiTTulares\LanzarOculto.vbs. No se ha tocado TTiTTulares."
+}
+
+if (-not (Test-Path (Join-Path $BaseDir "Ejecutar.js"))) {
+  throw "No se encuentra C:\TTiTTulares\Ejecutar.js. No se puede validar el envío real a ChatGPT."
+}
+
+Invoke-WebRequest -Uri ($PatchUrl + "?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -OutFile $Patch -UseBasicParsing
+
+$patchTokens = $null
+$patchParseErrors = $null
+[System.Management.Automation.Language.Parser]::ParseFile($Patch,[ref]$patchTokens,[ref]$patchParseErrors) | Out-Null
+if ($patchParseErrors.Count -gt 0) {
+  throw "El parche de Ejecutar.js tiene errores de sintaxis y no se aplicará."
+}
+
+& $Patch
+if ($LASTEXITCODE -ne 0) {
+  throw "No se pudo reforzar Ejecutar.js."
 }
 
 $cmd = '@echo off' + [Environment]::NewLine +
@@ -59,6 +79,7 @@ Write-Host "PID: $($proc.Id)"
 Write-Host "Listener: $Listener"
 Write-Host "Inicio con Windows: $StartupCmd"
 Write-Host "Log: C:\TTiTTulares\ttittulares-mobile-trigger.log"
+Write-Host "Ejecutar.js: confirmación real de mensaje + inicio de respuesta activada."
 Write-Host "No se ha detenido ni modificado el listener compartido ni las tareas programadas."
 Write-Host ""
 Write-Host "--- DIAGNOSTICO TTITTULARES ---" -ForegroundColor Cyan
