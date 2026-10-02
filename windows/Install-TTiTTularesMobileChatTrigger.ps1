@@ -26,8 +26,11 @@ if ($parseErrors.Count -gt 0) {
 
 $listenerText = Get-Content -LiteralPath $Listener -Raw -Encoding UTF8
 if (-not $listenerText.Contains('$WorkerId = "ttittulares-dedicated-v10"') -or
-    -not $listenerText.Contains('EDITORIAL PROCESS STARTED via-vbs')) {
-  throw "La descarga no contiene el listener TTiTTulares dedicado v10 con confirmación real de envío."
+    -not $listenerText.Contains('CHAT MESSAGE CONFIRMED') -or
+    -not $listenerText.Contains('EDITORIAL PROCESS STARTED direct-node') -or
+    -not $listenerText.Contains('Read-NewLauncherText $beforeLen') -or
+    -not $listenerText.Contains('$LaunchConfirmSeconds = 30')) {
+  throw "La descarga no contiene el listener TTiTTulares dedicado v10 con Node directo y confirmación real de envío."
 }
 
 if (-not (Test-Path (Join-Path $BaseDir "LanzarOculto.vbs"))) {
