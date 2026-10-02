@@ -25,9 +25,9 @@ if ($parseErrors.Count -gt 0) {
 }
 
 $listenerText = Get-Content -LiteralPath $Listener -Raw -Encoding UTF8
-if (-not $listenerText.Contains('$WorkerId = "ttittulares-dedicated-v7"') -or
+if (-not $listenerText.Contains('$WorkerId = "ttittulares-dedicated-v8"') -or
     -not $listenerText.Contains('EDITORIAL PROCESS STARTED via-vbs')) {
-  throw "La descarga no contiene el listener TTiTTulares dedicado v7 con lanzador editorial VBS y mensaje worker."
+  throw "La descarga no contiene el listener TTiTTulares dedicado v8 con confirmación real de envío."
 }
 
 if (-not (Test-Path (Join-Path $BaseDir "LanzarOculto.vbs"))) {
@@ -106,7 +106,7 @@ Write-Host "PID: $($proc.Id)"
 Write-Host "Listener: $Listener"
 Write-Host "Inicio con Windows: $StartupCmd"
 Write-Host "Log: C:\TTiTTulares\ttittulares-mobile-trigger.log"
-Write-Host "Entradas: VBS en ENVIO REAL + worker editorial no recursivo + polling 5s + telemetría remota activados."
+Write-Host "Entradas: VBS en ENVIO REAL + worker no recursivo + confirmación real de ChatGPT + polling 5s."
 Write-Host "No se ha detenido ni modificado el listener compartido ni las tareas programadas."
 Write-Host ""
 Write-Host "--- DIAGNOSTICO TTITTULARES ---" -ForegroundColor Cyan
