@@ -16,7 +16,7 @@ $ImageIndexUrl = "$StatusBase/api/ttendencias-run-status?view=image-index"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
 
-$WorkerId = "ttendencias-dedicated-v4"
+$WorkerId = "ttendencias-dedicated-v5"
 $PollSeconds = 5
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
@@ -238,8 +238,9 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$Expec
     try { if (Test-Path -LiteralPath $launchErr) { $stderr = Get-Content -LiteralPath $launchErr -Raw -ErrorAction SilentlyContinue } } catch {}
     $joined = [string]$stdout + "`n" + [string]$stderr
 
-    $hasMarker = (-not $ExpectedMarker) -or $joined.Contains($ExpectedMarker)
-
+    # El stdout/stderr es exclusivo de ESTE proceso. No exigimos que Ejecutar.js
+    # reimprima el mensaje completo: TT_CHAT_MESSAGE_B64 ya fue heredado por este proceso.
+    # El marcador se conserva solo para diagnóstico.
     if ($joined -match "MODO:\s*PRUEBA") {
       Write-Log "CHAT LAUNCH MODE ERROR :: $Reason :: Ejecutar.js arrancó en MODO PRUEBA"
       return $false
@@ -250,7 +251,7 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$Expec
     $messageSent = $joined -match "MENSAJE ENVIADO"
     $executionLaunched = $joined -match "EJECUCION LANZADA"
 
-    if ($hasMarker -and $realMode -and ($messageSent -or $executionLaunched -or $responseStarted)) {
+    if ($realMode -and ($messageSent -or $executionLaunched -or $responseStarted)) {
       $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
       Write-Log "CHAT MESSAGE CONFIRMED :: $Reason marker=$ExpectedMarker via=$why"
       return $true
