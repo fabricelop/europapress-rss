@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-02T20:14:31Z",
+  "updated_at": "2026-10-02T20:19:51.636815Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -302,7 +302,7 @@
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
@@ -327,15 +327,16 @@
         "alt": "Sánchez decidirá este fin de semana si adelanta las elecciones tras la caída de los decretos de vivienda"
       },
       "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "tool_called",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_tool_called_at": "2026-10-02T20:14:31Z",
-      "ai_image_last_attempt_at": "2026-10-02T20:14:31Z",
+      "ai_image_last_attempt_at": "2026-10-02T20:19:51.636704Z",
       "ai_image_context_guard": {
         "version": 3,
         "event_id": "ae4d816887c6",
         "revision": 1,
         "scope": "current_item_only"
-      }
+      },
+      "ai_image_failure_reason": "Invalid base64-encoded string: number of data characters (20681) cannot be 1 more than a multiple of 4"
     }
   ],
   "count": 11
