@@ -5,13 +5,14 @@
 $ErrorActionPreference = "Continue"
 $BaseDir = "C:\TTiTTulares"
 $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
+$Runner = Join-Path $BaseDir "Ejecutar.js"
 $StatePath = Join-Path $BaseDir "ttittulares-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
-$LaunchConfirmSeconds = 30
+$LaunchConfirmSeconds = 45
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v1"
+$WorkerId = "ttittulares-dedicated-v2"
 $PollSeconds = 3
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
@@ -64,6 +65,49 @@ function Ensure-StateFields($State) {
   }
 }
 
+function Enable-CustomChatMessages {
+  if (-not (Test-Path -LiteralPath $Runner)) {
+    Write-Log "CUSTOM MESSAGE DISABLED: no existe $Runner"
+    return $false
+  }
+  try {
+    $text = Get-Content -LiteralPath $Runner -Raw -Encoding UTF8
+    if ($text.Contains("TT_CHAT_MESSAGE_B64")) {
+      Write-Log "CUSTOM MESSAGE support already present"
+      return $true
+    }
+
+    $exprTit = '(process.env.TT_CHAT_MESSAGE_B64 ? Buffer.from(process.env.TT_CHAT_MESSAGE_B64,"base64").toString("utf8") : "Ejecuta TTiTTulares")'
+    $next = $text.Replace('"Ejecuta TTiTTulares"', $exprTit).Replace("'Ejecuta TTiTTulares'", $exprTit)
+
+    if ($next -eq $text) {
+      Write-Log "CUSTOM MESSAGE DISABLED: no se encontró el literal Ejecuta TTiTTulares"
+      return $false
+    }
+
+    $backup = $Runner + ".before-ttittulares-editorial-marker-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
+    Copy-Item -LiteralPath $Runner -Destination $backup -Force
+    Set-Content -LiteralPath $Runner -Value $next -Encoding UTF8
+
+    $node = Get-Command node.exe -ErrorAction SilentlyContinue
+    if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
+    if ($node) {
+      & $node.Source --check $Runner *> $null
+      if ($LASTEXITCODE -ne 0) {
+        Copy-Item -LiteralPath $backup -Destination $Runner -Force
+        Write-Log "CUSTOM MESSAGE DISABLED: node --check falló; restaurado $backup"
+        return $false
+      }
+    }
+
+    Write-Log "CUSTOM MESSAGE enabled; backup=$backup"
+    return $true
+  } catch {
+    Write-Log "CUSTOM MESSAGE ERROR :: $($_.Exception.Message)"
+    return $false
+  }
+}
+
 function Send-Ack([string]$CommandId,[string]$Stage) {
   try {
     $payload = @{
@@ -101,45 +145,54 @@ function Read-NewLauncherText([long]$Offset) {
 }
 
 function Launch-TTiTTulares([string]$CommandId) {
-  if (-not (Test-Path -LiteralPath $Launcher)) { throw "No existe $Launcher" }
+  if (-not (Test-Path -LiteralPath $Runner)) { throw "No existe $Runner" }
 
   $beforeLen = 0L
   if (Test-Path -LiteralPath $LauncherLogPath) {
     try { $beforeLen = (Get-Item -LiteralPath $LauncherLogPath).Length } catch {}
   }
 
-  Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"titulares") -WindowStyle Hidden | Out-Null
-  Write-Log "PROCESS STARTED titulares command=$CommandId"
+  $marker = "TT_EDITORIAL_RUN_V1 $CommandId"
+  $message = "$marker`nEjecuta TTiTTulares"
+  $old = $env:TT_CHAT_MESSAGE_B64
+
+  try {
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($message)
+    $env:TT_CHAT_MESSAGE_B64 = [Convert]::ToBase64String($bytes)
+
+    $node = Get-Command node.exe -ErrorAction SilentlyContinue
+    if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
+    if (-not $node) { throw "Node no disponible para lanzar TTiTTulares" }
+
+    Start-Process -FilePath $node.Source -ArgumentList @($Runner,"titulares") -WindowStyle Hidden | Out-Null
+    Write-Log "PROCESS STARTED direct-node command=$CommandId marker=$marker"
+  } finally {
+    if ($null -eq $old) { Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue }
+    else { $env:TT_CHAT_MESSAGE_B64 = $old }
+  }
 
   $deadline = (Get-Date).AddSeconds($LaunchConfirmSeconds)
-  $sawMessage = $false
 
   while ((Get-Date) -lt $deadline) {
     Start-Sleep -Seconds 1
     $newText = Read-NewLauncherText $beforeLen
     if (-not $newText) { continue }
 
+    # El éxito tiene prioridad: Ejecutar.js puede registrar después un Timeout CDP
+    # aunque el mensaje ya se haya aceptado y ChatGPT haya empezado a responder.
+    if ($newText.Contains($marker) -and $newText -match "MENSAJE ENVIADO") {
+      Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId marker=$marker"
+      return $true
+    }
+
     if ($newText -match "ERROR:|ERROR ::|Timeout CDP") {
       $last = ($newText -split "\r?\n" | Where-Object { $_ -match "ERROR:|ERROR ::|Timeout CDP" } | Select-Object -Last 1)
       Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $last"
       return $false
     }
-
-    if ($newText -match "MENSAJE ENVIADO") { $sawMessage = $true }
-
-    $m = [regex]::Match($newText,'CHAT NUEVO:\s*(https://chatgpt\.com/\S+)')
-    if ($m.Success -and $sawMessage) {
-      $chatUrl = $m.Groups[1].Value.Trim()
-      Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId url=$chatUrl"
-      return $true
-    }
   }
 
-  if ($sawMessage) {
-    Write-Log "CHAT MESSAGE SEEN BUT PROJECT URL NOT CONFIRMED command=$CommandId"
-  } else {
-    Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId after=$($LaunchConfirmSeconds)s"
-  }
+  Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId marker=$marker after=$($LaunchConfirmSeconds)s"
   return $false
 }
 
@@ -149,6 +202,7 @@ Write-Log "LISTENER START worker=$WorkerId pid=$PID"
 $state = Load-State
 Ensure-StateFields $state
 Save-State $state
+$CustomMessageSupport = Enable-CustomChatMessages
 
 # Diagnóstico inicial: confirma que el proceso sigue vivo y que ve el trigger remoto.
 $probe = Read-Trigger
@@ -197,6 +251,7 @@ while ($true) {
 
         if ($ack -eq "OK") {
           try {
+            if (-not $CustomMessageSupport) { throw "Ejecutar.js no admite TT_CHAT_MESSAGE_B64" }
             $messageSent = Launch-TTiTTulares $commandId
             if ($messageSent) {
               $launched = Send-Ack $commandId "launched"
