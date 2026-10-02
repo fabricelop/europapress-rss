@@ -25,9 +25,9 @@ if ($parseErrors.Count -gt 0) {
 }
 
 $listenerText = Get-Content -LiteralPath $Listener -Raw -Encoding UTF8
-if (-not $listenerText.Contains('$WorkerId = "ttittulares-dedicated-v5"') -or
+if (-not $listenerText.Contains('$WorkerId = "ttittulares-dedicated-v6"') -or
     -not $listenerText.Contains('EDITORIAL PROCESS STARTED via-vbs')) {
-  throw "La descarga no contiene el listener TTiTTulares dedicado v5 con lanzador editorial VBS."
+  throw "La descarga no contiene el listener TTiTTulares dedicado v6 con lanzador editorial VBS."
 }
 
 if (-not (Test-Path (Join-Path $BaseDir "LanzarOculto.vbs"))) {
@@ -106,7 +106,7 @@ Write-Host "PID: $($proc.Id)"
 Write-Host "Listener: $Listener"
 Write-Host "Inicio con Windows: $StartupCmd"
 Write-Host "Log: C:\TTiTTulares\ttittulares-mobile-trigger.log"
-Write-Host "Entradas: mismo lanzador editorial VBS que TTendencias + telemetría remota activados."
+Write-Host "Entradas: lanzador VBS + trigger fresco + polling 5s + telemetría remota activados."
 Write-Host "No se ha detenido ni modificado el listener compartido ni las tareas programadas."
 Write-Host ""
 Write-Host "--- DIAGNOSTICO TTITTULARES ---" -ForegroundColor Cyan
