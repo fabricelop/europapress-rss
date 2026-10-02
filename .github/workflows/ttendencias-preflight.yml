@@ -89,6 +89,9 @@ jobs:
           assert "TT#" in exp
           assert "Gag IA" in exp and "Archivo / fallback" in exp
           assert "✨ Generar IA" in exp and "📝 Reexplicar" in exp
+          assert 'id="imageBar"' not in top and 'id="runImages"' not in top
+          assert 'id="imageControl"' not in exp and 'id="runImages"' not in exp
+          assert "filter(x=>!x.copied&&!x.rewrite_pending).length" in top
           assert "🔁 Rehacer remate + IA" not in exp
           assert "!x.copied&&!x.rewrite_pending" in exp
           assert 'id="workingCount"' in top and 'id="workingSheet"' in top and "openWorkingSheet" in top

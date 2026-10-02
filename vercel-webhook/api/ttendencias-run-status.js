@@ -201,12 +201,12 @@ function persistedRequestsFallback(doc,request){
   const rows=(doc?.requests||[]).filter(x=>{
     const status=String(x?.status||"").toLowerCase();
     if(!["explained","dismissed","problematic"].includes(status))return false;
-    const at=stamp(x?.explained_at||x?.dismissed_at||x?.updated_at||x?.problematic_at);
+    const at=stamp(x?.explained_at||x?.dismissed_at||x?.problematic_at||x?.last_attempt_at);
     return at>=reqAt;
   });
   if(!rows.length)return null;
-  rows.sort((a,b)=>stamp(a?.explained_at||a?.dismissed_at||a?.updated_at||a?.problematic_at)-stamp(b?.explained_at||b?.dismissed_at||b?.updated_at||b?.problematic_at));
-  const latestAt=rows.at(-1)?.explained_at||rows.at(-1)?.dismissed_at||rows.at(-1)?.updated_at||rows.at(-1)?.problematic_at;
+  rows.sort((a,b)=>stamp(a?.explained_at||a?.dismissed_at||a?.problematic_at||a?.last_attempt_at)-stamp(b?.explained_at||b?.dismissed_at||b?.problematic_at||b?.last_attempt_at));
+  const latestAt=rows.at(-1)?.explained_at||rows.at(-1)?.dismissed_at||rows.at(-1)?.problematic_at||rows.at(-1)?.last_attempt_at;
   const explained=rows.filter(x=>String(x?.status||"").toLowerCase()==="explained");
   const dismissed=rows.filter(x=>String(x?.status||"").toLowerCase()==="dismissed");
   const problematic=rows.filter(x=>String(x?.status||"").toLowerCase()==="problematic");
@@ -384,7 +384,9 @@ export default async function handler(req,res){
     const persisted=persistedExplanationFallback(explainedDoc);
     const persistedRequests=persistedRequestsFallback(requestsDoc,request);
     if(runtime)terminal.push(runtime);
-    if(persistedRequests)terminal.push(persistedRequests);
+    const currentFallback=Boolean(fallback&&String(fallback.command_id||"")===String(request?.command_id||""));
+    const handoffSeen=currentFallback&&Boolean(fallback.pc_ack_stage);
+    if(persistedRequests&&handoffSeen)terminal.push(persistedRequests);
     // El "último run" debe representar la ejecución más reciente iniciada/solicitada,
     // no el comentario terminal actualizado más tarde. Un activador antiguo puede cerrarse
     // con ERROR mucho después y no debe ocultar una ejecución real posterior.
@@ -397,7 +399,7 @@ export default async function handler(req,res){
     let last_run=terminal.at(-1)||null;
     // La explicación persistida es un respaldo de último recurso, no una ejecución.
     // Solo la usamos si no hay telemetría real posterior que ya cubra esa persistencia.
-    if(persisted){
+    if(persisted&&!(currentFallback&&String(fallback.status||"")==="ERROR"&&!handoffSeen)){
       const persistedAt=stamp(persisted.finished_at||persisted.updated_at||persisted.started_at);
       const realFinishedAt=stamp(last_run?.finished_at||last_run?.updated_at||last_run?.started_at);
       if(!last_run||persistedAt>realFinishedAt)last_run=persisted;
@@ -408,7 +410,7 @@ export default async function handler(req,res){
     if(persistedRequests){
       const sameRequest=String(fallback?.command_id||request?.command_id||"")===String(request?.command_id||"");
       const syntheticError=String(last_run?.run_id||"")===String(request?.command_id||"")&&String(last_run?.status||"")==="ERROR";
-      if(sameRequest&&syntheticError)last_run=persistedRequests;
+      if(sameRequest&&syntheticError&&handoffSeen)last_run=persistedRequests;
     }
 
     return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,can_run:enabled&&authorized(req)})

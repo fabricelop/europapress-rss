@@ -17,7 +17,6 @@ main{width:100%;max-width:560px;margin:0 auto;padding:14px 10px 40px;overflow-x:
 <body>
 <header class="top"><nav class="nav3"><a class="navbtn" href="/ttendencias/">TOP 10</a><a class="navbtn pending active" href="/ttendencias/explicadas/">Pendientes <span class="navBadge" id="navPendingBadge"></span></a><a class="navbtn" href="/ttendencias/historico/">Histórico</a></nav></header>
 <main>
-<section class="imageControl" id="imageControl"><div class="imageControlMain"><strong id="imageHeadline">Imágenes IA</strong><div class="imageControlState" id="imageState">Comprobando cola…</div></div><button class="btn" id="runImages" type="button">✨ Imágenes IA</button></section>
 <input class="filter" id="filter" type="search" inputmode="search" autocomplete="off" placeholder="Buscar en pendientes…">
 <div class="section">Pendientes de publicar <span class="sectionCount" id="pendingCount">0</span></div>
 <section class="list" id="pendingList"><div class="empty">Cargando pendientes…</div></section>
@@ -524,7 +523,6 @@ async function load(){
  refreshImageRuns();
 }
 $("filter").addEventListener("input",render);
-$("runImages").onclick=requestPendingImages;
 $("cancelReexplain").onclick=()=>{$("reexplainDialog").close();reexplainItem=null};
 $("sendReexplain").onclick=sendReexplain;
 const refreshBtn=$("refresh");if(refreshBtn)refreshBtn.onclick=()=>load().catch(e=>alert(e.message));

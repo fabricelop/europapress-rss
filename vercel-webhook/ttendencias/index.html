@@ -39,7 +39,6 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
     <div class="badge" id="quality">—</div>
   </section>
   <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Entradas</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="primary" id="runNow" type="button">▶ Entradas</button></section>
-  <section class="runbar" id="imageBar"><div class="runmain"><div class="runline"><strong id="imageHeadline">Imágenes IA</strong></div><span id="imageState">Comprobando cola…</span></div><button class="primary" id="runImages" type="button">✨ Imágenes IA</button></section>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
   <section class="radarBlock" id="radarBlock">
     <div class="radarHead"><div><h2>Próximas tendencias</h2><div class="meta">Señales todavía fuera del Top 10</div></div><div class="radarHint">Cruce social + TTiTTulares</div></div>
@@ -74,7 +73,7 @@ const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
 const RUN_STATUS_API="/api/ttendencias-run-status";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="ttendencias-rate-limit-cache-v8-20261001";
+const SHELL_BUILD="20261002-pending-run-status-no-global-images";
 const $=id=>document.getElementById(id);
 const DATA_CACHE_KEY="ttendencias-last-model",RUN_CACHE_KEY="ttendencias-last-run-status";
 const IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/";
@@ -182,7 +181,7 @@ async function activatePush(){
    sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:appServerKey(d.publicKey)});
  }
  await api("push-subscribe",[],{subscription:sub.toJSON()});
- await updateBadge(model?.explainedRecent?.filter(x=>!x.copied).length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
+ await updateBadge(model?.explainedRecent?.filter(x=>!x.copied&&!x.rewrite_pending).length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
 }
 async function deactivatePush(){
  const sub=await currentPushSubscription();
@@ -355,7 +354,7 @@ function render(){
  quality.classList.add(total>0&&operativas/total>=0.7?"good":total>0&&operativas/total>=0.45?"warn":"bad");
  const elaboratingItems=model.elaboratingItems||[],elaborating=elaboratingItems.length;
  const working=$("workingCount");working.textContent="En elaboración: "+elaborating;working.classList.toggle("idle",elaborating===0);working.disabled=elaborating===0;working.title=elaborating?"Ver tendencias en elaboración":"";
- const unread=(model.explainedRecent||[]).filter(x=>!x.copied).length;
+ const unread=(model.explainedRecent||[]).filter(x=>!x.copied&&!x.rewrite_pending).length;
  const unreadBadge=$("unreadExplainedBadge");
  unreadBadge.textContent=unread>99?"99+":String(unread);
  unreadBadge.classList.toggle("show",unread>0);
@@ -756,7 +755,6 @@ $("workingClose").onclick=()=>$("workingSheet").classList.remove("show");
 $("workingSheet").addEventListener("click",e=>{if(e.target===$("workingSheet"))$("workingSheet").classList.remove("show")});
 
 $("runNow").onclick=requestRun;
-$("runImages").onclick=requestMainPendingImages;
 $("cancelProblemRetry").onclick=()=>{$("problemRetrySheet").classList.remove("show");problemRetryItem=null};
 $("sendProblemRetry").onclick=sendProblemRetry;
 $("problemRetrySheet").addEventListener("click",e=>{if(e.target===$("problemRetrySheet")){$("problemRetrySheet").classList.remove("show");problemRetryItem=null}});
@@ -769,7 +767,7 @@ $("explainedSheet").addEventListener("click",e=>{if(e.target===$("explainedSheet
 $("incidentClose").onclick=()=>$("incidentSheet").classList.remove("show");
 $("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buildDiagnostic(lastRunTelemetry||{}));showToast("Diagnóstico copiado")}catch(_){showToast("No se pudo copiar el diagnóstico")}};
 $("incidentSheet").addEventListener("click",e=>{if(e.target===$("incidentSheet"))$("incidentSheet").classList.remove("show")});
-$("refreshBtn").onclick=()=>{showToast("Recargando datos");load();loadRunStatus();refreshMainImageRuns()};
+$("refreshBtn").onclick=()=>{showToast("Recargando datos");load();loadRunStatus()};
 $("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado":"Sin token guardado";$("sheet").classList.add("show");refreshPushStatus().catch(()=>{})};
 $("cancelToken").onclick=()=>$("sheet").classList.remove("show");
 $("testToken").onclick=async()=>{const v=$("tokenInput").value.trim();if(!v)return;$("accessStatus").textContent="Comprobando…";try{const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+v},body:JSON.stringify({action:"ping"})});const d=await r.json();$("accessStatus").textContent=r.ok&&d?.backend?.ok?"✓ Acceso correcto · GitHub operativo":r.status===401?"✕ Token no válido":"⚠ Backend no disponible"}catch(_){$("accessStatus").textContent="✕ No se pudo comprobar"}};
