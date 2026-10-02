@@ -115,6 +115,8 @@ jobs:
           assert "Gag IA" in appjs and "Archivo / fallback" in appjs
           assert "🔁 Rehacer" in appjs and "🖼️ Usar archivo/fallback" in appjs
           assert "✨ Generar IA" in html and "🖼️ Copiar imagen archivo" in html
+          assert 'id="imageBar"' not in html and 'id="runImages"' not in html
+          assert "Mensaje confirmado en ChatGPT" in html
           assert 'provider==="chat-imagegen"' in html and 'origin==="executing_chat"' in html
           assert "🔁 Rehacer remate + IA" in html
           assert "const imageInFlight=" in html and "imagen pendiente cancelada" in html, "La imagen no debe bloquear la publicación"
@@ -129,6 +131,7 @@ jobs:
           assert "const {doc:trigger}=await readTrigger();" in run_api
           assert "readControlJson(ACK_PATH)" in run_api
           assert "GitHub REST refleja el HEAD" in run_status
+          assert "pc_worker_id" in run_status
           assert '$WorkerId = "ttittulares-dedicated-v9"' in listener
           assert "worker=ttittulares-dedicated-v9" in installer
 
