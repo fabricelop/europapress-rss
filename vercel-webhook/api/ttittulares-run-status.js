@@ -25,6 +25,7 @@ const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
 const TRACE_COMMENT_ID=5859738015;
 const STALE_MS=20*60*1000;
 const START_ACK_MS=30*1000;
+const LAUNCH_ACK_MS=45*1000;
 const CHAT_CONFIRM_MS=45*1000;
 
 async function gh(url,options={}){
@@ -186,7 +187,7 @@ function manualFallback(items,request,ack){
   const pickedAt=ackMatches?(ack?.picked_up_at||ack?.updated_at||null):null;
   const launchedAt=ackMatches?(ack?.launched_at||null):null;
   const noPickup=rawStatus==="REQUESTED"&&!started_at&&!ackMatches&&Date.now()-stamp(requested_at)>=START_ACK_MS;
-  const pickupButNoLaunch=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="picked_up"&&Date.now()-stamp(pickedAt)>=START_ACK_MS;
+  const pickupButNoLaunch=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="picked_up"&&Date.now()-stamp(pickedAt)>=LAUNCH_ACK_MS;
   const launchButNoEditorial=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="launched"&&launchedAt&&Date.now()-stamp(launchedAt)>=CHAT_CONFIRM_MS;
   const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(lastActivity)>=STALE_MS;
 
@@ -217,7 +218,7 @@ function manualFallback(items,request,ack){
   const finished_at=noPickup
     ?new Date(stamp(requested_at)+START_ACK_MS).toISOString()
     :pickupButNoLaunch
-      ?new Date(stamp(pickedAt)+START_ACK_MS).toISOString()
+      ?new Date(stamp(pickedAt)+LAUNCH_ACK_MS).toISOString()
       :launchButNoEditorial
         ?new Date(stamp(launchedAt)+CHAT_CONFIRM_MS).toISOString()
         :staleRunning?new Date().toISOString()
