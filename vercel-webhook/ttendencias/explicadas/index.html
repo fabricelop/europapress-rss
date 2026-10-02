@@ -10,7 +10,7 @@
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
 *{box-sizing:border-box}html,body{width:100%;max-width:100%;overflow-x:hidden}body{margin:0;background:#0b0e14;min-height:100vh}button,a{font:inherit;touch-action:manipulation}
 .top{position:sticky;top:0;z-index:20;background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36;padding:13px max(12px,env(safe-area-inset-left));display:flex;align-items:center;gap:10px}.back{color:#89b8ff;text-decoration:none;font-weight:750}.title{font-weight:850;font-size:18px}.spacer{flex:1}.count{font-size:12px;color:#9ba7b8;border:1px solid #303846;border-radius:999px;padding:6px 9px}.iconbtn{border:1px solid #303846;background:#141a24;color:#edf3ff;border-radius:10px;padding:8px 10px;font-weight:750;text-decoration:none;white-space:nowrap}
-main{width:100%;max-width:560px;margin:0 auto;padding:14px 10px 40px;overflow-x:hidden}.filter{width:100%;background:#0d131c;color:#eef2f8;border:1px solid #303b4a;border-radius:12px;padding:11px 12px;font:inherit;margin:0 0 14px;outline:none}.filter:focus{border-color:#5d7da8}.list{display:grid;gap:9px;width:100%;max-width:100%}.card{width:100%;background:#11161e;border:1px solid #29313d;border-radius:15px;padding:13px;max-width:100%}#pendingList{justify-items:stretch;width:100%}.sectionCount{font-weight:850;color:#c7d5e8;margin-left:5px}.aiStatusBadge{display:inline-flex;align-items:center;gap:5px;width:max-content;max-width:100%;border:1px solid #465467;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800;line-height:1.25;margin:8px 0 2px}.aiStatusBadge.aiPending{background:#102b46;border-color:#2f7cc0;color:#9fd7ff}.aiStatusBadge.aiReady{background:#102d20;border-color:#2f8f5b;color:#9ee6b8}.aiStatusBadge.aiFailed{background:#38171a;border-color:#a83b46;color:#ffadb5}.aiStatusBadge.aiRework{background:#38171a;border-color:#a83b46;color:#ffadb5}.aiStatusBadge.aiNone{background:#202630;border-color:#4b5563;color:#aeb9c9}.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.name{font-size:16px;font-weight:820}.when{font-size:11px;color:#7f8b9c;white-space:nowrap}.explanation{font-size:14px;line-height:1.48;color:#d7e0ec;margin:9px 0 3px;white-space:pre-line}.closer{font-size:14px;line-height:1.48;color:#f0d9b1;margin:9px 0 5px;font-weight:650}.meta{font-size:11px;color:#8795a8;margin-top:5px}.route{display:inline-block;border:1px solid #39526f;background:#152235;color:#bcd5f3;border-radius:999px;padding:4px 8px;margin-top:4px}.rating{margin:10px 0 12px;padding:11px;background:#101a25;border:1px solid #334358;border-radius:11px}.rating-title{font-size:12px;font-weight:800;color:#c8d8ec}.rating-quote{font-size:12px;color:#a8b9ce;margin:5px 0 7px;line-height:1.4}.rating-stars{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.rating-star{width:37px;height:37px;border:1px solid #455268;background:#1a2635;color:#97a9c1;font-size:24px;border-radius:9px;cursor:pointer;line-height:1}.rating-star.filled{color:#ffce69;border-color:#997441;background:#342918}.rating-star[aria-pressed="true"]{outline:2px solid #ffce69;outline-offset:1px}.rating-star:disabled{opacity:.55;cursor:wait}.rating-hint{color:#96a8bf;font-size:11px;margin-left:6px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:10px;padding:8px 10px;font-weight:760;text-decoration:none}.empty{text-align:center;color:#9aa6b7;padding:50px 10px}.section{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#7f8b9c;margin:18px 2px 8px}.top{padding:8px max(8px,env(safe-area-inset-left));display:block}.nav3{width:100%;max-width:560px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.navbtn{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:40px;padding:8px 5px;border:1px solid #303846;background:#141a24;color:#dce7f7;border-radius:10px;text-decoration:none;font-size:13px;font-weight:800;white-space:nowrap}.navbtn.active{border-color:#5e789d;background:#202a39;color:#fff}.navbtn.pending{border-color:#347fb9;background:#103150;color:#b9e1ff}.navbtn.pending.active{background:#174d79;border-color:#64b6f2;color:#fff}.navBadge{display:none;margin-left:5px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#ffcf5d;color:#17120a;align-items:center;justify-content:center;font-size:11px;font-weight:900}.navBadge.show{display:inline-flex}.collapsedCard{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:11px 12px}.collapsedInfo{min-width:0}.collapsedName{font-size:15px;font-weight:820;line-height:1.25;overflow-wrap:anywhere}.collapsedImageStatus{margin-top:6px;font-size:12px;font-weight:720;line-height:1.3;color:#94a3b8}.collapsedImageStatus.ready{color:#9ee6b8}.collapsedImageStatus.pending{color:#9fd7ff}.collapsedImageStatus.failed{color:#ffadb5}.collapsedImageStatus.requested{color:#ff7f8b}.collapsedImageStatus.fallback{color:#ffd978}.openPending{min-width:82px;text-align:center;justify-self:end}.imageControl{display:flex;align-items:center;justify-content:space-between;gap:9px;border:1px solid #354255;background:#101721;border-radius:13px;padding:10px 11px;margin:0 0 12px}.imageControlMain{min-width:0}.imageControl strong{display:block;font-size:13px}.imageControlState{font-size:11px;color:#8f9bad;margin-top:3px;line-height:1.35}.imageControlState.running{color:#ffc178}.imageControlState.done{color:#8ee6a8}.imageControl .btn:disabled{opacity:.45}
+main{width:100%;max-width:560px;margin:0 auto;padding:14px 10px 40px;overflow-x:hidden}.filter{width:100%;background:#0d131c;color:#eef2f8;border:1px solid #303b4a;border-radius:12px;padding:11px 12px;font:inherit;margin:0 0 14px;outline:none}.filter:focus{border-color:#5d7da8}.list{display:grid;gap:9px;width:100%;max-width:100%}.card{width:100%;background:#11161e;border:1px solid #29313d;border-radius:15px;padding:13px;max-width:100%}#pendingList{justify-items:stretch;width:100%}.sectionCount{font-weight:850;color:#c7d5e8;margin-left:5px}.aiStatusBadge{display:inline-flex;align-items:center;gap:5px;width:max-content;max-width:100%;border:1px solid #465467;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800;line-height:1.25;margin:8px 0 2px}.aiStatusBadge.aiPending{background:#102b46;border-color:#2f7cc0;color:#9fd7ff}.aiStatusBadge.aiReady{background:#102d20;border-color:#2f8f5b;color:#9ee6b8}.aiStatusBadge.aiFailed{background:#38171a;border-color:#a83b46;color:#ffadb5}.aiStatusBadge.aiRework{background:#38171a;border-color:#a83b46;color:#ffadb5}.aiStatusBadge.aiNone{background:#202630;border-color:#4b5563;color:#aeb9c9}.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.name{font-size:16px;font-weight:820}.when{font-size:11px;color:#7f8b9c;white-space:nowrap}.explanation{font-size:14px;line-height:1.48;color:#d7e0ec;margin:9px 0 3px;white-space:pre-line}.closer{font-size:14px;line-height:1.48;color:#f0d9b1;margin:9px 0 5px;font-weight:650}.meta{font-size:11px;color:#8795a8;margin-top:5px}.route{display:inline-block;border:1px solid #39526f;background:#152235;color:#bcd5f3;border-radius:999px;padding:4px 8px;margin-top:4px}.rating{margin:10px 0 12px;padding:11px;background:#101a25;border:1px solid #334358;border-radius:11px}.rating-title{font-size:12px;font-weight:800;color:#c8d8ec}.rating-quote{font-size:12px;color:#a8b9ce;margin:5px 0 7px;line-height:1.4}.rating-stars{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.rating-star{width:37px;height:37px;border:1px solid #455268;background:#1a2635;color:#97a9c1;font-size:24px;border-radius:9px;cursor:pointer;line-height:1}.rating-star.filled{color:#ffce69;border-color:#997441;background:#342918}.rating-star[aria-pressed="true"]{outline:2px solid #ffce69;outline-offset:1px}.rating-star:disabled{opacity:.55;cursor:wait}.rating-hint{color:#96a8bf;font-size:11px;margin-left:6px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:10px;padding:8px 10px;font-weight:760;text-decoration:none}.empty{text-align:center;color:#9aa6b7;padding:50px 10px}.section{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#7f8b9c;margin:18px 2px 8px}.top{padding:8px max(8px,env(safe-area-inset-left));display:block}.nav3{width:100%;max-width:560px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.navbtn{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:40px;padding:8px 5px;border:1px solid #303846;background:#141a24;color:#dce7f7;border-radius:10px;text-decoration:none;font-size:13px;font-weight:800;white-space:nowrap}.navbtn.active{border-color:#5e789d;background:#202a39;color:#fff}.navbtn.pending{border-color:#347fb9;background:#103150;color:#b9e1ff}.navbtn.pending.active{background:#174d79;border-color:#64b6f2;color:#fff}.navBadge{display:none;margin-left:5px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#ffcf5d;color:#17120a;align-items:center;justify-content:center;font-size:11px;font-weight:900}.navBadge.show{display:inline-flex}.collapsedCard{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 12px}.imagePick{display:inline-flex;align-items:center;gap:6px;color:#b9c9dc;font-size:12px;font-weight:800;cursor:pointer;user-select:none}.imagePick input{width:22px;height:22px;margin:0;accent-color:#79aef2}.imagePick.disabled{opacity:.42;cursor:not-allowed}.expandedImagePick{margin:0 0 10px;padding:8px 9px;border:1px solid #34445b;background:#0d131c;border-radius:10px;width:max-content;max-width:100%}.collapsedInfo{min-width:0}.collapsedName{font-size:15px;font-weight:820;line-height:1.25;overflow-wrap:anywhere}.collapsedImageStatus{margin-top:6px;font-size:12px;font-weight:720;line-height:1.3;color:#94a3b8}.collapsedImageStatus.ready{color:#9ee6b8}.collapsedImageStatus.pending{color:#9fd7ff}.collapsedImageStatus.failed{color:#ffadb5}.collapsedImageStatus.requested{color:#ff7f8b}.collapsedImageStatus.fallback{color:#ffd978}.openPending{min-width:82px;text-align:center;justify-self:end}.imageControl{display:flex;align-items:center;justify-content:space-between;gap:9px;border:1px solid #354255;background:#101721;border-radius:13px;padding:10px 11px;margin:0 0 12px}.imageControlMain{min-width:0}.imageControl strong{display:block;font-size:13px}.imageControlState{font-size:11px;color:#8f9bad;margin-top:3px;line-height:1.35}.imageControlState.running{color:#ffc178}.imageControlState.done{color:#8ee6a8}.imageControl .btn:disabled{opacity:.45}
 .card,.list,.imagebox,.actions{min-width:0;max-width:100%}.reexplainDialog{width:min(520px,calc(100vw - 24px));border:1px solid #354052;border-radius:16px;background:#111720;color:#eef2f8;padding:16px}.reexplainDialog::backdrop{background:#000a}.reexplainDialog h2{margin:0 0 7px}.reexplainDialog p{margin:0 0 10px;color:#9eabba;font-size:13px;line-height:1.4}.reexplainDialog textarea{width:100%;min-height:120px;resize:vertical;background:#0a0f16;color:#eef2f8;border:1px solid #34445b;border-radius:10px;padding:10px;font:inherit}.reexplainDialog .dialogActions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}@media(max-width:430px){.navbtn{font-size:12px;padding:8px 3px}.navBadge{min-width:18px;height:18px;font-size:10px}.card{padding:11px}.actions .btn{flex:1 1 44%;min-width:0;white-space:normal;text-align:center}}
 </style>
 </head>
@@ -18,6 +18,7 @@ main{width:100%;max-width:560px;margin:0 auto;padding:14px 10px 40px;overflow-x:
 <header class="top"><nav class="nav3"><a class="navbtn" href="/ttendencias/">TOP 10</a><a class="navbtn pending active" href="/ttendencias/explicadas/">Pendientes <span class="navBadge" id="navPendingBadge"></span></a><a class="navbtn" href="/ttendencias/historico/">Histórico</a></nav></header>
 <main>
 <input class="filter" id="filter" type="search" inputmode="search" autocomplete="off" placeholder="Buscar en pendientes…">
+<section class="imageControl" id="imageControl"><div class="imageControlMain"><strong id="imageHeadline">Imágenes IA</strong><div class="imageControlState done" id="imageState">Marca las tendencias que quieras convertir en gag IA.</div></div><button class="btn" id="runImages" type="button" disabled>✨ Imágenes</button></section>
 <div class="section">Pendientes de publicar <span class="sectionCount" id="pendingCount">0</span></div>
 <section class="list" id="pendingList"><div class="empty">Cargando pendientes…</div></section>
 </main>
@@ -27,8 +28,12 @@ const API="/api/ttendencias-control", RUN_API="/api/ttendencias-run";
 const IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/";
 const $=id=>document.getElementById(id);
 const ARCHIVED_LOCAL_KEY="ttendencias-explicadas-archived-v1";
+const IMAGE_SELECTED_KEY="ttendencias-image-selected-v1";
 function localArchived(){try{return new Set(JSON.parse(localStorage.getItem(ARCHIVED_LOCAL_KEY)||"[]"))}catch(_){return new Set()}}
 function saveLocalArchived(set){try{localStorage.setItem(ARCHIVED_LOCAL_KEY,JSON.stringify([...set].slice(-300)))}catch(_){}}
+function selectedImageKeys(){try{return new Set(JSON.parse(localStorage.getItem(IMAGE_SELECTED_KEY)||"[]"))}catch(_){return new Set()}}
+function saveSelectedImageKeys(set){try{localStorage.setItem(IMAGE_SELECTED_KEY,JSON.stringify([...set].slice(-200)))}catch(_){}}
+function imageSelectionKey(x){return String(x?.id||x?.name||"")+":r"+String(Number(x?.revision||0))}
 let allItems=[];let openPendingKey=null;let imageRuns=new Map(),imageRunPoll=null;let lastRenderFingerprint="";
 let uiInteractionVersion=0,uiHoldUntil=0,passiveRefreshTimer=null;
 function markUiInteraction(){uiInteractionVersion++;uiHoldUntil=Math.max(uiHoldUntil,Date.now()+1400)}
@@ -173,7 +178,7 @@ async function sendReexplain(){
  const button=$("sendReexplain"),old=button.textContent;button.disabled=true;button.textContent="Reevaluando…";
  try{
    const response=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+controlToken},body:JSON.stringify({
-     action:"rework",names:[x.name||displayName(x)],instruction,with_image:false,reexplain_only:true
+     action:"rework",names:[x.name||displayName(x)],instruction,reexplain_only:true
    })});
    const result=await response.json();
    if(!response.ok||!result?.ok)throw new Error(result?.error||"No se pudo solicitar la reevaluación.");
@@ -200,11 +205,42 @@ async function imageDecision(x,action,button){
 
 function explicitAiBlockReason(x){
  if(!x||x.tremending_origin)return "tremending";
- return String(x.ai_image_block_reason||x.image_block_reason||"").trim()
+ const reason=String(x.ai_image_block_reason||x.image_block_reason||"").trim().toLowerCase();
+ if(["political_actor","political_context","safety_sensitive_weather"].includes(reason))return "";
+ return reason
 }
 function normalAiEligible(x){
  if(!x||x.copied||x.tremending_origin||!Boolean(String(x.id||"")))return false;
  return !explicitAiBlockReason(x)
+}
+function imageHasAi(x){return Boolean(String((isChatImageGen(x?.ai_image)?x.ai_image:{}).url||""))}
+function imageSelectable(x){return normalAiEligible(x)&&!imageHasAi(x)}
+function imageSelected(x){return selectedImageKeys().has(imageSelectionKey(x))}
+function setImageSelected(x,selected){
+ const keys=selectedImageKeys(),key=imageSelectionKey(x);
+ if(selected)keys.add(key);else keys.delete(key);
+ saveSelectedImageKeys(keys);updateImageControl()
+}
+function pruneImageSelections(){
+ const valid=new Set(allItems.filter(imageSelectable).map(imageSelectionKey));
+ const keys=selectedImageKeys();let changed=false;
+ for(const key of keys)if(!valid.has(key)){keys.delete(key);changed=true}
+ if(changed)saveSelectedImageKeys(keys)
+}
+function makeImageSelector(x,expanded=false){
+ if(x?.tremending_origin)return null;
+ const label=document.createElement("label");label.className="imagePick"+(expanded?" expandedImagePick":"");
+ const input=document.createElement("input");input.type="checkbox";
+ const allowed=imageSelectable(x)||imageRunActive(imageRuns.get(String(x?.id||"")));
+ input.disabled=!allowed;
+ input.checked=allowed&&imageSelected(x);
+ input.setAttribute("aria-label","Crear gag IA para "+displayName(x));
+ input.onchange=()=>setImageSelected(x,input.checked);
+ const text=document.createElement("span");
+ const block=explicitAiBlockReason(x);
+ text.textContent=block?"IA bloqueada":imageHasAi(x)?"IA lista":"Gag IA";
+ if(!allowed){label.classList.add("disabled");label.title=block?("Bloqueada: "+block):"La imagen IA ya está disponible"}
+ label.append(input,text);return label
 }
 function imageHandoffTimedOut(run){
  const st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"").toLowerCase();
@@ -238,12 +274,8 @@ function liveImageRunState(x){
  return null
 }
 function pendingImageItems(){
- return allItems.filter(x=>{
-   if(!normalAiEligible(x))return false;
-   const ai=isChatImageGen(x.ai_image)?x.ai_image:{},hasAi=Boolean(String(ai.url||""));
-   if(x.ai_image_regenerate_requested)return true;
-   return !hasAi
- })
+ const selected=selectedImageKeys();
+ return allItems.filter(x=>selected.has(imageSelectionKey(x))&&imageSelectable(x))
 }
 function updateImageControl(){
  const candidates=pendingImageItems();
@@ -251,10 +283,14 @@ function updateImageControl(){
  const pending=candidates.filter(x=>!imageRunActive(imageRuns.get(String(x.id||"")))).length;
  const btn=$("runImages"),head=$("imageHeadline"),state=$("imageState");
  if(!btn||!head||!state)return;
- btn.textContent="✨ Imágenes IA"+(pending?" ("+pending+")":"");
+ btn.textContent="✨ Imágenes"+(pending?" ("+pending+")":"");
  btn.disabled=pending===0;
  head.textContent=active?("Imágenes IA · "+active+" en curso"):"Imágenes IA";
- state.textContent=active?(active+" generándose en paralelo · "+pending+" en cola · máximo 4 simultáneas"):(pending?pending+" pendiente"+(pending===1?"":"s")+" de generar":"Sin imágenes IA pendientes");
+ state.textContent=active
+   ? active+" generándose · "+pending+" seleccionada"+(pending===1?"":"s")+" por lanzar"
+   : pending
+     ? pending+" tendencia"+(pending===1?"":"s")+" seleccionada"+(pending===1?"":"s")+" · se enviarán con explicación + remate"
+     : "Marca las tendencias que quieras convertir en gag IA.";
  state.className="imageControlState "+(active||pending?"running":"done")
 }
 async function markImageRegenerate(x){
@@ -271,7 +307,7 @@ async function requestImageRun(x,{markRegenerate=false,silent=false}={}){
  const id=String(x.id||"");if(!id)throw new Error("La tendencia no tiene id");
  if(imageRunActive(imageRuns.get(id))){if(!silent)alert("Esa imagen ya se está generando.");return false}
  const hasAi=Boolean(String((isChatImageGen(x.ai_image)?x.ai_image:{}).url||""));
- if((markRegenerate||!hasAi)&&!x.ai_image_regenerate_requested)await markImageRegenerate(x);
+ if(markRegenerate&&!x.ai_image_regenerate_requested)await markImageRegenerate(x);
  const response=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+controlToken},body:JSON.stringify({
    task:"images",target_id:id,id,target_name:x.name||displayName(x),revision:Number(x.revision||0)
  })});
@@ -285,8 +321,8 @@ async function requestImageRun(x,{markRegenerate=false,silent=false}={}){
 }
 async function requestPendingImages(){
  const items=pendingImageItems().filter(x=>!imageRunActive(imageRuns.get(String(x.id||""))));
- if(!items.length){alert("No hay imágenes IA pendientes.");return}
- if(!confirm("¿Lanzar "+items.length+" imagen"+(items.length===1?"":"es")+" IA? Se abrirán chats independientes y hasta 4 generarán en paralelo."))return;
+ if(!items.length){alert("No hay tendencias marcadas para imagen IA.");return}
+ if(!confirm("¿Generar gag IA para "+items.length+" tendencia"+(items.length===1?"":"s")+" marcada"+(items.length===1?"":"s")+"?"))return;
  $("runImages").disabled=true;let ok=0,errors=0;
  for(const x of items){try{if(await requestImageRun(x,{silent:true}))ok++}catch(_){errors++}}
  updateImageControl();
@@ -451,6 +487,7 @@ function renderCard(x,pending){
 function pendingKey(x){return String(x.id||x.name||"")+":r"+String(x.revision||0)}
 function renderCollapsedPending(x){
  const card=document.createElement("article");card.className="card collapsedCard";
+ const pick=makeImageSelector(x,false);
  const info=document.createElement("div");info.className="collapsedInfo";
  const name=document.createElement("div");name.className="collapsedName";name.textContent=displayName(x);
  const imageState=collapsedImageState(x);
@@ -459,10 +496,11 @@ function renderCollapsedPending(x){
  const open=document.createElement("button");open.className="btn openPending";open.type="button";open.textContent=x.rewrite_pending?"Reevaluando…":"Abrir";
  open.disabled=Boolean(x.rewrite_pending);
  open.onclick=()=>{if(x.rewrite_pending)return;openPendingKey=pendingKey(x);render()};
- card.append(info,open);return card;
+ if(pick)card.append(pick,info,open);else card.append(info,open);return card;
 }
 function renderExpandedPending(x){
  const card=renderCard(x,true);
+ const pick=makeImageSelector(x,true);if(pick)card.prepend(pick);
  const close=document.createElement("button");close.className="btn";close.type="button";close.textContent="Cerrar";
  close.onclick=()=>{openPendingKey=null;render()};
  const actions=card.querySelector(".actions");if(actions)actions.prepend(close);
@@ -527,6 +565,7 @@ async function load(passive=false){
  const fingerprint=JSON.stringify(nextItems);
  const changed=fingerprint!==lastRenderFingerprint;
  allItems=nextItems;
+ pruneImageSelections();
  if(changed){lastRenderFingerprint=fingerprint;render()}
  else{updateUnreadBadge();updateImageControl()}
  // Cuando el servidor ya confirma el archivado, mantener solo claves todavía
@@ -539,6 +578,7 @@ $("filter").addEventListener("input",render);
 $("cancelReexplain").onclick=()=>{$("reexplainDialog").close();reexplainItem=null};
 $("sendReexplain").onclick=sendReexplain;
 const refreshBtn=$("refresh");if(refreshBtn)refreshBtn.onclick=()=>load().catch(e=>alert(e.message));
+const runImagesBtn=$("runImages");if(runImagesBtn)runImagesBtn.onclick=requestPendingImages;
 window.addEventListener("pageshow",()=>queuePassiveRefresh(250));
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)queuePassiveRefresh(250)});
 load().catch(e=>{$("pendingList").innerHTML='<div class="empty">'+e.message+'</div>';});
