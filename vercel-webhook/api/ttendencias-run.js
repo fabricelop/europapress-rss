@@ -171,7 +171,7 @@ async function requestImagePcAck(req,res){
   const command_id=String(req.body?.command_id||"").trim();
   const stage=String(req.body?.stage||"").toLowerCase();
   const worker_id=String(req.body?.worker_id||"ttendencias-dedicated-v1").trim().slice(0,120)||"ttendencias-dedicated-v1";
-  if(!command_id||!["picked_up","launched","cancelled"].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
+  if(!command_id||!["picked_up","launched","cancelled","failed"].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
@@ -193,6 +193,11 @@ async function requestImagePcAck(req,res){
     next.phase="stale_target";
     next.finished_at=now;
     next.message=String(req.body?.reason||"La entrada ya no está pendiente o vigente.").slice(0,240);
+  }else if(stage==="failed"){
+    next.status="ERROR";
+    next.phase="pc_launch_failed";
+    next.finished_at=now;
+    next.message=String(req.body?.reason||"El PC recogió la solicitud, pero no pudo enviar la orden al chat.").slice(0,240);
   }else{
     next.status="RUNNING";
     next.phase=stage==="picked_up"?"pc_pickup":"pc_launch";
@@ -232,6 +237,14 @@ async function requestImageRun(req,res){
     version:1,command_id,requested_at,updated_at:requested_at,status:"REQUESTED",phase:"queued",
     mode:"manual_pc_chat_image",executor:"pc_chat_ttendencias_dedicated",project:"ttendencias",launcher_arg:"tendencias",
     task:"image",target_id,trend_id:target_id,target_name,revision,
+    chat_command_version:2,
+    instruction_profile:"ttendencias_gag_v1",
+    instructions:{
+      scope:"Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+      context:"Lee en main la explicación completa y vigente correspondiente a target_id; no cambies explicación, hechos, fuentes ni remate.",
+      visual:"Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+      lifecycle:"Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante image-outbox V3."
+    },
     message:"Solicitud registrada; esperando al PC para abrir un chat de imagen."
   };
   let saved=await writeControlJson(jobPath,doc,existing.sha,"Solicitar imagen IA TTendencias "+target_id+" "+command_id);

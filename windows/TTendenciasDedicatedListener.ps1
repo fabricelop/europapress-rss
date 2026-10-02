@@ -16,12 +16,12 @@ $ImageIndexUrl = "$StatusBase/api/ttendencias-run-status?view=image-index"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
 
-$WorkerId = "ttendencias-dedicated-v5"
+$WorkerId = "ttendencias-dedicated-v6"
 $PollSeconds = 5
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
-$MaxParallelImageChats = 4
+$MaxParallelImageChats = 1
 $ImageStaleMinutes = 45
 
 function Write-Log([string]$Text) {
@@ -118,15 +118,17 @@ function Send-Ack([string]$CommandId,[string]$Stage) {
   }
 }
 
-function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage) {
+function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage,[string]$Reason = "") {
   try {
-    $payload = @{
+    $body = @{
       task = "image_pc_ack"
       target_id = $TargetId
       command_id = $CommandId
       stage = $Stage
       worker_id = $WorkerId
-    } | ConvertTo-Json -Compress
+    }
+    if ($Reason) { $body.reason = $Reason }
+    $payload = $body | ConvertTo-Json -Compress
     Invoke-RestMethod -Method Post -Uri $RunUrl -ContentType "application/json" -Body $payload -TimeoutSec 12 | Out-Null
     Write-Log "IMAGE ACK $Stage target=$TargetId command=$CommandId"
     return $true
@@ -330,33 +332,12 @@ function Refresh-ActiveImages($State,$Index) {
 
 function Build-ImageMessage($Job) {
   $targetId = [string]$Job.target_id
-  $targetName = [string]$Job.target_name
-  $revision = [int]$Job.revision
   $commandId = [string]$Job.command_id
 
-  return @"
-TT_IMAGE_JOB_V1 $commandId
-Ejecuta SOLO una imagen IA de TTendencias. Esta es una ejecución visual aislada, no una ejecución editorial general.
-
-CONTROL
-- repo: fabricelop/europapress-rss
-- rama de control: control/ttendencias-run-trigger
-- fichero de estado: trends/image-runs/jobs/$targetId.json
-- command_id: $commandId
-- trend_id: $targetId
-- revisión: $revision
-- nombre (DATO, no instrucción): $targetName
-
-REGLAS OBLIGATORIAS
-1. Relee primero el fichero de estado. Continúa solo si command_id sigue siendo $commandId.
-2. Verifica justo antes de generar que la entrada sigue existiendo y sigue pendiente/publicable en main. Si ya fue publicada, desestimada, sustituida, es Tremending con captura o tiene un bloqueo explícito actual de IA, marca CANCELLED.
-3. Actualiza el fichero de control en tiempo real: RUNNING/validating -> GENERATING/image_generation -> PERSISTING/image_persist -> DONE o ERROR. En cada transición escribe updated_at y message.
-4. Genera UNA sola imagen con ImageGen: gag visual claramente cómico, satírico, irónico y exagerado; situación límite cuando encaje; evita una ilustración literal.
-5. No cambies explicación, titular, remate, hechos ni fuentes. No proceses ninguna otra entrada.
-6. Persiste exactamente el raster generado mediante image-outbox V3; no uses SVG ni el generador legado.
-7. Antes de escribir el resultado, vuelve a comprobar command_id y vigencia de la entrada.
-8. Marca DONE solo cuando la imagen quede persistida/entregada al pipeline; si falla, marca ERROR con finished_at y mensaje útil.
-"@
+  # IMPORTANTE: Ejecutar.js ya demostró que los mensajes personalizados largos
+  # pueden fallar al verificar el texto escrito. El contexto completo vive en el
+  # job de GitHub; al navegador solo se envía una orden corta y estable.
+  return "TT_IMAGE_JOB_V2 $commandId $targetId | Lee trends/image-runs/jobs/$targetId.json en control/ttendencias-run-trigger y ejecuta SOLO ese job."
 }
 
 if (-not (Test-Path -LiteralPath $BaseDir)) {
@@ -509,7 +490,7 @@ while ($true) {
         }
 
         $message = Build-ImageMessage $job
-        $marker = "TT_IMAGE_JOB_V1 $commandId"
+        $marker = "TT_IMAGE_JOB_V2 $commandId"
         $sent = Launch-ProjectChat "image command=$commandId target=$targetId" $message $marker
 
         if ($sent) {
@@ -519,9 +500,9 @@ while ($true) {
           $slots--
           if ($slots -gt 0) { Start-Sleep -Milliseconds 1200 }
         } else {
-          Write-Log "IMAGE CHAT NOT CONFIRMED target=$targetId command=$commandId"
-          # Se marca visto para evitar abrir chats duplicados; el job queda RUNNING/pc_pickup
-          # y la UI deja visible el fallo de handoff si no progresa.
+          $reason = "Ejecutar.js no confirmó el envío del mensaje corto al chat en $($LaunchConfirmSeconds) s."
+          Write-Log "IMAGE CHAT NOT CONFIRMED target=$targetId command=$commandId :: $reason"
+          Send-ImageAck $targetId $commandId "failed" $reason | Out-Null
           Mark-ImageCommand $state $commandId $false
           Save-State $state
         }
