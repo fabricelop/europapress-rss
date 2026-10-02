@@ -21,6 +21,7 @@ on:
       - "vercel-webhook/api/ttittulares-run.js"
       - "windows/TTiTTularesDedicatedListener.ps1"
       - "windows/Install-TTiTTularesMobileChatTrigger.ps1"
+      - "windows/Install-TTiTTulares-v15.ps1"
       - "vercel-webhook/api/ttendencias-control.js"
       - "ttittulares/tremending/**"
       - ".github/workflows/tremending-collect.yml"
@@ -43,6 +44,7 @@ on:
       - "vercel-webhook/api/ttittulares-control.js"
       - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
+      - "windows/Install-TTiTTulares-v15.ps1"
       - "vercel-webhook/api/ttendencias-control.js"
       - "ttittulares/tremending/**"
       - ".github/workflows/tremending-collect.yml"
@@ -152,6 +154,8 @@ jobs:
           assert "TTendencias: NO MODIFICADO" in installer_v15
           assert "Ejecutar.js: validado, NO MODIFICADO" in installer_v15
           assert "97ada1f9e657e766a83fb375a42bbfe46bb3c588" in installer_v15
+          assert "$listenerPid=[int]$active[0].ProcessId" in installer_v15
+          assert "$pid=[int]$active[0].ProcessId" not in installer_v15
 
           ids=set()
           for item in prepared.get("items",[]):
