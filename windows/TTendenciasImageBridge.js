@@ -1,6 +1,7 @@
 // TTendenciasImageBridge.js
 const BASE_CDP="http://127.0.0.1:9223";
 const RUN_URL="https://europapress-rss.vercel.app/api/ttendencias-run";
+const JOB_URL="https://europapress-rss.vercel.app/api/ttendencias-run-status?view=image-job&id=";
 const commandId=String(process.argv[2]||"").trim();
 const targetId=String(process.argv[3]||"").trim();
 const secret=String(process.env.TT_IMAGE_UPLOAD_SECRET||"");
@@ -44,22 +45,71 @@ async function targets(){
   if(!r.ok)throw Error("CDP /json/list "+r.status);
   return r.json()
 }
+async function fetchJob(){
+  const r=await fetch(JOB_URL+encodeURIComponent(targetId)+"&t="+Date.now(),{cache:"no-store"});
+  if(!r.ok)throw Error("Job "+r.status);
+  const d=await r.json();
+  if(!d||!d.ok||String(d.command_id||"")!==commandId)throw Error("Job de imagen no disponible o sustituido");
+  return d
+}
+function buildMessage(job){
+  const name=String(job&&job.target_name||targetId);
+  return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
+}
+async function inspectChat(cdp){
+  return cdp.eval("(()=>{const turns=[...document.querySelectorAll('[data-message-author-role]')];const user=turns.some(el=>el.getAttribute('data-message-author-role')==='user'&&(el.innerText||'').includes("+JSON.stringify(commandId)+"));const body=String(document.body&&document.body.innerText||'');const composer=document.querySelector('#prompt-textarea,[data-testid=\"prompt-textarea\"],[contenteditable=\"true\"][data-lexical-editor=\"true\"],textarea');return {hasUser:user,hasMarker:body.includes("+JSON.stringify(commandId)+"),hasComposer:Boolean(composer),ttendencias:/TTendencias/i.test(document.title+' '+body.slice(0,5000)),title:document.title||'',url:location.href}})()")
+}
 async function findChat(){
-  const deadline=Date.now()+90000;
+  const deadline=Date.now()+30000,start=Date.now();
+  let best=null,bestScore=-1;
   while(Date.now()<deadline){
-    let list=[];try{list=await targets()}catch{await sleep(1000);continue}
+    let list=[];try{list=await targets()}catch{await sleep(800);continue}
     for(const t of list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl)){
       const c=new CDP(t.webSocketDebuggerUrl);
       try{
         await c.open();
-        const expr="Boolean(document.body&&document.body.innerText&&document.body.innerText.includes("+JSON.stringify(commandId)+"))";
-        if(await c.eval(expr))return c;
+        const st=await inspectChat(c);
+        if(st&&st.hasUser)return c;
+        const score=(st&&st.hasMarker?80:0)+(st&&st.ttendencias?20:0)+(st&&st.hasComposer?5:0);
+        if(score>bestScore){best=t;bestScore=score}
       }catch{}
       c.close()
     }
-    await sleep(1200)
+    if(Date.now()-start>=7000&&best&&bestScore>=5){
+      const c=new CDP(best.webSocketDebuggerUrl);
+      await c.open();
+      return c
+    }
+    await sleep(900)
   }
-  throw Error("No se encontró el chat del job")
+  throw Error("No se encontró un chat de TTendencias con compositor")
+}
+async function hasUserCommand(cdp){
+  return Boolean(await cdp.eval("(()=>[...document.querySelectorAll('[data-message-author-role=\"user\"]')].some(el=>(el.innerText||'').includes("+JSON.stringify(commandId)+")))()"))
+}
+async function ensureCommandSent(cdp,message){
+  if(await hasUserCommand(cdp))return {already:true};
+
+  const prepared=await cdp.eval("(()=>{const el=document.querySelector('#prompt-textarea,[data-testid=\"prompt-textarea\"],[contenteditable=\"true\"][data-lexical-editor=\"true\"],textarea');if(!el)return {ok:false};el.focus();try{if(el.tagName==='TEXTAREA'||el.tagName==='INPUT'){el.setSelectionRange(0,String(el.value||'').length)}else{const r=document.createRange(),s=window.getSelection();r.selectNodeContents(el);s.removeAllRanges();s.addRange(r)}}catch(_){}return {ok:true,tag:el.tagName}})()");
+  if(!prepared||!prepared.ok)throw Error("Chat abierto pero no se encontró el compositor");
+
+  await cdp.call("Input.insertText",{text:message});
+  await sleep(350);
+  const filled=await cdp.eval("(()=>{const el=document.querySelector('#prompt-textarea,[data-testid=\"prompt-textarea\"],[contenteditable=\"true\"][data-lexical-editor=\"true\"],textarea');const v=String(el&&(el.value||el.innerText||el.textContent)||'');return v.includes("+JSON.stringify(commandId)+")})()");
+  if(!filled)throw Error("No se pudo insertar el comando de imagen en el chat");
+
+  const clicked=await cdp.eval("(()=>{const qs=['button[data-testid=\"send-button\"]','button[data-testid=\"composer-submit-button\"]','button[aria-label*=\"Send\"]','button[aria-label*=\"Enviar\"]'];for(const q of qs){const b=document.querySelector(q);if(b&&!b.disabled&&b.getAttribute('aria-disabled')!=='true'){b.click();return true}}return false})()");
+  if(!clicked){
+    await cdp.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+    await cdp.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+  }
+
+  const deadline=Date.now()+30000;
+  while(Date.now()<deadline){
+    if(await hasUserCommand(cdp))return {already:false};
+    await sleep(700)
+  }
+  throw Error("El comando quedó en el chat, pero no apareció como turno de usuario en 30 segundos")
 }
 
 function probeExpression(){
@@ -68,7 +118,8 @@ function probeExpression(){
     "const command="+JSON.stringify(commandId)+";",
     "const turns=[...document.querySelectorAll('[data-message-author-role]')];",
     "const user=turns.find(el=>el.getAttribute('data-message-author-role')==='user'&&(el.innerText||'').includes(command));",
-    "const follows=el=>!user||Boolean(user.compareDocumentPosition(el)&Node.DOCUMENT_POSITION_FOLLOWING);",
+    "if(!user)return {found:false,diag:{turns:turns.length,assistants:0,imagesAfterUser:0,candidates:0,canvases:0,assistantTail:'',missingUser:true}};",
+    "const follows=el=>Boolean(user.compareDocumentPosition(el)&Node.DOCUMENT_POSITION_FOLLOWING);",
     "const assistants=turns.filter(el=>el.getAttribute('data-message-author-role')==='assistant'&&follows(el));",
     "const allImgs=[...document.querySelectorAll('img')].filter(follows);",
     "const imgs=allImgs.map(img=>{const r=img.getBoundingClientRect(),src=String(img.currentSrc||img.src||''),alt=String(img.alt||'').toLowerCase(),nw=Number(img.naturalWidth||0),nh=Number(img.naturalHeight||0);return {img,r,src,alt,nw,nh,area:Math.max(nw*nh,r.width*r.height)}}).filter(x=>x.r.width>=240&&x.r.height>=140&&!/avatar|emoji|icon|logo/.test(x.alt)&&!x.src.includes('avatar')).sort((a,b)=>b.area-a.area);",
@@ -115,8 +166,12 @@ async function fail(reason){
   let cdp;
   try{
     console.log("BRIDGE START "+commandId);
+    const job=await fetchJob();
+    const message=buildMessage(job);
     cdp=await findChat();
     console.log("BRIDGE CHAT FOUND");
+    const sent=await ensureCommandSent(cdp,message);
+    console.log("BRIDGE COMMAND "+(sent.already?"PRESENT":"RESENT"));
     const image=await capture(cdp);
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
     console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
