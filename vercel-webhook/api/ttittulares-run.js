@@ -122,7 +122,8 @@ async function requestPcAck(req,res){
   const command_id=String(req.body?.command_id||"").trim();
   const stage=String(req.body?.stage||"").toLowerCase();
   const worker_id=String(req.body?.worker_id||"legacy-shared-listener").trim().slice(0,120)||"legacy-shared-listener";
-  if(!command_id||!["picked_up","launched"].includes(stage))return res.status(400).json({ok:false,error:"Ack no válido"});
+  const detail=String(req.body?.detail||"").trim().slice(0,1000);
+  if(!command_id||!["picked_up","launched","failed"].includes(stage))return res.status(400).json({ok:false,error:"Ack no válido"});
   const {doc:trigger}=await readTrigger();
   if(String(trigger.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es el actual"});
   const requested_at=String(trigger.requested_at||"");
@@ -146,7 +147,7 @@ async function requestPcAck(req,res){
       picked_up_at:previous.picked_up_at||null,launched_at:previous.launched_at||null
     })
   }
-  if(stage==="launched"&&same&&previousWorker&&previousWorker!==worker_id){
+  if(["launched","failed"].includes(stage)&&same&&previousWorker&&previousWorker!==worker_id){
     return res.status(409).json({ok:false,error:"claim_not_owned",command_id,worker_id:previousWorker})
   }
 
@@ -156,6 +157,8 @@ async function requestPcAck(req,res){
     version:2,command_id,requested_at,worker_id,stage,
     picked_up_at:preservePickup?previous.picked_up_at:now,
     launched_at:stage==="launched"?now:(same&&previousWorker===worker_id?previous.launched_at||null:null),
+    failed_at:stage==="failed"?now:(same&&previousWorker===worker_id?previous.failed_at||null:null),
+    detail:stage==="failed"?detail:(same&&previousWorker===worker_id?previous.detail||null:null),
     updated_at:now
   };
   await writeControlJson(ACK_PATH,doc,existing.sha,"PC Chat ack TTiTTulares "+stage+" "+command_id+" "+worker_id);
