@@ -145,19 +145,13 @@ jobs:
           assert "EDITORIAL PROCESS STARTED direct-node-real-default-message" in listener and "MODO:\\s*ENVIO REAL" in listener
           assert 'ArgumentList @($Runner,"titulares","--enviar")' in listener
           assert "RedirectStandardOutput" in listener and "ttittulares-launch-" in listener
-          assert "if ($realMode -and ($messageSent -or $executionLaunched -or $responseStarted))" in listener
-          assert "TTITTULARES V14 INSTALADO Y ACTIVO" in installer_v14
-          assert 'node Ejecutar.js titulares --enviar' in installer_v14
-          assert "TTendencias: NO MODIFICADO" in installer_v14
-          assert "Ejecutar.js: validado, NO MODIFICADO" in installer_v14
+          assert "if ($realMode -and $defaultMessage -and ($messageSent -or $executionLaunched -or $responseStarted))" in listener
           assert "TTITTULARES V15 INSTALADO Y ACTIVO" in installer_v15
           assert 'node Ejecutar.js titulares --enviar' in installer_v15
           assert 'Mensaje editorial: Ejecuta TTiTTulares' in installer_v15
           assert "TTendencias: NO MODIFICADO" in installer_v15
           assert "Ejecutar.js: validado, NO MODIFICADO" in installer_v15
           assert "97ada1f9e657e766a83fb375a42bbfe46bb3c588" in installer_v15
-          assert "030e4277e89d12d0c7c158c86ca97779cd2f64b4" in installer_v14
-          assert 'const enviar = process.argv.includes("--enviar");' in installer_v14
 
           ids=set()
           for item in prepared.get("items",[]):
