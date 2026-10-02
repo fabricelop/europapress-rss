@@ -12,7 +12,7 @@ $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 45
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v6"
+$WorkerId = "ttittulares-dedicated-v7"
 $PollSeconds = 5
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
@@ -153,13 +153,27 @@ function Launch-TTiTTulares([string]$CommandId) {
     return $false
   }
 
-  # Mismo contrato que TTendencias Entradas:
-  # LanzarOculto.vbs es quien invoca Ejecutar.js en modo ENVIO REAL.
+  # Mantener LanzarOculto.vbs para que Ejecutar.js entre en ENVIO REAL,
+  # pero pasar un mensaje inequívoco para que el chat abierto NO cree
+  # un segundo trigger tt-chat-* y ejecute directamente la pasada editorial.
+  $message = @"
+TT_EDITORIAL_WORKER_V1 $CommandId
+Ejecuta TTiTTulares directamente en este chat como worker editorial de la orden ya recogida por el PC.
+NO crees ni modifiques run-now-trigger.json.
+NO solicites otra ejecución y NO lances otro chat.
+Usa command_id $CommandId para la telemetría/RUNTRACE de esta pasada.
+Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTulares.
+"@
+
+  $old = $env:TT_CHAT_MESSAGE_B64
   try {
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($message)
+    $env:TT_CHAT_MESSAGE_B64 = [Convert]::ToBase64String($bytes)
+
     $p = Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"titulares") -WindowStyle Hidden -PassThru
     if (-not $p) { throw "Start-Process no devolvió proceso" }
 
-    Write-Log "EDITORIAL PROCESS STARTED via-vbs pid=$($p.Id) command=$CommandId"
+    Write-Log "EDITORIAL PROCESS STARTED via-vbs-custom pid=$($p.Id) command=$CommandId"
     $launched = Send-Ack $CommandId "launched"
     if ($launched -ne "OK") {
       Write-Log "LAUNCHED ACK WARNING command=$CommandId result=$launched"
@@ -170,6 +184,9 @@ function Launch-TTiTTulares([string]$CommandId) {
     Write-Log "EDITORIAL PROCESS ERROR command=$CommandId :: $detail"
     [void](Send-Ack $CommandId "failed" $detail)
     return $false
+  } finally {
+    if ($null -eq $old) { Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue }
+    else { $env:TT_CHAT_MESSAGE_B64 = $old }
   }
 }
 
