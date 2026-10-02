@@ -136,15 +136,23 @@
       "ui_stars_immediately_below_closer": true,
       "closer_generation": {
         "preferred": true,
-        "max_attempts": 2,
+        "max_attempts": 3,
         "non_blocking": true,
-        "on_failure": "publish_verified_factual_explanation",
+        "on_failure": "persist_verified_factual_explanation_and_flag_missing_closer",
         "closer_text_on_failure": "",
         "never_mark_problematic_for_closer_failure": true,
-        "do_not_delay_next_trend": true
+        "do_not_delay_next_trend": true,
+        "required_for_eligible": true,
+        "eligible_exceptions": [
+          "sensitive_event",
+          "political_content"
+        ],
+        "flag_field": "closer_missing"
       },
       "tremending_prefix": "TT 🗯️ ",
-      "tremending_prefix_once": true
+      "tremending_prefix_once": true,
+      "closer_required_for_eligible": true,
+      "closer_eligible_rule": "Obligatorio salvo sucesos sensibles/trágicos o contenido político, donde se mantiene redacción neutral sin remate."
     },
     "progress_policy": {
       "enabled": true,
