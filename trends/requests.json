@@ -7031,7 +7031,7 @@
       "id": "6edd382e5ca7",
       "name": "Yola",
       "rank": 9,
-      "status": "preparing",
+      "status": "dismissed",
       "requested_at": "2026-10-02T02:31:27+02:00",
       "revision": 1,
       "reexplain": true,
@@ -7072,7 +7072,11 @@
           "name": "Yola",
           "rank": 10
         }
-      ]
+      ],
+      "dismissed_at": "2026-10-02T07:18:00+02:00",
+      "dismissed_source": "editorial_chat_revalidation",
+      "dismiss_reason": "La entrada ya no aparece en Top 10, próximas ni anticipadas al revalidarla justo antes de tratarla.",
+      "image_pending": false
     },
     {
       "id": "dc927b4ccc81",
@@ -8379,7 +8383,7 @@
       "id": "30a7058c0bc9",
       "name": "#ChiringuitoNegreira",
       "rank": 7,
-      "status": "preparing",
+      "status": "dismissed",
       "requested_at": "2026-10-02T02:31:27+02:00",
       "revision": 1,
       "reexplain": true,
@@ -8406,7 +8410,11 @@
       "explanation": "TT#10 #ChiringuitoNegreira es tendencia por el debate futbolístico sobre el caso Negreira y el acto de conciliación fijado para el 25 de noviembre entre el Barça y Florentino Pérez.\nEl balón ha acabado citado en el juzgado.",
       "closer_text": "El balón ha acabado citado en el juzgado.",
       "news_disposition": "ignored",
-      "source": "editorial_manual_run"
+      "source": "editorial_manual_run",
+      "dismissed_at": "2026-10-02T07:18:00+02:00",
+      "dismissed_source": "editorial_chat_revalidation",
+      "dismiss_reason": "La entrada ya no aparece en Top 10, próximas ni anticipadas al revalidarla justo antes de tratarla.",
+      "image_pending": false
     },
     {
       "id": "fdc83d13f1ba",
@@ -14903,7 +14911,7 @@
       "id": "049566b6b12d",
       "name": "Halloween",
       "revision": 2,
-      "status": "update",
+      "status": "problematic",
       "requested_at": "2026-10-02T04:58:15.192Z",
       "rank": 27,
       "with_image": true,
@@ -14918,22 +14926,32 @@
         "Halloween"
       ],
       "auto_queued": false,
-      "last_attempt_at": "2026-10-02T00:49:36+02:00",
+      "last_attempt_at": "2026-10-02T07:18:00+02:00",
       "source": "editorial_chat_direct",
       "disable_ai_image": true,
       "image_strategy": "none",
-      "ai_image_status": "none",
+      "ai_image_status": "disabled",
       "image_status": "none",
       "image_pending": false,
       "reexplain": true,
-      "problematic_attempts": 1,
+      "problematic_attempts": 2,
       "verification_sources": [
         {
           "source": "Radar TTendencias · España · 2/10/2026",
           "url": "https://twitter-trends.snaplytics.io/spain/"
+        },
+        {
+          "source": "Cadena SER Madrid Norte · 1/10/2026",
+          "url": "https://cadenaser.com/cmadrid/2026/10/01/el-mapa-del-terror-vuelve-este-halloween-a-paracuellos-de-jarama-con-dos-nuevos-premios-ser-madrid-norte/"
+        },
+        {
+          "source": "Time Out Madrid · 30/09/2026",
+          "url": "https://www.timeout.es/madrid/es/que-hacer/planes-para-pasar-un-halloween-de-miedo-en-madrid"
         }
       ],
-      "fallback_image_status": "none"
+      "fallback_image_status": "none",
+      "problem_reason": "«Halloween» mantiene señal social en España, pero no aparece un detonante único, concreto y actual que explique la tendencia. La cobertura reciente es estacional por el inicio de octubre y los preparativos de Halloween; se conserva como problemática para no atribuir una causa específica sin evidencia.",
+      "problematic_at": "2026-10-02T07:18:00+02:00"
     },
     {
       "id": "3dd01fb77d28",
@@ -15160,7 +15178,7 @@
       "id": "2e70108a529b",
       "name": "Arkano",
       "rank": 5,
-      "status": "preparing",
+      "status": "dismissed",
       "requested_at": "2026-10-02T01:21:27+02:00",
       "revision": 0,
       "reexplain": false,
@@ -15174,13 +15192,17 @@
         "Arkano",
         "ALGUN DIA IS OUT"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "dismissed_at": "2026-10-02T07:18:00+02:00",
+      "dismissed_source": "editorial_chat_revalidation",
+      "dismiss_reason": "La entrada ya no aparece en Top 10, próximas ni anticipadas al revalidarla justo antes de tratarla.",
+      "image_pending": false
     },
     {
       "id": "dabfe4f95a08",
       "name": "ALGUN DIA IS OUT",
       "rank": 10,
-      "status": "preparing",
+      "status": "dismissed",
       "requested_at": "2026-10-02T01:21:27+02:00",
       "revision": 0,
       "reexplain": false,
@@ -15194,13 +15216,17 @@
         "Arkano",
         "ALGUN DIA IS OUT"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "dismissed_at": "2026-10-02T07:18:00+02:00",
+      "dismissed_source": "editorial_chat_revalidation",
+      "dismiss_reason": "La entrada ya no aparece en Top 10, próximas ni anticipadas al revalidarla justo antes de tratarla.",
+      "image_pending": false
     },
     {
       "id": "fb5c9d2cf0b9",
       "name": "Waterloo",
       "revision": 0,
-      "status": "preparing",
+      "status": "dismissed",
       "requested_at": "2026-10-01T23:29:33.540Z",
       "rank": 18,
       "with_image": true,
@@ -15214,13 +15240,17 @@
       "requested_together": [
         "Waterloo"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "dismissed_at": "2026-10-02T07:18:00+02:00",
+      "dismissed_source": "editorial_chat_revalidation",
+      "dismiss_reason": "La entrada ya no aparece en Top 10, próximas ni anticipadas al revalidarla justo antes de tratarla.",
+      "image_pending": false
     },
     {
       "id": "59330137c24c",
       "name": "#LaNoche24h",
       "revision": 0,
-      "status": "preparing",
+      "status": "dismissed",
       "requested_at": "2026-10-01T23:29:34.066Z",
       "rank": 14,
       "with_image": true,
@@ -15234,13 +15264,17 @@
       "requested_together": [
         "#LaNoche24h"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "dismissed_at": "2026-10-02T07:18:00+02:00",
+      "dismissed_source": "editorial_chat_revalidation",
+      "dismiss_reason": "La entrada ya no aparece en Top 10, próximas ni anticipadas al revalidarla justo antes de tratarla.",
+      "image_pending": false
     },
     {
       "id": "a992e5cacda9",
       "name": "Elecciones",
       "revision": 0,
-      "status": "preparing",
+      "status": "dismissed",
       "requested_at": "2026-10-01T23:29:38.822Z",
       "rank": 15,
       "with_image": true,
@@ -15254,13 +15288,17 @@
       "requested_together": [
         "Elecciones"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "dismissed_at": "2026-10-02T07:18:00+02:00",
+      "dismissed_source": "editorial_chat_revalidation",
+      "dismiss_reason": "La entrada ya no aparece en Top 10, próximas ni anticipadas al revalidarla justo antes de tratarla.",
+      "image_pending": false
     },
     {
       "id": "6f7dd4187842",
       "name": "María Jesús",
       "revision": 0,
-      "status": "preparing",
+      "status": "dismissed",
       "requested_at": "2026-10-01T23:29:37.441Z",
       "rank": 11,
       "with_image": true,
@@ -15274,13 +15312,17 @@
       "requested_together": [
         "María Jesús"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "dismissed_at": "2026-10-02T07:18:00+02:00",
+      "dismissed_source": "editorial_chat_revalidation",
+      "dismiss_reason": "La entrada ya no aparece en Top 10, próximas ni anticipadas al revalidarla justo antes de tratarla.",
+      "image_pending": false
     },
     {
       "id": "5c964cfff54c",
       "name": "Ivana",
       "rank": 8,
-      "status": "preparing",
+      "status": "dismissed",
       "requested_at": "2026-10-02T02:31:27+02:00",
       "revision": 0,
       "reexplain": false,
@@ -15293,9 +15335,13 @@
       "captured_with": [
         "Ivana"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "dismissed_at": "2026-10-02T07:18:00+02:00",
+      "dismissed_source": "editorial_chat_revalidation",
+      "dismiss_reason": "La entrada ya no aparece en Top 10, próximas ni anticipadas al revalidarla justo antes de tratarla.",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-02T04:58:15.192Z",
+  "updated_at": "2026-10-02T07:18:00+02:00",
   "count": 401
 }
