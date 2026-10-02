@@ -5437,7 +5437,7 @@
       "id": "4b85f530992d",
       "name": "Puerta del Sol",
       "rank": 14,
-      "status": "update",
+      "status": "explained",
       "requested_at": "2026-10-02T08:08:42.418Z",
       "revision": 3,
       "reexplain": true,
@@ -5460,27 +5460,27 @@
         "Jorge Jesús"
       ],
       "auto_queued": false,
-      "explanation": "TT#4 Puerta del Sol es tendencia porque la acampada entra en su quinta jornada y hoy vence el plazo de 48 horas que la Comunidad dio a Delegación para desalojarla; mañana el Congreso vota dos decretos.\n🌶️ Sol ya tiene más plazos que campanadas.",
+      "explanation": "TT#14 Puerta del Sol es tendencia porque la acampada por la vivienda continúa mientras el Congreso vota hoy dos decretos de vivienda y la Comunidad de Madrid ha acudido a los tribunales para pedir su desalojo.",
       "news_disposition": "ignored",
       "duplicate_of": "manual-c34896ce0bc9",
-      "rank_at_explanation": 4,
-      "closer_text": "🌶️ Sol ya tiene más plazos que campanadas.",
+      "rank_at_explanation": 14,
+      "closer_text": "",
       "source": "editorial_chat_direct",
-      "news_note": "Actualización material del episodio de la acampada en Sol ya tratado; se evita abrir un puente duplicado a TTiTTulares desde esta pasada.",
+      "news_note": "Actualización factual del episodio de la acampada de Sol, revalidado en el radar anticipado; sin remate ni ImageGen por contexto político y de protesta.",
       "verification_sources": [
         {
-          "source": "RTVE",
+          "source": "RTVE · 1/10/2026",
           "url": "https://www.rtve.es/noticias/20261001/acampada-sol-vivienda-hoy-ultima-hora-cronica/17248350.shtml"
         },
         {
-          "source": "Europa Press",
-          "url": "https://www.europapress.es/madrid/noticia-vivienda-monopoliza-pleno-jueves-asamblea-marcado-maricarmen-acampada-reales-decretos-20261001055950.html"
+          "source": "El País · 1/10/2026",
+          "url": "https://elpais.com/espana/madrid/2026-10-01/el-ayuntamiento-presenta-una-foto-de-un-cuchillo-junto-a-pan-y-hummus-como-prueba-del-peligro-de-la-acampada-de-sol.html"
         }
       ],
-      "image_strategy": "existing_web_image",
+      "image_strategy": "fallback_only",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente.",
+      "image_failure_reason": "La explicación se cierra sin bloquearse por imagen; no se genera IA en contexto político y el fallback puede incorporarse después.",
       "trend_names": [
         "Puerta del Sol"
       ],
@@ -5490,7 +5490,13 @@
       "anticipated_best_rank": 14,
       "anticipated_social_source_count": 6,
       "anticipated_news_source_count": 5,
-      "anticipated_news_title": "Ayuso solicita a los tribunales la orden de desalojo de la Puerta del Sol mientras el Gobierno defiende la acampada como \"procedente\""
+      "anticipated_news_title": "Ayuso solicita a los tribunales la orden de desalojo de la Puerta del Sol mientras el Gobierno defiende la acampada como \"procedente\"",
+      "last_attempt_at": "2026-10-02T10:12:00+02:00",
+      "explained_at": "2026-10-02T10:12:00+02:00",
+      "disable_ai_image": true,
+      "ai_image_status": "disabled",
+      "ai_image_block_reason": "political_context",
+      "explanation_group_id": "grp-4b85f530992d"
     },
     {
       "id": "6e5f3712838f",
@@ -7745,7 +7751,7 @@
       "id": "54e75fa9750c",
       "name": "Almeida",
       "revision": 2,
-      "status": "update",
+      "status": "explained",
       "requested_at": "2026-10-02T08:08:44.330Z",
       "rank": 17,
       "with_image": true,
@@ -7760,8 +7766,8 @@
         "Almeida"
       ],
       "auto_queued": false,
-      "explanation": "TT#9 Almeida es tendencia porque el alcalde de Madrid asegura que el Ayuntamiento ha documentado cuchillos y adoquines en la acampada por la vivienda de Sol y exige su desalojo; remitirá las pruebas a Delegación del Gobierno e Interior.",
-      "rank_at_explanation": 9,
+      "explanation": "TT#17 Almeida es tendencia porque el alcalde de Madrid participó en la presentación del próximo rodaje de Woody Allen en la capital, que comenzará el 5 de octubre y cuenta con apoyo del Ayuntamiento y la Comunidad.",
+      "rank_at_explanation": 17,
       "group_id": "grp-almeida-acampada-sol-20260928",
       "explanation_group_id": "grp-almeida-acampada-sol-20260928",
       "group_title": "Almeida y la acampada en Puerta del Sol",
@@ -7775,16 +7781,16 @@
         }
       ],
       "news_disposition": "ignored",
-      "news_note": "Actualización material del mismo episodio de la acampada de Sol ya tratado; no se abre un nuevo puente a TTiTTulares en esta pasada.",
+      "news_note": "La actualización sustituye el contexto anterior de la acampada por el detonante actual observado en el radar: la presentación del rodaje de Woody Allen. Redacción factual; sin remate ni ImageGen.",
       "source": "editorial_chat_direct",
       "verification_sources": [
         {
-          "source": "RTVE",
-          "url": "https://www.rtve.es/noticias/20260930/almeida-adoquines-cuchillos-acampada-sol-delegado-gobierno/17247256.shtml"
+          "source": "Ayuntamiento de Madrid · 1/10/2026",
+          "url": "https://www.madrid.es/portales/munimadrid/es/Inicio/Actualidad/Noticias/Almeida-asegura-que-Madrid-ofrecera-a-Woody-Allen-el-mejor-escenario-posible-para-su-proxima-pelicula/?vgnextchannel=a12149fa40ec9410VgnVCM100000171f5a0aRCRD&vgnextfmt=default&vgnextoid=99c178faa47f0a10VgnVCM200000f921e388RCRD"
         },
         {
-          "source": "Europa Press",
-          "url": "https://www.europapress.es/madrid/noticia-ayuntamiento-envia-fotos-delegado-cuchillos-adoquines-tiendas-acampada-le-advierte-acciones-legales-20260930222421.html"
+          "source": "Cadena SER · 1/10/2026",
+          "url": "https://cadenaser.com/nacional/2026/10/01/la-respuesta-de-woody-allen-al-ser-preguntado-por-la-situacion-de-la-vivienda-en-espana-cadena-ser/"
         }
       ],
       "duplicate_of": "4cf7026cace3",
@@ -7802,10 +7808,15 @@
         "Jorge Jesús"
       ],
       "closer_text": "",
-      "image_strategy": "existing_web_image",
+      "image_strategy": "fallback_only",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente."
+      "image_failure_reason": "La explicación se cierra sin bloquearse por imagen; no se genera IA en contexto político y el fallback puede incorporarse después.",
+      "last_attempt_at": "2026-10-02T10:12:00+02:00",
+      "explained_at": "2026-10-02T10:12:00+02:00",
+      "disable_ai_image": true,
+      "ai_image_status": "disabled",
+      "ai_image_block_reason": "political_context"
     },
     {
       "id": "378649592d5e",
@@ -15562,7 +15573,7 @@
       "id": "76aea6cf66e7",
       "name": "Convoca",
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-02T07:49:32.842Z",
       "rank": 27,
       "with_image": true,
@@ -15576,13 +15587,42 @@
       "requested_together": [
         "Convoca"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "last_attempt_at": "2026-10-02T10:12:00+02:00",
+      "explained_at": "2026-10-02T10:12:00+02:00",
+      "explanation": "TT#27 Convoca es tendencia porque Reino Unido ha convocado a la embajadora argentina en Londres para protestar por el arbitraje anunciado por el Gobierno de Javier Milei sobre la explotación petrolera en torno a las Malvinas.",
+      "closer_text": "",
+      "rank_at_explanation": 27,
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "El País · 1/10/2026",
+          "url": "https://elpais.com/argentina/2026-10-01/reino-unido-convoca-a-la-embajadora-argentina-en-londres-en-rechazo-a-las-medidas-de-milei-por-las-malvinas.html"
+        },
+        {
+          "source": "Público · 1/10/2026",
+          "url": "https://www.publico.es/internacional/america-latina/reino-unido-convoca-embajadora-argentina-londres-protesta-medidas-milei-sobre-malvinas.html"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Explicación factual y neutral de una tendencia diplomática; no se añade remate ni ImageGen.",
+      "disable_ai_image": true,
+      "ai_image_status": "disabled",
+      "ai_image_block_reason": "political_context",
+      "image_strategy": "fallback_only",
+      "image_status": "none",
+      "image_pending": false,
+      "image_failure_reason": "La explicación se cierra sin bloquearse por imagen; no se genera IA en contexto político y el fallback puede incorporarse después.",
+      "explanation_group_id": "grp-76aea6cf66e7",
+      "trend_names": [
+        "Convoca"
+      ]
     },
     {
       "id": "2bd1d3d69584",
       "name": "Sánchez",
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-02T08:08:46.358Z",
       "rank": 14,
       "with_image": true,
@@ -15596,9 +15636,38 @@
       "requested_together": [
         "Sánchez"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "last_attempt_at": "2026-10-02T10:12:00+02:00",
+      "explained_at": "2026-10-02T10:12:00+02:00",
+      "explanation": "TT#14 Sánchez es tendencia por la investigación sobre las alertas previas a la entrada masiva en Ceuta: Vivas declaró que intentó contactar con el presidente y su gabinete; Moncloa sostiene que atendió las comunicaciones.",
+      "closer_text": "",
+      "rank_at_explanation": 14,
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "El País · 1/10/2026",
+          "url": "https://elpais.com/espana/2026-10-01/los-tres-dias-previos-a-la-entrada-masiva-en-ceuta-segun-el-relato-de-vivas-ante-la-jueza.html"
+        },
+        {
+          "source": "TeleCeuta · 2/10/2026",
+          "url": "https://teleceuta.com/moncloa-publica-nueve-llamadas-con-ceuta-y-sostiene-que-atendio-las-peticiones-de-vivas-antes-de-la-entrada-masiva/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Explicación política factual y neutral, atribuyendo por separado la versión de Vivas y la respuesta de Moncloa; sin remate ni ImageGen.",
+      "disable_ai_image": true,
+      "ai_image_status": "disabled",
+      "ai_image_block_reason": "political_context",
+      "image_strategy": "fallback_only",
+      "image_status": "none",
+      "image_pending": false,
+      "image_failure_reason": "La explicación se cierra sin bloquearse por imagen; no se genera IA en contexto político y el fallback puede incorporarse después.",
+      "explanation_group_id": "grp-2bd1d3d69584",
+      "trend_names": [
+        "Sánchez"
+      ]
     }
   ],
-  "updated_at": "2026-10-02T08:08:46.358Z",
+  "updated_at": "2026-10-02T10:12:00+02:00",
   "count": 401
 }
