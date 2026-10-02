@@ -186,9 +186,12 @@ function manualFallback(items,request,ack){
   const ackStage=ackMatches?String(ack?.stage||"").toLowerCase():"";
   const pickedAt=ackMatches?(ack?.picked_up_at||ack?.updated_at||null):null;
   const launchedAt=ackMatches?(ack?.launched_at||null):null;
+  const failedAt=ackMatches?(ack?.failed_at||null):null;
+  const failedDetail=ackMatches?String(ack?.detail||"").trim():null;
   const noPickup=rawStatus==="REQUESTED"&&!started_at&&!ackMatches&&Date.now()-stamp(requested_at)>=START_ACK_MS;
   const pickupButNoLaunch=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="picked_up"&&Date.now()-stamp(pickedAt)>=LAUNCH_ACK_MS;
   const launchButNoEditorial=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="launched"&&launchedAt&&Date.now()-stamp(launchedAt)>=CHAT_CONFIRM_MS;
+  const launchFailed=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="failed";
   const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(lastActivity)>=STALE_MS;
 
   let status=rawStatus,phase=status==="REQUESTED"?"preparing":status==="RUNNING"?"running":status==="DONE"?"closing":"error";
@@ -196,7 +199,7 @@ function manualFallback(items,request,ack){
   let effectiveStarted=started_at;
   let updated_at=lastActivity;
 
-  if(rawStatus==="REQUESTED"&&!started_at&&ackMatches){
+  if(rawStatus==="REQUESTED"&&!started_at&&ackMatches&&!launchFailed){
     status="RUNNING";
     phase=ackStage==="launched"?"chat_launch":"pc_ack";
     effectiveStarted=pickedAt||requested_at;
@@ -205,15 +208,17 @@ function manualFallback(items,request,ack){
       ?"PC ha recogido la orden y ha lanzado el chat; esperando confirmación editorial."
       :"PC ha recogido la orden; preparando el lanzamiento del chat.";
   }
-  if(noPickup||pickupButNoLaunch||launchButNoEditorial||staleRunning){
+  if(noPickup||pickupButNoLaunch||launchButNoEditorial||launchFailed||staleRunning){
     status="ERROR";phase="error";
     message=noPickup
       ?"El PC no ha recogido la orden en 30 segundos."
       :pickupButNoLaunch
-        ?"El PC recogió la orden, pero no confirmó el lanzamiento del chat en 30 segundos."
+        ?"El PC recogió la orden, pero no confirmó el lanzamiento del chat en 45 segundos."
         :launchButNoEditorial
           ?"El chat fue lanzado, pero no comenzó la ejecución editorial en 45 segundos."
-          :"La ejecución no actualiza su estado desde hace más de 20 minutos.";
+          :launchFailed
+            ?("El lanzador local falló: "+(failedDetail||"sin detalle"))
+            :"La ejecución no actualiza su estado desde hace más de 20 minutos.";
   }
   const finished_at=noPickup
     ?new Date(stamp(requested_at)+START_ACK_MS).toISOString()
@@ -221,7 +226,9 @@ function manualFallback(items,request,ack){
       ?new Date(stamp(pickedAt)+LAUNCH_ACK_MS).toISOString()
       :launchButNoEditorial
         ?new Date(stamp(launchedAt)+CHAT_CONFIRM_MS).toISOString()
-        :staleRunning?new Date().toISOString()
+        :launchFailed
+          ?(failedAt||ack?.updated_at||new Date().toISOString())
+          :staleRunning?new Date().toISOString()
       :(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
 
   return {
@@ -231,7 +238,7 @@ function manualFallback(items,request,ack){
     duration_seconds:effectiveStarted&&finished_at?seconds(effectiveStarted,finished_at):null,
     message:message||"Orden móvil registrada; esperando al PC para recogerla (máx. 30 s).",
     summary:null,incident_count:0,incidents:[],
-    pc_ack_stage:ackStage||null,pc_picked_up_at:pickedAt||null,pc_launched_at:launchedAt||null
+    pc_ack_stage:ackStage||null,pc_picked_up_at:pickedAt||null,pc_launched_at:launchedAt||null,pc_failed_at:failedAt||null,pc_failure_detail:failedDetail||null
   }
 }
 
