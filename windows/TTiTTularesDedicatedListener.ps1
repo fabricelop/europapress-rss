@@ -173,17 +173,22 @@ function Read-NewLauncherText([long]$Offset) {
 }
 
 function Launch-TTiTTulares([string]$CommandId) {
-  if (-not (Test-Path -LiteralPath $Runner)) {
-    $detail = "No existe $Runner"
+  if (-not (Test-Path -LiteralPath $Launcher)) {
+    $detail = "No existe $Launcher"
     Write-Log "EDITORIAL PROCESS ERROR command=$CommandId :: $detail"
     [void](Send-Ack $CommandId "failed" $detail)
     return $false
   }
 
-  $safeCommandId = ($CommandId -replace '[^A-Za-z0-9._-]','_')
-  $launchLog = Join-Path $BaseDir ("ttittulares-launch-" + $safeCommandId + ".log")
-  $launchErr = Join-Path $BaseDir ("ttittulares-launch-" + $safeCommandId + ".err.log")
-  Remove-Item -LiteralPath $launchLog,$launchErr -Force -ErrorAction SilentlyContinue
+  $beforeWrite = [DateTime]::MinValue
+  $beforeLen = 0L
+  if (Test-Path -LiteralPath $LauncherLogPath) {
+    try {
+      $fi = Get-Item -LiteralPath $LauncherLogPath
+      $beforeWrite = $fi.LastWriteTimeUtc
+      $beforeLen = $fi.Length
+    } catch {}
+  }
 
   $marker = "TT_EDITORIAL_WORKER_V1 $CommandId"
   $message = @"
@@ -196,20 +201,15 @@ Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTular
 "@
 
   $old = $env:TT_CHAT_MESSAGE_B64
-  $proc = $null
   try {
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($message)
     $env:TT_CHAT_MESSAGE_B64 = [Convert]::ToBase64String($bytes)
 
-    $node = Get-Command node.exe -ErrorAction SilentlyContinue
-    if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
-    if (-not $node) { throw "Node no disponible para lanzar TTiTTulares" }
-
-    $proc = Start-Process -FilePath $node.Source -ArgumentList @($Runner,"titulares") -WindowStyle Hidden -PassThru -RedirectStandardOutput $launchLog -RedirectStandardError $launchErr
-    if (-not $proc) { throw "Start-Process no devolvió proceso" }
-    Write-Log "EDITORIAL PROCESS STARTED direct-node pid=$($proc.Id) command=$CommandId stdout=$launchLog stderr=$launchErr"
+    $p = Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"titulares") -WindowStyle Hidden -PassThru
+    if (-not $p) { throw "Start-Process no devolvió proceso" }
+    Write-Log "EDITORIAL PROCESS STARTED via-vbs pid=$($p.Id) command=$CommandId"
   } catch {
-    $detail = "No se pudo lanzar Ejecutar.js titulares: $($_.Exception.Message)"
+    $detail = "No se pudo lanzar LanzarOculto.vbs titulares: $($_.Exception.Message)"
     Write-Log "EDITORIAL PROCESS ERROR command=$CommandId :: $detail"
     [void](Send-Ack $CommandId "failed" $detail)
     return $false
@@ -220,52 +220,55 @@ Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTular
 
   $deadline = (Get-Date).AddSeconds($LaunchConfirmSeconds)
   while ((Get-Date) -lt $deadline) {
-    Start-Sleep -Milliseconds 500
-
-    $stdout = ""
-    $stderr = ""
-    try { if (Test-Path -LiteralPath $launchLog) { $stdout = Get-Content -LiteralPath $launchLog -Raw -ErrorAction SilentlyContinue } } catch {}
-    try { if (Test-Path -LiteralPath $launchErr) { $stderr = Get-Content -LiteralPath $launchErr -Raw -ErrorAction SilentlyContinue } } catch {}
-    $newText = [string]$stdout + "`n" + [string]$stderr
-
-    $responseStarted = $newText -match '"generando"\s*:\s*true'
-    $messageSent = $newText -match "MENSAJE ENVIADO"
-    $executionLaunched = $newText -match "EJECUCION LANZADA"
-
-    if ($messageSent -or $executionLaunched -or $responseStarted) {
-      $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
-      Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId via=$why stdout=$launchLog"
-      $launched = Send-Ack $CommandId "launched"
-      if ($launched -ne "OK") {
-        Write-Log "LAUNCHED ACK WARNING command=$CommandId result=$launched"
-      }
-      return $true
-    }
-
-    if ($newText -match "ERROR:|ERROR ::|Timeout CDP|ChatGPT no confirmó") {
-      $detail = (($stderr + " " + $stdout) -replace '\s+',' ').Trim()
-      if ($detail.Length -gt 700) { $detail = $detail.Substring([Math]::Max(0,$detail.Length-700)) }
-      if (-not $detail) { $detail = "Ejecutar.js informó un error al lanzar el chat" }
-      Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $detail"
-      [void](Send-Ack $CommandId "failed" $detail)
-      return $false
-    }
+    Start-Sleep -Seconds 1
+    if (-not (Test-Path -LiteralPath $LauncherLogPath)) { continue }
 
     try {
-      $proc.Refresh()
-      if ($proc.HasExited -and -not $messageSent -and -not $executionLaunched -and -not $responseStarted) {
-        $detail = (($stderr + " " + $stdout) -replace '\s+',' ').Trim()
-        if (-not $detail) { $detail = "Ejecutar.js terminó sin confirmar el envío. ExitCode=$($proc.ExitCode)" }
+      $fi = Get-Item -LiteralPath $LauncherLogPath
+      if ($fi.Length -le $beforeLen -and $fi.LastWriteTimeUtc -le $beforeWrite) { continue }
+
+      $fs = [System.IO.File]::Open($LauncherLogPath,[System.IO.FileMode]::Open,[System.IO.FileAccess]::Read,[System.IO.FileShare]::ReadWrite)
+      try {
+        if ($beforeLen -gt $fs.Length) { $beforeLen = 0 }
+        [void]$fs.Seek($beforeLen,[System.IO.SeekOrigin]::Begin)
+        $sr = New-Object System.IO.StreamReader($fs,[System.Text.Encoding]::UTF8,$true,4096,$true)
+        try { $newText = $sr.ReadToEnd() } finally { $sr.Dispose() }
+      } finally { $fs.Dispose() }
+
+      if (-not $newText) { continue }
+
+      $realMode = $newText -match "MODO:\s*ENVIO REAL"
+      $responseStarted = $newText -match '"generando"\s*:\s*true'
+      $messageSent = $newText -match "MENSAJE ENVIADO"
+      $executionLaunched = $newText -match "EJECUCION LANZADA"
+
+      if ($realMode -and ($messageSent -or $executionLaunched -or $responseStarted)) {
+        $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
+        Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId via=vbs/$why"
+        $launched = Send-Ack $CommandId "launched"
+        if ($launched -ne "OK") { Write-Log "LAUNCHED ACK WARNING command=$CommandId result=$launched" }
+        return $true
+      }
+
+      if ($newText -match "MODO:\s*PRUEBA") {
+        $detail = "LanzarOculto.vbs titulares abrió Ejecutar.js en MODO PRUEBA"
+        Write-Log "CHAT LAUNCH MODE ERROR command=$CommandId :: $detail"
+        [void](Send-Ack $CommandId "failed" $detail)
+        return $false
+      }
+
+      if ($newText -match "ERROR:|ERROR ::|Timeout CDP|ChatGPT no confirmó") {
+        $detail = (($newText -replace '\s+',' ').Trim())
         if ($detail.Length -gt 700) { $detail = $detail.Substring([Math]::Max(0,$detail.Length-700)) }
-        Write-Log "CHAT PROCESS EXITED command=$CommandId :: $detail"
+        Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $detail"
         [void](Send-Ack $CommandId "failed" $detail)
         return $false
       }
     } catch {}
   }
 
-  $detail = "Ejecutar.js sigue activo pero no confirmó el mensaje en $($LaunchConfirmSeconds)s. Log: $launchLog"
-  Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId stdout=$launchLog stderr=$launchErr"
+  $detail = "LanzarOculto.vbs titulares no confirmó ENVIO REAL en $($LaunchConfirmSeconds)s"
+  Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId"
   [void](Send-Ack $CommandId "failed" $detail)
   return $false
 }
