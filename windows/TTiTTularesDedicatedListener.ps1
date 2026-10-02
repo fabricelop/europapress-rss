@@ -12,7 +12,7 @@ $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v12"
+$WorkerId = "ttittulares-dedicated-v13"
 $PollSeconds = 5
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
@@ -180,15 +180,10 @@ function Launch-TTiTTulares([string]$CommandId) {
     return $false
   }
 
-  $beforeWrite = [DateTime]::MinValue
-  $beforeLen = 0L
-  if (Test-Path -LiteralPath $LauncherLogPath) {
-    try {
-      $fi = Get-Item -LiteralPath $LauncherLogPath
-      $beforeWrite = $fi.LastWriteTimeUtc
-      $beforeLen = $fi.Length
-    } catch {}
-  }
+  $safeCommandId = ($CommandId -replace '[^A-Za-z0-9._-]','_')
+  $launchLog = Join-Path $BaseDir ("ttittulares-launch-" + $safeCommandId + ".log")
+  $launchErr = Join-Path $BaseDir ("ttittulares-launch-" + $safeCommandId + ".err.log")
+  Remove-Item -LiteralPath $launchLog,$launchErr -Force -ErrorAction SilentlyContinue
 
   $marker = "TT_EDITORIAL_WORKER_V1 $CommandId"
   $message = @"
@@ -201,6 +196,7 @@ Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTular
 "@
 
   $old = $env:TT_CHAT_MESSAGE_B64
+  $proc = $null
   try {
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($message)
     $env:TT_CHAT_MESSAGE_B64 = [Convert]::ToBase64String($bytes)
@@ -209,8 +205,9 @@ Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTular
     if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
     if (-not $node) { throw "Node no disponible para lanzar TTiTTulares" }
 
-    Start-Process -FilePath $node.Source -ArgumentList @($Runner,"titulares") -WindowStyle Hidden | Out-Null
-    Write-Log "EDITORIAL PROCESS STARTED direct-node command=$CommandId marker=$marker"
+    $proc = Start-Process -FilePath $node.Source -ArgumentList @($Runner,"titulares") -WindowStyle Hidden -PassThru -RedirectStandardOutput $launchLog -RedirectStandardError $launchErr
+    if (-not $proc) { throw "Start-Process no devolvió proceso" }
+    Write-Log "EDITORIAL PROCESS STARTED direct-node pid=$($proc.Id) command=$CommandId stdout=$launchLog stderr=$launchErr"
   } catch {
     $detail = "No se pudo lanzar Ejecutar.js titulares: $($_.Exception.Message)"
     Write-Log "EDITORIAL PROCESS ERROR command=$CommandId :: $detail"
@@ -223,41 +220,52 @@ Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTular
 
   $deadline = (Get-Date).AddSeconds($LaunchConfirmSeconds)
   while ((Get-Date) -lt $deadline) {
-    Start-Sleep -Seconds 1
-    if (-not (Test-Path -LiteralPath $LauncherLogPath)) { continue }
+    Start-Sleep -Milliseconds 500
+
+    $stdout = ""
+    $stderr = ""
+    try { if (Test-Path -LiteralPath $launchLog) { $stdout = Get-Content -LiteralPath $launchLog -Raw -ErrorAction SilentlyContinue } } catch {}
+    try { if (Test-Path -LiteralPath $launchErr) { $stderr = Get-Content -LiteralPath $launchErr -Raw -ErrorAction SilentlyContinue } } catch {}
+    $newText = [string]$stdout + "`n" + [string]$stderr
+
+    $responseStarted = $newText -match '"generando"\s*:\s*true'
+    $messageSent = $newText -match "MENSAJE ENVIADO"
+    $executionLaunched = $newText -match "EJECUCION LANZADA"
+
+    if ($messageSent -or $executionLaunched -or $responseStarted) {
+      $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
+      Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId via=$why stdout=$launchLog"
+      $launched = Send-Ack $CommandId "launched"
+      if ($launched -ne "OK") {
+        Write-Log "LAUNCHED ACK WARNING command=$CommandId result=$launched"
+      }
+      return $true
+    }
+
+    if ($newText -match "ERROR:|ERROR ::|Timeout CDP|ChatGPT no confirmó") {
+      $detail = (($stderr + " " + $stdout) -replace '\s+',' ').Trim()
+      if ($detail.Length -gt 700) { $detail = $detail.Substring([Math]::Max(0,$detail.Length-700)) }
+      if (-not $detail) { $detail = "Ejecutar.js informó un error al lanzar el chat" }
+      Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $detail"
+      [void](Send-Ack $CommandId "failed" $detail)
+      return $false
+    }
 
     try {
-      $fi = Get-Item -LiteralPath $LauncherLogPath
-      if ($fi.Length -le $beforeLen -and $fi.LastWriteTimeUtc -le $beforeWrite) { continue }
-
-      $newText = Read-NewLauncherText $beforeLen
-      if (-not $newText) { continue }
-
-      $responseStarted = $newText -match '"generando"\s*:\s*true'
-      $messageSent = $newText -match "MENSAJE ENVIADO"
-      $executionLaunched = $newText -match "EJECUCION LANZADA"
-
-      if ($messageSent -or $executionLaunched -or $responseStarted) {
-        $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
-        Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId marker=$marker via=$why"
-        $launched = Send-Ack $CommandId "launched"
-        if ($launched -ne "OK") {
-          Write-Log "LAUNCHED ACK WARNING command=$CommandId result=$launched"
-        }
-        return $true
-      }
-
-      if ($newText -match "ERROR:|ERROR ::|Timeout CDP") {
-        $detail = "Ejecutar.js informó un error al lanzar el chat"
-        Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $detail"
+      $proc.Refresh()
+      if ($proc.HasExited -and -not $messageSent -and -not $executionLaunched -and -not $responseStarted) {
+        $detail = (($stderr + " " + $stdout) -replace '\s+',' ').Trim()
+        if (-not $detail) { $detail = "Ejecutar.js terminó sin confirmar el envío. ExitCode=$($proc.ExitCode)" }
+        if ($detail.Length -gt 700) { $detail = $detail.Substring([Math]::Max(0,$detail.Length-700)) }
+        Write-Log "CHAT PROCESS EXITED command=$CommandId :: $detail"
         [void](Send-Ack $CommandId "failed" $detail)
         return $false
       }
     } catch {}
   }
 
-  $detail = "Ejecutar.js arrancó pero ChatGPT no confirmó el mensaje en $($LaunchConfirmSeconds)s"
-  Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId marker=$marker"
+  $detail = "Ejecutar.js sigue activo pero no confirmó el mensaje en $($LaunchConfirmSeconds)s. Log: $launchLog"
+  Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId stdout=$launchLog stderr=$launchErr"
   [void](Send-Ack $CommandId "failed" $detail)
   return $false
 }
