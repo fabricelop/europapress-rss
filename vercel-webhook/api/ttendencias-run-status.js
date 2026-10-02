@@ -202,6 +202,7 @@ function manualFallback(items,request,ack){
   const launchedAt=ackMatches?(ack?.launched_at||null):null;
   const noPickup=rawStatus==="REQUESTED"&&!started_at&&!ackMatches&&Date.now()-stamp(requested_at)>=START_ACK_MS;
   const pickupButNoLaunch=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="picked_up"&&Date.now()-stamp(pickedAt)>=START_ACK_MS;
+  const launchedButNoEditorial=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="launched"&&Date.now()-stamp(launchedAt||ack?.updated_at)>=60000;
   const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(lastActivity)>=STALE_MS;
 
   let status=rawStatus,phase=status==="REQUESTED"?"preparing":status==="RUNNING"?"running":status==="DONE"?"closing":"error";
@@ -218,20 +219,24 @@ function manualFallback(items,request,ack){
       ?"PC ha recogido la orden y ha lanzado el chat; esperando confirmación editorial."
       :"PC ha recogido la orden; preparando el lanzamiento del chat.";
   }
-  if(noPickup||pickupButNoLaunch||staleRunning){
+  if(noPickup||pickupButNoLaunch||launchedButNoEditorial||staleRunning){
     status="ERROR";phase="error";
     message=noPickup
       ?"El PC no ha recogido la orden en 30 segundos."
       :pickupButNoLaunch
-        ?"El PC recogió la orden, pero no confirmó el lanzamiento del chat en 30 segundos."
-        :"La ejecución no actualiza su estado desde hace más de 20 minutos.";
+        ?"El PC recogió la orden, pero no pudo arrancar el proceso local en 30 segundos."
+        :launchedButNoEditorial
+          ?"El PC abrió ChatGPT, pero no apareció ninguna ejecución editorial en 60 segundos."
+          :"La ejecución no actualiza su estado desde hace más de 20 minutos.";
   }
 
   const finished_at=noPickup
     ?new Date(stamp(requested_at)+START_ACK_MS).toISOString()
     :pickupButNoLaunch
       ?new Date(stamp(pickedAt)+START_ACK_MS).toISOString()
-      :staleRunning?new Date().toISOString()
+      :launchedButNoEditorial
+        ?new Date(stamp(launchedAt||ack?.updated_at)+60000).toISOString()
+        :staleRunning?new Date().toISOString()
       :(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
 
   return {
