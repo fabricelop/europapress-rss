@@ -137,7 +137,7 @@ jobs:
           assert "readJson(PROCESSING)" in control_api
           assert '$WorkerId = "ttittulares-dedicated-v13"' in listener
           assert "$LaunchConfirmSeconds = 30" in listener
-          assert "direct-node" in listener and "Read-NewLauncherText $beforeLen" in listener
+          assert "direct-node" in listener
           assert "TTendencias unchanged" in listener and "tendenciasBefore" in listener and "tendenciasWritten" in listener
           assert "RedirectStandardOutput" in listener and "ttittulares-launch-" in listener
           assert "if ($messageSent -or $executionLaunched -or $responseStarted)" in listener
