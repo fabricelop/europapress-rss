@@ -17,7 +17,7 @@ $ImageIndexUrl = "$StatusBase/api/ttendencias-run-status?view=image-index"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
 
-$WorkerId = "ttendencias-dedicated-v7"
+$WorkerId = "ttendencias-dedicated-v8"
 $PollSeconds = 5
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
@@ -380,12 +380,12 @@ function Refresh-ActiveImages($State,$Index) {
 
 function Build-ImageMessage($Job) {
   $targetId = [string]$Job.target_id
+  $targetName = [string]$Job.target_name
   $commandId = [string]$Job.command_id
 
-  # IMPORTANTE: Ejecutar.js ya demostró que los mensajes personalizados largos
-  # pueden fallar al verificar el texto escrito. El contexto completo vive en el
-  # job de GitHub; al navegador solo se envía una orden corta y estable.
-  return "TT_IMAGE_JOB_V2 $commandId $targetId | Lee trends/image-runs/jobs/$targetId.json en control/ttendencias-run-trigger y ejecuta SOLO ese job."
+  # Una sola línea, explícita y corta. El chat solo debe generar; el puente local
+  # recoge el raster y se ocupa de persistencia/validación.
+  return "TT_IMAGE_JOB_V3 $commandId $targetId | Usa ImageGen AHORA y genera UNA imagen IA para '$targetName': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/$targetId.json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
 
 if (-not (Test-Path -LiteralPath $BaseDir)) {
@@ -540,7 +540,7 @@ while ($true) {
         }
 
         $message = Build-ImageMessage $job
-        $marker = "TT_IMAGE_JOB_V2 $commandId"
+        $marker = "TT_IMAGE_JOB_V3 $commandId"
         $sent = Launch-ProjectChat "image command=$commandId target=$targetId" $message $marker
 
         if ($sent) {
