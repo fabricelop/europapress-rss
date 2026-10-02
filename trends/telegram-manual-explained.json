@@ -13592,7 +13592,7 @@
       ],
       "news_disposition": "ignored",
       "news_note": "Dos términos del mismo debate político sobre vivienda y los ocho años de Gobierno; redacción factual y atribuida, sin remate.",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image": {
@@ -13604,14 +13604,28 @@
         "generated": false
       },
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261002091737_690.jpg",
-        "source": "Europa Press · 2/10/2026",
-        "source_url": "https://www.europapress.es/nacional/noticia-psoe-sumar-piden-votacion-dos-decretos-vivienda-congreso-sea-llamamiento-20261002091737.html",
-        "alt": "Vista general del Congreso de los Diputados",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ba5ad69134c0-r1-ai1-ad69134c0-r1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "32e2f86d6bcdd4d86309d8dc446eadb6773b5e15223b9705fb6d03224ba78a62",
+        "width": 1400,
+        "height": 788,
+        "bytes": 248794,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ba5ad69134c0",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-v10-en8-ba5ad69134c0-r1"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ba5ad69134c0-r1-ai1-ad69134c0-r1.jpg",
+        "handoff": "pc-bridge-direct-materialized"
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "explanation_group_id": "grp-en8-despues8-vivienda-junts-20261002",
@@ -13626,8 +13640,32 @@
         "Después de 8"
       ],
       "rewrite_pending": false,
-      "ai_image_attempt": 0,
-      "political_image_policy": "allowed_neutral_situational_satire"
+      "ai_image_attempt": 1,
+      "political_image_policy": "allowed_neutral_situational_satire",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ba5ad69134c0-r1-ai1-ad69134c0-r1.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "32e2f86d6bcdd4d86309d8dc446eadb6773b5e15223b9705fb6d03224ba78a62",
+        "width": 1400,
+        "height": 788,
+        "bytes": 248794,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ba5ad69134c0",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-v10-en8-ba5ad69134c0-r1"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ba5ad69134c0-r1-ai1-ad69134c0-r1.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-02T19:22:50.151Z"
     },
     {
       "id": "tremending-d79633972e47",
@@ -14209,6 +14247,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-02T19:20:53.195Z",
+  "updated_at": "2026-10-02T19:22:50.151Z",
   "count": 419
 }
