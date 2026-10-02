@@ -9,7 +9,7 @@ $StartupDir = [Environment]::GetFolderPath("Startup")
 $StartupCmd = Join-Path $StartupDir "TTiTTulares Mobile Trigger Listener.cmd"
 
 # Listener fijado a un commit conocido para evitar caché/mezcla de versiones.
-$ListenerUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/589d18cd258d879ec02146abafdbbc4eae440bf4/windows/TTiTTularesDedicatedListener.ps1"
+$ListenerUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/97c94650d6b552b564d201f1c8f496a112eae078/windows/TTiTTularesDedicatedListener.ps1"
 
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 Invoke-WebRequest -Uri $ListenerUrl -OutFile $Listener -UseBasicParsing
@@ -27,8 +27,11 @@ $listenerText = Get-Content -LiteralPath $Listener -Raw -Encoding UTF8
 if (-not $listenerText.Contains('$WorkerId = "ttittulares-dedicated-v13"')) {
   throw "El listener descargado no es TTiTTulares v13."
 }
-if (-not $listenerText.Contains('RedirectStandardOutput') -or -not $listenerText.Contains('ttittulares-launch-')) {
-  throw "El listener v13 no contiene el log dedicado por ejecución."
+if (-not $listenerText.Contains('EDITORIAL PROCESS STARTED via-vbs')) {
+  throw "El listener v13 no usa LanzarOculto.vbs para el envío editorial real."
+}
+if (-not $listenerText.Contains('MODO:\s*ENVIO REAL')) {
+  throw "El listener v13 no valida explícitamente MODO ENVIO REAL."
 }
 if (-not $listenerText.Contains('TTendencias unchanged')) {
   throw "El listener v13 no contiene la protección de TTendencias."
@@ -131,7 +134,7 @@ if ($newLog -notmatch ("LISTENER START worker=ttittulares-dedicated-v13 pid=" + 
 
 Write-Host "TTITTULARES V13 INSTALADO Y ACTIVO" -ForegroundColor Green
 Write-Host "PID: $activePid"
-Write-Host "Listener fijado a commit: 589d18cd258d879ec02146abafdbbc4eae440bf4"
+Write-Host "Listener fijado a commit: 97c94650d6b552b564d201f1c8f496a112eae078"
 Write-Host "TTendencias: NO MODIFICADO" -ForegroundColor Green
 Write-Host "Ejecutar.js: validado, NO MODIFICADO" -ForegroundColor Green
 Write-Host "Log: $log"
