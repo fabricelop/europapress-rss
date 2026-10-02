@@ -29,7 +29,7 @@
       "fallback_enabled": true,
       "display_in_web_control": true,
       "queue_instruction": "La ejecución editorial NO genera IA. Para todo item explicado que no sea Tremending ni tenga un bloqueo explícito actual, deja la IA pendiente para un chat de imagen independiente por item. No marques disable_ai_image solo por separar las ejecuciones. Un failed/none/disabled heredado sin ai_image_block_reason explícito se considera pendiente/reintentable.",
-      "note": "IA y archivo/fallback son capas paralelas. READY/Explained no dependen de imagen. Sensibles: fallback_only. Un fallo/timeout visual es terminal para ese intento y no provoca reintento automático.",
+      "note": "IA y archivo/fallback son capas paralelas. READY/Explained no dependen de imagen. Sensibles: fallback_only. La política no se bloquea por defecto. Un fallo/timeout visual es terminal para ese intento y no provoca reintento automático.",
       "style_id": "TT_STYLE_A_V1",
       "style": "Caricatura satírica editorial muy expresiva y exagerada: un solo gag visual fuerte, entendido de un vistazo, colores vivos, props absurdos y situación llevada al límite; evitar imagen neutra o meramente literal.",
       "sensitive_mode": "fallback_only",
@@ -42,9 +42,9 @@
       "legacy_none_is_pending": true,
       "legacy_disable_requires_explicit_block_reason": true,
       "manual_image_request_overrides_legacy_disable": true,
-      "political_actor_mode": "fallback_only",
-      "political_actor_sets_block_reason": "political_actor",
-      "political_actor_note": "Para actores políticos, usar imagen de archivo/fallback neutral; no generar caricatura o gag satírico IA."
+      "political_actor_mode": "ai_plus_fallback",
+      "political_actor_sets_block_reason": null,
+      "political_actor_note": "Los actores y contextos políticos pueden usar ImageGen. El gag debe basarse en hechos verificados y ser sátira situacional, sin propaganda, llamada al voto ni hechos inventados."
     },
     "queue_consumer_only": true,
     "queue_states": [
