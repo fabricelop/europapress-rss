@@ -15572,11 +15572,11 @@
     {
       "id": "76aea6cf66e7",
       "name": "Convoca",
-      "revision": 0,
-      "status": "explained",
-      "requested_at": "2026-10-02T07:49:32.842Z",
+      "revision": 1,
+      "status": "update",
+      "requested_at": "2026-10-02T09:28:36.558Z",
       "rank": 27,
-      "with_image": true,
+      "with_image": false,
       "alternatives_target": 0,
       "anticipated": true,
       "anticipated_at": "2026-10-02T08:01:30+02:00",
@@ -15589,7 +15589,6 @@
       ],
       "auto_queued": false,
       "last_attempt_at": "2026-10-02T10:12:00+02:00",
-      "explained_at": "2026-10-02T10:12:00+02:00",
       "explanation": "TT#27 Convoca es tendencia porque Reino Unido ha convocado a la embajadora argentina en Londres para protestar por el arbitraje anunciado por el Gobierno de Javier Milei sobre la explotación petrolera en torno a las Malvinas.",
       "closer_text": "",
       "rank_at_explanation": 27,
@@ -15609,14 +15608,32 @@
       "disable_ai_image": true,
       "ai_image_status": "disabled",
       "ai_image_block_reason": "political_context",
-      "image_strategy": "fallback_only",
+      "image_strategy": "preserve_existing",
       "image_status": "none",
       "image_pending": false,
       "image_failure_reason": "La explicación se cierra sin bloquearse por imagen; no se genera IA en contexto político y el fallback puede incorporarse después.",
       "explanation_group_id": "grp-76aea6cf66e7",
       "trend_names": [
         "Convoca"
-      ]
+      ],
+      "reexplain": true,
+      "rewrite_instruction": "Investiga si no tiene que ver con convocar huelga o algo de política.",
+      "selected_tweet_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/UEHQJEJZVFNS3AN5C4EWA6RRG4.jpg?auth=ed364eca85b181c8d4aaf2a0f41edf822d9b97d2101356cce12e2fc27993ea07&width=1200",
+        "source": "El País · 1/10/2026",
+        "source_url": "https://elpais.com/argentina/2026-10-01/reino-unido-convoca-a-la-embajadora-argentina-en-londres-en-rechazo-a-las-medidas-de-milei-por-las-malvinas.html",
+        "alt": "Imagen de archivo relacionada con Convoca",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "existing_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/UEHQJEJZVFNS3AN5C4EWA6RRG4.jpg?auth=ed364eca85b181c8d4aaf2a0f41edf822d9b97d2101356cce12e2fc27993ea07&width=1200",
+        "source": "El País · 1/10/2026",
+        "source_url": "https://elpais.com/argentina/2026-10-01/reino-unido-convoca-a-la-embajadora-argentina-en-londres-en-rechazo-a-las-medidas-de-milei-por-las-malvinas.html",
+        "alt": "Imagen de archivo relacionada con Convoca",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "2bd1d3d69584",
@@ -15802,6 +15819,6 @@
       ]
     }
   ],
-  "updated_at": "2026-10-02T11:03:00+02:00",
+  "updated_at": "2026-10-02T09:28:36.558Z",
   "count": 401
 }
