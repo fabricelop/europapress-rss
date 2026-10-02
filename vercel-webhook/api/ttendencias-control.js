@@ -865,7 +865,9 @@ async function discardNames(names) {
 }
 
 async function reworkNames(names, instruction, options = {}) {
-  const withImage = options.with_image !== false;
+  // La reelaboración solo cambia el texto. Toda explicación normal sigue siendo seleccionable
+  // manualmente para imagen IA después; no existe ya un modo editorial with_image:false.
+  const withImage = true;
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
   if (!unique.length) throw new Error("No hay tendencias seleccionadas.");
   const text = String(instruction || "").trim();
@@ -915,13 +917,11 @@ async function reworkNames(names, instruction, options = {}) {
       req.revision = Math.max(Number(req.revision || 0), Number(latest?.revision || 0)) + 1;
       req.reexplain = true;
       req.rewrite_instruction = text;
-      req.rewrite_with_image = withImage;
-      req.with_image = withImage;
-      req.disable_ai_image = !withImage || Boolean(latest?.tremending_origin);
-      req.image_strategy = !withImage ? "preserve_existing" : (req.disable_ai_image ? "tweet_capture_only" : "ai_plus_fallback");
+      req.rewrite_with_image = true;
+      req.with_image = true;
+      req.disable_ai_image = Boolean(latest?.tremending_origin);
+      req.image_strategy = req.disable_ai_image ? "tweet_capture_only" : "ai_plus_fallback";
       if (latest?.fallback_image) req.selected_tweet_image = latest.fallback_image;
-      if (!withImage && latest?.ai_image) req.existing_ai_image = latest.ai_image;
-      if (!withImage && latest?.image) req.existing_image = latest.image;
       delete req.problem_reason;
       delete req.problematic_at;
       req.alternatives_target = 0;
