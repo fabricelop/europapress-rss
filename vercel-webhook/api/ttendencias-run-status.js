@@ -66,9 +66,21 @@ async function comments(){
   })
 }
 async function triggerReady(){return true}
-async function readControlBranchJson(path){
-  // Polling de estado: RAW primero para no consumir la cuota REST de GitHub.
-  // Cache-busting + no-store dan frescura suficiente para telemetría de UI.
+async function readControlBranchJson(path,strong=false){
+  // La UI usa RAW para no consumir cuota. El listener del PC puede pedir
+  // strong=1 para las pocas lecturas de control que necesitan consistencia inmediata.
+  if(strong){
+    try{
+      const rr=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(TRIGGER_BRANCH),{cache:"no-store"});
+      if(rr.ok){
+        const f=await rr.json();
+        const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+        return JSON.parse(raw||"{}")
+      }
+      if(rr.status===404)return {};
+    }catch(_){}
+  }
+  // Polling de estado normal: RAW primero para no consumir la cuota REST de GitHub.
   try{
     const u="https://raw.githubusercontent.com/"+REPO+"/"+encodeURIComponent(TRIGGER_BRANCH)+"/"+path+"?t="+Date.now();
     const rr=await fetch(u,{cache:"no-store",headers:{"cache-control":"no-cache","user-agent":"ttendencias-run-status-control-read"}});
@@ -310,13 +322,17 @@ export default async function handler(req,res){
       return res.status(200).json({ok:true,...doc});
     }
     if(view==="image-index"){
-      const {doc}=await readControlJson(IMAGE_RUN_INDEX_PATH);
+      const strong=String(req.query?.strong||"")==="1";
+      const doc0=await readControlBranchJson(IMAGE_RUN_INDEX_PATH,strong);
+      const doc=(doc0&&Object.keys(doc0).length)?doc0:null;
       return res.status(200).json({ok:true,...((doc&&typeof doc==="object")?doc:{version:1,jobs:[]})});
     }
     if(view==="image-job"){
       const id=String(req.query?.id||"").trim();
       if(!/^[A-Za-z0-9._-]{3,160}$/.test(id))return res.status(400).json({ok:false,error:"id inválido"});
-      const {doc}=await readControlJson(IMAGE_RUN_DIR+"/"+id+".json");
+      const strong=String(req.query?.strong||"")==="1";
+      const doc0=await readControlBranchJson(IMAGE_RUN_DIR+"/"+id+".json",strong);
+      const doc=(doc0&&Object.keys(doc0).length)?doc0:null;
       if(!doc)return res.status(404).json({ok:false,error:"job no encontrado"});
       return res.status(200).json({ok:true,...doc});
     }
