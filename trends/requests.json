@@ -17587,7 +17587,7 @@
       "id": "002f4503e670",
       "name": "#2OctubrESP",
       "revision": 0,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-02T13:30:17.004Z",
       "rank": 18,
       "with_image": true,
@@ -17601,7 +17601,17 @@
       "requested_together": [
         "#2OctubrESP"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "last_attempt_at": "2026-10-02T16:24:30+02:00",
+      "problem_reason": "La señal social de «#2OctubrESP» está confirmada en varias fuentes, pero dos búsquedas distintas no permiten identificar un detonante único, actual y verificable en España; no se fuerza una explicación por mera coincidencia con la fecha.",
+      "source": "editorial_chat_direct",
+      "disable_ai_image": true,
+      "image_strategy": "none",
+      "ai_image_status": "disabled",
+      "image_status": "none",
+      "image_pending": false,
+      "reexplain": false,
+      "rewrite_pending": false
     },
     {
       "id": "a04af111227a",
@@ -18066,6 +18076,6 @@
       "auto_queued": false
     }
   ],
-  "updated_at": "2026-10-02T16:22:00+02:00",
+  "updated_at": "2026-10-02T16:24:30+02:00",
   "count": 438
 }
