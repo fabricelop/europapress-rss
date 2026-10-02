@@ -56,132 +56,59 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],div[contenteditable="true"]:not([aria-hidden="true"]),textarea:not([disabled])';
+const BRIDGE_MODE="capture-only-v9";
 
 async function inspectChat(cdp){
-  return cdp.eval("(()=>{const turns=[...document.querySelectorAll('[data-message-author-role]')];const user=turns.some(el=>el.getAttribute('data-message-author-role')==='user'&&(el.innerText||'').includes("+JSON.stringify(commandId)+"));const body=String(document.body&&document.body.innerText||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");return {hasUser:user,hasMarker:body.includes("+JSON.stringify(commandId)+"),hasComposer:Boolean(composer),ttendencias:/TTendencias/i.test(document.title+' '+body.slice(0,7000)),title:document.title||'',url:location.href}})()")
+  return cdp.eval("(()=>{const body=String(document.body&&document.body.innerText||'');const marker=body.includes("+JSON.stringify(commandId)+");const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\"conversation-turn-\"],article').length;return {hasMarker:marker,generating,turns,title:document.title||'',url:location.href}})()")
 }
+
 async function findChat(){
-  const deadline=Date.now()+45000,start=Date.now();
+  const deadline=Date.now()+60000;
   let best=null,bestScore=-1,bestInfo=null;
   while(Date.now()<deadline){
-    let list=[];try{list=await targets()}catch{await sleep(800);continue}
+    let list=[];try{list=await targets()}catch{await sleep(700);continue}
     for(const t of list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl)){
       const c=new CDP(t.webSocketDebuggerUrl);
       try{
         await c.open();
         const st=await inspectChat(c);
-        if(st&&st.hasUser&&st.hasComposer)return c;
-        if(st&&st.hasComposer){
-          const score=(st.hasMarker?100:0)+(st.ttendencias?30:0)+(String(st.url||"").includes("/g/")?10:0)+5;
-          if(score>bestScore){best=t;bestScore=score;bestInfo=st}
+        if(st&&st.hasMarker){
+          console.log("BRIDGE TARGET MARKER "+String(st.url||""));
+          return c
         }
+        const score=(st&&st.generating?40:0)+(st&&/TTendencias/i.test(String(st.title||""))?15:0)+(String(st&&st.url||"").includes("/c/")?5:0);
+        if(score>bestScore){best=t;bestScore=score;bestInfo=st}
       }catch{}
       c.close()
     }
-    if(Date.now()-start>=9000&&best&&bestScore>=5){
-      const c=new CDP(best.webSocketDebuggerUrl);
-      try{
-        await c.open();
-        const st=await inspectChat(c);
-        if(st&&st.hasComposer)return c
-      }catch{}
-      c.close();
-      best=null;bestScore=-1;bestInfo=null;
-    }
     await sleep(900)
   }
-  throw Error("No se encontró un chat de TTendencias con compositor real"+(bestInfo?(" · "+String(bestInfo.title||bestInfo.url||"").slice(0,120)):""))
-}
-async function hasUserCommand(cdp){
-  return Boolean(await cdp.eval("(()=>[...document.querySelectorAll('[data-message-author-role=\"user\"]')].some(el=>(el.innerText||'').includes("+JSON.stringify(commandId)+")))()"))
-}
-async function prepareComposer(cdp){
-  return cdp.eval("(()=>{const el=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!el)return {ok:false};el.focus();try{if(el.tagName==='TEXTAREA'||el.tagName==='INPUT'){el.setSelectionRange(0,String(el.value||'').length)}else{const r=document.createRange(),s=window.getSelection();r.selectNodeContents(el);s.removeAllRanges();s.addRange(r)}}catch(_){}return {ok:true,tag:el.tagName,testid:el.getAttribute('data-testid')||'',role:el.getAttribute('role')||''}})()")
-}
-async function ensureCommandSent(cdp,message){
-  if(await hasUserCommand(cdp))return {already:true};
-
-  const prepared=await prepareComposer(cdp);
-  if(!prepared||!prepared.ok){
-    const e=Error("Chat cambió o recargó antes del envío; compositor no disponible");
-    e.code="COMPOSER_MISSING";
-    throw e
-  }
-
-  await cdp.call("Input.insertText",{text:message});
-  await sleep(450);
-  const filled=await cdp.eval("(()=>{const el=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const v=String(el&&(el.value||el.innerText||el.textContent)||'');return v.includes("+JSON.stringify(commandId)+")})()");
-  if(!filled){
-    const e=Error("El compositor existe pero no aceptó el comando de imagen");
-    e.code="COMPOSER_REJECTED";
-    throw e
-  }
-
-  async function submitComposer(){
-    return cdp.eval("(()=>{const el=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!el)return {ok:false,via:'no-composer'};const root=el.closest('form')||el.parentElement?.parentElement?.parentElement||document;const qs=['button[data-testid=\"send-button\"]','button[data-testid=\"composer-submit-button\"]','button[type=\"submit\"]','button[aria-label*=\"Send\" i]','button[aria-label*=\"Enviar\" i]','button[title*=\"Send\" i]','button[title*=\"Enviar\" i]'];for(const q of qs){const b=root.querySelector?.(q)||document.querySelector(q);if(b&&!b.disabled&&b.getAttribute('aria-disabled')!=='true'){b.click();return {ok:true,via:'click',selector:q,testid:b.getAttribute('data-testid')||'',aria:b.getAttribute('aria-label')||''}}}const form=el.closest('form');if(form&&typeof form.requestSubmit==='function'){const submit=[...form.querySelectorAll('button')].find(b=>!b.disabled&&b.getAttribute('aria-disabled')!=='true'&&(b.type==='submit'||/send|enviar/i.test((b.getAttribute('aria-label')||'')+' '+(b.getAttribute('data-testid')||'')+' '+(b.title||''))));try{form.requestSubmit(submit||undefined);return {ok:true,via:'requestSubmit'}}catch(_){}}const buttons=[...document.querySelectorAll('button')].slice(-40).map(b=>({testid:b.getAttribute('data-testid')||'',aria:b.getAttribute('aria-label')||'',title:b.title||'',type:b.type||'',disabled:Boolean(b.disabled||b.getAttribute('aria-disabled')==='true')}));return {ok:false,via:'no-submit',buttons}})()")
-  }
-
-  async function forceEnter(){
-    await cdp.call("Input.dispatchKeyEvent",{type:"rawKeyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13,text:"\r",unmodifiedText:"\r"});
-    await cdp.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-  }
-
-  let submit=await submitComposer();
-  if(!submit?.ok)await forceEnter();
-
-  const started=Date.now(),deadline=started+30000;
-  let forced1=false,forced2=false,retried=false;
-  while(Date.now()<deadline){
-    try{
-      if(await hasUserCommand(cdp))return {already:false,submit};
-      const elapsed=Date.now()-started;
-      // requestSubmit puede no disparar el envío real en la UI React de ChatGPT.
-      // Forzar Enter aunque submitComposer haya informado ok.
-      if(!forced1&&elapsed>=2500){forced1=true;await forceEnter()}
-      if(!retried&&elapsed>=7000){retried=true;submit=await submitComposer()}
-      if(!forced2&&elapsed>=10500){forced2=true;await forceEnter()}
-    }catch(e){
-      const er=Error("La pestaña de ChatGPT cambió durante el envío");
-      er.code="CHAT_TARGET_CHANGED";
-      throw er
-    }
-    await sleep(500)
-  }
-  const detail=submit&&submit.buttons?JSON.stringify(submit.buttons).slice(-900):JSON.stringify(submit||{});
-  throw Error("El comando quedó en el compositor, pero no apareció como turno de usuario en 30 segundos; submit="+detail)
-}
-async function attachAndEnsureCommand(message){
-  let last=null;
-  for(let attempt=1;attempt<=3;attempt++){
-    let cdp=null;
-    try{
-      cdp=await findChat();
-      const sent=await ensureCommandSent(cdp,message);
-      return {cdp,sent,attempt}
-    }catch(e){
-      last=e;
-      try{cdp&&cdp.close()}catch{}
-      console.log("BRIDGE REATTACH "+attempt+" :: "+String(e&&e.message||e));
-      if(attempt<3)await sleep(1800)
-    }
-  }
-  throw last||Error("No se pudo enlazar con el chat de imagen")
+  const detail=bestInfo?JSON.stringify(bestInfo).slice(0,500):"sin candidato";
+  throw Error("No se encontró el chat lanzado con el command_id en 60 segundos; "+detail)
 }
 
 function probeExpression(){
   return [
     "(async()=>{",
     "const command="+JSON.stringify(commandId)+";",
-    "const turns=[...document.querySelectorAll('[data-message-author-role]')];",
-    "const user=turns.find(el=>el.getAttribute('data-message-author-role')==='user'&&(el.innerText||'').includes(command));",
-    "if(!user)return {found:false,diag:{turns:turns.length,assistants:0,imagesAfterUser:0,candidates:0,canvases:0,assistantTail:'',missingUser:true}};",
-    "const follows=el=>Boolean(user.compareDocumentPosition(el)&Node.DOCUMENT_POSITION_FOLLOWING);",
-    "const assistants=turns.filter(el=>el.getAttribute('data-message-author-role')==='assistant'&&follows(el));",
+    "const root=document.querySelector('main')||document.body;",
+    "const turnSel='[data-message-author-role],[data-testid^=\"conversation-turn-\"],article';",
+    "const turnNodes=[...root.querySelectorAll(turnSel)];",
+    "let anchor=turnNodes.find(el=>String(el.innerText||el.textContent||'').includes(command))||null;",
+    "if(!anchor){",
+    " const nodes=[...root.querySelectorAll('div,p,span')].filter(el=>{const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<5000});",
+    " nodes.sort((a,b)=>String(a.innerText||a.textContent||'').length-String(b.innerText||b.textContent||'').length);",
+    " const leaf=nodes[0]||null;anchor=leaf?(leaf.closest(turnSel)||leaf):null;",
+    "}",
+    "const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));",
+    "if(!anchor)return {found:false,diag:{marker:false,turns:turnNodes.length,generating,imagesAfterMarker:0,candidates:0,canvases:0,assistantTail:''}};",
+    "const follows=el=>el!==anchor&&Boolean(anchor.compareDocumentPosition(el)&Node.DOCUMENT_POSITION_FOLLOWING);",
+    "const afterTurns=turnNodes.filter(follows);",
     "const allImgs=[...document.querySelectorAll('img')].filter(follows);",
-    "const imgs=allImgs.map(img=>{const r=img.getBoundingClientRect(),src=String(img.currentSrc||img.src||''),alt=String(img.alt||'').toLowerCase(),nw=Number(img.naturalWidth||0),nh=Number(img.naturalHeight||0);return {img,r,src,alt,nw,nh,area:Math.max(nw*nh,r.width*r.height)}}).filter(x=>x.r.width>=240&&x.r.height>=140&&!/avatar|emoji|icon|logo/.test(x.alt)&&!x.src.includes('avatar')).sort((a,b)=>b.area-a.area);",
+    "const imgs=allImgs.map(img=>{const r=img.getBoundingClientRect(),src=String(img.currentSrc||img.src||''),alt=String(img.alt||'').toLowerCase(),nw=Number(img.naturalWidth||0),nh=Number(img.naturalHeight||0);return {img,r,src,alt,nw,nh,area:Math.max(nw*nh,r.width*r.height)}}).filter(x=>x.r.width>=240&&x.r.height>=140&&!/avatar|emoji|icon|logo|profile/.test(x.alt)&&!x.src.includes('avatar')).sort((a,b)=>b.area-a.area);",
     "const canvases=[...document.querySelectorAll('canvas')].filter(follows).map(el=>{const r=el.getBoundingClientRect();return {el,r,area:r.width*r.height}}).filter(x=>x.r.width>=320&&x.r.height>=180).sort((a,b)=>b.area-a.area);",
-    "const diag={turns:turns.length,assistants:assistants.length,imagesAfterUser:allImgs.length,candidates:imgs.length,canvases:canvases.length,assistantTail:assistants.map(x=>(x.innerText||'').trim()).filter(Boolean).join(' | ').slice(-500)};",
+    "const tail=afterTurns.map(x=>String(x.innerText||x.textContent||'').trim()).filter(Boolean).join(' | ').slice(-700);",
+    "const diag={marker:true,turns:turnNodes.length,afterTurns:afterTurns.length,generating,imagesAfterMarker:allImgs.length,candidates:imgs.length,canvases:canvases.length,assistantTail:tail};",
     "if(!imgs.length){if(canvases.length){const r=canvases[0].r;return {found:true,kind:'canvas',width:Math.round(r.width),height:Math.round(r.height),rect:{x:r.left+scrollX,y:r.top+scrollY,width:r.width,height:r.height},diag}};return {found:false,diag};}",
     "const c=imgs[0],img=c.img,src=c.src,r=c.r;",
     "const info={found:true,kind:'img',width:c.nw||Math.round(r.width),height:c.nh||Math.round(r.height),rect:{x:r.left+scrollX,y:r.top+scrollY,width:r.width,height:r.height},diag};",
@@ -191,7 +118,6 @@ function probeExpression(){
     "})()"
   ].join("\n")
 }
-
 async function capture(cdp){
   const deadline=Date.now()+2*60*1000;
   let lastDiag=null,lastEvalError=null;
@@ -224,11 +150,9 @@ async function fail(reason){
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
-    const message=buildMessage(job);
-    const attached=await attachAndEnsureCommand(message);
-    cdp=attached.cdp;
-    console.log("BRIDGE CHAT FOUND attempt="+attached.attempt);
-    console.log("BRIDGE COMMAND "+(attached.sent.already?"PRESENT":"RESENT"));
+    void job;
+    cdp=await findChat();
+    console.log("BRIDGE CHAT FOUND mode="+BRIDGE_MODE);
     const image=await capture(cdp);
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
     console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
