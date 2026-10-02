@@ -29,6 +29,7 @@ Una explicación **no está cerrada** por el mero hecho de existir en `trends/te
 
 1. registro `status:"explained"` válido en `trends/telegram-manual-explained.json`;
 2. TODAS las revisiones cubiertas, identificadas por `(id, revision)`, pasan a `status:"explained"` en `trends/requests.json` con `explained_at`, `explanation`, `closer_text`, grupo y disposición correspondientes;
+   **Persistencia atómica obligatoria:** para una revisión nueva o reexplicada, escribe primero/además la ficha vigente en `trends/telegram-manual-explained.json` con el MISMO `id`, `revision`, `explanation`, `closer_text` y `explained_at`. No basta con actualizar `requests.json`. Tras ambos commits, relee `main` y compara exactamente esos cinco campos. Si falta la ficha o difieren, la entrada NO puede contarse como cerrada ni retirarse silenciosamente de la cola; corrige la persistencia en la misma pasada y registra incidencia si no es posible.
 3. solo entonces se retiran esas mismas revisiones de `trends/editorial-queue.json`;
 4. relee los tres archivos desde `main` y exige consistencia antes de contar el item como cerrado.
 
