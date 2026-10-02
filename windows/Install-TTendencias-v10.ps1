@@ -43,7 +43,11 @@ foreach ($needle in @(
   'CHAT LAUNCH MODE ERROR',
   'PROCESS STARTED direct-node-real',
   'RedirectStandardOutput $launchLog',
-  'MODO:\s*ENVIO REAL'
+  'MODO:\s*ENVIO REAL',
+  'Ensure-ImageBridgeLatest',
+  'IMAGE BRIDGE REFRESHED',
+  'view=image-index&strong=1',
+  'view=image-job&strong=1&id='
 )) {
   if (-not $listenerText.Contains($needle)) { throw "Falta garantía TTendencias v10: $needle" }
 }
