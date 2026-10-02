@@ -25,9 +25,9 @@ if ($parseErrors.Count -gt 0) {
 }
 
 $listenerText = Get-Content -LiteralPath $Listener -Raw -Encoding UTF8
-if (-not $listenerText.Contains('$WorkerId = "ttittulares-dedicated-v2"') -or
+if (-not $listenerText.Contains('$WorkerId = "ttittulares-dedicated-v3"') -or
     -not $listenerText.Contains('PROCESS STARTED direct-node')) {
-  throw "La descarga no contiene el listener TTiTTulares dedicado v2 con lanzamiento Node directo."
+  throw "La descarga no contiene el listener TTiTTulares dedicado v3 con confirmación robusta."
 }
 
 if (-not (Test-Path (Join-Path $BaseDir "LanzarOculto.vbs"))) {
@@ -103,7 +103,7 @@ Write-Host "PID: $($proc.Id)"
 Write-Host "Listener: $Listener"
 Write-Host "Inicio con Windows: $StartupCmd"
 Write-Host "Log: C:\TTiTTulares\ttittulares-mobile-trigger.log"
-Write-Host "Entradas: Node directo + marcador por command_id + confirmación real activados."
+Write-Host "Entradas: Node directo + marcador por command_id + confirmación robusta activados."
 Write-Host "No se ha detenido ni modificado el listener compartido ni las tareas programadas."
 Write-Host ""
 Write-Host "--- DIAGNOSTICO TTITTULARES ---" -ForegroundColor Cyan
