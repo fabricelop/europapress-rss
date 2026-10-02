@@ -12,7 +12,7 @@ $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v14"
+$WorkerId = "ttittulares-dedicated-v15"
 $PollSeconds = 5
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
@@ -185,31 +185,20 @@ function Launch-TTiTTulares([string]$CommandId) {
   $launchErr = Join-Path $BaseDir ("ttittulares-launch-" + $safeCommandId + ".err.log")
   Remove-Item -LiteralPath $launchLog,$launchErr -Force -ErrorAction SilentlyContinue
 
-  $marker = "TT_EDITORIAL_WORKER_V1 $CommandId"
-  $message = @"
-$marker
-Ejecuta TTiTTulares directamente en este chat como worker editorial de la orden ya recogida por el PC.
-NO crees ni modifiques run-now-trigger.json.
-NO solicites otra ejecución y NO lances otro chat.
-Usa command_id $CommandId para la telemetría/RUNTRACE de esta pasada.
-Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTulares.
-"@
-
+  # Editorial: usar EXACTAMENTE el mensaje por defecto que ya funciona
+  # ("Ejecuta TTiTTulares"). No inyectar TT_CHAT_MESSAGE_B64.
   $old = $env:TT_CHAT_MESSAGE_B64
   $proc = $null
   try {
-    $bytes = [System.Text.Encoding]::UTF8.GetBytes($message)
-    $env:TT_CHAT_MESSAGE_B64 = [Convert]::ToBase64String($bytes)
+    Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue
 
     $node = Get-Command node.exe -ErrorAction SilentlyContinue
     if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
     if (-not $node) { throw "Node no disponible para lanzar TTiTTulares" }
 
-    # EXACTAMENTE el mismo contrato que LanzarOculto.vbs:
-    # node Ejecutar.js titulares --enviar
     $proc = Start-Process -FilePath $node.Source -ArgumentList @($Runner,"titulares","--enviar") -WindowStyle Hidden -PassThru -RedirectStandardOutput $launchLog -RedirectStandardError $launchErr
     if (-not $proc) { throw "Start-Process no devolvió proceso" }
-    Write-Log "EDITORIAL PROCESS STARTED direct-node-real pid=$($proc.Id) command=$CommandId stdout=$launchLog stderr=$launchErr"
+    Write-Log "EDITORIAL PROCESS STARTED direct-node-real-default-message pid=$($proc.Id) command=$CommandId stdout=$launchLog stderr=$launchErr"
   } catch {
     $detail = "No se pudo lanzar Ejecutar.js titulares --enviar: $($_.Exception.Message)"
     Write-Log "EDITORIAL PROCESS ERROR command=$CommandId :: $detail"
@@ -238,13 +227,14 @@ Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTular
     }
 
     $realMode = $newText -match "MODO:\s*ENVIO REAL"
+    $defaultMessage = $newText -match "Mensaje preparado:\s*Ejecuta TTiTTulares"
     $responseStarted = $newText -match '"generando"\s*:\s*true'
     $messageSent = $newText -match "MENSAJE ENVIADO"
     $executionLaunched = $newText -match "EJECUCION LANZADA"
 
-    if ($realMode -and ($messageSent -or $executionLaunched -or $responseStarted)) {
+    if ($realMode -and $defaultMessage -and ($messageSent -or $executionLaunched -or $responseStarted)) {
       $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
-      Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId via=direct-node-real/$why"
+      Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId via=direct-node-real-default/$why"
       $launched = Send-Ack $CommandId "launched"
       if ($launched -ne "OK") { Write-Log "LAUNCHED ACK WARNING command=$CommandId result=$launched" }
       return $true
@@ -272,7 +262,7 @@ Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTular
     } catch {}
   }
 
-  $detail = "Ejecutar.js titulares --enviar sigue activo pero no confirmó ENVIO REAL en $($LaunchConfirmSeconds)s. Log: $launchLog"
+  $detail = "Ejecutar.js titulares --enviar no confirmó el mensaje por defecto en $($LaunchConfirmSeconds)s. Log: $launchLog"
   Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId stdout=$launchLog stderr=$launchErr"
   [void](Send-Ack $CommandId "failed" $detail)
   return $false
