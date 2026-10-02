@@ -7,9 +7,9 @@ $BaseDir = "C:\TTiTTulares"
 $Listener = Join-Path $BaseDir "TTendenciasDedicatedListener.ps1"
 $StartupDir = [Environment]::GetFolderPath("Startup")
 $StartupCmd = Join-Path $StartupDir "TTendencias Mobile Trigger Listener.cmd"
-$RawUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/57767d7b81801b2d9e415ee4f3dd3becadd27972/windows/TTendenciasDedicatedListener.ps1"
+$RawUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TTendenciasDedicatedListener.ps1"
 $Bridge = Join-Path $BaseDir "TTendenciasImageBridge.js"
-$BridgeUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/57767d7b81801b2d9e415ee4f3dd3becadd27972/windows/TTendenciasImageBridge.js"
+$BridgeUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TTendenciasImageBridge.js"
 
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 Invoke-WebRequest -Uri ($RawUrl + "?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -OutFile $Listener -UseBasicParsing
@@ -48,7 +48,9 @@ foreach ($needle in @(
   'BASE_CDP="http://127.0.0.1:9223"',
   'task:"image_upload"',
   'stage:"done"',
-  'TT_IMAGE_UPLOAD_SECRET'
+  'TT_IMAGE_UPLOAD_SECRET',
+  'ensureCommandSent',
+  'BRIDGE COMMAND'
 )) {
   if (-not $bridgeText.Contains($needle)) { throw "Falta garantía puente TTendencias v10: $needle" }
 }
@@ -128,7 +130,7 @@ if ($live.Count -ne 1 -or $live[0].ProcessId -ne $proc.Id) {
   throw "Garantía listener único fallida. PIDs TTendencias: $($live.ProcessId -join ', ')"
 }
 
-Write-Host "TTENDENCIAS V10 INSTALADO Y ACTIVO" -ForegroundColor Green
+Write-Host "TTENDENCIAS V10 ACTUALIZADO Y ACTIVO" -ForegroundColor Green
 Write-Host "PID: $($proc.Id)"
 Write-Host "Listener: $Listener"
 Write-Host "Puente imagen: $Bridge"
