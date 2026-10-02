@@ -73,7 +73,7 @@ const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
 const RUN_STATUS_API="/api/ttendencias-run-status";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="20261002-pending-run-status-no-global-images";
+const SHELL_BUILD="20261002-pending-exact-control-rest";
 const $=id=>document.getElementById(id);
 const DATA_CACHE_KEY="ttendencias-last-model",RUN_CACHE_KEY="ttendencias-last-run-status";
 const IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/";
@@ -181,7 +181,7 @@ async function activatePush(){
    sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:appServerKey(d.publicKey)});
  }
  await api("push-subscribe",[],{subscription:sub.toJSON()});
- await updateBadge(model?.explainedRecent?.filter(x=>!x.copied&&!x.rewrite_pending).length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
+ await updateBadge(model?.pendingExplainedRecent?.filter(x=>!x.copied&&!x.rewrite_pending).length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
 }
 async function deactivatePush(){
  const sub=await currentPushSubscription();
@@ -213,6 +213,24 @@ function collapseVisibleExplained(rows){
    const idx=out.length;out.push(x);
    if(group)groupIndex.set(group,idx);
    if(text)textIndex.set(text,idx);
+ }
+ return out
+}
+function collapsePendingExplained(rows){
+ const seenIds=new Set(),textIndex=new Map(),out=[];
+ for(const x of rows){
+   const id=String(x.id||"").trim(),text=nrm(x.explanation);
+   if(id&&seenIds.has(id))continue;
+   if(id)seenIds.add(id);
+   if(text&&textIndex.has(text)){
+     const idx=textIndex.get(text),prev=out[idx];
+     const prevLeader=String(prev?.group_leader_id||"")&&String(prev?.id||"")===String(prev.group_leader_id);
+     const curLeader=String(x.group_leader_id||"")&&String(x.id||"")===String(x.group_leader_id);
+     if(curLeader&&!prevLeader)out[idx]=x;
+     continue;
+   }
+   if(text)textIndex.set(text,out.length);
+   out.push(x);
  }
  return out
 }
@@ -338,9 +356,13 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
    .slice(0,100)
    .map(x=>({...x,_rank:rankAtExplanation(x)}))
    .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
+ const pendingExplainedRecent=collapsePendingExplained([...(explained.items||[])]
+   .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
+   .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||""))))
+   .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
  const sourceTotal=Object.keys(recent.sources||{}).length;
  const sourceProblemCount=Math.max(0,sourceTotal-Number(recent.source_count||0));
- return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,source_total:sourceTotal,source_problem_count:sourceProblemCount,items,upcoming,progress,prepared:preparedItems,explainedRecent,elaboratingItems:processing.map(x=>({id:x.id||null,name:x.name||"Tendencia",rank:Number(x.rank||0),status:String(x.status||""),revision:Number(x.revision||0),requested_at:x.requested_at||null,reexplain:Boolean(x.reexplain),rewrite_instruction:x.rewrite_instruction||""})),health,editorial_config:editorialConfig||{},editorial_queue:editorialQueue||{items:[]}};
+ return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,source_total:sourceTotal,source_problem_count:sourceProblemCount,items,upcoming,progress,prepared:preparedItems,explainedRecent,pendingExplainedRecent,elaboratingItems:processing.map(x=>({id:x.id||null,name:x.name||"Tendencia",rank:Number(x.rank||0),status:String(x.status||""),revision:Number(x.revision||0),requested_at:x.requested_at||null,reexplain:Boolean(x.reexplain),rewrite_instruction:x.rewrite_instruction||""})),health,editorial_config:editorialConfig||{},editorial_queue:editorialQueue||{items:[]}};
 }
 function render(){
  if(!model)return;
@@ -354,7 +376,7 @@ function render(){
  quality.classList.add(total>0&&operativas/total>=0.7?"good":total>0&&operativas/total>=0.45?"warn":"bad");
  const elaboratingItems=model.elaboratingItems||[],elaborating=elaboratingItems.length;
  const working=$("workingCount");working.textContent="En elaboración: "+elaborating;working.classList.toggle("idle",elaborating===0);working.disabled=elaborating===0;working.title=elaborating?"Ver tendencias en elaboración":"";
- const unread=(model.explainedRecent||[]).filter(x=>!x.copied&&!x.rewrite_pending).length;
+ const unread=(model.pendingExplainedRecent||[]).filter(x=>!x.copied&&!x.rewrite_pending).length;
  const unreadBadge=$("unreadExplainedBadge");
  unreadBadge.textContent=unread>99?"99+":String(unread);
  unreadBadge.classList.toggle("show",unread>0);

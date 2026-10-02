@@ -67,21 +67,22 @@ async function comments(){
 }
 async function triggerReady(){return true}
 async function readControlBranchJson(path){
-  // Primero RAW: las lecturas de estado no necesitan SHA y no deben consumir
-  // el rate limit REST autenticado.
-  try{
-    const u="https://raw.githubusercontent.com/"+REPO+"/"+encodeURIComponent(TRIGGER_BRANCH)+"/"+path+"?t="+Date.now();
-    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttendencias-run-status-control-read"}});
-    if(r.ok)return JSON.parse(await r.text()||"{}");
-  }catch(_){}
-  // Fallback REST solo por compatibilidad.
+  // El canal de control necesita consistencia fuerte: RAW puede devolver
+  // temporalmente un commit anterior aunque usemos cache-busting.
   try{
     const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(TRIGGER_BRANCH),{cache:"no-store"});
-    if(!r.ok)return {};
-    const f=await r.json();
-    const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-    return JSON.parse(raw||"{}")
-  }catch(_){return {}}
+    if(r.ok){
+      const f=await r.json();
+      const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+      return JSON.parse(raw||"{}")
+    }
+  }catch(_){}
+  try{
+    const u="https://raw.githubusercontent.com/"+REPO+"/"+encodeURIComponent(TRIGGER_BRANCH)+"/"+path+"?t="+Date.now();
+    const r=await fetch(u,{cache:"no-store",headers:{"cache-control":"no-cache","user-agent":"ttendencias-run-status-control-read"}});
+    if(r.ok)return JSON.parse(await r.text()||"{}");
+  }catch(_){}
+  return {}
 }
 async function readTrigger(){
   return {doc:await readControlBranchJson(TRIGGER_PATH)}
