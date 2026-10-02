@@ -16,7 +16,7 @@ $ImageIndexUrl = "$StatusBase/api/ttendencias-run-status?view=image-index"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
 
-$WorkerId = "ttendencias-dedicated-v2"
+$WorkerId = "ttendencias-dedicated-v3"
 $PollSeconds = 5
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
@@ -220,8 +220,8 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$Expec
     if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
     if (-not $node) { throw "Node no disponible para lanzar TTendencias" }
 
-    Start-Process -FilePath $node.Source -ArgumentList @($Runner,"tendencias") -WindowStyle Hidden | Out-Null
-    Write-Log "PROCESS STARTED direct-node :: $Reason marker=$ExpectedMarker"
+    Start-Process -FilePath $node.Source -ArgumentList @($Runner,"tendencias","--enviar") -WindowStyle Hidden | Out-Null
+    Write-Log "PROCESS STARTED direct-node-real :: $Reason marker=$ExpectedMarker"
   } finally {
     if ($null -eq $old) { Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue }
     else { $env:TT_CHAT_MESSAGE_B64 = $old }
@@ -242,6 +242,11 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$Expec
       # Confirmación robusta: la propia telemetría de Ejecutar.js puede mostrar
       # generando:true antes de que el DOM actualice el contador de mensajes o antes
       # de que aparezca la línea MENSAJE ENVIADO. En ese caso ChatGPT ya aceptó el envío.
+      if ($joined -match "MODO:\s*PRUEBA") {
+        Write-Log "CHAT LAUNCH MODE ERROR :: $Reason :: Ejecutar.js arrancó en MODO PRUEBA"
+        return $false
+      }
+
       $responseStarted = $joined -match '"generando"\s*:\s*true'
       $messageSent = $joined -match "MENSAJE ENVIADO"
       $executionLaunched = $joined -match "EJECUCION LANZADA"
