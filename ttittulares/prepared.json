@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-02T20:04:43Z",
+  "updated_at": "2026-10-02T20:11:03.616803Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -302,13 +302,13 @@
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
       "image_delivery": "app",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "fallback_image": {
         "url": "https://static.time.com/v3/assets/bltea6093859af6183b/blt366d73ee3125d67c/6abd8126747d8614ba7b4fb3/Winters_Time_Trump_17_v1.jpg?branch=production&width=2400&quality=75&auto=webp&crop=16:9%2Coffset-x0.00%2Coffset-y100.00",
         "source": "time.com",
@@ -319,22 +319,52 @@
       },
       "fallback_image_search_attempted_at": "2026-10-02T20:02:54.458593Z",
       "image": {
-        "url": "https://static.time.com/v3/assets/bltea6093859af6183b/blt366d73ee3125d67c/6abd8126747d8614ba7b4fb3/Winters_Time_Trump_17_v1.jpg?branch=production&width=2400&quality=75&auto=webp&crop=16:9%2Coffset-x0.00%2Coffset-y100.00",
-        "source": "time.com",
-        "source_url": "https://time.com/article/2026/10/01/donald-trump-2026-interview/",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Trump consultó a Grok sobre la posible reacción de Venezuela antes de capturar a Maduro, según Time"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/2ce50fc02cfc-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/2ce50fc02cfc-r1-ai1.jpg",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "alt": "Gag editorial sobre Trump consultando a Grok acerca de la reacción venezolana ante una hipotética captura de Maduro",
+        "context_guard": {
+          "version": 3,
+          "event_id": "2ce50fc02cfc",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "sha256": "36946343a66d671324221374e13ab1f1cf1b63fd00bf79e700a8575b84805c6f",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "tool_called",
+      "ai_image_last_attempt_status": "ready",
       "ai_image_tool_called_at": "2026-10-02T20:04:43Z",
-      "ai_image_last_attempt_at": "2026-10-02T20:04:43Z",
+      "ai_image_last_attempt_at": "2026-10-02T20:11:03.616745Z",
       "ai_image_context_guard": {
         "version": 3,
         "event_id": "2ce50fc02cfc",
         "revision": 1,
         "scope": "current_item_only"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/2ce50fc02cfc-r1-ai1.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/2ce50fc02cfc-r1-ai1.jpg",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "alt": "Gag editorial sobre Trump consultando a Grok acerca de la reacción venezolana ante una hipotética captura de Maduro",
+        "context_guard": {
+          "version": 3,
+          "event_id": "2ce50fc02cfc",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "sha256": "36946343a66d671324221374e13ab1f1cf1b63fd00bf79e700a8575b84805c6f",
+        "handoff": "inline-outbox-materialized-by-actions"
       }
     }
   ],
