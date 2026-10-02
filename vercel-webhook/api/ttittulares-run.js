@@ -81,7 +81,17 @@ function traceOf(comment){
   try{return {...JSON.parse(body.slice(TRACE_PREFIX.length).trim()),comment_id:comment.id,comment_updated_at:comment.updated_at||comment.created_at}}catch(_){return null}
 }
 function activeTrace(items){
-  const fresh=items.map(traceOf).filter(Boolean).filter(t=>["REQUESTED","RUNNING","PROCESSING"].includes(String(t.status||"").toUpperCase())).filter(t=>{
+  // Un mismo run puede escribir varios comentarios RUNTRACE (RUNNING -> DONE).
+  // El estado autoritativo de cada run es siempre su comentario más reciente.
+  const latestByRun=new Map();
+  for(const t of items.map(traceOf).filter(Boolean)){
+    const key=String(t.run_id||t.command_id||t.comment_id||"");
+    const at=stamp(t.comment_updated_at||t.updated_at||t.started_at||t.requested_at);
+    const prev=latestByRun.get(key);
+    const prevAt=prev?stamp(prev.comment_updated_at||prev.updated_at||prev.started_at||prev.requested_at):0;
+    if(!prev||at>=prevAt)latestByRun.set(key,t);
+  }
+  const fresh=[...latestByRun.values()].filter(t=>["REQUESTED","RUNNING","PROCESSING"].includes(String(t.status||"").toUpperCase())).filter(t=>{
     const age=Date.now()-stamp(t.comment_updated_at||t.updated_at||t.started_at||t.requested_at);
     const limit=String(t.status||"").toUpperCase()==="PROCESSING"?PROCESSING_ACTIVE_MS:ACTIVE_MS;
     return Number.isFinite(age)&&age>=0&&age<limit
