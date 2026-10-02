@@ -79,23 +79,26 @@ Get-CimInstance Win32_Process -Filter "Name = 'powershell.exe'" |
   Where-Object { $_.CommandLine -like "*TTiTTularesDedicatedListener.ps1*" -or $_.CommandLine -like "*TTiTTularesMobileChatTriggerListener.ps1*" } |
   ForEach-Object { try { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue } catch {} }
 
-$StdOut = Join-Path $BaseDir "ttittulares-dedicated-stdout.log"
-$StdErr = Join-Path $BaseDir "ttittulares-dedicated-stderr.log"
-Remove-Item $StdOut,$StdErr -Force -ErrorAction SilentlyContinue
-
-$proc = Start-Process powershell.exe -ArgumentList @(
+# Arranque desacoplado: no redirigir stdout/stderr del proceso permanente,
+# porque esos pipes pueden mantener abierta la sesión instaladora.
+$proc = Start-Process -FilePath "powershell.exe" -ArgumentList @(
   "-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-File",$Listener
-) -WindowStyle Hidden -RedirectStandardOutput $StdOut -RedirectStandardError $StdErr -PassThru
+) -WindowStyle Hidden -PassThru
 
 Start-Sleep -Seconds 4
 $proc.Refresh()
 if ($proc.HasExited) {
-  Write-Host "ERROR: listener dedicado TTiTTulares cerrado al arrancar. ExitCode=$($proc.ExitCode)" -ForegroundColor Red
-  if ((Test-Path $StdErr) -and (Get-Item $StdErr).Length -gt 0) {
-    Write-Host "--- STDERR ---" -ForegroundColor Yellow
-    Get-Content $StdErr -Tail 30
-  }
-  throw "El listener dedicado no ha quedado activo."
+  throw "El listener dedicado no ha quedado activo. ExitCode=$($proc.ExitCode)"
+}
+
+$listenerLog = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
+$started = $false
+if (Test-Path -LiteralPath $listenerLog) {
+  $tail = @(Get-Content -LiteralPath $listenerLog -Tail 20 -ErrorAction SilentlyContinue)
+  $started = (($tail -join "`n") -match "LISTENER START worker=ttittulares-dedicated-v3 pid=$($proc.Id)")
+}
+if (-not $started) {
+  Write-Host "AVISO: proceso activo pero aún no aparece su línea LISTENER START en el log." -ForegroundColor Yellow
 }
 
 Write-Host "TTITTULARES LISTENER INSTALADO Y ACTIVO" -ForegroundColor Green
@@ -109,8 +112,4 @@ Write-Host ""
 Write-Host "--- DIAGNOSTICO TTITTULARES ---" -ForegroundColor Cyan
 if (Test-Path (Join-Path $BaseDir "ttittulares-mobile-trigger.log")) {
   Get-Content (Join-Path $BaseDir "ttittulares-mobile-trigger.log") -Tail 12
-}
-if ((Test-Path $StdErr) -and (Get-Item $StdErr).Length -gt 0) {
-  Write-Host "--- STDERR ---" -ForegroundColor Yellow
-  Get-Content $StdErr -Tail 20
 }
