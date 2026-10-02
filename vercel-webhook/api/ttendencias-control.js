@@ -72,6 +72,7 @@ function reconcileExplainedView(explainedDoc, requestsDoc) {
     delete merged.rewrite_requested_at;
     delete merged.rewrite_request_version;
     delete merged.rewrite_instruction;
+    delete merged.rewrite_with_image;
     delete merged.reexplain;
     return merged;
   });
@@ -814,7 +815,8 @@ async function discardNames(names) {
   return { ok: true, dismissed: unique };
 }
 
-async function reworkNames(names, instruction) {
+async function reworkNames(names, instruction, options = {}) {
+  const withImage = options.with_image !== false;
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
   if (!unique.length) throw new Error("No hay tendencias seleccionadas.");
   const text = String(instruction || "").trim();
@@ -844,6 +846,7 @@ async function reworkNames(names, instruction) {
       row.rewrite_requested_at=now;
       row.rewrite_request_version=Number(row.rewrite_request_version||0)+1;
       row.rewrite_instruction=text;
+      row.rewrite_with_image=withImage;
     }
     doc.updated_at=now;
     return doc;
@@ -863,10 +866,12 @@ async function reworkNames(names, instruction) {
       req.revision = Math.max(Number(req.revision || 0), Number(latest?.revision || 0)) + 1;
       req.reexplain = true;
       req.rewrite_instruction = text;
-      req.with_image = true;
-      req.disable_ai_image = Boolean(latest?.tremending_origin);
-      req.image_strategy = req.disable_ai_image ? "tweet_capture_only" : "ai_plus_fallback";
-      if (req.disable_ai_image && latest?.fallback_image) req.selected_tweet_image = latest.fallback_image;
+      req.with_image = withImage;
+      req.disable_ai_image = !withImage || Boolean(latest?.tremending_origin);
+      req.image_strategy = !withImage ? "preserve_existing" : (req.disable_ai_image ? "tweet_capture_only" : "ai_plus_fallback");
+      if (latest?.fallback_image) req.selected_tweet_image = latest.fallback_image;
+      if (!withImage && latest?.ai_image) req.existing_ai_image = latest.ai_image;
+      if (!withImage && latest?.image) req.existing_image = latest.image;
       delete req.problem_reason;
       delete req.problematic_at;
       req.alternatives_target = 0;
@@ -1177,7 +1182,7 @@ export default async function handler(req, res) {
     }
     if (action === "discard") return res.status(200).json(await discardNames(body.names));
     if (action === "retry") return res.status(200).json(await retryNames(body.names));
-    if (action === "rework") return res.status(200).json(await reworkNames(body.names, body.instruction));
+    if (action === "rework") return res.status(200).json(await reworkNames(body.names, body.instruction, { with_image: body.with_image !== false }));
     if (action === "regenerate-image") return res.status(200).json(await requestImageRegeneration(body.names));
     if (action === "use-fallback-image") return res.status(200).json(await useFallbackImage(body.names));
     return res.status(400).json({ ok: false, error: "Acción no válida" });
