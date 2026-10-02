@@ -200,6 +200,10 @@ async function requestImagePcAck(req,res){
   const terminal=["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase());
   if(terminal)return res.status(409).json({ok:false,error:"job ya terminal",status:job.status});
   if(stage==="picked_up"){
+    const uploadHash=String(req.body?.upload_secret_hash||"").toLowerCase();
+    if(!/^[a-f0-9]{64}$/.test(uploadHash))return res.status(400).json({ok:false,error:"upload_secret_hash requerido"});
+    if(job.pc_upload_secret_hash&&String(job.pc_upload_secret_hash)!==uploadHash)return res.status(409).json({ok:false,error:"job ya reclamado con otro secreto"});
+    job.pc_upload_secret_hash=uploadHash;
     const eligibility=await imageEligibility(target_id);
     if(!eligibility.eligible){
       const now=new Date().toISOString();
