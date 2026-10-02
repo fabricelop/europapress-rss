@@ -156,6 +156,55 @@ function Get-Sha256Hex([string]$Text) {
   } finally { $sha.Dispose() }
 }
 
+function Ensure-ImageBridgeLatest([string]$NodePath) {
+  $tmp = $ImageBridge + ".new"
+  try {
+    $api = "https://api.github.com/repos/fabricelop/europapress-rss/contents/windows/TTendenciasImageBridge.js?ref=main&t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+    $doc = Invoke-RestMethod -Uri $api -Headers @{
+      "Accept" = "application/vnd.github+json"
+      "User-Agent" = "TTendencias-image-bridge-refresh"
+      "Cache-Control" = "no-cache"
+    } -TimeoutSec 15
+    if (-not $doc.content) { throw "GitHub API sin contenido" }
+    $raw = [Convert]::FromBase64String(([string]$doc.content -replace "\s",""))
+    [IO.File]::WriteAllBytes($tmp,$raw)
+
+    $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
+    foreach ($needle in @(
+      'BRIDGE_MODE="capture-only',
+      'view=image-job&strong=1&id=',
+      'imagesAfterMarker'
+    )) {
+      if (-not $txt.Contains($needle)) { throw "Bridge remoto sin garantía: $needle" }
+    }
+    & $NodePath --check $tmp *> $null
+    if ($LASTEXITCODE -ne 0) { throw "node --check falló en bridge remoto" }
+
+    Move-Item -LiteralPath $tmp -Destination $ImageBridge -Force
+    Write-Log "IMAGE BRIDGE REFRESHED source=github-api sha=$($doc.sha)"
+    return $true
+  } catch {
+    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+    Write-Log "IMAGE BRIDGE REFRESH WARNING :: $($_.Exception.Message)"
+  }
+
+  if (Test-Path -LiteralPath $ImageBridge) {
+    try {
+      $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
+      if ($txt.Contains('BRIDGE_MODE="capture-only') -and $txt.Contains('view=image-job&strong=1&id=')) {
+        & $NodePath --check $ImageBridge *> $null
+        if ($LASTEXITCODE -eq 0) {
+          Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK"
+          return $true
+        }
+      }
+    } catch {}
+  }
+
+  Write-Log "IMAGE BRIDGE ERROR no hay bridge capture-only válido"
+  return $false
+}
+
 function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadSecret) {
   if (-not (Test-Path -LiteralPath $ImageBridge)) {
     Write-Log "IMAGE BRIDGE ERROR missing=$ImageBridge"
@@ -165,6 +214,9 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
   if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
   if (-not $node) {
     Write-Log "IMAGE BRIDGE ERROR node no encontrado"
+    return $false
+  }
+  if (-not (Ensure-ImageBridgeLatest $node.Source)) {
     return $false
   }
   $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
