@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-v7-1790964938971-latasa",
   "requested_at": "2026-10-02T18:15:38.967Z",
-  "updated_at": "2026-10-02T18:15:38.967Z",
-  "status": "REQUESTED",
-  "phase": "queued",
+  "updated_at": "2026-10-02T18:15:51.554Z",
+  "status": "RUNNING",
+  "phase": "pc_pickup",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -22,5 +22,7 @@
     "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
     "lifecycle": "Verifica vigencia antes de generar; el puente local recogerá el raster y lo enviará al pipeline."
   },
-  "message": "Prueba controlada v7 con puente local de raster."
+  "message": "PC ha recogido la solicitud de imagen.",
+  "pc_worker_id": "ttendencias-dedicated-v7",
+  "pc_picked_up_at": "2026-10-02T18:15:51.554Z"
 }
