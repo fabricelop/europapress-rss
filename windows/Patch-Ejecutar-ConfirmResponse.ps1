@@ -16,7 +16,7 @@ if (-not (Test-Path -LiteralPath $Target)) {
 $text = Get-Content -LiteralPath $Target -Raw -Encoding UTF8
 if ($text.Contains($MarkerV2)) {
   Write-Host "EJECUTAR.JS YA TIENE CONFIRMACION V2" -ForegroundColor Green
-  exit 0
+  return
 }
 
 $backup = $Target + ".before-response-confirm-v2-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
