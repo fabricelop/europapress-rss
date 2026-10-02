@@ -11336,9 +11336,9 @@
       ],
       "news_disposition": "ignored",
       "news_note": "Tendencia asociada a la emisión en directo del programa; no abre una noticia paralela en TTiTTulares.",
-      "disable_ai_image": true,
-      "image_strategy": "existing_web_image",
-      "ai_image_status": "none",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
       "fallback_image_status": "none",
       "fallback_image_source": {
         "source": "RTVE",
@@ -11347,7 +11347,10 @@
       },
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "Fuente de archivo localizada; la imagen IA no bloquea el cierre editorial."
+      "image_failure_reason": "Fuente de archivo localizada; la imagen IA no bloquea el cierre editorial.",
+      "ai_image_regenerate_requested": true,
+      "ai_image_regenerate_requested_at": "2026-10-02T04:58:37.360Z",
+      "ai_image_regenerate_request_version": 1
     },
     {
       "id": "15a8bb795fe3",
@@ -11535,6 +11538,6 @@
       "image_failure_reason": "Fuente de archivo localizada; la imagen IA queda fuera de esta ejecución editorial."
     }
   ],
-  "updated_at": "2026-10-01T23:34:14.115Z",
+  "updated_at": "2026-10-02T04:58:37.360Z",
   "count": 392
 }
