@@ -868,6 +868,7 @@ async function reworkNames(names, instruction, options = {}) {
       req.revision = Math.max(Number(req.revision || 0), Number(latest?.revision || 0)) + 1;
       req.reexplain = true;
       req.rewrite_instruction = text;
+      req.rewrite_with_image = withImage;
       req.with_image = withImage;
       req.disable_ai_image = !withImage || Boolean(latest?.tremending_origin);
       req.image_strategy = !withImage ? "preserve_existing" : (req.disable_ai_image ? "tweet_capture_only" : "ai_plus_fallback");
