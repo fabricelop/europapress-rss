@@ -235,7 +235,8 @@ export default async function handler(req,res){
   try{
     const task=rawTask==="images"?"images":"editorial";
     if(task==="images")return await requestImageRun(req,res);
-    const [{doc:current,sha},items,ackDoc]=await Promise.all([readTrigger(),comments(),readControlRaw(ACK_PATH)]);\n    const ackState={doc:ackDoc||{}};
+    const [{doc:current,sha},items,ackDoc]=await Promise.all([readTrigger(),comments(),readControlRaw(ACK_PATH)]);
+    const ackState={doc:ackDoc||{}};
     if(activeTrace(items))return res.status(409).json({ok:false,error:"run_in_progress"});
     const currentId=String(current.command_id||"").trim(),currentRequested=String(current.requested_at||"").trim();
     if(currentId&&currentRequested){
