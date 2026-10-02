@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T09:58:20Z",
-      "event_id": "d87bac0874cd",
-      "phase": "image_persisting",
-      "reason": "La imagen generated_gag de Mbappé fue generada y validada, pero no se pudo garantizar un puente de bytes íntegro hacia el comentario PR; se evitó enviar un base64 dudoso y se cerró la imagen como none al no existir fallback Telegram autenticado.",
-      "remediation_prompt": "Usar un puente binario programático de extremo a extremo entre el archivo generado y el comentario PR, sin transcripción del base64 por el modelo."
-    },
-    {
       "at": "2026-09-27T10:33:23.207638Z",
       "event_id": "67fced92d0ee",
       "phase": "imagen",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "f351e06d89dd-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento f351e06d89dd-r1: f351e06d89dd-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-02T14:09:56.446508Z",
+      "event_id": "33985cee9182-r1",
+      "phase": "outbox",
+      "reason": "33985cee9182-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 33985cee9182-r1: 33985cee9182-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
