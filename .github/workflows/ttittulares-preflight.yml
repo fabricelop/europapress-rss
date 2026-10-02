@@ -131,6 +131,7 @@ jobs:
           installer=Path("windows/Install-TTiTTularesMobileChatTrigger.ps1").read_text(encoding="utf-8")
           assert "const {doc:trigger}=await readTrigger();" in run_api
           assert "readControlJson(ACK_PATH)" in run_api
+          assert "latestByRun" in run_api and "El estado autoritativo de cada run" in run_api
           assert "GitHub REST refleja el HEAD" in run_status
           assert "pc_worker_id" in run_status
           assert "readJson(PROCESSING)" in control_api
