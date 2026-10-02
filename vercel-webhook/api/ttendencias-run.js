@@ -280,7 +280,10 @@ export default async function handler(req,res){
       const ackMatches=String(ack.command_id||"")===currentId;
       const ackStage=ackMatches?String(ack.stage||"").toLowerCase():"";
       const ackAt=ackMatches?stamp(ack.updated_at||ack.launched_at||ack.picked_up_at):0;
-      const ackFresh=ackMatches&&ackAt&&Date.now()-ackAt<ACTIVE_MS;
+      // Un simple picked_up solo demuestra que el PC vio la orden. Si en 45 s no
+      // llegó a launched, el intento está muerto y no debe bloquear 20 minutos.
+      const ackWindow=ackStage==="picked_up"?45000:ACTIVE_MS;
+      const ackFresh=ackMatches&&ackAt&&Date.now()-ackAt<ackWindow;
 
       // 45 s cubre holgadamente el SLA visual de 30 s. Si pasado ese tiempo no hay
       // ACK ni RUNNING, la orden anterior está muerta y una pulsación nueva debe poder
