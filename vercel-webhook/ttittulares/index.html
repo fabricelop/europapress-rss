@@ -74,7 +74,6 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
   <button class="stat" data-view="tremending"><b id="tremendingCount">0</b>Tremending</button>
  </div>
  <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Entradas</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="btn primary" id="runNow" type="button">▶ Entradas</button></section>
- <section class="runbar" id="imageBar"><div class="runmain"><div class="runline"><strong id="imageHeadline">Imágenes IA</strong></div><span id="imageState">Comprobando cola…</span></div><button class="btn primary" id="runImages" type="button">✨ Imágenes IA</button></section>
  <section class="list" id="list"><div class="empty">Cargando…</div></section>
 </main>
 
@@ -200,7 +199,7 @@ function runPhaseLabel(s){
  const p=String(s.phase||"").toLowerCase();
  if(["preparing","prepare"].includes(p))return s.status==="REQUESTED"?"Esperando al PC":"Preparando ejecución";
  if(p==="pc_ack")return "PC ha recogido la orden";
- if(p==="chat_launch")return "Chat lanzado";
+ if(p==="chat_launch")return "Mensaje confirmado en ChatGPT";
  if(["investigating","research","verifying_news"].includes(p))return "Investigando noticia"+pos;
  if(["drafting","redacting","writing"].includes(p))return "Redactando noticia"+pos;
  if(["image_generating","image_generate","generating_image"].includes(p))return "Buscando imagen real"+pos;
@@ -246,6 +245,8 @@ function buildDiagnostic(s){
   "Inicio: "+(r.started_at||r.requested_at||"—"),
   "Última actualización: "+(r.updated_at||"—"),
   "Heartbeat: "+(r.heartbeat_age_seconds!=null?runDuration(r.heartbeat_age_seconds)+" desde la última actualización":"—"),
+  "Worker PC: "+(r.pc_worker_id||"—"),
+  "ACK PC: "+(r.pc_ack_stage||"—"),
   "Final: "+(r.finished_at||"—"),
   "Incidencias: "+runIncidentCount(r)
  ];
@@ -1036,7 +1037,6 @@ async function load(silent=false){
 }
 document.querySelectorAll(".stat[data-view]").forEach(x=>x.onclick=()=>setView(x.dataset.view));
 $("runNow").onclick=requestRun;
-$("runImages").onclick=requestPendingImages;
 $("incidentClose").onclick=()=>$("incidentSheet").classList.remove("show");
 $("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buildDiagnostic(lastRunTelemetry||{}));toast("Diagnóstico copiado")}catch(_){toast("No se pudo copiar el diagnóstico")}};
 $("notify").onclick=enablePush;
