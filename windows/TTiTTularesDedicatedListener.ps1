@@ -12,7 +12,7 @@ $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 45
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v3"
+$WorkerId = "ttittulares-dedicated-v4"
 $PollSeconds = 3
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
@@ -108,13 +108,14 @@ function Enable-CustomChatMessages {
   }
 }
 
-function Send-Ack([string]$CommandId,[string]$Stage) {
+function Send-Ack([string]$CommandId,[string]$Stage,[string]$Detail = "") {
   try {
     $payload = @{
       task = "pc_ack"
       command_id = $CommandId
       stage = $Stage
       worker_id = $WorkerId
+      detail = $Detail
     } | ConvertTo-Json -Compress
     $r = Invoke-RestMethod -Method Post -Uri $RunUrl -ContentType "application/json" -Body $payload -TimeoutSec 12
     Write-Log "ACK $Stage command=$CommandId worker=$WorkerId"
@@ -157,9 +158,15 @@ function Launch-TTiTTulares([string]$CommandId) {
     } catch {}
   }
 
+  $safeId = ($CommandId -replace '[^A-Za-z0-9._-]', '_')
+  $nodeOut = Join-Path $BaseDir ("ttittulares-node-" + $safeId + ".out.log")
+  $nodeErr = Join-Path $BaseDir ("ttittulares-node-" + $safeId + ".err.log")
+  Remove-Item $nodeOut,$nodeErr -Force -ErrorAction SilentlyContinue
+
   $marker = "TT_EDITORIAL_RUN_V1 $CommandId"
   $message = "$marker`nEjecuta TTiTTulares"
   $old = $env:TT_CHAT_MESSAGE_B64
+  $proc = $null
 
   try {
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($message)
@@ -169,8 +176,16 @@ function Launch-TTiTTulares([string]$CommandId) {
     if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
     if (-not $node) { throw "Node no disponible para lanzar TTiTTulares" }
 
-    Start-Process -FilePath $node.Source -ArgumentList @($Runner,"titulares") -WindowStyle Hidden | Out-Null
-    Write-Log "PROCESS STARTED direct-node command=$CommandId marker=$marker"
+    $proc = Start-Process -FilePath $node.Source -ArgumentList @($Runner,"titulares") -WindowStyle Hidden -RedirectStandardOutput $nodeOut -RedirectStandardError $nodeErr -PassThru
+    Write-Log "PROCESS STARTED direct-node command=$CommandId pid=$($proc.Id) marker=$marker"
+
+    $launched = Send-Ack $CommandId "launched"
+    if ($launched -ne "OK") { Write-Log "LAUNCHED ACK WARNING command=$CommandId result=$launched" }
+  } catch {
+    $detail = "No se pudo iniciar Node: $($_.Exception.Message)"
+    Write-Log "LAUNCH ERROR command=$CommandId :: $detail"
+    [void](Send-Ack $CommandId "failed" $detail)
+    return $false
   } finally {
     if ($null -eq $old) { Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue }
     else { $env:TT_CHAT_MESSAGE_B64 = $old }
@@ -179,17 +194,30 @@ function Launch-TTiTTulares([string]$CommandId) {
   $deadline = (Get-Date).AddSeconds($LaunchConfirmSeconds)
   while ((Get-Date) -lt $deadline) {
     Start-Sleep -Seconds 1
+
+    if ($proc) {
+      try {
+        $proc.Refresh()
+        if ($proc.HasExited) {
+          $err = if (Test-Path -LiteralPath $nodeErr) { ((Get-Content -LiteralPath $nodeErr -Tail 20 -ErrorAction SilentlyContinue) -join " | ") } else { "" }
+          $out = if (Test-Path -LiteralPath $nodeOut) { ((Get-Content -LiteralPath $nodeOut -Tail 20 -ErrorAction SilentlyContinue) -join " | ") } else { "" }
+          $detail = "Node terminó antes de confirmar ChatGPT. ExitCode=$($proc.ExitCode). STDERR=$err STDOUT=$out"
+          Write-Log "CHAT LAUNCH PROCESS EXIT command=$CommandId :: $detail"
+          [void](Send-Ack $CommandId "failed" $detail)
+          return $false
+        }
+      } catch {}
+    }
+
     if (-not (Test-Path -LiteralPath $LauncherLogPath)) { continue }
     try {
       $fi = Get-Item -LiteralPath $LauncherLogPath
       if ($fi.Length -le $beforeLen -and $fi.LastWriteTimeUtc -le $beforeWrite) { continue }
 
-      $tail = @(Get-Content -LiteralPath $LauncherLogPath -Tail 60 -ErrorAction Stop)
+      $tail = @(Get-Content -LiteralPath $LauncherLogPath -Tail 80 -ErrorAction Stop)
       $joined = ($tail -join "`n")
       $hasMarker = $joined.Contains($marker)
 
-      # Mismo criterio robusto que TTendencias: ChatGPT puede haber aceptado
-      # el envío antes de que aparezca MENSAJE ENVIADO en el log.
       $responseStarted = $joined -match '"generando"\s*:\s*true'
       $messageSent = $joined -match "MENSAJE ENVIADO"
       $executionLaunched = $joined -match "EJECUCION LANZADA"
@@ -200,15 +228,21 @@ function Launch-TTiTTulares([string]$CommandId) {
         return $true
       }
 
-      if ($joined -match "ERROR:|ERROR ::|Timeout CDP") {
+      if ($hasMarker -and $joined -match "ERROR:|ERROR ::|Timeout CDP") {
         $last = ($tail | Where-Object { $_ -match "ERROR:|ERROR ::|Timeout CDP" } | Select-Object -Last 1)
-        Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $last"
+        $detail = "Ejecutar.js: $last"
+        Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $detail"
+        [void](Send-Ack $CommandId "failed" $detail)
         return $false
       }
     } catch {}
   }
 
-  Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId marker=$marker after=$($LaunchConfirmSeconds)s"
+  $err = if (Test-Path -LiteralPath $nodeErr) { ((Get-Content -LiteralPath $nodeErr -Tail 20 -ErrorAction SilentlyContinue) -join " | ") } else { "" }
+  $out = if (Test-Path -LiteralPath $nodeOut) { ((Get-Content -LiteralPath $nodeOut -Tail 20 -ErrorAction SilentlyContinue) -join " | ") } else { "" }
+  $detail = "Timeout esperando confirmación de ChatGPT tras $($LaunchConfirmSeconds)s. STDERR=$err STDOUT=$out"
+  Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId marker=$marker :: $detail"
+  [void](Send-Ack $CommandId "failed" $detail)
   return $false
 }
 
@@ -270,12 +304,9 @@ while ($true) {
             if (-not $CustomMessageSupport) { throw "Ejecutar.js no admite TT_CHAT_MESSAGE_B64" }
             $messageSent = Launch-TTiTTulares $commandId
             if ($messageSent) {
-              $launched = Send-Ack $commandId "launched"
-              if ($launched -ne "OK") {
-                Write-Log "LAUNCH ACK WARNING command=$commandId result=$launched"
-              }
+              Write-Log "LAUNCH CONFIRMED command=$commandId"
             } else {
-              Write-Log "LAUNCH NOT CONFIRMED command=$commandId; no launched ACK"
+              Write-Log "LAUNCH FAILED/UNCONFIRMED command=$commandId"
             }
             # Consumir esta orden aunque el lanzamiento falle: evita abrir chats
             # repetidamente cada 3 segundos. Una nueva pulsación crea otro command_id.
