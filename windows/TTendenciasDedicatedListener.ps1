@@ -377,9 +377,7 @@ while ($true) {
           $ack = Send-Ack $commandId "picked_up"
           if ($ack -eq "OK") {
             try {
-              $editorialMarker = "TT_EDITORIAL_RUN_V1 $commandId"
-              $editorialMessage = "$editorialMarker`nEjecuta TTendencias"
-              $messageSent = Launch-ProjectChat "editorial command=$commandId" $editorialMessage $editorialMarker
+              $messageSent = Launch-ProjectChat "editorial command=$commandId"
               if ($messageSent) {
                 $launched = Send-Ack $commandId "launched"
                 if ($launched -ne "OK") { Write-Log "LAUNCH ACK WARNING command=$commandId result=$launched" }
