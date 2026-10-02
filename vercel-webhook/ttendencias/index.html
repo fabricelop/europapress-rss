@@ -15,7 +15,7 @@
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 55%)}button{font:inherit}
 .top{position:sticky;top:0;z-index:20;background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36;padding:13px max(12px,env(safe-area-inset-left));display:flex;align-items:center;gap:10px}.brand{font-size:19px;font-weight:850}.sub{font-size:11px;color:#8f9bad}.spacer{flex:1}
 .iconbtn{border:1px solid #303846;background:#141a24;color:#edf3ff;border-radius:11px;height:42px;padding:0 12px;font-weight:750}.iconbtn b{margin-left:3px}.iconbtn.tweets{min-width:92px;position:relative}.iconbtn.tweets.hasReady{background:#631d27;border-color:#b64b59;color:#fff}.unreadBadge{display:none;position:absolute;top:-7px;right:-7px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#c63e4d;color:#fff;border:2px solid #0b0e14;font-size:11px;font-weight:900;align-items:center;justify-content:center;line-height:1}.unreadBadge.show{display:inline-flex}
-main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 5px}.meta{color:#8f9bad;font-size:12px;line-height:1.45}.badge{border:1px solid #343c4a;background:#131923;border-radius:12px;padding:7px 10px;font-size:11px;color:#c7d1df;max-width:100%;line-height:1.35}.badge.good{border-color:#2f8f5b;background:#102d20;color:#9ee6b8}.badge.warn{border-color:#a77b1b;background:#3a2b0d;color:#ffd978}.badge.bad{border-color:#a83b46;background:#38171a;color:#ffadb5}.scheduleTiming{line-height:1.55}.scheduleTiming .late{color:#ff8d99}.scheduleTiming .ok{color:#9fdfbb}.workingCount{margin-top:4px;color:#ffc178;font-weight:800}.workingCount.idle{color:#8f9bad;font-weight:650}
+main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 5px}.meta{color:#8f9bad;font-size:12px;line-height:1.45}.badge{border:1px solid #343c4a;background:#131923;border-radius:12px;padding:7px 10px;font-size:11px;color:#c7d1df;max-width:100%;line-height:1.35}.badge.good{border-color:#2f8f5b;background:#102d20;color:#9ee6b8}.badge.warn{border-color:#a77b1b;background:#3a2b0d;color:#ffd978}.badge.bad{border-color:#a83b46;background:#38171a;color:#ffadb5}.scheduleTiming{line-height:1.55}.scheduleTiming .late{color:#ff8d99}.scheduleTiming .ok{color:#9fdfbb}.workingCount{margin-top:4px;color:#ffc178;font-weight:800;border:0;background:transparent;padding:0;cursor:pointer;text-align:left}.workingCount:not(.idle){text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}.workingCount.idle{color:#8f9bad;font-weight:650;cursor:default;text-decoration:none}.workingItems{display:grid;gap:8px;margin:12px 0}.workingItem{border:1px solid #344052;background:#0d131c;border-radius:11px;padding:10px 11px}.workingItemName{font-weight:800;color:#edf3ff}.workingItemMeta{margin-top:4px;font-size:11px;color:#91a0b4}
 
 .runbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #354255;background:#101721;border-radius:14px;padding:11px 12px;margin:0 0 14px;min-height:68px}.runmain{display:grid;gap:4px;min-width:0;flex:1}.runline{display:flex;align-items:center;gap:8px;min-width:0}.runbar strong{font-size:13px;min-width:0}.runbar span{font-size:11px;color:#8f9bad;line-height:1.35}.runbar span.running{color:#ffc178}.runbar span.done{color:#8ee6a8}.runbar span.error{color:#ff9ca5}.runbar .primary:disabled{opacity:.45;cursor:not-allowed}.runbar .primary[hidden]{display:none}.runbar.active{align-items:stretch}.runbar.active .runmain{width:100%}.runprogress{height:5px;background:#252f3c;border-radius:999px;overflow:hidden;margin-top:4px}.runprogress[hidden]{display:none}.runprogress i{display:block;height:100%;width:0;background:#6f8fb8;border-radius:999px;transition:width .35s ease}.incidentBtn{border:1px solid #7b5b25;background:#2a2114;color:#ffc178;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:850;cursor:pointer;white-space:nowrap}.incidentBtn.severe{border-color:#7d3038;background:#2a171a;color:#ff9ca5}.diag{white-space:pre-wrap;word-break:break-word;background:#090d13;border:1px solid #2d3745;border-radius:11px;padding:11px;max-height:44vh;overflow:auto;color:#cbd7e8;font:11px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace}
 .list{display:grid;gap:9px}.card{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:11px;background:#11161e;border:1px solid #262e3a;border-radius:15px;padding:12px 13px;min-height:72px}.card.pending{background:#2a1418;border-color:#7a3039}.card.inprogress{background:#2a2412;border-color:#7b6728}.card.explained{background:#102a47;border-color:#2d5b88}.card.problematic{background:#24172f;border-color:#66417f}.card.dismissed{background:#171b21;border-color:#3e4650}.card.explaining{background:#13281d;border-color:#376d4c}.card.novelty{background:#2e1f11;border-color:#8a5727}.entryTime{font-size:11px;color:#8fa4bd;margin-left:auto;white-space:nowrap;text-align:right;line-height:1.25}.entryAge{display:block;color:#6f86a1;margin-top:2px}.rank{font-weight:900;font-size:20px;color:#778399;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}.rankMove{font-size:14px;line-height:1;margin-top:5px;font-weight:950}.rankMove.up{color:#54d881}.rankMove.down{color:#ff7180}.rankMove.flat{color:#9aa6b7}.rankMove.new{color:#72a7ff;font-size:10px;letter-spacing:.04em}.nameLine{display:flex;align-items:center;gap:8px;min-width:0}.name{font-weight:790;font-size:16px;line-height:1.2;overflow-wrap:anywhere}.infoBtn{display:none;width:24px;height:24px;min-width:24px;border-radius:50%;border:1px solid #4b5c72;background:#18212f;color:#b9c9dc;font-size:13px;font-weight:900;align-items:center;justify-content:center;padding:0}.infoBtn.show{display:inline-flex}.problemInfo{display:none;margin-top:7px;padding:8px 9px;border:1px solid #5d4932;border-radius:9px;background:#17130f;color:#e0c7a1;font-size:11px;line-height:1.4}.problemInfo.show{display:block}.state{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:6px;color:#aab5c5}.state .explainable{cursor:pointer;color:#8ee6a8;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}.dot{width:8px;height:8px;border-radius:50%}.dot.pending{background:#ff6574}.dot.inprogress{background:#f1c94d}.dot.explained{background:#4b91ff}.dot.dismissed{background:#778399}.dot.problematic{background:#a66be2}.dot.explaining{background:#42c879}.dot.novelty{background:#ff993d}.detail{font-size:11px;color:#7f8b9c;margin-top:4px}.slot{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:7px;min-width:112px}.slot .action{width:100%}.action{border:1px solid #38465a;background:#18212f;color:#dce7f7;border-radius:10px;padding:8px 10px;font-weight:750;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.action.xsearch{color:#eef5ff;border-color:#3b5878}.action.prepare{border-color:#5576a6;background:#1b2d46;color:#dcecff}.action:disabled{opacity:.55;cursor:default}.action.warn{color:#ffd18b}
@@ -35,7 +35,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
 </header>
 <main>
   <section class="summary">
-    <div><h1>Top 10 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima explicación —</div><div class="workingCount idle" id="workingCount">En elaboración: 0</div></div></div>
+    <div><h1>Top 10 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima explicación —</div><button class="workingCount idle" id="workingCount" type="button">En elaboración: 0</button></div></div>
     <div class="badge" id="quality">—</div>
   </section>
   <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Entradas</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="primary" id="runNow" type="button">▶ Entradas</button></section>
@@ -65,6 +65,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
   <div class="row"><button class="secondary" id="cancelProblemRetry">Cancelar</button><button class="primary" id="sendProblemRetry">Reintentar y elaborar</button></div>
 </div></div>
 <div class="sheet" id="explainedSheet"><div class="panel"><h2 id="explainedTitle">Tendencia explicada</h2><p id="explainedText"></p><div class="row"><button class="primary" id="explainedClose">Cerrar</button></div></div></div>
+<div class="sheet" id="workingSheet"><div class="panel"><h2>En elaboración</h2><p>Estas tendencias están ahora mismo en la cola editorial o siendo reevaluadas.</p><div class="workingItems" id="workingItems"></div><div class="row"><button class="primary" id="workingClose" type="button">Cerrar</button></div></div></div>
 <div class="sheet" id="incidentSheet"><div class="panel"><h2>Diagnóstico de ejecución</h2><p id="incidentSummary">Información técnica de la ejecución.</p><pre class="diag" id="incidentDetails"></pre><div class="row"><button class="secondary" id="incidentClose">Cerrar</button><button class="primary" id="incidentCopy">Copiar diagnóstico</button></div></div></div>
 <div class="toast" id="toast"></div>
 
@@ -299,7 +300,14 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
      for(const name of rel)preparedNamesByGroup[group].add(name);
    }
  }
- const processing=requests.filter(x=>processingStates.has(String(x.status||"")));
+ const processingMap=new Map();
+ for(const req of requests.filter(x=>processingStates.has(String(x.status||"")))){
+   const key=String(req.id||nrm(req.name)||"");
+   const prev=processingMap.get(key);
+   const newer=!prev||Number(req.revision||0)>Number(prev.revision||0)||(Number(req.revision||0)===Number(prev.revision||0)&&String(req.requested_at||"")>String(prev.requested_at||""));
+   if(newer)processingMap.set(key,req);
+ }
+ const processing=[...processingMap.values()];
  const topProcessing=processing.filter(x=>topNames.has(nrm(x.name))&&!preparedNamesByGroup.top.has(nrm(x.name)));
  const radarProcessing=processing.filter(x=>!topNames.has(nrm(x.name))&&Boolean(x.anticipated)&&radarNames.has(nrm(x.name))&&!preparedNamesByGroup.radar.has(nrm(x.name)));
  const exProcessing=processing.filter(x=>!topNames.has(nrm(x.name))&&!(Boolean(x.anticipated)&&radarNames.has(nrm(x.name)))&&!preparedNamesByGroup.ex.has(nrm(x.name)));
@@ -333,7 +341,7 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
    .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
  const sourceTotal=Object.keys(recent.sources||{}).length;
  const sourceProblemCount=Math.max(0,sourceTotal-Number(recent.source_count||0));
- return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,source_total:sourceTotal,source_problem_count:sourceProblemCount,items,upcoming,progress,prepared:preparedItems,explainedRecent,health,editorial_config:editorialConfig||{},editorial_queue:editorialQueue||{items:[]}};
+ return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,source_total:sourceTotal,source_problem_count:sourceProblemCount,items,upcoming,progress,prepared:preparedItems,explainedRecent,elaboratingItems:processing.map(x=>({id:x.id||null,name:x.name||"Tendencia",rank:Number(x.rank||0),status:String(x.status||""),revision:Number(x.revision||0),requested_at:x.requested_at||null,reexplain:Boolean(x.reexplain),rewrite_instruction:x.rewrite_instruction||""})),health,editorial_config:editorialConfig||{},editorial_queue:editorialQueue||{items:[]}};
 }
 function render(){
  if(!model)return;
@@ -345,8 +353,8 @@ function render(){
  quality.textContent=operativas+"/"+total+" fuentes operativas · "+actuales+" actuales · "+problemas+" con problemas · fiabilidad "+rel;
  quality.classList.remove("good","warn","bad");
  quality.classList.add(total>0&&operativas/total>=0.7?"good":total>0&&operativas/total>=0.45?"warn":"bad");
- const elaborating=Math.max(0,Number(model.progress?.tweet_total||0)-Number(model.progress?.tweet_ready||0));
- const working=$("workingCount");working.textContent="En elaboración: "+elaborating;working.classList.toggle("idle",elaborating===0);
+ const elaboratingItems=model.elaboratingItems||[],elaborating=elaboratingItems.length;
+ const working=$("workingCount");working.textContent="En elaboración: "+elaborating;working.classList.toggle("idle",elaborating===0);working.disabled=elaborating===0;working.title=elaborating?"Ver tendencias en elaboración":"";
  const unread=(model.explainedRecent||[]).filter(x=>!x.copied).length;
  const unreadBadge=$("unreadExplainedBadge");
  unreadBadge.textContent=unread>99?"99+":String(unread);
@@ -730,6 +738,23 @@ async function load(silent=false){
   localStorage.setItem("ttendencias-last-model",JSON.stringify(model));render();
  }catch(e){if(model){const h=$("health");if(h){h.textContent="Datos en caché";h.classList.add("bad")}if(!silent)showToast("Mostrando la última copia válida")}else if(!silent)showToast("Datos temporalmente no disponibles")}
 }
+function openWorkingSheet(){
+ const rows=model?.elaboratingItems||[],box=$("workingItems");box.innerHTML="";
+ if(!rows.length)box.innerHTML='<div class="empty">No hay tendencias en elaboración.</div>';
+ else for(const x of rows){
+   const row=document.createElement("div");row.className="workingItem";
+   const title=document.createElement("div");title.className="workingItemName";title.textContent=(x.rank>=1&&x.rank<=20?"TT#"+x.rank+" · ":"")+x.name;
+   const meta=document.createElement("div");meta.className="workingItemMeta";
+   const state=x.reexplain?"Reexplicando":"Elaborando";
+   meta.textContent=state+" · revisión "+x.revision+(x.requested_at?" · "+fmtDate(x.requested_at):"");
+   row.append(title,meta);box.appendChild(row);
+ }
+ $("workingSheet").classList.add("show");
+}
+$("workingCount").onclick=()=>{if((model?.elaboratingItems||[]).length)openWorkingSheet()};
+$("workingClose").onclick=()=>$("workingSheet").classList.remove("show");
+$("workingSheet").addEventListener("click",e=>{if(e.target===$("workingSheet"))$("workingSheet").classList.remove("show")});
+
 $("runNow").onclick=requestRun;
 $("runImages").onclick=requestMainPendingImages;
 $("cancelProblemRetry").onclick=()=>{$("problemRetrySheet").classList.remove("show");problemRetryItem=null};
