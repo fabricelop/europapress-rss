@@ -17797,7 +17797,7 @@
       "id": "41cbc8729c11",
       "name": "tarrasa",
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-02T14:16:33.467Z",
       "rank": 17,
       "with_image": true,
@@ -17811,7 +17811,52 @@
       "requested_together": [
         "tarrasa"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "explained_at": "2026-10-02T16:25:00+02:00",
+      "explanation": "TT#17 tarrasa es tendencia por el tiroteo en Terrassa en el que dos guardias civiles resultaron heridos durante el seguimiento de un grupo de sospechosos; hay tres detenidos y ambos agentes están fuera de peligro.",
+      "closer_text": "",
+      "rank_at_explanation": 17,
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "EFE · 2/10/2026",
+          "url": "https://efe.com/espana/2026-10-02/dos-guardias-civiles-heridos-tiroteo-terrassa-barcelona/"
+        },
+        {
+          "source": "Europa Press · 2/10/2026",
+          "url": "https://www.europapress.es/catalunya/noticia-fuera-peligro-dos-agentes-guardia-civil-heridos-tiroteo-terrassa-barcelona-20261002102836.html"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "TTiTTulares ya tiene publicado el mismo tiroteo; se evita puente duplicado.",
+      "image_strategy": "fallback_only",
+      "disable_ai_image": true,
+      "ai_image_status": "disabled",
+      "image_status": "ready",
+      "image_pending": false,
+      "ai_image_block_reason": "sensitive_event",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "ready",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261002102836_690.jpg",
+        "source": "Europa Press · 2/10/2026",
+        "source_url": "https://www.europapress.es/catalunya/noticia-fuera-peligro-dos-agentes-guardia-civil-heridos-tiroteo-terrassa-barcelona-20261002102836.html",
+        "alt": "Vehículo de la Guardia Civil",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261002102836_690.jpg",
+        "source": "Europa Press · 2/10/2026",
+        "source_url": "https://www.europapress.es/catalunya/noticia-fuera-peligro-dos-agentes-guardia-civil-heridos-tiroteo-terrassa-barcelona-20261002102836.html",
+        "alt": "Vehículo de la Guardia Civil",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "last_attempt_at": "2026-10-02T16:25:00+02:00",
+      "reexplain": false,
+      "rewrite_pending": false
     },
     {
       "id": "da2f20879ae6",
@@ -18076,6 +18121,6 @@
       "auto_queued": false
     }
   ],
-  "updated_at": "2026-10-02T16:24:30+02:00",
+  "updated_at": "2026-10-02T16:25:00+02:00",
   "count": 438
 }
