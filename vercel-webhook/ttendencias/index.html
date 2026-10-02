@@ -474,7 +474,32 @@ function showRunIncidents(s){
  $("incidentDetails").textContent=buildDiagnostic(s);
  $("incidentSheet").classList.add("show")
 }
+function runStateRank(s){
+ const st=String(s?.status||"").toUpperCase(),p=String(s?.phase||"").toLowerCase();
+ if(st==="ERROR"||["DONE","DONE_WITH_INCIDENTS"].includes(st))return 100;
+ if(["closing","finalizing"].includes(p))return 90;
+ if(["verifying","verification"].includes(p))return 80;
+ if(["persisting","outbox"].includes(p))return 70;
+ if(["drafting","redacting","writing","classifying","classification"].includes(p))return 60;
+ if(["investigating","research","refreshing","radar_refresh"].includes(p))return 50;
+ if(p==="chat_launch")return 40;
+ if(p==="pc_ack")return 30;
+ if(st==="RUNNING")return 20;
+ if(st==="REQUESTED"||["preparing","prepare"].includes(p))return 10;
+ return 0
+}
+function shouldRenderRunState(next,prev){
+ if(!prev)return true;
+ const nextId=String(next?.command_id||next?.run_id||""),prevId=String(prev?.command_id||prev?.run_id||"");
+ if(nextId&&prevId&&nextId!==prevId)return true;
+ const nt=Date.parse(next?.updated_at||next?.started_at||next?.requested_at||"");
+ const pt=Date.parse(prev?.updated_at||prev?.started_at||prev?.requested_at||"");
+ const nr=runStateRank(next),pr=runStateRank(prev);
+ if(nr<pr&&Number.isFinite(nt)&&Number.isFinite(pt)&&nt<=pt+5000)return false;
+ return !(nr<pr&&String(next?.status||"").toUpperCase()==="REQUESTED"&&pr>=30)
+}
 function runVisual(s){
+ if(!shouldRenderRunState(s,lastRunTelemetry))return;
  lastRunTelemetry=s;
  const bar=$("runBar"),head=$("runHeadline"),el=$("runState"),btn=$("runNow"),warn=$("runIncident"),prog=$("runProgress"),fill=$("runProgressFill");
  const active=Boolean(s?.active)||["REQUESTED","RUNNING"].includes(String(s?.status||""));
@@ -485,7 +510,9 @@ function runVisual(s){
    const elapsed=s.started_at?runDuration((Date.now()-new Date(s.started_at).getTime())/1000):"";
    const requestedMs=Date.parse(s.requested_at||"");
    const remaining=s.status==="REQUESTED"&&Number.isFinite(requestedMs)?Math.max(0,30-Math.floor((Date.now()-requestedMs)/1000)):null;
-   const liveMessage=remaining!=null?("Esperando al PC para recoger la orden · "+remaining+" s"):s.message;
+   const liveMessage=String(s.phase||"").toLowerCase()==="chat_launch"
+     ?"Esperando inicio editorial"
+     :remaining!=null?("Esperando al PC para recoger la orden · "+remaining+" s"):s.message;
    el.textContent=[s.title,liveMessage,runSource(s.source||s.source_label),elapsed].filter(Boolean).join(" · ")||(s.status==="REQUESTED"?"Esperando al PC":"Ejecución en curso");
    el.className="running";fill.style.width=Math.max(3,Math.min(99,runProgressValue(s)))+"%";
    if(count){warn.hidden=false;warn.textContent="⚠ "+count;warn.onclick=()=>showRunIncidents(s)}
