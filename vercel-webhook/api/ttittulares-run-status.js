@@ -73,7 +73,17 @@ async function readControl(path){
     return JSON.parse(raw||"{}")
   }catch(_){return {}}
 }
-async function readTrigger(){return {doc:await readControl(TRIGGER_PATH)}}
+async function readTrigger(){
+  try{
+    const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+TRIGGER_PATH+"?ref="+encodeURIComponent(TRIGGER_BRANCH),{cache:"no-store"});
+    if(!r.ok)return {doc:await readControl(TRIGGER_PATH)};
+    const f=await r.json();
+    const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+    return {doc:JSON.parse(raw||"{}")}
+  }catch(_){
+    return {doc:await readControl(TRIGGER_PATH)}
+  }
+}
 async function readAck(){return await readControl(ACK_PATH)}
 async function readErrors(){
   try{
