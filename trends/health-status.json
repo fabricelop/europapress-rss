@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-02T16:05:47.713395+00:00",
+  "checked_at": "2026-10-02T18:03:16.767541+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -55,7 +55,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 0.9,
-      "run_id": 37031455924,
+      "run_id": 37044751158,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,29 +75,37 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
+      "ok": false,
       "pending_count": 1,
-      "overdue_count": 0,
-      "oldest_age_minutes": 26.1,
+      "overdue_count": 1,
+      "oldest_age_minutes": 31.0,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "95fdb72636f4",
+          "name": "#BangChanEmpireOfTalent",
+          "status": "preparing",
+          "age_minutes": 31.0
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "tremending-d79633972e47"
+        "95fdb72636f4"
       ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "config TTendencias incompatible con el modo activo"
+    "config TTendencias incompatible con el modo activo",
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 31.0 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 31.0 min | config TTendencias incompatible con el modo activo"
 }
