@@ -88,35 +88,49 @@ if ($remaining.Count -gt 0) {
   throw ("No se pudieron cerrar listeners TTiTTulares anteriores: " + (($remaining | ForEach-Object ProcessId) -join ","))
 }
 
+$log = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
+$logOffset = 0L
+if (Test-Path -LiteralPath $log) {
+  try { $logOffset = (Get-Item -LiteralPath $log).Length } catch {}
+}
+
 $proc = Start-Process -FilePath "powershell.exe" -ArgumentList @(
   "-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-File",$Listener
 ) -WindowStyle Hidden -PassThru
 
 Start-Sleep -Seconds 4
-$proc.Refresh()
-if ($proc.HasExited) {
-  throw "TTiTTulares v13 se cerró al arrancar. ExitCode=$($proc.ExitCode)"
+
+# No confiar en el PID devuelto por Start-Process: en algunos arranques
+# el proceso visible por CIM puede tener otro PID. La autoridad es:
+# 1) exactamente un listener TTiTTulares; 2) ese PID anuncia worker v13
+# en las líneas NUEVAS del log de esta instalación.
+$active = @(Get-TTiTTularesListeners)
+if ($active.Count -ne 1) {
+  $ids = ($active | ForEach-Object { $_.ProcessId }) -join ","
+  throw "Exclusividad TTiTTulares fallida: se esperaba 1 listener y se ven $($active.Count). PIDs: $ids"
 }
 
-$log = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
-$started = $false
+$activePid = [int]$active[0].ProcessId
+$newLog = ""
 if (Test-Path -LiteralPath $log) {
-  $tail = @(Get-Content -LiteralPath $log -Tail 30 -ErrorAction SilentlyContinue)
-  $started = (($tail -join "`n") -match "LISTENER START worker=ttittulares-dedicated-v13 pid=$($proc.Id)")
-}
-if (-not $started) {
-  Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
-  throw "No se confirmó LISTENER START de v13."
+  try {
+    $fs = [System.IO.File]::Open($log,[System.IO.FileMode]::Open,[System.IO.FileAccess]::Read,[System.IO.FileShare]::ReadWrite)
+    try {
+      if ($logOffset -gt $fs.Length) { $logOffset = 0 }
+      [void]$fs.Seek($logOffset,[System.IO.SeekOrigin]::Begin)
+      $sr = New-Object System.IO.StreamReader($fs,[System.Text.Encoding]::UTF8,$true,4096,$true)
+      try { $newLog = $sr.ReadToEnd() } finally { $sr.Dispose() }
+    } finally { $fs.Dispose() }
+  } catch {}
 }
 
-$active = Get-TTiTTularesListeners
-if ($active.Count -ne 1 -or [int]$active[0].ProcessId -ne [int]$proc.Id) {
-  Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
-  throw ("Exclusividad TTiTTulares fallida. PIDs visibles: " + (($active | ForEach-Object ProcessId) -join ","))
+if ($newLog -notmatch ("LISTENER START worker=ttittulares-dedicated-v13 pid=" + [regex]::Escape([string]$activePid))) {
+  try { Stop-Process -Id $activePid -Force -ErrorAction SilentlyContinue } catch {}
+  throw "Hay un único listener TTiTTulares (PID $activePid), pero no confirmó worker v13 en el log nuevo."
 }
 
 Write-Host "TTITTULARES V13 INSTALADO Y ACTIVO" -ForegroundColor Green
-Write-Host "PID: $($proc.Id)"
+Write-Host "PID: $activePid"
 Write-Host "Listener fijado a commit: 589d18cd258d879ec02146abafdbbc4eae440bf4"
 Write-Host "TTendencias: NO MODIFICADO" -ForegroundColor Green
 Write-Host "Ejecutar.js: validado, NO MODIFICADO" -ForegroundColor Green
