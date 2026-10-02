@@ -39,20 +39,29 @@ async function gh(url,options={}){
     ...(options.headers||{})
   }})
 }
+let commentsCache={at:0,items:[]};
 async function comments(){
-  const since=new Date(Date.now()-24*60*60*1000).toISOString();
-  let url=`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100&since=${encodeURIComponent(since)}`;
-  const items=[];
-  for(let page=0;page<10&&url;page++){
-    const r=await gh(url);
-    if(!r.ok)throw new Error(`GitHub comments: ${r.status} ${await r.text()}`);
-    items.push(...await r.json());
-    const next=(r.headers.get("link")||"").match(/<([^>]+)>;\s*rel="next"/);
-    url=next?next[1]:null
-  }
-  return items
+  const now=Date.now();
+  if(now-commentsCache.at<30000)return commentsCache.items;
+  const since=new Date(now-12*60*60*1000).toISOString();
+  try{
+    const r=await gh(`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100&since=${encodeURIComponent(since)}`);
+    if(!r.ok)return commentsCache.items;
+    const items=await r.json();
+    commentsCache={at:now,items};
+    return items
+  }catch(_){return commentsCache.items}
 }
 async function triggerReady(){return true}
+async function readControlRaw(path){
+  try{
+    const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
+    const u=`https://raw.githubusercontent.com/${REPO}/${encodeURIComponent(TRIGGER_BRANCH)}/${clean}?t=${Date.now()}`;
+    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttittulares-run-read"}});
+    if(!r.ok)return null;
+    return JSON.parse(await r.text()||"{}")
+  }catch(_){return null}
+}
 async function readTrigger(){
   const u=`https://api.github.com/repos/${REPO}/contents/${TRIGGER_PATH}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`;
   const r=await gh(u);
@@ -125,7 +134,7 @@ async function requestPcAck(req,res){
   const worker_id=String(req.body?.worker_id||"legacy-shared-listener").trim().slice(0,120)||"legacy-shared-listener";
   const detail=String(req.body?.detail||"").trim().slice(0,1000);
   if(!command_id||!["picked_up","launched","failed"].includes(stage))return res.status(400).json({ok:false,error:"Ack no válido"});
-  const {doc:trigger}=await readTrigger();
+  const trigger=(await readControlRaw(TRIGGER_PATH))||(await readTrigger()).doc;
   if(String(trigger.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es el actual"});
   const requested_at=String(trigger.requested_at||"");
   const age=Date.now()-stamp(requested_at);
@@ -226,7 +235,7 @@ export default async function handler(req,res){
   try{
     const task=rawTask==="images"?"images":"editorial";
     if(task==="images")return await requestImageRun(req,res);
-    const [{doc:current,sha},items,ackState]=await Promise.all([readTrigger(),comments(),readControlJson(ACK_PATH)]);
+    const [{doc:current,sha},items,ackDoc]=await Promise.all([readTrigger(),comments(),readControlRaw(ACK_PATH)]);\n    const ackState={doc:ackDoc||{}};
     if(activeTrace(items))return res.status(409).json({ok:false,error:"run_in_progress"});
     const currentId=String(current.command_id||"").trim(),currentRequested=String(current.requested_at||"").trim();
     if(currentId&&currentRequested){
