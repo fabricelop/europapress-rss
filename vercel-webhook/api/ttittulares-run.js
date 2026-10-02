@@ -1,3 +1,4 @@
+// deploy-sync: ttittulares picked_up 45s
 import crypto from "node:crypto";
 
 const CONTROL_TOKEN_HASHES=[
