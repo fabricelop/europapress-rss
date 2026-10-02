@@ -24,6 +24,12 @@ if ($parseErrors.Count -gt 0) {
   throw "El listener dedicado descargado no es ejecutable."
 }
 
+$listenerText = Get-Content -LiteralPath $Listener -Raw -Encoding UTF8
+if (-not $listenerText.Contains('$WorkerId = "ttittulares-dedicated-v2"') -or
+    -not $listenerText.Contains('PROCESS STARTED direct-node')) {
+  throw "La descarga no contiene el listener TTiTTulares dedicado v2 con lanzamiento Node directo."
+}
+
 if (-not (Test-Path (Join-Path $BaseDir "LanzarOculto.vbs"))) {
   throw "No se encuentra C:\TTiTTulares\LanzarOculto.vbs. No se ha tocado TTiTTulares."
 }
@@ -79,7 +85,7 @@ Write-Host "PID: $($proc.Id)"
 Write-Host "Listener: $Listener"
 Write-Host "Inicio con Windows: $StartupCmd"
 Write-Host "Log: C:\TTiTTulares\ttittulares-mobile-trigger.log"
-Write-Host "Ejecutar.js: confirmación real de mensaje + inicio de respuesta activada."
+Write-Host "Entradas: Node directo + marcador por command_id + confirmación real activados."
 Write-Host "No se ha detenido ni modificado el listener compartido ni las tareas programadas."
 Write-Host ""
 Write-Host "--- DIAGNOSTICO TTITTULARES ---" -ForegroundColor Cyan
