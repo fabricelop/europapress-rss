@@ -114,10 +114,10 @@ jobs:
           appjs=Path("ttittulares/app.js").read_text(encoding="utf-8")
           assert "Gag IA" in appjs and "Archivo / fallback" in appjs
           assert "🔁 Rehacer" in appjs and "🖼️ Usar archivo/fallback" in appjs
-          assert "Gag IA" in html and "Archivo / fallback" in html
+          assert "✨ Generar IA" in html and "🖼️ Copiar imagen archivo" in html
           assert 'provider==="chat-imagegen"' in html and 'origin==="executing_chat"' in html
-          assert "🔁 Rehacer" in html and "🖼️ Usar archivo/fallback" in html
-          assert "imageInFlight=false" in html, "La imagen no debe bloquear la publicación"
+          assert "🔁 Rehacer remate + IA" in html
+          assert "const imageInFlight=" in html and "imagen pendiente cancelada" in html, "La imagen no debe bloquear la publicación"
           assert manifest["start_url"] == "/ttittulares/"
           prompt=Path("ttittulares/editorial-run-prompt.md").read_text(encoding="utf-8")
           assert "misma conversación ejecutora" in prompt and "provider:\"chat-imagegen\"" in prompt
