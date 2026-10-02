@@ -11191,9 +11191,9 @@
       ],
       "news_disposition": "ignored",
       "news_note": "Explicación factual de la tendencia; no abre entrada paralela en TTiTTulares.",
-      "disable_ai_image": true,
-      "image_strategy": "existing_web_image",
-      "ai_image_status": "disabled",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
       "fallback_image_status": "ready",
       "fallback_image_source": {
         "source": "Fundación Caja de Burgos",
@@ -11220,7 +11220,10 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback"
+      "image_choice": "fallback",
+      "ai_image_regenerate_requested": true,
+      "ai_image_regenerate_requested_at": "2026-10-02T05:03:14.462Z",
+      "ai_image_regenerate_request_version": 1
     },
     {
       "id": "ae38b5339403",
@@ -11538,6 +11541,6 @@
       "image_failure_reason": "Fuente de archivo localizada; la imagen IA queda fuera de esta ejecución editorial."
     }
   ],
-  "updated_at": "2026-10-02T04:58:37.360Z",
+  "updated_at": "2026-10-02T05:03:14.462Z",
   "count": 392
 }
