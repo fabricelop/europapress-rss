@@ -47,9 +47,27 @@ if ($patchParseErrors.Count -gt 0) {
   throw "El parche de Ejecutar.js tiene errores de sintaxis y no se aplicará."
 }
 
-& $Patch
+try {
+  & $Patch
+} catch {
+  throw "No se pudo reforzar Ejecutar.js: $($_.Exception.Message)"
+}
+
+$runnerPath = Join-Path $BaseDir "Ejecutar.js"
+$runnerText = Get-Content -LiteralPath $runnerPath -Raw -Encoding UTF8
+if (-not $runnerText.Contains("TT_RESPONSE_CONFIRM_V2")) {
+  throw "Ejecutar.js no contiene TT_RESPONSE_CONFIRM_V2 después del parche."
+}
+
+$node = Get-Command node.exe -ErrorAction SilentlyContinue
+if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
+if (-not $node) {
+  throw "No encuentro node.exe para validar Ejecutar.js."
+}
+
+& $node.Source --check $runnerPath
 if ($LASTEXITCODE -ne 0) {
-  throw "No se pudo reforzar Ejecutar.js."
+  throw "Ejecutar.js no supera node --check después del parche."
 }
 
 $cmd = '@echo off' + [Environment]::NewLine +
