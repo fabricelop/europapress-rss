@@ -72,7 +72,7 @@ Start-Sleep -Seconds 4
 
 $active=@(Get-TTiTTularesListeners)
 if($active.Count -ne 1){throw "Se esperaba exactamente un listener TTiTTulares v15."}
-$pid=[int]$active[0].ProcessId
+$listenerPid=[int]$active[0].ProcessId
 
 $newLog=""
 if(Test-Path -LiteralPath $log){
@@ -84,13 +84,13 @@ if(Test-Path -LiteralPath $log){
     try{$newLog=$sr.ReadToEnd()}finally{$sr.Dispose()}
   }finally{$fs.Dispose()}
 }
-if($newLog -notmatch ("LISTENER START worker=ttittulares-dedicated-v15 pid="+[regex]::Escape([string]$pid))){
-  try{Stop-Process -Id $pid -Force -ErrorAction SilentlyContinue}catch{}
+if($newLog -notmatch ("LISTENER START worker=ttittulares-dedicated-v15 pid="+[regex]::Escape([string]$listenerPid))){
+  try{Stop-Process -Id $listenerPid -Force -ErrorAction SilentlyContinue}catch{}
   throw "No se confirmó worker v15 en el log nuevo."
 }
 
 Write-Host "TTITTULARES V15 INSTALADO Y ACTIVO" -ForegroundColor Green
-Write-Host "PID: $pid"
+Write-Host "PID: $listenerPid"
 Write-Host "Invocación editorial: node Ejecutar.js titulares --enviar"
 Write-Host "Mensaje editorial: Ejecuta TTiTTulares"
 Write-Host "TTendencias: NO MODIFICADO" -ForegroundColor Green
