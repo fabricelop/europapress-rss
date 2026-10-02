@@ -29,6 +29,7 @@ const PROCESSING_STALE_MS=5*60*1000;
 const START_ACK_MS=30*1000;
 const RUNTIME_PATH="trends/editorial-runtime.json";
 const EXPLAINED_PATH="trends/telegram-manual-explained.json";
+const REQUESTS_PATH="trends/requests.json";
 const EXPLAINED_COPY_STATE_PATH="trends/explained-copy-state.json";
 const MAIN_BRANCH="main";
 
@@ -186,6 +187,43 @@ function persistedExplanationFallback(doc){
     message:"Recuperada desde la persistencia editorial verificada en main."
   });
 }
+function persistedRequestsFallback(doc,request){
+  const reqAt=stamp(request?.requested_at);
+  if(!reqAt)return null;
+  const rows=(doc?.requests||[]).filter(x=>{
+    const status=String(x?.status||"").toLowerCase();
+    if(!["explained","dismissed","problematic"].includes(status))return false;
+    const at=stamp(x?.explained_at||x?.dismissed_at||x?.updated_at||x?.problematic_at);
+    return at>=reqAt;
+  });
+  if(!rows.length)return null;
+  rows.sort((a,b)=>stamp(a?.explained_at||a?.dismissed_at||a?.updated_at||a?.problematic_at)-stamp(b?.explained_at||b?.dismissed_at||b?.updated_at||b?.problematic_at));
+  const latestAt=rows.at(-1)?.explained_at||rows.at(-1)?.dismissed_at||rows.at(-1)?.updated_at||rows.at(-1)?.problematic_at;
+  const explained=rows.filter(x=>String(x?.status||"").toLowerCase()==="explained");
+  const dismissed=rows.filter(x=>String(x?.status||"").toLowerCase()==="dismissed");
+  const problematic=rows.filter(x=>String(x?.status||"").toLowerCase()==="problematic");
+  return normalizeTrace({
+    run_id:"requests-"+String(request?.command_id||latestAt).replace(/[^0-9A-Za-z_-]/g,"").slice(0,40),
+    source:"chat",
+    status:problematic.length?"DONE_WITH_INCIDENTS":"DONE",
+    phase:"closing",
+    started_at:request?.requested_at||latestAt,
+    updated_at:latestAt,
+    finished_at:latestAt,
+    current:rows.length,
+    total:rows.length,
+    summary:{
+      trends_processed:rows.length,
+      trends_explained:explained.length,
+      trends_dismissed:dismissed.length,
+      trends_problematic:problematic.length
+    },
+    incident_count:problematic.length,
+    incidents:problematic.map(x=>({trend_id:x.id||null,title:x.name||null,reason:x.problem_reason||"problematic"})),
+    message:"Recuperada desde requests.json: hubo actividad editorial persistida tras esta orden."
+  });
+}
+
 function manualFallback(items,request,ack){
   const command_id=String(request.command_id||"").trim();
   const requested_at=String(request.requested_at||"").trim();
@@ -202,7 +240,7 @@ function manualFallback(items,request,ack){
   const launchedAt=ackMatches?(ack?.launched_at||null):null;
   const noPickup=rawStatus==="REQUESTED"&&!started_at&&!ackMatches&&Date.now()-stamp(requested_at)>=START_ACK_MS;
   const pickupButNoLaunch=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="picked_up"&&Date.now()-stamp(pickedAt)>=START_ACK_MS;
-  const launchedButNoEditorial=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="launched"&&Date.now()-stamp(launchedAt||ack?.updated_at)>=60000;
+  const launchedButNoEditorial=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="launched"&&Date.now()-stamp(launchedAt||ack?.updated_at)>=5*60*1000;
   const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(lastActivity)>=STALE_MS;
 
   let status=rawStatus,phase=status==="REQUESTED"?"preparing":status==="RUNNING"?"running":status==="DONE"?"closing":"error";
@@ -226,7 +264,7 @@ function manualFallback(items,request,ack){
       :pickupButNoLaunch
         ?"El PC recogió la orden, pero no pudo arrancar el proceso local en 30 segundos."
         :launchedButNoEditorial
-          ?"El PC abrió ChatGPT, pero no apareció ninguna ejecución editorial en 60 segundos."
+          ?"El PC abrió ChatGPT, pero no apareció ninguna actividad editorial en 5 minutos."
           :"La ejecución no actualiza su estado desde hace más de 20 minutos.";
   }
 
@@ -235,7 +273,7 @@ function manualFallback(items,request,ack){
     :pickupButNoLaunch
       ?new Date(stamp(pickedAt)+START_ACK_MS).toISOString()
       :launchedButNoEditorial
-        ?new Date(stamp(launchedAt||ack?.updated_at)+60000).toISOString()
+        ?new Date(stamp(launchedAt||ack?.updated_at)+5*60*1000).toISOString()
         :staleRunning?new Date().toISOString()
       :(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
 
@@ -290,8 +328,8 @@ export default async function handler(req,res){
         target_id:id,name,revision:rev,explained_at:row.explained_at||null
       });
     }
-    const [enabled,items,{doc:request},ack,runtimeDoc,explainedDoc]=await Promise.all([
-      triggerReady(),comments(),readTrigger(),readAck(),readMainJson(RUNTIME_PATH),readMainJson(EXPLAINED_PATH)
+    const [enabled,items,{doc:request},ack,runtimeDoc,explainedDoc,requestsDoc]=await Promise.all([
+      triggerReady(),comments(),readTrigger(),readAck(),readMainJson(RUNTIME_PATH),readMainJson(EXPLAINED_PATH),readMainJson(REQUESTS_PATH)
     ]);
     const traces=items.map(traceOf).filter(Boolean).sort((a,b)=>stamp(a.updated_at||a.comment_updated_at)-stamp(b.updated_at||b.comment_updated_at));
     let latest=traces.length?normalizeTrace(traces.at(-1)):null;
@@ -336,7 +374,9 @@ export default async function handler(req,res){
     if(fallback&&terminalStatus(fallback.status))terminal.push(fallback);
     const runtime=runtimeFallback(runtimeDoc);
     const persisted=persistedExplanationFallback(explainedDoc);
+    const persistedRequests=persistedRequestsFallback(requestsDoc,request);
     if(runtime)terminal.push(runtime);
+    if(persistedRequests)terminal.push(persistedRequests);
     // El "último run" debe representar la ejecución más reciente iniciada/solicitada,
     // no el comentario terminal actualizado más tarde. Un activador antiguo puede cerrarse
     // con ERROR mucho después y no debe ocultar una ejecución real posterior.
