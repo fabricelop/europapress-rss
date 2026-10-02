@@ -39,6 +39,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
     <div class="badge" id="quality">—</div>
   </section>
   <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="primary" id="runNow" type="button" hidden style="display:none!important" aria-hidden="true" tabindex="-1">▶ Entradas</button></section>
+  <section class="runbar" id="imageBar"><div class="runmain"><div class="runline"><strong id="imageHeadline">Imágenes IA</strong></div><span id="imageState" class="done">Marca tendencias en Pendientes para crear sus gags.</span></div><button class="primary" id="runImages" type="button" disabled>✨ Imágenes</button></section>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
   <section class="radarBlock" id="radarBlock">
     <div class="radarHead"><div><h2>Próximas tendencias</h2><div class="meta">Señales todavía fuera del Top 10</div></div><div class="radarHint">Cruce social + TTiTTulares</div></div>
@@ -92,7 +93,10 @@ function updateGithubRate(rate){
 }
 function loadLocalJson(key){try{return JSON.parse(localStorage.getItem(key)||"null")}catch(_){return null}}
 const ARCHIVED_LOCAL_KEY="ttendencias-explicadas-archived-v1";
+const IMAGE_SELECTED_KEY="ttendencias-image-selected-v1";
 function localArchived(){try{return new Set(JSON.parse(localStorage.getItem(ARCHIVED_LOCAL_KEY)||"[]"))}catch(_){return new Set()}}
+function mainSelectedImageKeys(){try{return new Set(JSON.parse(localStorage.getItem(IMAGE_SELECTED_KEY)||"[]"))}catch(_){return new Set()}}
+function mainImageSelectionKey(x){return String(x?.id||x?.name||"")+":r"+String(Number(x?.revision||0))}
 let model=loadLocalJson(DATA_CACHE_KEY),busy=new Set(),runPoll=null,problemRetryItem=null,imageRuns=new Map(),imageRunPoll=null;
 let uiInteractionVersion=0,uiHoldUntil=0,passiveRefreshTimer=null;
 function markUiInteraction(){uiInteractionVersion++;uiHoldUntil=Math.max(uiHoldUntil,Date.now()+1400)}
@@ -625,7 +629,9 @@ function mainChatAi(image){
 }
 function mainExplicitAiBlockReason(x){
  if(!x||x.tremending_origin)return "tremending";
- return String(x.ai_image_block_reason||x.image_block_reason||"").trim()
+ const reason=String(x.ai_image_block_reason||x.image_block_reason||"").trim().toLowerCase();
+ if(["political_actor","political_context","safety_sensitive_weather"].includes(reason))return "";
+ return reason
 }
 function mainAiEligible(x){
  if(!x||x.copied||x.tremending_origin||!String(x.id||""))return false;
@@ -644,10 +650,10 @@ function mainImageRunActive(run){
  return ["RUNNING","GENERATING","PERSISTING"].includes(st)
 }
 function mainPendingImages(){
+ const selected=mainSelectedImageKeys();
  return (model?.explainedRecent||[]).filter(x=>{
-   if(!mainAiEligible(x))return false;
+   if(!selected.has(mainImageSelectionKey(x))||!mainAiEligible(x))return false;
    const ai=mainChatAi(x.ai_image)?x.ai_image:{},hasAi=Boolean(String(ai.url||""));
-   if(x.ai_image_regenerate_requested)return true;
    return !hasAi
  })
 }
@@ -657,30 +663,20 @@ function updateMainImageControl(){
  const pending=items.filter(x=>!mainImageRunActive(imageRuns.get(String(x.id||"")))).length;
  const btn=$("runImages"),head=$("imageHeadline"),state=$("imageState"),bar=$("imageBar");
  if(!btn||!head||!state)return;
- btn.textContent="✨ Imágenes IA"+(pending?" ("+pending+")":"");
+ btn.textContent="✨ Imágenes"+(pending?" ("+pending+")":"");
  btn.disabled=pending===0;
  head.textContent=active?("Imágenes IA · "+active+" en curso"):"Imágenes IA";
- state.textContent=active?(active+" en ejecución · "+pending+" en cola · máximo 4 simultáneas"):(pending?pending+" pendiente"+(pending===1?"":"s")+" de generar o reintentar":"Sin imágenes IA pendientes");
+ state.textContent=active
+   ? active+" en ejecución · "+pending+" seleccionada"+(pending===1?"":"s")+" por lanzar"
+   : pending
+     ? pending+" tendencia"+(pending===1?"":"s")+" marcada"+(pending===1?"":"s")+" en Pendientes"
+     : "Marca tendencias en Pendientes para crear sus gags.";
  state.className=active?"running":pending?"running":"done";
  if(bar)bar.classList.toggle("active",active>0)
 }
 async function requestMainImageRun(x){
  const id=String(x.id||"");if(!id)throw new Error("La tendencia no tiene id");
  if(mainImageRunActive(imageRuns.get(id)))return false;
- const ai=mainChatAi(x.ai_image)?x.ai_image:{};
- const hasAi=Boolean(String(ai.url||""));
- if(!hasAi&&!x.ai_image_regenerate_requested){
-   const controlToken=localStorage.getItem("ttendencias-control-token")||"";
-   if(!controlToken)throw new Error("Guarda primero el token de control desde Ajustes.");
-   const rr=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+controlToken},body:JSON.stringify({action:"regenerate-image",names:[x.name||x.display_name||""]})});
-   const rd=await rr.json().catch(()=>({}));
-   if(!rr.ok||!rd?.ok)throw new Error(rd?.error||"No se pudo preparar la imagen IA.");
-   x.ai_image_regenerate_requested=true;
-   x.disable_ai_image=false;
-   x.with_image=true;
-   x.image_strategy="ai_plus_fallback";
-   x.ai_image_status="pending";
- }
  const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:JSON.stringify({
    task:"images",target_id:id,id,target_name:x.name||x.display_name||"Tendencia",revision:Number(x.revision||0)
  })});
@@ -693,8 +689,8 @@ async function requestMainImageRun(x){
 async function requestMainPendingImages(){
  if(!token()){$("settingsBtn").click();showToast("Guarda primero el acceso");return}
  const items=mainPendingImages().filter(x=>!mainImageRunActive(imageRuns.get(String(x.id||""))));
- if(!items.length){showToast("No hay imágenes IA pendientes");return}
- if(!confirm("¿Lanzar "+items.length+" imagen"+(items.length===1?"":"es")+" IA? Se abrirán chats independientes y hasta 4 generarán en paralelo."))return;
+ if(!items.length){showToast("No hay tendencias marcadas para imagen IA");return}
+ if(!confirm("¿Generar gag IA para "+items.length+" tendencia"+(items.length===1?"":"s")+" marcada"+(items.length===1?"":"s")+"?"))return;
  $("runImages").disabled=true;let ok=0,errors=0;
  for(const x of items){try{if(await requestMainImageRun(x))ok++}catch(_){errors++}}
  updateMainImageControl();
@@ -799,6 +795,7 @@ function openWorkingSheet(){
  }
  $("workingSheet").classList.add("show");
 }
+const runImagesShortcut=$("runImages");if(runImagesShortcut)runImagesShortcut.onclick=requestMainPendingImages;
 $("workingCount").onclick=()=>{if((model?.elaboratingItems||[]).length)openWorkingSheet()};
 $("workingClose").onclick=()=>$("workingSheet").classList.remove("show");
 $("workingSheet").addEventListener("click",e=>{if(e.target===$("workingSheet"))$("workingSheet").classList.remove("show")});
