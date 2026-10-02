@@ -78,13 +78,34 @@ $cmd = '@echo off' + [Environment]::NewLine +
   'start "" powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $Listener + '"'
 Set-Content -LiteralPath $StartupCmd -Value $cmd -Encoding ASCII
 
-# Solo mata una instancia anterior DEL LISTENER DEDICADO.
-Get-CimInstance Win32_Process -Filter "Name = 'powershell.exe'" |
-  Where-Object { $_.CommandLine -like "*TTiTTularesDedicatedListener.ps1*" -or $_.CommandLine -like "*TTiTTularesMobileChatTriggerListener.ps1*" } |
-  ForEach-Object { try { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue } catch {} }
+# Exclusividad fuerte SOLO para el listener dedicado de TTiTTulares.
+# TTendencias y cualquier otro proceso quedan fuera por nombre de script.
+function Get-TTiTTularesListenerProcesses {
+  return @(Get-CimInstance Win32_Process -Filter "Name = 'powershell.exe'" |
+    Where-Object {
+      $_.CommandLine -like "*TTiTTularesDedicatedListener.ps1*" -or
+      $_.CommandLine -like "*TTiTTularesMobileChatTriggerListener.ps1*"
+    })
+}
 
-# Arranque desacoplado: no redirigir stdout/stderr del proceso permanente,
-# porque esos pipes pueden mantener abierta la sesión instaladora.
+$oldListeners = Get-TTiTTularesListenerProcesses
+foreach ($p in $oldListeners) {
+  try { Stop-Process -Id $p.ProcessId -Force -ErrorAction Stop }
+  catch { Write-Host ("AVISO: no se pudo detener PID " + $p.ProcessId + ": " + $_.Exception.Message) -ForegroundColor Yellow }
+}
+
+$stopDeadline = (Get-Date).AddSeconds(6)
+do {
+  Start-Sleep -Milliseconds 250
+  $remainingListeners = Get-TTiTTularesListenerProcesses
+} while ($remainingListeners.Count -gt 0 -and (Get-Date) -lt $stopDeadline)
+
+if ($remainingListeners.Count -gt 0) {
+  $ids = ($remainingListeners | ForEach-Object { $_.ProcessId }) -join ","
+  throw "Quedan listeners TTiTTulares antiguos activos (PID: $ids). No se arranca v13 para evitar duplicados."
+}
+
+# Arranque desacoplado: no redirigir stdout/stderr del proceso permanente.
 $proc = Start-Process -FilePath "powershell.exe" -ArgumentList @(
   "-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-File",$Listener
 ) -WindowStyle Hidden -PassThru
@@ -102,7 +123,14 @@ if (Test-Path -LiteralPath $listenerLog) {
   $started = (($tail -join "`n") -match "LISTENER START worker=ttittulares-dedicated-v13 pid=$($proc.Id)")
 }
 if (-not $started) {
-  Write-Host "AVISO: proceso activo pero aún no aparece su línea LISTENER START en el log." -ForegroundColor Yellow
+  throw "El proceso arrancó pero no se confirmó LISTENER START de v13 en el log."
+}
+
+$activeListeners = Get-TTiTTularesListenerProcesses
+if ($activeListeners.Count -ne 1 -or [int]$activeListeners[0].ProcessId -ne [int]$proc.Id) {
+  $ids = ($activeListeners | ForEach-Object { $_.ProcessId }) -join ","
+  try { Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue } catch {}
+  throw "Exclusividad TTiTTulares fallida. Esperaba solo PID $($proc.Id) y veo: $ids"
 }
 
 Write-Host "TTITTULARES LISTENER INSTALADO Y ACTIVO" -ForegroundColor Green
