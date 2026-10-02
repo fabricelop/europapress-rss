@@ -100,10 +100,10 @@ async function readMainJson(path){
 }
 async function imageEligibility(targetId){
   const [explained,copyState]=await Promise.all([readMainJson(EXPLAINED_PATH),readMainJson(EXPLAINED_COPY_STATE_PATH)]);
-  const rows=(explained.items||[]).filter(x=>String(x.id||"")===String(targetId)&&x.status!=="grouped"&&String(x.explanation||"").trim());
+  const rows=(explained.items||[]).filter(x=>String(x.id||"")===String(targetId));
   rows.sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||String(b.explained_at||"").localeCompare(String(a.explained_at||"")));
   const row=rows[0]||null;
-  if(!row)return {eligible:false,reason:"not_pending_explained"};
+  if(!row||row.status==="grouped"||!String(row.explanation||"").trim())return {eligible:false,reason:"not_pending_explained",row};
   const name=String(row.name||"").trim(),rev=Number(row.revision||0);
   const archived=(copyState.items||[]).some(x=>Number(x.revision||0)===rev&&Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase()));
   const blockReason=String(row.ai_image_block_reason||row.image_block_reason||"").trim().toLowerCase();
@@ -270,11 +270,13 @@ async function requestImagePcAck(req,res){
     if(job.pc_upload_secret_hash&&String(job.pc_upload_secret_hash)!==uploadHash)return res.status(409).json({ok:false,error:"job ya reclamado con otro secreto"});
     job.pc_upload_secret_hash=uploadHash;
     const eligibility=await imageEligibility(target_id);
-    if(!eligibility.eligible){
+    const revisionChanged=Boolean(eligibility.row)&&Number(eligibility.row.revision||0)!==Number(job.revision||0);
+    if(!eligibility.eligible||revisionChanged){
       const now=new Date().toISOString();
-      const cancelled={...job,status:"CANCELLED",phase:"stale_target",updated_at:now,finished_at:now,pc_worker_id:worker_id,message:"Cancelado antes de abrir chat: "+eligibility.reason};
+      const staleReason=revisionChanged?"revision_changed":eligibility.reason;
+      const cancelled={...job,status:"CANCELLED",phase:"stale_target",updated_at:now,finished_at:now,pc_worker_id:worker_id,message:"Cancelado antes de abrir chat: "+staleReason};
       await writeControlJson(path,cancelled,existing.sha,"Cancelar imagen IA obsoleta TTendencias "+target_id+" "+command_id);
-      return res.status(409).json({ok:false,error:"stale_target",reason:eligibility.reason,status:"CANCELLED",target_id,command_id})
+      return res.status(409).json({ok:false,error:"stale_target",reason:staleReason,status:"CANCELLED",target_id,command_id})
     }
   }
   const now=new Date().toISOString();
@@ -333,7 +335,8 @@ async function requestImageUpload(req,res){
   if(!validUploadSecret(job,upload_secret))return res.status(401).json({ok:false,error:"Secreto de imagen no válido"});
   if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase()))return res.status(409).json({ok:false,error:"job terminal",status:job.status});
   const eligible=await imageEligibility(target_id);
-  if(!eligible.eligible)return res.status(409).json({ok:false,error:"target_no_elegible",reason:eligible.reason});
+  const revisionChanged=Boolean(eligible.row)&&Number(eligible.row.revision||0)!==Number(job.revision||0);
+  if(!eligible.eligible||revisionChanged)return res.status(409).json({ok:false,error:"target_no_elegible",reason:revisionChanged?"revision_changed":eligible.reason});
   const m=data.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
   if(!m)return res.status(400).json({ok:false,error:"Formato de raster no admitido"});
   const buf=Buffer.from(m[2],"base64");
