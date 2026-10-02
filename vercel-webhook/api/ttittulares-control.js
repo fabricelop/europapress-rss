@@ -656,7 +656,7 @@ export default async function handler(req,res){
       if(String(req.query?.view||"")==="image-proxy")return await proxyPreparedImage(req.query?.url,res);
       const [prepared,status,config,queue,events,decisions,manualArchive,trendCandidates,remateRatings,tremending]=await Promise.all([
         readJson(PREPARED),readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
-        readPublicJson(PROCESSING),readPublicJson(EVENTS),readJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(TREND_CANDIDATES),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
+        readJson(PROCESSING),readPublicJson(EVENTS),readJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(TREND_CANDIDATES),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const closedIds=new Set((decisions.doc?.items||[])
