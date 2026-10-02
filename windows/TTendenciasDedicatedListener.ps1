@@ -17,7 +17,7 @@ $ImageIndexUrl = "$StatusBase/api/ttendencias-run-status?view=image-index"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
 
-$WorkerId = "ttendencias-dedicated-v9"
+$WorkerId = "ttendencias-dedicated-v10"
 $PollSeconds = 5
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
