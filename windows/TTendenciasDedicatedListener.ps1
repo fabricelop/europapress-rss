@@ -18,7 +18,7 @@ $RunUrl = "$StatusBase/api/ttendencias-run"
 
 $WorkerId = "ttendencias-dedicated-v2"
 $PollSeconds = 5
-$LaunchConfirmSeconds = 30
+$LaunchConfirmSeconds = 45
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
 $MaxParallelImageChats = 4
@@ -197,20 +197,17 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$Expec
     if ($Message) {
       $bytes = [System.Text.Encoding]::UTF8.GetBytes($Message)
       $env:TT_CHAT_MESSAGE_B64 = [Convert]::ToBase64String($bytes)
-
-      # Para prompts personalizados (imágenes) evitar el salto por WScript:
-      # lanzar Node directamente garantiza la herencia de TT_CHAT_MESSAGE_B64.
-      $node = Get-Command node.exe -ErrorAction SilentlyContinue
-      if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
-      if (-not $node) { throw "Node no disponible para lanzar chat de imagen" }
-
-      Start-Process -FilePath $node.Source -ArgumentList @($Runner,"tendencias") -WindowStyle Hidden | Out-Null
-      Write-Log "PROCESS STARTED direct-node :: $Reason marker=$ExpectedMarker"
     } else {
+      # Editorial: Ejecutar.js usará su mensaje por defecto "Ejecuta TTendencias".
       Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue
-      Start-Process -FilePath "$env:WINDIR\System32\wscript.exe" -ArgumentList @($Launcher,"tendencias") -WindowStyle Hidden | Out-Null
-      Write-Log "PROCESS STARTED wscript :: $Reason"
     }
+
+    $node = Get-Command node.exe -ErrorAction SilentlyContinue
+    if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
+    if (-not $node) { throw "Node no disponible para lanzar TTendencias" }
+
+    Start-Process -FilePath $node.Source -ArgumentList @($Runner,"tendencias") -WindowStyle Hidden | Out-Null
+    Write-Log "PROCESS STARTED direct-node :: $Reason marker=$ExpectedMarker"
   } finally {
     if ($null -eq $old) { Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue }
     else { $env:TT_CHAT_MESSAGE_B64 = $old }
