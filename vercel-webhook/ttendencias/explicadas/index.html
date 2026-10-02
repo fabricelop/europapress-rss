@@ -257,14 +257,13 @@ function imageGenerationTimedOut(run){
 function imageRunActive(run){
  const st=String(run?.status||"").toUpperCase();
  if(st==="REQUESTED")return true;
- if(imageHandoffTimedOut(run)||imageGenerationTimedOut(run))return false;
  return ["RUNNING","GENERATING","PERSISTING"].includes(st)
 }
 function liveImageRunState(x){
  const run=imageRuns.get(String(x.id||"")),st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"");
  if(st==="REQUESTED")return {aiCls:"aiRework",collapsed:"requested",text:"◷ IA solicitada · esperando al PC"};
- if(imageHandoffTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ El chat IA no arrancó en 45 s"};
- if(imageGenerationTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ La generación superó 150 s"};
+ if(st==="RUNNING"&&imageHandoffTimedOut(run))return {aiCls:"aiPending",collapsed:"pending",text:"⚠ Chat IA abierto · sin confirmación todavía"};
+ if(["RUNNING","GENERATING","PERSISTING"].includes(st)&&imageGenerationTimedOut(run))return {aiCls:"aiPending",collapsed:"pending",text:"⚠ Generación IA sin actualización reciente"};
  if(st==="RUNNING")return {aiCls:"aiPending",collapsed:"pending",text:phase==="pc_pickup"?"● PC ha recogido la imagen":phase==="pc_launch"?"● Chat IA abierto · esperando respuesta":phase==="validating"?"● Chat IA abierto · validando":"● Chat IA abierto"};
  if(st==="GENERATING")return {aiCls:"aiPending",collapsed:"pending",text:"● Generando IA ahora en ChatGPT"};
  if(st==="PERSISTING")return {aiCls:"aiPending",collapsed:"pending",text:"● IA generada · guardando"};
