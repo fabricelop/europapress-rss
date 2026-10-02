@@ -44,6 +44,16 @@ export function explanationIsCopied(item, copyState) {
   // Un mismo hecho puede reaparecer con más aliases del grupo y, por tanto,
   // con otra copy_key. Si el título editorial y la revisión coinciden, un
   // registro ya tratado se aplica a todo el grupo para que no "resucite".
+  const groupId = String(item?.explanation_group_id || item?.group_id || "").trim();
+  const explainedAtText = String(item?.explained_at || "").trim();
+  if (groupId && explainedAtText) {
+    const groupedRecord = records.find(entry =>
+      String(entry?.explanation_group_id || "").trim() === groupId &&
+      String(entry?.explained_at || "").trim() === explainedAtText
+    );
+    if (groupedRecord) return { copied: true, copied_at: groupedRecord.copied_at || null, source: groupedRecord.source || "group-copy" };
+  }
+
   const groupTitle = normalizeTrendName(item?.group_title || "");
   const revision = Number.isFinite(Number(item?.revision)) ? Number(item.revision) : 0;
   if (groupTitle) {
