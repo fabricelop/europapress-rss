@@ -92,10 +92,19 @@ async function readControlJson(path){
   return {sha:f.sha,doc:JSON.parse(raw||"{}")}
 }
 async function readMainJson(path){
-  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(MAIN_BRANCH));
-  if(r.status===404)return {};
-  if(!r.ok)throw new Error("GitHub main GET "+path+": "+r.status+" "+await r.text());
-  const f=await r.json(),raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+  // Las lecturas editoriales para validar imágenes no necesitan la API REST autenticada.
+  // RAW evita consumir cuota primaria; las escrituras siguen usando GitHub REST.
+  try{
+    const u="https://raw.githubusercontent.com/"+REPO+"/"+MAIN_BRANCH+"/"+path+"?t="+Date.now();
+    const rr=await fetch(u,{cache:"no-store",headers:{"cache-control":"no-cache","user-agent":"ttendencias-run-main-read"}});
+    if(rr.status===404)return {};
+    if(rr.ok)return JSON.parse(await rr.text()||"{}");
+  }catch(_){}
+  // Fallback REST solo si RAW no está disponible.
+  const rr=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(MAIN_BRANCH));
+  if(rr.status===404)return {};
+  if(!rr.ok)throw new Error("GitHub main GET "+path+": "+rr.status+" "+await rr.text());
+  const f=await rr.json(),raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
   return JSON.parse(raw||"{}")
 }
 async function imageEligibility(targetId){
