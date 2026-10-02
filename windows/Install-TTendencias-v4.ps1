@@ -66,7 +66,7 @@ if ($proc.HasExited) {
   throw "El listener dedicado no ha quedado activo."
 }
 
-Write-Host "TTENDENCIAS V3 INSTALADO Y ACTIVO" -ForegroundColor Green
+Write-Host "TTENDENCIAS V4 INSTALADO Y ACTIVO" -ForegroundColor Green
 Write-Host "PID: $($proc.Id)"
 Write-Host "Listener: $Listener"
 Write-Host "Inicio con Windows: $StartupCmd"
