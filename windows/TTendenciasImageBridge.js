@@ -1,7 +1,7 @@
 // TTendenciasImageBridge.js
 const BASE_CDP="http://127.0.0.1:9223";
 const RUN_URL="https://europapress-rss.vercel.app/api/ttendencias-run";
-const JOB_URL="https://europapress-rss.vercel.app/api/ttendencias-run-status?view=image-job&id=";
+const JOB_URL="https://europapress-rss.vercel.app/api/ttendencias-run-status?view=image-job&strong=1&id=";
 const commandId=String(process.argv[2]||"").trim();
 const targetId=String(process.argv[3]||"").trim();
 const secret=String(process.env.TT_IMAGE_UPLOAD_SECRET||"");
