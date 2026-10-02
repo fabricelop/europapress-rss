@@ -13,8 +13,8 @@ $LauncherLogPath = Join-Path $BaseDir "tendencias.log"
 
 $StatusBase = "https://europapress-rss.vercel.app"
 $TriggerApiUrl = "$StatusBase/api/ttendencias-run-status?view=trigger"
-$ImageIndexUrl = "$StatusBase/api/ttendencias-run-status?view=image-index"
-$ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&id="
+$ImageIndexUrl = "$StatusBase/api/ttendencias-run-status?view=image-index&strong=1"
+$ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
 
 $WorkerId = "ttendencias-dedicated-v10"
