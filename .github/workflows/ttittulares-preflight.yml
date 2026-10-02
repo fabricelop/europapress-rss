@@ -142,6 +142,7 @@ jobs:
           assert "RedirectStandardOutput" in listener and "ttittulares-launch-" in listener
           assert "if ($messageSent -or $executionLaunched -or $responseStarted)" in listener
           assert "worker=ttittulares-dedicated-v13" in installer
+          assert "Get-TTiTTularesListenerProcesses" in installer and "Exclusividad TTiTTulares fallida" in installer
 
           ids=set()
           for item in prepared.get("items",[]):
