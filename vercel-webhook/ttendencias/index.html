@@ -218,7 +218,14 @@ function collapseVisibleExplained(rows){
 }
 function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,editorialQueue){
  const requests=Array.isArray(requestDoc.requests)?requestDoc.requests:[],local=localState();
- const explainedByName={};for(const x of (explained.items||[])){if(x.status==="grouped")continue;for(const name of explanationNames(x))explainedByName[nrm(name)]=x;}
+ // requests.json es también evidencia editorial autoritativa. Si una ejecución
+ // cerró la revisión pero falló la copia a telegram-manual-explained.json,
+ // la UI debe seguir mostrando la revisión actual y su closer_text.
+ const requestExplained=requests.filter(x=>String(x.status||"")==="explained"&&String(x.explanation||"").trim());
+ const explainedPool=[...(explained.items||[]),...requestExplained]
+   .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
+   .sort((a,b)=>String(a.explained_at||a.updated_at||"").localeCompare(String(b.explained_at||b.updated_at||"")));
+ const explainedByName={};for(const x of explainedPool){for(const name of explanationNames(x))explainedByName[nrm(name)]=x;}
  const explainedSet=new Set(Object.keys(explainedByName));
  const anticipatedByName={};for(const x of (recent.anticipated_entries||[]))anticipatedByName[nrm(x.name)]=x;
  const latestFor=name=>[...requests].reverse().find(x=>nrm(x.name)===nrm(name));
@@ -319,9 +326,8 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
    return Number.isFinite(fallback)&&fallback>=1&&fallback<=20?fallback:null;
  };
  const archivedLocal=localArchived();
- const explainedRecent=collapseVisibleExplained([...(explained.items||[])]
-   .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
-   .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||""))))
+ const explainedRecent=collapseVisibleExplained([...explainedPool]
+   .sort((a,b)=>String(b.explained_at||b.updated_at||"").localeCompare(String(a.explained_at||a.updated_at||""))))
    .slice(0,100)
    .map(x=>({...x,_rank:rankAtExplanation(x)}))
    .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
