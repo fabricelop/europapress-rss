@@ -330,8 +330,8 @@ export default async function handler(req,res){
       const rev=Number(row.revision||0);
       const archived=(copyState.items||[]).some(x=>Number(x.revision||0)===rev&&Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase()));
       const blockReason=String(row.ai_image_block_reason||row.image_block_reason||"").trim().toLowerCase();
-      const legacyPoliticalBlock=blockReason==="political_actor"||blockReason==="political_context";
-      const blocked=Boolean(row.tremending_origin)||Boolean(blockReason&&!legacyPoliticalBlock)||row.with_image===false;
+      const advisoryOnlyBlock=["political_actor","political_context","safety_sensitive_weather"].includes(blockReason);
+      const blocked=Boolean(row.tremending_origin)||Boolean(blockReason&&!advisoryOnlyBlock);
       const hasAi=Boolean(String(row.ai_image?.url||"").trim());
       const eligible=!archived&&!blocked&&!hasAi;
       return res.status(200).json({
