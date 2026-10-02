@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-02T00:43:57.058713+00:00",
+  "checked_at": "2026-10-02T06:15:46.505260+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.0,
-      "run_id": 36947374484,
+      "age_minutes": 0.8,
+      "run_id": 36972636997,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,75 +75,27 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 9,
-      "overdue_count": 6,
-      "oldest_age_minutes": 82.5,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "2e70108a529b",
-          "name": "Arkano",
-          "status": "preparing",
-          "age_minutes": 82.5
-        },
-        {
-          "id": "dabfe4f95a08",
-          "name": "ALGUN DIA IS OUT",
-          "status": "preparing",
-          "age_minutes": 82.5
-        },
-        {
-          "id": "fb5c9d2cf0b9",
-          "name": "Waterloo",
-          "status": "preparing",
-          "age_minutes": 74.4
-        },
-        {
-          "id": "59330137c24c",
-          "name": "#LaNoche24h",
-          "status": "preparing",
-          "age_minutes": 74.4
-        },
-        {
-          "id": "a992e5cacda9",
-          "name": "Elecciones",
-          "status": "preparing",
-          "age_minutes": 74.3
-        },
-        {
-          "id": "6f7dd4187842",
-          "name": "María Jesús",
-          "status": "preparing",
-          "age_minutes": 74.3
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "6edd382e5ca7",
-        "30a7058c0bc9",
-        "2e70108a529b",
-        "dabfe4f95a08",
-        "fb5c9d2cf0b9",
-        "59330137c24c",
-        "a992e5cacda9",
-        "6f7dd4187842",
-        "5c964cfff54c"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "config TTendencias incompatible con el modo activo",
-    "cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 82.5 min"
+    "config TTendencias incompatible con el modo activo"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 82.5 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "config TTendencias incompatible con el modo activo"
 }
