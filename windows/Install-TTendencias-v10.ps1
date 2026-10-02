@@ -7,13 +7,24 @@ $BaseDir = "C:\TTiTTulares"
 $Listener = Join-Path $BaseDir "TTendenciasDedicatedListener.ps1"
 $StartupDir = [Environment]::GetFolderPath("Startup")
 $StartupCmd = Join-Path $StartupDir "TTendencias Mobile Trigger Listener.cmd"
-$RawUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TTendenciasDedicatedListener.ps1"
 $Bridge = Join-Path $BaseDir "TTendenciasImageBridge.js"
-$BridgeUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TTendenciasImageBridge.js"
+
+function Get-GitHubMainFile([string]$RepoPath,[string]$OutFile) {
+  $api = "https://api.github.com/repos/fabricelop/europapress-rss/contents/" + $RepoPath + "?ref=main&t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  $headers = @{
+    "Accept" = "application/vnd.github+json"
+    "User-Agent" = "TTendencias-v10-installer"
+    "Cache-Control" = "no-cache"
+  }
+  $doc = Invoke-RestMethod -Uri $api -Headers $headers -Method Get -UseBasicParsing
+  if (-not $doc.content) { throw "GitHub API no devolvió contenido para $RepoPath" }
+  $raw = [Convert]::FromBase64String(([string]$doc.content -replace "\s",""))
+  [IO.File]::WriteAllBytes($OutFile,$raw)
+}
 
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
-Invoke-WebRequest -Uri ($RawUrl + "?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -OutFile $Listener -UseBasicParsing
-Invoke-WebRequest -Uri ($BridgeUrl + "?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -OutFile $Bridge -UseBasicParsing
+Get-GitHubMainFile "windows/TTendenciasDedicatedListener.ps1" $Listener
+Get-GitHubMainFile "windows/TTendenciasImageBridge.js" $Bridge
 
 # Validar sintaxis y garantías v10 antes de reiniciar nada.
 $tokens = $null
@@ -49,8 +60,9 @@ foreach ($needle in @(
   'task:"image_upload"',
   'stage:"done"',
   'TT_IMAGE_UPLOAD_SECRET',
-  'ensureCommandSent',
-  'BRIDGE COMMAND',
+  'BRIDGE_MODE="capture-only-v9"',
+  'BRIDGE CHAT FOUND mode=',
+  'imagesAfterMarker',
   'view=image-job&strong=1&id='
 )) {
   if (-not $bridgeText.Contains($needle)) { throw "Falta garantía puente TTendencias v10: $needle" }
