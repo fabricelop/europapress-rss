@@ -1014,15 +1014,19 @@ async function rateRemate(ratingKey, rating) {
 }
 
 async function stateSnapshot() {
+  // El panel solo necesita contenido para pintar el estado. Usar RAW aquí
+  // evita gastar el rate limit REST autenticado de GitHub en cada polling.
+  // La API autenticada queda reservada para escrituras y operaciones que
+  // realmente necesitan SHA/consistencia transaccional.
   const [recent, requests, explained, explainedCopyState, health, prepared, editorialConfig, editorialQueue, remateRatings] = await Promise.all([
     readPublicJson(RECENT),
-    readJson(REQUESTS),
-    readJson(EXPLAINED),
-    readJson(EXPLAINED_COPY_STATE),
+    readPublicJson(REQUESTS),
+    readPublicJson(EXPLAINED),
+    readPublicJson(EXPLAINED_COPY_STATE),
     readPublicJson(HEALTH),
-    readJson(PREPARED),
+    readPublicJson(PREPARED),
     readPublicJson(EDITORIAL_CONFIG),
-    readJson(EDITORIAL_QUEUE),
+    readPublicJson(EDITORIAL_QUEUE),
     readPublicJson(REMATE_RATINGS),
   ]);
 
@@ -1075,7 +1079,7 @@ async function proxyPreparedImage(rawUrl, res, format = "") {
   const [{ doc: prepared }, { doc: explained }, { doc: requests }] = await Promise.all([
     readPublicJson(PREPARED),
     readPublicJson(EXPLAINED),
-    readJson(REQUESTS),
+    readPublicJson(REQUESTS),
   ]);
   const allowed = new Set([
     ...(prepared.items || []),
@@ -1105,11 +1109,12 @@ async function proxyPreparedImage(rawUrl, res, format = "") {
 }
 
 async function backendStatus() {
-  const r = await gh(`contents/${RECENT}?ref=${encodeURIComponent(BRANCH)}`, { cache: "no-store" });
-  if (!r.ok) {
-    return { ok: false, status: r.status, detail: (await r.text()).slice(0, 300) };
+  try {
+    await readPublicJson(RECENT);
+    return { ok: true, status: 200, source: "raw" };
+  } catch (e) {
+    return { ok: false, status: 503, detail: String(e?.message || e).slice(0, 300), source: "raw" };
   }
-  return { ok: true, status: r.status };
 }
 
 export default async function handler(req, res) {
