@@ -25,9 +25,9 @@ if ($parseErrors.Count -gt 0) {
 }
 
 $listenerText = Get-Content -LiteralPath $Listener -Raw -Encoding UTF8
-if (-not $listenerText.Contains('$WorkerId = "ttittulares-dedicated-v9"') -or
+if (-not $listenerText.Contains('$WorkerId = "ttittulares-dedicated-v10"') -or
     -not $listenerText.Contains('EDITORIAL PROCESS STARTED via-vbs')) {
-  throw "La descarga no contiene el listener TTiTTulares dedicado v9 con confirmación real de envío."
+  throw "La descarga no contiene el listener TTiTTulares dedicado v10 con confirmación real de envío."
 }
 
 if (-not (Test-Path (Join-Path $BaseDir "LanzarOculto.vbs"))) {
@@ -95,7 +95,7 @@ $listenerLog = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $started = $false
 if (Test-Path -LiteralPath $listenerLog) {
   $tail = @(Get-Content -LiteralPath $listenerLog -Tail 20 -ErrorAction SilentlyContinue)
-  $started = (($tail -join "`n") -match "LISTENER START worker=ttittulares-dedicated-v9 pid=$($proc.Id)")
+  $started = (($tail -join "`n") -match "LISTENER START worker=ttittulares-dedicated-v10 pid=$($proc.Id)")
 }
 if (-not $started) {
   Write-Host "AVISO: proceso activo pero aún no aparece su línea LISTENER START en el log." -ForegroundColor Yellow
@@ -106,7 +106,7 @@ Write-Host "PID: $($proc.Id)"
 Write-Host "Listener: $Listener"
 Write-Host "Inicio con Windows: $StartupCmd"
 Write-Host "Log: C:\TTiTTulares\ttittulares-mobile-trigger.log"
-Write-Host "Entradas: worker v9 + trigger/ACK autoritativos + confirmación real de ChatGPT + polling 5s."
+Write-Host "Entradas: worker v10 + Node directo + confirmación real de ChatGPT en 30s + polling 5s."
 Write-Host "No se ha detenido ni modificado el listener compartido ni las tareas programadas."
 Write-Host ""
 Write-Host "--- DIAGNOSTICO TTITTULARES ---" -ForegroundColor Cyan
