@@ -8,9 +8,14 @@ $Listener = Join-Path $BaseDir "TTendenciasDedicatedListener.ps1"
 $StartupDir = [Environment]::GetFolderPath("Startup")
 $StartupCmd = Join-Path $StartupDir "TTendencias Mobile Trigger Listener.cmd"
 $RawUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TTendenciasDedicatedListener.ps1"
+$PatchUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/Patch-Ejecutar-ConfirmResponse.ps1"
 
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 Invoke-WebRequest -Uri ($RawUrl + "?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -OutFile $Listener -UseBasicParsing
+
+Write-Host "APLICANDO PARCHE EJECUTAR.JS V2" -ForegroundColor Cyan
+$patchText = (Invoke-WebRequest -Uri ($PatchUrl + "?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -UseBasicParsing).Content
+& ([scriptblock]::Create($patchText))
 
 # Validar sintaxis antes de reiniciar nada.
 $tokens = $null
