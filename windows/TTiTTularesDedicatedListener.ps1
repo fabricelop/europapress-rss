@@ -12,7 +12,7 @@ $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 45
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v2"
+$WorkerId = "ttittulares-dedicated-v3"
 $PollSeconds = 3
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
@@ -147,9 +147,14 @@ function Read-NewLauncherText([long]$Offset) {
 function Launch-TTiTTulares([string]$CommandId) {
   if (-not (Test-Path -LiteralPath $Runner)) { throw "No existe $Runner" }
 
+  $beforeWrite = [DateTime]::MinValue
   $beforeLen = 0L
   if (Test-Path -LiteralPath $LauncherLogPath) {
-    try { $beforeLen = (Get-Item -LiteralPath $LauncherLogPath).Length } catch {}
+    try {
+      $fi = Get-Item -LiteralPath $LauncherLogPath
+      $beforeWrite = $fi.LastWriteTimeUtc
+      $beforeLen = $fi.Length
+    } catch {}
   }
 
   $marker = "TT_EDITORIAL_RUN_V1 $CommandId"
@@ -172,24 +177,35 @@ function Launch-TTiTTulares([string]$CommandId) {
   }
 
   $deadline = (Get-Date).AddSeconds($LaunchConfirmSeconds)
-
   while ((Get-Date) -lt $deadline) {
     Start-Sleep -Seconds 1
-    $newText = Read-NewLauncherText $beforeLen
-    if (-not $newText) { continue }
+    if (-not (Test-Path -LiteralPath $LauncherLogPath)) { continue }
+    try {
+      $fi = Get-Item -LiteralPath $LauncherLogPath
+      if ($fi.Length -le $beforeLen -and $fi.LastWriteTimeUtc -le $beforeWrite) { continue }
 
-    # El éxito tiene prioridad: Ejecutar.js puede registrar después un Timeout CDP
-    # aunque el mensaje ya se haya aceptado y ChatGPT haya empezado a responder.
-    if ($newText.Contains($marker) -and $newText -match "MENSAJE ENVIADO") {
-      Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId marker=$marker"
-      return $true
-    }
+      $tail = @(Get-Content -LiteralPath $LauncherLogPath -Tail 60 -ErrorAction Stop)
+      $joined = ($tail -join "`n")
+      $hasMarker = $joined.Contains($marker)
 
-    if ($newText -match "ERROR:|ERROR ::|Timeout CDP") {
-      $last = ($newText -split "\r?\n" | Where-Object { $_ -match "ERROR:|ERROR ::|Timeout CDP" } | Select-Object -Last 1)
-      Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $last"
-      return $false
-    }
+      # Mismo criterio robusto que TTendencias: ChatGPT puede haber aceptado
+      # el envío antes de que aparezca MENSAJE ENVIADO en el log.
+      $responseStarted = $joined -match '"generando"\s*:\s*true'
+      $messageSent = $joined -match "MENSAJE ENVIADO"
+      $executionLaunched = $joined -match "EJECUCION LANZADA"
+
+      if ($hasMarker -and ($messageSent -or $executionLaunched -or $responseStarted)) {
+        $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
+        Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId marker=$marker via=$why"
+        return $true
+      }
+
+      if ($joined -match "ERROR:|ERROR ::|Timeout CDP") {
+        $last = ($tail | Where-Object { $_ -match "ERROR:|ERROR ::|Timeout CDP" } | Select-Object -Last 1)
+        Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $last"
+        return $false
+      }
+    } catch {}
   }
 
   Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId marker=$marker after=$($LaunchConfirmSeconds)s"
