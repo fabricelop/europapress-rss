@@ -107,8 +107,10 @@ async function imageEligibility(targetId){
   const name=String(row.name||"").trim(),rev=Number(row.revision||0);
   const archived=(copyState.items||[]).some(x=>Number(x.revision||0)===rev&&Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase()));
   const blockReason=String(row.ai_image_block_reason||row.image_block_reason||"").trim().toLowerCase();
-  const legacyPoliticalBlock=blockReason==="political_actor"||blockReason==="political_context";
-  const blocked=Boolean(row.tremending_origin)||Boolean(blockReason&&!legacyPoliticalBlock)||row.with_image===false;
+  // Política y meteorología sin víctimas son material editorial válido para el gag.
+  // Los casos con muertos/víctimas deben llegar marcados como sensitive_event u otro bloqueo explícito real.
+  const advisoryOnlyBlock=["political_actor","political_context","safety_sensitive_weather"].includes(blockReason);
+  const blocked=Boolean(row.tremending_origin)||Boolean(blockReason&&!advisoryOnlyBlock);
   const hasAi=Boolean(String(row.ai_image?.url||"").trim());
   return {eligible:!archived&&!blocked&&!hasAi,reason:archived?"archived":blocked?"blocked":hasAi?"already_has_ai":"pending",row}
 }
@@ -353,8 +355,26 @@ async function requestImageUpload(req,res){
 
 async function requestImageRun(req,res){
   const target_id=safeTargetId(req.body?.target_id||req.body?.id);
-  const target_name=String(req.body?.target_name||req.body?.title||req.body?.name||"").trim().slice(0,240);
-  const revision=Math.max(0,Number.parseInt(req.body?.revision??0,10)||0);
+  const requestedRevision=Math.max(0,Number.parseInt(req.body?.revision??0,10)||0);
+  // Revalidación autoritativa justo antes de crear el job: nunca mandar una revisión vieja,
+  // archivada, agrupada o realmente sensible aunque la UI se haya quedado abierta.
+  const eligible=await imageEligibility(target_id);
+  if(!eligible.eligible)return res.status(409).json({ok:false,error:"target_no_elegible",reason:eligible.reason,target_id});
+  const row=eligible.row||{};
+  const revision=Number(row.revision||0);
+  if(revision!==requestedRevision)return res.status(409).json({ok:false,error:"target_no_elegible",reason:"revision_changed",target_id,revision});
+  const target_name=String(row.name||req.body?.target_name||req.body?.title||req.body?.name||"").trim().slice(0,240);
+  const context_snapshot={
+    name:target_name,
+    revision,
+    explanation:String(row.explanation||"").trim(),
+    closer_text:String(row.closer_text||"").trim(),
+    trend_names:Array.isArray(row.trend_names)?row.trend_names.slice(0,12):[],
+    group_title:String(row.group_title||"").trim(),
+    rank_at_explanation:Number(row.rank_at_explanation||row._rank||row.rank||0)||null,
+    explained_at:row.explained_at||null,
+    verification_sources:Array.isArray(row.verification_sources)?row.verification_sources.slice(0,8):[]
+  };
   const jobPath=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(jobPath);
   const previous=existing.doc||{};
@@ -376,13 +396,16 @@ async function requestImageRun(req,res){
     version:1,command_id,requested_at,updated_at:requested_at,status:"REQUESTED",phase:"queued",
     mode:"manual_pc_chat_image",executor:"pc_chat_ttendencias_dedicated",project:"ttendencias",launcher_arg:"tendencias",
     task:"image",target_id,trend_id:target_id,target_name,revision,
-    chat_command_version:2,
+    chat_command_version:3,
     instruction_profile:"ttendencias_gag_v1",
+    context_snapshot,
     instructions:{
       scope:"Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
-      context:"Lee en main la explicación completa y vigente correspondiente a target_id; no cambies explicación, hechos, fuentes ni remate.",
+      context:"Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
       visual:"Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
-      lifecycle:"Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante image-outbox V3."
+      sensitivity:"No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+      political_guard:"Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+      lifecycle:"Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
     },
     message:"Solicitud registrada; esperando al PC para abrir un chat de imagen."
   };
