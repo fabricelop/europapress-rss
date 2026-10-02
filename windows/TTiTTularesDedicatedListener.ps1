@@ -12,7 +12,7 @@ $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v10"
+$WorkerId = "ttittulares-dedicated-v11"
 $PollSeconds = 5
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
@@ -206,12 +206,11 @@ Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTular
       $newText = Read-NewLauncherText $beforeLen
       if (-not $newText) { continue }
 
-      $hasMarker = $newText.Contains($marker)
       $responseStarted = $newText -match '"generando"\s*:\s*true'
       $messageSent = $newText -match "MENSAJE ENVIADO"
       $executionLaunched = $newText -match "EJECUCION LANZADA"
 
-      if ($hasMarker -and ($messageSent -or $executionLaunched -or $responseStarted)) {
+      if ($messageSent -or $executionLaunched -or $responseStarted) {
         $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
         Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId marker=$marker via=$why"
         $launched = Send-Ack $CommandId "launched"
@@ -221,7 +220,7 @@ Procesa las Entradas pendientes siguiendo el flujo editorial normal de TTiTTular
         return $true
       }
 
-      if ($hasMarker -and $newText -match "ERROR:|ERROR ::|Timeout CDP") {
+      if ($newText -match "ERROR:|ERROR ::|Timeout CDP") {
         $detail = "Ejecutar.js informó un error al lanzar el chat"
         Write-Log "CHAT LAUNCH LOG ERROR command=$CommandId :: $detail"
         [void](Send-Ack $CommandId "failed" $detail)
