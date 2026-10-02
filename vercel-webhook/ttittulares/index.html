@@ -12,7 +12,7 @@
 <title>TTiTTulares</title>
 <style>
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
-*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 60%)}button,a{font:inherit}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 60%)}button,a{font:inherit;touch-action:manipulation}
 .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:9px;padding:13px max(12px,env(safe-area-inset-left));background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36}.brand{font-size:19px;font-weight:850}.sub{font-size:11px;color:#8f9bad}.spacer{flex:1}.iconbtn,.btn{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:11px;padding:9px 11px;font-weight:760;text-decoration:none}.iconbtn{height:42px}
 main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 4px}.meta{font-size:12px;color:#909cad;line-height:1.45}.timing{display:grid;gap:3px;margin-top:5px}.sourceCounters{display:flex;gap:12px;align-items:center;font-size:12px;color:#909cad;line-height:1.45}.sourceCounters span{white-space:nowrap}.sourceCounters b{color:#b9c9dc;font-size:12px;font-weight:800}.three-go{border:1px solid #40526a;background:#18212f;color:#eef3fa;border-radius:9px;min-width:36px;min-height:34px;font-weight:850}.timing .ok{color:#9fabc0}.timing .late{color:#ffb36b;font-weight:750}.health{border:1px solid #354255;border-radius:999px;padding:7px 10px;font-size:12px;color:#cbd7e8;white-space:nowrap;cursor:pointer;background:#101721}.health.bad{border-color:#6e3439;color:#ff9ca5}#sourcesSheet .panel{max-width:750px;padding:15px 13px calc(15px + env(safe-area-inset-bottom))}
 #sourcesSheet .panel p{margin:6px 0 4px;line-height:1.38}
@@ -73,6 +73,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
   <button class="stat" data-view="growing"><b id="growingCount">0</b>Creciendo</button>
   <button class="stat" data-view="tremending"><b id="tremendingCount">0</b>Tremending</button>
  </div>
+ <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="btn primary" id="runNow" type="button" hidden style="display:none!important" aria-hidden="true" tabindex="-1">▶ Entradas</button></section>
  <section class="list" id="list"><div class="empty">Cargando…</div></section>
 </main>
 
@@ -126,6 +127,16 @@ const REQUESTED_VIEW=new URLSearchParams(location.search).get("view");
 const INITIAL_VIEW=["ready","processing","problematic","growing","tremending"].includes(REQUESTED_VIEW)?REQUESTED_VIEW:"ready";
 const cachedModel=loadLocalJson(DATA_CACHE_KEY);
 let model=cachedModel||{prepared:[],status:{},config:{},tremending:{items:[]}},hasGoodState=Boolean(cachedModel),reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),tremendingOpen=loadUiSet(TREMENDING_OPEN_KEY),tremendingPreview=new Map(),imageRuns=new Map(),loadSeq=0,runPoll=null,imageRunPoll=null;
+let uiInteractionVersion=0,uiHoldUntil=0,passiveRefreshTimer=null;
+function markUiInteraction(){uiInteractionVersion++;uiHoldUntil=Math.max(uiHoldUntil,Date.now()+1400)}
+function uiInteractionActive(){return Date.now()<uiHoldUntil||Boolean(document.querySelector(".sheet.show,dialog[open]"))}
+function queuePassiveLoad(delay=0){
+ clearTimeout(passiveRefreshTimer);
+ const wait=Math.max(Number(delay)||0,uiHoldUntil-Date.now()+80,0);
+ passiveRefreshTimer=setTimeout(()=>{if(document.hidden)return;if(uiInteractionActive()){queuePassiveLoad(450);return}load(true,true)},wait)
+}
+document.addEventListener("pointerdown",markUiInteraction,{capture:true,passive:true});
+document.addEventListener("focusin",()=>{uiHoldUntil=Math.max(uiHoldUntil,Date.now()+900)},true);
 const LINKED_EVENT_ID=new URLSearchParams(location.search).get("event_id");
 const ACCESS_KEY="ttittulares-control-token";
 const bootAccess=new URLSearchParams(location.search).get("access");
@@ -1022,12 +1033,13 @@ function renderProcessing(list){
    list.appendChild(card)
  }
 }
-async function load(silent=false){
- const seq=++loadSeq;
+async function load(silent=false,passive=false){
+ const seq=++loadSeq,interactionAtStart=uiInteractionVersion;
  try{
   const r=await fetch(API+"?state="+Date.now(),{cache:"no-store"});
   if(!r.ok)throw new Error("No se pudieron leer los datos");
   const d=await r.json();if(seq!==loadSeq)return;
+  if(passive&&(uiInteractionActive()||interactionAtStart!==uiInteractionVersion)){queuePassiveLoad(450);return}
   const preparedRaw=d.prepared?.items||[],processingRaw=d.status?.processing_items||[],problematicRaw=d.status?.problematic_items||[],trendCandidatesRaw=d.status?.trend_candidates||[],growingRaw=d.status?.three_source_items||[];
   const present=new Set([...preparedRaw,...processingRaw,...problematicRaw,...growingRaw].map(x=>String(x.event_id||"")).filter(Boolean));
   for(const x of trendCandidatesRaw){const id=String(x.candidate_id||x.event_id||"");if(id)present.add(id)}
@@ -1051,7 +1063,7 @@ document.querySelectorAll(".stat[data-view]").forEach(x=>x.onclick=()=>setView(x
 $("incidentClose").onclick=()=>$("incidentSheet").classList.remove("show");
 $("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buildDiagnostic(lastRunTelemetry||{}));toast("Diagnóstico copiado")}catch(_){toast("No se pudo copiar el diagnóstico")}};
 $("notify").onclick=enablePush;
-$("refresh").onclick=()=>{toast("Recargando");load();refreshImageRuns()};
+$("refresh").onclick=()=>{toast("Recargando");load();loadRunStatus();refreshImageRuns()};
 $("submitNews").onclick=()=>{
  $("submitTitle").value="";$("submitInstruction").value="";$("submitStatus").textContent="";
  $("submitSheet").classList.add("show");$("submitTitle").focus()
@@ -1094,9 +1106,9 @@ $("sourcesClose").onclick=()=>$("sourcesSheet").classList.remove("show");
 $("sourcesSheet").onclick=e=>{if(e.target===$("sourcesSheet"))$("sourcesSheet").classList.remove("show")};
 $("reworkCancel").onclick=()=>{$("reworkSheet").classList.remove("show");reworkItem=null};
 $("reworkSend").onclick=async()=>{if(!reworkItem)return;const instruction=$("reworkInstruction").value.trim();if(!instruction){toast("Escribe qué quieres cambiar");return}if(!confirm("¿Mandar esta noticia de nuevo a elaboración con estas instrucciones?"))return;const old=[...model.prepared];model.prepared=model.prepared.filter(x=>x.event_id!==reworkItem.event_id);render();try{await api("rework",{event_id:reworkItem.event_id,instruction});$("reworkSheet").classList.remove("show");toast("Enviada a elaboración");reworkItem=null;setView("processing");setTimeout(()=>load(true),1000)}catch(e){model.prepared=old;render();toast(e.message)}};
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});window.addEventListener("pageshow",()=>load(true));
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)queuePassiveLoad(250)});window.addEventListener("pageshow",()=>queuePassiveLoad(250));
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttittulares/sw.js").then(()=>syncNotifyButton()).catch(()=>{});
-if(hasGoodState)render();else setView(view);load();refreshImageRuns();setInterval(()=>{if(!document.hidden)load(true)},15000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
+if(hasGoodState)render();else setView(view);if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshImageRuns();setInterval(()=>{if(!document.hidden)queuePassiveLoad(0)},15000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
 </script>
 </body></html>
 <!-- quote-candidates: conversation-low-engagement-v1 -->
