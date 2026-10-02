@@ -6,7 +6,12 @@ const CONTROL_TOKEN_HASHES=[
   "083d41ffcc41b14d52d426412b1ed44a8d4958b351ee110bdcc5a0eec167b840",
   "cdaa00313ab7f8031d485ac42ec8bb5d22eadf41a27e719848c8c6fcf40f3c98"
 ];
-function authToken(req){const h=String(req.headers.authorization||"");return h.startsWith("Bearer ")?h.slice(7).trim():""}
+function authToken(req){
+  const h=String(req.headers.authorization||"");
+  const bearer=h.startsWith("Bearer ")?h.slice(7).trim():"";
+  if(bearer)return bearer;
+  return String(req.body?.access||"").trim();
+}
 function authorized(req){
   if(process.env.VERCEL_ENV==="preview")return true;
   const got=authToken(req);if(!got)return false;
@@ -148,7 +153,7 @@ async function requestPcAck(req,res){
   if(String(trigger.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es el actual"});
   const requested_at=String(trigger.requested_at||"");
   const age=Date.now()-stamp(requested_at);
-  if(!stamp(requested_at)||age<0||age>10*60*1000)return res.status(409).json({ok:false,error:"Trigger fuera de ventana"});
+  if(!stamp(requested_at)||age<0||age>7*24*60*60*1000)return res.status(409).json({ok:false,error:"Trigger fuera de ventana"});
 
   const existing=await readControlJson(ACK_PATH);
   const previous=existing.doc||{};
