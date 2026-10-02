@@ -51,8 +51,11 @@ async function comments(){
   if(direct.ok)out.push(await direct.json());
   const since=new Date(Date.now()-24*60*60*1000).toISOString();
   const r=await gh("https://api.github.com/repos/"+REPO+"/issues/"+PR+"/comments?per_page=100&since="+encodeURIComponent(since));
-  if(!r.ok)throw new Error("GitHub RUNTRACE: "+r.status+" "+await r.text());
-  out.push(...(await r.json()).filter(x=>String(x.body||"").startsWith(TRACE_PREFIX)));
+  // RUNTRACE mejora el detalle, pero no debe tumbar el estado si GitHub REST
+  // está temporalmente limitado. Los fallbacks persistidos en main siguen siendo autoritativos.
+  if(r.ok){
+    out.push(...(await r.json()).filter(x=>String(x.body||"").startsWith(TRACE_PREFIX)));
+  }
   const seen=new Set();
   return out.filter(x=>{
     if(!String(x.body||"").startsWith(TRACE_PREFIX))return false;
@@ -64,6 +67,14 @@ async function comments(){
 }
 async function triggerReady(){return true}
 async function readControlBranchJson(path){
+  // Primero RAW: las lecturas de estado no necesitan SHA y no deben consumir
+  // el rate limit REST autenticado.
+  try{
+    const u="https://raw.githubusercontent.com/"+REPO+"/"+encodeURIComponent(TRIGGER_BRANCH)+"/"+path+"?t="+Date.now();
+    const r=await fetch(u,{cache:"no-store",headers:{"user-agent":"ttendencias-run-status-control-read"}});
+    if(r.ok)return JSON.parse(await r.text()||"{}");
+  }catch(_){}
+  // Fallback REST solo por compatibilidad.
   try{
     const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(TRIGGER_BRANCH),{cache:"no-store"});
     if(!r.ok)return {};
@@ -76,11 +87,8 @@ async function readTrigger(){
   return {doc:await readControlBranchJson(TRIGGER_PATH)}
 }
 async function readControlJson(path){
-  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(TRIGGER_BRANCH));
-  if(r.status===404)return {sha:null,doc:null};
-  if(!r.ok)throw new Error("GitHub control GET "+path+": "+r.status+" "+await r.text());
-  const f=await r.json(),raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-  return {sha:f.sha,doc:JSON.parse(raw||"{}")}
+  const doc=await readControlBranchJson(path);
+  return {sha:null,doc:(doc&&Object.keys(doc).length)?doc:null}
 }
 
 async function readAck(){
