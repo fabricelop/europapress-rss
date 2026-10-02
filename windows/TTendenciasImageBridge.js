@@ -81,14 +81,14 @@ function probeExpression(){
     "try{if(c.nw>=640&&c.nh>=360){const max=1400,scale=Math.min(1,max/Math.max(c.nw,c.nh)),w=Math.round(c.nw*scale),h=Math.round(c.nh*scale),cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d',{alpha:false}).drawImage(img,0,0,w,h);for(const q of [0.9,0.84,0.76,0.68]){const data=cv.toDataURL('image/jpeg',q);if(data.length<=2600000){info.dataUrl=data;info.width=w;info.height=h;info.capture='canvas-jpeg-'+q;return info}}}}catch(_){}",
     "return info;",
     "})()"
-  ].join("\\n")
+  ].join("\n")
 }
 
 async function capture(cdp){
-  const deadline=Date.now()+7*60*1000;
-  let lastDiag=null;
+  const deadline=Date.now()+2*60*1000;
+  let lastDiag=null,lastEvalError=null;
   while(Date.now()<deadline){
-    let p;try{p=await cdp.eval(probeExpression(),true)}catch{}
+    let p;try{p=await cdp.eval(probeExpression(),true)}catch(e){lastEvalError=String(e&&e.message||e)}
     if(p&&p.diag)lastDiag=p.diag;
     if(p&&p.dataUrl&&p.width>=640&&p.height>=360)return p;
     if(p&&p.found&&p.rect&&p.rect.width>=320&&p.rect.height>=180){
@@ -100,8 +100,8 @@ async function capture(cdp){
     }
     await sleep(1800)
   }
-  const diag=lastDiag?JSON.stringify(lastDiag).slice(0,350):"sin diagnóstico DOM";
-  throw Error("No apareció un raster capturable en 7 minutos; "+diag)
+  const diag=lastDiag?JSON.stringify(lastDiag).slice(0,350):(lastEvalError?("eval_error="+lastEvalError):"sin diagnóstico DOM");
+  throw Error("No apareció un raster capturable en 2 minutos; "+diag)
 }
 async function post(body){
   const r=await fetch(RUN_URL,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
