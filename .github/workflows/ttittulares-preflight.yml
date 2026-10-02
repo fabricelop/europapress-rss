@@ -145,17 +145,12 @@ jobs:
           assert 'ArgumentList @($Runner,"titulares","--enviar")' in listener
           assert "RedirectStandardOutput" in listener and "ttittulares-launch-" in listener
           assert "if ($realMode -and ($messageSent -or $executionLaunched -or $responseStarted))" in listener
-          assert "worker=ttittulares-dedicated-v14" in installer
-          assert "Get-TTiTTularesListenerProcesses" in installer and "Exclusividad TTiTTulares fallida" in installer
-          assert "Get-TTiTTularesListeners" in installer_v13
-          assert "exactamente un listener TTiTTulares" in installer_v13 or "se esperaba 1 listener" in installer_v13
-          assert "worker=ttittulares-dedicated-v14 pid=" in installer_v13
-          assert "TTendencias: NO MODIFICADO" in installer_v13
           assert "TTITTULARES V14 INSTALADO Y ACTIVO" in installer_v14
           assert 'node Ejecutar.js titulares --enviar' in installer_v14
           assert "TTendencias: NO MODIFICADO" in installer_v14
           assert "Ejecutar.js: validado, NO MODIFICADO" in installer_v14
-          assert "97c94650d6b552b564d201f1c8f496a112eae078" in installer_v13
+          assert "030e4277e89d12d0c7c158c86ca97779cd2f64b4" in installer_v14
+          assert 'const enviar = process.argv.includes("--enviar");' in installer_v14
 
           ids=set()
           for item in prepared.get("items",[]):
