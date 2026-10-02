@@ -338,18 +338,32 @@ async function loadRunStatus(){
  }
 }
 async function requestRun(){
- if(!token()){$("settings").click();toast("Guarda primero el acceso");return}
-  if(!confirm("¿Procesar ahora las entradas de TTiTTulares desde el PC? Las imágenes IA se gestionan por separado."))return;
+ const access=token();
+ if(!access){
+   $("runState").textContent="Acceso no guardado · abre ⚙ y guarda el token";
+   $("runState").className="error";
+   $("settings").click();
+   toast("Falta el acceso para lanzar Entradas");
+   return
+ }
  runVisual({ok:true,enabled:true,active:true,status:"REQUESTED",source:"mobile",phase:"preparing",current:0,total:0,requested_at:new Date().toISOString(),message:"Enviando solicitud…"});
  try{
-   const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:JSON.stringify({task:"editorial"})});
+   const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+access},body:JSON.stringify({task:"editorial"})});
    const d=await r.json().catch(()=>({}));
-   if(r.status===401)throw new Error("Acceso no autorizado");
+   if(r.status===401){
+     $("settings").click();
+     throw new Error("Acceso no autorizado · revisa el token en ⚙")
+   }
    if(r.status===429)throw new Error("Ya se solicitó una ejecución hace unos segundos");
    if(r.status===409)throw new Error("Ya hay una ejecución en curso");
    if(!r.ok)throw new Error(d.error||"No se pudo solicitar la ejecución");
    runVisual({ok:true,enabled:true,active:true,status:"REQUESTED",run_id:d.command_id,command_id:d.command_id,source:"mobile",phase:"preparing",current:0,total:0,requested_at:d.requested_at,updated_at:d.requested_at,message:"Orden móvil registrada; esperando al PC para recogerla."});scheduleRunPoll(true)
- }catch(e){toast(e.message);await loadRunStatus()}
+ }catch(e){
+   $("runState").textContent=e.message;
+   $("runState").className="error";
+   toast(e.message);
+   await loadRunStatus()
+ }
 }
 function normalAiEligible(item){
  if(!item||item.tremending_origin||item.disable_ai_image)return false;
