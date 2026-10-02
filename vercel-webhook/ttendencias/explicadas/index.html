@@ -25,7 +25,7 @@ main{width:100%;max-width:560px;margin:0 auto;padding:14px 10px 40px;overflow-x:
 <dialog class="reexplainDialog" id="reexplainDialog"><h2>Reexplicar tendencia</h2><p id="reexplainName"></p><p>Escribe por qué crees que es tendencia o qué parte de la explicación actual no encaja. Se volverá a investigar y verificar usando tu texto como contexto.</p><textarea id="reexplainText" placeholder="Ej.: Creo que es tendencia por…"></textarea><div class="dialogActions"><button class="btn" id="cancelReexplain" type="button">Cancelar</button><button class="btn" id="sendReexplain" type="button">Reevaluar</button></div></dialog>
 <script>
 const API="/api/ttendencias-control", RUN_API="/api/ttendencias-run";
-const IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/";
+const IMAGE_RUN_STATUS="/api/ttendencias-run-status?view=image-job&id=";
 const $=id=>document.getElementById(id);
 const ARCHIVED_LOCAL_KEY="ttendencias-explicadas-archived-v1";
 const IMAGE_SELECTED_KEY="ttendencias-image-selected-v1";
@@ -268,7 +268,7 @@ function liveImageRunState(x){
  if(st==="RUNNING")return {aiCls:"aiPending",collapsed:"pending",text:phase==="pc_pickup"?"● PC ha recogido la imagen":phase==="pc_launch"?"● Chat IA abierto · esperando respuesta":phase==="validating"?"● Chat IA abierto · validando":"● Chat IA abierto"};
  if(st==="GENERATING")return {aiCls:"aiPending",collapsed:"pending",text:"● Generando IA ahora en ChatGPT"};
  if(st==="PERSISTING")return {aiCls:"aiPending",collapsed:"pending",text:"● IA generada · guardando"};
- if(st==="ERROR")return {aiCls:"aiFailed",collapsed:"failed",text:"✕ Error en generación IA"};
+ if(st==="ERROR")return {aiCls:"aiFailed",collapsed:"failed",text:"✕ Error en generación IA"+(run?.message?" · "+String(run.message).slice(0,90):"")};
  if(st==="CANCELLED")return {aiCls:"aiFailed",collapsed:"failed",text:"— Generación cancelada · entrada ya no vigente"};
  if(st==="DONE")return {aiCls:"aiReady",collapsed:"ready",text:"✓ Generación IA terminada"};
  return null
@@ -336,7 +336,7 @@ async function refreshImageRuns(){
  await Promise.all(items.map(async x=>{
    const id=String(x.id||""),before=imageRuns.get(id);
    try{
-     const r=await fetch(IMAGE_RUN_RAW+encodeURIComponent(id)+".json?t="+Date.now(),{cache:"no-store"});
+     const r=await fetch(IMAGE_RUN_STATUS+encodeURIComponent(id)+"&t="+Date.now(),{cache:"no-store"});
      if(!r.ok){if(r.status===404&&before){imageRuns.delete(id);changed=true}return}
      const d=await r.json();
      if(JSON.stringify(before||null)!==JSON.stringify(d)){
