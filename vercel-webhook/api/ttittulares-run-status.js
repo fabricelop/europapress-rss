@@ -214,7 +214,7 @@ function manualFallback(items,request,ack){
     effectiveStarted=pickedAt||requested_at;
     updated_at=ack?.updated_at||pickedAt||requested_at;
     message=ackStage==="launched"
-      ?"PC ha recogido la orden y ha lanzado el chat; esperando confirmación editorial."
+      ?"PC ha recogido la orden y ChatGPT confirmó el mensaje; esperando inicio editorial."
       :"PC ha recogido la orden; preparando el lanzamiento del chat.";
   }
   if(noPickup||pickupButNoLaunch||launchButNoEditorial||launchFailed||staleRunning){
@@ -247,7 +247,7 @@ function manualFallback(items,request,ack){
     duration_seconds:effectiveStarted&&finished_at?seconds(effectiveStarted,finished_at):null,
     message:message||"Orden móvil registrada; esperando al PC para recogerla (máx. 30 s).",
     summary:null,incident_count:0,incidents:[],
-    pc_ack_stage:ackStage||null,pc_picked_up_at:pickedAt||null,pc_launched_at:launchedAt||null,pc_failed_at:failedAt||null,pc_failure_detail:failedDetail||null
+    pc_ack_stage:ackStage||null,pc_worker_id:ackMatches?(ack?.worker_id||null):null,pc_picked_up_at:pickedAt||null,pc_launched_at:launchedAt||null,pc_failed_at:failedAt||null,pc_failure_detail:failedDetail||null
   }
 }
 
