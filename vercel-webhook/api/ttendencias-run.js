@@ -225,7 +225,12 @@ async function requestImagePcAck(req,res){
     next.message=String(req.body?.reason||"La entrada ya no está pendiente o vigente.").slice(0,240);
   }else if(stage==="done"){
     const exp=await readMainJson(EXPLAINED_PATH);
-    const persisted=(exp.items||[]).find(x=>String(x.id||"")===target_id&&Number(x.revision||0)===Number(job.revision||0)&&String(x.ai_image?.sha256||"").toLowerCase()===String(job.upload_sha256||"").toLowerCase());
+    const persisted=(exp.items||[]).find(x=>
+      String(x.id||"")===target_id &&
+      Number(x.revision||0)===Number(job.revision||0) &&
+      String(x.ai_image?.context_guard?.command_id||"")===command_id &&
+      String(x.ai_image?.url||"").trim()
+    );
     if(!persisted)return res.status(409).json({ok:false,error:"image_not_persisted_yet"});
     next.status="DONE";
     next.phase="done";
