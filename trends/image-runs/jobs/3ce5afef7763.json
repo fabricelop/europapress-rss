@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-v6-1790963354679-latasa",
   "requested_at": "2026-10-02T17:49:14.675Z",
-  "updated_at": "2026-10-02T17:49:14.675Z",
-  "status": "REQUESTED",
-  "phase": "queued",
+  "updated_at": "2026-10-02T17:49:28.001Z",
+  "status": "RUNNING",
+  "phase": "pc_pickup",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -22,5 +22,7 @@
     "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
     "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante image-outbox V3."
   },
-  "message": "Prueba controlada v6 de una sola tendencia; esperando al PC para abrir un chat de imagen."
+  "message": "PC ha recogido la solicitud de imagen.",
+  "pc_worker_id": "ttendencias-dedicated-v6",
+  "pc_picked_up_at": "2026-10-02T17:49:28.001Z"
 }
