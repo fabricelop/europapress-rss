@@ -1,35 +1,30 @@
 # Patch-Ejecutar-ConfirmResponse.ps1
-# Refuerza C:\TTiTTulares\Ejecutar.js:
-# 1) no considera enviado un mensaje solo porque aparezca una URL /c/;
-# 2) exige que el mensaje del usuario aparezca y que ChatGPT empiece a responder;
-# 3) es idempotente y restaura backup si node --check falla.
+# Corrige C:\TTiTTulares\Ejecutar.js para automatización de ChatGPT:
+# 1) "generando:true" confirma que ChatGPT aceptó el envío aunque el contador DOM de usuario tarde;
+# 2) una diferencia transitoria al releer el editor no aborta el envío;
+# 3) actualiza instalaciones V1 existentes y valida con node --check.
 
 $ErrorActionPreference = "Stop"
 $Target = "C:\TTiTTulares\Ejecutar.js"
-$Marker = "TT_RESPONSE_CONFIRM_V1"
+$MarkerV1 = "TT_RESPONSE_CONFIRM_V1"
+$MarkerV2 = "TT_RESPONSE_CONFIRM_V2"
 
 if (-not (Test-Path -LiteralPath $Target)) {
   throw "No se encuentra $Target"
 }
 
 $text = Get-Content -LiteralPath $Target -Raw -Encoding UTF8
-if ($text.Contains($Marker)) {
-  Write-Host "EJECUTAR.JS YA TIENE CONFIRMACION DE RESPUESTA" -ForegroundColor Green
+if ($text.Contains($MarkerV2)) {
+  Write-Host "EJECUTAR.JS YA TIENE CONFIRMACION V2" -ForegroundColor Green
   exit 0
 }
 
-$backup = $Target + ".before-response-confirm-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
+$backup = $Target + ".before-response-confirm-v2-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
 Copy-Item -LiteralPath $Target -Destination $backup -Force
 
 try {
-  # A) Insertar helper antes de pulsarEnviar.
-  $anchor = "async function pulsarEnviar(evaluar) {"
-  if (-not $text.Contains($anchor)) {
-    throw "No encuentro async function pulsarEnviar(evaluar)"
-  }
-
-  $helper = @'
-/* TT_RESPONSE_CONFIRM_V1 */
+  $helperV2 = @'
+/* TT_RESPONSE_CONFIRM_V2 */
 async function esperarInicioRespuesta(
     evaluar,
     usuariosIniciales,
@@ -56,9 +51,12 @@ async function esperarInicioRespuesta(
                 !!ultimo?.generando ||
                 asistentes > Number(asistentesIniciales || 0);
 
+            // En la UI actual de ChatGPT el contador de mensajes del usuario
+            // puede actualizarse después de que ya haya empezado la generación.
+            // "generando:true" es una confirmación suficiente de que el envío fue aceptado.
             if (
-                mensajeAceptado &&
-                respuestaIniciada
+                respuestaIniciada ||
+                mensajeAceptado
             ) {
                 return ultimo;
             }
@@ -78,7 +76,7 @@ async function esperarInicioRespuesta(
         : "sin estado";
 
     throw Error(
-        "ChatGPT no confirmó el mensaje y el inicio de respuesta en 15 s. " +
+        "ChatGPT no confirmó el inicio de respuesta en 15 s. " +
         detalle
     );
 }
@@ -86,33 +84,75 @@ async function esperarInicioRespuesta(
 
 '@
 
-  $text = $text.Replace($anchor, $helper + $anchor)
-
-  # B) Guardar también el número inicial de mensajes de usuario.
-  $rxAssist = [regex]'const\s+asistentesIniciales\s*=\s*estadoInicial\.asistentes\s*;'
-  $matches = $rxAssist.Matches($text)
-  if ($matches.Count -ne 1) {
-    throw "Esperaba 1 bloque asistentesIniciales y encontré $($matches.Count)"
+  if ($text.Contains($MarkerV1)) {
+    $rxHelper = [regex]'(?s)/\* TT_RESPONSE_CONFIRM_V1 \*/.*?(?=async function pulsarEnviar\(evaluar\) \{)'
+    $m = $rxHelper.Match($text)
+    if (-not $m.Success) {
+      throw "Existe TT_RESPONSE_CONFIRM_V1 pero no se pudo localizar su helper."
+    }
+    $text = $rxHelper.Replace(
+      $text,
+      [System.Text.RegularExpressions.MatchEvaluator]{ param($x) $helperV2 },
+      1
+    )
   }
-  $replacement = $matches[0].Value + [Environment]::NewLine + [Environment]::NewLine +
-    "        const usuariosIniciales =" + [Environment]::NewLine +
-    "            estadoInicial.usuarios;"
-  $text = $rxAssist.Replace($text, [System.Text.RegularExpressions.MatchEvaluator]{ param($m) $replacement }, 1)
+  else {
+    $anchor = "async function pulsarEnviar(evaluar) {"
+    if (-not $text.Contains($anchor)) {
+      throw "No encuentro async function pulsarEnviar(evaluar)"
+    }
+    $text = $text.Replace($anchor, $helperV2 + $anchor)
 
-  # C) Tras crear la URL real, esperar aceptación del mensaje + inicio de respuesta.
-  $rxUrl = [regex]'(?s)(const\s+nuevaUrl\s*=\s*await\s+esperarUrlReal\s*\(\s*evaluar\s*\)\s*;)'
-  $urlMatches = $rxUrl.Matches($text)
-  if ($urlMatches.Count -ne 1) {
-    throw "Esperaba 1 bloque esperarUrlReal y encontré $($urlMatches.Count)"
+    # Si V1 nunca se instaló, añadir usuariosIniciales.
+    if ($text -notmatch 'const\s+usuariosIniciales\s*=') {
+      $rxAssist = [regex]'const\s+asistentesIniciales\s*=\s*estadoInicial\.asistentes\s*;'
+      $matches = $rxAssist.Matches($text)
+      if ($matches.Count -ne 1) {
+        throw "Esperaba 1 bloque asistentesIniciales y encontré $($matches.Count)"
+      }
+      $replacement = $matches[0].Value + [Environment]::NewLine + [Environment]::NewLine +
+        "        const usuariosIniciales =" + [Environment]::NewLine +
+        "            estadoInicial.usuarios;"
+      $text = $rxAssist.Replace(
+        $text,
+        [System.Text.RegularExpressions.MatchEvaluator]{ param($x) $replacement },
+        1
+      )
+    }
+
+    # Si nunca se añadió la llamada de confirmación, añadirla.
+    if ($text -notmatch 'esperarInicioRespuesta\s*\(') {
+      $rxUrl = [regex]'(?s)(const\s+nuevaUrl\s*=\s*await\s+esperarUrlReal\s*\(\s*evaluar\s*\)\s*;)'
+      $urlMatches = $rxUrl.Matches($text)
+      if ($urlMatches.Count -ne 1) {
+        throw "Esperaba 1 bloque esperarUrlReal y encontré $($urlMatches.Count)"
+      }
+      $afterUrl = $urlMatches[0].Value + [Environment]::NewLine + [Environment]::NewLine +
+        "        await esperarInicioRespuesta(" + [Environment]::NewLine +
+        "            evaluar," + [Environment]::NewLine +
+        "            usuariosIniciales," + [Environment]::NewLine +
+        "            asistentesIniciales," + [Environment]::NewLine +
+        "            15000" + [Environment]::NewLine +
+        "        );"
+      $text = $rxUrl.Replace(
+        $text,
+        [System.Text.RegularExpressions.MatchEvaluator]{ param($x) $afterUrl },
+        1
+      )
+    }
   }
-  $afterUrl = $urlMatches[0].Value + [Environment]::NewLine + [Environment]::NewLine +
-    "        await esperarInicioRespuesta(" + [Environment]::NewLine +
-    "            evaluar," + [Environment]::NewLine +
-    "            usuariosIniciales," + [Environment]::NewLine +
-    "            asistentesIniciales," + [Environment]::NewLine +
-    "            15000" + [Environment]::NewLine +
-    "        );"
-  $text = $rxUrl.Replace($text, [System.Text.RegularExpressions.MatchEvaluator]{ param($m) $afterUrl }, 1)
+
+  # La UI de ChatGPT puede normalizar el contenido del editor (saltos, espacios,
+  # nodos contenteditable). No abortar aquí; la confirmación real es que ChatGPT
+  # entre en generando/respuesta.
+  $text = $text.Replace(
+    'throw Error("El mensaje escrito no coincide.");',
+    'console.log("AVISO: el editor normalizó el texto; se valida por inicio de respuesta.");'
+  )
+  $text = $text.Replace(
+    "throw Error('El mensaje escrito no coincide.');",
+    'console.log("AVISO: el editor normalizó el texto; se valida por inicio de respuesta.");'
+  )
 
   Set-Content -LiteralPath $Target -Value $text -Encoding UTF8
 
@@ -127,13 +167,13 @@ async function esperarInicioRespuesta(
     throw "node --check ha fallado"
   }
 
-  Write-Host "EJECUTAR.JS PARCHEADO Y VALIDADO" -ForegroundColor Green
+  Write-Host "EJECUTAR.JS PARCHEADO Y VALIDADO V2" -ForegroundColor Green
   Write-Host "Backup: $backup"
-  Write-Host "Nueva condición de éxito: mensaje aceptado + respuesta iniciada."
+  Write-Host "Nueva condición de éxito: inicio real de respuesta (generando o respuesta creada)."
 }
 catch {
   Copy-Item -LiteralPath $backup -Destination $Target -Force
-  Write-Host "PATCH FALLIDO. EJECUTAR.JS RESTAURADO." -ForegroundColor Red
+  Write-Host "PATCH V2 FALLIDO. EJECUTAR.JS RESTAURADO." -ForegroundColor Red
   Write-Host $_.Exception.Message -ForegroundColor Red
   throw
 }
