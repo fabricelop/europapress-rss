@@ -140,14 +140,15 @@ jobs:
           assert "$LaunchConfirmSeconds = 30" in listener
           assert "direct-node" in listener
           assert "TTendencias unchanged" in listener and "tendenciasBefore" in listener and "tendenciasWritten" in listener
-          assert "RedirectStandardOutput" in listener and "ttittulares-launch-" in listener
-          assert "if ($messageSent -or $executionLaunched -or $responseStarted)" in listener
+          assert "EDITORIAL PROCESS STARTED via-vbs" in listener and "MODO:\\s*ENVIO REAL" in listener
+          assert "if ($realMode -and ($messageSent -or $executionLaunched -or $responseStarted))" in listener
           assert "worker=ttittulares-dedicated-v13" in installer
           assert "Get-TTiTTularesListenerProcesses" in installer and "Exclusividad TTiTTulares fallida" in installer
           assert "Get-TTiTTularesListeners" in installer_v13
           assert "exactamente un listener TTiTTulares" in installer_v13 or "se esperaba 1 listener" in installer_v13
           assert "worker=ttittulares-dedicated-v13 pid=" in installer_v13
           assert "TTendencias: NO MODIFICADO" in installer_v13
+          assert "97c94650d6b552b564d201f1c8f496a112eae078" in installer_v13
 
           ids=set()
           for item in prepared.get("items",[]):
