@@ -18,6 +18,9 @@ on:
       - "vercel-webhook/api/ttittulares-control.js"
       - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
+      - "vercel-webhook/api/ttittulares-run.js"
+      - "windows/TTiTTularesDedicatedListener.ps1"
+      - "windows/Install-TTiTTularesMobileChatTrigger.ps1"
       - "vercel-webhook/api/ttendencias-control.js"
       - "ttittulares/tremending/**"
       - ".github/workflows/tremending-collect.yml"
@@ -119,6 +122,15 @@ jobs:
           prompt=Path("ttittulares/editorial-run-prompt.md").read_text(encoding="utf-8")
           assert "misma conversación ejecutora" in prompt and "provider:\"chat-imagegen\"" in prompt
           assert "No uses el ImageGen interno" not in prompt and "crea exactamente UN trabajo visual" not in prompt
+          run_api=Path("vercel-webhook/api/ttittulares-run.js").read_text(encoding="utf-8")
+          run_status=Path("vercel-webhook/api/ttittulares-run-status.js").read_text(encoding="utf-8")
+          listener=Path("windows/TTiTTularesDedicatedListener.ps1").read_text(encoding="utf-8")
+          installer=Path("windows/Install-TTiTTularesMobileChatTrigger.ps1").read_text(encoding="utf-8")
+          assert "const {doc:trigger}=await readTrigger();" in run_api
+          assert "readControlJson(ACK_PATH)" in run_api
+          assert "GitHub REST refleja el HEAD" in run_status
+          assert '$WorkerId = "ttittulares-dedicated-v9"' in listener
+          assert "worker=ttittulares-dedicated-v9" in installer
 
           ids=set()
           for item in prepared.get("items",[]):
@@ -176,6 +188,7 @@ jobs:
           node --check vercel-webhook/api/ttittulares-control.js
           node --check vercel-webhook/api/ttittulares-widget.js
           node --check vercel-webhook/api/ttittulares-run-status.js
+          node --check vercel-webhook/api/ttittulares-run.js
           node --check ttittulares/tremending/capture_tweet.mjs
           node --check vercel-webhook/ttittulares/sw.js
           node --test vercel-webhook/test/ttittulares-image-ui.test.mjs vercel-webhook/test/ttittulares-source-table.test.mjs vercel-webhook/test/ttittulares-search-x.test.mjs

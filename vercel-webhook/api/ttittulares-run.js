@@ -134,7 +134,7 @@ async function requestPcAck(req,res){
   const worker_id=String(req.body?.worker_id||"legacy-shared-listener").trim().slice(0,120)||"legacy-shared-listener";
   const detail=String(req.body?.detail||"").trim().slice(0,1000);
   if(!command_id||!["picked_up","launched","failed"].includes(stage))return res.status(400).json({ok:false,error:"Ack no válido"});
-  const trigger=(await readControlRaw(TRIGGER_PATH))||(await readTrigger()).doc;
+  const {doc:trigger}=await readTrigger();
   if(String(trigger.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es el actual"});
   const requested_at=String(trigger.requested_at||"");
   const age=Date.now()-stamp(requested_at);
@@ -235,8 +235,7 @@ export default async function handler(req,res){
   try{
     const task=rawTask==="images"?"images":"editorial";
     if(task==="images")return await requestImageRun(req,res);
-    const [{doc:current,sha},items,ackDoc]=await Promise.all([readTrigger(),comments(),readControlRaw(ACK_PATH)]);
-    const ackState={doc:ackDoc||{}};
+    const [{doc:current,sha},items,ackState]=await Promise.all([readTrigger(),comments(),readControlJson(ACK_PATH)]);
     if(activeTrace(items))return res.status(409).json({ok:false,error:"run_in_progress"});
     const currentId=String(current.command_id||"").trim(),currentRequested=String(current.requested_at||"").trim();
     if(currentId&&currentRequested){
