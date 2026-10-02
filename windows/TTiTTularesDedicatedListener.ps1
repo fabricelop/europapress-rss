@@ -12,10 +12,10 @@ $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
 $TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
 $RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v15"
+$WorkerId = "ttittulares-dedicated-v16"
 $PollSeconds = 5
 $ClaimRetrySeconds = 38
-$MaxTriggerAgeSeconds = 90
+$MaxTriggerAgeSeconds = 604800
 
 function Write-Log([string]$Text) {
   $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $Text"
