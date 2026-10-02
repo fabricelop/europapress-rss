@@ -85,6 +85,17 @@ async function readTrigger(){
   }
 }
 async function readAck(){return await readControl(ACK_PATH)}
+async function readAckFresh(){
+  try{
+    const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+ACK_PATH+"?ref="+encodeURIComponent(TRIGGER_BRANCH),{cache:"no-store"});
+    if(!r.ok)return await readAck();
+    const f=await r.json();
+    const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+    return JSON.parse(raw||"{}")
+  }catch(_){
+    return await readAck()
+  }
+}
 async function readErrors(){
   try{
     const u=`https://raw.githubusercontent.com/${REPO}/main/ttittulares/execution-errors.json?t=${Date.now()}`;
@@ -246,7 +257,12 @@ export default async function handler(req,res){
       const [{doc:request},ack]=await Promise.all([readTrigger(),readAck()]);
       return res.status(200).json({ok:true,trigger:request||{},ack:ack||{},server_now:new Date().toISOString()})
     }
-    const [enabled,items,{doc:request},ack]=await Promise.all([triggerReady(),comments(),readTrigger(),readAck()]);
+    const [enabled,items,{doc:request},ackRaw]=await Promise.all([triggerReady(),comments(),readTrigger(),readAck()]);
+    let ack=ackRaw;
+    const requestAge=Date.now()-stamp(request?.requested_at);
+    if(request?.command_id&&Number.isFinite(requestAge)&&requestAge>=0&&requestAge<5*60*1000){
+      ack=await readAckFresh()
+    }
     const traces=items.map(traceOf).filter(Boolean);
     // Un RUNTRACE se crea una vez y se actualiza in-place. comment.updated_at mide
     // actividad/heartbeat, NO identidad cronológica del run: un run antiguo tocado
