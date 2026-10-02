@@ -129,6 +129,7 @@ jobs:
           control_api=Path("vercel-webhook/api/ttittulares-control.js").read_text(encoding="utf-8")
           listener=Path("windows/TTiTTularesDedicatedListener.ps1").read_text(encoding="utf-8")
           installer=Path("windows/Install-TTiTTularesMobileChatTrigger.ps1").read_text(encoding="utf-8")
+          installer_v13=Path("windows/Install-TTiTTulares-v13.ps1").read_text(encoding="utf-8")
           assert "const {doc:trigger}=await readTrigger();" in run_api
           assert "readControlJson(ACK_PATH)" in run_api
           assert "latestByRun" in run_api and "El estado autoritativo de cada run" in run_api
@@ -143,6 +144,10 @@ jobs:
           assert "if ($messageSent -or $executionLaunched -or $responseStarted)" in listener
           assert "worker=ttittulares-dedicated-v13" in installer
           assert "Get-TTiTTularesListenerProcesses" in installer and "Exclusividad TTiTTulares fallida" in installer
+          assert "Get-TTiTTularesListeners" in installer_v13
+          assert "exactamente un listener TTiTTulares" in installer_v13 or "se esperaba 1 listener" in installer_v13
+          assert "worker=ttittulares-dedicated-v13 pid=" in installer_v13
+          assert "TTendencias: NO MODIFICADO" in installer_v13
 
           ids=set()
           for item in prepared.get("items",[]):
