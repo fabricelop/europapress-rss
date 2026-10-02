@@ -50,7 +50,8 @@ foreach ($needle in @(
   'stage:"done"',
   'TT_IMAGE_UPLOAD_SECRET',
   'ensureCommandSent',
-  'BRIDGE COMMAND'
+  'BRIDGE COMMAND',
+  'view=image-job&strong=1&id='
 )) {
   if (-not $bridgeText.Contains($needle)) { throw "Falta garantía puente TTendencias v10: $needle" }
 }
