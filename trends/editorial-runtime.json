@@ -1,82 +1,66 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-02T14:55:00+02:00",
-  "last_completed_at": "2026-10-02T15:14:00+02:00",
+  "last_started_at": "2026-10-02T16:44:30+02:00",
+  "last_completed_at": "2026-10-02T16:56:00+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
-    "6ffbbb0c460f",
-    "5ab0526b0972",
-    "efad034bd296",
-    "02ad9e22e2d9",
-    "05b908270e8f",
-    "ad401a1e9e58",
-    "55182e295925",
-    "c9e5217f2b19",
-    "3e338faca793",
-    "2d65748bd484",
-    "1b1ed1fca8c6",
-    "3b2ff6816ee4",
-    "4cb63e0b4b6e"
+    "3db95918a884",
+    "0004d9f7a259",
+    "418afb769d6a",
+    "12e9e533301d",
+    "ff3a7dbc1a5a",
+    "4aa3329968cd",
+    "8f5a0e1a1655",
+    "a39bb5aa0dc4"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-02T15:14:00+02:00",
+  "updated_at": "2026-10-02T16:56:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "efad034bd296"
-  ],
+  "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "chat-20261002T1455+0200",
+    "run_id": "chat-20261002T164430+0200",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-02T14:55:00+02:00",
-    "updated_at": "2026-10-02T15:14:00+02:00",
-    "finished_at": "2026-10-02T15:14:00+02:00",
-    "current": 13,
-    "total": 13,
+    "started_at": "2026-10-02T16:44:30+02:00",
+    "updated_at": "2026-10-02T16:56:00+02:00",
+    "finished_at": "2026-10-02T16:56:00+02:00",
+    "current": 8,
+    "total": 8,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-02T14:55:00+02:00",
+    "requested_at": "2026-10-02T16:44:30.128+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 13,
-      "trends_explained": 12,
-      "explanation_groups": 4,
-      "new_cards": 4,
-      "revisions_updated": 1,
+      "trends_processed": 8,
+      "trends_explained": 8,
+      "explanation_groups": 7,
+      "new_cards": 7,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 1,
+      "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
-      "queue_remaining": 1,
+      "incidents": 0,
+      "queue_remaining": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 0,
-      "archive_sources_located": 0,
+      "fallback_images_ready": 7,
+      "archive_sources_located": 7,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 4,
+      "explanations_verified_under_280": 7,
       "remates_selected": 2,
-      "remates_omitted": 2,
-      "visual_backlog": 10,
-      "visual_backlog_current_run": 2,
-      "news_candidates": 0
+      "remates_omitted": 5,
+      "visual_backlog": 5,
+      "visual_backlog_current_run": 0
     },
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-02T15:08:00+02:00",
-        "phase": "investigating",
-        "trend_id": "efad034bd296",
-        "title": "Celia",
-        "reason": "La señal social está confirmada, pero tras búsquedas separadas no aparece un detonante único, actual y suficientemente verificable en España; no se fuerza una asociación con homónimos."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "cc64454562ecba8fdab56b654c32078cd46d6fbb",
@@ -86,184 +70,136 @@
     },
     "remate_selections": [
       {
-        "trend_id": "3e338faca793",
+        "trend_id": "3db95918a884",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": "political_content"
+        "no_remate_reason": "context_sensitivity"
       },
       {
-        "trend_id": "6ffbbb0c460f",
+        "trend_id": "0004d9f7a259",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": "political_content"
+        "no_remate_reason": "context_sensitivity"
       },
       {
-        "trend_id": "ad401a1e9e58",
+        "trend_id": "418afb769d6a",
         "revision": 0,
         "candidate_count": 5,
         "candidates": [
           {
             "id": "c1",
-            "total": 8.5,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
+            "total": 7.7
           },
           {
             "id": "c2",
-            "total": 7.9,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
+            "total": 8.5
           },
           {
             "id": "c3",
-            "total": 7.6,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
+            "total": 7.6
           },
           {
             "id": "c4",
-            "total": 7.4,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
+            "total": 7.3
           },
           {
             "id": "c5",
-            "total": 7.2,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
+            "total": 7
           }
         ],
-        "selected_candidate": "c1",
+        "selected_candidate": "c2",
         "selected_score": 8.5,
         "no_remate_reason": null
       },
       {
-        "trend_id": "55182e295925",
+        "trend_id": "12e9e533301d",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "context_sensitivity"
+      },
+      {
+        "trend_id": "ff3a7dbc1a5a",
         "revision": 0,
         "candidate_count": 5,
         "candidates": [
           {
             "id": "c1",
-            "total": 8.4,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 1.8,
-            "punch": 1.8,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
+            "total": 7.5
           },
           {
             "id": "c2",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
+            "total": 7.8
           },
           {
             "id": "c3",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
+            "total": 8.2
           },
           {
             "id": "c4",
-            "total": 7.3,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
+            "total": 7.4
           },
           {
             "id": "c5",
-            "total": 7,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
+            "total": 7.1
           }
         ],
-        "selected_candidate": "c1",
-        "selected_score": 8.4,
+        "selected_candidate": "c3",
+        "selected_score": 8.2,
         "no_remate_reason": null
+      },
+      {
+        "trend_id": "4aa3329968cd",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "context_sensitivity"
+      },
+      {
+        "trend_id": "8f5a0e1a1655",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "safety_sensitive_weather"
       }
     ],
-    "radar": {
-      "captured_at": "2026-10-02T15:01:32+02:00",
-      "queue_count": 1,
-      "top10": [
-        "Congreso",
-        "Junts",
-        "Bustinduy",
-        "#Mañaneros2O",
-        "Rufián",
-        "Patxi López",
-        "#EnBocaDeTodos",
-        "Comunismo",
-        "PP y Vox",
-        "Nogueras"
-      ]
-    },
-    "message": "Pasada directa completada 13/13 revisiones. Nueve tendencias del pleno y las protestas de vivienda se agruparon en una sola explicación; Comunismo se explicó aparte; Sepang y #paro se explicaron con remate e IA pendiente para chats visuales independientes. Celia queda problemática por falta de detonante actual verificable. Sin Work, ImageGen ni despliegues Vercel."
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "message": "Pasada directa completada 8/8. Siete tarjetas persistidas y verificadas; una agrupa dos términos del mismo aviso meteorológico. Todos los textos quedaron por debajo de 280 caracteres, con fallback de archivo. Cola editorial final 0."
   },
   "summary": {
-    "trends_processed": 13,
-    "trends_explained": 12,
-    "explanation_groups": 4,
-    "new_cards": 4,
-    "revisions_updated": 1,
+    "trends_processed": 8,
+    "trends_explained": 8,
+    "explanation_groups": 7,
+    "new_cards": 7,
+    "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "trends_problematic": 1,
+    "trends_problematic": 0,
     "trends_dismissed": 0,
-    "incidents": 1,
-    "queue_remaining": 1,
+    "incidents": 0,
+    "queue_remaining": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
-    "fallback_images_ready": 0,
-    "archive_sources_located": 0,
+    "fallback_images_ready": 7,
+    "archive_sources_located": 7,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 4,
+    "explanations_verified_under_280": 7,
     "remates_selected": 2,
-    "remates_omitted": 2,
-    "visual_backlog": 10,
-    "visual_backlog_current_run": 2,
-    "news_candidates": 0
+    "remates_omitted": 5,
+    "visual_backlog": 5,
+    "visual_backlog_current_run": 0
   },
   "error": null
 }
