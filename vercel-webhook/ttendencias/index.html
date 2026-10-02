@@ -28,17 +28,16 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
 <header class="top">
   <div class="topLine"><div class="brand">TTendencias</div><div class="spacer"></div><button class="iconbtn" id="refreshBtn" title="Recargar datos">↻</button><button class="iconbtn" id="settingsBtn" title="Acceso">⚙</button></div>
   <nav class="nav3">
-    <button class="navTab active" id="top10Btn" type="button">TOP 10</button>
-    <button class="navTab pending" id="preparedBtn" type="button" title="Ver pendientes de publicar">Pendientes<span class="unreadBadge" id="unreadExplainedBadge"></span></button>
-    <button class="navTab" id="historyBtn" type="button" title="Ver histórico">Histórico</button>
+    <a class="navTab active" id="top10Btn" href="/ttendencias/">TOP 10</a>
+    <a class="navTab pending" id="preparedBtn" href="/ttendencias/explicadas/" title="Ver pendientes de publicar">Pendientes<span class="unreadBadge" id="unreadExplainedBadge"></span></a>
+    <a class="navTab" id="historyBtn" href="/ttendencias/historico/" title="Ver histórico">Histórico</a>
   </nav>
 </header>
 <main>
   <section class="summary">
-    <div><h1>Top 10 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima explicación —</div><button class="workingCount idle" id="workingCount" type="button">En elaboración: 0</button></div></div>
+    <div><h1>Top 10 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><button class="workingCount idle" id="workingCount" type="button">En elaboración: 0</button></div></div>
     <div class="badge" id="quality">—</div>
   </section>
-  <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Entradas</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="primary" id="runNow" type="button">▶ Entradas</button></section>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
   <section class="radarBlock" id="radarBlock">
     <div class="radarHead"><div><h2>Próximas tendencias</h2><div class="meta">Señales todavía fuera del Top 10</div></div><div class="radarHint">Cruce social + TTiTTulares</div></div>
@@ -57,11 +56,11 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
   <div class="meta" id="badgeStatus" style="margin-top:8px"></div>
 </div></div>
 <div class="sheet" id="problemRetrySheet"><div class="panel">
-  <h2>Reintentar tendencia problemática</h2>
+  <h2>Pista para explicar tendencia</h2>
   <p id="problemRetryName"></p>
-  <p>Escribe qué has encontrado y por qué crees que esta tendencia está siendo comentada. Este contexto se enviará como instrucción para reelaborarla.</p>
-  <textarea id="problemRetryText" placeholder="Ej.: Según mis búsquedas, es tendencia porque…"></textarea>
-  <div class="row"><button class="secondary" id="cancelProblemRetry">Cancelar</button><button class="primary" id="sendProblemRetry">Reintentar y elaborar</button></div>
+  <p>Escribe por qué crees que es tendencia o qué contexto has encontrado. Se usará como pista, pero la explicación se volverá a investigar y verificar antes de prepararla.</p>
+  <textarea id="problemRetryText" placeholder="Ej.: Creo que es tendencia porque…"></textarea>
+  <div class="row"><button class="secondary" id="cancelProblemRetry">Cancelar</button><button class="primary" id="sendProblemRetry">Preparar</button></div>
 </div></div>
 <div class="sheet" id="explainedSheet"><div class="panel"><h2 id="explainedTitle">Tendencia explicada</h2><p id="explainedText"></p><div class="row"><button class="primary" id="explainedClose">Cerrar</button></div></div></div>
 <div class="sheet" id="workingSheet"><div class="panel"><h2>En elaboración</h2><p>Estas tendencias están ahora mismo en la cola editorial o siendo reevaluadas.</p><div class="workingItems" id="workingItems"></div><div class="row"><button class="primary" id="workingClose" type="button">Cerrar</button></div></div></div>
@@ -73,7 +72,7 @@ const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
 const RUN_STATUS_API="/api/ttendencias-run-status";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="20261002-pending-exact-control-rest";
+const SHELL_BUILD="20261002-clean-shortcuts-hint-v1";
 const $=id=>document.getElementById(id);
 const DATA_CACHE_KEY="ttendencias-last-model",RUN_CACHE_KEY="ttendencias-last-run-status";
 const IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/";
@@ -92,8 +91,7 @@ function renderScheduleTiming(){
  if(!model)return;
  const cfg=model.editorial_config?.editorial||{},now=new Date();
  const radarMinutes=(cfg.detection_schedule_minutes||[7,17,27,37,47,57]).map(Number);
- const editorialMinutes=(cfg.schedule_minutes||[15]).map(Number);
- const nextR=nextSlot(now,radarMinutes),nextE=nextSlot(now,editorialMinutes);
+ const nextR=nextSlot(now,radarMinutes);
  const healthChecked=new Date(model.health?.checked_at||0);
  const healthFresh=!Number.isNaN(healthChecked.getTime())&&(Date.now()-healthChecked.getTime())<=25*60000;
  const refresh=model.health?.modules?.refresh||{};
@@ -104,8 +102,6 @@ function renderScheduleTiming(){
  $("lastRadar").textContent="Último radar "+fmtRadar(model.captured_at)+(radarIssue?" · ⚠ "+radarIssue:"");
  const rm=nextR?Math.ceil((nextR-now)/60000):null;
  $("nextRadar").textContent="Próximo radar "+(nextR?hhmm(nextR):"—")+(rm!==null?" · en "+rm+" min":"");
- const em=nextE?Math.ceil((nextE-now)/60000):null;
- $("nextEditorial").textContent="Próxima explicación "+(nextE?hhmm(nextE):"—")+(em!==null?" · en "+em+" min":"");
 }
 
 function localState(){
@@ -401,6 +397,9 @@ function render(){
    }else{detail.textContent=item.detail||"";detail.style.display=item.detail?"block":"none"}
    const slot=card.querySelector(".slot");
    const x=document.createElement("a");x.className="action xsearch";x.textContent="Buscar en X";x.href="https://x.com/search?q="+encodeURIComponent(item.name)+"&src=typed_query&f=live";x.target="_blank";x.rel="noopener noreferrer";x.setAttribute("aria-label","Buscar "+item.name+" en X");slot.appendChild(x);
+   if(item.status==="problematic"){
+     const p=document.createElement("button");p.className="action prepare";p.type="button";p.textContent="Pista";p.disabled=busy.has(item.name);p.onclick=()=>openProblemRetry(item);slot.appendChild(p);
+   }
 
    list.appendChild(card);
  }
@@ -421,9 +420,10 @@ function render(){
    }
    const slot=card.querySelector(".slot");
    const x=document.createElement("a");x.className="action xsearch";x.textContent="Buscar en X";x.href="https://x.com/search?q="+encodeURIComponent(item.name)+"&src=typed_query&f=live";x.target="_blank";x.rel="noopener noreferrer";slot.appendChild(x);
-   const p=document.createElement("button");p.className="action prepare";p.disabled=busy.has(item.name)||queued;
-   p.textContent=item.material_novelty?"Preparar novedad":queued?"Preparando…":"Preparar";
-   p.onclick=()=>prepareUpcoming(item);slot.appendChild(p);
+   const p=document.createElement("button");p.className="action prepare";p.type="button";p.disabled=busy.has(item.name)||queued;
+   const needsHint=item.request_status==="problematic";
+   p.textContent=needsHint?"Pista":item.material_novelty?"Preparar novedad":queued?"Preparando…":"Preparar";
+   p.onclick=()=>needsHint?openProblemRetry(item):prepareUpcoming(item);slot.appendChild(p);
    upcomingList.appendChild(card);
  }
  if(!(model.upcoming||[]).length)upcomingList.innerHTML='<div class="empty">No hay señales anticipadas con suficiente respaldo ahora mismo.</div>';
@@ -738,7 +738,7 @@ async function sendProblemRetry(){
    clearLocal([item.name]);
    $("problemRetrySheet").classList.remove("show");
    problemRetryItem=null;
-   showToast("Contexto enviado · vuelve a explicación");
+   showToast("Pista enviada · vuelve a elaboración");
    await load(true);
  }catch(e){showToast(e.message)}
  finally{$("sendProblemRetry").disabled=false;busy.delete(item.name);render()}
@@ -776,24 +776,20 @@ $("workingCount").onclick=()=>{if((model?.elaboratingItems||[]).length)openWorki
 $("workingClose").onclick=()=>$("workingSheet").classList.remove("show");
 $("workingSheet").addEventListener("click",e=>{if(e.target===$("workingSheet"))$("workingSheet").classList.remove("show")});
 
-$("runNow").onclick=requestRun;
 $("cancelProblemRetry").onclick=()=>{$("problemRetrySheet").classList.remove("show");problemRetryItem=null};
 $("sendProblemRetry").onclick=sendProblemRetry;
 $("problemRetrySheet").addEventListener("click",e=>{if(e.target===$("problemRetrySheet")){$("problemRetrySheet").classList.remove("show");problemRetryItem=null}});
-$("top10Btn").onclick=()=>location.href="/ttendencias/";
-$("preparedBtn").onclick=()=>location.href="/ttendencias/explicadas/";
-$("historyBtn").onclick=()=>location.href="/ttendencias/historico/";
 $("explainedClose").onclick=()=>$("explainedSheet").classList.remove("show");
 $("explainedSheet").addEventListener("click",e=>{if(e.target===$("explainedSheet"))$("explainedSheet").classList.remove("show")});
 
 $("incidentClose").onclick=()=>$("incidentSheet").classList.remove("show");
 $("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buildDiagnostic(lastRunTelemetry||{}));showToast("Diagnóstico copiado")}catch(_){showToast("No se pudo copiar el diagnóstico")}};
 $("incidentSheet").addEventListener("click",e=>{if(e.target===$("incidentSheet"))$("incidentSheet").classList.remove("show")});
-$("refreshBtn").onclick=()=>{showToast("Recargando datos");load();loadRunStatus()};
+$("refreshBtn").onclick=()=>{showToast("Recargando datos");load()};
 $("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado":"Sin token guardado";$("sheet").classList.add("show");refreshPushStatus().catch(()=>{})};
 $("cancelToken").onclick=()=>$("sheet").classList.remove("show");
 $("testToken").onclick=async()=>{const v=$("tokenInput").value.trim();if(!v)return;$("accessStatus").textContent="Comprobando…";try{const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+v},body:JSON.stringify({action:"ping"})});const d=await r.json();$("accessStatus").textContent=r.ok&&d?.backend?.ok?"✓ Acceso correcto · GitHub operativo":r.status===401?"✕ Token no válido":"⚠ Backend no disponible"}catch(_){$("accessStatus").textContent="✕ No se pudo comprobar"}};
-$("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado");refreshPushStatus().catch(()=>{});loadRunStatus()};
+$("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado");refreshPushStatus().catch(()=>{})};
 $("badgeBtn").onclick=async()=>{try{const sub=await currentPushSubscription();if(sub)await deactivatePush();else await activatePush()}catch(e){showToast(e.message||"No se pudieron cambiar los avisos");await refreshPushStatus().catch(()=>{})}};
 $("pushTestBtn").onclick=async()=>{try{showToast("Enviando aviso de prueba…");const d=await api("push-test",[]);showToast(d.delivered>0?"Aviso de prueba enviado":"No se pudo entregar el aviso")}catch(e){showToast(e.message||"Falló el aviso de prueba")}};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
@@ -815,6 +811,6 @@ if("serviceWorker" in navigator){
    location.reload();
  });
 }
-if(model)render();if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshMainImageRuns();setInterval(()=>{if(!document.hidden)load(true)},15000);setInterval(()=>{if(!document.hidden&&model)renderScheduleTiming()},15000);
+if(model)render();load();refreshMainImageRuns();setInterval(()=>{if(!document.hidden)load(true)},15000);setInterval(()=>{if(!document.hidden&&model)renderScheduleTiming()},15000);
 </script>
 </body></html>

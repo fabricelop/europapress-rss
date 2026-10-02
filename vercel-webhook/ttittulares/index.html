@@ -65,7 +65,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <button class="iconbtn" id="settings" title="Ajustes">⚙</button>
 </header>
 <main>
- <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="lastEditorial">Última elaboración —</div><div id="nextRadar">Próximo radar —</div><div id="nextEditorial">Próxima elaboración —</div><div class="sourceCounters"><span title="Noticias activas detectadas en dos fuentes"><b id="twoSourceCount">0</b> 2 fuentes</span><span title="Noticias activas detectadas en una sola fuente"><b id="oneSourceCount">0</b> 1 fuente</span></div></div></div><div class="health" id="health" role="button" tabindex="0" aria-label="Ver estado de las fuentes">—</div></section>
+ <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div class="sourceCounters"><span title="Noticias activas detectadas en dos fuentes"><b id="twoSourceCount">0</b> 2 fuentes</span><span title="Noticias activas detectadas en una sola fuente"><b id="oneSourceCount">0</b> 1 fuente</span></div></div></div><div class="health" id="health" role="button" tabindex="0" aria-label="Ver estado de las fuentes">—</div></section>
  <div class="stats">
   <button class="stat active" data-view="ready"><b id="readyCount">0</b>Listas</button>
   <button class="stat" data-view="processing"><b id="processingCount">0</b>En elaboración</button>
@@ -73,7 +73,6 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
   <button class="stat" data-view="growing"><b id="growingCount">0</b>Creciendo</button>
   <button class="stat" data-view="tremending"><b id="tremendingCount">0</b>Tremending</button>
  </div>
- <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Entradas</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="btn primary" id="runNow" type="button">▶ Entradas</button></section>
  <section class="list" id="list"><div class="empty">Cargando…</div></section>
 </main>
 
@@ -140,8 +139,8 @@ function latestSlot(now,minutes){const d=new Date(now);d.setSeconds(0,0);for(let
 function agoMin(ms){return Math.max(0,Math.floor(ms/60000))}
 function renderTiming(){
  const s=model.status||{},cfg=model.config||{},now=new Date();
- const radarMinutes=cfg.radar?.schedule_minutes||[10,40], editorialMinutes=cfg.editorial?.schedule_minutes||[0];
- const last=s.radar_at?new Date(s.radar_at):null, expected=latestSlot(now,radarMinutes), upcoming=nextSlot(now,radarMinutes), ed=nextSlot(now,editorialMinutes);
+ const radarMinutes=cfg.radar?.schedule_minutes||[10,40];
+ const last=s.radar_at?new Date(s.radar_at):null, expected=latestSlot(now,radarMinutes), upcoming=nextSlot(now,radarMinutes);
  $("lastRadar").textContent="Último radar "+(last?fmt(last):"—");
  const delayed=last&&expected&&last<new Date(expected.getTime()-180000)&&now>new Date(expected.getTime()+180000);
  if(delayed){
@@ -149,7 +148,6 @@ function renderTiming(){
  }else{
    const mins=upcoming?Math.ceil((upcoming-now)/60000):null;$("nextRadar").textContent="Próximo radar "+(upcoming?hhmm(upcoming):"—")+(mins!==null?" · en "+mins+" min":"");$("nextRadar").className="ok";
  }
- const em=ed?Math.ceil((ed-now)/60000):null;$("nextEditorial").textContent="Próxima elaboración "+(ed?hhmm(ed):"—")+(em!==null?" · en "+em+" min":"");
 }
 function renderGrowing(list){
  $("viewTitle").textContent="Creciendo";
@@ -1050,11 +1048,10 @@ async function load(silent=false){
  }
 }
 document.querySelectorAll(".stat[data-view]").forEach(x=>x.onclick=()=>setView(x.dataset.view));
-$("runNow").onclick=requestRun;
 $("incidentClose").onclick=()=>$("incidentSheet").classList.remove("show");
 $("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buildDiagnostic(lastRunTelemetry||{}));toast("Diagnóstico copiado")}catch(_){toast("No se pudo copiar el diagnóstico")}};
 $("notify").onclick=enablePush;
-$("refresh").onclick=()=>{toast("Recargando");load();loadRunStatus();refreshImageRuns()};
+$("refresh").onclick=()=>{toast("Recargando");load();refreshImageRuns()};
 $("submitNews").onclick=()=>{
  $("submitTitle").value="";$("submitInstruction").value="";$("submitStatus").textContent="";
  $("submitSheet").classList.add("show");$("submitTitle").focus()
@@ -1099,7 +1096,7 @@ $("reworkCancel").onclick=()=>{$("reworkSheet").classList.remove("show");reworkI
 $("reworkSend").onclick=async()=>{if(!reworkItem)return;const instruction=$("reworkInstruction").value.trim();if(!instruction){toast("Escribe qué quieres cambiar");return}if(!confirm("¿Mandar esta noticia de nuevo a elaboración con estas instrucciones?"))return;const old=[...model.prepared];model.prepared=model.prepared.filter(x=>x.event_id!==reworkItem.event_id);render();try{await api("rework",{event_id:reworkItem.event_id,instruction});$("reworkSheet").classList.remove("show");toast("Enviada a elaboración");reworkItem=null;setView("processing");setTimeout(()=>load(true),1000)}catch(e){model.prepared=old;render();toast(e.message)}};
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load(true)});window.addEventListener("pageshow",()=>load(true));
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttittulares/sw.js").then(()=>syncNotifyButton()).catch(()=>{});
-if(hasGoodState)render();else setView(view);if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshImageRuns();setInterval(()=>{if(!document.hidden)load(true)},15000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
+if(hasGoodState)render();else setView(view);load();refreshImageRuns();setInterval(()=>{if(!document.hidden)load(true)},15000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
 </script>
 </body></html>
 <!-- quote-candidates: conversation-low-engagement-v1 -->
