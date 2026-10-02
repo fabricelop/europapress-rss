@@ -306,7 +306,8 @@ function collapseVisibleExplained(rows){
 }
 async function load(passive=false){
  const interactionAtStart=uiInteractionVersion;
- const r=await fetch(API+"?view=state&t="+Date.now(),{cache:"no-store"});
+ const url=passive?(API+"?view=state"):(API+"?view=state&fresh=1&t="+Date.now());
+ const r=await fetch(url,{cache:passive?"default":"no-store"});
  const d=await r.json();if(!r.ok||!d?.ok)throw new Error(d?.error||"No se pudo leer TTendencias");
  if(passive&&(uiInteractionActive()||interactionAtStart!==uiInteractionVersion)){queuePassiveRefresh(450);return}
  const requests=d.requests?.requests||[];

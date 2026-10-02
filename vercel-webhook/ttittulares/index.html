@@ -65,7 +65,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <button class="iconbtn" id="settings" title="Ajustes">⚙</button>
 </header>
 <main>
- <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div class="sourceCounters"><span title="Noticias activas detectadas en dos fuentes"><b id="twoSourceCount">0</b> 2 fuentes</span><span title="Noticias activas detectadas en una sola fuente"><b id="oneSourceCount">0</b> 1 fuente</span></div></div></div><div class="health" id="health" role="button" tabindex="0" aria-label="Ver estado de las fuentes">—</div></section>
+ <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="githubRate" class="late" hidden></div><div class="sourceCounters"><span title="Noticias activas detectadas en dos fuentes"><b id="twoSourceCount">0</b> 2 fuentes</span><span title="Noticias activas detectadas en una sola fuente"><b id="oneSourceCount">0</b> 1 fuente</span></div></div></div><div class="health" id="health" role="button" tabindex="0" aria-label="Ver estado de las fuentes">—</div></section>
  <div class="stats">
   <button class="stat active" data-view="ready"><b id="readyCount">0</b>Listas</button>
   <button class="stat" data-view="processing"><b id="processingCount">0</b>En elaboración</button>
@@ -120,6 +120,19 @@ const IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rs
 const $=id=>document.getElementById(id);
 const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards",TREMENDING_OPEN_KEY="ttittulares-open-tremending";
 const DATA_CACHE_KEY="ttittulares-last-model",RUN_CACHE_KEY="ttittulares-last-run-status";
+const GITHUB_RATE_KEY="github-rate-state-v1";
+function updateGithubRate(rate){
+ const el=$("githubRate");if(!el)return;
+ let info=rate||null;
+ if(info){try{localStorage.setItem(GITHUB_RATE_KEY,JSON.stringify(info))}catch(_){}}
+ else{try{info=JSON.parse(localStorage.getItem(GITHUB_RATE_KEY)||"null")}catch(_){}}
+ if(!info){el.hidden=true;return}
+ const reset=new Date(info.reset_at||0),resetOk=!Number.isNaN(reset.getTime()),limited=Boolean(info.limited)&&resetOk&&reset.getTime()>Date.now();
+ const remaining=Number(info.remaining);
+ if(limited){el.textContent="GitHub limitado · disponible de nuevo a las "+new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit"}).format(reset);el.hidden=false;return}
+ if(Number.isFinite(remaining)&&remaining<=250&&resetOk){el.textContent="GitHub · "+remaining+" restantes · reinicio "+new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit"}).format(reset);el.hidden=false;return}
+ el.hidden=true
+}
 function loadLocalJson(key){try{return JSON.parse(localStorage.getItem(key)||"null")}catch(_){return null}}
 function loadUiSet(key){try{return new Set((JSON.parse(sessionStorage.getItem(key)||"[]")||[]).map(String))}catch(_){return new Set()}}
 function persistUiState(){try{sessionStorage.setItem(PENDING_KEY,JSON.stringify([...pendingClosed]));sessionStorage.setItem(OPEN_KEY,JSON.stringify([...openCards]));sessionStorage.setItem(TREMENDING_OPEN_KEY,JSON.stringify([...tremendingOpen]))}catch(_){}}
@@ -1036,9 +1049,11 @@ function renderProcessing(list){
 async function load(silent=false,passive=false){
  const seq=++loadSeq,interactionAtStart=uiInteractionVersion;
  try{
-  const r=await fetch(API+"?state="+Date.now(),{cache:"no-store"});
-  if(!r.ok)throw new Error("No se pudieron leer los datos");
-  const d=await r.json();if(seq!==loadSeq)return;
+  const url=passive?API:(API+"?fresh=1&t="+Date.now());
+  const r=await fetch(url,{cache:passive?"default":"no-store"});
+  const d=await r.json().catch(()=>({}));if(seq!==loadSeq)return;
+  if(d.github_rate_limit)updateGithubRate(d.github_rate_limit);
+  if(!r.ok){const err=new Error(d.error||"No se pudieron leer los datos");err.githubRate=d.github_rate_limit||null;throw err}
   if(passive&&(uiInteractionActive()||interactionAtStart!==uiInteractionVersion)){queuePassiveLoad(450);return}
   const preparedRaw=d.prepared?.items||[],processingRaw=d.status?.processing_items||[],problematicRaw=d.status?.problematic_items||[],trendCandidatesRaw=d.status?.trend_candidates||[],growingRaw=d.status?.three_source_items||[];
   const present=new Set([...preparedRaw,...processingRaw,...problematicRaw,...growingRaw].map(x=>String(x.event_id||"")).filter(Boolean));
@@ -1054,7 +1069,8 @@ async function load(silent=false,passive=false){
   if(LINKED_EVENT_ID)requestAnimationFrame(()=>{const card=[...document.querySelectorAll("#list .card")].find(x=>x.dataset.eventId===LINKED_EVENT_ID);if(card)card.scrollIntoView({block:"start"})})
  }catch(e){
   if(seq===loadSeq){
-    if(hasGoodState){const h=$("health");if(h){h.textContent="Datos en caché · actualización temporalmente limitada";h.classList.add("bad")}if(!silent)toast("Mostrando la última copia válida");}
+    if(e.githubRate)updateGithubRate(e.githubRate);
+    if(hasGoodState){const h=$("health");if(h){h.textContent=e.githubRate?.limited?"Datos en caché · GitHub temporalmente limitado":"Datos en caché · actualización temporalmente limitada";h.classList.add("bad")}if(!silent)toast("Mostrando la última copia válida");}
     else if(!silent){toast("Datos temporalmente no disponibles");const list=$("list");if(list)list.innerHTML='<div class="empty"><b>Datos temporalmente no disponibles.</b><br><button class="btn" id="retryLoad">Reintentar</button></div>';const retry=$("retryLoad");if(retry)retry.onclick=()=>load();}
   }
  }
@@ -1108,7 +1124,7 @@ $("reworkCancel").onclick=()=>{$("reworkSheet").classList.remove("show");reworkI
 $("reworkSend").onclick=async()=>{if(!reworkItem)return;const instruction=$("reworkInstruction").value.trim();if(!instruction){toast("Escribe qué quieres cambiar");return}if(!confirm("¿Mandar esta noticia de nuevo a elaboración con estas instrucciones?"))return;const old=[...model.prepared];model.prepared=model.prepared.filter(x=>x.event_id!==reworkItem.event_id);render();try{await api("rework",{event_id:reworkItem.event_id,instruction});$("reworkSheet").classList.remove("show");toast("Enviada a elaboración");reworkItem=null;setView("processing");setTimeout(()=>load(true),1000)}catch(e){model.prepared=old;render();toast(e.message)}};
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)queuePassiveLoad(250)});window.addEventListener("pageshow",()=>queuePassiveLoad(250));
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttittulares/sw.js").then(()=>syncNotifyButton()).catch(()=>{});
-if(hasGoodState)render();else setView(view);if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshImageRuns();setInterval(()=>{if(!document.hidden)queuePassiveLoad(0)},15000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
+if(hasGoodState)render();else setView(view);if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshImageRuns();setInterval(()=>{if(!document.hidden)queuePassiveLoad(0)},60000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
 </script>
 </body></html>
 <!-- quote-candidates: conversation-low-engagement-v1 -->

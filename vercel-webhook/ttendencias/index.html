@@ -35,7 +35,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
 </header>
 <main>
   <section class="summary">
-    <div><h1>Top 10 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><button class="workingCount idle" id="workingCount" type="button">En elaboración: 0</button></div></div>
+    <div><h1>Top 10 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="githubRate" class="late" hidden></div><button class="workingCount idle" id="workingCount" type="button">En elaboración: 0</button></div></div>
     <div class="badge" id="quality">—</div>
   </section>
   <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="primary" id="runNow" type="button" hidden style="display:none!important" aria-hidden="true" tabindex="-1">▶ Entradas</button></section>
@@ -77,6 +77,19 @@ const SHELL_BUILD="20261002-runpanel-fasttap-v2";
 const $=id=>document.getElementById(id);
 const DATA_CACHE_KEY="ttendencias-last-model",RUN_CACHE_KEY="ttendencias-last-run-status";
 const IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/";
+const GITHUB_RATE_KEY="github-rate-state-v1";
+function updateGithubRate(rate){
+ const el=$("githubRate");if(!el)return;
+ let info=rate||null;
+ if(info){try{localStorage.setItem(GITHUB_RATE_KEY,JSON.stringify(info))}catch(_){}}
+ else{try{info=JSON.parse(localStorage.getItem(GITHUB_RATE_KEY)||"null")}catch(_){}}
+ if(!info){el.hidden=true;return}
+ const reset=new Date(info.reset_at||0),resetOk=!Number.isNaN(reset.getTime()),limited=Boolean(info.limited)&&resetOk&&reset.getTime()>Date.now();
+ const remaining=Number(info.remaining);
+ if(limited){el.textContent="GitHub limitado · disponible de nuevo a las "+new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit"}).format(reset);el.hidden=false;return}
+ if(Number.isFinite(remaining)&&remaining<=250&&resetOk){el.textContent="GitHub · "+remaining+" restantes · reinicio "+new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit"}).format(reset);el.hidden=false;return}
+ el.hidden=true
+}
 function loadLocalJson(key){try{return JSON.parse(localStorage.getItem(key)||"null")}catch(_){return null}}
 const ARCHIVED_LOCAL_KEY="ttendencias-explicadas-archived-v1";
 function localArchived(){try{return new Set(JSON.parse(localStorage.getItem(ARCHIVED_LOCAL_KEY)||"[]"))}catch(_){return new Set()}}
@@ -763,14 +776,15 @@ async function retry(item){
 async function load(silent=false,passive=false){
  const interactionAtStart=uiInteractionVersion;
  try{
-  const r=await fetch(API+"?view=state&t="+Date.now(),{cache:"no-store"});
-  if(!r.ok)throw new Error("No se pudieron leer los datos");
-  const d=await r.json();
-  if(!d?.ok)throw new Error(d?.error||"Estado TTendencias no disponible");
+  const url=passive?(API+"?view=state"):(API+"?view=state&fresh=1&t="+Date.now());
+  const r=await fetch(url,{cache:passive?"default":"no-store"});
+  const d=await r.json().catch(()=>({}));
+  if(d.github_rate_limit)updateGithubRate(d.github_rate_limit);
+  if(!r.ok||!d?.ok){const err=new Error(d?.error||"Estado TTendencias no disponible");err.githubRate=d.github_rate_limit||null;throw err}
   if(passive&&(uiInteractionActive()||interactionAtStart!==uiInteractionVersion)){queuePassiveRefresh(450);return}
   model=buildModel(d.recent||{},d.requests||{},d.explained||{},d.health||{},d.prepared||{items:[]},d.editorial_config||{},d.editorial_queue||{items:[]});
   localStorage.setItem("ttendencias-last-model",JSON.stringify(model));render();
- }catch(e){if(model){const h=$("health");if(h){h.textContent="Datos en caché";h.classList.add("bad")}if(!silent)showToast("Mostrando la última copia válida")}else if(!silent)showToast("Datos temporalmente no disponibles")}
+ }catch(e){if(e.githubRate)updateGithubRate(e.githubRate);if(model){const q=$("quality");if(q&&e.githubRate?.limited){q.textContent="GitHub limitado";q.className="badge warn"}if(!silent)showToast("Mostrando la última copia válida")}else if(!silent)showToast("Datos temporalmente no disponibles")}
 }
 function openWorkingSheet(){
  const rows=model?.elaboratingItems||[],box=$("workingItems");box.innerHTML="";
@@ -824,6 +838,6 @@ if("serviceWorker" in navigator){
    location.reload();
  });
 }
-if(model)render();if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshMainImageRuns();setInterval(()=>{if(!document.hidden)queuePassiveRefresh(0)},15000);setInterval(()=>{if(!document.hidden&&model)renderScheduleTiming()},15000);
+if(model)render();if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshMainImageRuns();setInterval(()=>{if(!document.hidden)queuePassiveRefresh(0)},60000);setInterval(()=>{if(!document.hidden&&model)renderScheduleTiming()},15000);
 </script>
 </body></html>

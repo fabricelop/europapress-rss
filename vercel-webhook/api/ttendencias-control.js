@@ -132,8 +132,49 @@ async function authorizedGitHubWorkflow(req) {
     return false;
   }
 }
+let githubRateState={limit:null,remaining:null,used:null,reset_at:null,limited:false,updated_at:null};
+let githubRateProbeAt=0;
+function captureGithubRate(r,core=null){
+  const num=v=>{const n=Number(v);return Number.isFinite(n)?n:null};
+  const limit=num(core?.limit??r?.headers?.get?.("x-ratelimit-limit"));
+  const remaining=num(core?.remaining??r?.headers?.get?.("x-ratelimit-remaining"));
+  const used=num(core?.used??r?.headers?.get?.("x-ratelimit-used"));
+  const reset=num(core?.reset??r?.headers?.get?.("x-ratelimit-reset"));
+  if(limit!==null)githubRateState.limit=limit;
+  if(remaining!==null)githubRateState.remaining=remaining;
+  if(used!==null)githubRateState.used=used;
+  if(reset!==null)githubRateState.reset_at=new Date(reset*1000).toISOString();
+  const resetMs=Date.parse(githubRateState.reset_at||"");
+  githubRateState.limited=githubRateState.remaining===0&&Number.isFinite(resetMs)&&resetMs>Date.now();
+  githubRateState.updated_at=new Date().toISOString();
+  return githubRateInfo()
+}
+function githubRateInfo(){
+  const resetMs=Date.parse(githubRateState.reset_at||"");
+  if(githubRateState.limited&&Number.isFinite(resetMs)&&resetMs<=Date.now())githubRateState.limited=false;
+  return {...githubRateState}
+}
+async function probeGithubRate(force=false){
+  if(!process.env.GITHUB_TOKEN)return githubRateInfo();
+  if(!force&&githubRateProbeAt&&Date.now()-githubRateProbeAt<60000)return githubRateInfo();
+  githubRateProbeAt=Date.now();
+  try{
+    const r=await fetch("https://api.github.com/rate_limit",{headers:{
+      accept:"application/vnd.github+json",authorization:`Bearer ${process.env.GITHUB_TOKEN}`,
+      "x-github-api-version":"2022-11-28","user-agent":"ttendencias-control-rate"
+    }});
+    let core=null;if(r.ok){try{core=(await r.json())?.resources?.core||null}catch(_){}}
+    captureGithubRate(r,core);
+  }catch(_){}
+  return githubRateInfo()
+}
 async function gh(path, options = {}) {
   const token = process.env.GITHUB_TOKEN;
+  const rate=githubRateInfo();
+  if(rate.limited){
+    const e=new Error("GitHub rate limit agotado hasta "+rate.reset_at);
+    e.statusCode=429;e.githubRateLimit=rate;throw e
+  }
   const r = await fetch(`https://api.github.com/repos/${REPO}/${path}`, {
     ...options,
     headers: {
@@ -144,6 +185,7 @@ async function gh(path, options = {}) {
       ...(options.headers || {}),
     },
   });
+  captureGithubRate(r);
   return r;
 }
 async function readJson(path) {
@@ -1022,6 +1064,7 @@ async function rateRemate(ratingKey, rating) {
 }
 
 async function stateSnapshot() {
+  const github_rate_limit = await probeGithubRate(false);
   // El panel solo necesita contenido para pintar el estado. Usar RAW aquí
   // evita gastar el rate limit REST autenticado de GitHub en cada polling.
   // La API autenticada queda reservada para escrituras y operaciones que
@@ -1047,7 +1090,7 @@ async function stateSnapshot() {
     const ageMinutes = captured ? Math.max(0, (Date.now() - captured) / 60000) : 99999;
     refresh_recovery.age_minutes = Math.round(ageMinutes * 10) / 10;
     refresh_recovery.stale = ageMinutes > 20;
-    if (refresh_recovery.stale) {
+    if (refresh_recovery.stale && !github_rate_limit.limited) {
       const current = await readText(REFRESH_TRIGGER);
       const match = String(current.text || "").match(/(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z)/);
       const last = match ? new Date(match[1]).getTime() : 0;
@@ -1057,6 +1100,8 @@ async function stateSnapshot() {
         refresh_recovery.triggered = true;
         refresh_recovery.triggered_at = stamp;
       }
+    } else if (refresh_recovery.stale && github_rate_limit.limited) {
+      refresh_recovery.suppressed = "github_rate_limit";
     }
   } catch (e) {
     refresh_recovery.error = String(e?.message || e).slice(0, 300);
@@ -1075,6 +1120,7 @@ async function stateSnapshot() {
     prepared: prepared.doc,
     editorial_config: editorialConfig.doc,
     editorial_queue: editorialQueue.doc,
+    github_rate_limit,
     refresh_recovery,
   };
 }
@@ -1130,6 +1176,8 @@ export default async function handler(req, res) {
   try {
     if (req.method === "GET") {
       if (String(req.query?.view || "") === "state") {
+        const fresh=String(req.query?.fresh||"")==="1";
+        res.setHeader("cache-control",fresh?"no-store":"public, max-age=0, s-maxage=45, stale-while-revalidate=120");
         return res.status(200).json(await stateSnapshot());
       }
       if (String(req.query?.view || "") === "image-proxy") {
@@ -1191,6 +1239,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: "Acción no válida" });
   } catch (e) {
     console.error(e);
-    return res.status(500).json({ ok: false, error: String(e.message || e) });
+    const github_rate_limit=e?.githubRateLimit||githubRateInfo();
+    const limited=Boolean(github_rate_limit?.limited);
+    return res.status(limited?429:500).json({ ok: false, error: limited?"GitHub temporalmente limitado":String(e.message || e), github_rate_limit, retry_at: limited?github_rate_limit.reset_at:undefined });
   }
 }

@@ -502,7 +502,8 @@ function collapseVisibleExplained(rows){
 }
 async function load(passive=false){
  const interactionAtStart=uiInteractionVersion;
- const r=await fetch(API+"?view=state&t="+Date.now(),{cache:"no-store"});
+ const url=passive?(API+"?view=state"):(API+"?view=state&fresh=1&t="+Date.now());
+ const r=await fetch(url,{cache:passive?"default":"no-store"});
  const d=await r.json();if(!r.ok||!d?.ok)throw new Error(d?.error||"No se pudo leer TTendencias");
  if(passive&&(uiInteractionActive()||interactionAtStart!==uiInteractionVersion)){queuePassiveRefresh(450);return}
  const requests=d.requests?.requests||[];
@@ -541,6 +542,6 @@ const refreshBtn=$("refresh");if(refreshBtn)refreshBtn.onclick=()=>load().catch(
 window.addEventListener("pageshow",()=>queuePassiveRefresh(250));
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)queuePassiveRefresh(250)});
 load().catch(e=>{$("pendingList").innerHTML='<div class="empty">'+e.message+'</div>';});
-setInterval(()=>{if(!document.hidden)queuePassiveRefresh(0)},15000);
+setInterval(()=>{if(!document.hidden)queuePassiveRefresh(0)},60000);
 </script>
 </body></html>

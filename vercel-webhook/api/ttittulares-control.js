@@ -33,13 +33,57 @@ function authorized(req){
   const digest=Buffer.from(crypto.createHash("sha256").update(got).digest("hex"));
   return CONTROL_TOKEN_HASHES.some(hash=>crypto.timingSafeEqual(digest,Buffer.from(hash)));
 }
+let githubRateState={limit:null,remaining:null,used:null,reset_at:null,limited:false,updated_at:null};
+let githubRateProbeAt=0;
+function captureGithubRate(r,core=null){
+  const num=v=>{const n=Number(v);return Number.isFinite(n)?n:null};
+  const limit=num(core?.limit??r?.headers?.get?.("x-ratelimit-limit"));
+  const remaining=num(core?.remaining??r?.headers?.get?.("x-ratelimit-remaining"));
+  const used=num(core?.used??r?.headers?.get?.("x-ratelimit-used"));
+  const reset=num(core?.reset??r?.headers?.get?.("x-ratelimit-reset"));
+  if(limit!==null)githubRateState.limit=limit;
+  if(remaining!==null)githubRateState.remaining=remaining;
+  if(used!==null)githubRateState.used=used;
+  if(reset!==null)githubRateState.reset_at=new Date(reset*1000).toISOString();
+  const resetMs=Date.parse(githubRateState.reset_at||"");
+  githubRateState.limited=githubRateState.remaining===0&&Number.isFinite(resetMs)&&resetMs>Date.now();
+  githubRateState.updated_at=new Date().toISOString();
+  return githubRateInfo()
+}
+function githubRateInfo(){
+  const resetMs=Date.parse(githubRateState.reset_at||"");
+  if(githubRateState.limited&&Number.isFinite(resetMs)&&resetMs<=Date.now())githubRateState.limited=false;
+  return {...githubRateState}
+}
+async function probeGithubRate(force=false){
+  if(!process.env.GITHUB_TOKEN)return githubRateInfo();
+  if(!force&&githubRateProbeAt&&Date.now()-githubRateProbeAt<60000)return githubRateInfo();
+  githubRateProbeAt=Date.now();
+  try{
+    const r=await fetch("https://api.github.com/rate_limit",{headers:{
+      accept:"application/vnd.github+json",authorization:`Bearer ${process.env.GITHUB_TOKEN}`,
+      "x-github-api-version":"2022-11-28","user-agent":"ttittulares-web-control-rate"
+    }});
+    let core=null;
+    if(r.ok){try{core=(await r.json())?.resources?.core||null}catch(_){}}
+    captureGithubRate(r,core);
+  }catch(_){}
+  return githubRateInfo()
+}
 async function gh(path,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
-  return fetch(`https://api.github.com/repos/${REPO}/${path}`,{
+  const rate=githubRateInfo();
+  if(rate.limited){
+    const e=new Error("GitHub rate limit agotado hasta "+rate.reset_at);
+    e.statusCode=429;e.githubRateLimit=rate;throw e
+  }
+  const r=await fetch(`https://api.github.com/repos/${REPO}/${path}`,{
     ...options,
     headers:{accept:"application/vnd.github+json",authorization:`Bearer ${process.env.GITHUB_TOKEN}`,
       "x-github-api-version":"2022-11-28","user-agent":"ttittulares-web-control",...(options.headers||{})}
-  })
+  });
+  captureGithubRate(r);
+  return r
 }
 async function readJson(path){
   let lastError;
@@ -654,9 +698,10 @@ export default async function handler(req,res){
   try{
     if(req.method==="GET"){
       if(String(req.query?.view||"")==="image-proxy")return await proxyPreparedImage(req.query?.url,res);
+      const github_rate_limit=await probeGithubRate(false);
       const [prepared,status,config,queue,events,decisions,manualArchive,trendCandidates,remateRatings,tremending]=await Promise.all([
-        readJson(PREPARED),readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
-        readJson(PROCESSING),readPublicJson(EVENTS),readJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(TREND_CANDIDATES),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
+        readPublicJson(PREPARED),readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
+        readPublicJson(PROCESSING),readPublicJson(EVENTS),readPublicJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(TREND_CANDIDATES),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const closedIds=new Set((decisions.doc?.items||[])
@@ -774,7 +819,9 @@ export default async function handler(req,res){
       const tremendingItems=(tremending.doc?.items||[]).map(x=>({
         id:tremendingEntryId(x.id),title:String(x.title||"Entrada sin título"),url:String(x.url||""),description:String(x.description||""),published_at:x.published_at||null,first_seen_at:x.first_seen_at||null,last_seen_at:x.last_seen_at||null,status:String(x.status||"pending"),destinations:Array.isArray(x.destinations)?x.destinations:[],tweets:Array.isArray(x.tweets)?x.tweets:[],selected_tweet_id:x.selected_tweet_id||null,image:x.image||{status:"not_selected"},article_status:x.article_status||"pending"
       })).filter(x=>x.id).sort((a,b)=>String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
-      return res.status(200).json({ok:true,service:"ttittulares-control",prepared:annotateTitularRemates({...(prepared.doc||{}),items:visiblePrepared},remateRatings.doc),status:liveStatus,config:config.doc,tremending:{...(tremending.doc||{}),items:tremendingItems}})
+      const fresh=String(req.query?.fresh||"")==="1";
+      res.setHeader("cache-control",fresh?"no-store":"public, max-age=0, s-maxage=45, stale-while-revalidate=120");
+      return res.status(200).json({ok:true,service:"ttittulares-control",github_rate_limit,prepared:annotateTitularRemates({...(prepared.doc||{}),items:visiblePrepared},remateRatings.doc),status:liveStatus,config:config.doc,tremending:{...(tremending.doc||{}),items:tremendingItems}})
     }
     if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
     if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
@@ -797,6 +844,6 @@ export default async function handler(req,res){
     if(action==="prepare3")return res.status(200).json(await manualPrepare(body.event_id));
     if(action==="submit")return res.status(200).json(await submitManualStory(body.url,body.title,body.instruction));
     return res.status(400).json({ok:false,error:"Acción no válida"})
-  }catch(e){console.error(e);return res.status(Number(e?.statusCode)||500).json({ok:false,error:String(e.message||e)})}
+  }catch(e){console.error(e);const github_rate_limit=e?.githubRateLimit||githubRateInfo();const limited=Boolean(github_rate_limit?.limited);return res.status(limited?429:(Number(e?.statusCode)||500)).json({ok:false,error:limited?"GitHub temporalmente limitado":String(e.message||e),github_rate_limit,retry_at:limited?github_rate_limit.reset_at:undefined})}
 }
 
