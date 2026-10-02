@@ -66,62 +66,37 @@ Cuando `tremending_origin:true`, esta entrada no es una tendencia clasificada po
 
 **Tremending NO usa ImageGen.** Si `tremending_origin:true` o `disable_ai_image:true`, no llames a ImageGen y no crees `ai_image`. Usa exclusivamente la captura real del tuit seleccionado como `image`/`fallback_image` cuando esté disponible; si la captura aún está pendiente, conserva `image_status:"pending_capture"` sin bloquear el texto.
 
-### Imágenes paralelas y no bloqueantes para TODAS las tendencias
+### Imagen IA: selección manual posterior
 
-La imagen es una capa asíncrona separada del texto. En `explanation_only`, el texto se cierra en cuanto está verificado: **nunca esperes a una imagen para pasar a Explicadas ni para continuar con la siguiente tendencia**.
+La elaboración editorial **NO llama a ImageGen**. Su única responsabilidad visual es dejar la explicación preparada para que el usuario pueda decidir después si quiere un gag.
 
-### Generación IA en el mismo chat ejecutor
+Para toda tendencia normal ya explicada:
+- conserva `with_image:true`: significa **seleccionable para imagen**, no «generar automáticamente»;
+- no pongas `with_image:false` para ahorrar imágenes, por categoría, por falta de fallback o por decisión editorial automática;
+- no marques política como bloqueo;
+- `safety_sensitive_weather` por sí solo tampoco bloquea: lluvia, temporal, inundación, calor, nieve u otros fenómenos meteorológicos pueden ser objeto de gag si el hecho no gira alrededor de víctimas;
+- si el hecho implica **muertos, duelo, víctimas, heridos graves, violencia grave, abuso, menores en contexto sensible, desaparición, guerra/ataque con víctimas o sufrimiento humano comparable**, usa un bloqueo real como `ai_image_block_reason:"sensitive_event"`, `disable_ai_image:true` e `image_strategy:"fallback_only"`.
 
-La única fuente principal admitida para el gag IA es una llamada real a **ImageGen desde esta misma conversación**. No crees `trends/image-jobs/**`, no llames a un endpoint/generador externo y no construyas ni rasterices SVG como sustituto. Para cada tendencia/grupo con `with_image:true`, contexto factual suficiente y **sin** `disable_ai_image:true` ni `tremending_origin:true`, persiste primero la explicación con `image_strategy:"ai_plus_fallback"`, `ai_image_status:"pending"` y el intento que va a comenzar; después llama una sola vez a ImageGen y entrega su raster por `trends/image-outbox/**`. El consumidor de ese outbox actualiza solo la capa visual.
+Tremending sigue fuera de ImageGen: usa la captura real del tuit seleccionado.
 
-La escritura y verificación del texto nunca espera la llamada, el transporte ni la aplicación de la imagen. Que la explicación esté en Explicadas y la imagen siga `pending` o termine `failed` es un estado correcto. La búsqueda de archivo/fallback continúa por su canal independiente.
+El flujo vigente es:
+`explicar → Explicadas/Pendientes → usuario marca Gag IA → pulsa Imágenes → job dedicado → ImageGen → puente → imagen materializada`.
 
-### Prompt visual aislado V3
+La selección se hace fuera de esta ejecución editorial y está vinculada a `id + revision`. Por tanto, una pasada de explicación **nunca** debe iniciar, reintentar, esperar ni recuperar una generación IA.
 
-Cada llamada a ImageGen debe usar un prompt nuevo y autocontenido que empiece conceptualmente por:
-`TTENDENCIAS_IMAGE_ISOLATION_V3 · CURRENT_ITEM_ONLY · <trend_id> r<revision>`.
+### Contexto para el job manual de imagen
 
-Incluye únicamente:
-- nombre de la tendencia, explicación factual verificada y hechos/sujetos/lugar inequívocos de ESA tendencia;
-- una sola escena narrativa, pocos elementos, detalle medio/bajo y composición apta para 16:9;
-- **TT_STYLE_A_V1: caricatura satírica editorial muy expresiva, colorida y exagerada**, con un único gag visual dominante que se entienda de un vistazo;
-- primero inventa el gag a partir del hecho verificado y después compón la escena: expresiones faciales claras, objetos/props absurdamente sobredimensionados, consecuencias visuales del hecho y una situación llevada al límite cuando encaje;
-- el humor debe funcionar incluso sin leer el tuit: evita retratos neutros, poses promocionales, escenas meramente bonitas, ilustración literal del titular o estética fotográfica genérica;
-- colores vivos, contraste fuerte y composición limpia pese al caos cómico; casi sin texto y, si aparece, que sea breve, grande, correcto y diegético;
-- sin collage, split-screen, multipanel, infografía ni interfaz.
+Cuando el usuario pulsa **Imágenes**, el backend crea un job dedicado y congela un `context_snapshot` con, como mínimo:
+- `name`, `id` y `revision`;
+- `explanation` factual ya verificada;
+- `closer_text`/remate exacto;
+- contexto de grupo/rango y fuentes de verificación cuando estén disponibles.
 
-**Filtro de sensibilidad antes de ImageGen:** si el hecho implica muerte, duelo, víctimas, violencia grave, abuso, menores en contexto sensible, catástrofe, desaparición, guerra/ataque con víctimas o sufrimiento humano comparable, marca `disable_ai_image:true`, `ai_image_status:"disabled"`, `image_strategy:"fallback_only"` y usa únicamente foto de archivo/fallback si existe. **No generes una versión IA sobria como sustituto**: en estos casos la opción correcta es archivo o ninguna imagen.
+Ese snapshot es la fuente autoritativa para el gag. El chat de imagen no reescribe ni reinvestiga la explicación: convierte ese contexto en una sola escena cómica, satírica, irónica y exagerada, evitando una ilustración literal.
 
-No reutilices prompts, semillas, imágenes ni elementos de otras tendencias. En asuntos políticos no hagas propaganda ni ataques partidistas: puede haber sátira situacional neutral basada en el hecho verificable (burocracia, puesta en escena, contradicción pública, objetos o contexto), pero nunca elogio, degradación dirigida, llamada al voto o persuasión a favor o en contra de un actor político.
+Política puede usar sátira situacional basada en los hechos del snapshot, sin inventar acusaciones, propaganda, llamadas al voto ni presentar juicios partidistas como hechos. No se hace humor de víctimas, duelo, abuso o sufrimiento humano.
 
-Un SVG técnico no es ImageGen: no puede guardarse en `ai_image`, elegir `image_choice:"ai"` ni mostrarse como «Gag IA». El flujo vigente no crea SVG. Un artefacto histórico de ese tipo se mantiene, como máximo, fuera de la selección visible y con procedencia técnica explícita.
-
-El `context_guard` es:
-`{"version":3,"trend_id":"<trend_id>","revision":<revision>,"scope":"current_item_only"}`.
-
-### Un solo intento y recuperación
-
-El intento inicial usa `attempt:1`. Antes de llamar a ImageGen registra de forma durable `ai_image_attempt:1` y el inicio del intento. No hagas una segunda llamada automática tras `failed`, timeout, interrupción o transporte incompleto. Solo una nueva pulsación manual de **✨ Generar IA** autoriza `attempt = ai_image_attempt + 1`.
-
-Al comenzar cada pasada revisa también Explicadas recientes. Una solicitud `ai_image_regenerate_requested:true` se consume una sola vez por su `ai_image_regenerate_request_version`: marca esa versión como consumida antes de llamar y ejecuta un único ImageGen sin reinvestigar ni reescribir.
-
-Para un `ai_image_status:"pending"` distingue dos casos:
-- si existe `ai_image_tool_called_at` para el intento actual, la llamada real ya ocurrió y no debes repetirla automáticamente;
-- si **NO existe** `ai_image_tool_called_at` (aunque haya `ai_image_attempt:1`, `started` o `pending`), es un intento huérfano: haz exactamente UNA llamada real a ImageGen con el mismo número de intento y registra `tool_called_at`. No incrementes `attempt`.
-
-Si el transporte no se materializa tras el intento real, marca fallo visual y espera a **🔁 Rehacer** para una nueva generación.
-
-### IA + fallback
-
-Mantén de forma independiente:
-- `ai_image` + `ai_image_status:"ready|failed|pending"`;
-- `fallback_image` + `fallback_image_status:"ready|none|pending_capture"`;
-- `image_choice:"ai|fallback|none"`;
-- `image` como alias de la imagen elegida para publicar.
-
-Si llega IA válida, queda elegida por defecto. Si todavía no llegó o falla, usa fallback cuando exista. Conserva ambos originales. Tremending mantiene como fallback prioritario la captura del tuit seleccionado.
-
-Si IA o fallback fallan, registra solo el fallo visual; nunca cambies una explicación a `problematic`, `preparing` o `update` por la imagen.
+La imagen es una capa separada y no bloqueante. Ningún estado de ImageGen cambia una explicación a `problematic`, `preparing` o `update`.
 
 ## Aprendizaje editorial de remates mediante estrellas
 
@@ -189,8 +164,8 @@ Al comenzar cada pasada revisa también las Explicadas recientes con `rewrite_pe
 - crea o repara la request `status:"update"` con una revisión estrictamente mayor que la última explicada;
 - usa `rewrite_instruction` guardada como hipótesis/contexto aportado por el usuario;
 - vuelve a investigar desde cero el motivo actual de la tendencia, contrasta ese contexto con fuentes actuales y reescribe la explicación factual; genera un remate nuevo solo si procede;
-- si `with_image:false` o `rewrite_with_image:false`, **no llames a ImageGen, no solicites otra imagen y no resetees ni borres la capa visual existente**. La acción Reexplicar es exclusivamente editorial;
-- si `with_image:true`, aplica las reglas normales de imagen de la revisión;
+- Reexplicar es exclusivamente editorial: no llama a ImageGen ni dispara imágenes;
+- la nueva revisión normal queda con `with_image:true` para que vuelva a ser seleccionable manualmente en Explicadas; Tremending conserva su captura real y sigue sin usar ImageGen;
 - al materializar la nueva revisión, elimina `rewrite_pending` de la revisión anterior;
 - si la nueva revisión queda terminalmente fallida, conserva una razón explícita y limpia igualmente la marca para no crear un bucle.
 
@@ -236,114 +211,36 @@ Los remates deben ser específicos del detonante real y evitar plantillas genér
 
 Genera para principal y A/B/C una URL `https://twitter.com/intent/tweet?text=` con el texto exacto correctamente codificado.
 
-## Imagen IA no bloqueante — contrato vigente en `explanation_only`
+## Imagen IA — contrato manual vigente
 
-Este bloque sustituye cualquier regla histórica que hiciera obligatoria la imagen o exigiera regenerarla antes de cerrar el item.
+Este bloque sustituye cualquier regla histórica que ordene generar imágenes durante `explanation_only`, recuperar intentos huérfanos desde una pasada editorial o crear `image-outbox` automáticamente.
 
-### Un solo intento inicial
+En `explanation_only`:
+1. investiga, verifica y persiste el texto;
+2. deja la tendencia normal con `with_image:true`, salvo que sea Tremending o tenga un bloqueo sensible real;
+3. **no llames a ImageGen**;
+4. **no esperes una imagen**;
+5. **no crees ni recuperes jobs de imagen**;
+6. continúa inmediatamente con la siguiente entrada.
 
-Para CADA tendencia nueva, cuando ya conozcas el detonante factual pero sin esperar a terminar toda la redacción:
-1. Construye un brief autocontenido de la tendencia actual.
-2. Haz **una sola llamada a ImageGen**. Nunca hagas un segundo intento automático, aunque el gag no parezca perfecto.
-3. En paralelo conserva/obtén una foto de archivo/fallback del mismo acontecimiento mediante el mecanismo existente.
-4. Persiste la explicación y cierra sus estados exactamente igual aunque la imagen IA siga pendiente, falle o sea dudosa.
-5. Continúa inmediatamente con la siguiente tendencia. La imagen jamás determina `queue_complete`, SUCCESS/ERROR ni la salida de Explicadas.
-6. Presupuesto visual operativo: **máximo 120 s por intento incluyendo generación + handoff**. Si no puede completarse dentro de ese presupuesto, termina ese intento como fallo visual y continúa; no hagas espera adicional ni segundo intento automático.
+La generación comienza únicamente por acción explícita del usuario: check **Gag IA** + atajo **Imágenes**. El job dedicado lleva `context_snapshot` con explicación y remate y revalida que la misma revisión siga vigente justo antes del pickup y del upload.
 
-### AISLAMIENTO DE CONTEXTO V3 — mejor esfuerzo, no bloqueante
+### Contrato visual del job dedicado
 
-El objetivo es reducir la contaminación entre items, no crear una puerta de bloqueo.
+Para cada job manual:
+- genera UNA sola imagen para ese `target_id + revision`;
+- usa exclusivamente el `context_snapshot` del job;
+- caricatura satírica editorial expresiva, colorida y exagerada, con un gag visual dominante;
+- una sola escena narrativa, pocos elementos principales, composición 16:9 y casi sin texto;
+- evita retrato neutro, póster promocional, collage, split-screen, infografía e ilustración meramente literal;
+- no reutilices rasters, prompts o elementos de otra tendencia;
+- `context_guard={"version":3,"trend_id":"<id>","revision":<revision>,"scope":"current_item_only"}`.
 
-Antes de CADA ImageGen crea `CURRENT_IMAGE_CONTEXT` desde cero y únicamente con:
-- `id`, `revision`, `name`;
-- el hecho/detonante actual ya verificado;
-- sujetos, lugar y objetos que pertenecen inequívocamente a ESE acontecimiento;
-- `related_trends` solo si son el mismo acontecimiento.
+Los asuntos meteorológicos son válidos mientras el hecho no tenga como centro muertes/víctimas/sufrimiento. Los asuntos políticos son válidos con sátira situacional factual y neutral, sin propaganda ni persuasión política.
 
-El brief debe comenzar conceptualmente por:
-`TTENDENCIAS_IMAGE_ISOLATION_V3 · CURRENT_ITEM_ONLY · <id> r<revision> · <name>`
+Si la entrada es sensible de verdad (muertos, víctimas, duelo, violencia grave, abuso, menores en contexto sensible, desaparición, guerra/ataque con víctimas o sufrimiento comparable), el backend/editorial debe impedir el job mediante un bloqueo real como `sensitive_event`; se usa fallback o ninguna imagen.
 
-y ordenar:
-- crear desde cero, sin reutilizar rasters, referencias, gen_id, parent_gen_id ni elementos de imágenes anteriores;
-- ignorar cualquier imagen, tendencia, noticia, persona, objeto, lugar o gag de otros items de la conversación;
-- una sola escena narrativa;
-- **TT_STYLE_A_V1**: caricatura satírica editorial, viva y exagerada, con un solo gag visual inmediatamente comprensible y ligado al hecho actual;
-- llevar la peculiaridad real del acontecimiento a una situación límite cómica mediante expresiones, escala, props y consecuencias visuales; el chiste debe entenderse antes de leer texto;
-- evitar por defecto el retrato neutro, la pose, el póster bonito y la ilustración meramente literal;
-- sin collage, split-screen, multipanel, infografía ni estética de interfaz;
-- casi sin texto; si existe, que sea breve, grande, correcto y diegético;
-- pocos elementos principales, siluetas claras, contraste alto y detalle medio/bajo para que funcione como miniatura.
-
-**No hagas inspección semántica bloqueante.** Si el fichero raster es íntegro, persístelo y entrégalo para revisión humana aunque sospeches que el contexto visual no sea perfecto. La app es el control final. Solo descarta un resultado si los bytes están corruptos, incompletos o no pueden materializarse.
-
-Añade a `ai_image`:
-`context_guard={"version":3,"trend_id":"<id>","revision":<revision>,"scope":"current_item_only"}`
-y `generation_attempt:<attempt>`, `provider:"chat-imagegen"`, `origin:"executing_chat"` y `source:"TTendencias / ChatGPT ImageGen"`. El consumidor rechaza cualquier otro proveedor u origen como IA visible.
-
-### Rapidez y tamaño
-
-La salida es una miniatura para X/móvil. Prioriza velocidad:
-- lado largo objetivo ~512 px después de normalizar;
-- JPEG/WebP ligero, preferentemente <=150 KB;
-- detalle medio/bajo, pocos elementos;
-- no calidad premium, hiperrealismo ni microdetalle.
-
-### Persistencia
-
-Cuando ImageGen devuelve el raster, usa este **handoff binario operativo** antes de declarar fallo:
-
-1. Antes de ImageGen, anota la lista/IDs de imágenes ya presentes en los archivos de la conversación. Después de ImageGen, lista de nuevo los archivos de la conversación con los generados incluidos y elige únicamente la imagen nueva/model-generated del intento actual. No uses una captura subida por el usuario ni una imagen de otra tendencia.
-2. Materializa ese archivo generado en el contenedor como bytes reales. Si ImageGen devuelve un archivo directamente utilizable, usa ese mismo archivo.
-3. Normalízalo programáticamente a JPEG RGB ligero: lado largo 512–640 px, calidad aproximada 65–75 y objetivo <=60 KB cuando sea razonable. Verifica que el JPEG abre completo y que mide al menos 480×260.
-4. Calcula SHA-256 y Base64 de **ese fichero normalizado**. Si la salida Base64 es demasiado grande, reduce calidad/dimensiones una sola vez; esto es transporte, no un segundo ImageGen.
-5. Escribe con GitHub Contents un único `trends/image-outbox/<id>-r<revision>-ai<attempt>.json`, igual que los handoffs que ya funcionaron (p. ej. Sindicato de Inquilinas): `ai_image.url` debe ser `data:image/jpeg;base64,<BASE64_COMPLETO>`, con `provider:"chat-imagegen"`, `origin:"executing_chat"`, `source:"TTendencias / ChatGPT ImageGen"`, `generation_attempt`, `context_guard`, `sha256` y `alt`.
-6. Relee el outbox desde `main` y comprueba que la data URL no está truncada. El workflow `.github/workflows/ttendencias-ai-image-apply.yml` lo consume y materializa `trends/generated-images/<id>-r<revision>-ai<attempt>.jpg`.
-7. Guarda la metadata bajo `ai_image`, nunca sustituyendo ni borrando `fallback_image`. Si la IA queda disponible, usa por defecto `image_choice:"ai"`; si no y existe fallback, `image_choice:"fallback"`.
-
-**No declares `image_transport_unavailable` solo porque el conector GitHub no acepte una referencia binaria directa.** La ruta soportada es: archivo generado de la conversación → materializar bytes → normalizar/encodear → JSON textual con data URL → GitHub Contents.
-
-Handoff obligatorio tras ImageGen:
-1. justo antes de llamar a ImageGen, toma un inventario de imágenes existentes en `/mnt/data` y, si hace falta, de adjuntos visibles de la conversación;
-2. inmediatamente después de ImageGen, vuelve a inspeccionar `/mnt/data` y selecciona exclusivamente el PNG/JPG/WebP nuevo del intento actual;
-3. si no aparece automáticamente, busca el adjunto generado de esta conversación y materialízalo en `/mnt/data`; no abandones por no disponer de una referencia binaria directa en GitHub;
-4. valida apertura completa del raster, normaliza a JPEG y genera SHA/Base64;
-5. escribe el image-outbox y reléelo desde `main`;
-6. **solo entonces** cuenta la imagen como entregada/generada en RUNTRACE.
-
-Si ImageGen devuelve visualmente una imagen pero no consigues escribir un outbox válido, el resultado terminal es `failed:image_transport_unavailable`, `generated:false`, `materialized:false`. No informes `generated:true` en ese caso: para TTendencias, una IA cuenta como generada únicamente cuando existe handoff persistido que el aplicador puede materializar.
-
-Un fallo de transporte deja `ai_image_status:"failed"` con una razón breve y NO afecta a la explicación.
-
-### Rehacer solicitado desde la app
-
-Al inicio de cada pasada, además de la cola normal, revisa las Explicadas recientes con `ai_image_regenerate_requested:true`. Para cada una:
-- NO reabras ni reescribas el texto;
-- haz exactamente UN nuevo intento IA usando el mismo aislamiento V3 y el contexto factual de esa explicación;
-- incrementa `ai_image_attempt`;
-- reemplaza solo `ai_image`;
-- selecciona la nueva IA por defecto si se persiste;
-- limpia `ai_image_regenerate_requested` aunque el intento falle, guardando el resultado/fallo;
-- continúa con el resto sin bloquear.
-
-El fallback nunca se borra al rehacer una IA.
-
-## Outbox de imagen V3 — separado y no bloqueante
-
-En `explanation_only`, la explicación se persiste primero mediante el mecanismo textual vigente y se cierra sin esperar al raster. **Nunca metas la data URL IA dentro de un outbox editorial de texto.**
-
-Después del único intento ImageGen:
-1. identifica exclusivamente el fichero generado para ese item;
-2. normaliza sus bytes reales a JPEG/WebP ligero, lado largo ~512 px y objetivo <=60 KB;
-3. calcula SHA-256 y base64 programáticamente;
-4. escribe por GitHub Contents:
-   `trends/image-outbox/<id>-r<revision>-ai<attempt>.json`
-   con `{"id","revision","attempt","status":"ready","ai_image":{...}}`; `ai_image.url` contiene la data URL real y su metadata V3;
-5. `.github/workflows/ttendencias-ai-image-apply.yml` materializa el raster y actualiza SOLO la imagen de `trends/telegram-manual-explained.json`;
-6. ante fallo técnico de ImageGen/transporte, escribe `status:"failed"` y una razón breve en ese image-outbox. La explicación queda igualmente cerrada.
-
-Para una nueva pulsación de **✨ Generar IA**, incrementa `attempt`, marca primero como consumida la versión concreta de la solicitud, genera exactamente una vez y usa este mismo image-outbox. No escribas otro texto, no cambies la revisión editorial y conserva siempre `fallback_image`. Una pasada normal no puede crear ai2/ai3/ai4 por recuperación.
-
-La foto de archivo/fallback sigue siendo posterior y no bloqueante mediante `ttendencias-image-enrich.yml`.
+El raster resultante se entrega por el puente dedicado y la persistencia directa vigente. Fallar o agotar el tiempo de imagen solo afecta a la capa visual y nunca reabre ni modifica el texto editorial.
 
 ## Outbox editorial legado
 
