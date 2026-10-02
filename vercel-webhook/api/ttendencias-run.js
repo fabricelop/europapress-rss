@@ -4,7 +4,7 @@ const CONTROL_TOKEN_HASHES=[
   "2663da5223c2313c3670a7843a0cdfabfd2dd7c8fad1ed168247866a3b1262e5",
   "e6dc803e75f1bad2c6caee93b1a7fce3df540f70c8313a7e08a998506d0dcb61"
 ];
-function authToken(req){const h=String(req.headers.authorization||"");return h.startsWith("Bearer ")?h.slice(7).trim():""}
+function authToken(req){const h=String(req.headers.authorization||"");const bearer=h.startsWith("Bearer ")?h.slice(7).trim():"";if(bearer)return bearer;return String(req.body?.access||"").trim()}
 function authorized(req){
   if(process.env.VERCEL_ENV==="preview")return true;
   const got=authToken(req);if(!got)return false;
