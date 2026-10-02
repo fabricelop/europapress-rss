@@ -32,7 +32,7 @@ function localArchived(){try{return new Set(JSON.parse(localStorage.getItem(ARCH
 function saveLocalArchived(set){try{localStorage.setItem(ARCHIVED_LOCAL_KEY,JSON.stringify([...set].slice(-300)))}catch(_){}}
 let allItems=[];let openPendingKey=null;let imageRuns=new Map(),imageRunPoll=null;let lastRenderFingerprint="";
 async function updateUnreadBadge(){
- const unread=allItems.filter(x=>!x.copied).length;
+ const unread=allItems.filter(x=>!x.copied&&!x.rewrite_pending).length;
  const badge=$("navPendingBadge");if(badge){badge.textContent=unread>99?"99+":String(unread);badge.classList.toggle("show",unread>0)}
  try{
    if(unread&&"setAppBadge" in navigator)await navigator.setAppBadge(unread);
@@ -168,7 +168,7 @@ async function sendReexplain(){
    })});
    const result=await response.json();
    if(!response.ok||!result?.ok)throw new Error(result?.error||"No se pudo solicitar la reevaluación.");
-   x.rewrite_pending=true;
+   x.rewrite_pending=true;openPendingKey=null;
    $("reexplainDialog").close();reexplainItem=null;render();
    setTimeout(()=>load().catch(()=>{}),700);
  }catch(error){alert(error?.message||"No se pudo solicitar la reevaluación.")}
@@ -462,7 +462,7 @@ function renderExpandedPending(x){
 function render(){
  const q=nrm($("filter").value);
  const visible=q?allItems.filter(x=>nrm(displayName(x)).includes(q)||nrm((x.trend_names||[]).join(" ")).includes(q)||nrm(x.explanation).includes(q)):allItems;
- const pendingAll=allItems.filter(x=>!x.copied),pending=visible.filter(x=>!x.copied);
+ const pendingAll=allItems.filter(x=>!x.copied&&!x.rewrite_pending),pending=visible.filter(x=>!x.copied&&!x.rewrite_pending);
  $("pendingCount").textContent=String(pending.length);updateUnreadBadge();updateImageControl();
  if(openPendingKey&&!pending.some(x=>pendingKey(x)===openPendingKey))openPendingKey=null;
  const pendingList=$("pendingList");pendingList.innerHTML="";
