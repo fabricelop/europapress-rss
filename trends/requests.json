@@ -17960,7 +17960,7 @@
       "id": "ba5ad69134c0",
       "name": "En 8",
       "revision": 1,
-      "status": "update",
+      "status": "explained",
       "requested_at": "2026-10-02T15:16:57.610Z",
       "rank": 24,
       "with_image": true,
@@ -17975,17 +17975,49 @@
         "En 8"
       ],
       "auto_queued": false,
-      "last_attempt_at": "2026-10-02T16:28:00+02:00",
+      "last_attempt_at": "2026-10-02T17:42:00+02:00",
       "source": "editorial_chat_direct",
-      "disable_ai_image": false,
-      "image_strategy": "ai_plus_fallback",
+      "disable_ai_image": true,
+      "image_strategy": "fallback_only",
       "ai_image_status": "disabled",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "reexplain": true,
       "rewrite_pending": false,
       "rewrite_instruction": "Hablan de que el gobierno lleva 8 años",
-      "rewrite_with_image": true
+      "rewrite_with_image": true,
+      "explained_at": "2026-10-02T17:42:00+02:00",
+      "explanation": "TT#24 En 8 es tendencia porque Junts replica a las críticas tras votar contra los decretos de vivienda: sostiene que, después de ocho años de Gobierno de Sánchez, no puede atribuirse a sus siete diputados la crisis habitacional.",
+      "closer_text": "",
+      "explanation_group_id": "grp-en8-despues8-vivienda-junts-20261002",
+      "group_id": "grp-en8-despues8-vivienda-junts-20261002",
+      "group_title": "Críticas por los ocho años de Gobierno en el debate de vivienda",
+      "trend_names": [
+        "En 8",
+        "Después de 8"
+      ],
+      "ai_image_block_reason": "political_context",
+      "fallback_image_status": "ready",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261002091737_690.jpg",
+        "source": "Europa Press · 2/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-psoe-sumar-piden-votacion-dos-decretos-vivienda-congreso-sea-llamamiento-20261002091737.html",
+        "alt": "Vista general del Congreso de los Diputados",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261002091737_690.jpg",
+        "source": "Europa Press · 2/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-psoe-sumar-piden-votacion-dos-decretos-vivienda-congreso-sea-llamamiento-20261002091737.html",
+        "alt": "Vista general del Congreso de los Diputados",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback",
+      "news_disposition": "ignored",
+      "news_note": "Agrupada por el mismo debate político sobre vivienda y los ocho años de Gobierno; sin remate."
     },
     {
       "id": "a032079b6888",
@@ -18828,7 +18860,7 @@
       "id": "455e00b92028",
       "name": "Después de 8",
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-02T15:35:31.631Z",
       "rank": 31,
       "with_image": true,
@@ -18842,7 +18874,46 @@
       "requested_together": [
         "Después de 8"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "explained_at": "2026-10-02T17:42:00+02:00",
+      "explanation": "TT#24 En 8 es tendencia porque Junts replica a las críticas tras votar contra los decretos de vivienda: sostiene que, después de ocho años de Gobierno de Sánchez, no puede atribuirse a sus siete diputados la crisis habitacional.",
+      "closer_text": "",
+      "explanation_group_id": "grp-en8-despues8-vivienda-junts-20261002",
+      "group_id": "grp-en8-despues8-vivienda-junts-20261002",
+      "group_title": "Críticas por los ocho años de Gobierno en el debate de vivienda",
+      "trend_names": [
+        "En 8",
+        "Después de 8"
+      ],
+      "last_attempt_at": "2026-10-02T17:42:00+02:00",
+      "source": "editorial_chat_direct",
+      "disable_ai_image": true,
+      "image_strategy": "fallback_only",
+      "ai_image_status": "disabled",
+      "ai_image_block_reason": "political_context",
+      "fallback_image_status": "ready",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261002091737_690.jpg",
+        "source": "Europa Press · 2/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-psoe-sumar-piden-votacion-dos-decretos-vivienda-congreso-sea-llamamiento-20261002091737.html",
+        "alt": "Vista general del Congreso de los Diputados",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261002091737_690.jpg",
+        "source": "Europa Press · 2/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-psoe-sumar-piden-votacion-dos-decretos-vivienda-congreso-sea-llamamiento-20261002091737.html",
+        "alt": "Vista general del Congreso de los Diputados",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback",
+      "image_status": "ready",
+      "image_pending": false,
+      "news_disposition": "ignored",
+      "news_note": "Agrupada por el mismo debate político sobre vivienda y los ocho años de Gobierno; sin remate."
     },
     {
       "id": "tremending-d79633972e47",
@@ -18882,6 +18953,6 @@
       "rewrite_instruction": "Entrada seleccionada desde Público/Tremending. Titula con el nombre corto \"Pillan a una concejala de Vox en Alacant durmiendo y\" y redacta \"TT 🗯️ Pillan a una concejala de Vox en Alacant durmiendo y es tendencia por/porque ...\" con un remate opcional 🌶️ en la línea siguiente. No utilizar TT#0 ni repetir título, ni copiar el titular completo. Verifica los hechos y atribuye opiniones. Usa exclusivamente la captura del tuit seleccionado como imagen; NO generes imagen IA."
     }
   ],
-  "updated_at": "2026-10-02T15:39:43.996Z",
-  "count": 438
+  "updated_at": "2026-10-02T15:42:00.000Z",
+  "count": 449
 }
