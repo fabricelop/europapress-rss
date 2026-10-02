@@ -2736,7 +2736,8 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "rewrite_pending": false
     },
     {
       "id": "7baec0d311dd",
@@ -7307,7 +7308,8 @@
         "generated": false
       },
       "fallback_image_status": "ready",
-      "image_choice": "fallback"
+      "image_choice": "fallback",
+      "rewrite_pending": false
     },
     {
       "id": "66d918da0fc2",
@@ -12848,8 +12850,60 @@
       "fallback_image_status": "pending",
       "image_status": "pending",
       "image_pending": true
+    },
+    {
+      "id": "10aaa9a5458f",
+      "name": "#EnBocaDeTodos",
+      "rank": 8,
+      "revision": 2,
+      "status": "explained",
+      "requested_at": "2026-10-02T15:21:22+02:00",
+      "explained_at": "2026-10-02T16:30:00+02:00",
+      "explanation": "TT#8 #EnBocaDeTodos es tendencia por la emisión de hoy en Cuatro, centrada en la votación de los decretos de vivienda, la protesta de Sol y el debate sobre un posible adelanto electoral.",
+      "closer_text": "",
+      "rank_at_explanation": 8,
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Mediaset Infinity · 2/10/2026",
+          "url": "https://www.mediasetinfinity.es/programas-tv/en-boca-de-todos/2026/episodios/programa-1142-40_020243013/player/"
+        },
+        {
+          "source": "Cuatro · En boca de todos",
+          "url": "https://www.cuatro.com/en-boca-de-todos/"
+        }
+      ],
+      "with_image": true,
+      "alternatives_target": 0,
+      "news_disposition": "ignored",
+      "news_note": "Hashtag de un programa de actualidad; no se abre noticia paralela en TTiTTulares.",
+      "image_strategy": "fallback_only",
+      "disable_ai_image": true,
+      "ai_image_status": "disabled",
+      "ai_image_block_reason": "political_content",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "ready",
+      "fallback_image": {
+        "url": "https://album.mediaset.es/eimg/2026/09/23/en-boca-de-todos-cambia-de-horario-a-partir-del-lunes-nos-vemos-a-las-10-00-horas-16-9-aspect-ratio_da39-3.jpg",
+        "source": "Cuatro",
+        "source_url": "https://www.cuatro.com/television/20260923/cambia-horario-partir-lunes-diez-horas_18_020250055.html",
+        "alt": "Imagen de archivo de En boca de todos",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback",
+      "image": {
+        "url": "https://album.mediaset.es/eimg/2026/09/23/en-boca-de-todos-cambia-de-horario-a-partir-del-lunes-nos-vemos-a-las-10-00-horas-16-9-aspect-ratio_da39-3.jpg",
+        "source": "Cuatro",
+        "source_url": "https://www.cuatro.com/television/20260923/cambia-horario-partir-lunes-diez-horas_18_020250055.html",
+        "alt": "Imagen de archivo de En boca de todos",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-02T16:29:00+02:00",
-  "count": 410
+  "updated_at": "2026-10-02T16:30:00+02:00",
+  "count": 411
 }
