@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-v5b-1790962291385-latasa",
-  "requested_at": "2026-10-02T17:31:31.385Z",
-  "updated_at": "2026-10-02T17:36:58.746Z",
-  "status": "ERROR",
-  "phase": "superseded_by_v6",
+  "command_id": "tr-img-v6-1790963354679-latasa",
+  "requested_at": "2026-10-02T17:49:14.675Z",
+  "updated_at": "2026-10-02T17:49:14.675Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,8 +14,13 @@
   "trend_id": "3ce5afef7763",
   "target_name": "Latasa",
   "revision": 0,
-  "message": "Intento v5 cerrado: el mensaje personalizado largo no llegó a confirmarse. Sustituido por v6 con orden corta.",
-  "pc_worker_id": "ttendencias-dedicated-v5",
-  "pc_picked_up_at": "2026-10-02T17:31:40.436Z",
-  "finished_at": "2026-10-02T17:36:58.746Z"
+  "chat_command_version": 2,
+  "instruction_profile": "ttendencias_gag_v1",
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Lee en main la explicación completa y vigente correspondiente a target_id; no cambies explicación, hechos, fuentes ni remate.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante image-outbox V3."
+  },
+  "message": "Prueba controlada v6 de una sola tendencia; esperando al PC para abrir un chat de imagen."
 }
