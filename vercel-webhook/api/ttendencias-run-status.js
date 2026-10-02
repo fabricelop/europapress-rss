@@ -394,6 +394,14 @@ export default async function handler(req,res){
       const realFinishedAt=stamp(last_run?.finished_at||last_run?.updated_at||last_run?.started_at);
       if(!last_run||persistedAt>realFinishedAt)last_run=persisted;
     }
+    // La persistencia real en requests.json prevalece sobre errores sintéticos
+    // del hand-off local. Si tras esta misma orden hubo tendencias explicadas,
+    // descartadas o problemáticas, sabemos que la ejecución editorial sí corrió.
+    if(persistedRequests){
+      const sameRequest=String(fallback?.command_id||request?.command_id||"")===String(request?.command_id||"");
+      const syntheticError=String(last_run?.run_id||"")===String(request?.command_id||"")&&String(last_run?.status||"")==="ERROR";
+      if(sameRequest&&syntheticError)last_run=persistedRequests;
+    }
 
     return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,can_run:enabled&&authorized(req)})
   }catch(e){
