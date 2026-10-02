@@ -134,8 +134,10 @@ jobs:
           assert "GitHub REST refleja el HEAD" in run_status
           assert "pc_worker_id" in run_status
           assert "readJson(PROCESSING)" in control_api
-          assert '$WorkerId = "ttittulares-dedicated-v9"' in listener
-          assert "worker=ttittulares-dedicated-v9" in installer
+          assert '$WorkerId = "ttittulares-dedicated-v10"' in listener
+          assert "$LaunchConfirmSeconds = 30" in listener
+          assert "direct-node" in listener and "Read-NewLauncherText $beforeLen" in listener
+          assert "worker=ttittulares-dedicated-v10" in installer
 
           ids=set()
           for item in prepared.get("items",[]):
