@@ -56,12 +56,14 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
+const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],div[contenteditable="true"]:not([aria-hidden="true"]),textarea:not([disabled])';
+
 async function inspectChat(cdp){
-  return cdp.eval("(()=>{const turns=[...document.querySelectorAll('[data-message-author-role]')];const user=turns.some(el=>el.getAttribute('data-message-author-role')==='user'&&(el.innerText||'').includes("+JSON.stringify(commandId)+"));const body=String(document.body&&document.body.innerText||'');const composer=document.querySelector('#prompt-textarea,[data-testid=\"prompt-textarea\"],[contenteditable=\"true\"][data-lexical-editor=\"true\"],textarea');return {hasUser:user,hasMarker:body.includes("+JSON.stringify(commandId)+"),hasComposer:Boolean(composer),ttendencias:/TTendencias/i.test(document.title+' '+body.slice(0,5000)),title:document.title||'',url:location.href}})()")
+  return cdp.eval("(()=>{const turns=[...document.querySelectorAll('[data-message-author-role]')];const user=turns.some(el=>el.getAttribute('data-message-author-role')==='user'&&(el.innerText||'').includes("+JSON.stringify(commandId)+"));const body=String(document.body&&document.body.innerText||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");return {hasUser:user,hasMarker:body.includes("+JSON.stringify(commandId)+"),hasComposer:Boolean(composer),ttendencias:/TTendencias/i.test(document.title+' '+body.slice(0,7000)),title:document.title||'',url:location.href}})()")
 }
 async function findChat(){
-  const deadline=Date.now()+30000,start=Date.now();
-  let best=null,bestScore=-1;
+  const deadline=Date.now()+45000,start=Date.now();
+  let best=null,bestScore=-1,bestInfo=null;
   while(Date.now()<deadline){
     let list=[];try{list=await targets()}catch{await sleep(800);continue}
     for(const t of list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl)){
@@ -69,34 +71,52 @@ async function findChat(){
       try{
         await c.open();
         const st=await inspectChat(c);
-        if(st&&st.hasUser)return c;
-        const score=(st&&st.hasMarker?80:0)+(st&&st.ttendencias?20:0)+(st&&st.hasComposer?5:0);
-        if(score>bestScore){best=t;bestScore=score}
+        if(st&&st.hasUser&&st.hasComposer)return c;
+        if(st&&st.hasComposer){
+          const score=(st.hasMarker?100:0)+(st.ttendencias?30:0)+(String(st.url||"").includes("/g/")?10:0)+5;
+          if(score>bestScore){best=t;bestScore=score;bestInfo=st}
+        }
       }catch{}
       c.close()
     }
-    if(Date.now()-start>=7000&&best&&bestScore>=5){
+    if(Date.now()-start>=9000&&best&&bestScore>=5){
       const c=new CDP(best.webSocketDebuggerUrl);
-      await c.open();
-      return c
+      try{
+        await c.open();
+        const st=await inspectChat(c);
+        if(st&&st.hasComposer)return c
+      }catch{}
+      c.close();
+      best=null;bestScore=-1;bestInfo=null;
     }
     await sleep(900)
   }
-  throw Error("No se encontró un chat de TTendencias con compositor")
+  throw Error("No se encontró un chat de TTendencias con compositor real"+(bestInfo?(" · "+String(bestInfo.title||bestInfo.url||"").slice(0,120)):""))
 }
 async function hasUserCommand(cdp){
   return Boolean(await cdp.eval("(()=>[...document.querySelectorAll('[data-message-author-role=\"user\"]')].some(el=>(el.innerText||'').includes("+JSON.stringify(commandId)+")))()"))
 }
+async function prepareComposer(cdp){
+  return cdp.eval("(()=>{const el=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!el)return {ok:false};el.focus();try{if(el.tagName==='TEXTAREA'||el.tagName==='INPUT'){el.setSelectionRange(0,String(el.value||'').length)}else{const r=document.createRange(),s=window.getSelection();r.selectNodeContents(el);s.removeAllRanges();s.addRange(r)}}catch(_){}return {ok:true,tag:el.tagName,testid:el.getAttribute('data-testid')||'',role:el.getAttribute('role')||''}})()")
+}
 async function ensureCommandSent(cdp,message){
   if(await hasUserCommand(cdp))return {already:true};
 
-  const prepared=await cdp.eval("(()=>{const el=document.querySelector('#prompt-textarea,[data-testid=\"prompt-textarea\"],[contenteditable=\"true\"][data-lexical-editor=\"true\"],textarea');if(!el)return {ok:false};el.focus();try{if(el.tagName==='TEXTAREA'||el.tagName==='INPUT'){el.setSelectionRange(0,String(el.value||'').length)}else{const r=document.createRange(),s=window.getSelection();r.selectNodeContents(el);s.removeAllRanges();s.addRange(r)}}catch(_){}return {ok:true,tag:el.tagName}})()");
-  if(!prepared||!prepared.ok)throw Error("Chat abierto pero no se encontró el compositor");
+  const prepared=await prepareComposer(cdp);
+  if(!prepared||!prepared.ok){
+    const e=Error("Chat cambió o recargó antes del envío; compositor no disponible");
+    e.code="COMPOSER_MISSING";
+    throw e
+  }
 
   await cdp.call("Input.insertText",{text:message});
-  await sleep(350);
-  const filled=await cdp.eval("(()=>{const el=document.querySelector('#prompt-textarea,[data-testid=\"prompt-textarea\"],[contenteditable=\"true\"][data-lexical-editor=\"true\"],textarea');const v=String(el&&(el.value||el.innerText||el.textContent)||'');return v.includes("+JSON.stringify(commandId)+")})()");
-  if(!filled)throw Error("No se pudo insertar el comando de imagen en el chat");
+  await sleep(450);
+  const filled=await cdp.eval("(()=>{const el=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const v=String(el&&(el.value||el.innerText||el.textContent)||'');return v.includes("+JSON.stringify(commandId)+")})()");
+  if(!filled){
+    const e=Error("El compositor existe pero no aceptó el comando de imagen");
+    e.code="COMPOSER_REJECTED";
+    throw e
+  }
 
   const clicked=await cdp.eval("(()=>{const qs=['button[data-testid=\"send-button\"]','button[data-testid=\"composer-submit-button\"]','button[aria-label*=\"Send\"]','button[aria-label*=\"Enviar\"]'];for(const q of qs){const b=document.querySelector(q);if(b&&!b.disabled&&b.getAttribute('aria-disabled')!=='true'){b.click();return true}}return false})()");
   if(!clicked){
@@ -106,10 +126,31 @@ async function ensureCommandSent(cdp,message){
 
   const deadline=Date.now()+30000;
   while(Date.now()<deadline){
-    if(await hasUserCommand(cdp))return {already:false};
+    try{if(await hasUserCommand(cdp))return {already:false}}catch(e){
+      const er=Error("La pestaña de ChatGPT cambió durante el envío");
+      er.code="CHAT_TARGET_CHANGED";
+      throw er
+    }
     await sleep(700)
   }
-  throw Error("El comando quedó en el chat, pero no apareció como turno de usuario en 30 segundos")
+  throw Error("El comando quedó en el compositor, pero no apareció como turno de usuario en 30 segundos")
+}
+async function attachAndEnsureCommand(message){
+  let last=null;
+  for(let attempt=1;attempt<=3;attempt++){
+    let cdp=null;
+    try{
+      cdp=await findChat();
+      const sent=await ensureCommandSent(cdp,message);
+      return {cdp,sent,attempt}
+    }catch(e){
+      last=e;
+      try{cdp&&cdp.close()}catch{}
+      console.log("BRIDGE REATTACH "+attempt+" :: "+String(e&&e.message||e));
+      if(attempt<3)await sleep(1800)
+    }
+  }
+  throw last||Error("No se pudo enlazar con el chat de imagen")
 }
 
 function probeExpression(){
@@ -168,10 +209,10 @@ async function fail(reason){
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
     const message=buildMessage(job);
-    cdp=await findChat();
-    console.log("BRIDGE CHAT FOUND");
-    const sent=await ensureCommandSent(cdp,message);
-    console.log("BRIDGE COMMAND "+(sent.already?"PRESENT":"RESENT"));
+    const attached=await attachAndEnsureCommand(message);
+    cdp=attached.cdp;
+    console.log("BRIDGE CHAT FOUND attempt="+attached.attempt);
+    console.log("BRIDGE COMMAND "+(attached.sent.already?"PRESENT":"RESENT"));
     const image=await capture(cdp);
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
     console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
