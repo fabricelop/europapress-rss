@@ -217,12 +217,12 @@ function imageRunActive(run){
 function liveImageRunState(x){
  const run=imageRuns.get(String(x.id||"")),st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"");
  if(st==="REQUESTED")return {aiCls:"aiRework",collapsed:"requested",text:"◷ IA solicitada · esperando al PC"};
- if(imageHandoffTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ El chat IA no arrancó en 45 s · pulsa Generar IA"};
- if(imageGenerationTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ La generación superó 150 s · pulsa Generar IA"};
+ if(imageHandoffTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ El chat IA no arrancó en 45 s"};
+ if(imageGenerationTimedOut(run))return {aiCls:"aiFailed",collapsed:"failed",text:"✕ La generación superó 150 s"};
  if(st==="RUNNING")return {aiCls:"aiPending",collapsed:"pending",text:phase==="pc_pickup"?"● PC ha recogido la imagen":phase==="pc_launch"?"● Chat IA abierto · esperando respuesta":phase==="validating"?"● Chat IA abierto · validando":"● Chat IA abierto"};
  if(st==="GENERATING")return {aiCls:"aiPending",collapsed:"pending",text:"● Generando IA ahora en ChatGPT"};
  if(st==="PERSISTING")return {aiCls:"aiPending",collapsed:"pending",text:"● IA generada · guardando"};
- if(st==="ERROR")return {aiCls:"aiFailed",collapsed:"failed",text:"✕ Error en generación IA · pulsa Generar IA"};
+ if(st==="ERROR")return {aiCls:"aiFailed",collapsed:"failed",text:"✕ Error en generación IA"};
  if(st==="CANCELLED")return {aiCls:"aiFailed",collapsed:"failed",text:"— Generación cancelada · entrada ya no vigente"};
  if(st==="DONE")return {aiCls:"aiReady",collapsed:"ready",text:"✓ Generación IA terminada"};
  return null
@@ -419,7 +419,7 @@ function renderCard(x,pending){
  if(!x.tremending_origin){
    const generate=document.createElement("button");generate.className="btn";generate.type="button";
    const currentAi=isChatImageGen(x.ai_image)?x.ai_image:{},hasAi=Boolean(String(currentAi.url||""));
-   generate.textContent="✨ Generar IA";
+   generate.textContent="✨ Generar IA";generate.hidden=true;
    generate.disabled=imageRunActive(imageRuns.get(String(x.id||"")));
    generate.onclick=async()=>{
      generate.disabled=true;

@@ -380,12 +380,12 @@ function imageRunActive(run){
 }
 function imageRunText(run){
  const st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"");
- if(st==="REQUESTED"&&imageRunPickupTimedOut(run))return {cls:"aiFailed",text:"✕ El PC no recogió la imagen en 30 s · vuelve a generarla"};
+ if(st==="REQUESTED"&&imageRunPickupTimedOut(run))return {cls:"aiFailed",text:"✕ El PC no recogió la imagen en 30 s"};
  if(st==="REQUESTED")return {cls:"aiRework",text:"◷ IA solicitada · esperando al PC"};
  if(st==="RUNNING")return {cls:"aiPending",text:phase==="validating"?"● Chat IA abierto · validando entrada":"● Chat IA abierto"};
  if(st==="GENERATING")return {cls:"aiPending",text:"● Generando IA ahora en ChatGPT"};
  if(st==="PERSISTING")return {cls:"aiPending",text:"● IA generada · guardando en la entrada"};
- if(st==="ERROR")return {cls:"aiFailed",text:"✕ Error en generación IA · pulsa Rehacer"};
+ if(st==="ERROR")return {cls:"aiFailed",text:"✕ Error en generación IA"};
  if(st==="CANCELLED")return {cls:"aiFailed",text:"— Generación cancelada · entrada ya no vigente"};
  if(st==="DONE")return {cls:"aiReady",text:"✓ Generación IA terminada"};
  return null
@@ -836,7 +836,7 @@ function renderReady(list,preservedImages=new Map()){
   const current=Number(events[item.event_id]?.source_count||item.current_source_count||item.drafted_source_count||0);
   const drafted=Number(item.drafted_source_count||item.source_count||0);
   const card=document.createElement("article");card.className="card";card.dataset.eventId=String(item.event_id||"");
-  card.innerHTML='<div class="head readyHead"><div class="title"></div><div class="readyMetaRow"><div class="sources"></div><div class="count"></div><button class="btn expand" type="button">Abrir</button><button class="btn danger quickDismiss" type="button">Desestimar</button></div><div class="imageCompact aiStatusBadge"></div></div><div class="details"><div class="variants"></div><div class="imagebox"><div class="imageTitle">Imágenes</div><div class="imageMeta aiStatusBadge"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:9px"><div class="aiChoice" hidden><div>IA</div><img class="aiPreview" style="width:100%;height:190px;object-fit:contain"></div><div class="archiveChoice" hidden><div>Archivo</div><img class="archivePreview" style="width:100%;height:190px;object-fit:contain"></div></div></div><div class="actions"><button class="btn generateAi">✨ Generar IA</button><button class="btn rework">🔁 Rehacer remate + IA</button><button class="btn copyTweet">📋 Copiar tuit</button><button class="btn copyAi" hidden>✨ Copiar imagen IA</button><button class="btn copyArchive" hidden>🖼️ Copiar imagen archivo</button><a class="btn openX" target="_blank" rel="noopener" hidden>↗ Abrir en X</a><a class="btn searchX" target="_blank" rel="noopener">🔎 Buscar en X</a><button class="btn published">✓ Ya publicado</button></div></div>';
+  card.innerHTML='<div class="head readyHead"><div class="title"></div><div class="readyMetaRow"><div class="sources"></div><div class="count"></div><button class="btn expand" type="button">Abrir</button><button class="btn danger quickDismiss" type="button">Desestimar</button></div><div class="imageCompact aiStatusBadge"></div></div><div class="details"><div class="variants"></div><div class="imagebox"><div class="imageTitle">Imágenes</div><div class="imageMeta aiStatusBadge"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:9px"><div class="aiChoice" hidden><div>IA</div><img class="aiPreview" style="width:100%;height:190px;object-fit:contain"></div><div class="archiveChoice" hidden><div>Archivo</div><img class="archivePreview" style="width:100%;height:190px;object-fit:contain"></div></div></div><div class="actions"><button class="btn generateAi" hidden>✨ Generar IA</button><button class="btn rework" hidden>🔁 Rehacer remate + IA</button><button class="btn copyTweet">📋 Copiar tuit</button><button class="btn copyAi" hidden>✨ Copiar imagen IA</button><button class="btn copyArchive" hidden>🖼️ Copiar imagen archivo</button><a class="btn openX" target="_blank" rel="noopener" hidden>↗ Abrir en X</a><a class="btn searchX" target="_blank" rel="noopener">🔎 Buscar en X</a><button class="btn published">✓ Ya publicado</button></div></div>';
   card.querySelector(".title").textContent=item.title||"Noticia sin título";
   card.querySelector(".sources").textContent="Red. "+drafted+" · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
@@ -851,10 +851,10 @@ function renderReady(list,preservedImages=new Map()){
   const aiAgeMin=Number.isFinite(aiLastAt)?Math.max(0,(Date.now()-aiLastAt)/60000):null;
   let aiClass="aiNone",aiText="— IA no solicitada";
   if(aiRegenerating){aiClass="aiRework";aiText="↻ Nueva IA solicitada · en cola"}
-  else if(aiRegenerationError){aiClass="aiFailed";aiText="✕ Nueva IA falló · se mantiene la anterior · Rehacer para intentar otra"}
+  else if(aiRegenerationError){aiClass="aiFailed";aiText="✕ Nueva IA falló · se mantiene la anterior"}
   else if(aiUrl){aiClass="aiReady";aiText="✓ IA lista"}
-  else if(["failed","none","error"].includes(aiRaw)){aiClass="aiFailed";aiText="✕ IA fallida · no llegará salvo Rehacer"}
-  else if(aiLast==="tool_called"&&aiAgeMin!==null&&aiAgeMin>10){aiClass="aiFailed";aiText="✕ IA no llegó · no esperes · pulsa Rehacer"}
+  else if(["failed","none","error"].includes(aiRaw)){aiClass="aiFailed";aiText="✕ IA fallida"}
+  else if(aiLast==="tool_called"&&aiAgeMin!==null&&aiAgeMin>10){aiClass="aiFailed";aiText="✕ IA no llegó · no disponible"}
   else if(aiLast==="tool_called"){aiClass="aiPending";aiText="● IA materializándose · todavía puede llegar · espera unos minutos"}
   else if(["pending","started"].includes(aiRaw)||String(item.image_strategy||"")==="ai_plus_fallback"){aiClass="aiRework";aiText="↻ IA en cola · aún no se está generando"}
   const liveImageRun=imageRuns.get(String(item.event_id||"")),liveUi=imageRunText(liveImageRun);
