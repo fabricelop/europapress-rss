@@ -67,15 +67,18 @@ function probeExpression(){
     "(async()=>{",
     "const command="+JSON.stringify(commandId)+";",
     "const turns=[...document.querySelectorAll('[data-message-author-role]')];",
-    "let scope=document;",
-    "const ui=turns.findIndex(el=>el.getAttribute('data-message-author-role')==='user'&&(el.innerText||'').includes(command));",
-    "if(ui>=0){const a=turns.slice(ui+1).filter(el=>el.getAttribute('data-message-author-role')==='assistant').at(-1);if(a)scope=a;}",
-    "const imgs=[...scope.querySelectorAll('img')].filter(img=>{const w=Number(img.naturalWidth||0),h=Number(img.naturalHeight||0),alt=String(img.alt||'').toLowerCase(),src=String(img.currentSrc||img.src||'');return img.complete&&w>=512&&h>=256&&!/avatar|emoji|icon|logo/.test(alt)&&!src.includes('avatar')}).sort((a,b)=>(b.naturalWidth*b.naturalHeight)-(a.naturalWidth*a.naturalHeight));",
-    "if(!imgs.length)return {found:false};",
-    "const img=imgs[0],src=img.currentSrc||img.src,rect=img.getBoundingClientRect();",
-    "const info={found:true,width:img.naturalWidth,height:img.naturalHeight,rect:{x:rect.left+scrollX,y:rect.top+scrollY,width:rect.width,height:rect.height}};",
+    "const user=turns.find(el=>el.getAttribute('data-message-author-role')==='user'&&(el.innerText||'').includes(command));",
+    "const follows=el=>!user||Boolean(user.compareDocumentPosition(el)&Node.DOCUMENT_POSITION_FOLLOWING);",
+    "const assistants=turns.filter(el=>el.getAttribute('data-message-author-role')==='assistant'&&follows(el));",
+    "const allImgs=[...document.querySelectorAll('img')].filter(follows);",
+    "const imgs=allImgs.map(img=>{const r=img.getBoundingClientRect(),src=String(img.currentSrc||img.src||''),alt=String(img.alt||'').toLowerCase(),nw=Number(img.naturalWidth||0),nh=Number(img.naturalHeight||0);return {img,r,src,alt,nw,nh,area:Math.max(nw*nh,r.width*r.height)}}).filter(x=>x.r.width>=240&&x.r.height>=140&&!/avatar|emoji|icon|logo/.test(x.alt)&&!x.src.includes('avatar')).sort((a,b)=>b.area-a.area);",
+    "const canvases=[...document.querySelectorAll('canvas')].filter(follows).map(el=>{const r=el.getBoundingClientRect();return {el,r,area:r.width*r.height}}).filter(x=>x.r.width>=320&&x.r.height>=180).sort((a,b)=>b.area-a.area);",
+    "const diag={turns:turns.length,assistants:assistants.length,imagesAfterUser:allImgs.length,candidates:imgs.length,canvases:canvases.length,assistantTail:assistants.map(x=>(x.innerText||'').trim()).filter(Boolean).join(' | ').slice(-500)};",
+    "if(!imgs.length){if(canvases.length){const r=canvases[0].r;return {found:true,kind:'canvas',width:Math.round(r.width),height:Math.round(r.height),rect:{x:r.left+scrollX,y:r.top+scrollY,width:r.width,height:r.height},diag}};return {found:false,diag};}",
+    "const c=imgs[0],img=c.img,src=c.src,r=c.r;",
+    "const info={found:true,kind:'img',width:c.nw||Math.round(r.width),height:c.nh||Math.round(r.height),rect:{x:r.left+scrollX,y:r.top+scrollY,width:r.width,height:r.height},diag};",
     "try{const rr=await fetch(src,{credentials:'include'});if(rr.ok){const blob=await rr.blob();if(blob.size>=4096&&blob.size<=1900000){const u8=new Uint8Array(await blob.arrayBuffer());let bin='';for(let i=0;i<u8.length;i+=32768)bin+=String.fromCharCode(...u8.subarray(i,i+32768));info.dataUrl='data:'+(blob.type||'image/png')+';base64,'+btoa(bin);info.capture='original-fetch';return info}}}catch(_){}",
-    "try{const max=1400,scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.round(img.naturalWidth*scale),h=Math.round(img.naturalHeight*scale),cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d',{alpha:false}).drawImage(img,0,0,w,h);for(const q of [0.9,0.84,0.76,0.68]){const data=cv.toDataURL('image/jpeg',q);if(data.length<=2600000){info.dataUrl=data;info.width=w;info.height=h;info.capture='canvas-jpeg-'+q;return info}}}catch(_){}",
+    "try{if(c.nw>=640&&c.nh>=360){const max=1400,scale=Math.min(1,max/Math.max(c.nw,c.nh)),w=Math.round(c.nw*scale),h=Math.round(c.nh*scale),cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d',{alpha:false}).drawImage(img,0,0,w,h);for(const q of [0.9,0.84,0.76,0.68]){const data=cv.toDataURL('image/jpeg',q);if(data.length<=2600000){info.dataUrl=data;info.width=w;info.height=h;info.capture='canvas-jpeg-'+q;return info}}}}catch(_){}",
     "return info;",
     "})()"
   ].join("\\n")
@@ -83,18 +86,22 @@ function probeExpression(){
 
 async function capture(cdp){
   const deadline=Date.now()+7*60*1000;
+  let lastDiag=null;
   while(Date.now()<deadline){
     let p;try{p=await cdp.eval(probeExpression(),true)}catch{}
+    if(p&&p.diag)lastDiag=p.diag;
     if(p&&p.dataUrl&&p.width>=640&&p.height>=360)return p;
     if(p&&p.found&&p.rect&&p.rect.width>=320&&p.rect.height>=180){
       try{
-        const cap=await cdp.call("Page.captureScreenshot",{format:"jpeg",quality:90,fromSurface:true,clip:{x:p.rect.x,y:p.rect.y,width:p.rect.width,height:p.rect.height,scale:1}});
-        if(cap&&cap.data&&cap.data.length<=2600000)return {dataUrl:"data:image/jpeg;base64,"+cap.data,width:Math.round(p.rect.width),height:Math.round(p.rect.height),capture:"cdp-element-screenshot"}
+        const cap=await cdp.call("Page.captureScreenshot",{format:"jpeg",quality:92,fromSurface:true,clip:{x:p.rect.x,y:p.rect.y,width:p.rect.width,height:p.rect.height,scale:1}});
+        const w=Math.round(p.rect.width),h=Math.round(p.rect.height);
+        if(cap&&cap.data&&cap.data.length<=2600000&&w>=640&&h>=360)return {dataUrl:"data:image/jpeg;base64,"+cap.data,width:w,height:h,capture:"cdp-element-screenshot",diag:p.diag||null}
       }catch{}
     }
     await sleep(1800)
   }
-  throw Error("No apareció un raster capturable en 7 minutos")
+  const diag=lastDiag?JSON.stringify(lastDiag).slice(0,350):"sin diagnóstico DOM";
+  throw Error("No apareció un raster capturable en 7 minutos; "+diag)
 }
 async function post(body){
   const r=await fetch(RUN_URL,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
