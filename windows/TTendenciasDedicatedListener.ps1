@@ -398,7 +398,10 @@ while ($true) {
           $ack = Send-Ack $commandId "picked_up"
           if ($ack -eq "OK") {
             try {
-              $messageSent = Launch-EditorialProcess $commandId
+              # Editorial usa el mismo lanzador robusto que las imágenes:
+              # solo damos ACK launched cuando Ejecutar.js confirma que el mensaje
+              # fue enviado o que ChatGPT ya empezó a responder.
+              $messageSent = Launch-ProjectChat "editorial command=$commandId"
               if ($messageSent) {
                 $launched = Send-Ack $commandId "launched"
                 if ($launched -ne "OK") { Write-Log "LAUNCH ACK WARNING command=$commandId result=$launched" }
