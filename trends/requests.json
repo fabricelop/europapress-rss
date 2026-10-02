@@ -17959,9 +17959,9 @@
     {
       "id": "ba5ad69134c0",
       "name": "En 8",
-      "revision": 0,
-      "status": "problematic",
-      "requested_at": "2026-10-02T14:16:38.827Z",
+      "revision": 1,
+      "status": "update",
+      "requested_at": "2026-10-02T15:16:57.610Z",
       "rank": 24,
       "with_image": true,
       "alternatives_target": 0,
@@ -17976,15 +17976,16 @@
       ],
       "auto_queued": false,
       "last_attempt_at": "2026-10-02T16:28:00+02:00",
-      "problem_reason": "«En 8» aparece como tendencia en varias fuentes sociales y coincide temporalmente con «Llevan 8», pero dos búsquedas distintas no permiten atribuirla con fiabilidad a un acontecimiento o conversación únicos; se evita inferir el contexto.",
       "source": "editorial_chat_direct",
-      "disable_ai_image": true,
-      "image_strategy": "none",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
       "ai_image_status": "disabled",
       "image_status": "none",
       "image_pending": false,
-      "reexplain": false,
-      "rewrite_pending": false
+      "reexplain": true,
+      "rewrite_pending": false,
+      "rewrite_instruction": "Hablan de que el gobierno lleva 8 años",
+      "rewrite_with_image": true
     },
     {
       "id": "a032079b6888",
@@ -18824,6 +18825,6 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-02T17:02:05+02:00",
+  "updated_at": "2026-10-02T15:16:57.610Z",
   "count": 438
 }
