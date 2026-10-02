@@ -101,7 +101,7 @@ El `context_guard` es:
 
 ### Un solo intento y recuperación
 
-El intento inicial usa `attempt:1`. Antes de llamar a ImageGen registra de forma durable `ai_image_attempt:1` y el inicio del intento. No hagas una segunda llamada automática tras `failed`, timeout, interrupción o transporte incompleto. Solo **🔁 Rehacer** autoriza `attempt = ai_image_attempt + 1`.
+El intento inicial usa `attempt:1`. Antes de llamar a ImageGen registra de forma durable `ai_image_attempt:1` y el inicio del intento. No hagas una segunda llamada automática tras `failed`, timeout, interrupción o transporte incompleto. Solo una nueva pulsación manual de **✨ Generar IA** autoriza `attempt = ai_image_attempt + 1`.
 
 Al comenzar cada pasada revisa también Explicadas recientes. Una solicitud `ai_image_regenerate_requested:true` se consume una sola vez por su `ai_image_regenerate_request_version`: marca esa versión como consumida antes de llamar y ejecuta un único ImageGen sin reinvestigar ni reescribir.
 
@@ -183,13 +183,14 @@ Si la relación no es inequívoca, no agrupes; verifica primero el detonante con
 
 Si un item trae `rewrite_instruction`, trátalo como CONTEXTO APORTADO POR EL USUARIO para explicar por qué la tendencia está activa. Debes leerlo antes de investigar y usarlo como pista prioritaria para orientar las búsquedas y la reelaboración. No lo ignores ni lo sustituyas por la explicación anterior problemática. Verifica con fuentes actuales todo dato factual verificable antes de publicarlo; si el texto del usuario contiene una interpretación u opinión, úsala como contexto editorial sin presentarla como hecho no comprobado.
 
-## Recuperación de Rehacer desde la app
+## Recuperación de Reexplicar desde la app
 
 Al comenzar cada pasada revisa también las Explicadas recientes con `rewrite_pending:true`. Esa marca es autoritativa aunque `trends/requests.json` o `trends/editorial-queue.json` hayan sufrido una carrera. Para cada una:
 - crea o repara la request `status:"update"` con una revisión estrictamente mayor que la última explicada;
-- usa `rewrite_instruction` guardada;
-- rehace remate + IA sin reutilizar ningún raster/URL/SHA anterior;
-- mantén el fallback;
+- usa `rewrite_instruction` guardada como hipótesis/contexto aportado por el usuario;
+- vuelve a investigar desde cero el motivo actual de la tendencia, contrasta ese contexto con fuentes actuales y reescribe la explicación factual; genera un remate nuevo solo si procede;
+- si `with_image:false` o `rewrite_with_image:false`, **no llames a ImageGen, no solicites otra imagen y no resetees ni borres la capa visual existente**. La acción Reexplicar es exclusivamente editorial;
+- si `with_image:true`, aplica las reglas normales de imagen de la revisión;
 - al materializar la nueva revisión, elimina `rewrite_pending` de la revisión anterior;
 - si la nueva revisión queda terminalmente fallida, conserva una razón explícita y limpia igualmente la marca para no crear un bucle.
 
@@ -340,7 +341,7 @@ Después del único intento ImageGen:
 5. `.github/workflows/ttendencias-ai-image-apply.yml` materializa el raster y actualiza SOLO la imagen de `trends/telegram-manual-explained.json`;
 6. ante fallo técnico de ImageGen/transporte, escribe `status:"failed"` y una razón breve en ese image-outbox. La explicación queda igualmente cerrada.
 
-Para **🔁 Rehacer**, incrementa `attempt`, marca primero como consumida la versión concreta de la solicitud, genera exactamente una vez y usa este mismo image-outbox. No escribas otro texto, no cambies la revisión editorial y conserva siempre `fallback_image`. Una pasada normal no puede crear ai2/ai3/ai4 por recuperación.
+Para una nueva pulsación de **✨ Generar IA**, incrementa `attempt`, marca primero como consumida la versión concreta de la solicitud, genera exactamente una vez y usa este mismo image-outbox. No escribas otro texto, no cambies la revisión editorial y conserva siempre `fallback_image`. Una pasada normal no puede crear ai2/ai3/ai4 por recuperación.
 
 La foto de archivo/fallback sigue siendo posterior y no bloqueante mediante `ttendencias-image-enrich.yml`.
 
