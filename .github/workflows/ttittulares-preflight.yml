@@ -126,12 +126,14 @@ jobs:
           assert "No uses el ImageGen interno" not in prompt and "crea exactamente UN trabajo visual" not in prompt
           run_api=Path("vercel-webhook/api/ttittulares-run.js").read_text(encoding="utf-8")
           run_status=Path("vercel-webhook/api/ttittulares-run-status.js").read_text(encoding="utf-8")
+          control_api=Path("vercel-webhook/api/ttittulares-control.js").read_text(encoding="utf-8")
           listener=Path("windows/TTiTTularesDedicatedListener.ps1").read_text(encoding="utf-8")
           installer=Path("windows/Install-TTiTTularesMobileChatTrigger.ps1").read_text(encoding="utf-8")
           assert "const {doc:trigger}=await readTrigger();" in run_api
           assert "readControlJson(ACK_PATH)" in run_api
           assert "GitHub REST refleja el HEAD" in run_status
           assert "pc_worker_id" in run_status
+          assert "readJson(PROCESSING)" in control_api
           assert '$WorkerId = "ttittulares-dedicated-v9"' in listener
           assert "worker=ttittulares-dedicated-v9" in installer
 
