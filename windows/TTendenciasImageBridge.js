@@ -127,9 +127,12 @@ async function capture(cdp){
     if(p&&p.dataUrl&&p.width>=640&&p.height>=360)return p;
     if(p&&p.found&&p.rect&&p.rect.width>=320&&p.rect.height>=180){
       try{
-        const cap=await cdp.call("Page.captureScreenshot",{format:"jpeg",quality:92,fromSurface:true,clip:{x:p.rect.x,y:p.rect.y,width:p.rect.width,height:p.rect.height,scale:1}});
-        const w=Math.round(p.rect.width),h=Math.round(p.rect.height);
-        if(cap&&cap.data&&cap.data.length<=2600000&&w>=640&&h>=360)return {dataUrl:"data:image/jpeg;base64,"+cap.data,width:w,height:h,capture:"cdp-element-screenshot",diag:p.diag||null}
+        const scale=Math.min(2.5,Math.max(1,640/Math.max(1,p.rect.width),360/Math.max(1,p.rect.height)));
+        for(const quality of [90,82,74]){
+          const cap=await cdp.call("Page.captureScreenshot",{format:"jpeg",quality,fromSurface:true,clip:{x:p.rect.x,y:p.rect.y,width:p.rect.width,height:p.rect.height,scale}});
+          const w=Math.round(p.rect.width*scale),h=Math.round(p.rect.height*scale);
+          if(cap&&cap.data&&cap.data.length<=2600000&&w>=640&&h>=360)return {dataUrl:"data:image/jpeg;base64,"+cap.data,width:w,height:h,capture:"cdp-element-screenshot-x"+scale.toFixed(2)+"-q"+quality,diag:p.diag||null}
+        }
       }catch{}
     }
     await sleep(1800)
