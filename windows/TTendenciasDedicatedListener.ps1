@@ -6,6 +6,7 @@ $ErrorActionPreference = "Continue"
 $BaseDir = "C:\TTiTTulares"
 $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
 $Runner = Join-Path $BaseDir "Ejecutar.js"
+$ImageBridge = Join-Path $BaseDir "TTendenciasImageBridge.js"
 $StatePath = Join-Path $BaseDir "ttendencias-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttendencias-mobile-trigger.log"
 $LauncherLogPath = Join-Path $BaseDir "tendencias.log"
@@ -16,7 +17,7 @@ $ImageIndexUrl = "$StatusBase/api/ttendencias-run-status?view=image-index"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
 
-$WorkerId = "ttendencias-dedicated-v6"
+$WorkerId = "ttendencias-dedicated-v7"
 $PollSeconds = 5
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
@@ -118,7 +119,7 @@ function Send-Ack([string]$CommandId,[string]$Stage) {
   }
 }
 
-function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage,[string]$Reason = "") {
+function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage,[string]$Reason = "",[string]$UploadSecretHash = "",[string]$UploadSecret = "") {
   try {
     $body = @{
       task = "image_pc_ack"
@@ -128,6 +129,8 @@ function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage,[stri
       worker_id = $WorkerId
     }
     if ($Reason) { $body.reason = $Reason }
+    if ($UploadSecretHash) { $body.upload_secret_hash = $UploadSecretHash }
+    if ($UploadSecret) { $body.upload_secret = $UploadSecret }
     $payload = $body | ConvertTo-Json -Compress
     Invoke-RestMethod -Method Post -Uri $RunUrl -ContentType "application/json" -Body $payload -TimeoutSec 12 | Out-Null
     Write-Log "IMAGE ACK $Stage target=$TargetId command=$CommandId"
@@ -135,6 +138,51 @@ function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage,[stri
   } catch {
     Write-Log "IMAGE ACK ERROR $Stage target=$TargetId command=$CommandId :: $($_.Exception.Message)"
     return $false
+  }
+}
+
+function New-ImageUploadSecret {
+  $bytes = New-Object byte[] 32
+  $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+  try { $rng.GetBytes($bytes) } finally { $rng.Dispose() }
+  return [Convert]::ToBase64String($bytes)
+}
+
+function Get-Sha256Hex([string]$Text) {
+  $sha = [System.Security.Cryptography.SHA256]::Create()
+  try {
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($Text)
+    return ([BitConverter]::ToString($sha.ComputeHash($bytes))).Replace("-","").ToLowerInvariant()
+  } finally { $sha.Dispose() }
+}
+
+function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadSecret) {
+  if (-not (Test-Path -LiteralPath $ImageBridge)) {
+    Write-Log "IMAGE BRIDGE ERROR missing=$ImageBridge"
+    return $false
+  }
+  $node = Get-Command node.exe -ErrorAction SilentlyContinue
+  if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
+  if (-not $node) {
+    Write-Log "IMAGE BRIDGE ERROR node no encontrado"
+    return $false
+  }
+  $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  $out = Join-Path $BaseDir ("ttendencias-image-bridge-" + $stamp + "-" + $TargetId + ".log")
+  $err = Join-Path $BaseDir ("ttendencias-image-bridge-" + $stamp + "-" + $TargetId + ".err.log")
+  $old = $env:TT_IMAGE_UPLOAD_SECRET
+  try {
+    $env:TT_IMAGE_UPLOAD_SECRET = $UploadSecret
+    $p = Start-Process -FilePath $node.Source -ArgumentList @($ImageBridge,$CommandId,$TargetId) -WindowStyle Hidden -PassThru -RedirectStandardOutput $out -RedirectStandardError $err
+    if (-not $p) { throw "Start-Process no devolvió proceso" }
+    Write-Log "IMAGE BRIDGE STARTED pid=$($p.Id) target=$TargetId command=$CommandId stdout=$out stderr=$err"
+    return $true
+  } catch {
+    Write-Log "IMAGE BRIDGE START ERROR target=$TargetId command=$CommandId :: $($_.Exception.Message)"
+    return $false
+  } finally {
+    if ($null -eq $old) { Remove-Item Env:TT_IMAGE_UPLOAD_SECRET -ErrorAction SilentlyContinue }
+    else { $env:TT_IMAGE_UPLOAD_SECRET = $old }
   }
 }
 
@@ -485,7 +533,9 @@ while ($true) {
 
         Write-Log "IMAGE NEW target=$targetId command=$commandId name=$($job.target_name)"
 
-        if (-not (Send-ImageAck $targetId $commandId "picked_up")) {
+        $uploadSecret = New-ImageUploadSecret
+        $uploadHash = Get-Sha256Hex $uploadSecret
+        if (-not (Send-ImageAck $targetId $commandId "picked_up" "" $uploadHash "")) {
           continue
         }
 
@@ -495,14 +545,20 @@ while ($true) {
 
         if ($sent) {
           Send-ImageAck $targetId $commandId "launched" | Out-Null
+          if (-not (Start-ImageBridge $commandId $targetId $uploadSecret)) {
+            $reason = "El chat arrancó, pero no se pudo iniciar el puente local de raster."
+            Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
+            Mark-ImageCommand $state $commandId $false
+            Save-State $state
+            continue
+          }
           Mark-ImageCommand $state $commandId $true
           Save-State $state
           $slots--
-          if ($slots -gt 0) { Start-Sleep -Milliseconds 1200 }
         } else {
           $reason = "Ejecutar.js no confirmó el envío del mensaje corto al chat en $($LaunchConfirmSeconds) s."
           Write-Log "IMAGE CHAT NOT CONFIRMED target=$targetId command=$commandId :: $reason"
-          Send-ImageAck $targetId $commandId "failed" $reason | Out-Null
+          Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
           Mark-ImageCommand $state $commandId $false
           Save-State $state
         }
