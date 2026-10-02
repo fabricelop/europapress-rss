@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-v7b-1790965315413-latasa",
-  "requested_at": "2026-10-02T18:21:55.413Z",
-  "updated_at": "2026-10-02T18:29:17.166Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-v8-1790966062930-latasa",
+  "requested_at": "2026-10-02T18:34:22.929Z",
+  "updated_at": "2026-10-02T18:34:22.929Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,18 +14,13 @@
   "trend_id": "3ce5afef7763",
   "target_name": "Latasa",
   "revision": 0,
-  "chat_command_version": 2,
+  "chat_command_version": 3,
   "instruction_profile": "ttendencias_gag_v1",
   "instructions": {
     "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
     "context": "Lee en main la explicación completa y vigente correspondiente a target_id; no cambies explicación, hechos, fuentes ni remate.",
     "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
-    "lifecycle": "Verifica vigencia antes de generar; el puente local recogerá el raster y lo enviará al pipeline."
+    "lifecycle": "El chat solo genera. El puente local recoge el raster, lo valida y lo persiste."
   },
-  "message": "No apareció un raster capturable en 7 minutos",
-  "pc_upload_secret_hash": "bb4faed44f0205594ce94792b34f3cf665c20f754ca641264e55ccfea1f42cb1",
-  "pc_worker_id": "ttendencias-image-bridge-v1",
-  "pc_picked_up_at": "2026-10-02T18:22:03.276Z",
-  "pc_launched_at": "2026-10-02T18:22:13.864Z",
-  "finished_at": "2026-10-02T18:29:17.166Z"
+  "message": "Prueba controlada v8 con orden explícita ImageGen y puente DOM ampliado."
 }
