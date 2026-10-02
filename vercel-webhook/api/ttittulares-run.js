@@ -236,7 +236,10 @@ export default async function handler(req,res){
       const ackMatches=String(ack.command_id||"")===currentId;
       const ackStage=ackMatches?String(ack.stage||"").toLowerCase():"";
       const ackAt=ackMatches?stamp(ack.updated_at||ack.launched_at||ack.picked_up_at):0;
-      const ackFresh=ackMatches&&ackAt&&Date.now()-ackAt<ACTIVE_MS;
+      // Igual que TTendencias: picked_up solo prueba que el PC vio la orden.
+      // Si no llega a launched en 45 s, no debe bloquear nuevas pulsaciones.
+      const ackWindow=ackStage==="picked_up"?45000:ackStage==="launched"?6*60*1000:ACTIVE_MS;
+      const ackFresh=ackMatches&&ackAt&&Date.now()-ackAt<ackWindow;
 
       // 45 s cubre holgadamente el SLA visual de 30 s. Si pasado ese tiempo no hay
       // ACK ni RUNNING, la orden anterior está muerta y una pulsación nueva debe poder
