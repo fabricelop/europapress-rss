@@ -13556,8 +13556,8 @@
       "reexplain": true,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": true,
-      "image_strategy": "fallback_only",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
       "tremending_origin": false,
@@ -13592,8 +13592,7 @@
       ],
       "news_disposition": "ignored",
       "news_note": "Dos términos del mismo debate político sobre vivienda y los ocho años de Gobierno; redacción factual y atribuida, sin remate.",
-      "ai_image_status": "disabled",
-      "ai_image_block_reason": "political_context",
+      "ai_image_status": "pending",
       "fallback_image_status": "ready",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image": {
@@ -13626,7 +13625,9 @@
         "En 8",
         "Después de 8"
       ],
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "ai_image_attempt": 0,
+      "political_image_policy": "allowed_neutral_situational_satire"
     },
     {
       "id": "tremending-d79633972e47",
@@ -14208,6 +14209,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-02T18:54:02.565178Z",
+  "updated_at": "2026-10-02T19:20:53.195Z",
   "count": 419
 }
