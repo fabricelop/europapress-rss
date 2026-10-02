@@ -225,8 +225,15 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$Expec
       $joined = ($tail -join "`n")
       $hasMarker = (-not $ExpectedMarker) -or $joined.Contains($ExpectedMarker)
 
-      if ($hasMarker -and $joined -match "MENSAJE ENVIADO") {
-        Write-Log "CHAT MESSAGE CONFIRMED :: $Reason marker=$ExpectedMarker"
+      # Confirmación robusta: la propia telemetría de Ejecutar.js puede mostrar
+      # generando:true antes de que el DOM actualice el contador de mensajes o antes
+      # de que aparezca la línea MENSAJE ENVIADO. En ese caso ChatGPT ya aceptó el envío.
+      $responseStarted = $joined -match '"generando"\s*:\s*true'
+      $messageSent = $joined -match "MENSAJE ENVIADO"
+      $executionLaunched = $joined -match "EJECUCION LANZADA"
+      if ($hasMarker -and ($messageSent -or $executionLaunched -or $responseStarted)) {
+        $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
+        Write-Log "CHAT MESSAGE CONFIRMED :: $Reason marker=$ExpectedMarker via=$why"
         return $true
       }
       if ($joined -match "ERROR:|ERROR ::|Timeout CDP") {
