@@ -135,12 +135,13 @@ jobs:
           assert "GitHub REST refleja el HEAD" in run_status
           assert "pc_worker_id" in run_status
           assert "readJson(PROCESSING)" in control_api
-          assert '$WorkerId = "ttittulares-dedicated-v12"' in listener
+          assert '$WorkerId = "ttittulares-dedicated-v13"' in listener
           assert "$LaunchConfirmSeconds = 30" in listener
           assert "direct-node" in listener and "Read-NewLauncherText $beforeLen" in listener
           assert "TTendencias unchanged" in listener and "tendenciasBefore" in listener and "tendenciasWritten" in listener
+          assert "RedirectStandardOutput" in listener and "ttittulares-launch-" in listener
           assert "if ($messageSent -or $executionLaunched -or $responseStarted)" in listener
-          assert "worker=ttittulares-dedicated-v12" in installer
+          assert "worker=ttittulares-dedicated-v13" in installer
 
           ids=set()
           for item in prepared.get("items",[]):
