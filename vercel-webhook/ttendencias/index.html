@@ -74,10 +74,10 @@ const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
 const RUN_STATUS_API="/api/ttendencias-run-status";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="20261002-runpanel-fasttap-v2";
+const SHELL_BUILD="20261002-image-status-backend-v3";
 const $=id=>document.getElementById(id);
 const DATA_CACHE_KEY="ttendencias-last-model",RUN_CACHE_KEY="ttendencias-last-run-status";
-const IMAGE_RUN_RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/";
+const IMAGE_RUN_STATUS=RUN_STATUS_API+"?view=image-job&id=";
 const GITHUB_RATE_KEY="github-rate-state-v1";
 function updateGithubRate(rate){
  const el=$("githubRate");if(!el)return;
@@ -702,7 +702,7 @@ async function refreshMainImageRuns(){
  await Promise.all(items.map(async x=>{
    const id=String(x.id||""),before=imageRuns.get(id);
    try{
-     const r=await fetch(IMAGE_RUN_RAW+encodeURIComponent(id)+".json?t="+Date.now(),{cache:"no-store"});
+     const r=await fetch(IMAGE_RUN_STATUS+encodeURIComponent(id)+"&t="+Date.now(),{cache:"no-store"});
      if(!r.ok)return;
      const d=await r.json();imageRuns.set(id,d);
      if(JSON.stringify(before||null)!==JSON.stringify(d)&&["DONE","ERROR","CANCELLED"].includes(String(d.status||"").toUpperCase()))terminal=true
