@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-02T18:03:16.767541+00:00",
+  "checked_at": "2026-10-02T20:22:45.308256+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -55,7 +55,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 0.9,
-      "run_id": 37044751158,
+      "run_id": 37060077670,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,37 +75,33 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 1,
-      "overdue_count": 1,
-      "oldest_age_minutes": 31.0,
+      "ok": true,
+      "pending_count": 5,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0.1,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "95fdb72636f4",
-          "name": "#BangChanEmpireOfTalent",
-          "status": "preparing",
-          "age_minutes": 31.0
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "95fdb72636f4"
+        "fdd1a3825803",
+        "68b1fa61df02",
+        "9767e3b44c3a",
+        "ea144aa53f81",
+        "5eaf524758db"
       ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "config TTendencias incompatible con el modo activo",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 31.0 min"
+    "config TTendencias incompatible con el modo activo"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 31.0 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "config TTendencias incompatible con el modo activo"
 }
