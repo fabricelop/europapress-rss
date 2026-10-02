@@ -12847,9 +12847,27 @@
       "disable_ai_image": true,
       "ai_image_status": "disabled",
       "ai_image_block_reason": "political_actor",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://fotografias.lasexta.com/clipping/cmsimages02/2026/10/02/A98E8E4E-9D02-413F-9781-0F7548554E71/imagen-que-publica-ester-munoz-incidente-alberto-ibanez-compromis_98.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
+        "source": "laSexta · 2/10/2026",
+        "source_url": "https://www.lasexta.com/noticias/nacional/ester-munoz-acusa-ejercer-violencia-alberto-ibanez-compromis-que-responde-violencia-votar-que-desahucien-senora-90-anos_202610026abf87caa4297764c3a80101.html",
+        "alt": "Imagen de archivo relacionada con Compromís",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://fotografias.lasexta.com/clipping/cmsimages02/2026/10/02/A98E8E4E-9D02-413F-9781-0F7548554E71/imagen-que-publica-ester-munoz-incidente-alberto-ibanez-compromis_98.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
+        "source": "laSexta · 2/10/2026",
+        "source_url": "https://www.lasexta.com/noticias/nacional/ester-munoz-acusa-ejercer-violencia-alberto-ibanez-compromis-que-responde-violencia-votar-que-desahucien-senora-90-anos_202610026abf87caa4297764c3a80101.html",
+        "alt": "Imagen de archivo relacionada con Compromís",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "10aaa9a5458f",
@@ -12904,6 +12922,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-02T16:30:00+02:00",
+  "updated_at": "2026-10-02T14:35:35.482507Z",
   "count": 411
 }
