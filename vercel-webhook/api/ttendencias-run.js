@@ -132,6 +132,69 @@ async function writeMainJson(path,doc,sha,message){
   if(!r.ok)throw new Error("GitHub main PUT "+path+": "+r.status+" "+await r.text());
   return r.json()
 }
+async function writeMainBinary(path,buf,sha,message){
+  const body={message,content:Buffer.from(buf).toString("base64"),branch:MAIN_BRANCH};
+  if(sha)body.sha=sha;
+  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path,{method:"PUT",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error("GitHub main binary PUT "+path+": "+r.status+" "+await r.text());
+  return r.json()
+}
+async function persistAiImageDirect({target_id,revision,attempt,command_id,buf,mime,sha256,width,height,bytes}){
+  const ext=mime==="image/png"?"png":mime==="image/webp"?"webp":"jpg";
+  const suffix=command_id.replace(/[^A-Za-z0-9_-]/g,"").slice(-12)||Date.now();
+  const imagePath="trends/generated-images/"+target_id+"-r"+revision+"-ai"+attempt+"-"+suffix+"."+ext;
+  const imageExisting=await readMainJsonWithSha(imagePath).catch(()=>({sha:null,doc:null}));
+  // readMainJsonWithSha no sirve para binarios existentes; el nombre es único por command_id,
+  // así que solo escribimos sin SHA y tratamos 422 como colisión imposible de nombre.
+  if(imageExisting?.sha)throw new Error("generated_image_path_already_exists");
+  await writeMainBinary(imagePath,buf,null,"TTendencias: guardar raster ImageGen "+target_id);
+
+  const rawUrl="https://raw.githubusercontent.com/"+REPO+"/main/"+imagePath;
+  const sourceUrl="https://github.com/"+REPO+"/blob/main/"+imagePath;
+  const ai={
+    url:rawUrl,source:"TTendencias / ChatGPT ImageGen",rights_status:"generated",generated:true,
+    provider:"chat-imagegen",origin:"executing_chat",generation_attempt:attempt,
+    sha256,width,height,bytes,
+    context_guard:{version:3,trend_id:target_id,revision,scope:"current_item_only",command_id},
+    source_url:sourceUrl,handoff:"pc-bridge-direct-materialized"
+  };
+
+  let updatedRow=null;
+  for(let n=0;n<6;n++){
+    const exp=await readMainJsonWithSha(EXPLAINED_PATH);
+    const doc=exp.doc||{project:"TTendencias",items:[]};
+    const items=Array.isArray(doc.items)?doc.items:[];
+    const row=[...items].reverse().find(x=>String(x.id||"")===target_id&&Number(x.revision||0)===Number(revision));
+    if(!row)throw new Error("not_pending_explained");
+    const collision=items.find(x=>String(x.id||"")!==target_id&&String(x.ai_image?.sha256||"").toLowerCase()===sha256.toLowerCase());
+    if(collision)throw new Error("cross_context_raster_reuse");
+    row.ai_image=ai;
+    row.ai_image_status="ready";
+    row.ai_image_attempt=attempt;
+    row.ai_image_last_attempt_status="ready";
+    row.ai_image_last_attempt_at=new Date().toISOString();
+    delete row.ai_image_failure_reason;
+    delete row.ai_image_regeneration_error;
+    delete row.ai_image_regenerate_requested;
+    delete row.ai_image_regenerate_requested_at;
+    delete row.ai_image_regenerate_request_version;
+    row.image={...ai};
+    row.image_choice="ai";
+    row.image_status="ready";
+    row.image_pending=false;
+    doc.updated_at=new Date().toISOString();
+    try{
+      await writeMainJson(EXPLAINED_PATH,doc,exp.sha,"TTendencias: adjuntar imagen IA "+target_id);
+      updatedRow=row;break;
+    }catch(e){
+      if(n===5||!/409|422/.test(String(e)))throw e;
+      await new Promise(r=>setTimeout(r,250*(n+1)));
+    }
+  }
+  if(!updatedRow)throw new Error("No se pudo actualizar el estado editorial con la imagen");
+  return {imagePath,ai}
+}
+
 function uploadSecretHash(value){return crypto.createHash("sha256").update(String(value||""),"utf8").digest("hex")}
 function validUploadSecret(job,secret){
   const expected=String(job?.pc_upload_secret_hash||"").toLowerCase(),actual=uploadSecretHash(secret);
@@ -277,16 +340,10 @@ async function requestImageUpload(req,res){
   if(width<640||height<360)return res.status(400).json({ok:false,error:"Raster inferior a 640x360",width,height});
   const sha256=crypto.createHash("sha256").update(buf).digest("hex");
   const now=new Date().toISOString(),revision=Number(eligible.row?.revision||job.revision||0),attempt=Math.max(1,Number(eligible.row?.ai_image_attempt||0)||1);
-  const persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido y validado; enviando a image-outbox."};
+  const persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido y validado; materializando directamente en main."};
   await writeControlJson(path,persisting,existing.sha,"TTendencias raster recibido "+command_id);
-  const outboxPath="trends/image-outbox/"+target_id+"-r"+revision+"-a"+attempt+"-"+command_id.replace(/[^A-Za-z0-9_-]/g,"").slice(-12)+".json";
-  const out=await readMainJsonWithSha(outboxPath);
-  const payload={version:3,id:target_id,revision,attempt,status:"ready",command_id,created_at:now,ai_image:{
-    url:data,source:"TTendencias / ChatGPT ImageGen",rights_status:"generated",generated:true,provider:"chat-imagegen",origin:"executing_chat",
-    generation_attempt:attempt,sha256,width,height,bytes:buf.length,context_guard:{version:3,trend_id:target_id,revision,scope:"current_item_only",command_id}
-  }};
-  await writeMainJson(outboxPath,payload,out.sha,"TTendencias: recibir raster ImageGen "+target_id);
-  return res.status(200).json({ok:true,status:"PERSISTING",target_id,command_id,outbox_path:outboxPath,sha256,width,height,bytes:buf.length})
+  const persisted=await persistAiImageDirect({target_id,revision,attempt,command_id,buf,mime:m[1],sha256,width,height,bytes:buf.length});
+  return res.status(200).json({ok:true,status:"PERSISTING",target_id,command_id,image_path:persisted.imagePath,sha256,width,height,bytes:buf.length})
 }
 
 async function requestImageRun(req,res){
