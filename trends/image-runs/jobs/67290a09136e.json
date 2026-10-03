@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791018831790-69e0b6",
+  "requested_at": "2026-10-03T09:13:51.790Z",
+  "updated_at": "2026-10-03T09:13:51.790Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "67290a09136e",
+  "trend_id": "67290a09136e",
+  "target_name": "bastianini",
+  "revision": 0,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "bastianini",
+    "revision": 0,
+    "explanation": "TT#6 bastianini es tendencia porque una penalización por límites de pista le hizo caer al 4.º puesto del Sprint de Motegi y elevó a Moreira al 2.º, su primer podio Sprint.\n🌶️ La línea verde repartió más puestos que la bandera a cuadros.",
+    "closer_text": "🌶️ La línea verde repartió más puestos que la bandera a cuadros.",
+    "trend_names": [
+      "bastianini",
+      "Moreira"
+    ],
+    "group_title": "Sprint de Motegi · Bastianini y Moreira",
+    "rank_at_explanation": 6,
+    "explained_at": "2026-10-03T11:09:30+02:00",
+    "verification_sources": [
+      {
+        "source": "MotoGP · 3/10/2026",
+        "url": "https://www.motogp.com/es/news/2026/10/01/marc-marquez-wins-dramatic-motegi-sprint-as-moreira-shines-for-first-saturday-podium/1145006"
+      },
+      {
+        "source": "Reuters · 3/10/2026",
+        "url": "https://www.reuters.com/sports/marquez-wins-japanese-gp-sprint-close-martin-2026-10-03/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+}
