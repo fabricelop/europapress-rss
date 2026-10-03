@@ -494,8 +494,6 @@ function Launch-TTiTTulares([string]$CommandId) {
     [void](Send-Ack $CommandId "failed" $detail)
     return $false
   }
-  Ensure-RunnerNewChatCompatibility | Out-Null
-
   $safeCommandId = ($CommandId -replace '[^A-Za-z0-9._-]','_')
   $launchLog = Join-Path $BaseDir ("ttittulares-launch-" + $safeCommandId + ".log")
   $launchErr = Join-Path $BaseDir ("ttittulares-launch-" + $safeCommandId + ".err.log")
@@ -591,7 +589,6 @@ Write-Log "LISTENER START worker=$WorkerId pid=$PID"
 $state = Load-State
 Ensure-StateFields $state
 Save-State $state
-Ensure-RunnerNewChatCompatibility | Out-Null
 $CustomMessageSupport = Enable-CustomChatMessages
 
 # Diagnóstico inicial: confirma que el proceso sigue vivo y que ve el trigger remoto.
