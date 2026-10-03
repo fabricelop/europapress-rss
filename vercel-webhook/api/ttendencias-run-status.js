@@ -332,6 +332,57 @@ export default async function handler(req,res){
       const {doc}=await readTrigger(strong);
       return res.status(200).json({ok:true,...doc});
     }
+    if(view==="image-monitor"){
+      // Monitor UI: una sola llamada Vercel. Las lecturas de jobs son RAW-first
+      // para no consumir la cuota REST primaria de GitHub.
+      const index0=await readControlBranchJson(IMAGE_RUN_INDEX_PATH,false);
+      const index=(index0&&typeof index0==="object")?index0:{version:1,jobs:[]};
+      const now=Date.now(),recent=(Array.isArray(index.jobs)?index.jobs:[])
+        .filter(j=>{
+          const t=Date.parse(j?.requested_at||"");
+          return Number.isFinite(t)&&now-t<6*60*60*1000
+        })
+        .slice(-30);
+      const rows=(await Promise.all(recent.map(async j=>{
+        const id=String(j?.target_id||j?.trend_id||"").trim();
+        if(!id)return null;
+        const path=String(j?.status_path||IMAGE_RUN_DIR+"/"+id+".json");
+        const d=await readControlBranchJson(path,false);
+        if(!d||!Object.keys(d).length)return {...j,target_id:id,status:"UNKNOWN"};
+        return {...j,...d,target_id:id,target_name:d.target_name||j.target_name||id}
+      }))).filter(Boolean);
+      const activeStates=new Set(["REQUESTED","RUNNING","GENERATING","PERSISTING"]);
+      const active=rows.filter(x=>activeStates.has(String(x.status||"").toUpperCase()))
+        .sort((a,b)=>stamp(a.requested_at)-stamp(b.requested_at));
+      const running=active.filter(x=>["RUNNING","GENERATING","PERSISTING"].includes(String(x.status||"").toUpperCase()));
+      const current=(running[0]||active[0]||null);
+      const terminal=rows.filter(x=>["DONE","ERROR","CANCELLED"].includes(String(x.status||"").toUpperCase()))
+        .sort((a,b)=>stamp(a.updated_at||a.finished_at||a.requested_at)-stamp(b.updated_at||b.finished_at||b.requested_at));
+      const last=terminal.at(-1)||null;
+      return res.status(200).json({
+        ok:true,
+        active_count:active.length,
+        queue_count:Math.max(0,active.length-(current?1:0)),
+        current:current?{
+          command_id:current.command_id||null,
+          target_id:current.target_id||null,
+          target_name:current.target_name||current.trend_name||current.target_id||null,
+          status:current.status||null,
+          phase:current.phase||null,
+          requested_at:current.requested_at||null,
+          updated_at:current.updated_at||null
+        }:null,
+        last_result:last?{
+          command_id:last.command_id||null,
+          target_id:last.target_id||null,
+          target_name:last.target_name||last.trend_name||last.target_id||null,
+          status:last.status||null,
+          updated_at:last.updated_at||last.finished_at||last.requested_at||null,
+          error:last.error||last.detail||null
+        }:null,
+        server_now:new Date().toISOString()
+      })
+    }
     if(view==="image-index"){
       const strong=String(req.query?.strong||"")==="1";
       const doc0=await readControlBranchJson(IMAGE_RUN_INDEX_PATH,strong);
