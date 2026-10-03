@@ -649,11 +649,23 @@ while ($true) {
           Save-State $state
           $slots--
         } else {
-          $reason = "Ejecutar.js no confirmó el envío del mensaje corto al chat en $($LaunchConfirmSeconds) s."
-          Write-Log "IMAGE CHAT NOT CONFIRMED target=$targetId command=$commandId :: $reason"
-          Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
-          Mark-ImageCommand $state $commandId $false
+          # Ejecutar.js puede no imprimir su confirmación aunque el mensaje ya haya
+          # llegado a ChatGPT (observado con ImageGen). No cerrar el job como ERROR
+          # por una ausencia de telemetría local: el bridge es quien confirma el
+          # marker real del command_id en el DOM y falla por sí mismo si no existe.
+          $reason = "Ejecutar.js no confirmó el envío en $($LaunchConfirmSeconds) s.; delegando confirmación real al bridge."
+          Write-Log "IMAGE CHAT UNCONFIRMED; BRIDGE WILL VERIFY target=$targetId command=$commandId :: $reason"
+          Send-ImageAck $targetId $commandId "launched" | Out-Null
+          if (-not (Start-ImageBridge $commandId $targetId $uploadSecret)) {
+            $failReason = "El lanzamiento quedó sin confirmar y tampoco se pudo iniciar el puente local de raster."
+            Send-ImageAck $targetId $commandId "failed" $failReason "" $uploadSecret | Out-Null
+            Mark-ImageCommand $state $commandId $false
+            Save-State $state
+            continue
+          }
+          Mark-ImageCommand $state $commandId $true
           Save-State $state
+          $slots--
         }
       }
     } elseif ($slots -gt 0 -and -not $CustomMessageSupport) {
