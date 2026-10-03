@@ -318,9 +318,8 @@ function runVisual(s){
       lastEditorial.textContent="Elaboración en curso "+started+(previousTime?" · última terminada "+previousTime:"");
       lastEditorial.className="running";
     }else if(previous){
-      const visual=Number(previous.summary?.visual_backlog||0);
-      lastEditorial.textContent="Última elaboración "+runTime(previous.started_at||previous.requested_at||previous.finished_at||previous.updated_at)+" · terminada"+(visual>0?" · "+visual+" imagen"+(visual===1?"":"es")+" pendiente"+(visual===1?"":"s")+" aparte":"");
-      lastEditorial.className=previous.status==="ERROR"?"late":visual>0?"running":"ok";
+      lastEditorial.textContent="Última elaboración "+runTime(previous.started_at||previous.requested_at||previous.finished_at||previous.updated_at)+" · terminada";
+      lastEditorial.className=previous.status==="ERROR"?"late":"ok";
     }else{
       lastEditorial.textContent="Última elaboración —";
       lastEditorial.className="";
@@ -345,10 +344,10 @@ function runVisual(s){
  prog.hidden=true;fill.style.width="0%";
  const r=s?.last_run||null;
  if(r){
-    const count=runIncidentCount(r),isError=r.status==="ERROR",visual=Number(r.summary?.visual_backlog||0);
+    const count=runIncidentCount(r),isError=r.status==="ERROR";
     head.textContent=isError?("Última ejecución editorial · "+runTime(r.finished_at||r.updated_at)+" · Error"):("Última ejecución editorial · "+runTime(r.finished_at||r.updated_at)+" · Terminada");
-    el.textContent=[runSummaryText(r),visual>0?(visual+" imagen"+(visual===1?"":"es")+" IA pendiente"+(visual===1?"":"s")+" en cola separada"):"sin imágenes IA pendientes",runSource(r.source||r.source_label)].filter(Boolean).join(" · ")||"Lista para ejecutar";
-    el.className=isError?"error":visual>0?"running":"done";
+    el.textContent=[runSummaryText(r),runSource(r.source||r.source_label)].filter(Boolean).join(" · ")||"Lista para ejecutar";
+    el.className=isError?"error":"done";
    if(count||isError){warn.hidden=false;warn.textContent=(isError?"✖ ":"⚠ ")+(count||1);warn.classList.toggle("severe",isError);warn.onclick=()=>showRunIncidents(s)}
  }else{
    head.textContent="Ejecución";el.textContent=s?.enabled===false?"Disparo móvil no disponible":"Lista para ejecutar";

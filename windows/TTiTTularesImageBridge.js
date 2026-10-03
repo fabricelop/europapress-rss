@@ -68,7 +68,7 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TTITTULARES_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee ttittulares/image-runs/jobs/"+targetId+".json en control/ttittulares-run-trigger-v2 para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v11-prelaunch-target";
+const BRIDGE_MODE="capture-only-v12-unique-image-title";
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
@@ -81,6 +81,7 @@ async function findChat(job){
   let best=null,bestScore=-1,bestInfo=null;
   while(Date.now()<deadline){
     let list=[];try{list=await targets()}catch{await sleep(700);continue}
+    const imageTitleCandidates=[];
     for(const t of list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl)){
       const postLaunch=isPostLaunchTarget(t);
       const c=new CDP(t.webSocketDebuggerUrl);
@@ -106,10 +107,20 @@ async function findChat(job){
           console.log("BRIDGE TARGET IMAGE-TITLE "+String(st.url||""));
           return c
         }
+        if(st&&st.imageTitle)imageTitleCandidates.push({t,st});
         const score=(postLaunch?900:0)+(st&&st.bodyMarker?1000:0)+(st&&st.targetMarker?650:0)+(st&&st.imageTitle?300:0)+(projectMatch?250:0)+(st&&st.generating?100:0)+(st&&st.images>0?40:0)+(String(st&&st.url||"").includes("/c/")?10:0)-(oppositeMatch?1000:0);
         if(score>bestScore){best=t;bestScore=score;bestInfo=st}
       }catch{}
       c.close()
+    }
+    if(imageTitleCandidates.length===1){
+      const only=imageTitleCandidates[0];
+      const c=new CDP(only.t.webSocketDebuggerUrl);
+      try{
+        await c.open();
+        console.log("BRIDGE TARGET UNIQUE IMAGE-TITLE "+String(only.st&&only.st.url||only.t.url||""));
+        return c
+      }catch{c.close()}
     }
     await sleep(900)
   }

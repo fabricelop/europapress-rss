@@ -28,7 +28,7 @@ const TRACE_COMMENT_ID=5859738015;
 const STALE_MS=20*60*1000;
 const START_ACK_MS=30*1000;
 const LAUNCH_ACK_MS=45*1000;
-const CHAT_CONFIRM_MS=45*1000;
+const CHAT_CONFIRM_MS=5*60*1000;
 
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
@@ -241,7 +241,7 @@ function manualFallback(items,request,ack){
       :pickupButNoLaunch
         ?"El PC recogió la orden, pero no confirmó el lanzamiento del chat en 45 segundos."
         :launchButNoEditorial
-          ?"El chat fue lanzado, pero no comenzó la ejecución editorial en 45 segundos."
+          ?"El chat fue lanzado, pero no apareció telemetría editorial en 5 minutos."
           :launchFailed
             ?("El lanzador local falló: "+(failedDetail||"sin detalle"))
             :"La ejecución no actualiza su estado desde hace más de 20 minutos.";
@@ -364,9 +364,13 @@ export default async function handler(req,res){
     }
     if(latest&&["DONE","ERROR"].includes(latest.status))terminalCandidates.push(latest);
     if(fallback&&["DONE","ERROR"].includes(fallback.status)){
-      if(!errors.length)errors=await readErrors();
-      const inc=incidentsFor(errors,fallback.started_at||fallback.requested_at,fallback.finished_at);
-      terminalCandidates.push({...fallback,incidents:inc,incident_count:inc.length})
+      const fallbackRunId=String(fallback.run_id||fallback.command_id||"");
+      const traceAlreadyTerminal=terminalCandidates.some(x=>String(x.run_id||x.command_id||"")===fallbackRunId);
+      if(!traceAlreadyTerminal){
+        if(!errors.length)errors=await readErrors();
+        const inc=incidentsFor(errors,fallback.started_at||fallback.requested_at,fallback.finished_at);
+        terminalCandidates.push({...fallback,incidents:inc,incident_count:inc.length})
+      }
     }
     terminalCandidates.sort((a,b)=>{
       const aStarted=stamp(a.started_at||a.requested_at||a.finished_at||a.updated_at);
