@@ -219,6 +219,7 @@ async function requestPcAck(req,res){
   const command_id=String(req.body?.command_id||"").trim();
   const stage=String(req.body?.stage||"").toLowerCase();
   const worker_id=String(req.body?.worker_id||"legacy-shared-listener").trim().slice(0,120)||"legacy-shared-listener";
+  if(worker_id!=="ttendencias-dedicated-v12")return res.status(409).json({ok:false,error:"stale_worker",expected_worker:"ttendencias-dedicated-v12",worker_id});
   if(!command_id||!["picked_up","launched"].includes(stage))return res.status(400).json({ok:false,error:"Ack no válido"});
   const {doc:trigger}=await readTrigger();
   if(String(trigger.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es el actual"});
