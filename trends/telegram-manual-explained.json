@@ -16911,8 +16911,8 @@
           "revision": 1
         }
       ],
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 1,
       "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
@@ -16926,14 +16926,52 @@
       },
       "fallback_image_status": "ready",
       "image": {
-        "url": "https://fotografias.lasexta.com/clipping/cmsimages01/2026/10/03/A79CCE9C-CC65-400D-8620-B1DAFEF04F33/ana-estudiante-trabajadora_98.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
-        "source": "laSexta · 3/10/2026",
-        "source_url": "https://www.lasexta.com/noticias/sociedad/ana-trabajadora-estudiante-acampada-sol-vivienda-noche-sido-tediosa-estamos-bastante-cansados_202610036ac0db79375d34226272f448.html",
-        "alt": "Imagen de archivo relacionada con #laSextaXplica",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/d438ccc039cc-r1-ai1-03349-57f85c.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "67d656f009ca1b0cca1e67c62679ea3a0e85518e690432a1af9111a8309a5df9",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2722663,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "d438ccc039cc",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791070203349-57f85c"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/d438ccc039cc-r1-ai1-03349-57f85c.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
-      "image_choice": "fallback"
+      "image_choice": "ai",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/d438ccc039cc-r1-ai1-03349-57f85c.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "67d656f009ca1b0cca1e67c62679ea3a0e85518e690432a1af9111a8309a5df9",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2722663,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "d438ccc039cc",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791070203349-57f85c"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/d438ccc039cc-r1-ai1-03349-57f85c.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-03T23:32:33.374Z"
     },
     {
       "id": "e486c2bd83db",
@@ -17330,6 +17368,6 @@
       "ai_image_last_attempt_at": "2026-10-03T23:22:26.427Z"
     }
   ],
-  "updated_at": "2026-10-03T23:22:26.427Z",
+  "updated_at": "2026-10-03T23:32:33.374Z",
   "count": 461
 }
