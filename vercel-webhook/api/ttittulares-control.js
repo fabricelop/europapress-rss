@@ -406,7 +406,7 @@ async function useFallbackImage(eventId){
 }
 
 async function rework(eventId,instruction,reinvestigate=false){
-  const id=idOf(eventId),text=String(instruction||"Cambia solo el remate y genera una nueva imagen IA. Conserva exactamente hechos, fuentes y texto factual. No reinvestigues.").trim();
+  const id=idOf(eventId),text=String(instruction||"Cambia solo el remate. Conserva exactamente hechos, fuentes y texto factual. No reinvestigues. La imagen IA se decide y genera aparte desde el panel.").trim();
   if(!id)throw new Error("Falta event_id");if(!text)throw new Error("Escribe las instrucciones para rehacer.");
   const now=new Date().toISOString();let found=false,targetRevision=0;
   await mutateJson(PREPARED,"Solicitar reelaboración TTiTTulares desde web",doc=>{
@@ -419,9 +419,9 @@ async function rework(eventId,instruction,reinvestigate=false){
       item.rewrite_requested_at=now;
       item.rewrite_target_revision=targetRevision;
       item.rewrite_request_version=Number(item.rewrite_request_version||0)+1;
-      item.rewrite_scope=reinvestigate?"full":"remate_and_ai";
+      item.rewrite_scope=reinvestigate?"full":"remate_only";
       item.reinvestigate=reinvestigate;
-      item.rewrite_request=reinvestigate?text:"CONTRATO: conservar hechos, fuentes y texto factual sin cambios. NO buscar ni reinvestigar. Cambiar exclusivamente remate e imagen IA; un intento ImageGen desde el chat, nunca bloquear READY. "+text;
+      item.rewrite_request=reinvestigate?text:"CONTRATO: conservar hechos, fuentes y texto factual sin cambios. NO buscar ni reinvestigar. Cambiar exclusivamente el remate. NO generar imagen IA: se solicita aparte desde el panel. "+text;
     }
     if(found)doc.updated_at=now;
     return doc
