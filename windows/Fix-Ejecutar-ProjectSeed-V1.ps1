@@ -9,6 +9,8 @@ $Marker = "TT_PROJECT_CHAT_SEED_V1"
 
 if (-not (Test-Path -LiteralPath $Target)) { throw "No se encuentra $Target" }
 $text = Get-Content -LiteralPath $Target -Raw -Encoding UTF8
+# Normaliza CRLF/LF para que los bloques literales sean reproducibles al ejecutar desde GitHub.
+$text = $text -replace "`r`n","`n"
 
 if ($text.Contains($Marker)) {
   Write-Host "EJECUTAR.JS YA TIENE PROJECT CHAT SEED V1" -ForegroundColor Green
