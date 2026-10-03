@@ -156,6 +156,19 @@ async function post(body){
 async function fail(reason){
   try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v1",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
+async function uploadImage(image){
+  let result;
+  for(let attempt=1;attempt<=3;attempt++){
+    result=await post({task:"image_upload",target_id:targetId,command_id:commandId,upload_secret:secret,image_data_url:image.dataUrl,capture:{method:image.capture,width:image.width,height:image.height}});
+    if(result.ok)return result;
+    const detail=String(result.data&&result.data.error||"");
+    const concurrentMainUpdate=result.status===409||(result.status===500&&/GitHub main binary PUT.*409/i.test(detail));
+    if(!concurrentMainUpdate||attempt===3)return result;
+    console.log("BRIDGE UPLOAD RETRY "+attempt+" concurrent-main-update");
+    await sleep(1500*attempt);
+  }
+  return result;
+}
 (async()=>{
   let cdp;
   try{
@@ -167,7 +180,7 @@ async function fail(reason){
     const image=await capture(cdp);
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
     console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
-    const up=await post({task:"image_upload",target_id:targetId,command_id:commandId,upload_secret:secret,image_data_url:image.dataUrl,capture:{method:image.capture,width:image.width,height:image.height}});
+    const up=await uploadImage(image);
     if(!up.ok)throw Error("Upload "+up.status+": "+(up.data&&up.data.error||"sin detalle"));
     console.log("BRIDGE UPLOADED "+up.data.sha256);
     const deadline=Date.now()+6*60*1000;

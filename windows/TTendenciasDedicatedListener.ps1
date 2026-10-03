@@ -613,6 +613,10 @@ while ($true) {
         $uploadSecret = New-ImageUploadSecret
         $uploadHash = Get-Sha256Hex $uploadSecret
         if (-not (Send-ImageAck $targetId $commandId "picked_up" "" $uploadHash "")) {
+          # El servidor ya movió o rechazó el trabajo. No relanzar el mismo
+          # command_id en cada sondeo; una nueva petición tendrá otro id.
+          Mark-ImageCommand $state $commandId $false
+          Save-State $state
           continue
         }
 

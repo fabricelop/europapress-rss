@@ -599,7 +599,13 @@ while ($true) {
         Write-Log "IMAGE NEW target=$targetId command=$commandId name=$($job.target_name)"
         $uploadSecret=New-ImageUploadSecret
         $uploadHash=Get-Sha256Hex $uploadSecret
-        if(-not (Send-ImageAck $targetId $commandId "picked_up" "" $uploadHash "")){continue}
+        if(-not (Send-ImageAck $targetId $commandId "picked_up" "" $uploadHash "")){
+          # El servidor ya movió o rechazó el trabajo. No relanzar el mismo
+          # command_id en cada sondeo; una nueva petición tendrá otro id.
+          Mark-ImageCommand $state $commandId $false
+          Save-State $state
+          continue
+        }
         $message=Build-ImageMessage $job
         $marker="TTITTULARES_IMAGE_JOB_V3 $commandId"
         $sent=Launch-ImageChat "image command=$commandId target=$targetId" $message $marker
