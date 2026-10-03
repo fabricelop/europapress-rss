@@ -34,7 +34,7 @@ function saveLocalArchived(set){try{localStorage.setItem(ARCHIVED_LOCAL_KEY,JSON
 function selectedImageKeys(){try{return new Set(JSON.parse(localStorage.getItem(IMAGE_SELECTED_KEY)||"[]"))}catch(_){return new Set()}}
 function saveSelectedImageKeys(set){try{localStorage.setItem(IMAGE_SELECTED_KEY,JSON.stringify([...set].slice(-200)))}catch(_){}}
 function imageSelectionKey(x){return String(x?.id||x?.name||"")+":r"+String(Number(x?.revision||0))}
-let allItems=[];let openPendingKey=null;let imageRuns=new Map(),imageRunPoll=null;let lastRenderFingerprint="";
+let allItems=[];let openPendingKey=null;let imageRuns=new Map(),imageRunPoll=null;let lastRenderFingerprint="";let archivingKeys=new Set();
 let uiInteractionVersion=0,uiHoldUntil=0,passiveRefreshTimer=null;
 function markUiInteraction(){uiInteractionVersion++;uiHoldUntil=Math.max(uiHoldUntil,Date.now()+1400)}
 function uiInteractionActive(){return Date.now()<uiHoldUntil||Boolean(document.querySelector("dialog[open]"))}
@@ -131,7 +131,8 @@ async function copyItem(x,button){
 async function markExplainedDone(x,button){
  const controlToken=localStorage.getItem("ttendencias-control-token")||"";
  if(!controlToken){alert("Guarda primero el token de control desde Ajustes en la pantalla principal.");return}
- const oldCopied=Boolean(x.copied),oldCopiedAt=x.copied_at||null;
+ const key=pendingKey(x),oldCopied=Boolean(x.copied),oldCopiedAt=x.copied_at||null;
+ archivingKeys.add(key);
  const archived=localArchived();archived.add(x.copy_key);saveLocalArchived(archived);
  x.copied=true;x.copied_at=new Date().toISOString();openPendingKey=null;
  updateUnreadBadge();render();
@@ -140,7 +141,13 @@ async function markExplainedDone(x,button){
    const result=await response.json();
    if(!response.ok||!result?.ok)throw new Error(result?.error||"No se pudo pasar la tendencia al histórico.");
    x.copied_at=result.copied_at||x.copied_at;
+   // Leer estado fresco antes de retirar la protección local: evita que un
+   // refresco pasivo vuelva a insertar la tarjeta recién archivada.
+   try{await load(false)}catch(_){}
+   archivingKeys.delete(key);
+   render();
  }catch(error){
+   archivingKeys.delete(key);
    x.copied=oldCopied;x.copied_at=oldCopiedAt;
    const rollback=localArchived();rollback.delete(x.copy_key);saveLocalArchived(rollback);
    updateUnreadBadge();render();
@@ -365,13 +372,12 @@ function collapsedImageState(x){
    return {text:"— Imagen del tuit no disponible",cls:"failed"};
  }
  if(live&&(imageRunActive(imageRuns.get(String(x.id||"")))||["ERROR","CANCELLED"].includes(String(imageRuns.get(String(x.id||""))?.status||"").toUpperCase())))return {text:live.text+(fallbackUrl?" · archivo disponible":""),cls:live.collapsed};
- if(aiRegenerating)return {text:"↻ Nueva IA solicitada"+(fallbackUrl?" · archivo disponible":""),cls:"requested"};
- if(aiRegenerationError)return {text:"◷ Pendiente IA · fallo anterior"+(fallbackUrl?" · archivo disponible":""),cls:"pending"};
+ if(aiRegenerating)return {text:"↻ Nueva IA marcada · pulsa Imágenes"+(fallbackUrl?" · archivo disponible":""),cls:"requested"};
  if(/^https:\/\//i.test(aiUrl))return {text:"✓ IA lista"+(fallbackUrl?" · archivo disponible":""),cls:"ready"};
- if(["pending","started","tool_called"].includes(aiRaw))return {text:"● IA pendiente/generándose"+(fallbackUrl?" · archivo disponible":""),cls:"pending"};
- if(["failed","none","error","disabled",""].includes(aiRaw))return {text:"◷ Pendiente IA"+(["failed","error"].includes(aiRaw)?" · fallo anterior":"")+(fallbackUrl?" · archivo disponible":""),cls:"pending"};
- if(/^https:\/\//i.test(fallbackUrl))return {text:"◷ Pendiente IA · archivo disponible",cls:"pending"};
- return {text:"◷ Pendiente IA",cls:"pending"};
+ // ai_image_status pending/started/tool_called puede venir de la arquitectura
+ // antigua. Sin job manual vivo no significa que el usuario haya pedido IA.
+ if(aiRegenerationError)return {text:"— IA no solicitada · intento anterior falló"+(fallbackUrl?" · archivo disponible":""),cls:"failed"};
+ return {text:"— IA no solicitada"+(fallbackUrl?" · archivo disponible":""),cls:"none"};
 }
 function appendImagePreview(host,image,label,badge){
  const url=String(image?.url||"");if(!/^https:\/\//i.test(url))return false;
@@ -508,7 +514,7 @@ function renderExpandedPending(x){
 function render(){
  const q=nrm($("filter").value);
  const visible=q?allItems.filter(x=>nrm(displayName(x)).includes(q)||nrm((x.trend_names||[]).join(" ")).includes(q)||nrm(x.explanation).includes(q)):allItems;
- const pendingAll=allItems.filter(x=>!x.copied&&!x.rewrite_pending),pending=visible.filter(x=>!x.copied&&!x.rewrite_pending);
+ const pendingAll=allItems.filter(x=>!x.copied&&!x.rewrite_pending&&!archivingKeys.has(pendingKey(x))),pending=visible.filter(x=>!x.copied&&!x.rewrite_pending&&!archivingKeys.has(pendingKey(x)));
  $("pendingCount").textContent=String(pending.length);updateUnreadBadge();updateImageControl();
  if(openPendingKey&&!pending.some(x=>pendingKey(x)===openPendingKey))openPendingKey=null;
  const pendingList=$("pendingList");pendingList.innerHTML="";
@@ -559,7 +565,7 @@ async function load(passive=false){
  const archived=localArchived();
  const nextItems=collapseVisibleExplained(sorted)
    .map(x=>({...x,_rank:rankFor(x,requests)}))
-   .map(x=>archived.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
+   .map(x=>(archived.has(x.copy_key)||archivingKeys.has(pendingKey(x)))?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
  // Evitar reconstruir las tarjetas (y recargar las imágenes) cada 15 s si no cambió nada.
  const fingerprint=JSON.stringify(nextItems);
  const changed=fingerprint!==lastRenderFingerprint;
