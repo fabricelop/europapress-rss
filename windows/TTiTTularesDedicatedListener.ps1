@@ -12,16 +12,20 @@ $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
 $StatusBase = "https://europapress-rss.vercel.app"
-$TriggerApiUrl = "$StatusBase/api/ttittulares-run-status?view=trigger"
-$ImageIndexUrl = "$StatusBase/api/ttittulares-run-status?view=image-index&strong=1"
+$ListenerSnapshotUrl = "$StatusBase/api/ttittulares-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttittulares-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v18"
-$PollSeconds = 5
+$WorkerId = "ttittulares-dedicated-v19"
+$PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
 $MaxParallelImageChats = 1
 $ImageStaleMinutes = 45
+$SnapshotStrongSeconds = 30
+$SnapshotCacheSeconds = 12
+$script:ListenerSnapshotCache = $null
+$script:ListenerSnapshotAt = [DateTimeOffset]::MinValue
+$script:LastStrongSnapshotAt = [DateTimeOffset]::MinValue
 
 function Write-Log([string]$Text) {
   $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $Text"
@@ -33,31 +37,39 @@ function CacheBust([string]$Url) {
   return $Url + $sep + "t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
 }
 
-function Read-Trigger {
-  try {
-    $r = Invoke-RestMethod -Uri (CacheBust $TriggerApiUrl) -Headers @{
+function Read-ListenerSnapshot {
+  $now=[DateTimeOffset]::UtcNow
+  if($script:ListenerSnapshotCache -and (($now-$script:ListenerSnapshotAt).TotalSeconds -lt $SnapshotCacheSeconds)){
+    return $script:ListenerSnapshotCache
+  }
+  $strong=(($now-$script:LastStrongSnapshotAt).TotalSeconds -ge $SnapshotStrongSeconds)
+  $url=$ListenerSnapshotUrl + $(if($strong){"&strong=1"}else{""})
+  try{
+    $r=Invoke-RestMethod -Uri (CacheBust $url) -Headers @{
       "Cache-Control" = "no-cache"
       "User-Agent" = "TTiTTulares-Dedicated-Listener"
     } -TimeoutSec 12
-    if (-not $r.ok) { throw "Endpoint trigger devolvio ok=false" }
-    if ($r.trigger) { return $r.trigger }
-    return $r
-  } catch {
-    Write-Log "TRIGGER ERROR :: $($_.Exception.Message)"
-    return $null
+    if($r -and $r.ok){
+      $script:ListenerSnapshotCache=$r
+      $script:ListenerSnapshotAt=$now
+      if($strong){$script:LastStrongSnapshotAt=$now}
+      return $r
+    }
+  }catch{
+    Write-Log "SNAPSHOT ERROR :: $($_.Exception.Message)"
   }
+  return $script:ListenerSnapshotCache
+}
+
+function Read-Trigger {
+  $r=Read-ListenerSnapshot
+  if($r -and $r.trigger){return $r.trigger}
+  return $null
 }
 
 function Read-ImageIndex {
-  try {
-    $r = Invoke-RestMethod -Uri (CacheBust $ImageIndexUrl) -Headers @{
-      "Cache-Control" = "no-cache"
-      "User-Agent" = "TTiTTulares-Dedicated-Listener"
-    } -TimeoutSec 12
-    if ($r -and $r.ok) { return $r }
-  } catch {
-    Write-Log "IMAGE INDEX ERROR :: $($_.Exception.Message)"
-  }
+  $r=Read-ListenerSnapshot
+  if($r -and $r.image_index){return $r.image_index}
   return [pscustomobject]@{ jobs = @() }
 }
 
@@ -73,7 +85,6 @@ function Read-ImageJob([string]$TargetId) {
     return $null
   }
 }
-
 
 function Load-State {
   if (Test-Path -LiteralPath $StatePath) {
