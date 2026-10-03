@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T10:34:48.975561Z",
-      "event_id": "8a7053b7113b",
-      "phase": "imagen",
-      "reason": "Se localizó una imagen atribuida al mismo accidente, pero el raster HTTPS directo no pudo abrirse ni validarse; no se adjunta material no comprobado.",
-      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 8a7053b7113b: Se localizó una imagen atribuida al mismo accidente, pero el raster HTTPS directo no pudo abrirse ni validarse; no se adjunta material no comprobado.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-27T10:51:59.630Z",
       "event_id": "2415cb1fe713",
       "phase": "verifying",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "d5d8a3db042d-r1.json: ValueError: tweet vacío o >280",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5d8a3db042d-r1: d5d8a3db042d-r1.json: ValueError: tweet vacío o >280. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-03T10:43:06.232399Z",
+      "event_id": "120475aafcf2-r1",
+      "phase": "outbox",
+      "reason": "120475aafcf2-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 120475aafcf2-r1: 120475aafcf2-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
