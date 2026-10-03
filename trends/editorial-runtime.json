@@ -1,229 +1,136 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
-  "last_started_at": "2026-10-03T08:22:54+02:00",
-  "last_completed_at": "2026-10-03T07:22:30+02:00",
+  "engine": "chat-direct",
+  "last_started_at": "2026-10-03T08:48:00+02:00",
+  "last_completed_at": "2026-10-03T09:12:00+02:00",
   "last_slot": null,
-  "status": "waiting",
+  "status": "success",
   "processed_ids": [
-    "f58b9810e347"
-  ],
-  "remaining_ids": [
-    "e883cdb753d6",
-    "6ab80fc5ad41",
-    "cb267d084937",
-    "1a5eed26f2e0",
-    "456ebcfdd8f1",
-    "13f0c35b4500",
     "e6ee5d34c014",
     "cfa67a30f2a4",
-    "952bacd03439"
+    "952bacd03439",
+    "12e9cc81373d",
+    "772cda27031c"
   ],
+  "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-03T08:22:54+02:00",
-  "queue_complete": false,
-  "remaining_active_ids": [
-    "e883cdb753d6",
-    "6ab80fc5ad41",
-    "cb267d084937",
-    "1a5eed26f2e0",
-    "456ebcfdd8f1",
-    "13f0c35b4500",
-    "e6ee5d34c014",
-    "cfa67a30f2a4",
-    "952bacd03439"
+  "updated_at": "2026-10-03T09:12:00+02:00",
+  "queue_complete": true,
+  "remaining_active_ids": [],
+  "remaining_problematic_ids": [
+    "772cda27031c"
   ],
-  "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "chat-20261003T071455+0200",
+    "run_id": "tr-20261003T084800+0200",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-03T07:14:55+02:00",
-    "updated_at": "2026-10-03T07:22:30+02:00",
-    "finished_at": "2026-10-03T07:22:30+02:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-03T08:48:00+02:00",
+    "updated_at": "2026-10-03T09:12:00+02:00",
+    "finished_at": "2026-10-03T09:12:00+02:00",
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 0,
+      "trends_processed": 5,
+      "trends_explained": 4,
+      "explanation_groups": 4,
+      "new_cards": 2,
       "revisions_updated": 2,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 0,
+      "trends_problematic": 1,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 0,
+      "fallback_images_ready": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
+      "explanations_verified_under_280": 4,
       "remates_selected": 2,
-      "remates_omitted": 0
+      "remates_omitted": 2
     },
-    "incident_count": 0,
-    "incidents": [],
+    "incident_count": 1,
+    "incidents": [
+      {
+        "trend_id": "e6ee5d34c014",
+        "revision": 2,
+        "type": "github_write_conflict",
+        "resolved": true,
+        "detail": "409 al actualizar requests.json; reconciliado y verificado."
+      }
+    ],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [],
+    "remaining_problematic_ids": [
+      "772cda27031c"
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
-      "blob_sha": "a3164bc5f813f89088e0c1b1beeffb64f688e355",
-      "updated_at": "2026-10-02T18:53:31.693Z",
-      "total_ratings": 125,
+      "blob_sha": "782dc0150fb9448b5487113b1b487fe9c3ec72c2",
+      "updated_at": "2026-10-03T05:27:32.781Z",
+      "total_ratings": 126,
       "recent_considered": 100
     },
     "remate_selections": [
       {
-        "trend_id": "03e6546dc5f6",
-        "revision": 1,
+        "trend_id": "e6ee5d34c014",
+        "revision": 2,
         "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "m1",
-            "total": 8.2,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.8,
-            "punch": 1.9,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "m2",
-            "total": 7.7,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "m3",
-            "total": 7.4,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "m4",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "m5",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "m1",
-        "selected_score": 8.2,
+        "selected_candidate": "t1",
+        "selected_score": 8.3,
         "no_remate_reason": null
       },
       {
-        "trend_id": "413c73f54712",
+        "trend_id": "cfa67a30f2a4",
+        "revision": 0,
+        "candidate_count": 0,
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "omitted"
+      },
+      {
+        "trend_id": "952bacd03439",
         "revision": 1,
+        "candidate_count": 0,
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_event"
+      },
+      {
+        "trend_id": "12e9cc81373d",
+        "revision": 0,
         "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "d1",
-            "total": 8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "d2",
-            "total": 7.7,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.7,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "d3",
-            "total": 8.5,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "d4",
-            "total": 7.9,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "d5",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "d3",
-        "selected_score": 8.5,
+        "selected_candidate": "j3",
+        "selected_score": 8.4,
         "no_remate_reason": null
       }
     ],
-    "message": "Pasada cerrada 2/2: #MalasLenguasN actualizada por el especial de La 1 tras el rechazo de los decretos de vivienda; #DeViernes actualizada por el regreso en directo de Belén Esteban. 2 revisiones persistidas, 0 problemáticas, 0 ImageGen, 0 Vercel."
+    "message": "Pasada cerrada: 5 revisiones tratadas; 4 explicadas y 1 problematic. Incidencia 409 reconciliada y verificada. Sin ImageGen ni Vercel."
   },
   "summary": {
-    "trends_processed": 2,
-    "trends_explained": 2,
-    "explanation_groups": 2,
-    "new_cards": 0,
+    "trends_processed": 5,
+    "trends_explained": 4,
+    "explanation_groups": 4,
+    "new_cards": 2,
     "revisions_updated": 2,
     "grouped_into_existing_card": 0,
-    "trends_problematic": 0,
+    "trends_problematic": 1,
     "trends_dismissed": 0,
-    "incidents": 0,
+    "incidents": 1,
     "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
-    "fallback_images_ready": 0,
+    "fallback_images_ready": 1,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 2,
+    "explanations_verified_under_280": 4,
     "remates_selected": 2,
-    "remates_omitted": 0
-  },
-  "error": null
+    "remates_omitted": 2
+  }
 }
