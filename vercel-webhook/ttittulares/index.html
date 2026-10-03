@@ -1109,7 +1109,15 @@ function renderProcessing(list){
    const header=document.createElement("div");header.style.cssText="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 2px 8px";
    const title=document.createElement("div");title.textContent="Salidas recientes de elaboración";title.style.cssText="font-size:1.25rem;font-weight:800;line-height:1.2";
    const clear=document.createElement("button");clear.className="btn danger";clear.textContent="Borrar todo";
-   clear.onclick=async()=>{if(!confirm("¿Borrar de esta bandeja todas las salidas recientes actuales? Las nuevas salidas seguirán apareciendo."))return;clear.disabled=true;try{await api("clear-outcomes",{});toast("Salidas recientes borradas");await load(true);setView("processing")}catch(err){clear.disabled=false;toast(err.message)}};
+   clear.onclick=async()=>{
+     if(!confirm("¿Borrar de esta bandeja todas las salidas recientes actuales? Las nuevas salidas seguirán apareciendo."))return;
+     clear.disabled=true;
+     const optimistic=[];
+     for(const outcome of outcomes){const id=String(outcome.event_id||"");if(id&&!pendingClosed.has(id)){pendingClosed.add(id);optimistic.push(id)}}
+     persistUiState();renderList();
+     try{await api("clear-outcomes",{});toast("Salidas recientes borradas");await load(true);setView("processing")}
+     catch(err){for(const id of optimistic)pendingClosed.delete(id);persistUiState();renderList();clear.disabled=false;toast(err.message)}
+   };
    header.append(title,clear);list.appendChild(header);
    for(const item of outcomes){
      const card=document.createElement("article");card.className="queuecard";
@@ -1127,9 +1135,10 @@ function renderProcessing(list){
      };
      card.querySelector(".hide-outcome").onclick=async()=>{
        if(!confirm("¿Borrar esta salida de la bandeja? No volverá a aparecer."))return;
-       const btn=card.querySelector(".hide-outcome");btn.disabled=true;
+       const btn=card.querySelector(".hide-outcome"),id=String(item.event_id||"");btn.disabled=true;
+       if(id)pendingClosed.add(id);persistUiState();renderList();
        try{await api("hide-outcome",{event_id:item.event_id});toast("Salida borrada");await load(true);setView("processing")}
-       catch(err){btn.disabled=false;toast(err.message)}
+       catch(err){if(id)pendingClosed.delete(id);persistUiState();renderList();toast(err.message)}
      };
      list.appendChild(card)
    }

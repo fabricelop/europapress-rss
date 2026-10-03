@@ -241,7 +241,21 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   return $false
 }
 
-function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadSecret) {
+function Get-ChatTargetSnapshot {
+  try {
+    $targets = Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/list" -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 3
+    $rows = @($targets | Where-Object { [string]$_.type -eq "page" -and [string]$_.url -like "*chatgpt.com*" } | ForEach-Object {
+      [pscustomobject]@{ id=[string]$_.id; url=[string]$_.url }
+    })
+    if ($rows.Count -eq 0) { return "[]" }
+    return ($rows | ConvertTo-Json -Compress)
+  } catch {
+    Write-Log "IMAGE TARGET SNAPSHOT WARNING :: $($_.Exception.Message)"
+    return "[]"
+  }
+}
+
+function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadSecret,[string]$TargetSnapshot = "[]") {
   if (-not (Test-Path -LiteralPath $ImageBridge)) {
     Write-Log "IMAGE BRIDGE ERROR missing=$ImageBridge"
     return $false
@@ -259,8 +273,10 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
   $out = Join-Path $BaseDir ("ttendencias-image-bridge-" + $stamp + "-" + $TargetId + ".log")
   $err = Join-Path $BaseDir ("ttendencias-image-bridge-" + $stamp + "-" + $TargetId + ".err.log")
   $old = $env:TT_IMAGE_UPLOAD_SECRET
+  $oldTargets = $env:TT_IMAGE_PRELAUNCH_TARGETS_JSON
   try {
     $env:TT_IMAGE_UPLOAD_SECRET = $UploadSecret
+    $env:TT_IMAGE_PRELAUNCH_TARGETS_JSON = $(if([string]::IsNullOrWhiteSpace($TargetSnapshot)){"[]"}else{$TargetSnapshot})
     $p = Start-Process -FilePath $node.Source -ArgumentList @($ImageBridge,$CommandId,$TargetId) -WindowStyle Hidden -PassThru -RedirectStandardOutput $out -RedirectStandardError $err
     if (-not $p) { throw "Start-Process no devolvió proceso" }
     Write-Log "IMAGE BRIDGE STARTED pid=$($p.Id) target=$TargetId command=$CommandId stdout=$out stderr=$err"
@@ -271,6 +287,8 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
   } finally {
     if ($null -eq $old) { Remove-Item Env:TT_IMAGE_UPLOAD_SECRET -ErrorAction SilentlyContinue }
     else { $env:TT_IMAGE_UPLOAD_SECRET = $old }
+    if ($null -eq $oldTargets) { Remove-Item Env:TT_IMAGE_PRELAUNCH_TARGETS_JSON -ErrorAction SilentlyContinue }
+    else { $env:TT_IMAGE_PRELAUNCH_TARGETS_JSON = $oldTargets }
   }
 }
 
@@ -646,11 +664,12 @@ while ($true) {
           continue
         }
         $marker = "TT_IMAGE_JOB_V3 $commandId"
+        $targetSnapshot=Get-ChatTargetSnapshot
         $sent = Launch-ProjectChat "image command=$commandId target=$targetId" $message $marker
 
         if ($sent) {
           Send-ImageAck $targetId $commandId "launched" | Out-Null
-          if (-not (Start-ImageBridge $commandId $targetId $uploadSecret)) {
+          if (-not (Start-ImageBridge $commandId $targetId $uploadSecret $targetSnapshot)) {
             $reason = "El chat arrancó, pero no se pudo iniciar el puente local de raster."
             Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
             Mark-ImageCommand $state $commandId $false
@@ -668,7 +687,7 @@ while ($true) {
           $reason = "Ejecutar.js no confirmó el envío en $($LaunchConfirmSeconds) s.; delegando confirmación real al bridge."
           Write-Log "IMAGE CHAT UNCONFIRMED; BRIDGE WILL VERIFY target=$targetId command=$commandId :: $reason"
           Send-ImageAck $targetId $commandId "launched" | Out-Null
-          if (-not (Start-ImageBridge $commandId $targetId $uploadSecret)) {
+          if (-not (Start-ImageBridge $commandId $targetId $uploadSecret $targetSnapshot)) {
             $failReason = "El lanzamiento quedó sin confirmar y tampoco se pudo iniciar el puente local de raster."
             Send-ImageAck $targetId $commandId "failed" $failReason "" $uploadSecret | Out-Null
             Mark-ImageCommand $state $commandId $false

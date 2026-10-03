@@ -5,6 +5,16 @@ const JOB_URL="https://europapress-rss.vercel.app/api/ttendencias-run-status?vie
 const commandId=String(process.argv[2]||"").trim();
 const targetId=String(process.argv[3]||"").trim();
 const secret=String(process.env.TT_IMAGE_UPLOAD_SECRET||"");
+let prelaunchTargets=new Map();
+try{
+  const parsed=JSON.parse(String(process.env.TT_IMAGE_PRELAUNCH_TARGETS_JSON||"[]"));
+  const rows=Array.isArray(parsed)?parsed:(parsed&&typeof parsed==="object"?[parsed]:[]);
+  prelaunchTargets=new Map(rows.map(x=>[String(x&&x.id||""),String(x&&x.url||"")]).filter(x=>x[0]));
+}catch{}
+function isPostLaunchTarget(t){
+  const id=String(t&&t.id||""),url=String(t&&t.url||"");
+  return !prelaunchTargets.has(id)||prelaunchTargets.get(id)!==url
+}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 if(!commandId||!targetId||secret.length<32)throw Error("Argumentos incompletos");
 if(typeof WebSocket==="undefined")throw Error("Node sin WebSocket global");
@@ -56,7 +66,7 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v10-img-only";
+const BRIDGE_MODE="capture-only-v11-prelaunch-target";
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
@@ -70,6 +80,7 @@ async function findChat(job){
   while(Date.now()<deadline){
     let list=[];try{list=await targets()}catch{await sleep(700);continue}
     for(const t of list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl)){
+      const postLaunch=isPostLaunchTarget(t);
       const c=new CDP(t.webSocketDebuggerUrl);
       try{
         await c.open();
@@ -85,11 +96,15 @@ async function findChat(job){
           console.log("BRIDGE TARGET GENERATING "+String(st.url||""));
           return c
         }
+        if(st&&st.imageTitle&&postLaunch){
+          console.log("BRIDGE TARGET POST-LAUNCH IMAGE "+String(st.url||""));
+          return c
+        }
         if(st&&st.imageTitle&&st.targetMarker&&st.images>0){
           console.log("BRIDGE TARGET IMAGE-TITLE "+String(st.url||""));
           return c
         }
-        const score=(st&&st.bodyMarker?1000:0)+(st&&st.targetMarker?650:0)+(st&&st.imageTitle?300:0)+(projectMatch?250:0)+(st&&st.generating?100:0)+(st&&st.images>0?40:0)+(String(st&&st.url||"").includes("/c/")?10:0)-(oppositeMatch?1000:0);
+        const score=(postLaunch?900:0)+(st&&st.bodyMarker?1000:0)+(st&&st.targetMarker?650:0)+(st&&st.imageTitle?300:0)+(projectMatch?250:0)+(st&&st.generating?100:0)+(st&&st.images>0?40:0)+(String(st&&st.url||"").includes("/c/")?10:0)-(oppositeMatch?1000:0);
         if(score>bestScore){best=t;bestScore=score;bestInfo=st}
       }catch{}
       c.close()
