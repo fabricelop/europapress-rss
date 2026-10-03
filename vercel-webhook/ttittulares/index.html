@@ -143,7 +143,7 @@ function persistUiState(){try{sessionStorage.setItem(PENDING_KEY,JSON.stringify(
 const REQUESTED_VIEW=new URLSearchParams(location.search).get("view");
 const INITIAL_VIEW=["ready","processing","problematic","growing","tremending"].includes(REQUESTED_VIEW)?REQUESTED_VIEW:"ready";
 const cachedModel=loadLocalJson(DATA_CACHE_KEY);
-let model=cachedModel||{prepared:[],status:{},config:{},tremending:{items:[]}},hasGoodState=Boolean(cachedModel),reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),tremendingOpen=loadUiSet(TREMENDING_OPEN_KEY),tremendingPreview=new Map(),imageRuns=new Map(),loadSeq=0,runPoll=null,imageRunPoll=null;
+let model=cachedModel||{prepared:[],status:{},config:{},tremending:{items:[]}},hasGoodState=Boolean(cachedModel),reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),tremendingOpen=loadUiSet(TREMENDING_OPEN_KEY),tremendingPreview=new Map(),imageRuns=new Map(),loadSeq=0,runPoll=null,imageRunPoll=null,imageTerminalRefreshActive=false;
 let uiInteractionVersion=0,uiHoldUntil=0,passiveRefreshTimer=null;
 function markUiInteraction(){uiInteractionVersion++;uiHoldUntil=Math.max(uiHoldUntil,Date.now()+1400)}
 function uiInteractionActive(){return Date.now()<uiHoldUntil||Boolean(document.querySelector(".sheet.show,dialog[open]"))}
@@ -473,6 +473,7 @@ async function refreshImageRuns(){
  const selected=selectedImageKeys();
  const items=(model.prepared||[]).filter(item=>imageSelectable(item)||selected.has(imageSelectionKey(item))||imageRuns.has(String(item.event_id||"")));
  let terminalChanged=false,changed=false;
+ const terminalIds=[];
  await Promise.all(items.map(async item=>{
    const id=String(item.event_id||"");if(!id)return;
    const before=imageRuns.get(id);
@@ -482,17 +483,34 @@ async function refreshImageRuns(){
      const d=await r.json();
      if(JSON.stringify(before||null)!==JSON.stringify(d)){
        imageRuns.set(id,d);changed=true;
-       if(["DONE","ERROR","CANCELLED"].includes(String(d.status||"").toUpperCase()))terminalChanged=true
+       if(["DONE","ERROR","CANCELLED"].includes(String(d.status||"").toUpperCase())){
+         terminalChanged=true;terminalIds.push(id)
+       }
      }
    }catch(_){}
  }));
  for(const id of [...imageRuns.keys()])if(!(model.prepared||[]).some(x=>String(x.event_id||"")===id))imageRuns.delete(id);
  if(changed){lastReadyRendering=null;renderList()}
  updateImageControl();
- scheduleImageRunPoll([...imageRuns.values()].some(imageRunActive));
- if(terminalChanged)load(true)
-}
 
+ if(terminalChanged){
+   const set=selectedImageKeys();
+   for(const item of (model.prepared||[])){
+     if(terminalIds.includes(String(item.event_id||"")))set.delete(imageSelectionKey(item));
+   }
+   saveSelectedImageKeys(set);
+   imageTerminalRefreshActive=true;
+   try{
+     await load(true,false);
+     lastReadyRendering=null;
+     renderList();
+     updateImageControl();
+   }finally{
+     imageTerminalRefreshActive=false
+   }
+ }
+ scheduleImageRunPoll([...imageRuns.values()].some(imageRunActive))
+}
 async function api(action,extra={}){
  const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
  const r=await fetch(API,{method:"POST",headers,body:JSON.stringify({action,...extra})});
@@ -1046,6 +1064,7 @@ function renderProcessing(list){
  }
 }
 async function load(silent=false,passive=false){
+ if(passive&&imageTerminalRefreshActive){queuePassiveLoad(1200);return}
  const seq=++loadSeq,interactionAtStart=uiInteractionVersion;
  try{
   const url=passive?API:(API+"?fresh=1&t="+Date.now());
