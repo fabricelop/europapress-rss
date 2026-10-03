@@ -471,8 +471,8 @@ def sync_compact(q):
     })
     return True
 
-def resolve_duplicate(payload, eid, previous, queue, decisions):
-    """A reviewed duplicate is terminal only against an actual user decision."""
+def resolve_duplicate(payload, eid, previous, queue, decisions, status=None):
+    """A reviewed duplicate is terminal only against an actual user decision/state."""
     if previous is not None:
         raise ValueError("un duplicado no puede ocultar una noticia ya materializada")
     original_id=str(payload.get("duplicate_of_event_id") or "").strip()
@@ -482,9 +482,11 @@ def resolve_duplicate(payload, eid, previous, queue, decisions):
     original=next((x for x in queue.get("items",[]) if str(x.get("event_id") or "")==original_id),None)
     decision=next((x for x in reversed(decisions.get("items",[]))
                    if str(x.get("event_id") or "")==original_id),None)
-    if original is None:
-        raise ValueError("el acontecimiento original no existe en la cola")
-    state=str((decision or {}).get("status") or original.get("status") or "").upper()
+    status_events=(status or {}).get("events",{}) if isinstance(status,dict) else {}
+    status_original=status_events.get(original_id) if isinstance(status_events,dict) else None
+    if original is None and decision is None and status_original is None:
+        raise ValueError("el acontecimiento original no existe en el estado autoritativo")
+    state=str((decision or {}).get("status") or (original or {}).get("status") or (status_original or {}).get("status") or "").upper()
     if state not in {"PUBLISHED","DISMISSED"}:
         raise ValueError("la noticia original no consta publicada ni descartada por el usuario")
     if state=="PUBLISHED" and payload.get("no_material_update") is not True:
@@ -554,7 +556,7 @@ def main():
                 row.pop("problem_reason",None);row.pop("problematic_at",None);row.pop("problematic_attempts",None);row.pop("verification_hint",None);row.pop("verification_hint_at",None);row.pop("user_validated",None);row.pop("user_validated_at",None);row.pop("user_validation_source",None);row.pop("user_validation_version",None)
             elif st=="duplicate":
                 target,original_id,reason=resolve_duplicate(
-                    payload,eid,previous,q,load(DECISIONS,{"items":[]}))
+                    payload,eid,previous,q,load(DECISIONS,{"items":[]}),load(STATUS,{"events":{}}))
                 row["status"]=target
                 row["reconciled_from_event_id"]=original_id
                 row["reconciliation_reason"]=reason
