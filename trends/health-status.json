@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-03T16:09:27.267382+00:00",
+  "checked_at": "2026-10-03T19:13:58.555062+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -41,7 +41,7 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 7,
+      "non_stale_sources": 6,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.0,
-      "run_id": 37135747996,
+      "age_minutes": 0.7,
+      "run_id": 37147100552,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -76,16 +76,22 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 2,
-      "overdue_count": 1,
-      "oldest_age_minutes": 77.3,
+      "pending_count": 6,
+      "overdue_count": 2,
+      "oldest_age_minutes": 79.5,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "bb5330a848cb",
-          "name": "Estadio de Vallecas",
+          "id": "2cf07ed453b6",
+          "name": "Croacia",
           "status": "preparing",
-          "age_minutes": 77.3
+          "age_minutes": 42.5
+        },
+        {
+          "id": "576b00cb535d",
+          "name": "#LaRoca243",
+          "status": "preparing",
+          "age_minutes": 79.5
         }
       ],
       "repairable": false
@@ -95,8 +101,12 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "bb5330a848cb",
-        "1381068b62bc"
+        "1de7f60793e4",
+        "2cf07ed453b6",
+        "576b00cb535d",
+        "d29040d36d2a",
+        "8abebbdd9b2a",
+        "9b146c448232"
       ],
       "contradictory_success": false
     }
@@ -104,9 +114,9 @@
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 77.3 min"
+    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 79.5 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 77.3 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 79.5 min | config TTendencias incompatible con el modo activo"
 }
