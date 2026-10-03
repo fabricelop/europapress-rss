@@ -68,7 +68,7 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v12-unique-image-title";
+const BRIDGE_MODE="capture-only-v13-new-raster-only";
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
@@ -115,12 +115,15 @@ async function findChat(job){
     }
     if(imageTitleCandidates.length===1){
       const only=imageTitleCandidates[0];
-      const c=new CDP(only.t.webSocketDebuggerUrl);
-      try{
-        await c.open();
-        console.log("BRIDGE TARGET UNIQUE IMAGE-TITLE "+String(only.st&&only.st.url||only.t.url||""));
-        return c
-      }catch{c.close()}
+      const existingImages=Number(only.st&&only.st.images||0);
+      if(existingImages===0){
+        const c=new CDP(only.t.webSocketDebuggerUrl);
+        try{
+          await c.open();
+          console.log("BRIDGE TARGET UNIQUE EMPTY IMAGE-TITLE "+String(only.st&&only.st.url||only.t.url||""));
+          return c
+        }catch{c.close()}
+      }
     }
     await sleep(900)
   }
@@ -142,7 +145,7 @@ function probeExpression(){
     "const diag={marker,turns:document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length,generating,imagesAfterMarker:all.length,candidates:all.length,canvases:document.querySelectorAll('canvas').length,top:all.slice(0,3).map(x=>({nw:x.nw,nh:x.nh,ratio:Number(x.ratio.toFixed(3)),alt:x.alt.slice(0,80),src:x.src.slice(0,120),score:x.score}))};",
     "if(!all.length)return {found:false,diag};",
     "const c=all[0],img=c.img,src=c.src,r=c.r;",
-    "const info={found:true,kind:'img',width:c.nw,height:c.nh,rect:{x:r.left+scrollX,y:r.top+scrollY,width:r.width,height:r.height},candidateIndex:c.index,diag};",
+    "const info={found:true,kind:'img',src:src.slice(0,1800),width:c.nw,height:c.nh,rect:{x:r.left+scrollX,y:r.top+scrollY,width:r.width,height:r.height},candidateIndex:c.index,diag};",
     "try{const rr=await fetch(src,{credentials:'include'});if(rr.ok){const blob=await rr.blob();if(blob.size>=12000&&blob.size<=3000000&&String(blob.type||'').startsWith('image/')){const u8=new Uint8Array(await blob.arrayBuffer());let bin='';for(let i=0;i<u8.length;i+=32768)bin+=String.fromCharCode(...u8.subarray(i,i+32768));info.dataUrl='data:'+(blob.type||'image/png')+';base64,'+btoa(bin);info.capture='original-fetch-img';return info}}}catch(_){}",
     "try{const max=1600,scale=Math.min(1,max/Math.max(c.nw,c.nh)),w=Math.round(c.nw*scale),h=Math.round(c.nh*scale),cv=document.createElement('canvas');cv.width=w;cv.height=h;const cx=cv.getContext('2d',{alpha:false});cx.drawImage(img,0,0,w,h);for(const q of [0.92,0.86,0.78]){const data=cv.toDataURL('image/jpeg',q);if(data.length>=16000&&data.length<=3900000){info.dataUrl=data;info.width=w;info.height=h;info.capture='canvas-from-img-'+q;return info}}}catch(_){}",
     "return info;",
@@ -151,14 +154,23 @@ function probeExpression(){
 }
 async function capture(cdp){
   const deadline=Date.now()+3*60*1000;
-  let lastDiag=null,lastEvalError=null;
+  let lastDiag=null,lastEvalError=null,baselineSet=false,baselineSrc="";
   while(Date.now()<deadline){
     let p;try{p=await cdp.eval(probeExpression(),true)}catch(e){lastEvalError=String(e&&e.message||e)}
     if(p&&p.diag)lastDiag=p.diag;
-    if(p&&p.dataUrl&&p.width>=640&&p.height>=360)return p;
+    const currentSrc=String(p&&p.src||"");
+    if(!baselineSet){
+      baselineSet=true;
+      baselineSrc=currentSrc;
+      if(baselineSrc)console.log("BRIDGE BASELINE IMAGE IGNORED "+baselineSrc.slice(0,120));
+      await sleep(800);
+      continue
+    }
+    const isNewRaster=Boolean(currentSrc)&&(!baselineSrc||currentSrc!==baselineSrc);
+    if(p&&p.dataUrl&&p.width>=640&&p.height>=360&&isNewRaster)return p;
     // Fallback seguro: screenshot SOLO del elemento <img> candidato. Nunca del turno,
     // card, canvas o viewport completo.
-    if(p&&p.found&&p.kind==="img"&&p.rect&&p.rect.width>=180&&p.rect.height>=120){
+    if(p&&p.found&&p.kind==="img"&&isNewRaster&&p.rect&&p.rect.width>=180&&p.rect.height>=120){
       try{
         const naturalRatio=Number(p.width||0)/Math.max(1,Number(p.height||1));
         const rectRatio=Number(p.rect.width||0)/Math.max(1,Number(p.rect.height||1));
