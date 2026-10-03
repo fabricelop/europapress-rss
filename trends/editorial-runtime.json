@@ -1,45 +1,45 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-03T11:03:00+02:00",
-  "last_completed_at": "2026-10-03T11:13:00+02:00",
+  "last_started_at": "2026-10-03T11:43:00+02:00",
+  "last_completed_at": "2026-10-03T11:59:00+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
-    "d8790ab87a2f",
-    "67290a09136e",
-    "d5016a027ab8",
-    "772cda27031c"
+    "33e48e8ab738",
+    "7ef7d7039b6a",
+    "0eb183243950"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-03T11:13:00+02:00",
+  "updated_at": "2026-10-03T11:59:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [
+    "7ef7d7039b6a",
     "772cda27031c"
   ],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-20261003T1103+0200",
+    "run_id": "tr-1791020518370-56289a",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-03T11:03:00+02:00",
-    "updated_at": "2026-10-03T11:13:00+02:00",
-    "finished_at": "2026-10-03T11:13:00+02:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-03T11:43:00+02:00",
+    "updated_at": "2026-10-03T11:59:00+02:00",
+    "finished_at": "2026-10-03T11:59:00+02:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 4,
-      "trends_explained": 3,
+      "trends_processed": 3,
+      "trends_explained": 2,
       "explanation_groups": 2,
-      "new_cards": 2,
-      "revisions_updated": 0,
+      "new_cards": 1,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "trends_problematic": 1,
       "trends_dismissed": 0,
@@ -59,145 +59,146 @@
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [
+      "7ef7d7039b6a",
       "772cda27031c"
     ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
-      "blob_sha": "f92e07b26e8156332c1a0ea250b6cba220531e13",
-      "updated_at": "2026-10-03T08:14:57.132Z",
-      "total_ratings": 128,
+      "blob_sha": "618afe31836515849e98aa375b3c5b13fa9ded14",
+      "updated_at": "2026-10-03T09:31:20.939Z",
+      "total_ratings": 130,
       "recent_considered": 100
     },
     "remate_selections": [
       {
-        "trend_id": "d8790ab87a2f",
+        "trend_id": "33e48e8ab738",
         "revision": 0,
         "candidate_count": 5,
         "candidates": [
           {
-            "id": "a1",
-            "total": 7.1,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.4,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.4
-          },
-          {
-            "id": "a2",
-            "total": 7.6,
+            "id": "vt1",
+            "total": 7.7,
             "ratings_affinity": 2,
-            "trend_specificity": 1.6,
+            "trend_specificity": 1.7,
             "punch": 1.5,
             "originality": 1.2,
             "length_fit": 1,
             "repetition_penalty": -0.3
           },
           {
-            "id": "a3",
-            "total": 6.9,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.5,
-            "punch": 1.3,
-            "originality": 1,
+            "id": "vt2",
+            "total": 7.3,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.4,
+            "originality": 1.1,
             "length_fit": 1,
-            "repetition_penalty": -0.6
+            "repetition_penalty": -0.3
           },
           {
-            "id": "a4",
-            "total": 8.4,
-            "ratings_affinity": 2.2,
+            "id": "vt3",
+            "total": 8.1,
+            "ratings_affinity": 2.1,
             "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "a5",
-            "total": 7.8,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
+            "punch": 1.6,
             "originality": 1.2,
             "length_fit": 1,
             "repetition_penalty": -0.6
-          }
-        ],
-        "selected_candidate": "a4",
-        "selected_score": 8.4,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "67290a09136e",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
+          },
           {
-            "id": "m1",
-            "total": 7.6,
+            "id": "vt4",
+            "total": 8.8,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "vt5",
+            "total": 7.5,
             "ratings_affinity": 1.9,
             "trend_specificity": 1.7,
             "punch": 1.5,
             "originality": 1.2,
             "length_fit": 1,
-            "repetition_penalty": -0.3
+            "repetition_penalty": -0.8
+          }
+        ],
+        "selected_candidate": "vt4",
+        "selected_score": 8.8,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "0eb183243950",
+        "revision": 1,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "v1",
+            "total": 7.4,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.4,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
           },
           {
-            "id": "m2",
-            "total": 8.7,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.8,
+            "id": "v2",
+            "total": 8,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
             "originality": 1.3,
             "length_fit": 1,
-            "repetition_penalty": -0.6
+            "repetition_penalty": -0.7
           },
           {
-            "id": "m3",
-            "total": 7.4,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
+            "id": "v3",
+            "total": 7.7,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
             "punch": 1.5,
             "originality": 1.2,
             "length_fit": 1,
             "repetition_penalty": -0.7
           },
           {
-            "id": "m4",
-            "total": 7.9,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
+            "id": "v4",
+            "total": 8.9,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.4,
             "length_fit": 1,
-            "repetition_penalty": -0.7
+            "repetition_penalty": -0.6
           },
           {
-            "id": "m5",
-            "total": 7.2,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1.1,
+            "id": "v5",
+            "total": 7.6,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.2,
             "length_fit": 1,
-            "repetition_penalty": -0.7
+            "repetition_penalty": -0.8
           }
         ],
-        "selected_candidate": "m2",
-        "selected_score": 8.7,
+        "selected_candidate": "v4",
+        "selected_score": 8.9,
         "no_remate_reason": null
       }
     ],
-    "message": "Pasada cerrada: 3 revisiones explicadas en 2 grupos y #FelizSábado reintentado sin detonante verificable, por lo que permanece problematic. Sin ImageGen ni Vercel."
+    "message": "Pasada cerrada: Valle del Tietar r0 y Verstappen r1 explicados y verificados; 1731 X r0 queda problematic por falta de detonante verificable. Sin ImageGen ni Vercel."
   },
   "summary": {
-    "trends_processed": 4,
-    "trends_explained": 3,
+    "trends_processed": 3,
+    "trends_explained": 2,
     "explanation_groups": 2,
-    "new_cards": 2,
-    "revisions_updated": 0,
+    "new_cards": 1,
+    "revisions_updated": 1,
     "grouped_into_existing_card": 0,
     "trends_problematic": 1,
     "trends_dismissed": 0,
