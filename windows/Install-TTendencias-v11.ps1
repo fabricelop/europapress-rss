@@ -125,7 +125,7 @@ if ($proc.HasExited) {
   throw "El listener dedicado no ha quedado activo."
 }
 
-# Garantía final: debe quedar exactamente un listener y debe ser el recién lanzado.
+# Garantía final: debe quedar exactamente un listener TTendencias.
 $live = @(
   Get-CimInstance Win32_Process |
     Where-Object {
@@ -133,24 +133,28 @@ $live = @(
       ($_.CommandLine -like "*TTendenciasDedicatedListener.ps1*" -or $_.CommandLine -like "*TTendenciasMobileChatTriggerListener.ps1*")
     }
 )
-$extras = @($live | Where-Object { $_.ProcessId -ne $proc.Id })
-foreach ($x in $extras) {
-  try { Stop-Process -Id $x.ProcessId -Force -ErrorAction SilentlyContinue } catch {}
+if ($live.Count -gt 1) {
+  $keep = $live | Sort-Object CreationDate -Descending | Select-Object -First 1
+  $extras = @($live | Where-Object { $_.ProcessId -ne $keep.ProcessId })
+  foreach ($x in $extras) {
+    try { Stop-Process -Id $x.ProcessId -Force -ErrorAction SilentlyContinue } catch {}
+  }
+  if ($extras.Count -gt 0) { Start-Sleep -Milliseconds 700 }
+  $live = @(
+    Get-CimInstance Win32_Process |
+      Where-Object {
+        ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and
+        ($_.CommandLine -like "*TTendenciasDedicatedListener.ps1*" -or $_.CommandLine -like "*TTendenciasMobileChatTriggerListener.ps1*")
+      }
+  )
 }
-if ($extras.Count -gt 0) { Start-Sleep -Milliseconds 700 }
-$live = @(
-  Get-CimInstance Win32_Process |
-    Where-Object {
-      ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and
-      ($_.CommandLine -like "*TTendenciasDedicatedListener.ps1*" -or $_.CommandLine -like "*TTendenciasMobileChatTriggerListener.ps1*")
-    }
-)
-if ($live.Count -ne 1 -or $live[0].ProcessId -ne $proc.Id) {
+if ($live.Count -ne 1) {
   throw "Garantía listener único fallida. PIDs TTendencias: $($live.ProcessId -join ', ')"
 }
+$listenerPid=[int]$live[0].ProcessId
 
 Write-Host "TTENDENCIAS V11 ACTUALIZADO Y ACTIVO" -ForegroundColor Green
-Write-Host "PID: $($proc.Id)"
+Write-Host "PID: $listenerPid"
 Write-Host "Listener: $Listener"
 Write-Host "Puente imagen: $Bridge"
 Write-Host "Inicio con Windows: $StartupCmd"
