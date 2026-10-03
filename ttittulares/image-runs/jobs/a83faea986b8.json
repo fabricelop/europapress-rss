@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-1791071377673-708de2",
   "requested_at": "2026-10-03T23:49:37.673Z",
-  "updated_at": "2026-10-03T23:50:39.290Z",
-  "status": "RUNNING",
-  "phase": "pc_launch",
+  "updated_at": "2026-10-03T23:51:42.773Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -47,9 +47,10 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
   },
-  "message": "PC ha abierto el chat de imagen; esperando ImageGen.",
+  "message": "No se encontró el chat lanzado con el command_id en 60 segundos; {\"hasMarker\":false,\"bodyMarker\":false,\"composerMarker\":false,\"targetMarker\":false,\"imageTitle\":false,\"generating\":false,\"turns\":0,\"images\":0,\"title\":\"ChatG",
   "pc_upload_secret_hash": "c24f779aa1776ae984a3f2767f48e3b344ce480ed18e38a101825f2a193776c7",
-  "pc_worker_id": "ttittulares-dedicated-v20",
+  "pc_worker_id": "ttittulares-image-bridge-v1",
   "pc_picked_up_at": "2026-10-03T23:50:27.982Z",
-  "pc_launched_at": "2026-10-03T23:50:39.290Z"
+  "pc_launched_at": "2026-10-03T23:50:39.290Z",
+  "finished_at": "2026-10-03T23:51:42.773Z"
 }
