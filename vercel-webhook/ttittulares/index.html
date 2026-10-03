@@ -190,7 +190,16 @@ function renderGrowing(list){
    card.querySelector(".growing-speed").textContent=Number.isFinite(mins)?"3 fuentes en "+mins+" min · esperando una cuarta":"3 fuentes · esperando una cuarta";
    card.querySelector(".three-go").onclick=async()=>{
      if(!confirm("¿Mandar esta noticia a elaboración con 3 fuentes?"))return;
-     try{await api("prepare3",{event_id:item.event_id});toast("Enviada a elaboración");await load(true);setView("growing")}catch(err){toast(err.message)}
+     const id=String(item.event_id||"");
+     pendingClosed.add(id);persistUiState();renderList();
+     try{
+       const result=await api("prepare3",{event_id:item.event_id});
+       toast(result?.message||"Enviada a elaboración");
+       await load(true);
+       setView("processing");
+     }catch(err){
+       pendingClosed.delete(id);persistUiState();renderList();toast(err.message)
+     }
    };
    card.querySelector(".dismiss-growing").onclick=async()=>{
      if(!confirm("¿Desestimar esta noticia? Se quitará de todas las listas."))return;
