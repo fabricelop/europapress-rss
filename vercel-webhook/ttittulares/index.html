@@ -918,7 +918,7 @@ function renderReady(list,preservedImages=new Map()){
   else if(aiLast==="tool_called"){aiClass="aiPending";aiText="● Intento IA anterior materializándose"}
   else{aiClass="aiNone";aiText="— IA no solicitada"}
   const liveImageRun=imageRuns.get(String(item.event_id||"")),liveUi=imageRunText(liveImageRun);
-  if(liveUi&&(imageRunActive(liveImageRun)||["ERROR","CANCELLED"].includes(String(liveImageRun.status||"").toUpperCase()))){aiClass=liveUi.cls;aiText=liveUi.text}
+  if(liveUi&&(imageRunActive(liveImageRun)||(!aiUrl&&["ERROR","CANCELLED"].includes(String(liveImageRun.status||"").toUpperCase())))){aiClass=liveUi.cls;aiText=liveUi.text}
   const archiveText=fallbackUrl?" · archivo disponible":" · sin archivo";
   for(const el of [card.querySelector(".imageMeta"),card.querySelector(".imageCompact")]){
     el.className=el.className.replace(/ai(?:Pending|Ready|Failed|Rework|None)/g,"").trim()+" "+aiClass;
@@ -929,6 +929,8 @@ function renderReady(list,preservedImages=new Map()){
   const syncExpanded=()=>{
     const opened=openCards.has(cardKey);
     det.classList.toggle("open",opened);
+    const compact=card.querySelector(".imageCompact");
+    if(compact)compact.hidden=opened;
     expand.textContent=opened?"Cerrar":"Abrir";
     expand.setAttribute("aria-expanded",String(opened));
   };
@@ -941,6 +943,7 @@ function renderReady(list,preservedImages=new Map()){
       const opened=openCards.has(String(other.dataset.eventId||""));
       const otherDetails=other.querySelector(".details"),otherExpand=other.querySelector(".expand");
       if(otherDetails)otherDetails.classList.toggle("open",opened);
+      const otherCompact=other.querySelector(".imageCompact");if(otherCompact)otherCompact.hidden=opened;
       if(otherExpand){otherExpand.textContent=opened?"Cerrar":"Abrir";otherExpand.setAttribute("aria-expanded",String(opened))}
     }
   };
