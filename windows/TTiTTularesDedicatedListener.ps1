@@ -1,21 +1,27 @@
 # TTiTTularesDedicatedListener.ps1
-# Listener dedicado SOLO a ejecuciones editoriales de TTiTTulares.
-# No procesa TTendencias ni trabajos de imagen IA.
+# Listener dedicado a TTiTTulares: ejecución editorial + jobs manuales de Gag IA.
+# No procesa TTendencias. Editorial e imágenes son flujos independientes.
 
 $ErrorActionPreference = "Continue"
 $BaseDir = "C:\TTiTTulares"
 $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
 $Runner = Join-Path $BaseDir "Ejecutar.js"
+$ImageBridge = Join-Path $BaseDir "TTiTTularesImageBridge.js"
 $StatePath = Join-Path $BaseDir "ttittulares-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
-$TriggerApiUrl = "https://europapress-rss.vercel.app/api/ttittulares-run-status?view=trigger"
-$RunUrl = "https://europapress-rss.vercel.app/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v16"
+$StatusBase = "https://europapress-rss.vercel.app"
+$TriggerApiUrl = "$StatusBase/api/ttittulares-run-status?view=trigger"
+$ImageIndexUrl = "$StatusBase/api/ttittulares-run-status?view=image-index&strong=1"
+$ImageJobUrlBase = "$StatusBase/api/ttittulares-run-status?view=image-job&strong=1&id="
+$RunUrl = "$StatusBase/api/ttittulares-run"
+$WorkerId = "ttittulares-dedicated-v17"
 $PollSeconds = 5
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
+$MaxParallelImageChats = 1
+$ImageStaleMinutes = 45
 
 function Write-Log([string]$Text) {
   $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $Text"
@@ -42,6 +48,33 @@ function Read-Trigger {
   }
 }
 
+function Read-ImageIndex {
+  try {
+    $r = Invoke-RestMethod -Uri (CacheBust $ImageIndexUrl) -Headers @{
+      "Cache-Control" = "no-cache"
+      "User-Agent" = "TTiTTulares-Dedicated-Listener"
+    } -TimeoutSec 12
+    if ($r -and $r.ok) { return $r }
+  } catch {
+    Write-Log "IMAGE INDEX ERROR :: $($_.Exception.Message)"
+  }
+  return [pscustomobject]@{ jobs = @() }
+}
+
+function Read-ImageJob([string]$TargetId) {
+  if (-not $TargetId) { return $null }
+  try {
+    return Invoke-RestMethod -Uri (CacheBust ($ImageJobUrlBase + [uri]::EscapeDataString($TargetId))) -Headers @{
+      "Cache-Control" = "no-cache"
+      "User-Agent" = "TTiTTulares-Dedicated-Listener"
+    } -TimeoutSec 12
+  } catch {
+    Write-Log "IMAGE JOB ERROR target=$TargetId :: $($_.Exception.Message)"
+    return $null
+  }
+}
+
+
 function Load-State {
   if (Test-Path -LiteralPath $StatePath) {
     try { return (Get-Content -LiteralPath $StatePath -Raw -Encoding UTF8 | ConvertFrom-Json) } catch {}
@@ -50,6 +83,8 @@ function Load-State {
     last_command_id = ""
     conflict_command_id = ""
     conflict_first_at = ""
+    image_commands = @()
+    active_image_commands = @()
   }
 }
 
@@ -63,6 +98,205 @@ function Ensure-StateFields($State) {
       $State | Add-Member -NotePropertyName $n -NotePropertyValue "" -Force
     }
   }
+  if (-not ($State.PSObject.Properties.Name -contains "image_commands")) {
+    $State | Add-Member -NotePropertyName image_commands -NotePropertyValue @() -Force
+  }
+  if (-not ($State.PSObject.Properties.Name -contains "active_image_commands")) {
+    $State | Add-Member -NotePropertyName active_image_commands -NotePropertyValue @() -Force
+  }
+}
+
+
+function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage,[string]$Reason = "",[string]$UploadSecretHash = "",[string]$UploadSecret = "") {
+  try {
+    $body = @{
+      task = "image_pc_ack"
+      target_id = $TargetId
+      command_id = $CommandId
+      stage = $Stage
+      worker_id = $WorkerId
+    }
+    if ($Reason) { $body.reason = $Reason }
+    if ($UploadSecretHash) { $body.upload_secret_hash = $UploadSecretHash }
+    if ($UploadSecret) { $body.upload_secret = $UploadSecret }
+    $payload = $body | ConvertTo-Json -Compress
+    Invoke-RestMethod -Method Post -Uri $RunUrl -ContentType "application/json" -Body $payload -TimeoutSec 12 | Out-Null
+    Write-Log "IMAGE ACK $Stage target=$TargetId command=$CommandId"
+    return $true
+  } catch {
+    Write-Log "IMAGE ACK ERROR $Stage target=$TargetId command=$CommandId :: $($_.Exception.Message)"
+    return $false
+  }
+}
+
+function New-ImageUploadSecret {
+  $bytes = New-Object byte[] 32
+  $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+  try { $rng.GetBytes($bytes) } finally { $rng.Dispose() }
+  return [Convert]::ToBase64String($bytes)
+}
+
+function Get-Sha256Hex([string]$Text) {
+  $sha = [System.Security.Cryptography.SHA256]::Create()
+  try {
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($Text)
+    return ([BitConverter]::ToString($sha.ComputeHash($bytes))).Replace("-","").ToLowerInvariant()
+  } finally { $sha.Dispose() }
+}
+
+function Ensure-ImageBridgeLatest([string]$NodePath) {
+  $tmp = $ImageBridge + ".new"
+  try {
+    $api = "https://api.github.com/repos/fabricelop/europapress-rss/contents/windows/TTiTTularesImageBridge.js?ref=main&t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+    $doc = Invoke-RestMethod -Uri $api -Headers @{
+      "Accept" = "application/vnd.github+json"
+      "User-Agent" = "TTiTTulares-image-bridge-refresh"
+      "Cache-Control" = "no-cache"
+    } -TimeoutSec 15
+    if (-not $doc.content) { throw "GitHub API sin contenido" }
+    $raw = [Convert]::FromBase64String(([string]$doc.content -replace "\s",""))
+    [IO.File]::WriteAllBytes($tmp,$raw)
+    $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
+    foreach ($needle in @(
+      'BRIDGE_MODE="capture-only',
+      'ttittulares-run-status?view=image-job&strong=1&id=',
+      'ttittulares-image-bridge-v1',
+      'imagesAfterMarker'
+    )) {
+      if (-not $txt.Contains($needle)) { throw "Bridge remoto sin garantía: $needle" }
+    }
+    & $NodePath --check $tmp *> $null
+    if ($LASTEXITCODE -ne 0) { throw "node --check falló en bridge remoto" }
+    Move-Item -LiteralPath $tmp -Destination $ImageBridge -Force
+    Write-Log "IMAGE BRIDGE REFRESHED source=github-api sha=$($doc.sha)"
+    return $true
+  } catch {
+    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+    Write-Log "IMAGE BRIDGE REFRESH WARNING :: $($_.Exception.Message)"
+  }
+  if (Test-Path -LiteralPath $ImageBridge) {
+    try {
+      $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
+      if ($txt.Contains('BRIDGE_MODE="capture-only') -and $txt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')) {
+        & $NodePath --check $ImageBridge *> $null
+        if ($LASTEXITCODE -eq 0) { Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK"; return $true }
+      }
+    } catch {}
+  }
+  Write-Log "IMAGE BRIDGE ERROR no hay bridge capture-only válido"
+  return $false
+}
+
+function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadSecret) {
+  $node = Get-Command node.exe -ErrorAction SilentlyContinue
+  if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
+  if (-not $node) { Write-Log "IMAGE BRIDGE ERROR node no encontrado"; return $false }
+  if (-not (Ensure-ImageBridgeLatest $node.Source)) { return $false }
+  $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  $out = Join-Path $BaseDir ("ttittulares-image-bridge-" + $stamp + "-" + $TargetId + ".log")
+  $err = Join-Path $BaseDir ("ttittulares-image-bridge-" + $stamp + "-" + $TargetId + ".err.log")
+  $old = $env:TT_IMAGE_UPLOAD_SECRET
+  try {
+    $env:TT_IMAGE_UPLOAD_SECRET = $UploadSecret
+    $p = Start-Process -FilePath $node.Source -ArgumentList @($ImageBridge,$CommandId,$TargetId) -WindowStyle Hidden -PassThru -RedirectStandardOutput $out -RedirectStandardError $err
+    if (-not $p) { throw "Start-Process no devolvió proceso" }
+    Write-Log "IMAGE BRIDGE STARTED pid=$($p.Id) target=$TargetId command=$CommandId stdout=$out stderr=$err"
+    return $true
+  } catch {
+    Write-Log "IMAGE BRIDGE START ERROR target=$TargetId command=$CommandId :: $($_.Exception.Message)"
+    return $false
+  } finally {
+    if ($null -eq $old) { Remove-Item Env:TT_IMAGE_UPLOAD_SECRET -ErrorAction SilentlyContinue }
+    else { $env:TT_IMAGE_UPLOAD_SECRET = $old }
+  }
+}
+
+function Launch-ImageChat([string]$Reason,[string]$Message,[string]$ExpectedMarker) {
+  if (-not (Test-Path -LiteralPath $Runner)) { return $false }
+  $safeReason = ($Reason -replace '[^A-Za-z0-9._-]','_')
+  if ($safeReason.Length -gt 80) { $safeReason = $safeReason.Substring(0,80) }
+  $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  $launchLog = Join-Path $BaseDir ("ttittulares-image-launch-" + $stamp + "-" + $safeReason + ".log")
+  $launchErr = Join-Path $BaseDir ("ttittulares-image-launch-" + $stamp + "-" + $safeReason + ".err.log")
+  $old = $env:TT_CHAT_MESSAGE_B64
+  $proc = $null
+  try {
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($Message)
+    $env:TT_CHAT_MESSAGE_B64 = [Convert]::ToBase64String($bytes)
+    $node = Get-Command node.exe -ErrorAction SilentlyContinue
+    if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
+    if (-not $node) { throw "Node no disponible" }
+    $proc = Start-Process -FilePath $node.Source -ArgumentList @($Runner,"titulares","--enviar") -WindowStyle Hidden -PassThru -RedirectStandardOutput $launchLog -RedirectStandardError $launchErr
+    if (-not $proc) { throw "Start-Process no devolvió proceso" }
+    Write-Log "IMAGE CHAT PROCESS STARTED pid=$($proc.Id) marker=$ExpectedMarker"
+  } catch {
+    Write-Log "IMAGE CHAT START ERROR :: $Reason :: $($_.Exception.Message)"
+    return $false
+  } finally {
+    if ($null -eq $old) { Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue }
+    else { $env:TT_CHAT_MESSAGE_B64 = $old }
+  }
+
+  $deadline = (Get-Date).AddSeconds($LaunchConfirmSeconds)
+  while ((Get-Date) -lt $deadline) {
+    Start-Sleep -Milliseconds 500
+    $stdout="";$stderr=""
+    try { if(Test-Path $launchLog){$stdout=Get-Content $launchLog -Raw -ErrorAction SilentlyContinue} } catch {}
+    try { if(Test-Path $launchErr){$stderr=Get-Content $launchErr -Raw -ErrorAction SilentlyContinue} } catch {}
+    $joined=[string]$stdout+[Environment]::NewLine+[string]$stderr
+    if($joined -match "MODO:\s*PRUEBA"){Write-Log "IMAGE CHAT MODE ERROR :: $Reason";return $false}
+    $real=$joined -match "MODO:\s*ENVIO REAL"
+    $sent=$joined -match "MENSAJE ENVIADO"
+    $launched=$joined -match "EJECUCION LANZADA"
+    $generating=$joined -match '"generando"\s*:\s*true'
+    if($real -and ($sent -or $launched -or $generating)){
+      $why=if($generating){"generando:true"}elseif($launched){"EJECUCION LANZADA"}else{"MENSAJE ENVIADO"}
+      Write-Log "IMAGE CHAT CONFIRMED marker=$ExpectedMarker via=$why"
+      return $true
+    }
+    if($joined -match "ERROR:|ERROR ::|Timeout CDP|ChatGPT no confirmó"){Write-Log "IMAGE CHAT LOG ERROR :: $Reason";return $false}
+    try{
+      $proc.Refresh()
+      if($proc.HasExited -and -not $sent -and -not $launched -and -not $generating){Write-Log "IMAGE CHAT PROCESS EXITED :: $Reason";return $false}
+    }catch{}
+  }
+  Write-Log "IMAGE CHAT TIMEOUT :: $Reason"
+  return $false
+}
+
+function Is-TerminalImageStatus([string]$Status) {
+  return @("DONE","ERROR","CANCELLED","SUPERSEDED") -contains ([string]$Status).ToUpperInvariant()
+}
+function Seen-ImageCommand($State,[string]$CommandId) {
+  return @($State.image_commands) -contains $CommandId
+}
+function Mark-ImageCommand($State,[string]$CommandId,[bool]$Active) {
+  $State.image_commands = @((@($State.image_commands) + $CommandId) | Select-Object -Unique | Select-Object -Last 120)
+  if ($Active) { $State.active_image_commands = @((@($State.active_image_commands) + $CommandId) | Select-Object -Unique) }
+}
+function Refresh-ActiveImages($State,$Index) {
+  $active=@();$jobs=@()
+  if($Index -and $Index.jobs){$jobs=@($Index.jobs)}
+  foreach($cmd in @($State.active_image_commands)){
+    $job=$jobs|Where-Object{[string]$_.command_id -eq [string]$cmd}|Select-Object -Last 1
+    if(-not $job){continue}
+    $statusDoc=Read-ImageJob ([string]$job.target_id)
+    if(-not $statusDoc){$active += [string]$cmd;continue}
+    if(Is-TerminalImageStatus ([string]$statusDoc.status)){Write-Log "IMAGE TERMINAL command=$cmd target=$($job.target_id) status=$($statusDoc.status)";continue}
+    try {
+      $atText=if($statusDoc.updated_at){[string]$statusDoc.updated_at}else{[string]$statusDoc.requested_at}
+      $at=[DateTimeOffset]::Parse($atText)
+      if(([DateTimeOffset]::UtcNow-$at).TotalMinutes -gt $ImageStaleMinutes){Write-Log "IMAGE STALE command=$cmd";continue}
+    } catch {}
+    $active += [string]$cmd
+  }
+  $State.active_image_commands=@($active|Select-Object -Unique)
+}
+function Build-ImageMessage($Job) {
+  $targetId=[string]$Job.target_id
+  $targetName=[string]$Job.target_name
+  $commandId=[string]$Job.command_id
+  return "TTITTULARES_IMAGE_JOB_V3 $commandId $targetId | Usa ImageGen AHORA y genera UNA imagen IA para '$targetName': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee ttittulares/image-runs/jobs/$targetId.json en control/ttittulares-run-trigger-v2 para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
 
 function Enable-CustomChatMessages {
@@ -283,6 +517,8 @@ if ($probe -and $probe.command_id) {
 } else {
   Write-Log "TRIGGER PROBE FAILED"
 }
+$imageProbe=Read-ImageIndex
+Write-Log "IMAGE PROBE jobs=$(@($imageProbe.jobs).Count) seen=$(@($state.image_commands).Count) active=$(@($state.active_image_commands).Count)"
 $loopCount = 0
 
 while ($true) {
@@ -367,11 +603,60 @@ while ($true) {
   } catch {
     Write-Log "LOOP ERROR :: $($_.Exception.Message)"
   }
+
+  # 2) Jobs manuales de Gag IA (separados de la ejecución editorial)
+  try {
+    $idx=Read-ImageIndex
+    Refresh-ActiveImages $state $idx
+    Save-State $state
+    $slots=[Math]::Max(0,$MaxParallelImageChats-@($state.active_image_commands).Count)
+    if($slots -gt 0 -and $CustomMessageSupport){
+      $jobs=@();if($idx -and $idx.jobs){$jobs=@($idx.jobs)}
+      foreach($job in $jobs){
+        if($slots -le 0){break}
+        $commandId=[string]$job.command_id
+        $targetId=[string]$job.target_id
+        if(-not $commandId -or -not $targetId -or (Seen-ImageCommand $state $commandId)){continue}
+        $recent=$true
+        try{$requested=[DateTimeOffset]::Parse([string]$job.requested_at);if(([DateTimeOffset]::UtcNow-$requested).TotalHours -gt 12){$recent=$false}}catch{}
+        if(-not $recent){Mark-ImageCommand $state $commandId $false;Save-State $state;continue}
+        $statusDoc=Read-ImageJob $targetId
+        if(-not $statusDoc -or [string]$statusDoc.command_id -ne $commandId){Mark-ImageCommand $state $commandId $false;Save-State $state;continue}
+        if(Is-TerminalImageStatus ([string]$statusDoc.status)){Mark-ImageCommand $state $commandId $false;Save-State $state;continue}
+        Write-Log "IMAGE NEW target=$targetId command=$commandId name=$($job.target_name)"
+        $uploadSecret=New-ImageUploadSecret
+        $uploadHash=Get-Sha256Hex $uploadSecret
+        if(-not (Send-ImageAck $targetId $commandId "picked_up" "" $uploadHash "")){continue}
+        $message=Build-ImageMessage $job
+        $marker="TTITTULARES_IMAGE_JOB_V3 $commandId"
+        $sent=Launch-ImageChat "image command=$commandId target=$targetId" $message $marker
+        if($sent){
+          Send-ImageAck $targetId $commandId "launched" | Out-Null
+          if(-not (Start-ImageBridge $commandId $targetId $uploadSecret)){
+            $reason="El chat arrancó, pero no se pudo iniciar el puente local de raster."
+            Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
+            Mark-ImageCommand $state $commandId $false;Save-State $state;continue
+          }
+          Mark-ImageCommand $state $commandId $true;Save-State $state;$slots--
+        }else{
+          $reason="Ejecutar.js no confirmó el envío del job de imagen en $($LaunchConfirmSeconds) s."
+          Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
+          Mark-ImageCommand $state $commandId $false;Save-State $state
+        }
+      }
+    }elseif($slots -gt 0 -and -not $CustomMessageSupport){
+      Write-Log "IMAGE QUEUE WAITING: custom message support unavailable"
+    }
+  } catch {
+    Write-Log "IMAGE LOOP ERROR :: $($_.Exception.Message)"
+  }
+
   if (($loopCount % 20) -eq 0) {
     try {
       $hb = Read-Trigger
       if ($hb -and $hb.command_id) {
-        Write-Log "HEARTBEAT remote=$($hb.command_id) executor=$($hb.executor) local=$($state.last_command_id)"
+        $hidx=Read-ImageIndex
+        Write-Log "HEARTBEAT remote=$($hb.command_id) executor=$($hb.executor) local=$($state.last_command_id) image_jobs=$(@($hidx.jobs).Count) image_active=$(@($state.active_image_commands).Count)"
       } else {
         Write-Log "HEARTBEAT trigger_unavailable"
       }
