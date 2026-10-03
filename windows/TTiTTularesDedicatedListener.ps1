@@ -289,7 +289,6 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
 
 function Launch-ImageChat([string]$Reason,[string]$Message,[string]$ExpectedMarker) {
   if (-not (Test-Path -LiteralPath $Runner)) { return $false }
-  Ensure-RunnerNewChatCompatibility | Out-Null
   $safeReason = ($Reason -replace '[^A-Za-z0-9._-]','_')
   if ($safeReason.Length -gt 80) { $safeReason = $safeReason.Substring(0,80) }
   $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
