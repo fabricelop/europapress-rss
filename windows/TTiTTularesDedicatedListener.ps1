@@ -32,6 +32,68 @@ function Write-Log([string]$Text) {
   Add-Content -LiteralPath $LogPath -Value $line -Encoding UTF8
 }
 
+
+function Ensure-RunnerNewChatCompatibility {
+  if (-not (Test-Path -LiteralPath $Runner)) {
+    Write-Log "RUNNER COMPAT WARN: no existe $Runner"
+    return $false
+  }
+  try {
+    $text = Get-Content -LiteralPath $Runner -Raw -Encoding UTF8
+    if ($text.Contains("TT_NEW_CHAT_OPTIONAL_V3")) {
+      return $true
+    }
+
+    $rx = [regex]'(?m)^(?<indent>\s*)if\s*\(\s*!\s*(?<var>[A-Za-z_$][A-Za-z0-9_$]*)\s*\)\s*(?:\{\s*)?throw\s+(?:new\s+)?Error\(\s*(["''])No encuentro New chat(?:[^"'']*)\3\s*\)\s*;?\s*(?:\}\s*)?$'
+    $m = $rx.Match($text)
+    if (-not $m.Success) {
+      Write-Log "RUNNER COMPAT WARN: no se reconoce el bloque 'No encuentro New chat'; no se modifica Ejecutar.js"
+      return $false
+    }
+
+    $indent = $m.Groups['indent'].Value
+    $var = $m.Groups['var'].Value
+    $replacement = $indent + '/* TT_NEW_CHAT_OPTIONAL_V3 */' + [Environment]::NewLine +
+      $indent + 'if (!' + $var + ') {' + [Environment]::NewLine +
+      $indent + '    console.log("AVISO: New chat no visible; se prueba el compositor actual del proyecto.");' + [Environment]::NewLine +
+      $indent + '    ' + $var + ' = { click: async () => {} };' + [Environment]::NewLine +
+      $indent + '}'
+
+    $next = $text.Substring(0,$m.Index) + $replacement + $text.Substring($m.Index + $m.Length)
+
+    foreach ($needle in @(
+      'Ejecuta TTiTTulares',
+      'Ejecuta TTendencias',
+      'TT_CHAT_MESSAGE_B64',
+      'const enviar = process.argv.includes("--enviar");'
+    )) {
+      if (-not $next.Contains($needle)) {
+        throw "Proteccion fallida: falta $needle"
+      }
+    }
+
+    $backup = $Runner + ".before-auto-new-chat-v3-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
+    Copy-Item -LiteralPath $Runner -Destination $backup -Force
+    Set-Content -LiteralPath $Runner -Value $next -Encoding UTF8
+
+    $node = Get-Command node.exe -ErrorAction SilentlyContinue
+    if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
+    if ($node) {
+      & $node.Source --check $Runner *> $null
+      if ($LASTEXITCODE -ne 0) {
+        Copy-Item -LiteralPath $backup -Destination $Runner -Force
+        throw "node --check fallo; restaurado backup"
+      }
+    }
+
+    Write-Log "RUNNER COMPAT APPLIED: TT_NEW_CHAT_OPTIONAL_V3 backup=$backup"
+    return $true
+  } catch {
+    Write-Log "RUNNER COMPAT ERROR :: $($_.Exception.Message)"
+    return $false
+  }
+}
+
 function CacheBust([string]$Url) {
   $sep = if ($Url.Contains("?")) { "&" } else { "?" }
   return $Url + $sep + "t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
@@ -224,6 +286,7 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
 
 function Launch-ImageChat([string]$Reason,[string]$Message,[string]$ExpectedMarker) {
   if (-not (Test-Path -LiteralPath $Runner)) { return $false }
+  Ensure-RunnerNewChatCompatibility | Out-Null
   $safeReason = ($Reason -replace '[^A-Za-z0-9._-]','_')
   if ($safeReason.Length -gt 80) { $safeReason = $safeReason.Substring(0,80) }
   $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
@@ -428,6 +491,7 @@ function Launch-TTiTTulares([string]$CommandId) {
     [void](Send-Ack $CommandId "failed" $detail)
     return $false
   }
+  Ensure-RunnerNewChatCompatibility | Out-Null
 
   $safeCommandId = ($CommandId -replace '[^A-Za-z0-9._-]','_')
   $launchLog = Join-Path $BaseDir ("ttittulares-launch-" + $safeCommandId + ".log")
@@ -524,6 +588,7 @@ Write-Log "LISTENER START worker=$WorkerId pid=$PID"
 $state = Load-State
 Ensure-StateFields $state
 Save-State $state
+Ensure-RunnerNewChatCompatibility | Out-Null
 $CustomMessageSupport = Enable-CustomChatMessages
 
 # Diagnóstico inicial: confirma que el proceso sigue vivo y que ve el trigger remoto.
