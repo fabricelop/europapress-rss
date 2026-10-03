@@ -1,5 +1,6 @@
 // deploy-sync: ttittulares picked_up 45s
 import crypto from "node:crypto";
+import sharp from "sharp";
 
 const CONTROL_TOKEN_HASHES=[
   "2663da5223c2313c3670a7843a0cdfabfd2dd7c8fad1ed168247866a3b1262e5",
@@ -28,7 +29,10 @@ const TRIGGER_PATH="ttittulares/run-now-trigger.json";
 const ACK_PATH="ttittulares/run-ack.json";
 const IMAGE_RUN_INDEX_PATH="ttittulares/image-runs/index.json";
 const IMAGE_RUN_DIR="ttittulares/image-runs/jobs";
-const IMAGE_ACTIVE_MS=45*60*1000;
+const IMAGE_HANDOFF_ACTIVE_MS=45*1000;
+const IMAGE_GENERATION_ACTIVE_MS=150*1000;
+const MAIN_BRANCH="main";
+const PREPARED_PATH="ttittulares/prepared.json";
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
 const ACTIVE_MS=20*60*1000;
@@ -143,6 +147,131 @@ async function writeControlJson(path,doc,sha,message){
   if(!r.ok)throw new Error("GitHub control PUT "+path+": "+r.status+" "+await r.text());
   return r.json()
 }
+
+async function readMainJsonWithSha(path){
+  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(MAIN_BRANCH),{cache:"no-store"});
+  if(r.status===404)return {sha:null,doc:null};
+  if(!r.ok)throw new Error("GitHub main GET "+path+": "+r.status+" "+await r.text());
+  const file=await r.json();
+  const raw=Buffer.from(String(file.content||"").replace(/\n/g,""),"base64").toString("utf8");
+  return {sha:file.sha,doc:JSON.parse(raw||"{}")}
+}
+async function readMainJson(path){
+  const x=await readMainJsonWithSha(path);
+  return x.doc||{}
+}
+async function writeMainJson(path,doc,sha,message){
+  const body={message,content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64"),branch:MAIN_BRANCH};
+  if(sha)body.sha=sha;
+  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path,{method:"PUT",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error("GitHub main PUT "+path+": "+r.status+" "+await r.text());
+  return r.json()
+}
+async function writeMainBinary(path,buf,message){
+  const body={message,content:Buffer.from(buf).toString("base64"),branch:MAIN_BRANCH};
+  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path,{method:"PUT",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error("GitHub main binary PUT "+path+": "+r.status+" "+await r.text());
+  return r.json()
+}
+function validChatAi(image){
+  return Boolean(image&&image.generated===true&&image.provider==="chat-imagegen"&&image.origin==="executing_chat"&&String(image.url||"").trim())
+}
+async function imageEligibility(targetId){
+  const prepared=await readMainJson(PREPARED_PATH);
+  const rows=(prepared.items||[]).filter(x=>String(x.event_id||"")===String(targetId));
+  rows.sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||String(b.prepared_at||"").localeCompare(String(a.prepared_at||"")));
+  const row=rows[0]||null;
+  if(!row)return {eligible:false,reason:"not_ready",row:null};
+  const mode=String(row.image_mode||row.image_strategy||"").toLowerCase();
+  if(row.tremending_origin)return {eligible:false,reason:"tremending",row};
+  if(row.disable_ai_image||["fallback_only","archive_only","tweet_capture_only"].includes(mode)||String(row.ai_image_status||"").toLowerCase()==="disabled"){
+    return {eligible:false,reason:"blocked",row}
+  }
+  const hasAi=validChatAi(row.ai_image)||validChatAi(row.image);
+  if(hasAi&&!row.ai_image_regenerate_requested)return {eligible:false,reason:"already_has_ai",row};
+  return {eligible:true,reason:"ready",row}
+}
+function uploadSecretHash(value){return crypto.createHash("sha256").update(String(value||""),"utf8").digest("hex")}
+function validUploadSecret(job,secret){
+  const expected=String(job?.pc_upload_secret_hash||"").toLowerCase(),actual=uploadSecretHash(secret);
+  if(!/^[a-f0-9]{64}$/.test(expected)||String(secret||"").length<32)return false;
+  return crypto.timingSafeEqual(Buffer.from(expected,"hex"),Buffer.from(actual,"hex"))
+}
+async function markPreparedImageFailed(target_id,revision,reason){
+  for(let n=0;n<5;n++){
+    const p=await readMainJsonWithSha(PREPARED_PATH);
+    const doc=p.doc||{project:"TTiTTulares",items:[]};
+    const row=(doc.items||[]).find(x=>String(x.event_id||"")===target_id&&Number(x.revision||0)===Number(revision));
+    if(!row)return;
+    row.ai_image_status="failed";
+    row.ai_image_last_attempt_status="failed";
+    row.ai_image_last_attempt_at=new Date().toISOString();
+    row.ai_image_failure_reason=String(reason||"image_job_failed").slice(0,240);
+    delete row.ai_image_regenerate_requested;
+    delete row.ai_image_regenerate_requested_at;
+    delete row.ai_image_regenerate_request_version;
+    doc.updated_at=new Date().toISOString();
+    try{await writeMainJson(PREPARED_PATH,doc,p.sha,"TTiTTulares: registrar fallo Gag IA "+target_id);return}
+    catch(e){if(n===4||!/409|422/.test(String(e)))throw e;await new Promise(r=>setTimeout(r,200*(n+1)))}
+  }
+}
+async function persistAiImageDirect({target_id,revision,command_id,buf,mime,sha256,width,height,bytes}){
+  let current=await readMainJsonWithSha(PREPARED_PATH);
+  const row0=(current.doc?.items||[]).find(x=>String(x.event_id||"")===target_id&&Number(x.revision||0)===Number(revision));
+  if(!row0)throw new Error("not_ready");
+  const previousAttempt=Math.max(0,Number(row0.ai_image_attempt||0)||0);
+  const previousWasReal=Boolean(row0.ai_image_tool_called_at||validChatAi(row0.ai_image)||validChatAi(row0.image));
+  const attempt=previousWasReal?Math.max(1,previousAttempt+1):Math.max(1,previousAttempt||1);
+  const ext=mime==="image/png"?"png":mime==="image/webp"?"webp":"jpg";
+  const suffix=command_id.replace(/[^A-Za-z0-9_-]/g,"").slice(-12)||Date.now();
+  const imagePath="ttittulares/generated-images/"+target_id+"-r"+revision+"-ai"+attempt+"-"+suffix+"."+ext;
+  await writeMainBinary(imagePath,buf,"TTiTTulares: guardar raster ImageGen "+target_id);
+
+  const rawUrl="https://raw.githubusercontent.com/"+REPO+"/main/"+imagePath;
+  const sourceUrl="https://github.com/"+REPO+"/blob/main/"+imagePath;
+  const ai={
+    url:rawUrl,source:"TTiTTulares / ChatGPT ImageGen",rights_status:"generated",generated:true,
+    provider:"chat-imagegen",origin:"executing_chat",generation_attempt:attempt,
+    sha256,width,height,bytes,
+    context_guard:{version:3,event_id:target_id,revision,scope:"current_item_only",command_id},
+    source_url:sourceUrl,handoff:"pc-bridge-direct-materialized"
+  };
+
+  let updated=false;
+  for(let n=0;n<6;n++){
+    const p=await readMainJsonWithSha(PREPARED_PATH);
+    const doc=p.doc||{project:"TTiTTulares",items:[]};
+    const items=Array.isArray(doc.items)?doc.items:[];
+    const row=items.find(x=>String(x.event_id||"")===target_id&&Number(x.revision||0)===Number(revision));
+    if(!row)throw new Error("not_ready");
+    const collision=items.find(x=>String(x.event_id||"")!==target_id&&String(x.ai_image?.sha256||"").toLowerCase()===sha256.toLowerCase());
+    if(collision)throw new Error("cross_context_raster_reuse");
+    const now=new Date().toISOString();
+    row.ai_image=ai;
+    row.ai_image_status="ready";
+    row.ai_image_attempt=attempt;
+    row.ai_image_tool_called_at=row.ai_image_tool_called_at||now;
+    row.ai_image_last_attempt_status="ready";
+    row.ai_image_last_attempt_at=now;
+    delete row.ai_image_failure_reason;
+    delete row.ai_image_regeneration_error;
+    delete row.ai_image_regenerate_requested;
+    delete row.ai_image_regenerate_requested_at;
+    delete row.ai_image_regenerate_request_version;
+    row.image={...ai};
+    row.image_choice="ai";
+    row.image_status="ready";
+    row.image_pending=false;
+    row.image_app_available=true;
+    row.image_delivery="app";
+    doc.updated_at=now;
+    try{await writeMainJson(PREPARED_PATH,doc,p.sha,"TTiTTulares: adjuntar Gag IA "+target_id);updated=true;break}
+    catch(e){if(n===5||!/409|422/.test(String(e)))throw e;await new Promise(r=>setTimeout(r,250*(n+1)))}
+  }
+  if(!updated)throw new Error("No se pudo actualizar prepared con la imagen");
+  return {imagePath,ai,attempt}
+}
+
 async function requestPcAck(req,res){
   const command_id=String(req.body?.command_id||"").trim();
   const stage=String(req.body?.stage||"").toLowerCase();
@@ -195,45 +324,127 @@ function safeTargetId(v){
   if(!/^[A-Za-z0-9._-]{3,160}$/.test(id))throw new Error("target_id inválido");
   return id
 }
+async function requestImagePcAck(req,res){
+  const target_id=safeTargetId(req.body?.target_id||req.body?.event_id||req.body?.id);
+  const command_id=String(req.body?.command_id||"").trim();
+  const stage=String(req.body?.stage||"").toLowerCase();
+  const worker_id=String(req.body?.worker_id||"ttittulares-image-bridge-v1").trim().slice(0,120)||"ttittulares-image-bridge-v1";
+  if(!command_id||!["picked_up","launched","cancelled","failed","done"].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
+  const path=IMAGE_RUN_DIR+"/"+target_id+".json";
+  const existing=await readControlJson(path),job=existing.doc||{};
+  if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
+  if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase()))return res.status(409).json({ok:false,error:"job ya terminal",status:job.status});
+
+  if(stage==="picked_up"){
+    const uploadHash=String(req.body?.upload_secret_hash||"").toLowerCase();
+    if(!/^[a-f0-9]{64}$/.test(uploadHash))return res.status(400).json({ok:false,error:"upload_secret_hash requerido"});
+    if(job.pc_upload_secret_hash&&String(job.pc_upload_secret_hash)!==uploadHash)return res.status(409).json({ok:false,error:"job ya reclamado con otro secreto"});
+    job.pc_upload_secret_hash=uploadHash;
+    const eligible=await imageEligibility(target_id);
+    const revisionChanged=Boolean(eligible.row)&&Number(eligible.row.revision||0)!==Number(job.revision||0);
+    if(!eligible.eligible||revisionChanged){
+      const now=new Date().toISOString(),reason=revisionChanged?"revision_changed":eligible.reason;
+      const cancelled={...job,status:"CANCELLED",phase:"stale_target",updated_at:now,finished_at:now,pc_worker_id:worker_id,message:"Cancelado antes de abrir chat: "+reason};
+      await writeControlJson(path,cancelled,existing.sha,"Cancelar Gag IA obsoleto TTiTTulares "+target_id+" "+command_id);
+      return res.status(409).json({ok:false,error:"stale_target",reason,status:"CANCELLED",target_id,command_id})
+    }
+  }
+
+  const now=new Date().toISOString(),next={...job,updated_at:now,pc_worker_id:worker_id};
+  const secret=String(req.body?.upload_secret||"");
+  if(["done","failed"].includes(stage)&&job.pc_upload_secret_hash&&!validUploadSecret(job,secret))return res.status(401).json({ok:false,error:"Secreto de imagen no válido"});
+  if(stage==="cancelled"){
+    next.status="CANCELLED";next.phase="stale_target";next.finished_at=now;
+    next.message=String(req.body?.reason||"La entrada ya no está vigente.").slice(0,240);
+  }else if(stage==="done"){
+    const prepared=await readMainJson(PREPARED_PATH);
+    const persisted=(prepared.items||[]).find(x=>String(x.event_id||"")===target_id&&Number(x.revision||0)===Number(job.revision||0)&&String(x.ai_image?.context_guard?.command_id||"")===command_id&&String(x.ai_image?.url||"").trim());
+    if(!persisted)return res.status(409).json({ok:false,error:"image_not_persisted_yet"});
+    next.status="DONE";next.phase="done";next.finished_at=now;next.message="Gag IA materializado y visible en Listas.";
+  }else if(stage==="failed"){
+    const reason=String(req.body?.reason||"El puente de imagen no pudo completar el trabajo.").slice(0,240);
+    next.status="ERROR";next.phase=job.upload_sha256?"image_bridge_failed":"pc_launch_failed";next.finished_at=now;next.message=reason;
+    await markPreparedImageFailed(target_id,job.revision,reason).catch(()=>{});
+  }else{
+    next.status="RUNNING";next.phase=stage==="picked_up"?"pc_pickup":"pc_launch";
+    if(stage==="picked_up")next.pc_picked_up_at=job.pc_picked_up_at||now;
+    if(stage==="launched"){next.pc_picked_up_at=job.pc_picked_up_at||now;next.pc_launched_at=now}
+    next.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":"PC ha abierto el chat de imagen; esperando ImageGen.";
+  }
+  await writeControlJson(path,next,existing.sha,"PC Chat Gag IA TTiTTulares "+stage+" "+target_id+" "+command_id);
+  return res.status(200).json({ok:true,...next})
+}
+
+async function requestImageUpload(req,res){
+  const target_id=safeTargetId(req.body?.target_id||req.body?.event_id||req.body?.id);
+  const command_id=String(req.body?.command_id||"").trim(),upload_secret=String(req.body?.upload_secret||""),data=String(req.body?.image_data_url||"");
+  if(!command_id||!upload_secret||!data.startsWith("data:image/"))return res.status(400).json({ok:false,error:"Carga de imagen incompleta"});
+  if(data.length>4*1024*1024)return res.status(413).json({ok:false,error:"Raster codificado demasiado grande"});
+  const path=IMAGE_RUN_DIR+"/"+target_id+".json";
+  const existing=await readControlJson(path),job=existing.doc||{};
+  if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es actual"});
+  if(!validUploadSecret(job,upload_secret))return res.status(401).json({ok:false,error:"Secreto de imagen no válido"});
+  if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase()))return res.status(409).json({ok:false,error:"job terminal",status:job.status});
+  const eligible=await imageEligibility(target_id);
+  const revisionChanged=Boolean(eligible.row)&&Number(eligible.row.revision||0)!==Number(job.revision||0);
+  if(!eligible.eligible||revisionChanged)return res.status(409).json({ok:false,error:"target_no_elegible",reason:revisionChanged?"revision_changed":eligible.reason});
+  const m=data.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
+  if(!m)return res.status(400).json({ok:false,error:"Formato de raster no admitido"});
+  const buf=Buffer.from(m[2],"base64");
+  if(buf.length<4096||buf.length>3*1024*1024)return res.status(400).json({ok:false,error:"Tamaño de raster no válido",bytes:buf.length});
+  const meta=await sharp(buf,{animated:false}).metadata(),width=Number(meta.width||0),height=Number(meta.height||0);
+  if(width<640||height<360)return res.status(400).json({ok:false,error:"Raster inferior a 640x360",width,height});
+  const sha256=crypto.createHash("sha256").update(buf).digest("hex"),now=new Date().toISOString();
+  const persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido; guardando Gag IA en main."};
+  await writeControlJson(path,persisting,existing.sha,"TTiTTulares raster recibido "+command_id);
+  const persisted=await persistAiImageDirect({target_id,revision:Number(job.revision||0),command_id,buf,mime:m[1],sha256,width,height,bytes:buf.length});
+  return res.status(200).json({ok:true,status:"PERSISTING",target_id,command_id,image_path:persisted.imagePath,attempt:persisted.attempt,sha256,width,height,bytes:buf.length})
+}
+
 async function requestImageRun(req,res){
   const target_id=safeTargetId(req.body?.target_id||req.body?.event_id);
-  const target_name=String(req.body?.target_name||req.body?.title||req.body?.name||"").trim().slice(0,240);
-  const revision=Math.max(0,Number.parseInt(req.body?.revision??1,10)||1);
-  const jobPath=IMAGE_RUN_DIR+"/"+target_id+".json";
-  const existing=await readControlJson(jobPath);
-  const previous=existing.doc||{};
-  const previousStatus=String(previous.status||"").toUpperCase();
-  const previousAt=stamp(previous.updated_at||previous.finished_at||previous.requested_at);
-  const previousAge=previousAt?Date.now()-previousAt:Infinity;
-  const previousStillActive=previousStatus==="REQUESTED"
-    ?previousAge<30000
-    :["RUNNING","GENERATING","PERSISTING"].includes(previousStatus)&&previousAge<IMAGE_ACTIVE_MS;
-  if(previousStillActive){
-    return res.status(409).json({ok:false,error:"image_run_in_progress",command_id:previous.command_id||null,target_id,status:previousStatus})
-  }
-  const requested_at=new Date().toISOString();
-  const command_id="tt-img-"+Date.now()+"-"+crypto.randomBytes(3).toString("hex");
+  const requestedRevision=Math.max(0,Number.parseInt(req.body?.revision??1,10)||1);
+  const eligible=await imageEligibility(target_id);
+  if(!eligible.eligible)return res.status(409).json({ok:false,error:"target_no_elegible",reason:eligible.reason,target_id});
+  const row=eligible.row||{},revision=Number(row.revision||1);
+  if(revision!==requestedRevision)return res.status(409).json({ok:false,error:"target_no_elegible",reason:"revision_changed",target_id,revision});
+  const target_name=String(row.title||req.body?.target_name||"").trim().slice(0,240);
+  const context_snapshot={
+    title:target_name,revision,
+    factual_summary:String(row.factual_summary||"").trim(),
+    tweet_text:String(row.tweet?.text||"").trim(),
+    remate:String(row.tweet?.remate||"").trim(),
+    url:String(row.url||"").trim(),
+    citations:Array.isArray(row.citations)?row.citations.slice(0,8):[]
+  };
+  const jobPath=IMAGE_RUN_DIR+"/"+target_id+".json",existing=await readControlJson(jobPath),previous=existing.doc||{};
+  const status=String(previous.status||"").toUpperCase(),phase=String(previous.phase||"").toLowerCase();
+  const at=stamp(previous.updated_at||previous.finished_at||previous.requested_at),age=at?Date.now()-at:Infinity;
+  const active=status==="REQUESTED"?age<30000:status==="RUNNING"&&["pc_pickup","pc_launch"].includes(phase)?age<IMAGE_HANDOFF_ACTIVE_MS:["RUNNING","GENERATING","PERSISTING"].includes(status)&&age<IMAGE_GENERATION_ACTIVE_MS;
+  if(active)return res.status(409).json({ok:false,error:"image_run_in_progress",command_id:previous.command_id||null,target_id,status});
+  const requested_at=new Date().toISOString(),command_id="tt-img-"+Date.now()+"-"+crypto.randomBytes(3).toString("hex");
   const doc={
     version:1,command_id,requested_at,updated_at:requested_at,status:"REQUESTED",phase:"queued",
-    mode:"manual_pc_chat_image",executor:"pc_chat",project:"ttittulares",launcher_arg:"titulares",
-    task:"image",target_id,event_id:target_id,target_name,revision,
-    message:"Solicitud registrada; esperando al PC para abrir un chat de imagen."
+    mode:"manual_pc_chat_image",executor:"pc_chat_ttittulares_dedicated",project:"ttittulares",launcher_arg:"titulares",
+    task:"image",target_id,event_id:target_id,target_name,revision,chat_command_version:3,
+    instruction_profile:"ttittulares_gag_v1",context_snapshot,
+    instructions:{
+      scope:"Genera UNA sola imagen IA para esta noticia y no proceses ninguna otra entrada.",
+      context:"Usa context_snapshot como contexto factual autoritativo. No reinvestigues ni reescribas la noticia.",
+      visual:"Gag visual claramente cómico, satírico, irónico y exagerado; una sola escena 16:9 con idea específica del hecho, evitando ilustración literal.",
+      sensitivity:"No conviertas víctimas, muertes, duelo, violencia grave, abuso, menores en contexto sensible o sufrimiento humano en objeto del gag.",
+      political_guard:"Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+      lifecycle:"El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
+    },
+    message:"Solicitud registrada; esperando al PC."
   };
-  let saved=await writeControlJson(jobPath,doc,existing.sha,"Solicitar imagen IA TTiTTulares "+target_id+" "+command_id);
-
-  // Índice de descubrimiento: pequeño y acotado. El estado autoritativo sigue siendo el fichero individual.
-  for(let attempt=0;attempt<3;attempt++){
-    const idx=await readControlJson(IMAGE_RUN_INDEX_PATH);
-    const base=idx.doc&&Array.isArray(idx.doc.jobs)?idx.doc:{version:1,jobs:[]};
+  const saved=await writeControlJson(jobPath,doc,existing.sha,"Solicitar Gag IA TTiTTulares "+target_id+" "+command_id);
+  for(let n=0;n<3;n++){
+    const idx=await readControlJson(IMAGE_RUN_INDEX_PATH),base=idx.doc&&Array.isArray(idx.doc.jobs)?idx.doc:{version:1,jobs:[]};
     const jobs=base.jobs.filter(x=>String(x.command_id||"")!==command_id&&String(x.target_id||"")!==target_id);
-    jobs.push({command_id,target_id,event_id:target_id,target_name,revision,requested_at,status_path:jobPath});
-    const indexDoc={version:1,updated_at:requested_at,jobs:jobs.slice(-60)};
-    try{
-      await writeControlJson(IMAGE_RUN_INDEX_PATH,indexDoc,idx.sha,"Actualizar cola de imágenes IA TTiTTulares");
-      break
-    }catch(e){
-      if(attempt===2||(!String(e.message||e).includes("409")&&!String(e.message||e).includes("422")))throw e
-    }
+    jobs.push({command_id,target_id,event_id:target_id,target_name,revision,requested_at,status_path:jobPath,executor:"pc_chat_ttittulares_dedicated"});
+    try{await writeControlJson(IMAGE_RUN_INDEX_PATH,{version:1,updated_at:requested_at,jobs:jobs.slice(-60)},idx.sha,"Actualizar cola Gag IA TTiTTulares");break}
+    catch(e){if(n===2||!/409|422/.test(String(e)))throw e}
   }
   return res.status(200).json({ok:true,task:"images",image_run:true,command_id,requested_at,target_id,target_name,revision,status_path:jobPath,commit_sha:saved?.commit?.sha||null})
 }
@@ -244,6 +455,14 @@ export default async function handler(req,res){
   const rawTask=String(req.body?.task||"editorial").toLowerCase();
   if(rawTask==="pc_ack"){
     try{return await requestPcAck(req,res)}
+    catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
+  }
+  if(rawTask==="image_pc_ack"){
+    try{return await requestImagePcAck(req,res)}
+    catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
+  }
+  if(rawTask==="image_upload"){
+    try{return await requestImageUpload(req,res)}
     catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
   }
   if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
