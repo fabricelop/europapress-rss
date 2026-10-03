@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-03T11:58:17.433213+00:00",
+  "checked_at": "2026-10-03T16:09:27.267382+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -55,7 +55,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 1.0,
-      "run_id": 37121290506,
+      "run_id": 37135747996,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,27 +75,38 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 2,
+      "overdue_count": 1,
+      "oldest_age_minutes": 77.3,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "bb5330a848cb",
+          "name": "Estadio de Vallecas",
+          "status": "preparing",
+          "age_minutes": 77.3
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "bb5330a848cb",
+        "1381068b62bc"
+      ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "config TTendencias incompatible con el modo activo"
+    "config TTendencias incompatible con el modo activo",
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 77.3 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 77.3 min | config TTendencias incompatible con el modo activo"
 }
