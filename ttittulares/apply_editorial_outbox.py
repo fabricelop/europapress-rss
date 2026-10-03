@@ -361,7 +361,7 @@ def _ai_image_disabled(item):
 
 
 def _initialize_parallel_images(item):
-    """Inicializa IA/fallback sin I/O de red; READY no espera a ninguna foto."""
+    """Inicializa solo fallback y elegibilidad IA; ImageGen se solicita manualmente desde el panel."""
     legacy=item.get("image")
     if legacy and not item.get("fallback_image") and not (isinstance(legacy,dict) and legacy.get("generated")):
         try:
@@ -382,13 +382,12 @@ def _initialize_parallel_images(item):
             item["fallback_image_status"]="pending"
         _select_image(item)
         return item
-    if item.get("ai_image"):
+    if item.get("ai_image") and not (isinstance(item.get("ai_image"),dict) and item["ai_image"].get("generated") and item["ai_image"].get("provider")=="chat-imagegen"):
         item.pop("ai_image",None)
-        item["ai_image_status"]="pending"
         item["ai_image_inline_rejected"]=True
-        item["ai_image_failure_reason"]="La IA inline se descartó; debe llegar por ttittulares/image-outbox V3."
-    elif not item.get("ai_image_status"):
-        item["ai_image_status"]="pending"
+    if str(item.get("ai_image_status") or "").casefold() not in {"ready","disabled"}:
+        item["ai_image_status"]="none"
+        item.pop("ai_image_failure_reason",None)
     if not item.get("fallback_image_status"):
         item["fallback_image_status"]="pending"
     _select_image(item)
@@ -397,7 +396,7 @@ def _initialize_parallel_images(item):
 
 
 def _finish_archive_image(item,row,events):
-    """Completa solo el fallback; ImageGen llega después por image-outbox V3."""
+    """Completa solo el fallback; cualquier Gag IA se solicita después manualmente desde el panel."""
     if _ai_image_disabled(item):
         item.pop("ai_image",None)
         item["disable_ai_image"]=True
@@ -413,11 +412,11 @@ def _finish_archive_image(item,row,events):
         item.pop("ai_image_regenerate_requested",None)
         item.pop("ai_image_regenerate_requested_at",None)
         return item["image_app_available"]
-    if item.get("ai_image"):
+    if item.get("ai_image") and not (isinstance(item.get("ai_image"),dict) and item["ai_image"].get("generated") and item["ai_image"].get("provider")=="chat-imagegen"):
         item.pop("ai_image",None)
         item["ai_image_inline_rejected"]=True
-    if not item.get("ai_image_status"):
-        item["ai_image_status"]="pending"
+    if str(item.get("ai_image_status") or "").casefold() not in {"ready","disabled"}:
+        item["ai_image_status"]="none"
     try:
         if str(item.get("fallback_image_status") or "") not in {"ready","none"}:
             _recover_fallback_image(item,row,events)
