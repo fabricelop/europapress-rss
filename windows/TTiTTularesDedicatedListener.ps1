@@ -16,7 +16,7 @@ $TriggerApiUrl = "$StatusBase/api/ttittulares-run-status?view=trigger"
 $ImageIndexUrl = "$StatusBase/api/ttittulares-run-status?view=image-index&strong=1"
 $ImageJobUrlBase = "$StatusBase/api/ttittulares-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v17"
+$WorkerId = "ttittulares-dedicated-v18"
 $PollSeconds = 5
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -406,6 +406,10 @@ function Read-NewLauncherText([long]$Offset) {
   } catch { return "" }
 }
 
+function Build-EditorialMessage([string]$CommandId) {
+  return "TTITTULARES_EDITORIAL_JOB_V2 $CommandId | Ejecuta AHORA la pasada editorial real de TTiTTulares. Lee primero ttittulares/editorial-run-prompt.md y el estado autoritativo de ttittulares/editorial-queue.json, ttittulares/status.json y telegram/editorial-processing.json. Procesa TODOS los PROCESSING activos y las reelaboraciones rewrite_pending vigentes. Relee estado antes de declarar cola vacía. NO llames a ImageGen ni generes imágenes en esta pasada. Solo puedes cerrar 0/0 si no queda ningún PROCESSING activo ni rewrite_pending."
+}
+
 function Launch-TTiTTulares([string]$CommandId) {
   if (-not (Test-Path -LiteralPath $Runner)) {
     $detail = "No existe $Runner"
@@ -419,12 +423,14 @@ function Launch-TTiTTulares([string]$CommandId) {
   $launchErr = Join-Path $BaseDir ("ttittulares-launch-" + $safeCommandId + ".err.log")
   Remove-Item -LiteralPath $launchLog,$launchErr -Force -ErrorAction SilentlyContinue
 
-  # Editorial: usar EXACTAMENTE el mensaje por defecto que ya funciona
-  # ("Ejecuta TTiTTulares"). No inyectar TT_CHAT_MESSAGE_B64.
+  # Editorial: mensaje explícito y auditable, igual que los jobs de imagen.
   $old = $env:TT_CHAT_MESSAGE_B64
   $proc = $null
+  $editorialMessage = Build-EditorialMessage $CommandId
+  $editorialMarker = "TTITTULARES_EDITORIAL_JOB_V2 $CommandId"
   try {
-    Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($editorialMessage)
+    $env:TT_CHAT_MESSAGE_B64 = [Convert]::ToBase64String($bytes)
 
     $node = Get-Command node.exe -ErrorAction SilentlyContinue
     if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
@@ -432,7 +438,7 @@ function Launch-TTiTTulares([string]$CommandId) {
 
     $proc = Start-Process -FilePath $node.Source -ArgumentList @($Runner,"titulares","--enviar") -WindowStyle Hidden -PassThru -RedirectStandardOutput $launchLog -RedirectStandardError $launchErr
     if (-not $proc) { throw "Start-Process no devolvió proceso" }
-    Write-Log "EDITORIAL PROCESS STARTED direct-node-real-default-message pid=$($proc.Id) command=$CommandId stdout=$launchLog stderr=$launchErr"
+    Write-Log "EDITORIAL PROCESS STARTED direct-node-real-explicit-message pid=$($proc.Id) command=$CommandId marker=$editorialMarker stdout=$launchLog stderr=$launchErr"
   } catch {
     $detail = "No se pudo lanzar Ejecutar.js titulares --enviar: $($_.Exception.Message)"
     Write-Log "EDITORIAL PROCESS ERROR command=$CommandId :: $detail"
@@ -461,14 +467,13 @@ function Launch-TTiTTulares([string]$CommandId) {
     }
 
     $realMode = $newText -match "MODO:\s*ENVIO REAL"
-    $defaultMessage = $newText -match "Mensaje preparado:\s*Ejecuta TTiTTulares"
     $responseStarted = $newText -match '"generando"\s*:\s*true'
     $messageSent = $newText -match "MENSAJE ENVIADO"
     $executionLaunched = $newText -match "EJECUCION LANZADA"
 
-    if ($realMode -and $defaultMessage -and ($messageSent -or $executionLaunched -or $responseStarted)) {
+    if ($realMode -and ($messageSent -or $executionLaunched -or $responseStarted)) {
       $why = if ($responseStarted) { "generando:true" } elseif ($executionLaunched) { "EJECUCION LANZADA" } else { "MENSAJE ENVIADO" }
-      Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId via=direct-node-real-default/$why"
+      Write-Log "CHAT MESSAGE CONFIRMED command=$CommandId marker=$editorialMarker via=direct-node-real-explicit/$why"
       $launched = Send-Ack $CommandId "launched"
       if ($launched -ne "OK") { Write-Log "LAUNCHED ACK WARNING command=$CommandId result=$launched" }
       return $true
@@ -496,7 +501,7 @@ function Launch-TTiTTulares([string]$CommandId) {
     } catch {}
   }
 
-  $detail = "Ejecutar.js titulares --enviar no confirmó el mensaje por defecto en $($LaunchConfirmSeconds)s. Log: $launchLog"
+  $detail = "Ejecutar.js titulares --enviar no confirmó el mensaje editorial explícito en $($LaunchConfirmSeconds)s. Log: $launchLog"
   Write-Log "CHAT MESSAGE TIMEOUT command=$CommandId stdout=$launchLog stderr=$launchErr"
   [void](Send-Ack $CommandId "failed" $detail)
   return $false
