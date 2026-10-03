@@ -448,11 +448,12 @@ function renderCard(x,pending){
  const aiUrl=String(ai.url||""),fallbackUrl=String(fallback.url||"");
  const aiRaw=String(x.ai_image_status||"").toLowerCase(),aiRegenerating=Boolean(x.ai_image_regenerate_requested),aiRegenerationError=String(x.ai_image_regeneration_error||"");
  let aiClass="aiNone",aiText="— IA no solicitada";
- if(aiRegenerating){aiClass="aiRework";aiText="↻ Nueva IA solicitada · espera antes de publicar"}
- else if(aiRegenerationError){aiClass="aiPending";aiText="◷ Pendiente IA · fallo anterior"}
+ if(aiRegenerating){aiClass="aiRework";aiText="↻ Nueva IA marcada · pulsa Imágenes"}
  else if(aiUrl){aiClass="aiReady";aiText="✓ IA lista"}
- else if(["failed","none","error","disabled",""].includes(aiRaw)){aiClass="aiPending";aiText="◷ Pendiente IA"+(["failed","error"].includes(aiRaw)?" · fallo anterior":"")}
- else if(["pending","started","tool_called"].includes(aiRaw)){aiClass="aiPending";aiText="● IA pendiente/generándose"}
+ else if(aiRegenerationError){aiClass="aiFailed";aiText="— IA no solicitada · intento anterior falló"}
+ // Estados pending/started/tool_called heredados ya no implican solicitud manual.
+ // Solo un job vivo en imageRuns puede mostrar "solicitada/generándose".
+ else{aiClass="aiNone";aiText="— IA no solicitada"}
  const liveRun=liveImageRunState(x);
  if(liveRun&&(imageRunActive(imageRuns.get(String(x.id||"")))||["ERROR","CANCELLED"].includes(String(imageRuns.get(String(x.id||""))?.status||"").toUpperCase()))){aiClass=liveRun.aiCls;aiText=liveRun.text}
  const aiStatus=card.querySelector(".aiStatusBadge");aiStatus.classList.add(aiClass);aiStatus.textContent=aiText+(fallbackUrl?" · archivo disponible":" · sin archivo");
