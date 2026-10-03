@@ -1,20 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T21:35:37.991881Z",
-      "event_id": "0ec9b53c91e8-r1",
-      "phase": "outbox",
-      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T21:35:37.991881Z",
-      "event_id": "4da79a83822c-r1",
-      "phase": "outbox",
-      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-27T21:37:04.049713Z",
       "event_id": "0ec9b53c91e8-r1",
       "phase": "outbox",
@@ -1399,6 +1385,20 @@
       "phase": "outbox",
       "reason": "93a97601ab8d-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 93a97601ab8d-r1: 93a97601ab8d-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-03T21:58:46.435271Z",
+      "event_id": "1a01bff39bcb-r1",
+      "phase": "outbox",
+      "reason": "1a01bff39bcb-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 1a01bff39bcb-r1: 1a01bff39bcb-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-03T21:58:46.435271Z",
+      "event_id": "93a97601ab8d-r1",
+      "phase": "outbox",
+      "reason": "93a97601ab8d-r1.json: ValueError: tweet vacío o >280",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 93a97601ab8d-r1: 93a97601ab8d-r1.json: ValueError: tweet vacío o >280. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
