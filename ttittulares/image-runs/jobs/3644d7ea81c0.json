@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-1791006149504-f2cb70",
   "requested_at": "2026-10-03T05:42:29.504Z",
-  "updated_at": "2026-10-03T05:42:43.381Z",
-  "status": "RUNNING",
-  "phase": "pc_launch",
+  "updated_at": "2026-10-03T05:44:00.015Z",
+  "status": "PERSISTING",
+  "phase": "image_persist",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -46,9 +46,12 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
   },
-  "message": "PC ha abierto el chat de imagen; esperando ImageGen.",
+  "message": "Raster recibido; guardando Gag IA en main.",
   "pc_upload_secret_hash": "446a3ce75f7b7e4d3453297f47baaa78402de95eb51fd39c33cc8e6d0c671d9d",
   "pc_worker_id": "ttittulares-dedicated-v17",
   "pc_picked_up_at": "2026-10-03T05:42:32.193Z",
-  "pc_launched_at": "2026-10-03T05:42:43.381Z"
+  "pc_launched_at": "2026-10-03T05:42:43.381Z",
+  "upload_received_at": "2026-10-03T05:44:00.015Z",
+  "upload_sha256": "79f226bde589a1074bafb5d8bd4b98b2d3feb75477fd43c8fac6b0a20f07b9c9",
+  "upload_bytes": 323892
 }
