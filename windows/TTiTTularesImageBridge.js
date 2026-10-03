@@ -77,7 +77,17 @@ async function findChat(){
           console.log("BRIDGE TARGET MARKER "+String(st.url||""));
           return c
         }
-        const score=(st&&st.generating?40:0)+(st&&/TTiTTulares/i.test(String(st.title||""))?15:0)+(String(st&&st.url||"").includes("/c/")?5:0);
+        const title=String(st&&st.title||"");
+        const projectMatch=/TTiTTulares/i.test(title)&&!/TTendencias/i.test(title);
+        const oppositeMatch=/TTendencias/i.test(title);
+        // La UI actual de ChatGPT puede no exponer los turnos/marker aunque ImageGen
+        // esté ejecutándose. En ese caso, una pestaña dedicada del proyecto que está
+        // generando es una señal más fiable que otra pestaña generando de la otra app.
+        if(st&&st.generating&&projectMatch){
+          console.log("BRIDGE TARGET PROJECT-GENERATING "+String(st.url||""));
+          return c
+        }
+        const score=(projectMatch?500:0)+(st&&st.generating?80:0)+(String(st&&st.url||"").includes("/c/")?10:0)-(oppositeMatch?1000:0);
         if(score>bestScore){best=t;bestScore=score;bestInfo=st}
       }catch{}
       c.close()
