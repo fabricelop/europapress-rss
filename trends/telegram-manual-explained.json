@@ -14593,12 +14593,12 @@
         "Belén",
         "Ángela Portero"
       ],
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 1,
       "fallback_image_status": "none",
       "fallback_image_strategy": "existing_web_image",
-      "image_choice": null,
-      "image_status": "none",
+      "image_choice": "ai",
+      "image_status": "ready",
       "image_pending": false,
       "group_id": "grp-413c73f54712",
       "group_title": "De Viernes · regreso de Belén Esteban",
@@ -14642,7 +14642,53 @@
           "name": "Ángela Portero",
           "revision": 1
         }
-      ]
+      ],
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/413c73f54712-r1-ai1-29716-eeb02c.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f541be5ec06ad1abc070dddc4f57dc3c816ffa405bb28f072c53f6a9ab8572a2",
+        "width": 800,
+        "height": 706,
+        "bytes": 19615,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "413c73f54712",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791011329716-eeb02c"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/413c73f54712-r1-ai1-29716-eeb02c.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-03T07:10:50.069Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/413c73f54712-r1-ai1-29716-eeb02c.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f541be5ec06ad1abc070dddc4f57dc3c816ffa405bb28f072c53f6a9ab8572a2",
+        "width": 800,
+        "height": 706,
+        "bytes": 19615,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "413c73f54712",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791011329716-eeb02c"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/413c73f54712-r1-ai1-29716-eeb02c.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     },
     {
       "id": "68b1fa61df02",
@@ -15525,6 +15571,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-03T07:06:00.000Z",
+  "updated_at": "2026-10-03T07:10:50.069Z",
   "count": 441
 }
