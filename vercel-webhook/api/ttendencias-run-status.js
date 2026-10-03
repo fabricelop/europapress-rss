@@ -348,7 +348,13 @@ export default async function handler(req,res){
         if(!id)return null;
         const path=String(j?.status_path||IMAGE_RUN_DIR+"/"+id+".json");
         const d=await readControlBranchJson(path,false);
-        if(!d||!Object.keys(d).length)return {...j,target_id:id,status:"UNKNOWN"};
+        if(!d||!Object.keys(d).length)return {...j,target_id:id,status:"REQUESTED",phase:"queued"};
+        // RAW puede tardar unos segundos en reflejar una reejecución sobre el mismo target_id.
+        // Si el job leído pertenece a un command_id anterior, no mezclar su ERROR/DONE con
+        // la nueva entrada del índice: la nueva ejecución está solicitada y debe mostrarse activa.
+        if(String(d.command_id||"")!==String(j.command_id||"")){
+          return {...j,target_id:id,status:"REQUESTED",phase:"queued",target_name:j.target_name||id}
+        }
         return {...j,...d,target_id:id,target_name:d.target_name||j.target_name||id}
       }))).filter(Boolean);
       const activeStates=new Set(["REQUESTED","RUNNING","GENERATING","PERSISTING"]);
