@@ -17,7 +17,7 @@ $ImageIndexUrl = "$StatusBase/api/ttendencias-run-status?view=image-index&strong
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
 
-$WorkerId = "ttendencias-dedicated-v10"
+$WorkerId = "ttendencias-dedicated-v11"
 $PollSeconds = 5
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
@@ -430,6 +430,10 @@ function Refresh-ActiveImages($State,$Index) {
   $State.active_image_commands = @($active | Select-Object -Unique)
 }
 
+function Build-EditorialMessage([string]$CommandId) {
+  return "TTENDENCIAS_EDITORIAL_JOB_V2 $CommandId | Ejecuta AHORA la pasada editorial real de TTendencias. Lee primero trends/editorial-run-prompt.md y trends/editorial-queue.json desde main. Antes de declarar cola vacía, relee editorial-queue.json y procesa TODOS los items status preparing/update, del más antiguo al más reciente, validando cada (id,revision) justo antes de tratarlo. NO llames a ImageGen ni generes imágenes en esta pasada. Solo puedes cerrar 0/0 si, tras releer main, no queda ningún preparing/update ni reexplicación pendiente."
+}
+
 function Build-ImageMessage($Job) {
   $targetId = [string]$Job.target_id
   $targetName = [string]$Job.target_name
@@ -501,7 +505,9 @@ while ($true) {
               # Editorial usa el mismo lanzador robusto que las imágenes:
               # solo damos ACK launched cuando Ejecutar.js confirma que el mensaje
               # fue enviado o que ChatGPT ya empezó a responder.
-              $messageSent = Launch-ProjectChat "editorial command=$commandId"
+              $editorialMessage = Build-EditorialMessage $commandId
+              $editorialMarker = "TTENDENCIAS_EDITORIAL_JOB_V2 $commandId"
+              $messageSent = Launch-ProjectChat "editorial command=$commandId" $editorialMessage $editorialMarker
               if ($messageSent) {
                 $launched = Send-Ack $commandId "launched"
                 if ($launched -ne "OK") { Write-Log "LAUNCH ACK WARNING command=$commandId result=$launched" }
