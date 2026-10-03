@@ -397,8 +397,6 @@ function Launch-EditorialProcess([string]$CommandId) {
 
 function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$ExpectedMarker = "") {
   if (-not (Test-Path -LiteralPath $Runner)) { throw "No existe $Runner" }
-  Ensure-RunnerNewChatCompatibility | Out-Null
-
   $safeReason = ($Reason -replace '[^A-Za-z0-9._-]','_')
   if ($safeReason.Length -gt 80) { $safeReason = $safeReason.Substring(0,80) }
   $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
@@ -554,7 +552,6 @@ $state = Load-State
 Ensure-StateFields $state
 Save-State $state
 
-Ensure-RunnerNewChatCompatibility | Out-Null
 $CustomMessageSupport = Enable-CustomChatMessages
 
 $probe = Read-Trigger
