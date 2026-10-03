@@ -56,7 +56,7 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TTITTULARES_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee ttittulares/image-runs/jobs/"+targetId+".json en control/ttittulares-run-trigger-v2 para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v9";
+const BRIDGE_MODE="capture-only-v10-img-only";
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp){
@@ -94,54 +94,49 @@ function probeExpression(){
     "const command="+JSON.stringify(commandId)+";",
     "const root=document.querySelector('main')||document.body;",
     "const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");",
-    "const turnSel='[data-message-author-role],[data-testid^=\"conversation-turn-\"],article';",
-    "const turnNodes=[...root.querySelectorAll(turnSel)];",
-    "const outsideComposer=el=>!(composer&&(el===composer||el.contains(composer)||composer.contains(el)));",
-    "let anchor=turnNodes.find(el=>outsideComposer(el)&&String(el.innerText||el.textContent||'').includes(command))||null;",
-    "if(!anchor){",
-    " const nodes=[...root.querySelectorAll('div,p,span')].filter(el=>{if(!outsideComposer(el))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<5000});",
-    " nodes.sort((a,b)=>String(a.innerText||a.textContent||'').length-String(b.innerText||b.textContent||'').length);",
-    " const leaf=nodes[0]||null;anchor=leaf?(leaf.closest(turnSel)||leaf):null;",
-    "}",
-    "const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));",
-    "if(!anchor){const ct=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');return {found:false,diag:{marker:false,composerMarker:ct.includes(command),turns:turnNodes.length,generating,imagesAfterMarker:0,candidates:0,canvases:0,assistantTail:''}};}",
-    "const follows=el=>el!==anchor&&Boolean(anchor.compareDocumentPosition(el)&Node.DOCUMENT_POSITION_FOLLOWING);",
-    "const afterTurns=turnNodes.filter(follows);",
-    "const allImgs=[...document.querySelectorAll('img')].filter(follows);",
-    "const imgs=allImgs.map(img=>{const r=img.getBoundingClientRect(),src=String(img.currentSrc||img.src||''),alt=String(img.alt||'').toLowerCase(),nw=Number(img.naturalWidth||0),nh=Number(img.naturalHeight||0);return {img,r,src,alt,nw,nh,area:Math.max(nw*nh,r.width*r.height)}}).filter(x=>x.r.width>=240&&x.r.height>=140&&!/avatar|emoji|icon|logo|profile/.test(x.alt)&&!x.src.includes('avatar')).sort((a,b)=>b.area-a.area);",
-    "const canvases=[...document.querySelectorAll('canvas')].filter(follows).map(el=>{const r=el.getBoundingClientRect();return {el,r,area:r.width*r.height}}).filter(x=>x.r.width>=320&&x.r.height>=180).sort((a,b)=>b.area-a.area);",
-    "const tail=afterTurns.map(x=>String(x.innerText||x.textContent||'').trim()).filter(Boolean).join(' | ').slice(-700);",
-    "const diag={marker:true,turns:turnNodes.length,afterTurns:afterTurns.length,generating,imagesAfterMarker:allImgs.length,candidates:imgs.length,canvases:canvases.length,assistantTail:tail};",
-    "if(!imgs.length){if(canvases.length){const r=canvases[0].r;return {found:true,kind:'canvas',width:Math.round(r.width),height:Math.round(r.height),rect:{x:r.left+scrollX,y:r.top+scrollY,width:r.width,height:r.height},diag}};return {found:false,diag};}",
-    "const c=imgs[0],img=c.img,src=c.src,r=c.r;",
-    "const info={found:true,kind:'img',width:c.nw||Math.round(r.width),height:c.nh||Math.round(r.height),rect:{x:r.left+scrollX,y:r.top+scrollY,width:r.width,height:r.height},diag};",
-    "try{const rr=await fetch(src,{credentials:'include'});if(rr.ok){const blob=await rr.blob();if(blob.size>=4096&&blob.size<=1900000){const u8=new Uint8Array(await blob.arrayBuffer());let bin='';for(let i=0;i<u8.length;i+=32768)bin+=String.fromCharCode(...u8.subarray(i,i+32768));info.dataUrl='data:'+(blob.type||'image/png')+';base64,'+btoa(bin);info.capture='original-fetch';return info}}}catch(_){}",
-    "try{if(c.nw>=640&&c.nh>=360){const max=1400,scale=Math.min(1,max/Math.max(c.nw,c.nh)),w=Math.round(c.nw*scale),h=Math.round(c.nh*scale),cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d',{alpha:false}).drawImage(img,0,0,w,h);for(const q of [0.9,0.84,0.76,0.68]){const data=cv.toDataURL('image/jpeg',q);if(data.length<=2600000){info.dataUrl=data;info.width=w;info.height=h;info.capture='canvas-jpeg-'+q;return info}}}}catch(_){}",
+    "const markerNodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<7000});",
+    "const marker=markerNodes.length>0;",
+    "const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));",
+    "const all=[...document.querySelectorAll('img')].map((img,index)=>{const r=img.getBoundingClientRect(),src=String(img.currentSrc||img.src||''),alt=String(img.alt||''),nw=Number(img.naturalWidth||0),nh=Number(img.naturalHeight||0),vis=r.width>=180&&r.height>=120&&r.bottom>0&&r.right>0;const ratio=nh?nw/nh:0;const area=nw*nh;const sourceScore=/oaiusercontent|openai|blob:|generated|image/i.test(src+' '+alt)?80:0;const altScore=/generated|image|imagen/i.test(alt)?25:0;const sizeScore=Math.min(60,Math.floor(area/25000));const uiPenalty=/avatar|emoji|icon|logo|profile|thumbnail/i.test((alt+' '+src).toLowerCase())?200:0;return {index,img,r,src,alt,nw,nh,ratio,area,vis,score:sourceScore+altScore+sizeScore-uiPenalty}}).filter(x=>x.vis&&x.nw>=640&&x.nh>=360&&x.area>=300000&&x.score>-50).sort((a,b)=>b.score-a.score||b.area-a.area);",
+    "const diag={marker,turns:document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length,generating,imagesAfterMarker:all.length,candidates:all.length,canvases:document.querySelectorAll('canvas').length,top:all.slice(0,3).map(x=>({nw:x.nw,nh:x.nh,ratio:Number(x.ratio.toFixed(3)),alt:x.alt.slice(0,80),src:x.src.slice(0,120),score:x.score}))};",
+    "if(!all.length)return {found:false,diag};",
+    "const c=all[0],img=c.img,src=c.src,r=c.r;",
+    "const info={found:true,kind:'img',width:c.nw,height:c.nh,rect:{x:r.left+scrollX,y:r.top+scrollY,width:r.width,height:r.height},candidateIndex:c.index,diag};",
+    "try{const rr=await fetch(src,{credentials:'include'});if(rr.ok){const blob=await rr.blob();if(blob.size>=12000&&blob.size<=3000000&&String(blob.type||'').startsWith('image/')){const u8=new Uint8Array(await blob.arrayBuffer());let bin='';for(let i=0;i<u8.length;i+=32768)bin+=String.fromCharCode(...u8.subarray(i,i+32768));info.dataUrl='data:'+(blob.type||'image/png')+';base64,'+btoa(bin);info.capture='original-fetch-img';return info}}}catch(_){}",
+    "try{const max=1600,scale=Math.min(1,max/Math.max(c.nw,c.nh)),w=Math.round(c.nw*scale),h=Math.round(c.nh*scale),cv=document.createElement('canvas');cv.width=w;cv.height=h;const cx=cv.getContext('2d',{alpha:false});cx.drawImage(img,0,0,w,h);for(const q of [0.92,0.86,0.78]){const data=cv.toDataURL('image/jpeg',q);if(data.length>=16000&&data.length<=3900000){info.dataUrl=data;info.width=w;info.height=h;info.capture='canvas-from-img-'+q;return info}}}catch(_){}",
     "return info;",
     "})()"
-  ].join("\n")
+  ].join("\\n")
 }
 async function capture(cdp){
-  const deadline=Date.now()+2*60*1000;
+  const deadline=Date.now()+3*60*1000;
   let lastDiag=null,lastEvalError=null;
   while(Date.now()<deadline){
     let p;try{p=await cdp.eval(probeExpression(),true)}catch(e){lastEvalError=String(e&&e.message||e)}
     if(p&&p.diag)lastDiag=p.diag;
     if(p&&p.dataUrl&&p.width>=640&&p.height>=360)return p;
-    if(p&&p.found&&p.rect&&p.rect.width>=320&&p.rect.height>=180){
+    // Fallback seguro: screenshot SOLO del elemento <img> candidato. Nunca del turno,
+    // card, canvas o viewport completo.
+    if(p&&p.found&&p.kind==="img"&&p.rect&&p.rect.width>=180&&p.rect.height>=120){
       try{
-        const scale=Math.min(2.5,Math.max(1,640/Math.max(1,p.rect.width),360/Math.max(1,p.rect.height)));
-        for(const quality of [90,82,74]){
-          const cap=await cdp.call("Page.captureScreenshot",{format:"jpeg",quality,fromSurface:true,clip:{x:p.rect.x,y:p.rect.y,width:p.rect.width,height:p.rect.height,scale}});
-          const w=Math.round(p.rect.width*scale),h=Math.round(p.rect.height*scale);
-          if(cap&&cap.data&&cap.data.length<=2600000&&w>=640&&h>=360)return {dataUrl:"data:image/jpeg;base64,"+cap.data,width:w,height:h,capture:"cdp-element-screenshot-x"+scale.toFixed(2)+"-q"+quality,diag:p.diag||null}
+        const naturalRatio=Number(p.width||0)/Math.max(1,Number(p.height||1));
+        const rectRatio=Number(p.rect.width||0)/Math.max(1,Number(p.rect.height||1));
+        if(naturalRatio>=0.7&&naturalRatio<=2.2&&Math.abs(Math.log(Math.max(0.01,naturalRatio)/Math.max(0.01,rectRatio)))<0.45){
+          const scale=Math.min(3,Math.max(1,640/Math.max(1,p.rect.width),360/Math.max(1,p.rect.height)));
+          for(const quality of [92,86,78]){
+            const cap=await cdp.call("Page.captureScreenshot",{format:"jpeg",quality,fromSurface:true,clip:{x:p.rect.x,y:p.rect.y,width:p.rect.width,height:p.rect.height,scale}});
+            const w=Math.round(p.rect.width*scale),h=Math.round(p.rect.height*scale);
+            if(cap&&cap.data&&cap.data.length>=16000&&cap.data.length<=3900000&&w>=640&&h>=360){
+              return {dataUrl:"data:image/jpeg;base64,"+cap.data,width:w,height:h,capture:"image-element-screenshot-x"+scale.toFixed(2)+"-q"+quality,diag:p.diag||null}
+            }
+          }
         }
       }catch{}
     }
-    await sleep(1800)
+    await sleep(1500)
   }
-  const diag=lastDiag?JSON.stringify(lastDiag).slice(0,350):(lastEvalError?("eval_error="+lastEvalError):"sin diagnóstico DOM");
-  throw Error("No apareció un raster capturable en 2 minutos; "+diag)
+  const diag=lastDiag?JSON.stringify(lastDiag).slice(0,900):(lastEvalError?("eval_error="+lastEvalError):"sin diagnóstico DOM");
+  throw Error("No apareció un raster ImageGen capturable en 3 minutos; "+diag)
 }
 async function post(body){
   const r=await fetch(RUN_URL,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
