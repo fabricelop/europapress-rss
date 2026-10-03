@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-03T09:35:18.083Z",
+  "updated_at": "2026-10-03T09:37:31.387Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -358,13 +358,16 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "fallback_image_status": "none",
       "image_choice": "none",
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-03T09:37:31.387Z",
+      "ai_image_failure_reason": "Upload 422: Raster rechazado: el bridge no acredita captura del elemento de imagen"
     },
     {
       "event_id": "83986ca4f1a5",
