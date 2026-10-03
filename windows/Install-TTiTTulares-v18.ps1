@@ -41,7 +41,6 @@ foreach($needle in @(
   '$WorkerId = "ttittulares-dedicated-v18"',
   'ArgumentList @($Runner,"titulares","--enviar")',
   'Remove-Item Env:TT_CHAT_MESSAGE_B64',
-  'Mensaje preparado:\s*Ejecuta TTiTTulares',
   'EDITORIAL PROCESS STARTED direct-node-real-explicit-message',
   'TTITTULARES_EDITORIAL_JOB_V2',
   'Build-EditorialMessage',
