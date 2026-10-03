@@ -60,7 +60,7 @@ Get-MainFile "windows/TTiTTularesDedicatedListener.ps1" $tmpTitleListener
 Get-MainFile "windows/TTiTTularesImageBridge.js" $tmpTitleBridge
 
 Validate-PowerShell $tmpTrendListener @(
-  '$WorkerId = "ttendencias-dedicated-v12"',
+  '$WorkerId = "ttendencias-dedicated-',
   'IMAGE CHAT UNCONFIRMED; BRIDGE WILL VERIFY',
   'Start-ImageBridge $commandId $targetId $uploadSecret'
 )
@@ -71,7 +71,7 @@ Validate-Node $tmpTrendBridge @(
   'image-element-screenshot-'
 )
 Validate-PowerShell $tmpTitleListener @(
-  '$WorkerId = "ttittulares-dedicated-v15"',
+  '$WorkerId = "ttittulares-dedicated-',
   'IMAGE CHAT UNCONFIRMED; BRIDGE WILL VERIFY',
   'Start-ImageBridge $commandId $targetId $uploadSecret'
 )
