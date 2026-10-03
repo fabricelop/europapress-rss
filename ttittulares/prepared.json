@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-03T05:14:39.597155Z",
+  "updated_at": "2026-10-03T05:16:46.183148Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -375,9 +375,9 @@
       "trend_context": [],
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -392,13 +392,46 @@
       },
       "fallback_image_search_attempted_at": "2026-10-03T04:58:44.196450Z",
       "image": {
-        "url": "https://www.servimedia.es/sites/default/files/noticias/A/A1-1413382434-1.jpg",
-        "source": "Servimedia",
-        "source_url": "https://www.servimedia.es/noticias/congreso-tumba-decreto-vivienda-votos-pp-vox-junts/1413382434",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Rufián vuelve a usar un billete de 50 euros y unas llaves para criticar a Junts por los decretos de vivienda"
-      }
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "alt": "Gag editorial: un billete de 50 euros y unas llaves gigantes dominan un atril parlamentario.",
+        "context_guard": {
+          "version": 3,
+          "event_id": "dc4ef402edb8",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/dc4ef402edb8-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/dc4ef402edb8-r1-ai1.jpg",
+        "sha256": "3fb88d60603cbfc20e5c6ce75d1fadb83f56ee72ce8f792ad615f8721f2cd7b2",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "alt": "Gag editorial: un billete de 50 euros y unas llaves gigantes dominan un atril parlamentario.",
+        "context_guard": {
+          "version": 3,
+          "event_id": "dc4ef402edb8",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/dc4ef402edb8-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/dc4ef402edb8-r1-ai1.jpg",
+        "sha256": "3fb88d60603cbfc20e5c6ce75d1fadb83f56ee72ce8f792ad615f8721f2cd7b2",
+        "handoff": "inline-outbox-materialized-by-actions"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-03T05:16:46.183104Z"
     },
     {
       "event_id": "18caeef46e05",
