@@ -27758,15 +27758,18 @@
         }
       ],
       "selected_at": "2026-10-03T10:33:27.693426Z",
-      "status": "PROCESSING",
+      "status": "PROBLEMATIC",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
       "parent_event_id": null,
       "update_context": null,
       "parallel_source_claimed_at": null,
       "with_image": true,
-      "image_mode": "ai_plus_fallback"
+      "image_mode": "ai_plus_fallback",
+      "problematic_at": "2026-10-03T10:48:58.854477Z",
+      "problem_reason": "La entrada coincide editorialmente con db372192b25b, ya materializada en READY, y no aporta una novedad material independiente. El aplicador solo puede reconciliar duplicados de forma terminal cuando la entrada original consta PUBLISHED o DISMISSED; preparar otra copia crearía un duplicado visible.",
+      "problematic_attempts": 1
     }
   ],
-  "updated_at": "2026-10-03T10:48:25.645014Z"
+  "updated_at": "2026-10-03T10:48:58.854477Z"
 }

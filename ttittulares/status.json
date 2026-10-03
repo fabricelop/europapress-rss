@@ -1,8 +1,8 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-03T10:48:25.645014Z",
+  "updated_at": "2026-10-03T10:48:58.854477Z",
   "radar_at": "2026-10-03T10:32:55.403691Z",
-  "processing_count": 2,
+  "processing_count": 1,
   "processing_items": [
     {
       "event_id": "3dee70729947",
@@ -51,59 +51,30 @@
       "parallel_source_claimed_at": null,
       "with_image": true,
       "image_mode": "ai_plus_fallback"
-    },
+    }
+  ],
+  "ready_count": 9,
+  "problematic_count": 2,
+  "problematic_items": [
     {
       "event_id": "225ba2505b57",
       "title": "Manifestaciones por la vivienda en toda España llaman a una huelga general",
       "url": "https://www.abc.es/economia/ultima-hora-decreto-vivienda-directo-votacion-aprobacion-20261002100014-di.html",
+      "selected_at": "2026-10-03T10:33:27.693426Z",
+      "problematic_at": "2026-10-03T10:48:58.854477Z",
+      "problem_reason": "La entrada coincide editorialmente con db372192b25b, ya materializada en READY, y no aporta una novedad material independiente. El aplicador solo puede reconciliar duplicados de forma terminal cuando la entrada original consta PUBLISHED o DISMISSED; preparar otra copia crearía un duplicado visible.",
+      "problematic_attempts": 1,
+      "user_validated": false,
+      "user_validated_at": null,
+      "revision": 1,
+      "source_count": 4,
       "sources": [
         "20minutos",
         "ABC",
         "Público",
         "laSexta Noticias"
-      ],
-      "source_count": 4,
-      "drafted_source_count": 4,
-      "source_evidence": [
-        {
-          "source": "ABC",
-          "title": "Manifestaciones por la vivienda en toda España llaman a una huelga general",
-          "url": "https://www.abc.es/economia/ultima-hora-decreto-vivienda-directo-votacion-aprobacion-20261002100014-di.html",
-          "first_seen": "2026-10-03T10:22:37.589175Z"
-        },
-        {
-          "source": "Público",
-          "title": "Comienzan las manifestaciones por la vivienda en toda España",
-          "url": "https://www.publico.es/economia/vivienda/ultima-hora-protestas-vivienda-directo.html",
-          "first_seen": "2026-10-03T10:22:37.589175Z"
-        },
-        {
-          "source": "laSexta Noticias",
-          "title": "Última hora Manifestaciones por la vivienda en directo | Hartazgo e indignación en toda España: las protestas toman la calle por la crisis de vivienda con la huelga general en el horizonte Jorge Bautista 03 de octubre de 2026, 08:00",
-          "url": "https://www.lasexta.com/noticias/nacional/protestas-vivienda-directo_202610036ac099f21c30184d44b3d683.html",
-          "first_seen": "2026-10-03T10:22:37.589175Z"
-        },
-        {
-          "source": "20minutos",
-          "title": "Manifestaciones por la vivienda hoy en España, en directo | Miles de personas salen a las calles en Madrid y otras ciudades por la vivienda: \"Hacia la huelga general\"",
-          "url": "https://www.20minutos.es/nacional/manifestaciones-vivienda-hoy-espana-directo-protestas-calles-ciudades-madrid-congreso-tumbar-decretos_7044389_6.html",
-          "first_seen": "2026-10-03T10:32:55.403691Z"
-        }
-      ],
-      "selected_at": "2026-10-03T10:33:27.693426Z",
-      "status": "PROCESSING",
-      "selection_mode": "AUTO_WEB",
-      "revision": 1,
-      "parent_event_id": null,
-      "update_context": null,
-      "parallel_source_claimed_at": null,
-      "with_image": true,
-      "image_mode": "ai_plus_fallback"
-    }
-  ],
-  "ready_count": 9,
-  "problematic_count": 1,
-  "problematic_items": [
+      ]
+    },
     {
       "event_id": "41fbb2ed58fc",
       "title": "Noticias de la Comunidad Valenciana - EFE - Agencia de noticias",
