@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-1791005363828-981596",
-  "requested_at": "2026-10-03T05:29:23.828Z",
-  "updated_at": "2026-10-03T05:31:46.235Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-1791011329716-eeb02c",
+  "requested_at": "2026-10-03T07:08:49.716Z",
+  "updated_at": "2026-10-03T07:08:49.716Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -22,9 +22,12 @@
     "explanation": "TT#2 #DeViernes es tendencia por el regreso en directo de Belén Esteban a Telecinco, donde respondió a la familia Janeiro y se reencontró con Beatriz Trapote y Terelu Campos.\n🌶️ Belén volvió al plató y el felpudo decía «pase, pero venga a responder».",
     "closer_text": "🌶️ Belén volvió al plató y el felpudo decía «pase, pero venga a responder».",
     "trend_names": [
-      "#DeViernes"
+      "#DeViernes",
+      "Terelu",
+      "Belén",
+      "Ángela Portero"
     ],
-    "group_title": "",
+    "group_title": "De Viernes · regreso de Belén Esteban",
     "rank_at_explanation": 2,
     "explained_at": "2026-10-03T07:20:45+02:00",
     "verification_sources": [
@@ -35,6 +38,10 @@
       {
         "source": "Tribuna de Burgos · 2/10/2026",
         "url": "https://www.tribunaburgos.com/noticias/461138/belen-esteban-regresa-al-prime-time-dispuesta-a-responder-a-todos-los-frentes-que-ha-abierto-su-vuelta-a-telecinco"
+      },
+      {
+        "source": "El Televisero · 3/10/2026",
+        "url": "https://eltelevisero.huffingtonpost.es/2026/10/multitudinaria-sentencia-del-publico-ante-lo-visto-con-belen-esteban-al-entrar-en-de-viernes-pelos-de-punta-con-este-inicio/"
       }
     ]
   },
@@ -46,10 +53,5 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
   },
-  "message": "No apareció un raster capturable en 2 minutos; {\"marker\":true,\"turns\":0,\"afterTurns\":0,\"generating\":false,\"imagesAfterMarker\":0,\"candidates\":0,\"canvases\":0,\"assistantTail\":\"\"}",
-  "pc_upload_secret_hash": "2831bb0ee1b59d74cd510e1a7eacecccda02f3cabda2c4bb4b4c8c18b25739db",
-  "pc_worker_id": "ttendencias-image-bridge-v1",
-  "pc_picked_up_at": "2026-10-03T05:29:28.439Z",
-  "pc_launched_at": "2026-10-03T05:29:42.497Z",
-  "finished_at": "2026-10-03T05:31:46.235Z"
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
 }
