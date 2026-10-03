@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T10:51:59.630Z",
-      "event_id": "2415cb1fe713",
-      "phase": "verifying",
-      "reason": "El outbox de imagen de archivo se publicó con una URL HTTPS validada del mismo acontecimiento, pero tras las dos relecturas acotadas prepared seguía pending; se conserva para la siguiente ejecución.",
-      "remediation_prompt": "Revisar la ingestión del comentario outbox image-only y reaplicar idempotentemente sin cambiar los textos."
-    },
-    {
       "at": "2026-09-27T11:01:33.548Z",
       "event_id": "1cf7fefb4370",
       "phase": "verifying",
@@ -1395,6 +1388,13 @@
     },
     {
       "at": "2026-10-03T10:43:06.232399Z",
+      "event_id": "120475aafcf2-r1",
+      "phase": "outbox",
+      "reason": "120475aafcf2-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 120475aafcf2-r1: 120475aafcf2-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-03T10:43:11.629494Z",
       "event_id": "120475aafcf2-r1",
       "phase": "outbox",
       "reason": "120475aafcf2-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
