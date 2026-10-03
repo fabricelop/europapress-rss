@@ -16488,8 +16488,8 @@
           "revision": 0
         }
       ],
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 1,
       "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
@@ -16503,14 +16503,52 @@
       },
       "fallback_image_status": "ready",
       "image": {
-        "url": "https://cadenaser.com/resizer/v2/C7FF6GEPENF75LFZGZZWCBBK4I.jpg?auth=6765c47fc68ef12d9f802d7b56eab4c6ad47f1fbefb6560183f031959300af41&quality=70&width=1200&height=675&smart=true",
-        "source": "Cadena SER · 3/10/2026",
-        "source_url": "https://cadenaser.com/nacional/2026/10/03/espana-3-1-republica-checa-resumen-resultado-y-goles-del-partido-de-la-jornada-3-de-la-nations-league-cadena-ser/",
-        "alt": "Imagen de archivo relacionada con República Checa",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/d29040d36d2a-r0-ai1-32164-ce36cc.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ae47ce20beea89ba799a67b224a25c664e32c26b1a40c1f968355c5d151dbe06",
+        "width": 1600,
+        "height": 900,
+        "bytes": 598507,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "d29040d36d2a",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791064332164-ce36cc"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/d29040d36d2a-r0-ai1-32164-ce36cc.jpg",
+        "handoff": "pc-bridge-direct-materialized"
       },
-      "image_choice": "fallback"
+      "image_choice": "ai",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/d29040d36d2a-r0-ai1-32164-ce36cc.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ae47ce20beea89ba799a67b224a25c664e32c26b1a40c1f968355c5d151dbe06",
+        "width": 1600,
+        "height": 900,
+        "bytes": 598507,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "d29040d36d2a",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791064332164-ce36cc"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/d29040d36d2a-r0-ai1-32164-ce36cc.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-03T21:54:13.105Z"
     },
     {
       "id": "8abebbdd9b2a",
@@ -17254,6 +17292,6 @@
       "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-03T23:43:29+02:00",
+  "updated_at": "2026-10-03T21:54:13.105Z",
   "count": 461
 }
