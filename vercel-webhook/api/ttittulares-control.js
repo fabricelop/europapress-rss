@@ -505,19 +505,36 @@ async function submitManualStory(url,title,instruction){
 async function manualPrepare(eventId){
   const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
   const now=new Date().toISOString();
-  const {doc:events}=await readJson(EVENTS);
+  const [{doc:events},{doc:decisions},{doc:processing},{doc:prepared}]=await Promise.all([
+    readJson(EVENTS),readJson(DECISIONS),readJson(PROCESSING),readJson(PREPARED)
+  ]);
   const ev=(events.events||[]).find(x=>idOf(x.id||x.event_id)===id);
   if(!ev)throw new Error("No se encuentra el acontecimiento");
   const count=Number(ev.source_count||0);
   if(count<3)throw new Error("Solo se puede forzar elaboración con al menos 3 fuentes");
-  if(!["WAITING","UPDATE_WAITING","ELIGIBLE","ELIGIBLE_UPDATE"].includes(String(ev.status||"")))throw new Error("La noticia ya no está disponible para elaborar");
-  const {doc:decisions}=await readJson(DECISIONS);
-  const closed=(decisions.items||[]).find(x=>idOf(x.event_id)===id&&["published","dismissed"].includes(String(x.status||"")));
+
+  const closed=(decisions.items||[]).find(x=>idOf(x.event_id)===id&&["published","dismissed"].includes(String(x.status||"").toLowerCase()));
   if(closed)throw new Error("La noticia ya fue cerrada");
+
+  // Idempotencia: si otro proceso la movió entre el render de Creciendo y el clic,
+  // devolver éxito en lugar de fallar.
+  const preparedRow=(prepared.items||[]).find(x=>idOf(x.event_id)===id);
+  if(preparedRow)return {ok:true,event_id:id,status:"READY",duplicate:true,message:"La noticia ya está lista"};
+  const queued=[...(processing.items||[])].reverse().find(x=>idOf(x.event_id)===id);
+  if(queued&&["PROCESSING","READY"].includes(String(queued.status||"").toUpperCase())){
+    return {ok:true,event_id:id,status:String(queued.status||"PROCESSING").toUpperCase(),duplicate:true,message:"La noticia ya está en elaboración"}
+  }
+
+  const eventStatus=String(ev.status||"").toUpperCase();
+  if(["PUBLISHED","DISMISSED","CLOSED"].includes(eventStatus))throw new Error("La noticia ya fue cerrada");
+
+  // No exigir WAITING exacto: el radar puede cambiar transitoriamente el estado
+  // entre la lectura que pinta Creciendo y este POST. Fuente>=3 + no cerrada +
+  // no activa es suficiente para una promoción manual explícita.
   await mutateJson(PROCESSING,"Forzar elaboración TTiTTulares desde web",doc=>{
     doc.items||=[];
     let item=[...doc.items].reverse().find(x=>idOf(x.event_id)===id);
-    if(item&&["PROCESSING","READY","PUBLISHED","DISMISSED"].includes(String(item.status||"")))return doc;
+    if(item&&["PROCESSING","READY"].includes(String(item.status||"").toUpperCase()))return doc;
     item=item||{event_id:id};
     Object.assign(item,{
       event_id:id,
@@ -535,6 +552,7 @@ async function manualPrepare(eventId){
       with_image:true,
       image_mode:"ai_plus_fallback"
     });
+    delete item.published_at;delete item.dismissed_at;delete item.delivered_at;
     if(!doc.items.includes(item))doc.items.push(item);
     doc.updated_at=now;return doc
   });
@@ -544,9 +562,8 @@ async function manualPrepare(eventId){
     }
     doc.updated_at=now;return doc
   });
-  return {ok:true,event_id:id,status:"PROCESSING"}
+  return {ok:true,event_id:id,status:"PROCESSING",message:"Enviada a elaboración"}
 }
-
 
 function trendCandidateId(item){
   return idOf(item?.candidate_id||item?.event_id||item?.id);
