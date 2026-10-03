@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "command_id": "tt-img-1791024925752-7fc9c6",
+  "requested_at": "2026-10-03T10:55:25.752Z",
+  "updated_at": "2026-10-03T10:55:25.752Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "launcher_arg": "titulares",
+  "task": "image",
+  "target_id": "db372192b25b",
+  "event_id": "db372192b25b",
+  "target_name": "Los sindicatos de inquilinas convocan protestas en más de 50 ciudades y apuntan a una huelga general",
+  "revision": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttittulares_gag_v1",
+  "context_snapshot": {
+    "title": "Los sindicatos de inquilinas convocan protestas en más de 50 ciudades y apuntan a una huelga general",
+    "revision": 1,
+    "factual_summary": "La Confederación de Sindicatos de Inquilinas convocó manifestaciones en más de 50 ciudades españolas tras el rechazo en el Congreso de los dos decretos de vivienda y señaló que pretende avanzar hacia una huelga general. Las convocatorias se desarrollan durante el fin de semana y no se había fijado una fecha para esa eventual huelga.",
+    "tweet_text": "La Confederación de Sindicatos de Inquilinas convoca protestas en más de 50 ciudades tras el rechazo de los decretos de vivienda y dice que el siguiente paso será avanzar hacia una huelga general, aún sin fecha.\n\n🌶️ Al problema de la vivienda ya le falta sitio hasta en el mapa.",
+    "remate": "🌶️ Al problema de la vivienda ya le falta sitio hasta en el mapa.",
+    "url": "https://efe.com/espana/2026-10-03/sindicato-inquilinas-manifestaciones-espana/",
+    "citations": [
+      {
+        "source": "EFE",
+        "url": "https://efe.com/espana/2026-10-03/sindicato-inquilinas-manifestaciones-espana/"
+      },
+      {
+        "source": "RTVE",
+        "url": "https://www.rtve.es/noticias/20261003/manifestaciones-vivienda-ultima-hora-directo-cronica/17251674.shtml"
+      },
+      {
+        "source": "Pikara Magazine",
+        "url": "https://www.pikaramagazine.com/2026/10/un-fin-de-semana-de-movilizaciones-para-hacer-musculo-de-cara-a-una-huelga-general/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta noticia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto factual autoritativo. No reinvestigues ni reescribas la noticia.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; una sola escena 16:9 con idea específica del hecho, evitando ilustración literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso, menores en contexto sensible o sufrimiento humano en objeto del gag.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
+  },
+  "message": "Solicitud registrada; esperando al PC."
+}
