@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791070197273-f18f85",
+  "requested_at": "2026-10-03T23:29:57.273Z",
+  "updated_at": "2026-10-03T23:29:57.273Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "e24a929a9107",
+  "trend_id": "e24a929a9107",
+  "target_name": "Merino",
+  "revision": 0,
+  "attempt": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "Merino",
+    "revision": 0,
+    "explanation": "TT#4 Merino es tendencia porque salió del banquillo y marcó en el 88 el 3-1 con el que España sentenció a Chequia en Oviedo y mantuvo su pleno de victorias.\n🌶️ Merino entró tarde y llegó justo a tiempo para echar el cierre.",
+    "closer_text": "🌶️ Merino entró tarde y llegó justo a tiempo para echar el cierre.",
+    "trend_names": [
+      "Merino"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 4,
+    "explained_at": "2026-10-03T23:50:00+02:00",
+    "verification_sources": [
+      {
+        "source": "Cadena SER · 3/10/2026",
+        "url": "https://cadenaser.com/nacional/2026/10/03/espana-3-1-republica-checa-resumen-resultado-y-goles-del-partido-de-la-jornada-3-de-la-nations-league-cadena-ser/"
+      },
+      {
+        "source": "The Guardian · 3/10/2026",
+        "url": "https://www.theguardian.com/football/2026/oct/03/lamine-yamal-stars-again-as-spain-see-off-czechia-and-maintain-perfect-start"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+}
