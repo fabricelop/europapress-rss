@@ -33,6 +33,8 @@ const IMAGE_HANDOFF_ACTIVE_MS=45*1000;
 const IMAGE_GENERATION_ACTIVE_MS=150*1000;
 const MAIN_BRANCH="main";
 const PREPARED_PATH="ttittulares/prepared.json";
+const CROSS_IMAGE_STATE_PATH="trends/telegram-manual-explained.json";
+const RASTER_REGISTRY_PATH="shared/image-raster-registry.json";
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
 const ACTIVE_MS=20*60*1000;
@@ -197,6 +199,69 @@ function validUploadSecret(job,secret){
   if(!/^[a-f0-9]{64}$/.test(expected)||String(secret||"").length<32)return false;
   return crypto.timingSafeEqual(Buffer.from(expected,"hex"),Buffer.from(actual,"hex"))
 }
+
+async function claimRasterContext({project,target_id,revision,command_id,sha256}){
+  const hash=String(sha256||"").toLowerCase();
+  if(!/^[a-f0-9]{64}$/.test(hash))throw new Error("invalid_raster_sha256");
+
+  // Backfill guard: inspect both editorial stores, so hashes created before the
+  // shared registry existed are also protected across TTendencias/TTiTTulares.
+  const [trendState,headlineState]=await Promise.all([
+    readMainJson("trends/telegram-manual-explained.json"),
+    readMainJson("ttittulares/prepared.json")
+  ]);
+  const uses=[];
+  for(const row of trendState.items||[]){
+    const image=row.ai_image||((row.image&&row.image.generated)?row.image:null);
+    const h=String(image?.sha256||"").toLowerCase();
+    if(h===hash)uses.push({
+      project:"ttendencias",target_id:String(row.id||""),revision:Number(row.revision||0),
+      command_id:String(image?.context_guard?.command_id||"")
+    });
+  }
+  for(const row of headlineState.items||[]){
+    const image=row.ai_image||((row.image&&row.image.generated)?row.image:null);
+    const h=String(image?.sha256||"").toLowerCase();
+    if(h===hash)uses.push({
+      project:"ttittulares",target_id:String(row.event_id||""),revision:Number(row.revision||0),
+      command_id:String(image?.context_guard?.command_id||"")
+    });
+  }
+  for(const use of uses){
+    const same=use.project===project&&use.target_id===String(target_id)&&use.command_id===String(command_id);
+    if(!same)throw new Error("cross_context_raster_reuse");
+  }
+
+  // Atomic shared claim. GitHub blob SHA gives us cross-project serialization:
+  // two concurrent contexts cannot both claim the same raster hash.
+  for(let n=0;n<7;n++){
+    const reg=await readMainJsonWithSha(RASTER_REGISTRY_PATH);
+    const doc=reg.doc||{version:1,updated_at:null,entries:{}};
+    if(!doc.entries||typeof doc.entries!=="object")doc.entries={};
+    const existing=doc.entries[hash];
+    if(existing){
+      const same=String(existing.project||"")===project &&
+        String(existing.target_id||"")===String(target_id) &&
+        String(existing.command_id||"")===String(command_id);
+      if(same)return existing;
+      throw new Error("cross_context_raster_reuse");
+    }
+    const claim={
+      project,target_id:String(target_id),revision:Number(revision||0),command_id:String(command_id),
+      claimed_at:new Date().toISOString()
+    };
+    doc.entries[hash]=claim;
+    doc.updated_at=new Date().toISOString();
+    try{
+      await writeMainJson(RASTER_REGISTRY_PATH,doc,reg.sha,"Claim ImageGen raster "+hash.slice(0,12)+" "+project+" "+target_id);
+      return claim
+    }catch(e){
+      if(n===6||!/409|422/.test(String(e)))throw e;
+      await new Promise(r=>setTimeout(r,180*(n+1)));
+    }
+  }
+  throw new Error("raster_registry_claim_failed");
+}
 async function markPreparedImageFailed(target_id,revision,reason){
   for(let n=0;n<5;n++){
     const p=await readMainJsonWithSha(PREPARED_PATH);
@@ -216,6 +281,7 @@ async function markPreparedImageFailed(target_id,revision,reason){
   }
 }
 async function persistAiImageDirect({target_id,revision,command_id,buf,mime,sha256,width,height,bytes}){
+  await claimRasterContext({project:"ttittulares",target_id,revision,command_id,sha256});
   let current=await readMainJsonWithSha(PREPARED_PATH);
   const row0=(current.doc?.items||[]).find(x=>String(x.event_id||"")===target_id&&Number(x.revision||0)===Number(revision));
   if(!row0)throw new Error("not_ready");
