@@ -28203,14 +28203,17 @@
         }
       ],
       "selected_at": "2026-10-03T12:33:38.928827Z",
-      "status": "PROCESSING",
+      "status": "DISMISSED",
       "selection_mode": "AUTO_WEB",
       "revision": 1,
       "parent_event_id": null,
       "update_context": null,
       "parallel_source_claimed_at": null,
       "with_image": true,
-      "image_mode": "ai_plus_fallback"
+      "image_mode": "ai_plus_fallback",
+      "reconciled_from_event_id": "93d81bb1b23e",
+      "reconciliation_reason": "Es el mismo incidente del aeropuerto de Vilna ya tratado en 93d81bb1b23e: cierre temporal por un objeto posiblemente dron y posterior desaparición de la amenaza. La versión 93d81bb1b23e incorporaba además la reapertura del aeropuerto y fue desestimada por el usuario, por lo que esta entrada no aporta una novedad material independiente.",
+      "reconciled_at": "2026-10-03T13:19:00.968791Z"
     },
     {
       "event_id": "3ff63ae296f8",
@@ -28338,5 +28341,5 @@
       "image_mode": "ai_plus_fallback"
     }
   ],
-  "updated_at": "2026-10-03T13:18:55.448296Z"
+  "updated_at": "2026-10-03T13:19:00.968791Z"
 }
