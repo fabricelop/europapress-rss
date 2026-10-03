@@ -273,6 +273,15 @@ export default async function handler(req,res){
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
     const view=String(req.query?.view||"").toLowerCase();
+    if(view==="listener-snapshot"){
+      const strong=String(req.query?.strong||"")==="1";
+      const [trigger,imageIndex0]=await Promise.all([
+        readImageControl(TRIGGER_PATH,strong),
+        readImageControl(IMAGE_RUN_INDEX_PATH,strong)
+      ]);
+      const image_index=(imageIndex0&&typeof imageIndex0==="object")?imageIndex0:{version:1,jobs:[]};
+      return res.status(200).json({ok:true,strong,trigger:trigger||{},image_index,server_now:new Date().toISOString()})
+    }
     if(view==="image-index"){
       const strong=String(req.query?.strong||"")==="1";
       const doc=await readImageControl(IMAGE_RUN_INDEX_PATH,strong);
