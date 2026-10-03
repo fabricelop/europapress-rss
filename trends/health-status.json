@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-03T01:08:11.088253+00:00",
+  "checked_at": "2026-10-03T06:33:12.385553+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -41,7 +41,7 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 7,
+      "non_stale_sources": 6,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -55,7 +55,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 0.9,
-      "run_id": 37084857834,
+      "run_id": 37103391039,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -76,70 +76,28 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 18,
-      "overdue_count": 17,
-      "oldest_age_minutes": 285.5,
+      "pending_count": 3,
+      "overdue_count": 3,
+      "oldest_age_minutes": 352.2,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "413c73f54712",
-          "name": "#DeViernes",
+          "id": "e6ee5d34c014",
+          "name": "Trapote",
           "status": "preparing",
-          "age_minutes": 186.4
+          "age_minutes": 352.2
         },
         {
-          "id": "1a5eed26f2e0",
-          "name": "#LaVozAudiciones",
-          "status": "preparing",
-          "age_minutes": 117.0
+          "id": "952bacd03439",
+          "name": "Terrassa",
+          "status": "update",
+          "age_minutes": 63.1
         },
         {
-          "id": "456ebcfdd8f1",
-          "name": "Belén",
+          "id": "cfa67a30f2a4",
+          "name": "Moncloa",
           "status": "preparing",
-          "age_minutes": 117.0
-        },
-        {
-          "id": "13f0c35b4500",
-          "name": "Ángela Portero",
-          "status": "preparing",
-          "age_minutes": 117.0
-        },
-        {
-          "id": "03e6546dc5f6",
-          "name": "#MalasLenguasN",
-          "status": "preparing",
-          "age_minutes": 216.5
-        },
-        {
-          "id": "fdd1a3825803",
-          "name": "Omeprazol",
-          "status": "preparing",
-          "age_minutes": 285.5
-        },
-        {
-          "id": "68b1fa61df02",
-          "name": "Maroan",
-          "status": "preparing",
-          "age_minutes": 285.5
-        },
-        {
-          "id": "9767e3b44c3a",
-          "name": "Calero",
-          "status": "preparing",
-          "age_minutes": 285.5
-        },
-        {
-          "id": "ea144aa53f81",
-          "name": "#EldenseRealOviedo",
-          "status": "preparing",
-          "age_minutes": 285.5
-        },
-        {
-          "id": "5eaf524758db",
-          "name": "Samu",
-          "status": "preparing",
-          "age_minutes": 285.5
+          "age_minutes": 100.3
         }
       ],
       "repairable": false
@@ -149,24 +107,9 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "413c73f54712",
-        "1a5eed26f2e0",
-        "456ebcfdd8f1",
-        "13f0c35b4500",
         "e6ee5d34c014",
-        "03e6546dc5f6",
-        "fdd1a3825803",
-        "68b1fa61df02",
-        "9767e3b44c3a",
-        "ea144aa53f81",
-        "5eaf524758db",
-        "8090f1b1fec6",
-        "89a6eb26d71d",
-        "f58b9810e347",
-        "584f74c1663e",
-        "e883cdb753d6",
-        "6ab80fc5ad41",
-        "cb267d084937"
+        "952bacd03439",
+        "cfa67a30f2a4"
       ],
       "contradictory_success": false
     }
@@ -174,9 +117,9 @@
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola de explicaciones retrasada: 17 pendiente(s) superan 30 min; más antigua 285.5 min"
+    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 352.2 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 17 pendiente(s) superan 30 min; más antigua 285.5 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 352.2 min | config TTendencias incompatible con el modo activo"
 }
