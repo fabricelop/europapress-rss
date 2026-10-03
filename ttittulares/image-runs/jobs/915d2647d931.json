@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tt-img-1791070220545-e7335d",
-  "requested_at": "2026-10-03T23:30:20.545Z",
-  "updated_at": "2026-10-03T23:40:33.123Z",
-  "status": "ERROR",
-  "phase": "invalidated_cross_context",
+  "command_id": "tt-img-1791071375531-d0c360",
+  "requested_at": "2026-10-03T23:49:35.531Z",
+  "updated_at": "2026-10-03T23:49:35.531Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -14,6 +14,7 @@
   "event_id": "915d2647d931",
   "target_name": "Putin reitera que Rusia podría usar armas atómicas para proteger Kaliningrado y la OTAN prevé más \"ataques híbridos\"",
   "revision": 1,
+  "regenerate": false,
   "chat_command_version": 3,
   "instruction_profile": "ttittulares_gag_v1",
   "context_snapshot": {
@@ -46,13 +47,5 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
   },
-  "message": "Imagen invalidada: el raster pertenecía a otro contexto (David Raya).",
-  "pc_upload_secret_hash": "c2b33301511d5c033e690e5f47d28aa46c1a2e368eccd3372070c43db2de0886",
-  "pc_worker_id": "ttittulares-image-bridge-v1",
-  "pc_picked_up_at": "2026-10-03T23:30:47.859Z",
-  "pc_launched_at": "2026-10-03T23:30:53.728Z",
-  "upload_received_at": "2026-10-03T23:30:57.718Z",
-  "upload_sha256": "adc8843324bb8160cd4173e242c838abf1d01995b05ce38fab421f6dec90eccf",
-  "upload_bytes": 2636510,
-  "finished_at": "2026-10-03T23:40:33.123Z"
+  "message": "Solicitud registrada; esperando al PC."
 }
