@@ -43,6 +43,14 @@ if(-not $titleTxt.Contains("Ensure-RunnerNewChatCompatibility")){throw "Listener
 Move-Item $tmpTrend $trend -Force
 Move-Item $tmpTitle $title -Force
 
+# Repara también Ejecutar.js para la UI actual de ChatGPT.
+# La portada del proyecto puede no mostrar compositor; se usa un chat semilla existente.
+$seedPatch = Join-Path $BaseDir "Fix-Ejecutar-ProjectSeed-V1.ps1"
+Get-MainFile "windows/Fix-Ejecutar-ProjectSeed-V1.ps1" $seedPatch
+Validate-Ps $seedPatch
+& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $seedPatch
+if ($LASTEXITCODE -ne 0) { throw "No se pudo aplicar Fix-Ejecutar-ProjectSeed-V1.ps1" }
+
 # Mata cualquier listener TT antiguo o agregado que pueda competir por los mismos triggers.
 $patterns = @(
   "TTendenciasDedicatedListener.ps1",
@@ -101,4 +109,4 @@ Write-Host "Procesos antiguos detenidos: $($killed.Count)"
 Write-Host "Inicio antiguo desactivado: $($disabled.Count)"
 Write-Host "TTendencias PID: $($tp.Id)"
 Write-Host "TTiTTulares PID: $($hp.Id)"
-Write-Host "Ejecutar.js: compatibilidad New chat se aplicará al arrancar"
+Write-Host "Ejecutar.js: New chat opcional + chat semilla del proyecto activos"
