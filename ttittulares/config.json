@@ -38,8 +38,8 @@
   "images": {
     "enabled": true,
     "mode": "ai_plus_fallback",
-    "generate": true,
-    "ai_attempts_initial": 1,
+    "generate": false,
+    "ai_attempts_initial": 0,
     "non_blocking": true,
     "fallback_enabled": true,
     "source_preference": [
@@ -51,11 +51,12 @@
     "rights_status_default": "unverified",
     "explicit_not_found": true,
     "validate_https": true,
-    "policy": "Intentar una sola imagen IA por noticia apta en estilo TT_STYLE_A_V1, siempre acorde con el resumen factual. Sensibles: disable_ai_image + fallback_only. Imagen, fallback, timeout o fallo nunca bloquean READY, Listas ni la cola.",
+    "policy": "La ejecución editorial solo prepara fallback real y deja la IA sin solicitar. ImageGen se ejecuta únicamente mediante jobs manuales independientes para noticias marcadas con Gag IA en el panel. Sensibles: disable_ai_image + fallback_only. Ninguna imagen bloquea READY, Listas ni la cola.",
     "style_id": "TT_STYLE_A_V1",
     "style": "Caricatura satírica editorial muy expresiva y exagerada: un solo gag visual fuerte, entendido de un vistazo, colores vivos, props absurdos y situación llevada al límite; evitar imagen neutra o meramente literal.",
     "sensitive_mode": "fallback_only",
     "sensitive_sets_disable_ai_image": true,
-    "max_visual_seconds": 120
+    "max_visual_seconds": 120,
+    "generation_mode": "manual_selected_jobs"
   }
 }
