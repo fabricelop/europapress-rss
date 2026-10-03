@@ -655,9 +655,18 @@ while ($true) {
           }
           Mark-ImageCommand $state $commandId $true;Save-State $state;$slots--
         }else{
-          $reason="Ejecutar.js no confirmó el envío del job de imagen en $($LaunchConfirmSeconds) s."
-          Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
-          Mark-ImageCommand $state $commandId $false;Save-State $state
+          # La telemetría de Ejecutar.js puede faltar aunque el mensaje haya llegado
+          # al chat. El bridge valida el marker real del command_id y es la autoridad
+          # para decidir si el hand-off existió.
+          $reason="Ejecutar.js no confirmó el envío en $($LaunchConfirmSeconds) s.; delegando confirmación real al bridge."
+          Write-Log "IMAGE CHAT UNCONFIRMED; BRIDGE WILL VERIFY target=$targetId command=$commandId :: $reason"
+          Send-ImageAck $targetId $commandId "launched" | Out-Null
+          if(-not (Start-ImageBridge $commandId $targetId $uploadSecret)){
+            $failReason="El lanzamiento quedó sin confirmar y tampoco se pudo iniciar el puente local de raster."
+            Send-ImageAck $targetId $commandId "failed" $failReason "" $uploadSecret | Out-Null
+            Mark-ImageCommand $state $commandId $false;Save-State $state;continue
+          }
+          Mark-ImageCommand $state $commandId $true;Save-State $state;$slots--
         }
       }
     }elseif($slots -gt 0 -and -not $CustomMessageSupport){
