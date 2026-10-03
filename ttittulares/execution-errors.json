@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T12:45:38.330436Z",
-      "event_id": "3c9796650440",
-      "phase": "imagen",
-      "reason": "Se verificó el hecho en varias fuentes actuales. No apareció un raster HTTPS inequívoco del mismo acontecimiento; la vía generated_gag no dispone en esta ejecución de un puente de bytes íntegro hacia el aplicador, por lo que se cierra sin imagen sin bloquear la cola.",
-      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 3c9796650440: Se verificó el hecho en varias fuentes actuales. No apareció un raster HTTPS inequívoco del mismo acontecimiento; la vía generated_gag no dispone en esta ejecución de un puente de bytes íntegro hacia el aplicador, por lo que se cierra sin imagen sin bloquear la cola.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-27T12:45:52.887330Z",
       "event_id": "3a551d1258a1",
       "phase": "imagen",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "120475aafcf2-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 120475aafcf2-r1: 120475aafcf2-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-03T15:30:42.691148Z",
+      "event_id": "manual-6f01bf29e1ab-r1",
+      "phase": "outbox",
+      "reason": "manual-6f01bf29e1ab-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento manual-6f01bf29e1ab-r1: manual-6f01bf29e1ab-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
