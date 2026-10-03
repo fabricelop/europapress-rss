@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T10:33:23.207638Z",
-      "event_id": "67fced92d0ee",
-      "phase": "imagen",
-      "reason": "No se encontró una imagen HTTPS verificable del mismo acontecimiento actual; se descartaron resultados antiguos o no inequívocamente vinculados.",
-      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 67fced92d0ee: No se encontró una imagen HTTPS verificable del mismo acontecimiento actual; se descartaron resultados antiguos o no inequívocamente vinculados.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-27T10:34:48.975561Z",
       "event_id": "8a7053b7113b",
       "phase": "imagen",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "33985cee9182-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 33985cee9182-r1: 33985cee9182-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-03T09:08:12.255198Z",
+      "event_id": "d5d8a3db042d-r1",
+      "phase": "outbox",
+      "reason": "d5d8a3db042d-r1.json: ValueError: tweet vacío o >280",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5d8a3db042d-r1: d5d8a3db042d-r1.json: ValueError: tweet vacío o >280. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
