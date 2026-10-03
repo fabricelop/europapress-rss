@@ -27445,7 +27445,7 @@
         }
       ],
       "selected_at": "2026-10-03T09:34:48.299778Z",
-      "status": "PROCESSING",
+      "status": "DISMISSED",
       "selection_mode": "AUTO_WEB",
       "revision": 2,
       "parent_event_id": "93d81bb1b23e",
@@ -27456,7 +27456,10 @@
       },
       "parallel_source_claimed_at": null,
       "with_image": true,
-      "image_mode": "ai_plus_fallback"
+      "image_mode": "ai_plus_fallback",
+      "reconciled_from_event_id": "93d81bb1b23e",
+      "reconciliation_reason": "La revisión 2 repite el mismo cierre temporal del aeropuerto de Vilnius y el despliegue de cazas de la OTAN ya tratado en la revisión anterior; las fuentes actuales no aportan un hecho material posterior independiente.",
+      "reconciled_at": "2026-10-03T10:35:37.553073Z"
     },
     {
       "event_id": "120475aafcf2",
@@ -27754,5 +27757,5 @@
       "image_mode": "ai_plus_fallback"
     }
   ],
-  "updated_at": "2026-10-03T10:34:43.053470Z"
+  "updated_at": "2026-10-03T10:35:37.553073Z"
 }
