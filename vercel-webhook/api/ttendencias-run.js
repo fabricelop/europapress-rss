@@ -354,6 +354,19 @@ async function requestImageUpload(req,res){
   if(buf.length<4096||buf.length>3*1024*1024)return res.status(400).json({ok:false,error:"Tamaño de raster no válido",bytes:buf.length});
   const meta=await sharp(buf,{animated:false}).metadata(),width=Number(meta.width||0),height=Number(meta.height||0);
   if(width<640||height<360)return res.status(400).json({ok:false,error:"Raster inferior a 640x360",width,height});
+  // ImageGen entrega el gag como raster panorámico 16:9. El bridge no debe
+  // aceptar capturas del viewport/chat (normalmente cuadradas o casi verticales)
+  // aunque técnicamente sean JPEG/PNG válidos.
+  const aspect=height?width/height:0;
+  const byteDensity=width&&height?buf.length/(width*height):0;
+  if(aspect<1.60||aspect>1.90){
+    return res.status(422).json({ok:false,error:"Raster rechazado: no parece la salida 16:9 de ImageGen",width,height,aspect:Number(aspect.toFixed(3))});
+  }
+  // Segunda barrera contra screenshots casi vacíos/negros de la interfaz.
+  // Un raster real generado contiene mucha más información visual por píxel.
+  if(buf.length<50000||byteDensity<0.05){
+    return res.status(422).json({ok:false,error:"Raster rechazado: contenido demasiado ligero para una imagen generada",width,height,bytes:buf.length,byte_density:Number(byteDensity.toFixed(4))});
+  }
   const sha256=crypto.createHash("sha256").update(buf).digest("hex");
   const now=new Date().toISOString(),revision=Number(eligible.row?.revision||job.revision||0),attempt=Math.max(1,Number(eligible.row?.ai_image_attempt||0)||1);
   const persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido y validado; materializando directamente en main."};
