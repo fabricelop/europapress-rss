@@ -97,7 +97,7 @@ const IMAGE_SELECTED_KEY="ttendencias-image-selected-v1";
 function localArchived(){try{return new Set(JSON.parse(localStorage.getItem(ARCHIVED_LOCAL_KEY)||"[]"))}catch(_){return new Set()}}
 function mainSelectedImageKeys(){try{return new Set(JSON.parse(localStorage.getItem(IMAGE_SELECTED_KEY)||"[]"))}catch(_){return new Set()}}
 function mainImageSelectionKey(x){return String(x?.id||x?.name||"")+":r"+String(Number(x?.revision||0))}
-let model=loadLocalJson(DATA_CACHE_KEY),busy=new Set(),runPoll=null,problemRetryItem=null,imageRuns=new Map(),imageRunPoll=null;
+let model=loadLocalJson(DATA_CACHE_KEY),busy=new Set(),runPoll=null,problemRetryItem=null,imageRuns=new Map(),imageRunPoll=null,imageTerminalRefreshActive=false;
 let uiInteractionVersion=0,uiHoldUntil=0,passiveRefreshTimer=null;
 function markUiInteraction(){uiInteractionVersion++;uiHoldUntil=Math.max(uiHoldUntil,Date.now()+1400)}
 function uiInteractionActive(){return Date.now()<uiHoldUntil||Boolean(document.querySelector(".sheet.show,dialog[open]"))}
@@ -698,21 +698,33 @@ async function requestMainPendingImages(){
 }
 function scheduleMainImagePoll(fast){clearTimeout(imageRunPoll);imageRunPoll=setTimeout(refreshMainImageRuns,fast?4000:15000)}
 async function refreshMainImageRuns(){
- const items=mainPendingImages();let terminal=false;
+ const items=mainPendingImages();let terminal=false,changed=false;
+ const terminalIds=[];
  await Promise.all(items.map(async x=>{
    const id=String(x.id||""),before=imageRuns.get(id);
    try{
      const r=await fetch(IMAGE_RUN_STATUS+encodeURIComponent(id)+"&t="+Date.now(),{cache:"no-store"});
      if(!r.ok)return;
-     const d=await r.json();imageRuns.set(id,d);
-     if(JSON.stringify(before||null)!==JSON.stringify(d)&&["DONE","ERROR","CANCELLED"].includes(String(d.status||"").toUpperCase()))terminal=true
+     const d=await r.json();
+     if(JSON.stringify(before||null)!==JSON.stringify(d)){
+       imageRuns.set(id,d);changed=true;
+       if(["DONE","ERROR","CANCELLED"].includes(String(d.status||"").toUpperCase())){terminal=true;terminalIds.push(id)}
+     }
    }catch(_){}
  }));
  updateMainImageControl();
- scheduleMainImagePoll([...imageRuns.values()].some(mainImageRunActive));
- if(terminal)load(true)
+ if(terminal){
+   const set=mainSelectedImageKeys();
+   for(const x of (model.explained||[])){
+     if(terminalIds.includes(String(x.id||"")))set.delete(mainImageSelectionKey(x));
+   }
+   saveMainSelectedImageKeys(set);
+   imageTerminalRefreshActive=true;
+   try{await load(true,false);updateMainImageControl()}
+   finally{imageTerminalRefreshActive=false}
+ }
+ scheduleMainImagePoll([...imageRuns.values()].some(mainImageRunActive))
 }
-
 async function api(action,names,extra={}){
  const t=token();if(!t){$("sheet").classList.add("show");throw new Error("Falta el token de control")}
  const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+t},body:JSON.stringify({action,names,...extra})});
@@ -770,6 +782,7 @@ async function retry(item){
  try{await api("retry",[item.name]);showToast("Enviada a explicación");setTimeout(()=>load(true),1200)}catch(e){showToast(e.message);await load(true)}finally{busy.delete(item.name);render()}
 }
 async function load(silent=false,passive=false){
+ if(arguments[1]&&imageTerminalRefreshActive){queuePassiveLoad(1200);return}
  const interactionAtStart=uiInteractionVersion;
  try{
   const url=passive?(API+"?view=state"):(API+"?view=state&fresh=1&t="+Date.now());
