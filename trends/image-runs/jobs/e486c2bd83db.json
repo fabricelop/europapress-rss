@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791070201405-7a58e2",
+  "requested_at": "2026-10-03T23:30:01.405Z",
+  "updated_at": "2026-10-03T23:30:01.405Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "e486c2bd83db",
+  "trend_id": "e486c2bd83db",
+  "target_name": "Rodri",
+  "revision": 0,
+  "attempt": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "Rodri",
+    "revision": 0,
+    "explanation": "TT#6 Rodri es tendencia porque marcó el 2-0 en el 3-1 de España a Chequia y su actuación reabrió en Carrusel el debate sobre si supera a Busquets como mediocentro.\n🌶️ Rodri marcó y le cayó encima un examen de historia del mediocentro.",
+    "closer_text": "🌶️ Rodri marcó y le cayó encima un examen de historia del mediocentro.",
+    "trend_names": [
+      "Rodri"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 6,
+    "explained_at": "2026-10-03T23:44:00+02:00",
+    "verification_sources": [
+      {
+        "source": "Cadena SER · España-Chequia 3/10/2026",
+        "url": "https://cadenaser.com/nacional/2026/10/03/espana-3-1-republica-checa-resumen-resultado-y-goles-del-partido-de-la-jornada-3-de-la-nations-league-cadena-ser/"
+      },
+      {
+        "source": "Cadena SER · debate Rodri/Busquets 3/10/2026",
+        "url": "https://cadenaser.com/nacional/2026/10/03/dani-garrido-se-moja-y-participa-en-el-debate-sobre-si-es-mejor-rodri-o-busquets-me-da-hasta-apuro-decirlo-cadena-ser/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+}
