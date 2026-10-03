@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-1791020122947-dc4674",
   "requested_at": "2026-10-03T09:35:22.947Z",
-  "updated_at": "2026-10-03T09:35:59.463Z",
-  "status": "RUNNING",
-  "phase": "pc_launch",
+  "updated_at": "2026-10-03T09:37:31.259Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -46,9 +46,10 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
   },
-  "message": "PC ha abierto el chat de imagen; esperando ImageGen.",
+  "message": "Upload 422: Raster rechazado: el bridge no acredita captura del elemento de imagen",
   "pc_upload_secret_hash": "308557e6f217c5f17a477803df5d6f27e7010051719539640e80a52807ca342a",
-  "pc_worker_id": "ttittulares-dedicated-v19",
+  "pc_worker_id": "ttittulares-image-bridge-v1",
   "pc_picked_up_at": "2026-10-03T09:35:45.131Z",
-  "pc_launched_at": "2026-10-03T09:35:59.463Z"
+  "pc_launched_at": "2026-10-03T09:35:59.463Z",
+  "finished_at": "2026-10-03T09:37:31.259Z"
 }
