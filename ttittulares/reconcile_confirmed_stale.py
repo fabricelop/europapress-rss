@@ -15,8 +15,6 @@ QUEUE = ROOT / "telegram" / "editorial-processing.json"
 DECISIONS = ROOT / "ttittulares" / "decisions.json"
 PREPARED = ROOT / "ttittulares" / "prepared.json"
 OUTBOX = ROOT / "ttittulares" / "editorial-outbox"
-# Reviewed in run manual-20260929T190213970Z-chat. Require the original selection
-# time and revision so an update or a newly requested rewrite is never suppressed.
 LINKS = {
     "e7ae04ea52f6": ("905ccb3cbb37", "PUBLISHED", "SKIPPED_DUPLICATE", "2026-09-29T10:22:59.601383Z"),
     "dba4e8e53c2f": ("5cd174f703c1", "PUBLISHED", "SKIPPED_DUPLICATE", "2026-09-29T14:41:38.983Z"),
@@ -26,7 +24,6 @@ LINKS = {
 def pending_ids():
     pending = set()
     for path in OUTBOX.glob("*.json"):
-        # Be conservative also with malformed pending outboxes.
         pending.add(path.stem.rsplit("-r", 1)[0])
         try:
             pending.add(str(load(path).get("event_id") or ""))
@@ -55,15 +52,34 @@ def reconcile(queue, decisions, prepared, pending=None):
         if not old or (old.get("status") != required and decision.get(original) != required):
             continue
         if event_id in ready:
-            continue  # Never hide materialized news.
-        # This mapping is explicitly reviewed against the 2026-09-29 run;
-        # later substantive updates must be assessed as new revisions.
+            continue
         row["status"] = target
         row["reconciled_from_event_id"] = original
         row["reconciliation_reason"] = ("already_published_no_material_update"
                                         if required == "PUBLISHED" else "inherited_user_dismissal")
         changes.append((event_id, target, original))
     return changes
+
+def cleanup_ai_blocks(prepared):
+    """Remove legacy topic-based AI-image blocks from normal READY stories."""
+    changed = []
+    for item in prepared.get("items", []):
+        if item.get("tremending_origin") or str(item.get("image_mode", "")).lower() == "tweet_capture_only":
+            continue
+        blocked = (bool(item.get("disable_ai_image")) or
+                   str(item.get("image_mode", "")).lower() in {"fallback_only", "archive_only"} or
+                   str(item.get("image_strategy", "")).lower() in {"fallback_only", "archive_only"} or
+                   str(item.get("ai_image_status", "")).lower() == "disabled")
+        if not blocked:
+            continue
+        item.pop("disable_ai_image", None)
+        item.pop("sensitive_image_reason", None)
+        item["image_strategy"] = "ai_plus_fallback"
+        item["image_mode"] = "ai_plus_fallback"
+        if str(item.get("ai_image_status", "")).lower() == "disabled":
+            item["ai_image_status"] = "none"
+        changed.append(str(item.get("event_id") or ""))
+    return changed
 
 def main():
     parser = argparse.ArgumentParser()
@@ -95,19 +111,30 @@ def main():
             reconcile(q, decisions, {"items": [{"event_id": eid}]})
             assert row["status"] == "PROCESSING"
             row["status"] = target
+        sample = {"items": [{"event_id": "political", "disable_ai_image": True,
+                              "image_mode": "fallback_only", "image_strategy": "fallback_only",
+                              "ai_image_status": "disabled"},
+                             {"event_id": "trem", "tremending_origin": True,
+                              "image_mode": "tweet_capture_only", "disable_ai_image": True}]}
+        assert cleanup_ai_blocks(sample) == ["political"]
+        assert sample["items"][0]["image_mode"] == "ai_plus_fallback"
+        assert sample["items"][1]["disable_ai_image"] is True
         print("RECONCILE_CONFIRMED_STALE_SELFTEST_OK")
         return
     queue, decisions, prepared = load(QUEUE), load(DECISIONS), load(PREPARED)
     changes = reconcile(queue, decisions, prepared, pending_ids())
-    print(json.dumps({"mode": "apply" if args.apply else "dry-run", "changes": changes},
-                     ensure_ascii=False))
-    if not args.apply or not changes:
+    ai_changes = cleanup_ai_blocks(prepared) if args.apply else []
+    print(json.dumps({"mode": "apply" if args.apply else "dry-run", "changes": changes,
+                      "ai_unblocked": ai_changes}, ensure_ascii=False))
+    if not args.apply:
+        return
+    if ai_changes:
+        PREPARED.write_text(json.dumps(prepared, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if not changes:
         return
     stamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     queue["updated_at"] = stamp
     QUEUE.write_text(json.dumps(queue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    # Refresh derived counters/compact queue with the existing canonical pipeline.
-    # The caller must run apply_editorial_outbox.py and check /api/ttittulares-control.
 
 if __name__ == "__main__":
     main()
