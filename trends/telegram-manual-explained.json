@@ -15395,12 +15395,58 @@
       ],
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 1,
       "fallback_image_status": "none",
-      "image_choice": null,
-      "image_status": "none",
-      "image_pending": false
+      "image_choice": "ai",
+      "image_status": "ready",
+      "image_pending": false,
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/e6ee5d34c014-r2-ai1-29472-65fb03.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b7bafa950fe48b75d0f7c139320c45663714944ffb4c123cec33d27d70d62590",
+        "width": 800,
+        "height": 706,
+        "bytes": 20918,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "e6ee5d34c014",
+          "revision": 2,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791015329472-65fb03"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/e6ee5d34c014-r2-ai1-29472-65fb03.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-03T08:16:13.624Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/e6ee5d34c014-r2-ai1-29472-65fb03.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b7bafa950fe48b75d0f7c139320c45663714944ffb4c123cec33d27d70d62590",
+        "width": 800,
+        "height": 706,
+        "bytes": 20918,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "e6ee5d34c014",
+          "revision": 2,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791015329472-65fb03"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/e6ee5d34c014-r2-ai1-29472-65fb03.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     },
     {
       "id": "cfa67a30f2a4",
@@ -15617,6 +15663,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-03T07:14:16.313Z",
+  "updated_at": "2026-10-03T08:16:13.624Z",
   "count": 441
 }
