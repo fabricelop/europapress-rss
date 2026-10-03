@@ -16619,8 +16619,8 @@
           "revision": 0
         }
       ],
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 1,
       "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
@@ -16634,14 +16634,52 @@
       },
       "fallback_image_status": "ready",
       "image": {
-        "url": "https://cadenaser.com/resizer/v2/BHFPBMBHNJEMXHMTSDSZ5XU5WA.jpeg?auth=d343414f4ec550e69d3ad87ddcf7592acc9e0061b8009841bc91d4eb0d4afc04&quality=70&width=1200&height=675&smart=true",
-        "source": "Cadena SER Albacete · 3/10/2026",
-        "source_url": "https://cadenaser.com/castillalamancha/2026/10/03/alberto-gonzalez-es-cesado-fulminantemente-tras-la-ultima-derrota-del-alba-radio-albacete/",
-        "alt": "Imagen de archivo relacionada con Alberto González",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/8abebbdd9b2a-r0-ai1-07766-c423d7.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "0bc81b809cf32cff39f6f9576b08a240ade967a2fabbcd07d815cc70d7e35dbf",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2581302,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "8abebbdd9b2a",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791070207766-c423d7"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/8abebbdd9b2a-r0-ai1-07766-c423d7.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
-      "image_choice": "fallback"
+      "image_choice": "ai",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/8abebbdd9b2a-r0-ai1-07766-c423d7.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "0bc81b809cf32cff39f6f9576b08a240ade967a2fabbcd07d815cc70d7e35dbf",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2581302,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "8abebbdd9b2a",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791070207766-c423d7"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/8abebbdd9b2a-r0-ai1-07766-c423d7.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-03T23:37:32.319Z"
     },
     {
       "id": "9b146c448232",
@@ -17368,6 +17406,6 @@
       "ai_image_last_attempt_at": "2026-10-03T23:22:26.427Z"
     }
   ],
-  "updated_at": "2026-10-03T23:32:33.374Z",
+  "updated_at": "2026-10-03T23:37:32.319Z",
   "count": 461
 }
