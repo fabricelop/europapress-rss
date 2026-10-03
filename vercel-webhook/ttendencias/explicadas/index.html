@@ -98,16 +98,14 @@ function hasTweetReadyFormat(x){
 function tweetBody(x){
  const full=String(x.explanation||"").trim();
  const closer=String(x.closer_text||"").trim();
- // Dar una guindilla también al histórico sin cambiar sus valoraciones guardadas.
+ // El tuit publicable empieza directamente por la explicación TT#N. El nombre
+ // de la tendencia/grupo queda solo como título visual de la tarjeta.
  if(!closer||closer.startsWith("🌶️")||!full.endsWith(closer))return full;
  const candidate=full.slice(0,-closer.length)+"🌶️ "+closer;
- const heading=hasTweetReadyFormat(x)?"":groupRankLabel(x)+"\n\n";
- // Incluye el encabezado legado en el presupuesto total si sigue utilizándose.
- return [...(heading+candidate)].length<280?candidate:full;
+ return [...candidate].length<280?candidate:full;
 }
 function copyText(x){
- const value=tweetBody(x);
- return hasTweetReadyFormat(x)?value:groupRankLabel(x)+"\n\n"+value;
+ return tweetBody(x);
 }
 function displayedExplanation(x){
  // TT#N ya viene dentro del tuit nuevo: conservar la cadena completa.
