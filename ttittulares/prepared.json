@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-03T05:08:02.050470Z",
+  "updated_at": "2026-10-03T05:10:54.047482Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -368,9 +368,9 @@
       "trend_context": [],
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -385,17 +385,46 @@
       },
       "fallback_image_search_attempted_at": "2026-10-03T04:56:15.903541Z",
       "image": {
-        "url": "https://www.publico.es/files/og_thumbnail/uploads/2026/10/02/6abf91a081a7a.jpeg",
-        "source": "www.publico.es",
-        "source_url": "https://www.publico.es/internacional/asia/tribunal-supremo-israeli-levanta-veto-permite-partidos-arabes-presentarse-elecciones.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "El Supremo israelí permite a las principales listas árabes concurrir a las elecciones del 27 de octubre"
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "alt": "Gag editorial: una papeleta recupera dos opciones mientras un mazo judicial bloquea una goma de borrar.",
+        "context_guard": {
+          "version": 3,
+          "event_id": "d280c8c20756",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d280c8c20756-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/d280c8c20756-r1-ai1.jpg",
+        "sha256": "66f43f0a0de56d361333226ff77d53a2bd00b0dc01514e99866d82ab21051371",
+        "handoff": "inline-outbox-materialized-by-actions"
       },
       "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-03T05:04:58.633298Z",
-      "ai_image_failure_reason": "SHA-256 de imagen IA no coincide"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-03T05:10:54.047427Z",
+      "ai_image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "alt": "Gag editorial: una papeleta recupera dos opciones mientras un mazo judicial bloquea una goma de borrar.",
+        "context_guard": {
+          "version": 3,
+          "event_id": "d280c8c20756",
+          "revision": 1,
+          "scope": "current_item_only"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d280c8c20756-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/d280c8c20756-r1-ai1.jpg",
+        "sha256": "66f43f0a0de56d361333226ff77d53a2bd00b0dc01514e99866d82ab21051371",
+        "handoff": "inline-outbox-materialized-by-actions"
+      }
     },
     {
       "event_id": "472aefef1f10",
