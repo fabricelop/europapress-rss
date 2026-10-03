@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T12:46:07.322281Z",
-      "event_id": "d7441528e76a",
-      "phase": "imagen",
-      "reason": "Se confirmaron fotografías del mismo acontecimiento en EFE, RTVE y otros medios, pero no se obtuvo una URL HTTPS directa del raster que pudiera validarse y persistirse de forma segura. Al ser archive_sensitive no se genera recreación.",
-      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento d7441528e76a: Se confirmaron fotografías del mismo acontecimiento en EFE, RTVE y otros medios, pero no se obtuvo una URL HTTPS directa del raster que pudiera validarse y persistirse de forma segura. Al ser archive_sensitive no se genera recreación.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-27T13:22:50.823485Z",
       "event_id": "c753d2413a91-r1",
       "phase": "outbox",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "e50e72e1dc05-r1.json: ValueError: el acontecimiento original no existe en la cola",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento e50e72e1dc05-r1: e50e72e1dc05-r1.json: ValueError: el acontecimiento original no existe en la cola. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-03T21:56:17.350468Z",
+      "event_id": "93a97601ab8d-r1",
+      "phase": "outbox",
+      "reason": "93a97601ab8d-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 93a97601ab8d-r1: 93a97601ab8d-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
