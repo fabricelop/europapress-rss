@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-02T22:07:04.825216+00:00",
+  "checked_at": "2026-10-03T01:08:11.088253+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.0,
-      "run_id": 37070632611,
+      "age_minutes": 0.9,
+      "run_id": 37084857834,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -76,70 +76,70 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 13,
-      "overdue_count": 11,
-      "oldest_age_minutes": 104.4,
+      "pending_count": 18,
+      "overdue_count": 17,
+      "oldest_age_minutes": 285.5,
       "warning_after_minutes": 30,
       "overdue_items": [
+        {
+          "id": "413c73f54712",
+          "name": "#DeViernes",
+          "status": "preparing",
+          "age_minutes": 186.4
+        },
+        {
+          "id": "1a5eed26f2e0",
+          "name": "#LaVozAudiciones",
+          "status": "preparing",
+          "age_minutes": 117.0
+        },
+        {
+          "id": "456ebcfdd8f1",
+          "name": "Belén",
+          "status": "preparing",
+          "age_minutes": 117.0
+        },
+        {
+          "id": "13f0c35b4500",
+          "name": "Ángela Portero",
+          "status": "preparing",
+          "age_minutes": 117.0
+        },
         {
           "id": "03e6546dc5f6",
           "name": "#MalasLenguasN",
           "status": "preparing",
-          "age_minutes": 35.4
+          "age_minutes": 216.5
         },
         {
           "id": "fdd1a3825803",
           "name": "Omeprazol",
           "status": "preparing",
-          "age_minutes": 104.4
+          "age_minutes": 285.5
         },
         {
           "id": "68b1fa61df02",
           "name": "Maroan",
           "status": "preparing",
-          "age_minutes": 104.4
+          "age_minutes": 285.5
         },
         {
           "id": "9767e3b44c3a",
           "name": "Calero",
           "status": "preparing",
-          "age_minutes": 104.4
+          "age_minutes": 285.5
         },
         {
           "id": "ea144aa53f81",
           "name": "#EldenseRealOviedo",
           "status": "preparing",
-          "age_minutes": 104.4
+          "age_minutes": 285.5
         },
         {
           "id": "5eaf524758db",
           "name": "Samu",
           "status": "preparing",
-          "age_minutes": 104.4
-        },
-        {
-          "id": "8090f1b1fec6",
-          "name": "Eldense",
-          "status": "preparing",
-          "age_minutes": 35.4
-        },
-        {
-          "id": "89a6eb26d71d",
-          "name": "#firstdates2o",
-          "status": "preparing",
-          "age_minutes": 35.4
-        },
-        {
-          "id": "f58b9810e347",
-          "name": "Andrés Jiménez",
-          "status": "preparing",
-          "age_minutes": 35.4
-        },
-        {
-          "id": "584f74c1663e",
-          "name": "Juan Cruz",
-          "status": "preparing",
-          "age_minutes": 35.4
+          "age_minutes": 285.5
         }
       ],
       "repairable": false
@@ -150,6 +150,10 @@
       "queue_complete": false,
       "remaining_active_ids": [
         "413c73f54712",
+        "1a5eed26f2e0",
+        "456ebcfdd8f1",
+        "13f0c35b4500",
+        "e6ee5d34c014",
         "03e6546dc5f6",
         "fdd1a3825803",
         "68b1fa61df02",
@@ -161,7 +165,8 @@
         "f58b9810e347",
         "584f74c1663e",
         "e883cdb753d6",
-        "6ab80fc5ad41"
+        "6ab80fc5ad41",
+        "cb267d084937"
       ],
       "contradictory_success": false
     }
@@ -169,9 +174,9 @@
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola de explicaciones retrasada: 11 pendiente(s) superan 30 min; más antigua 104.4 min"
+    "cola de explicaciones retrasada: 17 pendiente(s) superan 30 min; más antigua 285.5 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 11 pendiente(s) superan 30 min; más antigua 104.4 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola de explicaciones retrasada: 17 pendiente(s) superan 30 min; más antigua 285.5 min | config TTendencias incompatible con el modo activo"
 }
