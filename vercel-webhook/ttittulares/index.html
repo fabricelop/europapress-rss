@@ -405,10 +405,12 @@ function normalAiEligible(item){
  if(["fallback_only","archive_only","tweet_capture_only"].includes(mode))return false;
  return String(item.ai_image_status||"").toLowerCase()!=="disabled"
 }
+function imageHasAi(item){
+ const ai=isChatImageGen(item?.ai_image)?item.ai_image:isChatImageGen(item?.image)?item.image:{};
+ return Boolean(String(ai.url||"").trim())
+}
 function imageSelectable(item){
- if(!normalAiEligible(item))return false;
- const ai=isChatImageGen(item.ai_image)?item.ai_image:isChatImageGen(item.image)?item.image:{};
- return !String(ai.url||"").trim()||Boolean(item.ai_image_regenerate_requested)
+ return normalAiEligible(item)
 }
 function imageRunActive(run){
  const st=String(run?.status||"").toUpperCase();
@@ -452,13 +454,15 @@ async function requestSingleImageRun(item,{silent=false}={}){
  if(!id)throw new Error("La noticia no tiene event_id");
  if(!imageSelectable(item))throw new Error("La noticia ya no es elegible para Gag IA");
  if(imageRunActive(imageRuns.get(id))){if(!silent)toast("Esa imagen ya se está generando");return false}
+ const regenerating=imageHasAi(item);
  const r=await fetch(RUN_API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token()},body:JSON.stringify({
    task:"images",target_id:id,event_id:id,target_name:item.title||"",revision:Number(item.revision||1)
  })});
  const d=await r.json().catch(()=>({}));
  if(r.status===409&&d.error==="image_run_in_progress"){if(!silent)toast("Esa imagen ya tiene un chat en curso");return false}
  if(!r.ok)throw new Error(d.error||"No se pudo solicitar la imagen IA");
- imageRuns.set(id,{...d,status:"REQUESTED",phase:"queued",updated_at:d.requested_at,message:"Esperando al PC"});
+ if(regenerating)item.ai_image_regenerate_requested=true;
+ imageRuns.set(id,{...d,status:"REQUESTED",phase:"queued",updated_at:d.requested_at,message:regenerating?"Nueva IA solicitada; se mantiene la anterior":"Esperando al PC"});
  lastReadyRendering=null;renderList();updateImageControl();scheduleImageRunPoll(true);
  if(!silent)toast("Gag IA enviado a un chat independiente");
  return true
@@ -899,9 +903,13 @@ function renderReady(list,preservedImages=new Map()){
   const gagText=gagLabel.querySelector("span");
   if(!selectable){
     gagLabel.classList.add("disabled");
-    if(gagText)gagText.textContent=normalAiEligible(item)?"IA lista":"IA bloqueada";
-    gagLabel.title=normalAiEligible(item)?"La IA ya está disponible":"Esta noticia usa solo archivo/fallback";
-  }else if(gagText){gagText.textContent="Gag IA"}
+    if(gagText)gagText.textContent="IA bloqueada";
+    gagLabel.title="Esta noticia usa solo archivo/fallback";
+  }else{
+    const hasAi=imageHasAi(item);
+    if(gagText)gagText.textContent=hasAi?"Rehacer Gag IA":"Gag IA";
+    gagLabel.title=hasAi?"Generar una nueva imagen IA manteniendo esta noticia y su contexto":"Generar Gag IA para esta noticia";
+  }
   gagCheck.onchange=()=>{const set=selectedImageKeys();if(gagCheck.checked)set.add(selectionKey);else set.delete(selectionKey);saveSelectedImageKeys(set);updateImageControl()};
   const aiRegenerating=Boolean(item.ai_image_regenerate_requested);
   const aiRegenerationError=String(item.ai_image_regeneration_error||"");
