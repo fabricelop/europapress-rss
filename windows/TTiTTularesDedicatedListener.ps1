@@ -626,8 +626,10 @@ while ($true) {
         } catch {}
 
         if (-not $isFresh) {
-          Write-Log "STALE TRIGGER BASELINED command=$commandId requested_at=$($doc.requested_at)"
-          $state.last_command_id = $commandId
+          # Nunca rebobinar last_command_id por una lectura remota antigua.
+          # Un snapshot viejo puede reaparecer y provocar que el comando actual
+          # se lance de nuevo cuando la lectura fresca vuelva.
+          Write-Log "STALE TRIGGER IGNORED command=$commandId requested_at=$($doc.requested_at)"
           $state.conflict_command_id = ""
           $state.conflict_first_at = ""
           Save-State $state
