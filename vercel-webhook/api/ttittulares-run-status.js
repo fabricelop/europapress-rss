@@ -20,6 +20,8 @@ const PR=2;
 const TRIGGER_BRANCH="control/ttittulares-run-trigger-v2";
 const TRIGGER_PATH="ttittulares/run-now-trigger.json";
 const ACK_PATH="ttittulares/run-ack.json";
+const IMAGE_RUN_INDEX_PATH="ttittulares/image-runs/index.json";
+const IMAGE_RUN_DIR="ttittulares/image-runs/jobs";
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
 const TRACE_COMMENT_ID=5859738015;
@@ -87,6 +89,21 @@ async function readTrigger(){
   }
 }
 async function readAck(){return await readControl(ACK_PATH)}
+
+async function readImageControl(path,strong=false){
+  if(strong){
+    try{return await readControl(path)}catch(_){}
+  }
+  try{
+    const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
+    const u="https://raw.githubusercontent.com/"+REPO+"/"+encodeURIComponent(TRIGGER_BRANCH)+"/"+clean+"?t="+Date.now();
+    const r=await fetch(u,{cache:"no-store",headers:{"cache-control":"no-cache","user-agent":"ttittulares-image-status-read"}});
+    if(r.ok)return JSON.parse(await r.text()||"{}");
+    if(r.status===404)return {}
+  }catch(_){}
+  try{return await readControl(path)}catch(_){return {}}
+}
+
 async function readAckFresh(){
   try{
     const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+ACK_PATH+"?ref="+encodeURIComponent(TRIGGER_BRANCH),{cache:"no-store"});
@@ -255,7 +272,21 @@ export default async function handler(req,res){
   res.setHeader("cache-control","no-store");
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
-    if(String(req.query?.view||"").toLowerCase()==="trigger"){
+    const view=String(req.query?.view||"").toLowerCase();
+    if(view==="image-index"){
+      const strong=String(req.query?.strong||"")==="1";
+      const doc=await readImageControl(IMAGE_RUN_INDEX_PATH,strong);
+      return res.status(200).json({ok:true,...((doc&&typeof doc==="object")?doc:{version:1,jobs:[]})})
+    }
+    if(view==="image-job"){
+      const id=String(req.query?.id||"").trim();
+      if(!/^[A-Za-z0-9._-]{3,160}$/.test(id))return res.status(400).json({ok:false,error:"id inválido"});
+      const strong=String(req.query?.strong||"")==="1";
+      const doc=await readImageControl(IMAGE_RUN_DIR+"/"+id+".json",strong);
+      if(!doc||!Object.keys(doc).length)return res.status(404).json({ok:false,error:"job no encontrado"});
+      return res.status(200).json({ok:true,...doc})
+    }
+    if(view==="trigger"){
       const [{doc:request},ack]=await Promise.all([readTrigger(),readAck()]);
       return res.status(200).json({ok:true,trigger:request||{},ack:ack||{},server_now:new Date().toISOString()})
     }
