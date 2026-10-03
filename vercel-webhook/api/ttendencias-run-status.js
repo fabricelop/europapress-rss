@@ -419,10 +419,10 @@ export default async function handler(req,res){
       const advisoryOnlyBlock=["political_actor","political_context","safety_sensitive_weather"].includes(blockReason);
       const blocked=Boolean(row.tremending_origin)||Boolean(blockReason&&!advisoryOnlyBlock);
       const hasAi=Boolean(String(row.ai_image?.url||"").trim());
-      const eligible=!archived&&!blocked&&!hasAi;
+      const eligible=!archived&&!blocked;
       return res.status(200).json({
-        ok:true,eligible,reason:archived?"archived":blocked?"blocked":hasAi?"already_has_ai":"pending",
-        target_id:id,name,revision:rev,explained_at:row.explained_at||null
+        ok:true,eligible,reason:archived?"archived":blocked?"blocked":hasAi?"regenerate":"pending",
+        has_ai:hasAi,target_id:id,name,revision:rev,explained_at:row.explained_at||null
       });
     }
     const [enabled,items,{doc:request},ack,runtimeDoc,explainedDoc,requestsDoc]=await Promise.all([

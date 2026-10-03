@@ -221,7 +221,7 @@ function normalAiEligible(x){
  return !explicitAiBlockReason(x)
 }
 function imageHasAi(x){return Boolean(String((isChatImageGen(x?.ai_image)?x.ai_image:{}).url||""))}
-function imageSelectable(x){return normalAiEligible(x)&&!imageHasAi(x)}
+function imageSelectable(x){return normalAiEligible(x)}
 function imageSelected(x){return selectedImageKeys().has(imageSelectionKey(x))}
 function setImageSelected(x,selected){
  const keys=selectedImageKeys(),key=imageSelectionKey(x);
@@ -245,8 +245,9 @@ function makeImageSelector(x,expanded=false){
  input.onchange=()=>setImageSelected(x,input.checked);
  const text=document.createElement("span");
  const block=explicitAiBlockReason(x);
- text.textContent=block?"IA bloqueada":imageHasAi(x)?"IA lista":"Gag IA";
- if(!allowed){label.classList.add("disabled");label.title=block?("Bloqueada: "+block):"La imagen IA ya está disponible"}
+ text.textContent=block?"IA bloqueada":imageHasAi(x)?"Rehacer Gag IA":"Gag IA";
+ if(!allowed){label.classList.add("disabled");label.title=block?("Bloqueada: "+block):"Imagen IA no disponible para esta entrada"}
+ else if(imageHasAi(x)){label.title="Generar una nueva imagen IA manteniendo la misma explicación y contexto"}
  label.append(input,text);return label
 }
 function imageHandoffTimedOut(run){

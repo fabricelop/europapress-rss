@@ -121,7 +121,9 @@ async function imageEligibility(targetId){
   const advisoryOnlyBlock=["political_actor","political_context","safety_sensitive_weather"].includes(blockReason);
   const blocked=Boolean(row.tremending_origin)||Boolean(blockReason&&!advisoryOnlyBlock);
   const hasAi=Boolean(String(row.ai_image?.url||"").trim());
-  return {eligible:!archived&&!blocked&&!hasAi,reason:archived?"archived":blocked?"blocked":hasAi?"already_has_ai":"pending",row}
+  // Una imagen existente no bloquea un nuevo gag: permite rehacerla conservando
+  // exactamente la misma explicación y revisión editorial.
+  return {eligible:!archived&&!blocked,reason:archived?"archived":blocked?"blocked":hasAi?"regenerate":"pending",row,hasAi}
 }
 
 async function writeControlJson(path,doc,sha,message){
@@ -369,7 +371,7 @@ async function requestImageUpload(req,res){
     return res.status(422).json({ok:false,error:"Raster rechazado: geometría anómala",width,height,aspect:Number(aspect.toFixed(3))});
   }
   const sha256=crypto.createHash("sha256").update(buf).digest("hex");
-  const now=new Date().toISOString(),revision=Number(eligible.row?.revision||job.revision||0),attempt=Math.max(1,Number(eligible.row?.ai_image_attempt||0)||1);
+  const now=new Date().toISOString(),revision=Number(eligible.row?.revision||job.revision||0),attempt=Math.max(1,Number(job.attempt||0)||((Number(eligible.row?.ai_image_attempt||0)||0)+1));
   const persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido y validado; materializando directamente en main."};
   const persistWrite=await writeControlJson(path,persisting,existing.sha,"TTendencias raster recibido "+command_id);
   const persisted=await persistAiImageDirect({target_id,revision,attempt,command_id,buf,mime:m[1],sha256,width,height,bytes:buf.length});
@@ -411,6 +413,7 @@ async function requestImageRun(req,res){
     explained_at:row.explained_at||null,
     verification_sources:Array.isArray(row.verification_sources)?row.verification_sources.slice(0,8):[]
   };
+  const attempt=Math.max(1,(Number(row.ai_image_attempt||0)||0)+1);
   const jobPath=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(jobPath);
   const previous=existing.doc||{};
@@ -431,7 +434,7 @@ async function requestImageRun(req,res){
   const doc={
     version:1,command_id,requested_at,updated_at:requested_at,status:"REQUESTED",phase:"queued",
     mode:"manual_pc_chat_image",executor:"pc_chat_ttendencias_dedicated",project:"ttendencias",launcher_arg:"tendencias",
-    task:"image",target_id,trend_id:target_id,target_name,revision,
+    task:"image",target_id,trend_id:target_id,target_name,revision,attempt,
     chat_command_version:3,
     instruction_profile:"ttendencias_gag_v1",
     context_snapshot,
