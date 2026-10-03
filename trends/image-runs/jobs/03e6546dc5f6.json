@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791005018050-cd9978",
+  "requested_at": "2026-10-03T05:23:38.050Z",
+  "updated_at": "2026-10-03T05:23:38.050Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "03e6546dc5f6",
+  "trend_id": "03e6546dc5f6",
+  "target_name": "#MalasLenguasN",
+  "revision": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "#MalasLenguasN",
+    "revision": 1,
+    "explanation": "TT#10 #MalasLenguasN es tendencia por el especial de La 1 tras el rechazo del Congreso a los decretos de vivienda: Gonzalo Miró y Esther Palomera analizaron la crisis e entrevistaron a Félix Bolaños.\n🌶️ Dos decretos cayeron y a La 1 le salió un prime time de urgencia.",
+    "closer_text": "🌶️ Dos decretos cayeron y a La 1 le salió un prime time de urgencia.",
+    "trend_names": [
+      "#MalasLenguasN"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 10,
+    "explained_at": "2026-10-03T07:19:30+02:00",
+    "verification_sources": [
+      {
+        "source": "RTVE · 2/10/2026",
+        "url": "https://www.rtve.es/rtve/20261002/programacion-especial-1-tras-rechazo-del-congreso-a-decretos-vivienda/17251508.shtml"
+      },
+      {
+        "source": "The Objective · 2/10/2026",
+        "url": "https://theobjective.com/espana/politica/2026-10-02/bolanos-elude-sanchez-convocara-elecciones-fracaso-decretos/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+}
