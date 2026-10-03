@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-1791062861482-cd021f",
-  "requested_at": "2026-10-03T21:27:41.482Z",
-  "updated_at": "2026-10-03T21:29:29.625Z",
-  "status": "ERROR",
-  "phase": "image_bridge_failed",
+  "command_id": "tr-img-1791064332164-ce36cc",
+  "requested_at": "2026-10-03T21:52:12.164Z",
+  "updated_at": "2026-10-03T21:52:12.164Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -19,7 +19,7 @@
   "context_snapshot": {
     "name": "República Checa",
     "revision": 0,
-    "explanation": "TT#14 República Checa es tendencia porque cayó 3-1 ante España en Oviedo; Lamine Yamal, Rodri y Mikel Merino marcaron para una Roja que suma tres victorias en tres partidos de Nations League.\n🌶️ Chequia salió del Tartiere con tres sellos en el pasaporte.",
+    "explanation": "TT#14 República Checa es tendencia porque cayó 3-1 ante España en Oviedo; Lamine, Rodri y Merino marcaron para una Roja que suma tres victorias en tres partidos.\n🌶️ Chequia salió del Tartiere con tres sellos en el pasaporte.",
     "closer_text": "🌶️ Chequia salió del Tartiere con tres sellos en el pasaporte.",
     "trend_names": [
       "República Checa"
@@ -46,13 +46,5 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
   },
-  "message": "Upload 500: GitHub main binary PUT trends/generated-images/d29040d36d2a-r0-ai1-61482-cd021f.jpg: 409 {\"message\":\"is at b1d75f42d0e7993845f3cc29feb0efeaa5803fd4 but expected 94e04ea83bfc493d5173ae94a998020a874a65d1\",\"docu",
-  "pc_upload_secret_hash": "b3ac5c55428607394497595f7607de7bcb7a98326e5b02c8297b94eeceaf3be2",
-  "pc_worker_id": "ttendencias-image-bridge-v1",
-  "pc_picked_up_at": "2026-10-03T21:27:51.191Z",
-  "pc_launched_at": "2026-10-03T21:28:03.126Z",
-  "upload_received_at": "2026-10-03T21:29:27.572Z",
-  "upload_sha256": "7970cbe16296d2557b5636a923d8ec3cb6ded926228bde3124a43cc13fabbb15",
-  "upload_bytes": 659857,
-  "finished_at": "2026-10-03T21:29:29.625Z"
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
 }
