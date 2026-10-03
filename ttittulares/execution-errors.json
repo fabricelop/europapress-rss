@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T11:03:20.620777Z",
-      "event_id": "1cf7fefb4370",
-      "phase": "imagen",
-      "reason": "Se localizó una fotonoticia del incendio de Igualeja atribuida a Plan Infoca, pero no una URL HTTPS directa del raster que pudiera validarse y persistirse con seguridad; archive_sensitive no permite recreación.",
-      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 1cf7fefb4370: Se localizó una fotonoticia del incendio de Igualeja atribuida a Plan Infoca, pero no una URL HTTPS directa del raster que pudiera validarse y persistirse con seguridad; archive_sensitive no permite recreación.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-27T11:08:01.854645Z",
       "event_id": "80628f366caa",
       "phase": "imagen",
@@ -1395,6 +1388,13 @@
     },
     {
       "at": "2026-10-03T10:43:52.505738Z",
+      "event_id": "120475aafcf2-r1",
+      "phase": "outbox",
+      "reason": "120475aafcf2-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 120475aafcf2-r1: 120475aafcf2-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-03T10:43:57.280869Z",
       "event_id": "120475aafcf2-r1",
       "phase": "outbox",
       "reason": "120475aafcf2-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
