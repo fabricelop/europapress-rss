@@ -394,6 +394,17 @@ async function requestImageUpload(req,res){
   if(buf.length<4096||buf.length>3*1024*1024)return res.status(400).json({ok:false,error:"Tamaño de raster no válido",bytes:buf.length});
   const meta=await sharp(buf,{animated:false}).metadata(),width=Number(meta.width||0),height=Number(meta.height||0);
   if(width<640||height<360)return res.status(400).json({ok:false,error:"Raster inferior a 640x360",width,height});
+  // ImageGen entrega el gag como raster panorámico 16:9. El bridge no debe
+  // aceptar capturas del viewport/chat aunque sean JPEG/PNG técnicamente válidos.
+  const aspect=height?width/height:0;
+  const byteDensity=width&&height?buf.length/(width*height):0;
+  if(aspect<1.60||aspect>1.90){
+    return res.status(422).json({ok:false,error:"Raster rechazado: no parece la salida 16:9 de ImageGen",width,height,aspect:Number(aspect.toFixed(3))});
+  }
+  // Evita materializar screenshots casi vacíos/negros de la interfaz.
+  if(buf.length<50000||byteDensity<0.05){
+    return res.status(422).json({ok:false,error:"Raster rechazado: contenido demasiado ligero para una imagen generada",width,height,bytes:buf.length,byte_density:Number(byteDensity.toFixed(4))});
+  }
   const sha256=crypto.createHash("sha256").update(buf).digest("hex"),now=new Date().toISOString();
   const persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido; guardando Gag IA en main."};
   await writeControlJson(path,persisting,existing.sha,"TTiTTulares raster recibido "+command_id);
