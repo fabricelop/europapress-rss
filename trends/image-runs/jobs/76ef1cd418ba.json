@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791024043567-1865d8",
+  "requested_at": "2026-10-03T10:40:43.567Z",
+  "updated_at": "2026-10-03T10:40:43.567Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "76ef1cd418ba",
+  "trend_id": "76ef1cd418ba",
+  "target_name": "José Andrés",
+  "revision": 0,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "José Andrés",
+    "revision": 0,
+    "explanation": "TT#23 José Andrés es tendencia porque, desde la Comic-Con de Málaga, ha criticado la política de vivienda del Gobierno y ha defendido construir más, agilizar suelo y combinar inversión pública y privada.",
+    "closer_text": "",
+    "trend_names": [
+      "José Andrés"
+    ],
+    "group_title": "José Andrés · vivienda 3 de octubre",
+    "rank_at_explanation": 23,
+    "explained_at": "2026-10-03T12:34:30+02:00",
+    "verification_sources": [
+      {
+        "source": "HuffPost · 3/10/2026",
+        "url": "https://www.huffingtonpost.es/virales/jose-andres-tenemos-gobierno-lleva-ochonos-golpe-ultimo-segundo-acordamos-vivienda-f202610.html"
+      },
+      {
+        "source": "AS · 3/10/2026",
+        "url": "https://as.com/actualidad/sociedad/jeff-bezos-y-jose-andres-coinciden-con-espana-la-culpa-del-problema-de-la-vivienda-es-de-los-politicos-sin-preparacion-ni-conocimiento-f202610-n/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+}
