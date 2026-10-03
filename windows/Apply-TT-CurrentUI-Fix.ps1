@@ -1,6 +1,6 @@
 # Apply-TT-CurrentUI-Fix.ps1
 # One-shot repair for current ChatGPT project UI.
-# 1) Applies persistent project chat runner patch to clean baseline Ejecutar.js.
+# 1) Applies the project landing composer V2 migration to Ejecutar.js.
 # 2) Runs current listener recovery (which does NOT modify Ejecutar.js).
 # 3) Verifies marker and listener files.
 
@@ -26,16 +26,19 @@ function Validate-Ps([string]$File) {
 
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 
-$patch = Join-Path $BaseDir "Fix-Ejecutar-PersistentProjectChat-V1.ps1"
-Get-MainFile "windows/Fix-Ejecutar-PersistentProjectChat-V1.ps1" $patch
+$patch = Join-Path $BaseDir "Repair-Ejecutar-ProjectLanding-V2.ps1"
+$rollback = Join-Path $BaseDir "Rollback-Ejecutar-ProjectLanding-V2.ps1"
+Get-MainFile "windows/Repair-Ejecutar-ProjectLanding-V2.ps1" $patch
+Get-MainFile "windows/Rollback-Ejecutar-ProjectLanding-V2.ps1" $rollback
 Validate-Ps $patch
+Validate-Ps $rollback
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $patch
-if ($LASTEXITCODE -ne 0) { throw "Falló Fix-Ejecutar-PersistentProjectChat-V1.ps1" }
+if ($LASTEXITCODE -ne 0) { throw "Falló Repair-Ejecutar-ProjectLanding-V2.ps1" }
 
 $runner = Join-Path $BaseDir "Ejecutar.js"
 $runnerText = Get-Content -LiteralPath $runner -Raw -Encoding UTF8
-if (-not $runnerText.Contains("TT_PERSISTENT_PROJECT_CHAT_V1")) {
-  throw "Ejecutar.js no contiene TT_PERSISTENT_PROJECT_CHAT_V1"
+if (-not $runnerText.Contains("TT_PROJECT_LANDING_COMPOSER_V2")) {
+  throw "Ejecutar.js no contiene TT_PROJECT_LANDING_COMPOSER_V2"
 }
 
 $recovery = Join-Path $BaseDir "Recover-TT-Execution.ps1"
@@ -46,6 +49,7 @@ if ($LASTEXITCODE -ne 0) { throw "Falló Recover-TT-Execution.ps1" }
 
 Write-Host ""
 Write-Host "TT CURRENT UI FIX ACTIVO" -ForegroundColor Green
-Write-Host "Runner: TT_PERSISTENT_PROJECT_CHAT_V1"
+Write-Host "Runner: TT_PROJECT_LANDING_COMPOSER_V2"
 Write-Host "Recovery: listeners actuales, Ejecutar.js no modificado"
+Write-Host "Rollback instalado: $rollback"
 Write-Host "Siguiente paso: lanzar TTendencias UNA vez."

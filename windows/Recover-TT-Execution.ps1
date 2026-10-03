@@ -37,8 +37,19 @@ Validate-Ps $tmpTitle
 
 $trendTxt = Get-Content $tmpTrend -Raw -Encoding UTF8
 $titleTxt = Get-Content $tmpTitle -Raw -Encoding UTF8
-if(-not $trendTxt.Contains("Ensure-RunnerNewChatCompatibility")){throw "Listener TTendencias sin compatibilidad New chat"}
-if(-not $titleTxt.Contains("Ensure-RunnerNewChatCompatibility")){throw "Listener TTiTTulares sin compatibilidad New chat"}
+foreach($pair in @(
+  @{Name="TTendencias";Text=$trendTxt},
+  @{Name="TTiTTulares";Text=$titleTxt}
+)){
+  if(-not $pair.Text.Contains("Test-CustomChatMessageSupport")){
+    throw "Listener $($pair.Name) sin validación read-only del runner"
+  }
+  foreach($forbidden in @("Ensure-RunnerNewChatCompatibility","Enable-CustomChatMessages","Set-Content -LiteralPath `$Runner")){
+    if($pair.Text.Contains($forbidden)){
+      throw "Listener $($pair.Name) intenta modificar Ejecutar.js: $forbidden"
+    }
+  }
+}
 
 Move-Item $tmpTrend $trend -Force
 Move-Item $tmpTitle $title -Force

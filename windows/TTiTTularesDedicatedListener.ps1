@@ -33,70 +33,6 @@ function Write-Log([string]$Text) {
 }
 
 
-function Ensure-RunnerNewChatCompatibility {
-  if (-not (Test-Path -LiteralPath $Runner)) {
-    Write-Log "RUNNER COMPAT WARN: no existe $Runner"
-    return $false
-  }
-  try {
-    $text = Get-Content -LiteralPath $Runner -Raw -Encoding UTF8
-    if ($text.Contains("TT_NEW_CHAT_OPTIONAL_V4") -or $text.Contains("TT_NEW_CHAT_OPTIONAL_V3")) {
-      return $true
-    }
-
-    # Forma actual de Ejecutar.js: abrirNuevoChatProyecto devuelve {ok:false,error:"No encuentro New chat"}
-    # y después aborta en el wrapper con throw. Si el botón no existe, continuar con el compositor actual.
-    $old = '    if (!r?.ok)' + [Environment]::NewLine +
-      '        throw Error(r?.error || "No se puede crear el chat nuevo.");'
-    $oldCrLf = '    if (!r?.ok)' + "`r`n" +
-      '        throw Error(r?.error || "No se puede crear el chat nuevo.");'
-
-    $replacement = '    /* TT_NEW_CHAT_OPTIONAL_V4 */' + [Environment]::NewLine +
-      '    if (!r?.ok) {' + [Environment]::NewLine +
-      '        console.log("AVISO: New chat no visible; se usa el compositor actual del proyecto.");' + [Environment]::NewLine +
-      '        return;' + [Environment]::NewLine +
-      '    }'
-
-    $next = $text
-    if ($next.Contains($old)) { $next = $next.Replace($old,$replacement) }
-    elseif ($next.Contains($oldCrLf)) { $next = $next.Replace($oldCrLf,$replacement) }
-    else {
-      Write-Log "RUNNER COMPAT WARN: no se reconoce el wrapper actual de abrirNuevoChatProyecto; no se modifica Ejecutar.js"
-      return $false
-    }
-
-    foreach ($needle in @(
-      'Ejecuta TTiTTulares',
-      'Ejecuta TTendencias',
-      'TT_CHAT_MESSAGE_B64',
-      'const enviar = process.argv.includes("--enviar");',
-      'error:"No encuentro New chat"'
-    )) {
-      if (-not $next.Contains($needle)) { throw "Proteccion fallida: falta $needle" }
-    }
-
-    $backup = $Runner + ".before-auto-new-chat-v4-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
-    Copy-Item -LiteralPath $Runner -Destination $backup -Force
-    Set-Content -LiteralPath $Runner -Value $next -Encoding UTF8
-
-    $node = Get-Command node.exe -ErrorAction SilentlyContinue
-    if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
-    if ($node) {
-      & $node.Source --check $Runner *> $null
-      if ($LASTEXITCODE -ne 0) {
-        Copy-Item -LiteralPath $backup -Destination $Runner -Force
-        throw "node --check fallo; restaurado backup"
-      }
-    }
-
-    Write-Log "RUNNER COMPAT APPLIED: TT_NEW_CHAT_OPTIONAL_V4 backup=$backup"
-    return $true
-  } catch {
-    Write-Log "RUNNER COMPAT ERROR :: $($_.Exception.Message)"
-    return $false
-  }
-}
-
 function CacheBust([string]$Url) {
   $sep = if ($Url.Contains("?")) { "&" } else { "?" }
   return $Url + $sep + "t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
@@ -375,72 +311,27 @@ function Build-ImageMessage($Job) {
   return "TTITTULARES_IMAGE_JOB_V3 $commandId $targetId | Usa ImageGen AHORA y genera UNA imagen IA para '$targetName': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee ttittulares/image-runs/jobs/$targetId.json en control/ttittulares-run-trigger-v2 para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
 
-function Enable-CustomChatMessages {
+function Test-CustomChatMessageSupport {
   if (-not (Test-Path -LiteralPath $Runner)) {
-    Write-Log "CUSTOM MESSAGE DISABLED: no existe $Runner"
+    Write-Log "CUSTOM MESSAGE UNAVAILABLE: no existe $Runner"
     return $false
   }
+
   try {
     $text = Get-Content -LiteralPath $Runner -Raw -Encoding UTF8
+    $ok =
+      $text.Contains("TT_CHAT_MESSAGE_B64") -and
+      $text.Contains('const enviar = process.argv.includes("--enviar");')
 
-    # MUY IMPORTANTE: este listener solo puede tocar la entrada 'titulares'.
-    # TTendencias comparte Ejecutar.js y su línea debe quedar byte-a-byte igual.
-    $tendenciasBefore = (($text -split "`r?`n") | Where-Object { $_ -match '^\s*tendencias\s*:' } | Select-Object -First 1)
-    if (-not $tendenciasBefore) {
-      Write-Log "CUSTOM MESSAGE DISABLED: no se encontró la línea tendencias; no se toca Ejecutar.js"
+    if (-not $ok) {
+      Write-Log "CUSTOM MESSAGE UNAVAILABLE: Ejecutar.js no acepta TT_CHAT_MESSAGE_B64; no se modifica"
       return $false
     }
 
-    $exprTit = '(process.env.TT_CHAT_MESSAGE_B64 ? Buffer.from(process.env.TT_CHAT_MESSAGE_B64,"base64").toString("utf8") : "Ejecuta TTiTTulares")'
-    $signature = 'titulares: ' + $exprTit
-
-    if ($text.Contains($signature)) {
-      Write-Log "CUSTOM MESSAGE titulares support already present; tendencias preserved"
-      return $true
-    }
-
-    $next = $text.Replace('titulares: "Ejecuta TTiTTulares"', $signature)
-    $next = $next.Replace("titulares: 'Ejecuta TTiTTulares'", $signature)
-
-    if ($next -eq $text) {
-      Write-Log "CUSTOM MESSAGE DISABLED: no se encontró la entrada exacta titulares; no se toca TTendencias"
-      return $false
-    }
-
-    $tendenciasAfter = (($next -split "`r?`n") | Where-Object { $_ -match '^\s*tendencias\s*:' } | Select-Object -First 1)
-    if ($tendenciasAfter -cne $tendenciasBefore) {
-      Write-Log "CUSTOM MESSAGE ABORTED: la línea tendencias habría cambiado"
-      return $false
-    }
-
-    $backup = $Runner + ".before-ttittulares-editorial-v12-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
-    Copy-Item -LiteralPath $Runner -Destination $backup -Force
-    Set-Content -LiteralPath $Runner -Value $next -Encoding UTF8
-
-    $node = Get-Command node.exe -ErrorAction SilentlyContinue
-    if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
-    if ($node) {
-      & $node.Source --check $Runner *> $null
-      if ($LASTEXITCODE -ne 0) {
-        Copy-Item -LiteralPath $backup -Destination $Runner -Force
-        Write-Log "CUSTOM MESSAGE DISABLED: node --check falló; restaurado $backup"
-        return $false
-      }
-    }
-
-    # Verificación final en disco: TTendencias debe seguir idéntico.
-    $written = Get-Content -LiteralPath $Runner -Raw -Encoding UTF8
-    $tendenciasWritten = (($written -split "`r?`n") | Where-Object { $_ -match '^\s*tendencias\s*:' } | Select-Object -First 1)
-    if ($tendenciasWritten -cne $tendenciasBefore) {
-      Copy-Item -LiteralPath $backup -Destination $Runner -Force
-      Write-Log "CUSTOM MESSAGE ABORTED: protección TTendencias activada; backup restaurado"
-      return $false
-    }
-
-    Write-Log "CUSTOM MESSAGE titulares enabled; TTendencias unchanged; backup=$backup"
+    Write-Log "CUSTOM MESSAGE READY: validación de solo lectura; Ejecutar.js no modificado"
     return $true
   } catch {
-    Write-Log "CUSTOM MESSAGE ERROR :: $($_.Exception.Message)"
+    Write-Log "CUSTOM MESSAGE CHECK ERROR :: $($_.Exception.Message)"
     return $false
   }
 }
@@ -588,7 +479,7 @@ Write-Log "LISTENER START worker=$WorkerId pid=$PID"
 $state = Load-State
 Ensure-StateFields $state
 Save-State $state
-$CustomMessageSupport = Enable-CustomChatMessages
+$CustomMessageSupport = Test-CustomChatMessageSupport
 
 # Diagnóstico inicial: confirma que el proceso sigue vivo y que ve el trigger remoto.
 $probe = Read-Trigger

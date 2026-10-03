@@ -35,70 +35,6 @@ function Write-Log([string]$Text) {
 }
 
 
-function Ensure-RunnerNewChatCompatibility {
-  if (-not (Test-Path -LiteralPath $Runner)) {
-    Write-Log "RUNNER COMPAT WARN: no existe $Runner"
-    return $false
-  }
-  try {
-    $text = Get-Content -LiteralPath $Runner -Raw -Encoding UTF8
-    if ($text.Contains("TT_NEW_CHAT_OPTIONAL_V4") -or $text.Contains("TT_NEW_CHAT_OPTIONAL_V3")) {
-      return $true
-    }
-
-    # Forma actual de Ejecutar.js: abrirNuevoChatProyecto devuelve {ok:false,error:"No encuentro New chat"}
-    # y después aborta en el wrapper con throw. Si el botón no existe, continuar con el compositor actual.
-    $old = '    if (!r?.ok)' + [Environment]::NewLine +
-      '        throw Error(r?.error || "No se puede crear el chat nuevo.");'
-    $oldCrLf = '    if (!r?.ok)' + "`r`n" +
-      '        throw Error(r?.error || "No se puede crear el chat nuevo.");'
-
-    $replacement = '    /* TT_NEW_CHAT_OPTIONAL_V4 */' + [Environment]::NewLine +
-      '    if (!r?.ok) {' + [Environment]::NewLine +
-      '        console.log("AVISO: New chat no visible; se usa el compositor actual del proyecto.");' + [Environment]::NewLine +
-      '        return;' + [Environment]::NewLine +
-      '    }'
-
-    $next = $text
-    if ($next.Contains($old)) { $next = $next.Replace($old,$replacement) }
-    elseif ($next.Contains($oldCrLf)) { $next = $next.Replace($oldCrLf,$replacement) }
-    else {
-      Write-Log "RUNNER COMPAT WARN: no se reconoce el wrapper actual de abrirNuevoChatProyecto; no se modifica Ejecutar.js"
-      return $false
-    }
-
-    foreach ($needle in @(
-      'Ejecuta TTiTTulares',
-      'Ejecuta TTendencias',
-      'TT_CHAT_MESSAGE_B64',
-      'const enviar = process.argv.includes("--enviar");',
-      'error:"No encuentro New chat"'
-    )) {
-      if (-not $next.Contains($needle)) { throw "Proteccion fallida: falta $needle" }
-    }
-
-    $backup = $Runner + ".before-auto-new-chat-v4-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
-    Copy-Item -LiteralPath $Runner -Destination $backup -Force
-    Set-Content -LiteralPath $Runner -Value $next -Encoding UTF8
-
-    $node = Get-Command node.exe -ErrorAction SilentlyContinue
-    if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
-    if ($node) {
-      & $node.Source --check $Runner *> $null
-      if ($LASTEXITCODE -ne 0) {
-        Copy-Item -LiteralPath $backup -Destination $Runner -Force
-        throw "node --check fallo; restaurado backup"
-      }
-    }
-
-    Write-Log "RUNNER COMPAT APPLIED: TT_NEW_CHAT_OPTIONAL_V4 backup=$backup"
-    return $true
-  } catch {
-    Write-Log "RUNNER COMPAT ERROR :: $($_.Exception.Message)"
-    return $false
-  }
-}
-
 function CacheBust([string]$Url) {
   $sep = if ($Url.Contains("?")) { "&" } else { "?" }
   return $Url + $sep + "t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
@@ -338,45 +274,27 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
   }
 }
 
-function Enable-CustomChatMessages {
+function Test-CustomChatMessageSupport {
   if (-not (Test-Path -LiteralPath $Runner)) {
-    Write-Log "CUSTOM MESSAGE DISABLED: no existe $Runner"
+    Write-Log "CUSTOM MESSAGE UNAVAILABLE: no existe $Runner"
     return $false
   }
+
   try {
     $text = Get-Content -LiteralPath $Runner -Raw -Encoding UTF8
-    if ($text.Contains("TT_CHAT_MESSAGE_B64")) {
-      Write-Log "CUSTOM MESSAGE support already present"
-      return $true
-    }
+    $ok =
+      $text.Contains("TT_CHAT_MESSAGE_B64") -and
+      $text.Contains('const enviar = process.argv.includes("--enviar");')
 
-    $exprTre = '(process.env.TT_CHAT_MESSAGE_B64 ? Buffer.from(process.env.TT_CHAT_MESSAGE_B64,"base64").toString("utf8") : "Ejecuta TTendencias")'
-    $next = $text.Replace('"Ejecuta TTendencias"', $exprTre).Replace("'Ejecuta TTendencias'", $exprTre)
-
-    if ($next -eq $text) {
-      Write-Log "CUSTOM MESSAGE DISABLED: no se encontró el literal Ejecuta TTendencias"
+    if (-not $ok) {
+      Write-Log "CUSTOM MESSAGE UNAVAILABLE: Ejecutar.js no acepta TT_CHAT_MESSAGE_B64; no se modifica"
       return $false
     }
 
-    $backup = $Runner + ".before-ttendencias-image-chat-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
-    Copy-Item -LiteralPath $Runner -Destination $backup -Force
-    Set-Content -LiteralPath $Runner -Value $next -Encoding UTF8
-
-    $node = Get-Command node.exe -ErrorAction SilentlyContinue
-    if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
-    if ($node) {
-      & $node.Source --check $Runner *> $null
-      if ($LASTEXITCODE -ne 0) {
-        Copy-Item -LiteralPath $backup -Destination $Runner -Force
-        Write-Log "CUSTOM MESSAGE DISABLED: node --check falló; restaurado $backup"
-        return $false
-      }
-    }
-
-    Write-Log "CUSTOM MESSAGE enabled; backup=$backup"
+    Write-Log "CUSTOM MESSAGE READY: validación de solo lectura; Ejecutar.js no modificado"
     return $true
   } catch {
-    Write-Log "CUSTOM MESSAGE ERROR :: $($_.Exception.Message)"
+    Write-Log "CUSTOM MESSAGE CHECK ERROR :: $($_.Exception.Message)"
     return $false
   }
 }
@@ -552,7 +470,7 @@ $state = Load-State
 Ensure-StateFields $state
 Save-State $state
 
-$CustomMessageSupport = Enable-CustomChatMessages
+$CustomMessageSupport = Test-CustomChatMessageSupport
 
 $probe = Read-Trigger
 if ($probe -and $probe.command_id) {
