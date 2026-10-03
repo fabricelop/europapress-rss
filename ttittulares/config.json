@@ -3,18 +3,12 @@
   "radar": {
     "minimum_sources": 4,
     "waiting_ttl_hours": 24,
-    "schedule_minutes": [
-      10,
-      40
-    ],
+    "schedule_minutes": [10, 40],
     "timezone": "Europe/Madrid",
     "source_repair": "inline_parallel_fallback"
   },
   "editorial": {
-    "schedule_minutes": [
-      0,
-      30
-    ],
+    "schedule_minutes": [0, 30],
     "timezone": "Europe/Madrid",
     "tweets_per_story": 1,
     "verify_before_draft": true
@@ -42,20 +36,18 @@
     "ai_attempts_initial": 0,
     "non_blocking": true,
     "fallback_enabled": true,
-    "source_preference": [
-      "official_or_primary",
-      "reputable_media"
-    ],
+    "source_preference": ["official_or_primary", "reputable_media"],
     "require_source_page": true,
     "store": "generated_repo_plus_external_fallback",
     "rights_status_default": "unverified",
     "explicit_not_found": true,
     "validate_https": true,
-    "policy": "La ejecución editorial solo prepara fallback real y deja la IA sin solicitar. ImageGen se ejecuta únicamente mediante jobs manuales independientes para noticias marcadas con Gag IA en el panel. Sensibles: disable_ai_image + fallback_only. Ninguna imagen bloquea READY, Listas ni la cola.",
+    "policy": "La ejecución editorial solo prepara fallback real y deja la IA sin solicitar. ImageGen se ejecuta únicamente mediante jobs manuales independientes para noticias marcadas con Gag IA en el panel. Las noticias políticas y otras noticias READY normales son elegibles para Gag IA; la temática política no deshabilita ImageGen. Ninguna imagen bloquea READY, Listas ni la cola.",
     "style_id": "TT_STYLE_A_V1",
     "style": "Caricatura satírica editorial muy expresiva y exagerada: un solo gag visual fuerte, entendido de un vistazo, colores vivos, props absurdos y situación llevada al límite; evitar imagen neutra o meramente literal.",
-    "sensitive_mode": "fallback_only",
-    "sensitive_sets_disable_ai_image": true,
+    "sensitive_mode": "ai_plus_fallback",
+    "sensitive_sets_disable_ai_image": false,
+    "political_ai_images_enabled": true,
     "max_visual_seconds": 120,
     "generation_mode": "manual_selected_jobs"
   }
