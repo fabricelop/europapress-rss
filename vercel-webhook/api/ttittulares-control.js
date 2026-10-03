@@ -772,6 +772,29 @@ export default async function handler(req,res){
           rewrite_pending_source:"prepared"
         }));
       const processingItems=[...queueProcessing,...syntheticRewrites];
+      const processingOutcomes=(queue.doc?.items||[])
+        .filter(x=>["DISMISSED","SKIPPED_DUPLICATE","ERROR","CANCELLED"].includes(String(x.status||"").toUpperCase()))
+        .map(x=>{
+          const ev=eventMap.get(String(x.event_id||""))||{};
+          return {
+            event_id:String(x.event_id||""),
+            title:String(x.title||ev.canonical_title||ev.title||""),
+            url:String(x.url||ev.url||""),
+            status:String(x.status||"").toUpperCase(),
+            selection_mode:x.selection_mode||null,
+            selected_at:x.selected_at||null,
+            finished_at:x.reconciled_at||x.dismissed_at||x.problematic_at||x.updated_at||x.selected_at||null,
+            filter_reason:String(x.filter_reason||""),
+            reconciliation_reason:String(x.reconciliation_reason||""),
+            problem_reason:String(x.problem_reason||""),
+            duplicate_of_event_id:x.duplicate_of_event_id||x.reconciled_from_event_id||null,
+            matching_source_count:Number(x.matching_source_count||0)||null,
+            source_count:Number(ev.source_count||x.source_count||0),
+            sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
+          }
+        })
+        .sort((a,b)=>String(b.finished_at||b.selected_at||"").localeCompare(String(a.finished_at||a.selected_at||"")))
+        .slice(0,20);
       const problematicItems=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROBLEMATIC"&&!preparedIds.has(String(x.event_id||""))&&!closedIds.has(String(x.event_id||""))).map(x=>{
         const ev=eventMap.get(String(x.event_id||""))||{};
         return {
@@ -832,7 +855,7 @@ export default async function handler(req,res){
         const bv=Number.isFinite(b.source3_minutes)?b.source3_minutes:Number.MAX_SAFE_INTEGER;
         return av-bv||String(b.first_seen||"").localeCompare(String(a.first_seen||""))
       });
-      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,problematic_count:problematicItems.length+trendCandidateItems.length,problematic_items:problematicItems,trend_candidates_count:trendCandidateItems.length,trend_candidates:trendCandidateItems,ready_count:visiblePrepared.length,one_source_count:oneSourceCount,two_source_count:twoSourceCount,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
+      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,processing_outcomes:processingOutcomes,processing_outcomes_count:processingOutcomes.length,problematic_count:problematicItems.length+trendCandidateItems.length,problematic_items:problematicItems,trend_candidates_count:trendCandidateItems.length,trend_candidates:trendCandidateItems,ready_count:visiblePrepared.length,one_source_count:oneSourceCount,two_source_count:twoSourceCount,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
       const tremendingItems=(tremending.doc?.items||[]).map(x=>({
         id:tremendingEntryId(x.id),title:String(x.title||"Entrada sin título"),url:String(x.url||""),description:String(x.description||""),published_at:x.published_at||null,first_seen_at:x.first_seen_at||null,last_seen_at:x.last_seen_at||null,status:String(x.status||"pending"),destinations:Array.isArray(x.destinations)?x.destinations:[],tweets:Array.isArray(x.tweets)?x.tweets:[],selected_tweet_id:x.selected_tweet_id||null,image:x.image||{status:"not_selected"},article_status:x.article_status||"pending"
       })).filter(x=>x.id).sort((a,b)=>String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));

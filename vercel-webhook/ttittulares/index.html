@@ -1057,10 +1057,41 @@ function renderProblematic(list){
    list.appendChild(card)
  }
 }
+function processingOutcomeReason(item){
+ const exact=String(item.reconciliation_reason||"").trim();
+ if(exact)return exact;
+ const filter=String(item.filter_reason||"").trim();
+ if(filter==="insufficient_matching_source_evidence"){
+   const n=Number(item.matching_source_count||0);
+   return "Descartada porque la verificación editorial no encontró suficientes fuentes coincidentes"+(n?" ("+n+" coincidentes).":".");
+ }
+ if(filter==="already_prepared_or_processing_same_story")return "Duplicada: la misma historia ya estaba en Listas o en elaboración.";
+ if(filter)return "Motivo editorial: "+filter.replaceAll("_"," ")+".";
+ const problem=String(item.problem_reason||"").trim();
+ if(problem==="transport_write_blocked")return "No pudo completarse por un bloqueo de escritura/transporte.";
+ if(problem)return "Incidencia: "+problem.replaceAll("_"," ")+".";
+ if(String(item.status||"")==="SKIPPED_DUPLICATE")return "Duplicada o reconciliada con otra noticia; no llegó a Listas.";
+ if(String(item.status||"")==="DISMISSED")return "Desestimada; no quedó un motivo detallado registrado.";
+ if(String(item.status||"")==="ERROR")return "La elaboración terminó con error.";
+ if(String(item.status||"")==="CANCELLED")return "La elaboración fue cancelada.";
+ return "No llegó a Listas."
+}
+function processingOutcomeLabel(item){
+ const s=String(item.status||"");
+ if(s==="SKIPPED_DUPLICATE")return "Duplicada / reconciliada";
+ if(s==="DISMISSED")return "Descartada";
+ if(s==="ERROR")return "Error";
+ if(s==="CANCELLED")return "Cancelada";
+ return s||"Salida"
+}
 function renderProcessing(list){
  $("viewTitle").textContent="En elaboración";
  const items=[...(model.status?.processing_items||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
- if(!items.length){list.innerHTML='<div class="empty">No hay noticias en elaboración.</div>';return}
+ const outcomes=[...(model.status?.processing_outcomes||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
+ if(!items.length&&!outcomes.length){list.innerHTML='<div class="empty">No hay noticias en elaboración ni salidas recientes.</div>';return}
+ if(!items.length){
+   const empty=document.createElement("div");empty.className="empty";empty.textContent="No hay noticias actualmente en elaboración.";list.appendChild(empty)
+ }
  for(const item of items){
    const card=document.createElement("article");card.className="queuecard";
    const chips=(item.sources||[]).map(s=>'<span class="chip">'+String(typeof s==="string"?s:(s.name||s.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
@@ -1074,6 +1105,19 @@ function renderProcessing(list){
    };
    list.appendChild(card)
  }
+ if(outcomes.length){
+   const sep=document.createElement("div");sep.className="meta";sep.style.margin="16px 2px 6px";sep.textContent="Salidas recientes de elaboración";list.appendChild(sep);
+   for(const item of outcomes){
+     const card=document.createElement("article");card.className="queuecard";
+     const chips=(item.sources||[]).map(s=>'<span class="chip">'+String(typeof s==="string"?s:(s.name||s.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
+     card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="problem-reason"></div><div class="sources-list">'+chips+'</div>';
+     card.querySelector(".title").textContent=item.title||"Noticia sin título";
+     card.querySelector(".sources").textContent=processingOutcomeLabel(item)+" · "+fmt(item.finished_at||item.selected_at);
+     card.querySelector(".count").textContent=Number(item.source_count||0)+" fuentes";
+     card.querySelector(".problem-reason").textContent=processingOutcomeReason(item);
+     list.appendChild(card)
+   }
+ }
 }
 async function load(silent=false,passive=false){
  if(passive&&imageTerminalRefreshActive){queuePassiveLoad(1200);return}
@@ -1085,13 +1129,13 @@ async function load(silent=false,passive=false){
   if(d.github_rate_limit)updateGithubRate(d.github_rate_limit);
   if(!r.ok){const err=new Error(d.error||"No se pudieron leer los datos");err.githubRate=d.github_rate_limit||null;throw err}
   if(passive&&(uiInteractionActive()||interactionAtStart!==uiInteractionVersion)){queuePassiveLoad(450);return}
-  const preparedRaw=d.prepared?.items||[],processingRaw=d.status?.processing_items||[],problematicRaw=d.status?.problematic_items||[],trendCandidatesRaw=d.status?.trend_candidates||[],growingRaw=d.status?.three_source_items||[];
-  const present=new Set([...preparedRaw,...processingRaw,...problematicRaw,...growingRaw].map(x=>String(x.event_id||"")).filter(Boolean));
+  const preparedRaw=d.prepared?.items||[],processingRaw=d.status?.processing_items||[],processingOutcomesRaw=d.status?.processing_outcomes||[],problematicRaw=d.status?.problematic_items||[],trendCandidatesRaw=d.status?.trend_candidates||[],growingRaw=d.status?.three_source_items||[];
+  const present=new Set([...preparedRaw,...processingRaw,...processingOutcomesRaw,...problematicRaw,...growingRaw].map(x=>String(x.event_id||"")).filter(Boolean));
   for(const x of trendCandidatesRaw){const id=String(x.candidate_id||x.event_id||"");if(id)present.add(id)}
   let pendingChanged=false;for(const id of [...pendingClosed])if(!present.has(id)){pendingClosed.delete(id);pendingChanged=true}
   if(pendingChanged)persistUiState();
-  const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),problematic_items:problematicRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),trend_candidates:trendCandidatesRaw.filter(x=>!pendingClosed.has(String(x.candidate_id||x.event_id||""))),three_source_items:growingRaw.filter(x=>!pendingClosed.has(String(x.event_id||"")))};
-  status.processing_count=status.processing_items.length;status.problematic_count=status.problematic_items.length+status.trend_candidates.length;status.trend_candidates_count=status.trend_candidates.length;status.three_source_count=status.three_source_items.length;
+  const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),processing_outcomes:processingOutcomesRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),problematic_items:problematicRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),trend_candidates:trendCandidatesRaw.filter(x=>!pendingClosed.has(String(x.candidate_id||x.event_id||""))),three_source_items:growingRaw.filter(x=>!pendingClosed.has(String(x.event_id||"")))};
+  status.processing_count=status.processing_items.length;status.processing_outcomes_count=status.processing_outcomes.length;status.problematic_count=status.problematic_items.length+status.trend_candidates.length;status.trend_candidates_count=status.trend_candidates.length;status.three_source_count=status.three_source_items.length;
   model={prepared:preparedRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),status,config:d.config||{},tremending:d.tremending||{items:[]}};
   hasGoodState=true;localStorage.setItem(DATA_CACHE_KEY,JSON.stringify(model));
   if(LINKED_EVENT_ID&&model.prepared.some(x=>String(x.event_id)===LINKED_EVENT_ID)){view="ready";openCards.add(LINKED_EVENT_ID);persistUiState()}
