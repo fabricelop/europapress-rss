@@ -29,8 +29,15 @@ function Validate-Node([string]$File,[string[]]$Needles) {
   $node=Get-Command node.exe -ErrorAction SilentlyContinue
   if(-not $node){$node=Get-Command node -ErrorAction SilentlyContinue}
   if(-not $node){throw "No encuentro Node.js"}
-  & $node.Source --check $File *> $null
-  if($LASTEXITCODE -ne 0){throw "node --check falló en $File"}
+  $oldEap=$ErrorActionPreference
+  try {
+    $ErrorActionPreference="Continue"
+    & $node.Source --check $File 1>$null 2>$null
+    $nodeCode=$LASTEXITCODE
+  } finally {
+    $ErrorActionPreference=$oldEap
+  }
+  if($nodeCode -ne 0){throw "node --check falló en $File"}
   $txt=Get-Content -LiteralPath $File -Raw -Encoding UTF8
   foreach($n in $Needles){if(-not $txt.Contains($n)){throw "Falta garantía '$n' en $File"}}
 }
@@ -43,9 +50,9 @@ $titleListener= Join-Path $BaseDir "TTiTTularesDedicatedListener.ps1"
 $titleBridge  = Join-Path $BaseDir "TTiTTularesImageBridge.js"
 
 $tmpTrendListener=$trendListener+".new"
-$tmpTrendBridge=$trendBridge+".new"
+$tmpTrendBridge=Join-Path $BaseDir "TTendenciasImageBridge.new.js"
 $tmpTitleListener=$titleListener+".new"
-$tmpTitleBridge=$titleBridge+".new"
+$tmpTitleBridge=Join-Path $BaseDir "TTiTTularesImageBridge.new.js"
 
 Get-MainFile "windows/TTendenciasDedicatedListener.ps1" $tmpTrendListener
 Get-MainFile "windows/TTendenciasImageBridge.js" $tmpTrendBridge
