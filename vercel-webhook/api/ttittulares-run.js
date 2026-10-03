@@ -378,7 +378,10 @@ async function requestImagePcAck(req,res){
 async function requestImageUpload(req,res){
   const target_id=safeTargetId(req.body?.target_id||req.body?.event_id||req.body?.id);
   const command_id=String(req.body?.command_id||"").trim(),upload_secret=String(req.body?.upload_secret||""),data=String(req.body?.image_data_url||"");
+  const captureMethod=String(req.body?.capture?.method||"");
+  const captureFromImage=/^(original-fetch-img|canvas-from-img-|image-element-screenshot-)/.test(captureMethod);
   if(!command_id||!upload_secret||!data.startsWith("data:image/"))return res.status(400).json({ok:false,error:"Carga de imagen incompleta"});
+  if(!captureFromImage)return res.status(422).json({ok:false,error:"Raster rechazado: el bridge no acredita captura del elemento de imagen",capture_method:captureMethod||null});
   if(data.length>4*1024*1024)return res.status(413).json({ok:false,error:"Raster codificado demasiado grande"});
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(path),job=existing.doc||{};
@@ -391,19 +394,15 @@ async function requestImageUpload(req,res){
   const m=data.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
   if(!m)return res.status(400).json({ok:false,error:"Formato de raster no admitido"});
   const buf=Buffer.from(m[2],"base64");
-  if(buf.length<4096||buf.length>3*1024*1024)return res.status(400).json({ok:false,error:"Tamaño de raster no válido",bytes:buf.length});
+  if(buf.length<12000||buf.length>3*1024*1024)return res.status(400).json({ok:false,error:"Tamaño de raster no válido",bytes:buf.length});
   const meta=await sharp(buf,{animated:false}).metadata(),width=Number(meta.width||0),height=Number(meta.height||0);
   if(width<640||height<360)return res.status(400).json({ok:false,error:"Raster inferior a 640x360",width,height});
-  // ImageGen entrega el gag como raster panorámico 16:9. El bridge no debe
-  // aceptar capturas del viewport/chat aunque sean JPEG/PNG técnicamente válidos.
+  // La geometría puede variar según la salida real de ImageGen. La garantía
+  // importante es que el bridge v10 haya extraído un <img> real, nunca una card,
+  // canvas genérico o captura del viewport de ChatGPT.
   const aspect=height?width/height:0;
-  const byteDensity=width&&height?buf.length/(width*height):0;
-  if(aspect<1.60||aspect>1.90){
-    return res.status(422).json({ok:false,error:"Raster rechazado: no parece la salida 16:9 de ImageGen",width,height,aspect:Number(aspect.toFixed(3))});
-  }
-  // Evita materializar screenshots casi vacíos/negros de la interfaz.
-  if(buf.length<50000||byteDensity<0.05){
-    return res.status(422).json({ok:false,error:"Raster rechazado: contenido demasiado ligero para una imagen generada",width,height,bytes:buf.length,byte_density:Number(byteDensity.toFixed(4))});
+  if(aspect<0.65||aspect>2.40){
+    return res.status(422).json({ok:false,error:"Raster rechazado: geometría anómala",width,height,aspect:Number(aspect.toFixed(3))});
   }
   const sha256=crypto.createHash("sha256").update(buf).digest("hex"),now=new Date().toISOString();
   const persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido; guardando Gag IA en main."};
