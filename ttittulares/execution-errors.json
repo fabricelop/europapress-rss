@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T12:45:52.887330Z",
-      "event_id": "3a551d1258a1",
-      "phase": "imagen",
-      "reason": "Se confirmó el acontecimiento y se localizaron fotografías actuales de la gala, pero esta ejecución no obtuvo una URL HTTPS directa del raster ni un puente de bytes íntegro hacia el aplicador. Se cierra sin imagen sin bloquear la cola.",
-      "remediation_prompt": "Revisa TTiTTulares, fase imagen, evento 3a551d1258a1: Se confirmó el acontecimiento y se localizaron fotografías actuales de la gala, pero esta ejecución no obtuvo una URL HTTPS directa del raster ni un puente de bytes íntegro hacia el aplicador. Se cierra sin imagen sin bloquear la cola.. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-27T12:46:07.322281Z",
       "event_id": "d7441528e76a",
       "phase": "imagen",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "manual-6f01bf29e1ab-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento manual-6f01bf29e1ab-r1: manual-6f01bf29e1ab-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-03T21:20:06.181632Z",
+      "event_id": "e50e72e1dc05-r1",
+      "phase": "outbox",
+      "reason": "e50e72e1dc05-r1.json: ValueError: el acontecimiento original no existe en la cola",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento e50e72e1dc05-r1: e50e72e1dc05-r1.json: ValueError: el acontecimiento original no existe en la cola. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
