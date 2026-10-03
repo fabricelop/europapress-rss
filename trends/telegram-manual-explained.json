@@ -14354,12 +14354,12 @@
       "alternatives_target": 0,
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 1,
       "fallback_image_status": "none",
       "fallback_image_strategy": "existing_web_image",
-      "image_choice": null,
-      "image_status": "none",
+      "image_choice": "ai",
+      "image_status": "ready",
       "image_pending": false,
       "news_disposition": "ignored",
       "news_note": "Novedad material del mismo pleno de vivienda ya cubierto en TTendencias: se actualiza por el resultado final de las votaciones, sin abrir un duplicado en TTiTTulares.",
@@ -14382,9 +14382,55 @@
           "name": "Vox y Junts",
           "revision": 2
         }
-      ]
+      ],
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/cb7b33217e93-r2-ai1-63859-680963.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "61595f8259b3d37a992409629f9adaf74cdae3cf5545f4278e8fa8dba3427d60",
+        "width": 1400,
+        "height": 788,
+        "bytes": 464554,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "cb7b33217e93",
+          "revision": 2,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791003663859-680963"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/cb7b33217e93-r2-ai1-63859-680963.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-03T05:02:33.125Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/cb7b33217e93-r2-ai1-63859-680963.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "61595f8259b3d37a992409629f9adaf74cdae3cf5545f4278e8fa8dba3427d60",
+        "width": 1400,
+        "height": 788,
+        "bytes": 464554,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "cb7b33217e93",
+          "revision": 2,
+          "scope": "current_item_only",
+          "command_id": "tr-img-1791003663859-680963"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/cb7b33217e93-r2-ai1-63859-680963.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     }
   ],
-  "updated_at": "2026-10-02T22:10:30+02:00",
+  "updated_at": "2026-10-03T05:02:33.125Z",
   "count": 429
 }
