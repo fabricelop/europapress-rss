@@ -125,6 +125,19 @@ Si la entrada es el mismo acontecimiento que otro ya PUBLICADO y no aporta noved
 
 El `prepared_item` editorial debe ser completo en texto/tuit, pero NO debe contener data URLs ni bytes de imagen. Puede incluir únicamente estados pequeños como `ai_image_status:"none|disabled"` y `fallback_image_status:"pending|ready|none"`. No escribas directamente en `ttittulares/editorial-outbox/**`. Confirma que el texto se materializó en Listas antes de considerar terminado el item; cualquier Gag IA se solicitará después e independientemente desde el panel. Cada incidencia se añade a `ttittulares/execution-errors.json` mediante el mismo transporte cuando esté disponible.
 
+## Fallback obligatorio cuando el transporte del outbox es bloqueado
+
+Si la escritura normal del comentario `TTITTULARES_OUTBOX_V1` es rechazada por el canal/conector **antes de llegar a GitHub** (por ejemplo, un bloqueo de transporte asociado al contenido), no reintentes indefinidamente el mismo payload ni dejes la entrada en `PROCESSING`.
+
+1. Relee JIT `editorial-queue.json`, `status.json`, `prepared.json` y `decisions.json`. Si la revisión ya no está activa, sáltala.
+2. Si sigue activa, envía un outbox mínimo, sin repetir titular, resumen ni contenido sensible: 
+   `{"event_id":"<id>","revision":<rev>,"status":"problematic","problem_reason":"transport_write_blocked"}`.
+3. Confirma que el aplicador mueve la entrada a `PROBLEMATIC`. Ese resultado es terminal para la pasada y no debe dejar `partial:true` por sí solo.
+4. No cuentes el intento bloqueado como READY ni inventes una versión reducida de la noticia para eludir el bloqueo. La entrada queda en «No comprobadas» y solo se reintenta mediante Check/validación explícita o una revisión material nueva, como cualquier otra PROBLEMATIC.
+5. El RUNTRACE registra la incidencia como `transport_write_blocked`, pero `processing_remaining` debe calcularse después de aplicar el fallback.
+
+Este fallback solo se usa cuando el **transporte** rechaza la escritura; no sustituye las validaciones editoriales normales ni convierte errores de contenido del aplicador en PROBLEMATIC automáticamente.
+
 ## Cierre
 
 Relee cola, prepared y status, incluyendo PROCESSING anteriores. Informa noticias tratadas y estado de IA/fallback por separado, sin considerar ninguna imagen requisito de cierre.
