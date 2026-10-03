@@ -52,11 +52,6 @@ $patterns = @(
   "MobileChatTriggerListener.ps1"
 )
 $killed=@()
-Get-CimInstance Win32_Process | Where-Object {
-  ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and
-  ($patterns | Where-Object { [string]$_.Length -gt 0 -and [string]$_.ToString() -and ([string]$args[0]) })
-} | Out-Null
-
 $procs = @(Get-CimInstance Win32_Process | Where-Object {
   $_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe"
 })
