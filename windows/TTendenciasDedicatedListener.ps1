@@ -455,10 +455,27 @@ function Build-ImageMessage($Job) {
   $targetId = [string]$Job.target_id
   $targetName = [string]$Job.target_name
   $commandId = [string]$Job.command_id
+  $contextJson = ""
 
-  # Una sola línea, explícita y corta. El chat solo debe generar; el puente local
-  # recoge el raster y se ocupa de persistencia/validación.
-  return "TT_IMAGE_JOB_V3 $commandId $targetId | Usa ImageGen AHORA y genera UNA imagen IA para '$targetName': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/$targetId.json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
+  try {
+    if ($Job.context_snapshot) {
+      $contextJson = ($Job.context_snapshot | ConvertTo-Json -Depth 10 -Compress)
+    }
+  } catch {}
+
+  if ([string]::IsNullOrWhiteSpace($contextJson) -or $contextJson -eq "null" -or $contextJson -eq "{}") {
+    Write-Log "IMAGE CONTEXT MISSING target=$targetId command=$commandId"
+    return ""
+  }
+
+  return @"
+TT_IMAGE_JOB_V3 $commandId $targetId | Usa ImageGen AHORA y genera UNA imagen IA para '$targetName'.
+
+CONTEXTO FACTUAL AUTORITATIVO (úsalo DIRECTAMENTE; no necesitas abrir GitHub ni reinvestigar):
+$contextJson
+
+Genera un gag visual cómico, satírico, irónico y exagerado basado ESPECÍFICAMENTE en los hechos de ese contexto y en su remate. Evita una ilustración literal y evita por completo una caricatura genérica del país, persona, equipo o nombre de la tendencia. La idea visual debe depender de al menos un hecho concreto del contexto; si no puedes identificarlo, no inventes otro hecho. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster.
+"@
 }
 
 if (-not (Test-Path -LiteralPath $BaseDir)) {
@@ -620,7 +637,14 @@ while ($true) {
           continue
         }
 
-        $message = Build-ImageMessage $job
+        $message = Build-ImageMessage $statusDoc
+        if (-not $message) {
+          $reason = "El job de imagen no contiene context_snapshot factual; se cancela para evitar una imagen genérica."
+          Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
+          Mark-ImageCommand $state $commandId $false
+          Save-State $state
+          continue
+        }
         $marker = "TT_IMAGE_JOB_V3 $commandId"
         $sent = Launch-ProjectChat "image command=$commandId target=$targetId" $message $marker
 
