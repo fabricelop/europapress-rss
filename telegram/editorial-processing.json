@@ -26808,7 +26808,7 @@
       "source_count": 0,
       "drafted_source_count": 0,
       "selected_at": "2026-10-03T07:57:52.429Z",
-      "status": "PROBLEMATIC",
+      "status": "DISMISSED",
       "selection_mode": "MANUAL_WEB_USER",
       "manual_submission": true,
       "revision": 1,
@@ -26816,7 +26816,8 @@
       "image_mode": "ai_plus_fallback",
       "problematic_at": "2026-10-03T08:08:06.331340Z",
       "problem_reason": "La entrada manual reproduce el mismo derrumbe ya materializado como READY en 0b67d6fe3919. El contrato impide cerrar como duplicate contra un READY: solo admite originales PUBLISHED o DISMISSED, por lo que se deja PROBLEMATIC sin crear una segunda tarjeta.",
-      "problematic_attempts": 1
+      "problematic_attempts": 1,
+      "dismissed_at": "2026-10-03T10:30:50.893Z"
     },
     {
       "event_id": "3a1467d29c53",
@@ -27703,5 +27704,5 @@
       "image_mode": "ai_plus_fallback"
     }
   ],
-  "updated_at": "2026-10-03T10:23:19.210418Z"
+  "updated_at": "2026-10-03T10:30:50.893Z"
 }
