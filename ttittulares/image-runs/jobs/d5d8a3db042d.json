@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-1791020122947-dc4674",
   "requested_at": "2026-10-03T09:35:22.947Z",
-  "updated_at": "2026-10-03T09:35:22.947Z",
-  "status": "REQUESTED",
-  "phase": "queued",
+  "updated_at": "2026-10-03T09:35:45.131Z",
+  "status": "RUNNING",
+  "phase": "pc_pickup",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -46,5 +46,8 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
   },
-  "message": "Solicitud registrada; esperando al PC."
+  "message": "PC ha recogido la solicitud de imagen.",
+  "pc_upload_secret_hash": "308557e6f217c5f17a477803df5d6f27e7010051719539640e80a52807ca342a",
+  "pc_worker_id": "ttittulares-dedicated-v19",
+  "pc_picked_up_at": "2026-10-03T09:35:45.131Z"
 }
