@@ -51,6 +51,12 @@ Validate-Ps $seedPatch
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $seedPatch
 if ($LASTEXITCODE -ne 0) { throw "No se pudo aplicar Fix-Ejecutar-ProjectSeed-V1.ps1" }
 
+$targetPatch = Join-Path $BaseDir "Fix-Ejecutar-ProjectTarget-V2.ps1"
+Get-MainFile "windows/Fix-Ejecutar-ProjectTarget-V2.ps1" $targetPatch
+Validate-Ps $targetPatch
+& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $targetPatch
+if ($LASTEXITCODE -ne 0) { throw "No se pudo aplicar Fix-Ejecutar-ProjectTarget-V2.ps1" }
+
 # Mata cualquier listener TT antiguo o agregado que pueda competir por los mismos triggers.
 $patterns = @(
   "TTendenciasDedicatedListener.ps1",
@@ -109,4 +115,4 @@ Write-Host "Procesos antiguos detenidos: $($killed.Count)"
 Write-Host "Inicio antiguo desactivado: $($disabled.Count)"
 Write-Host "TTendencias PID: $($tp.Id)"
 Write-Host "TTiTTulares PID: $($hp.Id)"
-Write-Host "Ejecutar.js: New chat opcional + chat semilla del proyecto activos"
+Write-Host "Ejecutar.js: New chat opcional + target de proyecto con compositor visible activos"
