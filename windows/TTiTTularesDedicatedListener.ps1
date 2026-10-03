@@ -308,7 +308,27 @@ function Build-ImageMessage($Job) {
   $targetId=[string]$Job.target_id
   $targetName=[string]$Job.target_name
   $commandId=[string]$Job.command_id
-  return "TTITTULARES_IMAGE_JOB_V3 $commandId $targetId | Usa ImageGen AHORA y genera UNA imagen IA para '$targetName': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee ttittulares/image-runs/jobs/$targetId.json en control/ttittulares-run-trigger-v2 para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
+  $contextJson=""
+
+  try {
+    if ($Job.context_snapshot) {
+      $contextJson=($Job.context_snapshot | ConvertTo-Json -Depth 10 -Compress)
+    }
+  } catch {}
+
+  if ([string]::IsNullOrWhiteSpace($contextJson) -or $contextJson -eq "null" -or $contextJson -eq "{}") {
+    Write-Log "IMAGE CONTEXT MISSING target=$targetId command=$commandId"
+    return ""
+  }
+
+  return @"
+TTITTULARES_IMAGE_JOB_V3 $commandId $targetId | Usa ImageGen AHORA y genera UNA imagen IA para '$targetName'.
+
+CONTEXTO FACTUAL AUTORITATIVO (úsalo DIRECTAMENTE; no necesitas abrir GitHub ni reinvestigar):
+$contextJson
+
+Genera un gag visual cómico, satírico, irónico y exagerado basado ESPECÍFICAMENTE en los hechos de ese contexto, el texto editorial y el remate. Evita una ilustración literal y evita por completo una caricatura genérica del protagonista, lugar, país, equipo o tema. La idea visual debe depender de al menos un hecho concreto del contexto; si no puedes identificarlo, no inventes otro hecho. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster.
+"@
 }
 
 function Test-CustomChatMessageSupport {
@@ -606,7 +626,14 @@ while ($true) {
           Save-State $state
           continue
         }
-        $message=Build-ImageMessage $job
+        $message=Build-ImageMessage $statusDoc
+        if(-not $message){
+          $reason="El job de imagen no contiene context_snapshot factual; se cancela para evitar una imagen genérica."
+          Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
+          Mark-ImageCommand $state $commandId $false
+          Save-State $state
+          continue
+        }
         $marker="TTITTULARES_IMAGE_JOB_V3 $commandId"
         $sent=Launch-ImageChat "image command=$commandId target=$targetId" $message $marker
         if($sent){
