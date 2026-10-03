@@ -1121,8 +1121,9 @@ $("submitSend").onclick=async()=>{
    const d=await api("submit",{title,instruction});
    const messages={PROCESSING:d.duplicate?"Ya existía: está en elaboración":"Enviada a elaboración",READY:"Ya estaba elaborada y lista",PUBLISHED:"Ya estaba publicada",DISMISSED:"Ya estaba desestimada"};
    $("submitStatus").textContent=messages[d.status]||d.message||"Procesada";
+   if(d.status==="PROCESSING")setView("processing");
    await load(true);
-   if(d.status==="PROCESSING"&&!d.duplicate){setTimeout(()=>$("submitSheet").classList.remove("show"),700)}
+   if(d.status==="PROCESSING"){setView("processing");setTimeout(()=>$("submitSheet").classList.remove("show"),700)}
  }catch(e){$("submitStatus").textContent=e.message}
 };
 $("settings").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado en este dispositivo":"Sin token guardado";$("settingsSheet").classList.add("show")};
