@@ -42,39 +42,42 @@ function Ensure-RunnerNewChatCompatibility {
   }
   try {
     $text = Get-Content -LiteralPath $Runner -Raw -Encoding UTF8
-    if ($text.Contains("TT_NEW_CHAT_OPTIONAL_V3")) {
+    if ($text.Contains("TT_NEW_CHAT_OPTIONAL_V4") -or $text.Contains("TT_NEW_CHAT_OPTIONAL_V3")) {
       return $true
     }
 
-    $rx = [regex]'(?m)^(?<indent>\s*)if\s*\(\s*!\s*(?<var>[A-Za-z_$][A-Za-z0-9_$]*)\s*\)\s*(?:\{\s*)?throw\s+(?:new\s+)?Error\(\s*(["''])No encuentro New chat(?:[^"'']*)\3\s*\)\s*;?\s*(?:\}\s*)?$'
-    $m = $rx.Match($text)
-    if (-not $m.Success) {
-      Write-Log "RUNNER COMPAT WARN: no se reconoce el bloque 'No encuentro New chat'; no se modifica Ejecutar.js"
+    # Forma actual de Ejecutar.js: abrirNuevoChatProyecto devuelve {ok:false,error:"No encuentro New chat"}
+    # y después aborta en el wrapper con throw. Si el botón no existe, continuar con el compositor actual.
+    $old = '    if (!r?.ok)' + [Environment]::NewLine +
+      '        throw Error(r?.error || "No se puede crear el chat nuevo.");'
+    $oldCrLf = '    if (!r?.ok)' + "`r`n" +
+      '        throw Error(r?.error || "No se puede crear el chat nuevo.");'
+
+    $replacement = '    /* TT_NEW_CHAT_OPTIONAL_V4 */' + [Environment]::NewLine +
+      '    if (!r?.ok) {' + [Environment]::NewLine +
+      '        console.log("AVISO: New chat no visible; se usa el compositor actual del proyecto.");' + [Environment]::NewLine +
+      '        return;' + [Environment]::NewLine +
+      '    }'
+
+    $next = $text
+    if ($next.Contains($old)) { $next = $next.Replace($old,$replacement) }
+    elseif ($next.Contains($oldCrLf)) { $next = $next.Replace($oldCrLf,$replacement) }
+    else {
+      Write-Log "RUNNER COMPAT WARN: no se reconoce el wrapper actual de abrirNuevoChatProyecto; no se modifica Ejecutar.js"
       return $false
     }
-
-    $indent = $m.Groups['indent'].Value
-    $var = $m.Groups['var'].Value
-    $replacement = $indent + '/* TT_NEW_CHAT_OPTIONAL_V3 */' + [Environment]::NewLine +
-      $indent + 'if (!' + $var + ') {' + [Environment]::NewLine +
-      $indent + '    console.log("AVISO: New chat no visible; se prueba el compositor actual del proyecto.");' + [Environment]::NewLine +
-      $indent + '    ' + $var + ' = { click: async () => {} };' + [Environment]::NewLine +
-      $indent + '}'
-
-    $next = $text.Substring(0,$m.Index) + $replacement + $text.Substring($m.Index + $m.Length)
 
     foreach ($needle in @(
       'Ejecuta TTiTTulares',
       'Ejecuta TTendencias',
       'TT_CHAT_MESSAGE_B64',
-      'const enviar = process.argv.includes("--enviar");'
+      'const enviar = process.argv.includes("--enviar");',
+      'error:"No encuentro New chat"'
     )) {
-      if (-not $next.Contains($needle)) {
-        throw "Proteccion fallida: falta $needle"
-      }
+      if (-not $next.Contains($needle)) { throw "Proteccion fallida: falta $needle" }
     }
 
-    $backup = $Runner + ".before-auto-new-chat-v3-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
+    $backup = $Runner + ".before-auto-new-chat-v4-" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".bak"
     Copy-Item -LiteralPath $Runner -Destination $backup -Force
     Set-Content -LiteralPath $Runner -Value $next -Encoding UTF8
 
@@ -88,7 +91,7 @@ function Ensure-RunnerNewChatCompatibility {
       }
     }
 
-    Write-Log "RUNNER COMPAT APPLIED: TT_NEW_CHAT_OPTIONAL_V3 backup=$backup"
+    Write-Log "RUNNER COMPAT APPLIED: TT_NEW_CHAT_OPTIONAL_V4 backup=$backup"
     return $true
   } catch {
     Write-Log "RUNNER COMPAT ERROR :: $($_.Exception.Message)"
