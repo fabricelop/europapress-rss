@@ -5,6 +5,7 @@ const JOB_URL="https://europapress-rss.vercel.app/api/ttendencias-run-status?vie
 const commandId=String(process.argv[2]||"").trim();
 const targetId=String(process.argv[3]||"").trim();
 const secret=String(process.env.TT_IMAGE_UPLOAD_SECRET||"");
+const prelaunchSnapshotProvided=Object.prototype.hasOwnProperty.call(process.env,"TT_IMAGE_PRELAUNCH_TARGETS_JSON");
 let prelaunchTargets=new Map();
 try{
   const parsed=JSON.parse(String(process.env.TT_IMAGE_PRELAUNCH_TARGETS_JSON||"[]"));
@@ -12,6 +13,7 @@ try{
   prelaunchTargets=new Map(rows.map(x=>[String(x&&x.id||""),String(x&&x.url||"")]).filter(x=>x[0]));
 }catch{}
 function isPostLaunchTarget(t){
+  if(!prelaunchSnapshotProvided)return false;
   const id=String(t&&t.id||""),url=String(t&&t.url||"");
   return !prelaunchTargets.has(id)||prelaunchTargets.get(id)!==url
 }
