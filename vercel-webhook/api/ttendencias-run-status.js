@@ -98,8 +98,8 @@ async function readControlBranchJson(path,strong=false){
   }catch(_){}
   return {}
 }
-async function readTrigger(){
-  return {doc:await readControlBranchJson(TRIGGER_PATH)}
+async function readTrigger(strong=false){
+  return {doc:await readControlBranchJson(TRIGGER_PATH,strong)}
 }
 async function readControlJson(path){
   const doc=await readControlBranchJson(path);
@@ -318,7 +318,9 @@ export default async function handler(req,res){
   try{
     const view=String(req.query?.view||"").toLowerCase();
     if(view==="trigger"){
-      const {doc}=await readTrigger();
+      const ua=String(req.headers?.["user-agent"]||"");
+      const strong=String(req.query?.strong||"")==="1"||/TTendencias-Dedicated-Listener/i.test(ua);
+      const {doc}=await readTrigger(strong);
       return res.status(200).json({ok:true,...doc});
     }
     if(view==="image-index"){
