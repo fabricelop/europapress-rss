@@ -12,18 +12,22 @@ $LogPath = Join-Path $BaseDir "ttendencias-mobile-trigger.log"
 $LauncherLogPath = Join-Path $BaseDir "tendencias.log"
 
 $StatusBase = "https://europapress-rss.vercel.app"
-$TriggerApiUrl = "$StatusBase/api/ttendencias-run-status?view=trigger"
-$ImageIndexUrl = "$StatusBase/api/ttendencias-run-status?view=image-index&strong=1"
+$ListenerSnapshotUrl = "$StatusBase/api/ttendencias-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
 
-$WorkerId = "ttendencias-dedicated-v11"
-$PollSeconds = 5
+$WorkerId = "ttendencias-dedicated-v12"
+$PollSeconds = 15
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 90
 $MaxParallelImageChats = 1
 $ImageStaleMinutes = 45
+$SnapshotStrongSeconds = 30
+$SnapshotCacheSeconds = 12
+$script:ListenerSnapshotCache = $null
+$script:ListenerSnapshotAt = [DateTimeOffset]::MinValue
+$script:LastStrongSnapshotAt = [DateTimeOffset]::MinValue
 
 function Write-Log([string]$Text) {
   $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $Text"
@@ -47,22 +51,53 @@ function Read-JsonUrl([string]$Url, [bool]$Quiet = $false) {
   }
 }
 
+function Read-ListenerSnapshot {
+  $now=[DateTimeOffset]::UtcNow
+  if($script:ListenerSnapshotCache -and (($now-$script:ListenerSnapshotAt).TotalSeconds -lt $SnapshotCacheSeconds)){
+    return $script:ListenerSnapshotCache
+  }
+  $strong=(($now-$script:LastStrongSnapshotAt).TotalSeconds -ge $SnapshotStrongSeconds)
+  $url=$ListenerSnapshotUrl + $(if($strong){"&strong=1"}else{""})
+  try{
+    $r=Invoke-RestMethod -Uri (CacheBust $url) -Headers @{
+      "Cache-Control" = "no-cache"
+      "User-Agent" = "TTendencias-Dedicated-Listener"
+    } -TimeoutSec 12
+    if($r -and $r.ok){
+      $script:ListenerSnapshotCache=$r
+      $script:ListenerSnapshotAt=$now
+      if($strong){$script:LastStrongSnapshotAt=$now}
+      return $r
+    }
+  }catch{
+    Write-Log "SNAPSHOT ERROR :: $($_.Exception.Message)"
+  }
+  return $script:ListenerSnapshotCache
+}
+
 function Read-Trigger {
-  $r = Read-JsonUrl $TriggerApiUrl $true
-  if ($r -and $r.ok -and $r.command_id) { return $r }
-  if (-not $r) { Write-Log "TRIGGER ERROR :: backend no disponible" }
+  $r=Read-ListenerSnapshot
+  if($r -and $r.trigger){return $r.trigger}
   return $null
 }
 
 function Read-ImageIndex {
-  $r = Read-JsonUrl $ImageIndexUrl $true
-  if ($r -and $r.ok) { return $r }
+  $r=Read-ListenerSnapshot
+  if($r -and $r.image_index){return $r.image_index}
   return [pscustomobject]@{ jobs = @() }
 }
 
 function Read-ImageJob([string]$TargetId) {
   if (-not $TargetId) { return $null }
-  return Read-JsonUrl ($ImageJobUrlBase + [uri]::EscapeDataString($TargetId)) $true
+  try {
+    return Invoke-RestMethod -Uri (CacheBust ($ImageJobUrlBase + [uri]::EscapeDataString($TargetId))) -Headers @{
+      "Cache-Control" = "no-cache"
+      "User-Agent" = "TTendencias-Dedicated-Listener"
+    } -TimeoutSec 12
+  } catch {
+    Write-Log "IMAGE JOB ERROR target=$TargetId :: $($_.Exception.Message)"
+    return $null
+  }
 }
 
 function Load-State {
