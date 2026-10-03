@@ -190,8 +190,9 @@ async function imageEligibility(targetId){
     return {eligible:false,reason:"blocked",row}
   }
   const hasAi=validChatAi(row.ai_image)||validChatAi(row.image);
-  if(hasAi&&!row.ai_image_regenerate_requested)return {eligible:false,reason:"already_has_ai",row};
-  return {eligible:true,reason:"ready",row}
+  // Una IA existente nunca bloquea un nuevo gag. La anterior se conserva hasta
+  // que la nueva se materialice correctamente.
+  return {eligible:true,reason:hasAi?"regenerate":"ready",row,hasAi}
 }
 function uploadSecretHash(value){return crypto.createHash("sha256").update(String(value||""),"utf8").digest("hex")}
 function validUploadSecret(job,secret){
@@ -268,10 +269,18 @@ async function markPreparedImageFailed(target_id,revision,reason){
     const doc=p.doc||{project:"TTiTTulares",items:[]};
     const row=(doc.items||[]).find(x=>String(x.event_id||"")===target_id&&Number(x.revision||0)===Number(revision));
     if(!row)return;
-    row.ai_image_status="failed";
+    const hadAi=validChatAi(row.ai_image)||validChatAi(row.image);
     row.ai_image_last_attempt_status="failed";
     row.ai_image_last_attempt_at=new Date().toISOString();
-    row.ai_image_failure_reason=String(reason||"image_job_failed").slice(0,240);
+    if(hadAi){
+      row.ai_image_status="ready";
+      row.ai_image_regeneration_error=String(reason||"image_job_failed").slice(0,240);
+      delete row.ai_image_failure_reason;
+    }else{
+      row.ai_image_status="failed";
+      row.ai_image_failure_reason=String(reason||"image_job_failed").slice(0,240);
+      delete row.ai_image_regeneration_error;
+    }
     delete row.ai_image_regenerate_requested;
     delete row.ai_image_regenerate_requested_at;
     delete row.ai_image_regenerate_request_version;
@@ -503,7 +512,7 @@ async function requestImageRun(req,res){
   const doc={
     version:1,command_id,requested_at,updated_at:requested_at,status:"REQUESTED",phase:"queued",
     mode:"manual_pc_chat_image",executor:"pc_chat_ttittulares_dedicated",project:"ttittulares",launcher_arg:"titulares",
-    task:"image",target_id,event_id:target_id,target_name,revision,chat_command_version:3,
+    task:"image",target_id,event_id:target_id,target_name,revision,regenerate:Boolean(eligible.hasAi),chat_command_version:3,
     instruction_profile:"ttittulares_gag_v1",context_snapshot,
     instructions:{
       scope:"Genera UNA sola imagen IA para esta noticia y no proceses ninguna otra entrada.",
