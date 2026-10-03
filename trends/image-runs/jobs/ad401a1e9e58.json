@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791025833711-0d7a32",
+  "requested_at": "2026-10-03T11:10:33.711Z",
+  "updated_at": "2026-10-03T11:10:33.711Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "ad401a1e9e58",
+  "trend_id": "ad401a1e9e58",
+  "target_name": "Sepang",
+  "revision": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "Sepang",
+    "revision": 1,
+    "explanation": "TT#25 Sepang es tendencia porque Verstappen logró su primera pole de 2026, con Hamilton 2.º; Alonso saldrá 12.º y Sainz 13.º en el GP de Baréin en Malasia.\n🌶️ Sepang volvió a la F1 tras ocho años y ha regresado repartiendo titulares.",
+    "closer_text": "🌶️ Sepang volvió a la F1 tras ocho años y ha regresado repartiendo titulares.",
+    "trend_names": [
+      "Sepang"
+    ],
+    "group_title": "Sepang · clasificación del 3 de octubre",
+    "rank_at_explanation": 25,
+    "explained_at": "2026-10-03T13:02:40+02:00",
+    "verification_sources": [
+      {
+        "source": "Formula 1 · 3/10/2026",
+        "url": "https://www.formula1.com/en/latest/article/verstappen-seizes-first-pole-position-of-the-season-in-qualifying-for-bahrain-gp-in-malaysia.3BW0zzYBLhG54bsQoNKFvP"
+      },
+      {
+        "source": "Reuters · 3/10/2026",
+        "url": "https://www.reuters.com/sports/formula1/verstappen-claims-first-pole-season-bahrain-gp-malaysia-2026-10-03/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+}
