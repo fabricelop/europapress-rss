@@ -15841,7 +15841,7 @@
       "id": "952bacd03439",
       "name": "Terrassa",
       "revision": 1,
-      "status": "update",
+      "status": "explained",
       "requested_at": "2026-10-03T05:30:04.851Z",
       "rank": 29,
       "with_image": true,
@@ -15857,15 +15857,15 @@
       ],
       "auto_queued": false,
       "anticipated_entered_top10_at": "2026-10-02T09:21:29+02:00",
-      "last_attempt_at": "2026-10-02T09:24:30+02:00",
-      "explanation": "TT#7 Terrassa es tendencia por el tiroteo en Can Parellada durante una persecución a presuntos ladrones de autopista: dos guardias civiles de paisano resultaron heridos y los Mossos detuvieron a tres sospechosos.",
+      "last_attempt_at": "2026-10-03T09:02:00+02:00",
+      "explanation": "TT#29 Terrassa es tendencia porque los Mossos registraron dos viviendas y un local vinculados al tiroteo que hirió a dos guardias civiles; hay tres detenidos y continúa la búsqueda de un cuarto implicado.",
       "closer_text": "",
-      "rank_at_explanation": 7,
+      "rank_at_explanation": 29,
       "source": "editorial_chat_direct",
       "verification_sources": [
         {
-          "source": "Cadena SER · 2/10/2026",
-          "url": "https://cadenaser.com/cataluna/2026/10/02/detenidos-en-terrassa-los-tres-presuntos-ladrones-que-anoche-disparararon-a-dos-guardias-civiles-de-paisano-radio-barcelona/"
+          "source": "EFE · 2/10/2026",
+          "url": "https://efe.com/espana/2026-10-02/dos-guardias-civiles-heridos-tiroteo-terrassa-barcelona/"
         },
         {
           "source": "El País · 2/10/2026",
@@ -15873,11 +15873,11 @@
         }
       ],
       "news_disposition": "ignored",
-      "news_note": "Suceso explicado como tendencia; no se abre una noticia paralela en esta pasada.",
+      "news_note": "Actualización del tiroteo: registros de los Mossos, tres detenidos y búsqueda de un cuarto implicado.",
       "disable_ai_image": true,
       "ai_image_status": "disabled",
       "ai_image_block_reason": "sensitive_event",
-      "image_strategy": "existing_web_image",
+      "image_strategy": "fallback_only",
       "fallback_image_status": "ready",
       "fallback_image_source": {
         "source": "Cadena SER · archivo Mossos",
@@ -15902,7 +15902,29 @@
       },
       "image_status": "ready",
       "image_pending": false,
-      "reexplain": true
+      "reexplain": true,
+      "explained_at": "2026-10-03T09:02:00+02:00",
+      "group_id": "grp-terrassa-tiroteo-20261002",
+      "explanation_group_id": "grp-terrassa-tiroteo-20261002",
+      "group_title": "Terrassa · tiroteo e investigación 2 de octubre",
+      "group_leader_id": "952bacd03439",
+      "trend_names": [
+        "Terrassa"
+      ],
+      "trend_context": [
+        {
+          "name": "Terrassa",
+          "rank": 29
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "952bacd03439",
+          "name": "Terrassa",
+          "revision": 1
+        }
+      ],
+      "image_choice": "fallback"
     },
     {
       "id": "b9c56aa90c0a",
@@ -20706,6 +20728,6 @@
       "auto_queued": false
     }
   ],
-  "updated_at": "2026-10-03T06:58:00.000Z",
+  "updated_at": "2026-10-03T07:03:00.000Z",
   "count": 474
 }
