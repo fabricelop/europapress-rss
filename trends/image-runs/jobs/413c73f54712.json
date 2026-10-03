@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791005015524-e299d1",
+  "requested_at": "2026-10-03T05:23:35.524Z",
+  "updated_at": "2026-10-03T05:23:35.524Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "413c73f54712",
+  "trend_id": "413c73f54712",
+  "target_name": "#DeViernes",
+  "revision": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "#DeViernes",
+    "revision": 1,
+    "explanation": "TT#2 #DeViernes es tendencia por el regreso en directo de Belén Esteban a Telecinco, donde respondió a la familia Janeiro y se reencontró con Beatriz Trapote y Terelu Campos.\n🌶️ Belén volvió al plató y el felpudo decía «pase, pero venga a responder».",
+    "closer_text": "🌶️ Belén volvió al plató y el felpudo decía «pase, pero venga a responder».",
+    "trend_names": [
+      "#DeViernes"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 2,
+    "explained_at": "2026-10-03T07:20:45+02:00",
+    "verification_sources": [
+      {
+        "source": "Telecinco · 2/10/2026",
+        "url": "https://www.telecinco.es/television/20261002/frentes-abiertos-belen-esteban-entrevista-plato-de-viernes_18_020337257.html?amp=true"
+      },
+      {
+        "source": "Tribuna de Burgos · 2/10/2026",
+        "url": "https://www.tribunaburgos.com/noticias/461138/belen-esteban-regresa-al-prime-time-dispuesta-a-responder-a-todos-los-frentes-que-ha-abierto-su-vuelta-a-telecinco"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+}
