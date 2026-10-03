@@ -10,35 +10,36 @@ Lee `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `telegram/edi
 
 ### Barrera JIT obligatoria por entrada
 
-El lote inicial es solo una lista de candidatos. **Justo antes de tratar CADA entrada** —antes de web, drafting, selección de remate, fallback o ImageGen— relee desde `main` su estado autoritativo por `(event_id, revision)` en `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `ttittulares/prepared.json` y `ttittulares/decisions.json` cuando corresponda. No reutilices para esta decisión el snapshot leído al inicio de la pasada.
+El lote inicial es solo una lista de candidatos. **Justo antes de tratar CADA entrada** —antes de web, drafting, selección de remate o fallback— relee desde `main` su estado autoritativo por `(event_id, revision)` en `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `ttittulares/prepared.json` y `ttittulares/decisions.json` cuando corresponda. No reutilices para esta decisión el snapshot leído al inicio de la pasada.
 
-Si en esa relectura la revisión ya está `PUBLISHED`, `DISMISSED`, `SKIPPED_DUPLICATE`, ya no figura como trabajo activo de la cola, o fue sustituida por una revisión más nueva, **sáltala inmediatamente y continúa con la siguiente**. No hagas búsquedas, no redactes, no selecciones remate, no llames a ImageGen y no la cuentes como intentada/tratada ni como incidencia. Esto también se aplica al `visual_backlog` y a `rewrite_pending`: antes de cada intento visual o reelaboración vuelve a comprobar que la entrada sigue siendo elegible. Una acción del usuario en el panel mientras la ejecución está en marcha prevalece siempre sobre el lote inicial.
+Si en esa relectura la revisión ya está `PUBLISHED`, `DISMISSED`, `SKIPPED_DUPLICATE`, ya no figura como trabajo activo de la cola, o fue sustituida por una revisión más nueva, **sáltala inmediatamente y continúa con la siguiente**. No hagas búsquedas, no redactes ni selecciones remate, y no la cuentes como intentada/tratada ni como incidencia. Esto también se aplica a `rewrite_pending`: antes de cada reelaboración vuelve a comprobar que la entrada sigue siendo elegible. Una acción del usuario en el panel mientras la ejecución está en marcha prevalece siempre sobre el lote inicial.
 
 Una PROBLEMATIC antigua que no se intenta en la pasada permanece visible en «No comprobadas», pero no cuenta como noticia tratada, `problematic_reviewed` ni incidencia de esa ejecución. No hagas búsquedas web ni escribas RUNTRACE `investigating` para ella. Si se pulsa **Check**, consume esa validación en un único intento editorial; si vuelve a terminar PROBLEMATIC, queda de nuevo en espera hasta otro Check o una revisión material nueva.
 
-### Recuperación obligatoria de IA pendiente
+### Imágenes IA separadas de la ejecución editorial
 
-Al comenzar cada pasada, **antes de redactar nuevas noticias**, crea un `visual_backlog` con los READY de `ttittulares/prepared.json` que:
-- tengan `image_strategy:"ai_plus_fallback"` o `image_mode:"ai_plus_fallback"`;
-- no estén PUBLISHED/DISMISSED;
-- no tengan una `ai_image.url` válida;
-- y tengan `ai_image_status:"pending"`, estado vacío/ausente sin intento terminal previo, o `ai_image_regenerate_requested:true`.
+La ejecución normal **NO genera imágenes IA, NO llama a ImageGen y NO procesa ningún backlog visual**. La selección y generación de gags IA se realiza únicamente mediante jobs manuales independientes lanzados desde el panel con el check **Gag IA** y el botón **✨ Imágenes**.
 
-Procesa ese `visual_backlog` de forma real en la misma pasada: para cada item elegible haz exactamente **una llamada real a ImageGen** y registra `ai_image_tool_called_at` inmediatamente después de la llamada. No basta con enumerarlo ni con marcar `started`. Si la llamada no llega a ocurrir, el item no puede seguir como `pending`: usa `failed:imagegen_not_invoked`.
+Para cada noticia editorial apta:
+- puedes seguir buscando/preparando `fallback_image` real sin bloquear el texto;
+- usa `image_strategy:"ai_plus_fallback"` / `image_mode:"ai_plus_fallback"` cuando la noticia admita gag IA;
+- si no existe una IA previa válida, deja `ai_image_status:"none"` (no `pending`) y no escribas `ai_image_attempt`, `ai_image_tool_called_at` ni marcadores de intento;
+- si ya existe una IA válida en una revisión que se conserva, no la regeneres automáticamente;
+- `ai_image_regenerate_requested` no se consume en la pasada editorial: la regeneración solo se ejecuta mediante el job manual de imagen;
+- los temas sensibles siguen usando `disable_ai_image:true`, `ai_image_status:"disabled"` y `image_mode:"fallback_only"`;
+- Tremending sigue usando `tweet_capture_only`.
 
-Estos items NO se reinvestigan ni se redactan de nuevo. Un `pending` solo representa un intento real si existe prueba durable de que ImageGen fue invocado para ese intento: `ai_image_tool_called_at` y `ai_image_last_attempt_status:"tool_called"` (o un resultado terminal `ready|failed`). Un estado histórico `started` sin `ai_image_tool_called_at` es un intento huérfano: NO consume el intento automático y debe recuperarse con exactamente una llamada real a ImageGen, manteniendo `attempt:1`. Solo una solicitud explícita `ai_image_regenerate_requested:true` cuya versión aún no esté consumida autoriza incrementar el intento. Nunca marques un intento como consumido antes de invocar realmente ImageGen. Los `failed` terminales NO se reintentan automáticamente: solo vuelven a ImageGen mediante Rehacer. La capa visual es asíncrona y no impide cerrar la pasada editorial.
-
-Antes del primer `drafting`, RUNTRACE debe reflejar `visual_backlog:<N>`. Al terminar la pasada, para cada ID del backlog debe existir uno de estos resultados verificables: `ai_image_status:"ready"`, `ai_image_status:"failed"` o `ai_image_last_attempt_status:"tool_called"` con outbox pendiente. No cierres una pasada dejando un READY elegible intacto y sin intento.
+La existencia o ausencia de IA nunca cambia el cierre editorial ni el estado READY/Listas.
 
 ### Recuperación obligatoria de reelaboraciones
 
-Al comenzar cada pasada, además de PROCESSING y del visual_backlog, lee los READY de `ttittulares/prepared.json` con `rewrite_pending:true`. Cada uno constituye una reelaboración **autoritativa** aunque no exista todavía una fila REWRITE en `telegram/editorial-processing.json`.
+Al comenzar cada pasada, además de PROCESSING, lee los READY de `ttittulares/prepared.json` con `rewrite_pending:true`. Cada uno constituye una reelaboración **autoritativa** aunque no exista todavía una fila REWRITE en `telegram/editorial-processing.json`.
 
 Para cada `rewrite_pending`:
 - trátalo como `selection_mode:"REWRITE"`;
 - usa `rewrite_target_revision` como nueva revisión;
 - usa `rewrite_scope`, `reinvestigate` y `rewrite_request` guardados en prepared;
-- si `rewrite_scope:"remate_and_ai"`, conserva hechos, fuentes y bloque factual de la versión preparada y cambia solo remate + nueva IA;
+- si `rewrite_scope:"remate_only"`, conserva hechos, fuentes y bloque factual de la versión preparada y cambia solo el remate;
 - no vuelvas a mostrar la versión antigua en READY mientras siga `rewrite_pending:true`;
 - elimina `rewrite_pending` únicamente cuando la nueva revisión haya quedado materializada en READY o cuando la reelaboración termine de forma terminal con error explícito.
 
@@ -84,96 +85,26 @@ Añade una fase real `remate_selection` inmediatamente después de `drafting` y 
 
 No incluyas el texto de los candidatos descartados en RUNTRACE: el único remate visible sigue siendo el seleccionado. Mantén `remate_selections` en el cierre `DONE` para que pueda auditarse después qué peso tuvieron las estrellas y qué snapshot exacto se usó. Si la cola está vacía, conserva igualmente `ratings_snapshot` y usa `remate_selections:[]`.
 
-## Imágenes IA + archivo, siempre no bloqueantes
+## Imágenes: fallback editorial + Gag IA manual
 
-La imagen es una capa asíncrona. **Nunca retrasa ni impide que una noticia pase a READY/Listas**, nunca cambia una noticia verificada a PROBLEMATIC y nunca impide continuar con el resto del lote.
+La imagen sigue siendo una capa no bloqueante, pero queda dividida en dos responsabilidades:
 
-### Generación IA desde el mismo chat
+1. **Ejecución editorial normal:** puede localizar una fotografía real/fallback y dejarla en `fallback_image`. Nunca llama a ImageGen.
+2. **Job manual de imagen:** se lanza aparte desde el panel para las noticias que el usuario marque con **Gag IA**. Ese job abre un chat independiente, genera una sola imagen con ImageGen y el puente local captura/persiste el raster.
 
-La única fuente principal admitida para el gag IA es una llamada real a **ImageGen desde esta misma conversación ejecutora**. No crees `ttittulares/image-jobs/**`, no llames a Vercel AI Gateway ni a otro generador y no construyas/rasterices SVG como sustituto. Para cada noticia PROCESSING verificada:
+Para una noticia apta sin IA generada:
+- `image_mode:"ai_plus_fallback"`;
+- `image_strategy:"ai_plus_fallback"`;
+- `ai_image_status:"none"`;
+- `fallback_image_status:"ready|none|pending"` según corresponda;
+- `image_choice:"fallback|none"` hasta que llegue una IA manual;
+- `image` apunta al fallback si existe.
 
-1. prepara y persiste el texto/tuit normalmente, con `image_strategy:"ai_plus_fallback"` y `ai_image_status:"pending"`, pero NO escribas todavía `ai_image_attempt` ni estado `started`;
-2. cierra y verifica READY/Listas sin esperar a la imagen;
-3. llama exactamente UNA vez a ImageGen en este chat; esa llamada real, y no un marcador previo, es lo que consume el intento;
-4. inmediatamente después de que la llamada haya sido realmente invocada, persiste `ai_image_attempt:1`, `ai_image_last_attempt_status:"tool_called"`, `ai_image_tool_called_at` y el `context_guard` V3;
-5. entrega el raster real por `ttittulares/image-outbox/<event_id>-r<revision>-ai<attempt>.json` con estado `ready`; si ImageGen o el transporte falla, escribe un resultado `failed` con motivo técnico;
-6. si ImageGen no llega a invocarse, NO dejes `pending`: persiste `ai_image_status:"failed"` con razón `imagegen_not_invoked` y no cuentes ningún intento;
-7. `.github/workflows/ttittulares-ai-image-apply.yml` materializa el raster y actualiza SOLO los campos visuales del READY.
+Para una noticia sensible o Tremending, conserva las exclusiones ya vigentes (`disable_ai_image`, `fallback_only`, `tweet_capture_only`).
 
-#### Transporte del raster: mismo patrón probado de TTendencias
+**Prohibición explícita:** durante `Ejecuta TTiTTulares` no llames a ImageGen, no generes `ttittulares/image-outbox/**`, no abras chats visuales, no registres intentos IA y no esperes por imágenes. Los únicos intentos de ImageGen válidos son los jobs manuales independientes creados por el backend de imágenes.
 
-Usa el **mismo handoff que ya funciona en TTendencias**:
-1. justo antes de llamar a ImageGen, toma inventario de PNG/JPG/WebP existentes en `/mnt/data`;
-2. inmediatamente después de ImageGen, vuelve a inspeccionar `/mnt/data` y selecciona exclusivamente el raster nuevo de ESE intento;
-3. si no aparece automáticamente, localiza/materializa el adjunto generado de esta conversación en `/mnt/data`;
-4. valida que el raster abre completo;
-5. normalízalo programáticamente a JPEG ligero, **lado largo ~512 px y objetivo <=60 KB**;
-6. calcula SHA-256 y Base64 de esos bytes normalizados;
-7. escribe el outbox por GitHub Contents y reléelo desde `main` antes de dar el transporte por hecho.
-
-Para un resultado `status:"ready"`, usa **un único archivo JSON** `ttittulares/image-outbox/<event_id>-r<revision>-ai<attempt>.json` y escribe el raster completo directamente en `ai_image.url` como `data:image/jpeg;base64,<BASE64_COMPLETO>` (o PNG/WebP raster equivalente). El objeto debe conservar `provider:"chat-imagegen"`, `origin:"executing_chat"`, `source:"TTiTTulares / ChatGPT ImageGen"`, `generation_attempt` y el `context_guard` V3 exacto.
-
-No cuentes una imagen como generada/entregada en RUNTRACE hasta que el outbox completo haya sido releído desde `main`.
-
-**No trocees la imagen.** No uses `comment_chunks`, comentarios de PR, `chunk_files`, directorios `.parts`, concatenación manual de Base64 ni SHA transportados por un canal separado para nuevas generaciones. Esos puentes han provocado Base64 truncado y desajustes SHA. El consumidor ya acepta el `data:` URL directo y su selftest valida esa ruta.
-
-Si el canal ejecutor no puede escribir el `data:` URL completo en un único outbox, registra el intento como `failed` con razón técnica `image_transport_unavailable`; no inventes un puente alternativo ni dejes un `pending` ficticio. Una siguiente generación solo se hará mediante **🔁 Rehacer**.
-
-No esperes 4–6 para continuar con la siguiente noticia. Texto y cola editorial avanzan mientras el canal visual se resuelve por separado; el fallback real también continúa por su propio workflow.
-
-**Presupuesto visual operativo:** máximo **120 s por intento** incluyendo generación y handoff. Si no puede completarse dentro de ese presupuesto, registra fallo visual terminal para ese intento y continúa. Nunca esperes más ni hagas un segundo intento automático.
-
-### Aislamiento de contexto V3
-
-El prompt de cada llamada comienza conceptualmente por:
-`TTITTULARES_IMAGE_ISOLATION_V3 · CURRENT_ITEM_ONLY · <event_id> r<revision>`.
-
-Incluye exclusivamente:
-- `event_id`, revisión, titular y resumen factual verificado;
-- sujetos, lugar, objetos y acción que pertenecen inequívocamente a ESA noticia;
-- una sola escena narrativa, pocos elementos, composición 16:9 y detalle medio/bajo;
-- **TT_STYLE_A_V1: caricatura satírica editorial muy expresiva, colorida y exagerada**, con un único gag visual dominante derivado del hecho verificado;
-- primero encuentra la idea cómica específica y después dibújala: expresiones claras, objetos/props sobredimensionados, escala absurda y consecuencias visuales que lleven la situación al límite cuando encaje;
-- el gag debe entenderse sin leer el tuit; evita retratos neutros, poses promocionales, imágenes meramente bonitas o ilustraciones literales del titular;
-- colores vivos, contraste fuerte, siluetas claras; casi sin texto y, si aparece, breve, grande, correcto y diegético;
-- sin collage, split-screen, multipanel, infografía ni UI.
-
-**Filtro de sensibilidad antes de ImageGen:** si la noticia implica muerte, duelo, víctimas, violencia grave, abuso, menores en contexto sensible, catástrofe, desaparición, guerra/ataque con víctimas o sufrimiento humano comparable, persiste `disable_ai_image:true`, `ai_image_status:"disabled"`, `image_mode:"fallback_only"` e `image_strategy:"fallback_only"`. En esos casos **NO llames a ImageGen**: usa foto de archivo/fallback si existe o ninguna imagen.
-
-No reutilices prompts, semillas, imágenes ni elementos de otros items. En política puede existir sátira situacional neutral basada en hechos observables, pero nunca propaganda, elogio, ataque partidista, degradación dirigida ni persuasión a favor o en contra de un actor político.
-
-Un SVG técnico no es ImageGen: no puede persistirse como `ai_image`, usar `image_choice:"ai"` ni mostrarse como «Gag IA». El flujo vigente no genera SVG; cualquier artefacto histórico queda fuera de la selección visible y con procedencia técnica explícita.
-
-El `context_guard` es:
-`{"version":3,"event_id":"<event_id>","revision":<revision>,"scope":"current_item_only"}`.
-
-### Un solo intento
-
-El intento inicial es `attempt:1`. No hagas un segundo intento automático tras `failed`, timeout, interrupción o fallo de transporte. **🔁 Rehacer** es la única acción que autoriza `attempt = ai_image_attempt + 1`; no reabre investigación, texto ni tuit.
-
-Al iniciar cada pasada:
-- si un READY tiene `ai_image_regenerate_requested:true` y su `ai_image_regenerate_request_version` aún no fue consumida, haz una sola llamada de Rehacer; marca esa versión como consumida únicamente cuando la llamada real haya sido invocada;
-- si tiene `ai_image_status:"pending"` sin `ai_image` y existe `ai_image_tool_called_at` para su intento actual, no generes otra vez: ese intento sí fue realmente invocado;
-- si tiene `ai_image_status:"pending"`, `ai_image_attempt>=1` pero NO existe `ai_image_tool_called_at` (incluido `ai_image_last_attempt_status:"started"`), considéralo un marcador huérfano y recupera exactamente UNA llamada real sin incrementar el número de intento;
-- si no existe `ai_image_attempt`, puede iniciarse una sola vez el intento 1, pero el número de intento se registra únicamente después de invocar ImageGen.
-
-El consumidor visual limpia la solicitud de Rehacer cuando aplica un resultado `ready` o `failed`. El outbox `ready` debe incluir `provider:"chat-imagegen"`, `origin:"executing_chat"`, `source:"TTiTTulares / ChatGPT ImageGen"`, `generation_attempt` y el `context_guard` V3 exacto. Cualquier otra procedencia se rechaza como IA visible.
-
-### IA + fallback
-
-Conserva en paralelo la búsqueda de fotografía real/archivo desde fuentes. No esperes al fallback para cerrar el texto.
-
-Mantén:
-- `ai_image` y `ai_image_status:"ready|failed|pending"`;
-- `fallback_image` y `fallback_image_status:"ready|none|pending"`;
-- `image_choice:"ai|fallback|none"`;
-- `image` como alias de la imagen elegida.
-
-Si llega una IA válida, selecciónala por defecto. Si aún no llegó o falla, usa fallback cuando exista. Mantén ambos originales para la app.
-
-**Excepción Tremending y fallback-only:** si `tremending_origin:true`, `disable_ai_image:true`, `image_mode:"tweet_capture_only"` o `image_mode:"fallback_only"`, NO llames a ImageGen, no crees `ai_image_status:"pending"` y no consumas intento IA. Tremending usa exclusivamente la captura del tuit elegido; los temas sensibles usan exclusivamente foto de archivo/fallback cuando exista. Si el recurso real aún está pendiente, conserva su estado visual pendiente y continúa con el texto. Ninguna captura/foto se usa como prueba factual.
-
-La imagen NUNCA viaja dentro de `TTITTULARES_OUTBOX_V1`; ese comentario sigue siendo pequeño y cierra READY independientemente del raster.
+Cuando un job manual termine, el backend visual actualizará `ai_image`, `ai_image_status`, `image_choice` e `image` sin reabrir ni bloquear la ejecución editorial.
 
 ## Outbox editorial
 
@@ -186,22 +117,20 @@ Si la entrada es el mismo acontecimiento que otro ya PUBLICADO y no aporta noved
 `{"event_id":"ID_actual","revision":1,"status":"duplicate","duplicate_of_event_id":"ID_original","reason":"justificación concreta basada en hechos","no_material_update":true}`.
 `no_material_update:true` es obligatorio al referenciar un PUBLISHED y jamás se declara si hay actualización independiente. El aplicador comprueba la decisión del original y marca SKIPPED_DUPLICATE o DISMISSED; nunca crea un READY ni una imagen en ese caso. No ocultes una noticia materializada, reescrita o con revisión diferente; ante duda, conserva PROCESSING e informa de la incidencia. Confirma que cada resultado pasó a estado terminal real en la cola antes de darlo por cerrado.
 
-El `prepared_item` editorial debe ser completo en texto/tuit, pero NO debe contener data URLs ni bytes de imagen. Puede incluir únicamente estados pequeños como `ai_image_status:"pending"` y `fallback_image_status:"pending"`. No escribas directamente en `ttittulares/editorial-outbox/**`. Confirma que el texto se materializó en Listas antes de considerar terminado el item; la imagen continúa de forma independiente. Cada incidencia se añade a `ttittulares/execution-errors.json` mediante el mismo transporte cuando esté disponible.
+El `prepared_item` editorial debe ser completo en texto/tuit, pero NO debe contener data URLs ni bytes de imagen. Puede incluir únicamente estados pequeños como `ai_image_status:"none|disabled"` y `fallback_image_status:"pending|ready|none"`. No escribas directamente en `ttittulares/editorial-outbox/**`. Confirma que el texto se materializó en Listas antes de considerar terminado el item; cualquier Gag IA se solicitará después e independientemente desde el panel. Cada incidencia se añade a `ttittulares/execution-errors.json` mediante el mismo transporte cuando esté disponible.
 
 ## Cierre
 
 Relee cola, prepared y status, incluyendo PROCESSING anteriores. Informa noticias tratadas y estado de IA/fallback por separado, sin considerar ninguna imagen requisito de cierre.
 
-**La capa visual nunca mantiene RUNTRACE abierto.** En cuanto el texto esté confirmado en READY/Listas, `processing_remaining:0` y el raster IA haya sido entregado al outbox (o haya quedado en un estado terminal `failed`), escribe RUNTRACE `DONE` inmediatamente. No esperes a que el workflow aplicador materialice el fichero final para cerrar la ejecución. Si el aplicador sigue en curso, refleja `visual_backlog>0` como estado informativo, pero conserva `partial:false` mientras no quede trabajo editorial pendiente. Nunca dejes `status:"RUNNING"` o `phase:"image_apply"` únicamente por esperar la imagen.
-
-Antes de escribir RUNTRACE `DONE`, reconcilia la trazabilidad visual. Un item solo puede quedar `ai_image_status:"pending"` si para ESE intento existe `ai_image_tool_called_at` y `ai_image_last_attempt_status:"tool_called"`, es decir, si hubo una llamada real y solo queda pendiente transporte/materialización. Si no existe esa prueba, invoca ImageGen en ese mismo chat o marca `failed:imagegen_not_invoked`; jamás cierres con un `pending` ficticio. `summary.imagegen_calls` cuenta exclusivamente llamadas reales a la herramienta y `summary.ai_attempts_registered` no puede ser mayor que `imagegen_calls`. Si difieren, registra una incidencia y corrige los estados antes de DONE.
+**La capa visual nunca mantiene RUNTRACE abierto.** En cuanto el texto esté confirmado en READY/Listas y `processing_remaining:0`, escribe RUNTRACE `DONE`. No esperes imágenes, no contabilices `visual_backlog` y no invoques ImageGen. `summary.imagegen_calls` debe ser `0` en una ejecución editorial normal.
 
 La semántica de `partial` se refiere exclusivamente al **trabajo editorial de esta pasada que queda sin cerrar**. Una noticia realmente intentada en esta ejecución que termina o permanece en `PROBLEMATIC` es un resultado terminal de esa pasada: cuenta en `problematic_reviewed` y como incidencia de esa ejecución, pero **por sí sola no pone `partial:true`**. Una `PROBLEMATIC` histórica no reintentada puede seguir contando en `problematic_remaining`, pero NO cuenta como incidencia ni como revisada en esta pasada. En una ejecución sin PROCESSING ni problemáticas activadas por Check/revisión material, el diagnóstico debe cerrar 0/0, `problematic_reviewed:0` e incidencias 0 aunque existan elementos históricos en «No comprobadas».
 
 Usa `partial:true` únicamente si queda algún `PROCESSING` pendiente de esta pasada, si un resultado que debía materializarse no alcanzó un estado terminal real, o si un fallo global impidió completar el lote inicial. Si `processing_remaining:0` y todos los items intentados terminaron en READY/PUBLISHED/DISMISSED/SKIPPED_DUPLICATE/PROBLEMATIC según corresponda, el resumen debe llevar `partial:false`, aunque `problematic_remaining` sea mayor que cero. No presentes un DONE realmente parcial como reconciliación completa. No pauses, sustituyas ni recrees automatizaciones.
 
 
-## Revisión exclusiva de remate e IA
-Si rewrite_scope=remate_and_ai y reinvestigate no es true: no investigar ni buscar fuentes. Usar preserved_editorial como contenido factual inmutable. Conservar fuentes, hechos, título, resumen y texto anterior al remate. Cambiar solo remate e imagen IA; una única tentativa ImageGen desde el chat con contexto del evento actual y nueva revisión. Conservar fallback existente. El fallo de imagen nunca bloquea READY. Investigar de nuevo solo con reinvestigate=true solicitado expresamente.
+## Revisión exclusiva de remate
+Si `rewrite_scope=remate_only` y `reinvestigate` no es true: no investigar ni buscar fuentes. Usa `preserved_editorial` como contenido factual inmutable. Conserva fuentes, hechos, título, resumen y texto anterior al remate. Cambia solo el remate y conserva el fallback existente. La IA se gestiona aparte mediante el check **Gag IA** y un job manual independiente.
 
-En una revisión REWRITE, la IA anterior de preserved_editorial es **histórica**: no copies ni reutilices `ai_image`, `image` generada, URL, SHA ni bytes anteriores como resultado de la nueva revisión. El nuevo READY debe usar la revisión indicada por la cola y comenzar la nueva IA como `pending` hasta que exista una llamada real a ImageGen. Si `ai_image_regenerate_requested:true`, incrementa el intento exactamente una vez y genera un raster nuevo; nunca presentes el raster anterior como si fuera la regeneración.
+En una revisión REWRITE, no generes ni regeneres IA automáticamente. Si la revisión nueva no conserva una IA válida, deja `ai_image_status:"none"`; el usuario decidirá después si solicita una nueva imagen.
