@@ -25,11 +25,11 @@ jobs:
           shopt -s nullglob
           jobs=(trends/image-jobs/*.json ttittulares/image-jobs/*.json)
           if ((${#jobs[@]})); then
-            printf 'Los jobs visuales heredados ya no se procesan. ImageGen debe ejecutarse en el mismo chat editorial y entregar un image-outbox V3.\n' >&2
+            printf 'Los jobs visuales heredados ya no se procesan. ImageGen se ejecuta solo mediante jobs manuales independientes seleccionados desde el panel.\n' >&2
             printf 'Job legado: %s\n' "${jobs[@]}" >&2
             exit 1
           fi
           echo "LEGACY_AI_IMAGE_GENERATOR_DISABLED"
 
 # Barrera de seguridad: no llama a Vercel/OpenAI, no rasteriza SVG y no escribe
-# ai_image. Solo se admite ImageGen desde el chat ejecutor mediante image-outbox V3.
+# ai_image. Solo se admite ImageGen mediante el flujo manual PC Chat + bridge capture-only.
