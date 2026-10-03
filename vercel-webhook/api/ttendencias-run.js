@@ -274,7 +274,10 @@ async function requestImagePcAck(req,res){
   const existing=await readControlJson(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
   const terminal=["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase());
-  if(terminal)return res.status(409).json({ok:false,error:"job ya terminal",status:job.status});
+  if(terminal){
+    if(stage==="done"&&String(job.status||"").toUpperCase()==="DONE")return res.status(200).json({ok:true,...job});
+    return res.status(409).json({ok:false,error:"job ya terminal",status:job.status})
+  }
   if(stage==="picked_up"){
     const uploadHash=String(req.body?.upload_secret_hash||"").toLowerCase();
     if(!/^[a-f0-9]{64}$/.test(uploadHash))return res.status(400).json({ok:false,error:"upload_secret_hash requerido"});
@@ -367,9 +370,22 @@ async function requestImageUpload(req,res){
   const sha256=crypto.createHash("sha256").update(buf).digest("hex");
   const now=new Date().toISOString(),revision=Number(eligible.row?.revision||job.revision||0),attempt=Math.max(1,Number(eligible.row?.ai_image_attempt||0)||1);
   const persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido y validado; materializando directamente en main."};
-  await writeControlJson(path,persisting,existing.sha,"TTendencias raster recibido "+command_id);
+  const persistWrite=await writeControlJson(path,persisting,existing.sha,"TTendencias raster recibido "+command_id);
   const persisted=await persistAiImageDirect({target_id,revision,attempt,command_id,buf,mime:m[1],sha256,width,height,bytes:buf.length});
-  return res.status(200).json({ok:true,status:"PERSISTING",target_id,command_id,image_path:persisted.imagePath,sha256,width,height,bytes:buf.length})
+
+  // La persistencia anterior usa la API REST de GitHub y ya confirma que el raster
+  // y el estado editorial están escritos en main. No dependemos después de RAW/CDN
+  // para cerrar el job, porque puede tardar unos segundos y mostrar PERSISTING/error falso.
+  const doneAt=new Date().toISOString();
+  const done={...persisting,status:"DONE",phase:"done",updated_at:doneAt,finished_at:doneAt,message:"Imagen IA materializada y visible en el estado editorial."};
+  const persistSha=persistWrite?.content?.sha||persistWrite?.content?.git_url?.split("/").pop()||null;
+  if(persistSha){
+    await writeControlJson(path,done,persistSha,"TTendencias imagen IA completada "+command_id);
+  }else{
+    const fresh=await readControlJson(path);
+    await writeControlJson(path,done,fresh.sha,"TTendencias imagen IA completada "+command_id);
+  }
+  return res.status(200).json({ok:true,status:"DONE",target_id,command_id,image_path:persisted.imagePath,sha256,width,height,bytes:buf.length})
 }
 
 async function requestImageRun(req,res){
