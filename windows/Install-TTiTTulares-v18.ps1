@@ -102,7 +102,7 @@ Get-TTiTTularesListeners | ForEach-Object { try{Stop-Process -Id $_.ProcessId -F
 $deadline=(Get-Date).AddSeconds(7)
 do{
   Start-Sleep -Milliseconds 250
-  $remaining=Get-TTiTTularesListeners
+  $remaining=@(Get-TTiTTularesListeners)
 }while($remaining.Count -gt 0 -and (Get-Date) -lt $deadline)
 if($remaining.Count -gt 0){throw "Quedan listeners TTiTTulares anteriores activos: $($remaining.ProcessId -join ', ')"}
 
@@ -122,14 +122,14 @@ if($proc.HasExited){
   throw "El listener TTiTTulares v18 no ha quedado activo."
 }
 
-$live=Get-TTiTTularesListeners
+$live=@(Get-TTiTTularesListeners)
 if($live.Count -gt 1){
   # Conserva el listener más reciente y elimina duplicados antiguos.
   $keep=$live|Sort-Object CreationDate -Descending|Select-Object -First 1
   $extras=@($live|Where-Object{$_.ProcessId -ne $keep.ProcessId})
   foreach($x in $extras){try{Stop-Process -Id $x.ProcessId -Force -ErrorAction SilentlyContinue}catch{}}
   if($extras.Count -gt 0){Start-Sleep -Milliseconds 700}
-  $live=Get-TTiTTularesListeners
+  $live=@(Get-TTiTTularesListeners)
 }
 if($live.Count -ne 1){
   throw "Garantía listener único fallida. PIDs TTiTTulares: $($live.ProcessId -join ', ')"
