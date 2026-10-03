@@ -59,11 +59,12 @@ function buildMessage(job){
 const BRIDGE_MODE="capture-only-v10-img-only";
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
-async function inspectChat(cdp){
-  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const root=document.querySelector('main')||document.body;const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\"conversation-turn-\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<6000});const markerOutsideComposer=nodes.length>0;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\"conversation-turn-\"],article').length;return {hasMarker:markerOutsideComposer,composerMarker,generating,turns,title:document.title||'',url:location.href}})()")
+async function inspectChat(cdp,job){
+  const targetName=String(job&&job.target_name||"").trim();
+  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=bodyText.includes(command);const markerOutsideComposer=bodyMarker||nodes.length>0;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const images=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360).length;const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,title,url:location.href}})()")
 }
 
-async function findChat(){
+async function findChat(job){
   const deadline=Date.now()+60000;
   let best=null,bestScore=-1,bestInfo=null;
   while(Date.now()<deadline){
@@ -72,7 +73,7 @@ async function findChat(){
       const c=new CDP(t.webSocketDebuggerUrl);
       try{
         await c.open();
-        const st=await inspectChat(c);
+        const st=await inspectChat(c,job);
         if(st&&st.hasMarker){
           console.log("BRIDGE TARGET MARKER "+String(st.url||""));
           return c
@@ -80,21 +81,22 @@ async function findChat(){
         const title=String(st&&st.title||"");
         const projectMatch=/TTiTTulares/i.test(title)&&!/TTendencias/i.test(title);
         const oppositeMatch=/TTendencias/i.test(title);
-        // La UI actual de ChatGPT puede no exponer los turnos/marker aunque ImageGen
-        // esté ejecutándose. En ese caso, una pestaña dedicada del proyecto que está
-        // generando es una señal más fiable que otra pestaña generando de la otra app.
-        if(st&&st.generating&&projectMatch){
-          console.log("BRIDGE TARGET PROJECT-GENERATING "+String(st.url||""));
+        if(st&&st.generating&&(projectMatch||st.targetMarker||st.imageTitle)){
+          console.log("BRIDGE TARGET GENERATING "+String(st.url||""));
           return c
         }
-        const score=(projectMatch?500:0)+(st&&st.generating?80:0)+(String(st&&st.url||"").includes("/c/")?10:0)-(oppositeMatch?1000:0);
+        if(st&&st.imageTitle&&st.targetMarker&&st.images>0){
+          console.log("BRIDGE TARGET IMAGE-TITLE "+String(st.url||""));
+          return c
+        }
+        const score=(st&&st.bodyMarker?1000:0)+(st&&st.targetMarker?650:0)+(st&&st.imageTitle?300:0)+(projectMatch?250:0)+(st&&st.generating?100:0)+(st&&st.images>0?40:0)+(String(st&&st.url||"").includes("/c/")?10:0)-(oppositeMatch?1000:0);
         if(score>bestScore){best=t;bestScore=score;bestInfo=st}
       }catch{}
       c.close()
     }
     await sleep(900)
   }
-  const detail=bestInfo?JSON.stringify(bestInfo).slice(0,500):"sin candidato";
+  const detail=bestInfo?JSON.stringify(bestInfo).slice(0,700):"sin candidato";
   throw Error("No se encontró el chat lanzado con el command_id en 60 segundos; "+detail)
 }
 
@@ -105,7 +107,8 @@ function probeExpression(){
     "const root=document.querySelector('main')||document.body;",
     "const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");",
     "const markerNodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<7000});",
-    "const marker=markerNodes.length>0;",
+    "const bodyText=String((document.body&&document.body.innerText)||'');",
+    "const marker=markerNodes.length>0||bodyText.includes(command);",
     "const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));",
     "const all=[...document.querySelectorAll('img')].map((img,index)=>{const r=img.getBoundingClientRect(),src=String(img.currentSrc||img.src||''),alt=String(img.alt||''),nw=Number(img.naturalWidth||0),nh=Number(img.naturalHeight||0),vis=r.width>=180&&r.height>=120&&r.bottom>0&&r.right>0;const ratio=nh?nw/nh:0;const area=nw*nh;const sourceScore=/oaiusercontent|openai|blob:|generated|image/i.test(src+' '+alt)?80:0;const altScore=/generated|image|imagen/i.test(alt)?25:0;const sizeScore=Math.min(60,Math.floor(area/25000));const uiPenalty=/avatar|emoji|icon|logo|profile|thumbnail/i.test((alt+' '+src).toLowerCase())?200:0;return {index,img,r,src,alt,nw,nh,ratio,area,vis,score:sourceScore+altScore+sizeScore-uiPenalty}}).filter(x=>x.vis&&x.nw>=640&&x.nh>=360&&x.area>=300000&&x.score>-50).sort((a,b)=>b.score-a.score||b.area-a.area);",
     "const diag={marker,turns:document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length,generating,imagesAfterMarker:all.length,candidates:all.length,canvases:document.querySelectorAll('canvas').length,top:all.slice(0,3).map(x=>({nw:x.nw,nh:x.nh,ratio:Number(x.ratio.toFixed(3)),alt:x.alt.slice(0,80),src:x.src.slice(0,120),score:x.score}))};",
@@ -175,7 +178,7 @@ async function uploadImage(image){
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
     void job;
-    cdp=await findChat();
+    cdp=await findChat(job);
     console.log("BRIDGE CHAT FOUND mode="+BRIDGE_MODE);
     const image=await capture(cdp);
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");

@@ -1106,15 +1106,31 @@ function renderProcessing(list){
    list.appendChild(card)
  }
  if(outcomes.length){
-   const sep=document.createElement("div");sep.className="meta";sep.style.margin="16px 2px 6px";sep.textContent="Salidas recientes de elaboración";list.appendChild(sep);
+   const header=document.createElement("div");header.style.cssText="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 2px 8px";
+   const title=document.createElement("div");title.textContent="Salidas recientes de elaboración";title.style.cssText="font-size:1.25rem;font-weight:800;line-height:1.2";
+   const clear=document.createElement("button");clear.className="btn danger";clear.textContent="Borrar todo";
+   clear.onclick=async()=>{if(!confirm("¿Borrar de esta bandeja todas las salidas recientes actuales? Las nuevas salidas seguirán apareciendo."))return;clear.disabled=true;try{await api("clear-outcomes",{});toast("Salidas recientes borradas");await load(true);setView("processing")}catch(err){clear.disabled=false;toast(err.message)}};
+   header.append(title,clear);list.appendChild(header);
    for(const item of outcomes){
      const card=document.createElement("article");card.className="queuecard";
      const chips=(item.sources||[]).map(s=>'<span class="chip">'+String(typeof s==="string"?s:(s.name||s.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
-     card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="problem-reason"></div><div class="sources-list">'+chips+'</div>';
+     card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="problem-reason"></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn primary reopen-outcome">Elaborar igualmente</button><button class="btn danger hide-outcome">Borrar</button></div>';
      card.querySelector(".title").textContent=item.title||"Noticia sin título";
      card.querySelector(".sources").textContent=processingOutcomeLabel(item)+" · "+fmt(item.finished_at||item.selected_at);
      card.querySelector(".count").textContent=Number(item.source_count||0)+" fuentes";
      card.querySelector(".problem-reason").textContent=processingOutcomeReason(item);
+     card.querySelector(".reopen-outcome").onclick=async()=>{
+       if(!confirm("¿Volver a elaborar esta noticia de todas formas? El siguiente pase respetará esta decisión aunque antes se descartara como duplicada o no material."))return;
+       const btn=card.querySelector(".reopen-outcome");btn.disabled=true;
+       try{await api("reopen-outcome",{event_id:item.event_id});toast("Reabierta para elaboración");await load(true);setView("processing")}
+       catch(err){btn.disabled=false;toast(err.message)}
+     };
+     card.querySelector(".hide-outcome").onclick=async()=>{
+       if(!confirm("¿Borrar esta salida de la bandeja? No volverá a aparecer."))return;
+       const btn=card.querySelector(".hide-outcome");btn.disabled=true;
+       try{await api("hide-outcome",{event_id:item.event_id});toast("Salida borrada");await load(true);setView("processing")}
+       catch(err){btn.disabled=false;toast(err.message)}
+     };
      list.appendChild(card)
    }
  }

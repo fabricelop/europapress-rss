@@ -502,6 +502,86 @@ async function submitManualStory(url,title,instruction){
   return {ok:true,duplicate:!!(archiveMatch||eventMatch||queueMatch||preparedMatch),event_id:id,status:"PROCESSING",message:"Enviada a elaboración"}
 }
 
+async function reopenProcessingOutcome(eventId){
+  const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
+  const now=new Date().toISOString();
+  const [{doc:processing},{doc:events},{doc:prepared},{doc:decisions}]=await Promise.all([
+    readJson(PROCESSING),readJson(EVENTS),readJson(PREPARED),readJson(DECISIONS)
+  ]);
+  if((prepared.items||[]).some(x=>idOf(x.event_id)===id))return {ok:true,event_id:id,status:"READY",duplicate:true,message:"La noticia ya está en Listas"};
+  const row=[...(processing.items||[])].reverse().find(x=>idOf(x.event_id)===id);
+  if(!row)throw new Error("No se encuentra la salida editorial");
+  if(!["DISMISSED","SKIPPED_DUPLICATE","ERROR","CANCELLED"].includes(String(row.status||"").toUpperCase()))throw new Error("La noticia ya no está en Salidas recientes");
+  const published=(decisions.items||[]).find(x=>idOf(x.event_id)===id&&String(x.status||"").toLowerCase()==="published");
+  if(published)throw new Error("La noticia ya fue publicada y no puede reabrirse desde Salidas recientes");
+  const previousOutcome={
+    status:String(row.status||"").toUpperCase(),
+    filter_reason:String(row.filter_reason||""),
+    reconciliation_reason:String(row.reconciliation_reason||""),
+    problem_reason:String(row.problem_reason||""),
+    duplicate_of_event_id:row.duplicate_of_event_id||row.reconciled_from_event_id||null,
+    finished_at:row.reconciled_at||row.dismissed_at||row.problematic_at||row.updated_at||row.selected_at||null
+  };
+  await mutateJson(DECISIONS,"Reabrir salida editorial TTiTTulares",doc=>{
+    doc.project||="TTiTTulares";doc.items||=[];
+    for(const item of doc.items)if(idOf(item.event_id)===id&&String(item.status||"").toLowerCase()==="dismissed"){
+      item.status="reopened";item.reopened_at=now;item.updated_at=now;item.reopened_source="web_processing_outcome"
+    }
+    doc.updated_at=now;return doc
+  });
+  await mutateJson(PROCESSING,"Reelaborar salida TTiTTulares por decisión del usuario",doc=>{
+    doc.items||=[];
+    const item=[...(doc.items||[])].reverse().find(x=>idOf(x.event_id)===id);
+    if(!item)throw new Error("No se encuentra la salida editorial");
+    Object.assign(item,{
+      status:"PROCESSING",selected_at:now,selection_mode:"MANUAL_REOPEN_OUTCOME",
+      force_user_elaborate:true,user_validated:true,user_validated_at:now,
+      previous_outcome:previousOutcome,reopened_at:now,reopened_source:"web_processing_outcome",
+      revision:Math.max(1,Number(item.revision||1)),with_image:true,image_mode:item.image_mode||"ai_plus_fallback"
+    });
+    for(const k of ["filter_reason","reconciliation_reason","reconciled_at","reconciled_from_event_id","duplicate_of_event_id","dismissed_at","published_at","problem_reason","problematic_at","history_hidden_at","history_hidden_source"])delete item[k];
+    doc.updated_at=now;return doc
+  });
+  await mutateJson(EVENTS,"Reabrir evento TTiTTulares por decisión del usuario",doc=>{
+    for(const event of doc.events||[])if(idOf(event.id||event.event_id)===id){
+      event.status="PROCESSING";event.processing_at=now;event.force_user_elaborate=true;event.reopened_at=now;
+      delete event.dismissed_at;delete event.published_at
+    }
+    doc.updated_at=now;return doc
+  });
+  await mutateJson(MANUAL_ARCHIVE,"Reabrir archivo manual TTiTTulares",doc=>{
+    for(const item of doc.items||[])if(idOf(item.event_id)===id){
+      item.status="PROCESSING";item.updated_at=now;item.reopened_at=now
+    }
+    doc.updated_at=now;return doc
+  });
+  return {ok:true,event_id:id,status:"PROCESSING",force_user_elaborate:true,message:"Reabierta para elaborar igualmente"}
+}
+async function hideProcessingOutcome(eventId){
+  const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
+  const now=new Date().toISOString();let found=false;
+  await mutateJson(PROCESSING,"Ocultar salida reciente TTiTTulares",doc=>{
+    for(const item of doc.items||[])if(idOf(item.event_id)===id&&["DISMISSED","SKIPPED_DUPLICATE","ERROR","CANCELLED"].includes(String(item.status||"").toUpperCase())){
+      found=true;item.history_hidden_at=now;item.history_hidden_source="web"
+    }
+    if(found)doc.updated_at=now;return doc
+  });
+  if(!found)throw new Error("La salida ya no está disponible");
+  return {ok:true,event_id:id,hidden:true}
+}
+async function clearProcessingOutcomes(){
+  const now=new Date().toISOString();let hidden=0;
+  await mutateJson(PROCESSING,"Ocultar todas las salidas recientes TTiTTulares",doc=>{
+    for(const item of doc.items||[]){
+      if(["DISMISSED","SKIPPED_DUPLICATE","ERROR","CANCELLED"].includes(String(item.status||"").toUpperCase())&&!item.history_hidden_at){
+        item.history_hidden_at=now;item.history_hidden_source="web_clear_all";hidden++
+      }
+    }
+    if(hidden)doc.updated_at=now;return doc
+  });
+  return {ok:true,hidden}
+}
+
 async function manualPrepare(eventId){
   const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
   const now=new Date().toISOString();
@@ -773,7 +853,7 @@ export default async function handler(req,res){
         }));
       const processingItems=[...queueProcessing,...syntheticRewrites];
       const processingOutcomes=(queue.doc?.items||[])
-        .filter(x=>["DISMISSED","SKIPPED_DUPLICATE","ERROR","CANCELLED"].includes(String(x.status||"").toUpperCase()))
+        .filter(x=>["DISMISSED","SKIPPED_DUPLICATE","ERROR","CANCELLED"].includes(String(x.status||"").toUpperCase())&&!x.history_hidden_at)
         .map(x=>{
           const ev=eventMap.get(String(x.event_id||""))||{};
           return {
@@ -882,6 +962,9 @@ export default async function handler(req,res){
     if(action==="promote-trend")return res.status(200).json(await promoteTrendCandidate(body.candidate_id));
     if(action==="dismiss-trend")return res.status(200).json(await dismissTrendCandidate(body.candidate_id));
     if(action==="prepare3")return res.status(200).json(await manualPrepare(body.event_id));
+    if(action==="reopen-outcome")return res.status(200).json(await reopenProcessingOutcome(body.event_id));
+    if(action==="hide-outcome")return res.status(200).json(await hideProcessingOutcome(body.event_id));
+    if(action==="clear-outcomes")return res.status(200).json(await clearProcessingOutcomes());
     if(action==="submit")return res.status(200).json(await submitManualStory(body.url,body.title,body.instruction));
     return res.status(400).json({ok:false,error:"Acción no válida"})
   }catch(e){console.error(e);const github_rate_limit=e?.githubRateLimit||githubRateInfo();const limited=Boolean(github_rate_limit?.limited);return res.status(limited?429:(Number(e?.statusCode)||500)).json({ok:false,error:limited?"GitHub temporalmente limitado":String(e.message||e),github_rate_limit,retry_at:limited?github_rate_limit.reset_at:undefined})}
