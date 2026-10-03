@@ -8663,9 +8663,9 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
-      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-01T09:26:02.687300Z",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
@@ -8677,46 +8677,17 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "ai",
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/df30c371946b-r2-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "df30c371946b",
-          "revision": 2,
-          "scope": "current_item_only"
-        },
-        "sha256": "3248525cb5f3953a9d988627438b7354bf78063d4ef1ea9035584b6fe8ae74c7",
-        "alt": "Caricatura editorial de una tienda de campaña participando en una mesa de negociación sobre vivienda.",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/df30c371946b-r2-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
-      },
+      "image_choice": "fallback",
       "image_status": "ready",
       "image_pending": false,
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/df30c371946b-r2-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "df30c371946b",
-          "revision": 2,
-          "scope": "current_item_only"
-        },
-        "sha256": "3248525cb5f3953a9d988627438b7354bf78063d4ef1ea9035584b6fe8ae74c7",
-        "alt": "Caricatura editorial de una tienda de campaña participando en una mesa de negociación sobre vivienda.",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/df30c371946b-r2-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
+      "ai_image_failure_reason": "rejected_non_imagegen_raster",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20260928175939_690.jpg",
+        "source": "Europa Press · archivo de la acampada en Puerta del Sol",
+        "source_url": "https://www.europapress.es/madrid/noticia-sindicato-inquilinas-avisa-acampada-sol-seguira-mas-alla-alcance-acuerdo-maricarmen-20260928175939.html",
+        "alt": "Tiendas de campaña en la Puerta del Sol durante la protesta por la vivienda",
+        "rights_status": "unverified",
+        "generated": false
       }
     },
     {
@@ -9534,7 +9505,7 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T12:52:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -9547,50 +9518,19 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "ai",
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/34ed3ecf6720-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "34ed3ecf6720",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "ed8c2f32-c35a-4305-ba41-5800ab245c98",
-        "alt": "Imagen editorial generada por IA para Paiporta",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/34ed3ecf6720-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions",
-        "sha256": "7416819eef91371c138bbd99a2a10790e20bdbb8339f701c5bf5f71b278b2fc7"
-      },
+      "image_choice": "fallback",
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-01T11:07:33.008096Z",
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/34ed3ecf6720-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "34ed3ecf6720",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "ed8c2f32-c35a-4305-ba41-5800ab245c98",
-        "alt": "Imagen editorial generada por IA para Paiporta",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/34ed3ecf6720-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions",
-        "sha256": "7416819eef91371c138bbd99a2a10790e20bdbb8339f701c5bf5f71b278b2fc7"
+      "ai_image_failure_reason": "rejected_non_imagegen_raster",
+      "image": {
+        "url": "https://archivos.elperiodic.com/archivos/imagenes/noticias/2024/10/30/gbic2glw4aa4dje.jpeg",
+        "source": "ElPeriodic · archivo DANA 2024",
+        "source_url": "https://www.elperiodic.com/paiporta/desmienten-falso-aviso-evacuacion-pueblos-lhorta-crecidas-agua_986360",
+        "alt": "Imagen de archivo de las inundaciones de 2024 en Paiporta",
+        "rights_status": "unverified",
+        "generated": false
       }
     },
     {
@@ -9630,7 +9570,7 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T12:52:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -9643,51 +9583,20 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "ai",
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/b79a16e0b2ed-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "b79a16e0b2ed",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "fa9d12c6-50d2-4076-8524-75b62233746a",
-        "alt": "Imagen editorial generada por IA para Digi",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/b79a16e0b2ed-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions",
-        "sha256": "9efebf37482d34b80f3958ff64c0b632aa6abd9d0927b42bf1f5cc43ecb8e441"
-      },
+      "image_choice": "fallback",
       "image_status": "ready",
       "image_pending": false,
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/b79a16e0b2ed-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "b79a16e0b2ed",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "fa9d12c6-50d2-4076-8524-75b62233746a",
-        "alt": "Imagen editorial generada por IA para Digi",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/b79a16e0b2ed-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions",
-        "sha256": "9efebf37482d34b80f3958ff64c0b632aa6abd9d0927b42bf1f5cc43ecb8e441"
-      },
-      "ai_image_last_attempt_status": "ready",
-      "ai_image_last_attempt_at": "2026-10-01T11:04:06.282870Z"
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T11:04:06.282870Z",
+      "ai_image_failure_reason": "rejected_non_imagegen_raster",
+      "image": {
+        "url": "https://sta.articulo14.es/main-files/uploads/2026/07/Digi-2-1200x675.jpg",
+        "source": "Artículo14 · archivo Digi",
+        "source_url": "https://www.articulo14.es/economia/que-ha-pasado-con-digi-movistar-y-o2-caida-masiva-de-la-red-20261001.html",
+        "alt": "Imagen de archivo de Digi",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "c798cdb58da2",
@@ -9716,7 +9625,7 @@
       "with_image": true,
       "alternatives_target": 0,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "ai_image_started_at": "2026-10-01T13:49:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -9729,51 +9638,20 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "ai",
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/c798cdb58da2-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "c798cdb58da2",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "4e9fd110-1973-411a-ae03-26fe3aa2113b",
-        "alt": "Caricatura editorial de un magacín matinal de actualidad en directo durante más de cuatro horas.",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/c798cdb58da2-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions",
-        "sha256": "26814882d584b9b5b3d4915e7c8b58acf1e99de13c24c1fbd2684073e89768ca"
-      },
+      "image_choice": "fallback",
       "image_status": "ready",
       "image_pending": false,
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/c798cdb58da2-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "c798cdb58da2",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "4e9fd110-1973-411a-ae03-26fe3aa2113b",
-        "alt": "Caricatura editorial de un magacín matinal de actualidad en directo durante más de cuatro horas.",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/c798cdb58da2-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions",
-        "sha256": "26814882d584b9b5b3d4915e7c8b58acf1e99de13c24c1fbd2684073e89768ca"
-      },
-      "ai_image_last_attempt_status": "ready",
-      "ai_image_last_attempt_at": "2026-10-01T11:54:19.055471Z"
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T11:54:19.055471Z",
+      "ai_image_failure_reason": "rejected_non_imagegen_raster",
+      "image": {
+        "url": "https://img.rtve.es/imagenes/mananeros-360/01787317601398.jpg",
+        "source": "RTVE Play · Mañaneros 360",
+        "source_url": "https://www.rtve.es/play/videos/mananeros-360/",
+        "alt": "Imagen de archivo de Mañaneros 360 en RTVE",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "8c3b67c3b720",
@@ -9813,15 +9691,15 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 2,
       "ai_image_attempt_started_at": "2026-10-01T16:49:00+02:00",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
-      "image_choice": "ai",
+      "image_choice": "fallback",
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-01T14:57:25.427483Z",
       "ai_image_generated_but_not_materialized": true,
       "ai_image_last_generated_gen_id": "b127b376-7a90-4a4c-9c1c-690514817ffa",
@@ -9839,48 +9717,17 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/8c3b67c3b720-r0-ai2.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 2,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "8c3b67c3b720",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "ddad8855-fdcb-430c-a8e7-50d076a912ac",
-        "alt": "Ilustración editorial amable sobre el Día Internacional de las Personas Mayores y la longevidad",
-        "sha256": "24972b825db0bf4584f6d3ee74385f1e864df7327ce88a191d7d3615805ffdc7",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/8c3b67c3b720-r0-ai2.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
-      },
       "ai_image_regenerate_reason": "retry_after_binary_handoff_fix",
       "ai_image_regenerate_consumed_version": 1,
       "ai_image_regenerate_consumed_at": "2026-10-01T16:49:00+02:00",
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/8c3b67c3b720-r0-ai2.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 2,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "8c3b67c3b720",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "ddad8855-fdcb-430c-a8e7-50d076a912ac",
-        "alt": "Ilustración editorial amable sobre el Día Internacional de las Personas Mayores y la longevidad",
-        "sha256": "24972b825db0bf4584f6d3ee74385f1e864df7327ce88a191d7d3615805ffdc7",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/8c3b67c3b720-r0-ai2.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
+      "ai_image_failure_reason": "rejected_non_imagegen_raster",
+      "image": {
+        "url": "https://www.un.org/sites/un2.un.org/files/2021/10/older-woman-at-computer.jpg",
+        "source": "Naciones Unidas · Día Internacional de las Personas de Edad",
+        "source_url": "https://www.un.org/es/observances/older-persons-day",
+        "alt": "Imagen de archivo relacionada con Personas Mayores",
+        "rights_status": "unverified",
+        "generated": false
       }
     },
     {
@@ -10170,7 +10017,7 @@
       ],
       "auto_queued": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T16:49:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -10183,51 +10030,20 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "ai",
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/7591c30cd1ec-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "7591c30cd1ec",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "84fb5622-31ed-4690-95f0-b76f43edfe72",
-        "alt": "Ilustración editorial neutral sobre la votación diferenciada del PNV a dos decretos de vivienda",
-        "sha256": "28be3d6ac1cd1cb9766c21e4a77483de32e12c442e9cb2beb5b8e8ed482d0e3d",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/7591c30cd1ec-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
-      },
+      "image_choice": "fallback",
       "image_status": "ready",
       "image_pending": false,
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/7591c30cd1ec-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "7591c30cd1ec",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "84fb5622-31ed-4690-95f0-b76f43edfe72",
-        "alt": "Ilustración editorial neutral sobre la votación diferenciada del PNV a dos decretos de vivienda",
-        "sha256": "28be3d6ac1cd1cb9766c21e4a77483de32e12c442e9cb2beb5b8e8ed482d0e3d",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/7591c30cd1ec-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
-      },
-      "ai_image_last_attempt_status": "ready",
-      "ai_image_last_attempt_at": "2026-10-01T14:55:20.708283Z"
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-01T14:55:20.708283Z",
+      "ai_image_failure_reason": "rejected_non_imagegen_raster",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001144608_690.jpg",
+        "source": "Europa Press · Congreso",
+        "source_url": "https://www.europapress.es/economia/construccion-y-vivienda-00342/noticia-pnv-apoyara-decreto-vivienda-ayudas-fiscales-rechazara-renovacion-alquiler-automatica-20261001144608.html",
+        "alt": "La portavoz del PNV en el Congreso, Maribel Vaquero, junto a otros diputados en el hemiciclo",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "75f572510033",
@@ -10334,7 +10150,7 @@
       ],
       "auto_queued": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T17:06:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -10347,50 +10163,19 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "ai",
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/7a6276fb2b07-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "7a6276fb2b07",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "f15a6447-3372-4c39-b3c0-2ec7cc3961d2",
-        "alt": "Ilustración editorial de un programa televisivo comentando la crisis de vivienda y la acampada de Sol",
-        "sha256": "6219ba4dc12b8e66cb5cad5973c0c616534e3338ca2edbec6e28e2821fc19a68",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/7a6276fb2b07-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
-      },
+      "image_choice": "fallback",
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-01T15:18:48.002568Z",
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/7a6276fb2b07-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "7a6276fb2b07",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "f15a6447-3372-4c39-b3c0-2ec7cc3961d2",
-        "alt": "Ilustración editorial de un programa televisivo comentando la crisis de vivienda y la acampada de Sol",
-        "sha256": "6219ba4dc12b8e66cb5cad5973c0c616534e3338ca2edbec6e28e2821fc19a68",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/7a6276fb2b07-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
+      "ai_image_failure_reason": "rejected_non_imagegen_raster",
+      "image": {
+        "url": "https://album.mediaset.es/eimg/2026/09/30/beatriz-payo-manifestante-en-sol-responde-a-almeida-y-al-ultimatum-de-ayuso-16-9-aspect-ratio-defaul_da39.jpg?w=1024",
+        "source": "Cuatro · Todo es mentira",
+        "source_url": "https://www.cuatro.com/todoesmentira/",
+        "alt": "Captura de Todo es mentira durante la cobertura de la acampada por la vivienda en Puerta del Sol",
+        "rights_status": "unverified",
+        "generated": false
       }
     },
     {
@@ -10431,7 +10216,7 @@
       "captured_with": [],
       "auto_queued": false,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T17:10:00+02:00",
       "fallback_image_strategy": "existing_web_image",
@@ -10444,57 +10229,26 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "ai",
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/75f572510033-r1-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "75f572510033",
-          "revision": 1,
-          "scope": "current_item_only"
-        },
-        "gen_id": "6daa1dfd-92ad-4857-8ac1-253140b2f19d",
-        "alt": "Ilustración editorial de Woody Allen preparando un rodaje de seis semanas por más de 30 localizaciones de Madrid y Aranjuez",
-        "sha256": "2b1eb707dff28904d69b1ec42ee389ee043c384fd04134eabf87a77d9be6a04f",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/75f572510033-r1-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
-      },
+      "image_choice": "fallback",
       "image_status": "ready",
       "image_pending": false,
-      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-01T15:16:14.628599Z",
       "rewrite_instruction": "Rehaz el remate manteniendo los hechos y el formato del tuit, con un giro más específico. Genera también una nueva imagen IA.",
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/75f572510033-r1-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "75f572510033",
-          "revision": 1,
-          "scope": "current_item_only"
-        },
-        "gen_id": "6daa1dfd-92ad-4857-8ac1-253140b2f19d",
-        "alt": "Ilustración editorial de Woody Allen preparando un rodaje de seis semanas por más de 30 localizaciones de Madrid y Aranjuez",
-        "sha256": "2b1eb707dff28904d69b1ec42ee389ee043c384fd04134eabf87a77d9be6a04f",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/75f572510033-r1-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
-      },
       "rewrite_pending": false,
       "rewrite_requested_at": "2026-10-01T15:22:22.316Z",
       "rewrite_request_version": 1,
       "rewrite_completed_by_revision": 2,
-      "rewrite_completed_at": "2026-10-01T17:48:00+02:00"
+      "rewrite_completed_at": "2026-10-01T17:48:00+02:00",
+      "ai_image_failure_reason": "rejected_non_imagegen_raster",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261001160432_690.jpg",
+        "source": "Europa Press · Cultura",
+        "source_url": "https://www.europapress.es/cultura/cine-00128/noticia-woody-allen-recuerda-madrid-no-director-politico-carga-contra-fascismo-tambien-forma-censura-20261001160432.html",
+        "alt": "Woody Allen posa en Madrid durante la presentación del rodaje de su nueva película",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "75f572510033",
@@ -10730,13 +10484,13 @@
       "auto_queued": true,
       "batch_id": "70cc9e93328c",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "ai_image_attempt_started_at": "2026-10-01T18:21:00+02:00",
       "ai_image_tool_called_at": "2026-10-01T18:21:00+02:00",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
-      "image_choice": "ai",
+      "image_choice": "fallback",
       "image_status": "ready",
       "image_pending": false,
       "fallback_image": {
@@ -10747,47 +10501,7 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/5738d6468612-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "5738d6468612",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "db08ad1c-9ebe-4825-806f-ab8409846983",
-        "alt": "Ilustración editorial de una autoridad del fútbol europeo reabriendo un gran expediente rodeado de documentos, un balón y tarjetas arbitrales",
-        "sha256": "987f93c050d8ca018384e073390283e5ac55aaf289a1d2a4f95d3d3c4d3ec5af",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/5738d6468612-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
-      },
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/5738d6468612-r0-ai1.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "5738d6468612",
-          "revision": 0,
-          "scope": "current_item_only"
-        },
-        "gen_id": "db08ad1c-9ebe-4825-806f-ab8409846983",
-        "alt": "Ilustración editorial de una autoridad del fútbol europeo reabriendo un gran expediente rodeado de documentos, un balón y tarjetas arbitrales",
-        "sha256": "987f93c050d8ca018384e073390283e5ac55aaf289a1d2a4f95d3d3c4d3ec5af",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/5738d6468612-r0-ai1.jpg",
-        "handoff": "inline-outbox-materialized-by-actions"
-      },
-      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-01T16:27:27.783071Z",
       "group_id": "grp-uefa-negreira-20261001",
       "explanation_group_id": "grp-uefa-negreira-20261001",
@@ -10828,7 +10542,16 @@
           "name": "Real Madrid",
           "revision": 0
         }
-      ]
+      ],
+      "ai_image_failure_reason": "rejected_non_imagegen_raster",
+      "image": {
+        "url": "https://cadenaser.com/resizer/v2/7A34DSSYZBEGRNSMYA424IWIY4.jpg?auth=85aa3346793a4bdc5d3c4bf47d5c1eeb1d4844521f20a96f22949501877ad450&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER · 1/10/2026",
+        "source_url": "https://cadenaser.com/nacional/2026/10/01/la-uefa-confirma-que-el-real-madrid-le-ha-enviado-documentacion-sobre-el-caso-negreira-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Uefa",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "ee465b09509f",
@@ -14593,12 +14316,12 @@
         "Belén",
         "Ángela Portero"
       ],
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "fallback_image_status": "none",
       "fallback_image_strategy": "existing_web_image",
-      "image_choice": "ai",
-      "image_status": "ready",
+      "image_choice": null,
+      "image_status": "none",
       "image_pending": false,
       "group_id": "grp-413c73f54712",
       "group_title": "De Viernes · regreso de Belén Esteban",
@@ -14643,52 +14366,9 @@
           "revision": 1
         }
       ],
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/413c73f54712-r1-ai1-29716-eeb02c.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "sha256": "f541be5ec06ad1abc070dddc4f57dc3c816ffa405bb28f072c53f6a9ab8572a2",
-        "width": 800,
-        "height": 706,
-        "bytes": 19615,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "413c73f54712",
-          "revision": 1,
-          "scope": "current_item_only",
-          "command_id": "tr-img-1791011329716-eeb02c"
-        },
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/413c73f54712-r1-ai1-29716-eeb02c.jpg",
-        "handoff": "pc-bridge-direct-materialized"
-      },
-      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-03T07:10:50.069Z",
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/413c73f54712-r1-ai1-29716-eeb02c.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "sha256": "f541be5ec06ad1abc070dddc4f57dc3c816ffa405bb28f072c53f6a9ab8572a2",
-        "width": 800,
-        "height": 706,
-        "bytes": 19615,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "413c73f54712",
-          "revision": 1,
-          "scope": "current_item_only",
-          "command_id": "tr-img-1791011329716-eeb02c"
-        },
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/413c73f54712-r1-ai1-29716-eeb02c.jpg",
-        "handoff": "pc-bridge-direct-materialized"
-      }
+      "ai_image_failure_reason": "rejected_non_imagegen_raster"
     },
     {
       "id": "68b1fa61df02",
@@ -15000,58 +14680,15 @@
       ],
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "fallback_image_status": "none",
-      "image_choice": "ai",
-      "image_status": "ready",
+      "image_choice": null,
+      "image_status": "none",
       "image_pending": false,
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/89a6eb26d71d-r0-ai1-34800-7bfa1f.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "sha256": "2560bda39b2447da1f1542d49105de2bd4795f8e0a671a630ecdfcebe6cdfb23",
-        "width": 800,
-        "height": 706,
-        "bytes": 21533,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "89a6eb26d71d",
-          "revision": 0,
-          "scope": "current_item_only",
-          "command_id": "tr-img-1791011334800-7bfa1f"
-        },
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/89a6eb26d71d-r0-ai1-34800-7bfa1f.jpg",
-        "handoff": "pc-bridge-direct-materialized"
-      },
-      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-03T07:14:16.313Z",
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/89a6eb26d71d-r0-ai1-34800-7bfa1f.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "sha256": "2560bda39b2447da1f1542d49105de2bd4795f8e0a671a630ecdfcebe6cdfb23",
-        "width": 800,
-        "height": 706,
-        "bytes": 21533,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "89a6eb26d71d",
-          "revision": 0,
-          "scope": "current_item_only",
-          "command_id": "tr-img-1791011334800-7bfa1f"
-        },
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/89a6eb26d71d-r0-ai1-34800-7bfa1f.jpg",
-        "handoff": "pc-bridge-direct-materialized"
-      }
+      "ai_image_failure_reason": "rejected_non_imagegen_raster"
     },
     {
       "id": "e883cdb753d6",
@@ -15115,58 +14752,15 @@
       ],
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "fallback_image_status": "none",
-      "image_choice": "ai",
-      "image_status": "ready",
+      "image_choice": null,
+      "image_status": "none",
       "image_pending": false,
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/e883cdb753d6-r0-ai1-59462-8b423c.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "sha256": "79870e7b293415e4c2c9b9302331a2523762e3e69cd4f740315858c2e8bbc1d6",
-        "width": 800,
-        "height": 800,
-        "bytes": 23626,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "e883cdb753d6",
-          "revision": 0,
-          "scope": "current_item_only",
-          "command_id": "tr-img-1791009759462-8b423c"
-        },
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/e883cdb753d6-r0-ai1-59462-8b423c.jpg",
-        "handoff": "pc-bridge-direct-materialized"
-      },
-      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-03T06:43:51.831Z",
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/e883cdb753d6-r0-ai1-59462-8b423c.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "sha256": "79870e7b293415e4c2c9b9302331a2523762e3e69cd4f740315858c2e8bbc1d6",
-        "width": 800,
-        "height": 800,
-        "bytes": 23626,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "e883cdb753d6",
-          "revision": 0,
-          "scope": "current_item_only",
-          "command_id": "tr-img-1791009759462-8b423c"
-        },
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/e883cdb753d6-r0-ai1-59462-8b423c.jpg",
-        "handoff": "pc-bridge-direct-materialized"
-      }
+      "ai_image_failure_reason": "rejected_non_imagegen_raster"
     },
     {
       "id": "6ab80fc5ad41",
@@ -15395,58 +14989,15 @@
       ],
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "ai_image_attempt": 1,
       "fallback_image_status": "none",
-      "image_choice": "ai",
-      "image_status": "ready",
+      "image_choice": null,
+      "image_status": "none",
       "image_pending": false,
-      "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/e6ee5d34c014-r2-ai1-29472-65fb03.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "sha256": "b7bafa950fe48b75d0f7c139320c45663714944ffb4c123cec33d27d70d62590",
-        "width": 800,
-        "height": 706,
-        "bytes": 20918,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "e6ee5d34c014",
-          "revision": 2,
-          "scope": "current_item_only",
-          "command_id": "tr-img-1791015329472-65fb03"
-        },
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/e6ee5d34c014-r2-ai1-29472-65fb03.jpg",
-        "handoff": "pc-bridge-direct-materialized"
-      },
-      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-03T08:16:13.624Z",
-      "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/e6ee5d34c014-r2-ai1-29472-65fb03.jpg",
-        "source": "TTendencias / ChatGPT ImageGen",
-        "rights_status": "generated",
-        "generated": true,
-        "provider": "chat-imagegen",
-        "origin": "executing_chat",
-        "generation_attempt": 1,
-        "sha256": "b7bafa950fe48b75d0f7c139320c45663714944ffb4c123cec33d27d70d62590",
-        "width": 800,
-        "height": 706,
-        "bytes": 20918,
-        "context_guard": {
-          "version": 3,
-          "trend_id": "e6ee5d34c014",
-          "revision": 2,
-          "scope": "current_item_only",
-          "command_id": "tr-img-1791015329472-65fb03"
-        },
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/e6ee5d34c014-r2-ai1-29472-65fb03.jpg",
-        "handoff": "pc-bridge-direct-materialized"
-      }
+      "ai_image_failure_reason": "rejected_non_imagegen_raster"
     },
     {
       "id": "cfa67a30f2a4",
@@ -15663,6 +15214,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-03T08:16:13.624Z",
+  "updated_at": "2026-10-03T08:27:15.506Z",
   "count": 441
 }
