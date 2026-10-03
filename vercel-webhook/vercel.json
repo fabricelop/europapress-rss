@@ -18,7 +18,7 @@
     }
   },
   "git": {
-    "deploymentEnabled": true
+    "deploymentEnabled": false
   },
   "rewrites": [
     {
@@ -309,5 +309,5 @@
   "github": {
     "autoJobCancelation": false
   },
-  "ignoreCommand": "grep -q '^deploy-ttittulares-outcome-actions-imagefix-20261004$' .deploy-trigger && exit 1 || exit 0"
+  "ignoreCommand": "grep -q '^deploy-' .deploy-trigger && exit 1 || exit 0"
 }
