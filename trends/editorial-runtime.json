@@ -1,102 +1,210 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-02T22:05:00+02:00",
-  "last_completed_at": "2026-10-02T22:18:30+02:00",
+  "last_started_at": "2026-10-03T07:14:55+02:00",
+  "last_completed_at": "2026-10-03T07:22:30+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
-    "bb2c88d73a1e",
-    "cb7b33217e93",
-    "2f9fe574bf60",
-    "1e2f594d6098",
-    "477e4e087555",
-    "7f88aa1f905b"
+    "03e6546dc5f6",
+    "413c73f54712"
   ],
-  "remaining_ids": [
-    "2f9fe574bf60",
-    "1e2f594d6098",
-    "477e4e087555"
-  ],
+  "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-02T22:18:30+02:00",
+  "updated_at": "2026-10-03T07:22:30+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "2f9fe574bf60",
-    "1e2f594d6098",
-    "477e4e087555"
-  ],
+  "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "chat-20261002T2205+0200",
+    "run_id": "chat-20261003T071455+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-02T22:05:00+02:00",
-    "updated_at": "2026-10-02T22:18:30+02:00",
-    "finished_at": "2026-10-02T22:18:30+02:00",
-    "current": 6,
-    "total": 6,
+    "started_at": "2026-10-03T07:14:55+02:00",
+    "updated_at": "2026-10-03T07:22:30+02:00",
+    "finished_at": "2026-10-03T07:22:30+02:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 6,
+      "trends_processed": 2,
       "trends_explained": 2,
       "explanation_groups": 2,
-      "new_cards": 1,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 1,
-      "trends_problematic": 4,
+      "new_cards": 0,
+      "revisions_updated": 2,
+      "grouped_into_existing_card": 0,
+      "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
-      "queue_remaining": 3,
+      "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 2,
-      "remates_selected": 0,
-      "remates_omitted": 1
+      "remates_selected": 2,
+      "remates_omitted": 0
     },
     "incident_count": 0,
     "incidents": [],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [
-      "2f9fe574bf60",
-      "1e2f594d6098",
-      "477e4e087555"
-    ],
+    "remaining_problematic_ids": [],
     "ratings_snapshot": {
-      "source": "trends/remate-ratings.json",
-      "used": true
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "a3164bc5f813f89088e0c1b1beeffb64f688e355",
+      "updated_at": "2026-10-02T18:53:31.693Z",
+      "total_ratings": 125,
+      "recent_considered": 100
     },
-    "remate_selections": [],
-    "message": "Pasada cerrada 6/6: etiqueta coreana de Bang Chan agrupada con #BangChanEmpireOfTalent; Vox y Junts r2 explicada por el resultado final de los decretos de vivienda; #Cuphead, Tranquilo y Señalando permanecen problemáticas tras segundo intento; Carta quedó problemática y salió de la cola al estar fuera del Top 10. Sin ImageGen ni despliegues."
+    "remate_selections": [
+      {
+        "trend_id": "03e6546dc5f6",
+        "revision": 1,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "m1",
+            "total": 8.2,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.9,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "m2",
+            "total": 7.7,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "m3",
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "m4",
+            "total": 7.8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "m5",
+            "total": 7.2,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "m1",
+        "selected_score": 8.2,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "413c73f54712",
+        "revision": 1,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "d1",
+            "total": 8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "d2",
+            "total": 7.7,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.7,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "d3",
+            "total": 8.5,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "d4",
+            "total": 7.9,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "d5",
+            "total": 7.5,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "d3",
+        "selected_score": 8.5,
+        "no_remate_reason": null
+      }
+    ],
+    "message": "Pasada cerrada 2/2: #MalasLenguasN actualizada por el especial de La 1 tras el rechazo de los decretos de vivienda; #DeViernes actualizada por el regreso en directo de Belén Esteban. 2 revisiones persistidas, 0 problemáticas, 0 ImageGen, 0 Vercel."
   },
   "summary": {
-    "trends_processed": 6,
+    "trends_processed": 2,
     "trends_explained": 2,
     "explanation_groups": 2,
-    "new_cards": 1,
-    "revisions_updated": 1,
-    "grouped_into_existing_card": 1,
-    "trends_problematic": 4,
+    "new_cards": 0,
+    "revisions_updated": 2,
+    "grouped_into_existing_card": 0,
+    "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
     "fallback_images_ready": 0,
     "vercel_deploys": 0,
     "explanations_verified_under_280": 2,
-    "remates_selected": 0,
-    "remates_omitted": 1
+    "remates_selected": 2,
+    "remates_omitted": 0
   },
   "error": null
 }
