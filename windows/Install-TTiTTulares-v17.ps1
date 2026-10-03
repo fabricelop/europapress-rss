@@ -122,16 +122,21 @@ if($proc.HasExited){
 }
 
 $live=Get-TTiTTularesListeners
-$extras=@($live|Where-Object{$_.ProcessId -ne $proc.Id})
-foreach($x in $extras){try{Stop-Process -Id $x.ProcessId -Force -ErrorAction SilentlyContinue}catch{}}
-if($extras.Count -gt 0){Start-Sleep -Milliseconds 700}
-$live=Get-TTiTTularesListeners
-if($live.Count -ne 1 -or $live[0].ProcessId -ne $proc.Id){
+if($live.Count -gt 1){
+  # Conserva el listener más reciente y elimina duplicados antiguos.
+  $keep=$live|Sort-Object CreationDate -Descending|Select-Object -First 1
+  $extras=@($live|Where-Object{$_.ProcessId -ne $keep.ProcessId})
+  foreach($x in $extras){try{Stop-Process -Id $x.ProcessId -Force -ErrorAction SilentlyContinue}catch{}}
+  if($extras.Count -gt 0){Start-Sleep -Milliseconds 700}
+  $live=Get-TTiTTularesListeners
+}
+if($live.Count -ne 1){
   throw "Garantía listener único fallida. PIDs TTiTTulares: $($live.ProcessId -join ', ')"
 }
+$listenerPid=[int]$live[0].ProcessId
 
 Write-Host "TTITTULARES V17 ACTUALIZADO Y ACTIVO" -ForegroundColor Green
-Write-Host "PID: $($proc.Id)"
+Write-Host "PID: $listenerPid"
 Write-Host "Listener: $Listener"
 Write-Host "Bridge IA: $Bridge"
 Write-Host "Editorial: Ejecuta TTiTTulares (sin ImageGen)" -ForegroundColor Green
