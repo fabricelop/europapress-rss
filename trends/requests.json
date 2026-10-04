@@ -5293,20 +5293,28 @@
     {
       "id": "7a9af9deaab3",
       "name": "Sanse",
-      "rank": 6,
-      "status": "explained",
-      "requested_at": "2026-09-26T17:10:23+02:00",
-      "revision": 0,
-      "reexplain": false,
-      "with_image": false,
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-10-04T16:02:20+02:00",
+      "revision": 1,
+      "reexplain": true,
+      "with_image": true,
       "alternatives_target": 0,
       "batch_id": "74a97e7efbdd",
       "requested_together": [
         "Sanse"
       ],
       "captured_with": [
+        "Pacheta",
+        "Güímar",
+        "Zverev",
+        "Djokovic",
+        "Alonso",
+        "Maledon",
         "Sanse",
-        "#ADCeutaFCRealSociedadB"
+        "Hamilton",
+        "Jantunen",
+        "Norris"
       ],
       "auto_queued": true,
       "image_checkpoint": {
@@ -5317,8 +5325,7 @@
       },
       "ready_at": "2026-09-26T15:41:55.818Z",
       "delivery_confirmation": "prepared_web",
-      "editorial_engine": "chatgpt-automation-outbox",
-      "explained_at": "2026-09-26T16:27:11.417Z"
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "da0ade2d51e6",
@@ -15348,11 +15355,11 @@
     {
       "id": "52173709450d",
       "name": "Maledon",
-      "rank": 7,
-      "status": "explained",
-      "requested_at": "2026-10-01T21:31:36+02:00",
-      "revision": 0,
-      "reexplain": false,
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-10-04T16:02:20+02:00",
+      "revision": 1,
+      "reexplain": true,
       "with_image": true,
       "alternatives_target": 0,
       "batch_id": "e18511b9f82a",
@@ -15360,11 +15367,18 @@
         "Maledon"
       ],
       "captured_with": [
+        "Pacheta",
+        "Güímar",
+        "Zverev",
+        "Djokovic",
+        "Alonso",
         "Maledon",
-        "Pedro Martínez"
+        "Sanse",
+        "Hamilton",
+        "Jantunen",
+        "Norris"
       ],
       "auto_queued": true,
-      "explained_at": "2026-10-01T21:46:00+02:00",
       "explanation": "TT#7 Maledon es tendencia porque firmó 26 puntos y 40 de valoración en la remontada que no evitó el 102-98 del Real Madrid ante Hapoel; el equipo de Pedro Martínez arranca 0-3 en Euroliga.\n🌶️ Maledon levantó 22 puntos y al Madrid se le cayó el último piso.",
       "closer_text": "🌶️ Maledon levantó 22 puntos y al Madrid se le cayó el último piso.",
       "rank_at_explanation": 7,
@@ -25121,8 +25135,96 @@
         "Obradoiro"
       ],
       "auto_queued": true
+    },
+    {
+      "id": "205740091d52",
+      "name": "Güímar",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-10-04T16:02:20+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "35be4746a9ca",
+      "requested_together": [
+        "Güímar"
+      ],
+      "captured_with": [
+        "Güímar",
+        "Zverev",
+        "Djokovic",
+        "Jantunen"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "5a0235142133",
+      "name": "Zverev",
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-10-04T16:02:20+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "35be4746a9ca",
+      "requested_together": [
+        "Zverev"
+      ],
+      "captured_with": [
+        "Güímar",
+        "Zverev",
+        "Djokovic",
+        "Jantunen"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "e44b21dad3dc",
+      "name": "Djokovic",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-10-04T16:02:20+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "35be4746a9ca",
+      "requested_together": [
+        "Djokovic"
+      ],
+      "captured_with": [
+        "Güímar",
+        "Zverev",
+        "Djokovic",
+        "Jantunen"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "19d80e7eb33e",
+      "name": "Jantunen",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-10-04T16:02:20+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "35be4746a9ca",
+      "requested_together": [
+        "Jantunen"
+      ],
+      "captured_with": [
+        "Güímar",
+        "Zverev",
+        "Djokovic",
+        "Jantunen"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-04T15:31:37+02:00",
+  "updated_at": "2026-10-04T16:02:20+02:00",
   "count": 528
 }
