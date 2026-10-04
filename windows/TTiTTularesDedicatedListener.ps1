@@ -1,4 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
+# official-pipeline-restart-token: 2026-10-04-v28a
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
