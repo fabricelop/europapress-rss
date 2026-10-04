@@ -42,16 +42,16 @@ class CDP{
       m.error?p.bad(Error(m.error.message||"CDP error")):p.ok(m.result)
     });
   }
-  call(method,params={}){
+  call(method,params={},timeoutMs=4000){
     const id=++this.seq;
     return new Promise((ok,bad)=>{
       this.pending.set(id,{ok,bad});
       this.ws.send(JSON.stringify({id,method,params}));
-      setTimeout(()=>{if(this.pending.delete(id))bad(Error("CDP timeout "+method))},12000);
+      setTimeout(()=>{if(this.pending.delete(id))bad(Error("CDP timeout "+method))},Math.max(800,Number(timeoutMs)||4000));
     })
   }
   async eval(expression,awaitPromise=false){
-    const r=await this.call("Runtime.evaluate",{expression,returnByValue:true,awaitPromise,userGesture:true});
+    const r=await this.call("Runtime.evaluate",{expression,returnByValue:true,awaitPromise,userGesture:true},4500);
     if(r&&r.exceptionDetails)throw Error(r.exceptionDetails.text||"Runtime.evaluate");
     return r&&r.result?r.result.value:undefined
   }
@@ -95,7 +95,7 @@ function buildMessage(job){
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
 const BRIDGE_MODE="capture-only-v23-target-handoff";
-const BRIDGE_FEATURES="v25-exact-command-self-submit-dom-capture";
+const BRIDGE_FEATURES="v26-hard-cdp-timeouts-exact-command-dom-capture";
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
 // compatibility: BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover"
@@ -302,7 +302,7 @@ async function domImageCandidates(cdp){
     const root=doc&&doc.root&&doc.root.nodeId;
     if(!root)return out;
     const q=await cdp.call("DOM.querySelectorAll",{nodeId:root,selector:"img"});
-    const ids=Array.isArray(q&&q.nodeIds)?q.nodeIds.slice(-80):[];
+    const ids=Array.isArray(q&&q.nodeIds)?q.nodeIds.slice(-14):[];
     for(const nodeId of ids){
       try{
         const a=await cdp.call("DOM.getAttributes",{nodeId});
