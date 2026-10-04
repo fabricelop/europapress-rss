@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-auto-7dd1c5062296-r0-a1-1791146486125",
   "requested_at": "2026-10-04T20:41:26.124699Z",
-  "updated_at": "2026-10-04T20:48:36.565Z",
+  "updated_at": "2026-10-04T20:48:38.728Z",
   "status": "PERSISTING",
-  "phase": "raster_captured",
+  "phase": "image_persist",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -49,12 +49,15 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Raster ImageGen capturado; validando y materializando.",
+  "message": "Raster recibido y validado; materializando directamente en main.",
   "pc_upload_secret_hash": "9dbf40789dca91334be0ac5160b900efc5368bf34403e903ebbe7d0690e4eef2",
   "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
   "pc_picked_up_at": "2026-10-04T20:43:58.686Z",
   "bridge_version": null,
   "target_handoff_id": "5063CE7481D0CE379BD4B608CB202918",
   "target_handoff_at": "2026-10-04T20:44:08.275Z",
-  "pc_launched_at": "2026-10-04T20:44:11.494Z"
+  "pc_launched_at": "2026-10-04T20:44:11.494Z",
+  "upload_received_at": "2026-10-04T20:48:38.728Z",
+  "upload_sha256": "e965a9c9e65066ba034cbbb7349477457622d137660b6104f49df0131c80f11e",
+  "upload_bytes": 2362457
 }
