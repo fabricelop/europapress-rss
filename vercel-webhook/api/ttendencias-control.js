@@ -98,6 +98,36 @@ function reconcileExplainedView(explainedDoc, requestsDoc) {
   return doc;
 }
 
+function buildPendingExplainedView(explainedDoc) {
+  const cutoff=Date.now()-24*60*60*1000;
+  const rows=(explainedDoc?.items||[])
+    .filter(x=>x?.status!=="grouped"&&String(x?.explanation||"").trim())
+    .filter(x=>!["published","dismissed"].includes(String(x?.telegram_package_status||"").toLowerCase()))
+    .filter(x=>!x?.copied&&!x?.rewrite_pending)
+    .filter(x=>{const at=Date.parse(x?.explained_at||"");return Number.isFinite(at)&&at>=cutoff})
+    .sort((a,b)=>String(b?.explained_at||"").localeCompare(String(a?.explained_at||"")));
+  const seenIds=new Set(),groupIndex=new Map(),textIndex=new Map(),out=[];
+  for(const x of rows){
+    const id=String(x?.id||"").trim();
+    const group=String(x?.explanation_group_id||x?.group_id||"").trim();
+    const text=norm(x?.explanation);
+    if(id&&seenIds.has(id))continue;
+    if(id)seenIds.add(id);
+    const existingIndex=group&&groupIndex.has(group)?groupIndex.get(group):(text&&textIndex.has(text)?textIndex.get(text):-1);
+    if(existingIndex>=0){
+      const prev=out[existingIndex];
+      const prevLeader=String(prev?.group_leader_id||"")&&String(prev?.id||"")===String(prev?.group_leader_id);
+      const curLeader=String(x?.group_leader_id||"")&&String(x?.id||"")===String(x?.group_leader_id);
+      if(curLeader&&!prevLeader)out[existingIndex]=x;
+      continue;
+    }
+    const idx=out.length;out.push(x);
+    if(group)groupIndex.set(group,idx);
+    if(text)textIndex.set(text,idx);
+  }
+  return {count:out.length,items:out,cutoff_hours:24};
+}
+
 function authToken(req) {
   const h = String(req.headers.authorization || "");
   return h.startsWith("Bearer ") ? h.slice(7).trim() : "";
@@ -1114,6 +1144,14 @@ async function stateSnapshot(fresh = false) {
     refresh_recovery.error = String(e?.message || e).slice(0, 300);
   }
 
+  const explainedView=annotateRemateRatings(
+    annotateExplainedCopyState(reconcileExplainedView(explained.doc, requests.doc), explainedCopyState.doc),
+    remateRatings.doc
+  );
+  const pendingExplained=buildPendingExplainedView(explainedView);
+  explainedView.pending_items=pendingExplained.items;
+  explainedView.pending_count=pendingExplained.count;
+
   return {
     ok: true,
     service: "ttendencias-control",
@@ -1121,7 +1159,8 @@ async function stateSnapshot(fresh = false) {
     fetched_at: new Date().toISOString(),
     recent: recent.doc,
     requests: requests.doc,
-    explained: annotateRemateRatings(annotateExplainedCopyState(reconcileExplainedView(explained.doc, requests.doc), explainedCopyState.doc), remateRatings.doc),
+    explained: explainedView,
+    pending_explained: pendingExplained,
     explained_copy_state: explainedCopyState.doc,
     health: health.doc,
     prepared: prepared.doc,
