@@ -1,0 +1,64 @@
+name: Limpiar mensajes TTiTTulares inválidos
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "telegram/delete-message-queue.json"
+      - ".github/workflows/delete-ttittulares-telegram-messages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-telegram-delete
+  cancel-in-progress: false
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Borrar mensajes pendientes
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, urllib.request
+          from datetime import datetime, timezone
+          p=pathlib.Path("telegram/delete-message-queue.json")
+          d=json.loads(p.read_text(encoding="utf-8"))
+          token=os.environ["TELEGRAM_BOT_TOKEN"].strip()
+          chat=os.environ["TELEGRAM_CHAT_ID"].strip()
+          changed=False
+          for row in d.get("items",[]):
+              if row.get("status")!="pending": continue
+              payload=json.dumps({"chat_id":chat,"message_id":row["message_id"]}).encode()
+              req=urllib.request.Request(f"https://api.telegram.org/bot{token}/deleteMessage",data=payload,headers={"content-type":"application/json"})
+              try:
+                  with urllib.request.urlopen(req,timeout=30) as r:
+                      out=json.loads(r.read().decode())
+                  if out.get("ok"):
+                      row["status"]="deleted";row["deleted_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z");changed=True
+                      print("TELEGRAM_DELETE_OK",row["message_id"])
+                  else:
+                      row["status"]="error";row["error"]=str(out);changed=True
+              except Exception as e:
+                  row["status"]="error";row["error"]=str(e);changed=True
+          if changed:
+              d["updated_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+              p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          PY
+      - name: Guardar resultado
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- telegram/delete-message-queue.json; then exit 0; fi
+          git add telegram/delete-message-queue.json
+          git commit -m "Registrar limpieza Telegram TTiTTulares"
+          git pull --rebase origin main
+          git push origin HEAD:main
