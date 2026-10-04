@@ -45,7 +45,7 @@ function queuePassiveRefresh(delay=0){
 document.addEventListener("pointerdown",markUiInteraction,{capture:true,passive:true});
 document.addEventListener("focusin",()=>{uiHoldUntil=Math.max(uiHoldUntil,Date.now()+900)},true);
 async function updateUnreadBadge(){
- const unread=allItems.filter(x=>!x.copied&&!x.rewrite_pending).length;
+ const unread=allItems.length;
  const badge=$("navPendingBadge");if(badge){badge.textContent=unread>99?"99+":String(unread);badge.classList.toggle("show",unread>0)}
  try{
    if(unread&&"setAppBadge" in navigator)await navigator.setAppBadge(unread);
@@ -54,6 +54,13 @@ async function updateUnreadBadge(){
  document.title=(unread?"("+unread+") ":"")+"TTendencias · Pendientes";
 }
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
+function pendingExplainedEligible(x){
+ if(!x||x.status==="grouped"||!String(x.explanation||"").trim())return false;
+ if(["published","dismissed"].includes(String(x.telegram_package_status||"").toLowerCase()))return false;
+ if(x.copied||x.rewrite_pending)return false;
+ const at=Date.parse(x.explained_at||"");
+ return Number.isFinite(at)&&Date.now()-at<24*60*60*1000;
+}
 function fmt(v){if(!v)return "";const d=new Date(v);return Number.isNaN(d.getTime())?"":new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d)}
 function displayName(x){
  if(String(x.group_title||"").trim())return String(x.group_title).trim();
@@ -547,32 +554,30 @@ function render(){
  }
  const q=nrm($("filter").value);
  const visible=q?allItems.filter(x=>nrm(displayName(x)).includes(q)||nrm((x.trend_names||[]).join(" ")).includes(q)||nrm(x.explanation).includes(q)):allItems;
- const pendingAll=allItems.filter(x=>!x.copied&&!x.rewrite_pending&&!archivingKeys.has(pendingKey(x))),pending=visible.filter(x=>!x.copied&&!x.rewrite_pending&&!archivingKeys.has(pendingKey(x)));
- $("pendingCount").textContent=String(pending.length);updateUnreadBadge();updateImageControl();
+ const pendingAll=allItems.filter(x=>!archivingKeys.has(pendingKey(x))),pending=visible.filter(x=>!archivingKeys.has(pendingKey(x)));
+ $("pendingCount").textContent=String(pendingAll.length);updateUnreadBadge();updateImageControl();
  if(openPendingKey&&!pending.some(x=>pendingKey(x)===openPendingKey))openPendingKey=null;
  pendingList.innerHTML="";
  if(!pending.length)pendingList.innerHTML='<div class="empty">'+(q?"No hay pendientes que coincidan.":"No tienes tendencias pendientes de publicar.")+'</div>';
  else for(const x of pending)pendingList.appendChild(pendingKey(x)===openPendingKey?renderExpandedPending(x):renderCollapsedPending(x));
 }
 function collapseVisibleExplained(rows){
- const seenIds=new Set(),textIndex=new Map(),out=[];
+ const seenIds=new Set(),groupIndex=new Map(),textIndex=new Map(),out=[];
  for(const x of rows){
-  const id=String(x.id||"").trim();
-  const text=nrm(x.explanation);
-  // Una revisión anterior del mismo item nunca debe crear otra tarjeta visible.
+  const id=String(x.id||"").trim(),group=String(x.explanation_group_id||x.group_id||"").trim(),text=nrm(x.explanation);
   if(id&&seenIds.has(id))continue;
   if(id)seenIds.add(id);
-  // Si dos miembros de un grupo guardaron exactamente la misma explicación,
-  // conserva una sola tarjeta y prefiere el líder real del grupo.
-  if(text&&textIndex.has(text)){
-   const idx=textIndex.get(text),prev=out[idx];
+  const existingIndex=group&&groupIndex.has(group)?groupIndex.get(group):(text&&textIndex.has(text)?textIndex.get(text):-1);
+  if(existingIndex>=0){
+   const prev=out[existingIndex];
    const prevLeader=String(prev?.group_leader_id||"")&&String(prev?.id||"")===String(prev.group_leader_id);
    const curLeader=String(x.group_leader_id||"")&&String(x.id||"")===String(x.group_leader_id);
-   if(curLeader&&!prevLeader)out[idx]=x;
+   if(curLeader&&!prevLeader)out[existingIndex]=x;
    continue;
   }
-  if(text)textIndex.set(text,out.length);
-  out.push(x);
+  const idx=out.length;out.push(x);
+  if(group)groupIndex.set(group,idx);
+  if(text)textIndex.set(text,idx);
  }
  return out;
 }
@@ -585,8 +590,7 @@ async function load(passive=false){
  const requests=d.requests?.requests||[];
  const sorted=[...(d.explained?.items||[])]
    .map((x,_sourceOrder)=>({...x,_sourceOrder}))
-   .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
-   .filter(x=>!["published","dismissed"].includes(String(x.telegram_package_status||"").toLowerCase()))
+   .filter(pendingExplainedEligible)
    .sort((a,b)=>{
      const ta=Date.parse(a.explained_at||""),tb=Date.parse(b.explained_at||"");
      const va=Number.isFinite(ta),vb=Number.isFinite(tb);
