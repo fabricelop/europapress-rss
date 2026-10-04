@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "trends/telegram-manual-explained.json"
+      - "trends/editorial-queue.json"
       - ".github/workflows/repair-ttendencias-explicadas.yml"
   schedule:
     - cron: "*/10 * * * *"
