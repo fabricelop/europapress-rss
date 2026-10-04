@@ -600,7 +600,7 @@ async function queueNames(names) {
           rank: Number(item.rank),
           status: reexplain ? "update" : "preparing",
           requested_at: now,
-          revision: Number(previous?.revision || 0) + (reexplain ? 1 : 0),
+          revision: Number(previous?.revision || 0) + ((reexplain || String(previous?.status || "") === "inactive") ? 1 : 0),
           reexplain,
           with_image: true,
           alternatives_target: 0,
@@ -653,7 +653,7 @@ async function queueUpcomingNames(names) {
           revision: 0,
         };
         doc.requests.push(req);
-      } else if (["explained", "dismissed", "problematic"].includes(existingStatus)) {
+      } else if (["explained", "dismissed", "problematic", "inactive"].includes(existingStatus)) {
         req.revision = Number(req.revision || 0) + 1;
         req.reexplain = true;
       }
@@ -1110,7 +1110,7 @@ async function stateSnapshot(fresh = false) {
     readPublicJson(RECENT),
     strong(REQUESTS),
     strong(EXPLAINED),
-    readPublicJson(EXPLAINED_COPY_STATE),
+    strong(EXPLAINED_COPY_STATE),
     readPublicJson(HEALTH),
     readPublicJson(PREPARED),
     readPublicJson(EDITORIAL_CONFIG),
