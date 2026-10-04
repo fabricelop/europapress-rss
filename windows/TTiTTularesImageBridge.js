@@ -637,7 +637,7 @@ async function uploadImage(image){
     }
     if(!image)throw Error("ImageGen no produjo raster tras reintento interno");
     await progress("raster_captured","Raster ImageGen capturado; validando y materializando.");
-    if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
+    if(image.width<1024||image.height<576)throw Error("Raster capturado inferior a 1024x576");
     if(!/^(original-fetch-img|canvas-from-img-)/.test(String(image.capture||"")))throw Error("Método de captura no permitido: "+String(image.capture||""));
     console.log("BRIDGE CLEAN IMAGE "+image.capture+" "+image.width+"x"+image.height);
     const up=await uploadImage(image);
