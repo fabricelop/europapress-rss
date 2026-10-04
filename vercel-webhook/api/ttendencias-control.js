@@ -1068,21 +1068,22 @@ async function rateRemate(ratingKey, rating) {
   };
 }
 
-async function stateSnapshot() {
+async function stateSnapshot(fresh = false) {
   const github_rate_limit = await probeGithubRate(false);
   // El panel solo necesita contenido para pintar el estado. Usar RAW aquí
   // evita gastar el rate limit REST autenticado de GitHub en cada polling.
   // La API autenticada queda reservada para escrituras y operaciones que
   // realmente necesitan SHA/consistencia transaccional.
+  const strong = fresh ? readJson : readPublicJson;
   const [recent, requests, explained, explainedCopyState, health, prepared, editorialConfig, editorialQueue, remateRatings] = await Promise.all([
     readPublicJson(RECENT),
-    readPublicJson(REQUESTS),
-    readPublicJson(EXPLAINED),
+    strong(REQUESTS),
+    strong(EXPLAINED),
     readPublicJson(EXPLAINED_COPY_STATE),
     readPublicJson(HEALTH),
     readPublicJson(PREPARED),
     readPublicJson(EDITORIAL_CONFIG),
-    readPublicJson(EDITORIAL_QUEUE),
+    strong(EDITORIAL_QUEUE),
     readPublicJson(REMATE_RATINGS),
   ]);
 
@@ -1183,7 +1184,7 @@ export default async function handler(req, res) {
       if (String(req.query?.view || "") === "state") {
         const fresh=String(req.query?.fresh||"")==="1";
         res.setHeader("cache-control",fresh?"no-store":"public, max-age=0, s-maxage=45, stale-while-revalidate=120");
-        return res.status(200).json(await stateSnapshot());
+        return res.status(200).json(await stateSnapshot(fresh));
       }
       if (String(req.query?.view || "") === "image-proxy") {
         return await proxyPreparedImage(req.query?.url, res, req.query?.format);
