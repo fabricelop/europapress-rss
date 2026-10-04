@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-real-1cd626eda987-20261004-1412",
   "requested_at": "2026-10-04T14:12:00Z",
-  "updated_at": "2026-10-04T14:54:25.208Z",
-  "status": "RUNNING",
-  "phase": "pc_launch",
+  "updated_at": "2026-10-04T14:58:24.209Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -47,9 +47,10 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no foto pura, no reescribir el tuit dentro de la imagen.",
     "lifecycle": "El bridge capture-only recoge el raster real y lo materializa en generated-images."
   },
-  "message": "PC ha abierto el chat de imagen; esperando ImageGen.",
+  "message": "No apareció un raster ImageGen capturable en 3 minutos; eval_error=CDP timeout Runtime.evaluate",
   "pc_upload_secret_hash": "c4ff4e4d2a53b3df123a9e44aa95f747dd683afb3cb2e84e8d9964f65d07cb0b",
-  "pc_worker_id": "ttittulares-dedicated-v19",
+  "pc_worker_id": "ttittulares-image-bridge-v1",
   "pc_picked_up_at": "2026-10-04T14:54:10.384Z",
-  "pc_launched_at": "2026-10-04T14:54:25.208Z"
+  "pc_launched_at": "2026-10-04T14:54:25.208Z",
+  "finished_at": "2026-10-04T14:58:24.209Z"
 }
