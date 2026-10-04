@@ -18210,7 +18210,11 @@
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
       "image_status": "none",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     },
     {
       "id": "04cad2c98b47",
@@ -18288,10 +18292,29 @@
       ],
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "none",
-      "image_pending": false
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://imagenes.diaridetarragona.com/files/og_thumbnail/files/fp/uploads/2026/09/29/6abb762d95bbb.r_d.2919-1036-0.jpeg",
+        "source": "Diari de Tarragona / ACN · 4/10/2026",
+        "source_url": "https://www.diaridetarragona.com/espana/272197/nogueras-cree-sanchez-actua-clave-electoral-solucionar-problema-vivienda.html",
+        "alt": "Imagen de archivo relacionada con Junts",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://imagenes.diaridetarragona.com/files/og_thumbnail/files/fp/uploads/2026/09/29/6abb762d95bbb.r_d.2919-1036-0.jpeg",
+        "source": "Diari de Tarragona / ACN · 4/10/2026",
+        "source_url": "https://www.diaridetarragona.com/espana/272197/nogueras-cree-sanchez-actua-clave-electoral-solucionar-problema-vivienda.html",
+        "alt": "Imagen de archivo relacionada con Junts",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-04T09:17:53.936+02:00",
+  "updated_at": "2026-10-04T07:18:29.803079Z",
   "count": 471
 }
