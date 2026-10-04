@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T07:59:47.770Z",
+  "updated_at": "2026-10-04T08:00:31.976Z",
   "items": [
     {
       "event_id": "46511e488b01",
@@ -355,7 +355,7 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
@@ -378,7 +378,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Sinner renuncia a Shanghái por su lesión de rodilla y pone en riesgo el número uno"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-04T08:00:31.976Z",
+      "ai_image_failure_reason": "No apareció un raster ImageGen capturable en 3 minutos; {\"marker\":false,\"turns\":0,\"generating\":true,\"imagesAfterMarker\":0,\"candidates\":0,\"canvases\":0,\"top\":[]}"
     }
   ],
   "count": 11
