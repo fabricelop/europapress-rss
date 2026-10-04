@@ -19,6 +19,9 @@ def save(path, obj):
 events_doc = load(TG / "events.json", {"events":[]})
 processing = load(TG / "editorial-processing.json", {"items":[]})
 prepared = load(TT / "prepared.json", {"items":[]})
+decisions = load(TT / "decisions.json", {"items":[]})
+terminal_ids = {str(x.get("event_id") or "") for x in decisions.get("items", []) if str(x.get("status") or "").lower() in {"published","dismissed"}}
+visible_prepared = [x for x in prepared.get("items", []) if str(x.get("event_id") or "") not in terminal_ids]
 trend_candidates_doc = load(TT / "trend-candidates.json", {"items":[]})
 # TTendencias bridge: candidate stories stay separate until user promotes them.
 
@@ -169,7 +172,7 @@ out = {
     "radar_at":events_doc.get("last_run"),
     "processing_count":len(processing_items),
     "processing_items":processing_items,
-    "ready_count":len(prepared.get("items", [])),
+    "ready_count":len(visible_prepared),
     "problematic_count":len(problematic_items) + len(trend_candidates),
     "problematic_items":problematic_items,
     "trend_candidates_count":len(trend_candidates),
