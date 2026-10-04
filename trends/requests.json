@@ -20288,10 +20288,10 @@
       "id": "b1654d6cc28d",
       "name": "Cataluña",
       "rank": 5,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-04T20:21:42+02:00",
       "revision": 1,
-      "reexplain": true,
+      "reexplain": false,
       "with_image": true,
       "alternatives_target": 0,
       "batch_id": "488df368ba1d",
@@ -20313,8 +20313,8 @@
       "auto_queued": true,
       "rewrite_instruction": "",
       "rewrite_with_image": true,
-      "disable_ai_image": true,
-      "image_strategy": "fallback_only",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
       "tremending_origin": false,
@@ -20329,33 +20329,53 @@
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
       "anticipated_entered_top10_at": null,
-      "explanation": "TT#2 Cataluña es tendencia por las lluvias torrenciales en Tarragona: se superaron los 250 l/m², hubo inundaciones y cortes de carreteras y trenes, y Protección Civil confinó temporalmente Baix Ebre y Montsià.",
+      "explanation": "TT#5 Cataluña es tendencia por el temporal de lluvias torrenciales: al menos dos personas han muerto y una sigue desaparecida en Barcelona, con alertas por desbordamientos y fuertes restricciones de transporte.",
       "closer_text": "",
-      "rank_at_explanation": 2,
+      "rank_at_explanation": 5,
       "last_attempt_at": "2026-10-02T19:35:30+02:00",
       "source": "editorial_chat_direct",
       "verification_sources": [
         {
-          "source": "El País · 2/10/2026",
-          "url": "https://elpais.com/el-tiempo/2026-10-02/segundo-dia-del-temporal-de-lluvias-torrenciales-y-persistentes-persiste-el-rojo-en-tarragona-y-castellon.html"
+          "source": "RTVE · 4/10/2026",
+          "url": "https://www.rtve.es/noticias/20261004/temporal-lluvias-hoy-4-octubre-ultima-hora-directo-cronica/17252367.shtml"
         },
         {
-          "source": "RTVE · 2/10/2026",
-          "url": "https://www.rtve.es/noticias/20261001/alerta-lluvias-extremas-comunidad-valenciana-cataluna-hoy-ultima-hora-directo/17249220.shtml"
+          "source": "Euronews · 4/10/2026",
+          "url": "https://es.euronews.com/2026/10/04/nueva-alerta-por-lluvias-y-restricciones-de-movilidad-en-cataluna-tras-el-dia-mas-lluvioso"
         }
       ],
-      "news_disposition": "ignored",
-      "news_note": "Temporal e inundaciones: sin humor ni IA por sensibilidad meteorológica; fallback no bloqueante.",
-      "explanation_group_id": "grp-b1654d6cc28d",
+      "news_disposition": "processing",
+      "news_note": "Hecho actual y sensible; explicación factual sin remate. La capa visual posterior queda elegible según la política vigente.",
+      "explanation_group_id": "grp-cataluna-temporal-20261004",
       "trend_names": [
         "Cataluña"
       ],
-      "ai_image_status": "disabled",
-      "ai_image_block_reason": "safety_sensitive_weather",
-      "fallback_image_status": "pending",
-      "image_choice": "none",
-      "image_status": "pending",
-      "image_pending": true
+      "ai_image_status": "pending",
+      "ai_image_block_reason": null,
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
+      "image_pending": false,
+      "explained_at": "2026-10-04T22:14:00+02:00",
+      "category": "Desastre",
+      "group_title": "Temporal e inundaciones en Cataluña del 4 de octubre",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/temporal-lluvias-hoy-4-octubre-ultima-hora-directo-cronica/01791143453787.jpg",
+        "source": "RTVE · 4/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261004/temporal-lluvias-hoy-4-octubre-ultima-hora-directo-cronica/17252367.shtml",
+        "alt": "Imagen de archivo relacionada con Cataluña",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.rtve.es/imagenes/temporal-lluvias-hoy-4-octubre-ultima-hora-directo-cronica/01791143453787.jpg",
+        "source": "RTVE · 4/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261004/temporal-lluvias-hoy-4-octubre-ultima-hora-directo-cronica/17252367.shtml",
+        "alt": "Imagen de archivo relacionada con Cataluña",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "2f9fe574bf60",
@@ -27367,6 +27387,6 @@
       "auto_queued": false
     }
   ],
-  "updated_at": "2026-10-04T22:12:30+02:00",
+  "updated_at": "2026-10-04T22:14:30+02:00",
   "count": 567
 }
