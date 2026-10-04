@@ -582,6 +582,7 @@ async function load(passive=false){
  const sorted=[...(d.explained?.items||[])]
    .map((x,_sourceOrder)=>({...x,_sourceOrder}))
    .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
+   .filter(x=>!["published","dismissed"].includes(String(x.telegram_package_status||"").toLowerCase()))
    .sort((a,b)=>{
      const ta=Date.parse(a.explained_at||""),tb=Date.parse(b.explained_at||"");
      const va=Number.isFinite(ta),vb=Number.isFinite(tb);
