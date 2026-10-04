@@ -1047,22 +1047,22 @@
     {
       "id": "2dd1283eb26c",
       "name": "Omar",
-      "rank": 9,
-      "status": "inactive",
-      "requested_at": "2026-09-23T03:10:57+02:00",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-10-05T01:21:36+02:00",
       "revision": 0,
       "reexplain": false,
-      "with_image": false,
+      "with_image": true,
       "alternatives_target": 0,
-      "batch_id": "0ae2f1632b35",
+      "batch_id": "ac68e39e051a",
       "requested_together": [
         "Omar"
       ],
-      "auto_queued": true,
-      "problematic_at": "2026-09-23T08:26:00+02:00",
-      "problem_reason": "No se ha podido verificar con suficiente fiabilidad qué hecho concreto explica que «Omar» sea tendencia ahora; las fuentes actuales lo vinculan a Supervivientes All Stars, pero no identifican un detonante actual inequívoco.",
-      "inactive_at": "2026-10-04T22:15:20.435Z",
-      "inactive_reason": "left-top10-radar"
+      "captured_with": [
+        "Omar",
+        "#elsecreto"
+      ],
+      "auto_queued": true
     },
     {
       "id": "6cc256e84877",
@@ -7712,26 +7712,30 @@
     {
       "id": "aecd944b5e7c",
       "name": "#NASCARenDAZN",
-      "rank": 8,
-      "status": "explained",
-      "requested_at": "2026-09-27T22:12:03+02:00",
-      "revision": 0,
-      "reexplain": false,
-      "with_image": false,
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-10-05T01:21:36+02:00",
+      "revision": 1,
+      "reexplain": true,
+      "with_image": true,
       "alternatives_target": 0,
       "batch_id": "3ffbe2687e17",
       "requested_together": [
         "#NASCARenDAZN"
       ],
       "captured_with": [
-        "Pablo Vázquez",
-        "Jorgenson",
+        "#ConexiónHonduras4",
+        "Asraf",
+        "Lula",
+        "Yola",
+        "Omar",
         "#NASCARenDAZN",
-        "Matthews",
-        "Corea del Norte"
+        "#DragRaceEs",
+        "Pereira",
+        "#elsecreto",
+        "Ibai"
       ],
       "auto_queued": true,
-      "explained_at": "2026-09-27T20:44:00Z",
       "explanation": "#NASCARenDAZN es tendencia por el seguimiento en España de la carrera de la NASCAR Cup de este domingo en Kansas, el Hollywood Casino 400; funciona como etiqueta de retransmisión y conversación deportiva.",
       "rank_at_explanation": 8,
       "news_disposition": "ignored"
@@ -28373,8 +28377,28 @@
       "image_pending": true,
       "fallback_image_status": "pending",
       "rewrite_pending": false
+    },
+    {
+      "id": "a90056474d8d",
+      "name": "#elsecreto",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-10-05T01:21:36+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "ac68e39e051a",
+      "requested_together": [
+        "#elsecreto"
+      ],
+      "captured_with": [
+        "Omar",
+        "#elsecreto"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-05T01:01:43+02:00",
+  "updated_at": "2026-10-05T01:21:36+02:00",
   "count": 577
 }
