@@ -26,7 +26,7 @@ const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
 const TRACE_COMMENT_ID=5859738015;
 const STALE_MS=20*60*1000;
-const START_ACK_MS=30*1000;
+const START_ACK_MS=90*1000;
 const LAUNCH_ACK_MS=45*1000;
 const CHAT_CONFIRM_MS=5*60*1000;
 
@@ -237,7 +237,7 @@ function manualFallback(items,request,ack){
   if(noPickup||pickupButNoLaunch||launchButNoEditorial||launchFailed||staleRunning){
     status="ERROR";phase="error";
     message=noPickup
-      ?"El PC no ha recogido la orden en 30 segundos."
+      ?"El PC no ha recogido la orden en 90 segundos."
       :pickupButNoLaunch
         ?"El PC recogió la orden, pero no confirmó el lanzamiento del chat en 45 segundos."
         :launchButNoEditorial
@@ -262,7 +262,7 @@ function manualFallback(items,request,ack){
     current:0,total:0,event_id:null,title:null,requested_at,started_at:effectiveStarted,updated_at,finished_at,
     start_delay_seconds:effectiveStarted?seconds(requested_at,effectiveStarted):null,
     duration_seconds:effectiveStarted&&finished_at?seconds(effectiveStarted,finished_at):null,
-    message:message||"Orden móvil registrada; esperando al PC para recogerla (máx. 30 s).",
+    message:message||"Orden móvil registrada; esperando al PC para recogerla (máx. 90 s).",
     summary:null,incident_count:0,incidents:[],
     pc_ack_stage:ackStage||null,pc_worker_id:ackMatches?(ack?.worker_id||null):null,pc_picked_up_at:pickedAt||null,pc_launched_at:launchedAt||null,pc_failed_at:failedAt||null,pc_failure_detail:failedDetail||null
   }
@@ -324,7 +324,7 @@ export default async function handler(req,res){
       const deadline=latest.status==="REQUESTED"?START_ACK_MS:STALE_MS;
       if(Number.isFinite(age)&&age>=0&&age<deadline)active=latest;
       else latest={...latest,status:"ERROR",finished_at:new Date().toISOString(),message:latest.status==="REQUESTED"
-        ?"No se ha recibido RUNNING en 30 segundos: el PC no ha recogido la orden móvil."
+        ?"No se ha recibido RUNNING en 90 segundos: el PC no ha recogido la orden móvil."
         :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")}
     }
 
