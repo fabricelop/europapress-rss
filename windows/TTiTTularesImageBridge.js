@@ -591,12 +591,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v1",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v24-fixed-tab",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v1",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v24-fixed-tab",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -623,7 +623,7 @@ async function uploadImage(image){
     cdp.acceptInitialRaster=true;
     console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED");
     await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-    const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v1"});
+    const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v24-fixed-tab"});
     if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
     await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña.");
     const image=await capture(cdp,job);
@@ -640,7 +640,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v1",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v24-fixed-tab",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
