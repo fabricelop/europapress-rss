@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T16:04:29.458Z",
+  "updated_at": "2026-10-04T16:08:05.410Z",
   "items": [
     {
       "event_id": "95dc2368eaed",
@@ -37,9 +37,9 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "failed",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -55,52 +55,52 @@
       },
       "fallback_image_search_attempted_at": "2026-10-04T13:26:37.784723Z",
       "image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/95dc2368eaed-r1-ai1-0261004-1547.jpg",
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/95dc2368eaed-r1-ai2-0261004-1612.jpg",
         "source": "TTiTTulares / ChatGPT ImageGen",
         "rights_status": "generated",
         "generated": true,
         "provider": "chat-imagegen",
         "origin": "executing_chat",
-        "generation_attempt": 1,
-        "sha256": "41a11787f5bda68d7b3ef840aacac2261ea9aa70fbe225268ccb2dc9c6cdefbb",
+        "generation_attempt": 2,
+        "sha256": "fd7a141598e5689acd3d801d17ed950cd528dd64219cb7079a09b87d086c85c3",
         "width": 798,
         "height": 450,
-        "bytes": 84058,
+        "bytes": 77431,
         "context_guard": {
           "version": 3,
           "event_id": "95dc2368eaed",
           "revision": 1,
           "scope": "current_item_only",
-          "command_id": "tt-img-v20probe-95dc2368eaed-20261004-1547"
+          "command_id": "tt-img-clean-95dc2368eaed-20261004-1612"
         },
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/95dc2368eaed-r1-ai1-0261004-1547.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/95dc2368eaed-r1-ai2-0261004-1612.jpg",
         "handoff": "pc-bridge-direct-materialized"
       },
       "ai_image_last_attempt_status": "ready",
-      "ai_image_last_attempt_at": "2026-10-04T15:58:57.400Z",
+      "ai_image_last_attempt_at": "2026-10-04T16:08:05.410Z",
       "ai_image": {
-        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/95dc2368eaed-r1-ai1-0261004-1547.jpg",
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/95dc2368eaed-r1-ai2-0261004-1612.jpg",
         "source": "TTiTTulares / ChatGPT ImageGen",
         "rights_status": "generated",
         "generated": true,
         "provider": "chat-imagegen",
         "origin": "executing_chat",
-        "generation_attempt": 1,
-        "sha256": "41a11787f5bda68d7b3ef840aacac2261ea9aa70fbe225268ccb2dc9c6cdefbb",
+        "generation_attempt": 2,
+        "sha256": "fd7a141598e5689acd3d801d17ed950cd528dd64219cb7079a09b87d086c85c3",
         "width": 798,
         "height": 450,
-        "bytes": 84058,
+        "bytes": 77431,
         "context_guard": {
           "version": 3,
           "event_id": "95dc2368eaed",
           "revision": 1,
           "scope": "current_item_only",
-          "command_id": "tt-img-v20probe-95dc2368eaed-20261004-1547"
+          "command_id": "tt-img-clean-95dc2368eaed-20261004-1612"
         },
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/95dc2368eaed-r1-ai1-0261004-1547.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/95dc2368eaed-r1-ai2-0261004-1612.jpg",
         "handoff": "pc-bridge-direct-materialized"
       },
-      "ai_image_attempt": 1,
+      "ai_image_attempt": 2,
       "ai_image_tool_called_at": "2026-10-04T15:58:57.400Z",
       "image_failure_reason": "ui_capture_rejected",
       "image_failure_detail": "Raster invalidado: contenía interfaz ChatGPT. Se regenerará con captura de bytes limpios."
