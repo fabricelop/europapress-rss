@@ -24709,14 +24709,30 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "pending",
-      "image_pending": true,
-      "fallback_image_strategy": "web_search",
-      "fallback_image_status": "pending",
-      "image_choice": null,
-      "rewrite_pending": false
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "rewrite_pending": false,
+      "fallback_image": {
+        "url": "https://www.formulatv.com/images/articulos/138000/138400_VcH0U2o7zJE1YFe8WBgkqtsLR96i43xNP-hog.jpg",
+        "source": "FormulaTV · 3/10/2026",
+        "source_url": "https://www.formulatv.com/noticias/supervivientes-all-stars-3-nominados-emociones-138400/",
+        "alt": "Imagen de archivo relacionada con Asraf",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.formulatv.com/images/articulos/138000/138400_VcH0U2o7zJE1YFe8WBgkqtsLR96i43xNP-hog.jpg",
+        "source": "FormulaTV · 3/10/2026",
+        "source_url": "https://www.formulatv.com/noticias/supervivientes-all-stars-3-nominados-emociones-138400/",
+        "alt": "Imagen de archivo relacionada con Asraf",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-05T00:27:15+02:00",
+  "updated_at": "2026-10-04T22:26:01.780745Z",
   "count": 536
 }
