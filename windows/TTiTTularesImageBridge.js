@@ -252,7 +252,7 @@ function buildMessage(job){
   ].join("\n")
 }
 
-const BRIDGE_MODE="capture-only-v25-clean-raster";
+const BRIDGE_MODE="capture-only-v26-strict-submit";
 // compatibility during hot rollout: BRIDGE_MODE="capture-only-v23-target-handoff"
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
@@ -389,7 +389,7 @@ async function ensureSubmitted(cdp,job){
   while(Date.now()<deadline){
     let st=null;
     try{
-      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const submitted=[...root.querySelectorAll('[data-message-author-role=\\\"user\\\"],[data-testid^=\\\"conversation-turn-\\\"],article')].some(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;return String(el.innerText||el.textContent||'').includes(command)});const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const send=document.querySelector('button[data-testid=\\\"send-button\\\"],button[aria-label*=\\\"Send\\\" i],button[aria-label*=\\\"Enviar\\\" i]');return {composerMarker,submitted,generating,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
+      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"]')].filter(el=>String(el.innerText||el.textContent||'').includes(command));const submitted=userTurns.length>0;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const send=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');return {composerMarker,submitted,userTurns:userTurns.length,generating,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
     }catch{}
 
     if(!st){
@@ -402,35 +402,38 @@ async function ensureSubmitted(cdp,job){
     }
 
     last=st;
-    if(st&&(st.submitted||st.generating)){
+    if(st&&st.submitted){
       current.submissionVerified=true;
       current.acceptInitialRaster=true;
+      console.log("BRIDGE SUBMIT VERIFIED userTurns="+Number(st.userTurns||0)+" url="+String(st.url||""));
       return current
     }
 
     if(st&&st.composerMarker&&Date.now()-lastAttemptAt>=1200){
       lastAttemptAt=Date.now();
-      let clicked=false;
+      let triggered=false;
       try{
-        clicked=Boolean(await current.eval("(()=>{const b=document.querySelector('button[data-testid=\\\"send-button\\\"],button[aria-label*=\\\"Send\\\" i],button[aria-label*=\\\"Enviar\\\" i]');if(!b||b.disabled)return false;b.click();return true})()"));
+        triggered=Boolean(await current.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const b=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');if(b&&!b.disabled){b.click();return true}const form=c&&c.closest&&c.closest('form');if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return true}return false})()"));
       }catch{}
-      if(!clicked){
+      if(!triggered){
         try{
           const focused=Boolean(await current.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return false;c.focus();return true})()"));
           if(focused){
             await current.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+            await current.call("Input.dispatchKeyEvent",{type:"char",text:"\r",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
             await current.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-            clicked=true;
+            triggered=true;
           }
         }catch{}
       }
-      console.log("BRIDGE SUBMIT RECOVERY "+(clicked?"TRIGGERED":"WAIT")+" sendDisabled="+Boolean(st.sendDisabled));
+      console.log("BRIDGE SUBMIT RECOVERY "+(triggered?"TRIGGERED":"WAIT")+" sendDisabled="+Boolean(st.sendDisabled)+" generating="+Boolean(st.generating));
     }
 
     await sleep(650);
   }
-  throw Error("El prompt ImageGen quedó sin enviar tras reintentos/relocalización; "+JSON.stringify(last||{}).slice(0,500))
+  throw Error("El prompt ImageGen no creó un turno de usuario real tras reintentos; "+JSON.stringify(last||{}).slice(0,700))
 }
+
 function probeExpression(){
   return [
     "(async()=>{",
@@ -563,12 +566,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v25-clean-raster",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v26-strict-submit",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v25-clean-raster",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v26-strict-submit",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -595,7 +598,7 @@ async function uploadImage(image){
     cdp.acceptInitialRaster=true;
     console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED");
     await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-    const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v25-clean-raster"});
+    const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v26-strict-submit"});
     if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
     await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña.");
     const image=await capture(cdp,job);
@@ -613,7 +616,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v25-clean-raster",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v26-strict-submit",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
