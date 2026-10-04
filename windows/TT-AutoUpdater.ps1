@@ -1,4 +1,4 @@
-param([int]$IntervalSeconds=600,[switch]$Once)
+param([int]$IntervalSeconds=120,[switch]$Once)
 $ErrorActionPreference="Stop"
 $BaseDir="C:\TTiTTulares"
 $LogPath=Join-Path $BaseDir "tt-auto-updater.log"
@@ -16,13 +16,14 @@ function Log([string]$t){
 }
 
 function Download-Raw([string]$path){
-  $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+$path+"?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-  $wc=New-Object System.Net.WebClient
-  try{
-    $wc.Headers["User-Agent"]="TT-auto-updater-raw-v3"
-    $wc.Headers["Cache-Control"]="no-cache"
-    return $wc.DownloadData($url)
-  }finally{$wc.Dispose()}
+  $api="https://api.github.com/repos/fabricelop/europapress-rss/contents/"+$path+"?ref=main&t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  $doc=Invoke-RestMethod -Uri $api -Headers @{
+    "Accept"="application/vnd.github+json"
+    "User-Agent"="TT-auto-updater-api-v4"
+    "Cache-Control"="no-cache"
+  } -TimeoutSec 30
+  if(-not $doc.content){throw "GitHub API sin contenido: $path"}
+  return [Convert]::FromBase64String(([string]$doc.content -replace "\s",""))
 }
 
 function Sha256Bytes([byte[]]$b){
@@ -46,10 +47,11 @@ function ValidateJs([string]$f){
   $n=Get-Command node.exe -ErrorAction SilentlyContinue
   if(-not $n){$n=Get-Command node -ErrorAction SilentlyContinue}
   if(-not $n){throw "Node no disponible"}
+  $src=Get-Content -LiteralPath $f -Raw -Encoding UTF8
   $old=$ErrorActionPreference
   try{
     $ErrorActionPreference="Continue"
-    & $n.Source --check $f 1>$null 2>$null
+    $src | & $n.Source --check - 1>$null 2>$null
     $code=$LASTEXITCODE
   }finally{$ErrorActionPreference=$old}
   if($code -ne 0){throw "JS invalido: $f"}
@@ -106,13 +108,13 @@ function CheckOnce{
       Start-Sleep -Milliseconds 500
       StartListener ([string]$m.Local)
     }
-    Log ("CHECK OK raw-v3 downloads="+$downloads+" restarts="+$restart.Count)
+    Log ("CHECK OK api-v4 downloads="+$downloads+" restarts="+$restart.Count)
   }catch{
     Log ("CHECK ERROR :: "+$_.Exception.Message)
   }
 }
 
-Log ("START raw-v3 interval="+$IntervalSeconds+" once="+$Once+" pid="+$PID)
+Log ("START api-v4 interval="+$IntervalSeconds+" once="+$Once+" pid="+$PID)
 do{
   CheckOnce
   if($Once){break}
