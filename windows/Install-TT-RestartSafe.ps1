@@ -1,5 +1,6 @@
 # Install-TT-RestartSafe.ps1
 # Instalacion unificada para TTiTTulares + TTendencias resistente a reinicios/caidas.
+$InstallerVersion="restart-safe-v3-stdin-js-check"
 $ErrorActionPreference="Stop"
 $BaseDir="C:\TTiTTulares"
 $Startup=[Environment]::GetFolderPath("Startup")
@@ -34,8 +35,16 @@ function ValidateJs([string]$f){
   $node=Get-Command node.exe -ErrorAction SilentlyContinue
   if(-not $node){$node=Get-Command node -ErrorAction SilentlyContinue}
   if(-not $node){throw "Node no disponible"}
-  & $node.Source --check $f 1>$null 2>$null
-  if($LASTEXITCODE -ne 0){throw "JS invalido: $f"}
+  $src=Get-Content -LiteralPath $f -Raw -Encoding UTF8
+  $oldPref=$ErrorActionPreference
+  try{
+    $ErrorActionPreference="Continue"
+    $src | & $node.Source --check - 1>$null 2>$null
+    $code=$LASTEXITCODE
+  }finally{
+    $ErrorActionPreference=$oldPref
+  }
+  if($code -ne 0){throw "JS invalido: $f"}
 }
 foreach($f in $files){
   $dest=Join-Path $BaseDir $f.Local
@@ -111,7 +120,7 @@ $checks=[ordered]@{
 $cdp=$false
 try{$v=Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/version" -TimeoutSec 4;$cdp=[bool]$v.webSocketDebuggerUrl}catch{}
 
-Write-Host "TT RESTART-SAFE ACTIVO" -ForegroundColor Green
+Write-Host ("TT RESTART-SAFE ACTIVO · "+$InstallerVersion) -ForegroundColor Green
 $checks.GetEnumerator()|ForEach-Object{Write-Host ($_.Key+": "+$_.Value)}
 Write-Host ("Chrome CDP: "+$cdp)
 Write-Host "Inicio automatico instalado para listeners, updater y watchdog."
