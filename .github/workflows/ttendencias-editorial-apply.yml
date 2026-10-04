@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: ttendencias-editorial-apply
@@ -81,3 +82,12 @@ jobs:
 
           echo "No se pudo persistir el resultado editorial" >&2
           exit 1
+
+
+      - name: Lanzar reparación visual TTendencias
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh workflow run repair-ttendencias-explicadas.yml --repo "$REPO" --ref main
