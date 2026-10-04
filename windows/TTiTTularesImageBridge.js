@@ -92,8 +92,30 @@ async function fetchJob(){
 }
 function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
-  return "TTITTULARES_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee ttittulares/image-runs/jobs/"+targetId+".json en control/ttittulares-run-trigger-v2 para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
+  const ctx=(job&&job.context_snapshot)||{};
+  const tweet=String(ctx.tweet_text||"");
+  const remate=String(ctx.remate||"");
+  const factual=String(ctx.factual_summary||"");
+  return [
+    "TTITTULARES_IMAGE_JOB_V4 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA SOLA imagen GAG IA para '"+name+"'.",
+    "",
+    "TEXTO EXACTO DE LA NOTICIA YA LISTA (NO LO REESCRIBAS):",
+    tweet,
+    "",
+    "REMATE EXACTO:",
+    remate,
+    "",
+    "CONTEXTO FACTUAL COMPLEMENTARIO:",
+    factual,
+    "",
+    "ESTILO VISUAL OBLIGATORIO:",
+    "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena abarrotada de detalles y personajes expresivos, humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Incorporar carteles, objetos y elementos del entorno que permitan entender el chiste de un vistazo. Expresiones faciales exageradas, composición dinámica, profundidad, iluminación dramática y acabado pulido tipo portada/editorial. Texto en español únicamente cuando sea necesario para el gag y perfectamente integrado en la escena. Evitar caricatura genérica, evitar collage, evitar aspecto fotográfico puro y evitar infografía.",
+    "",
+    "CONSTRUCCIÓN: escena factual concreta; gag visual específico derivado del hecho; remate visual que traduzca la guindilla. Una sola escena coherente, con un gag principal inmediatamente reconocible.",
+    "No inventes hechos externos. No hagas una infografía, interfaz, diagrama, collage ni captura de pantalla. No escribas el tuit dentro de la imagen. Genera exactamente UNA imagen. No proceses otra noticia ni persistas la imagen: el puente local recoge el raster."
+  ].join("\n")
 }
+
 const BRIDGE_MODE="capture-only-v23-target-handoff";
 const BRIDGE_FEATURES="v28-reject-nonconversation-image-targets";
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
