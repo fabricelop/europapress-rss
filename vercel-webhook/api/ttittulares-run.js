@@ -407,7 +407,7 @@ async function requestImagePcAck(req,res){
   const command_id=String(req.body?.command_id||"").trim();
   const stage=String(req.body?.stage||"").toLowerCase();
   const worker_id=String(req.body?.worker_id||"ttittulares-image-bridge-v1").trim().slice(0,120)||"ttittulares-image-bridge-v1";
-  if(!command_id||!["picked_up","launched","cancelled","failed","done"].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
+  if(!command_id||!["picked_up","progress","launched","cancelled","failed","done"].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
@@ -443,11 +443,16 @@ async function requestImagePcAck(req,res){
     const reason=String(req.body?.reason||"El puente de imagen no pudo completar el trabajo.").slice(0,240);
     next.status="ERROR";next.phase=job.upload_sha256?"image_bridge_failed":"pc_launch_failed";next.finished_at=now;next.message=reason;
     await markPreparedImageFailed(target_id,job.revision,reason).catch(()=>{});
+  }else if(stage==="progress"){
+    const phase=String(req.body?.phase||"pc_progress").trim().slice(0,80)||"pc_progress";
+    const detail=String(req.body?.detail||"").trim().slice(0,240);
+    next.status="RUNNING";next.phase=phase;next.pc_picked_up_at=job.pc_picked_up_at||now;
+    next.message=detail||("Progreso de imagen: "+phase);
   }else{
     next.status="RUNNING";next.phase=stage==="picked_up"?"pc_pickup":"pc_launch";
     if(stage==="picked_up")next.pc_picked_up_at=job.pc_picked_up_at||now;
     if(stage==="launched"){next.pc_picked_up_at=job.pc_picked_up_at||now;next.pc_launched_at=now}
-    next.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":"PC ha abierto el chat de imagen; esperando ImageGen.";
+    next.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":"Prompt enviado en la pestaña fija; esperando ImageGen.";
   }
   await writeControlJson(path,next,existing.sha,"PC Chat Gag IA TTiTTulares "+stage+" "+target_id+" "+command_id);
   return res.status(200).json({ok:true,...next})
