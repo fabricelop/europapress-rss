@@ -29,6 +29,7 @@ Para CADA noticia/revisión, publica como mínimo estos hitos:
 - Antes de la noticia siguiente incrementa `current` y cambia `event_id/title` inmediatamente.
 
 Si una búsqueda, escritura o relectura puede tardar, actualiza el mensaje **antes** de ejecutarla y de nuevo al obtener el resultado. No uses mensajes genéricos como «Procesando» cuando conoces la operación concreta. La capa ImageGen posterior tiene su propia telemetría/job y no mantiene abierto el RUNTRACE editorial.
+Conserva también un campo RUNTRACE `activity` con los **últimos 20 hitos** en orden cronológico. Cada entrada es `{at,phase,event_id,title,message}`. Añade un hito cada vez que cambie la operación visible y conserva la lista hasta el cierre para que el panel no pierda pasos ocurridos entre dos refrescos.
 
 ### Barrera JIT obligatoria por entrada
 
