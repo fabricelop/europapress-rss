@@ -16,7 +16,7 @@ $StatusBase = "https://europapress-rss.vercel.app"
 $ListenerSnapshotUrl = "$StatusBase/api/ttittulares-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttittulares-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v19"
+$WorkerId = "ttittulares-dedicated-v20"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
