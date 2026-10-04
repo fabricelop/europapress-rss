@@ -496,15 +496,39 @@ function renderCard(x,pending){
  if(pending){const done=document.createElement("button");done.className="btn";done.type="button";done.textContent="✓ Ya explicado";done.onclick=()=>markExplainedDone(x,done);actions.appendChild(done)}
  return card
 }
+function trendCategory(x){
+ const explicit=String(x.category||x.editorial_category||"").trim();
+ if(explicit)return explicit;
+ const t=nrm([displayName(x),x.explanation,x.closer_text,(x.trend_names||[]).join(" ")].filter(Boolean).join(" "));
+ const has=(...words)=>words.some(w=>t.includes(nrm(w)));
+ if(has("atentado","terrorista","ataque terrorista","explosión suicida"))return "Atentado";
+ if(has("guerra","ucrania","rusia","gaza","israel","misil","bombardeo","ofensiva militar","otan"))return "Guerra";
+ if(has("terremoto","inundación","huracán","incendio forestal","desastre","catástrofe","volcán","derrumbe"))return "Desastre";
+ if(has("fútbol","gol","liga","champions","selección","moto2","motogp","fórmula 1","tenis","ufc","baloncesto","carrera","partido","piloto"))return "Deportes";
+ if(has("elecciones","gobierno","ministro","congreso","senado","partido político","sánchez","ayuso","junts","pp","psoe","podemos","sumar"))return "Política";
+ if(has("cantante","concierto","canción","álbum","shakira","dua lipa","música"))return "Música";
+ if(has("serie","programa","televisión","la sexta","telecinco","antena 3","rtve","reality"))return "TV";
+ if(has("actor","actriz","cine","película","festival","alfombra roja","celebridad"))return "Espectáculos";
+ if(has("juez","tribunal","fiscal","sentencia","juicio","audiencia","prisión"))return "Justicia";
+ if(has("bolsa","inflación","banco","empresa","economía","precio","mercado","empleo"))return "Economía";
+ if(has("ia","inteligencia artificial","apple","google","microsoft","tecnología","móvil","internet"))return "Tecnología";
+ if(has("hospital","salud","médico","enfermedad","virus","vacuna"))return "Salud";
+ if(has("accidente","crimen","asesin","desaparición","rescate"))return "Sucesos";
+ if(has("libro","escritor","arte","museo","literatura","cultura"))return "Cultura";
+ if(has("viral","meme","redes sociales","hashtag"))return "Viral/Redes";
+ return "Sociedad"
+}
 function pendingKey(x){return String(x.id||x.name||"")+":r"+String(x.revision||0)}
 function renderCollapsedPending(x){
  const card=document.createElement("article");card.className="card collapsedCard";
  const pick=makeImageSelector(x,false);
  const info=document.createElement("div");info.className="collapsedInfo";
  const name=document.createElement("div");name.className="collapsedName";name.textContent=displayName(x);
+ const meta=document.createElement("div");meta.style.cssText="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:3px";
+ const category=document.createElement("span");category.textContent=trendCategory(x);category.style.cssText="font-size:10px;font-weight:850;letter-spacing:.02em;border:1px solid #3f5168;background:#162131;color:#bfd2e8;border-radius:999px;padding:2px 7px;white-space:nowrap";
  const imageState=collapsedImageState(x);
- const status=document.createElement("div");status.className="collapsedImageStatus "+imageState.cls;status.textContent=imageState.text;
- info.append(name,status);
+ const status=document.createElement("span");status.className="collapsedImageStatus "+imageState.cls;status.textContent=imageState.text;
+ meta.append(category,status);info.append(name,meta);
  const open=document.createElement("button");open.className="btn openPending";open.type="button";open.textContent=x.rewrite_pending?"Reevaluando…":"Abrir";
  open.disabled=Boolean(x.rewrite_pending);
  open.onclick=()=>{if(x.rewrite_pending)return;openPendingKey=pendingKey(x);render()};
