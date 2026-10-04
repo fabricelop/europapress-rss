@@ -110,6 +110,7 @@ jobs:
           now=datetime.now(timezone.utc)
           nowz=now.isoformat().replace("+00:00","Z")
           RECENT_HOURS=6
+          ROLLOUT_AT=datetime.fromisoformat("2026-10-04T19:40:00+00:00")
           ACTIVE={"REQUESTED","RUNNING","PERSISTING","GENERATING"}
 
           STYLE=("Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, "
@@ -155,7 +156,7 @@ jobs:
               if strategy in {"fallback_only","archive_only","tweet_capture_only"}:
                   continue
               at=parse_dt(row.get("explained_at"))
-              if not at or (now-at).total_seconds()>RECENT_HOURS*3600:
+              if not at or at < ROLLOUT_AT or (now-at).total_seconds()>RECENT_HOURS*3600:
                   continue
               leaders.append(row)
 
