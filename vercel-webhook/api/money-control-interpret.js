@@ -1,3 +1,4 @@
+import { generateText } from "ai";
 const MAX_TEXT=24000;
 const MAX_IMAGE_CHARS=5_500_000;
 const MODEL="openai/gpt-5.6-sol";
@@ -139,36 +140,34 @@ export default async function handler(req,res){
     ];
     if(imageDataUrl)content.push({type:"input_image",image_url:imageDataUrl,detail:"high"});
 
-    const token=process.env.AI_GATEWAY_API_KEY||process.env.VERCEL_OIDC_TOKEN;
-    if(!token)return reply(res,503,{ok:false,error:"ai_gateway_not_configured"});
+    const aiContent=[
+      {type:"text",text:context+"\n\nUser input:\n"+(userText||"(image only)")}
+    ];
+    if(imageDataUrl)aiContent.push({type:"image",image:imageDataUrl});
 
-    const response=await fetch("https://ai-gateway.vercel.sh/v1/responses",{
-      method:"POST",
-      headers:{
-        authorization:"Bearer "+token,
-        "content-type":"application/json"
-      },
-      body:JSON.stringify({
-        model:MODEL,
-        instructions,
-        input:[{type:"message",role:"user",content}],
-        text:{format:{type:"json_schema",name:"money_control_interpretation",schema,strict:true}},
-        reasoning:{effort:"medium"},
-        max_output_tokens:3000
-      })
+    const prompt=[
+      instructions,
+      "",
+      "Return ONLY valid JSON matching exactly this shape:",
+      JSON.stringify(schema),
+      "",
+      "Do not wrap the JSON in markdown fences."
+    ].join("\n");
+
+    const result=await generateText({
+      model:MODEL,
+      instructions:prompt,
+      messages:[{role:"user",content:aiContent}],
+      reasoning:"medium",
+      maxOutputTokens:3000
     });
 
-    const raw=await response.json().catch(()=>null);
-    if(!response.ok){
-      console.error("money-control-interpret gateway",response.status,raw?.error?.message||raw);
-      return reply(res,502,{ok:false,error:"interpretation_failed",detail:String(raw?.error?.message||"gateway_error").slice(0,240)});
-    }
-
-    const text=outputText(raw);
+    let text=String(result.text||"").trim();
     if(!text)return reply(res,502,{ok:false,error:"empty_interpretation"});
+    text=text.replace(/^\x60\x60\x60(?:json)?\s*/i,"").replace(/\s*\x60\x60\x60$/,"").trim();
     let parsed;
     try{parsed=JSON.parse(text)}catch(e){
-      console.error("money-control-interpret json",text.slice(0,500));
+      console.error("money-control-interpret json",text.slice(0,800));
       return reply(res,502,{ok:false,error:"invalid_interpretation"});
     }
     return reply(res,200,{ok:true,model:MODEL,interpretation:parsed});
