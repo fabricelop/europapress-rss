@@ -270,9 +270,15 @@ function liveImageRunState(x){
  if(st==="REQUESTED")return {aiCls:"aiRework",collapsed:"requested",text:"◷ IA solicitada · esperando al PC"};
  if(st==="RUNNING"&&imageHandoffTimedOut(run))return {aiCls:"aiPending",collapsed:"pending",text:"⚠ Chat IA abierto · sin confirmación todavía"};
  if(["RUNNING","GENERATING","PERSISTING"].includes(st)&&imageGenerationTimedOut(run))return {aiCls:"aiPending",collapsed:"pending",text:"⚠ Generación IA sin actualización reciente"};
- if(st==="RUNNING")return {aiCls:"aiPending",collapsed:"pending",text:phase==="pc_pickup"?"● PC ha recogido la imagen":phase==="pc_launch"?"● Chat IA abierto · esperando respuesta":phase==="validating"?"● Chat IA abierto · validando":"● Chat IA abierto"};
+ if(st==="RUNNING")return {aiCls:"aiPending",collapsed:"pending",text:
+   phase==="pc_pickup"?"● PC ha recogido la imagen":
+   phase==="pc_launch"?"● Chat IA abierto · esperando respuesta":
+   phase==="target_handoff"?"● Chat localizado · entregado al bridge":
+   phase==="chat_found"?"● Bridge conectado al chat":
+   phase==="validating"?"● Chat IA abierto · validando":
+   "● Chat IA abierto"};
  if(st==="GENERATING")return {aiCls:"aiPending",collapsed:"pending",text:"● Generando IA ahora en ChatGPT"};
- if(st==="PERSISTING")return {aiCls:"aiPending",collapsed:"pending",text:"● IA generada · guardando"};
+ if(st==="PERSISTING")return {aiCls:"aiPending",collapsed:"pending",text:phase==="raster_found"?"● Raster IA encontrado":phase==="upload_started"?"● Raster IA enviándose a la app":"● IA generada · guardando"};
  if(st==="ERROR")return {aiCls:"aiFailed",collapsed:"failed",text:"✕ Error en generación IA"+(run?.message?" · "+String(run.message).slice(0,90):"")};
  if(st==="CANCELLED")return {aiCls:"aiFailed",collapsed:"failed",text:"— Generación cancelada · entrada ya no vigente"};
  if(st==="DONE")return {aiCls:"aiReady",collapsed:"ready",text:"✓ Generación IA terminada"};
