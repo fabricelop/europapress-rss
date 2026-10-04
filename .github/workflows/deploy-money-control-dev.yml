@@ -1,6 +1,7 @@
 name: Deploy Money Control Dev
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
