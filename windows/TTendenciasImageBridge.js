@@ -94,8 +94,8 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v24-self-submit-fallback";
-// compatibility: BRIDGE_MODE="capture-only-v23-target-handoff";
+const BRIDGE_MODE="capture-only-v23-target-handoff";
+const BRIDGE_FEATURES="v24-self-submit-fallback";
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
 // compatibility: BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover"
