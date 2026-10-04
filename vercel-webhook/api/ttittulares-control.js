@@ -952,6 +952,25 @@ export default async function handler(req,res){
         id:tremendingEntryId(x.id),title:String(x.title||"Entrada sin título"),url:String(x.url||""),description:String(x.description||""),published_at:x.published_at||null,first_seen_at:x.first_seen_at||null,last_seen_at:x.last_seen_at||null,status:String(x.status||"pending"),destinations:Array.isArray(x.destinations)?x.destinations:[],tweets:Array.isArray(x.tweets)?x.tweets:[],selected_tweet_id:x.selected_tweet_id||null,image:x.image||{status:"not_selected"},article_status:x.article_status||"pending"
       })).filter(x=>x.id).sort((a,b)=>String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
       res.setHeader("cache-control",fresh?"no-store":"public, max-age=0, s-maxage=45, stale-while-revalidate=120");
+      if(String(req.query?.view||"")==="widget"){
+        return res.status(200).json({
+          ok:true,
+          updated_at:new Date().toISOString(),
+          refresh_after_seconds:900,
+          counts:{
+            listas:Number(liveStatus.ready_count??visiblePrepared.length)||0,
+            elaboracion:Number(liveStatus.processing_count||0),
+            creciendo:Number(liveStatus.three_source_count||0),
+            tendencias:Number(liveStatus.problematic_count||0)
+          },
+          links:{
+            listas:"/ttittulares/?view=ready",
+            elaboracion:"/ttittulares/?view=processing",
+            creciendo:"/ttittulares/?view=growing",
+            tendencias:"/ttittulares/?view=problematic"
+          }
+        })
+      }
       return res.status(200).json({ok:true,service:"ttittulares-control",github_rate_limit,prepared:annotateTitularRemates({...(prepared.doc||{}),items:visiblePrepared},remateRatings.doc),status:liveStatus,config:config.doc,tremending:{...(tremending.doc||{}),items:tremendingItems}})
     }
     if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
