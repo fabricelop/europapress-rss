@@ -93,6 +93,22 @@ El flujo oficial es:
 
 El reparador de Explicadas revalida `id + revision`, genera o regenera IA ausente/incorrecta y conserva el job manual del panel únicamente como override. Por tanto, una pasada de explicación **nunca** debe esperar a ImageGen ni mantener abierta la cola por la imagen.
 
+### Paquete visual oficial en el bot TTendencias
+
+Una tendencia puede quedar `explained` sin imagen. La capa visual es posterior y no bloqueante, pero el bot **solo entrega un paquete cuando existe una IA válida** (`chat-imagegen`, `origin:"executing_chat"`, raster limpio, mínimo 1024×576 y SHA256 materializado).
+
+Para cada explicación elegible:
+- intenta conservar/recuperar una imagen real como `archive_image` o `fallback_image`;
+- si existe imagen de archivo, el bot la envía como foto separada;
+- la imagen IA se envía como foto principal con el texto exacto de la explicación;
+- el teclado del paquete IA contiene **🖼️ Copiar imagen IA**, **🗂️ Copiar imagen archivo** cuando exista, **📋 Copiar texto**, **✍️ Abrir en X**, **🗑️ Desestimar** y **✅ Publicado**;
+- `Publicado` y `Desestimar` actualizan `trends/telegram-image-deliveries.json` y la ficha vigente de `trends/telegram-manual-explained.json`, y borran del bot tanto el mensaje IA como el de archivo;
+- una IA ausente, inválida o de una revisión sustituida se vuelve a intentar automáticamente mediante `.github/workflows/repair-ttendencias-explicadas.yml`;
+- no dupliques paquetes ya entregados para el mismo `id + revision + ai_sha256`;
+- Tremending y entradas con `disable_ai_image:true` quedan fuera de este paquete IA y mantienen su tratamiento específico.
+
+El bot es un canal adicional de revisión/publicación; el panel web y GitHub continúan siendo el estado autoritativo.
+
 ### Contexto para el job de imagen
 
 Todo job de imagen —creado automáticamente por el reparador o manualmente desde **Imágenes**— congela un `context_snapshot` con, como mínimo:
