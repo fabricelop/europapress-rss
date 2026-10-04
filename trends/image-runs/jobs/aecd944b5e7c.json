@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-aecd944b5e7c-r1-a1-1791157954546",
+  "requested_at": "2026-10-04T23:52:34.546701Z",
+  "updated_at": "2026-10-04T23:52:34.546701Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "aecd944b5e7c",
+  "trend_id": "aecd944b5e7c",
+  "target_name": "#NASCARenDAZN",
+  "revision": 1,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "#NASCARenDAZN",
+    "revision": 1,
+    "explanation": "TT#6 #NASCARenDAZN es tendencia por la retransmisión del South Point 400 de la NASCAR Cup en Las Vegas, que sigue en curso en el Las Vegas Motor Speedway; Chase Briscoe ganó la primera etapa.\n🌶️ La bandera verde también ha entrado al top 10.",
+    "closer_text": "🌶️ La bandera verde también ha entrado al top 10.",
+    "trend_names": [
+      "#NASCARenDAZN"
+    ],
+    "group_title": "South Point 400 de NASCAR en Las Vegas",
+    "rank_at_explanation": 6,
+    "explained_at": "2026-10-05T01:49:20+02:00",
+    "verification_sources": [
+      {
+        "source": "NASCAR.com · 4/10/2026",
+        "url": "https://www.nascar.com/news-media/2026/10/04/2026-cup-series-las-vegas-chase-race-recap-results/"
+      },
+      {
+        "source": "FOX Sports · 4/10/2026",
+        "url": "https://www.foxsports.com/nascar/south-point-400-nascar-cup-series-oct-04-2026-racetrax-6088"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
