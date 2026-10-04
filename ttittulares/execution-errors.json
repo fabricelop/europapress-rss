@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T21:37:06.654318Z",
-      "event_id": "dab5ca1ae833-r1",
-      "phase": "outbox",
-      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-27T21:37:08.871092Z",
       "event_id": "0ec9b53c91e8-r1",
       "phase": "outbox",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "7ba9f8ba5d71-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 7ba9f8ba5d71-r1: 7ba9f8ba5d71-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-04T07:49:47.689577Z",
+      "event_id": "manual-2a0434945bd5-r1",
+      "phase": "outbox",
+      "reason": "manual-2a0434945bd5-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento manual-2a0434945bd5-r1: manual-2a0434945bd5-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
