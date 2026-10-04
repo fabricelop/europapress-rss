@@ -33,6 +33,109 @@ async function gh(path, options = {}) {
 }
 
 
+async function mutateJsonFile(path, message, mutator) {
+  for (let attempt = 1; attempt <= 6; attempt++) {
+    const get = await gh(`contents/${path}?ref=${encodeURIComponent(BRANCH)}`);
+    if (!get.ok) throw new Error(`GitHub GET ${path}: ${get.status} ${await get.text()}`);
+    const file = await get.json();
+    const doc = JSON.parse(b64decode(file.content) || "{}");
+    const out = (await mutator(doc)) || doc;
+    const put = await gh(`contents/${path}`, {
+      method: "PUT",
+      headers: {"content-type":"application/json"},
+      body: JSON.stringify({
+        message,
+        content: b64encode(JSON.stringify(out, null, 2) + "\n"),
+        sha: file.sha,
+        branch: BRANCH,
+      }),
+    });
+    if (put.ok) return out;
+    if (![409, 422].includes(put.status)) throw new Error(`GitHub PUT ${path}: ${put.status} ${await put.text()}`);
+    await new Promise(r => setTimeout(r, attempt * 180));
+  }
+  throw new Error(`Conflicto persistente actualizando ${path}`);
+}
+
+async function closeTtiFromTelegram(eventId, status, messageId) {
+  const id = String(eventId || "").trim();
+  if (!id) throw new Error("event_id ausente");
+  const now = new Date().toISOString();
+  const terminal = status === "published" ? "PUBLISHED" : "DISMISSED";
+
+  await mutateJsonFile(
+    "ttittulares/decisions.json",
+    (status === "published" ? "Publicar" : "Desestimar") + " TTiTTulares desde Telegram",
+    (doc) => {
+      doc.project ||= "TTiTTulares";
+      doc.items = Array.isArray(doc.items) ? doc.items : [];
+      let row = doc.items.find(x => String(x.event_id || "") === id);
+      if (!row) { row = {event_id:id}; doc.items.push(row); }
+      Object.assign(row, {
+        status,
+        updated_at: now,
+        decision_source: "telegram",
+        telegram_message_id: Number(messageId || 0),
+      });
+      doc.updated_at = now;
+      return doc;
+    }
+  );
+
+  await Promise.all([
+    mutateJsonFile("ttittulares/prepared.json", "Retirar noticia cerrada desde Telegram", (doc) => {
+      doc.items = (Array.isArray(doc.items) ? doc.items : []).filter(x => String(x.event_id || "") !== id);
+      doc.updated_at = now;
+      return doc;
+    }),
+    mutateJsonFile("telegram/editorial-processing.json", "Cerrar noticia TTiTTulares desde Telegram", (doc) => {
+      doc.items = Array.isArray(doc.items) ? doc.items : [];
+      for (const row of doc.items) {
+        if (String(row.event_id || row.id || "") === id) {
+          row.status = terminal;
+          row[status === "published" ? "published_at" : "dismissed_at"] = now;
+          row.decision_source = "telegram";
+          row.telegram_message_id = Number(messageId || 0);
+        }
+      }
+      doc.updated_at = now;
+      return doc;
+    }),
+    mutateJsonFile("telegram/events.json", "Cerrar evento TTiTTulares desde Telegram", (doc) => {
+      doc.events = Array.isArray(doc.events) ? doc.events : [];
+      for (const row of doc.events) {
+        if (String(row.id || row.event_id || "") === id) {
+          row.status = terminal;
+          row[status === "published" ? "published_at" : "dismissed_at"] = now;
+          row.decision_source = "telegram";
+        }
+      }
+      doc.updated_at = now;
+      return doc;
+    }),
+  ]);
+
+  try {
+    await mutateJsonFile("ttittulares/manual-submissions.json", "Actualizar archivo manual desde Telegram", (doc) => {
+      doc.items = Array.isArray(doc.items) ? doc.items : [];
+      for (const row of doc.items) {
+        if (String(row.event_id || "") === id) {
+          row.status = terminal;
+          row.updated_at = now;
+          row.decision_source = "telegram";
+        }
+      }
+      doc.updated_at = now;
+      return doc;
+    });
+  } catch (e) {
+    console.error("manual-submissions cierre opcional", e);
+  }
+
+  return {ok:true,event_id:id,status};
+}
+
+
 async function upsertEditorialProcessing(eventId, title, url) {
   const path = "telegram/editorial-processing.json";
   for (let attempt = 1; attempt <= 5; attempt++) {
@@ -143,7 +246,33 @@ export default async function handler(req, res) {
       if (chatId !== allowedChat) return res.status(200).json({ ok: true });
       const data = cq.data || "";
 
-      if (data.startsWith("emergency:")) {
+      if (data.startsWith("tt:")) {
+        const parts = data.split(":");
+        const action = parts[1] || "";
+        const id = parts.slice(2).join(":");
+        if (!["p","d"].includes(action) || !id) {
+          await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"Acción no válida.",show_alert:true});
+          return res.status(200).json({ok:true,stored:false});
+        }
+        try {
+          const status = action === "p" ? "published" : "dismissed";
+          await closeTtiFromTelegram(id, status, Number(msg.message_id || 0));
+          await safeTelegram("answerCallbackQuery",{
+            callback_query_id:cq.id,
+            text:status === "published" ? "Marcada como publicada." : "Desestimada."
+          });
+          const deleted = await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
+          return res.status(200).json({ok:true,stored:true,event_id:id,status,telegram_deleted:deleted!==null});
+        } catch (e) {
+          console.error("TTiTTulares close from Telegram", e);
+          await safeTelegram("answerCallbackQuery",{
+            callback_query_id:cq.id,
+            text:"No se pudo guardar el estado. El mensaje se conserva.",
+            show_alert:true
+          });
+          return res.status(200).json({ok:true,stored:false,event_id:id,error:String(e)});
+        }
+      } else if (data.startsWith("emergency:")) {
         const parts=data.split(":"); const action=parts[1]||""; const id=parts.slice(2).join(":")||"";
         if(action==="prepare"){
           const original=msg.text||"";
