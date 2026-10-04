@@ -55,15 +55,31 @@ def recent_visual(row, hours=6):
 
 def valid_ai(row):
     ai=row.get("ai_image") or {}
-    return (
+    url=str(ai.get("url") or "").strip()
+    sha=str(ai.get("sha256") or "").strip().lower()
+    if not (
         str(row.get("ai_image_status") or "").lower()=="ready"
         and str(ai.get("provider") or "")=="chat-imagegen"
         and str(ai.get("origin") or "")=="executing_chat"
         and int(ai.get("width") or 0)>=1024
         and int(ai.get("height") or 0)>=576
-        and bool(str(ai.get("url") or "").strip())
-        and bool(str(ai.get("sha256") or "").strip())
-    )
+        and url and len(sha)==64
+    ):
+        return False
+    try:
+        raw=fetch_image(url)
+        if hashlib.sha256(raw).hexdigest().lower()!=sha:
+            return False
+        with Image.open(BytesIO(raw)) as im:
+            width,height=im.size
+            im.verify()
+        return (
+            width>=1024 and height>=576
+            and width==int(ai.get("width") or 0)
+            and height==int(ai.get("height") or 0)
+        )
+    except Exception:
+        return False
 
 
 def package_text(row):
