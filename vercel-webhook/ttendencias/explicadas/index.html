@@ -611,6 +611,7 @@ async function load(passive=false){
    if(target){
      openPendingKey=deep.key;
      if(deep.reexplain&&!target.rewrite_pending){
+       history.replaceState(null,"",location.pathname);
        setTimeout(()=>openReexplain(target),60);
      }
    }
