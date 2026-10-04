@@ -94,7 +94,8 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v23-target-handoff";
+const BRIDGE_MODE="capture-only-v24-self-submit-fallback";
+// compatibility: BRIDGE_MODE="capture-only-v23-target-handoff";
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
 // compatibility: BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover"
@@ -105,8 +106,42 @@ async function inspectChat(cdp,job){
   return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=nodes.length>0;const markerOutsideComposer=bodyMarker;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const largeImages=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360);const images=largeImages.length;const imageSrc=largeImages.length?String(largeImages[0].currentSrc||largeImages[0].src||''):'';const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,imageSrc,title,url:location.href}})()")
 }
 
+
+async function injectPromptIntoChat(cdp,job){
+  const message=buildMessage(job);
+  const expr="(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return {ok:false,reason:'no-composer'};const text="+JSON.stringify(message)+";c.focus();if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){c.value=text;}else{c.textContent=text;}try{c.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText',data:text}))}catch(_){c.dispatchEvent(new Event('input',{bubbles:true}))}const t=String(c.innerText||c.textContent||c.value||'');return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,url:location.href,title:document.title||''}})()";
+  const result=await cdp.eval(expr);
+  if(!result||!result.ok)throw Error("Fallback no pudo escribir el prompt completo");
+  console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED "+String(result.url||""));
+  return cdp
+}
+
+async function findFallbackComposerChat(job){
+  let list=[];try{list=await targets()}catch{return null}
+  const candidates=[];
+  for(const t of list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl)){
+    const c=new CDP(t.webSocketDebuggerUrl);
+    try{
+      await c.open();
+      const st=await c.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const title=document.title||'';const url=location.href;const body=String((document.body&&document.body.innerText)||'').slice(0,12000);return {composer:!!c,title,url,body}})()");
+      if(!st||!st.composer){c.close();continue}
+      const title=String(st.title||""),body=String(st.body||"");
+      const opposite=/TTiTTulares/i.test(title+' '+body);
+      if(opposite){c.close();continue}
+      const imageish=/Generar imagen|Gag IA|Image generation|Imagen IA/i.test(title+" "+body);
+      const projectish=/TTendencias/i.test(title+" "+body);
+      const score=(imageish?1000:0)+(projectish?600:0)+(String(st.url||"").includes("/c/")?100:0);
+      candidates.push({c,st,score});
+    }catch{c.close()}
+  }
+  candidates.sort((a,b)=>b.score-a.score);
+  const best=candidates.shift()||null;
+  for(const x of candidates){try{x.c.close()}catch{}}
+  return best
+}
+
 async function findChat(job){
-  const deadline=Date.now()+90000;
+  const deadline=Date.now()+15000;
   let best=null,bestScore=-1,bestInfo=null;
   const baselineImageSrc=new Map();
   const baselineState=new Map();
@@ -210,8 +245,20 @@ async function findChat(job){
     }
     await sleep(700)
   }
+  const fallback=await findFallbackComposerChat(job);
+  if(fallback&&fallback.c){
+    console.log("BRIDGE SELF-SUBMIT FALLBACK target="+String(fallback.st&&fallback.st.url||""));
+    try{
+      const injected=await injectPromptIntoChat(fallback.c,job);
+      injected.acceptInitialRaster=true;
+      return injected
+    }catch(e){
+      try{fallback.c.close()}catch{}
+      console.log("BRIDGE SELF-SUBMIT FALLBACK ERROR :: "+String(e&&e.message||e))
+    }
+  }
   const detail=bestInfo?JSON.stringify(bestInfo).slice(0,700):"sin candidato";
-  throw Error("No se encontró el chat lanzado tras observar cambios de estado en 90 segundos; "+detail)
+  throw Error("No se encontró ni se pudo crear un chat ImageGen tras fallback autónomo; "+detail)
 }
 
 async function reacquireCommandChat(job){
