@@ -33,12 +33,12 @@ $tokens=$null;$parseErrors=$null
 if($parseErrors.Count -gt 0){
   Write-Host "ERROR DE SINTAXIS EN LISTENER TTITTULARES" -ForegroundColor Red
   $parseErrors | ForEach-Object { Write-Host ("  " + $_.Message + " @ " + $_.Extent.StartLineNumber) -ForegroundColor Red }
-  throw "El listener v19 descargado no es ejecutable."
+  throw "El listener v20 descargado no es ejecutable."
 }
 
 $listenerText=Get-Content -LiteralPath $Listener -Raw -Encoding UTF8
 foreach($needle in @(
-  '$WorkerId = "ttittulares-dedicated-v19"',
+  '$WorkerId = "ttittulares-dedicated-v20"',
   'ArgumentList @($Runner,"titulares","--enviar")',
   'Remove-Item Env:TT_CHAT_MESSAGE_B64',
   'EDITORIAL PROCESS STARTED direct-node-real-explicit-message',
@@ -53,7 +53,7 @@ foreach($needle in @(
   'Ensure-ImageBridgeLatest',
   'TTITTULARES_IMAGE_JOB_V4'
 )){
-  if(-not $listenerText.Contains($needle)){throw "Falta garantía TTiTTulares v19: $needle"}
+  if(-not $listenerText.Contains($needle)){throw "Falta garantía TTiTTulares v20: $needle"}
 }
 
 if(-not (Test-Path -LiteralPath $Runner)){throw "No se encuentra C:\TTiTTulares\Ejecutar.js."}
@@ -86,7 +86,7 @@ foreach($needle in @(
   'ttittulares-image-bridge-v1',
   'imagesAfterMarker'
 )){
-  if(-not $bridgeText.Contains($needle)){throw "Falta garantía bridge TTiTTulares v19: $needle"}
+  if(-not $bridgeText.Contains($needle)){throw "Falta garantía bridge TTiTTulares v20: $needle"}
 }
 
 $cmd='@echo off'+[Environment]::NewLine+'start "" powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "'+$Listener+'"'
@@ -121,7 +121,7 @@ $proc.Refresh()
 if($proc.HasExited){
   Write-Host "ERROR: listener TTiTTulares cerrado al arrancar. ExitCode=$($proc.ExitCode)" -ForegroundColor Red
   if((Test-Path $StdErr) -and (Get-Item $StdErr).Length -gt 0){Get-Content $StdErr -Tail 40}
-  throw "El listener TTiTTulares v19 no ha quedado activo."
+  throw "El listener TTiTTulares v20 no ha quedado activo."
 }
 
 $live=@(Get-TTiTTularesListeners)
@@ -138,7 +138,7 @@ if($live.Count -ne 1){
 }
 $listenerPid=[int]$live[0].ProcessId
 
-Write-Host "TTITTULARES V19 ACTUALIZADO Y ACTIVO" -ForegroundColor Green
+Write-Host "TTITTULARES V20 ACTUALIZADO Y ACTIVO" -ForegroundColor Green
 Write-Host "PID: $listenerPid"
 Write-Host "Listener: $Listener"
 Write-Host "Bridge IA: $Bridge"
