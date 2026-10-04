@@ -1,4 +1,3 @@
-import { generateText } from "ai";
 const MAX_TEXT=24000;
 const MAX_IMAGE_CHARS=5_500_000;
 const MODEL="openai/gpt-5.6-sol";
@@ -20,16 +19,86 @@ function cleanAccounts(input){
   })).filter(a=>a.name);
 }
 
-function outputText(x){
-  if(typeof x?.output_text==="string"&&x.output_text.trim())return x.output_text.trim();
-  const parts=[];
-  for(const item of x?.output||[]){
-    for(const c of item?.content||[]){
-      if(typeof c?.text==="string")parts.push(c.text);
-      else if(typeof c?.output_text==="string")parts.push(c.output_text);
+function norm(v){
+  return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z0-9]+/g," ").trim().replace(/\s+/g," ");
+}
+
+function parseMoneyInput(v){
+  let x=String(v||"").replace(/\u00a0/g," ").trim().replace(/\b(EUR|USD|GBP|CHF)\b/gi,"").replace(/[€$£]/g,"").replace(/\s/g,"");
+  if(!x)return null;
+  if(x.includes(","))x=x.replace(/\./g,"").replace(",",".");
+  else if(/^[-+]?\d{1,3}(\.\d{3})+$/.test(x))x=x.replace(/\./g,"");
+  const n=Number(x);
+  return Number.isFinite(n)?n:null;
+}
+
+function resolveKnownAccount(label,accounts,defaultAccount=""){
+  const wanted=norm(label||defaultAccount);
+  if(!wanted)return null;
+  const exact=accounts.filter(a=>norm(a.name)===wanted);
+  if(exact.length===1)return exact[0];
+  const fuzzy=accounts.filter(a=>{
+    const n=norm(a.name);
+    return n&&(n.includes(wanted)||wanted.includes(n));
+  });
+  return fuzzy.length===1?fuzzy[0]:null;
+}
+
+function parseSimpleBalances(text,accounts,defaultAccount,today){
+  const src=String(text||"").replace(/\u00a0/g," ").trim();
+  if(!src)return null;
+  const amount="([+-]?(?:\\d{1,3}(?:\\.\\d{3})+(?:,\\d{1,2})?|\\d+[.,]\\d{1,2}|\\d+))";
+  const patterns=[
+    new RegExp("(?:el\\s+)?saldo\\s+(?:actual\\s+)?(?:de|en)?\\s*([^=;:\\n]+?)\\s*(?:ahora\\s*)?(?:=|:|\\bes\\b)\\s*"+amount+"\\s*(?:€|eur)?","gi"),
+    new RegExp("(?:^|[.;]\\s*|\\n+)de\\s+([^=;:\\n]+?)\\s*(?:ahora\\s*)?(?:=|:|\\bes\\b)\\s*"+amount+"\\s*(?:€|eur)?","gi")
+  ];
+  const balances=[],ranges=[],seen=new Set();
+  for(const re of patterns){
+    let m;
+    while((m=re.exec(src))){
+      const account=resolveKnownAccount(m[1],accounts,"");
+      const balance=parseMoneyInput(m[2]);
+      if(!account||balance===null)continue;
+      const key=account.id+"|"+balance;
+      if(!seen.has(key)){
+        seen.add(key);
+        balances.push({account:account.name,date:today,balance,confidence:1,note:"Saldo indicado por el usuario"});
+      }
+      ranges.push([m.index,m.index+m[0].length]);
     }
   }
-  return parts.join("").trim();
+  if(defaultAccount){
+    const re=new RegExp("(?:el\\s+)?(?:saldo|balance)\\s*(?:actual\\s*)?(?:=|:|\\bes\\b)\\s*"+amount+"\\s*(?:€|eur)?","gi");
+    let m;
+    while((m=re.exec(src))){
+      if(ranges.some(([a,b])=>m.index<b&&m.index+m[0].length>a))continue;
+      const account=resolveKnownAccount("",accounts,defaultAccount);
+      const balance=parseMoneyInput(m[1]);
+      if(!account||balance===null)continue;
+      const key=account.id+"|"+balance;
+      if(!seen.has(key)){
+        seen.add(key);
+        balances.push({account:account.name,date:today,balance,confidence:1,note:"Saldo indicado por el usuario"});
+      }
+      ranges.push([m.index,m.index+m[0].length]);
+    }
+  }
+  if(!balances.length)return null;
+  let rest=src.split("");
+  for(const [a,b] of ranges)for(let i=a;i<b;i++)rest[i]=" ";
+  const residual=rest.join("")
+    .replace(/[.;,\s]+/g," ")
+    .replace(/\b(?:y|e|and|et|tambien|también)\b/gi," ")
+    .replace(/\s+/g," ")
+    .trim();
+  if(residual)return null;
+  return{
+    summary:"He entendido una actualización de saldos.",
+    movements:[],
+    balances,
+    instructions:[],
+    warnings:[]
+  };
 }
 
 const schema={
@@ -110,6 +179,11 @@ export default async function handler(req,res){
     const today=/^\d{4}-\d{2}-\d{2}$/.test(String(body.today||""))?String(body.today):new Date().toISOString().slice(0,10);
     const defaultAccount=String(body.defaultAccount||"").slice(0,160);
 
+    if(userText&&!imageDataUrl){
+      const simple=parseSimpleBalances(userText,accounts,defaultAccount,today);
+      if(simple)return reply(res,200,{ok:true,model:"deterministic-balance-parser",interpretation:simple});
+    }
+
     const instructions=[
       "You interpret personal-finance updates for Money Control.",
       "The user may write in Spanish, French or English, paste arbitrary bank tables, semi-natural text, explanations, corrections, or attach a screenshot.",
@@ -117,7 +191,7 @@ export default async function handler(req,res){
       "Known accounts are provided. Prefer their exact names. If the user does not name an account and a default account is supplied, use that default account.",
       "Never invent a movement, amount, date, account or balance not supported by the input.",
       "Relative dates such as hoy, ayer, today, yesterday must be resolved using the supplied current date.",
-      "Spanish number formatting uses dot for thousands and comma for decimals.",
+      "Amounts may use comma or dot as decimal separator. Interpret 73.24 as seventy-three euros and twenty-four cents; interpret 3.489,49 as Spanish thousands plus decimals.",
       "Expenses must have negative amounts and income positive.",
       "If the user supplies only a final/current balance, return it only in balances. Do NOT invent an adjustment movement; Money Control computes any residual adjustment itself.",
       "If a bank row contains both operation date and value date, use operation date unless the user explicitly says otherwise.",
@@ -135,11 +209,6 @@ export default async function handler(req,res){
       ...accounts.map(a=>"- "+a.name+" ["+a.group+"]")
     ].join("\n");
 
-    const content=[
-      {type:"input_text",text:context+"\n\nUser input:\n"+(userText||"(image only)")}
-    ];
-    if(imageDataUrl)content.push({type:"input_image",image_url:imageDataUrl,detail:"high"});
-
     const aiContent=[
       {type:"text",text:context+"\n\nUser input:\n"+(userText||"(image only)")}
     ];
@@ -154,6 +223,7 @@ export default async function handler(req,res){
       "Do not wrap the JSON in markdown fences."
     ].join("\n");
 
+    const {generateText}=await import("ai");
     const result=await generateText({
       model:MODEL,
       instructions:prompt,
