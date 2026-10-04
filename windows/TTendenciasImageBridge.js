@@ -75,6 +75,7 @@ function buildMessage(job){
 }
 const BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover";
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
+// compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
