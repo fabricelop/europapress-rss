@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791104989476-b5765f",
+  "requested_at": "2026-10-04T09:09:49.476Z",
+  "updated_at": "2026-10-04T09:09:49.476Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "2bd1d3d69584",
+  "trend_id": "2bd1d3d69584",
+  "target_name": "Sánchez",
+  "revision": 1,
+  "attempt": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "Sánchez",
+    "revision": 1,
+    "explanation": "TT#6 Sánchez es tendencia porque sopesa adelantar las elecciones tras caer en el Congreso sus dos decretos de vivienda con los votos de PP, Vox y Junts; Moncloa mantiene abierta la decisión y Sumar se reúne hoy ante ese escenario.",
+    "closer_text": "",
+    "trend_names": [
+      "Sánchez"
+    ],
+    "group_title": "Sánchez sopesa adelantar elecciones tras la derrota en vivienda",
+    "rank_at_explanation": 6,
+    "explained_at": "2026-10-04T11:03:30+02:00",
+    "verification_sources": [
+      {
+        "source": "RTVE · 4/10/2026",
+        "url": "https://www.rtve.es/noticias/20261004/sumar-reune-evaluar-vivienda-posibilidad-adelanto-electoral/17252395.shtml"
+      },
+      {
+        "source": "El País · 4/10/2026",
+        "url": "https://elpais.com/espana/2026-10-04/la-mayoria-del-psoe-y-el-gobierno-anima-a-sanchez-a-convocar-elecciones-ya-ahora-hay-una-oportunidad.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+}
