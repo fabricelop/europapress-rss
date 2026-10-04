@@ -3406,7 +3406,7 @@
       "id": "31fa73ae74f1",
       "name": "Frente Amplio",
       "revision": 2,
-      "status": "update",
+      "status": "explained",
       "requested_at": "2026-10-04T14:24:24.464Z",
       "rank": 14,
       "with_image": true,
@@ -3423,8 +3423,64 @@
       "auto_queued": false,
       "anticipated_entered_top10_at": "2026-09-25T20:51:04+02:00",
       "editorial_engine": "chatgpt-automation-outbox",
-      "reexplain": true,
-      "rewrite_instruction": "Ha entrado en el Top 10: actualiza el encabezado al puesto real y verifica que el motivo siga siendo actual. Reutiliza la preparación del Radar si sigue siendo válida."
+      "reexplain": false,
+      "rewrite_instruction": "",
+      "rewrite_with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "selected_tweet_image": null,
+      "task": "explain",
+      "batch_id": null,
+      "captured_with": [],
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "explained_at": "2026-10-04T16:28:40+02:00",
+      "explanation": "TT#14 Frente Amplio es tendencia porque el nuevo espacio de Sumar ha fijado el 17 de octubre para su presentación y para anunciar quién encabezará su candidatura a las generales.",
+      "closer_text": "",
+      "category": "Política",
+      "rank_at_explanation": 14,
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "laSexta · 4/10/2026",
+          "url": "https://www.lasexta.com/noticias/nacional/frente-amplio-anunciara-17-octubre-cabeza-lista-elecciones-generales_202610046ac25341f7f8f566d14cf672.html"
+        }
+      ],
+      "news_disposition": "ignore",
+      "news_note": "Detonante actualizado al anuncio de hoy. Sigue como señal anticipada con mejor puesto observado 14; no está en el Top 10 actual. Redacción política neutral, sin remate.",
+      "group_id": "grp-frente-amplio-presentacion-20261004",
+      "explanation_group_id": "grp-frente-amplio-presentacion-20261004",
+      "group_title": "Frente Amplio fija su presentación y anuncio de candidatura para el 17 de octubre",
+      "group_leader_id": "31fa73ae74f1",
+      "trend_names": [
+        "Frente Amplio"
+      ],
+      "trend_context": [
+        {
+          "name": "Frente Amplio",
+          "rank": 14
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "31fa73ae74f1",
+          "name": "Frente Amplio",
+          "revision": 2
+        }
+      ],
+      "duplicate_of": null,
+      "ai_image_block_reason": null,
+      "ai_image_status": "pending",
+      "ai_image_attempt": 0,
+      "image_status": "none",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "image_choice": "none",
+      "rewrite_pending": false
     },
     {
       "id": "9986911fa8ce",
@@ -25370,6 +25426,6 @@
       "auto_queued": false
     }
   ],
-  "updated_at": "2026-10-04T16:27:30+02:00",
+  "updated_at": "2026-10-04T16:28:40+02:00",
   "count": 536
 }
