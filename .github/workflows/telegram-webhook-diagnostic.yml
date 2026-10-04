@@ -1,0 +1,57 @@
+name: Diagnosticar webhook Telegram TTiTTulares
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/telegram-webhook-diagnostic.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Consultar webhook y Worker
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p telegram
+          curl --fail --silent --show-error             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo"             -o /tmp/webhook.json
+          curl --fail --silent --show-error             "https://tt-control.fabricelop.workers.dev/api/ttittulares-webhook-version"             -o /tmp/worker.json
+          python3 - <<'PY'
+          import json, pathlib, datetime
+          w=json.load(open('/tmp/webhook.json',encoding='utf-8'))
+          v=json.load(open('/tmp/worker.json',encoding='utf-8'))
+          r=w.get('result') or {}
+          out={
+            "checked_at":datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00","Z"),
+            "webhook":{
+              "url":r.get("url"),
+              "pending_update_count":r.get("pending_update_count"),
+              "last_error_date":r.get("last_error_date"),
+              "last_error_message":r.get("last_error_message"),
+              "max_connections":r.get("max_connections"),
+              "ip_address":r.get("ip_address")
+            },
+            "worker":v
+          }
+          pathlib.Path("telegram/webhook-diagnostic.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps(out,ensure_ascii=False))
+          PY
+
+      - name: Guardar diagnóstico
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add telegram/webhook-diagnostic.json
+          git commit -m "Registrar diagnóstico webhook Telegram"
+          git pull --rebase origin main
+          git push origin HEAD:main
