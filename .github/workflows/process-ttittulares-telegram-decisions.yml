@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: ttittulares-telegram-decisions
@@ -188,3 +189,12 @@ jobs:
           done
           echo "No se pudo persistir la decisión Telegram" >&2
           exit 1
+
+
+      - name: Lanzar borrado de mensajes cerrados
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh workflow run delete-ttittulares-telegram-messages.yml --repo "$REPO" --ref main
