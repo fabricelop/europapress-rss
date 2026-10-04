@@ -342,7 +342,7 @@ async function requestImagePcAck(req,res){
   const stage=String(req.body?.stage||"").toLowerCase();
   const worker_id=String(req.body?.worker_id||"ttendencias-dedicated-v1").trim().slice(0,120)||"ttendencias-dedicated-v1";
   const telemetryStages=["target_handoff","chat_found","raster_found","upload_started"];
-  if(!command_id||!["picked_up","launched","cancelled","failed","done",...telemetryStages].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
+  if(!command_id||!["picked_up","launched","cancelled","failed","done","progress",...telemetryStages].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
@@ -372,7 +372,12 @@ async function requestImagePcAck(req,res){
   if(["done","failed",...telemetryStages].includes(stage)&&job.pc_upload_secret_hash&&!validUploadSecret(job,doneSecret)){
     return res.status(401).json({ok:false,error:"Secreto de imagen no válido"})
   }
-  if(telemetryStages.includes(stage)){
+  if(stage==="progress"){
+    const phase=String(req.body?.phase||"pc_progress").slice(0,80);
+    next.status=/raster|persist|upload/i.test(phase)?"PERSISTING":"RUNNING";
+    next.phase=phase;
+    next.message=String(req.body?.detail||req.body?.reason||"Progreso del bridge de imagen.").slice(0,240);
+  }else if(telemetryStages.includes(stage)){
     next.status=stage==="raster_found"||stage==="upload_started"?"PERSISTING":"RUNNING";
     next.phase=stage;
     next.bridge_version=String(req.body?.bridge_version||job.bridge_version||"").slice(0,80)||null;
