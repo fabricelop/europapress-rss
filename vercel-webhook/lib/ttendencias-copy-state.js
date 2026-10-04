@@ -41,6 +41,19 @@ export function explanationIsCopied(item, copyState) {
   const record = records.find(entry => entry?.key === key);
   if (record) return { copied: true, copied_at: record.copied_at || null, source: record.source || "copy" };
 
+  // Identidad estable de la misma entrada/revisión. El copy_key puede variar si
+  // cambian aliases del grupo o un reconciliado modifica explained_at, pero una
+  // entrada ya publicada no debe reaparecer por esos cambios cosméticos.
+  const itemId = String(item?.id || "").trim();
+  const itemRevision = Number.isFinite(Number(item?.revision)) ? Number(item.revision) : 0;
+  if (itemId) {
+    const idRecord = records.find(entry =>
+      String(entry?.item_id || "").trim() === itemId &&
+      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === itemRevision
+    );
+    if (idRecord) return { copied: true, copied_at: idRecord.copied_at || null, source: idRecord.source || "id-copy" };
+  }
+
   // Un mismo hecho puede reaparecer con más aliases del grupo y, por tanto,
   // con otra copy_key. Si el título editorial y la revisión coinciden, un
   // registro ya tratado se aplica a todo el grupo para que no "resucite".
@@ -91,6 +104,7 @@ export function annotateExplainedCopyState(explained, copyState) {
 export function buildCopyRecord(item, copiedAt = new Date().toISOString()) {
   return {
     key: explanationCopyIdentity(item),
+    item_id: String(item?.id || "").trim() || null,
     trend_names: explanationTrendNames(item),
     group_title: String(item?.group_title || "").trim() || null,
     explanation_group_id: String(item?.explanation_group_id || item?.group_id || "").trim() || null,
