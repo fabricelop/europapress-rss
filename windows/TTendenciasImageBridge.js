@@ -83,6 +83,142 @@ async function targets(){
   if(!r.ok)throw Error("CDP /json/list "+r.status);
   return r.json()
 }
+
+async function readFixedTabState(){
+  try{
+    const fs=await import("node:fs/promises");
+    return JSON.parse(await fs.readFile(FIXED_TAB_STATE,"utf8"));
+  }catch{return {}}
+}
+async function writeFixedTabState(t){
+  try{
+    const fs=await import("node:fs/promises");
+    await fs.writeFile(FIXED_TAB_STATE,JSON.stringify({
+      version:1,target_id:String(t&&t.id||""),url:String(t&&t.url||""),
+      updated_at:new Date().toISOString()
+    },null,2)+"\n","utf8")
+  }catch(e){console.log("BRIDGE FIXED TAB STATE WARNING :: "+String(e&&e.message||e))}
+}
+async function createFixedTarget(){
+  // Vía preferida: Browser CDP -> Target.createTarget. Es estable y mantiene
+  // exactamente la misma sesión/perfil de Chrome que ya está autenticada.
+  try{
+    const vr=await fetch(BASE_CDP+"/json/version",{cache:"no-store",signal:AbortSignal.timeout(5000)});
+    if(!vr.ok)throw Error("CDP /json/version "+vr.status);
+    const vd=await vr.json();
+    const ws=String(vd&&vd.webSocketDebuggerUrl||"");
+    if(!ws)throw Error("browser websocket ausente");
+    const browser=new CDP(ws);
+    await browser.open();
+    let made;
+    try{made=await browser.call("Target.createTarget",{url:CHAT_ROOT,newWindow:false,background:false},10000)}
+    finally{browser.close()}
+    const targetId=String(made&&made.targetId||"");
+    if(!targetId)throw Error("Target.createTarget sin targetId");
+    const deadline=Date.now()+10000;
+    while(Date.now()<deadline){
+      const list=await targets();
+      const t=list.find(x=>String(x&&x.id||"")===targetId&&x.type==="page"&&x.webSocketDebuggerUrl);
+      if(t){
+        await writeFixedTabState(t);
+        console.log("BRIDGE FIXED TAB CREATED target="+String(t.id)+" via=Target.createTarget");
+        return t
+      }
+      await sleep(250)
+    }
+    throw Error("Target creado pero no apareció en /json/list")
+  }catch(e){
+    console.log("BRIDGE FIXED TAB CREATE PRIMARY WARNING :: "+String(e&&e.message||e))
+  }
+
+  // Compatibilidad para Chromes que no permitan Target.createTarget en el
+  // browser websocket.
+  const url=BASE_CDP+"/json/new?"+encodeURIComponent(CHAT_ROOT);
+  let r;
+  try{r=await fetch(url,{method:"PUT",cache:"no-store",signal:AbortSignal.timeout(5000)})}catch{}
+  if(!r||!r.ok){
+    try{r=await fetch(url,{cache:"no-store",signal:AbortSignal.timeout(5000)})}catch{}
+  }
+  if(!r||!r.ok)throw Error("No se pudo crear pestaña dedicada CDP");
+  const t=await r.json();
+  if(!t||!t.id||!t.webSocketDebuggerUrl)throw Error("CDP creó una pestaña sin target válido");
+  await writeFixedTabState(t);
+  console.log("BRIDGE FIXED TAB CREATED target="+String(t.id)+" via=json-new");
+  return t
+}
+
+async function fixedTarget(createIfMissing=true){
+  const list=await targets();
+  const st=await readFixedTabState();
+  let t=list.find(x=>String(x&&x.id||"")===String(st&&st.target_id||"")&&x.type==="page"&&x.webSocketDebuggerUrl);
+  if(t){
+    console.log("BRIDGE FIXED TAB REUSE target="+String(t.id)+" url="+String(t.url||""));
+    return t
+  }
+  if(!createIfMissing)return null;
+  return createFixedTarget()
+}
+async function waitComposer(cdp,timeoutMs=60000){
+  const deadline=Date.now()+timeoutMs;
+  let last=null;
+  while(Date.now()<deadline){
+    try{
+      last=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");return {composer:!!c,url:location.href,title:document.title||'',ready:document.readyState}})()");
+      if(last&&last.composer)return last
+    }catch(e){last={error:String(e&&e.message||e)}}
+    await sleep(750)
+  }
+  throw Error("La pestaña dedicada no mostró compositor en "+timeoutMs+" ms; "+JSON.stringify(last||{}).slice(0,400))
+}
+async function openFreshDedicatedConversation(){
+  let t=await fixedTarget(true);
+  await progress("fixed_tab","Pestaña física dedicada disponible: "+String(t.id));
+  let cdp=new CDP(t.webSocketDebuggerUrl);
+  try{
+    await cdp.open();
+    try{await cdp.call("Page.enable",{},5000)}catch{}
+    try{await cdp.call("Page.bringToFront",{},5000)}catch{}
+    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+    await waitComposer(cdp,60000);
+    await progress("composer_ready","ChatGPT cargado en la pestaña fija; compositor disponible.");
+    // Si ChatGPT restaurase una conversación previa al navegar a raíz, pulsa "Nuevo chat"
+    // dentro de LA MISMA pestaña. El target CDP no cambia.
+    try{
+      const st=await cdp.eval("(()=>({url:location.href}))()");
+      if(st&&/\/c\//.test(String(st.url||""))){
+        await cdp.eval("(()=>{const els=[...document.querySelectorAll('a,button')];const b=els.find(x=>/new chat|nuevo chat/i.test(String(x.getAttribute('aria-label')||x.getAttribute('title')||x.innerText||'')));if(!b)return false;b.click();return true})()");
+        await sleep(700);
+        await waitComposer(cdp,30000)
+      }
+    }catch{}
+    const meta=await cdp.eval("(()=>({url:location.href,title:document.title||''}))()");
+    console.log("BRIDGE FIXED TAB FRESH CONVERSATION target="+String(t.id)+" url="+String(meta&&meta.url||""));
+    return cdp
+  }catch(e){
+    try{cdp.close()}catch{}
+    // El target persistido pudo morir entre /json/list y la conexión. Crear uno nuevo una sola vez.
+    t=await createFixedTarget();
+    cdp=new CDP(t.webSocketDebuggerUrl);
+    await cdp.open();
+    try{await cdp.call("Page.enable",{},5000)}catch{}
+    try{await cdp.call("Page.bringToFront",{},5000)}catch{}
+    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+    await waitComposer(cdp,60000);
+    await progress("composer_ready","Pestaña fija recreada; compositor disponible.");
+    console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id));
+    return cdp
+  }
+}
+async function reconnectFixedConversation(job){
+  const t=await fixedTarget(false);
+  if(!t)return null;
+  const c=new CDP(t.webSocketDebuggerUrl);
+  try{
+    await c.open();
+    const st=await inspectChat(c,job);
+    return {cdp:c,state:st}
+  }catch{try{c.close()}catch{};return null}
+}
 async function fetchJob(){
   const r=await fetch(JOB_URL+encodeURIComponent(targetId)+"&t="+Date.now(),{cache:"no-store"});
   if(!r.ok)throw Error("Job "+r.status);
@@ -92,9 +228,38 @@ async function fetchJob(){
 }
 function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
-  return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
+  const ctx=(job&&job.context_snapshot)||{};
+  const explanation=String(ctx.explanation||"");
+  const closer=String(ctx.closer_text||"");
+  const group=String(ctx.group_title||"");
+  const trendNames=Array.isArray(ctx.trend_names)?ctx.trend_names.join(", "):"";
+  const sources=Array.isArray(ctx.verification_sources)?ctx.verification_sources.map(x=>String(x&&x.source||"")).filter(Boolean).join(", "):"";
+  return [
+    "TTENDENCIAS_IMAGE_JOB_V4 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA SOLA imagen GAG IA para '"+name+"'.",
+    "",
+    "TEXTO EXACTO DE LA TENDENCIA YA EXPLICADA (NO LO REESCRIBAS):",
+    explanation,
+    "",
+    "REMATE EXACTO:",
+    closer,
+    "",
+    "CONTEXTO COMPLEMENTARIO:",
+    "Tendencias relacionadas: "+trendNames,
+    group?("Grupo editorial: "+group):"",
+    sources?("Fuentes verificadas: "+sources):"",
+    "",
+    "ESTILO VISUAL OBLIGATORIO:",
+    "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en los hechos de la explicación. Crear un gag visual específico a partir de la tendencia y su detonante, no una representación literal ni una caricatura genérica del nombre. Expresiones faciales exageradas, composición dinámica, profundidad, iluminación dramática y acabado pulido tipo portada/editorial. Texto en español únicamente cuando sea necesario para el gag y perfectamente integrado.",
+    "",
+    "CONSTRUCCIÓN: una sola escena factual concreta; un gag principal inmediatamente reconocible; el remate visual debe traducir la guindilla cuando exista. Si no hay remate, crea el gag a partir del hecho factual, sin inventar otro.",
+    "No inventes hechos externos. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. No escribas la explicación completa dentro de la imagen. Genera exactamente UNA imagen. No proceses otra tendencia ni persistas la imagen: el puente local recoge el raster."
+  ].filter(Boolean).join("\n")
 }
-const BRIDGE_MODE="capture-only-v23-target-handoff";
+
+const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
+// compatibility during hot rollout: BRIDGE_MODE="capture-only-v23-target-handoff"
+const FIXED_TAB_STATE="C:\\TTiTTulares\\ttendencias-image-tab.json";
+const CHAT_ROOT="https://chatgpt.com/";
 const BRIDGE_FEATURES="v28-reject-nonconversation-image-targets";
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
@@ -130,7 +295,7 @@ async function findFallbackComposerChat(job){
   const pages=list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl);
   const ranked=pages.map(t=>{
     const meta=(String(t.title||"")+" "+String(t.url||""));
-    const opposite=/TTiTTulares/i.test(meta);
+    const opposite=/TTiTTulares/i.test(meta)&&!/TTendencias/i.test(meta);
     const imageish=/Generar imagen|Gag IA|Image generation|Imagen IA/i.test(meta);
     const projectish=/TTendencias/i.test(meta);
     const score=(isPostLaunchTarget(t)?1800:0)+(imageish?1000:0)+(projectish?600:0)+(String(t.url||"").includes("/c/")?100:0)-(opposite?3000:0);
@@ -196,6 +361,9 @@ async function findChat(job){
 }
 
 async function reacquireCommandChat(job){
+  const fixed=await reconnectFixedConversation(job);
+  if(fixed&&fixed.cdp){console.log("BRIDGE REACQUIRE FIXED TAB "+String(fixed.state&&fixed.state.url||""));return fixed}
+
   const hinted=await hintedTarget();
   if(hinted){
     const hc=new CDP(hinted.webSocketDebuggerUrl);
@@ -221,11 +389,11 @@ async function reacquireCommandChat(job){
 
 async function ensureSubmitted(cdp,job){
   const deadline=Date.now()+45000;
-  let current=cdp,last=null,lastAttemptAt=0,reacquires=0;
+  let current=cdp,last=null,lastAttemptAt=0,reacquires=0,triggeredAt=0;
   while(Date.now()<deadline){
     let st=null;
     try{
-      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const submitted=[...root.querySelectorAll('[data-message-author-role=\\\"user\\\"],[data-testid^=\\\"conversation-turn-\\\"],article')].some(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;return String(el.innerText||el.textContent||'').includes(command)});const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const send=document.querySelector('button[data-testid=\\\"send-button\\\"],button[aria-label*=\\\"Send\\\" i],button[aria-label*=\\\"Enviar\\\" i]');return {composerMarker,submitted,generating,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
+      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const bodyText=String((root&&root.innerText)||'');const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"],[data-testid*=\"user\" i],[class*=\"user-message\" i]')].filter(el=>String(el.innerText||el.textContent||'').includes(command));const submitted=userTurns.length>0;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const send=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');const inConversation=/\\/c\\//.test(location.pathname);const commandOutsideComposer=bodyText.includes(command)&&!composerMarker;return {composerMarker,submitted,userTurns:userTurns.length,generating,inConversation,commandOutsideComposer,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
     }catch{}
 
     if(!st){
@@ -238,35 +406,47 @@ async function ensureSubmitted(cdp,job){
     }
 
     last=st;
-    if(st&&(st.submitted||st.generating)){
+    const strongTransition=Boolean(
+      st && triggeredAt &&
+      st.inConversation &&
+      !st.composerMarker &&
+      (st.generating || st.commandOutsideComposer) &&
+      (Date.now()-triggeredAt)>=500
+    );
+
+    if(st&&(st.submitted||strongTransition)){
       current.submissionVerified=true;
       current.acceptInitialRaster=true;
+      console.log("BRIDGE SUBMIT VERIFIED mode="+(st.submitted?"user-turn":"conversation-transition")+" generating="+Boolean(st.generating)+" url="+String(st.url||""));
       return current
     }
 
     if(st&&st.composerMarker&&Date.now()-lastAttemptAt>=1200){
       lastAttemptAt=Date.now();
-      let clicked=false;
+      let triggered=false;
       try{
-        clicked=Boolean(await current.eval("(()=>{const b=document.querySelector('button[data-testid=\\\"send-button\\\"],button[aria-label*=\\\"Send\\\" i],button[aria-label*=\\\"Enviar\\\" i]');if(!b||b.disabled)return false;b.click();return true})()"));
+        triggered=Boolean(await current.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const b=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');if(b&&!b.disabled){b.click();return true}const form=c&&c.closest&&c.closest('form');if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return true}return false})()"));
       }catch{}
-      if(!clicked){
+      if(!triggered){
         try{
           const focused=Boolean(await current.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return false;c.focus();return true})()"));
           if(focused){
             await current.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+            await current.call("Input.dispatchKeyEvent",{type:"char",text:"\r",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
             await current.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-            clicked=true;
+            triggered=true;
           }
         }catch{}
       }
-      console.log("BRIDGE SUBMIT RECOVERY "+(clicked?"TRIGGERED":"WAIT")+" sendDisabled="+Boolean(st.sendDisabled));
+      if(triggered&&!triggeredAt)triggeredAt=Date.now();
+      console.log("BRIDGE SUBMIT RECOVERY "+(triggered?"TRIGGERED":"WAIT")+" sendDisabled="+Boolean(st.sendDisabled)+" generating="+Boolean(st.generating));
     }
 
     await sleep(650);
   }
-  throw Error("El prompt ImageGen quedó sin enviar tras reintentos/relocalización; "+JSON.stringify(last||{}).slice(0,500))
+  throw Error("No hubo evidencia suficiente de envío del prompt ImageGen; "+JSON.stringify(last||{}).slice(0,700))
 }
+
 function probeExpression(){
   return [
     "(async()=>{",
@@ -338,7 +518,7 @@ async function captureDomImage(cdp,candidate){
 
 async function capture(cdp,job){
   const deadline=Date.now()+3*60*1000;
-  let lastDiag=null,lastEvalError=null,baselineSet=false,baselineSrc="";
+  let lastDiag=null,lastEvalError=null,baselineSet=false,baselineSrc="",deadSince=0;
   const acceptInitialRaster=Boolean(cdp&&cdp.acceptInitialRaster);
   let domBaseline=(cdp&&cdp.preSubmitImageSrcs instanceof Set)?new Set(cdp.preSubmitImageSrcs):new Set();
   try{
@@ -347,21 +527,9 @@ async function capture(cdp,job){
     console.log("BRIDGE DOM BASELINE images="+initial.length);
   }catch{}
   while(Date.now()<deadline){
-    try{
-      const dom=await domImageCandidates(cdp);
-      let fresh=dom.filter(x=>!domBaseline.has(x.src));
-      if(!fresh.length&&acceptInitialRaster&&dom.length){
-        const elapsed=(3*60*1000)-(deadline-Date.now());
-        if(elapsed>12000)fresh=[dom[0]];
-      }
-      if(fresh.length){
-        const shot=await captureDomImage(cdp,fresh[0]);
-        if(shot){
-          console.log("BRIDGE DOM RASTER "+fresh[0].width.toFixed(0)+"x"+fresh[0].height.toFixed(0)+" "+fresh[0].src.slice(0,120));
-          return shot
-        }
-      }
-    }catch(e){console.log("BRIDGE DOM CAPTURE WARNING :: "+String(e&&e.message||e))}
+    // v25: nunca hacemos screenshot del DOM. La interfaz de ChatGPT puede
+    // superponerse al <img> (Preview, Ask ChatGPT, controles) y contaminar
+    // el resultado. Solo se aceptan bytes del recurso o canvas del <img>.
     let p;
     try{
       p=await cdp.eval(probeExpression(),true);
@@ -382,7 +550,14 @@ async function capture(cdp,job){
         }
       }
     }
-    if(p&&p.diag)lastDiag=p.diag;
+    if(p&&p.diag){
+      lastDiag=p.diag;
+      const dead=Boolean(p.diag.marker&&p.diag.commandScoped&&!p.diag.generating&&Number(p.diag.imagesAfterMarker||0)===0&&Number(p.diag.turns||0)===0);
+      if(dead){
+        if(!deadSince)deadSince=Date.now();
+        if(Date.now()-deadSince>=15000)throw Error("ImageGen quedó inactivo tras el envío; "+JSON.stringify(p.diag).slice(0,700))
+      }else deadSince=0;
+    }
     const currentSrc=String(p&&p.src||"");
     if(!baselineSet){
       baselineSet=true;
@@ -397,24 +572,8 @@ async function capture(cdp,job){
     }
     const isNewRaster=Boolean(currentSrc)&&(!baselineSrc||currentSrc!==baselineSrc);
     if(p&&p.dataUrl&&p.width>=640&&p.height>=360&&isNewRaster)return p;
-    // Fallback seguro: screenshot SOLO del elemento <img> candidato. Nunca del turno,
-    // card, canvas o viewport completo.
-    if(p&&p.found&&p.kind==="img"&&isNewRaster&&p.rect&&p.rect.width>=180&&p.rect.height>=120){
-      try{
-        const naturalRatio=Number(p.width||0)/Math.max(1,Number(p.height||1));
-        const rectRatio=Number(p.rect.width||0)/Math.max(1,Number(p.rect.height||1));
-        if(naturalRatio>=0.7&&naturalRatio<=2.2&&Math.abs(Math.log(Math.max(0.01,naturalRatio)/Math.max(0.01,rectRatio)))<0.45){
-          const scale=Math.min(3,Math.max(1,640/Math.max(1,p.rect.width),360/Math.max(1,p.rect.height)));
-          for(const quality of [92,86,78]){
-            const cap=await cdp.call("Page.captureScreenshot",{format:"jpeg",quality,fromSurface:true,clip:{x:p.rect.x,y:p.rect.y,width:p.rect.width,height:p.rect.height,scale}});
-            const w=Math.round(p.rect.width*scale),h=Math.round(p.rect.height*scale);
-            if(cap&&cap.data&&cap.data.length>=16000&&cap.data.length<=3900000&&w>=640&&h>=360){
-              return {dataUrl:"data:image/jpeg;base64,"+cap.data,width:w,height:h,capture:"image-element-screenshot-x"+scale.toFixed(2)+"-q"+quality,diag:p.diag||null}
-            }
-          }
-        }
-      }catch{}
-    }
+    // Sin fallback de screenshot: si fetch/canvas no produce raster limpio,
+    // esperamos hasta timeout y fallamos de forma explícita.
     await sleep(1500)
   }
   const diag=lastDiag?JSON.stringify(lastDiag).slice(0,900):(lastEvalError?("eval_error="+lastEvalError):"sin diagnóstico DOM");
@@ -425,23 +584,14 @@ async function post(body){
   let d={};try{d=await r.json()}catch{}
   return {ok:r.ok,status:r.status,data:d}
 }
-async function telemetry(stage,extra={}){
+async function progress(phase,detail){
   try{
-    const r=await post({
-      task:"image_pc_ack",
-      target_id:targetId,
-      command_id:commandId,
-      stage,
-      worker_id:"ttendencias-image-bridge-v1",
-      upload_secret:secret,
-      bridge_version:BRIDGE_MODE,
-      ...extra
-    });
-    if(!r.ok)console.log("BRIDGE TELEMETRY "+stage+" "+r.status+" "+String(r.data&&r.data.error||""));
-  }catch(e){console.log("BRIDGE TELEMETRY ERROR "+stage+" :: "+String(e&&e.message||e))}
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttendencias-image-bridge-v28-dead-submit-retry",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
+  }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v1",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v28-dead-submit-retry",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -461,30 +611,39 @@ async function uploadImage(image){
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
-    void job;
-    cdp=await findChat(job);
-    console.log("BRIDGE CHAT FOUND mode="+BRIDGE_MODE);
-    await telemetry("chat_found",{reason:"Bridge conectado al chat objetivo."});
-    try{
+    cdp=await openFreshDedicatedConversation();
+    console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
+    let image=null;
+    for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
+      if(generationAttempt>1){
+        try{cdp&&cdp.close()}catch{}
+        await progress("image_retry","Primer envío no produjo generación real; reintentando en conversación nueva de la misma pestaña.");
+        cdp=await openFreshDedicatedConversation();
+        console.log("BRIDGE INTERNAL RETRY conversation="+generationAttempt);
+      }
+      cdp=await injectPromptIntoChat(cdp,job);
       cdp=await ensureSubmitted(cdp,job);
       cdp.acceptInitialRaster=true;
-      console.log("BRIDGE PROMPT SUBMITTED/VERIFIED");
-    }catch(submitErr){
-      console.log("BRIDGE SUBMIT PRIMARY MISSED :: "+String(submitErr&&submitErr.message||submitErr));
+      console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
+      if(generationAttempt===1){
+        await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
+        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v28-dead-submit-retry"});
+        if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
+      }
+      await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
       try{
-        cdp=await injectPromptIntoChat(cdp,job);
-        cdp=await ensureSubmitted(cdp,job);
-        cdp.acceptInitialRaster=true;
-        console.log("BRIDGE PROMPT SELF-SUBMITTED/VERIFIED");
-      }catch(selfErr){
-        throw Error("No se pudo enviar el prompt en el target elegido: "+String(selfErr&&selfErr.message||selfErr))
+        image=await capture(cdp,job);
+        break
+      }catch(e){
+        if(generationAttempt>=2)throw e;
+        console.log("BRIDGE GENERATION RETRY :: "+String(e&&e.message||e));
       }
     }
-    const image=await capture(cdp,job);
-    if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
-    console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
-    await telemetry("raster_found",{reason:"Raster ImageGen detectado: "+image.capture+" "+image.width+"x"+image.height});
-    await telemetry("upload_started",{reason:"Subida del raster iniciada."});
+    if(!image)throw Error("ImageGen no produjo raster tras reintento interno");
+    await progress("raster_captured","Raster ImageGen capturado; validando y materializando.");
+    if(image.width<1024||image.height<576)throw Error("Raster capturado inferior a 1024x576");
+    if(!/^(original-fetch-img|canvas-from-img-)/.test(String(image.capture||"")))throw Error("Método de captura no permitido: "+String(image.capture||""));
+    console.log("BRIDGE CLEAN IMAGE "+image.capture+" "+image.width+"x"+image.height);
     const up=await uploadImage(image);
     if(!up.ok)throw Error("Upload "+up.status+": "+(up.data&&up.data.error||"sin detalle"));
     console.log("BRIDGE UPLOADED "+up.data.sha256);
@@ -495,7 +654,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttendencias-image-bridge-v1",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttendencias-image-bridge-v28-dead-submit-retry",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
