@@ -17,20 +17,15 @@ if(root&&root!=="vercel-webhook")throw new Error("Unexpected rootDirectory: "+ro
 const prefix=root?root+"/":"";
 
 const sources=[
-  {local:"vercel-webhook/money-control/index.html",file:prefix+"money-control/index.html"},
-  {local:"vercel-webhook/api/money-control-snapshot.js",file:prefix+"api/money-control-snapshot.js"},
-  {local:"vercel-webhook/api/money-control-state.js",file:prefix+"api/money-control-state.js"},
-  {local:"vercel-webhook/package.json",file:prefix+"package.json"}
+  {local:"vercel-webhook/money-control/index.html",file:prefix+"money-control/index.html"}
 ];
 
 const minimalConfig={
   "$schema":"https://openapi.vercel.sh/vercel.json",
-  functions:{
-    "api/money-control-snapshot.js":{maxDuration:30},
-    "api/money-control-state.js":{maxDuration:30}
-  },
   git:{deploymentEnabled:false},
   rewrites:[
+    {source:"/api/money-control-snapshot",destination:"https://europapress-rss.vercel.app/api/money-control-snapshot"},
+    {source:"/api/money-control-state",destination:"https://europapress-rss.vercel.app/api/money-control-state"},
     {source:"/money-control",destination:"/money-control/index.html"},
     {source:"/money-control/",destination:"/money-control/index.html"}
   ],
@@ -85,7 +80,7 @@ const payload={
   project:projectId,
   files:uploads,
   projectSettings:{framework:null},
-  meta:{moneyControlDev:"native-ingest-v1"}
+  meta:{moneyControlDev:"native-ingest-v2-proxy"}
 };
 const response=await fetch("https://api.vercel.com/v13/deployments?teamId="+encodeURIComponent(teamId)+"&skipAutoDetectionConfirmation=1",{
   method:"POST",
