@@ -16,7 +16,7 @@ $ListenerSnapshotUrl = "$StatusBase/api/ttendencias-run-status?view=listener-sna
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
 
-$WorkerId = "ttendencias-dedicated-v14"
+$WorkerId = "ttendencias-dedicated-v13"
 $PollSeconds = 15
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
