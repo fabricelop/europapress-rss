@@ -35,7 +35,7 @@ Para cada noticia editorial apta:
 - si no existe una IA válida, deja `ai_image_status:"none"` o `failed` y permite que el reparador automático de Listas cree el job;
 - una IA solo es válida si procede de ChatGPT ImageGen, está materializada como raster limpio y tiene al menos 1024×576; previews, screenshots de la interfaz y rasteres inferiores se consideran inválidos y deben regenerarse;
 - si una IA válida ya existe para la revisión vigente, no la regeneres;
-- los temas sensibles mantienen `disable_ai_image:true`, `ai_image_status:"disabled"` y `image_mode:"fallback_only"`;
+- **la sensibilidad editorial no bloquea ImageGen**: noticias con víctimas, violencia, guerra, tragedias u otros asuntos sensibles siguen siendo elegibles para generar una propuesta IA; el tratamiento debe ser factual y respetuoso y el usuario decide si la imagen es apta para publicar;
 - Tremending mantiene `tweet_capture_only`.
 
 La ausencia de IA nunca impide READY/Listas, pero **sí impide el envío a Telegram**. El reparador de Listas reintenta automáticamente IA ausente/incorrecta y archivo ausente recuperable.
@@ -110,7 +110,7 @@ Para una noticia apta sin IA:
 - `fallback_image_status:"ready|none|pending"`;
 - `image_choice:"fallback|none"` hasta que llegue una IA válida.
 
-Para una noticia sensible o Tremending, conserva las exclusiones vigentes (`disable_ai_image`, `fallback_only`, `tweet_capture_only`).
+No excluyas una noticia normal de ImageGen por sensibilidad editorial ni por categorías como sucesos, guerra, tragedia o víctimas. Conserva únicamente Tremending en su flujo específico `tweet_capture_only`; la decisión final sobre si una IA normal se publica corresponde al usuario.
 
 La pasada editorial no abre directamente el chat visual ni espera a ImageGen: la generación automática es posterior a READY y forma parte del mismo pipeline oficial. Cuando el bridge termina, actualiza `ai_image`, `ai_image_status`, `image_choice` e `image`; el workflow de Telegram detecta el cambio y entrega/repara el paquete.
 
