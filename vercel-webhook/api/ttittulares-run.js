@@ -74,8 +74,8 @@ async function readControlRaw(path){
   }catch(_){return null}
 }
 async function readTrigger(){
-  const u=`https://api.github.com/repos/${REPO}/contents/${TRIGGER_PATH}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`;
-  const r=await gh(u);
+  const u=`https://api.github.com/repos/${REPO}/contents/${TRIGGER_PATH}?ref=${encodeURIComponent(TRIGGER_BRANCH)}&t=${Date.now()}`;
+  const r=await gh(u,{cache:"no-store",headers:{"cache-control":"no-cache"}});
   if(!r.ok)throw new Error(`GitHub trigger GET: ${r.status} ${await r.text()}`);
   const f=await r.json();
   const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
@@ -356,7 +356,7 @@ async function requestPcAck(req,res){
   const detail=String(req.body?.detail||"").trim().slice(0,1000);
   if(!command_id||!["picked_up","launched","failed"].includes(stage))return res.status(400).json({ok:false,error:"Ack no válido"});
   const {doc:trigger}=await readTrigger();
-  if(String(trigger.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es el actual"});
+  if(String(trigger.command_id||"")!==command_id){console.log("TTI_PC_ACK_MISMATCH",{incoming:command_id,current:String(trigger.command_id||""),requested_at:trigger.requested_at||null});return res.status(409).json({ok:false,error:"command_id ya no es el actual",incoming:command_id,current:String(trigger.command_id||"")});}
   const requested_at=String(trigger.requested_at||"");
   const age=Date.now()-stamp(requested_at);
   if(!stamp(requested_at)||age<0||age>7*24*60*60*1000)return res.status(409).json({ok:false,error:"Trigger fuera de ventana"});
