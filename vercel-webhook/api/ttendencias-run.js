@@ -341,7 +341,8 @@ async function requestImagePcAck(req,res){
   const command_id=String(req.body?.command_id||"").trim();
   const stage=String(req.body?.stage||"").toLowerCase();
   const worker_id=String(req.body?.worker_id||"ttendencias-dedicated-v1").trim().slice(0,120)||"ttendencias-dedicated-v1";
-  if(!command_id||!["picked_up","launched","cancelled","failed","done"].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
+  const telemetryStages=["target_handoff","chat_found","raster_found","upload_started"];
+  if(!command_id||!["picked_up","launched","cancelled","failed","done",...telemetryStages].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
@@ -368,10 +369,25 @@ async function requestImagePcAck(req,res){
   const now=new Date().toISOString();
   const next={...job,updated_at:now,pc_worker_id:worker_id};
   const doneSecret=String(req.body?.upload_secret||"");
-  if(["done","failed"].includes(stage)&&job.pc_upload_secret_hash&&!validUploadSecret(job,doneSecret)){
+  if(["done","failed",...telemetryStages].includes(stage)&&job.pc_upload_secret_hash&&!validUploadSecret(job,doneSecret)){
     return res.status(401).json({ok:false,error:"Secreto de imagen no válido"})
   }
-  if(stage==="cancelled"){
+  if(telemetryStages.includes(stage)){
+    next.status=stage==="raster_found"||stage==="upload_started"?"PERSISTING":"RUNNING";
+    next.phase=stage;
+    next.bridge_version=String(req.body?.bridge_version||job.bridge_version||"").slice(0,80)||null;
+    if(req.body?.diagnostic_target_id)next.target_handoff_id=String(req.body.diagnostic_target_id).slice(0,180);
+    if(stage==="target_handoff")next.target_handoff_at=now;
+    if(stage==="chat_found")next.chat_found_at=now;
+    if(stage==="raster_found")next.raster_found_at=now;
+    if(stage==="upload_started")next.upload_started_at=now;
+    next.message=String(req.body?.reason||({
+      target_handoff:"Target de ChatGPT entregado al bridge.",
+      chat_found:"Bridge conectado al chat objetivo.",
+      raster_found:"Raster ImageGen detectado.",
+      upload_started:"Subida del raster iniciada."
+    }[stage]||"Diagnóstico de imagen actualizado.")).slice(0,240);
+  }else if(stage==="cancelled"){
     next.status="CANCELLED";
     next.phase="stale_target";
     next.finished_at=now;
