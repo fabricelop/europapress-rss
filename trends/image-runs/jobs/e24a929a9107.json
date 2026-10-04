@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-1791072247202-001eaf",
   "requested_at": "2026-10-04T00:04:07.202Z",
-  "updated_at": "2026-10-04T00:04:07.202Z",
-  "status": "REQUESTED",
-  "phase": "queued",
+  "updated_at": "2026-10-04T00:04:12.234Z",
+  "status": "RUNNING",
+  "phase": "pc_pickup",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -47,5 +47,8 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
   },
-  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+  "message": "PC ha recogido la solicitud de imagen.",
+  "pc_upload_secret_hash": "482590c31d3ef16ddc058a256ccebc7d4bf4eb965d257a7845ef721407c646b0",
+  "pc_worker_id": "ttendencias-dedicated-v13",
+  "pc_picked_up_at": "2026-10-04T00:04:12.234Z"
 }
