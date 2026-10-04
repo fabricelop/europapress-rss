@@ -1,8 +1,8 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T00:45:00+02:00",
-  "last_completed_at": "2026-10-05T00:50:00+02:00",
+  "last_started_at": "2026-10-05T01:15:00+02:00",
+  "last_completed_at": "2026-10-05T01:16:47+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
@@ -14,25 +14,25 @@
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T00:50:00+02:00",
+  "updated_at": "2026-10-05T01:16:47+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T004500+0200",
+    "run_id": "tr-chat-20261005T011500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-05T00:45:00+02:00",
-    "updated_at": "2026-10-05T00:50:00+02:00",
-    "finished_at": "2026-10-05T00:50:00+02:00",
+    "started_at": "2026-10-05T01:15:00+02:00",
+    "updated_at": "2026-10-05T01:16:47+02:00",
+    "finished_at": "2026-10-05T01:16:47+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-05T00:45:00+02:00",
+    "requested_at": "2026-10-05T01:15:00+02:00",
     "partial": false,
     "summary": {
       "trends_processed": 0,
@@ -53,10 +53,10 @@
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_omitted": 0,
-      "pending_cards_checked": 8,
-      "pending_visual_repair_requested": 3
+      "pending_cards_checked": 46,
+      "pending_visual_repair_requested": 41
     },
-    "message": "Ejecución cerrada · cola editorial vacía",
+    "message": "Ejecución cerrada · cola editorial vacía; saneamiento visual solicitado",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -69,39 +69,39 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-05T00:45:00+02:00",
+        "at": "2026-10-05T01:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando ejecución directa de TTendencias"
       },
       {
-        "at": "2026-10-05T00:46:00+02:00",
+        "at": "2026-10-05T01:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 8 tarjetas"
+        "message": "Revisando Pendientes · 46 tarjetas"
       },
       {
-        "at": "2026-10-05T00:47:00+02:00",
+        "at": "2026-10-05T01:16:47+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
-        "message": "Reparación visual solicitada para 3 tarjetas"
+        "message": "Reparación visual solicitada para 41 tarjetas"
       },
       {
-        "at": "2026-10-05T00:49:00+02:00",
+        "at": "2026-10-05T01:16:47+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola y verificando saneamiento de Pendientes"
+        "message": "Releyendo main y verificando cola final"
       },
       {
-        "at": "2026-10-05T00:50:00+02:00",
+        "at": "2026-10-05T01:16:47+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Ejecución cerrada · cola editorial vacía"
+        "message": "Ejecución cerrada · cola editorial vacía; saneamiento visual solicitado"
       }
     ]
   },
