@@ -247,6 +247,40 @@ function persistedRequestsFallback(doc,request){
   });
 }
 
+function persistedActiveRequestsFallback(doc,request){
+  const reqAt=stamp(request?.requested_at);
+  if(!reqAt)return null;
+  const rows=(doc?.requests||[]).filter(x=>["preparing","update"].includes(String(x?.status||"").toLowerCase()));
+  if(!rows.length)return null;
+  const completedAfter=(doc?.requests||[]).some(x=>{
+    const st=String(x?.status||"").toLowerCase();
+    if(!["explained","dismissed","problematic"].includes(st))return false;
+    const at=stamp(x?.explained_at||x?.dismissed_at||x?.problematic_at||x?.last_attempt_at||x?.updated_at);
+    return at>=reqAt;
+  });
+  const latestActiveAt=Math.max(...rows.map(x=>stamp(x?.last_attempt_at||x?.updated_at||x?.requested_at)).filter(Boolean),0);
+  // Si ya hubo cierres posteriores a la orden y aún quedan revisiones activas,
+  // la pasada sigue realmente trabajando aunque RUNTRACE no haya actualizado.
+  if(!completedAfter && (!latestActiveAt || latestActiveAt<reqAt))return null;
+  rows.sort((a,b)=>stamp(a?.requested_at)-stamp(b?.requested_at));
+  const current=rows[0]||{};
+  return normalizeTrace({
+    run_id:String(request?.command_id||"persisted-active"),
+    command_id:String(request?.command_id||"persisted-active"),
+    source:"chat",
+    status:"PROCESSING",
+    phase:"persisting",
+    requested_at:request?.requested_at||null,
+    started_at:request?.requested_at||null,
+    updated_at:new Date(Math.max(Date.now()-1000,latestActiveAt||Date.now())).toISOString(),
+    current:0,
+    total:rows.length,
+    trend_id:current.id||null,
+    title:current.name||null,
+    message:rows.length+" tendencia"+(rows.length===1?"":"s")+" aún en elaboración; actividad editorial persistida en main."
+  });
+}
+
 function manualFallback(items,request,ack){
   const command_id=String(request.command_id||"").trim();
   const requested_at=String(request.requested_at||"").trim();
@@ -263,7 +297,7 @@ function manualFallback(items,request,ack){
   const launchedAt=ackMatches?(ack?.launched_at||null):null;
   const noPickup=rawStatus==="REQUESTED"&&!started_at&&!ackMatches&&Date.now()-stamp(requested_at)>=START_ACK_MS;
   const pickupButNoLaunch=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="picked_up"&&Date.now()-stamp(pickedAt)>=START_ACK_MS;
-  const launchedButNoEditorial=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="launched"&&Date.now()-stamp(launchedAt||ack?.updated_at)>=5*60*1000;
+  const launchedButNoEditorial=rawStatus==="REQUESTED"&&!started_at&&ackMatches&&ackStage==="launched"&&Date.now()-stamp(launchedAt||ack?.updated_at)>=30*60*1000;
   const staleRunning=rawStatus==="RUNNING"&&Date.now()-stamp(lastActivity)>=STALE_MS;
 
   let status=rawStatus,phase=status==="REQUESTED"?"preparing":status==="RUNNING"?"running":status==="DONE"?"closing":"error";
@@ -287,7 +321,7 @@ function manualFallback(items,request,ack){
       :pickupButNoLaunch
         ?"El PC recogió la orden, pero no pudo arrancar el proceso local en 90 segundos."
         :launchedButNoEditorial
-          ?"El PC abrió ChatGPT, pero no apareció ninguna actividad editorial en 5 minutos."
+          ?"El PC abrió ChatGPT, pero no apareció ninguna actividad editorial persistida en 30 minutos."
           :"La ejecución no actualiza su estado desde hace más de 20 minutos.";
   }
 
@@ -296,7 +330,7 @@ function manualFallback(items,request,ack){
     :pickupButNoLaunch
       ?new Date(stamp(pickedAt)+START_ACK_MS).toISOString()
       :launchedButNoEditorial
-        ?new Date(stamp(launchedAt||ack?.updated_at)+5*60*1000).toISOString()
+        ?new Date(stamp(launchedAt||ack?.updated_at)+30*60*1000).toISOString()
         :staleRunning?new Date().toISOString()
       :(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
 
@@ -464,6 +498,8 @@ export default async function handler(req,res){
       }
     }
 
+    const persistedActive=persistedActiveRequestsFallback(requestsDoc,request);
+    if(!active&&persistedActive)active=persistedActive;
     if(active)return res.status(200).json({ok:true,enabled,active:true,...active,last_run:null,can_run:enabled&&authorized(req)});
 
     const terminal=traces.map(normalizeTrace).filter(t=>terminalStatus(t.status));
