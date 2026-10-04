@@ -171,7 +171,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     [IO.File]::WriteAllBytes($tmp,$raw)
     $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
     foreach ($needle in @(
-      'BRIDGE_MODE="capture-only-v25-clean-raster"',
+      'BRIDGE_MODE="capture-only-v26-strict-submit"',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'ttittulares-image-bridge-v1',
       'imagesAfterMarker'
@@ -190,7 +190,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   if (Test-Path -LiteralPath $ImageBridge) {
     try {
       $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
-      if ($txt.Contains('BRIDGE_MODE="capture-only-v25-clean-raster"') -and $txt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')) {
+      if ($txt.Contains('BRIDGE_MODE="capture-only-v26-strict-submit"') -and $txt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')) {
         & $NodePath --check $ImageBridge *> $null
         if ($LASTEXITCODE -eq 0) { Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK"; return $true }
       }
