@@ -22977,10 +22977,29 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true,
+      "image_status": "ready",
+      "image_pending": false,
       "news_disposition": "ignored",
-      "news_note": "Campaña de fandom; no es una noticia independiente para el puente."
+      "news_note": "Campaña de fandom; no es una noticia independiente para el puente.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://sites.google.com/sitesv-images-rt/AMxu72u0H41Clcax9siGNghtyREVXqxO_ATp1fVPdBhNR6rpsc5fa3qPFqnDDlwwE-4zufJ_5B55L8So2BXwihDZfvU5y5yzOe67-oFlBH5xtE8UOovR5ezEXCJ7vBUfdVpTZCZifElTRBBNEP_62j1EfxigH1lQ8WStA4Lg1PGGku1FUXp0jcSaNtt8Gu77yRU=w16383",
+        "source": "SKZ Stay Spain · campaña fan",
+        "source_url": "https://sites.google.com/view/skzstayspain",
+        "alt": "Imagen de archivo relacionada con STRAY KIDS IN SPAIN",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://sites.google.com/sitesv-images-rt/AMxu72u0H41Clcax9siGNghtyREVXqxO_ATp1fVPdBhNR6rpsc5fa3qPFqnDDlwwE-4zufJ_5B55L8So2BXwihDZfvU5y5yzOe67-oFlBH5xtE8UOovR5ezEXCJ7vBUfdVpTZCZifElTRBBNEP_62j1EfxigH1lQ8WStA4Lg1PGGku1FUXp0jcSaNtt8Gu77yRU=w16383",
+        "source": "SKZ Stay Spain · campaña fan",
+        "source_url": "https://sites.google.com/view/skzstayspain",
+        "alt": "Imagen de archivo relacionada con STRAY KIDS IN SPAIN",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "d933cc72e8f4",
@@ -23143,11 +23162,15 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true,
-      "news_note": "Conversación de emisión televisiva; no es noticia independiente para el puente."
+      "image_status": "none",
+      "image_pending": false,
+      "news_note": "Conversación de emisión televisiva; no es noticia independiente para el puente.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     }
   ],
-  "updated_at": "2026-10-04T22:20:00+02:00",
+  "updated_at": "2026-10-04T20:19:17.904338Z",
   "count": 523
 }
