@@ -252,7 +252,7 @@ function buildMessage(job){
   ].join("\n")
 }
 
-const BRIDGE_MODE="capture-only-v24-fixed-tab";
+const BRIDGE_MODE="capture-only-v25-clean-raster";
 // compatibility during hot rollout: BRIDGE_MODE="capture-only-v23-target-handoff"
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
@@ -511,21 +511,9 @@ async function capture(cdp,job){
     console.log("BRIDGE DOM BASELINE images="+initial.length);
   }catch{}
   while(Date.now()<deadline){
-    try{
-      const dom=await domImageCandidates(cdp);
-      let fresh=dom.filter(x=>!domBaseline.has(x.src));
-      if(!fresh.length&&acceptInitialRaster&&dom.length){
-        const elapsed=(3*60*1000)-(deadline-Date.now());
-        if(elapsed>12000)fresh=[dom[0]];
-      }
-      if(fresh.length){
-        const shot=await captureDomImage(cdp,fresh[0]);
-        if(shot){
-          console.log("BRIDGE DOM RASTER "+fresh[0].width.toFixed(0)+"x"+fresh[0].height.toFixed(0)+" "+fresh[0].src.slice(0,120));
-          return shot
-        }
-      }
-    }catch(e){console.log("BRIDGE DOM CAPTURE WARNING :: "+String(e&&e.message||e))}
+    // v25: nunca hacemos screenshot del DOM. La interfaz de ChatGPT puede
+    // superponerse al <img> (Preview, Ask ChatGPT, controles) y contaminar
+    // el resultado. Solo se aceptan bytes del recurso o canvas del <img>.
     let p;
     try{
       p=await cdp.eval(probeExpression(),true);
@@ -561,24 +549,8 @@ async function capture(cdp,job){
     }
     const isNewRaster=Boolean(currentSrc)&&(!baselineSrc||currentSrc!==baselineSrc);
     if(p&&p.dataUrl&&p.width>=640&&p.height>=360&&isNewRaster)return p;
-    // Fallback seguro: screenshot SOLO del elemento <img> candidato. Nunca del turno,
-    // card, canvas o viewport completo.
-    if(p&&p.found&&p.kind==="img"&&isNewRaster&&p.rect&&p.rect.width>=180&&p.rect.height>=120){
-      try{
-        const naturalRatio=Number(p.width||0)/Math.max(1,Number(p.height||1));
-        const rectRatio=Number(p.rect.width||0)/Math.max(1,Number(p.rect.height||1));
-        if(naturalRatio>=0.7&&naturalRatio<=2.2&&Math.abs(Math.log(Math.max(0.01,naturalRatio)/Math.max(0.01,rectRatio)))<0.45){
-          const scale=Math.min(3,Math.max(1,640/Math.max(1,p.rect.width),360/Math.max(1,p.rect.height)));
-          for(const quality of [92,86,78]){
-            const cap=await cdp.call("Page.captureScreenshot",{format:"jpeg",quality,fromSurface:true,clip:{x:p.rect.x,y:p.rect.y,width:p.rect.width,height:p.rect.height,scale}});
-            const w=Math.round(p.rect.width*scale),h=Math.round(p.rect.height*scale);
-            if(cap&&cap.data&&cap.data.length>=16000&&cap.data.length<=3900000&&w>=640&&h>=360){
-              return {dataUrl:"data:image/jpeg;base64,"+cap.data,width:w,height:h,capture:"image-element-screenshot-x"+scale.toFixed(2)+"-q"+quality,diag:p.diag||null}
-            }
-          }
-        }
-      }catch{}
-    }
+    // Sin fallback de screenshot: si fetch/canvas no produce raster limpio,
+    // esperamos hasta timeout y fallamos de forma explícita.
     await sleep(1500)
   }
   const diag=lastDiag?JSON.stringify(lastDiag).slice(0,900):(lastEvalError?("eval_error="+lastEvalError):"sin diagnóstico DOM");
@@ -591,12 +563,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v24-fixed-tab",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v25-clean-raster",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v24-fixed-tab",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v25-clean-raster",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -623,13 +595,14 @@ async function uploadImage(image){
     cdp.acceptInitialRaster=true;
     console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED");
     await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-    const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v24-fixed-tab"});
+    const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v25-clean-raster"});
     if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
     await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña.");
     const image=await capture(cdp,job);
     await progress("raster_captured","Raster ImageGen capturado; validando y materializando.");
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
-    console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
+    if(!/^(original-fetch-img|canvas-from-img-)/.test(String(image.capture||"")))throw Error("Método de captura no permitido: "+String(image.capture||""));
+    console.log("BRIDGE CLEAN IMAGE "+image.capture+" "+image.width+"x"+image.height);
     const up=await uploadImage(image);
     if(!up.ok)throw Error("Upload "+up.status+": "+(up.data&&up.data.error||"sin detalle"));
     console.log("BRIDGE UPLOADED "+up.data.sha256);
@@ -640,7 +613,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v24-fixed-tab",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v25-clean-raster",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
