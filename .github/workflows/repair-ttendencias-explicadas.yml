@@ -116,6 +116,7 @@ jobs:
           index=json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {"version":1,"jobs":[]}
           now=datetime.now(timezone.utc)
           nowz=now.isoformat().replace("+00:00","Z")
+          CUTOFF=now.timestamp()-24*3600
           ACTIVE={"REQUESTED","RUNNING","PERSISTING","GENERATING"}
 
           STYLE=("Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, "
@@ -179,6 +180,9 @@ jobs:
                   continue
               # La sensibilidad editorial no bloquea ImageGen. Solo Tremending queda fuera
               # porque usa su flujo específico de captura real del tuit.
+              at=parse_dt(row.get("explained_at"))
+              if not at or at.timestamp() < CUTOFF:
+                  continue
               leaders.append(row)
 
           queued=[]
