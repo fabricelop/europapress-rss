@@ -232,7 +232,7 @@ def run_send(patch_path):
             continue
         if (str(row.get("name") or "").strip().casefold(),int(row.get("revision") or 0)) in archived:
             continue
-        if row.get("tremending_origin") or row.get("disable_ai_image") or row.get("telegram_package_suppress"):
+        if row.get("tremending_origin") or row.get("telegram_package_suppress"):
             continue
         if str(row.get("telegram_package_status") or "").lower() in TERMINAL:
             continue
