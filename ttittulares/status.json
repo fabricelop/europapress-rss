@@ -1,24 +1,9 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T07:47:08.046263Z",
+  "updated_at": "2026-10-04T07:49:18.499166Z",
   "radar_at": "2026-10-04T07:42:27.599542Z",
-  "processing_count": 2,
+  "processing_count": 1,
   "processing_items": [
-    {
-      "event_id": "manual-a1fce4363854",
-      "title": "Y",
-      "url": "",
-      "sources": [],
-      "source_count": 0,
-      "drafted_source_count": 0,
-      "selected_at": "2026-10-04T07:40:37.826Z",
-      "status": "PROCESSING",
-      "selection_mode": "MANUAL_WEB_USER",
-      "manual_submission": true,
-      "revision": 1,
-      "with_image": true,
-      "image_mode": "ai_plus_fallback"
-    },
     {
       "event_id": "manual-2a0434945bd5",
       "title": "Última hora del temporal de lluvias en Cataluña: Illa confirma una víctima mortal por el temporal de lluvias en Tordera (Barcelona)",
@@ -36,8 +21,23 @@
     }
   ],
   "ready_count": 9,
-  "problematic_count": 0,
-  "problematic_items": [],
+  "problematic_count": 1,
+  "problematic_items": [
+    {
+      "event_id": "manual-a1fce4363854",
+      "title": "Y",
+      "url": "",
+      "selected_at": "2026-10-04T07:40:37.826Z",
+      "problematic_at": "2026-10-04T07:49:18.499166Z",
+      "problem_reason": "insufficient_manual_information",
+      "problematic_attempts": 1,
+      "user_validated": false,
+      "user_validated_at": null,
+      "revision": 1,
+      "source_count": 0,
+      "sources": []
+    }
+  ],
   "trend_candidates_count": 0,
   "trend_candidates": [],
   "one_source_count": 423,
