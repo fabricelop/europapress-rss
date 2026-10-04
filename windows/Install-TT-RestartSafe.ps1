@@ -39,7 +39,7 @@ function ValidateJs([string]$f){
 }
 foreach($f in $files){
   $dest=Join-Path $BaseDir $f.Local
-  $tmp=$dest+".restartsafe.new"
+  $tmp=$dest+$(if($f.Kind -eq "js"){".restartsafe.new.js"}else{".restartsafe.new.ps1"})
   [IO.File]::WriteAllBytes($tmp,(Raw $f.Remote))
   if($f.Kind -eq "ps"){ValidatePs $tmp}else{ValidateJs $tmp}
   Move-Item -LiteralPath $tmp -Destination $dest -Force
