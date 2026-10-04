@@ -509,6 +509,10 @@ function trendCategory(x){
  return "Sociedad"
 }
 function pendingKey(x){return String(x.id||x.name||"")+":r"+String(x.revision||0)}
+function deepLinkTarget(){
+ const p=new URLSearchParams(location.search),key=String(p.get("open")||"").trim();
+ return {key,reexplain:p.get("reexplain")==="1"}
+}
 function renderCollapsedPending(x){
  const card=document.createElement("article");card.className="card collapsedCard";
  const pick=makeImageSelector(x,false);
@@ -601,7 +605,17 @@ async function load(passive=false){
  const changed=fingerprint!==lastRenderFingerprint;
  allItems=nextItems;
  pruneImageSelections();
- if(changed){lastRenderFingerprint=fingerprint;render()}
+ const deep=deepLinkTarget();
+ if(deep.key){
+   const target=allItems.find(x=>pendingKey(x)===deep.key);
+   if(target){
+     openPendingKey=deep.key;
+     if(deep.reexplain&&!target.rewrite_pending){
+       setTimeout(()=>openReexplain(target),60);
+     }
+   }
+ }
+ if(changed||deep.key){lastRenderFingerprint=fingerprint;render()}
  else{updateUnreadBadge();updateImageControl()}
  // No borrar la protección local cuando el servidor confirma el archivado.
  // El copy_key identifica una versión exacta; conservarlo evita que una lectura
