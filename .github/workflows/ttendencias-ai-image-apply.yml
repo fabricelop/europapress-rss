@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: ttendencias-ai-image-apply
@@ -57,3 +58,11 @@ jobs:
           done
           echo "No se pudo aplicar la imagen IA tras cinco intentos" >&2
           exit 1
+
+
+      - name: Lanzar entrega visual TTendencias
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: gh workflow run send-ttendencias-explained-telegram.yml --repo "$REPO" --ref main
