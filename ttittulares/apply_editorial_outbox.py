@@ -452,7 +452,7 @@ def sync_compact(q):
             "event_id":x.get("event_id"),"title":x.get("title") or "","url":x.get("url") or "",
             "sources":x.get("sources") or [],"source_count":int(x.get("source_count") or 0),
             "selected_at":x.get("selected_at"),"selection_mode":x.get("selection_mode") or "",
-            "revision":int(x.get("revision") or 1),
+            "status":"PROCESSING","revision":int(x.get("revision") or 1),
             "rewrite_scope":x.get("rewrite_scope"),"reinvestigate":bool(x.get("reinvestigate")),"preserved_editorial":x.get("preserved_editorial"),
             "rewrite_request":x.get("rewrite_request") or x.get("rewrite_instruction") or "",
             "parent_event_id":x.get("parent_event_id"),"update_context":x.get("update_context"),
