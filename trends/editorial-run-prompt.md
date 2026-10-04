@@ -46,6 +46,15 @@ No uses Telegram. No proceses TTiTTulares ni SeLoRecordamos. No despliegues Verc
 
 ## Formato vigente de explicaciones para un tuit (prioridad de redacción)
 
+
+### Categoría editorial compacta para Pendientes
+
+Cada explicación/grupo cerrado debe persistir también un campo `category` con **una sola etiqueta breve** que permita decidir de un vistazo si merece imagen IA. Usa preferentemente esta taxonomía estable: `Deportes`, `Política`, `Espectáculos`, `Música`, `TV`, `Guerra`, `Atentado`, `Desastre`, `Sucesos`, `Justicia`, `Economía`, `Tecnología`, `Cultura`, `Sociedad`, `Salud`, `Internacional`, `Motor`, `Viral/Redes`, `Otros`.
+- Elige por el **hecho explicado**, no por el nombre de la tendencia.
+- `Guerra`, `Atentado` y `Desastre` tienen prioridad sobre categorías genéricas como Política o Internacional cuando describen el hecho central.
+- En agrupaciones, la categoría corresponde al acontecimiento compartido.
+- Persiste el mismo `category` en la ficha vigente de `trends/telegram-manual-explained.json` y en las revisiones cerradas de `trends/requests.json`.
+
 Cuando `trends/editorial-config.json.editorial.mode` sea `explanation_only` (o `explanation_only:true`), esta sección prevalece sobre cualquier formato heredado de Principal/A/B/C. **No cambia el flujo, la verificación factual, los estados, la agrupación, el puente a TTiTTulares ni la persistencia existente**. En este modo se redacta UNA explicación por acontecimiento/grupo, sin alternativas. La pasada editorial puede mantener la búsqueda de foto web/fallback, pero NO llama a ImageGen; el Gag IA se solicita aparte desde el panel.
 
 **Regla prioritaria de salida no bloqueante (prevalece sobre cualquier regla posterior que sugiera que el remate es obligatorio):** El chascarrillo es deseable, pero NUNCA un requisito para cerrar o sacar una tendencia cuya explicación factual ya esté verificada. Genera internamente hasta CINCO candidatos breves de remate concreto y adecuado y somételos a la selección basada en ratings descrita más abajo; solo el ganador puede hacerse visible. Si ninguno sirve, resulta inapropiado por sensibilidad, falla su generación o no cabe en el tuit, persiste inmediatamente la explicación factual completa con `closer_text:""`, sin línea `🌶️`, sin estrellas y con estado editorial normal `explained`. No reintentes indefinidamente, no esperes otra generación, no bloquees la cola ni las siguientes tendencias y NUNCA marques `problematic`, `preparing` o `update` exclusivamente por falta de remate. La verificación factual y el límite del tuit siguen siendo obligatorios; si no se verifica el hecho, aplica el tratamiento normal de hechos no verificados. Registra una incidencia editorial no bloqueante cuando falte el remate por un fallo de generación, no cuando su omisión sea deliberada por sensibilidad. El orden de dos líneas y la presencia de `🌶️` de las reglas siguientes solo se exigen CUANDO EXISTA un remate válido.
