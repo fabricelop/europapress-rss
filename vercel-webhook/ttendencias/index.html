@@ -39,7 +39,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
     <div class="badge" id="quality">—</div>
   </section>
   <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div></div><button class="primary" id="runNow" type="button" hidden style="display:none!important" aria-hidden="true" tabindex="-1">▶ Entradas</button></section>
-  <section class="runbar" id="imageBar"><div class="runmain"><div class="runline"><strong id="imageHeadline">Imágenes IA</strong></div><span id="imageState" class="done">Sin imágenes en curso · selección y lanzamiento desde Pendientes.</span></div></section>
+  <section class="runbar" id="imageBar"><div class="runmain"><div class="runline"><strong id="imageHeadline">Generación IA automática</strong></div><span id="imageState" class="done">Sin imágenes en curso.</span></div></section>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
   <section class="radarBlock" id="radarBlock">
     <div class="radarHead"><div><h2>Próximas tendencias</h2><div class="meta">Señales todavía fuera del Top 10</div></div><div class="radarHint">Cruce social + TTiTTulares</div></div>
@@ -74,7 +74,7 @@ const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
 const RUN_STATUS_API="/api/ttendencias-run-status";
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
-const SHELL_BUILD="20261003-image-monitor-v1";
+const SHELL_BUILD="20261004-auto-image-monitor-v2";
 const $=id=>document.getElementById(id);
 const DATA_CACHE_KEY="ttendencias-last-model",RUN_CACHE_KEY="ttendencias-last-run-status";
 const IMAGE_RUN_STATUS=RUN_STATUS_API+"?view=image-job&id=";
@@ -205,7 +205,7 @@ async function activatePush(){
    sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:appServerKey(d.publicKey)});
  }
  await api("push-subscribe",[],{subscription:sub.toJSON()});
- await updateBadge(model?.pendingExplainedRecent?.filter(x=>!x.copied&&!x.rewrite_pending).length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
+ const archived=localArchived();await updateBadge(model?.pendingExplainedRecent?.filter(x=>!x.copied&&!x.rewrite_pending&&!archived.has(x.copy_key)).length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
 }
 async function deactivatePush(){
  const sub=await currentPushSubscription();
@@ -400,7 +400,7 @@ function render(){
  quality.classList.add(total>0&&operativas/total>=0.7?"good":total>0&&operativas/total>=0.45?"warn":"bad");
  const elaboratingItems=model.elaboratingItems||[],elaborating=elaboratingItems.length;
  const working=$("workingCount");working.textContent="En elaboración: "+elaborating;working.classList.toggle("idle",elaborating===0);working.disabled=elaborating===0;working.title=elaborating?"Ver tendencias en elaboración":"";
- const unread=(model.pendingExplainedRecent||[]).filter(x=>!x.copied&&!x.rewrite_pending).length;
+ const archived=localArchived();const unread=(model.pendingExplainedRecent||[]).filter(x=>!x.copied&&!x.rewrite_pending&&!archived.has(x.copy_key)).length;
  const unreadBadge=$("unreadExplainedBadge");
  unreadBadge.textContent=unread>99?"99+":String(unread);
  unreadBadge.classList.toggle("show",unread>0);
@@ -639,18 +639,18 @@ function updateMainImageControl(){
  const current=d.current||null,q=Math.max(0,Number(d.queue_count||0)),active=Math.max(0,Number(d.active_count||0)),last=d.last_result||null;
  if(current){
    const name=String(current.target_name||current.target_id||"Tendencia");
-   head.textContent="Imágenes IA · "+active+" activa"+(active===1?"":"s");
+   head.textContent="Generación IA automática · "+active+" activa"+(active===1?"":"s");
    state.textContent=mainImageMonitorLabel(current)+" · "+name+(q?" · "+q+" en cola":"");
    state.className="running";if(bar)bar.classList.add("active");return
  }
- head.textContent="Imágenes IA";
+ head.textContent="Generación IA automática";
  if(last){
    const name=String(last.target_name||last.target_id||"Tendencia"),st=String(last.status||"").toUpperCase();
    if(st==="DONE"){state.textContent="Sin imágenes en curso · última lista: "+name;state.className="done"}
    else if(st==="ERROR"){state.textContent="Sin imágenes en curso · último fallo: "+name;state.className="error"}
    else{state.textContent="Sin imágenes en curso · último estado: "+name+" · "+st;state.className="done"}
  }else{
-   state.textContent="Sin imágenes en curso · selección y lanzamiento desde Pendientes.";
+   state.textContent="Sin imágenes en curso.";
    state.className="done"
  }
  if(bar)bar.classList.remove("active")
