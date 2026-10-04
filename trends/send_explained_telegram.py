@@ -17,7 +17,7 @@ DELIVERIES=ROOT/"trends/telegram-image-deliveries.json"
 BOT_STATE=ROOT/"trends/telegram-bot-state.json"
 ARCHIVE_DIR=ROOT/"trends/archive-images"
 WORKER="https://tt-control.fabricelop.workers.dev"
-BUTTONS_VERSION=2
+BUTTONS_VERSION=3
 TERMINAL={"published","dismissed"}
 
 
@@ -179,7 +179,22 @@ def q(url,params):
     return url+"?"+urllib.parse.urlencode(params)
 
 
-def keyboard(tid,rev,text,ai_url,archive_url=""):
+def x_search_url(term):
+    return "https://x.com/search?"+urllib.parse.urlencode({
+        "q":str(term or "").strip(),
+        "src":"typed_query",
+        "f":"live",
+    })
+
+
+def trend_search_term(row):
+    names=[str(x or "").strip() for x in (row.get("trend_names") or []) if str(x or "").strip()]
+    if names:
+        return names[0]
+    return str(row.get("name") or "").strip()
+
+
+def keyboard(tid,rev,text,ai_url,archive_url="",search_term=""):
     rows=[[{"text":"🖼️ Copiar imagen IA","url":q(WORKER+"/copy-image",{"src":ai_url})}]]
     if archive_url:
         rows.append([{"text":"🗂️ Copiar imagen archivo","url":q(WORKER+"/copy-image",{"src":archive_url})}])
@@ -191,6 +206,8 @@ def keyboard(tid,rev,text,ai_url,archive_url=""):
         copy_button,
         {"text":"✍️ Abrir en X","url":q(WORKER+"/x-compose",{"text":text})}
     ])
+    if str(search_term or "").strip():
+        rows.append([{"text":"🔎 Buscar en X","url":x_search_url(search_term)}])
     rows.append([
         {"text":"🗑️ Desestimar","callback_data":f"tx:d:{tid}:{rev}"},
         {"text":"✅ Publicado","callback_data":f"tx:p:{tid}:{rev}"}
@@ -297,7 +314,7 @@ def run_send(patch_path):
             except Exception as e:
                 print("TTENDENCIAS_ARCHIVE_WARNING",tid,str(e),flush=True)
 
-        kb=keyboard(tid,rev,text,ai_url,archive_copy_url)
+        kb=keyboard(tid,rev,text,ai_url,archive_copy_url,trend_search_term(row))
 
         if exact and str(exact.get("status") or "").lower()=="sent":
             edit_keyboard(token,chat,int(exact.get("telegram_message_id") or 0),kb)
@@ -399,19 +416,24 @@ def apply_patch(patch_path):
 
 
 def selftest():
-    kb=keyboard("abc123",2,"TT#1 Demo es tendencia porque ocurre algo.\n🌶️ Remate.","https://example.com/ai.png","https://example.com/archive.jpg")
+    kb=keyboard("abc123",2,"TT#1 Demo es tendencia porque ocurre algo.\n🌶️ Remate.","https://example.com/ai.png","https://example.com/archive.jpg","Demo")
     rows=kb.get("inline_keyboard") or []
     labels=[b.get("text") for row in rows for b in row]
-    expected={"🖼️ Copiar imagen IA","🗂️ Copiar imagen archivo","📋 Copiar texto","✍️ Abrir en X","🗑️ Desestimar","✅ Publicado"}
+    expected={"🖼️ Copiar imagen IA","🗂️ Copiar imagen archivo","📋 Copiar texto","✍️ Abrir en X","🔎 Buscar en X","🗑️ Desestimar","✅ Publicado"}
     if not expected.issubset(set(labels)):
         raise SystemExit("SELFTEST keyboard incompleto: "+repr(labels))
     callbacks=[b.get("callback_data") for row in rows for b in row if b.get("callback_data")]
     if "tx:d:abc123:2" not in callbacks or "tx:p:abc123:2" not in callbacks:
         raise SystemExit("SELFTEST callbacks tx incorrectos")
-    kb2=keyboard("abc123",2,"texto","https://example.com/ai.png","")
+    search=[b for row in rows for b in row if b.get("text")=="🔎 Buscar en X"]
+    if not search or "q=Demo" not in str(search[0].get("url") or ""):
+        raise SystemExit("SELFTEST búsqueda X incorrecta")
+    kb2=keyboard("abc123",2,"texto","https://example.com/ai.png","","")
     labels2=[b.get("text") for row in kb2.get("inline_keyboard",[]) for b in row]
     if "🗂️ Copiar imagen archivo" in labels2:
         raise SystemExit("SELFTEST botón archivo no debe aparecer sin archivo")
+    if "🔎 Buscar en X" in labels2:
+        raise SystemExit("SELFTEST búsqueda X no debe aparecer sin término")
     print("TTENDENCIAS_TELEGRAM_SELFTEST_OK",flush=True)
 
 def main():
