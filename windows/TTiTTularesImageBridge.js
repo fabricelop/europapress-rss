@@ -5,6 +5,7 @@ const JOB_URL="https://europapress-rss.vercel.app/api/ttittulares-run-status?vie
 const commandId=String(process.argv[2]||"").trim();
 const targetId=String(process.argv[3]||"").trim();
 const secret=String(process.env.TT_IMAGE_UPLOAD_SECRET||"");
+const targetHintFile=String(process.env.TT_IMAGE_TARGET_HINT_FILE||"").trim();
 const prelaunchSnapshotProvided=Object.prototype.hasOwnProperty.call(process.env,"TT_IMAGE_PRELAUNCH_TARGETS_JSON");
 let prelaunchTargets=new Map();
 try{
@@ -57,6 +58,26 @@ class CDP{
   close(){try{this.ws&&this.ws.close()}catch{}}
 }
 
+async function readTargetHint(){
+  if(!targetHintFile)return null;
+  try{
+    const fs=await import("node:fs/promises");
+    const txt=await fs.readFile(targetHintFile,"utf8");
+    const d=JSON.parse(txt);
+    const id=String(d&&d.target_id||"").trim();
+    if(!id)return null;
+    return {id,url:String(d&&d.url||""),title:String(d&&d.title||"")}
+  }catch{return null}
+}
+async function hintedTarget(){
+  const hint=await readTargetHint();
+  if(!hint)return null;
+  let list=[];try{list=await targets()}catch{return null}
+  const t=list.find(x=>String(x&&x.id||"")===hint.id && x.webSocketDebuggerUrl);
+  if(!t)return null;
+  return t
+}
+
 async function targets(){
   const r=await fetch(BASE_CDP+"/json/list",{cache:"no-store"});
   if(!r.ok)throw Error("CDP /json/list "+r.status);
@@ -73,9 +94,10 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TTITTULARES_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee ttittulares/image-runs/jobs/"+targetId+".json en control/ttittulares-run-trigger-v2 para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover";
+const BRIDGE_MODE="capture-only-v23-target-handoff";
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
+// compatibility: BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover"
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
@@ -90,6 +112,17 @@ async function findChat(job){
   const baselineState=new Map();
   let baselinePass=true;
   while(Date.now()<deadline){
+    const hinted=await hintedTarget();
+    if(hinted){
+      const hc=new CDP(hinted.webSocketDebuggerUrl);
+      try{
+        await hc.open();
+        const hs=await inspectChat(hc,job);
+        console.log("BRIDGE TARGET HINT "+String(hs&&hs.url||hinted.url||"")+" id="+String(hinted.id||""));
+        hc.acceptInitialRaster=true;
+        return hc
+      }catch{hc.close()}
+    }
     let list=[];try{list=await targets()}catch{await sleep(700);continue}
     const imageTitleCandidates=[];
     for(const t of list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl)){
@@ -182,6 +215,15 @@ async function findChat(job){
 }
 
 async function reacquireCommandChat(job){
+  const hinted=await hintedTarget();
+  if(hinted){
+    const hc=new CDP(hinted.webSocketDebuggerUrl);
+    try{
+      await hc.open();
+      const hs=await inspectChat(hc,job);
+      return {cdp:hc,state:hs}
+    }catch{hc.close()}
+  }
   let list=[];try{list=await targets()}catch{return null}
   let composerCandidate=null;
   for(const t of list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl)){
