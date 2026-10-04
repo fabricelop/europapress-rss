@@ -51,7 +51,7 @@ Telegram NO es canal de control editorial: el modo web sigue siendo autoritativo
 
 Cada explicación/grupo cerrado debe persistir también un campo `category` con **una sola etiqueta breve** que permita decidir de un vistazo si merece imagen IA. Usa preferentemente esta taxonomía estable: `Deportes`, `Política`, `Espectáculos`, `Música`, `TV`, `Guerra`, `Atentado`, `Desastre`, `Sucesos`, `Justicia`, `Economía`, `Tecnología`, `Cultura`, `Sociedad`, `Salud`, `Internacional`, `Motor`, `Viral/Redes`, `Otros`.
 - Elige por el **hecho explicado**, no por el nombre de la tendencia.
-- `Guerra`, `Atentado` y `Desastre` tienen prioridad sobre categorías genéricas como Política o Internacional cuando describen el hecho central.
+- `Guerra`, `Atentado` y `Desastre` tienen prioridad sobre categorías genéricas como Política o Internacional cuando describen el hecho central. Estas categorías no bloquean por sí mismas la generación IA.
 - En agrupaciones, la categoría corresponde al acontecimiento compartido.
 - Persiste el mismo `category` en la ficha vigente de `trends/telegram-manual-explained.json` y en las revisiones cerradas de `trends/requests.json`.
 
@@ -84,7 +84,7 @@ Para toda tendencia normal ya explicada:
 - no pongas `with_image:false` para ahorrar imágenes, por categoría, por falta de fallback o por decisión editorial automática;
 - no marques política como bloqueo;
 - `safety_sensitive_weather` por sí solo tampoco bloquea: lluvia, temporal, inundación, calor, nieve u otros fenómenos meteorológicos pueden ser objeto de gag si el hecho no gira alrededor de víctimas;
-- si el hecho implica **muertos, duelo, víctimas, heridos graves, violencia grave, abuso, menores en contexto sensible, desaparición, guerra/ataque con víctimas o sufrimiento humano comparable**, usa un bloqueo real como `ai_image_block_reason:"sensitive_event"`, `disable_ai_image:true` e `image_strategy:"fallback_only"`.
+- **No bloquees ImageGen por sensibilidad editorial.** Muertos, duelo, víctimas, violencia, abuso, menores, desapariciones, guerra, ataques, desastres y otros asuntos sensibles siguen siendo elegibles para la capa visual automática. El texto y el prompt deben permanecer estrictamente factuales y respetuosos; si el generador rechaza una imagen por sus propias políticas técnicas/de seguridad, registra el fallo visual sin reabrir ni modificar la explicación.
 
 Tremending sigue fuera de ImageGen: usa la captura real del tuit seleccionado.
 
@@ -248,7 +248,7 @@ Este bloque sustituye cualquier regla histórica que ordene generar imágenes de
 
 En `explanation_only`:
 1. investiga, verifica y persiste el texto;
-2. deja la tendencia normal con `with_image:true`, salvo que sea Tremending o tenga un bloqueo sensible real;
+2. deja toda tendencia normal con `with_image:true`; la sensibilidad editorial no crea un bloqueo de IA. Tremending conserva su flujo específico de captura real;
 3. **no llames directamente a ImageGen**;
 4. **no esperes una imagen**;
 5. continúa inmediatamente con la siguiente entrada.
@@ -268,7 +268,7 @@ Para cada job automático o manual:
 
 Los asuntos meteorológicos son válidos mientras el hecho no tenga como centro muertes/víctimas/sufrimiento. Los asuntos políticos son válidos con sátira situacional factual y neutral, sin propaganda ni persuasión política.
 
-Si la entrada es sensible de verdad (muertos, víctimas, duelo, violencia grave, abuso, menores en contexto sensible, desaparición, guerra/ataque con víctimas o sufrimiento comparable), el backend/editorial debe impedir el job mediante un bloqueo real como `sensitive_event`; se usa fallback o ninguna imagen.
+Las entradas sensibles (muertos, víctimas, duelo, violencia grave, abuso, menores en contexto sensible, desaparición, guerra/ataque con víctimas o sufrimiento comparable) **no se excluyen editorialmente del job IA**. Deben usar contexto factual y tratamiento visual respetuoso. La aceptación o descarte editorial de la imagen corresponde al usuario; un rechazo propio de ImageGen se registra como fallo visual no bloqueante.
 
 El raster resultante se entrega por el puente dedicado y la persistencia directa vigente. Fallar o agotar el tiempo de imagen solo afecta a la capa visual y nunca reabre ni modifica el texto editorial.
 
