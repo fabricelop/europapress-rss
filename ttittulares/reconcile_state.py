@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 QUEUE=ROOT/"telegram"/"editorial-processing.json"
 PREP=ROOT/"ttittulares"/"prepared.json"
+DECISIONS=ROOT/"ttittulares"/"decisions.json"
 
 def load(p,default):
     try:return json.loads(p.read_text(encoding="utf-8"))
@@ -16,6 +17,14 @@ def save(p,obj):
 
 q=load(QUEUE,{"items":[]})
 p=load(PREP,{"items":[]})
+d=load(DECISIONS,{"items":[]})
+terminal={str(x.get("event_id") or "") for x in d.get("items",[]) if str(x.get("status") or "").lower() in {"published","dismissed"}}
+before=len(p.get("items",[]))
+p["items"]=[x for x in p.get("items",[]) if str(x.get("event_id") or "") not in terminal]
+pruned=before-len(p["items"])
+if pruned:
+    p["updated_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+    save(PREP,p)
 ready={str(x.get("event_id")):x for x in p.get("items",[]) if x.get("event_id")}
 changed=0
 for item in q.get("items",[]):
@@ -29,4 +38,4 @@ for item in q.get("items",[]):
 if changed:
     q["updated_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
     save(QUEUE,q)
-print("RECONCILED_READY",changed)
+print("RECONCILED_READY",changed,"PREPARED_TERMINAL_PRUNED",pruned)
