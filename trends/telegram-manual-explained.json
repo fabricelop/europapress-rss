@@ -14875,14 +14875,6 @@
         }
       ],
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image": {
-        "url": "https://statics-maker.llt-services.com/ovi/images/2026/10/02/large/0134a4c4-be4e-40e8-aa4f-82dc2dec868d-874.jpeg",
-        "source": "Real Oviedo · 2/10/2026",
-        "source_url": "https://www.realoviedo.es/noticias/dura-derrota-del-real-oviedo-en-elda",
-        "alt": "Imagen de archivo relacionada con Eldense",
-        "rights_status": "unverified",
-        "generated": false
-      },
       "fallback_image_status": "ready",
       "image": {
         "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/8090f1b1fec6-r0-ai1-21968-fe9bdf.jpg",
@@ -14934,7 +14926,15 @@
       "ai_image_status": "ready",
       "ai_image_attempt": 1,
       "ai_image_last_attempt_status": "ready",
-      "ai_image_last_attempt_at": "2026-10-03T06:37:31.493Z"
+      "ai_image_last_attempt_at": "2026-10-03T06:37:31.493Z",
+      "fallback_image": {
+        "url": "https://cflvdg.avoz.es/sc/zar1h0yLZ47AZXoI15jBjE4lqz0=/1280x/2026/08/15/00121786821316566310478/Foto/juli.jpeg",
+        "source": "La Voz de Asturias · 2/10/2026",
+        "source_url": "https://www.lavozdeasturias.es/noticia/azulcarbayon/2026/10/02/calero-tras-dura-derrota-oviedo-ante-eldense-sensacion-equipo-abandono-consentir/00031790973147443330779.htm",
+        "alt": "Imagen de archivo relacionada con Eldense",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "89a6eb26d71d",
@@ -18558,10 +18558,29 @@
       ],
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "none",
-      "image_pending": false
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://motorgpbariloche.com.ar/images/noticias/22208.jpg",
+        "source": "MotorGP Bariloche · 4/10/2026",
+        "source_url": "https://motorgpbariloche.com.ar/articulo/moto2-en-motegi---izan-guevara-vence-y-aprovecha-un-0-dramatico-de-manu-gonzalez.php",
+        "alt": "Imagen de archivo relacionada con Manu González",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://motorgpbariloche.com.ar/images/noticias/22208.jpg",
+        "source": "MotorGP Bariloche · 4/10/2026",
+        "source_url": "https://motorgpbariloche.com.ar/articulo/moto2-en-motegi---izan-guevara-vence-y-aprovecha-un-0-dramatico-de-manu-gonzalez.php",
+        "alt": "Imagen de archivo relacionada con Manu González",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-04T09:20:33.918+02:00",
+  "updated_at": "2026-10-04T07:21:53.496790Z",
   "count": 474
 }
