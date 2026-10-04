@@ -135,6 +135,8 @@ jobs:
                   continue
               if row.get("tremending_origin"):
                   continue
+              if str(row.get("telegram_package_status") or "").lower() in {"published","dismissed"}:
+                  continue
               if row.get("disable_ai_image"):
                   continue
               strategy=str(row.get("image_strategy") or row.get("image_mode") or "").lower()
