@@ -588,7 +588,8 @@ async function load(passive=false){
  const d=await r.json();if(!r.ok||!d?.ok)throw new Error(d?.error||"No se pudo leer TTendencias");
  if(passive&&(uiInteractionActive()||interactionAtStart!==uiInteractionVersion)){queuePassiveRefresh(450);return}
  const requests=d.requests?.requests||[];
- const sorted=[...(d.explained?.items||[])]
+ const sourcePending=Array.isArray(d.pending_explained?.items)?d.pending_explained.items:(d.explained?.items||[]);
+ const sorted=[...sourcePending]
    .map((x,_sourceOrder)=>({...x,_sourceOrder}))
    .filter(pendingExplainedEligible)
    .sort((a,b)=>{
