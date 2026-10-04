@@ -799,7 +799,7 @@ export default async function handler(req,res){
       const github_rate_limit=await probeGithubRate(false);
       const fresh=String(req.query?.fresh||"")==="1";
       const [prepared,status,config,queue,events,decisions,manualArchive,trendCandidates,remateRatings,tremending]=await Promise.all([
-        readPublicJson(PREPARED),fresh?readJson("ttittulares/status.json"):readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
+        fresh?readJson(PREPARED):readPublicJson(PREPARED),fresh?readJson("ttittulares/status.json"):readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
         fresh?readJson(PROCESSING):readPublicJson(PROCESSING),readPublicJson(EVENTS),readPublicJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(TREND_CANDIDATES),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
