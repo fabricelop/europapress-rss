@@ -26,7 +26,7 @@ const TRACE_PREFIX="TTENDENCIAS_RUNTRACE_V1\n";
 const TRACE_COMMENT_ID=5859532515;
 const STALE_MS=20*60*1000;
 const PROCESSING_STALE_MS=5*60*1000;
-const START_ACK_MS=30*1000;
+const START_ACK_MS=90*1000;
 const RUNTIME_PATH="trends/editorial-runtime.json";
 const EXPLAINED_PATH="trends/telegram-manual-explained.json";
 const REQUESTS_PATH="trends/requests.json";
@@ -283,9 +283,9 @@ function manualFallback(items,request,ack){
   if(noPickup||pickupButNoLaunch||launchedButNoEditorial||staleRunning){
     status="ERROR";phase="error";
     message=noPickup
-      ?"El PC no ha recogido la orden en 30 segundos."
+      ?"El PC no ha recogido la orden en 90 segundos."
       :pickupButNoLaunch
-        ?"El PC recogió la orden, pero no pudo arrancar el proceso local en 30 segundos."
+        ?"El PC recogió la orden, pero no pudo arrancar el proceso local en 90 segundos."
         :launchedButNoEditorial
           ?"El PC abrió ChatGPT, pero no apareció ninguna actividad editorial en 5 minutos."
           :"La ejecución no actualiza su estado desde hace más de 20 minutos.";
@@ -306,7 +306,7 @@ function manualFallback(items,request,ack){
     updated_at,finished_at,
     start_delay_seconds:effectiveStarted?seconds(requested_at,effectiveStarted):null,
     duration_seconds:effectiveStarted&&finished_at?seconds(effectiveStarted,finished_at):null,
-    message:message||"Orden móvil registrada; esperando al PC para recogerla (máx. 30 s).",
+    message:message||"Orden móvil registrada; esperando al PC para recogerla (máx. 90 s).",
     summary:null,incident_count:0,incidents:[],
     pc_ack_stage:ackStage||null,pc_picked_up_at:pickedAt||null,pc_launched_at:launchedAt||null
   }
@@ -440,7 +440,7 @@ export default async function handler(req,res){
       const deadline=latestStatus==="REQUESTED"?START_ACK_MS:latestStatus==="PROCESSING"?PROCESSING_STALE_MS:STALE_MS;
       if(Number.isFinite(age)&&age>=0&&age<deadline)active=latest;
       else latest={...latest,status:"ERROR",finished_at:lastActivity||null,message:latest.status==="REQUESTED"
-        ?"No se ha recibido RUNNING en 30 segundos: el PC no ha recogido la orden móvil."
+        ?"No se ha recibido RUNNING en 90 segundos: el PC no ha recogido la orden móvil."
         :latestStatus==="PROCESSING"
           ?"La ejecución lleva más de 5 minutos sin actualizar progreso durante la investigación."
           :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")}
