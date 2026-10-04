@@ -34,6 +34,10 @@ $SnapshotCacheSeconds = 12
 $script:ListenerSnapshotCache = $null
 $script:ListenerSnapshotAt = [DateTimeOffset]::MinValue
 $script:LastStrongSnapshotAt = [DateTimeOffset]::MinValue
+$script:ListenerMutex=New-Object System.Threading.Mutex($false,"Local\TTiTTularesDedicatedListenerSingleton")
+$script:ListenerMutexOwned=$false
+try{$script:ListenerMutexOwned=$script:ListenerMutex.WaitOne(0,$false)}catch{}
+if(-not $script:ListenerMutexOwned){exit 0}
 
 function Write-Log([string]$Text) {
   $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $Text"
