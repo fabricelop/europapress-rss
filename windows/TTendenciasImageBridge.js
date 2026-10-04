@@ -95,7 +95,7 @@ function buildMessage(job){
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
 const BRIDGE_MODE="capture-only-v23-target-handoff";
-const BRIDGE_FEATURES="v24-self-submit-fallback";
+const BRIDGE_FEATURES="v25-exact-command-self-submit-dom-capture";
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
 // compatibility: BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover"
@@ -114,10 +114,13 @@ async function injectPromptIntoChat(cdp,job){
     cdp.preSubmitImageSrcs=new Set(before.map(x=>x.src));
     console.log("BRIDGE SELF-SUBMIT BASELINE images="+before.length);
   }catch{}
-  const expr="(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return {ok:false,reason:'no-composer'};const text="+JSON.stringify(message)+";c.focus();if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){c.value=text;}else{c.textContent=text;}try{c.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText',data:text}))}catch(_){c.dispatchEvent(new Event('input',{bubbles:true}))}const t=String(c.innerText||c.textContent||c.value||'');return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,url:location.href,title:document.title||''}})()";
-  const result=await cdp.eval(expr);
-  if(!result||!result.ok)throw Error("Fallback no pudo escribir el prompt completo");
-  console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED "+String(result.url||""));
+  const prep=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return {ok:false};c.focus();try{if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){c.value='';c.dispatchEvent(new Event('input',{bubbles:true}))}else{const s=getSelection();const r=document.createRange();r.selectNodeContents(c);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null)}}catch(_){}return {ok:true,url:location.href,title:document.title||''}})()");
+  if(!prep||!prep.ok)throw Error("No hay compositor utilizable para fallback");
+  await cdp.call("Input.insertText",{text:message});
+  await sleep(250);
+  const verify=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const t=String(c&&(c.innerText||c.textContent||c.value)||'');return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,url:location.href,title:document.title||''}})()");
+  if(!verify||!verify.ok)throw Error("Fallback no pudo escribir el prompt completo");
+  console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED "+String(verify.url||""));
   return cdp
 }
 
@@ -146,11 +149,7 @@ async function findFallbackComposerChat(job){
 }
 
 async function findChat(job){
-  const deadline=Date.now()+15000;
-  let best=null,bestScore=-1,bestInfo=null;
-  const baselineImageSrc=new Map();
-  const baselineState=new Map();
-  let baselinePass=true;
+  const deadline=Date.now()+6000;
   while(Date.now()<deadline){
     const hinted=await hintedTarget();
     if(hinted){
@@ -158,97 +157,31 @@ async function findChat(job){
       try{
         await hc.open();
         const hs=await inspectChat(hc,job);
-        console.log("BRIDGE TARGET HINT "+String(hs&&hs.url||hinted.url||"")+" id="+String(hinted.id||""));
-        hc.acceptInitialRaster=true;
-        return hc
-      }catch{hc.close()}
+        if(hs&&(hs.hasMarker||hs.composerMarker)){
+          console.log("BRIDGE TARGET HINT EXACT "+String(hs.url||hinted.url||""));
+          return hc
+        }
+      }catch{}
+      hc.close()
     }
-    let list=[];try{list=await targets()}catch{await sleep(700);continue}
-    const imageTitleCandidates=[];
+    let list=[];try{list=await targets()}catch{await sleep(500);continue}
     for(const t of list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl)){
-      const postLaunch=isPostLaunchTarget(t);
       const c=new CDP(t.webSocketDebuggerUrl);
       try{
         await c.open();
         const st=await inspectChat(c,job);
-        const tid=String(t&&t.id||"");
-        const currentImageSrc=String(st&&st.imageSrc||"");
-        if(baselinePass){
-          baselineImageSrc.set(tid,currentImageSrc);
-          baselineState.set(tid,{
-            targetMarker:Boolean(st&&st.targetMarker),
-            turns:Number(st&&st.turns||0),
-            title:String(st&&st.title||""),
-            url:String(st&&st.url||"")
-          });
-        }else{
-          const before=baselineState.get(tid)||null;
-          const chatChanged=Boolean(before)&&(
-            (!before.targetMarker&&Boolean(st&&st.targetMarker)) ||
-            Number(st&&st.turns||0)>Number(before.turns||0) ||
-            String(st&&st.title||"")!==String(before.title||"") ||
-            String(st&&st.url||"")!==String(before.url||"")
-          );
-          if(st&&st.targetMarker&&chatChanged){
-            console.log("BRIDGE TARGET CHAT-STATE CHANGE "+String(st.url||""));
-            return c
-          }
-        }
-        if(!baselinePass&&st&&st.imageTitle&&currentImageSrc&&baselineImageSrc.has(tid)&&baselineImageSrc.get(tid)!==currentImageSrc){
-          console.log("BRIDGE TARGET NEW RASTER "+String(st.url||""));
-          c.acceptInitialRaster=true;
-          return c
-        }else if(st&&st.imageTitle&&currentImageSrc&&!baselineImageSrc.has(tid)){
-          console.log("BRIDGE TARGET NEW IMAGE TAB "+String(st.url||""));
-          c.acceptInitialRaster=true;
-          return c
-        }
         if(st&&st.hasMarker){
-          console.log("BRIDGE TARGET MARKER "+String(st.url||""));
+          console.log("BRIDGE TARGET EXACT COMMAND "+String(st.url||""));
           return c
         }
-        if(st&&st.targetMarker&&postLaunch){
-          console.log("BRIDGE TARGET POST-LAUNCH TARGET "+String(st.url||""));
+        if(st&&st.composerMarker){
+          console.log("BRIDGE TARGET EXACT COMPOSER "+String(st.url||""));
           return c
         }
-        const title=String(st&&st.title||"");
-        const projectMatch=/TTendencias/i.test(title)&&!/TTiTTulares/i.test(title);
-        const oppositeMatch=/TTiTTulares/i.test(title);
-        if(st&&st.generating&&postLaunch&&(st.targetMarker||st.imageTitle)){
-          console.log("BRIDGE TARGET POST-LAUNCH GENERATING "+String(st.url||""));
-          return c
-        }
-        if(st&&st.imageTitle&&postLaunch){
-          console.log("BRIDGE TARGET POST-LAUNCH IMAGE "+String(st.url||""));
-          return c
-        }
-        if(st&&st.imageTitle&&st.targetMarker&&st.images>0){
-          console.log("BRIDGE TARGET IMAGE-TITLE "+String(st.url||""));
-          return c
-        }
-        if(st&&st.imageTitle)imageTitleCandidates.push({t,st});
-        const score=(postLaunch?900:0)+(st&&st.bodyMarker?1000:0)+(st&&st.targetMarker?650:0)+(st&&st.imageTitle?300:0)+(projectMatch?250:0)+(st&&st.generating&&(st.bodyMarker||st.targetMarker||postLaunch)?100:0)+(st&&st.images>0?40:0)+(String(st&&st.url||"").includes("/c/")?10:0)-(oppositeMatch?1000:0);
-        if(score>bestScore){best=t;bestScore=score;bestInfo=st}
       }catch{}
       c.close()
     }
-    if(imageTitleCandidates.length===1){
-      const only=imageTitleCandidates[0];
-      const existingImages=Number(only.st&&only.st.images||0);
-      if(existingImages===0&&(isPostLaunchTarget(only.t)||Boolean(only.st&&only.st.targetMarker))){
-        const c=new CDP(only.t.webSocketDebuggerUrl);
-        try{
-          await c.open();
-          console.log("BRIDGE TARGET UNIQUE EMPTY IMAGE-TITLE "+String(only.st&&only.st.url||only.t.url||""));
-          return c
-        }catch{c.close()}
-      }
-    }
-    if(baselinePass){
-      baselinePass=false;
-      console.log("BRIDGE PRELAUNCH BASELINE targets="+baselineImageSrc.size);
-    }
-    await sleep(700)
+    await sleep(500)
   }
   const fallback=await findFallbackComposerChat(job);
   if(fallback&&fallback.c){
@@ -262,8 +195,7 @@ async function findChat(job){
       console.log("BRIDGE SELF-SUBMIT FALLBACK ERROR :: "+String(e&&e.message||e))
     }
   }
-  const detail=bestInfo?JSON.stringify(bestInfo).slice(0,700):"sin candidato";
-  throw Error("No se encontró ni se pudo crear un chat ImageGen tras fallback autónomo; "+detail)
+  throw Error("No se encontró el command_id exacto ni un compositor válido para self-submit")
 }
 
 async function reacquireCommandChat(job){
@@ -273,33 +205,21 @@ async function reacquireCommandChat(job){
     try{
       await hc.open();
       const hs=await inspectChat(hc,job);
-      return {cdp:hc,state:hs}
-    }catch{hc.close()}
+      if(hs&&(hs.bodyMarker||hs.composerMarker))return {cdp:hc,state:hs}
+    }catch{}
+    hc.close()
   }
   let list=[];try{list=await targets()}catch{return null}
-  let composerCandidate=null;
   for(const t of list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl)){
     const c=new CDP(t.webSocketDebuggerUrl);
     try{
       await c.open();
       const st=await inspectChat(c,job);
-      if(st&&st.bodyMarker){
-        if(composerCandidate){try{composerCandidate.cdp.close()}catch{}}
-        return {cdp:c,state:st}
-      }
-      if(st&&isPostLaunchTarget(t)&&(st.targetMarker||st.imageTitle)){
-        if(composerCandidate){try{composerCandidate.cdp.close()}catch{}}
-        return {cdp:c,state:st}
-      }
-      if(st&&st.composerMarker){
-        if(composerCandidate){try{composerCandidate.cdp.close()}catch{}}
-        composerCandidate={cdp:c,state:st};
-        continue
-      }
+      if(st&&(st.bodyMarker||st.composerMarker))return {cdp:c,state:st}
     }catch{}
     c.close()
   }
-  return composerCandidate
+  return null
 }
 
 async function ensureSubmitted(cdp,job){
