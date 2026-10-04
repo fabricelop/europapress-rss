@@ -100,19 +100,53 @@ async function writeFixedTabState(t){
   }catch(e){console.log("BRIDGE FIXED TAB STATE WARNING :: "+String(e&&e.message||e))}
 }
 async function createFixedTarget(){
+  // Vía preferida: Browser CDP -> Target.createTarget. Es estable y mantiene
+  // exactamente la misma sesión/perfil de Chrome que ya está autenticada.
+  try{
+    const vr=await fetch(BASE_CDP+"/json/version",{cache:"no-store",signal:AbortSignal.timeout(5000)});
+    if(!vr.ok)throw Error("CDP /json/version "+vr.status);
+    const vd=await vr.json();
+    const ws=String(vd&&vd.webSocketDebuggerUrl||"");
+    if(!ws)throw Error("browser websocket ausente");
+    const browser=new CDP(ws);
+    await browser.open();
+    let made;
+    try{made=await browser.call("Target.createTarget",{url:CHAT_ROOT,newWindow:false,background:false},10000)}
+    finally{browser.close()}
+    const targetId=String(made&&made.targetId||"");
+    if(!targetId)throw Error("Target.createTarget sin targetId");
+    const deadline=Date.now()+10000;
+    while(Date.now()<deadline){
+      const list=await targets();
+      const t=list.find(x=>String(x&&x.id||"")===targetId&&x.type==="page"&&x.webSocketDebuggerUrl);
+      if(t){
+        await writeFixedTabState(t);
+        console.log("BRIDGE FIXED TAB CREATED target="+String(t.id)+" via=Target.createTarget");
+        return t
+      }
+      await sleep(250)
+    }
+    throw Error("Target creado pero no apareció en /json/list")
+  }catch(e){
+    console.log("BRIDGE FIXED TAB CREATE PRIMARY WARNING :: "+String(e&&e.message||e))
+  }
+
+  // Compatibilidad para Chromes que no permitan Target.createTarget en el
+  // browser websocket.
   const url=BASE_CDP+"/json/new?"+encodeURIComponent(CHAT_ROOT);
   let r;
-  try{r=await fetch(url,{method:"PUT",cache:"no-store"})}catch{}
+  try{r=await fetch(url,{method:"PUT",cache:"no-store",signal:AbortSignal.timeout(5000)})}catch{}
   if(!r||!r.ok){
-    try{r=await fetch(url,{cache:"no-store"})}catch{}
+    try{r=await fetch(url,{cache:"no-store",signal:AbortSignal.timeout(5000)})}catch{}
   }
   if(!r||!r.ok)throw Error("No se pudo crear pestaña dedicada CDP");
   const t=await r.json();
   if(!t||!t.id||!t.webSocketDebuggerUrl)throw Error("CDP creó una pestaña sin target válido");
   await writeFixedTabState(t);
-  console.log("BRIDGE FIXED TAB CREATED target="+String(t.id));
+  console.log("BRIDGE FIXED TAB CREATED target="+String(t.id)+" via=json-new");
   return t
 }
+
 async function fixedTarget(createIfMissing=true){
   const list=await targets();
   const st=await readFixedTabState();
