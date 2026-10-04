@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tt-img-v25-95dc2368eaed-20261004-1620",
-  "requested_at": "2026-10-04T16:20:00Z",
-  "updated_at": "2026-10-04T16:23:25.061Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tt-img-v26-95dc2368eaed-20261004-1627",
+  "requested_at": "2026-10-04T16:27:00Z",
+  "updated_at": "2026-10-04T16:27:00Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -15,8 +15,8 @@
   "target_name": "Marlaska recibe abucheos en Cádiz durante la parada militar de la Guardia Civil",
   "revision": 1,
   "regenerate": true,
-  "chat_command_version": 5,
-  "instruction_profile": "ttittulares_gag_v5_clean_raster",
+  "chat_command_version": 6,
+  "instruction_profile": "ttittulares_gag_v6_strict_submit_clean_raster",
   "context_snapshot": {
     "title": "Marlaska recibe abucheos en Cádiz durante la parada militar de la Guardia Civil",
     "revision": 1,
@@ -46,12 +46,7 @@
     "prompt": "Usa image_prompt completo.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster real; Telegram."
   },
-  "message": "No apareció un raster ImageGen capturable en 3 minutos; {\"marker\":true,\"commandScoped\":true,\"turns\":0,\"generating\":false,\"imagesAfterMarker\":0,\"candidates\":0,\"canvases\":0,\"top\":[]}",
+  "message": "Prueba limpia v26: envío estricto + raster limpio.",
   "upload_received_at": "2026-10-04T16:08:02.399Z",
-  "upload_bytes": 77431,
-  "pc_upload_secret_hash": "d8c27e0ed7cf36e603415c4c8c35b878af1ad5bc75c3e676375b5fd3e478756c",
-  "pc_worker_id": "ttittulares-image-bridge-v25-clean-raster",
-  "pc_picked_up_at": "2026-10-04T16:20:10.906Z",
-  "pc_launched_at": "2026-10-04T16:20:22.061Z",
-  "finished_at": "2026-10-04T16:23:25.061Z"
+  "upload_bytes": 77431
 }
