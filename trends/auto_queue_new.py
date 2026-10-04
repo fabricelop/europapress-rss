@@ -300,6 +300,32 @@ for item in (recent.get("items") or [])[:10]:
     if name:
         current.append({"name": name, "rank": int(item.get("rank") or 0)})
 
+# Las problemáticas solo son trabajo vivo mientras sigan en Top 10 o Radar.
+# Si salen de ambos, se retiran a un estado inerte. Si vuelven a aparecer,
+# se abrirá una revisión nueva para evitar que un listener atrasado resucite
+# la revisión problemática antigua.
+current_names = {norm(x["name"]) for x in current}
+radar_names = {
+    norm(x.get("name"))
+    for x in (recent.get("upcoming") or [])
+    if x.get("name")
+}
+retired_problematic = 0
+for req in requests:
+    if str(req.get("status") or "") != "problematic":
+        continue
+    key = norm(req.get("name"))
+    if not key or key in current_names or key in radar_names:
+        continue
+    req["status"] = "inactive"
+    req["inactive_at"] = now_dt.isoformat(timespec="seconds")
+    req["inactive_reason"] = "left-top10-radar"
+    retired_problematic += 1
+
+if retired_problematic:
+    reconciled = True
+    print("Problemáticas antiguas retiradas:", retired_problematic)
+
 def explanation_expired(key):
     """Solo reabre una tendencia con una explicación fechada de hace >48 h.
 
@@ -407,7 +433,7 @@ for item in to_queue:
         "rank": item["rank"],
         "status": "preparing",
         "requested_at": now,
-        "revision": int((req or {}).get("revision") or 0),
+        "revision": int((req or {}).get("revision") or 0) + (1 if req and status == "inactive" else 0),
         "reexplain": False,
         "with_image": True,
         "alternatives_target": 0,
