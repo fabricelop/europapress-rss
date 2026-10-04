@@ -18747,7 +18747,7 @@
       "ai_image_status": "pending",
       "ai_image_block_reason": null,
       "image_strategy": null,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "image_failure_reason": null,
       "explanation_group_id": "grp-sanchez-adelanto-electoral-vivienda-20261004",
@@ -18779,9 +18779,28 @@
           "revision": 1
         }
       ],
-      "ai_image_attempt": 0
+      "ai_image_attempt": 0,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/sumar-reune-evaluar-vivienda-posibilidad-adelanto-electoral/01791047774207.jpg",
+        "source": "RTVE · 4/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261004/sumar-reune-evaluar-vivienda-posibilidad-adelanto-electoral/17252395.shtml",
+        "alt": "Imagen de archivo relacionada con Sánchez",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.rtve.es/imagenes/sumar-reune-evaluar-vivienda-posibilidad-adelanto-electoral/01791047774207.jpg",
+        "source": "RTVE · 4/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261004/sumar-reune-evaluar-vivienda-posibilidad-adelanto-electoral/17252395.shtml",
+        "alt": "Imagen de archivo relacionada con Sánchez",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-04T11:03:30+02:00",
+  "updated_at": "2026-10-04T09:03:05.678892Z",
   "count": 476
 }
