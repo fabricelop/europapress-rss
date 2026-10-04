@@ -210,6 +210,8 @@ def run_send(patch_path):
             continue
         if row.get("tremending_origin") or row.get("disable_ai_image"):
             continue
+        if str(row.get("telegram_package_status") or "").lower() in TERMINAL:
+            continue
         if not valid_ai(row):
             continue
         if not recent_visual(row,6):
