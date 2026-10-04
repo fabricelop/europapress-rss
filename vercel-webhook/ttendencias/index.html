@@ -381,6 +381,7 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
    .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
  const pendingExplainedRecent=collapsePendingExplained([...(explained.items||[])]
    .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
+   .filter(x=>!["published","dismissed"].includes(String(x.telegram_package_status||"").toLowerCase()))
    .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||""))))
    .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
  const sourceTotal=Object.keys(recent.sources||{}).length;
