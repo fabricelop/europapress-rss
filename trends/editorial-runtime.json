@@ -1,8 +1,8 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-04T12:21:30+02:00",
-  "last_completed_at": "2026-10-04T12:29:00+02:00",
+  "last_started_at": "2026-10-04T12:37:00+02:00",
+  "last_completed_at": "2026-10-04T12:46:00+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
@@ -13,33 +13,33 @@
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-04T12:29:00+02:00",
+  "updated_at": "2026-10-04T12:46:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-1791109265336-663284",
+    "run_id": "tr-1791110185658-fc973f",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-04T12:21:30+02:00",
-    "updated_at": "2026-10-04T12:29:00+02:00",
-    "finished_at": "2026-10-04T12:29:00+02:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-04T12:37:00+02:00",
+    "updated_at": "2026-10-04T12:46:00+02:00",
+    "finished_at": "2026-10-04T12:46:00+02:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-04T12:21:00+02:00",
+    "requested_at": "2026-10-04T12:36:25+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 4,
-      "trends_explained": 4,
+      "trends_processed": 2,
+      "trends_explained": 2,
       "explanation_groups": 2,
-      "new_cards": 1,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 3,
+      "new_cards": 0,
+      "revisions_updated": 0,
+      "grouped_into_existing_card": 2,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -49,10 +49,9 @@
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "explanations_verified_conservative_250": 1,
+      "explanations_verified_under_280": 2,
       "remates_selected": 0,
-      "remates_omitted": 1
+      "remates_omitted": 0
     },
     "incident_count": 0,
     "incidents": [],
@@ -68,7 +67,7 @@
     },
     "remate_selections": [
       {
-        "trend_id": "ff5aa449aa6e",
+        "trend_id": "24b026091f12",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
@@ -77,26 +76,8 @@
         "no_remate_reason": "grouped_existing_card"
       },
       {
-        "trend_id": "cc9091b36b3b",
+        "trend_id": "d67ccc5a0b49",
         "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "grouped_existing_card"
-      },
-      {
-        "trend_id": "eff24d42fd29",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitive_event"
-      },
-      {
-        "trend_id": "8c5ab4afd440",
-        "revision": 1,
         "candidate_count": 0,
         "candidates": [],
         "selected_candidate": null,
@@ -104,7 +85,7 @@
         "no_remate_reason": "grouped_existing_card"
       }
     ],
-    "message": "Pasada cerrada 4/4. Ferrari, Antonelli y Safety Car se revalidaron y quedaron enlazadas al grupo existente del GP de Baréin en Sepang; Besòs quedó explicado como alerta por riesgo de desbordamiento, sin remate y con bloqueo sensible de IA. Relectura final: 0 preparing/update, 0 problematic y 0 rewrite_pending. Sin ImageGen ni despliegues Vercel."
+    "message": "Pasada cerrada 2/2. MotoGP quedó enlazada al grupo existente de Marc Márquez/Motegi; La FIA quedó enlazada al grupo existente del GP de Baréin en Sepang por la actuación de Dirección de Carrera ante el diluvio. Relectura final: 0 preparing/update, 0 rewrite_pending. Sin ImageGen ni despliegues Vercel."
   },
   "summary": {
     "trends_processed": 4,
