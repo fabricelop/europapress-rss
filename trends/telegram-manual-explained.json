@@ -2262,11 +2262,11 @@
       "rank_at_explanation": 6,
       "news_disposition": "ignore",
       "image_strategy": "ai_plus_fallback",
-      "image_status": "pending",
-      "image_pending": true,
+      "image_status": "ready",
+      "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "pending",
-      "image_choice": null,
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "reexplain": true,
       "alternatives_target": 0,
       "closer_text": "🌶️ La bandera verde también ha entrado al top 10.",
@@ -2305,7 +2305,23 @@
       ],
       "duplicate_of": null,
       "ai_image_status": "pending",
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image": {
+        "url": "https://b.fssta.com/uploads/application/fscom/SiteShareImage.vresize.1200.630.high.0.png",
+        "source": "FOX Sports · 4/10/2026",
+        "source_url": "https://www.foxsports.com/nascar/south-point-400-nascar-cup-series-oct-04-2026-racetrax-6088",
+        "alt": "Imagen de archivo relacionada con #NASCARenDAZN",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://b.fssta.com/uploads/application/fscom/SiteShareImage.vresize.1200.630.high.0.png",
+        "source": "FOX Sports · 4/10/2026",
+        "source_url": "https://www.foxsports.com/nascar/south-point-400-nascar-cup-series-oct-04-2026-racetrax-6088",
+        "alt": "Imagen de archivo relacionada con #NASCARenDAZN",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "823fadd0fb3a",
@@ -24899,6 +24915,6 @@
       "ai_image_last_attempt_at": "2026-10-04T22:29:44.047Z"
     }
   ],
-  "updated_at": "2026-10-05T01:49:20+02:00",
+  "updated_at": "2026-10-04T23:52:32.861707Z",
   "count": 536
 }
