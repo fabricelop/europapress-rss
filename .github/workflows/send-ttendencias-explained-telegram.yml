@@ -1,0 +1,83 @@
+name: Entregar TTendencias Explicadas a Telegram
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "trends/telegram-manual-explained.json"
+      - "trends/generated-images/**"
+      - "trends/send_explained_telegram.py"
+      - ".github/workflows/send-ttendencias-explained-telegram.yml"
+  schedule:
+    - cron: "*/10 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttendencias-explained-telegram-send
+  cancel-in-progress: false
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sincronizar main
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Preparar dependencias
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow requests
+
+      - name: Enviar o reparar paquetes visuales
+        env:
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 trends/send_explained_telegram.py send --patch /tmp/ttendencias-delivery-patch.json
+          if [ -d trends/archive-images ]; then
+            tar -czf /tmp/ttendencias-archive-images.tgz trends/archive-images
+          fi
+
+      - name: Persistir entrega sobre main fresco
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          for n in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+
+            if [ -f /tmp/ttendencias-archive-images.tgz ]; then
+              tar -xzf /tmp/ttendencias-archive-images.tgz
+            fi
+            python3 trends/send_explained_telegram.py apply-patch --patch /tmp/ttendencias-delivery-patch.json
+
+            git add trends/telegram-image-deliveries.json
+            if [ -d trends/archive-images ]; then git add trends/archive-images; fi
+
+            if git diff --cached --quiet; then
+              echo "Sin cambios de entrega."
+              exit 0
+            fi
+
+            git commit -m "Registrar paquete visual TTendencias en Telegram"
+            if git push origin HEAD:main; then
+              echo "TTENDENCIAS_TELEGRAM_PERSISTED"
+              exit 0
+            fi
+            echo "Main avanzó; rehaciendo fusión ($n/5)."
+            sleep $((n*2))
+          done
+
+          echo "No se pudo persistir la entrega TTendencias" >&2
+          exit 1
