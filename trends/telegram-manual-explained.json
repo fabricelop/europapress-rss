@@ -24490,14 +24490,30 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "pending",
-      "image_pending": true,
-      "fallback_image_strategy": "web_search",
-      "fallback_image_status": "pending",
-      "image_choice": null,
-      "rewrite_pending": false
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "rewrite_pending": false,
+      "fallback_image": {
+        "url": "https://www.diariosigloxxi.com/images/20537",
+        "source": "Europa Press / Diario Siglo XXI · 4/10/2026",
+        "source_url": "https://www.diariosigloxxi.com/texto-ep/mostrar/20261004121312/proteccion-civil-envia-alert-comarcas-girona-riesgo-desborde-ridaura-daro",
+        "alt": "Imagen de archivo relacionada con Girona",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.diariosigloxxi.com/images/20537",
+        "source": "Europa Press / Diario Siglo XXI · 4/10/2026",
+        "source_url": "https://www.diariosigloxxi.com/texto-ep/mostrar/20261004121312/proteccion-civil-envia-alert-comarcas-girona-riesgo-desborde-ridaura-daro",
+        "alt": "Imagen de archivo relacionada con Girona",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-05T00:22:15+02:00",
+  "updated_at": "2026-10-04T22:20:24.291851Z",
   "count": 534
 }
