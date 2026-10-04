@@ -83,7 +83,10 @@ function EnsureChrome{
   }catch{Log "CHROME AUTO ERROR :: $($_.Exception.Message)"}
 }
 function EnsureScheduledTasks{
-  foreach($name in @("TT Chrome Auto","TTiTTulares Local","TTendencias Local")){
+  foreach($name in @(
+    "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
+    "SeLoRecordamos-Telegram","SeLoRecordamos-Search","SeLoRecordamos-Published","SeLoRecordamos-Watchdog"
+  )){
     try{
       $task=Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
       if($task -and $task.State -eq "Disabled"){
@@ -92,6 +95,13 @@ function EnsureScheduledTasks{
       }
     }catch{}
   }
+  try{
+    $slr=Get-ScheduledTask -TaskName "SeLoRecordamos-Telegram" -ErrorAction SilentlyContinue
+    if($slr -and $slr.State -ne "Running"){
+      Start-ScheduledTask -TaskName "SeLoRecordamos-Telegram" -ErrorAction SilentlyContinue
+      Log "SLR TELEGRAM LISTENER REQUESTED"
+    }
+  }catch{}
 }
 
 $tt=Join-Path $BaseDir "TTiTTularesDedicatedListener.ps1"
