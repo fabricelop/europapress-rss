@@ -2,7 +2,7 @@
 import argparse, json
 from pathlib import Path
 
-STATUS_ORDER = {"preparing": 1, "update": 1, "ready": 2, "problematic": 3, "dismissed": 4, "explained": 4}
+STATUS_ORDER = {"preparing": 1, "update": 1, "ready": 2, "problematic": 3, "dismissed": 4, "explained": 4, "inactive": 5}
 
 def load(path, default):
     try:
