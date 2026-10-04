@@ -233,7 +233,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       if ($txt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and $txt.Contains('view=image-job&strong=1&id=') -and $txt.Contains('BRIDGE SUBMIT VERIFY WARNING')) {
         & $NodePath --check $ImageBridge *> $null
         if ($LASTEXITCODE -eq 0) {
-          Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK version=v23"
+          Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK version=v28"
           return $true
         }
       }
