@@ -1,0 +1,365 @@
+#!/usr/bin/env python3
+import argparse
+import hashlib
+import json
+import os
+import pathlib
+import urllib.parse
+from datetime import datetime, timezone
+
+import requests
+from PIL import Image
+from io import BytesIO
+
+ROOT=pathlib.Path(__file__).resolve().parents[1]
+EXPLAINED=ROOT/"trends/telegram-manual-explained.json"
+DELIVERIES=ROOT/"trends/telegram-image-deliveries.json"
+BOT_STATE=ROOT/"trends/telegram-bot-state.json"
+ARCHIVE_DIR=ROOT/"trends/archive-images"
+WORKER="https://tt-control.fabricelop.workers.dev"
+BUTTONS_VERSION=1
+TERMINAL={"published","dismissed"}
+
+
+def load(path, default):
+    try:
+        raw=path.read_text(encoding="utf-8").strip()
+        return json.loads(raw) if raw else default
+    except Exception:
+        return default
+
+
+def save(path, doc):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    path.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+
+
+def nowz():
+    return datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+
+
+def valid_ai(row):
+    ai=row.get("ai_image") or {}
+    return (
+        str(row.get("ai_image_status") or "").lower()=="ready"
+        and str(ai.get("provider") or "")=="chat-imagegen"
+        and str(ai.get("origin") or "")=="executing_chat"
+        and int(ai.get("width") or 0)>=1024
+        and int(ai.get("height") or 0)>=576
+        and bool(str(ai.get("url") or "").strip())
+        and bool(str(ai.get("sha256") or "").strip())
+    )
+
+
+def package_text(row):
+    explanation=str(row.get("explanation") or "").strip()
+    closer=str(row.get("closer_text") or "").strip()
+    if closer and closer not in explanation:
+        explanation=(explanation+"\n"+closer).strip()
+    return explanation
+
+
+def image_source(row):
+    for key in ("archive_image","fallback_image"):
+        obj=row.get(key)
+        if isinstance(obj,dict) and str(obj.get("url") or "").strip() and not obj.get("generated"):
+            return obj
+    return {}
+
+
+def fetch_image(url):
+    marker="/main/"
+    if url.startswith("https://raw.githubusercontent.com/fabricelop/europapress-rss/") and marker in url:
+        rel=urllib.parse.unquote(url.split(marker,1)[1])
+        local=(ROOT/rel).resolve()
+        try: local.relative_to(ROOT.resolve())
+        except Exception: local=None
+        if local and local.is_file():
+            raw=local.read_bytes()
+        else:
+            raw=b""
+    else:
+        raw=b""
+    if not raw:
+        r=requests.get(url,timeout=35,headers={"User-Agent":"TTendencias-Telegram/1"},allow_redirects=True)
+        r.raise_for_status()
+        ct=str(r.headers.get("content-type") or "").lower()
+        if ct and not ct.startswith("image/"):
+            raise RuntimeError("No es imagen: "+ct)
+        raw=r.content
+    img=Image.open(BytesIO(raw))
+    img.verify()
+    return raw
+
+
+def ext_and_mime(raw):
+    im=Image.open(BytesIO(raw))
+    fmt=(im.format or "JPEG").upper()
+    if fmt=="PNG": return ".png","image/png"
+    if fmt=="WEBP": return ".webp","image/webp"
+    return ".jpg","image/jpeg"
+
+
+def materialize_archive(tid,rev,raw):
+    sha=hashlib.sha256(raw).hexdigest()
+    ext,_=ext_and_mime(raw)
+    rel=pathlib.Path("trends/archive-images")/f"{tid}-r{rev}-{sha[:12]}{ext}"
+    path=ROOT/rel
+    path.parent.mkdir(parents=True,exist_ok=True)
+    if not path.exists():
+        path.write_bytes(raw)
+    url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+str(rel).replace("\\","/")
+    return sha,str(rel),url
+
+
+def telegram_api(token,method,payload=None,files=None):
+    url=f"https://api.telegram.org/bot{token}/{method}"
+    if files:
+        r=requests.post(url,data=payload,files=files,timeout=45)
+    else:
+        r=requests.post(url,json=payload,timeout=35)
+    try: out=r.json()
+    except Exception: out={"ok":False,"description":r.text[:500]}
+    if not r.ok or not out.get("ok"):
+        raise RuntimeError(f"Telegram {method}: {out}")
+    return out.get("result")
+
+
+def send_photo(token,chat,raw,caption,keyboard=None):
+    ext,mime=ext_and_mime(raw)
+    data={"chat_id":str(chat),"caption":caption}
+    if keyboard:
+        data["reply_markup"]=json.dumps(keyboard,ensure_ascii=False,separators=(",",":"))
+    return telegram_api(token,"sendPhoto",data,{"photo":("ttendencias"+ext,raw,mime)})
+
+
+def edit_keyboard(token,chat,message_id,keyboard):
+    try:
+        return telegram_api(token,"editMessageReplyMarkup",{
+            "chat_id":str(chat),"message_id":int(message_id),"reply_markup":keyboard
+        })
+    except Exception as e:
+        if "message is not modified" in str(e).lower():
+            return None
+        raise
+
+
+def q(url,params):
+    return url+"?"+urllib.parse.urlencode(params)
+
+
+def keyboard(tid,rev,text,ai_url,archive_url=""):
+    rows=[[{"text":"🖼️ Copiar imagen IA","url":q(WORKER+"/copy-image",{"src":ai_url})}]]
+    if archive_url:
+        rows.append([{"text":"🗂️ Copiar imagen archivo","url":q(WORKER+"/copy-image",{"src":archive_url})}])
+    if len(text)<=256:
+        copy_button={"text":"📋 Copiar texto","copy_text":{"text":text}}
+    else:
+        copy_button={"text":"📋 Copiar texto","url":q(WORKER+"/copy-text",{"text":text})}
+    rows.append([
+        copy_button,
+        {"text":"✍️ Abrir en X","url":q(WORKER+"/x-compose",{"text":text})}
+    ])
+    rows.append([
+        {"text":"🗑️ Desestimar","callback_data":f"tx:d:{tid}:{rev}"},
+        {"text":"✅ Publicado","callback_data":f"tx:p:{tid}:{rev}"}
+    ])
+    return {"inline_keyboard":rows}
+
+
+def build_patch(base_doc,current_doc,changed_keys):
+    rows=[]
+    for row in current_doc.get("items",[]):
+        if str(row.get("delivery_key") or "") in changed_keys:
+            rows.append(row)
+    return {"version":1,"updated_at":nowz(),"rows":rows}
+
+
+def run_send(patch_path):
+    token=str(os.environ.get("TTENDENCIAS_BOT_TOKEN") or "").strip()
+    if not token:
+        raise SystemExit("Falta TTENDENCIAS_BOT_TOKEN")
+    state=load(BOT_STATE,{})
+    chat=state.get("chat_id")
+    if not chat:
+        raise SystemExit("TTendencias no tiene chat_id enlazado")
+
+    explained=load(EXPLAINED,{"items":[]})
+    deliveries=load(DELIVERIES,{"version":1,"items":[]})
+    deliveries.setdefault("items",[])
+    changed=set()
+    touched=0
+
+    for row in explained.get("items",[]):
+        if str(row.get("status") or "").lower()!="explained":
+            continue
+        if row.get("tremending_origin") or row.get("disable_ai_image"):
+            continue
+        if not valid_ai(row):
+            continue
+        tid=str(row.get("id") or "").strip()
+        rev=int(row.get("revision") or 0)
+        if not tid:
+            continue
+        text=package_text(row)
+        if not text:
+            continue
+        if len(text)>280:
+            print("TTENDENCIAS_TELEGRAM_SKIP_LONG",tid,len(text),flush=True)
+            continue
+
+        ai=row.get("ai_image") or {}
+        ai_url=str(ai.get("url") or "").strip()
+        ai_sha=str(ai.get("sha256") or "").strip().lower()
+        key=f"{tid}:r{rev}:{ai_sha}"
+
+        exact=None
+        event_sent=None
+        for d in reversed(deliveries.get("items",[])):
+            if str(d.get("event_id") or "")==tid and int(d.get("revision") or 0)==rev and str(d.get("status") or "").lower()=="sent" and event_sent is None:
+                event_sent=d
+            if str(d.get("delivery_key") or "")==key:
+                exact=d
+                break
+
+        if exact and str(exact.get("status") or "").lower() in TERMINAL:
+            continue
+
+        archive=image_source(row)
+        archive_src=str(archive.get("url") or "").strip()
+        archive_mid=int((exact or event_sent or {}).get("archive_telegram_message_id") or 0)
+        archive_copy_url=str((exact or event_sent or {}).get("archive_materialized_url") or "")
+        archive_sha=str((exact or event_sent or {}).get("archive_sha256") or "")
+
+        if archive_src and not archive_copy_url:
+            try:
+                raw=fetch_image(archive_src)
+                archive_sha,_,archive_copy_url=materialize_archive(tid,rev,raw)
+            except Exception as e:
+                print("TTENDENCIAS_ARCHIVE_MATERIALIZE_WARNING",tid,str(e),flush=True)
+
+        if archive_src and not archive_mid:
+            try:
+                raw=fetch_image(archive_src)
+                if not archive_copy_url:
+                    archive_sha,_,archive_copy_url=materialize_archive(tid,rev,raw)
+                msg=send_photo(token,chat,raw,"🗂️ Imagen de archivo · "+str(row.get("name") or "TTendencias"))
+                archive_mid=int(msg.get("message_id") or 0)
+                print("TTENDENCIAS_ARCHIVE_SENT",tid,archive_mid,flush=True)
+            except Exception as e:
+                print("TTENDENCIAS_ARCHIVE_WARNING",tid,str(e),flush=True)
+
+        kb=keyboard(tid,rev,text,ai_url,archive_copy_url)
+
+        if exact and str(exact.get("status") or "").lower()=="sent":
+            edit_keyboard(token,chat,int(exact.get("telegram_message_id") or 0),kb)
+            updates={
+                "buttons_version":BUTTONS_VERSION,
+                "buttons_updated_at":nowz(),
+            }
+            if archive_mid:
+                updates.update({
+                    "archive_telegram_message_id":archive_mid,
+                    "archive_image_url":archive_src,
+                    "archive_materialized_url":archive_copy_url,
+                    "archive_sha256":archive_sha,
+                    "archive_delivered_at":exact.get("archive_delivered_at") or nowz(),
+                })
+            row_changed=False
+            for k,v in updates.items():
+                if exact.get(k)!=v:
+                    exact[k]=v
+                    row_changed=True
+            if row_changed:
+                changed.add(key)
+            touched+=1
+            continue
+
+        raw=fetch_image(ai_url)
+        got=hashlib.sha256(raw).hexdigest()
+        if got.lower()!=ai_sha:
+            raise RuntimeError(f"{tid}: SHA256 IA no coincide")
+        caption=text+f"\n\n{len(text)}/280"
+        msg=send_photo(token,chat,raw,caption,kb)
+        mid=int(msg.get("message_id") or 0)
+        delivery={
+            "delivery_key":key,
+            "event_id":tid,
+            "revision":rev,
+            "name":str(row.get("name") or ""),
+            "image_sha256":got,
+            "image_url":ai_url,
+            "telegram_message_id":mid,
+            "delivered_at":nowz(),
+            "status":"sent",
+            "buttons_version":BUTTONS_VERSION,
+        }
+        if archive_mid:
+            delivery.update({
+                "archive_telegram_message_id":archive_mid,
+                "archive_image_url":archive_src,
+                "archive_materialized_url":archive_copy_url,
+                "archive_sha256":archive_sha,
+                "archive_delivered_at":nowz(),
+            })
+        deliveries["items"].append(delivery)
+        changed.add(key)
+        touched+=1
+        print("TTENDENCIAS_TELEGRAM_SENT",tid,mid,"archive",archive_mid,"chars",len(text),flush=True)
+
+    deliveries["items"]=deliveries.get("items",[])[-500:]
+    deliveries["count"]=len(deliveries["items"])
+    deliveries["version"]=1
+    if changed:
+        deliveries["updated_at"]=nowz()
+        save(DELIVERIES,deliveries)
+    patch=build_patch({},deliveries,changed)
+    save(pathlib.Path(patch_path),patch)
+    print("TTENDENCIAS_TELEGRAM_PATCH_ROWS="+str(len(patch["rows"])),flush=True)
+    print("TTENDENCIAS_TELEGRAM_TOUCHED="+str(touched),flush=True)
+
+
+def apply_patch(patch_path):
+    current=load(DELIVERIES,{"version":1,"items":[]})
+    patch=load(pathlib.Path(patch_path),{"rows":[]})
+    items=current.setdefault("items",[])
+    by={str(x.get("delivery_key") or ""):x for x in items if x.get("delivery_key")}
+    for incoming in patch.get("rows",[]):
+        key=str(incoming.get("delivery_key") or "")
+        if not key:
+            continue
+        existing=by.get(key)
+        if existing is None:
+            copy=dict(incoming)
+            items.append(copy)
+            by[key]=copy
+            continue
+        terminal=str(existing.get("status") or "").lower() in TERMINAL
+        terminal_fields={}
+        if terminal:
+            for k in ("status","published_at","dismissed_at","decision_source"):
+                if k in existing:
+                    terminal_fields[k]=existing[k]
+        existing.update(incoming)
+        if terminal:
+            existing.update(terminal_fields)
+    current["version"]=1
+    current["items"]=items[-500:]
+    current["count"]=len(current["items"])
+    current["updated_at"]=patch.get("updated_at") or current.get("updated_at")
+    save(DELIVERIES,current)
+
+
+def main():
+    ap=argparse.ArgumentParser()
+    ap.add_argument("mode",choices=["send","apply-patch"])
+    ap.add_argument("--patch",default="/tmp/ttendencias-delivery-patch.json")
+    args=ap.parse_args()
+    if args.mode=="send":
+        run_send(args.patch)
+    else:
+        apply_patch(args.patch)
+
+
+if __name__=="__main__":
+    main()
