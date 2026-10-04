@@ -195,7 +195,8 @@ function normalizeTrace(t,errors){
     outbox_comment_id:t.outbox_comment_id||null,
     final_image_result:t.final_image_result||null,
     incident_count,
-    incidents
+    incidents,
+    activity:Array.isArray(t.activity)?t.activity.slice(-20):[]
   }
 }
 function manualFallback(items,request,ack){
