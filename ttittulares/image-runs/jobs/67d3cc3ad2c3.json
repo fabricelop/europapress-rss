@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-67d3cc3ad2c3-r1-a1-1791138061347",
+  "requested_at": "2026-10-04T18:21:01.323346Z",
+  "updated_at": "2026-10-04T18:21:01.323346Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "67d3cc3ad2c3",
+  "event_id": "67d3cc3ad2c3",
+  "target_name": "Barcelona y Real Madrid disputan hoy el Clásico de la Liga F",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v8_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "title": "Barcelona y Real Madrid disputan hoy el Clásico de la Liga F",
+    "revision": 1,
+    "factual_summary": "Barcelona y Real Madrid disputan hoy el Clásico de la Liga F. EL PAÍS y El Mundo publicaron la previa con horario y opciones para verlo, mientras COPE ofrece seguimiento en directo. Se excluye de la verificación la aparición de ABC porque corresponde a otro partido.",
+    "tweet_text": "Barcelona y Real Madrid disputan hoy el Clásico de la Liga F. EL PAÍS y El Mundo publicaron la previa y COPE ofrece seguimiento en directo.\n\n🌶️ El Clásico también viene con deberes: hora, canal y sofá reservado.",
+    "remate": "🌶️ El Clásico también viene con deberes: hora, canal y sofá reservado.",
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Texto en español únicamente cuando sea necesario para el gag. Evitar caricatura genérica, collage, aspecto fotográfico puro e infografía. Un gag principal inmediatamente reconocible y pocos detalles secundarios, solo si refuerzan el chiste.",
+    "image_prompt": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Texto en español únicamente cuando sea necesario para el gag. Evitar caricatura genérica, collage, aspecto fotográfico puro e infografía. Un gag principal inmediatamente reconocible y pocos detalles secundarios, solo si refuerzan el chiste.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nBarcelona y Real Madrid disputan hoy el Clásico de la Liga F. EL PAÍS y El Mundo publicaron la previa y COPE ofrece seguimiento en directo.\n\n🌶️ El Clásico también viene con deberes: hora, canal y sofá reservado.\n\nREMATE EXACTO:\n🌶️ El Clásico también viene con deberes: hora, canal y sofá reservado.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nBarcelona y Real Madrid disputan hoy el Clásico de la Liga F. EL PAÍS y El Mundo publicaron la previa con horario y opciones para verlo, mientras COPE ofrece seguimiento en directo. Se excluye de la verificación la aparición de ABC porque corresponde a otro partido.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.elmundo.es/como/2026/10/04/6ac217c2e85ece8f178b457e.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/deportes/futbol/2026-10-04/barcelona-real-madrid-horario-y-donde-ver-el-clasico-de-la-liga-f.html"
+      },
+      {
+        "source": "El Mundo",
+        "url": "https://www.elmundo.es/como/2026/10/04/6ac217c2e85ece8f178b457e.html"
+      },
+      {
+        "source": "COPE",
+        "url": "https://www.cope.es/programas/tiempo-de-juego/cronica/directo-barcelona-real-madrid-femenino-jornada-6-04-20261004_3449319.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
