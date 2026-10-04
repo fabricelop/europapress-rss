@@ -2069,7 +2069,8 @@
       "image_strategy": "existing_web_image",
       "image_status": "none",
       "image_pending": false,
-      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "rewrite_pending": false
     },
     {
       "id": "2c40a1b8a25f",
@@ -21707,8 +21708,101 @@
       "fallback_image_status": "none",
       "image_choice": "none",
       "rewrite_pending": false
+    },
+    {
+      "id": "c700abb892cc",
+      "name": "Remco",
+      "rank": 5,
+      "status": "explained",
+      "requested_at": "2026-10-04T17:11:30+02:00",
+      "revision": 1,
+      "rewrite_instruction": "",
+      "reexplain": true,
+      "rewrite_with_image": true,
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "selected_tweet_image": null,
+      "task": "explain",
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": "06d1e96be29d",
+      "requested_together": [
+        "Remco"
+      ],
+      "captured_with": [
+        "Pacheta",
+        "Frente Amplio",
+        "Güímar",
+        "Zverev",
+        "Remco",
+        "Djokovic",
+        "Alberto Flores",
+        "zubieta",
+        "Hortaleza",
+        "Sanse"
+      ],
+      "auto_queued": true,
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null,
+      "explained_at": "2026-10-04T17:23:00+02:00",
+      "explanation": "TT#5 Remco es tendencia porque Remco Evenepoel ganó al esprint la prueba élite masculina del Europeo de carretera en Liubliana, superando a Giulio Ciccone por foto finish.\n🌶️ La victoria necesitó lupa antes que champán.",
+      "closer_text": "🌶️ La victoria necesitó lupa antes que champán.",
+      "category": "Deportes",
+      "rank_at_explanation": 5,
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Cyclingnews · 4/10/2026",
+          "url": "https://www.cyclingnews.com/pro-cycling/racing/uec-european-championships-remco-evenepoel-snatches-photo-finish-victory-in-the-elite-mens-race-after-two-man-sprint/"
+        },
+        {
+          "source": "UEC · #EuroRoad26",
+          "url": "https://www.uec.ch/fr/actu/397/euroroad26-le-cyclisme-europeen-en-rdv-en-slovenie"
+        }
+      ],
+      "news_disposition": "ignore",
+      "news_note": "Evenepoel ganó el Europeo élite masculino en un esprint a dos decidido por foto finish frente a Giulio Ciccone.",
+      "group_id": "grp-remco-euroroad26-win-20261004",
+      "explanation_group_id": "grp-remco-euroroad26-win-20261004",
+      "group_title": "Remco Evenepoel gana el Europeo élite en foto finish",
+      "group_leader_id": "c700abb892cc",
+      "trend_names": [
+        "Remco"
+      ],
+      "trend_context": [
+        {
+          "name": "Remco",
+          "rank": 5
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "c700abb892cc",
+          "name": "Remco",
+          "revision": 1
+        }
+      ],
+      "duplicate_of": null,
+      "ai_image_block_reason": null,
+      "ai_image_status": "pending",
+      "ai_image_attempt": 0,
+      "image_status": "none",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "image_choice": "none",
+      "rewrite_pending": false
     }
   ],
-  "updated_at": "2026-10-04T17:16:00+02:00",
-  "count": 505
+  "updated_at": "2026-10-04T17:23:00+02:00",
+  "count": 506
 }
