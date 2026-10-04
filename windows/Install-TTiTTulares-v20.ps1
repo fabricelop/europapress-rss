@@ -102,7 +102,7 @@ $lp.Refresh();$up.Refresh()
 if($lp.HasExited){if(Test-Path $le){Get-Content $le -Tail 50};throw "Listener v20 no quedo activo"}
 if($up.HasExited){if(Test-Path $ue){Get-Content $ue -Tail 50};throw "Auto-updater raw-v3 no quedo activo"}
 
-$live=Procs "*TTiTTularesDedicatedListener.ps1*"
+$live=@(Procs "*TTiTTularesDedicatedListener.ps1*")
 if($live.Count -ne 1){throw "Se esperaban 1 listener TTiTTulares; activos: "+($live.ProcessId -join ",")}
 
 Write-Host "TTITTULARES V20 ACTIVO" -ForegroundColor Green
