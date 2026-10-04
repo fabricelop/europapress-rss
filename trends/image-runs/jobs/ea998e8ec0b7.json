@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791100274949-b5fb67",
+  "requested_at": "2026-10-04T07:51:14.949Z",
+  "updated_at": "2026-10-04T07:51:14.949Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "ea998e8ec0b7",
+  "trend_id": "ea998e8ec0b7",
+  "target_name": "Marc Márquez",
+  "revision": 0,
+  "attempt": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "Marc Márquez",
+    "revision": 0,
+    "explanation": "TT#5 Marc Márquez es tendencia porque ganó la carrera de MotoGP en Motegi, completó el doblete tras vencer también el sprint y se quedó a dos puntos de Jorge Martín en el Mundial.\n🌶️ Motegi le ha dejado el campeonato a distancia de rebufo.",
+    "closer_text": "🌶️ Motegi le ha dejado el campeonato a distancia de rebufo.",
+    "trend_names": [
+      "Marc Márquez"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 5,
+    "explained_at": "2026-10-04T09:19:35.589+02:00",
+    "verification_sources": [
+      {
+        "source": "El Nacional · 4/10/2026",
+        "url": "https://www.elnacional.cat/es/deportes/marc-marquez-pletorico-vuelve-superar-jorge-martin-motegi-sacude-mundial-motogp_1704817_102.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+}
