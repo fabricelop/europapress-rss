@@ -1,5 +1,5 @@
 # TTendenciasDedicatedListener.ps1
-# Listener dedicado de TTendencias: ejecuciones editoriales + imágenes IA por entrada.
+# Listener dedicado de TTendencias: editorial + cola automática/manual de imágenes IA por entrada.
 # No procesa TTiTTulares.
 
 $ErrorActionPreference = "Continue"
@@ -209,7 +209,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
 
     $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
     foreach ($needle in @(
-      'BRIDGE_MODE="capture-only-v23-target-handoff"',
+      'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
       'view=image-job&strong=1&id=',
       'imagesAfterMarker',
       'BRIDGE SUBMIT VERIFY WARNING'
@@ -230,7 +230,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   if (Test-Path -LiteralPath $ImageBridge) {
     try {
       $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
-      if ($txt.Contains('BRIDGE_MODE="capture-only-v23-target-handoff"') -and $txt.Contains('view=image-job&strong=1&id=') -and $txt.Contains('BRIDGE SUBMIT VERIFY WARNING')) {
+      if ($txt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and $txt.Contains('view=image-job&strong=1&id=') -and $txt.Contains('BRIDGE SUBMIT VERIFY WARNING')) {
         & $NodePath --check $ImageBridge *> $null
         if ($LASTEXITCODE -eq 0) {
           Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK version=v23"
@@ -240,7 +240,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     } catch {}
   }
 
-  Write-Log "IMAGE BRIDGE ERROR no hay bridge v23 válido; no se lanza imagen con código antiguo"
+  Write-Log "IMAGE BRIDGE ERROR no hay bridge v28 válido; no se lanza imagen con código antiguo"
   return $false
 }
 
@@ -580,12 +580,12 @@ function Build-ImageMessage($Job) {
   }
 
   return @"
-TT_IMAGE_JOB_V3 $commandId $targetId | Usa ImageGen AHORA y genera UNA imagen IA para '$targetName'.
+TTENDENCIAS_IMAGE_JOB_V4 $commandId $targetId | Usa ImageGen AHORA y genera UNA imagen IA para '$targetName'.
 
 CONTEXTO FACTUAL AUTORITATIVO (úsalo DIRECTAMENTE; no necesitas abrir GitHub ni reinvestigar):
 $contextJson
 
-Genera un gag visual cómico, satírico, irónico y exagerado basado ESPECÍFICAMENTE en los hechos de ese contexto y en su remate. Evita una ilustración literal y evita por completo una caricatura genérica del país, persona, equipo o nombre de la tendencia. La idea visual debe depender de al menos un hecho concreto del contexto; si no puedes identificarlo, no inventes otro hecho. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster.
+Genera un gag visual editorial 16:9, cómico, satírico, irónico y exagerado basado ESPECÍFICAMENTE en la explicación y el remate de context_snapshot. Evita una ilustración literal y una caricatura genérica del nombre de la tendencia. Una sola escena coherente, un gag principal claro, sin infografía, collage, interfaz ni captura de pantalla. No inventes hechos externos. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster.
 "@
 }
 
@@ -757,7 +757,7 @@ while ($true) {
           Save-State $state
           continue
         }
-        $marker = "TT_IMAGE_JOB_V3 $commandId"
+        $marker = "TTENDENCIAS_IMAGE_JOB_V4 $commandId"
         $targetSnapshot=Get-ChatTargetSnapshot
         $hintSafe=($commandId -replace '[^A-Za-z0-9._-]','_')
         $targetHintPath=Join-Path $BaseDir ("tt-image-target-" + $hintSafe + ".json")
