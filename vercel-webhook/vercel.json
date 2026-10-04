@@ -318,8 +318,5 @@
   "github": {
     "autoJobCancelation": false
   },
-  "ignoreCommand": "! (git log -1 --pretty=%B | grep -Eq '^(deploy-money-control-|deploy-panels-)' || grep -Eq '^deploy-image-flicker-cache-20261004' .deploy-trigger)",
-  "git": {
-    "deploymentEnabled": false
-  }
+  "ignoreCommand": "! (git log -1 --pretty=%B | grep -Eq '^(deploy-money-control-|deploy-panels-)' || grep -Eq '^deploy-image-flicker-cache-20261004' .deploy-trigger)"
 }
