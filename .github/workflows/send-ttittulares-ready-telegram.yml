@@ -1,0 +1,194 @@
+name: Entregar TTiTTulares READY a Telegram
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "ttittulares/prepared.json"
+      - "ttittulares/generated-images/**"
+      - ".github/workflows/send-ttittulares-ready-telegram.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-ready-telegram
+  cancel-in-progress: false
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Instalar cliente HTTP
+        run: python3 -m pip install --quiet requests
+
+      - name: Enviar READY con GAG IA real
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, urllib.parse
+          from datetime import datetime, timezone
+          import requests
+
+          ROOT=pathlib.Path(".")
+          prepared=json.loads((ROOT/"ttittulares/prepared.json").read_text(encoding="utf-8"))
+          decisions=json.loads((ROOT/"ttittulares/decisions.json").read_text(encoding="utf-8"))
+          deliveries_path=ROOT/"telegram/ttittulares-deliveries.json"
+          deliveries=json.loads(deliveries_path.read_text(encoding="utf-8")) if deliveries_path.exists() else {"version":1,"items":[]}
+
+          latest={}
+          for row in decisions.get("items",[]):
+              eid=str(row.get("event_id") or "")
+              if eid:
+                  latest[eid]=str(row.get("status") or "").lower()
+
+          sent_keys={
+              str(x.get("delivery_key") or "")
+              for x in deliveries.get("items",[])
+              if str(x.get("status") or "").lower()=="sent"
+          }
+
+          token=os.environ.get("TELEGRAM_BOT_TOKEN","").strip()
+          chat=os.environ.get("TELEGRAM_CHAT_ID","").strip()
+          if not token or not chat:
+              raise SystemExit("Faltan TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID")
+
+          endpoint=f"https://api.telegram.org/bot{token}/sendPhoto"
+          new_rows=[]
+
+          for item in prepared.get("items",[]):
+              eid=str(item.get("event_id") or "").strip()
+              rev=int(item.get("revision") or 1)
+              if not eid or latest.get(eid) in {"published","dismissed"}:
+                  continue
+
+              ai=item.get("ai_image") or {}
+              if str(item.get("ai_image_status") or "").lower()!="ready":
+                  continue
+              if str(ai.get("provider") or "")!="chat-imagegen" or str(ai.get("origin") or "")!="executing_chat":
+                  continue
+
+              image_url=str(ai.get("url") or "").strip()
+              image_sha=str(ai.get("sha256") or "").strip().lower()
+              tweet=str((item.get("tweet") or {}).get("text") or "")
+              x_url=str((item.get("tweet") or {}).get("url") or "").strip()
+              if not image_url or not tweet:
+                  continue
+              if len(tweet)>256:
+                  raise SystemExit(f"{eid}: tuit {len(tweet)}/256")
+              if not x_url:
+                  x_url="https://x.com/intent/post?text="+urllib.parse.quote(tweet,safe="")
+
+              delivery_key=f"{eid}:r{rev}:{image_sha or image_url}"
+              if delivery_key in sent_keys:
+                  continue
+
+              raw=None
+              marker="/main/"
+              if image_url.startswith("https://raw.githubusercontent.com/") and marker in image_url:
+                  rel=urllib.parse.unquote(image_url.split(marker,1)[1])
+                  local=(ROOT/rel).resolve()
+                  try:
+                      local.relative_to(ROOT.resolve())
+                  except ValueError:
+                      local=None
+                  if local and local.is_file():
+                      raw=local.read_bytes()
+
+              if raw is None:
+                  rr=requests.get(image_url,timeout=30)
+                  rr.raise_for_status()
+                  raw=rr.content
+
+              if not raw:
+                  raise SystemExit(f"{eid}: imagen vacía")
+              got=hashlib.sha256(raw).hexdigest()
+              if image_sha and got.lower()!=image_sha:
+                  raise SystemExit(f"{eid}: SHA256 no coincide")
+
+              copy_url="https://tt-control.fabricelop.workers.dev/copy-image?"+urllib.parse.urlencode({"src":image_url})
+              keyboard={
+                  "inline_keyboard":[
+                      [{"text":"🖼️ Copiar imagen","url":copy_url}],
+                      [
+                          {"text":"📋 Copiar tuit","copy_text":{"text":tweet}},
+                          {"text":"✍️ Abrir en X","url":x_url}
+                      ],
+                      [
+                          {"text":"🗑 Desestimar","callback_data":"tt:d:"+eid},
+                          {"text":"✅ Publicado","callback_data":"tt:p:"+eid}
+                      ]
+                  ]
+              }
+              caption=tweet+f"\n\n{len(tweet)}/256"
+              ext=".png" if raw.startswith(b"\x89PNG") else ".webp" if raw.startswith(b"RIFF") else ".jpg"
+              mime="image/png" if ext==".png" else "image/webp" if ext==".webp" else "image/jpeg"
+
+              resp=requests.post(
+                  endpoint,
+                  data={"chat_id":chat,"caption":caption,"reply_markup":json.dumps(keyboard,ensure_ascii=False,separators=(",",":"))},
+                  files={"photo":("ttittulares"+ext,raw,mime)},
+                  timeout=45
+              )
+              try:
+                  data=resp.json()
+              except Exception:
+                  raise SystemExit(f"{eid}: Telegram HTTP {resp.status_code}: {resp.text[:500]}")
+              if not resp.ok or not data.get("ok"):
+                  raise SystemExit(f"{eid}: Telegram rechazó envío: {json.dumps(data,ensure_ascii=False)[:700]}")
+
+              msg=data.get("result") or {}
+              message_id=msg.get("message_id")
+              now=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+              row={
+                  "delivery_key":delivery_key,
+                  "event_id":eid,
+                  "revision":rev,
+                  "title":str(item.get("title") or ""),
+                  "image_sha256":got,
+                  "image_url":image_url,
+                  "telegram_message_id":message_id,
+                  "delivered_at":now,
+                  "status":"sent"
+              }
+              deliveries.setdefault("items",[]).append(row)
+              deliveries["updated_at"]=now
+              sent_keys.add(delivery_key)
+              new_rows.append(row)
+              print(f"TTITTULARES_TELEGRAM_SENT event={eid} message_id={message_id} chars={len(tweet)}")
+
+          deliveries["items"]=deliveries.get("items",[])[-500:]
+          deliveries["count"]=len(deliveries["items"])
+          deliveries_path.write_text(json.dumps(deliveries,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print("TTITTULARES_TELEGRAM_NEW="+str(len(new_rows)))
+          PY
+
+      - name: Guardar confirmaciones de entrega
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- telegram/ttittulares-deliveries.json; then
+            echo "Sin nuevas entregas."
+            exit 0
+          fi
+          git add telegram/ttittulares-deliveries.json
+          git commit -m "Registrar entregas TTiTTulares en Telegram"
+          for n in 1 2 3 4 5; do
+            git pull --rebase origin main || { git rebase --abort || true; sleep $((n*2)); continue; }
+            if git push origin HEAD:main; then exit 0; fi
+            sleep $((n*2))
+          done
+          echo "No se pudo persistir el registro de entregas" >&2
+          exit 1
