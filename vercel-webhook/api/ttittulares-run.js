@@ -462,7 +462,7 @@ async function requestImageUpload(req,res){
   const target_id=safeTargetId(req.body?.target_id||req.body?.event_id||req.body?.id);
   const command_id=String(req.body?.command_id||"").trim(),upload_secret=String(req.body?.upload_secret||""),data=String(req.body?.image_data_url||"");
   const captureMethod=String(req.body?.capture?.method||"");
-  const captureFromImage=/^(original-fetch-img|canvas-from-img-|image-element-screenshot-)/.test(captureMethod);
+  const captureFromImage=/^(original-fetch-img|canvas-from-img-)/.test(captureMethod);
   if(!command_id||!upload_secret||!data.startsWith("data:image/"))return res.status(400).json({ok:false,error:"Carga de imagen incompleta"});
   if(!captureFromImage)return res.status(422).json({ok:false,error:"Raster rechazado: el bridge no acredita captura del elemento de imagen",capture_method:captureMethod||null});
   if(data.length>4*1024*1024)return res.status(413).json({ok:false,error:"Raster codificado demasiado grande"});
