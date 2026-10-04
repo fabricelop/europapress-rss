@@ -1,0 +1,265 @@
+name: Reparar imágenes TTendencias Explicadas
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "trends/telegram-manual-explained.json"
+      - ".github/workflows/repair-ttendencias-explicadas.yml"
+  schedule:
+    - cron: "*/10 * * * *"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: ttendencias-explicadas-repair
+  cancel-in-progress: true
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sincronizar main
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Esperar cierre editorial
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          ACTIVE=$(python3 - <<'PY'
+          import json
+          d=json.load(open("trends/editorial-queue.json",encoding="utf-8"))
+          active=[x for x in d.get("items",[]) if str(x.get("status","")).lower() in {"preparing","update","ready"} or x.get("rewrite_pending") is True]
+          print(len(active))
+          PY
+          )
+          echo "active=$ACTIVE" >> "$GITHUB_OUTPUT"
+          echo "TTENDENCIAS_EDITORIAL_ACTIVE=$ACTIVE"
+
+      - name: Preparar dependencias
+        if: steps.gate.outputs.active == '0'
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow requests beautifulsoup4
+
+      - name: Recuperar imágenes de archivo
+        if: steps.gate.outputs.active == '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "ttendencias-image-repair"
+          git config user.email "actions@users.noreply.github.com"
+
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 trends/enrich_explained_images.py
+            git add trends/telegram-manual-explained.json
+            if git diff --cached --quiet; then
+              echo "TTENDENCIAS_ARCHIVE_UP_TO_DATE"
+              break
+            fi
+            git commit -m "Reparar imágenes de archivo TTendencias"
+            if git push origin HEAD:main; then
+              echo "TTENDENCIAS_ARCHIVE_PERSISTED"
+              break
+            fi
+            sleep $((attempt * 2))
+          done
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Encolar Gag IA ausente o inválido
+        if: steps.gate.outputs.active == '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          CONTROL="control/ttendencias-run-trigger"
+          git fetch origin "$CONTROL"
+          rm -rf /tmp/ttendencias-control
+          git worktree add -B "$CONTROL" /tmp/ttendencias-control "origin/$CONTROL"
+
+          python3 - <<'PY'
+          import json, pathlib, time
+          from datetime import datetime, timezone
+
+          MAIN=pathlib.Path(".")
+          CTRL=pathlib.Path("/tmp/ttendencias-control")
+          explained=json.loads((MAIN/"trends/telegram-manual-explained.json").read_text(encoding="utf-8"))
+          index_path=CTRL/"trends/image-runs/index.json"
+          index=json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {"version":1,"jobs":[]}
+          now=datetime.now(timezone.utc)
+          nowz=now.isoformat().replace("+00:00","Z")
+          RECENT_HOURS=6
+          ACTIVE={"REQUESTED","RUNNING","PERSISTING","GENERATING"}
+
+          STYLE=("Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, "
+                 "colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. "
+                 "Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; "
+                 "sin infografía, collage, interfaz ni captura de pantalla.")
+
+          def parse_dt(v):
+              try:return datetime.fromisoformat(str(v).replace("Z","+00:00")).astimezone(timezone.utc)
+              except Exception:return None
+
+          def valid_ai(row):
+              ai=row.get("ai_image") or {}
+              return (
+                  str(row.get("ai_image_status") or "").lower()=="ready"
+                  and str(ai.get("provider") or "")=="chat-imagegen"
+                  and str(ai.get("origin") or "")=="executing_chat"
+                  and int(ai.get("width") or 0)>=1024
+                  and int(ai.get("height") or 0)>=576
+                  and bool(str(ai.get("url") or "").strip())
+                  and bool(str(ai.get("sha256") or "").strip())
+              )
+
+          def load(path):
+              try:return json.loads(path.read_text(encoding="utf-8"))
+              except Exception:return {}
+
+          leaders=[]
+          for row in explained.get("items",[]):
+              if str(row.get("status") or "").lower()!="explained":
+                  continue
+              if not str(row.get("explanation") or "").strip():
+                  continue
+              if row.get("tremending_origin"):
+                  continue
+              if row.get("disable_ai_image"):
+                  continue
+              strategy=str(row.get("image_strategy") or row.get("image_mode") or "").lower()
+              if strategy in {"fallback_only","archive_only","tweet_capture_only"}:
+                  continue
+              at=parse_dt(row.get("explained_at"))
+              if not at or (now-at).total_seconds()>RECENT_HOURS*3600:
+                  continue
+              leaders.append(row)
+
+          queued=[]
+          for row in leaders:
+              if valid_ai(row):
+                  continue
+              tid=str(row.get("id") or "").strip()
+              if not tid:
+                  continue
+              revision=int(row.get("revision") or 0)
+              job_path=CTRL/f"trends/image-runs/jobs/{tid}.json"
+              old=load(job_path)
+              old_status=str(old.get("status") or "").upper()
+              if int(old.get("revision") or revision)==revision and old_status in ACTIVE:
+                  continue
+
+              auto_attempt=int(old.get("auto_repair_attempt") or 0)
+              previous_attempt=int(old.get("attempt") or row.get("ai_image_attempt") or 0)
+              last=parse_dt(old.get("finished_at") or old.get("updated_at"))
+              cooldown=300 if auto_attempt<3 else 3600
+              if old and last and (now-last).total_seconds()<cooldown:
+                  continue
+
+              auto_attempt+=1
+              attempt=max(1,previous_attempt+1)
+              command=f"tr-img-auto-{tid}-r{revision}-a{auto_attempt}-{int(time.time()*1000)}"
+              explanation=str(row.get("explanation") or "")
+              closer=str(row.get("closer_text") or "")
+              context={
+                  "name":str(row.get("name") or tid),
+                  "revision":revision,
+                  "explanation":explanation,
+                  "closer_text":closer,
+                  "trend_names":row.get("trend_names") or [str(row.get("name") or tid)],
+                  "group_title":str(row.get("group_title") or ""),
+                  "rank_at_explanation":row.get("rank_at_explanation",row.get("rank")),
+                  "explained_at":row.get("explained_at"),
+                  "verification_sources":row.get("verification_sources") or [],
+                  "image_style":STYLE
+              }
+              job={
+                  "version":1,
+                  "command_id":command,
+                  "requested_at":nowz,
+                  "updated_at":nowz,
+                  "status":"REQUESTED",
+                  "phase":"queued",
+                  "mode":"automatic_explained_repair",
+                  "executor":"pc_chat_ttendencias_dedicated",
+                  "project":"ttendencias",
+                  "launcher_arg":"tendencias",
+                  "task":"image",
+                  "target_id":tid,
+                  "trend_id":tid,
+                  "target_name":str(row.get("name") or tid),
+                  "revision":revision,
+                  "attempt":attempt,
+                  "auto_repair":True,
+                  "auto_repair_attempt":auto_attempt,
+                  "chat_command_version":4,
+                  "instruction_profile":"ttendencias_gag_v4_dead_submit_retry_clean_raster",
+                  "context_snapshot":context,
+                  "instructions":{
+                      "scope":"Una sola tendencia y una sola imagen.",
+                      "exact_input":"Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+                      "visual":"Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+                      "prohibitions":"No infografía, interfaz, diagrama, collage ni screenshot.",
+                      "lifecycle":"Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+                  },
+                  "message":"Reparación automática de imagen IA para tendencia Explicada."
+              }
+              job_path.parent.mkdir(parents=True,exist_ok=True)
+              job_path.write_text(json.dumps(job,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+              index["jobs"]=[x for x in index.get("jobs",[]) if str(x.get("target_id") or "")!=tid]
+              index["jobs"].append({
+                  "command_id":command,
+                  "target_id":tid,
+                  "trend_id":tid,
+                  "target_name":str(row.get("name") or tid),
+                  "revision":revision,
+                  "requested_at":nowz,
+                  "status_path":f"trends/image-runs/jobs/{tid}.json",
+                  "executor":"pc_chat_ttendencias_dedicated",
+                  "auto_repair":True,
+                  "auto_repair_attempt":auto_attempt
+              })
+              queued.append((tid,row.get("name"),command,auto_attempt))
+
+          if queued:
+              index["version"]=1
+              index["updated_at"]=nowz
+              index["jobs"]=index.get("jobs",[])[-100:]
+              index_path.parent.mkdir(parents=True,exist_ok=True)
+              index_path.write_text(json.dumps(index,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+
+          for q in queued:print("TTENDENCIAS_AI_REPAIR_QUEUED",*q)
+          print("TTENDENCIAS_AI_REPAIR_COUNT="+str(len(queued)))
+          PY
+
+          cd /tmp/ttendencias-control
+          if git diff --quiet -- trends/image-runs; then
+            echo "Sin jobs IA nuevos."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add trends/image-runs
+            git commit -m "Reparar automáticamente IA de TTendencias"
+            for n in 1 2 3 4 5; do
+              git pull --rebase origin "$CONTROL" || { git rebase --abort || true; sleep $((n*2)); continue; }
+              if git push origin HEAD:"$CONTROL"; then break; fi
+              sleep $((n*2))
+            done
+          fi
+
+      - name: Lanzar entrega al bot TTendencias
+        if: steps.gate.outputs.active == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: gh workflow run send-ttendencias-explained-telegram.yml --repo "$REPO" --ref main
