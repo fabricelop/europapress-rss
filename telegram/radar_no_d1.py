@@ -1360,6 +1360,59 @@ for e in list(events):
    new_processed.append(processed_snapshot(e,"UPDATE_SENT_REVIEW",now,e.get("revision",2)))
    if did_send: sent+=1
 
+# En modo web, 4 fuentes/familias independientes deben entrar automáticamente
+# en En elaboración. Tres fuentes siguen visibles en Creciendo para promoción manual.
+auto_queued=0
+if web_mode:
+ editorial_doc.setdefault("items",[])
+ prepared_items=prepared_doc.get("items") or []
+ decision_items=decisions_doc.get("items") or decisions_doc.get("decisions") or []
+
+ prepared_keys={(str(x.get("event_id") or ""),int(x.get("revision",1) or 1)) for x in prepared_items}
+ closed_ids={str(x.get("event_id") or "") for x in decision_items
+             if str(x.get("status") or "").lower() in {"published","dismissed"}}
+ processing_keys={(str(x.get("event_id") or x.get("id") or ""),int(x.get("revision",1) or 1))
+                  for x in editorial_doc.get("items") or []}
+
+ for e in events:
+  if e.get("status") not in {"ELIGIBLE","ELIGIBLE_UPDATE"}:continue
+  eid=str(e.get("id") or e.get("event_id") or "")
+  rev=int(e.get("revision",1) or 1)
+  if not eid or eid in closed_ids or (eid,rev) in prepared_keys or (eid,rev) in processing_keys:continue
+
+  evidence=[]
+  seen_families=set()
+  for a in e.get("appearances") or []:
+   src=str(a.get("source") or "")
+   fam=source_family(src)
+   if not src or fam in seen_families:continue
+   seen_families.add(fam)
+   row=dict(a);row["source_family"]=fam;evidence.append(row)
+
+  item=dict(e)
+  item.update({
+   "event_id":eid,
+   "title":e.get("canonical_title") or e.get("title") or "",
+   "source_evidence":evidence,
+   "source_count":int(e.get("source_count") or len(e.get("sources") or [])),
+   "drafted_source_count":int(e.get("source_count") or len(e.get("sources") or [])),
+   "selected_at":iso(now),
+   "status":"PROCESSING",
+   "selection_mode":"AUTO_WEB",
+   "revision":rev,
+   "with_image":True,
+   "image_mode":"ai_plus_fallback"
+  })
+  editorial_doc["items"].append(item)
+  processing_keys.add((eid,rev))
+  e["status"]="PROCESSING";e["processing_at"]=iso(now)
+  auto_queued+=1
+
+ if auto_queued:
+  editorial_doc["updated_at"]=iso(now)
+  save(EDITORIAL_PROCESSING,editorial_doc)
+  print("AUTO_WEB_QUEUED",auto_queued)
+
 # Segunda poda por si el ciclo acaba de cruzar el límite de 24 h.
 kept=[]
 for e in events:
@@ -1420,11 +1473,11 @@ seeds_doc={"version":1,"updated_at":iso(now),"retention_hours":WAIT_HOURS,"max_i
 events_doc={"version":6,"configured_sources":TOTAL_SOURCES,"configured_source_families":TOTAL_SOURCE_FAMILIES,"review_min_sources":REVIEW_MIN,
             "fast_track_min_sources":FAST_TRACK_MIN,"fast_track_window_minutes":FAST_TRACK_WINDOW_MIN,
             "fast_track_initialized":True,"fast_track_initialized_at":events_doc.get("fast_track_initialized_at") or iso(now),
-            "automatic_processing":False,"waiting_ttl_hours":WAIT_HOURS,"min_healthy_sources":MIN_HEALTHY_SOURCES,"last_run":iso(now),
+            "automatic_processing":True,"waiting_ttl_hours":WAIT_HOURS,"min_healthy_sources":MIN_HEALTHY_SOURCES,"last_run":iso(now),
             "healthy_sources":sorted(set(healthy)),"healthy_source_count":len(set(healthy)),
             "healthy_source_families":healthy_families,"healthy_source_family_count":len(healthy_families),
             "healthy_sport_sources":sorted(set(sport_healthy)),"source_failures":source_failures,
             "source_status":source_status,"source_article_telemetry":source_article_telemetry,"source_recovery":source_recovery,"discovery_sources":[x[0] for x in DISCOVERY_SOURCES],"events":events}
 processed_doc={"version":1,"updated_at":iso(now),"events":processed}
 save(EVENTS,events_doc);save(SEEDS,seeds_doc);save(PROCESSED,processed_doc)
-print("RESULT rows",len(rows),"active_events",len(events),"seed_events",len(seed_items),"review_sent",sent,"auto_queued",0,"expired",expired)
+print("RESULT rows",len(rows),"active_events",len(events),"seed_events",len(seed_items),"review_sent",sent,"auto_queued",auto_queued,"expired",expired)
