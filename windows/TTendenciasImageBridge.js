@@ -73,17 +73,19 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v14-reused-target-title";
+const BRIDGE_MODE="capture-only-v15-prelaunch-raster-watch";
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
   const targetName=String(job&&job.target_name||"").trim();
-  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=bodyText.includes(command);const markerOutsideComposer=bodyMarker||nodes.length>0;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const images=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360).length;const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,title,url:location.href}})()")
+  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=bodyText.includes(command);const markerOutsideComposer=bodyMarker||nodes.length>0;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const largeImages=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360);const images=largeImages.length;const imageSrc=largeImages.length?String(largeImages[0].currentSrc||largeImages[0].src||''):'';const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,imageSrc,title,url:location.href}})()")
 }
 
 async function findChat(job){
-  const deadline=Date.now()+60000;
+  const deadline=Date.now()+90000;
   let best=null,bestScore=-1,bestInfo=null;
+  const baselineImageSrc=new Map();
+  let baselinePass=true;
   while(Date.now()<deadline){
     let list=[];try{list=await targets()}catch{await sleep(700);continue}
     const imageTitleCandidates=[];
@@ -93,6 +95,19 @@ async function findChat(job){
       try{
         await c.open();
         const st=await inspectChat(c,job);
+        const tid=String(t&&t.id||"");
+        const currentImageSrc=String(st&&st.imageSrc||"");
+        if(baselinePass){
+          baselineImageSrc.set(tid,currentImageSrc);
+        }else if(st&&st.imageTitle&&currentImageSrc&&baselineImageSrc.has(tid)&&baselineImageSrc.get(tid)!==currentImageSrc){
+          console.log("BRIDGE TARGET NEW RASTER "+String(st.url||""));
+          c.acceptInitialRaster=true;
+          return c
+        }else if(st&&st.imageTitle&&currentImageSrc&&!baselineImageSrc.has(tid)){
+          console.log("BRIDGE TARGET NEW IMAGE TAB "+String(st.url||""));
+          c.acceptInitialRaster=true;
+          return c
+        }
         if(st&&st.hasMarker){
           console.log("BRIDGE TARGET MARKER "+String(st.url||""));
           return c
@@ -130,7 +145,11 @@ async function findChat(job){
         }catch{c.close()}
       }
     }
-    await sleep(900)
+    if(baselinePass){
+      baselinePass=false;
+      console.log("BRIDGE PRELAUNCH BASELINE targets="+baselineImageSrc.size);
+    }
+    await sleep(700)
   }
   const detail=bestInfo?JSON.stringify(bestInfo).slice(0,700):"sin candidato";
   throw Error("No se encontró el chat lanzado con el command_id en 60 segundos; "+detail)
@@ -160,6 +179,7 @@ function probeExpression(){
 async function capture(cdp){
   const deadline=Date.now()+3*60*1000;
   let lastDiag=null,lastEvalError=null,baselineSet=false,baselineSrc="";
+  const acceptInitialRaster=Boolean(cdp&&cdp.acceptInitialRaster);
   while(Date.now()<deadline){
     let p;try{p=await cdp.eval(probeExpression(),true)}catch(e){lastEvalError=String(e&&e.message||e)}
     if(p&&p.diag)lastDiag=p.diag;
@@ -167,6 +187,10 @@ async function capture(cdp){
     if(!baselineSet){
       baselineSet=true;
       baselineSrc=currentSrc;
+      if(acceptInitialRaster&&p&&p.dataUrl&&p.width>=640&&p.height>=360){
+        console.log("BRIDGE ACCEPT POST-BASELINE RASTER "+currentSrc.slice(0,120));
+        return p
+      }
       if(baselineSrc)console.log("BRIDGE BASELINE IMAGE IGNORED "+baselineSrc.slice(0,120));
       await sleep(800);
       continue
