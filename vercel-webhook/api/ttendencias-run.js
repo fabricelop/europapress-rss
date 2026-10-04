@@ -118,15 +118,13 @@ async function imageEligibility(targetId){
   if(!row||row.status==="grouped"||!String(row.explanation||"").trim())return {eligible:false,reason:"not_pending_explained",row};
   const name=String(row.name||"").trim(),rev=Number(row.revision||0);
   const archived=(copyState.items||[]).some(x=>Number(x.revision||0)===rev&&Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase()));
-  const blockReason=String(row.ai_image_block_reason||row.image_block_reason||"").trim().toLowerCase();
-  // Política y meteorología sin víctimas son material editorial válido para el gag.
-  // Los casos con muertos/víctimas deben llegar marcados como sensitive_event u otro bloqueo explícito real.
-  const advisoryOnlyBlock=["political_actor","political_context","safety_sensitive_weather"].includes(blockReason);
-  const blocked=Boolean(row.tremending_origin)||Boolean(blockReason&&!advisoryOnlyBlock);
+  // La sensibilidad editorial no bloquea ImageGen. Tremending conserva su
+  // flujo específico de captura real del tuit y no entra en este endpoint.
+  const blocked=Boolean(row.tremending_origin);
   const hasAi=Boolean(String(row.ai_image?.url||"").trim());
   // Una imagen existente no bloquea un nuevo gag: permite rehacerla conservando
   // exactamente la misma explicación y revisión editorial.
-  return {eligible:!archived&&!blocked,reason:archived?"archived":blocked?"blocked":hasAi?"regenerate":"pending",row,hasAi}
+  return {eligible:!archived&&!blocked,reason:archived?"archived":blocked?"tremending":hasAi?"regenerate":"pending",row,hasAi}
 }
 
 async function writeControlJson(path,doc,sha,message){
