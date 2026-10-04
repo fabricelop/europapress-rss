@@ -44,8 +44,8 @@ jobs:
           prepared=json.loads((ROOT/"ttittulares/prepared.json").read_text(encoding="utf-8"))
           decisions=json.loads((ROOT/"ttittulares/decisions.json").read_text(encoding="utf-8"))
           deliveries_path=ROOT/"telegram/ttittulares-deliveries.json"
-          deliveries=json.loads(deliveries_path.read_text(encoding="utf-8")) if deliveries_path.exists() else {"version":2,"items":[]}
-          deliveries["version"]=max(2,int(deliveries.get("version") or 1))
+          deliveries=json.loads(deliveries_path.read_text(encoding="utf-8")) if deliveries_path.exists() else {"version":3,"items":[]}
+          deliveries["version"]=max(3,int(deliveries.get("version") or 1))
 
           latest={}
           for row in decisions.get("items",[]):
@@ -75,7 +75,7 @@ jobs:
                       local=None
                   if local and local.is_file():
                       return local.read_bytes()
-              rr=requests.get(url,timeout=35,headers={"User-Agent":"TTiTTulares-Telegram/2"})
+              rr=requests.get(url,timeout=35,headers={"User-Agent":"TTiTTulares-Telegram/3"},allow_redirects=True)
               rr.raise_for_status()
               ct=str(rr.headers.get("content-type") or "")
               if ct and not ct.lower().startswith("image/"):
@@ -88,6 +88,16 @@ jobs:
               if raw.startswith(b"RIFF") and raw[8:12]==b"WEBP":
                   return ".webp","image/webp"
               return ".jpg","image/jpeg"
+
+          def materialize_archive(eid,rev,raw):
+              sha=hashlib.sha256(raw).hexdigest()
+              ext,_=ext_mime(raw)
+              rel=pathlib.Path("ttittulares/archive-images")/f"{eid}-r{rev}-{sha[:12]}{ext}"
+              rel.parent.mkdir(parents=True,exist_ok=True)
+              if not rel.exists():
+                  rel.write_bytes(raw)
+              url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+str(rel).replace("\\","/")
+              return sha,str(rel),url
 
           def send_photo(raw,caption,reply_markup=None):
               ext,mime=ext_mime(raw)
@@ -108,7 +118,6 @@ jobs:
               },timeout=30)
               out=resp.json()
               if not resp.ok or not out.get("ok"):
-                  # "message is not modified" no debe convertir una reparación válida en error.
                   desc=str(out.get("description") or "")
                   if "message is not modified" not in desc.lower():
                       raise RuntimeError("Telegram editMessageReplyMarkup: "+json.dumps(out,ensure_ascii=False)[:700])
@@ -126,31 +135,29 @@ jobs:
               )
 
           def archive_obj(item):
-              # archive_image es el nombre oficial; fallback_image se conserva por compatibilidad.
               a=item.get("archive_image") or item.get("fallback_image") or {}
-              url=str(a.get("url") or "").strip()
-              if not url:
-                  return {}
-              return a
+              return a if isinstance(a,dict) and str(a.get("url") or "").strip() else {}
 
-          def keyboard_for(eid,tweet,image_url,archive_file_id=""):
+          def keyboard_for(eid,tweet,image_url,archive_copy_url=""):
               rows=[
                   [{"text":"🖼️ Copiar imagen IA","url":"https://tt-control.fabricelop.workers.dev/copy-image?"+urllib.parse.urlencode({"src":image_url})}]
               ]
-              if archive_file_id:
-                  rows.append([{"text":"🗂️ Copiar imagen archivo","url":"https://tt-control.fabricelop.workers.dev/copy-telegram-image?"+urllib.parse.urlencode({"file_id":archive_file_id})}])
+              if archive_copy_url:
+                  rows.append([{"text":"🗂️ Copiar imagen archivo","url":"https://tt-control.fabricelop.workers.dev/copy-image?"+urllib.parse.urlencode({"src":archive_copy_url})}])
               rows.append([
                   {"text":"📋 Copiar tuit","copy_text":{"text":tweet}},
                   {"text":"✍️ Abrir en X","url":"https://tt-control.fabricelop.workers.dev/x-compose?"+urllib.parse.urlencode({"text":tweet})}
               ])
+              # Estos callbacks YA están soportados por el webhook Vercel actualmente desplegado.
+              # El workflow process-ttittulares-telegram-decisions.yml aplica el cierre real.
               rows.append([
-                  {"text":"🗑 Desestimar","callback_data":"tt:d:"+eid},
-                  {"text":"✅ Publicado","callback_data":"tt:p:"+eid}
+                  {"text":"🗑 Desestimar","callback_data":"emergency:ttd:"+eid},
+                  {"text":"✅ Publicado","callback_data":"emergency:ttp:"+eid}
               ])
               return {"inline_keyboard":rows}
 
           changed=False
-          sent_or_repaired=0
+          touched=0
 
           for item in prepared.get("items",[]):
               eid=str(item.get("event_id") or "").strip()
@@ -161,7 +168,7 @@ jobs:
               tweet_obj=item.get("tweet") or {}
               tweet=str(tweet_obj.get("text") or "")
               remate=str(tweet_obj.get("remate") or "")
-              # Listas existe con texto+remate; Telegram exige además IA válida.
+              # Listas = texto + remate. Telegram exige además IA válida.
               if not tweet or not remate or not ai_valid(item):
                   continue
               if len(tweet)>256:
@@ -181,46 +188,56 @@ jobs:
               archive=archive_obj(item)
               archive_url=str(archive.get("url") or "").strip()
               archive_mid=int((current or {}).get("archive_telegram_message_id") or 0)
-              archive_file_id=str((current or {}).get("archive_telegram_file_id") or "")
               archive_sha=str((current or {}).get("archive_sha256") or "")
+              archive_copy_url=str((current or {}).get("archive_materialized_url") or "")
 
-              # Reparar/añadir imagen de archivo de manera independiente.
+              # Materializa el archivo en GitHub para que Copiar imagen use el mismo helper fiable que la IA.
+              if archive_url and not archive_copy_url:
+                  try:
+                      araw=fetch_bytes(archive_url)
+                      if araw:
+                          archive_sha,_,archive_copy_url=materialize_archive(eid,rev,araw)
+                          changed=True
+                  except Exception as e:
+                      print(f"TTITTULARES_ARCHIVE_MATERIALIZE_WARNING event={eid} error={e}")
+
+              # Si falta el mensaje de archivo, envíalo. Su fallo no bloquea la IA.
               if archive_url and not archive_mid:
                   try:
                       araw=fetch_bytes(archive_url)
                       if araw:
-                          archive_sha=hashlib.sha256(araw).hexdigest()
+                          if not archive_copy_url:
+                              archive_sha,_,archive_copy_url=materialize_archive(eid,rev,araw)
                           amsg=send_photo(araw,"🗂️ Imagen de archivo · "+str(item.get("title") or "TTiTTulares"))
                           archive_mid=int(amsg.get("message_id") or 0)
-                          photos=amsg.get("photo") or []
-                          if photos:
-                              archive_file_id=str(photos[-1].get("file_id") or "")
                           changed=True
                           print(f"TTITTULARES_ARCHIVE_SENT event={eid} message_id={archive_mid}")
                   except Exception as e:
-                      # La ausencia/fallo de archivo NO bloquea Telegram si la IA es válida.
                       print(f"TTITTULARES_ARCHIVE_WARNING event={eid} error={e}")
 
-              keyboard=keyboard_for(eid,tweet,image_url,archive_file_id)
+              keyboard=keyboard_for(eid,tweet,image_url,archive_copy_url)
 
               if current:
-                  # Repara botones y vincula una imagen de archivo añadida después.
                   try:
                       edit_keyboard(int(current.get("telegram_message_id") or 0),keyboard)
                   except Exception as e:
                       print(f"TTITTULARES_KEYBOARD_WARNING event={eid} error={e}")
-                  if archive_mid and not current.get("archive_telegram_message_id"):
-                      current["archive_telegram_message_id"]=archive_mid
-                      current["archive_telegram_file_id"]=archive_file_id
-                      current["archive_image_url"]=archive_url
-                      current["archive_sha256"]=archive_sha
-                      current["archive_delivered_at"]=nowz()
-                      changed=True
-                  if current.get("buttons_version")!=2:
-                      current["buttons_version"]=2
-                      current["buttons_updated_at"]=nowz()
-                      changed=True
-                  sent_or_repaired+=1
+                  patches={
+                      "buttons_version":3,
+                      "buttons_updated_at":nowz()
+                  }
+                  if archive_mid:
+                      patches.update({
+                          "archive_telegram_message_id":archive_mid,
+                          "archive_image_url":archive_url,
+                          "archive_materialized_url":archive_copy_url,
+                          "archive_sha256":archive_sha,
+                          "archive_delivered_at":current.get("archive_delivered_at") or nowz()
+                      })
+                  for k,v in patches.items():
+                      if current.get(k)!=v:
+                          current[k]=v; changed=True
+                  touched+=1
                   continue
 
               raw=fetch_bytes(image_url)
@@ -242,19 +259,19 @@ jobs:
                   "telegram_message_id":message_id,
                   "delivered_at":nowz(),
                   "status":"sent",
-                  "buttons_version":2
+                  "buttons_version":3
               }
               if archive_mid:
                   row.update({
                       "archive_telegram_message_id":archive_mid,
-                      "archive_telegram_file_id":archive_file_id,
                       "archive_image_url":archive_url,
+                      "archive_materialized_url":archive_copy_url,
                       "archive_sha256":archive_sha,
                       "archive_delivered_at":nowz()
                   })
               deliveries.setdefault("items",[]).append(row)
               changed=True
-              sent_or_repaired+=1
+              touched+=1
               print(f"TTITTULARES_TELEGRAM_SENT event={eid} message_id={message_id} archive_message_id={archive_mid or 0} chars={len(tweet)}")
 
           deliveries["items"]=deliveries.get("items",[])[-500:]
@@ -263,25 +280,26 @@ jobs:
               deliveries["updated_at"]=nowz()
               deliveries_path.write_text(json.dumps(deliveries,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
           print("TTITTULARES_TELEGRAM_CHANGED="+str(int(changed)))
-          print("TTITTULARES_TELEGRAM_TOUCHED="+str(sent_or_repaired))
+          print("TTITTULARES_TELEGRAM_TOUCHED="+str(touched))
           PY
 
-      - name: Guardar confirmaciones de entrega
+      - name: Guardar entrega y archivo materializado
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- telegram/ttittulares-deliveries.json; then
+          git add telegram/ttittulares-deliveries.json
+          if [ -d ttittulares/archive-images ]; then git add ttittulares/archive-images; fi
+          if git diff --cached --quiet; then
             echo "Sin cambios de entrega."
             exit 0
           fi
-          git add telegram/ttittulares-deliveries.json
-          git commit -m "Registrar entregas TTiTTulares en Telegram"
+          git commit -m "Registrar paquete Telegram TTiTTulares"
           for n in 1 2 3 4 5; do
             git pull --rebase origin main || { git rebase --abort || true; sleep $((n*2)); continue; }
             if git push origin HEAD:main; then exit 0; fi
             sleep $((n*2))
           done
-          echo "No se pudo persistir el registro de entregas" >&2
+          echo "No se pudo persistir el paquete Telegram" >&2
           exit 1
