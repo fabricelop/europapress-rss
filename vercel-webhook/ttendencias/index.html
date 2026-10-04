@@ -204,7 +204,7 @@ async function activatePush(){
    sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:appServerKey(d.publicKey)});
  }
  await api("push-subscribe",[],{subscription:sub.toJSON()});
- const archived=localArchived();await updateBadge(model?.pendingExplainedRecent?.filter(x=>!x.copied&&!x.rewrite_pending&&!archived.has(x.copy_key)).length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
+ await updateBadge(model?.pendingExplainedRecent?.length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
 }
 async function deactivatePush(){
  const sub=await currentPushSubscription();
@@ -238,6 +238,13 @@ function collapseVisibleExplained(rows){
    if(text)textIndex.set(text,idx);
  }
  return out
+}
+function pendingExplainedEligible(x){
+ if(!x||x.status==="grouped"||!String(x.explanation||"").trim())return false;
+ if(["published","dismissed"].includes(String(x.telegram_package_status||"").toLowerCase()))return false;
+ if(x.copied||x.rewrite_pending)return false;
+ const at=Date.parse(x.explained_at||"");
+ return Number.isFinite(at)&&Date.now()-at<24*60*60*1000;
 }
 function collapsePendingExplained(rows){
  const seenIds=new Set(),textIndex=new Map(),out=[];
@@ -380,10 +387,9 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
    .map(x=>({...x,_rank:rankAtExplanation(x)}))
    .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
  const pendingExplainedRecent=collapsePendingExplained([...(explained.items||[])]
-   .filter(x=>x.status!=="grouped"&&String(x.explanation||"").trim())
-   .filter(x=>!["published","dismissed"].includes(String(x.telegram_package_status||"").toLowerCase()))
-   .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||""))))
-   .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
+   .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x)
+   .filter(pendingExplainedEligible)
+   .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||""))));
  const sourceTotal=Object.keys(recent.sources||{}).length;
  const sourceProblemCount=Math.max(0,sourceTotal-Number(recent.source_count||0));
  return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,source_total:sourceTotal,source_problem_count:sourceProblemCount,items,upcoming,progress,prepared:preparedItems,explainedRecent,pendingExplainedRecent,elaboratingItems:processing.map(x=>({id:x.id||null,name:x.name||"Tendencia",rank:Number(x.rank||0),status:String(x.status||""),revision:Number(x.revision||0),requested_at:x.requested_at||null,reexplain:Boolean(x.reexplain),rewrite_instruction:x.rewrite_instruction||""})),health,editorial_config:editorialConfig||{},editorial_queue:editorialQueue||{items:[]}};
@@ -400,7 +406,7 @@ function render(){
  quality.classList.add(total>0&&operativas/total>=0.7?"good":total>0&&operativas/total>=0.45?"warn":"bad");
  const elaboratingItems=model.elaboratingItems||[],elaborating=elaboratingItems.length;
  const working=$("workingCount");working.textContent="En elaboración: "+elaborating;working.classList.toggle("idle",elaborating===0);working.disabled=elaborating===0;working.title=elaborating?"Ver tendencias en elaboración":"";
- const archived=localArchived();const unread=(model.pendingExplainedRecent||[]).filter(x=>!x.copied&&!x.rewrite_pending&&!archived.has(x.copy_key)).length;
+ const unread=(model.pendingExplainedRecent||[]).length;
  const unreadBadge=$("unreadExplainedBadge");
  unreadBadge.textContent=unread>99?"99+":String(unread);
  unreadBadge.classList.toggle("show",unread>0);
