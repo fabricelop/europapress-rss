@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-auto-5890384b2f85-r0-a2-1791152938697",
   "requested_at": "2026-10-04T22:28:58.680812Z",
-  "updated_at": "2026-10-04T22:30:06.346Z",
+  "updated_at": "2026-10-04T22:30:07.489Z",
   "status": "RUNNING",
-  "phase": "pc_launch",
+  "phase": "capture_wait",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -49,9 +49,9 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "PC ha abierto el chat de imagen; esperando inicio de generación.",
+  "message": "Esperando el raster generado por ImageGen en la misma pestaña. Intento 1/2.",
   "pc_upload_secret_hash": "7ecba5124eac0fb4983f06bd23d9efa9898b177da5a4d6cdea209f03b0b58897",
-  "pc_worker_id": "ttendencias-dedicated-v12",
+  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
   "pc_picked_up_at": "2026-10-04T22:29:58.251Z",
   "pc_launched_at": "2026-10-04T22:30:06.346Z"
 }
