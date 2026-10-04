@@ -252,7 +252,7 @@ function buildMessage(job){
   ].join("\n")
 }
 
-const BRIDGE_MODE="capture-only-v27-submit-evidence";
+const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 // compatibility during hot rollout: BRIDGE_MODE="capture-only-v23-target-handoff"
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
@@ -514,7 +514,7 @@ async function captureDomImage(cdp,candidate){
 
 async function capture(cdp,job){
   const deadline=Date.now()+3*60*1000;
-  let lastDiag=null,lastEvalError=null,baselineSet=false,baselineSrc="";
+  let lastDiag=null,lastEvalError=null,baselineSet=false,baselineSrc="",deadSince=0;
   const acceptInitialRaster=Boolean(cdp&&cdp.acceptInitialRaster);
   let domBaseline=(cdp&&cdp.preSubmitImageSrcs instanceof Set)?new Set(cdp.preSubmitImageSrcs):new Set();
   try{
@@ -546,7 +546,14 @@ async function capture(cdp,job){
         }
       }
     }
-    if(p&&p.diag)lastDiag=p.diag;
+    if(p&&p.diag){
+      lastDiag=p.diag;
+      const dead=Boolean(p.diag.marker&&p.diag.commandScoped&&!p.diag.generating&&Number(p.diag.imagesAfterMarker||0)===0&&Number(p.diag.turns||0)===0);
+      if(dead){
+        if(!deadSince)deadSince=Date.now();
+        if(Date.now()-deadSince>=15000)throw Error("ImageGen quedó inactivo tras el envío; "+JSON.stringify(p.diag).slice(0,700))
+      }else deadSince=0;
+    }
     const currentSrc=String(p&&p.src||"");
     if(!baselineSet){
       baselineSet=true;
@@ -575,12 +582,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v27-submit-evidence",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v27-submit-evidence",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -602,15 +609,33 @@ async function uploadImage(image){
     const job=await fetchJob();
     cdp=await openFreshDedicatedConversation();
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
-    cdp=await injectPromptIntoChat(cdp,job);
-    cdp=await ensureSubmitted(cdp,job);
-    cdp.acceptInitialRaster=true;
-    console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED");
-    await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-    const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v27-submit-evidence"});
-    if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
-    await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña.");
-    const image=await capture(cdp,job);
+    let image=null;
+    for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
+      if(generationAttempt>1){
+        try{cdp&&cdp.close()}catch{}
+        await progress("image_retry","Primer envío no produjo generación real; reintentando en conversación nueva de la misma pestaña.");
+        cdp=await openFreshDedicatedConversation();
+        console.log("BRIDGE INTERNAL RETRY conversation="+generationAttempt);
+      }
+      cdp=await injectPromptIntoChat(cdp,job);
+      cdp=await ensureSubmitted(cdp,job);
+      cdp.acceptInitialRaster=true;
+      console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
+      if(generationAttempt===1){
+        await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
+        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry"});
+        if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
+      }
+      await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
+      try{
+        image=await capture(cdp,job);
+        break
+      }catch(e){
+        if(generationAttempt>=2)throw e;
+        console.log("BRIDGE GENERATION RETRY :: "+String(e&&e.message||e));
+      }
+    }
+    if(!image)throw Error("ImageGen no produjo raster tras reintento interno");
     await progress("raster_captured","Raster ImageGen capturado; validando y materializando.");
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
     if(!/^(original-fetch-img|canvas-from-img-)/.test(String(image.capture||"")))throw Error("Método de captura no permitido: "+String(image.capture||""));
@@ -625,7 +650,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v27-submit-evidence",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
