@@ -315,5 +315,5 @@
   "github": {
     "autoJobCancelation": false
   },
-  "ignoreCommand": "git log -1 --pretty=%B | grep -q '^Vercel: deploy ' && exit 1 || exit 0"
+  "ignoreCommand": "! (git log -1 --pretty=%B | grep -Eq '^deploy-money-control-' || grep -Eq '^deploy-image-flicker-cache-20261004' .deploy-trigger)"
 }
