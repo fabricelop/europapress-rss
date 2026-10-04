@@ -1,49 +1,49 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-04T17:11:47.994+02:00",
-  "last_completed_at": "2026-10-04T17:28:30+02:00",
+  "last_started_at": "2026-10-04T18:38:25.543+02:00",
+  "last_completed_at": "2026-10-04T18:54:52+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
-    "a5b3807688c7",
-    "a4a691b7cac1",
-    "b9ad7ec5bc7e",
-    "c700abb892cc",
-    "051eba11c9bc",
-    "5b99b445c2ad",
-    "9008ba8e2ce3",
-    "b52739680491"
+    "3049e3a4341a",
+    "a1225b8c7b2e",
+    "1881a1c436a6",
+    "6e3874008cf3",
+    "358fe7fb4b56",
+    "f9ce2a658e8b",
+    "be8da289072a",
+    "20a73bde341d"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-04T17:28:30+02:00",
+  "updated_at": "2026-10-04T18:54:52+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-1791126707994-56a946",
+    "run_id": "tr-1791131905543-7b722f",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-04T17:11:47.994+02:00",
-    "updated_at": "2026-10-04T17:28:30+02:00",
-    "finished_at": "2026-10-04T17:28:30+02:00",
+    "started_at": "2026-10-04T18:38:25.543+02:00",
+    "updated_at": "2026-10-04T18:54:52+02:00",
+    "finished_at": "2026-10-04T18:54:52+02:00",
     "current": 8,
     "total": 8,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-04T17:11:47.994+02:00",
+    "requested_at": "2026-10-04T18:38:25.543+02:00",
     "partial": false,
     "summary": {
       "trends_processed": 8,
       "trends_explained": 8,
-      "explanation_groups": 6,
-      "new_cards": 5,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 1,
+      "explanation_groups": 5,
+      "new_cards": 3,
+      "revisions_updated": 0,
+      "grouped_into_existing_card": 3,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -54,8 +54,8 @@
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 8,
-      "remates_selected": 4,
-      "remates_omitted": 2
+      "remates_selected": 3,
+      "remates_omitted": 0
     },
     "incident_count": 0,
     "incidents": [],
@@ -64,70 +64,202 @@
     "remaining_problematic_ids": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
-      "blob_sha": "794f72d69d46e81afb73b72f92e952a68cb84d3e",
-      "updated_at": "2026-10-04T14:38:24.073Z",
-      "total_ratings": 148,
+      "blob_sha": "17767dd253d157c83e5e511811f035e4a18137c6",
+      "updated_at": "2026-10-04T15:28:42.517Z",
+      "total_ratings": 151,
       "recent_considered": 100
     },
     "remate_selections": [
       {
-        "trend_id": "a5b3807688c7",
+        "trend_id": "3049e3a4341a",
         "revision": 0,
         "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.4,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c2",
+            "total": 7.7,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 7.8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
         "selected_candidate": "c1",
         "selected_score": 8.4,
         "no_remate_reason": null
       },
       {
-        "trend_id": "a4a691b7cac1",
+        "trend_id": "a1225b8c7b2e",
         "revision": 0,
         "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.2,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c2",
+            "total": 7.7,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 7.5,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 7.8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 7.2,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
         "selected_candidate": "c1",
         "selected_score": 8.2,
         "no_remate_reason": null
       },
       {
-        "trend_id": "b9ad7ec5bc7e",
-        "revision": 0,
-        "candidate_count": 0,
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "editorial_omission"
-      },
-      {
-        "trend_id": "c700abb892cc",
-        "revision": 1,
-        "candidate_count": 5,
-        "selected_candidate": "c2",
-        "selected_score": 8.6,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "051eba11c9bc",
+        "trend_id": "358fe7fb4b56",
         "revision": 0,
         "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.4,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c2",
+            "total": 7.9,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 7.5,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 8.1,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 7.6,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
         "selected_candidate": "c1",
-        "selected_score": 8.5,
+        "selected_score": 8.4,
         "no_remate_reason": null
-      },
-      {
-        "trend_id": "b52739680491",
-        "revision": 0,
-        "candidate_count": 0,
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "editorial_omission"
       }
     ],
-    "message": "Pasada completada 8/8 en 6 grupos editoriales. Relectura final de main: 0 preparing/update, 0 rewrite_pending y 0 problematic. Las 8 revisiones coinciden exactamente entre el estado explicado y requests y ya no están en editorial-queue. Sin ImageGen ni despliegues Vercel."
+    "message": "Pasada completada 8/8. Se procesaron las 7 revisiones iniciales y una entrada nueva («casas») detectada en la relectura final. Verificación terminal: 0 preparing/update en cola, 0 preparing/update en requests, 0 rewrite_pending; las 8 revisiones coinciden con su explicación/grupo y están fuera de la cola. Sin ImageGen ni despliegues Vercel."
   },
   "summary": {
     "trends_processed": 8,
     "trends_explained": 8,
-    "explanation_groups": 6,
-    "new_cards": 5,
-    "revisions_updated": 1,
-    "grouped_into_existing_card": 1,
+    "explanation_groups": 5,
+    "new_cards": 3,
+    "revisions_updated": 0,
+    "grouped_into_existing_card": 3,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -138,7 +270,7 @@
     "fallback_images_ready": 0,
     "vercel_deploys": 0,
     "explanations_verified_under_280": 8,
-    "remates_selected": 4,
-    "remates_omitted": 2
+    "remates_selected": 3,
+    "remates_omitted": 0
   }
 }
