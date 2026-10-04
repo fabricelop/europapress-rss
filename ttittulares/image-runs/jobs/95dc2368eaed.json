@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-real-95dc2368eaed-20261004-1410",
+  "requested_at": "2026-10-04T14:10:00Z",
+  "updated_at": "2026-10-04T14:10:00Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "launcher_arg": "titulares",
+  "task": "image",
+  "target_id": "95dc2368eaed",
+  "event_id": "95dc2368eaed",
+  "target_name": "Marlaska recibe abucheos en Cádiz durante la parada militar de la Guardia Civil",
+  "revision": 1,
+  "regenerate": false,
+  "chat_command_version": 4,
+  "instruction_profile": "ttittulares_gag_v4",
+  "context_snapshot": {
+    "title": "Marlaska recibe abucheos en Cádiz durante la parada militar de la Guardia Civil",
+    "revision": 1,
+    "factual_summary": "Fernando Grande-Marlaska fue recibido con abucheos y gritos de «fuera» en Cádiz durante la parada militar de la Guardia Civil. El ministro presidió el acto y defendió la labor y los medios del cuerpo frente al narcotráfico.",
+    "tweet_text": "Fernando Grande-Marlaska fue recibido con abucheos y gritos de «fuera» en Cádiz durante la parada militar de la Guardia Civil, donde defendió al cuerpo frente al narcotráfico.\n\n🌶️ El protocolo de Cádiz incluyó un coro que no figuraba en el programa.",
+    "remate": "🌶️ El protocolo de Cádiz incluyó un coro que no figuraba en el programa.",
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena abarrotada de detalles y personajes expresivos, humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Incorporar carteles, objetos y elementos del entorno que permitan entender el chiste de un vistazo. Expresiones faciales exageradas, composición dinámica, profundidad, iluminación dramática y acabado pulido tipo portada/editorial. Texto en español únicamente cuando sea necesario para el gag y perfectamente integrado en la escena. Evitar caricatura genérica, evitar collage, evitar aspecto fotográfico puro y evitar infografía. La imagen debe parecer una escena única y coherente, como una viñeta editorial de gran presupuesto, con muchos pequeños detalles humorísticos secundarios pero un gag principal inmediatamente reconocible.",
+    "scene": "Parada militar solemne de la Guardia Civil en Cádiz, con Fernando Grande-Marlaska en el centro del acto y público alrededor reaccionando con abucheos.",
+    "gag_visual": "Convertir visualmente parte del público en una coral improvisada fuera de programa: atriles improvisados, gestos de coro y un director accidental, mientras el protocolo militar intenta seguir con absoluta solemnidad.",
+    "visual_closer": "Un programa oficial de la parada con una línea añadida a mano: «CORO IMPROVISADO», como pequeño detalle del chiste.",
+    "image_prompt": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena abarrotada de detalles y personajes expresivos, humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Incorporar carteles, objetos y elementos del entorno que permitan entender el chiste de un vistazo. Expresiones faciales exageradas, composición dinámica, profundidad, iluminación dramática y acabado pulido tipo portada/editorial. Texto en español únicamente cuando sea necesario para el gag y perfectamente integrado en la escena. Evitar caricatura genérica, evitar collage, evitar aspecto fotográfico puro y evitar infografía. La imagen debe parecer una escena única y coherente, como una viñeta editorial de gran presupuesto, con muchos pequeños detalles humorísticos secundarios pero un gag principal inmediatamente reconocible.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nFernando Grande-Marlaska fue recibido con abucheos y gritos de «fuera» en Cádiz durante la parada militar de la Guardia Civil, donde defendió al cuerpo frente al narcotráfico.\n\n🌶️ El protocolo de Cádiz incluyó un coro que no figuraba en el programa.\n\nREMATE EXACTO:\n🌶️ El protocolo de Cádiz incluyó un coro que no figuraba en el programa.\n\nESCENA:\nParada militar solemne de la Guardia Civil en Cádiz, con Fernando Grande-Marlaska en el centro del acto y público alrededor reaccionando con abucheos.\n\nGAG VISUAL:\nConvertir visualmente parte del público en una coral improvisada fuera de programa: atriles improvisados, gestos de coro y un director accidental, mientras el protocolo militar intenta seguir con absoluta solemnidad.\n\nREMATE VISUAL:\nUn programa oficial de la parada con una línea añadida a mano: «CORO IMPROVISADO», como pequeño detalle del chiste.",
+    "url": "https://www.abc.es/espana/andalucia/cadiz/cadiz-recibe-marlaska-abucheos-gritos-parada-militar-20261004151414-nts.html",
+    "citations": [
+      {
+        "source": "ABC",
+        "url": "https://www.abc.es/espana/andalucia/cadiz/cadiz-recibe-marlaska-abucheos-gritos-parada-militar-20261004151414-nts.html"
+      },
+      {
+        "source": "Europa Sur",
+        "url": "https://www.europasur.es/campo-de-gibraltar/marlaska-cadiz-pitada-planton-augc_0_2008149192.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen para esta entrada. No proceses otra.",
+    "exact_input": "Usa literalmente context_snapshot.tweet_text y context_snapshot.remate como base factual/editorial.",
+    "prompt": "Usa context_snapshot.image_prompt completo.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no foto pura, no reescribir el tuit dentro de la imagen.",
+    "lifecycle": "El bridge capture-only recoge el raster real y lo materializa en generated-images."
+  },
+  "message": "En cola para Imagen GAG IA V4."
+}
