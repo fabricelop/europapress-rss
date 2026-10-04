@@ -161,7 +161,8 @@ function normalizeTrace(t){
     message:t.message||null,
     summary:t.summary||null,
     incident_count:Math.max(Number(t.incident_count||0),incidents.length),
-    incidents
+    incidents,
+    activity:Array.isArray(t.activity)?t.activity.slice(-20):[]
   }
 }
 function runtimeFallback(doc){
