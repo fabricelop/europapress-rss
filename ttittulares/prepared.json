@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T18:50:58.693042Z",
+  "updated_at": "2026-10-04T18:53:06.641Z",
   "items": [
     {
       "event_id": "925a5c92ebf3",
@@ -58,10 +58,10 @@
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "disable_ai_image": false,
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -76,12 +76,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-04T18:50:06.884029Z",
       "image": {
-        "url": "https://cadenaser.com/resizer/v2/XGSHII2TCZNRTEPO2RJIMUF3DY.jpg?auth=0ab1023e2ba1ae9d782d4ec6eab723b6e677e70d24e169b5ed32d980e7f67ce7&quality=70&width=1200&height=675&smart=true",
-        "source": "cadenaser.com",
-        "source_url": "https://cadenaser.com/nacional/2026/10/04/trump-anuncia-una-fuerza-de-superinteligencia-para-gestionar-el-desarrollo-de-la-ia-en-eeuu-cadena-ser/",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Trump anuncia una \"Fuerza de Superinteligencia\" para gestionar el desarrollo de la IA en EEUU"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/925a5c92ebf3-r1-ai1-791139860906.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d5aa4aebb3b7eafc23f755e75c52f5b33ef0e0d2f4c037f9d2f3395217758896",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2540474,
+        "context_guard": {
+          "version": 3,
+          "event_id": "925a5c92ebf3",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-925a5c92ebf3-r1-a1-1791139860906"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/925a5c92ebf3-r1-ai1-791139860906.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://cadenaser.com/resizer/v2/XGSHII2TCZNRTEPO2RJIMUF3DY.jpg?auth=0ab1023e2ba1ae9d782d4ec6eab723b6e677e70d24e169b5ed32d980e7f67ce7&quality=70&width=1200&height=675&smart=true",
@@ -90,7 +104,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Trump anuncia una \"Fuerza de Superinteligencia\" para gestionar el desarrollo de la IA en EEUU"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/925a5c92ebf3-r1-ai1-791139860906.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d5aa4aebb3b7eafc23f755e75c52f5b33ef0e0d2f4c037f9d2f3395217758896",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2540474,
+        "context_guard": {
+          "version": 3,
+          "event_id": "925a5c92ebf3",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-925a5c92ebf3-r1-a1-1791139860906"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/925a5c92ebf3-r1-ai1-791139860906.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-04T18:53:06.641Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-04T18:53:06.641Z"
     }
   ],
   "count": 11
