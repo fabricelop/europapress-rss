@@ -15,38 +15,25 @@ function Log([string]$t){
   Add-Content -LiteralPath $LogPath -Value ((Get-Date -Format "yyyy-MM-dd HH:mm:ss")+" "+$t) -Encoding UTF8
 }
 
-function Api([string]$u){
-  Invoke-RestMethod -Uri $u -Headers @{
-    "Accept"="application/vnd.github+json"
-    "User-Agent"="TT-auto-updater"
-    "Cache-Control"="no-cache"
-  } -TimeoutSec 20
+function Download-Raw([string]$path){
+  $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+$path+"?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  $wc=New-Object System.Net.WebClient
+  try{
+    $wc.Headers["User-Agent"]="TT-auto-updater-raw-v3"
+    $wc.Headers["Cache-Control"]="no-cache"
+    return $wc.DownloadData($url)
+  }finally{$wc.Dispose()}
 }
 
-function Get-Tree {
-  Api ("https://api.github.com/repos/fabricelop/europapress-rss/git/trees/main?recursive=1&t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds())
-}
-
-function Remote([string]$p){
-  $u="https://api.github.com/repos/fabricelop/europapress-rss/contents/"+$p+"?ref=main&t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-  $d=Api $u
-  if(-not $d.content){throw "Sin contenido remoto: $p"}
-  [Convert]::FromBase64String(([string]$d.content -replace "\s",""))
-}
-
-function GitBlobSha([byte[]]$b){
-  $prefix=[Text.Encoding]::UTF8.GetBytes("blob "+$b.Length+[char]0)
-  $all=New-Object byte[] ($prefix.Length+$b.Length)
-  [Array]::Copy($prefix,0,$all,0,$prefix.Length)
-  [Array]::Copy($b,0,$all,$prefix.Length,$b.Length)
-  $s=[Security.Cryptography.SHA1]::Create()
-  try{([BitConverter]::ToString($s.ComputeHash($all))).Replace("-","").ToLowerInvariant()}
+function Sha256Bytes([byte[]]$b){
+  $s=[Security.Cryptography.SHA256]::Create()
+  try{([BitConverter]::ToString($s.ComputeHash($b))).Replace("-","").ToLowerInvariant()}
   finally{$s.Dispose()}
 }
 
 function LocalSha([string]$f){
   if(-not (Test-Path -LiteralPath $f)){return ""}
-  GitBlobSha ([IO.File]::ReadAllBytes($f))
+  Sha256Bytes ([IO.File]::ReadAllBytes($f))
 }
 
 function ValidatePs([string]$f){
@@ -90,42 +77,27 @@ function StartListener([string]$name){
 
 function CheckOnce{
   try{
-    # Una sola petición GitHub por ciclo para saber qué ha cambiado.
-    $tree=Get-Tree
-    $remote=@{}
-    foreach($x in @($tree.tree)){
-      if($x.type -eq "blob"){$remote[[string]$x.path]=[string]$x.sha}
-    }
-
     $restart=@()
     $downloads=0
-
     foreach($m in $Managed){
-      $remoteSha=[string]$remote[[string]$m.Path]
-      if(-not $remoteSha){
-        Log ("WARN no aparece en tree: "+$m.Path)
-        continue
-      }
-
       $local=Join-Path $BaseDir ([string]$m.Local)
+      $bytes=Download-Raw ([string]$m.Path)
+      $downloads++
+      if(-not $bytes -or $bytes.Length -lt 100){throw "Descarga vacia/corta: "+$m.Path}
+      $remoteSha=Sha256Bytes $bytes
       $localSha=LocalSha $local
       if($localSha -eq $remoteSha){continue}
 
       Log ("UPDATE DETECTED "+$m.Path+" local="+$localSha+" remote="+$remoteSha)
-      $bytes=Remote ([string]$m.Path)
-      $downloads++
-
       $tmp=$local+".autoupdate"+$(if($m.Kind -eq "js"){".new.js"}else{".new.ps1"})
       [IO.File]::WriteAllBytes($tmp,$bytes)
       if($m.Kind -eq "ps"){ValidatePs $tmp}else{ValidateJs $tmp}
-
       if((LocalSha $tmp) -ne $remoteSha){
         Remove-Item $tmp -Force -ErrorAction SilentlyContinue
-        throw "SHA Git no coincide: "+$m.Path
+        throw "SHA256 no coincide: "+$m.Path
       }
-
       Move-Item -LiteralPath $tmp -Destination $local -Force
-      Log ("UPDATED "+$m.Path+" sha="+$remoteSha)
+      Log ("UPDATED "+$m.Path+" sha256="+$remoteSha)
       if($m.Pattern){$restart+=$m}
     }
 
@@ -134,14 +106,13 @@ function CheckOnce{
       Start-Sleep -Milliseconds 500
       StartListener ([string]$m.Local)
     }
-
-    Log ("CHECK OK downloads="+$downloads+" restarts="+$restart.Count)
+    Log ("CHECK OK raw-v3 downloads="+$downloads+" restarts="+$restart.Count)
   }catch{
     Log ("CHECK ERROR :: "+$_.Exception.Message)
   }
 }
 
-Log ("START optimized-v2 interval="+$IntervalSeconds+" once="+$Once+" pid="+$PID)
+Log ("START raw-v3 interval="+$IntervalSeconds+" once="+$Once+" pid="+$PID)
 do{
   CheckOnce
   if($Once){break}
