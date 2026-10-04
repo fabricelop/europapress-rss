@@ -374,6 +374,10 @@ async function uploadImage(image){
     const up=await uploadImage(image);
     if(!up.ok)throw Error("Upload "+up.status+": "+(up.data&&up.data.error||"sin detalle"));
     console.log("BRIDGE UPLOADED "+up.data.sha256);
+    if(String(up.data&&up.data.status||"").toUpperCase()==="DONE"){
+      console.log("BRIDGE DONE VIA UPLOAD");
+      return
+    }
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
