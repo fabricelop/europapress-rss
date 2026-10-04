@@ -18,7 +18,6 @@ main{width:100%;max-width:560px;margin:0 auto;padding:14px 10px 40px;overflow-x:
 <header class="top"><nav class="nav3"><a class="navbtn" href="/ttendencias/">TOP 10</a><a class="navbtn pending active" href="/ttendencias/explicadas/">Pendientes <span class="navBadge" id="navPendingBadge"></span></a><a class="navbtn" href="/ttendencias/historico/">Histórico</a></nav></header>
 <main>
 <input class="filter" id="filter" type="search" inputmode="search" autocomplete="off" placeholder="Buscar en pendientes…">
-<section class="imageControl" id="imageControl"><div class="imageControlMain"><strong id="imageHeadline">Imágenes IA</strong><div class="imageControlState done" id="imageState">Marca las tendencias que quieras convertir en gag IA.</div></div><button class="btn" id="runImages" type="button" disabled>✨ Imágenes</button></section>
 <div class="section">Pendientes de publicar <span class="sectionCount" id="pendingCount">0</span></div>
 <section class="list" id="pendingList"><div class="empty">Cargando pendientes…</div></section>
 </main>
@@ -232,22 +231,7 @@ function pruneImageSelections(){
  for(const key of keys)if(!valid.has(key)){keys.delete(key);changed=true}
  if(changed)saveSelectedImageKeys(keys)
 }
-function makeImageSelector(x,expanded=false){
- if(x?.tremending_origin)return null;
- const label=document.createElement("label");label.className="imagePick"+(expanded?" expandedImagePick":"");
- const input=document.createElement("input");input.type="checkbox";
- const allowed=imageSelectable(x)||imageRunActive(imageRuns.get(String(x?.id||"")));
- input.disabled=!allowed;
- input.checked=allowed&&imageSelected(x);
- input.setAttribute("aria-label","Crear gag IA para "+displayName(x));
- input.onchange=()=>setImageSelected(x,input.checked);
- const text=document.createElement("span");
- const block=explicitAiBlockReason(x);
- text.textContent=block?"IA bloqueada":imageHasAi(x)?"Rehacer Gag IA":"Gag IA";
- if(!allowed){label.classList.add("disabled");label.title=block?("Bloqueada: "+block):"Imagen IA no disponible para esta entrada"}
- else if(imageHasAi(x)){label.title="Generar una nueva imagen IA manteniendo la misma explicación y contexto"}
- label.append(input,text);return label
-}
+function makeImageSelector(){return null}
 function imageHandoffTimedOut(run){
  const st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"").toLowerCase();
  if(st!=="RUNNING"||!["pc_pickup","pc_launch"].includes(phase))return false;
