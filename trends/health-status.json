@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-04T21:33:37.682301+00:00",
+  "checked_at": "2026-10-04T23:01:46.904448+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -41,8 +41,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 6,
-      "captured_age_minutes": 0.3,
+      "non_stale_sources": 7,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -55,7 +55,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 1.1,
-      "run_id": 37236507837,
+      "run_id": 37242159027,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -65,8 +65,8 @@
       "outcome": "no-aplica"
     },
     "request_queue": {
-      "ok": true,
-      "invalid_count": 0,
+      "ok": false,
+      "invalid_count": 45,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -75,53 +75,28 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 5,
-      "overdue_count": 3,
-      "oldest_age_minutes": 68.8,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "4c937a96fa19",
-          "name": "Escribá",
-          "status": "preparing",
-          "age_minutes": 68.8
-        },
-        {
-          "id": "19649a7e10aa",
-          "name": "#CuartoMilenio",
-          "status": "preparing",
-          "age_minutes": 47.3
-        },
-        {
-          "id": "f354c321182d",
-          "name": "Frente Popular",
-          "status": "preparing",
-          "age_minutes": 47.2
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "4c937a96fa19",
-        "19649a7e10aa",
-        "f354c321182d",
-        "64029d6bfa48",
-        "91a2ffbb955b"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 68.8 min"
+    "cola con 45 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 68.8 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola con 45 estado(s) inválido(s) | config TTendencias incompatible con el modo activo"
 }
