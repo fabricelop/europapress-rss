@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-04-v28a
+# official-pipeline-restart-token: 2026-10-04-v29-direct-trigger
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -18,6 +18,10 @@ $StatusBase = "https://europapress-rss.vercel.app"
 $ListenerSnapshotUrl = "$StatusBase/api/ttittulares-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttittulares-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttittulares-run"
+$DirectTriggerApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/run-now-trigger.json?ref=control%2Fttittulares-run-trigger-v2"
+$DirectTriggerRefreshSeconds = 60
+$script:DirectTriggerCache = $null
+$script:DirectTriggerAt = [DateTimeOffset]::MinValue
 # Protocol compatibility: producción Vercel antigua exige v19; el código local sigue siendo v20/v28.
 $WorkerId = "ttittulares-dedicated-v19"
 $PollSeconds = 15
@@ -96,10 +100,48 @@ function Read-ListenerSnapshot {
   return $script:ListenerSnapshotCache
 }
 
+function Read-TriggerDirect {
+  $now=[DateTimeOffset]::UtcNow
+  if($script:DirectTriggerCache -and (($now-$script:DirectTriggerAt).TotalSeconds -lt $DirectTriggerRefreshSeconds)){
+    return $script:DirectTriggerCache
+  }
+  try{
+    $doc=Invoke-RestMethod -Uri (CacheBust $DirectTriggerApi) -Headers @{
+      "Accept"="application/vnd.github+json"
+      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectTrigger"
+      "Cache-Control"="no-cache"
+    } -TimeoutSec 12
+    if($doc -and $doc.content){
+      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
+      $parsed=$raw|ConvertFrom-Json
+      if($parsed -and $parsed.command_id){
+        $script:DirectTriggerCache=$parsed
+        $script:DirectTriggerAt=$now
+        return $parsed
+      }
+    }
+  }catch{
+    Write-Log "DIRECT TRIGGER ERROR :: $($_.Exception.Message)"
+  }
+  return $script:DirectTriggerCache
+}
+
 function Read-Trigger {
+  $snapshot=$null
   $r=Read-ListenerSnapshot
-  if($r -and $r.trigger){return $r.trigger}
-  return $null
+  if($r -and $r.trigger){$snapshot=$r.trigger}
+  $direct=Read-TriggerDirect
+  if($direct -and $direct.command_id){
+    if(-not $snapshot -or -not $snapshot.command_id){return $direct}
+    try{
+      $dt=[DateTimeOffset]::Parse([string]$direct.requested_at)
+      $st=[DateTimeOffset]::Parse([string]$snapshot.requested_at)
+      if($dt -ge $st){return $direct}
+    }catch{
+      if([string]$direct.command_id -ne [string]$snapshot.command_id){return $direct}
+    }
+  }
+  return $snapshot
 }
 
 function Read-ImageIndex {
