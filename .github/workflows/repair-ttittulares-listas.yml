@@ -234,7 +234,9 @@ jobs:
               remate=str(tweet.get("remate") or "").strip()
               if not eid or not text or not remate:
                   continue
-              if item.get("disable_ai_image") or str(item.get("ai_image_status") or "").lower()=="disabled":
+              # Los bloqueos editoriales heredados (disable/fallback_only/etc.) ya no
+              # impiden generar IA. Tremending sigue fuera por su flujo tweet_capture.
+              if item.get("tremending_origin") or str(item.get("image_mode") or item.get("image_strategy") or "").lower()=="tweet_capture_only":
                   continue
               if ai_valid(item):
                   continue
