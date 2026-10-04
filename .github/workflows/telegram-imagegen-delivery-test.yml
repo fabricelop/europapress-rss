@@ -1,0 +1,86 @@
+name: Prueba Telegram raster ImageGen
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ttittulares/generated-images/telegram-test-lobato-20261004-*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: telegram-imagegen-delivery-test
+  cancel-in-progress: false
+
+jobs:
+  send-photo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Localizar raster recién materializado
+        id: image
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE="$(git diff-tree --no-commit-id --name-only -r "$GITHUB_SHA" -- 'ttittulares/generated-images/telegram-test-lobato-20261004-*' | head -n 1)"
+          test -n "$FILE"
+          test -f "$FILE"
+          echo "file=$FILE" >> "$GITHUB_OUTPUT"
+          echo "Raster: $FILE"
+          file "$FILE"
+
+      - name: Preparar caption y botones
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, urllib.parse
+          from pathlib import Path
+          d=json.loads(Path("telegram/image-delivery-test.json").read_text(encoding="utf-8"))
+          tweet=str(d["tweet_text"])
+          if len(tweet)>256:
+              raise SystemExit(f"Tweet de prueba demasiado largo: {len(tweet)}/256")
+          caption="🧪 PRUEBA TTiTTulares → Telegram\n\n"+tweet
+          keyboard={
+              "inline_keyboard":[[
+                  {"text":"📋 Copiar tuit","copy_text":{"text":tweet}},
+                  {"text":"✍️ Abrir X","url":"https://x.com/intent/post?text="+urllib.parse.quote(tweet)}
+              ]]
+          }
+          Path("/tmp/tt-caption.txt").write_text(caption,encoding="utf-8")
+          Path("/tmp/tt-reply.json").write_text(json.dumps(keyboard,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
+          print(f"Tweet: {len(tweet)}/256")
+          PY
+
+      - name: Enviar fichero real a Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          IMAGE_FILE: ${{ steps.image.outputs.file }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$TELEGRAM_BOT_TOKEN"
+          test -n "$TELEGRAM_CHAT_ID"
+          RESPONSE="$(curl --fail-with-body --silent --show-error \
+            -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto" \
+            -F "chat_id=${TELEGRAM_CHAT_ID}" \
+            -F "photo=@${IMAGE_FILE}" \
+            --form-string "caption=$(cat /tmp/tt-caption.txt)" \
+            --form-string "reply_markup=$(cat /tmp/tt-reply.json)")"
+          printf '%s\n' "$RESPONSE" > /tmp/telegram-response.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open("/tmp/telegram-response.json",encoding="utf-8"))
+          if not d.get("ok"):
+              raise SystemExit("Telegram no confirmó el envío: "+json.dumps(d,ensure_ascii=False))
+          m=d.get("result") or {}
+          photos=m.get("photo") or []
+          print("TELEGRAM_SENDPHOTO_OK")
+          print("message_id="+str(m.get("message_id")))
+          print("photo_sizes="+str(len(photos)))
+          PY
