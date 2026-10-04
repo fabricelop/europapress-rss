@@ -378,14 +378,21 @@ function collapsedImageState(x){
  if(aiRegenerationError)return {text:"— IA no solicitada · intento anterior falló"+(fallbackUrl?" · archivo disponible":""),cls:"failed"};
  return {text:"— IA no solicitada"+(fallbackUrl?" · archivo disponible":""),cls:"none"};
 }
-function appendImagePreview(host,image,label,badge){
+let preservedTrendImages=new Map();
+function appendImagePreview(host,image,label,badge,itemId=""){
  const url=String(image?.url||"");if(!/^https:\/\//i.test(url))return false;
  const wrap=document.createElement("div");wrap.style.cssText="flex:1 1 260px;min-width:0;border:1px solid #29384a;border-radius:11px;padding:8px;background:#0d131c";
  const title=document.createElement("div");title.style.cssText="display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:800;color:#b9c9dd;margin-bottom:6px";
  title.textContent=label;
  if(badge){const b=document.createElement("span");b.textContent="EN USO";b.style.cssText="color:#ffce69";title.appendChild(b)}
  const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";
- const img=document.createElement("img");img.src=API+"?view=image-proxy&url="+encodeURIComponent(url);img.alt=String(image.alt||label);img.loading="lazy";img.decoding="async";img.referrerPolicy="no-referrer";img.style.cssText="display:block;width:100%;height:auto;max-height:320px;object-fit:contain;border-radius:8px;background:#090d13";
+ const proxySrc=API+"?view=image-proxy&url="+encodeURIComponent(url);
+ const preserveKey=JSON.stringify([String(itemId||""),url]);
+ let img=preservedTrendImages.get(preserveKey)||null;
+ if(!(img&&img.complete&&img.naturalWidth>0&&img.getAttribute("src")===proxySrc)){
+   img=document.createElement("img");img.src=proxySrc;
+ }
+ img.dataset.imageUrl=url;img.alt=String(image.alt||label);img.loading="lazy";img.decoding="async";img.referrerPolicy="no-referrer";img.style.cssText="display:block;width:100%;height:auto;max-height:320px;object-fit:contain;border-radius:8px;background:#090d13";
  a.appendChild(img);wrap.append(title,a);
  const source=document.createElement("div");source.style.cssText="font-size:10px;color:#8090a4;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis";source.textContent=String(image.source||label);wrap.appendChild(source);
  host.appendChild(wrap);return true;
@@ -435,7 +442,7 @@ function renderRemateRating(host,x){
  draw();
 }
 function renderCard(x,pending){
- const card=document.createElement("article");card.className="card";
+ const card=document.createElement("article");card.className="card";card.dataset.itemId=String(x.id||"");
  const name=displayName(x),route=routeLabel(x),labelled=groupRankLabel(x);
  card.innerHTML='<div class="head"><div class="name"></div><div class="when"></div></div><div class="explanation"></div><div class="closer" hidden></div><div class="aiStatusBadge"></div><div class="imagebox" hidden></div><div class="rating"></div><div class="meta"></div><div class="actions"></div>';
  const heading=card.querySelector(".name");heading.textContent=labelled;if(hasTweetReadyFormat(x))heading.hidden=true;
@@ -460,7 +467,7 @@ function renderCard(x,pending){
  if(/^https:\/\//i.test(aiUrl)||/^https:\/\//i.test(fallbackUrl)||x.ai_image_status||x.fallback_image_status){
    picture.hidden=false;picture.style.cssText="margin:9px 0 5px;max-width:100%;overflow:hidden";
    const grid=document.createElement("div");grid.style.cssText="display:flex;gap:8px;flex-wrap:wrap";
-   appendImagePreview(grid,ai,"Gag IA",imageChoice==="ai");appendImagePreview(grid,fallback,"Archivo / fallback",imageChoice==="fallback");
+   appendImagePreview(grid,ai,"Gag IA",imageChoice==="ai",x.id);appendImagePreview(grid,fallback,"Archivo / fallback",imageChoice==="fallback",x.id);
    if(!grid.children.length){const state=document.createElement("div");state.style.cssText="font-size:11px;color:#94a3b8;padding:8px;border:1px solid #29384a;border-radius:10px;width:100%";state.textContent=x.ai_image_regenerate_requested?"Nueva IA solicitada · se intentará una imagen en la próxima pasada.":"Imagen IA/fallback todavía no disponible.";grid.appendChild(state)}
    picture.appendChild(grid);
  }
@@ -512,12 +519,20 @@ function renderExpandedPending(x){
  return card;
 }
 function render(){
+ const pendingList=$("pendingList");
+ preservedTrendImages=new Map();
+ for(const card of pendingList.querySelectorAll("article.card[data-item-id]")){
+   for(const img of card.querySelectorAll("img[data-image-url]")){
+     const itemId=String(card.dataset.itemId||""),url=String(img.dataset.imageUrl||"");
+     if(itemId&&url&&img.complete&&img.naturalWidth>0)preservedTrendImages.set(JSON.stringify([itemId,url]),img);
+   }
+ }
  const q=nrm($("filter").value);
  const visible=q?allItems.filter(x=>nrm(displayName(x)).includes(q)||nrm((x.trend_names||[]).join(" ")).includes(q)||nrm(x.explanation).includes(q)):allItems;
  const pendingAll=allItems.filter(x=>!x.copied&&!x.rewrite_pending&&!archivingKeys.has(pendingKey(x))),pending=visible.filter(x=>!x.copied&&!x.rewrite_pending&&!archivingKeys.has(pendingKey(x)));
  $("pendingCount").textContent=String(pending.length);updateUnreadBadge();updateImageControl();
  if(openPendingKey&&!pending.some(x=>pendingKey(x)===openPendingKey))openPendingKey=null;
- const pendingList=$("pendingList");pendingList.innerHTML="";
+ pendingList.innerHTML="";
  if(!pending.length)pendingList.innerHTML='<div class="empty">'+(q?"No hay pendientes que coincidan.":"No tienes tendencias pendientes de publicar.")+'</div>';
  else for(const x of pending)pendingList.appendChild(pendingKey(x)===openPendingKey?renderExpandedPending(x):renderCollapsedPending(x));
 }
