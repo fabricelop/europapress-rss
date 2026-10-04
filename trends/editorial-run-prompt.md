@@ -11,6 +11,7 @@ Cuando el usuario envía «Ejecuta TTendencias» a una conversación de ChatGPT,
 La ejecución directa —incluida la lanzada por la programación de Windows que escribe «Ejecuta TTendencias»— **debe dejar telemetría aunque procese 0 tendencias**.
 
 1. Antes de investigar, lee los comentarios del PR #7 y localiza el comentario canónico `TTENDENCIAS_RUNTRACE_V1` con `"canonical":true` (actualmente comment_id `5859532515`). Si no existe, créalo una sola vez. Actualiza ESE MISMO comentario a `RUNNING` con un `run_id` nuevo, `source:"chat"`, `started_at`, `updated_at`, `phase:"preparing"`, `current:0`, `total` real y resumen vacío. Nunca crees un comentario RUNTRACE nuevo por cada pasada.
+   - En ese mismo arranque actualiza `trends/pending-repair-trigger.json` con `run_id`, `requested_at` y `reason:"execution-start-pending-repair"`. Ese commit despierta el saneamiento visual de Pendientes aunque la cola editorial nueva sea 0. No esperes al cierre para hacerlo.
 2. Actualiza ese comentario durante las fases reales `investigating`, `drafting`, `remate_selection`, `persisting`, `verifying` y `closing`. `remate_selection` se usa solo cuando se está evaluando el remate. No uses `image_generating` ni `image_persisting` en una pasada editorial normal: la capa visual se ejecuta asíncronamente después de `explained`, mediante jobs independientes automáticos o un override manual.
 
 #### Telemetría visible de grano fino
