@@ -1,26 +1,21 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-04T09:01:28+02:00",
-  "last_completed_at": "2026-10-04T09:23:21.184+02:00",
+  "last_started_at": "2026-10-04T10:55:00+02:00",
+  "last_completed_at": "2026-10-04T11:11:00+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
-    "576b00cb535d",
-    "2cf07ed453b6",
-    "d29040d36d2a",
-    "8abebbdd9b2a",
-    "9b146c448232",
-    "1de7f60793e4",
-    "d438ccc039cc",
-    "e486c2bd83db",
-    "536b6cb3934c",
-    "e24a929a9107",
-    "1467a7980228"
+    "733d8b67420a",
+    "020d025d36d2",
+    "e49844ddb6a4",
+    "80441a0a28dc",
+    "2bd1d3d69584",
+    "b949e90f6945"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-04T09:23:21.184+02:00",
+  "updated_at": "2026-10-04T11:11:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [
@@ -30,56 +25,41 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-1791097288078-e67c13",
+    "run_id": "tr-1791104094937-576f6c",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-04T09:01:28+02:00",
-    "updated_at": "2026-10-04T09:23:21.184+02:00",
-    "finished_at": "2026-10-04T09:23:21.184+02:00",
-    "current": 15,
-    "total": 15,
+    "started_at": "2026-10-04T10:55:00+02:00",
+    "updated_at": "2026-10-04T11:11:00+02:00",
+    "finished_at": "2026-10-04T11:11:00+02:00",
+    "current": 6,
+    "total": 6,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 15,
-      "trends_explained": 13,
-      "explanation_groups": 10,
-      "new_cards": 7,
-      "revisions_updated": 3,
+      "trends_processed": 6,
+      "trends_explained": 6,
+      "explanation_groups": 3,
+      "new_cards": 2,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 2,
+      "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 2,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 13,
-      "explanations_verified_conservative_250": 13,
-      "remates_selected": 8,
-      "remates_omitted": 2
+      "explanations_verified_under_280": 6,
+      "explanations_verified_conservative_250": 6,
+      "remates_selected": 2,
+      "remates_omitted": 1
     },
-    "incident_count": 2,
-    "incidents": [
-      {
-        "at": "2026-10-04T09:09:30+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "reason": "Una operación por lotes superó el límite interno de llamadas del conector; se releyó main y se reanudó idempotentemente desde las revisiones aún activas."
-      },
-      {
-        "at": "2026-10-04T09:16:30+02:00",
-        "phase": "persisting",
-        "trend_id": "aa572b78b06b",
-        "title": "Shapovalov",
-        "reason": "Conflicto SHA 409 al persistir; se releyó main y se reintentó idempotentemente con SHA fresco, sin duplicados."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [
@@ -88,556 +68,76 @@
     ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
-      "blob_sha": "3a878d434e5818ed6e3d058a5e74ccfe39c5a351",
-      "updated_at": "2026-10-04T00:24:46.222Z",
-      "total_ratings": 136,
+      "blob_sha": "170edb084148c3bed1b58f37a5144ca10e3bdc7f",
+      "updated_at": "2026-10-04T08:52:00.193Z",
+      "total_ratings": 141,
       "recent_considered": 100
     },
     "remate_selections": [
       {
-        "trend_id": "9055ec2f483b",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_altercation_deliberate"
-      },
-      {
-        "trend_id": "7446a08e46ab",
+        "trend_id": "020d025d36d2",
         "revision": 0,
         "grouped_member_revisions": [
           {
-            "id": "7446a08e46ab",
+            "id": "733d8b67420a",
             "revision": 0
           },
           {
-            "id": "6f69ffb91e09",
+            "id": "020d025d36d2",
+            "revision": 0
+          },
+          {
+            "id": "e49844ddb6a4",
+            "revision": 0
+          },
+          {
+            "id": "80441a0a28dc",
             "revision": 0
           }
         ],
         "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "sha1",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "sha2",
-            "total": 8.3,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "sha3",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "sha4",
-            "total": 8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "sha5",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "sha2",
-        "selected_score": 8.3,
+        "selected_candidate": "f1-1",
+        "selected_text": "🌶️ La parrilla ha necesitado más flotador que alerón.",
         "no_remate_reason": null
       },
       {
-        "trend_id": "1a1ad33aea16",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "len1",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "len2",
-            "total": 8.3,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "len3",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "len4",
-            "total": 8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "len5",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "len2",
-        "selected_score": 8.3,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "3813e99f80c5",
+        "trend_id": "2bd1d3d69584",
         "revision": 1,
-        "grouped_member_revisions": [
-          {
-            "id": "3813e99f80c5",
-            "revision": 1
-          },
-          {
-            "id": "739af8f880b0",
-            "revision": 0
-          },
-          {
-            "id": "2248d6be1d4d",
-            "revision": 0
-          }
-        ],
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "ufc1",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "ufc2",
-            "total": 8.3,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "ufc3",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "ufc4",
-            "total": 8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "ufc5",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "ufc2",
-        "selected_score": 8.3,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "a564371ac0f2",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "bur1",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "bur2",
-            "total": 8.3,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "bur3",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "bur4",
-            "total": 8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "bur5",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "bur2",
-        "selected_score": 8.3,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "aa572b78b06b",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "shp1",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "shp2",
-            "total": 8.3,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "shp3",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "shp4",
-            "total": 8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "shp5",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "shp2",
-        "selected_score": 8.3,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "04cad2c98b47",
-        "revision": 3,
         "candidate_count": 0,
-        "candidates": [],
         "selected_candidate": null,
-        "selected_score": null,
+        "selected_text": null,
         "no_remate_reason": "political_current_affairs_deliberate"
       },
       {
-        "trend_id": "88badc81e464",
-        "revision": 1,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "fel1",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "fel2",
-            "total": 8.3,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "fel3",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "fel4",
-            "total": 8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "fel5",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "fel2",
-        "selected_score": 8.3,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "ea998e8ec0b7",
+        "trend_id": "b949e90f6945",
         "revision": 0,
         "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "mar1",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "mar2",
-            "total": 8.3,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "mar3",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "mar4",
-            "total": 8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "mar5",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "mar2",
-        "selected_score": 8.3,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "1a5d85302711",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "man1",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "man2",
-            "total": 8.3,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "man3",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "man4",
-            "total": 8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "man5",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "man2",
-        "selected_score": 8.3,
+        "selected_candidate": "cc-1",
+        "selected_text": "🌶️ El desayuno ha venido con más octanos que café.",
         "no_remate_reason": null
       }
     ],
-    "message": "Pasada cerrada 15/15. Trece revisiones quedaron explicadas y verificadas, dos quedaron problematic por falta de detonante verificable. Tras relectura final de main quedan 0 preparing/update y 0 rewrite_pending. Sin ImageGen ni despliegues Vercel. Dos incidencias técnicas de persistencia fueron recuperadas idempotentemente."
+    "message": "Pasada cerrada 6/6. Seis revisiones quedaron explicadas y verificadas en tres tarjetas/grupos. La cola recibió #CCubicos436 durante la ejecución y también se procesó. Tras relectura final de main quedan 0 preparing/update y 0 rewrite_pending. Sin ImageGen ni despliegues Vercel."
   },
   "summary": {
-    "trends_processed": 11,
-    "trends_explained": 11,
-    "explanation_groups": 10,
-    "new_cards": 7,
-    "revisions_updated": 3,
-    "grouped_into_existing_card": 1,
+    "trends_processed": 6,
+    "trends_explained": 6,
+    "explanation_groups": 3,
+    "new_cards": 2,
+    "revisions_updated": 1,
+    "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
-    "incidents": 2,
+    "incidents": 0,
     "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
     "fallback_images_ready": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 11,
-    "explanations_verified_conservative_250": 11,
-    "remates_selected": 8,
-    "remates_omitted": 2
+    "explanations_verified_under_280": 6,
+    "explanations_verified_conservative_250": 6,
+    "remates_selected": 2,
+    "remates_omitted": 1
   }
 }
