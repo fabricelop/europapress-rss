@@ -252,7 +252,7 @@ function imageHandoffTimedOut(run){
  const st=String(run?.status||"").toUpperCase(),phase=String(run?.phase||"").toLowerCase();
  if(st!=="RUNNING"||!["pc_pickup","pc_launch"].includes(phase))return false;
  const at=Date.parse(run?.updated_at||run?.pc_launched_at||run?.pc_picked_up_at||"");
- return Number.isFinite(at)&&Date.now()-at>=45000
+ return Number.isFinite(at)&&Date.now()-at>=105000
 }
 function imageGenerationTimedOut(run){
  const st=String(run?.status||"").toUpperCase();
