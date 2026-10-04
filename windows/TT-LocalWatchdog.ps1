@@ -6,6 +6,18 @@ $BaseDir="C:\TTiTTulares"
 $LogPath=Join-Path $BaseDir "tt-local-watchdog.log"
 $StartupDir=[Environment]::GetFolderPath("Startup")
 
+try{
+  Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+public static class TTKeepAwake {
+  [DllImport("kernel32.dll")]
+  public static extern uint SetThreadExecutionState(uint esFlags);
+}
+"@ -ErrorAction SilentlyContinue
+  [void][TTKeepAwake]::SetThreadExecutionState(0x80000001)
+}catch{}
+
 $mutex=New-Object System.Threading.Mutex($false,"Local\TTAutomationWatchdog")
 $owned=$false
 try{$owned=$mutex.WaitOne(0,$false)}catch{}
@@ -103,5 +115,6 @@ try{
   }
 }finally{
   try{if($owned){$mutex.ReleaseMutex()}}catch{}
+  try{[void][TTKeepAwake]::SetThreadExecutionState(0x80000000)}catch{}
   try{$mutex.Dispose()}catch{}
 }
