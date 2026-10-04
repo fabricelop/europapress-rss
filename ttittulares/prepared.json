@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T23:37:15.612637Z",
+  "updated_at": "2026-10-04T23:39:00.528Z",
   "items": [
     {
       "event_id": "6503399040ac",
@@ -64,10 +64,10 @@
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -82,12 +82,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-04T23:36:22.889134Z",
       "image": {
-        "url": "https://cdn.socy.cloud/TVEE/v1/_20/f/202610/TVEE/upload_733432381791133850_4lqzhgj6ww9jh6ptm1shh2ltqjrs20.jpg",
-        "source": "RTVE",
-        "source_url": "https://stories.rtve.es/noticias/newstory/stories/5398bfb74132afb44254?r=MATSPC",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Flávio Bolsonaro y Lula pasan a la segunda vuelta presidencial en Brasil"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/6503399040ac-r1-ai1-791157038146.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "0c0f8be80617045dc19dc10f71089b437390dd2da2278376aed0336aa72bac52",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2704297,
+        "context_guard": {
+          "version": 3,
+          "event_id": "6503399040ac",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-6503399040ac-r1-a1-1791157038146"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/6503399040ac-r1-ai1-791157038146.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://cdn.socy.cloud/TVEE/v1/_20/f/202610/TVEE/upload_733432381791133850_4lqzhgj6ww9jh6ptm1shh2ltqjrs20.jpg",
@@ -96,7 +110,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Flávio Bolsonaro y Lula pasan a la segunda vuelta presidencial en Brasil"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/6503399040ac-r1-ai1-791157038146.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "0c0f8be80617045dc19dc10f71089b437390dd2da2278376aed0336aa72bac52",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2704297,
+        "context_guard": {
+          "version": 3,
+          "event_id": "6503399040ac",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-6503399040ac-r1-a1-1791157038146"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/6503399040ac-r1-ai1-791157038146.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-04T23:39:00.528Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-04T23:39:00.528Z"
     }
   ],
   "count": 11
