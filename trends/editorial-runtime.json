@@ -1,38 +1,41 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-04T13:29:21.027+02:00",
-  "last_completed_at": "2026-10-04T13:32:14.464+02:00",
+  "last_started_at": "2026-10-04T13:52:00+02:00",
+  "last_completed_at": "2026-10-04T13:58:00+02:00",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "37b5073e4e9a",
+    "ac36d7f68662"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-04T13:32:14.464+02:00",
+  "updated_at": "2026-10-04T13:58:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-1791113361027-26a8d4",
+    "run_id": "tr-1791114759270-cdef4b",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-04T13:29:21.027+02:00",
-    "updated_at": "2026-10-04T13:32:14.464+02:00",
-    "finished_at": "2026-10-04T13:32:14.464+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-04T13:52:00+02:00",
+    "updated_at": "2026-10-04T13:58:00+02:00",
+    "finished_at": "2026-10-04T13:58:00+02:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-04T13:29:21.027+02:00",
+    "requested_at": "2026-10-04T13:52:00+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 2,
+      "trends_explained": 2,
+      "explanation_groups": 2,
+      "new_cards": 2,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -44,9 +47,9 @@
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 0
+      "explanations_verified_under_280": 2,
+      "remates_selected": 1,
+      "remates_omitted": 1
     },
     "incident_count": 0,
     "incidents": [],
@@ -55,19 +58,89 @@
     "remaining_problematic_ids": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
-      "blob_sha": "048afbf09c5e33f3255cac8e598bd0730dca2902",
-      "updated_at": "2026-10-04T10:53:54.072Z",
-      "total_ratings": 143,
+      "blob_sha": "35d55ce68d13d57d50616ebfbeba5f36ab00b6f9",
+      "updated_at": "2026-10-04T11:32:17.230Z",
+      "total_ratings": 144,
       "recent_considered": 100
     },
-    "remate_selections": [],
-    "message": "Pasada cerrada 0/0. Relectura final de main: 0 preparing/update y 0 rewrite_pending; ningún problematic vigente en Top 10. Radar fresco (captured_at 13:21:24). Sin ImageGen ni despliegues Vercel."
+    "remate_selections": [
+      {
+        "trend_id": "37b5073e4e9a",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "political_content"
+      },
+      {
+        "trend_id": "ac36d7f68662",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.4,
+            "ratings_affinity": 2.5,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
+            "total": 8,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 7.8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c4",
+            "total": 7.5,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c5",
+            "total": 7,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 0.9,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.4,
+        "no_remate_reason": null
+      }
+    ],
+    "message": "Pasada completada 2/2. Lula r0 y Bortoleto r0 fueron revalidadas justo antes de tratarlas, persistidas de forma transaccional en explained + requests y retiradas de la cola solo después de verificar consistencia. Relectura final: 0 preparing/update, 0 rewrite_pending y 0 problematic vigente en Top 10. Sin ImageGen ni despliegues Vercel."
   },
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "trends_processed": 2,
+    "trends_explained": 2,
+    "explanation_groups": 2,
+    "new_cards": 2,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
@@ -79,8 +152,8 @@
     "imagegen_attempts": 0,
     "fallback_images_ready": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
-    "remates_omitted": 0
+    "explanations_verified_under_280": 2,
+    "remates_selected": 1,
+    "remates_omitted": 1
   }
 }
