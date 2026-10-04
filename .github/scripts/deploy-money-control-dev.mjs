@@ -17,11 +17,13 @@ if(root&&root!=="vercel-webhook")throw new Error("Unexpected rootDirectory: "+ro
 const prefix=root?root+"/":"";
 
 const sources=[
-  {local:"vercel-webhook/money-control/index.html",file:prefix+"money-control/index.html"}
+  {local:"vercel-webhook/money-control/index.html",file:prefix+"money-control/index.html"},
+  {local:"vercel-webhook/api/money-control-interpret.js",file:prefix+"api/money-control-interpret.js"}
 ];
 
 const minimalConfig={
   "$schema":"https://openapi.vercel.sh/vercel.json",
+  functions:{"api/money-control-interpret.js":{maxDuration:60}},
   git:{deploymentEnabled:false},
   rewrites:[
     {source:"/api/money-control-snapshot",destination:"https://europapress-rss.vercel.app/api/money-control-snapshot"},
@@ -80,7 +82,7 @@ const payload={
   project:projectId,
   files:uploads,
   projectSettings:{framework:null},
-  meta:{moneyControlDev:"native-ingest-v2-proxy"}
+  meta:{moneyControlDev:"semantic-ingest-v3"}
 };
 const response=await fetch("https://api.vercel.com/v13/deployments?teamId="+encodeURIComponent(teamId)+"&skipAutoDetectionConfirmation=1",{
   method:"POST",
