@@ -152,6 +152,6 @@ Usa `partial:true` únicamente si queda algún `PROCESSING` pendiente de esta pa
 
 
 ## Revisión exclusiva de remate
-Si `rewrite_scope=remate_only` y `reinvestigate` no es true: no investigar ni buscar fuentes. Usa `preserved_editorial` como contenido factual inmutable. Conserva fuentes, hechos, título, resumen y texto anterior al remate. Cambia solo el remate y conserva el fallback existente. La IA se gestiona aparte mediante el check **Gag IA** y un job manual independiente.
+Si `rewrite_scope=remate_only` y `reinvestigate` no es true: no investigar ni buscar fuentes. Usa `preserved_editorial` como contenido factual inmutable. Conserva fuentes, hechos, título, resumen y texto anterior al remate. Cambia solo el remate y conserva el fallback existente. La IA se gestiona después de READY mediante el reparador automático de Listas; el check **Gag IA** queda únicamente como override manual.
 
-En una revisión REWRITE, no generes ni regeneres IA automáticamente. Si la revisión nueva no conserva una IA válida, deja `ai_image_status:"none"`; el usuario decidirá después si solicita una nueva imagen.
+En una revisión REWRITE, la pasada editorial no llama directamente a ImageGen. Si la revisión nueva no conserva una IA válida, deja `ai_image_status:"none"` o `failed`; el reparador automático de Listas generará o regenerará la IA correspondiente a la revisión vigente.
