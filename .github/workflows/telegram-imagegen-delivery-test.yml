@@ -54,12 +54,23 @@ jobs:
           tweet=str(d["tweet_text"])
           if len(tweet)>256:
               raise SystemExit(f"Tweet de prueba demasiado largo: {len(tweet)}/256")
-          caption="🧪 PRUEBA TTiTTulares → Telegram\n\n"+tweet
+          caption="🧪 PRUEBA FINAL TTiTTulares → Telegram\n\n"+tweet
+          target=str(d["target_id"])
+          raw_image="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/telegram-test-lobato-20261004-r1.jpg"
+          copy_url="https://tt-control.fabricelop.workers.dev/copy-image?"+urllib.parse.urlencode({"src":raw_image})
+          x_url="https://tt-control.fabricelop.workers.dev/x-compose?"+urllib.parse.urlencode({"text":tweet})
           keyboard={
-              "inline_keyboard":[[
-                  {"text":"📋 Copiar tuit","copy_text":{"text":tweet}},
-                  {"text":"✍️ Abrir X","url":"https://x.com/intent/post?text="+urllib.parse.quote(tweet)}
-              ]]
+              "inline_keyboard":[
+                  [{"text":"🖼️ Copiar imagen","url":copy_url}],
+                  [
+                      {"text":"📋 Copiar tuit","copy_text":{"text":tweet}},
+                      {"text":"✍️ Abrir en X","url":x_url}
+                  ],
+                  [
+                      {"text":"🗑 Desestimar","callback_data":"tt:d:"+target},
+                      {"text":"✅ Publicado","callback_data":"tt:p:"+target}
+                  ]
+              ]
           }
           Path("/tmp/tt-caption.txt").write_text(caption,encoding="utf-8")
           Path("/tmp/tt-reply.json").write_text(json.dumps(keyboard,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
