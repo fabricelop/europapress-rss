@@ -4,14 +4,14 @@ Este archivo es la ÚNICA fuente de verdad para la elaboración editorial de TTe
 
 ## Ejecución directa desde el chat (incluido el PC)
 
-Cuando el usuario envía «Ejecuta TTendencias» a una conversación de ChatGPT, es una orden de realizar **en esa misma conversación** la pasada editorial real sobre `main`, conforme a este contrato. No se satisface la orden actualizando únicamente `control/ttendencias-run-trigger` ni escribiendo `trends/run-now-trigger.json`: un commit en el PR #7 **no inicia ningún editor por sí mismo**. Esa delegación solo es válida si se ha comprobado que existe un consumidor Work de eventos activo y que la solicitud ha recibido confirmación `RUNNING`. Sin confirmación, informar del bloqueo, no simular que está en curso. Para la ejecución directa, usar el PR #7 exclusivamente como telemetría, ejecutar el ciclo editorial, persistir y releer para verificar las revisiones tratadas. No reactivar programaciones antiguas; respetar siempre `explanation_only`. La generación IA está separada de la pasada editorial: `Ejecuta TTendencias` NO llama a ImageGen. Las imágenes IA se solicitan después, manualmente, mediante los checks Gag IA y jobs independientes. La pasada editorial puede conservar/buscar fallback real sin bloquear el texto.
+Cuando el usuario envía «Ejecuta TTendencias» a una conversación de ChatGPT, es una orden de realizar **en esa misma conversación** la pasada editorial real sobre `main`, conforme a este contrato. No se satisface la orden actualizando únicamente `control/ttendencias-run-trigger` ni escribiendo `trends/run-now-trigger.json`: un commit en el PR #7 **no inicia ningún editor por sí mismo**. Esa delegación solo es válida si se ha comprobado que existe un consumidor Work de eventos activo y que la solicitud ha recibido confirmación `RUNNING`. Sin confirmación, informar del bloqueo, no simular que está en curso. Para la ejecución directa, usar el PR #7 exclusivamente como telemetría, ejecutar el ciclo editorial, persistir y releer para verificar las revisiones tratadas. No reactivar programaciones antiguas; respetar siempre `explanation_only`. La generación IA está separada de la pasada editorial: `Ejecuta TTendencias` NO llama directamente a ImageGen ni espera imágenes. El flujo oficial continúa automáticamente después de `explained`: el reparador de Explicadas busca/normaliza imagen de archivo, crea o reintenta el job IA y el bot de TTendencias entrega el paquete cuando la IA es válida. Los checks Gag IA/Imágenes quedan como override manual. La pasada editorial puede conservar/buscar fallback real sin bloquear el texto.
 
 ### Telemetría obligatoria de TODA ejecución directa
 
 La ejecución directa —incluida la lanzada por la programación de Windows que escribe «Ejecuta TTendencias»— **debe dejar telemetría aunque procese 0 tendencias**.
 
 1. Antes de investigar, lee los comentarios del PR #7 y localiza el comentario canónico `TTENDENCIAS_RUNTRACE_V1` con `"canonical":true` (actualmente comment_id `5859532515`). Si no existe, créalo una sola vez. Actualiza ESE MISMO comentario a `RUNNING` con un `run_id` nuevo, `source:"chat"`, `started_at`, `updated_at`, `phase:"preparing"`, `current:0`, `total` real y resumen vacío. Nunca crees un comentario RUNTRACE nuevo por cada pasada.
-2. Actualiza ese comentario durante las fases reales `investigating`, `drafting`, `remate_selection`, `persisting`, `verifying` y `closing`. `remate_selection` se usa solo cuando se está evaluando el remate. No uses `image_generating` ni `image_persisting` en una pasada editorial normal: ImageGen se ejecuta únicamente mediante jobs manuales independientes.
+2. Actualiza ese comentario durante las fases reales `investigating`, `drafting`, `remate_selection`, `persisting`, `verifying` y `closing`. `remate_selection` se usa solo cuando se está evaluando el remate. No uses `image_generating` ni `image_persisting` en una pasada editorial normal: la capa visual se ejecuta asíncronamente después de `explained`, mediante jobs independientes automáticos o un override manual.
 3. Al terminar, incluso con cola vacía o con 0 explicaciones cerradas, cierra el mismo RUNTRACE como `DONE` (o `DONE_WITH_INCIDENTS` si hubo incidencias no globales; `ERROR` solo ante fallo global), con `finished_at`, `updated_at` y `summary` real.
    - `summary.visual_backlog` se mantiene por compatibilidad y debe ser `0` en una ejecución editorial normal. Las imágenes manuales tienen lifecycle independiente y nunca provocan una pasada editorial automática de seguimiento.
 4. En el mismo cierre persiste `trends/editorial-runtime.json` como telemetría durable. Conserva compatibilidad con sus campos existentes y añade/actualiza:
@@ -40,9 +40,9 @@ Si una escritura intermedia falla, relee SHA y reintenta; no redactes de nuevo u
 
 Usa el conector GitHub disponible para `fabricelop/europapress-rss`. Trabaja EXCLUSIVAMENTE con TTendencias y con estado fresco de la rama `main`.
 
-GitHub es la única persistencia/estado del flujo. Web se usa para investigar por qué una tendencia es tendencia AHORA y verificar hechos actuales. La pasada editorial NO genera imágenes IA. Puede conservar una imagen de archivo/fallback verificable; cualquier Gag IA se solicita después mediante jobs manuales independientes y nunca bloquea la explicación ni la cola.
+GitHub es la única persistencia/estado del flujo. Web se usa para investigar por qué una tendencia es tendencia AHORA y verificar hechos actuales. La pasada editorial NO genera directamente imágenes IA. Puede conservar una imagen de archivo/fallback verificable; después de `explained`, el reparador automático de Explicadas crea o reintenta el Gag IA sin bloquear la explicación ni la cola.
 
-No uses Telegram. No proceses TTiTTulares ni SeLoRecordamos. No despliegues Vercel. No cambies radar, fuentes, umbrales ni ninguna programación/automatización.
+Telegram NO es canal de control editorial: el modo web sigue siendo autoritativo. El bot de TTendencias se usa únicamente como canal adicional para entregar paquetes visuales y recibir las acciones Publicado/Desestimar de esos paquetes. No proceses TTiTTulares ni SeLoRecordamos. No despliegues Vercel. No cambies radar, fuentes, umbrales ni ninguna programación/automatización.
 
 ## Formato vigente de explicaciones para un tuit (prioridad de redacción)
 
@@ -55,7 +55,7 @@ Cada explicación/grupo cerrado debe persistir también un campo `category` con 
 - En agrupaciones, la categoría corresponde al acontecimiento compartido.
 - Persiste el mismo `category` en la ficha vigente de `trends/telegram-manual-explained.json` y en las revisiones cerradas de `trends/requests.json`.
 
-Cuando `trends/editorial-config.json.editorial.mode` sea `explanation_only` (o `explanation_only:true`), esta sección prevalece sobre cualquier formato heredado de Principal/A/B/C. **No cambia el flujo, la verificación factual, los estados, la agrupación, el puente a TTiTTulares ni la persistencia existente**. En este modo se redacta UNA explicación por acontecimiento/grupo, sin alternativas. La pasada editorial puede mantener la búsqueda de foto web/fallback, pero NO llama a ImageGen; el Gag IA se solicita aparte desde el panel.
+Cuando `trends/editorial-config.json.editorial.mode` sea `explanation_only` (o `explanation_only:true`), esta sección prevalece sobre cualquier formato heredado de Principal/A/B/C. **No cambia el flujo, la verificación factual, los estados, la agrupación, el puente a TTiTTulares ni la persistencia existente**. En este modo se redacta UNA explicación por acontecimiento/grupo, sin alternativas. La pasada editorial puede mantener la búsqueda de foto web/fallback, pero NO llama a ImageGen; tras persistir `explained`, el reparador visual automático continúa el pipeline. El panel conserva el Gag IA manual como override.
 
 **Regla prioritaria de salida no bloqueante (prevalece sobre cualquier regla posterior que sugiera que el remate es obligatorio):** El chascarrillo es deseable, pero NUNCA un requisito para cerrar o sacar una tendencia cuya explicación factual ya esté verificada. Genera internamente hasta CINCO candidatos breves de remate concreto y adecuado y somételos a la selección basada en ratings descrita más abajo; solo el ganador puede hacerse visible. Si ninguno sirve, resulta inapropiado por sensibilidad, falla su generación o no cabe en el tuit, persiste inmediatamente la explicación factual completa con `closer_text:""`, sin línea `🌶️`, sin estrellas y con estado editorial normal `explained`. No reintentes indefinidamente, no esperes otra generación, no bloquees la cola ni las siguientes tendencias y NUNCA marques `problematic`, `preparing` o `update` exclusivamente por falta de remate. La verificación factual y el límite del tuit siguen siendo obligatorios; si no se verifica el hecho, aplica el tratamiento normal de hechos no verificados. Registra una incidencia editorial no bloqueante cuando falte el remate por un fallo de generación, no cuando su omisión sea deliberada por sensibilidad. El orden de dos líneas y la presencia de `🌶️` de las reglas siguientes solo se exigen CUANDO EXISTA un remate válido.
 
@@ -75,12 +75,12 @@ Cuando `tremending_origin:true`, esta entrada no es una tendencia clasificada po
 
 **Tremending NO usa ImageGen.** Si `tremending_origin:true` o `disable_ai_image:true`, no llames a ImageGen y no crees `ai_image`. Usa exclusivamente la captura real del tuit seleccionado como `image`/`fallback_image` cuando esté disponible; si la captura aún está pendiente, conserva `image_status:"pending_capture"` sin bloquear el texto.
 
-### Imagen IA: selección manual posterior
+### Imagen IA: reparación automática posterior
 
-La elaboración editorial **NO llama a ImageGen**. Su única responsabilidad visual es dejar la explicación preparada para que el usuario pueda decidir después si quiere un gag.
+La elaboración editorial **NO llama a ImageGen** y no espera imágenes. Su responsabilidad termina cuando la explicación queda verificada y persistida como `explained`.
 
 Para toda tendencia normal ya explicada:
-- conserva `with_image:true`: significa **seleccionable para imagen**, no «generar automáticamente»;
+- conserva `with_image:true`: significa **apta para la capa visual posterior**;
 - no pongas `with_image:false` para ahorrar imágenes, por categoría, por falta de fallback o por decisión editorial automática;
 - no marques política como bloqueo;
 - `safety_sensitive_weather` por sí solo tampoco bloquea: lluvia, temporal, inundación, calor, nieve u otros fenómenos meteorológicos pueden ser objeto de gag si el hecho no gira alrededor de víctimas;
@@ -88,12 +88,12 @@ Para toda tendencia normal ya explicada:
 
 Tremending sigue fuera de ImageGen: usa la captura real del tuit seleccionado.
 
-El flujo vigente es:
-`explicar → Explicadas/Pendientes → usuario marca Gag IA → pulsa Imágenes → job dedicado → ImageGen → puente → imagen materializada`.
+El flujo oficial es:
+`preparing/update → explained → reparación de archivo + IA → bot TTendencias`.
 
-La selección se hace fuera de esta ejecución editorial y está vinculada a `id + revision`. Por tanto, una pasada de explicación **nunca** debe iniciar, reintentar, esperar ni recuperar una generación IA.
+El reparador de Explicadas revalida `id + revision`, genera o regenera IA ausente/incorrecta y conserva el job manual del panel únicamente como override. Por tanto, una pasada de explicación **nunca** debe esperar a ImageGen ni mantener abierta la cola por la imagen.
 
-### Contexto para el job manual de imagen
+### Contexto para el job de imagen
 
 Cuando el usuario pulsa **Imágenes**, el backend crea un job dedicado y congela un `context_snapshot` con, como mínimo:
 - `name`, `id` y `revision`;
@@ -141,7 +141,7 @@ No guardes en RUNTRACE el texto de candidatos descartados. Así la app sigue mos
 
 `trends/editorial-queue.json` es autoritativo para decidir si existe trabajo. Si contiene al menos un item cuya revisión vigente está `preparing` o `update`, está PROHIBIDO cerrar una pasada como 0/0 o «sin trabajo editorial». Deben procesarse primero TODOS esos items, del más antiguo al más reciente, salvo que la barrera JIT confirme que esa revisión ya dejó de estar activa.
 
-Una ejecución normal `Ejecuta TTendencias` NO llama a ImageGen, NO crea `trends/image-outbox/**` y NO espera imágenes. Los Gag IA se lanzan únicamente desde el panel mediante jobs manuales independientes.
+Una ejecución normal `Ejecuta TTendencias` NO llama directamente a ImageGen, NO crea `trends/image-outbox/**` y NO espera imágenes. Tras materializar `explained`, el reparador automático de Explicadas crea/reintenta los jobs IA; el panel conserva jobs manuales como override.
 
 ## Estado inicial y watchdog
 
@@ -150,7 +150,7 @@ Una ejecución normal `Ejecuta TTendencias` NO llama a ImageGen, NO crea `trends
 3. Si `trends/recent.json.captured_at` supera 20 minutos, actualiza `trends/refresh-trigger.txt` en `main` para pedir una captura fresca y después relee `trends/editorial-queue.json`, `trends/recent.json` y `trends/editorial-config.json`.
 4. Antes de considerar la pasada vacía, relee `trends/editorial-queue.json` y `trends/requests.json`. Si existe cualquier revisión activa `preparing` o `update`, la pasada NO está vacía. Las solicitudes de imagen no forman parte de esta ejecución editorial.
 5. Si hay pendientes, usa DOS fases de prioridad: primero TODOS los `preparing`/`update` del más antiguo al más reciente; solo después reintenta los `problematic` que sigan en Top 10. Un problematic antiguo NUNCA puede hacer starvation de tendencias nuevas.
-6. PROCESAMIENTO EDITORIAL SECUENCIAL: para cada tendencia/grupo investiga → redacta/verifica → persiste y cierra el TEXTO → confirma requests/cola. NO registres intentos visuales, NO llames a ImageGen y NO generes `trends/image-outbox/**` durante esta pasada. La imagen IA se gestiona exclusivamente mediante jobs manuales independientes.
+6. PROCESAMIENTO EDITORIAL SECUENCIAL: para cada tendencia/grupo investiga → redacta/verifica → persiste y cierra el TEXTO → confirma requests/cola. NO registres intentos visuales, NO llames a ImageGen y NO generes `trends/image-outbox/**` durante esta pasada. La imagen IA se gestiona después de `explained` mediante el reparador automático y, opcionalmente, overrides manuales.
 7. Una tendencia `problematic` se reintenta automáticamente mientras siga en el Top 10, pero siempre al final de la pasada. Si ya salió del Top 10, no se fuerza otro intento.
 8. Un fallo de un item no debe bloquear los siguientes: registra ese item pendiente/problematic según corresponda y continúa con el siguiente.
 9. Relee estado fresco antes de cada escritura. Ante conflicto, relee SHA y reintenta de forma segura.
@@ -226,23 +226,22 @@ Los remates deben ser específicos del detonante real y evitar plantillas genér
 
 Genera para principal y A/B/C una URL `https://twitter.com/intent/tweet?text=` con el texto exacto correctamente codificado.
 
-## Imagen IA — contrato manual vigente
+## Imagen IA — contrato automático posterior
 
-Este bloque sustituye cualquier regla histórica que ordene generar imágenes durante `explanation_only`, recuperar intentos huérfanos desde una pasada editorial o crear `image-outbox` automáticamente.
+Este bloque sustituye cualquier regla histórica que ordene generar imágenes dentro de `explanation_only` o que limite la generación a una acción manual.
 
 En `explanation_only`:
 1. investiga, verifica y persiste el texto;
 2. deja la tendencia normal con `with_image:true`, salvo que sea Tremending o tenga un bloqueo sensible real;
-3. **no llames a ImageGen**;
+3. **no llames directamente a ImageGen**;
 4. **no esperes una imagen**;
-5. **no crees ni recuperes jobs de imagen**;
-6. continúa inmediatamente con la siguiente entrada.
+5. continúa inmediatamente con la siguiente entrada.
 
-La generación comienza únicamente por acción explícita del usuario: check **Gag IA** + atajo **Imágenes**. El job dedicado lleva `context_snapshot` con explicación y remate y revalida que la misma revisión siga vigente justo antes del pickup y del upload.
+Después de persistir `explained`, `.github/workflows/repair-ttendencias-explicadas.yml` revalida la revisión, busca/normaliza imagen de archivo y crea/reintenta el job IA si falta o es inválido. El check **Gag IA** + atajo **Imágenes** se conserva como override manual.
 
 ### Contrato visual del job dedicado
 
-Para cada job manual:
+Para cada job automático o manual:
 - genera UNA sola imagen para ese `target_id + revision`;
 - usa exclusivamente el `context_snapshot` del job;
 - caricatura satírica editorial expresiva, colorida y exagerada, con un gag visual dominante;
