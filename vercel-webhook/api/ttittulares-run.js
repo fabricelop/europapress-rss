@@ -185,10 +185,9 @@ async function imageEligibility(targetId){
   const row=rows[0]||null;
   if(!row)return {eligible:false,reason:"not_ready",row:null};
   const mode=String(row.image_mode||row.image_strategy||"").toLowerCase();
-  if(row.tremending_origin)return {eligible:false,reason:"tremending",row};
-  if(row.disable_ai_image||["fallback_only","archive_only","tweet_capture_only"].includes(mode)||String(row.ai_image_status||"").toLowerCase()==="disabled"){
-    return {eligible:false,reason:"blocked",row}
-  }
+  // La sensibilidad editorial y los flags legacy disable/fallback_only/archive_only
+  // no bloquean ImageGen. Tremending/tweet_capture conserva su flujo específico.
+  if(row.tremending_origin||mode==="tweet_capture_only")return {eligible:false,reason:"tremending",row};
   const hasAi=validChatAi(row.ai_image)||validChatAi(row.image);
   // Una IA existente nunca bloquea un nuevo gag. La anterior se conserva hasta
   // que la nueva se materialice correctamente.
