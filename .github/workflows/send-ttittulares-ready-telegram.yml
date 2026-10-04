@@ -86,13 +86,14 @@ jobs:
               image_url=str(ai.get("url") or "").strip()
               image_sha=str(ai.get("sha256") or "").strip().lower()
               tweet=str((item.get("tweet") or {}).get("text") or "")
-              x_url=str((item.get("tweet") or {}).get("url") or "").strip()
               if not image_url or not tweet:
                   continue
               if len(tweet)>256:
                   raise SystemExit(f"{eid}: tuit {len(tweet)}/256")
-              if not x_url:
-                  x_url="https://x.com/intent/post?text="+urllib.parse.quote(tweet,safe="")
+              # Telegram abre x.com dentro de su navegador y puede pedir login de nuevo.
+              # El helper salta inmediatamente al deep link de la app X y conserva
+              # el fallback web solo si la app no responde.
+              x_url="https://tt-control.fabricelop.workers.dev/x-compose?"+urllib.parse.urlencode({"text":tweet})
 
               delivery_key=f"{eid}:r{rev}:{image_sha or image_url}"
               if delivery_key in sent_keys:
