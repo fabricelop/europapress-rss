@@ -73,7 +73,7 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TTITTULARES_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee ttittulares/image-runs/jobs/"+targetId+".json en control/ttittulares-run-trigger-v2 para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v18-submit-reacquire";
+const BRIDGE_MODE="capture-only-v19-raster-first";
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
@@ -223,6 +223,7 @@ async function ensureSubmitted(cdp,job){
     last=st;
     if(st&&(st.submitted||st.generating)){
       current.submissionVerified=true;
+      current.acceptInitialRaster=true;
       return current
     }
 
@@ -343,8 +344,26 @@ async function uploadImage(image){
     void job;
     cdp=await findChat(job);
     console.log("BRIDGE CHAT FOUND mode="+BRIDGE_MODE);
-    cdp=await ensureSubmitted(cdp,job);
-    console.log("BRIDGE PROMPT SUBMITTED");
+    try{
+      cdp=await ensureSubmitted(cdp,job);
+      cdp.acceptInitialRaster=true;
+      console.log("BRIDGE PROMPT SUBMITTED/VERIFIED");
+    }catch(submitErr){
+      // El lanzador y el usuario pueden confirmar que ImageGen sí arrancó aunque
+      // la UI de ChatGPT ya haya reemplazado el composer/turno que usamos como prueba.
+      // No abortar: volver a localizar el chat y pasar a captura del raster.
+      console.log("BRIDGE SUBMIT VERIFY WARNING :: "+String(submitErr&&submitErr.message||submitErr));
+      const found=await reacquireCommandChat(job);
+      if(found&&found.cdp){
+        try{cdp&&cdp.close()}catch{}
+        cdp=found.cdp;
+        cdp.acceptInitialRaster=Boolean(found.state&&(found.state.bodyMarker||found.state.generating||found.state.imageTitle||found.state.targetMarker));
+        console.log("BRIDGE CAPTURE CHAT REACQUIRED "+String(found.state&&found.state.url||""));
+      }else{
+        // Mantener el target ya localizado: capture() seguirá esperando hasta 3 minutos.
+        cdp.acceptInitialRaster=true;
+      }
+    }
     const image=await capture(cdp);
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
     console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
