@@ -36,6 +36,9 @@ jobs:
       - name: Preparar dependencias
         run: python3 -m pip install --disable-pip-version-check --quiet Pillow requests
 
+      - name: Validar paquete Telegram
+        run: python3 trends/send_explained_telegram.py selftest
+
       - name: Enviar o reparar paquetes visuales
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
