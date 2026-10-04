@@ -14,6 +14,22 @@ Una ejecución normal `Ejecuta TTiTTulares` redacta y materializa todas las noti
 
 Lee `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `telegram/editorial-processing.json`, `telegram/events.json`, `ttittulares/prepared.json` y `ttittulares/execution-errors.json`. Procesa todas las noticias PROCESSING. Las PROBLEMATIC históricas NO se reintentan automáticamente: solo entran en esta pasada si `user_validated:true` (botón **Check**/validación explícita) o si el radar las ha reabierto como PROCESSING por una revisión material posterior. Relee estado fresco antes de cada operación. Una incidencia individual no detiene el resto del lote. RUNTRACE muestra únicamente items realmente intentados y avanza después de cada intento. ERROR se reserva para un fallo global.
 
+### Telemetría visible de grano fino
+
+El RUNTRACE alimenta el panel y debe describir **cada operación real** mientras ocurre. Antes y después de cada paso significativo actualiza el mismo `TTITTULARES_RUNTRACE_V1` con `event_id`, `title`, `current`, `total`, `phase`, `updated_at` y un `message` humano, concreto y breve.
+
+Para CADA noticia/revisión, publica como mínimo estos hitos:
+- JIT: `phase:"verifying"`, «Releyendo estado autoritativo».
+- Investigación: `phase:"investigating"`, «Buscando fuentes», «Contrastando fuente 1/2», «Contrastando fuente 2/2», «Hecho esencial verificado» o motivo concreto de fallo.
+- Redacción: `phase:"drafting"`, «Redactando bloque factual» y «Comprobando longitud <=256».
+- Remate: `phase:"remate_selection"`, «Generando candidatos», «Evaluando candidatos con ratings» y «Remate seleccionado»; si no procede, «Sin remate · cierre factual».
+- Archivo: cuando se busque dentro de la pasada, `phase:"image_searching"`, «Buscando imagen real de archivo» y resultado «Archivo encontrado»/«Sin archivo recuperable». Esta fase NO es ImageGen.
+- Persistencia: `phase:"persisting"`, mensajes separados «Preparando outbox», «Aplicando resultado», «Materializando Listas/READY».
+- Verificación: `phase:"verifying"`, «Releyendo main», «Verificando estado terminal y revisión» y «Noticia cerrada y verificada».
+- Antes de la noticia siguiente incrementa `current` y cambia `event_id/title` inmediatamente.
+
+Si una búsqueda, escritura o relectura puede tardar, actualiza el mensaje **antes** de ejecutarla y de nuevo al obtener el resultado. No uses mensajes genéricos como «Procesando» cuando conoces la operación concreta. La capa ImageGen posterior tiene su propia telemetría/job y no mantiene abierto el RUNTRACE editorial.
+
 ### Barrera JIT obligatoria por entrada
 
 El lote inicial es solo una lista de candidatos. **Justo antes de tratar CADA entrada** —antes de web, drafting, selección de remate o fallback— relee desde `main` su estado autoritativo por `(event_id, revision)` en `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `ttittulares/prepared.json` y `ttittulares/decisions.json` cuando corresponda. No reutilices para esta decisión el snapshot leído al inicio de la pasada.
