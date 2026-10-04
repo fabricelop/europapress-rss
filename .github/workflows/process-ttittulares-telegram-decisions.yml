@@ -169,7 +169,9 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add             ttittulares/decisions.json             ttittulares/prepared.json             telegram/editorial-processing.json             telegram/events.json             ttittulares/manual-submissions.json             telegram/ttittulares-deliveries.json             telegram/delete-message-queue.json             telegram/ttittulares-decision-events.json
+          for f in ttittulares/decisions.json ttittulares/prepared.json telegram/editorial-processing.json telegram/events.json ttittulares/manual-submissions.json telegram/ttittulares-deliveries.json telegram/delete-message-queue.json telegram/ttittulares-decision-events.json; do
+            [ -e "$f" ] && git add "$f"
+          done
           if git diff --cached --quiet; then
             echo "Sin decisiones nuevas."
             exit 0
