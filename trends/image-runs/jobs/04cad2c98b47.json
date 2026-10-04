@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791103294334-b47894",
+  "requested_at": "2026-10-04T08:41:34.334Z",
+  "updated_at": "2026-10-04T08:41:34.334Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "04cad2c98b47",
+  "trend_id": "04cad2c98b47",
+  "target_name": "Junts",
+  "revision": 3,
+  "attempt": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "Junts",
+    "revision": 3,
+    "explanation": "TT#1 Junts es tendencia tras su no a los dos decretos de vivienda y porque Míriam Nogueras afirma que el partido asume el riesgo, está preparado para elecciones y mantiene una propuesta alternativa.",
+    "closer_text": "",
+    "trend_names": [
+      "Junts"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 1,
+    "explained_at": "2026-10-04T09:17:53.936+02:00",
+    "verification_sources": [
+      {
+        "source": "Diari de Tarragona / ACN · 4/10/2026",
+        "url": "https://www.diaridetarragona.com/espana/272197/nogueras-cree-sanchez-actua-clave-electoral-solucionar-problema-vivienda.html"
+      },
+      {
+        "source": "El Ideal Gallego · 3/10/2026",
+        "url": "https://www.elidealgallego.com/actualidad/espana/2026-10-03/junts-ofrece-a-sanchez-buscar-un-acuerdo-si-no-hace-electoralismo-estamos-a-tiempo-882829.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+}
