@@ -156,7 +156,7 @@ function Send-Ack([string]$CommandId,[string]$Stage) {
   }
 }
 
-function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage,[string]$Reason = "",[string]$UploadSecretHash = "",[string]$UploadSecret = "") {
+function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage,[string]$Reason = "",[string]$UploadSecretHash = "",[string]$UploadSecret = "",[string]$DiagnosticTargetId = "") {
   try {
     $body = @{
       task = "image_pc_ack"
@@ -168,6 +168,7 @@ function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage,[stri
     if ($Reason) { $body.reason = $Reason }
     if ($UploadSecretHash) { $body.upload_secret_hash = $UploadSecretHash }
     if ($UploadSecret) { $body.upload_secret = $UploadSecret }
+    if ($DiagnosticTargetId) { $body.diagnostic_target_id = $DiagnosticTargetId }
     $payload = $body | ConvertTo-Json -Compress
     Invoke-RestMethod -Method Post -Uri $RunUrl -ContentType "application/json" -Body $payload -TimeoutSec 12 | Out-Null
     Write-Log "IMAGE ACK $Stage target=$TargetId command=$CommandId"
@@ -331,14 +332,14 @@ function Publish-ImageTargetHint([string]$BeforeSnapshot,[string]$HintPath,[stri
         captured_at=[DateTimeOffset]::UtcNow.ToString("o")
       } | ConvertTo-Json -Compress | Set-Content -LiteralPath $HintPath -Encoding UTF8
       Write-Log "IMAGE TARGET HANDOFF command=$CommandId target_id=$([string]$candidate.id) url=$([string]$candidate.url)"
-      return $true
+      return [string]$candidate.id
     }
 
     Write-Log "IMAGE TARGET HANDOFF MISS command=$CommandId new=$($new.Count)"
-    return $false
+    return ""
   } catch {
     Write-Log "IMAGE TARGET HANDOFF ERROR command=$CommandId :: $($_.Exception.Message)"
-    return $false
+    return ""
   }
 }
 
@@ -775,7 +776,8 @@ while ($true) {
         Start-Sleep -Milliseconds 900
 
         $sent = Launch-ProjectChat "image command=$commandId target=$targetId" $message $marker
-        Publish-ImageTargetHint $targetSnapshot $targetHintPath $commandId | Out-Null
+        $handoffId=Publish-ImageTargetHint $targetSnapshot $targetHintPath $commandId
+        if($handoffId){ Send-ImageAck $targetId $commandId "target_handoff" "Target exacto de ChatGPT entregado al bridge." "" $uploadSecret $handoffId | Out-Null }
         Send-ImageAck $targetId $commandId "launched" | Out-Null
 
         if (-not $sent) {
