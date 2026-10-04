@@ -109,6 +109,11 @@ async function inspectChat(cdp,job){
 
 async function injectPromptIntoChat(cdp,job){
   const message=buildMessage(job);
+  try{
+    const before=await domImageCandidates(cdp);
+    cdp.preSubmitImageSrcs=new Set(before.map(x=>x.src));
+    console.log("BRIDGE SELF-SUBMIT BASELINE images="+before.length);
+  }catch{}
   const expr="(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return {ok:false,reason:'no-composer'};const text="+JSON.stringify(message)+";c.focus();if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){c.value=text;}else{c.textContent=text;}try{c.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText',data:text}))}catch(_){c.dispatchEvent(new Event('input',{bubbles:true}))}const t=String(c.innerText||c.textContent||c.value||'');return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,url:location.href,title:document.title||''}})()";
   const result=await cdp.eval(expr);
   if(!result||!result.ok)throw Error("Fallback no pudo escribir el prompt completo");
@@ -369,11 +374,77 @@ function probeExpression(){
     "})()"
   ].join("\n")
 }
+
+async function domImageCandidates(cdp){
+  const out=[];
+  try{
+    const doc=await cdp.call("DOM.getDocument",{depth:0,pierce:true});
+    const root=doc&&doc.root&&doc.root.nodeId;
+    if(!root)return out;
+    const q=await cdp.call("DOM.querySelectorAll",{nodeId:root,selector:"img"});
+    const ids=Array.isArray(q&&q.nodeIds)?q.nodeIds.slice(-80):[];
+    for(const nodeId of ids){
+      try{
+        const a=await cdp.call("DOM.getAttributes",{nodeId});
+        const arr=Array.isArray(a&&a.attributes)?a.attributes:[];
+        const attrs={};for(let i=0;i+1<arr.length;i+=2)attrs[String(arr[i])]=String(arr[i+1]);
+        const src=String(attrs.src||attrs["data-src"]||attrs["data-original"]||"");
+        if(!src)continue;
+        const box=await cdp.call("DOM.getBoxModel",{nodeId});
+        const quad=(box&&box.model&&(box.model.border||box.model.content))||null;
+        if(!Array.isArray(quad)||quad.length<8)continue;
+        const xs=[quad[0],quad[2],quad[4],quad[6]].map(Number),ys=[quad[1],quad[3],quad[5],quad[7]].map(Number);
+        const x=Math.min(...xs),y=Math.min(...ys),w=Math.max(...xs)-x,h=Math.max(...ys)-y;
+        if(!(w>=180&&h>=120))continue;
+        out.push({nodeId,src,alt:String(attrs.alt||""),x,y,width:w,height:h,area:w*h});
+      }catch{}
+    }
+  }catch(e){
+    console.log("BRIDGE DOM IMAGE SCAN WARNING :: "+String(e&&e.message||e))
+  }
+  out.sort((a,b)=>(b.y+b.height)-(a.y+a.height)||b.area-a.area);
+  return out
+}
+async function captureDomImage(cdp,candidate){
+  const scale=Math.min(3,Math.max(1,640/Math.max(1,candidate.width),360/Math.max(1,candidate.height)));
+  for(const quality of [92,86,78]){
+    try{
+      const cap=await cdp.call("Page.captureScreenshot",{format:"jpeg",quality,fromSurface:true,clip:{x:candidate.x,y:candidate.y,width:candidate.width,height:candidate.height,scale}});
+      const w=Math.round(candidate.width*scale),h=Math.round(candidate.height*scale);
+      if(cap&&cap.data&&cap.data.length>=16000&&cap.data.length<=3900000&&w>=640&&h>=360){
+        return {dataUrl:"data:image/jpeg;base64,"+cap.data,width:w,height:h,capture:"image-element-screenshot-cdp-x"+scale.toFixed(2)+"-q"+quality,diag:{src:candidate.src.slice(0,180),nodeId:candidate.nodeId}}
+      }
+    }catch{}
+  }
+  return null
+}
+
 async function capture(cdp,job){
   const deadline=Date.now()+3*60*1000;
   let lastDiag=null,lastEvalError=null,baselineSet=false,baselineSrc="";
   const acceptInitialRaster=Boolean(cdp&&cdp.acceptInitialRaster);
+  let domBaseline=(cdp&&cdp.preSubmitImageSrcs instanceof Set)?new Set(cdp.preSubmitImageSrcs):new Set();
+  try{
+    const initial=await domImageCandidates(cdp);
+    if(!domBaseline.size)domBaseline=new Set(initial.map(x=>x.src));
+    console.log("BRIDGE DOM BASELINE images="+initial.length);
+  }catch{}
   while(Date.now()<deadline){
+    try{
+      const dom=await domImageCandidates(cdp);
+      let fresh=dom.filter(x=>!domBaseline.has(x.src));
+      if(!fresh.length&&acceptInitialRaster&&dom.length){
+        const elapsed=(3*60*1000)-(deadline-Date.now());
+        if(elapsed>12000)fresh=[dom[0]];
+      }
+      if(fresh.length){
+        const shot=await captureDomImage(cdp,fresh[0]);
+        if(shot){
+          console.log("BRIDGE DOM RASTER "+fresh[0].width.toFixed(0)+"x"+fresh[0].height.toFixed(0)+" "+fresh[0].src.slice(0,120));
+          return shot
+        }
+      }
+    }catch(e){console.log("BRIDGE DOM CAPTURE WARNING :: "+String(e&&e.message||e))}
     let p;
     try{
       p=await cdp.eval(probeExpression(),true);
