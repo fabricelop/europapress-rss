@@ -174,11 +174,8 @@ jobs:
                   continue
               if str(row.get("telegram_package_status") or "").lower() in {"published","dismissed"}:
                   continue
-              if row.get("disable_ai_image"):
-                  continue
-              strategy=str(row.get("image_strategy") or row.get("image_mode") or "").lower()
-              if strategy in {"fallback_only","archive_only","tweet_capture_only"}:
-                  continue
+              # La sensibilidad editorial no bloquea ImageGen. Solo Tremending queda fuera
+              # porque usa su flujo específico de captura real del tuit.
               at=parse_dt(row.get("explained_at"))
               if not at or at < ROLLOUT_AT or (now-at).total_seconds()>RECENT_HOURS*3600:
                   continue
