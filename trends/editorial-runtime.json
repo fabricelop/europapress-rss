@@ -1,8 +1,8 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T00:15:00+02:00",
-  "last_completed_at": "2026-10-05T00:28:30+02:00",
+  "last_started_at": "2026-10-05T00:45:00+02:00",
+  "last_completed_at": "2026-10-05T00:50:00+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
@@ -14,31 +14,31 @@
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T00:28:30+02:00",
+  "updated_at": "2026-10-05T00:50:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T001500+0200",
+    "run_id": "tr-chat-20261005T004500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-05T00:15:00+02:00",
-    "updated_at": "2026-10-05T00:28:30+02:00",
-    "finished_at": "2026-10-05T00:28:30+02:00",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-10-05T00:45:00+02:00",
+    "updated_at": "2026-10-05T00:50:00+02:00",
+    "finished_at": "2026-10-05T00:50:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-05T00:15:00+02:00",
+    "requested_at": "2026-10-05T00:45:00+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 5,
-      "trends_explained": 5,
-      "explanation_groups": 4,
-      "new_cards": 4,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -50,198 +50,60 @@
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 4,
-      "remates_selected": 3,
-      "remates_omitted": 1
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 0,
+      "pending_cards_checked": 8,
+      "pending_visual_repair_requested": 3
     },
+    "message": "Ejecución cerrada · cola editorial vacía",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
+      "updated_at": "2026-10-04T17:29:26.880Z",
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "2f4a568bb479",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "🌶️ La selección cambió el fuera de juego por el sabotaje.",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "ed81bf20d9b4",
-        "revision": 0,
-        "candidate_count": 0,
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitive_event"
-      },
-      {
-        "trend_id": "5890384b2f85",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "🌶️ El plan de partido terminó triturado antes del descanso.",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "9314435265dd",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "🌶️ Honduras convirtió la lista de espera en prime time.",
-        "selected_score": null,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-05T00:24:55+02:00",
+        "at": "2026-10-05T00:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando ejecución directa de TTendencias"
+      },
+      {
+        "at": "2026-10-05T00:46:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 8 tarjetas"
+      },
+      {
+        "at": "2026-10-05T00:47:00+02:00",
         "phase": "persisting",
-        "trend_id": "5890384b2f85",
-        "title": "Quesada",
-        "message": "Actualizando requests"
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación visual solicitada para 3 tarjetas"
       },
       {
-        "at": "2026-10-05T00:25:05+02:00",
-        "phase": "persisting",
-        "trend_id": "5890384b2f85",
-        "title": "Quesada",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-05T00:25:20+02:00",
-        "phase": "verifying",
-        "trend_id": "5890384b2f85",
-        "title": "Quesada",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-05T00:25:30+02:00",
-        "phase": "verifying",
-        "trend_id": "5890384b2f85",
-        "title": "Quesada",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-05T00:25:40+02:00",
-        "phase": "verifying",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
-        "message": "Releyendo estado autoritativo de Asraf"
-      },
-      {
-        "at": "2026-10-05T00:26:00+02:00",
-        "phase": "investigating",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-05T00:26:20+02:00",
-        "phase": "investigating",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Contrastando emisión de Conexión Honduras y expulsión de Yulen Pereira"
-      },
-      {
-        "at": "2026-10-05T00:26:35+02:00",
-        "phase": "investigating",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Relación inequívoca verificada · misma emisión y trama de Supervivientes"
-      },
-      {
-        "at": "2026-10-05T00:26:45+02:00",
-        "phase": "drafting",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Redactando explicación factual agrupada"
-      },
-      {
-        "at": "2026-10-05T00:26:50+02:00",
-        "phase": "drafting",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Comprobando límite de X · 245/279 caracteres"
-      },
-      {
-        "at": "2026-10-05T00:26:55+02:00",
-        "phase": "remate_selection",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-05T00:27:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Evaluando candidatos con ratings"
-      },
-      {
-        "at": "2026-10-05T00:27:05+02:00",
-        "phase": "remate_selection",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-05T00:27:10+02:00",
-        "phase": "persisting",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Guardando ficha Explicada agrupada"
-      },
-      {
-        "at": "2026-10-05T00:27:30+02:00",
-        "phase": "persisting",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Actualizando requests de Asraf y Pereira"
-      },
-      {
-        "at": "2026-10-05T00:27:45+02:00",
-        "phase": "persisting",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Retirando revisiones agrupadas de la cola"
-      },
-      {
-        "at": "2026-10-05T00:28:00+02:00",
-        "phase": "verifying",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-05T00:28:15+02:00",
-        "phase": "verifying",
-        "trend_id": "9314435265dd",
-        "title": "Asraf + Pereira",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-05T00:28:20+02:00",
+        "at": "2026-10-05T00:49:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · 0 preparing/update y 0 reexplicaciones pendientes"
+        "message": "Releyendo cola y verificando saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-05T00:28:30+02:00",
+        "at": "2026-10-05T00:50:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 5/5 cerrada · 5 tendencias explicadas en 4 tarjetas"
+        "message": "Ejecución cerrada · cola editorial vacía"
       }
-    ],
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "remaining_problematic_ids": [],
-    "message": "Pasada completada 5/5: Ibai, Girona, Quesada, Asraf y Pereira quedaron explicadas y verificadas; Asraf y Pereira comparten una tarjeta por la misma emisión de Conexión Honduras. Cola final 0, sin reexplicaciones pendientes. Reparación visual de Pendientes solicitada al inicio; sin ImageGen directo ni despliegues Vercel."
+    ]
   },
   "summary": {
     "trends_processed": 5,
