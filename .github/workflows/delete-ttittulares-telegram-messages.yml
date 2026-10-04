@@ -60,5 +60,14 @@ jobs:
           if git diff --quiet -- telegram/delete-message-queue.json; then exit 0; fi
           git add telegram/delete-message-queue.json
           git commit -m "Registrar limpieza Telegram TTiTTulares"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          for n in 1 2 3 4 5; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            if git rebase origin/main; then
+              continue
+            fi
+            git rebase --abort || true
+            sleep $((n*2))
+          done
+          echo "No se pudo persistir el estado de limpieza" >&2
+          exit 1
