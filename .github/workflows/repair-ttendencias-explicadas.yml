@@ -17,7 +17,7 @@ permissions:
 
 concurrency:
   group: ttendencias-explicadas-repair
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   repair:
@@ -33,27 +33,10 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
 
-      - name: Esperar cierre editorial
-        id: gate
-        shell: bash
-        run: |
-          set -euo pipefail
-          ACTIVE=$(python3 - <<'PY'
-          import json
-          d=json.load(open("trends/editorial-queue.json",encoding="utf-8"))
-          active=[x for x in d.get("items",[]) if str(x.get("status","")).lower() in {"preparing","update","ready"} or x.get("rewrite_pending") is True]
-          print(len(active))
-          PY
-          )
-          echo "active=$ACTIVE" >> "$GITHUB_OUTPUT"
-          echo "TTENDENCIAS_EDITORIAL_ACTIVE=$ACTIVE"
-
       - name: Preparar dependencias
-        if: steps.gate.outputs.active == '0'
         run: python3 -m pip install --disable-pip-version-check --quiet Pillow requests beautifulsoup4
 
       - name: Recuperar imágenes de archivo
-        if: steps.gate.outputs.active == '0'
         shell: bash
         run: |
           set -euo pipefail
@@ -102,7 +85,6 @@ jobs:
           git reset --hard origin/main
 
       - name: Encolar Gag IA ausente o inválido
-        if: steps.gate.outputs.active == '0'
         shell: bash
         run: |
           set -euo pipefail
@@ -316,7 +298,6 @@ jobs:
           fi
 
       - name: Lanzar entrega al bot TTendencias
-        if: steps.gate.outputs.active == '0'
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
