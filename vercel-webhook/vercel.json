@@ -315,5 +315,5 @@
   "github": {
     "autoJobCancelation": false
   },
-  "ignoreCommand": "grep -Eq '^deploy-image-flicker-cache-20261004|^deploy-money-control-' .deploy-trigger && exit 1 || exit 0"
+  "ignoreCommand": "grep -q '^deploy-ttendencias-v13-ack-20261004$' .deploy-trigger && exit 1 || exit 0"
 }
