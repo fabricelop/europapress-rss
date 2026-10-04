@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "ttittulares/generated-images/telegram-test-lobato-20261004-*"
+      - "telegram/image-delivery-test-trigger.txt"
 
 permissions:
   contents: read
@@ -22,16 +23,24 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Localizar raster recién materializado
+      - name: Localizar o reconstruir raster
         id: image
         shell: bash
         run: |
           set -euo pipefail
-          FILE="$(git diff-tree --no-commit-id --name-only -r "$GITHUB_SHA" -- 'ttittulares/generated-images/telegram-test-lobato-20261004-*' | head -n 1)"
-          test -n "$FILE"
-          test -f "$FILE"
+          FILE="$(git diff-tree --no-commit-id --name-only -r "$GITHUB_SHA" -- 'ttittulares/generated-images/telegram-test-lobato-20261004-*' | head -n 1 || true)"
+          if [ -n "$FILE" ] && [ -f "$FILE" ]; then
+            echo "Usando raster materializado: $FILE"
+          else
+            shopt -s nullglob
+            chunks=(telegram/image-delivery-test-chunks/*.b64)
+            test "${#chunks[@]}" -gt 0
+            cat "${chunks[@]}" | tr -d '\r\n' | base64 --decode > /tmp/telegram-image.jpg
+            FILE="/tmp/telegram-image.jpg"
+            echo "Raster reconstruido desde bloques de prueba."
+          fi
+          test -s "$FILE"
           echo "file=$FILE" >> "$GITHUB_OUTPUT"
-          echo "Raster: $FILE"
           file "$FILE"
 
       - name: Preparar caption y botones
