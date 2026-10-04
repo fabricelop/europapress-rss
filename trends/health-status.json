@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-04T00:37:53.232186+00:00",
+  "checked_at": "2026-10-04T06:19:06.201951+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.9,
-      "run_id": 37165485968,
+      "age_minutes": 1.0,
+      "run_id": 37182395770,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -76,28 +76,70 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 7,
-      "overdue_count": 3,
-      "oldest_age_minutes": 166.8,
+      "pending_count": 10,
+      "overdue_count": 10,
+      "oldest_age_minutes": 508.1,
       "warning_after_minutes": 30,
       "overdue_items": [
+        {
+          "id": "04cad2c98b47",
+          "name": "Junts",
+          "status": "preparing",
+          "age_minutes": 47.8
+        },
         {
           "id": "3813e99f80c5",
           "name": "#UFCHBOMax",
           "status": "preparing",
-          "age_minutes": 56.4
+          "age_minutes": 397.6
         },
         {
           "id": "9055ec2f483b",
           "name": "Núcleo Nacional",
           "status": "preparing",
-          "age_minutes": 166.8
+          "age_minutes": 508.1
         },
         {
           "id": "f26fecb9c229",
           "name": "Listing ID",
           "status": "preparing",
-          "age_minutes": 56.4
+          "age_minutes": 397.6
+        },
+        {
+          "id": "2e5e4203c732",
+          "name": "La Blanca",
+          "status": "preparing",
+          "age_minutes": 347.5
+        },
+        {
+          "id": "1a1ad33aea16",
+          "name": "Le Normand",
+          "status": "preparing",
+          "age_minutes": 347.5
+        },
+        {
+          "id": "6f69ffb91e09",
+          "name": "Dua Lipa",
+          "status": "preparing",
+          "age_minutes": 347.4
+        },
+        {
+          "id": "7446a08e46ab",
+          "name": "Shakira",
+          "status": "preparing",
+          "age_minutes": 347.5
+        },
+        {
+          "id": "739af8f880b0",
+          "name": "#UFC332",
+          "status": "preparing",
+          "age_minutes": 297.4
+        },
+        {
+          "id": "a564371ac0f2",
+          "name": "Burkina Faso",
+          "status": "preparing",
+          "age_minutes": 149.7
         }
       ],
       "repairable": false
@@ -107,13 +149,16 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
+        "04cad2c98b47",
         "3813e99f80c5",
         "9055ec2f483b",
         "f26fecb9c229",
         "2e5e4203c732",
         "1a1ad33aea16",
         "6f69ffb91e09",
-        "7446a08e46ab"
+        "7446a08e46ab",
+        "739af8f880b0",
+        "a564371ac0f2"
       ],
       "contradictory_success": false
     }
@@ -121,9 +166,9 @@
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 166.8 min"
+    "cola de explicaciones retrasada: 10 pendiente(s) superan 30 min; más antigua 508.1 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 166.8 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola de explicaciones retrasada: 10 pendiente(s) superan 30 min; más antigua 508.1 min | config TTendencias incompatible con el modo activo"
 }
