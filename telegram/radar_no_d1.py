@@ -425,10 +425,22 @@ def fetch_items():
      continue
     is_sport=source_type=="sport"
     if used and rows:
-     (sport_healthy if is_sport else healthy).append(src)
-     out.extend(rows)
      primary=next((u for n,u,k in (SPORT_SOURCES if is_sport else SOURCES) if n==src),used)
      recovered=used!=primary
+     # Cuatro puede devolver HTTP 200 en portada pero acabar recuperándose por
+     # Google News con un único resultado antiguo/genérico. Conservar esa fila
+     # como posible evidencia (misma familia Mediaset que Telecinco), pero no
+     # declarar la fuente sana hasta que vuelva a aportar cobertura suficiente.
+     low_confidence_recovery=(src=="Noticias Cuatro" and
+       urllib.parse.urlparse(used).hostname=="news.google.com" and len(rows)<=1)
+     out.extend(rows)
+     if low_confidence_recovery:
+      msg="fallback Google aporta solo un resultado; frescura de Cuatro no verificada"
+      failures.append({"source":src,"type":"general","error":msg})
+      source_status.append({"source":src,"type":"general","ok":False,"degraded":True,"items":len(rows),"url":used,"error":msg,"recovered":True})
+      print("SOURCE_STATUS",src,"DEGRADED",len(rows),used,msg)
+      continue
+     (sport_healthy if is_sport else healthy).append(src)
      source_status.append({"source":src,"type":"sport" if is_sport else "general","ok":True,"items":len(rows),"url":used,"error":None,"recovered":recovered})
      print("SOURCE_STATUS",src,"OK",len(rows),used)
      if recovered:
