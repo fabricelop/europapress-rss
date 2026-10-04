@@ -7,6 +7,7 @@ $BaseDir = "C:\TTiTTulares"
 $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
 $Runner = Join-Path $BaseDir "Ejecutar.js"
 $ImageBridge = Join-Path $BaseDir "TTiTTularesImageBridge.js"
+$ImageBridgeLockPath = Join-Path $BaseDir "ttittulares-image-bridge.lock.json"
 $StatePath = Join-Path $BaseDir "ttittulares-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
@@ -199,6 +200,36 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   return $false
 }
 
+function Test-ImageBridgeBusy {
+  if (-not (Test-Path -LiteralPath $ImageBridgeLockPath)) { return $false }
+  try {
+    $lock = Get-Content -LiteralPath $ImageBridgeLockPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $pidValue = [int]$lock.pid
+    if ($pidValue -gt 0) {
+      $p = Get-Process -Id $pidValue -ErrorAction SilentlyContinue
+      if ($p) {
+        Write-Log "IMAGE LOCAL LOCK ACTIVE pid=$pidValue command=$($lock.command_id) target=$($lock.target_id)"
+        return $true
+      }
+    }
+  } catch {}
+  Remove-Item -LiteralPath $ImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+  return $false
+}
+
+function Set-ImageBridgeLock([int]$Pid,[string]$CommandId,[string]$TargetId) {
+  try {
+    @{
+      pid=$Pid
+      command_id=$CommandId
+      target_id=$TargetId
+      started_at=[DateTimeOffset]::UtcNow.ToString("o")
+    } | ConvertTo-Json -Compress | Set-Content -LiteralPath $ImageBridgeLockPath -Encoding UTF8
+  } catch {
+    Write-Log "IMAGE LOCAL LOCK WARNING :: $($_.Exception.Message)"
+  }
+}
+
 function Get-ChatTargetSnapshot {
   try {
     $targets = Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/list" -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 3
@@ -228,6 +259,7 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
     $env:TT_IMAGE_PRELAUNCH_TARGETS_JSON = $(if([string]::IsNullOrWhiteSpace($TargetSnapshot)){"[]"}else{$TargetSnapshot})
     $p = Start-Process -FilePath $node.Source -ArgumentList @($ImageBridge,$CommandId,$TargetId) -WindowStyle Hidden -PassThru -RedirectStandardOutput $out -RedirectStandardError $err
     if (-not $p) { throw "Start-Process no devolvió proceso" }
+    Set-ImageBridgeLock $p.Id $CommandId $TargetId
     Write-Log "IMAGE BRIDGE STARTED pid=$($p.Id) target=$TargetId command=$CommandId stdout=$out stderr=$err"
     return $true
   } catch {
@@ -620,7 +652,8 @@ while ($true) {
     $idx=Read-ImageIndex
     Refresh-ActiveImages $state $idx
     Save-State $state
-    $slots=[Math]::Max(0,$MaxParallelImageChats-@($state.active_image_commands).Count)
+    $localBridgeBusy=Test-ImageBridgeBusy
+    $slots=if($localBridgeBusy){0}else{[Math]::Max(0,$MaxParallelImageChats-@($state.active_image_commands).Count)}
     if($slots -gt 0 -and $CustomMessageSupport){
       $jobs=@();if($idx -and $idx.jobs){$jobs=@($idx.jobs)}
       foreach($job in $jobs){
