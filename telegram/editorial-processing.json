@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T07:17:27.743Z",
+  "updated_at": "2026-10-04T07:17:35.545Z",
   "items": [
     {
       "event_id": "5aa7c3036ce0",
@@ -2018,17 +2018,29 @@
           "first_seen": "2026-10-03T17:12:53.319109Z"
         }
       ],
-      "selected_at": "2026-10-03T17:13:15.149678Z",
-      "status": "DISMISSED",
-      "selection_mode": "AUTO_WEB",
+      "selected_at": "2026-10-04T07:17:35.545Z",
+      "status": "PROCESSING",
+      "selection_mode": "MANUAL_REOPEN_OUTCOME",
       "revision": 1,
       "parent_event_id": null,
       "update_context": null,
       "parallel_source_claimed_at": null,
       "with_image": true,
       "image_mode": "ai_plus_fallback",
-      "filter_reason": "insufficient_matching_source_evidence",
-      "matching_source_count": 3
+      "matching_source_count": 3,
+      "force_user_elaborate": true,
+      "user_validated": true,
+      "user_validated_at": "2026-10-04T07:17:35.545Z",
+      "previous_outcome": {
+        "status": "DISMISSED",
+        "filter_reason": "insufficient_matching_source_evidence",
+        "reconciliation_reason": "",
+        "problem_reason": "",
+        "duplicate_of_event_id": null,
+        "finished_at": "2026-10-03T17:13:15.149678Z"
+      },
+      "reopened_at": "2026-10-04T07:17:35.545Z",
+      "reopened_source": "web_processing_outcome"
     },
     {
       "event_id": "d084d75e023a",
