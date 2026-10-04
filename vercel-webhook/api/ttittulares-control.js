@@ -748,7 +748,17 @@ async function proxyPreparedImage(rawUrl,res){
   ].filter(Boolean).map(String));
   if(!allowed.has(url))throw new Error("Imagen no autorizada");
   const r=await fetch(url,{headers:{"user-agent":"TTiTTulares-Image-Proxy/1.0",accept:"image/*"}});
-  if(!r.ok)throw new Error("No se pudo descargar la imagen: "+r.status);
+  // Algunos medios bloquean fetch servidor-servidor (401/403) pero permiten abrir
+  // exactamente la misma URL desde el navegador. Tras comprobar que la URL está
+  // en la allowlist de una entrada preparada, degradamos a redirección directa
+  // en vez de convertir una imagen no proxyable en un 500 de toda la petición.
+  if(!r.ok){
+    if(r.status===401||r.status===403){
+      res.setHeader("cache-control","no-store");
+      return res.redirect(307,url)
+    }
+    throw new Error("No se pudo descargar la imagen: "+r.status)
+  }
   const type=String(r.headers.get("content-type")||"");
   if(!type.startsWith("image/"))throw new Error("El recurso no es una imagen");
   const buf=Buffer.from(await r.arrayBuffer());
