@@ -200,6 +200,12 @@ def run_send(patch_path):
         raise SystemExit("TTendencias no tiene chat_id enlazado")
 
     explained=load(EXPLAINED,{"items":[]})
+    copy_state=load(ROOT/"trends/explained-copy-state.json",{"items":[]})
+    archived=set()
+    for x in copy_state.get("items",[]):
+        rev=int(x.get("revision") or 0)
+        for name in x.get("trend_names") or []:
+            archived.add((str(name or "").strip().casefold(),rev))
     deliveries=load(DELIVERIES,{"version":1,"items":[]})
     deliveries.setdefault("items",[])
     changed=set()
@@ -207,6 +213,8 @@ def run_send(patch_path):
 
     for row in explained.get("items",[]):
         if str(row.get("status") or "").lower()!="explained":
+            continue
+        if (str(row.get("name") or "").strip().casefold(),int(row.get("revision") or 0)) in archived:
             continue
         if row.get("tremending_origin") or row.get("disable_ai_image"):
             continue
