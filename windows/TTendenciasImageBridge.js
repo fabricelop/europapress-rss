@@ -73,7 +73,7 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v21-command-scoped";
+const BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover";
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
@@ -279,12 +279,31 @@ function probeExpression(){
     "})()"
   ].join("\n")
 }
-async function capture(cdp){
+async function capture(cdp,job){
   const deadline=Date.now()+3*60*1000;
   let lastDiag=null,lastEvalError=null,baselineSet=false,baselineSrc="";
   const acceptInitialRaster=Boolean(cdp&&cdp.acceptInitialRaster);
   while(Date.now()<deadline){
-    let p;try{p=await cdp.eval(probeExpression(),true)}catch(e){lastEvalError=String(e&&e.message||e)}
+    let p;
+    try{
+      p=await cdp.eval(probeExpression(),true);
+    }catch(e){
+      lastEvalError=String(e&&e.message||e);
+      if(/CDP timeout|WebSocket|closed|not open|Target closed|Inspected target navigated/i.test(lastEvalError)){
+        console.log("BRIDGE CAPTURE CDP RECOVER :: "+lastEvalError);
+        const found=await reacquireCommandChat(job);
+        if(found&&found.cdp){
+          try{cdp&&cdp.close()}catch{}
+          cdp=found.cdp;
+          cdp.acceptInitialRaster=true;
+          baselineSet=false;
+          baselineSrc="";
+          console.log("BRIDGE CAPTURE CDP REACQUIRED "+String(found.state&&found.state.url||""));
+          await sleep(500);
+          continue
+        }
+      }
+    }
     if(p&&p.diag)lastDiag=p.diag;
     const currentSrc=String(p&&p.src||"");
     if(!baselineSet){
@@ -372,7 +391,7 @@ async function uploadImage(image){
         cdp.acceptInitialRaster=true;
       }
     }
-    const image=await capture(cdp);
+    const image=await capture(cdp,job);
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
     console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
     const up=await uploadImage(image);
