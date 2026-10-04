@@ -417,26 +417,51 @@ function Build-ImageMessage($Job) {
   $targetId=[string]$Job.target_id
   $targetName=[string]$Job.target_name
   $commandId=[string]$Job.command_id
-  $contextJson=""
+  $tweetText=""
+  $remate=""
+  $factualSummary=""
 
   try {
     if ($Job.context_snapshot) {
-      $contextJson=($Job.context_snapshot | ConvertTo-Json -Depth 10 -Compress)
+      $tweetText=[string]$Job.context_snapshot.tweet_text
+      $remate=[string]$Job.context_snapshot.remate
+      $factualSummary=[string]$Job.context_snapshot.factual_summary
     }
   } catch {}
 
-  if ([string]::IsNullOrWhiteSpace($contextJson) -or $contextJson -eq "null" -or $contextJson -eq "{}") {
+  if ([string]::IsNullOrWhiteSpace($tweetText) -or [string]::IsNullOrWhiteSpace($remate)) {
     Write-Log "IMAGE CONTEXT MISSING target=$targetId command=$commandId"
     return ""
   }
 
   return @"
-TTITTULARES_IMAGE_JOB_V3 $commandId $targetId | Usa ImageGen AHORA y genera UNA imagen IA para '$targetName'.
+TTITTULARES_IMAGE_JOB_V4 $commandId $targetId | Usa ImageGen AHORA y genera UNA SOLA imagen GAG IA para '$targetName'.
 
-CONTEXTO FACTUAL AUTORITATIVO (úsalo DIRECTAMENTE; no necesitas abrir GitHub ni reinvestigar):
-$contextJson
+TEXTO EXACTO DE LA NOTICIA YA LISTA (NO LO REESCRIBAS):
+$tweetText
 
-Genera un gag visual cómico, satírico, irónico y exagerado basado ESPECÍFICAMENTE en los hechos de ese contexto, el texto editorial y el remate. Evita una ilustración literal y evita por completo una caricatura genérica del protagonista, lugar, país, equipo o tema. La idea visual debe depender de al menos un hecho concreto del contexto; si no puedes identificarlo, no inventes otro hecho. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster.
+REMATE EXACTO:
+$remate
+
+CONTEXTO FACTUAL COMPLEMENTARIO:
+$factualSummary
+
+ESTILO VISUAL OBLIGATORIO:
+Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena abarrotada de detalles y personajes expresivos, humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Incorporar carteles, objetos y elementos del entorno que permitan entender el chiste de un vistazo. Expresiones faciales exageradas, composición dinámica, profundidad, iluminación dramática y acabado pulido tipo portada/editorial. Texto en español únicamente cuando sea necesario para el gag y perfectamente integrado en la escena. Evitar caricatura genérica, evitar collage, evitar aspecto fotográfico puro y evitar infografía.
+
+CONSTRUCCIÓN:
+1. ESCENA: extrae una descripción factual concreta exclusivamente del texto exacto y del contexto.
+2. GAG VISUAL: crea una metáfora o situación absurda derivada directamente de ese hecho.
+3. REMATE VISUAL: añade un detalle que traduzca visualmente la guindilla exacta.
+4. La imagen debe parecer una escena única y coherente, como una viñeta editorial de gran presupuesto, con muchos pequeños detalles humorísticos secundarios pero un gag principal inmediatamente reconocible.
+
+REGLAS:
+- No inventes hechos externos.
+- No hagas una infografía, interfaz, diagrama, collage ni captura de pantalla.
+- No escribas el tuit dentro de la imagen.
+- No proceses otra noticia.
+- Genera exactamente UNA imagen.
+- No persistas la imagen: el puente local recoge el raster.
 "@
 }
 
