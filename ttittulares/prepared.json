@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T18:27:27.142896Z",
+  "updated_at": "2026-10-04T18:29:13.953Z",
   "items": [
     {
       "event_id": "af6e2a8d5921",
@@ -384,10 +384,10 @@
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -402,12 +402,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-04T18:15:47.695235Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261004162033_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/comunitat-valenciana/noticia-aplazado-desahucio-hombre-95-anos-benidorm-20261004162033.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Aplazado el desahucio de un hombre de 95 años en Benidorm"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/724ac75e693a-r1-ai1-791138061347.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "8d47ef4f7f2cfd47d70c0bcf8597f7ec034be537c6dc32145d90adb82a95f849",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2826888,
+        "context_guard": {
+          "version": 3,
+          "event_id": "724ac75e693a",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-724ac75e693a-r1-a1-1791138061347"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/724ac75e693a-r1-ai1-791138061347.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261004162033_1200.jpg",
@@ -416,7 +430,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Aplazado el desahucio de un hombre de 95 años en Benidorm"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/724ac75e693a-r1-ai1-791138061347.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "8d47ef4f7f2cfd47d70c0bcf8597f7ec034be537c6dc32145d90adb82a95f849",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2826888,
+        "context_guard": {
+          "version": 3,
+          "event_id": "724ac75e693a",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-724ac75e693a-r1-a1-1791138061347"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/724ac75e693a-r1-ai1-791138061347.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-04T18:29:13.953Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-04T18:29:13.953Z"
     },
     {
       "event_id": "a7255fbd0f9d",
