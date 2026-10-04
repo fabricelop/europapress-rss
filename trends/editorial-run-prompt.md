@@ -52,6 +52,21 @@ Una explicación **no está cerrada** por el mero hecho de existir en `trends/te
 Si una escritura intermedia falla, relee SHA y reintenta; no redactes de nuevo una explicación ya persistida. Antes de empezar trabajo nuevo y otra vez al cierre, reconcilia idempotentemente cualquier explicación `explained` ya persistida con su revisión exacta en requests/cola. Nunca uses solo el nombre para reconciliar revisiones.
 
 
+## Saneamiento obligatorio de Pendientes al iniciar cada ejecución
+
+Antes de dar por terminada una ejecución —y preferiblemente al principio, para que la reparación visual pueda avanzar mientras investigas entradas nuevas— revisa también **todas las tarjetas que sigan realmente en Pendientes**. La fuente autoritativa es la vista reconciliada de `trends/telegram-manual-explained.json` + `trends/requests.json`, excluyendo revisiones `grouped`, las archivadas/copied en `trends/explained-copy-state.json` y las que tengan `telegram_package_status:"published"|"dismissed"`.
+
+Para cada Pendiente vigente:
+1. **Explicación**: no la reinvestigues ni la reescribas solo para reparar campos accesorios.
+2. **Remate**: si `closer_text` está vacío, intenta generar/seleccionar un único remate breve usando exclusivamente la explicación factual ya verificada y los ratings disponibles. Solo persístelo si mejora el texto y el paquete completo sigue <=280 caracteres. Si ninguno sirve, deja `closer_text` vacío: el remate es opcional y nunca bloquea.
+3. **Imagen de archivo**: si falta o la URL guardada ya no es un raster válido, deja que el reparador visual vuelva a buscarla en las fuentes verificadas. Un fallo de archivo no bloquea IA ni Telegram.
+4. **Imagen IA**: si falta, falla o no supera la validación física vigente, debe existir un job automático de reparación. Si ya hay una IA válida para la revisión actual, no regeneres.
+5. **Telegram**: si al finalizar el ciclo del item existe explicación + IA válida, intenta entregar inmediatamente ese item; añade archivo si existe. No esperes al final del lote ni a que otras tendencias estén completas.
+
+Cuando repares un remate, sincroniza el mismo `closer_text` en la ficha vigente de `trends/telegram-manual-explained.json` y en la revisión exacta correspondiente de `trends/requests.json`, sin cambiar `explanation`, `explained_at`, `id` ni `revision`. Haz la reparación en lote cuando sea posible para reducir escrituras.
+
+La telemetría debe contar este saneamiento: mensajes como «Revisando Pendientes · 12 tarjetas», «Pendiente 3/12 · falta remate», «Pendiente 3/12 · reparación visual solicitada» o «Pendiente 3/12 · paquete ya completo». Este saneamiento forma parte de una ejecución normal incluso si la cola nueva está vacía.
+
 ## Ámbito y estado
 
 Usa el conector GitHub disponible para `fabricelop/europapress-rss`. Trabaja EXCLUSIVAMENTE con TTendencias y con estado fresco de la rama `main`.
