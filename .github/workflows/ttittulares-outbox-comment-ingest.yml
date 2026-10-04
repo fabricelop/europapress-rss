@@ -8,6 +8,7 @@ permissions:
   contents: write
   issues: write
   pull-requests: read
+  actions: write
 
 concurrency:
   # Every comment must be ingested; a shared pending slot loses comments.
@@ -83,3 +84,12 @@ jobs:
           # Los comentarios TTITTULARES_OUTBOX_V1 son un bus efímero, no historial editorial.
           # Se eliminan solo después de que la aplicación haya terminado con éxito.
           gh api --method DELETE "repos/$REPO/issues/comments/$COMMENT_ID" || echo "Aviso: no se pudo retirar el comentario (no bloqueante)."
+
+
+      - name: Lanzar reparación visual de Listas
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh workflow run repair-ttittulares-listas.yml --repo "$REPO" --ref main
