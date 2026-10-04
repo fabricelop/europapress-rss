@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T07:33:38.650Z",
+  "updated_at": "2026-10-04T07:33:43.687Z",
   "items": [
     {
       "event_id": "5aa7c3036ce0",
@@ -1825,9 +1825,9 @@
           "first_seen": "2026-10-03T17:04:14.728121Z"
         }
       ],
-      "selected_at": "2026-10-03T17:04:37.070658Z",
-      "status": "DISMISSED",
-      "selection_mode": "AUTO_WEB",
+      "selected_at": "2026-10-04T07:33:43.687Z",
+      "status": "PROCESSING",
+      "selection_mode": "MANUAL_REOPEN_OUTCOME",
       "revision": 2,
       "parent_event_id": "48e2c46ed23a",
       "update_context": {
@@ -1838,8 +1838,20 @@
       "parallel_source_claimed_at": null,
       "with_image": true,
       "image_mode": "ai_plus_fallback",
-      "filter_reason": "insufficient_matching_source_evidence",
-      "matching_source_count": 1
+      "matching_source_count": 1,
+      "force_user_elaborate": true,
+      "user_validated": true,
+      "user_validated_at": "2026-10-04T07:33:43.687Z",
+      "previous_outcome": {
+        "status": "DISMISSED",
+        "filter_reason": "insufficient_matching_source_evidence",
+        "reconciliation_reason": "",
+        "problem_reason": "",
+        "duplicate_of_event_id": null,
+        "finished_at": "2026-10-03T17:04:37.070658Z"
+      },
+      "reopened_at": "2026-10-04T07:33:43.687Z",
+      "reopened_source": "web_processing_outcome"
     },
     {
       "event_id": "f4c4769f4feb",
