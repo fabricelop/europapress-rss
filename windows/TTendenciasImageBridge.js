@@ -73,7 +73,7 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v17-submit-guard";
+const BRIDGE_MODE="capture-only-v18-submit-reacquire";
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
@@ -179,37 +179,76 @@ async function findChat(job){
   throw Error("No se encontró el chat lanzado tras observar cambios de estado en 90 segundos; "+detail)
 }
 
-async function ensureSubmitted(cdp){
-  const deadline=Date.now()+35000;
-  let attempted=false,last=null;
+async function reacquireCommandChat(job){
+  let list=[];try{list=await targets()}catch{return null}
+  let composerCandidate=null;
+  for(const t of list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl)){
+    const c=new CDP(t.webSocketDebuggerUrl);
+    try{
+      await c.open();
+      const st=await inspectChat(c,job);
+      if(st&&(st.bodyMarker||st.generating)){
+        if(composerCandidate){try{composerCandidate.cdp.close()}catch{}}
+        return {cdp:c,state:st}
+      }
+      if(st&&st.composerMarker){
+        if(composerCandidate){try{composerCandidate.cdp.close()}catch{}}
+        composerCandidate={cdp:c,state:st};
+        continue
+      }
+    }catch{}
+    c.close()
+  }
+  return composerCandidate
+}
+
+async function ensureSubmitted(cdp,job){
+  const deadline=Date.now()+45000;
+  let current=cdp,last=null,lastAttemptAt=0,reacquires=0;
   while(Date.now()<deadline){
     let st=null;
     try{
-      st=await cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const submitted=[...root.querySelectorAll('[data-message-author-role=\\\"user\\\"],[data-testid^=\\\"conversation-turn-\\\"],article')].some(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;return String(el.innerText||el.textContent||'').includes(command)});const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const send=document.querySelector('button[data-testid=\\\"send-button\\\"],button[aria-label*=\\\"Send\\\" i],button[aria-label*=\\\"Enviar\\\" i]');return {composerMarker,submitted,generating,send:!!send}})()");
+      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const submitted=[...root.querySelectorAll('[data-message-author-role=\\\"user\\\"],[data-testid^=\\\"conversation-turn-\\\"],article')].some(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;return String(el.innerText||el.textContent||'').includes(command)});const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const send=document.querySelector('button[data-testid=\\\"send-button\\\"],button[aria-label*=\\\"Send\\\" i],button[aria-label*=\\\"Enviar\\\" i]');return {composerMarker,submitted,generating,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
     }catch{}
+
+    if(!st){
+      const found=await reacquireCommandChat(job);
+      if(found){
+        if(found.cdp!==current){try{current&&current.close()}catch{}}
+        current=found.cdp;st=found.state;reacquires++;
+        console.log("BRIDGE SUBMIT REACQUIRED "+String(st&&st.url||"")+" count="+reacquires);
+      }
+    }
+
     last=st;
-    if(st&&(st.submitted||st.generating))return true;
-    if(st&&st.composerMarker&&!attempted){
-      attempted=true;
+    if(st&&(st.submitted||st.generating)){
+      current.submissionVerified=true;
+      return current
+    }
+
+    if(st&&st.composerMarker&&Date.now()-lastAttemptAt>=1200){
+      lastAttemptAt=Date.now();
       let clicked=false;
       try{
-        clicked=Boolean(await cdp.eval("(()=>{const b=document.querySelector('button[data-testid=\\\"send-button\\\"],button[aria-label*=\\\"Send\\\" i],button[aria-label*=\\\"Enviar\\\" i]');if(!b||b.disabled)return false;b.click();return true})()"));
+        clicked=Boolean(await current.eval("(()=>{const b=document.querySelector('button[data-testid=\\\"send-button\\\"],button[aria-label*=\\\"Send\\\" i],button[aria-label*=\\\"Enviar\\\" i]');if(!b||b.disabled)return false;b.click();return true})()"));
       }catch{}
       if(!clicked){
         try{
-          await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(c){c.focus();return true}return false})()");
-          await cdp.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-          await cdp.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-          clicked=true;
+          const focused=Boolean(await current.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return false;c.focus();return true})()"));
+          if(focused){
+            await current.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+            await current.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+            clicked=true;
+          }
         }catch{}
       }
-      console.log("BRIDGE SUBMIT RECOVERY "+(clicked?"TRIGGERED":"FAILED"));
+      console.log("BRIDGE SUBMIT RECOVERY "+(clicked?"TRIGGERED":"WAIT")+" sendDisabled="+Boolean(st.sendDisabled));
     }
-    await sleep(700);
-  }
-  throw Error("El prompt ImageGen quedó sin enviar; "+JSON.stringify(last||{}).slice(0,500))
-}
 
+    await sleep(650);
+  }
+  throw Error("El prompt ImageGen quedó sin enviar tras reintentos/relocalización; "+JSON.stringify(last||{}).slice(0,500))
+}
 function probeExpression(){
   return [
     "(async()=>{",
@@ -304,7 +343,7 @@ async function uploadImage(image){
     void job;
     cdp=await findChat(job);
     console.log("BRIDGE CHAT FOUND mode="+BRIDGE_MODE);
-    await ensureSubmitted(cdp);
+    cdp=await ensureSubmitted(cdp,job);
     console.log("BRIDGE PROMPT SUBMITTED");
     const image=await capture(cdp);
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
