@@ -27294,7 +27294,7 @@
       "id": "3cc4df10a4bf",
       "name": "Esponjitas",
       "revision": 0,
-      "status": "problematic",
+      "status": "inactive",
       "requested_at": "2026-10-04T19:05:08.309Z",
       "rank": 15,
       "with_image": true,
@@ -27313,7 +27313,9 @@
       "problem_reason": "No se ha podido identificar un detonante actual y verificable para «Esponjitas»: aparece como señal social anticipada, pero las búsquedas actuales no aportan un acontecimiento único y fiable que permita explicarla sin especular.",
       "problematic_attempts": 1,
       "editorial_engine": "chat-direct",
-      "last_attempt_at": "2026-10-04T22:09:00+02:00"
+      "last_attempt_at": "2026-10-04T22:09:00+02:00",
+      "inactive_at": "2026-10-05T00:21:34+02:00",
+      "inactive_reason": "left-top10-radar"
     },
     {
       "id": "bab052f37217",
@@ -28215,8 +28217,48 @@
         "Quesada"
       ],
       "auto_queued": false
+    },
+    {
+      "id": "9314435265dd",
+      "name": "Asraf",
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-10-05T00:21:34+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "a0275b988deb",
+      "requested_together": [
+        "Asraf"
+      ],
+      "captured_with": [
+        "Asraf",
+        "Pereira"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "0ddf4be72fce",
+      "name": "Pereira",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-10-05T00:21:34+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "a0275b988deb",
+      "requested_together": [
+        "Pereira"
+      ],
+      "captured_with": [
+        "Asraf",
+        "Pereira"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-05T00:22:35+02:00",
+  "updated_at": "2026-10-05T00:21:34+02:00",
   "count": 575
 }
