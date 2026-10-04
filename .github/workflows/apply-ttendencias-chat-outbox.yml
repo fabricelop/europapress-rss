@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: ttendencias-chat-outbox
@@ -75,3 +76,12 @@ jobs:
           git commit -m "Aplicar pasada editorial TTendencias desde chat"
           git pull --rebase origin main
           git push origin HEAD:main
+
+
+      - name: Lanzar reparación visual TTendencias
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh workflow run repair-ttendencias-explicadas.yml --repo "$REPO" --ref main
