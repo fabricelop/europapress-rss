@@ -33,6 +33,19 @@ foreach($pat in @("*TTiTTularesDedicatedListener.ps1*","*TT-AutoUpdater.ps1*")){
 }
 Start-Sleep -Milliseconds 700
 
+# El listener antiguo pudo marcar localmente un trigger como consumido tras un 409
+# aunque el ack remoto nunca se persistiera. Reseteamos solo el cursor editorial.
+$statePath=Join-Path $BaseDir "ttittulares-mobile-trigger-state.json"
+if(Test-Path $statePath){
+  try{
+    $s=Get-Content -LiteralPath $statePath -Raw -Encoding UTF8 | ConvertFrom-Json
+    if($s.PSObject.Properties.Name -contains "last_command_id"){$s.last_command_id=""}
+    if($s.PSObject.Properties.Name -contains "conflict_command_id"){$s.conflict_command_id=""}
+    if($s.PSObject.Properties.Name -contains "conflict_first_at"){$s.conflict_first_at=""}
+    $s | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $statePath -Encoding UTF8
+  }catch{}
+}
+
 function Start-Hidden([string]$file,[string]$name){
   $out=Join-Path $BaseDir ($name+".repair.out.log")
   $err=Join-Path $BaseDir ($name+".repair.err.log")
