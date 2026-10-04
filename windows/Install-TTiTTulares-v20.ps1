@@ -62,18 +62,18 @@ $lt=Get-Content -LiteralPath $Listener -Raw -Encoding UTF8
 foreach($needle in @(
   '$WorkerId = "ttittulares-dedicated-v20"',
   'TTITTULARES_IMAGE_JOB_V4',
-  'BRIDGE_MODE="capture-only-v27-submit-evidence"',
+  'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
   'IMAGE FIXED TAB BRIDGE STARTED'
 )){
   if(-not $lt.Contains($needle)){throw "Listener v20 sin garantia: $needle"}
 }
 $bt=Get-Content -LiteralPath $Bridge -Raw -Encoding UTF8
 foreach($needle in @(
-  'BRIDGE_MODE="capture-only-v27-submit-evidence"',
+  'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
   'FIXED_TAB_STATE',
   'Target.createTarget',
   'openFreshDedicatedConversation',
-  'ttittulares-image-bridge-v27-submit-evidence'
+  'ttittulares-image-bridge-v28-dead-submit-retry'
 )){
   if(-not $bt.Contains($needle)){throw "Bridge v24 sin garantia: $needle"}
 }
@@ -108,6 +108,6 @@ if($live.Count -ne 1){throw "Se esperaban 1 listener TTiTTulares; activos: "+($l
 Write-Host "TTITTULARES V20 ACTIVO" -ForegroundColor Green
 Write-Host ("Listener PID: "+$lp.Id)
 Write-Host ("Updater PID: "+$up.Id)
-Write-Host "Bridge: v27 pestaña fija + evidencia de envío + raster limpio" -ForegroundColor Green
+Write-Host "Bridge: v28 pestaña fija + reintento interno + raster limpio" -ForegroundColor Green
 Write-Host "Auto-updater: raw.githubusercontent.com, sin GitHub API" -ForegroundColor Green
 Write-Host "TTendencias: NO MODIFICADO" -ForegroundColor Green
