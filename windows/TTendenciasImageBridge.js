@@ -73,7 +73,7 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v15-prelaunch-raster-watch";
+const BRIDGE_MODE="capture-only-v16-prelaunch-chat-state";
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
@@ -85,6 +85,7 @@ async function findChat(job){
   const deadline=Date.now()+90000;
   let best=null,bestScore=-1,bestInfo=null;
   const baselineImageSrc=new Map();
+  const baselineState=new Map();
   let baselinePass=true;
   while(Date.now()<deadline){
     let list=[];try{list=await targets()}catch{await sleep(700);continue}
@@ -99,7 +100,26 @@ async function findChat(job){
         const currentImageSrc=String(st&&st.imageSrc||"");
         if(baselinePass){
           baselineImageSrc.set(tid,currentImageSrc);
-        }else if(st&&st.imageTitle&&currentImageSrc&&baselineImageSrc.has(tid)&&baselineImageSrc.get(tid)!==currentImageSrc){
+          baselineState.set(tid,{
+            targetMarker:Boolean(st&&st.targetMarker),
+            turns:Number(st&&st.turns||0),
+            title:String(st&&st.title||""),
+            url:String(st&&st.url||"")
+          });
+        }else{
+          const before=baselineState.get(tid)||null;
+          const chatChanged=Boolean(before)&&(
+            (!before.targetMarker&&Boolean(st&&st.targetMarker)) ||
+            Number(st&&st.turns||0)>Number(before.turns||0) ||
+            String(st&&st.title||"")!==String(before.title||"") ||
+            String(st&&st.url||"")!==String(before.url||"")
+          );
+          if(st&&st.targetMarker&&chatChanged){
+            console.log("BRIDGE TARGET CHAT-STATE CHANGE "+String(st.url||""));
+            return c
+          }
+        }
+        if(!baselinePass&&st&&st.imageTitle&&currentImageSrc&&baselineImageSrc.has(tid)&&baselineImageSrc.get(tid)!==currentImageSrc){
           console.log("BRIDGE TARGET NEW RASTER "+String(st.url||""));
           c.acceptInitialRaster=true;
           return c
@@ -152,7 +172,7 @@ async function findChat(job){
     await sleep(700)
   }
   const detail=bestInfo?JSON.stringify(bestInfo).slice(0,700):"sin candidato";
-  throw Error("No se encontró el chat lanzado con el command_id en 60 segundos; "+detail)
+  throw Error("No se encontró el chat lanzado tras observar cambios de estado en 90 segundos; "+detail)
 }
 
 function probeExpression(){
