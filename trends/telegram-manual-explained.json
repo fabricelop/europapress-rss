@@ -24615,14 +24615,30 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "pending",
-      "image_pending": true,
-      "fallback_image_strategy": "web_search",
-      "fallback_image_status": "pending",
-      "image_choice": null,
-      "rewrite_pending": false
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "rewrite_pending": false,
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/XNJMVLWUHRLWDMWLBCK65VQ7WU.jpg?auth=334db02f770bb9ac9ecb2be939cecf77b2d5d4600cf4e99051eb4aaabfee4258&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER · 4/10/2026",
+        "source_url": "https://cadenaser.com/nacional/2026/10/04/el-barca-completa-una-goleada-historica-al-real-madrid-en-la-liga-f-con-una-estelar-claudia-pina-7-0-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Quesada",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://cadenaser.com/resizer/v2/XNJMVLWUHRLWDMWLBCK65VQ7WU.jpg?auth=334db02f770bb9ac9ecb2be939cecf77b2d5d4600cf4e99051eb4aaabfee4258&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER · 4/10/2026",
+        "source_url": "https://cadenaser.com/nacional/2026/10/04/el-barca-completa-una-goleada-historica-al-real-madrid-en-la-liga-f-con-una-estelar-claudia-pina-7-0-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Quesada",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-05T00:24:45+02:00",
+  "updated_at": "2026-10-04T22:23:20.687134Z",
   "count": 535
 }
