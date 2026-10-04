@@ -51,7 +51,7 @@ foreach($needle in @(
   'view=image-job&strong=1&id=',
   'Launch-ImageChat',
   'Ensure-ImageBridgeLatest',
-  'TTITTULARES_IMAGE_JOB_V3'
+  'TTITTULARES_IMAGE_JOB_V4'
 )){
   if(-not $listenerText.Contains($needle)){throw "Falta garantía TTiTTulares v19: $needle"}
 }
