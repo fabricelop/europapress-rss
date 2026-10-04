@@ -390,6 +390,21 @@ async function post(body){
   let d={};try{d=await r.json()}catch{}
   return {ok:r.ok,status:r.status,data:d}
 }
+async function telemetry(stage,extra={}){
+  try{
+    const r=await post({
+      task:"image_pc_ack",
+      target_id:targetId,
+      command_id:commandId,
+      stage,
+      worker_id:"ttendencias-image-bridge-v1",
+      upload_secret:secret,
+      bridge_version:BRIDGE_MODE,
+      ...extra
+    });
+    if(!r.ok)console.log("BRIDGE TELEMETRY "+stage+" "+r.status+" "+String(r.data&&r.data.error||""));
+  }catch(e){console.log("BRIDGE TELEMETRY ERROR "+stage+" :: "+String(e&&e.message||e))}
+}
 async function fail(reason){
   try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v1",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
@@ -414,6 +429,7 @@ async function uploadImage(image){
     void job;
     cdp=await findChat(job);
     console.log("BRIDGE CHAT FOUND mode="+BRIDGE_MODE);
+    await telemetry("chat_found",{reason:"Bridge conectado al chat objetivo."});
     try{
       cdp=await ensureSubmitted(cdp,job);
       cdp.acceptInitialRaster=true;
@@ -437,6 +453,8 @@ async function uploadImage(image){
     const image=await capture(cdp,job);
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
     console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
+    await telemetry("raster_found",{reason:"Raster ImageGen detectado: "+image.capture+" "+image.width+"x"+image.height});
+    await telemetry("upload_started",{reason:"Subida del raster iniciada."});
     const up=await uploadImage(image);
     if(!up.ok)throw Error("Upload "+up.status+": "+(up.data&&up.data.error||"sin detalle"));
     console.log("BRIDGE UPLOADED "+up.data.sha256);
