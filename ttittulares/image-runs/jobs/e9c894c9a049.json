@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-1791101726127-975173",
   "requested_at": "2026-10-04T08:15:26.127Z",
-  "updated_at": "2026-10-04T08:15:51.452Z",
-  "status": "RUNNING",
-  "phase": "pc_launch",
+  "updated_at": "2026-10-04T08:19:51.913Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -43,9 +43,10 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
   },
-  "message": "PC ha abierto el chat de imagen; esperando ImageGen.",
+  "message": "No apareció un raster ImageGen capturable en 3 minutos; eval_error=CDP timeout Runtime.evaluate",
   "pc_upload_secret_hash": "8a18b4fea93a674184ce361d1772158fee122cb974f409ddb1b8ad717e35c1d4",
-  "pc_worker_id": "ttittulares-dedicated-v19",
+  "pc_worker_id": "ttittulares-image-bridge-v1",
   "pc_picked_up_at": "2026-10-04T08:15:35.892Z",
-  "pc_launched_at": "2026-10-04T08:15:51.452Z"
+  "pc_launched_at": "2026-10-04T08:15:51.452Z",
+  "finished_at": "2026-10-04T08:19:51.913Z"
 }
