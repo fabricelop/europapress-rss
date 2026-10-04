@@ -12,7 +12,7 @@ import ipaddress
 import io
 import json
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit
@@ -320,6 +320,7 @@ def main():
         for name in x.get("trend_names") or []:
             archived_names.add((str(name or "").strip().casefold(), rev))
     changed, attempted, ready, absent, capture_pending = 0, 0, 0, 0, 0
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
     for row in reversed(doc.get("items") or []):
         if attempted >= MAX_ITEMS_PER_PASS:
             break
@@ -328,6 +329,14 @@ def main():
         if not str(row.get("explanation") or "").strip():
             continue
         if str(row.get("telegram_package_status") or "").lower() in {"published", "dismissed"}:
+            continue
+        try:
+            at = datetime.fromisoformat(str(row.get("explained_at") or "").replace("Z", "+00:00"))
+            if at.tzinfo is None:
+                at = at.replace(tzinfo=timezone.utc)
+            if at.astimezone(timezone.utc) < cutoff:
+                continue
+        except Exception:
             continue
         rev = int(row.get("revision") or 0)
         if (str(row.get("id") or ""), rev) in archived_ids:
