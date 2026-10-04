@@ -58,11 +58,10 @@ export function explanationIsCopied(item, copyState) {
   // con otra copy_key. Si el título editorial y la revisión coinciden, un
   // registro ya tratado se aplica a todo el grupo para que no "resucite".
   const groupId = String(item?.explanation_group_id || item?.group_id || "").trim();
-  const explainedAtText = String(item?.explained_at || "").trim();
-  if (groupId && explainedAtText) {
+  if (groupId) {
     const groupedRecord = records.find(entry =>
       String(entry?.explanation_group_id || "").trim() === groupId &&
-      String(entry?.explained_at || "").trim() === explainedAtText
+      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === itemRevision
     );
     if (groupedRecord) return { copied: true, copied_at: groupedRecord.copied_at || null, source: groupedRecord.source || "group-copy" };
   }
