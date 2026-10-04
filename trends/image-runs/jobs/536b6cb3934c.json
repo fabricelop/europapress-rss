@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-1791071919132-febceb",
-  "requested_at": "2026-10-03T23:58:39.132Z",
-  "updated_at": "2026-10-04T00:00:22.982Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-1791072663401-9e6f0a",
+  "requested_at": "2026-10-04T00:11:03.401Z",
+  "updated_at": "2026-10-04T00:11:03.401Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -47,10 +47,5 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
   },
-  "message": "No se encontró el chat lanzado con el command_id en 60 segundos; {\"hasMarker\":false,\"bodyMarker\":false,\"composerMarker\":false,\"targetMarker\":false,\"imageTitle\":true,\"generating\":false,\"turns\":0,\"images\":1,\"title\":\"Genera",
-  "pc_upload_secret_hash": "0af320e4c603edc110665bf3f99603ba7395cebddf338088c323a7936b477ca4",
-  "pc_worker_id": "ttendencias-image-bridge-v1",
-  "pc_picked_up_at": "2026-10-03T23:59:12.729Z",
-  "pc_launched_at": "2026-10-03T23:59:20.404Z",
-  "finished_at": "2026-10-04T00:00:22.982Z"
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
 }
