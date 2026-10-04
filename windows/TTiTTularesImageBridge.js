@@ -132,6 +132,10 @@ async function findChat(job){
           console.log("BRIDGE TARGET MARKER "+String(st.url||""));
           return c
         }
+        if(st&&st.targetMarker&&postLaunch){
+          console.log("BRIDGE TARGET POST-LAUNCH TARGET "+String(st.url||""));
+          return c
+        }
         const title=String(st&&st.title||"");
         const projectMatch=/TTiTTulares/i.test(title)&&!/TTendencias/i.test(title);
         const oppositeMatch=/TTendencias/i.test(title);
