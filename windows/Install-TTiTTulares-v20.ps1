@@ -60,7 +60,7 @@ ValidateJs $Bridge
 
 $lt=Get-Content -LiteralPath $Listener -Raw -Encoding UTF8
 foreach($needle in @(
-  '$WorkerId = "ttittulares-dedicated-v20"',
+  '$WorkerId = "ttittulares-dedicated-v19"',
   'TTITTULARES_IMAGE_JOB_V4',
   'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
   'IMAGE FIXED TAB BRIDGE STARTED'
