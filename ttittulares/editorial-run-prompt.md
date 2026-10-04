@@ -8,7 +8,7 @@ Cuando el usuario envía «Ejecuta TTiTTulares» a una conversación, esa misma 
 
 `ttittulares/editorial-queue.json` y los estados PROCESSING vigentes son autoritativos para decidir si existe trabajo. Si queda al menos una revisión PROCESSING activa o un `rewrite_pending:true` vigente, está PROHIBIDO cerrar una pasada como 0/0 o «sin trabajo editorial». Debe releerse estado fresco y procesarse el backlog antes del cierre.
 
-Una ejecución normal `Ejecuta TTiTTulares` redacta y materializa todas las noticias PROCESSING en Listas cuando tienen texto+remate. No espera imágenes. El tramo visual pertenece al **mismo proceso oficial**, pero se ejecuta de forma asíncrona mediante `.github/workflows/repair-ttittulares-listas.yml` y el bridge local: detecta READY/Listas sin IA válida, encola la generación y reintenta las IA ausentes o incorrectas. Los controles manuales del panel quedan como override, no como requisito del flujo normal.
+Una ejecución normal `Ejecuta TTiTTulares` redacta y materializa todas las noticias PROCESSING en Listas cuando tienen texto+remate. No espera imágenes. El tramo visual pertenece al **mismo proceso oficial**, pero se ejecuta de forma asíncrona mediante `.github/workflows/repair-ttittulares-listas.yml` y el bridge local: **cada noticia que entra en READY/Listas dispara su reparación visual inmediatamente, sin esperar a que termine el lote editorial**; detecta IA ausente/incorrecta, encola la generación y continúa hasta Telegram de forma independiente. Los controles manuales del panel quedan como override, no como requisito del flujo normal.
 
 ## Orden y progreso
 
