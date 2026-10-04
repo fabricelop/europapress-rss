@@ -1163,7 +1163,7 @@ async function proxyPreparedImage(rawUrl, res, format = "") {
   }
   res.setHeader("content-type", outputType);
   res.setHeader("content-length", String(buf.length));
-  res.setHeader("cache-control", "no-store");
+  res.setHeader("cache-control", "public, max-age=300, s-maxage=300, stale-while-revalidate=86400");
   return res.status(200).send(buf);
 }
 
