@@ -573,10 +573,9 @@ async function load(passive=false){
  pruneImageSelections();
  if(changed){lastRenderFingerprint=fingerprint;render()}
  else{updateUnreadBadge();updateImageControl()}
- // Cuando el servidor ya confirma el archivado, mantener solo claves todavía
- // útiles como protección frente a restauraciones/cachés móviles.
- const confirmed=new Set(allItems.filter(x=>x.copied&&x.copy_source!=="local-archive-guard").map(x=>x.copy_key));
- if(confirmed.size){const next=localArchived();for(const key of confirmed)next.delete(key);saveLocalArchived(next)}
+ // No borrar la protección local cuando el servidor confirma el archivado.
+ // El copy_key identifica una versión exacta; conservarlo evita que una lectura
+ // atrasada del móvil/edge haga reaparecer una tendencia ya publicada.
  refreshImageRuns();
 }
 $("filter").addEventListener("input",render);
