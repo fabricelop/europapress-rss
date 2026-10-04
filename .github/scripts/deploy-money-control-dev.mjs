@@ -21,6 +21,15 @@ const sources=[
   {local:"vercel-webhook/api/money-control-interpret.js",file:prefix+"api/money-control-interpret.js"}
 ];
 
+const sourcePackage=JSON.parse(await fs.readFile(path.resolve("vercel-webhook/package.json"),"utf8"));
+const aiVersion=String(sourcePackage?.dependencies?.ai||"").replace(/^[~^]/,"");
+if(!aiVersion)throw new Error("Missing ai dependency in vercel-webhook/package.json");
+const minimalPackage=Buffer.from(JSON.stringify({
+  private:true,
+  type:"module",
+  dependencies:{ai:aiVersion}
+},null,2)+"\n");
+
 const minimalConfig={
   "$schema":"https://openapi.vercel.sh/vercel.json",
   functions:{"api/money-control-interpret.js":{maxDuration:60}},
@@ -74,6 +83,7 @@ for(const source of sources){
   const data=await fs.readFile(path.resolve(source.local));
   await uploadBuffer(source.file,data);
 }
+await uploadBuffer(prefix+"package.json",minimalPackage);
 await uploadBuffer(prefix+"vercel.json",generated);
 
 console.log("MONEY_CONTROL_DEV_FILES_UPLOADED="+uploads.length);
@@ -82,7 +92,7 @@ const payload={
   project:projectId,
   files:uploads,
   projectSettings:{framework:null},
-  meta:{moneyControlDev:"semantic-ingest-v3"}
+  meta:{moneyControlDev:"semantic-ingest-v4"}
 };
 const response=await fetch("https://api.vercel.com/v13/deployments?teamId="+encodeURIComponent(teamId)+"&skipAutoDetectionConfirmation=1",{
   method:"POST",
