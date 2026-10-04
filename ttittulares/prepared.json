@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T16:08:05.410Z",
+  "updated_at": "2026-10-04T16:09:03.452Z",
   "items": [
     {
       "event_id": "95dc2368eaed",
@@ -37,9 +37,9 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "ready",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
-      "image_choice": "ai",
+      "image_choice": "fallback",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -103,7 +103,7 @@
       "ai_image_attempt": 2,
       "ai_image_tool_called_at": "2026-10-04T15:58:57.400Z",
       "image_failure_reason": "ui_capture_rejected",
-      "image_failure_detail": "Raster invalidado: contenía interfaz ChatGPT. Se regenerará con captura de bytes limpios."
+      "image_failure_detail": "Segundo raster v24 rechazado: 798x450 y captura de interfaz. Esperando bridge v25 limpio."
     },
     {
       "event_id": "d85bd2aa1309",
