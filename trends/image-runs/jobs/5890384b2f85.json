@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-5890384b2f85-r0-a1-1791152602639",
+  "requested_at": "2026-10-04T22:23:22.625136Z",
+  "updated_at": "2026-10-04T22:23:22.625136Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "5890384b2f85",
+  "trend_id": "5890384b2f85",
+  "target_name": "Quesada",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "Quesada",
+    "revision": 0,
+    "explanation": "TT#19 Quesada es tendencia porque el Real Madrid femenino de Pau Quesada cayó 7-0 ante el Barça en el Camp Nou, la mayor goleada de la historia del Clásico, con cuatro goles de Claudia Pina.\n🌶️ El plan de partido terminó triturado antes del descanso.",
+    "closer_text": "🌶️ El plan de partido terminó triturado antes del descanso.",
+    "trend_names": [
+      "Quesada"
+    ],
+    "group_title": "Pau Quesada tras el Barça 7-0 Real Madrid femenino",
+    "rank_at_explanation": 19,
+    "explained_at": "2026-10-05T00:24:45+02:00",
+    "verification_sources": [
+      {
+        "source": "Cadena SER · 4/10/2026",
+        "url": "https://cadenaser.com/nacional/2026/10/04/el-barca-completa-una-goleada-historica-al-real-madrid-en-la-liga-f-con-una-estelar-claudia-pina-7-0-cadena-ser/"
+      },
+      {
+        "source": "AS · 4/10/2026",
+        "url": "https://as.com/futbol/femenino/quesada-estoy-convencido-que-podemos-hacer-un-gran-partido-f202610-n/"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
