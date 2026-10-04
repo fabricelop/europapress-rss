@@ -17,7 +17,7 @@ DELIVERIES=ROOT/"trends/telegram-image-deliveries.json"
 BOT_STATE=ROOT/"trends/telegram-bot-state.json"
 ARCHIVE_DIR=ROOT/"trends/archive-images"
 WORKER="https://tt-control.fabricelop.workers.dev"
-BUTTONS_VERSION=1
+BUTTONS_VERSION=2
 TERMINAL={"published","dismissed"}
 
 
@@ -377,15 +377,33 @@ def apply_patch(patch_path):
     save(DELIVERIES,current)
 
 
+def selftest():
+    kb=keyboard("abc123",2,"TT#1 Demo es tendencia porque ocurre algo.\n🌶️ Remate.","https://example.com/ai.png","https://example.com/archive.jpg")
+    rows=kb.get("inline_keyboard") or []
+    labels=[b.get("text") for row in rows for b in row]
+    expected={"🖼️ Copiar imagen IA","🗂️ Copiar imagen archivo","📋 Copiar texto","✍️ Abrir en X","🗑️ Desestimar","✅ Publicado"}
+    if not expected.issubset(set(labels)):
+        raise SystemExit("SELFTEST keyboard incompleto: "+repr(labels))
+    callbacks=[b.get("callback_data") for row in rows for b in row if b.get("callback_data")]
+    if "tx:d:abc123:2" not in callbacks or "tx:p:abc123:2" not in callbacks:
+        raise SystemExit("SELFTEST callbacks tx incorrectos")
+    kb2=keyboard("abc123",2,"texto","https://example.com/ai.png","")
+    labels2=[b.get("text") for row in kb2.get("inline_keyboard",[]) for b in row]
+    if "🗂️ Copiar imagen archivo" in labels2:
+        raise SystemExit("SELFTEST botón archivo no debe aparecer sin archivo")
+    print("TTENDENCIAS_TELEGRAM_SELFTEST_OK",flush=True)
+
 def main():
     ap=argparse.ArgumentParser()
-    ap.add_argument("mode",choices=["send","apply-patch"])
+    ap.add_argument("mode",choices=["send","apply-patch","selftest"])
     ap.add_argument("--patch",default="/tmp/ttendencias-delivery-patch.json")
     args=ap.parse_args()
     if args.mode=="send":
         run_send(args.patch)
-    else:
+    elif args.mode=="apply-patch":
         apply_patch(args.patch)
+    else:
+        selftest()
 
 
 if __name__=="__main__":
