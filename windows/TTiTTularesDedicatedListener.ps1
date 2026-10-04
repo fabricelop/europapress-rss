@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-04-v29-direct-trigger
+# official-pipeline-restart-token: 2026-10-04-v30-ack-bypass
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -142,6 +142,13 @@ function Read-Trigger {
     }
   }
   return $snapshot
+}
+
+function Confirm-DirectTriggerCurrent([string]$CommandId){
+  try{
+    $d=Read-TriggerDirect
+    return ($d -and [string]$d.command_id -eq [string]$CommandId)
+  }catch{return $false}
 }
 
 function Read-ImageIndex {
@@ -762,8 +769,16 @@ while ($true) {
         }
 
         $ack = Send-Ack $commandId "picked_up"
+        $localFallback = $false
+        if ($ack -eq "CONFLICT" -and (Confirm-DirectTriggerCurrent $commandId)) {
+          # El backend puede estar comparando contra un snapshot Vercel atrasado.
+          # GitHub HEAD es autoritativo; con un único listener local podemos seguir
+          # sin perder la ejecución y dejar que RUNTRACE confirme el arranque real.
+          $localFallback = $true
+          Write-Log "ACK 409 BYPASSED command=$commandId reason=direct-trigger-current"
+        }
 
-        if ($ack -eq "OK") {
+        if ($ack -eq "OK" -or $localFallback) {
           try {
             $messageSent = Launch-TTiTTulares $commandId
             if ($messageSent) {
