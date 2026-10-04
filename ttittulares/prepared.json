@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T18:31:37.143900Z",
+  "updated_at": "2026-10-04T18:32:44.882Z",
   "items": [
     {
       "event_id": "7e2a9707eb85",
@@ -383,10 +383,10 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -401,12 +401,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-04T18:17:04.998514Z",
       "image": {
-        "url": "https://e01-phantom-elmundo.uecdn.es/ba086b0bf873dac74d7cc015cb4a71cd/resize/1200/f/webp/assets/multimedia/imagenes/2026/10/04/17911322216000.jpg",
-        "source": "www.elmundo.es",
-        "source_url": "https://www.elmundo.es/internacional/2026/10/04/6ac2821ae85ece1d7d8b4585.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "La Policía Federal de Brasil investiga una posible injerencia de EEUU en las elecciones"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/f8cf660e864a-r1-ai1-791138061347.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "cea58768bf38f22d60183fda178cd26276e7fb82f715bb9834bf831ed203eab6",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2491595,
+        "context_guard": {
+          "version": 3,
+          "event_id": "f8cf660e864a",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-f8cf660e864a-r1-a1-1791138061347"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/f8cf660e864a-r1-ai1-791138061347.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://e01-phantom-elmundo.uecdn.es/ba086b0bf873dac74d7cc015cb4a71cd/resize/1200/f/webp/assets/multimedia/imagenes/2026/10/04/17911322216000.jpg",
@@ -415,7 +429,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "La Policía Federal de Brasil investiga una posible injerencia de EEUU en las elecciones"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/f8cf660e864a-r1-ai1-791138061347.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "cea58768bf38f22d60183fda178cd26276e7fb82f715bb9834bf831ed203eab6",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2491595,
+        "context_guard": {
+          "version": 3,
+          "event_id": "f8cf660e864a",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-f8cf660e864a-r1-a1-1791138061347"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/f8cf660e864a-r1-ai1-791138061347.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-04T18:32:44.882Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-04T18:32:44.882Z"
     },
     {
       "event_id": "afde0ea8476d",
