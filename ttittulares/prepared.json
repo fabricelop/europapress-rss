@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T22:10:11.304893Z",
+  "updated_at": "2026-10-04T22:11:20.598Z",
   "items": [
     {
       "event_id": "e86c444feac6",
@@ -200,10 +200,10 @@
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -218,12 +218,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-04T22:07:30.876241Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261004232450_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/sociedad/noticia-policia-nacional-culmina-operativo-trampolin-ceuta-1100-migrantes-desalojados-20261004232450.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "El operativo en la playa del Trampolín de Ceuta termina con más de 1.100 desalojados"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/manual-218637789-r1-ai1-791151751898.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "8209d6065f153743d36f0771f760b8cc570248e9dec8d4fa6d8bf8455ea39f65",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2850958,
+        "context_guard": {
+          "version": 3,
+          "event_id": "manual-218637789",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-manual-218637789-r1-a1-1791151751898"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/manual-218637789-r1-ai1-791151751898.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261004232450_1200.jpg",
@@ -232,7 +246,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "El operativo en la playa del Trampolín de Ceuta termina con más de 1.100 desalojados"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/manual-218637789-r1-ai1-791151751898.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "8209d6065f153743d36f0771f760b8cc570248e9dec8d4fa6d8bf8455ea39f65",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2850958,
+        "context_guard": {
+          "version": 3,
+          "event_id": "manual-218637789",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-manual-218637789-r1-a1-1791151751898"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/manual-218637789-r1-ai1-791151751898.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-04T22:11:20.598Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-04T22:11:20.598Z"
     }
   ],
   "count": 11
