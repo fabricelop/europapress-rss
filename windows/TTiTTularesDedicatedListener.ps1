@@ -15,7 +15,7 @@ $StatusBase = "https://europapress-rss.vercel.app"
 $ListenerSnapshotUrl = "$StatusBase/api/ttittulares-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttittulares-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttittulares-run"
-$WorkerId = "ttittulares-dedicated-v20"
+$WorkerId = "ttittulares-dedicated-v21"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -203,7 +203,7 @@ function Get-ChatTargetSnapshot {
   try {
     $targets = Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/list" -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 3
     $rows = @($targets | Where-Object { [string]$_.type -eq "page" -and [string]$_.url -like "*chatgpt.com*" } | ForEach-Object {
-      [pscustomobject]@{ id=[string]$_.id; url=[string]$_.url }
+      [pscustomobject]@{ id=[string]$_.id; url=[string]$_.url; title=[string]$_.title }
     })
     if ($rows.Count -eq 0) { return "[]" }
     return ($rows | ConvertTo-Json -Compress)
