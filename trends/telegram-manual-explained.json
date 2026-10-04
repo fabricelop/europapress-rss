@@ -24276,13 +24276,13 @@
       ],
       "duplicate_of": null,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 2,
       "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "rewrite_pending": false,
       "fallback_image": {
         "url": "https://fotografias.lasexta.com/clipping/cmsimages01/2026/10/03/FB8316BB-A031-47E1-8BA6-29EE652ABD26/hoy-salvados-gonzo-analiza-ola-indignacion-social-vivienda-junto-teresa-rodriguez-exeurodiputada-exdiputada-andaluza_98.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
@@ -24293,13 +24293,51 @@
         "generated": false
       },
       "image": {
-        "url": "https://fotografias.lasexta.com/clipping/cmsimages01/2026/10/03/FB8316BB-A031-47E1-8BA6-29EE652ABD26/hoy-salvados-gonzo-analiza-ola-indignacion-social-vivienda-junto-teresa-rodriguez-exeurodiputada-exdiputada-andaluza_98.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
-        "source": "laSexta · 4/10/2026",
-        "source_url": "https://www.lasexta.com/programas/salvados/hoy-salvados-gonzo-analiza-ola-indignacion-social-vivienda-junto-teresa-rodriguez-exeurodiputada-exdiputada-andaluza_202610046ac17c19a4297764c3a9053e.html",
-        "alt": "Imagen de archivo relacionada con #SalvadosTeresaRodríguez",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/91a2ffbb955b-r0-ai2-791152223561.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "sha256": "bb1ede7fb139ce8c6af4d1f7128e2125537c27399686ebbdbc03f1365c977b98",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2912531,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "91a2ffbb955b",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-91a2ffbb955b-r0-a2-1791152223561"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/91a2ffbb955b-r0-ai2-791152223561.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/91a2ffbb955b-r0-ai2-791152223561.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "sha256": "bb1ede7fb139ce8c6af4d1f7128e2125537c27399686ebbdbc03f1365c977b98",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2912531,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "91a2ffbb955b",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-91a2ffbb955b-r0-a2-1791152223561"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/91a2ffbb955b-r0-ai2-791152223561.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-04T22:18:38.751Z"
     },
     {
       "id": "2f4a568bb479",
@@ -24373,6 +24411,6 @@
       "rewrite_pending": false
     }
   ],
-  "updated_at": "2026-10-05T00:18:45+02:00",
+  "updated_at": "2026-10-04T22:18:38.751Z",
   "count": 533
 }
