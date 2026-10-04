@@ -20,6 +20,8 @@ LISTENER_STATE = ROOT / "telegram-listener-state.json"
 MANUAL = ROOT / "telegram-manual-explained.json"
 REQUESTS = ROOT / "requests.json"
 PREPARED = ROOT / "prepared.json"
+IMAGE_DELIVERIES = ROOT / "telegram-image-deliveries.json"
+PACKAGE_STATE = ROOT / "telegram-package-listener-state.json"
 
 TOKEN = os.environ["TTENDENCIAS_BOT_TOKEN"]
 API = f"https://api.telegram.org/bot{TOKEN}/"
@@ -120,6 +122,229 @@ def persist_git(message="Actualizar estado inmediato TTendencias", include_trend
 
     print("No se pudo persistir estado TTendencias tras 3 intentos", flush=True)
     return False
+
+
+def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
+    """Fusiona solo decisiones de paquetes y offset del listener sobre main fresco."""
+    stamp = str(time.time_ns())
+    tmp = Path("/tmp") / f"ttendencias-package-{stamp}"
+    tmp.mkdir(parents=True, exist_ok=True)
+
+    snapshots = {}
+    for rel, path in (
+        ("trends/telegram-image-deliveries.json", IMAGE_DELIVERIES),
+        ("trends/telegram-manual-explained.json", MANUAL),
+        ("trends/telegram-package-listener-state.json", PACKAGE_STATE),
+    ):
+        if path.exists():
+            dst = tmp / path.name
+            dst.write_bytes(path.read_bytes())
+            snapshots[rel] = dst
+
+    subprocess.run(["git", "config", "user.name", "ttendencias-package-bot"], check=False)
+    subprocess.run(["git", "config", "user.email", "actions@users.noreply.github.com"], check=False)
+
+    for attempt in range(5):
+        subprocess.run(["git", "fetch", "origin", "main"], check=False,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        if subprocess.run(["git", "reset", "--hard", "origin/main"], check=False).returncode != 0:
+            time.sleep((attempt + 1) * 2)
+            continue
+
+        remote_del = load(IMAGE_DELIVERIES, {"version": 1, "items": []})
+        local_del = load(snapshots.get("trends/telegram-image-deliveries.json", Path("/nonexistent")), {"items": []})
+        by_key = {
+            str(x.get("delivery_key") or ""): x
+            for x in remote_del.get("items", [])
+            if x.get("delivery_key")
+        }
+        for incoming in local_del.get("items", []):
+            status = str(incoming.get("status") or "").lower()
+            if status not in {"published", "dismissed"}:
+                continue
+            key = str(incoming.get("delivery_key") or "")
+            if not key:
+                continue
+            cur = by_key.get(key)
+            if cur is None:
+                cur = dict(incoming)
+                remote_del.setdefault("items", []).append(cur)
+                by_key[key] = cur
+            else:
+                for k in (
+                    "status", "published_at", "dismissed_at", "decision_source",
+                    "telegram_message_id", "archive_telegram_message_id",
+                ):
+                    if k in incoming:
+                        cur[k] = incoming[k]
+        remote_del["items"] = remote_del.get("items", [])[-500:]
+        remote_del["count"] = len(remote_del["items"])
+        remote_del["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+        save(IMAGE_DELIVERIES, remote_del)
+
+        remote_manual = load(MANUAL, {"items": []})
+        local_manual = load(snapshots.get("trends/telegram-manual-explained.json", Path("/nonexistent")), {"items": []})
+        local_actions = {}
+        for x in local_manual.get("items", []):
+            if str(x.get("telegram_package_status") or "").lower() in {"published", "dismissed"}:
+                local_actions[(str(x.get("id") or ""), int(x.get("revision") or 0))] = x
+        for row in remote_manual.get("items", []):
+            src = local_actions.get((str(row.get("id") or ""), int(row.get("revision") or 0)))
+            if not src:
+                continue
+            for k in (
+                "telegram_package_status", "telegram_package_updated_at",
+                "telegram_published_at", "telegram_dismissed_at",
+                "telegram_decision_source",
+            ):
+                if k in src:
+                    row[k] = src[k]
+        remote_manual["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+        save(MANUAL, remote_manual)
+
+        remote_state = load(PACKAGE_STATE, {"version": 1, "last_update_id": 0})
+        local_state = load(snapshots.get("trends/telegram-package-listener-state.json", Path("/nonexistent")), {"last_update_id": 0})
+        remote_state["version"] = 1
+        remote_state["last_update_id"] = max(
+            int(remote_state.get("last_update_id") or 0),
+            int(local_state.get("last_update_id") or 0),
+        )
+        remote_state["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+        save(PACKAGE_STATE, remote_state)
+
+        subprocess.run([
+            "git", "add",
+            "trends/telegram-image-deliveries.json",
+            "trends/telegram-manual-explained.json",
+            "trends/telegram-package-listener-state.json",
+        ], check=False)
+        if subprocess.run(["git", "diff", "--cached", "--quiet"], check=False).returncode == 0:
+            return True
+        if subprocess.run(["git", "commit", "-m", message], check=False).returncode != 0:
+            time.sleep((attempt + 1) * 2)
+            continue
+        if subprocess.run(["git", "push", "origin", "HEAD:main"], check=False).returncode == 0:
+            return True
+        time.sleep((attempt + 1) * 2)
+
+    print("No se pudo persistir paquete TTendencias tras 5 intentos", flush=True)
+    return False
+
+
+def handle_package_callback(callback):
+    data = str(callback.get("data") or "")
+    parts = data.split(":")
+    if len(parts) != 4 or parts[0] != "tx" or parts[1] not in {"p", "d"}:
+        return False
+
+    action, trend_id = parts[1], parts[2]
+    try:
+        revision = int(parts[3])
+    except Exception:
+        revision = 0
+
+    bot_state = load_remote_json("trends/telegram-bot-state.json", load(STATE, {}))
+    allowed_chat = int(bot_state.get("chat_id") or 0)
+    message = callback.get("message") or {}
+    chat_id = int((message.get("chat") or {}).get("id") or 0)
+    if not allowed_chat or chat_id != allowed_chat:
+        try:
+            call("answerCallbackQuery", {
+                "callback_query_id": callback["id"],
+                "text": "Chat no autorizado.",
+                "show_alert": True,
+            })
+        except Exception:
+            pass
+        return True
+
+    deliveries = load_remote_json(
+        "trends/telegram-image-deliveries.json",
+        load(IMAGE_DELIVERIES, {"version": 1, "items": []}),
+    )
+    manual = load_remote_json(
+        "trends/telegram-manual-explained.json",
+        load(MANUAL, {"items": []}),
+    )
+
+    status = "published" if action == "p" else "dismissed"
+    now = datetime.now(MADRID).isoformat(timespec="seconds")
+    mids = []
+    matched = False
+
+    for row in deliveries.get("items", []):
+        if str(row.get("event_id") or "") != trend_id or int(row.get("revision") or 0) != revision:
+            continue
+        current = str(row.get("status") or "").lower()
+        if current not in {"sent", status}:
+            continue
+        matched = True
+        row["status"] = status
+        row["decision_source"] = "telegram_package"
+        row["published_at" if status == "published" else "dismissed_at"] = now
+        for k in ("telegram_message_id", "archive_telegram_message_id"):
+            mid = int(row.get(k) or 0)
+            if mid and mid not in mids:
+                mids.append(mid)
+
+    current_mid = int(message.get("message_id") or 0)
+    if current_mid and current_mid not in mids:
+        mids.append(current_mid)
+
+    for row in manual.get("items", []):
+        if str(row.get("id") or "") == trend_id and int(row.get("revision") or 0) == revision:
+            row["telegram_package_status"] = status
+            row["telegram_package_updated_at"] = now
+            row["telegram_decision_source"] = "telegram_package"
+            row["telegram_published_at" if status == "published" else "telegram_dismissed_at"] = now
+            matched = True
+
+    if not matched:
+        try:
+            call("answerCallbackQuery", {
+                "callback_query_id": callback["id"],
+                "text": "No encuentro el paquete vigente.",
+                "show_alert": True,
+            })
+        except Exception:
+            pass
+        return True
+
+    save(IMAGE_DELIVERIES, deliveries)
+    save(MANUAL, manual)
+
+    if not persist_package_state("Cerrar paquete TTendencias desde Telegram"):
+        try:
+            call("answerCallbackQuery", {
+                "callback_query_id": callback["id"],
+                "text": "No se pudo guardar el estado; el mensaje se conserva.",
+                "show_alert": True,
+            })
+        except Exception:
+            pass
+        return True
+
+    deleted = 0
+    for mid in mids:
+        try:
+            call("deleteMessage", {"chat_id": chat_id, "message_id": mid})
+            deleted += 1
+        except Exception as e:
+            if "message to delete not found" in str(e).lower():
+                deleted += 1
+            else:
+                print(f"No se pudo borrar paquete TTendencias {mid}: {e}", flush=True)
+
+    try:
+        call("answerCallbackQuery", {
+            "callback_query_id": callback["id"],
+            "text": "Publicada." if status == "published" else "Desestimada.",
+        })
+    except Exception:
+        pass
+    print("TTENDENCIAS_PACKAGE_CLOSED", trend_id, revision, status, "deleted", deleted, flush=True)
+    return True
+
 
 def norm(s):
     return " ".join(str(s or "").split()).casefold()
@@ -744,7 +969,9 @@ def handle(update):
     if not cb:
         return
     data = cb.get("data", "")
-    if data.startswith("toggle:"):
+    if data.startswith("tx:"):
+        handle_package_callback(cb)
+    elif data.startswith("toggle:"):
         toggle_trend(cb)
     elif data == "batch:text":
         submit_batch(cb, with_image=False)
@@ -798,6 +1025,53 @@ def handle(update):
                 })
             except Exception:
                 pass
+
+
+
+def poll_packages(seconds=3300):
+    started = time.time()
+    package_state = load(PACKAGE_STATE, {"version": 1, "last_update_id": 0})
+    legacy_state = load(LISTENER_STATE, {"last_update_id": 0})
+    offset = max(
+        int(package_state.get("last_update_id") or 0),
+        int(legacy_state.get("last_update_id") or 0),
+    ) + 1
+    dirty = False
+    last_persist = time.time()
+
+    while time.time() - started < seconds:
+        try:
+            updates = call("getUpdates", {
+                "offset": offset,
+                "timeout": 25,
+                "allowed_updates": ["callback_query", "message"],
+            }) or []
+
+            for upd in updates:
+                uid = int(upd["update_id"])
+                offset = max(offset, uid + 1)
+                package_state["last_update_id"] = uid
+                package_state["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+                save(PACKAGE_STATE, package_state)
+                dirty = True
+
+                cb = upd.get("callback_query")
+                if cb and str(cb.get("data") or "").startswith("tx:"):
+                    handle_package_callback(cb)
+                    dirty = False
+                    last_persist = time.time()
+
+            if dirty and time.time() - last_persist >= 10:
+                persist_package_state("Actualizar offset bot paquetes TTendencias")
+                dirty = False
+                last_persist = time.time()
+
+        except Exception as e:
+            print("package poll error:", e, flush=True)
+            time.sleep(2)
+
+    if dirty:
+        persist_package_state("Actualizar offset final bot paquetes TTendencias")
 
 
 def poll(seconds=3300):
@@ -855,10 +1129,12 @@ if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "sync"
     if mode == "listen":
         poll(int(os.environ.get("TTENDENCIAS_LISTEN_SECONDS", "3300")))
+    elif mode == "package-listen":
+        poll_packages(int(os.environ.get("TTENDENCIAS_LISTEN_SECONDS", "3300")))
     elif mode == "sync":
         sync_panel()
     elif mode == "force":
         sync_panel(force_new=True)
         persist_git("Recrear panel TTendencias")
     else:
-        raise SystemExit("Uso: telegram_bot.py [sync|listen|force]")
+        raise SystemExit("Uso: telegram_bot.py [sync|listen|package-listen|force]")
