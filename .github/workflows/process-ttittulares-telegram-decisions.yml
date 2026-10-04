@@ -1,0 +1,188 @@
+name: Procesar decisiones TTiTTulares Telegram
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "telegram/emergency-requests.json"
+      - ".github/workflows/process-ttittulares-telegram-decisions.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-telegram-decisions
+  cancel-in-progress: false
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sincronizar main
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Aplicar Publicado o Desestimar
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib
+          from datetime import datetime, timezone
+
+          ROOT=pathlib.Path(".")
+          now=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+
+          def load(path,default):
+              p=ROOT/path
+              try:
+                  raw=p.read_text(encoding="utf-8").strip()
+                  return json.loads(raw) if raw else default
+              except Exception:
+                  return default
+
+          def save(path,obj):
+              p=ROOT/path
+              p.parent.mkdir(parents=True,exist_ok=True)
+              p.write_text(json.dumps(obj,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+
+          req=load("telegram/emergency-requests.json",{"requests":[]})
+          state=load("telegram/ttittulares-decision-events.json",{"version":1,"processed":[]})
+          processed_ids={str(x.get("update_id")) for x in state.get("processed",[]) if x.get("update_id") is not None}
+
+          actions=[]
+          for row in req.get("requests",[]):
+              uid=str(row.get("update_id"))
+              if uid in processed_ids:
+                  continue
+              if str(row.get("type") or "")!="emergency_action":
+                  continue
+              text=str(row.get("text") or "")
+              if "|" not in text:
+                  continue
+              action,eid=text.split("|",1)
+              if action not in {"ttp","ttd"} or not eid.strip():
+                  continue
+              actions.append((row,action,eid.strip()))
+
+          if not actions:
+              print("TTITTULARES_DECISIONS_NEW=0")
+              raise SystemExit(0)
+
+          decisions=load("ttittulares/decisions.json",{"project":"TTiTTulares","items":[]})
+          prepared=load("ttittulares/prepared.json",{"project":"TTiTTulares","items":[]})
+          editorial=load("telegram/editorial-processing.json",{"items":[]})
+          events=load("telegram/events.json",{"events":[]})
+          manual=load("ttittulares/manual-submissions.json",{"items":[]})
+          deliveries=load("telegram/ttittulares-deliveries.json",{"version":3,"items":[]})
+          deleteq=load("telegram/delete-message-queue.json",{"version":1,"items":[]})
+
+          decisions["items"]=decisions.get("items") or []
+          editorial["items"]=editorial.get("items") or []
+          events["events"]=events.get("events") or []
+          manual["items"]=manual.get("items") or []
+          deliveries["items"]=deliveries.get("items") or []
+          deleteq["items"]=deleteq.get("items") or []
+
+          existing_delete={int(x.get("message_id") or 0) for x in deleteq["items"]}
+
+          for row,action,eid in actions:
+              status="published" if action=="ttp" else "dismissed"
+              terminal="PUBLISHED" if status=="published" else "DISMISSED"
+              field="published_at" if status=="published" else "dismissed_at"
+
+              drow=next((x for x in decisions["items"] if str(x.get("event_id") or "")==eid),None)
+              if drow is None:
+                  drow={"event_id":eid}; decisions["items"].append(drow)
+              drow.update({"status":status,"updated_at":now,"decision_source":"telegram_emergency_callback"})
+
+              prepared["items"]=[x for x in (prepared.get("items") or []) if str(x.get("event_id") or "")!=eid]
+
+              for x in editorial["items"]:
+                  if str(x.get("event_id") or x.get("id") or "")==eid:
+                      x["status"]=terminal; x[field]=now; x["decision_source"]="telegram_emergency_callback"
+
+              for x in events["events"]:
+                  if str(x.get("id") or x.get("event_id") or "")==eid:
+                      x["status"]=terminal; x[field]=now; x["decision_source"]="telegram_emergency_callback"
+
+              for x in manual["items"]:
+                  if str(x.get("event_id") or "")==eid:
+                      x["status"]=terminal; x["updated_at"]=now; x["decision_source"]="telegram_emergency_callback"
+
+              mids=[]
+              for x in deliveries["items"]:
+                  if str(x.get("event_id") or "")!=eid:
+                      continue
+                  if str(x.get("status") or "").lower() in {"sent",status}:
+                      x["status"]=status; x[field]=now; x["decision_source"]="telegram_emergency_callback"
+                      for k in ("telegram_message_id","archive_telegram_message_id"):
+                          mid=int(x.get(k) or 0)
+                          if mid and mid not in mids:
+                              mids.append(mid)
+
+              for mid in mids:
+                  if mid not in existing_delete:
+                      deleteq["items"].append({
+                          "message_id":mid,
+                          "event_id":eid,
+                          "reason":status+"_telegram_callback",
+                          "status":"pending"
+                      })
+                      existing_delete.add(mid)
+
+              state.setdefault("processed",[]).append({
+                  "update_id":row.get("update_id"),
+                  "event_id":eid,
+                  "action":action,
+                  "status":status,
+                  "processed_at":now,
+                  "message_ids":mids
+              })
+              print("TTITTULARES_DECISION_APPLIED",eid,status,"messages",",".join(map(str,mids)))
+
+          for doc in (decisions,prepared,editorial,events,manual,deliveries,deleteq,state):
+              doc["updated_at"]=now
+
+          save("ttittulares/decisions.json",decisions)
+          save("ttittulares/prepared.json",prepared)
+          save("telegram/editorial-processing.json",editorial)
+          save("telegram/events.json",events)
+          save("ttittulares/manual-submissions.json",manual)
+          save("telegram/ttittulares-deliveries.json",deliveries)
+          save("telegram/delete-message-queue.json",deleteq)
+          state["processed"]=state.get("processed",[])[-1000:]
+          save("telegram/ttittulares-decision-events.json",state)
+          print("TTITTULARES_DECISIONS_NEW="+str(len(actions)))
+          PY
+
+      - name: Guardar cierres
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add             ttittulares/decisions.json             ttittulares/prepared.json             telegram/editorial-processing.json             telegram/events.json             ttittulares/manual-submissions.json             telegram/ttittulares-deliveries.json             telegram/delete-message-queue.json             telegram/ttittulares-decision-events.json
+          if git diff --cached --quiet; then
+            echo "Sin decisiones nuevas."
+            exit 0
+          fi
+          git commit -m "Aplicar decisión TTiTTulares desde Telegram"
+          for n in 1 2 3 4 5; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            if git rebase origin/main; then
+              continue
+            fi
+            git rebase --abort || true
+            sleep $((n*2))
+          done
+          echo "No se pudo persistir la decisión Telegram" >&2
+          exit 1
