@@ -430,7 +430,7 @@ async function requestImageUpload(req,res){
   const upload_secret=String(req.body?.upload_secret||"");
   const data=String(req.body?.image_data_url||"");
   const captureMethod=String(req.body?.capture?.method||"");
-  const captureFromImage=/^(original-fetch-img|canvas-from-img-|image-element-screenshot-)/.test(captureMethod);
+  const captureFromImage=/^(original-fetch-img|canvas-from-img-)/.test(captureMethod);
   if(!command_id||!upload_secret||!data.startsWith("data:image/"))return res.status(400).json({ok:false,error:"Carga de imagen incompleta"});
   if(!captureFromImage)return res.status(422).json({ok:false,error:"Raster rechazado: el bridge no acredita captura del elemento de imagen",capture_method:captureMethod||null});
   if(data.length>4*1024*1024)return res.status(413).json({ok:false,error:"Raster codificado demasiado grande"});
@@ -447,10 +447,9 @@ async function requestImageUpload(req,res){
   const buf=Buffer.from(m[2],"base64");
   if(buf.length<12000||buf.length>3*1024*1024)return res.status(400).json({ok:false,error:"Tamaño de raster no válido",bytes:buf.length});
   const meta=await sharp(buf,{animated:false}).metadata(),width=Number(meta.width||0),height=Number(meta.height||0);
-  if(width<640||height<360)return res.status(400).json({ok:false,error:"Raster inferior a 640x360",width,height});
+  if(width<1024||height<576)return res.status(400).json({ok:false,error:"Raster inferior a 1024x576",width,height});
   // La geometría puede variar según la salida real de ImageGen. La garantía
-  // importante es que el bridge v10 haya extraído un <img> real, nunca una card,
-  // canvas genérico o captura del viewport de ChatGPT.
+  // importante es que el bridge v28 haya extraído bytes limpios del recurso o canvas del <img>, nunca UI ni screenshot.
   const aspect=height?width/height:0;
   if(aspect<0.65||aspect>2.40){
     return res.status(422).json({ok:false,error:"Raster rechazado: geometría anómala",width,height,aspect:Number(aspect.toFixed(3))});
