@@ -10,12 +10,17 @@ let prelaunchTargets=new Map();
 try{
   const parsed=JSON.parse(String(process.env.TT_IMAGE_PRELAUNCH_TARGETS_JSON||"[]"));
   const rows=Array.isArray(parsed)?parsed:(parsed&&typeof parsed==="object"?[parsed]:[]);
-  prelaunchTargets=new Map(rows.map(x=>[String(x&&x.id||""),String(x&&x.url||"")]).filter(x=>x[0]));
+  prelaunchTargets=new Map(rows.map(x=>[
+    String(x&&x.id||""),
+    {url:String(x&&x.url||""),title:String(x&&x.title||"")}
+  ]).filter(x=>x[0]));
 }catch{}
 function isPostLaunchTarget(t){
   if(!prelaunchSnapshotProvided)return false;
-  const id=String(t&&t.id||""),url=String(t&&t.url||"");
-  return !prelaunchTargets.has(id)||prelaunchTargets.get(id)!==url
+  const id=String(t&&t.id||""),url=String(t&&t.url||""),title=String(t&&t.title||"");
+  if(!prelaunchTargets.has(id))return true;
+  const before=prelaunchTargets.get(id)||{};
+  return String(before.url||"")!==url || (!!String(before.title||"") && String(before.title||"")!==title)
 }
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 if(!commandId||!targetId||secret.length<32)throw Error("Argumentos incompletos");
@@ -68,7 +73,7 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TTITTULARES_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee ttittulares/image-runs/jobs/"+targetId+".json en control/ttittulares-run-trigger-v2 para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v13-new-raster-only";
+const BRIDGE_MODE="capture-only-v14-reused-target-title";
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
