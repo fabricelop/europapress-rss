@@ -1,6 +1,6 @@
 # TTiTTularesDedicatedListener.ps1
-# Listener dedicado a TTiTTulares: ejecución editorial + jobs manuales de Gag IA.
-# No procesa TTendencias. Editorial e imágenes son flujos independientes.
+# Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
+# No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
 $ErrorActionPreference = "Continue"
 $BaseDir = "C:\TTiTTulares"
@@ -530,7 +530,7 @@ function Read-NewLauncherText([long]$Offset) {
 }
 
 function Build-EditorialMessage([string]$CommandId) {
-  return "TTITTULARES_EDITORIAL_JOB_V2 $CommandId | Ejecuta AHORA la pasada editorial real de TTiTTulares. Lee primero ttittulares/editorial-run-prompt.md y el estado autoritativo de ttittulares/editorial-queue.json, ttittulares/status.json y telegram/editorial-processing.json. Procesa TODOS los PROCESSING activos y las reelaboraciones rewrite_pending vigentes. Relee estado antes de declarar cola vacía. NO llames a ImageGen ni generes imágenes en esta pasada. Solo puedes cerrar 0/0 si no queda ningún PROCESSING activo ni rewrite_pending."
+  return "TTITTULARES_EDITORIAL_JOB_V2 $CommandId | Ejecuta AHORA la pasada editorial OFICIAL de TTiTTulares. Lee primero ttittulares/editorial-run-prompt.md y el estado autoritativo de ttittulares/editorial-queue.json, ttittulares/status.json y telegram/editorial-processing.json. Procesa TODOS los PROCESSING activos y las reelaboraciones rewrite_pending vigentes. Para cada noticia publicable, cierra texto factual + UN remate y materialízala en Listas/READY; texto+remate bastan para READY y el tuit completo debe quedar <=256 caracteres. Intenta dejar imagen de archivo si la obtienes, pero no bloquees READY por ninguna imagen. NO llames directamente a ImageGen en esta conversación: tras READY, el reparador automático de Listas generará/regenerará la IA, completará el archivo si falta y Telegram entregará el paquete solo cuando la IA sea válida. Relee estado antes de declarar cola vacía. Solo puedes cerrar 0/0 si no queda ningún PROCESSING activo ni rewrite_pending."
 }
 
 function Launch-TTiTTulares([string]$CommandId) {
@@ -733,7 +733,7 @@ while ($true) {
     Write-Log "LOOP ERROR :: $($_.Exception.Message)"
   }
 
-  # 2) Jobs manuales de Gag IA (separados de la ejecución editorial)
+  # 2) Jobs de Gag IA automáticos/manuales posteriores a READY
   try {
     $idx=Read-ImageIndex
     Refresh-ActiveImages $state $idx
