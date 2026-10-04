@@ -1216,15 +1216,43 @@ $("submitCancel").onclick=()=>$("submitSheet").classList.remove("show");
 $("submitSend").onclick=async()=>{
  const title=$("submitTitle").value.trim(),instruction=$("submitInstruction").value.trim();
  if(!title){$("submitStatus").textContent="Escribe la noticia";return}
- $("submitStatus").textContent="Comprobando archivo y cola…";
+ const tempId="optimistic-submit-"+Date.now();
+ const previousItems=[...(model.status?.processing_items||[])];
+ const optimistic={
+   event_id:tempId,title,url:"",status:"PROCESSING",
+   selected_at:new Date().toISOString(),selection_mode:"MANUAL_WEB_USER",
+   manual_submission:true,revision:1,source_count:0,sources:[],
+   optimistic:true
+ };
+ model.status.processing_items=[optimistic,...previousItems];
+ model.status.processing_count=model.status.processing_items.length;
+ $("submitStatus").textContent="Enviada a elaboración…";
+ $("submitSheet").classList.remove("show");
+ setView("processing");renderList();
  try{
    const d=await api("submit",{title,instruction});
    const messages={PROCESSING:d.duplicate?"Ya existía: está en elaboración":"Enviada a elaboración",READY:"Ya estaba elaborada y lista",PUBLISHED:"Ya estaba publicada",DISMISSED:"Ya estaba desestimada"};
    $("submitStatus").textContent=messages[d.status]||d.message||"Procesada";
-   if(d.status==="PROCESSING")setView("processing");
-   await load(true);
-   if(d.status==="PROCESSING"){setView("processing");setTimeout(()=>$("submitSheet").classList.remove("show"),700)}
- }catch(e){$("submitStatus").textContent=e.message}
+   if(d.status==="PROCESSING"){
+     const items=[...(model.status?.processing_items||[])].filter(x=>String(x.event_id||"")!==tempId);
+     model.status.processing_items=[{...optimistic,event_id:String(d.event_id||tempId),optimistic:false},...items.filter(x=>String(x.event_id||"")!==String(d.event_id||""))];
+     model.status.processing_count=model.status.processing_items.length;
+     setView("processing");renderList();
+   }else{
+     model.status.processing_items=previousItems;
+     model.status.processing_count=previousItems.length;
+     renderList();
+     toast(messages[d.status]||d.message||"Procesada")
+   }
+   // Refresco autoritativo en segundo plano; no bloquear el movimiento visual.
+   load(true);
+ }catch(e){
+   model.status.processing_items=previousItems;
+   model.status.processing_count=previousItems.length;
+   renderList();
+   $("submitSheet").classList.add("show");
+   $("submitStatus").textContent=e.message
+ }
 };
 $("settings").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado en este dispositivo":"Sin token guardado";$("settingsSheet").classList.add("show")};
 $("settingsCancel").onclick=()=>$("settingsSheet").classList.remove("show");
