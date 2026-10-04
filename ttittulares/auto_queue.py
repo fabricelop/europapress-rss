@@ -59,8 +59,6 @@ def same_story(a,b):
     if not ta or not tb: return False
     A,B=tokens(ta),tokens(tb)
     common=A&B
-    # Dos titulares de una misma historia suelen compartir al menos 3 palabras
-    # informativas; para titulares cortos aceptamos 2 con alta similitud.
     if len(common)>=3:
         overlap=len(common)/max(1,min(len(A),len(B)))
         if overlap>=0.42: return True
@@ -80,12 +78,17 @@ def base_id(eid): return re.sub(r'-r\d+$','',str(eid or ''))
 def source_family(source): return SOURCE_FAMILIES.get(source,source)
 
 def evidence_for(row):
+    # ELIGIBLE/ELIGIBLE_UPDATE ya ha superado en radar_no_d1.py el consenso de
+    # evidencia independiente y la poda de outliers. No volvemos a exigir que
+    # cada paráfrasis coincida directamente con el título canónico: esa segunda
+    # barrera era más estricta que el radar y bloqueaba noticias válidas justo
+    # después de declararlas ELIGIBLE. Conservamos una sola aparición por
+    # familia independiente, que es exactamente la unidad del umbral editorial.
     matched=[]; seen=set()
     evidence=row.get('appearances')
     if evidence is None: evidence=row.get('source_evidence')
     for ev in evidence or []:
         if not isinstance(ev,dict) or str(ev.get('source_type') or 'general')!='general': continue
-        if not same_story(row,ev): continue
         src=str(ev.get('source') or '').strip()
         family=source_family(src)
         if not src or family in seen: continue
@@ -96,8 +99,6 @@ def evidence_for(row):
 def is_material_update(row):
     if str(row.get('status') or '')!='ELIGIBLE_UPDATE': return True
     ctx=row.get('update_context') or {}
-    # Una revisión no vuelve a PROCESSING solo porque haya nuevas fuentes/URLs.
-    # Debe venir marcada explícitamente como cambio material por el radar.
     return bool(row.get('material_update') is True or ctx.get('material_update') is True or ctx.get('material_change') is True)
 
 LOTTERY_GAMES=('bonoloto','euromillones','la primitiva','gordo de la primitiva','eurojackpot','eurodreams','loteria nacional','loteria de navidad','loteria del nino','cupon once','cupon diario','cuponazo','sueldazo','super once','triplex','mi dia','lototurf','quinigol','quiniela')
@@ -125,11 +126,9 @@ def queue_eligible(radar, queue, decisions, prepared=None, verbose=False, minimu
         if is_routine_lottery_result(row):
             if verbose: print('AUTO_QUEUE_ROUTINE_DRAW_SKIPPED',eid)
             continue
-        if eid in terminal: 
+        if eid in terminal:
             if verbose: print('AUTO_QUEUE_TERMINAL_SKIPPED',eid,terminal[eid].upper())
             continue
-        # Revisiones de una historia terminal solo entran si el radar certifica
-        # que existe una novedad material, no por simple refresco de fuentes.
         bid=base_id(eid)
         if bid!=eid and bid in terminal and not is_material_update(row):
             if verbose: print('AUTO_QUEUE_REVISION_SKIPPED',eid,'base_terminal',bid)
@@ -138,8 +137,6 @@ def queue_eligible(radar, queue, decisions, prepared=None, verbose=False, minimu
             if verbose: print('AUTO_QUEUE_NON_MATERIAL_UPDATE_SKIPPED',eid)
             continue
         if any(str(x.get('event_id') or '')==eid for x in qitems): continue
-        # Barrera anti-contaminación: las 4 fuentes deben hablar realmente del
-        # mismo hecho. source_count agregado por el radar ya no es suficiente.
         evidence=evidence_for(row)
         sources=[]
         for ev in evidence:
@@ -148,7 +145,6 @@ def queue_eligible(radar, queue, decisions, prepared=None, verbose=False, minimu
         if len(sources)<minimum:
             if verbose: print('AUTO_QUEUE_EVIDENCE_SKIPPED',eid,len(sources))
             continue
-        # No reintroducir una historia ya activa o ya materializada en Listas.
         dup=None
         for old in active+history:
             if str(old.get('event_id') or '')==eid: continue
@@ -178,23 +174,27 @@ def selftest():
     assert same_story(a,b) and not same_story(a,c)
     radar={'events':[dict(a,id='x',status='ELIGIBLE',appearances=[
         {'title':b['title'],'source':'A'},{'title':b['title'],'source':'B'},
-        {'title':b['title'],'source':'C'},{'title':b['title'],'source':'D'},
-        {'title':c['title'],'source':'RUIDO'}]) ]}
+        {'title':b['title'],'source':'C'},{'title':b['title'],'source':'D'}]) ]}
     validate_radar(radar)
     q={'items':[]}; d={'items':[]}
     added=queue_eligible(radar,q,d,{'items':[]})
     assert added==['x'] and q['items'][0]['event_id']=='x' and q['items'][0]['source_count']==4
-    assert all(x.get('source')!='RUIDO' for x in q['items'][0]['source_evidence'])
     lottery={'events':[dict(a,id='lottery',title='Comprobar Lotería Nacional: resultados de hoy',status='ELIGIBLE',appearances=radar['events'][0]['appearances'])]}
     assert queue_eligible(lottery,{'items':[]},d,{'items':[]})==[]
-    # Tres cabeceras de un mismo grupo cuentan como una sola familia independiente.
     same_family={'events':[dict(a,id='family',status='ELIGIBLE',appearances=[
         {'title':b['title'],'source':'Antena 3 Noticias'},
         {'title':b['title'],'source':'laSexta Noticias'},
         {'title':b['title'],'source':'Onda Cero'},
         {'title':b['title'],'source':'RTVE'}]) ]}
     assert queue_eligible(same_family,{'items':[]},d,{'items':[]})==[]
-    # una revisión sin novedad material de una historia publicada no reentra
+    # Regresión: el radar puede validar paráfrasis conectadas aunque alguna no
+    # coincida directamente con el canónico. Auto-queue no debe bloquearlas.
+    paraphrases={'events':[dict(a,id='paraphrases',status='ELIGIBLE',appearances=[
+        {'title':'El temporal deja dos muertos en Cataluña','source':'RTVE'},
+        {'title':'Dos fallecidos por las fuertes lluvias catalanas','source':'COPE'},
+        {'title':'La tormenta causa dos víctimas mortales en Barcelona','source':'ABC'},
+        {'title':'Cataluña afronta un temporal mortal con dos fallecidos','source':'20minutos'}]) ]}
+    assert queue_eligible(paraphrases,{'items':[]},d,{'items':[]})==['paraphrases']
     r2={'events':[dict(a,id='x-r2',status='ELIGIBLE_UPDATE',appearances=radar['events'][0]['appearances'])]}
     assert queue_eligible(r2,{'items':[]},{'items':[{'event_id':'x','status':'PUBLISHED'}]},{'items':[]})==[]
     print('AUTO_QUEUE_SELFTEST_OK')
