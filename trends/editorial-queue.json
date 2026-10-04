@@ -1,8 +1,42 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-04T21:04:52+02:00",
-  "count": 2,
+  "updated_at": "2026-10-04T19:05:11.031Z",
+  "count": 3,
   "items": [
+    {
+      "id": "3cc4df10a4bf",
+      "name": "Esponjitas",
+      "rank": 15,
+      "status": "preparing",
+      "requested_at": "2026-10-04T19:05:08.309Z",
+      "revision": 0,
+      "rewrite_instruction": "",
+      "reexplain": false,
+      "rewrite_with_image": true,
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": null,
+      "selected_tweet_image": null,
+      "task": "explain",
+      "batch_id": null,
+      "requested_together": [
+        "Esponjitas"
+      ],
+      "captured_with": [],
+      "auto_queued": false,
+      "anticipated": true,
+      "anticipated_at": "2026-10-04T21:01:30+02:00",
+      "anticipated_best_rank": 15,
+      "anticipated_social_source_count": 6,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null
+    },
     {
       "id": "b1654d6cc28d",
       "name": "Cataluña",
@@ -11,9 +45,13 @@
       "requested_at": "2026-10-04T20:21:42+02:00",
       "revision": 1,
       "rewrite_instruction": "",
+      "reexplain": true,
+      "rewrite_with_image": true,
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_instruction": "La ejecución editorial NO genera IA. Para todo item explicado que no sea Tremending ni tenga un bloqueo explícito actual, deja la IA pendiente para un chat de imagen independiente por item. No marques disable_ai_image solo por separar las ejecuciones. Un failed/none/disabled heredado sin ai_image_block_reason explícito se considera pendiente/reintentable.",
+      "disable_ai_image": true,
+      "image_strategy": "fallback_only",
+      "selected_tweet_image": null,
+      "task": "explain",
       "batch_id": "488df368ba1d",
       "requested_together": [
         "Cataluña"
@@ -37,7 +75,12 @@
       "anticipated_social_source_count": 0,
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
+      "anticipated_entered_top10_at": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null
     },
     {
       "id": "71f3ec3c8ac9",
@@ -47,9 +90,13 @@
       "requested_at": "2026-10-04T20:21:42+02:00",
       "revision": 0,
       "rewrite_instruction": "",
+      "reexplain": false,
+      "rewrite_with_image": true,
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_instruction": "La ejecución editorial NO genera IA. Para todo item explicado que no sea Tremending ni tenga un bloqueo explícito actual, deja la IA pendiente para un chat de imagen independiente por item. No marques disable_ai_image solo por separar las ejecuciones. Un failed/none/disabled heredado sin ai_image_block_reason explícito se considera pendiente/reintentable.",
+      "disable_ai_image": false,
+      "image_strategy": null,
+      "selected_tweet_image": null,
+      "task": "explain",
       "batch_id": "948967e36efd",
       "requested_together": [
         "Pina"
@@ -64,7 +111,12 @@
       "anticipated_social_source_count": 0,
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
+      "anticipated_entered_top10_at": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null
     }
   ]
 }
