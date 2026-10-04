@@ -28,7 +28,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python3 - <<'PY'
-          import json, os, pathlib, urllib.request
+          import json, os, pathlib, urllib.request, urllib.error
           from datetime import datetime, timezone
           p=pathlib.Path("telegram/delete-message-queue.json")
           d=json.loads(p.read_text(encoding="utf-8"))
@@ -47,6 +47,13 @@ jobs:
                       print("TELEGRAM_DELETE_OK",row["message_id"])
                   else:
                       row["status"]="error";row["error"]=str(out);changed=True
+              except urllib.error.HTTPError as e:
+                  body=e.read().decode("utf-8","replace")
+                  if "message to delete not found" in body.lower():
+                      row["status"]="deleted";row["deleted_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z");changed=True
+                      print("TELEGRAM_DELETE_ALREADY_GONE",row["message_id"])
+                  else:
+                      row["status"]="error";row["error"]=f"HTTP {e.code}: {body[:300]}";changed=True
               except Exception as e:
                   row["status"]="error";row["error"]=str(e);changed=True
           if changed:
