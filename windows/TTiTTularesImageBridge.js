@@ -83,6 +83,105 @@ async function targets(){
   if(!r.ok)throw Error("CDP /json/list "+r.status);
   return r.json()
 }
+
+async function readFixedTabState(){
+  try{
+    const fs=await import("node:fs/promises");
+    return JSON.parse(await fs.readFile(FIXED_TAB_STATE,"utf8"));
+  }catch{return {}}
+}
+async function writeFixedTabState(t){
+  try{
+    const fs=await import("node:fs/promises");
+    await fs.writeFile(FIXED_TAB_STATE,JSON.stringify({
+      version:1,target_id:String(t&&t.id||""),url:String(t&&t.url||""),
+      updated_at:new Date().toISOString()
+    },null,2)+"\n","utf8")
+  }catch(e){console.log("BRIDGE FIXED TAB STATE WARNING :: "+String(e&&e.message||e))}
+}
+async function createFixedTarget(){
+  const url=BASE_CDP+"/json/new?"+encodeURIComponent(CHAT_ROOT);
+  let r;
+  try{r=await fetch(url,{method:"PUT",cache:"no-store"})}catch{}
+  if(!r||!r.ok){
+    try{r=await fetch(url,{cache:"no-store"})}catch{}
+  }
+  if(!r||!r.ok)throw Error("No se pudo crear pestaña dedicada CDP");
+  const t=await r.json();
+  if(!t||!t.id||!t.webSocketDebuggerUrl)throw Error("CDP creó una pestaña sin target válido");
+  await writeFixedTabState(t);
+  console.log("BRIDGE FIXED TAB CREATED target="+String(t.id));
+  return t
+}
+async function fixedTarget(createIfMissing=true){
+  const list=await targets();
+  const st=await readFixedTabState();
+  let t=list.find(x=>String(x&&x.id||"")===String(st&&st.target_id||"")&&x.type==="page"&&x.webSocketDebuggerUrl);
+  if(t){
+    console.log("BRIDGE FIXED TAB REUSE target="+String(t.id)+" url="+String(t.url||""));
+    return t
+  }
+  if(!createIfMissing)return null;
+  return createFixedTarget()
+}
+async function waitComposer(cdp,timeoutMs=60000){
+  const deadline=Date.now()+timeoutMs;
+  let last=null;
+  while(Date.now()<deadline){
+    try{
+      last=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");return {composer:!!c,url:location.href,title:document.title||'',ready:document.readyState}})()");
+      if(last&&last.composer)return last
+    }catch(e){last={error:String(e&&e.message||e)}}
+    await sleep(750)
+  }
+  throw Error("La pestaña dedicada no mostró compositor en "+timeoutMs+" ms; "+JSON.stringify(last||{}).slice(0,400))
+}
+async function openFreshDedicatedConversation(){
+  let t=await fixedTarget(true);
+  let cdp=new CDP(t.webSocketDebuggerUrl);
+  try{
+    await cdp.open();
+    try{await cdp.call("Page.enable",{},5000)}catch{}
+    try{await cdp.call("Page.bringToFront",{},5000)}catch{}
+    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+    await waitComposer(cdp,60000);
+    // Si ChatGPT restaurase una conversación previa al navegar a raíz, pulsa "Nuevo chat"
+    // dentro de LA MISMA pestaña. El target CDP no cambia.
+    try{
+      const st=await cdp.eval("(()=>({url:location.href}))()");
+      if(st&&/\/c\//.test(String(st.url||""))){
+        await cdp.eval("(()=>{const els=[...document.querySelectorAll('a,button')];const b=els.find(x=>/new chat|nuevo chat/i.test(String(x.getAttribute('aria-label')||x.getAttribute('title')||x.innerText||'')));if(!b)return false;b.click();return true})()");
+        await sleep(700);
+        await waitComposer(cdp,30000)
+      }
+    }catch{}
+    const meta=await cdp.eval("(()=>({url:location.href,title:document.title||''}))()");
+    console.log("BRIDGE FIXED TAB FRESH CONVERSATION target="+String(t.id)+" url="+String(meta&&meta.url||""));
+    return cdp
+  }catch(e){
+    try{cdp.close()}catch{}
+    // El target persistido pudo morir entre /json/list y la conexión. Crear uno nuevo una sola vez.
+    t=await createFixedTarget();
+    cdp=new CDP(t.webSocketDebuggerUrl);
+    await cdp.open();
+    try{await cdp.call("Page.enable",{},5000)}catch{}
+    try{await cdp.call("Page.bringToFront",{},5000)}catch{}
+    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+    await waitComposer(cdp,60000);
+    console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id));
+    return cdp
+  }
+}
+async function reconnectFixedConversation(job){
+  const t=await fixedTarget(false);
+  if(!t)return null;
+  const c=new CDP(t.webSocketDebuggerUrl);
+  try{
+    await c.open();
+    const st=await inspectChat(c,job);
+    return {cdp:c,state:st}
+  }catch{try{c.close()}catch{};return null}
+}
 async function fetchJob(){
   const r=await fetch(JOB_URL+encodeURIComponent(targetId)+"&t="+Date.now(),{cache:"no-store"});
   if(!r.ok)throw Error("Job "+r.status);
@@ -116,7 +215,10 @@ function buildMessage(job){
   ].join("\n")
 }
 
-const BRIDGE_MODE="capture-only-v23-target-handoff";
+const BRIDGE_MODE="capture-only-v24-fixed-tab";
+// compatibility during hot rollout: BRIDGE_MODE="capture-only-v23-target-handoff"
+const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
+const CHAT_ROOT="https://chatgpt.com/";
 const BRIDGE_FEATURES="v28-reject-nonconversation-image-targets";
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
@@ -218,6 +320,9 @@ async function findChat(job){
 }
 
 async function reacquireCommandChat(job){
+  const fixed=await reconnectFixedConversation(job);
+  if(fixed&&fixed.cdp){console.log("BRIDGE REACQUIRE FIXED TAB "+String(fixed.state&&fixed.state.url||""));return fixed}
+
   const hinted=await hintedTarget();
   if(hinted){
     const hc=new CDP(hinted.webSocketDebuggerUrl);
@@ -468,24 +573,14 @@ async function uploadImage(image){
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
-    void job;
-    cdp=await findChat(job);
-    console.log("BRIDGE CHAT FOUND mode="+BRIDGE_MODE);
-    try{
-      cdp=await ensureSubmitted(cdp,job);
-      cdp.acceptInitialRaster=true;
-      console.log("BRIDGE PROMPT SUBMITTED/VERIFIED");
-    }catch(submitErr){
-      console.log("BRIDGE SUBMIT PRIMARY MISSED :: "+String(submitErr&&submitErr.message||submitErr));
-      try{
-        cdp=await injectPromptIntoChat(cdp,job);
-        cdp=await ensureSubmitted(cdp,job);
-        cdp.acceptInitialRaster=true;
-        console.log("BRIDGE PROMPT SELF-SUBMITTED/VERIFIED");
-      }catch(selfErr){
-        throw Error("No se pudo enviar el prompt en el target elegido: "+String(selfErr&&selfErr.message||selfErr))
-      }
-    }
+    cdp=await openFreshDedicatedConversation();
+    console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
+    cdp=await injectPromptIntoChat(cdp,job);
+    cdp=await ensureSubmitted(cdp,job);
+    cdp.acceptInitialRaster=true;
+    console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED");
+    const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v1"});
+    if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
     const image=await capture(cdp,job);
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
     console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
