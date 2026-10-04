@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-04T20:04:53.876213+00:00",
+  "checked_at": "2026-10-04T21:33:37.682301+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -41,8 +41,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 7,
-      "captured_age_minutes": 0.2,
+      "non_stale_sources": 6,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.0,
-      "run_id": 37230617105,
+      "age_minutes": 1.1,
+      "run_id": 37236507837,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -76,28 +76,28 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 10,
+      "pending_count": 5,
       "overdue_count": 3,
-      "oldest_age_minutes": 103.2,
+      "oldest_age_minutes": 68.8,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "b1654d6cc28d",
-          "name": "Cataluña",
+          "id": "4c937a96fa19",
+          "name": "Escribá",
           "status": "preparing",
-          "age_minutes": 103.2
+          "age_minutes": 68.8
         },
         {
-          "id": "71f3ec3c8ac9",
-          "name": "Pina",
+          "id": "19649a7e10aa",
+          "name": "#CuartoMilenio",
           "status": "preparing",
-          "age_minutes": 103.2
+          "age_minutes": 47.3
         },
         {
-          "id": "3cc4df10a4bf",
-          "name": "Esponjitas",
+          "id": "f354c321182d",
+          "name": "Frente Popular",
           "status": "preparing",
-          "age_minutes": 59.8
+          "age_minutes": 47.2
         }
       ],
       "repairable": false
@@ -107,16 +107,11 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "3ce5afef7763",
-        "3947a38f094f",
-        "b1654d6cc28d",
-        "71f3ec3c8ac9",
-        "3cc4df10a4bf",
-        "bab052f37217",
-        "d933cc72e8f4",
-        "00f71f925669",
-        "057dc616ed1d",
-        "cd03f22f4fb4"
+        "4c937a96fa19",
+        "19649a7e10aa",
+        "f354c321182d",
+        "64029d6bfa48",
+        "91a2ffbb955b"
       ],
       "contradictory_success": false
     }
@@ -124,9 +119,9 @@
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 103.2 min"
+    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 68.8 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 103.2 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 68.8 min | config TTendencias incompatible con el modo activo"
 }
