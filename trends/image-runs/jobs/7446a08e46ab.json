@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791098789922-c3ac81",
+  "requested_at": "2026-10-04T07:26:29.922Z",
+  "updated_at": "2026-10-04T07:26:29.922Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "7446a08e46ab",
+  "trend_id": "7446a08e46ab",
+  "target_name": "Shakira",
+  "revision": 0,
+  "attempt": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "Shakira",
+    "revision": 0,
+    "explanation": "TT#14 Shakira es tendencia porque Dua Lipa apareció por sorpresa en el octavo concierto de su residencia en Madrid y ambas cantaron juntas «Antología» por primera vez.\n🌶️ Macondo Park convirtió una balada de 1995 en estreno mundial.",
+    "closer_text": "🌶️ Macondo Park convirtió una balada de 1995 en estreno mundial.",
+    "trend_names": [
+      "Shakira",
+      "Dua Lipa"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 14,
+    "explained_at": "2026-10-04T09:11:00+02:00",
+    "verification_sources": [
+      {
+        "source": "EFE/Hola News · 4/10/2026",
+        "url": "https://holanews.com/dua-lipa-inesperada-estrella-invitada-en-la-residencia-de-shakira-para-un-duo-inedito/"
+      },
+      {
+        "source": "Europa FM · 3/10/2026",
+        "url": "https://www.europafm.com/noticias/musica/concierto-shakira-madrid-hoy-sabado-horario-como-llegar-macondo-park-accesos-setlist-que-pasa-llueve_202610036ac0cd86a4297764c3a8ac77.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "Solicitud registrada; esperando al PC para abrir un chat de imagen."
+}
