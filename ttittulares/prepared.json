@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T16:42:40.347Z",
+  "updated_at": "2026-10-04T16:44:38.685Z",
   "items": [
     {
       "event_id": "95dc2368eaed",
@@ -246,9 +246,9 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "failed",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -263,16 +263,53 @@
       },
       "fallback_image_search_attempted_at": "2026-10-04T13:27:57.308526Z",
       "image": {
-        "url": "https://cadenaser.com/resizer/v2/T47SXBNFHZOSVLU2V5KMF6IOFA.jpg?auth=290de3a7d10c275247c189824a5f735f8bb8ba287888faa4012b6c3eb5f22a25&quality=70&width=1200&height=675&smart=true",
-        "source": "cadenaser.com",
-        "source_url": "https://cadenaser.com/nacional/2026/10/04/sumar-anuncia-el-lanzamiento-de-la-nueva-coalicion-de-izquierdas-frente-amplio-el-proximo-17-de-octubre-cadena-ser/",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Sumar, IU, Más Madrid y Comuns lanzarán Frente Amplio el 17 de octubre"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/1cd626eda987-r1-ai1-31958955-822.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "c083cec042aa1ce077558a39e294a2bf851d63d15ab5260b2b68fdbb63114074",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2575223,
+        "context_guard": {
+          "version": 3,
+          "event_id": "1cd626eda987",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-v27-1cd626eda987-1791131958955-822"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/1cd626eda987-r1-ai1-31958955-822.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-04T14:58:24.375Z",
-      "ai_image_failure_reason": "No apareció un raster ImageGen capturable en 3 minutos; eval_error=CDP timeout Runtime.evaluate"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-04T16:44:38.685Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/1cd626eda987-r1-ai1-31958955-822.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "c083cec042aa1ce077558a39e294a2bf851d63d15ab5260b2b68fdbb63114074",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2575223,
+        "context_guard": {
+          "version": 3,
+          "event_id": "1cd626eda987",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-v27-1cd626eda987-1791131958955-822"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/1cd626eda987-r1-ai1-31958955-822.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-04T16:44:38.685Z"
     }
   ],
   "count": 11
