@@ -95,6 +95,15 @@ jobs:
           MAIN=pathlib.Path(".")
           CTRL=pathlib.Path("/tmp/ttendencias-control")
           explained=json.loads((MAIN/"trends/telegram-manual-explained.json").read_text(encoding="utf-8"))
+          try:
+              copy_state=json.loads((MAIN/"trends/explained-copy-state.json").read_text(encoding="utf-8"))
+          except Exception:
+              copy_state={"items":[]}
+          archived=set()
+          for x in copy_state.get("items",[]):
+              rev=int(x.get("revision") or 0)
+              for name in x.get("trend_names") or []:
+                  archived.add((str(name or "").strip().casefold(),rev))
           index_path=CTRL/"trends/image-runs/index.json"
           index=json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {"version":1,"jobs":[]}
           now=datetime.now(timezone.utc)
@@ -130,6 +139,8 @@ jobs:
           leaders=[]
           for row in explained.get("items",[]):
               if str(row.get("status") or "").lower()!="explained":
+                  continue
+              if (str(row.get("name") or "").strip().casefold(),int(row.get("revision") or 0)) in archived:
                   continue
               if not str(row.get("explanation") or "").strip():
                   continue
