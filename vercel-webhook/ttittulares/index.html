@@ -1185,7 +1185,14 @@ async function load(silent=false,passive=false){
   const preparedRaw=d.prepared?.items||[],processingRaw=d.status?.processing_items||[],processingOutcomesRaw=d.status?.processing_outcomes||[],problematicRaw=d.status?.problematic_items||[],trendCandidatesRaw=d.status?.trend_candidates||[],growingRaw=d.status?.three_source_items||[];
   const present=new Set([...preparedRaw,...processingRaw,...processingOutcomesRaw,...problematicRaw,...growingRaw].map(x=>String(x.event_id||"")).filter(Boolean));
   for(const x of trendCandidatesRaw){const id=String(x.candidate_id||x.event_id||"");if(id)present.add(id)}
-  let pendingChanged=false;for(const id of [...pendingClosed])if(!present.has(id)){pendingClosed.delete(id);pendingChanged=true}
+  // Si el backend autoritativo devuelve una noticia en prepared, debe volver a
+  // Listas aunque su event_id hubiera quedado en pendingClosed por una acción
+  // anterior/revisión. pendingClosed solo protege el intervalo optimista.
+  const preparedNow=new Set(preparedRaw.map(x=>String(x.event_id||"")).filter(Boolean));
+  let pendingChanged=false;
+  for(const id of [...pendingClosed]){
+    if(preparedNow.has(id)||!present.has(id)){pendingClosed.delete(id);pendingChanged=true}
+  }
   if(pendingChanged)persistUiState();
   const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),processing_outcomes:processingOutcomesRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),problematic_items:problematicRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),trend_candidates:trendCandidatesRaw.filter(x=>!pendingClosed.has(String(x.candidate_id||x.event_id||""))),three_source_items:growingRaw.filter(x=>!pendingClosed.has(String(x.event_id||"")))};
   status.processing_count=status.processing_items.length;status.processing_outcomes_count=status.processing_outcomes.length;status.problematic_count=status.problematic_items.length+status.trend_candidates.length;status.trend_candidates_count=status.trend_candidates.length;status.three_source_count=status.three_source_items.length;
