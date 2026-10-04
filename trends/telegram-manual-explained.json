@@ -24403,14 +24403,30 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "pending",
-      "image_pending": true,
-      "fallback_image_strategy": "web_search",
-      "fallback_image_status": "pending",
-      "image_choice": null,
-      "rewrite_pending": false
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "rewrite_pending": false,
+      "fallback_image": {
+        "url": "https://static.que.es/wp-content/uploads/2023/03/Ibai-Llanos-convierte-la-Kings-League-en-otro-Negreira-y-ataca-a-Pique.jpg",
+        "source": "Qué! · 4/10/2026",
+        "source_url": "https://www.que.es/2026/10/04/ibai-llanos-among-us-lamine-yamal/",
+        "alt": "Imagen de archivo relacionada con Ibai",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://static.que.es/wp-content/uploads/2023/03/Ibai-Llanos-convierte-la-Kings-League-en-otro-Negreira-y-ataca-a-Pique.jpg",
+        "source": "Qué! · 4/10/2026",
+        "source_url": "https://www.que.es/2026/10/04/ibai-llanos-among-us-lamine-yamal/",
+        "alt": "Imagen de archivo relacionada con Ibai",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-04T22:18:38.751Z",
+  "updated_at": "2026-10-04T22:18:51.183444Z",
   "count": 533
 }
