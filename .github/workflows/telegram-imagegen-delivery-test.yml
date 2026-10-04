@@ -40,6 +40,7 @@ jobs:
             echo "Raster reconstruido desde bloques de prueba."
           fi
           test -s "$FILE"
+          echo "2641eb6b3456dc54b4b9d1ceca4bc1b7163fc0969c84d00d3eb5ba8ac671d2f5  $FILE" | sha256sum -c -
           echo "file=$FILE" >> "$GITHUB_OUTPUT"
           file "$FILE"
 
