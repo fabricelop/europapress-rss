@@ -665,39 +665,32 @@ while ($true) {
         }
         $marker = "TT_IMAGE_JOB_V3 $commandId"
         $targetSnapshot=Get-ChatTargetSnapshot
-        $sent = Launch-ProjectChat "image command=$commandId target=$targetId" $message $marker
 
-        if ($sent) {
-          Send-ImageAck $targetId $commandId "launched" | Out-Null
-          if (-not (Start-ImageBridge $commandId $targetId $uploadSecret $targetSnapshot)) {
-            $reason = "El chat arrancó, pero no se pudo iniciar el puente local de raster."
-            Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
-            Mark-ImageCommand $state $commandId $false
-            Save-State $state
-            continue
-          }
-          Mark-ImageCommand $state $commandId $true
+        # Arrancar el bridge ANTES del envío: así toma una línea base real de
+        # tabs/rasteres y puede detectar el cambio aunque ChatGPT reutilice el
+        # mismo target y la imagen aparezca muy rápido.
+        if (-not (Start-ImageBridge $commandId $targetId $uploadSecret $targetSnapshot)) {
+          $reason = "No se pudo iniciar el puente local de raster antes del lanzamiento."
+          Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
+          Mark-ImageCommand $state $commandId $false
           Save-State $state
-          $slots--
-        } else {
-          # Ejecutar.js puede no imprimir su confirmación aunque el mensaje ya haya
-          # llegado a ChatGPT (observado con ImageGen). No cerrar el job como ERROR
-          # por una ausencia de telemetría local: el bridge es quien confirma el
-          # marker real del command_id en el DOM y falla por sí mismo si no existe.
-          $reason = "Ejecutar.js no confirmó el envío en $($LaunchConfirmSeconds) s.; delegando confirmación real al bridge."
-          Write-Log "IMAGE CHAT UNCONFIRMED; BRIDGE WILL VERIFY target=$targetId command=$commandId :: $reason"
-          Send-ImageAck $targetId $commandId "launched" | Out-Null
-          if (-not (Start-ImageBridge $commandId $targetId $uploadSecret $targetSnapshot)) {
-            $failReason = "El lanzamiento quedó sin confirmar y tampoco se pudo iniciar el puente local de raster."
-            Send-ImageAck $targetId $commandId "failed" $failReason "" $uploadSecret | Out-Null
-            Mark-ImageCommand $state $commandId $false
-            Save-State $state
-            continue
-          }
-          Mark-ImageCommand $state $commandId $true
-          Save-State $state
-          $slots--
+          continue
         }
+        Start-Sleep -Milliseconds 900
+
+        $sent = Launch-ProjectChat "image command=$commandId target=$targetId" $message $marker
+        Send-ImageAck $targetId $commandId "launched" | Out-Null
+
+        if (-not $sent) {
+          # El bridge ya estaba observando antes del envío y es la autoridad real:
+          # si el mensaje sí llegó, detectará el nuevo raster; si no, cerrará ERROR.
+          $reason = "Ejecutar.js no confirmó el envío en $($LaunchConfirmSeconds) s.; bridge pre-lanzamiento verificando."
+          Write-Log "IMAGE CHAT UNCONFIRMED; PRELAUNCH BRIDGE VERIFY target=$targetId command=$commandId :: $reason"
+        }
+
+        Mark-ImageCommand $state $commandId $true
+        Save-State $state
+        $slots--
       }
     } elseif ($slots -gt 0 -and -not $CustomMessageSupport) {
       Write-Log "IMAGE QUEUE WAITING: custom message support unavailable"
