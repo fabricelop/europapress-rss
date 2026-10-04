@@ -11,6 +11,7 @@ $ImageBridge = Join-Path $BaseDir "TTiTTularesImageBridge.js"
 $ImageBridgeLockPath = Join-Path $BaseDir "ttittulares-image-bridge.lock.json"
 $StatePath = Join-Path $BaseDir "ttittulares-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
+$WatchdogPath = Join-Path $BaseDir "TT-LocalWatchdog.ps1"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
 $StatusBase = "https://europapress-rss.vercel.app"
@@ -33,6 +34,36 @@ $script:LastStrongSnapshotAt = [DateTimeOffset]::MinValue
 function Write-Log([string]$Text) {
   $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $Text"
   Add-Content -LiteralPath $LogPath -Value $line -Encoding UTF8
+}
+
+function Ensure-LocalWatchdog {
+  try {
+    $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TT-LocalWatchdog.ps1?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+    $tmp=$WatchdogPath+".new"
+    Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing -TimeoutSec 20
+    $tokens=$null;$errors=$null
+    [Management.Automation.Language.Parser]::ParseFile($tmp,[ref]$tokens,[ref]$errors)|Out-Null
+    if($errors.Count -gt 0){throw "Watchdog PowerShell invalido"}
+    $changed=$true
+    if(Test-Path -LiteralPath $WatchdogPath){
+      try{$changed=((Get-FileHash $tmp -Algorithm SHA256).Hash -ne (Get-FileHash $WatchdogPath -Algorithm SHA256).Hash)}catch{}
+    }
+    Move-Item -LiteralPath $tmp -Destination $WatchdogPath -Force
+    $live=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue|Where-Object{
+      ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like "*TT-LocalWatchdog.ps1*"
+    })
+    if($changed -and $live.Count -gt 0){
+      $live|ForEach-Object{try{Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue}catch{}}
+      Start-Sleep -Milliseconds 300
+      $live=@()
+    }
+    if($live.Count -eq 0){
+      $p=Start-Process powershell.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-File",$WatchdogPath) -WindowStyle Hidden -PassThru
+      Write-Log "WATCHDOG STARTED pid=$($p.Id)"
+    }
+  } catch {
+    Write-Log "WATCHDOG ENSURE ERROR :: $($_.Exception.Message)"
+  }
 }
 
 
@@ -630,6 +661,8 @@ function Launch-TTiTTulares([string]$CommandId) {
   [void](Send-Ack $CommandId "failed" $detail)
   return $false
 }
+
+Ensure-LocalWatchdog
 
 if (-not (Test-Path -LiteralPath $BaseDir)) { New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null }
 
