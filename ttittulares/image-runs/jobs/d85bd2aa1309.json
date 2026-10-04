@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-real-d85bd2aa1309-20261004-1411",
+  "requested_at": "2026-10-04T14:11:00Z",
+  "updated_at": "2026-10-04T14:11:00Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "launcher_arg": "titulares",
+  "task": "image",
+  "target_id": "d85bd2aa1309",
+  "event_id": "d85bd2aa1309",
+  "target_name": "Alonso critica la parada de carrera por el incidente de Hamilton en Sepang",
+  "revision": 1,
+  "regenerate": false,
+  "chat_command_version": 4,
+  "instruction_profile": "ttittulares_gag_v4",
+  "context_snapshot": {
+    "title": "Alonso critica la parada de carrera por el incidente de Hamilton en Sepang",
+    "revision": 1,
+    "factual_summary": "Fernando Alonso, octavo en Sepang, criticó que la carrera se detuviera cuando Lewis Hamilton quedó fuera de pista. Recordó que en sus propios abandonos de esta temporada «nunca pararon» la carrera y calificó la situación de «rara».",
+    "tweet_text": "Alonso fue octavo en Sepang y criticó que la carrera se parase cuando Lewis Hamilton quedó fuera de pista: recordó que en sus abandonos «nunca pararon» y lo calificó de «raro».\n\n🌶️ Alonso terminó octavo y pidió la hoja de reclamaciones del botón de pausa.",
+    "remate": "🌶️ Alonso terminó octavo y pidió la hoja de reclamaciones del botón de pausa.",
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena abarrotada de detalles y personajes expresivos, humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Incorporar carteles, objetos y elementos del entorno que permitan entender el chiste de un vistazo. Expresiones faciales exageradas, composición dinámica, profundidad, iluminación dramática y acabado pulido tipo portada/editorial. Texto en español únicamente cuando sea necesario para el gag y perfectamente integrado en la escena. Evitar caricatura genérica, evitar collage, evitar aspecto fotográfico puro y evitar infografía. La imagen debe parecer una escena única y coherente, como una viñeta editorial de gran presupuesto, con muchos pequeños detalles humorísticos secundarios pero un gag principal inmediatamente reconocible.",
+    "scene": "Circuito de Sepang bajo ambiente de carrera, con Fernando Alonso octavo y la acción detenida tras quedar Lewis Hamilton fuera de pista.",
+    "gag_visual": "Race Control convertido en un enorme botón rojo de «PAUSA» que parece activarse selectivamente; Alonso llega a una ventanilla absurda de atención al piloto con una hoja de reclamaciones en la mano.",
+    "visual_closer": "Junto al gran botón de pausa, un pequeño dispensador o cartel «HOJAS DE RECLAMACIONES», traduciendo literalmente la guindilla.",
+    "image_prompt": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena abarrotada de detalles y personajes expresivos, humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Incorporar carteles, objetos y elementos del entorno que permitan entender el chiste de un vistazo. Expresiones faciales exageradas, composición dinámica, profundidad, iluminación dramática y acabado pulido tipo portada/editorial. Texto en español únicamente cuando sea necesario para el gag y perfectamente integrado en la escena. Evitar caricatura genérica, evitar collage, evitar aspecto fotográfico puro y evitar infografía. La imagen debe parecer una escena única y coherente, como una viñeta editorial de gran presupuesto, con muchos pequeños detalles humorísticos secundarios pero un gag principal inmediatamente reconocible.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nAlonso fue octavo en Sepang y criticó que la carrera se parase cuando Lewis Hamilton quedó fuera de pista: recordó que en sus abandonos «nunca pararon» y lo calificó de «raro».\n\n🌶️ Alonso terminó octavo y pidió la hoja de reclamaciones del botón de pausa.\n\nREMATE EXACTO:\n🌶️ Alonso terminó octavo y pidió la hoja de reclamaciones del botón de pausa.\n\nESCENA:\nCircuito de Sepang bajo ambiente de carrera, con Fernando Alonso octavo y la acción detenida tras quedar Lewis Hamilton fuera de pista.\n\nGAG VISUAL:\nRace Control convertido en un enorme botón rojo de «PAUSA» que parece activarse selectivamente; Alonso llega a una ventanilla absurda de atención al piloto con una hoja de reclamaciones en la mano.\n\nREMATE VISUAL:\nJunto al gran botón de pausa, un pequeño dispensador o cartel «HOJAS DE RECLAMACIONES», traduciendo literalmente la guindilla.",
+    "url": "https://www.europapress.es/deportes/formula1-00312/noticia-fernando-alonso-hamilton-cuneta-hubo-estres-pararon-volviese-salir-20261004134223.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/deportes/formula1-00312/noticia-fernando-alonso-hamilton-cuneta-hubo-estres-pararon-volviese-salir-20261004134223.html"
+      },
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/nacional/2026/10/04/alonso-descontento-pese-a-su-8-puesto-en-malasia-cuando-yo-abandono-no-se-para-la-carrera-pero-con-hamilton-cadena-ser/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen para esta entrada. No proceses otra.",
+    "exact_input": "Usa literalmente context_snapshot.tweet_text y context_snapshot.remate como base factual/editorial.",
+    "prompt": "Usa context_snapshot.image_prompt completo.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no foto pura, no reescribir el tuit dentro de la imagen.",
+    "lifecycle": "El bridge capture-only recoge el raster real y lo materializa en generated-images."
+  },
+  "message": "En cola para Imagen GAG IA V4."
+}
