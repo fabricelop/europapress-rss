@@ -171,7 +171,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     [IO.File]::WriteAllBytes($tmp,$raw)
     $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
     foreach ($needle in @(
-      'BRIDGE_MODE="capture-only-v21-command-scoped"',
+      'BRIDGE_MODE="capture-only-v23-target-handoff"',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'ttittulares-image-bridge-v1',
       'imagesAfterMarker'
@@ -190,13 +190,13 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   if (Test-Path -LiteralPath $ImageBridge) {
     try {
       $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
-      if ($txt.Contains('BRIDGE_MODE="capture-only-v21-command-scoped"') -and $txt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')) {
+      if ($txt.Contains('BRIDGE_MODE="capture-only-v23-target-handoff"') -and $txt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')) {
         & $NodePath --check $ImageBridge *> $null
         if ($LASTEXITCODE -eq 0) { Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK"; return $true }
       }
     } catch {}
   }
-  Write-Log "IMAGE BRIDGE ERROR no hay bridge v21 válido"
+  Write-Log "IMAGE BRIDGE ERROR no hay bridge v23 válido"
   return $false
 }
 
@@ -244,7 +244,62 @@ function Get-ChatTargetSnapshot {
   }
 }
 
-function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadSecret,[string]$TargetSnapshot = "[]") {
+
+function Publish-ImageTargetHint([string]$BeforeSnapshot,[string]$HintPath,[string]$CommandId) {
+  try {
+    $before=@{}
+    try {
+      $rows = @($BeforeSnapshot | ConvertFrom-Json)
+      foreach($r in $rows){ if($r.id){ $before[[string]$r.id]=$r } }
+    } catch {}
+
+    $targets = Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/list?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 3
+    $pages = @($targets | Where-Object {
+      [string]$_.type -eq "page" -and
+      [string]$_.url -like "*chatgpt.com*" -and
+      $_.webSocketDebuggerUrl
+    })
+
+    $candidate = $null
+    $new = @($pages | Where-Object { -not $before.ContainsKey([string]$_.id) })
+    if($new.Count -eq 1){
+      $candidate=$new[0]
+    } elseif($new.Count -gt 1){
+      $candidate=$new | Sort-Object -Property @{Expression={ if([string]$_.url -like "*/c/*"){0}else{1} }}, @{Expression={ [string]$_.title }} | Select-Object -First 1
+    } else {
+      $changed=@()
+      foreach($p in $pages){
+        $id=[string]$p.id
+        if(-not $before.ContainsKey($id)){ continue }
+        $b=$before[$id]
+        if(([string]$b.url -ne [string]$p.url) -or ([string]$b.title -ne [string]$p.title)){
+          $changed += $p
+        }
+      }
+      if($changed.Count -eq 1){ $candidate=$changed[0] }
+    }
+
+    if($candidate){
+      @{
+        command_id=$CommandId
+        target_id=[string]$candidate.id
+        url=[string]$candidate.url
+        title=[string]$candidate.title
+        captured_at=[DateTimeOffset]::UtcNow.ToString("o")
+      } | ConvertTo-Json -Compress | Set-Content -LiteralPath $HintPath -Encoding UTF8
+      Write-Log "IMAGE TARGET HANDOFF command=$CommandId target_id=$([string]$candidate.id) url=$([string]$candidate.url)"
+      return $true
+    }
+
+    Write-Log "IMAGE TARGET HANDOFF MISS command=$CommandId new=$($new.Count)"
+    return $false
+  } catch {
+    Write-Log "IMAGE TARGET HANDOFF ERROR command=$CommandId :: $($_.Exception.Message)"
+    return $false
+  }
+}
+
+function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadSecret,[string]$TargetSnapshot = "[]",[string]$TargetHintPath = "") {
   $node = Get-Command node.exe -ErrorAction SilentlyContinue
   if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
   if (-not $node) { Write-Log "IMAGE BRIDGE ERROR node no encontrado"; return $false }
@@ -254,9 +309,11 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
   $err = Join-Path $BaseDir ("ttittulares-image-bridge-" + $stamp + "-" + $TargetId + ".err.log")
   $old = $env:TT_IMAGE_UPLOAD_SECRET
   $oldTargets = $env:TT_IMAGE_PRELAUNCH_TARGETS_JSON
+  $oldHint = $env:TT_IMAGE_TARGET_HINT_FILE
   try {
     $env:TT_IMAGE_UPLOAD_SECRET = $UploadSecret
     $env:TT_IMAGE_PRELAUNCH_TARGETS_JSON = $(if([string]::IsNullOrWhiteSpace($TargetSnapshot)){"[]"}else{$TargetSnapshot})
+    if($TargetHintPath){ $env:TT_IMAGE_TARGET_HINT_FILE = $TargetHintPath } else { Remove-Item Env:TT_IMAGE_TARGET_HINT_FILE -ErrorAction SilentlyContinue }
     $p = Start-Process -FilePath $node.Source -ArgumentList @($ImageBridge,$CommandId,$TargetId) -WindowStyle Hidden -PassThru -RedirectStandardOutput $out -RedirectStandardError $err
     if (-not $p) { throw "Start-Process no devolvió proceso" }
     Set-ImageBridgeLock $p.Id $CommandId $TargetId
@@ -270,6 +327,8 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
     else { $env:TT_IMAGE_UPLOAD_SECRET = $old }
     if ($null -eq $oldTargets) { Remove-Item Env:TT_IMAGE_PRELAUNCH_TARGETS_JSON -ErrorAction SilentlyContinue }
     else { $env:TT_IMAGE_PRELAUNCH_TARGETS_JSON = $oldTargets }
+    if ($null -eq $oldHint) { Remove-Item Env:TT_IMAGE_TARGET_HINT_FILE -ErrorAction SilentlyContinue }
+    else { $env:TT_IMAGE_TARGET_HINT_FILE = $oldHint }
   }
 }
 
@@ -687,10 +746,13 @@ while ($true) {
         }
         $marker="TTITTULARES_IMAGE_JOB_V3 $commandId"
         $targetSnapshot=Get-ChatTargetSnapshot
+        $hintSafe=($commandId -replace '[^A-Za-z0-9._-]','_')
+        $targetHintPath=Join-Path $BaseDir ("tt-image-target-" + $hintSafe + ".json")
+        Remove-Item -LiteralPath $targetHintPath -Force -ErrorAction SilentlyContinue
 
         # Arrancar el bridge ANTES del envío para observar la línea base de
         # tabs/rasteres y detectar un cambio aunque ChatGPT reutilice el tab.
-        if(-not (Start-ImageBridge $commandId $targetId $uploadSecret $targetSnapshot)){
+        if(-not (Start-ImageBridge $commandId $targetId $uploadSecret $targetSnapshot $targetHintPath)){
           $reason="No se pudo iniciar el puente local de raster antes del lanzamiento."
           Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
           Mark-ImageCommand $state $commandId $false;Save-State $state;continue
@@ -698,6 +760,7 @@ while ($true) {
         Start-Sleep -Milliseconds 900
 
         $sent=Launch-ImageChat "image command=$commandId target=$targetId" $message $marker
+        Publish-ImageTargetHint $targetSnapshot $targetHintPath $commandId | Out-Null
         Send-ImageAck $targetId $commandId "launched" | Out-Null
 
         if(-not $sent){
