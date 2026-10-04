@@ -191,7 +191,62 @@ jobs:
           exit 1
 
 
-      - name: Lanzar borrado de mensajes cerrados
+      - name: Borrar inmediatamente mensajes cerrados
+        if: success()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, pathlib, urllib.request, urllib.error
+
+          token=os.environ.get("TELEGRAM_BOT_TOKEN","").strip()
+          chat=os.environ.get("TELEGRAM_CHAT_ID","").strip()
+          if not token or not chat:
+              raise SystemExit("Faltan TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID")
+
+          qpath=pathlib.Path("telegram/delete-message-queue.json")
+          if not qpath.exists():
+              print("TTITTULARES_DELETE_IMMEDIATE=0")
+              raise SystemExit(0)
+
+          doc=json.loads(qpath.read_text(encoding="utf-8"))
+          pending=[x for x in doc.get("items",[]) if str(x.get("status") or "")=="pending"]
+          ok=0
+          for row in pending:
+              mid=int(row.get("message_id") or 0)
+              if not mid:
+                  continue
+              payload=json.dumps({"chat_id":chat,"message_id":mid}).encode("utf-8")
+              req=urllib.request.Request(
+                  f"https://api.telegram.org/bot{token}/deleteMessage",
+                  data=payload,
+                  headers={"content-type":"application/json"}
+              )
+              try:
+                  with urllib.request.urlopen(req,timeout=20) as r:
+                      out=json.loads(r.read().decode("utf-8"))
+                  if out.get("ok"):
+                      ok+=1
+                      print("TTITTULARES_DELETE_IMMEDIATE_OK",mid)
+                  else:
+                      print("TTITTULARES_DELETE_IMMEDIATE_WARNING",mid,out.get("description"))
+              except urllib.error.HTTPError as e:
+                  body=e.read().decode("utf-8","replace")
+                  # Si Telegram dice que el mensaje ya no existe, el objetivo ya está cumplido.
+                  if "message to delete not found" in body.lower():
+                      ok+=1
+                      print("TTITTULARES_DELETE_IMMEDIATE_ALREADY_GONE",mid)
+                  else:
+                      print("TTITTULARES_DELETE_IMMEDIATE_WARNING",mid,e.code,body[:300])
+              except Exception as e:
+                  print("TTITTULARES_DELETE_IMMEDIATE_WARNING",mid,str(e))
+          print("TTITTULARES_DELETE_IMMEDIATE="+str(ok))
+          PY
+
+      - name: Lanzar borrado de respaldo
         if: success()
         env:
           GH_TOKEN: ${{ github.token }}
