@@ -205,6 +205,42 @@ async function fetchCandidate(id) {
   return JSON.parse(b64decode(file.content));
 }
 
+async function ttiDeliveryMessageIds(eventId) {
+  const id=String(eventId||"").trim();
+  if(!id)return [];
+  try{
+    const get=await gh(`contents/telegram/ttittulares-deliveries.json?ref=${encodeURIComponent(BRANCH)}&t=${Date.now()}`,{cache:"no-store",headers:{"cache-control":"no-cache"}});
+    if(!get.ok)return [];
+    const file=await get.json();
+    const doc=JSON.parse(b64decode(file.content)||'{"items":[]}');
+    const mids=[];
+    for(const row of [...(doc.items||[])].reverse()){
+      if(String(row.event_id||"")!==id)continue;
+      for(const k of ["telegram_message_id","archive_telegram_message_id"]){
+        const mid=Number(row[k]||0);
+        if(Number.isInteger(mid)&&mid>0&&!mids.includes(mid))mids.push(mid);
+      }
+      if(mids.length)break;
+    }
+    return mids;
+  }catch(e){
+    console.error("TTiTTulares delivery lookup",e);
+    return [];
+  }
+}
+
+async function deleteTtiPackageNow(eventId,currentMessageId,chatId){
+  const mids=await ttiDeliveryMessageIds(eventId);
+  const current=Number(currentMessageId||0);
+  if(current>0&&!mids.includes(current))mids.push(current);
+  let deleted=0;
+  for(const mid of mids){
+    const out=await safeTelegram("deleteMessage",{chat_id:chatId,message_id:mid});
+    if(out!==null)deleted++;
+  }
+  return {requested:mids.length,deleted};
+}
+
 async function safeTelegram(method, payload) {
   try { return await telegram(method, payload); }
   catch (e) { console.error(e); return null; }
@@ -313,9 +349,12 @@ export default async function handler(req, res) {
           return res.status(200).json({ok:true,queued:true});
         }
         const stored=await appendRequest(requestObj(update,"emergency_action",action+"|"+id),EMERGENCY_QUEUE);
-        await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:action==="dismiss"?"Descartada.":"Confirmado."});
-        if(action==="dismiss") await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
-        return res.status(200).json({ok:true,stored});
+        await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:action==="ttd"||action==="dismiss"?"Desestimada.":"Marcada como publicada."});
+        let telegram_delete={requested:0,deleted:0};
+        if(action==="ttp"||action==="ttd"||action==="dismiss"){
+          telegram_delete=await deleteTtiPackageNow(id,msg.message_id,allowedChat);
+        }
+        return res.status(200).json({ok:true,stored,telegram_delete});
       } else if (data.startsWith("media:")) {
         const parts=data.split(":"); const action=parts[1]||""; const id=parts[2]||"";
         if (!/^(PREPARE|INTERESTING|DISMISS)$/.test(action) || !/^\d+$/.test(id)) {
