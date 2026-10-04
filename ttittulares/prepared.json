@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T15:58:57.400Z",
+  "updated_at": "2026-10-04T16:03:17.726Z",
   "items": [
     {
       "event_id": "95dc2368eaed",
@@ -138,9 +138,9 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "failed",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -156,16 +156,53 @@
       },
       "fallback_image_search_attempted_at": "2026-10-04T13:26:43.241838Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261004134223_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/deportes/formula1-00312/noticia-fernando-alonso-hamilton-cuneta-hubo-estres-pararon-volviese-salir-20261004134223.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Alonso critica la parada de carrera por el incidente de Hamilton en Sepang"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d85bd2aa1309-r1-ai1-0261004-1602.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "1912ae262c0c2efb4331ba5425bfa6e40aa1c207cd00b275367563728be07130",
+        "width": 798,
+        "height": 450,
+        "bytes": 110025,
+        "context_guard": {
+          "version": 3,
+          "event_id": "d85bd2aa1309",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-v20-d85bd2aa1309-20261004-1602"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/d85bd2aa1309-r1-ai1-0261004-1602.jpg",
+        "handoff": "pc-bridge-direct-materialized"
       },
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-04T14:53:48.309Z",
-      "ai_image_failure_reason": "No se encontró el chat lanzado tras observar cambios de estado en 90 segundos; {\"hasMarker\":false,\"bodyMarker\":false,\"composerMarker\":false,\"targetMarker\":false,\"imageTitle\":false,\"generating\":false,\"turns\":0,\"images\":0,"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-04T16:03:17.726Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d85bd2aa1309-r1-ai1-0261004-1602.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "1912ae262c0c2efb4331ba5425bfa6e40aa1c207cd00b275367563728be07130",
+        "width": 798,
+        "height": 450,
+        "bytes": 110025,
+        "context_guard": {
+          "version": 3,
+          "event_id": "d85bd2aa1309",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-v20-d85bd2aa1309-20261004-1602"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/d85bd2aa1309-r1-ai1-0261004-1602.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-04T16:03:17.726Z"
     },
     {
       "event_id": "1cd626eda987",
