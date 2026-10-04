@@ -5,7 +5,7 @@ import json
 import os
 import pathlib
 import urllib.parse
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 import requests
 from PIL import Image
@@ -235,6 +235,13 @@ def run_send(patch_path):
         if row.get("tremending_origin") or row.get("telegram_package_suppress"):
             continue
         if str(row.get("telegram_package_status") or "").lower() in TERMINAL:
+            continue
+        cutoff=datetime.now(timezone.utc)-timedelta(hours=24)
+        try:
+            at=datetime.fromisoformat(str(row.get("explained_at") or "").replace("Z","+00:00")).astimezone(timezone.utc)
+            if at < cutoff:
+                continue
+        except Exception:
             continue
         if not valid_ai(row):
             continue
