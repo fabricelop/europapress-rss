@@ -12,7 +12,7 @@ import ipaddress
 import io
 import json
 import re
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit
@@ -21,7 +21,8 @@ from urllib.request import Request, build_opener, HTTPRedirectHandler
 ROOT = Path(__file__).resolve().parents[1]
 EXPLAINED = ROOT / "trends" / "telegram-manual-explained.json"
 TREMENDING = ROOT / "ttittulares" / "tremending" / "items.json"
-MAX_ITEMS_PER_PASS = 90  # Covers the whole recent 48h window in a single triggered run.
+COPY_STATE = ROOT / "trends" / "explained-copy-state.json"
+MAX_ITEMS_PER_PASS = 120  # Suficiente para sanear toda la bandeja Pendientes en una pasada.
 USER_AGENT = "TTendencias-RealPhoto/1.0 (+https://github.com/fabricelop/europapress-rss)"
 
 
@@ -214,8 +215,6 @@ def enrich(row, by_tremending, photo_finder=page_photo, exists=lambda p: p.is_fi
             row["image_status"] = "pending"
             row["image_choice"] = "none"
             row["image_pending"] = True
-    elif fallback_status == "none":
-        return False
     if row.get("tremending_origin"):
         entry = by_tremending.get(str(row.get("tremending_id") or ""))
         image = tremending_photo(row, entry, exists)
@@ -309,23 +308,31 @@ def main():
         return
     doc = read(EXPLAINED)
     state = read(TREMENDING)
+    try:
+        copy_state = read(COPY_STATE)
+    except Exception:
+        copy_state = {"items": []}
     by_id = {str(x.get("id") or ""): x for x in state.get("items") or []}
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=48)
+    archived_ids = {(str(x.get("item_id") or ""), int(x.get("revision") or 0)) for x in copy_state.get("items", [])}
+    archived_names = set()
+    for x in copy_state.get("items", []):
+        rev = int(x.get("revision") or 0)
+        for name in x.get("trend_names") or []:
+            archived_names.add((str(name or "").strip().casefold(), rev))
     changed, attempted, ready, absent, capture_pending = 0, 0, 0, 0, 0
-    for row in reversed((doc.get("items") or [])[-90:]):
+    for row in reversed(doc.get("items") or []):
         if attempted >= MAX_ITEMS_PER_PASS:
             break
-        if row.get("fallback_image_status") == "none":
-            continue
-        try:
-            at = datetime.fromisoformat(str(row.get("explained_at") or "").replace("Z", "+00:00"))
-            if at.tzinfo is None:
-                at = at.replace(tzinfo=timezone.utc)
-            if at.astimezone(timezone.utc) < cutoff:
-                continue
-        except ValueError:
-            continue
         if str(row.get("status") or "") != "explained":
+            continue
+        if not str(row.get("explanation") or "").strip():
+            continue
+        if str(row.get("telegram_package_status") or "").lower() in {"published", "dismissed"}:
+            continue
+        rev = int(row.get("revision") or 0)
+        if (str(row.get("id") or ""), rev) in archived_ids:
+            continue
+        if (str(row.get("name") or "").strip().casefold(), rev) in archived_names:
             continue
         attempted += 1
         if enrich(row, by_id):
