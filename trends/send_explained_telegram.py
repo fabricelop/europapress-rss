@@ -5,7 +5,7 @@ import json
 import os
 import pathlib
 import urllib.parse
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 
 import requests
 from PIL import Image
@@ -237,8 +237,6 @@ def run_send(patch_path):
         if str(row.get("telegram_package_status") or "").lower() in TERMINAL:
             continue
         if not valid_ai(row):
-            continue
-        if not recent_visual(row,6):
             continue
         tid=str(row.get("id") or "").strip()
         rev=int(row.get("revision") or 0)
