@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "command_id": "tr-img-v28-test-93ebfdf3651f-1791141619057",
+  "requested_at": "2026-10-04T19:20:19.057Z",
+  "updated_at": "2026-10-04T19:20:19.057Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "93ebfdf3651f",
+  "trend_id": "93ebfdf3651f",
+  "target_name": "Unicaja",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "Unicaja",
+    "revision": 0,
+    "explanation": "Unicaja es tendencia por su estreno en la Liga Endesa ante el Real Madrid: perdió 89-87 en el Movistar Arena tras un final ajustado. El partido ya figuraba en el radar de TTiTTulares.",
+    "closer_text": "",
+    "trend_names": [
+      "Unicaja"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 15,
+    "explained_at": "2026-09-27T20:50:00Z",
+    "verification_sources": []
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9 específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; prueba sin entrega Telegram."
+  },
+  "message": "Prueba controlada del bridge v28 TTendencias; Telegram suprimido."
+}
