@@ -2,13 +2,6 @@
   "items": [
     {
       "at": "2026-09-27T21:37:08.871092Z",
-      "event_id": "0ec9b53c91e8-r1",
-      "phase": "outbox",
-      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T21:37:08.871092Z",
       "event_id": "3e4fa144266f-r1",
       "phase": "outbox",
       "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "manual-2a0434945bd5-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento manual-2a0434945bd5-r1: manual-2a0434945bd5-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-04T08:47:47.488764Z",
+      "event_id": "56af984055bf-r1",
+      "phase": "outbox",
+      "reason": "56af984055bf-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 56af984055bf-r1: 56af984055bf-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
