@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-1791109550409-c016e1",
-  "requested_at": "2026-10-04T10:25:50.409Z",
-  "updated_at": "2026-10-04T10:30:15.069Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-v24-mutp6jbk",
+  "requested_at": "2026-10-04T10:48:14.672Z",
+  "updated_at": "2026-10-04T10:48:14.672Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,7 +14,7 @@
   "trend_id": "ab55faea6d66",
   "target_name": "San Francisco de Asís",
   "revision": 0,
-  "attempt": 1,
+  "attempt": 2,
   "chat_command_version": 3,
   "instruction_profile": "ttendencias_gag_v1",
   "context_snapshot": {
@@ -47,10 +47,5 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
   },
-  "message": "No apareció un raster ImageGen capturable en 3 minutos; eval_error=CDP timeout Runtime.evaluate",
-  "pc_upload_secret_hash": "48cf0593118f58996d797c7a061b20ff8e90b5f0aa9a1a65d32c8bd2ceb55f4c",
-  "pc_worker_id": "ttendencias-image-bridge-v1",
-  "pc_picked_up_at": "2026-10-04T10:26:03.471Z",
-  "pc_launched_at": "2026-10-04T10:26:15.187Z",
-  "finished_at": "2026-10-04T10:30:15.069Z"
+  "message": "Prueba controlada bridge v24 self-submit fallback."
 }
