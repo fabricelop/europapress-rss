@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T16:37:38.436Z",
+  "updated_at": "2026-10-04T16:42:40.347Z",
   "items": [
     {
       "event_id": "95dc2368eaed",
@@ -140,7 +140,7 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "failed",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
@@ -179,8 +179,8 @@
         "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/d85bd2aa1309-r1-ai1-0261004-1602.jpg",
         "handoff": "pc-bridge-direct-materialized"
       },
-      "ai_image_last_attempt_status": "ready",
-      "ai_image_last_attempt_at": "2026-10-04T16:03:17.726Z",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-04T16:42:40.347Z",
       "ai_image": {
         "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d85bd2aa1309-r1-ai1-0261004-1602.jpg",
         "source": "TTiTTulares / ChatGPT ImageGen",
@@ -206,7 +206,8 @@
       "ai_image_attempt": 1,
       "ai_image_tool_called_at": "2026-10-04T16:03:17.726Z",
       "image_failure_reason": "ui_capture_rejected",
-      "image_failure_detail": "Raster invalidado: contenía interfaz ChatGPT. Se regenerará con captura de bytes limpios."
+      "image_failure_detail": "Raster invalidado: contenía interfaz ChatGPT. Se regenerará con captura de bytes limpios.",
+      "ai_image_regeneration_error": "No apareció un raster ImageGen capturable en 3 minutos; {\"marker\":true,\"commandScoped\":true,\"turns\":0,\"generating\":false,\"imagesAfterMarker\":0,\"candidates\":0,\"canvases\":0,\"top\":[]}"
     },
     {
       "event_id": "1cd626eda987",
