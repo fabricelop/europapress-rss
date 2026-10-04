@@ -96,6 +96,7 @@ function buildMessage(job){
 }
 const BRIDGE_MODE="capture-only-v23-target-handoff";
 const BRIDGE_FEATURES="v28-reject-nonconversation-image-targets";
+// compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
 // compatibility: BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover"
