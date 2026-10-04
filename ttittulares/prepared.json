@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T18:33:57.835Z",
+  "updated_at": "2026-10-04T18:35:45.252Z",
   "items": [
     {
       "event_id": "7e2a9707eb85",
@@ -615,10 +615,10 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -633,12 +633,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-04T18:18:24.405521Z",
       "image": {
-        "url": "https://imagenes.elpais.com/resizer/v2/H7PUX5DTS5MQLESFK2R3G22YPM.jpg?auth=848c9a624c814e847f270c53e2a450fa9983ab530c61e5089ddb04f2f495683d&width=1200",
-        "source": "elpais.com",
-        "source_url": "https://elpais.com/deportes/motociclismo/2026-10-04/gp-de-japon-en-directo-motogp-en-vivo.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Marc Márquez gana el GP de Japón y aprieta el Mundial"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/3a5181f0459c-r1-ai1-791138061348.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ae5949967b91666ac3265ef7ef30e4ef93b46b7227e08bc7d948360ac61fa546",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2820236,
+        "context_guard": {
+          "version": 3,
+          "event_id": "3a5181f0459c",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-3a5181f0459c-r1-a1-1791138061348"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/3a5181f0459c-r1-ai1-791138061348.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://imagenes.elpais.com/resizer/v2/H7PUX5DTS5MQLESFK2R3G22YPM.jpg?auth=848c9a624c814e847f270c53e2a450fa9983ab530c61e5089ddb04f2f495683d&width=1200",
@@ -647,7 +661,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Marc Márquez gana el GP de Japón y aprieta el Mundial"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/3a5181f0459c-r1-ai1-791138061348.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ae5949967b91666ac3265ef7ef30e4ef93b46b7227e08bc7d948360ac61fa546",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2820236,
+        "context_guard": {
+          "version": 3,
+          "event_id": "3a5181f0459c",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-3a5181f0459c-r1-a1-1791138061348"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/3a5181f0459c-r1-ai1-791138061348.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-04T18:35:45.252Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-04T18:35:45.252Z"
     }
   ],
   "count": 11
