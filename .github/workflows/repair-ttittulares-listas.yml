@@ -101,6 +101,17 @@ jobs:
               if not str(tweet.get("text") or "").strip() or not str(tweet.get("remate") or "").strip():
                   continue
 
+              mode=str(item.get("image_mode") or item.get("image_strategy") or "").lower()
+              if not item.get("tremending_origin") and mode!="tweet_capture_only":
+                  for key in ("disable_ai_image","ai_image_block_reason","image_block_reason"):
+                      if key in item:
+                          item.pop(key,None); changed=True
+                  if str(item.get("ai_image_status") or "").lower()=="disabled":
+                      item["ai_image_status"]="none"; changed=True
+                  for key in ("image_mode","image_strategy"):
+                      if str(item.get(key) or "").lower() in {"fallback_only","archive_only"}:
+                          item[key]="ai_plus_fallback"; changed=True
+
               archive=item.get("archive_image")
               fallback=item.get("fallback_image")
               if not valid_archive(archive) and valid_archive(fallback):
