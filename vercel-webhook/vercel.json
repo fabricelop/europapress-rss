@@ -315,7 +315,5 @@
   "github": {
     "autoJobCancelation": false
   },
-  "ignoreCommand": "grep -q '^deploy-ttendencias-auto-images-20261004
-}
- .deploy-trigger && exit 1 || exit 0"
+  "ignoreCommand": "grep -q '^deploy-ttendencias-auto-images-20261004$' .deploy-trigger && exit 1 || exit 0"
 }
