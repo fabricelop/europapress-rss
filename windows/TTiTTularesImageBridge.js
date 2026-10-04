@@ -74,6 +74,7 @@ function buildMessage(job){
   return "TTITTULARES_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee ttittulares/image-runs/jobs/"+targetId+".json en control/ttittulares-run-trigger-v2 para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
 const BRIDGE_MODE="capture-only-v21-command-scoped";
+// compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
