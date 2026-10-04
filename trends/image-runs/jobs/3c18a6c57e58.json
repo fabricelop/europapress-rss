@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-3c18a6c57e58-r0-a1-1791141023078",
+  "requested_at": "2026-10-04T19:10:23.076Z",
+  "updated_at": "2026-10-04T19:10:23.076Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "3c18a6c57e58",
+  "trend_id": "3c18a6c57e58",
+  "target_name": "#LaRoca244",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "#LaRoca244",
+    "revision": 0,
+    "explanation": "TT#8 #LaRoca244 es tendencia por la emisión 244 de La Roca en laSexta, que hoy debate el posible adelanto electoral, la amenaza nuclear rusa y otros asuntos de actualidad.",
+    "closer_text": "",
+    "trend_names": [
+      "#LaRoca244"
+    ],
+    "group_title": "La Roca · emisión 244",
+    "rank_at_explanation": 8,
+    "explained_at": "2026-10-04T19:41:00+02:00",
+    "verification_sources": [
+      {
+        "source": "Atresmedia · programación 3-4/10/2026",
+        "url": "https://www.atresmedia.com/prensa/notas/destacados/destacados-programacion-sabado-3-domingo-4-octubre_202610026abf9708a4297764c3a80f8b.html"
+      },
+      {
+        "source": "laSexta · La Roca · 4/10/2026",
+        "url": "https://amp.lasexta.com/programas/la-roca/nuria-roca-mucho-miedo-putin-amenaza-nuclear-otan-estas-meterte-debajo-mesa_202610046ac266da916cda53dca3cdfa.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9 específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Primera prueba automática del pipeline visual TTendencias."
+}
