@@ -73,12 +73,12 @@ function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
   return "TTITTULARES_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee ttittulares/image-runs/jobs/"+targetId+".json en control/ttittulares-run-trigger-v2 para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
-const BRIDGE_MODE="capture-only-v16-prelaunch-chat-state";
+const BRIDGE_MODE="capture-only-v17-submit-guard";
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
   const targetName=String(job&&job.target_name||"").trim();
-  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=bodyText.includes(command);const markerOutsideComposer=bodyMarker||nodes.length>0;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const largeImages=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360);const images=largeImages.length;const imageSrc=largeImages.length?String(largeImages[0].currentSrc||largeImages[0].src||''):'';const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,imageSrc,title,url:location.href}})()")
+  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=nodes.length>0;const markerOutsideComposer=bodyMarker;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const largeImages=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360);const images=largeImages.length;const imageSrc=largeImages.length?String(largeImages[0].currentSrc||largeImages[0].src||''):'';const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,imageSrc,title,url:location.href}})()")
 }
 
 async function findChat(job){
@@ -179,6 +179,37 @@ async function findChat(job){
   throw Error("No se encontró el chat lanzado tras observar cambios de estado en 90 segundos; "+detail)
 }
 
+async function ensureSubmitted(cdp){
+  const deadline=Date.now()+35000;
+  let attempted=false,last=null;
+  while(Date.now()<deadline){
+    let st=null;
+    try{
+      st=await cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const submitted=[...root.querySelectorAll('[data-message-author-role=\\\"user\\\"],[data-testid^=\\\"conversation-turn-\\\"],article')].some(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;return String(el.innerText||el.textContent||'').includes(command)});const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const send=document.querySelector('button[data-testid=\\\"send-button\\\"],button[aria-label*=\\\"Send\\\" i],button[aria-label*=\\\"Enviar\\\" i]');return {composerMarker,submitted,generating,send:!!send}})()");
+    }catch{}
+    last=st;
+    if(st&&(st.submitted||st.generating))return true;
+    if(st&&st.composerMarker&&!attempted){
+      attempted=true;
+      let clicked=false;
+      try{
+        clicked=Boolean(await cdp.eval("(()=>{const b=document.querySelector('button[data-testid=\\\"send-button\\\"],button[aria-label*=\\\"Send\\\" i],button[aria-label*=\\\"Enviar\\\" i]');if(!b||b.disabled)return false;b.click();return true})()"));
+      }catch{}
+      if(!clicked){
+        try{
+          await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(c){c.focus();return true}return false})()");
+          await cdp.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+          await cdp.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+          clicked=true;
+        }catch{}
+      }
+      console.log("BRIDGE SUBMIT RECOVERY "+(clicked?"TRIGGERED":"FAILED"));
+    }
+    await sleep(700);
+  }
+  throw Error("El prompt ImageGen quedó sin enviar; "+JSON.stringify(last||{}).slice(0,500))
+}
+
 function probeExpression(){
   return [
     "(async()=>{",
@@ -273,6 +304,8 @@ async function uploadImage(image){
     void job;
     cdp=await findChat(job);
     console.log("BRIDGE CHAT FOUND mode="+BRIDGE_MODE);
+    await ensureSubmitted(cdp);
+    console.log("BRIDGE PROMPT SUBMITTED");
     const image=await capture(cdp);
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
     console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
