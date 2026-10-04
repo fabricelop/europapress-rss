@@ -386,10 +386,13 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
    .slice(0,100)
    .map(x=>({...x,_rank:rankAtExplanation(x)}))
    .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
- const pendingExplainedRecent=collapsePendingExplained([...(explained.items||[])]
-   .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x)
-   .filter(pendingExplainedEligible)
-   .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||""))));
+ const serverPending=Array.isArray(explained.pending_items)?explained.pending_items:null;
+ const pendingExplainedRecent=serverPending
+   ? [...serverPending]
+   : collapsePendingExplained([...(explained.items||[])]
+       .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x)
+       .filter(pendingExplainedEligible)
+       .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||""))));
  const sourceTotal=Object.keys(recent.sources||{}).length;
  const sourceProblemCount=Math.max(0,sourceTotal-Number(recent.source_count||0));
  return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,source_total:sourceTotal,source_problem_count:sourceProblemCount,items,upcoming,progress,prepared:preparedItems,explainedRecent,pendingExplainedRecent,elaboratingItems:processing.map(x=>({id:x.id||null,name:x.name||"Tendencia",rank:Number(x.rank||0),status:String(x.status||""),revision:Number(x.revision||0),requested_at:x.requested_at||null,reexplain:Boolean(x.reexplain),rewrite_instruction:x.rewrite_instruction||""})),health,editorial_config:editorialConfig||{},editorial_queue:editorialQueue||{items:[]}};
