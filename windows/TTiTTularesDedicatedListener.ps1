@@ -171,7 +171,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     [IO.File]::WriteAllBytes($tmp,$raw)
     $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
     foreach ($needle in @(
-      'BRIDGE_MODE="capture-only-v23-target-handoff"',
+      'BRIDGE_MODE="capture-only-v24-fixed-tab"',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'ttittulares-image-bridge-v1',
       'imagesAfterMarker'
@@ -190,7 +190,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   if (Test-Path -LiteralPath $ImageBridge) {
     try {
       $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
-      if ($txt.Contains('BRIDGE_MODE="capture-only-v23-target-handoff"') -and $txt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')) {
+      if ($txt.Contains('BRIDGE_MODE="capture-only-v24-fixed-tab"') -and $txt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')) {
         & $NodePath --check $ImageBridge *> $null
         if ($LASTEXITCODE -eq 0) { Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK"; return $true }
       }
@@ -769,29 +769,16 @@ while ($true) {
           Save-State $state
           continue
         }
-        $marker="TTITTULARES_IMAGE_JOB_V3 $commandId"
-        $targetSnapshot=Get-ChatTargetSnapshot
-        $hintSafe=($commandId -replace '[^A-Za-z0-9._-]','_')
-        $targetHintPath=Join-Path $BaseDir ("tt-image-target-" + $hintSafe + ".json")
-        Remove-Item -LiteralPath $targetHintPath -Force -ErrorAction SilentlyContinue
-
-        # Arrancar el bridge ANTES del envío para observar la línea base de
-        # tabs/rasteres y detectar un cambio aunque ChatGPT reutilice el tab.
-        if(-not (Start-ImageBridge $commandId $targetId $uploadSecret $targetSnapshot $targetHintPath)){
-          $reason="No se pudo iniciar el puente local de raster antes del lanzamiento."
+        # FASE 1: una única pestaña física de ChatGPT para todos los GAG IA.
+        # El bridge conserva el target CDP y crea una conversación nueva dentro
+        # de ESA MISMA pestaña por noticia. El listener ya no abre otra pestaña
+        # ni intenta relocalizarla con Ejecutar.js.
+        if(-not (Start-ImageBridge $commandId $targetId $uploadSecret "[]" "")){
+          $reason="No se pudo iniciar el bridge de pestaña fija."
           Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
           Mark-ImageCommand $state $commandId $false;Save-State $state;continue
         }
-        Start-Sleep -Milliseconds 900
-
-        $sent=Launch-ImageChat "image command=$commandId target=$targetId" $message $marker
-        Publish-ImageTargetHint $targetSnapshot $targetHintPath $commandId | Out-Null
-        Send-ImageAck $targetId $commandId "launched" | Out-Null
-
-        if(-not $sent){
-          $reason="Ejecutar.js no confirmó el envío en $($LaunchConfirmSeconds) s.; bridge pre-lanzamiento verificando."
-          Write-Log "IMAGE CHAT UNCONFIRMED; PRELAUNCH BRIDGE VERIFY target=$targetId command=$commandId :: $reason"
-        }
+        Write-Log "IMAGE FIXED TAB BRIDGE STARTED target=$targetId command=$commandId"
         Mark-ImageCommand $state $commandId $true;Save-State $state;$slots--
       }
     }elseif($slots -gt 0 -and -not $CustomMessageSupport){
