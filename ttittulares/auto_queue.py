@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json, sys, re, unicodedata
 from difflib import SequenceMatcher
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -101,6 +101,16 @@ def is_material_update(row):
     ctx=row.get('update_context') or {}
     return bool(row.get('material_update') is True or ctx.get('material_update') is True or ctx.get('material_change') is True)
 
+def is_current(row, hours=24):
+    raw=row.get('last_seen') or row.get('eligible_at') or row.get('first_seen')
+    if not raw: return True
+    try:
+        seen=datetime.fromisoformat(str(raw).replace('Z','+00:00'))
+        if seen.tzinfo is None: seen=seen.replace(tzinfo=timezone.utc)
+    except Exception:
+        return True
+    return seen.astimezone(timezone.utc) >= datetime.now(timezone.utc)-timedelta(hours=hours)
+
 LOTTERY_GAMES=('bonoloto','euromillones','la primitiva','gordo de la primitiva','eurojackpot','eurodreams','loteria nacional','loteria de navidad','loteria del nino','cupon once','cupon diario','cuponazo','sueldazo','super once','triplex','mi dia','lototurf','quinigol','quiniela')
 ROUTINE_DRAW=('comprobar','resultado','resultados','combinacion ganadora','numero premiado','numeros premiados','numeros ganadores','sorteo de hoy','sorteo hoy','sorteo del','sorteo de la','combinacion del','premios de hoy')
 MATERIAL_LOTTERY=('acertante','un ganador','una ganadora','reparte','repartido','vendido en','cae en','premio record','fraude','estafa','detenido','detenida','investiga','investigacion','error','fallo','cancelado','suspendido','cambio de reglas','cambio normativo','nueva norma','nuevo sistema')
@@ -117,6 +127,7 @@ def queue_eligible(radar, queue, decisions, prepared=None, verbose=False, minimu
     terminal=terminal_map(decisions)
     active=[x for x in qitems if str(x.get('status') or '') in {'PROCESSING','READY'}]
     history=list(prepared.get('items') or [])
+    prepared_ids={str(x.get('event_id') or '') for x in history if x.get('event_id')}
     added=[]
     for row in radar.get('events') or []:
         st=str(row.get('status') or '')
@@ -128,6 +139,12 @@ def queue_eligible(radar, queue, decisions, prepared=None, verbose=False, minimu
             continue
         if eid in terminal:
             if verbose: print('AUTO_QUEUE_TERMINAL_SKIPPED',eid,terminal[eid].upper())
+            continue
+        if eid in prepared_ids:
+            if verbose: print('AUTO_QUEUE_PREPARED_SKIPPED',eid)
+            continue
+        if not is_current(row):
+            if verbose: print('AUTO_QUEUE_STALE_SKIPPED',eid,row.get('last_seen') or row.get('eligible_at'))
             continue
         bid=base_id(eid)
         if bid!=eid and bid in terminal and not is_material_update(row):
@@ -197,6 +214,10 @@ def selftest():
     assert queue_eligible(paraphrases,{'items':[]},d,{'items':[]})==['paraphrases']
     r2={'events':[dict(a,id='x-r2',status='ELIGIBLE_UPDATE',appearances=radar['events'][0]['appearances'])]}
     assert queue_eligible(r2,{'items':[]},{'items':[{'event_id':'x','status':'PUBLISHED'}]},{'items':[]})==[]
+    prepared_same={'items':[{'event_id':'x','title':'Título ya preparado'}]}
+    assert queue_eligible(radar,{'items':[]},d,prepared_same)==[], 'un event_id preparado no puede reencolarse'
+    stale={'events':[dict(a,id='stale',status='ELIGIBLE',last_seen='2026-01-01T00:00:00Z',appearances=radar['events'][0]['appearances'])]}
+    assert queue_eligible(stale,{'items':[]},d,{'items':[]})==[], 'un ELIGIBLE caducado no puede reencolarse'
     print('AUTO_QUEUE_SELFTEST_OK')
 
 def main():
