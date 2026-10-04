@@ -24,7 +24,7 @@
     }
   },
   "git": {
-    "deploymentEnabled": false
+    "deploymentEnabled": true
   },
   "rewrites": [
     {
@@ -315,5 +315,7 @@
   "github": {
     "autoJobCancelation": false
   },
-  "ignoreCommand": "! (git log -1 --pretty=%B | grep -Eq '^deploy-money-control-' || grep -Eq '^deploy-image-flicker-cache-20261004' .deploy-trigger)"
+  "ignoreCommand": "grep -q '^deploy-ttendencias-auto-images-20261004
+}
+ .deploy-trigger && exit 1 || exit 0"
 }
