@@ -1,4 +1,4 @@
-// deploy-sync: ttendencias dedicated-v13 ack 90s 20261004
+// deploy-sync: mobile-run-worker-contract-v13-20261004
 import crypto from "node:crypto";
 import sharp from "sharp";
 

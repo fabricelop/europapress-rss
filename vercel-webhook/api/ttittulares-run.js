@@ -1,4 +1,4 @@
-// deploy-sync: ttittulares picked_up 45s
+// deploy-sync: mobile-run-worker-contract-v20-20261004
 import crypto from "node:crypto";
 import sharp from "sharp";
 
