@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-04T14:53:48.309Z",
+  "updated_at": "2026-10-04T14:58:24.375Z",
   "items": [
     {
       "event_id": "95dc2368eaed",
@@ -167,7 +167,7 @@
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "ready",
@@ -190,7 +190,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Sumar, IU, Más Madrid y Comuns lanzarán Frente Amplio el 17 de octubre"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-04T14:58:24.375Z",
+      "ai_image_failure_reason": "No apareció un raster ImageGen capturable en 3 minutos; eval_error=CDP timeout Runtime.evaluate"
     }
   ],
   "count": 11
