@@ -1,0 +1,333 @@
+name: Reparar TTiTTulares Listas
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "ttittulares/prepared.json"
+      - ".github/workflows/repair-ttittulares-listas.yml"
+  schedule:
+    - cron: "*/10 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-listas-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Instalar cliente HTTP
+        run: python3 -m pip install --quiet requests
+
+      - name: Reparar imagen de archivo
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib, re, urllib.parse
+          from datetime import datetime, timezone
+          from html.parser import HTMLParser
+          import requests
+
+          P=pathlib.Path("ttittulares/prepared.json")
+          doc=json.loads(P.read_text(encoding="utf-8"))
+          now=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+          changed=False
+
+          class MetaParser(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.candidates=[]
+              def handle_starttag(self,tag,attrs):
+                  a={str(k).lower():str(v or "") for k,v in attrs}
+                  if tag.lower()=="meta":
+                      key=(a.get("property") or a.get("name") or "").lower()
+                      if key in {"og:image","og:image:url","twitter:image","twitter:image:src"} and a.get("content"):
+                          self.candidates.append(a["content"])
+                  elif tag.lower()=="link" and "image_src" in a.get("rel","").lower() and a.get("href"):
+                      self.candidates.append(a["href"])
+
+          def valid_archive(a):
+              return isinstance(a,dict) and bool(str(a.get("url") or "").strip()) and not bool(a.get("generated"))
+
+          def try_source(page_url):
+              if not page_url or not str(page_url).startswith(("http://","https://")):
+                  return None
+              try:
+                  rr=requests.get(page_url,timeout=20,headers={"User-Agent":"Mozilla/5.0 TTiTTulares/1"},allow_redirects=True)
+                  rr.raise_for_status()
+                  parser=MetaParser(); parser.feed(rr.text[:1500000])
+                  for candidate in parser.candidates[:8]:
+                      url=urllib.parse.urljoin(rr.url,candidate.strip())
+                      if not url.startswith(("http://","https://")):
+                          continue
+                      try:
+                          ir=requests.get(url,timeout=20,headers={"User-Agent":"Mozilla/5.0 TTiTTulares/1","Referer":rr.url},stream=True,allow_redirects=True)
+                          ct=str(ir.headers.get("content-type") or "").lower()
+                          if ir.ok and ct.startswith("image/"):
+                              ir.close()
+                              return {
+                                  "url":url,
+                                  "source":urllib.parse.urlparse(rr.url).hostname or "archivo",
+                                  "source_url":rr.url,
+                                  "rights_status":"unverified",
+                                  "generated":False,
+                                  "alt":""
+                              }
+                          ir.close()
+                      except Exception:
+                          pass
+              except Exception:
+                  pass
+              return None
+
+          for item in doc.get("items",[]):
+              tweet=item.get("tweet") or {}
+              # Solo Listas reales: texto + remate.
+              if not str(tweet.get("text") or "").strip() or not str(tweet.get("remate") or "").strip():
+                  continue
+
+              archive=item.get("archive_image")
+              fallback=item.get("fallback_image")
+              if not valid_archive(archive) and valid_archive(fallback):
+                  item["archive_image"]=dict(fallback)
+                  item["archive_image_status"]="ready"
+                  changed=True
+                  archive=item["archive_image"]
+
+              if valid_archive(archive):
+                  if item.get("archive_image_status")!="ready":
+                      item["archive_image_status"]="ready"; changed=True
+                  continue
+
+              # Evita golpear la misma fuente varias veces dentro de 30 min.
+              last=str(item.get("archive_image_search_attempted_at") or "")
+              if last:
+                  try:
+                      dt=datetime.fromisoformat(last.replace("Z","+00:00"))
+                      if (datetime.now(timezone.utc)-dt).total_seconds()<1800:
+                          continue
+                  except Exception:
+                      pass
+
+              urls=[]
+              for u in [item.get("url")]+[x.get("url") for x in (item.get("citations") or []) if isinstance(x,dict)]:
+                  u=str(u or "").strip()
+                  if u and u not in urls: urls.append(u)
+              found=None
+              for u in urls[:4]:
+                  found=try_source(u)
+                  if found: break
+
+              item["archive_image_search_attempted_at"]=now
+              item["fallback_image_search_attempted_at"]=now
+              if found:
+                  found["alt"]=str(item.get("title") or "")
+                  item["archive_image"]=found
+                  item["fallback_image"]=dict(found)
+                  item["archive_image_status"]="ready"
+                  item["fallback_image_status"]="ready"
+                  if str(item.get("image_choice") or "") in {"","none"}:
+                      item["image_choice"]="fallback"
+                  changed=True
+                  print("TTITTULARES_ARCHIVE_READY",item.get("event_id"),found["url"])
+              else:
+                  if item.get("archive_image_status") not in {"none","ready"}:
+                      item["archive_image_status"]="none"; changed=True
+                  print("TTITTULARES_ARCHIVE_NONE",item.get("event_id"))
+
+          if changed:
+              doc["updated_at"]=now
+              P.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print("TTITTULARES_ARCHIVE_CHANGED="+str(int(changed)))
+          PY
+
+      - name: Guardar reparación de archivo
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- ttittulares/prepared.json; then
+            echo "Sin cambios de archivo."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ttittulares/prepared.json
+          git commit -m "Reparar imagen de archivo en Listas"
+          for n in 1 2 3 4 5; do
+            git pull --rebase origin main || { git rebase --abort || true; sleep $((n*2)); continue; }
+            if git push origin HEAD:main; then break; fi
+            sleep $((n*2))
+          done
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Encolar IA ausente o inválida
+        shell: bash
+        run: |
+          set -euo pipefail
+          CONTROL="control/ttittulares-run-trigger-v2"
+          git fetch origin "$CONTROL:$CONTROL" || git fetch origin "$CONTROL"
+          rm -rf /tmp/tt-control-branch
+          git worktree add -B "$CONTROL" /tmp/tt-control-branch "origin/$CONTROL"
+          python3 - <<'PY'
+          import json, pathlib, subprocess, time
+          from datetime import datetime, timezone
+
+          MAIN=pathlib.Path(".")
+          CTRL=pathlib.Path("/tmp/tt-control-branch")
+          prepared=json.loads((MAIN/"ttittulares/prepared.json").read_text(encoding="utf-8"))
+          index_path=CTRL/"ttittulares/image-runs/index.json"
+          index=json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {"version":1,"jobs":[]}
+          now=datetime.now(timezone.utc)
+          nowz=now.isoformat().replace("+00:00","Z")
+          changed=False
+
+          STYLE=("Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, "
+                 "colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. "
+                 "Humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. "
+                 "Texto en español únicamente cuando sea necesario para el gag. Evitar caricatura genérica, collage, aspecto fotográfico puro e infografía. "
+                 "Un gag principal inmediatamente reconocible y pocos detalles secundarios, solo si refuerzan el chiste.")
+
+          def ai_valid(item):
+              ai=item.get("ai_image") or {}
+              return (
+                  str(item.get("ai_image_status") or "").lower()=="ready"
+                  and str(ai.get("provider") or "")=="chat-imagegen"
+                  and str(ai.get("origin") or "")=="executing_chat"
+                  and int(ai.get("width") or 0)>=1024
+                  and int(ai.get("height") or 0)>=576
+                  and bool(str(ai.get("url") or "").strip())
+                  and bool(str(ai.get("sha256") or "").strip())
+              )
+
+          def load_old(path):
+              try: return json.loads(path.read_text(encoding="utf-8"))
+              except Exception: return {}
+
+          active={"REQUESTED","RUNNING","PERSISTING"}
+          queued=[]
+
+          for item in prepared.get("items",[]):
+              eid=str(item.get("event_id") or "").strip()
+              rev=int(item.get("revision") or 1)
+              tweet=item.get("tweet") or {}
+              text=str(tweet.get("text") or "").strip()
+              remate=str(tweet.get("remate") or "").strip()
+              if not eid or not text or not remate:
+                  continue
+              if item.get("disable_ai_image") or str(item.get("ai_image_status") or "").lower()=="disabled":
+                  continue
+              if ai_valid(item):
+                  continue
+
+              job_path=CTRL/f"ttittulares/image-runs/jobs/{eid}.json"
+              old=load_old(job_path)
+              if int(old.get("revision") or rev)==rev and str(old.get("status") or "").upper() in active:
+                  continue
+
+              attempt=int(old.get("auto_repair_attempt") or 0)
+              finished=str(old.get("finished_at") or old.get("updated_at") or "")
+              age=999999
+              if finished:
+                  try:
+                      dt=datetime.fromisoformat(finished.replace("Z","+00:00"))
+                      age=(now-dt).total_seconds()
+                  except Exception: pass
+              cooldown=300 if attempt<3 else 3600
+              if old and age<cooldown:
+                  continue
+
+              attempt+=1
+              command=f"tt-img-auto-{eid}-r{rev}-a{attempt}-{int(time.time()*1000)}"
+              factual=str(item.get("factual_summary") or "")
+              title=str(item.get("title") or eid)
+              prompt=(STYLE+"\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\n"+text+
+                      "\n\nREMATE EXACTO:\n"+remate+
+                      "\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\n"+factual+
+                      "\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. "
+                      "Genera exactamente UNA imagen.")
+
+              job={
+                  "version":1,
+                  "command_id":command,
+                  "requested_at":nowz,
+                  "updated_at":nowz,
+                  "status":"REQUESTED",
+                  "phase":"queued",
+                  "mode":"automatic_ready_repair",
+                  "executor":"pc_chat_ttittulares_dedicated",
+                  "project":"ttittulares",
+                  "task":"image",
+                  "target_id":eid,
+                  "event_id":eid,
+                  "target_name":title,
+                  "revision":rev,
+                  "regenerate":bool(old),
+                  "auto_repair":True,
+                  "auto_repair_attempt":attempt,
+                  "chat_command_version":7,
+                  "instruction_profile":"ttittulares_gag_v7_submit_evidence_clean_raster",
+                  "context_snapshot":{
+                      "title":title,
+                      "revision":rev,
+                      "factual_summary":factual,
+                      "tweet_text":text,
+                      "remate":remate,
+                      "image_style":STYLE,
+                      "image_prompt":prompt,
+                      "url":str(item.get("url") or ""),
+                      "citations":item.get("citations") or []
+                  },
+                  "instructions":{
+                      "scope":"Una sola noticia y una sola imagen.",
+                      "exact_input":"Usa literalmente tweet_text y remate.",
+                      "prohibitions":"No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+                      "lifecycle":"Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+                  },
+                  "message":"Reparación automática de imagen IA para noticia en Listas."
+              }
+              job_path.parent.mkdir(parents=True,exist_ok=True)
+              job_path.write_text(json.dumps(job,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+              index["jobs"]=[x for x in index.get("jobs",[]) if str(x.get("target_id") or "")!=eid]
+              index["jobs"].append({
+                  "command_id":command,"target_id":eid,"event_id":eid,"target_name":title,
+                  "revision":rev,"requested_at":nowz,
+                  "status_path":f"ttittulares/image-runs/jobs/{eid}.json",
+                  "executor":"pc_chat_ttittulares_dedicated","auto_repair":True,"auto_repair_attempt":attempt
+              })
+              queued.append((eid,attempt,command))
+              changed=True
+
+          if changed:
+              index["updated_at"]=nowz
+              index_path.parent.mkdir(parents=True,exist_ok=True)
+              index_path.write_text(json.dumps(index,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          for x in queued: print("TTITTULARES_AI_REPAIR_QUEUED",*x)
+          print("TTITTULARES_AI_REPAIR_COUNT="+str(len(queued)))
+          PY
+          cd /tmp/tt-control-branch
+          if git diff --quiet -- ttittulares/image-runs; then
+            echo "Sin IA para encolar."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ttittulares/image-runs
+          git commit -m "Reparar automáticamente IA de Listas"
+          for n in 1 2 3 4 5; do
+            git pull --rebase origin "$CONTROL" || { git rebase --abort || true; sleep $((n*2)); continue; }
+            if git push origin HEAD:"$CONTROL"; then exit 0; fi
+            sleep $((n*2))
+          done
+          echo "No se pudo encolar reparación IA" >&2
+          exit 1
