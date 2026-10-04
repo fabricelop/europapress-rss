@@ -55,9 +55,9 @@ Si una escritura intermedia falla, relee SHA y reintenta; no redactes de nuevo u
 
 ## Saneamiento obligatorio de Pendientes al iniciar cada ejecución
 
-Antes de dar por terminada una ejecución —y preferiblemente al principio, para que la reparación visual pueda avanzar mientras investigas entradas nuevas— revisa también **todas las tarjetas que sigan realmente en Pendientes**. La fuente autoritativa es la vista reconciliada de `trends/telegram-manual-explained.json` + `trends/requests.json`, excluyendo revisiones `grouped`, las archivadas/copied en `trends/explained-copy-state.json` y las que tengan `telegram_package_status:"published"|"dismissed"`.
+Antes de dar por terminada una ejecución —y preferiblemente al principio, para que la reparación visual pueda avanzar mientras investigas entradas nuevas— revisa también **todas las tarjetas que sigan realmente en Pendientes y cuya explicación tenga menos de 24 horas**. Las de 24 horas o más quedan fuera del saneamiento automático y no se intentan reparar ni enviar. La fuente autoritativa es la vista reconciliada de `trends/telegram-manual-explained.json` + `trends/requests.json`, excluyendo revisiones `grouped`, las archivadas/copied en `trends/explained-copy-state.json` y las que tengan `telegram_package_status:"published"|"dismissed"`.
 
-Para cada Pendiente vigente:
+Para cada Pendiente vigente con `explained_at` < 24 h:
 1. **Explicación**: no la reinvestigues ni la reescribas solo para reparar campos accesorios.
 2. **Remate**: si `closer_text` está vacío, intenta generar/seleccionar un único remate breve usando exclusivamente la explicación factual ya verificada y los ratings disponibles. Solo persístelo si mejora el texto y el paquete completo sigue <=280 caracteres. Si ninguno sirve, deja `closer_text` vacío: el remate es opcional y nunca bloquea.
 3. **Imagen de archivo**: si falta o la URL guardada ya no es un raster válido, deja que el reparador visual vuelva a buscarla en las fuentes verificadas. Un fallo de archivo no bloquea IA ni Telegram.
