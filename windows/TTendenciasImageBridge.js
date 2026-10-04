@@ -95,7 +95,7 @@ function buildMessage(job){
   return "TT_IMAGE_JOB_V3 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA imagen IA para '"+name+"': gag visual cómico, satírico, irónico y exagerado, no una ilustración literal. Lee trends/image-runs/jobs/"+targetId+".json en control/ttendencias-run-trigger para el contexto exacto. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster."
 }
 const BRIDGE_MODE="capture-only-v23-target-handoff";
-const BRIDGE_FEATURES="v27-single-target-self-submit-dom-capture";
+const BRIDGE_FEATURES="v28-reject-nonconversation-image-targets";
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
 // compatibility: BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover"
@@ -155,33 +155,43 @@ async function findChat(job){
       const hc=new CDP(hinted.webSocketDebuggerUrl);
       try{
         await hc.open();
-        console.log("BRIDGE TARGET HINT DIRECT "+String(hinted.url||"")+" id="+String(hinted.id||""));
-        return hc
-      }catch{hc.close()}
+        const st=await hc.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;return {composer:!!c,turns,title:document.title||'',url:location.href}})()");
+        if(st&&(st.composer||st.turns>0)){
+          console.log("BRIDGE TARGET HINT CONVERSATION "+String(st.url||hinted.url||"")+" turns="+Number(st.turns||0));
+          return hc
+        }
+        console.log("BRIDGE TARGET HINT REJECTED non-conversation "+String(st&&st.url||hinted.url||""));
+      }catch{}
+      hc.close()
     }
     let list=[];try{list=await targets()}catch{await sleep(500);continue}
     const fresh=list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl&&isPostLaunchTarget(x));
-    if(fresh.length){
-      fresh.sort((a,b)=>{
-        const sa=(/Generar imagen|Image generation|Imagen IA/i.test(String(a.title||""))?1000:0)+(String(a.url||"").includes("/c/")?100:0);
-        const sb=(/Generar imagen|Image generation|Imagen IA/i.test(String(b.title||""))?1000:0)+(String(b.url||"").includes("/c/")?100:0);
-        return sb-sa
-      });
-      const t=fresh[0],fc=new CDP(t.webSocketDebuggerUrl);
+    fresh.sort((a,b)=>{
+      const sa=(String(a.url||"").includes("/c/")?500:0)+(/TTendencias|TTiTTulares/i.test(String(a.title||""))?200:0)-(/Generar imagen|Image generation/i.test(String(a.title||""))?300:0);
+      const sb=(String(b.url||"").includes("/c/")?500:0)+(/TTendencias|TTiTTulares/i.test(String(b.title||""))?200:0)-(/Generar imagen|Image generation/i.test(String(b.title||""))?300:0);
+      return sb-sa
+    });
+    for(const t of fresh.slice(0,4)){
+      const fc=new CDP(t.webSocketDebuggerUrl);
       try{
         await fc.open();
-        console.log("BRIDGE TARGET POST-LAUNCH DIRECT "+String(t.url||"")+" id="+String(t.id||""));
-        return fc
-      }catch{fc.close()}
+        const st=await fc.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;return {composer:!!c,turns,title:document.title||'',url:location.href}})()");
+        if(st&&(st.composer||st.turns>0)){
+          console.log("BRIDGE TARGET POST-LAUNCH CONVERSATION "+String(st.url||t.url||"")+" turns="+Number(st.turns||0));
+          return fc
+        }
+        console.log("BRIDGE TARGET POST-LAUNCH REJECTED non-conversation "+String(st&&st.url||t.url||""));
+      }catch{}
+      fc.close()
     }
     await sleep(500)
   }
   const fallback=await findFallbackComposerChat(job);
   if(fallback&&fallback.c){
-    console.log("BRIDGE SELF-SUBMIT FALLBACK target="+String(fallback.st&&fallback.st.url||""));
+    console.log("BRIDGE SELF-SUBMIT FALLBACK conversation="+String(fallback.st&&fallback.st.url||""));
     return fallback.c
   }
-  throw Error("No se encontró target nuevo/hint ni un compositor válido para self-submit")
+  throw Error("No se encontró ninguna conversación ChatGPT válida con compositor")
 }
 
 async function reacquireCommandChat(job){
