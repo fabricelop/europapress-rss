@@ -7,9 +7,6 @@
     "api/ttendencias-control.js": {
       "maxDuration": 30
     },
-    "api/ttittulares-widget.js": {
-      "maxDuration": 30
-    },
     "api/ai-image.js": {
       "maxDuration": 60
     },
@@ -21,6 +18,10 @@
     }
   },
   "rewrites": [
+    {
+      "source": "/api/ttittulares-widget",
+      "destination": "/api/ttittulares-control?view=widget"
+    },
     {
       "source": "/api/telegram-webhook-admin",
       "destination": "/api/telegram-webhook?admin=1"
