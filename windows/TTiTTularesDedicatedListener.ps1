@@ -160,18 +160,20 @@ function Get-Sha256Hex([string]$Text) {
 function Ensure-ImageBridgeLatest([string]$NodePath) {
   $tmp = $ImageBridge + ".new"
   try {
-    $api = "https://api.github.com/repos/fabricelop/europapress-rss/contents/windows/TTiTTularesImageBridge.js?ref=main&t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-    $doc = Invoke-RestMethod -Uri $api -Headers @{
-      "Accept" = "application/vnd.github+json"
-      "User-Agent" = "TTiTTulares-image-bridge-refresh"
-      "Cache-Control" = "no-cache"
-    } -TimeoutSec 15
-    if (-not $doc.content) { throw "GitHub API sin contenido" }
-    $raw = [Convert]::FromBase64String(([string]$doc.content -replace "\s",""))
+    $url = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TTiTTularesImageBridge.js?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+    $wc = New-Object System.Net.WebClient
+    try {
+      $wc.Headers["User-Agent"]="TTiTTulares-image-bridge-refresh-v27"
+      $wc.Headers["Cache-Control"]="no-cache"
+      $raw = $wc.DownloadData($url)
+    } finally {
+      $wc.Dispose()
+    }
+    if (-not $raw -or $raw.Length -lt 1000) { throw "raw bridge vacío/corto" }
     [IO.File]::WriteAllBytes($tmp,$raw)
     $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
     foreach ($needle in @(
-      'BRIDGE_MODE="capture-only-v26-strict-submit"',
+      'BRIDGE_MODE="capture-only-v27-submit-evidence"',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'ttittulares-image-bridge-v1',
       'imagesAfterMarker'
@@ -181,7 +183,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     & $NodePath --check $tmp *> $null
     if ($LASTEXITCODE -ne 0) { throw "node --check falló en bridge remoto" }
     Move-Item -LiteralPath $tmp -Destination $ImageBridge -Force
-    Write-Log "IMAGE BRIDGE REFRESHED source=github-api sha=$($doc.sha)"
+    Write-Log "IMAGE BRIDGE REFRESHED source=raw-v27"
     return $true
   } catch {
     Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
@@ -190,13 +192,13 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   if (Test-Path -LiteralPath $ImageBridge) {
     try {
       $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
-      if ($txt.Contains('BRIDGE_MODE="capture-only-v26-strict-submit"') -and $txt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')) {
+      if ($txt.Contains('BRIDGE_MODE="capture-only-v27-submit-evidence"') -and $txt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')) {
         & $NodePath --check $ImageBridge *> $null
         if ($LASTEXITCODE -eq 0) { Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK"; return $true }
       }
     } catch {}
   }
-  Write-Log "IMAGE BRIDGE ERROR no hay bridge v23 válido"
+  Write-Log "IMAGE BRIDGE ERROR no hay bridge v27 válido"
   return $false
 }
 
