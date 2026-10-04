@@ -814,6 +814,38 @@ def run_active_merge_regressions():
 
 run_active_merge_regressions()
 
+def revalidate_eligible_events(items, minimum=REVIEW_MIN):
+ # Un ELIGIBLE puede perder evidencia al podar outliers o consolidar fragmentos.
+ # No debe quedar congelado por debajo del mismo consenso que lo hizo elegible:
+ # volver a WAITING permite que nuevas cabeceras reconstruyan la evidencia.
+ downgraded=0
+ for e in items:
+  status=str(e.get("status") or "")
+  if status not in {"ELIGIBLE","ELIGIBLE_UPDATE"}:continue
+  if int(e.get("source_count") or 0)>=minimum and has_independent_evidence_consensus(e,minimum):continue
+  e["status"]="UPDATE_WAITING" if status=="ELIGIBLE_UPDATE" else "WAITING"
+  e.pop("eligible_at",None)
+  downgraded+=1
+  print("ELIGIBLE_REVALIDATED_TO_WAITING",e.get("id"),e.get("source_count",0))
+ return downgraded
+
+def run_eligible_revalidation_regressions():
+ stale={"id":"stale","status":"ELIGIBLE","source_count":2,"eligible_at":"2026-10-04T08:00:00Z","appearances":[
+  {"source":"RTVE","source_type":"general","title":"Alonso gana una carrera extraordinaria en Sepang"},
+  {"source":"COPE","source_type":"general","title":"Fernando Alonso gana una carrera extraordinaria en Sepang"},
+ ]}
+ valid={"id":"valid","status":"ELIGIBLE","source_count":4,"eligible_at":"2026-10-04T08:00:00Z","appearances":[
+  {"source":"RTVE","source_type":"general","title":"Alonso gana una carrera extraordinaria en Sepang de Fórmula 1"},
+  {"source":"COPE","source_type":"general","title":"Fernando Alonso gana una carrera extraordinaria en Sepang de Fórmula 1"},
+  {"source":"ABC","source_type":"general","title":"Alonso gana en Sepang una carrera extraordinaria de Fórmula 1"},
+  {"source":"20minutos","source_type":"general","title":"Fernando Alonso gana la carrera de Fórmula 1 en Sepang"},
+ ]}
+ assert revalidate_eligible_events([stale,valid])==1
+ assert stale["status"]=="WAITING" and "eligible_at" not in stale
+ assert valid["status"]=="ELIGIBLE"
+
+run_eligible_revalidation_regressions()
+
 def source_gather_minutes(e,count=None):
  general=set(e.get("sources",[]))
  seen={}
@@ -1316,6 +1348,7 @@ for row in rows:
  add_appearance(e,row,now);events.append(e)
 
 events=merge_duplicate_active_events(events)
+revalidate_eligible_events(events)
 
 control_mode=load(CONTROL_MODE,{"mode":"telegram"})
 web_mode=str(control_mode.get("mode") or "telegram").strip().lower()=="web"
