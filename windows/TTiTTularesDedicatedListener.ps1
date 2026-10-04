@@ -217,10 +217,10 @@ function Test-ImageBridgeBusy {
   return $false
 }
 
-function Set-ImageBridgeLock([int]$Pid,[string]$CommandId,[string]$TargetId) {
+function Set-ImageBridgeLock([int]$BridgePid,[string]$CommandId,[string]$TargetId) {
   try {
     @{
-      pid=$Pid
+      pid=$BridgePid
       command_id=$CommandId
       target_id=$TargetId
       started_at=[DateTimeOffset]::UtcNow.ToString("o")
