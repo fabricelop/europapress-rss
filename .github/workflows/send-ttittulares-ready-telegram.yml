@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   group: ttittulares-ready-telegram
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deliver:
@@ -76,6 +76,11 @@ jobs:
               if str(item.get("ai_image_status") or "").lower()!="ready":
                   continue
               if str(ai.get("provider") or "")!="chat-imagegen" or str(ai.get("origin") or "")!="executing_chat":
+                  continue
+              # Nunca enviar previews/capturas pequeñas de la interfaz de ChatGPT.
+              # Los raster limpios de ImageGen deben conservar resolución útil.
+              if int(ai.get("width") or 0) < 1024 or int(ai.get("height") or 0) < 576:
+                  print(f"TTITTULARES_TELEGRAM_SKIP_LOW_RES event={eid} size={ai.get('width')}x{ai.get('height')}")
                   continue
 
               image_url=str(ai.get("url") or "").strip()
