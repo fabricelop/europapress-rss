@@ -642,8 +642,12 @@ def selftest_images():
     assert dual["image_choice"]=="fallback" and dual["image"]["generated"] is False
     inline={**dual,"ai_image":dict(dual["ai_image"]),"image_choice":"ai","image":dict(dual["ai_image"])}
     _initialize_parallel_images(inline)
-    assert "ai_image" not in inline and inline["ai_image_inline_rejected"] is True
-    assert inline["image_choice"]=="fallback"
+    # Una imagen IA ya materializada por el bridge/chat-imagegen, con contexto
+    # firmado del evento/revisión, es válida y no debe confundirse con una URL
+    # IA arbitraria incrustada por el payload editorial.
+    assert "ai_image" in inline and inline["ai_image"]["generated"] is True
+    assert not inline.get("ai_image_inline_rejected")
+    assert inline["image_choice"]=="ai"
     sensitive={"event_id":"sensitive","revision":1,"disable_ai_image":True,"image_mode":"fallback_only",
                "fallback_image":{"url":"https://example.test/archive.jpg","source":"Fuente","source_url":"https://example.test/story","rights_status":"unverified","generated":False},
                "fallback_image_status":"ready"}
