@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "command_id": "tt-img-test-lobato-20261004-1455",
+  "requested_at": "2026-10-04T12:55:00Z",
+  "updated_at": "2026-10-04T12:55:00Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "launcher_arg": "titulares",
+  "task": "image",
+  "target_id": "telegram-test-lobato-20261004",
+  "event_id": "telegram-test-lobato-20261004",
+  "target_name": "Antonio Lobato durante el GP de Baréin de F1 en Sepang",
+  "revision": 1,
+  "regenerate": false,
+  "chat_command_version": 3,
+  "instruction_profile": "ttittulares_gag_v1",
+  "context_snapshot": {
+    "title": "Antonio Lobato durante el GP de Baréin de F1 en Sepang",
+    "revision": 1,
+    "factual_summary": "Payload de prueba suministrado por el usuario para validar la entrega ChatGPT ImageGen → raster → Telegram.",
+    "tweet_text": "TT#22 Lobato es tendencia por Antonio Lobato, narrador de DAZN, durante el GP de Baréin disputado hoy en Sepang, ganado por Verstappen tras una carrera marcada por la lluvia.\n\n🌶️ La cabina de Lobato también acabó pidiendo neumáticos de lluvia.",
+    "remate": "🌶️ La cabina de Lobato también acabó pidiendo neumáticos de lluvia.",
+    "url": "",
+    "citations": []
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta prueba y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot directamente como payload de prueba; no reinvestigues ni reescribas.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado: cabina de comentarista de F1 desbordada por lluvia y neumáticos de lluvia, una escena 16:9, no una ilustración literal.",
+    "lifecycle": "El bridge capture-only debe recoger el raster real; después GitHub Actions lo envía como fichero a Telegram."
+  },
+  "message": "Prueba Telegram: esperando al PC."
+}
