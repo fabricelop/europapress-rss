@@ -207,9 +207,10 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
 
     $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
     foreach ($needle in @(
-      'BRIDGE_MODE="capture-only',
+      'BRIDGE_MODE="capture-only-v19-raster-first"',
       'view=image-job&strong=1&id=',
-      'imagesAfterMarker'
+      'imagesAfterMarker',
+      'BRIDGE SUBMIT VERIFY WARNING'
     )) {
       if (-not $txt.Contains($needle)) { throw "Bridge remoto sin garantía: $needle" }
     }
@@ -227,17 +228,17 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   if (Test-Path -LiteralPath $ImageBridge) {
     try {
       $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
-      if ($txt.Contains('BRIDGE_MODE="capture-only') -and $txt.Contains('view=image-job&strong=1&id=')) {
+      if ($txt.Contains('BRIDGE_MODE="capture-only-v19-raster-first"') -and $txt.Contains('view=image-job&strong=1&id=') -and $txt.Contains('BRIDGE SUBMIT VERIFY WARNING')) {
         & $NodePath --check $ImageBridge *> $null
         if ($LASTEXITCODE -eq 0) {
-          Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK"
+          Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK version=v19"
           return $true
         }
       }
     } catch {}
   }
 
-  Write-Log "IMAGE BRIDGE ERROR no hay bridge capture-only válido"
+  Write-Log "IMAGE BRIDGE ERROR no hay bridge v19 válido; no se lanza imagen con código antiguo"
   return $false
 }
 
