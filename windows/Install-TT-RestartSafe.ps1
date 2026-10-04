@@ -1,6 +1,6 @@
 # Install-TT-RestartSafe.ps1
 # Instalacion unificada para TTiTTulares + TTendencias resistente a reinicios/caidas.
-$InstallerVersion="restart-safe-v4-github-api"
+$InstallerVersion="restart-safe-v5-with-selorecordamos"
 $ErrorActionPreference="Stop"
 $BaseDir="C:\TTiTTulares"
 $Startup=[Environment]::GetFolderPath("Startup")
@@ -98,13 +98,24 @@ $tt=StartPs "TTiTTularesDedicatedListener.ps1" "ttittulares-listener"
 $tr=StartPs "TTendenciasDedicatedListener.ps1" "ttendencias-listener"
 $wd=StartPs "TT-LocalWatchdog.ps1" "tt-watchdog"
 
-foreach($taskName in @("TT Chrome Auto","TTiTTulares Local","TTendencias Local")){
+foreach($taskName in @(
+ "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
+ "SeLoRecordamos-Telegram","SeLoRecordamos-Search","SeLoRecordamos-Published","SeLoRecordamos-Watchdog"
+)){
  try{
    $task=Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
    if($task -and $task.State -eq "Disabled"){Enable-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue|Out-Null}
  }catch{}
 }
 try{& schtasks.exe /Run /TN "TT Chrome Auto" 1>$null 2>$null}catch{}
+try{
+ $slr=Get-ScheduledTask -TaskName "SeLoRecordamos-Telegram" -ErrorAction SilentlyContinue
+ if($slr -and $slr.State -ne "Running"){Start-ScheduledTask -TaskName "SeLoRecordamos-Telegram" -ErrorAction SilentlyContinue}
+}catch{}
+try{
+ $slrWd=Get-ScheduledTask -TaskName "SeLoRecordamos-Watchdog" -ErrorAction SilentlyContinue
+ if($slrWd){Start-ScheduledTask -TaskName "SeLoRecordamos-Watchdog" -ErrorAction SilentlyContinue}
+}catch{}
 Start-Sleep -Seconds 4
 
 function CountProc([string]$pat){
@@ -124,6 +135,13 @@ try{$v=Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/version" -TimeoutSec 4
 Write-Host ("TT RESTART-SAFE ACTIVO · "+$InstallerVersion) -ForegroundColor Green
 $checks.GetEnumerator()|ForEach-Object{Write-Host ($_.Key+": "+$_.Value)}
 Write-Host ("Chrome CDP: "+$cdp)
+foreach($n in @("SeLoRecordamos-Telegram","SeLoRecordamos-Search","SeLoRecordamos-Published","SeLoRecordamos-Watchdog")){
+ try{
+   $t=Get-ScheduledTask -TaskName $n -ErrorAction Stop
+   $i=Get-ScheduledTaskInfo -TaskName $n -ErrorAction Stop
+   Write-Host ($n+": "+$t.State+" | LastResult="+$i.LastTaskResult)
+ }catch{Write-Host ($n+": MISSING")}
+}
 Write-Host "Inicio automatico instalado para listeners, updater y watchdog."
 Write-Host "El watchdog mantiene el PC despierto y relanza componentes caidos."
 Write-Host "Tras reiniciar: basta con que exista una sesion de Windows iniciada." -ForegroundColor Green
