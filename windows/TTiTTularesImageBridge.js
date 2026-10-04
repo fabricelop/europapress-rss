@@ -172,6 +172,7 @@ async function waitComposer(cdp,timeoutMs=60000){
 }
 async function openFreshDedicatedConversation(){
   let t=await fixedTarget(true);
+  await progress("fixed_tab","Pestaña física dedicada disponible: "+String(t.id));
   let cdp=new CDP(t.webSocketDebuggerUrl);
   try{
     await cdp.open();
@@ -179,6 +180,7 @@ async function openFreshDedicatedConversation(){
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
     await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
     await waitComposer(cdp,60000);
+    await progress("composer_ready","ChatGPT cargado en la pestaña fija; compositor disponible.");
     // Si ChatGPT restaurase una conversación previa al navegar a raíz, pulsa "Nuevo chat"
     // dentro de LA MISMA pestaña. El target CDP no cambia.
     try{
@@ -202,6 +204,7 @@ async function openFreshDedicatedConversation(){
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
     await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
     await waitComposer(cdp,60000);
+    await progress("composer_ready","Pestaña fija recreada; compositor disponible.");
     console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id));
     return cdp
   }
@@ -586,6 +589,12 @@ async function post(body){
   let d={};try{d=await r.json()}catch{}
   return {ok:r.ok,status:r.status,data:d}
 }
+async function progress(phase,detail){
+  try{
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v1",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
+  }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
+}
 async function fail(reason){
   try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v1",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
@@ -613,9 +622,12 @@ async function uploadImage(image){
     cdp=await ensureSubmitted(cdp,job);
     cdp.acceptInitialRaster=true;
     console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED");
+    await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
     const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v1"});
     if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
+    await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña.");
     const image=await capture(cdp,job);
+    await progress("raster_captured","Raster ImageGen capturado; validando y materializando.");
     if(image.width<640||image.height<360)throw Error("Raster capturado inferior a 640x360");
     console.log("BRIDGE IMAGE "+image.capture+" "+image.width+"x"+image.height);
     const up=await uploadImage(image);
