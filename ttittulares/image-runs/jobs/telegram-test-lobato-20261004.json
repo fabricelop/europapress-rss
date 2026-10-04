@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-test-lobato-20261004-1455",
   "requested_at": "2026-10-04T12:55:00Z",
-  "updated_at": "2026-10-04T13:24:31.547Z",
-  "status": "RUNNING",
-  "phase": "pc_launch",
+  "updated_at": "2026-10-04T13:25:54.038Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -32,9 +32,10 @@
     "visual": "Gag visual claramente cómico, satírico, irónico y exagerado: cabina de comentarista de F1 desbordada por lluvia y neumáticos de lluvia, una escena 16:9, no una ilustración literal.",
     "lifecycle": "El bridge capture-only debe recoger el raster real; después GitHub Actions lo envía como fichero a Telegram."
   },
-  "message": "PC ha abierto el chat de imagen; esperando ImageGen.",
+  "message": "No se encontró el chat lanzado tras observar cambios de estado en 90 segundos; {\"hasMarker\":false,\"bodyMarker\":false,\"composerMarker\":false,\"targetMarker\":false,\"imageTitle\":false,\"generating\":false,\"turns\":0,\"images\":0,",
   "pc_upload_secret_hash": "1090c7d47be529f6d86a4202e65ecd8c67c636b39076965e1f41d30cbedde133",
-  "pc_worker_id": "ttittulares-dedicated-v19",
+  "pc_worker_id": "ttittulares-image-bridge-v1",
   "pc_picked_up_at": "2026-10-04T13:24:21.673Z",
-  "pc_launched_at": "2026-10-04T13:24:31.547Z"
+  "pc_launched_at": "2026-10-04T13:24:31.547Z",
+  "finished_at": "2026-10-04T13:25:54.038Z"
 }
