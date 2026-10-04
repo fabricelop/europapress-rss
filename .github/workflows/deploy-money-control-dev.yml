@@ -34,12 +34,11 @@ jobs:
           const m=html.match(/<script>([\s\S]*)<\/script>/);
           if(!m)throw new Error('Script no encontrado');
           new Function(m[1]);
-          for(const x of ['nativeTransactions:[]','money-control-update','Aplicar actualización','function duplicateAssessment(']){
+          for(const x of ['nativeTransactions:[]','function duplicateAssessment(','Habla con Money Control','function analyzeIngest()','description:\'Ajuste\'']){
             if(!html.includes(x))throw new Error('Falta '+x);
           }
           console.log('MONEY_CONTROL_DEV_VALIDATED');
           NODE
-          node --check vercel-webhook/api/money-control-snapshot.js
-          node --check vercel-webhook/api/money-control-state.js
+          node --check vercel-webhook/api/money-control-interpret.js
       - name: Publicar preview mínima Money Control
         run: node .github/scripts/deploy-money-control-dev.mjs
