@@ -1136,9 +1136,30 @@ function renderProcessing(list){
      card.querySelector(".problem-reason").textContent=processingOutcomeReason(item);
      card.querySelector(".reopen-outcome").onclick=async()=>{
        if(!confirm("¿Volver a elaborar esta noticia de todas formas? El siguiente pase respetará esta decisión aunque antes se descartara como duplicada o no material."))return;
-       const btn=card.querySelector(".reopen-outcome");btn.disabled=true;
-       try{await api("reopen-outcome",{event_id:item.event_id});toast("Reabierta para elaboración");await load(true);setView("processing")}
-       catch(err){btn.disabled=false;toast(err.message)}
+       const btn=card.querySelector(".reopen-outcome"),id=String(item.event_id||"");btn.disabled=true;
+       const previousItems=[...(model.status?.processing_items||[])],previousOutcomes=[...(model.status?.processing_outcomes||[])];
+       // Movimiento optimista: la decisión del usuario se refleja al instante.
+       // El backend sigue siendo autoritativo y, si falla, hacemos rollback visual.
+       const optimistic={
+         ...item,status:"PROCESSING",selected_at:new Date().toISOString(),
+         selection_mode:"MANUAL_REOPEN_OUTCOME",force_user_elaborate:true
+       };
+       model.status.processing_outcomes=previousOutcomes.filter(x=>String(x.event_id||"")!==id);
+       model.status.processing_items=[optimistic,...previousItems.filter(x=>String(x.event_id||"")!==id)];
+       model.status.processing_outcomes_count=model.status.processing_outcomes.length;
+       model.status.processing_count=model.status.processing_items.length;
+       renderList();
+       try{
+         await api("reopen-outcome",{event_id:item.event_id});
+         toast("Reabierta para elaboración");
+         await load(true);setView("processing")
+       }catch(err){
+         model.status.processing_items=previousItems;
+         model.status.processing_outcomes=previousOutcomes;
+         model.status.processing_count=previousItems.length;
+         model.status.processing_outcomes_count=previousOutcomes.length;
+         renderList();toast(err.message)
+       }
      };
      card.querySelector(".hide-outcome").onclick=async()=>{
        if(!confirm("¿Borrar esta salida de la bandeja? No volverá a aparecer."))return;
