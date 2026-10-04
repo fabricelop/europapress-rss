@@ -95,7 +95,7 @@ El reparador de Explicadas revalida `id + revision`, genera o regenera IA ausent
 
 ### Contexto para el job de imagen
 
-Cuando el usuario pulsa **Imágenes**, el backend crea un job dedicado y congela un `context_snapshot` con, como mínimo:
+Todo job de imagen —creado automáticamente por el reparador o manualmente desde **Imágenes**— congela un `context_snapshot` con, como mínimo:
 - `name`, `id` y `revision`;
 - `explanation` factual ya verificada;
 - `closer_text`/remate exacto;
@@ -180,7 +180,7 @@ Al comenzar cada pasada revisa también las Explicadas recientes con `rewrite_pe
 - usa `rewrite_instruction` guardada como hipótesis/contexto aportado por el usuario;
 - vuelve a investigar desde cero el motivo actual de la tendencia, contrasta ese contexto con fuentes actuales y reescribe la explicación factual; genera un remate nuevo solo si procede;
 - Reexplicar es exclusivamente editorial: no llama a ImageGen ni dispara imágenes;
-- la nueva revisión normal queda con `with_image:true` para que vuelva a ser seleccionable manualmente en Explicadas; Tremending conserva su captura real y sigue sin usar ImageGen;
+- la nueva revisión normal queda con `with_image:true` para que vuelva a entrar en la reparación visual automática de Explicadas; el panel conserva la selección manual como override. Tremending conserva su captura real y sigue sin usar ImageGen;
 - al materializar la nueva revisión, elimina `rewrite_pending` de la revisión anterior;
 - si la nueva revisión queda terminalmente fallida, conserva una razón explícita y limpia igualmente la marca para no crear un bucle.
 
