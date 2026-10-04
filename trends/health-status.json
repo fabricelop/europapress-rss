@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-04T16:59:04.305786+00:00",
+  "checked_at": "2026-10-04T20:04:53.876213+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.9,
-      "run_id": 37218720449,
+      "age_minutes": 1.0,
+      "run_id": 37230617105,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,27 +75,58 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 10,
+      "overdue_count": 3,
+      "oldest_age_minutes": 103.2,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "b1654d6cc28d",
+          "name": "Cataluña",
+          "status": "preparing",
+          "age_minutes": 103.2
+        },
+        {
+          "id": "71f3ec3c8ac9",
+          "name": "Pina",
+          "status": "preparing",
+          "age_minutes": 103.2
+        },
+        {
+          "id": "3cc4df10a4bf",
+          "name": "Esponjitas",
+          "status": "preparing",
+          "age_minutes": 59.8
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "3ce5afef7763",
+        "3947a38f094f",
+        "b1654d6cc28d",
+        "71f3ec3c8ac9",
+        "3cc4df10a4bf",
+        "bab052f37217",
+        "d933cc72e8f4",
+        "00f71f925669",
+        "057dc616ed1d",
+        "cd03f22f4fb4"
+      ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "config TTendencias incompatible con el modo activo"
+    "config TTendencias incompatible con el modo activo",
+    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 103.2 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 103.2 min | config TTendencias incompatible con el modo activo"
 }
