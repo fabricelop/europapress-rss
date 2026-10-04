@@ -3,8 +3,8 @@ name: Watchdog radar TTiTTulares
 on:
   workflow_dispatch:
   schedule:
-    # Desfasado 5 minutos respecto al reloj principal. Solo actúa si el radar
-    # lleva demasiado tiempo sin actualizarse.
+    # Desfasado 5 minutos respecto al reloj principal. Comprueba siempre el
+    # radar: last_run por sí solo no demuestra que la ingestión esté sana.
     - cron: '5,15,25,35,45,55 * * * *'
   push:
     branches: [main]
@@ -18,8 +18,6 @@ permissions:
   contents: write
 
 concurrency:
-  # Independiente del workflow monolítico: si este se atasca, el watchdog
-  # debe poder recuperar TTiTTulares sin esperar detrás de él.
   group: ttittulares-radar-watchdog
   cancel-in-progress: false
 
@@ -32,51 +30,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Comprobar frescura del radar
-        id: freshness
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-        run: |
-          python3 - <<'PY'
-          import json, os
-          from datetime import datetime, timezone
-          from pathlib import Path
-
-          force = os.environ.get("EVENT_NAME") in {"workflow_dispatch", "push"}
-          stale = force
-          age = None
-          try:
-              data = json.loads(Path("telegram/events.json").read_text(encoding="utf-8"))
-              stamp = str(data.get("last_run") or "")
-              last = datetime.fromisoformat(stamp.replace("Z","+00:00")).astimezone(timezone.utc)
-              age = (datetime.now(timezone.utc) - last).total_seconds()
-              if age >= 9 * 60:
-                  stale = True
-          except Exception as exc:
-              print("No se pudo validar last_run:", exc)
-              stale = True
-
-          print("RADAR_AGE_SECONDS", None if age is None else round(age, 1))
-          print("RADAR_WATCHDOG_STALE", stale)
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
-              fh.write(f"stale={'true' if stale else 'false'}\n")
-          PY
-
       - name: Preparar Python
-        if: steps.freshness.outputs.stale == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Instalar dependencias del radar
-        if: steps.freshness.outputs.stale == 'true'
         run: |
           python -m pip install --upgrade pip
           python -m pip install --quiet Pillow
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Recuperar y guardar radar TTiTTulares
-        if: steps.freshness.outputs.stale == 'true'
+      - name: Verificar, recuperar y guardar radar TTiTTulares
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -84,6 +49,9 @@ jobs:
           git config user.name "ttittulares-radar-watchdog"
           git config user.email "actions@users.noreply.github.com"
 
+          # Ejecutamos la captación real en cada tick del watchdog. Esto evita
+          # el falso positivo anterior: otro proceso podía refrescar last_run
+          # aunque las fuentes no hubieran aportado las noticias recientes.
           for intento in 1 2 3 4; do
             git fetch origin main
             git reset --hard origin/main
@@ -101,11 +69,11 @@ jobs:
             git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
 
             if git diff --cached --quiet; then
-              echo "Radar sin cambios."
+              echo "Radar verificado: sin cambios nuevos."
               exit 0
             fi
 
-            git commit -m "Recuperar radar TTiTTulares"
+            git commit -m "Actualizar radar TTiTTulares"
             git fetch origin main
             BASE="$(git rev-parse HEAD^)"
             REMOTE="$(git rev-parse origin/main)"
@@ -127,13 +95,14 @@ jobs:
                   continue
                 fi
               else
-                echo "Estado TTiTTulares ya fue actualizado en paralelo; se descarta este snapshot antiguo."
-                exit 0
+                echo "Estado TTiTTulares actualizado en paralelo; recalculando para no perder entradas."
+                sleep $((intento * 2))
+                continue
               fi
             fi
 
             if git push origin HEAD:main; then
-              echo "Radar recuperado correctamente."
+              echo "Radar actualizado correctamente."
               exit 0
             fi
 
@@ -143,7 +112,3 @@ jobs:
 
           echo "ERROR: watchdog no pudo guardar el radar tras 4 intentos."
           exit 1
-
-      - name: Radar todavía fresco
-        if: steps.freshness.outputs.stale != 'true'
-        run: echo "Radar fresco; watchdog no interviene."
