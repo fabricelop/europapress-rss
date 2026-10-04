@@ -24488,13 +24488,13 @@
       ],
       "duplicate_of": null,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 1,
       "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "rewrite_pending": false,
       "fallback_image": {
         "url": "https://www.diariosigloxxi.com/images/20537",
@@ -24505,15 +24505,53 @@
         "generated": false
       },
       "image": {
-        "url": "https://www.diariosigloxxi.com/images/20537",
-        "source": "Europa Press / Diario Siglo XXI · 4/10/2026",
-        "source_url": "https://www.diariosigloxxi.com/texto-ep/mostrar/20261004121312/proteccion-civil-envia-alert-comarcas-girona-riesgo-desborde-ridaura-daro",
-        "alt": "Imagen de archivo relacionada con Girona",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ed81bf20d9b4-r0-ai1-791152469332.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "4873e3afb5fb5145c3af47e9054ff35353a88bf11d50260c4b27e448d755cf4f",
+        "width": 1600,
+        "height": 900,
+        "bytes": 624182,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ed81bf20d9b4",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-ed81bf20d9b4-r0-a1-1791152469332"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ed81bf20d9b4-r0-ai1-791152469332.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ed81bf20d9b4-r0-ai1-791152469332.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "4873e3afb5fb5145c3af47e9054ff35353a88bf11d50260c4b27e448d755cf4f",
+        "width": 1600,
+        "height": 900,
+        "bytes": 624182,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ed81bf20d9b4",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-ed81bf20d9b4-r0-a1-1791152469332"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ed81bf20d9b4-r0-ai1-791152469332.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-04T22:22:22.864Z"
     }
   ],
-  "updated_at": "2026-10-04T22:20:24.291851Z",
+  "updated_at": "2026-10-04T22:22:22.864Z",
   "count": 534
 }
