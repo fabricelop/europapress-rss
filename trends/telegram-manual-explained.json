@@ -23474,14 +23474,61 @@
         "#DragRaceEs"
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
-      "image_status": "none",
+      "ai_image_status": "ready",
+      "image_status": "ready",
       "image_pending": false,
       "news_note": "Conversación de emisión televisiva; no es noticia independiente para el puente.",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "none",
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
-      "image_choice": "none"
+      "image_choice": "ai",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/3947a38f094f-r2-ai1-791146486125.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "89cb8ca0530b541c7162f5cd5409266b8b088952b671cb4d400c4ad2cf0c85bc",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2687770,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "3947a38f094f",
+          "revision": 2,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-3947a38f094f-r2-a1-1791146486125"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/3947a38f094f-r2-ai1-791146486125.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-04T20:57:05.537Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/3947a38f094f-r2-ai1-791146486125.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "89cb8ca0530b541c7162f5cd5409266b8b088952b671cb4d400c4ad2cf0c85bc",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2687770,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "3947a38f094f",
+          "revision": 2,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-3947a38f094f-r2-a1-1791146486125"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/3947a38f094f-r2-ai1-791146486125.png",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     },
     {
       "id": "c149412bbb68",
@@ -23791,6 +23838,6 @@
       "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-04T22:55:56+02:00",
+  "updated_at": "2026-10-04T20:57:05.537Z",
   "count": 528
 }
