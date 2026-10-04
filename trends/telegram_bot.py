@@ -22,6 +22,7 @@ REQUESTS = ROOT / "requests.json"
 PREPARED = ROOT / "prepared.json"
 IMAGE_DELIVERIES = ROOT / "telegram-image-deliveries.json"
 PACKAGE_STATE = ROOT / "telegram-package-listener-state.json"
+COPY_STATE = ROOT / "explained-copy-state.json"
 
 TOKEN = os.environ["TTENDENCIAS_BOT_TOKEN"]
 API = f"https://api.telegram.org/bot{TOKEN}/"
@@ -135,6 +136,7 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
         ("trends/telegram-image-deliveries.json", IMAGE_DELIVERIES),
         ("trends/telegram-manual-explained.json", MANUAL),
         ("trends/telegram-package-listener-state.json", PACKAGE_STATE),
+        ("trends/explained-copy-state.json", COPY_STATE),
     ):
         if path.exists():
             dst = tmp / path.name
@@ -212,11 +214,28 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
         remote_state["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
         save(PACKAGE_STATE, remote_state)
 
+        remote_copy = load(COPY_STATE, {"version": 1, "items": []})
+        local_copy = load(snapshots.get("trends/explained-copy-state.json", Path("/nonexistent")), {"items": []})
+        copy_keys = {
+            (str(x.get("item_id") or ""), int(x.get("revision") or 0))
+            for x in remote_copy.get("items", [])
+        }
+        for incoming in local_copy.get("items", []):
+            key = (str(incoming.get("item_id") or ""), int(incoming.get("revision") or 0))
+            if not key[0] or key in copy_keys:
+                continue
+            remote_copy.setdefault("items", []).append(incoming)
+            copy_keys.add(key)
+        remote_copy["count"] = len(remote_copy.get("items", []))
+        remote_copy["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+        save(COPY_STATE, remote_copy)
+
         subprocess.run([
             "git", "add",
             "trends/telegram-image-deliveries.json",
             "trends/telegram-manual-explained.json",
             "trends/telegram-package-listener-state.json",
+            "trends/explained-copy-state.json",
         ], check=False)
         if subprocess.run(["git", "diff", "--cached", "--quiet"], check=False).returncode == 0:
             return True
@@ -266,6 +285,10 @@ def handle_package_callback(callback):
         "trends/telegram-manual-explained.json",
         load(MANUAL, {"items": []}),
     )
+    copy_state = load_remote_json(
+        "trends/explained-copy-state.json",
+        load(COPY_STATE, {"version": 1, "items": []}),
+    )
 
     status = "published" if action == "p" else "dismissed"
     now = datetime.now(MADRID).isoformat(timespec="seconds")
@@ -310,8 +333,32 @@ def handle_package_callback(callback):
             pass
         return True
 
+    existing_copy = {
+        (str(x.get("item_id") or ""), int(x.get("revision") or 0))
+        for x in copy_state.get("items", [])
+    }
+    if (trend_id, revision) not in existing_copy:
+        source_row = next(
+            (x for x in manual.get("items", [])
+             if str(x.get("id") or "") == trend_id and int(x.get("revision") or 0) == revision),
+            {},
+        )
+        copy_state.setdefault("items", []).append({
+            "item_id": trend_id,
+            "revision": revision,
+            "copied_at": now,
+            "trend_names": source_row.get("trend_names") or ([source_row.get("name")] if source_row.get("name") else []),
+            "explanation": str(source_row.get("explanation") or ""),
+            "copy_key": str(source_row.get("copy_key") or f"{trend_id}:r{revision}"),
+            "closed_from": "telegram_package",
+            "telegram_package_status": status,
+        })
+        copy_state["count"] = len(copy_state["items"])
+        copy_state["updated_at"] = now
+
     save(IMAGE_DELIVERIES, deliveries)
     save(MANUAL, manual)
+    save(COPY_STATE, copy_state)
 
     if not persist_package_state("Cerrar paquete TTendencias desde Telegram"):
         try:
