@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   group: ttittulares-ready-telegram
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deliver:
@@ -24,6 +24,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Sincronizar estado autoritativo
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
 
       - name: Instalar cliente HTTP
         run: python3 -m pip install --quiet requests
@@ -180,16 +185,20 @@ jobs:
               image_sha=str(ai.get("sha256") or "").strip().lower()
               delivery_key=f"{eid}:r{rev}:{image_sha}"
               current=None
+              event_delivery=None
               for row in reversed(deliveries.get("items",[])):
+                  if event_delivery is None and str(row.get("event_id") or "")==eid and int(row.get("revision") or 0)==rev and str(row.get("status") or "").lower()=="sent":
+                      event_delivery=row
                   if str(row.get("delivery_key") or "")==delivery_key and str(row.get("status") or "").lower()=="sent":
                       current=row
                       break
 
               archive=archive_obj(item)
               archive_url=str(archive.get("url") or "").strip()
-              archive_mid=int((current or {}).get("archive_telegram_message_id") or 0)
-              archive_sha=str((current or {}).get("archive_sha256") or "")
-              archive_copy_url=str((current or {}).get("archive_materialized_url") or "")
+              archive_source=current or event_delivery or {}
+              archive_mid=int(archive_source.get("archive_telegram_message_id") or 0)
+              archive_sha=str(archive_source.get("archive_sha256") or "")
+              archive_copy_url=str(archive_source.get("archive_materialized_url") or "")
 
               # Materializa el archivo en GitHub para que Copiar imagen use el mismo helper fiable que la IA.
               if archive_url and not archive_copy_url:
