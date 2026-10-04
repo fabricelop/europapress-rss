@@ -12,6 +12,21 @@ La ejecución directa —incluida la lanzada por la programación de Windows que
 
 1. Antes de investigar, lee los comentarios del PR #7 y localiza el comentario canónico `TTENDENCIAS_RUNTRACE_V1` con `"canonical":true` (actualmente comment_id `5859532515`). Si no existe, créalo una sola vez. Actualiza ESE MISMO comentario a `RUNNING` con un `run_id` nuevo, `source:"chat"`, `started_at`, `updated_at`, `phase:"preparing"`, `current:0`, `total` real y resumen vacío. Nunca crees un comentario RUNTRACE nuevo por cada pasada.
 2. Actualiza ese comentario durante las fases reales `investigating`, `drafting`, `remate_selection`, `persisting`, `verifying` y `closing`. `remate_selection` se usa solo cuando se está evaluando el remate. No uses `image_generating` ni `image_persisting` en una pasada editorial normal: la capa visual se ejecuta asíncronamente después de `explained`, mediante jobs independientes automáticos o un override manual.
+
+#### Telemetría visible de grano fino
+
+El panel de control debe poder contar **qué estás haciendo ahora**, no solo que la ejecución está activa. Por ello, el mismo comentario RUNTRACE se actualiza antes y después de cada paso significativo y siempre contiene `trend_id`, `title`, `current`, `total`, `phase` y un `message` humano, concreto y breve.
+
+Para CADA tendencia/grupo, actualiza el RUNTRACE como mínimo en estos hitos, sin agruparlos en un único salto:
+- JIT: `phase:"verifying"`, mensaje «Releyendo estado autoritativo de <nombre>».
+- Investigación: `phase:"investigating"`, mensajes que indiquen la acción real: «Buscando detonante actual», «Contrastando fuente 1/2», «Contrastando fuente 2/2», «Hecho esencial verificado» o el motivo concreto por el que no se verifica.
+- Redacción: `phase:"drafting"`, mensajes «Redactando explicación factual» y «Comprobando límite de X».
+- Remate: si procede, `phase:"remate_selection"` con «Generando candidatos de remate», «Evaluando candidatos con ratings» y «Remate seleccionado»; si se omite, mensaje explícito «Sin remate · explicación factual suficiente».
+- Persistencia: `phase:"persisting"`, mensajes separados «Guardando ficha Explicada», «Actualizando requests», «Retirando revisión de la cola».
+- Verificación: `phase:"verifying"`, mensajes «Releyendo main», «Verificando id+revision y texto persistido» y finalmente «Tendencia cerrada y verificada».
+- Cambio de entrada: antes de empezar la siguiente, incrementa `current` y cambia inmediatamente `trend_id/title`; nunca dejes en pantalla el nombre anterior mientras trabajas otra tendencia.
+
+Si una búsqueda web, escritura GitHub o relectura tarda varios segundos, publica el mensaje **antes** de ejecutarla. Si una operación devuelve un resultado material, actualiza de nuevo el mensaje al terminar. No inventes actividad: el mensaje describe exactamente la operación real que acaba de empezar o terminar.
 3. Al terminar, incluso con cola vacía o con 0 explicaciones cerradas, cierra el mismo RUNTRACE como `DONE` (o `DONE_WITH_INCIDENTS` si hubo incidencias no globales; `ERROR` solo ante fallo global), con `finished_at`, `updated_at` y `summary` real.
    - `summary.visual_backlog` se mantiene por compatibilidad y debe ser `0` en una ejecución editorial normal. Las imágenes manuales tienen lifecycle independiente y nunca provocan una pasada editorial automática de seguimiento.
 4. En el mismo cierre persiste `trends/editorial-runtime.json` como telemetría durable. Conserva compatibilidad con sus campos existentes y añade/actualiza:
