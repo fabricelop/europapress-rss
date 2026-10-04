@@ -17,7 +17,8 @@ DELIVERIES=ROOT/"trends/telegram-image-deliveries.json"
 BOT_STATE=ROOT/"trends/telegram-bot-state.json"
 ARCHIVE_DIR=ROOT/"trends/archive-images"
 WORKER="https://tt-control.fabricelop.workers.dev"
-BUTTONS_VERSION=3
+APP_URL=str(os.environ.get("TTENDENCIAS_APP_URL") or "https://europapress-rss-fabricelopezillac-9660.vercel.app").rstrip("/")
+BUTTONS_VERSION=4
 TERMINAL={"published","dismissed"}
 
 
@@ -194,6 +195,13 @@ def trend_search_term(row):
     return str(row.get("name") or "").strip()
 
 
+def reexplain_url(tid,rev):
+    return APP_URL+"/ttendencias/explicadas/?"+urllib.parse.urlencode({
+        "open":f"{tid}:r{int(rev)}",
+        "reexplain":"1",
+    })
+
+
 def keyboard(tid,rev,text,ai_url,archive_url="",search_term=""):
     rows=[[{"text":"🖼️ Copiar imagen IA","url":q(WORKER+"/copy-image",{"src":ai_url})}]]
     if archive_url:
@@ -206,8 +214,11 @@ def keyboard(tid,rev,text,ai_url,archive_url="",search_term=""):
         copy_button,
         {"text":"✍️ Abrir en X","url":q(WORKER+"/x-compose",{"text":text})}
     ])
+    action_row=[]
     if str(search_term or "").strip():
-        rows.append([{"text":"🔎 Buscar en X","url":x_search_url(search_term)}])
+        action_row.append({"text":"🔎 Buscar en X","url":x_search_url(search_term)})
+    action_row.append({"text":"🔄 Reexplicar","url":reexplain_url(tid,rev)})
+    rows.append(action_row)
     rows.append([
         {"text":"🗑️ Desestimar","callback_data":f"tx:d:{tid}:{rev}"},
         {"text":"✅ Publicado","callback_data":f"tx:p:{tid}:{rev}"}
@@ -419,7 +430,7 @@ def selftest():
     kb=keyboard("abc123",2,"TT#1 Demo es tendencia porque ocurre algo.\n🌶️ Remate.","https://example.com/ai.png","https://example.com/archive.jpg","Demo")
     rows=kb.get("inline_keyboard") or []
     labels=[b.get("text") for row in rows for b in row]
-    expected={"🖼️ Copiar imagen IA","🗂️ Copiar imagen archivo","📋 Copiar texto","✍️ Abrir en X","🔎 Buscar en X","🗑️ Desestimar","✅ Publicado"}
+    expected={"🖼️ Copiar imagen IA","🗂️ Copiar imagen archivo","📋 Copiar texto","✍️ Abrir en X","🔎 Buscar en X","🔄 Reexplicar","🗑️ Desestimar","✅ Publicado"}
     if not expected.issubset(set(labels)):
         raise SystemExit("SELFTEST keyboard incompleto: "+repr(labels))
     callbacks=[b.get("callback_data") for row in rows for b in row if b.get("callback_data")]
