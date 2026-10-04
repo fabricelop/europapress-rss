@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-v28-mutqb76h",
-  "requested_at": "2026-10-04T11:19:51.833Z",
-  "updated_at": "2026-10-04T11:21:32.881Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-v28c-mutqj9r6",
+  "requested_at": "2026-10-04T11:26:08.418Z",
+  "updated_at": "2026-10-04T11:26:08.418Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,7 +14,7 @@
   "trend_id": "ab55faea6d66",
   "target_name": "San Francisco de Asís",
   "revision": 0,
-  "attempt": 8,
+  "attempt": 9,
   "chat_command_version": 3,
   "instruction_profile": "ttendencias_gag_v1",
   "context_snapshot": {
@@ -47,10 +47,5 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
   },
-  "message": "No se encontró el chat lanzado tras observar cambios de estado en 90 segundos; {\"hasMarker\":false,\"bodyMarker\":false,\"composerMarker\":false,\"targetMarker\":false,\"imageTitle\":false,\"generating\":false,\"turns\":0,\"images\":0,",
-  "pc_upload_secret_hash": "af8789339da47d2dc1b8329438af9f20c899cfdcb11fe3505b22cba3c2236fa7",
-  "pc_worker_id": "ttendencias-image-bridge-v1",
-  "pc_picked_up_at": "2026-10-04T11:20:00.118Z",
-  "pc_launched_at": "2026-10-04T11:20:13.304Z",
-  "finished_at": "2026-10-04T11:21:32.881Z"
+  "message": "Prueba limpia v28 compatible con listener residente."
 }
