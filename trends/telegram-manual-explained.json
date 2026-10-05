@@ -27883,9 +27883,9 @@
       ],
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -27916,13 +27916,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://imagenes.elpais.com/resizer/v2/XVOPGA743ZHA3E2K2Y4FLFITSA.png?auth=dee05497a883475e9530bb4e498c2115f778bf0857e407a3a2a17c95a33f5dd9&width=1200",
-        "source": "El País · 5/10/2026",
-        "source_url": "https://elpais.com/espana/2026-10-05/el-tiron-de-vox-mantiene-al-bloque-de-la-derecha-en-el-50-en-plena-conmocion-por-maricarmen.html",
-        "alt": "Imagen de archivo relacionada con SALF",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/586304ff2756-r0-ai1-791203284950.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "1efd790bb079623ce624c89e96db78057adc583e73e1a475dbfaedbe72074cee",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2721993,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "586304ff2756",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-586304ff2756-r0-a1-1791203284950"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/586304ff2756-r0-ai1-791203284950.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/586304ff2756-r0-ai1-791203284950.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "1efd790bb079623ce624c89e96db78057adc583e73e1a475dbfaedbe72074cee",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2721993,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "586304ff2756",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-586304ff2756-r0-a1-1791203284950"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/586304ff2756-r0-ai1-791203284950.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T12:30:31.525Z"
     },
     {
       "id": "4cce8b25488a",
@@ -28009,6 +28048,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-05T14:30:21+02:00",
+  "updated_at": "2026-10-05T12:30:31.525Z",
   "count": 561
 }
