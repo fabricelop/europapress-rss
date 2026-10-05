@@ -32,6 +32,16 @@ async function gh(path, options = {}) {
   });
 }
 
+async function dispatchWorkflow(workflowFile) {
+  const r = await gh(`actions/workflows/${encodeURIComponent(workflowFile)}/dispatches`, {
+    method: "POST",
+    headers: {"content-type":"application/json"},
+    body: JSON.stringify({ref: BRANCH}),
+  });
+  if (!r.ok) throw new Error(`GitHub workflow dispatch ${workflowFile}: ${r.status} ${await r.text()}`);
+  return true;
+}
+
 
 async function mutateJsonFile(path, message, mutator) {
   for (let attempt = 1; attempt <= 6; attempt++) {
@@ -321,6 +331,12 @@ export default async function handler(req, res) {
             requestObj(update,"emergency_action",decision+"|"+id),
             EMERGENCY_QUEUE
           );
+          let dispatched = false;
+          try {
+            dispatched = await dispatchWorkflow("process-ttittulares-telegram-decisions.yml");
+          } catch (dispatchError) {
+            console.error("TTiTTulares decision workflow dispatch failed", dispatchError);
+          }
           await safeTelegram("answerCallbackQuery",{
             callback_query_id:cq.id,
             text:stored
@@ -329,7 +345,7 @@ export default async function handler(req, res) {
           });
           // No borrar aquí: process-ttittulares-telegram-decisions.yml serializa
           // el cierre, persiste todos los ficheros y solo entonces borra Telegram.
-          return res.status(200).json({ok:true,stored,event_id:id,decision});
+          return res.status(200).json({ok:true,stored,dispatched,event_id:id,decision});
         } catch (e) {
           console.error("TTiTTulares queue from Telegram", e);
           await safeTelegram("answerCallbackQuery",{
