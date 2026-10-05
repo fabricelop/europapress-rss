@@ -35,7 +35,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, pathlib, re, urllib.parse
+          import json, pathlib, re, urllib.parse, time, hashlib
           from datetime import datetime, timezone
           from html.parser import HTMLParser
           import requests
