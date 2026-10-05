@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T10:44:38.597221Z",
+  "updated_at": "2026-10-05T10:46:14.778Z",
   "items": [
     {
       "event_id": "c1361e1f39d8",
@@ -177,10 +177,10 @@
       "trend_context": [],
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -196,12 +196,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T10:39:19.695994Z",
       "image": {
-        "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2025/12/05/6932cda40be570-13665465.jpeg",
-        "source": "20minutos",
-        "source_url": "https://www.20minutos.es/cataluna/illa-traslada-sanchez-su-apoyo-tras-adelanto-electoral-es-momento-decidir-entre-seguir-avanzando-volver-atras_7044769_0.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Junts: \"Si Sánchez antepone vivienda, nos llamará. Si antepone el PSOE, habrá elecciones\""
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/430ddeab4eb1-r1-ai1-791196807061.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b9429b972c9021ef0c84dbf5e7a6058f07b6f7452b23fb77b29089d33a4aa778",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2717156,
+        "context_guard": {
+          "version": 3,
+          "event_id": "430ddeab4eb1",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-430ddeab4eb1-r1-a1-1791196807061"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/430ddeab4eb1-r1-ai1-791196807061.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2025/12/05/6932cda40be570-13665465.jpeg",
@@ -210,7 +224,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Junts: \"Si Sánchez antepone vivienda, nos llamará. Si antepone el PSOE, habrá elecciones\""
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/430ddeab4eb1-r1-ai1-791196807061.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b9429b972c9021ef0c84dbf5e7a6058f07b6f7452b23fb77b29089d33a4aa778",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2717156,
+        "context_guard": {
+          "version": 3,
+          "event_id": "430ddeab4eb1",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-430ddeab4eb1-r1-a1-1791196807061"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/430ddeab4eb1-r1-ai1-791196807061.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T10:46:14.778Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T10:46:14.778Z"
     }
   ],
   "count": 11
