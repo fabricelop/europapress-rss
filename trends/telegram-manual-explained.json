@@ -26362,7 +26362,7 @@
           "revision": 0
         }
       ],
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -26377,14 +26377,53 @@
       },
       "fallback_image_status": "ready",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005102608_1200.jpg",
-        "source": "Europa Press · 5/10/2026",
-        "source_url": "https://www.europapress.es/nacional/noticia-feijoo-apela-cambio-reconstruccion-nacional-cree-sanchez-merece-mayor-castigos-20261005102608.html",
-        "alt": "Imagen de archivo relacionada con Feijoo",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/b4c3409ccc4d-r0-ai1-791192040235.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "e46b8d31b8e07ad0fbb3ae4c136e4491d4495bb8018937b5021cb56c5fe817f5",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2276539,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "b4c3409ccc4d",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-b4c3409ccc4d-r0-a1-1791192040235"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/b4c3409ccc4d-r0-ai1-791192040235.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
-      "image_choice": "fallback"
+      "image_choice": "ai",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/b4c3409ccc4d-r0-ai1-791192040235.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "e46b8d31b8e07ad0fbb3ae4c136e4491d4495bb8018937b5021cb56c5fe817f5",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2276539,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "b4c3409ccc4d",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-b4c3409ccc4d-r0-a1-1791192040235"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/b4c3409ccc4d-r0-ai1-791192040235.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T09:22:24.621Z"
     },
     {
       "id": "914cf3da7267",
@@ -26487,6 +26526,6 @@
       "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-05T09:20:38.026451Z",
+  "updated_at": "2026-10-05T09:22:24.621Z",
   "count": 548
 }
