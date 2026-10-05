@@ -19551,10 +19551,10 @@
     {
       "id": "a032079b6888",
       "name": "Votar",
-      "revision": 0,
-      "status": "explained",
-      "requested_at": "2026-10-02T14:16:36.443Z",
-      "rank": 19,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-05T12:21:44+02:00",
+      "rank": 4,
       "with_image": true,
       "alternatives_target": 0,
       "anticipated": true,
@@ -19568,7 +19568,6 @@
       ],
       "auto_queued": false,
       "last_attempt_at": "2026-10-02T16:22:00+02:00",
-      "explained_at": "2026-10-02T16:22:00+02:00",
       "explanation": "TT#3 Bustinduy es tendencia por el pleno extraordinario de vivienda: defendió la renovación automática de alquileres; Rufián y Patxi López apoyaron los decretos, mientras Junts, PP y Vox mantuvieron el rechazo y hubo llamamientos a huelga general.",
       "closer_text": "",
       "rank_at_explanation": 3,
@@ -19728,7 +19727,19 @@
       "fallback_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
-      "reexplain": false
+      "reexplain": true,
+      "captured_with": [
+        "#Elecciones",
+        "Pedro Sánchez",
+        "Abascal",
+        "Votar",
+        "Cortés",
+        "29-N",
+        "#LaHora5O",
+        "#Mañaneros5O",
+        "#FelizLunes",
+        "Adamuz"
+      ]
     },
     {
       "id": "e364d2460794",
@@ -29313,7 +29324,7 @@
       "id": "c75f7bc51d0f",
       "name": "#5OctubrESP",
       "rank": 10,
-      "status": "problematic",
+      "status": "inactive",
       "requested_at": "2026-10-05T11:01:59+02:00",
       "revision": 0,
       "reexplain": false,
@@ -29335,7 +29346,9 @@
       "problem_reason": "Tras varias búsquedas exactas del hashtag y variantes no aparece una fuente fiable que identifique su significado o detonante actual. No se publica una explicación por inferencia.",
       "source": "editorial_chat_direct",
       "problematic_attempts": 2,
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "inactive_at": "2026-10-05T12:21:44+02:00",
+      "inactive_reason": "left-top10-radar"
     },
     {
       "id": "96df52cb77aa",
@@ -29522,8 +29535,71 @@
       "image_status": "none",
       "image_pending": false,
       "category": "Desastre"
+    },
+    {
+      "id": "97392049c7ee",
+      "name": "Abascal",
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-10-05T12:21:44+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "389241f20456",
+      "requested_together": [
+        "Abascal"
+      ],
+      "captured_with": [
+        "Abascal",
+        "#Mañaneros5O",
+        "Adamuz"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "113916b38ea5",
+      "name": "#Mañaneros5O",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-10-05T12:21:44+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "389241f20456",
+      "requested_together": [
+        "#Mañaneros5O"
+      ],
+      "captured_with": [
+        "Abascal",
+        "#Mañaneros5O",
+        "Adamuz"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "0f5bf1e8b366",
+      "name": "Adamuz",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-10-05T12:21:44+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "389241f20456",
+      "requested_together": [
+        "Adamuz"
+      ],
+      "captured_with": [
+        "Abascal",
+        "#Mañaneros5O",
+        "Adamuz"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-05T11:54:00+02:00",
+  "updated_at": "2026-10-05T12:21:44+02:00",
   "count": 595
 }
