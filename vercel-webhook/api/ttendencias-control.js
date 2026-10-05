@@ -220,10 +220,27 @@ async function gh(path, options = {}) {
   return r;
 }
 async function readJson(path) {
-  const r = await gh(`contents/${path}?ref=${encodeURIComponent(BRANCH)}`);
+  const r = await gh(`contents/${path}?ref=${encodeURIComponent(BRANCH)}&t=${Date.now()}`, {
+    cache: "no-store",
+    headers: { "cache-control": "no-cache" },
+  });
   if (!r.ok) throw new Error(`GitHub GET ${path}: ${r.status} ${await r.text()}`);
   const file = await r.json();
-  return { doc: JSON.parse(b64decode(file.content) || "{}"), sha: file.sha };
+  let encoded = String(file.content || "").replace(/\n/g, "");
+  // GitHub Contents API omite `content` en ficheros grandes (>1 MB).
+  // Recuperar el blob por SHA evita interpretar como {} requests/explained reales.
+  if (!encoded && file.sha) {
+    const br = await gh(`https://api.github.com/repos/${REPO}/git/blobs/${encodeURIComponent(file.sha)}`, {
+      cache: "no-store",
+      headers: { "cache-control": "no-cache" },
+    });
+    if (!br.ok) throw new Error(`GitHub blob GET ${path}: ${br.status} ${await br.text()}`);
+    const blob = await br.json();
+    encoded = String(blob.content || "").replace(/\n/g, "");
+  }
+  const raw = Buffer.from(encoded, "base64").toString("utf8");
+  if (!raw.trim()) throw new Error(`GitHub GET ${path}: contenido vacío`);
+  return { doc: JSON.parse(raw), sha: file.sha };
 }
 async function readPublicJson(path) {
   const clean = String(path || "").split("/").map(encodeURIComponent).join("/");
