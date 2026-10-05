@@ -1,0 +1,51 @@
+name: Preflight TT Windows
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "windows/TTiTTularesDedicatedListener.ps1"
+      - "windows/TTendenciasDedicatedListener.ps1"
+      - "windows/TT-AutoUpdater.ps1"
+      - "windows/TT-LocalWatchdog.ps1"
+      - "windows/TTiTTularesImageBridge.js"
+      - "windows/TTendenciasImageBridge.js"
+      - ".github/workflows/preflight-tt-windows.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse PowerShell
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $files = @(
+            "windows/TTiTTularesDedicatedListener.ps1",
+            "windows/TTendenciasDedicatedListener.ps1",
+            "windows/TT-AutoUpdater.ps1",
+            "windows/TT-LocalWatchdog.ps1"
+          )
+          foreach ($p in $files) {
+            $tokens=$null; $errors=$null
+            [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p), [ref]$tokens, [ref]$errors)
+            if ($errors.Count) {
+              $errors | ForEach-Object { Write-Host "::error file=$p::$($_.Message)" }
+              throw "PowerShell syntax error: $p"
+            }
+            Write-Host "OK $p"
+          }
+
+      - name: Check Node bridges
+        shell: pwsh
+        run: |
+          node --check windows/TTiTTularesImageBridge.js
+          if ($LASTEXITCODE -ne 0) { throw "TTiTTularesImageBridge.js inválido" }
+          node --check windows/TTendenciasImageBridge.js
+          if ($LASTEXITCODE -ne 0) { throw "TTendenciasImageBridge.js inválido" }
