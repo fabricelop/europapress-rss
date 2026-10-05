@@ -315,17 +315,23 @@ export default async function handler(req, res) {
           await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"Acción no válida.",show_alert:true});
           return res.status(200).json({ok:true,stored:false});
         }
+        const decision = action === "p" ? "ttp" : "ttd";
         try {
-          const status = action === "p" ? "published" : "dismissed";
-          await closeTtiFromTelegram(id, status, Number(msg.message_id || 0));
+          const stored = await appendRequest(
+            requestObj(update,"emergency_action",decision+"|"+id),
+            EMERGENCY_QUEUE
+          );
           await safeTelegram("answerCallbackQuery",{
             callback_query_id:cq.id,
-            text:status === "published" ? "Marcada como publicada." : "Desestimada."
+            text:stored
+              ? (action === "p" ? "✅ Publicado: guardando estado." : "🗑 Desestimado: guardando estado.")
+              : "✅ Estado ya registrado."
           });
-          const telegram_delete=await deleteTtiPackageNow(id,msg.message_id,allowedChat);
-          return res.status(200).json({ok:true,stored:true,event_id:id,status,telegram_delete});
+          // No borrar aquí: process-ttittulares-telegram-decisions.yml serializa
+          // el cierre, persiste todos los ficheros y solo entonces borra Telegram.
+          return res.status(200).json({ok:true,stored,event_id:id,decision});
         } catch (e) {
-          console.error("TTiTTulares close from Telegram", e);
+          console.error("TTiTTulares queue from Telegram", e);
           await safeTelegram("answerCallbackQuery",{
             callback_query_id:cq.id,
             text:"No se pudo guardar el estado. El mensaje se conserva.",
