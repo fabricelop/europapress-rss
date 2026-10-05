@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-04-v30-ack-bypass
+# official-pipeline-restart-token: 2026-10-05-v31-authoritative-ack
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -19,9 +19,11 @@ $ListenerSnapshotUrl = "$StatusBase/api/ttittulares-run-status?view=listener-sna
 $ImageJobUrlBase = "$StatusBase/api/ttittulares-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttittulares-run"
 $DirectTriggerApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/run-now-trigger.json?ref=control%2Fttittulares-run-trigger-v2"
+$DirectAckApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/run-ack.json?ref=control%2Fttittulares-run-trigger-v2"
 $DirectTriggerRefreshSeconds = 60
 $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
+$script:LastAckConflict = $null
 # Protocol compatibility: producción Vercel antigua exige v19; el código local sigue siendo v20/v28.
 $WorkerId = "ttittulares-dedicated-v19"
 $PollSeconds = 15
@@ -104,9 +106,9 @@ function Read-ListenerSnapshot {
   return $script:ListenerSnapshotCache
 }
 
-function Read-TriggerDirect {
+function Read-TriggerDirect([switch]$Force) {
   $now=[DateTimeOffset]::UtcNow
-  if($script:DirectTriggerCache -and (($now-$script:DirectTriggerAt).TotalSeconds -lt $DirectTriggerRefreshSeconds)){
+  if(-not $Force -and $script:DirectTriggerCache -and (($now-$script:DirectTriggerAt).TotalSeconds -lt $DirectTriggerRefreshSeconds)){
     return $script:DirectTriggerCache
   }
   try{
@@ -150,9 +152,26 @@ function Read-Trigger {
 
 function Confirm-DirectTriggerCurrent([string]$CommandId){
   try{
-    $d=Read-TriggerDirect
+    $d=Read-TriggerDirect -Force
     return ($d -and [string]$d.command_id -eq [string]$CommandId)
   }catch{return $false}
+}
+
+function Read-AckDirect {
+  try{
+    $doc=Invoke-RestMethod -Uri (CacheBust $DirectAckApi) -Headers @{
+      "Accept"="application/vnd.github+json"
+      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectAck"
+      "Cache-Control"="no-cache"
+    } -TimeoutSec 12
+    if($doc -and $doc.content){
+      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
+      return ($raw|ConvertFrom-Json)
+    }
+  }catch{
+    Write-Log "DIRECT ACK ERROR :: $($_.Exception.Message)"
+  }
+  return $null
 }
 
 function Read-ImageIndex {
@@ -579,6 +598,7 @@ function Test-CustomChatMessageSupport {
 }
 
 function Send-Ack([string]$CommandId,[string]$Stage,[string]$Detail = "") {
+  $script:LastAckConflict = $null
   try {
     $payload = @{
       task = "pc_ack"
@@ -594,7 +614,26 @@ function Send-Ack([string]$CommandId,[string]$Stage,[string]$Detail = "") {
     $code = 0
     try { $code = [int]$_.Exception.Response.StatusCode } catch {}
     if ($code -eq 409) {
-      Write-Log "ACK CONFLICT $Stage command=$CommandId"
+      $body = ""
+      $reason = ""
+      try {
+        $resp = $_.Exception.Response
+        if ($resp) {
+          $stream = $resp.GetResponseStream()
+          if ($stream) {
+            $reader = New-Object System.IO.StreamReader($stream)
+            try { $body = $reader.ReadToEnd() } finally { $reader.Dispose(); $stream.Dispose() }
+          }
+        }
+      } catch {}
+      try {
+        if ($body) {
+          $parsed = $body | ConvertFrom-Json
+          $reason = [string]$parsed.error
+        }
+      } catch {}
+      $script:LastAckConflict = [pscustomobject]@{ reason=$reason; body=$body }
+      Write-Log "ACK CONFLICT $Stage command=$CommandId reason=$reason"
       return "CONFLICT"
     }
     Write-Log "ACK ERROR $Stage command=$CommandId :: $($_.Exception.Message)"
@@ -774,12 +813,30 @@ while ($true) {
 
         $ack = Send-Ack $commandId "picked_up"
         $localFallback = $false
-        if ($ack -eq "CONFLICT" -and (Confirm-DirectTriggerCurrent $commandId)) {
-          # El backend puede estar comparando contra un snapshot Vercel atrasado.
-          # GitHub HEAD es autoritativo; con un único listener local podemos seguir
-          # sin perder la ejecución y dejar que RUNTRACE confirme el arranque real.
-          $localFallback = $true
-          Write-Log "ACK 409 BYPASSED command=$commandId reason=direct-trigger-current"
+        $remoteAck = $null
+        if ($ack -eq "CONFLICT") {
+          $remoteAck = Read-AckDirect
+          $remoteLaunched = ($remoteAck -and [string]$remoteAck.command_id -eq $commandId -and [string]$remoteAck.stage -eq "launched")
+          if ($remoteLaunched) {
+            Write-Log "ACK CONFLICT RESOLVED command=$commandId reason=remote-ack-launched worker=$($remoteAck.worker_id)"
+            $state.last_command_id = $commandId
+            $state.conflict_command_id = ""
+            $state.conflict_first_at = ""
+            Save-State $state
+            $ack = "REMOTE_LAUNCHED"
+          } else {
+            $reason = ""
+            if ($script:LastAckConflict) { $reason = [string]$script:LastAckConflict.reason }
+            $remoteMatches = ($remoteAck -and [string]$remoteAck.command_id -eq $commandId)
+            $staleBackendConflict = (-not $remoteMatches) -and (Confirm-DirectTriggerCurrent $commandId) -and
+              ([string]::IsNullOrWhiteSpace($reason) -or $reason -eq "command_id ya no es el actual")
+            if ($staleBackendConflict) {
+              # El trigger de GitHub HEAD es autoritativo y el ACK directo demuestra que
+              # nadie ha reclamado esta orden. Solo en este caso se permite el bypass.
+              $localFallback = $true
+              Write-Log "ACK 409 BYPASSED command=$commandId reason=stale-backend-trigger"
+            }
+          }
         }
 
         if ($ack -eq "OK" -or $localFallback) {
@@ -787,39 +844,35 @@ while ($true) {
             $messageSent = Launch-TTiTTulares $commandId
             if ($messageSent) {
               Write-Log "LAUNCH CONFIRMED command=$commandId via=direct-node"
+              # Una orden solo se consume localmente cuando el envío físico al chat
+              # quedó confirmado. Un fallo de lanzamiento debe poder reintentarse.
+              $state.last_command_id = $commandId
+              $state.conflict_command_id = ""
+              $state.conflict_first_at = ""
+              Save-State $state
             } else {
-              Write-Log "LAUNCH FAILED command=$commandId via=direct-node"
+              Write-Log "LAUNCH FAILED command=$commandId via=direct-node; command remains retryable"
             }
-            # Consumir esta orden aunque el lanzamiento falle: evita abrir chats
-            # repetidamente cada 3 segundos. Una nueva pulsación crea otro command_id.
-            $state.last_command_id = $commandId
-            $state.conflict_command_id = ""
-            $state.conflict_first_at = ""
-            Save-State $state
           } catch {
             Write-Log "LAUNCH ERROR command=$commandId :: $($_.Exception.Message)"
           }
         } elseif ($ack -eq "CONFLICT") {
+          # Nunca consumir por timeout. Solo un ACK autoritativo en stage=launched
+          # permite concluir que otra instancia ya ejecutó la orden.
           if ([string]$state.conflict_command_id -ne $commandId) {
             $state.conflict_command_id = $commandId
             $state.conflict_first_at = [DateTimeOffset]::UtcNow.ToString("o")
             Save-State $state
           } else {
-            try {
-              $first = [DateTimeOffset]::Parse([string]$state.conflict_first_at)
-              if (([DateTimeOffset]::UtcNow - $first).TotalSeconds -ge $ClaimRetrySeconds) {
-                # Si otro listener llegó a launched, damos la orden por consumida.
-                # Si solo hizo picked_up y murió, el claim del servidor ya habrá caducado
-                # y uno de los reintentos anteriores habrá podido tomarlo.
-                Write-Log "CONFLICT SETTLED command=$commandId; another listener owns/owned it"
-                $state.last_command_id = $commandId
-                $state.conflict_command_id = ""
-                $state.conflict_first_at = ""
-                Save-State $state
-              }
-            } catch {
-              $state.conflict_first_at = [DateTimeOffset]::UtcNow.ToString("o")
+            $remoteAck = Read-AckDirect
+            if ($remoteAck -and [string]$remoteAck.command_id -eq $commandId -and [string]$remoteAck.stage -eq "launched") {
+              Write-Log "CONFLICT SETTLED command=$commandId reason=remote-ack-launched worker=$($remoteAck.worker_id)"
+              $state.last_command_id = $commandId
+              $state.conflict_command_id = ""
+              $state.conflict_first_at = ""
               Save-State $state
+            } else {
+              Write-Log "CONFLICT RETAINED command=$commandId; no authoritative launched ACK"
             }
           }
         }
