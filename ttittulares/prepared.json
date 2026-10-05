@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T11:17:17.777173Z",
+  "updated_at": "2026-10-05T11:18:58.058Z",
   "items": [
     {
       "event_id": "1d8ce85758dd",
@@ -177,10 +177,10 @@
       "trend_context": [],
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -196,12 +196,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T11:11:27.561298Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005114946_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/comunitat-valenciana/noticia-vivas-agradece-alta-distincion-generalitat-reivindica-coraje-capacidad-resistir-ceuties-20261005114946.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Vivas agradece la Alta Distinción de la Generalitat y reivindica el “coraje” y la “capacidad de resistir” de los ceutíes"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/706e94548406-r1-ai1-791198753961.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "1fb9fb99fbaa5a96ef36efa2635f8cb8b8f966e118ec5919fa46a7d1ef3aa060",
+        "width": 1600,
+        "height": 900,
+        "bytes": 612904,
+        "context_guard": {
+          "version": 3,
+          "event_id": "706e94548406",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-706e94548406-r1-a1-1791198753961"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/706e94548406-r1-ai1-791198753961.jpg",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005114946_1200.jpg",
@@ -210,7 +224,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Vivas agradece la Alta Distinción de la Generalitat y reivindica el “coraje” y la “capacidad de resistir” de los ceutíes"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/706e94548406-r1-ai1-791198753961.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "1fb9fb99fbaa5a96ef36efa2635f8cb8b8f966e118ec5919fa46a7d1ef3aa060",
+        "width": 1600,
+        "height": 900,
+        "bytes": 612904,
+        "context_guard": {
+          "version": 3,
+          "event_id": "706e94548406",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-706e94548406-r1-a1-1791198753961"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/706e94548406-r1-ai1-791198753961.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T11:18:58.058Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T11:18:58.058Z"
     }
   ],
   "count": 11
