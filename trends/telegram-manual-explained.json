@@ -26505,7 +26505,7 @@
           "revision": 0
         }
       ],
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -26520,16 +26520,55 @@
       },
       "fallback_image_status": "ready",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005091229_1200_v2.jpg",
-        "source": "Europa Press · 5/10/2026",
-        "source_url": "https://www.europapress.es/deportes/ciclismo-00396/noticia-fallece-exciclista-angel-arroyo-pionero-segundo-tour-francia-1983-20261005091229.html",
-        "alt": "Imagen de archivo relacionada con Ángel Arroyo",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/914cf3da7267-r0-ai1-791192040236.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "a4b812cf906e5953408ae1b4a59bfc851b92c04c02c62c422cb804079ef41e51",
+        "width": 1600,
+        "height": 900,
+        "bytes": 559412,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "914cf3da7267",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-914cf3da7267-r0-a1-1791192040236"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/914cf3da7267-r0-ai1-791192040236.jpg",
+        "handoff": "pc-bridge-direct-materialized"
       },
-      "image_choice": "fallback"
+      "image_choice": "ai",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/914cf3da7267-r0-ai1-791192040236.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "a4b812cf906e5953408ae1b4a59bfc851b92c04c02c62c422cb804079ef41e51",
+        "width": 1600,
+        "height": 900,
+        "bytes": 559412,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "914cf3da7267",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-914cf3da7267-r0-a1-1791192040236"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/914cf3da7267-r0-ai1-791192040236.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T09:24:13.484Z"
     }
   ],
-  "updated_at": "2026-10-05T11:23:34+02:00",
+  "updated_at": "2026-10-05T09:24:13.484Z",
   "count": 548
 }
