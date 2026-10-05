@@ -1,11 +1,13 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T17:45:00+02:00",
-  "last_completed_at": "2026-10-05T17:49:00+02:00",
-  "updated_at": "2026-10-05T17:49:00+02:00",
+  "last_started_at": "2026-10-05T18:15:00+02:00",
+  "last_completed_at": "2026-10-05T18:23:00+02:00",
+  "updated_at": "2026-10-05T18:23:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "97e1b3a8b829"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -14,25 +16,25 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T174500+0200",
+    "run_id": "tr-chat-20261005T181500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "current": 0,
-    "total": 0,
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-05T17:45:00+02:00",
-    "updated_at": "2026-10-05T17:49:00+02:00",
-    "finished_at": "2026-10-05T17:49:00+02:00",
+    "started_at": "2026-10-05T18:15:00+02:00",
+    "updated_at": "2026-10-05T18:23:00+02:00",
+    "finished_at": "2026-10-05T18:23:00+02:00",
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 1,
       "trends_problematic": 0,
       "incidents": 0,
       "queue_remaining": 0,
@@ -40,10 +42,10 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "vercel_deploys": 0,
-      "pending_cards_reviewed": 6,
-      "pending_with_closer_reviewed": 4,
-      "pending_without_closer_reviewed": 2,
-      "pending_visual_repair_candidates": 6,
+      "pending_cards_reviewed": 3,
+      "pending_with_closer_reviewed": 0,
+      "pending_without_closer_reviewed": 3,
+      "pending_visual_repair_candidates": 3,
       "pending_repair_triggered": 1,
       "problematic_top10_retried": 0
     },
@@ -55,98 +57,154 @@
       "recent_considered": 100
     },
     "remate_selections": [],
-    "message": "Pasada completada sin trabajo editorial nuevo: cola vacía, 0 preparing/update, 0 rewrite_pending y 0 problematic vigentes en Top 10. Saneamiento de 6 fichas recientes revisado; 4 ya conservan remate y alvise/Medvedev mantienen closer_text vacío deliberadamente. Reparación visual solicitada al inicio.",
+    "message": "Pasada completada: #TEM5O r0 explicada y verificada como TT#1 por el programa Todo es mentira del 5-O sobre el adelanto electoral al 29-N. Cola 0; sin reexplicaciones ni problemáticas Top 10. 3 Pendientes recientes revisadas; imágenes disponibles y remates vacíos deliberados.",
     "activity": [
       {
-        "at": "2026-10-05T17:45:00+02:00",
+        "at": "2026-10-05T18:15:00+02:00",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio de pasada · cola editorial 0; comprobando reexplicaciones, solicitudes activas y Pendientes recientes"
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Inicio de pasada · 1 entrada activa; preparando verificación JIT de #TEM5O"
       },
       {
-        "at": "2026-10-05T17:46:00+02:00",
+        "at": "2026-10-05T18:15:20+02:00",
+        "phase": "verifying",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Releyendo estado autoritativo de #TEM5O"
+      },
+      {
+        "at": "2026-10-05T18:16:00+02:00",
+        "phase": "verifying",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Revisión JIT confirmada · #TEM5O r0 sigue preparing y ocupa TT#1"
+      },
+      {
+        "at": "2026-10-05T18:16:05+02:00",
+        "phase": "investigating",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Buscando detonante actual de #TEM5O"
+      },
+      {
+        "at": "2026-10-05T18:18:30+02:00",
+        "phase": "investigating",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Contrastando fuente 1/2 · Mediaset confirma el programa de hoy y el análisis de Risto"
+      },
+      {
+        "at": "2026-10-05T18:19:00+02:00",
+        "phase": "investigating",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Contrastando fuente 2/2 · RTVE confirma el adelanto electoral al 29-N"
+      },
+      {
+        "at": "2026-10-05T18:19:10+02:00",
+        "phase": "investigating",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Hecho esencial verificado · #TEM5O corresponde a Todo es mentira del 5-O y su cobertura del adelanto electoral"
+      },
+      {
+        "at": "2026-10-05T18:19:15+02:00",
+        "phase": "drafting",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-05T18:19:40+02:00",
+        "phase": "drafting",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Comprobando límite de X · 210 caracteres"
+      },
+      {
+        "at": "2026-10-05T18:19:45+02:00",
+        "phase": "remate_selection",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Sin remate · contenido político; explicación factual suficiente"
+      },
+      {
+        "at": "2026-10-05T18:20:00+02:00",
+        "phase": "persisting",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-05T18:20:20+02:00",
+        "phase": "persisting",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-05T18:20:40+02:00",
+        "phase": "verifying",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-05T18:20:45+02:00",
+        "phase": "verifying",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-05T18:21:05+02:00",
+        "phase": "verifying",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-05T18:21:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo estado autoritativo de requests, Explicadas y cola"
+        "message": "Revisando Pendientes y comprobando si entró trabajo nuevo"
       },
       {
-        "at": "2026-10-05T17:47:00+02:00",
+        "at": "2026-10-05T18:22:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 6 fichas recientes candidatas antes de excluir miembros agrupados"
+        "message": "Revisando Pendientes · 3 tarjetas recientes reales"
       },
       {
-        "at": "2026-10-05T17:47:20+02:00",
-        "phase": "verifying",
-        "trend_id": "d933cc72e8f4",
-        "title": "#SPAIN_WANTS_RUN_IT",
-        "message": "Pendiente revisada · remate presente; capa visual pendiente"
-      },
-      {
-        "at": "2026-10-05T17:47:22+02:00",
-        "phase": "verifying",
-        "trend_id": "00f71f925669",
-        "title": "#StaySpain",
-        "message": "Pendiente revisada · remate presente; capa visual pendiente"
-      },
-      {
-        "at": "2026-10-05T17:47:24+02:00",
-        "phase": "verifying",
-        "trend_id": "c149412bbb68",
-        "title": "Pajor",
-        "message": "Pendiente revisada · remate presente; capa visual pendiente"
-      },
-      {
-        "at": "2026-10-05T17:47:26+02:00",
-        "phase": "verifying",
-        "trend_id": "5d422d0acb34",
-        "title": "Graham",
-        "message": "Pendiente revisada · remate presente; capa visual pendiente"
-      },
-      {
-        "at": "2026-10-05T17:47:28+02:00",
-        "phase": "verifying",
-        "trend_id": "26bb59be27a6",
-        "title": "alvise",
-        "message": "Pendiente revisada · sin remate; se mantiene explicación factual neutral"
-      },
-      {
-        "at": "2026-10-05T17:47:30+02:00",
-        "phase": "verifying",
-        "trend_id": "4bcc67659c7e",
-        "title": "Medvedev",
-        "message": "Pendiente revisada · sin remate por incidente con espectador; explicación factual suficiente"
-      },
-      {
-        "at": "2026-10-05T17:47:40+02:00",
+        "at": "2026-10-05T18:22:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento de Pendientes · sin cambios editoriales; reparación visual ya solicitada"
+        "message": "Pendientes revisadas · alvise y #TEM5O sin remate por política; Medvedev sin remate por sensibilidad; imágenes disponibles"
       },
       {
-        "at": "2026-10-05T17:48:00+02:00",
+        "at": "2026-10-05T18:22:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · verificando que no haya entrado trabajo editorial durante el saneamiento"
+        "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending y 0 problematic vigentes en Top 10"
       },
       {
-        "at": "2026-10-05T17:49:00+02:00",
+        "at": "2026-10-05T18:23:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · cola 0 y sin revisiones editoriales activas"
+        "message": "Pasada cerrada · 1 tendencia explicada y cola editorial vacía"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261005T174500+0200",
+      "run_id": "tr-chat-20261005T181500+0200",
       "status": "triggered",
       "direct_imagegen": false
     },
