@@ -1,14 +1,18 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T09:44:51.536+02:00",
-  "last_completed_at": "2026-10-05T09:58:30+02:00",
+  "last_started_at": "2026-10-05T09:45:45+02:00",
+  "last_completed_at": "2026-10-05T09:58:00+02:00",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "0c2f4be392df",
+    "87d194456cfe",
+    "70b83466c26a"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T09:58:30+02:00",
+  "updated_at": "2026-10-05T09:58:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -17,11 +21,11 @@
     "canonical": true,
     "run_id": "tr-chat-20261005T094545+0200",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-05T09:45:45+02:00",
-    "updated_at": "2026-10-05T09:58:30+02:00",
-    "finished_at": "2026-10-05T09:58:30+02:00",
+    "updated_at": "2026-10-05T09:58:00+02:00",
+    "finished_at": "2026-10-05T09:58:00+02:00",
     "current": 3,
     "total": 3,
     "trend_id": null,
@@ -29,192 +33,263 @@
     "requested_at": "2026-10-05T09:45:45+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 3,
+      "trends_explained": 3,
+      "explanation_groups": 3,
+      "new_cards": 3,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 0,
+      "fallback_images_ready": 3,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 3,
-      "remates_selected": 0,
-      "remates_omitted": 0,
-      "pending_repair_triggered": 1,
-      "jit_skipped_concurrent": 3,
-      "final_verified_explanations": 3
+      "remates_selected": 1,
+      "remates_omitted": 2,
+      "pending_repair_triggered": 1
     },
-    "incident_count": 1,
-    "incidents": [
-      {
-        "trend_id": "70b83466c26a",
-        "type": "persistence_connector_argument_rejected",
-        "message": "Un intento de commit atómico fue rechazado por argumentos del conector; no se aplicó. La relectura JIT posterior confirmó que la revisión quedó cerrada íntegramente por la ejecución concurrente."
-      }
-    ],
+    "message": "Pasada directa completada 3/3. #LaHora5O, Docentes y Los Rocho quedaron explicadas y verificadas; cola editorial final 0. La reparación visual continúa por el flujo independiente cuando corresponde.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
       "updated_at": "2026-10-04T17:29:26.880Z",
       "total_ratings": 153,
-      "recent_considered": 30
+      "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "0c2f4be392df",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "political_context"
+      },
+      {
+        "trend_id": "87d194456cfe",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.2,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0.1
+          },
+          {
+            "id": "c2",
+            "total": 7.7,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 7.5,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c4",
+            "total": 7.2,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c5",
+            "total": 6.9,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.5,
+            "punch": 1.4,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.2,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "70b83466c26a",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_threats"
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-05T09:54:15+02:00",
-        "phase": "drafting",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Comprobando límite de X"
+        "at": "2026-10-05T09:45:45+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo cola y estado autoritativo de TTendencias"
       },
       {
-        "at": "2026-10-05T09:54:20+02:00",
-        "phase": "drafting",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Sin remate · explicación factual suficiente por sensibilidad"
+        "at": "2026-10-05T09:47:00+02:00",
+        "phase": "verifying",
+        "trend_id": "0c2f4be392df",
+        "title": "#LaHora5O",
+        "message": "Releyendo estado autoritativo de #LaHora5O"
       },
       {
-        "at": "2026-10-05T09:56:15+02:00",
+        "at": "2026-10-05T09:48:20+02:00",
+        "phase": "investigating",
+        "trend_id": "0c2f4be392df",
+        "title": "#LaHora5O",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-05T09:49:00+02:00",
+        "phase": "drafting",
+        "trend_id": "0c2f4be392df",
+        "title": "#LaHora5O",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-05T09:49:30+02:00",
+        "phase": "remate_selection",
+        "trend_id": "0c2f4be392df",
+        "title": "#LaHora5O",
+        "message": "Sin remate · explicación factual suficiente"
+      },
+      {
+        "at": "2026-10-05T09:50:00+02:00",
+        "phase": "verifying",
+        "trend_id": "0c2f4be392df",
+        "title": "#LaHora5O",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-05T09:51:30+02:00",
         "phase": "verifying",
         "trend_id": "87d194456cfe",
         "title": "Docentes",
-        "message": "Releyendo main"
+        "message": "Releyendo estado autoritativo de Docentes"
       },
       {
-        "at": "2026-10-05T09:56:25+02:00",
+        "at": "2026-10-05T09:52:00+02:00",
+        "phase": "investigating",
+        "trend_id": "87d194456cfe",
+        "title": "Docentes",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-05T09:52:10+02:00",
+        "phase": "drafting",
+        "trend_id": "87d194456cfe",
+        "title": "Docentes",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-05T09:52:20+02:00",
+        "phase": "remate_selection",
+        "trend_id": "87d194456cfe",
+        "title": "Docentes",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-05T09:52:30+02:00",
+        "phase": "persisting",
+        "trend_id": "87d194456cfe",
+        "title": "Docentes",
+        "message": "Guardando ficha Explicada y actualizando requests"
+      },
+      {
+        "at": "2026-10-05T09:53:00+02:00",
         "phase": "verifying",
         "trend_id": "87d194456cfe",
         "title": "Docentes",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-05T09:56:35+02:00",
+        "at": "2026-10-05T09:54:00+02:00",
         "phase": "verifying",
         "trend_id": "70b83466c26a",
         "title": "Los Rocho",
         "message": "Releyendo estado autoritativo de Los Rocho"
       },
       {
-        "at": "2026-10-05T09:57:00+02:00",
+        "at": "2026-10-05T09:55:00+02:00",
         "phase": "investigating",
         "trend_id": "70b83466c26a",
         "title": "Los Rocho",
-        "message": "Buscando detonante actual de Los Rocho"
+        "message": "Hecho esencial verificado con atribución"
       },
       {
-        "at": "2026-10-05T09:57:10+02:00",
-        "phase": "investigating",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Contrastando fuente 1/2 · información publicada hoy"
-      },
-      {
-        "at": "2026-10-05T09:57:20+02:00",
-        "phase": "investigating",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Contrastando fuente 2/2 · contexto judicial y UCO"
-      },
-      {
-        "at": "2026-10-05T09:57:30+02:00",
-        "phase": "investigating",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Hecho esencial verificado con atribución explícita"
-      },
-      {
-        "at": "2026-10-05T09:57:40+02:00",
+        "at": "2026-10-05T09:55:30+02:00",
         "phase": "drafting",
         "trend_id": "70b83466c26a",
         "title": "Los Rocho",
         "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-05T09:57:50+02:00",
-        "phase": "drafting",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Comprobando límite de X · 239 caracteres"
-      },
-      {
-        "at": "2026-10-05T09:58:00+02:00",
+        "at": "2026-10-05T09:55:45+02:00",
         "phase": "remate_selection",
         "trend_id": "70b83466c26a",
         "title": "Los Rocho",
-        "message": "Sin remate · asunto de amenazas graves"
+        "message": "Sin remate · contexto sensible"
       },
       {
-        "at": "2026-10-05T09:58:10+02:00",
+        "at": "2026-10-05T09:56:20+02:00",
         "phase": "persisting",
         "trend_id": "70b83466c26a",
         "title": "Los Rocho",
-        "message": "Guardando ficha Explicada"
+        "message": "Persistencia reintentada tras conflicto de concurrencia"
       },
       {
-        "at": "2026-10-05T09:58:25+02:00",
-        "phase": "persisting",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-05T09:58:40+02:00",
-        "phase": "persisting",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-05T10:00:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main antes del cierre"
-      },
-      {
-        "at": "2026-10-05T09:58:15+02:00",
-        "phase": "verifying",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-05T09:58:18+02:00",
-        "phase": "verifying",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-05T09:58:21+02:00",
+        "at": "2026-10-05T09:57:00+02:00",
         "phase": "verifying",
         "trend_id": "70b83466c26a",
         "title": "Los Rocho",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-05T09:58:30+02:00",
+        "at": "2026-10-05T09:57:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Sincronizando categoría faltante de #LaHora5O y releyendo main"
+      },
+      {
+        "at": "2026-10-05T09:58:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cola final 0; requests preparing/update 0; rewrite_pending 0"
+        "message": "Cola editorial final 0; tres revisiones cerradas y verificadas"
       }
     ],
-    "message": "Pasada cerrada: 3/3 revisiones quedaron resueltas en main durante las revalidaciones JIT; esta ejecución no sobrescribió cierres concurrentes. Cola final 0, requests preparing/update 0 y rewrite_pending 0.",
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "radar": {
-      "captured_at": "2026-10-05T09:51:12+02:00",
+      "captured_at": "2026-10-05T09:45:29+02:00",
       "queue_count": 0,
       "top10": [
         "#FelizLunes",
@@ -230,14 +305,14 @@
       ],
       "new_entries": [
         "#LaHora5O",
+        "Sanchez",
         "Docentes",
         "Los Rocho"
       ]
     },
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-1791186291536-2436be",
-      "status": "requested"
+      "status": "independent_pipeline"
     }
   },
   "summary": {
