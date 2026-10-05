@@ -182,7 +182,11 @@ jobs:
               auto_attempt=int(old.get("auto_repair_attempt") or 0)
               previous_attempt=int(old.get("attempt") or row.get("ai_image_attempt") or 0)
               last=parse_dt(old.get("finished_at") or old.get("updated_at"))
-              cooldown=300 if auto_attempt<3 else 3600
+              # not_pending_explained fue un fallo de lectura del fichero grande
+              # (>1 MB) ya corregido en el backend; debe poder reintentarse al
+              # instante, sin quedar bloqueado una hora por el contador previo.
+              old_message=str(old.get("message") or "")
+              cooldown=0 if "not_pending_explained" in old_message else (300 if auto_attempt<3 else 3600)
               if old and last and (now-last).total_seconds()<cooldown:
                   continue
 
