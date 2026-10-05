@@ -22,7 +22,7 @@ function tokenMatches(req){
 }
 function blobOptions(extra={}){
   return {
-    access:"private",
+    access:"public",
     storeId:process.env.BLOB_STORE_ID||undefined,
     oidcToken:process.env.VERCEL_OIDC_TOKEN||undefined,
     ...extra
