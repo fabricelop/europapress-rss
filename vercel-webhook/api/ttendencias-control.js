@@ -1246,14 +1246,8 @@ export default async function handler(req, res) {
       if (String(req.query?.view || "") === "image-proxy") {
         return await proxyPreparedImage(req.query?.url, res, req.query?.format);
       }
-      if (String(req.query?.view || "") === "push-key") {
-        return res.status(200).json({ ok: true, publicKey: vapidKeys().publicKey });
-      }
-      if (String(req.query?.view || "") === "push-scan") {
-        if (!authorized(req) && !(await authorizedGitHubWorkflow(req))) {
-          return res.status(401).json({ ok: false, error: "No autorizado" });
-        }
-        return res.status(200).json(await scanPush());
+      if (["push-key","push-scan"].includes(String(req.query?.view || ""))) {
+        return res.status(410).json({ ok: false, disabled: true, error: "Avisos TTendencias retirados" });
       }
       const backend = await backendStatus();
       return res.status(backend.ok ? 200 : 503).json({
@@ -1276,11 +1270,8 @@ export default async function handler(req, res) {
         error: backend.ok ? undefined : "Token de control válido, pero esta instancia no tiene acceso válido a GitHub."
       });
     }
-    if (action === "push-subscribe") return res.status(200).json(await subscribePush(body.subscription));
-    if (action === "push-unsubscribe") return res.status(200).json(await unsubscribePush(body.subscription));
-    if (action === "push-test") {
-      const result = await testPush();
-      return res.status(result.ok ? 200 : 503).json(result);
+    if (action.startsWith("push-")) {
+      return res.status(410).json({ ok: false, disabled: true, error: "Avisos TTendencias retirados" });
     }
     if (action === "queue") return res.status(200).json(await queueNames(body.names));
     if (action === "queue-upcoming") return res.status(200).json(await queueUpcomingNames(body.names));
