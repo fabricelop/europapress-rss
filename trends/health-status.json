@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-05T21:25:19.905337+00:00",
+  "checked_at": "2026-10-05T21:54:47.379571+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -39,11 +39,12 @@
       "required": false
     },
     "top10": {
-      "ok": true,
+      "ok": false,
       "count": 10,
       "non_stale_sources": 7,
-      "captured_age_minutes": 6.8,
-      "noise_count": 0
+      "captured_age_minutes": 36.2,
+      "noise_count": 0,
+      "repair_started": true
     },
     "listener": {
       "ok": true,
@@ -52,10 +53,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "in_progress",
+      "status": "queued",
       "conclusion": null,
-      "age_minutes": 1.2,
-      "run_id": 37374869695,
+      "age_minutes": 0.0,
+      "run_id": 37379010249,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -65,7 +66,9 @@
       "outcome": "no-aplica"
     }
   },
-  "repairs_started": [],
+  "repairs_started": [
+    "relanzado refresco Top 10"
+  ],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
     "requests_json: JSON inválido o ilegible"
