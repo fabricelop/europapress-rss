@@ -51,7 +51,8 @@ async function comments(){
 }
 async function triggerReady(){return true}
 async function readTrigger(){
-  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+TRIGGER_PATH+"?ref="+encodeURIComponent(TRIGGER_BRANCH));
+  const u="https://api.github.com/repos/"+REPO+"/contents/"+TRIGGER_PATH+"?ref="+encodeURIComponent(TRIGGER_BRANCH)+"&t="+Date.now();
+  const r=await gh(u,{cache:"no-store",headers:{"cache-control":"no-cache"}});
   if(!r.ok)throw new Error("GitHub trigger GET: "+r.status+" "+await r.text());
   const f=await r.json(),raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
   return {sha:f.sha,doc:JSON.parse(raw||"{}")}
@@ -291,10 +292,13 @@ async function requestPcAck(req,res){
   if(workerVersion<12)return res.status(409).json({ok:false,error:"stale_worker",minimum_worker:"ttendencias-dedicated-v12",worker_id});
   if(!command_id||!["picked_up","launched"].includes(stage))return res.status(400).json({ok:false,error:"Ack no válido"});
   const {doc:trigger}=await readTrigger();
-  if(String(trigger.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es el actual"});
+  if(String(trigger.command_id||"")!==command_id){
+    console.log("TTEND_PC_ACK_MISMATCH",{incoming:command_id,current:String(trigger.command_id||""),requested_at:trigger.requested_at||null});
+    return res.status(409).json({ok:false,error:"command_id ya no es el actual",incoming:command_id,current:String(trigger.command_id||"")});
+  }
   const requested_at=String(trigger.requested_at||"");
   const age=Date.now()-stamp(requested_at);
-  if(!stamp(requested_at)||age<0||age>10*60*1000)return res.status(409).json({ok:false,error:"Trigger fuera de ventana"});
+  if(!stamp(requested_at)||age<0||age>24*60*60*1000)return res.status(409).json({ok:false,error:"Trigger fuera de ventana"});
 
   const existing=await readControlJson(ACK_PATH);
   const previous=existing.doc||{};
