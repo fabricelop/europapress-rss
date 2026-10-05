@@ -1,2 +1,8 @@
-Deploy TTiTTulares: Publicado autoritativo y borrado inmediato
-2026-10-05T18:17:00+02:00
+TT Apps production deploy trigger
+Reason: reduce Vercel Fluid Active CPU polling
+Requested: 2026-10-05T20:18:13.190Z
+Includes:
+- TTiTTulares image polling: index + recent/active jobs only
+- TTiTTulares idle polling: 5 min
+- TTendencias idle polling: 5 min
+- No polling while tab hidden
