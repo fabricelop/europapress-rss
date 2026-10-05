@@ -951,8 +951,11 @@ export default async function handler(req,res){
       const tremendingItems=(tremending.doc?.items||[]).map(x=>({
         id:tremendingEntryId(x.id),title:String(x.title||"Entrada sin título"),url:String(x.url||""),description:String(x.description||""),published_at:x.published_at||null,first_seen_at:x.first_seen_at||null,last_seen_at:x.last_seen_at||null,status:String(x.status||"pending"),destinations:Array.isArray(x.destinations)?x.destinations:[],tweets:Array.isArray(x.tweets)?x.tweets:[],selected_tweet_id:x.selected_tweet_id||null,image:x.image||{status:"not_selected"},article_status:x.article_status||"pending"
       })).filter(x=>x.id).sort((a,b)=>String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
-      res.setHeader("cache-control",fresh?"no-store":"public, max-age=0, s-maxage=45, stale-while-revalidate=120");
-      if(String(req.query?.view||"")==="widget"){
+      const isWidget=String(req.query?.view||"")==="widget";
+      // La app principal debe reflejar inmediatamente Publicado/Desestimado de
+      // Telegram. No permitimos que Vercel/CDN conserve una Lista cerrada.
+      res.setHeader("cache-control",(fresh||!isWidget)?"no-store":"public, max-age=0, s-maxage=45, stale-while-revalidate=120");
+      if(isWidget){
         return res.status(200).json({
           ok:true,
           updated_at:new Date().toISOString(),
