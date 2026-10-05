@@ -34,6 +34,26 @@ const EXPLAINED_COPY_STATE_PATH="trends/explained-copy-state.json";
 const CROSS_IMAGE_STATE_PATH="ttittulares/prepared.json";
 const RASTER_REGISTRY_PATH="shared/image-raster-registry.json";
 
+const IMAGE_STYLE_BASE="PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag nace del hecho/remate y no se limita a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ";
+const IMAGE_STYLE_BANK=[
+  ["tinta_acuarela","Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero."],
+  ["comic_europeo","Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición dinámica pero despejada."],
+  ["poster_grafico","Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil."],
+  ["absurdo_semirrealista","Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual."],
+  ["stop_motion","Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo."],
+  ["retro_60s","Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia."],
+  ["grabado_moderno","Grabado o linograbado moderno de alta calidad, textura rica, contraste controlado y un único foco narrativo."],
+  ["pop_art","Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos."],
+  ["cartoon_3d","Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona."],
+  ["novela_grafica","Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria."]
+];
+function imageStyleFor(seed){
+  const h=crypto.createHash("sha256").update(String(seed||"")).digest();
+  const index=h.readUInt32BE(0)%IMAGE_STYLE_BANK.length;
+  const [name,detail]=IMAGE_STYLE_BANK[index];
+  return {index,name,text:IMAGE_STYLE_BASE+"ESTILO ASIGNADO PARA ESTA IMAGEN: "+detail};
+}
+
 async function gh(url,options={}){
   if(!process.env.GITHUB_TOKEN)throw new Error("GITHUB_TOKEN no configurado");
   return fetch(url,{...options,headers:{accept:"application/vnd.github+json",authorization:"Bearer "+process.env.GITHUB_TOKEN,"x-github-api-version":"2022-11-28","user-agent":"ttendencias-run-now",...(options.headers||{})}})
@@ -516,6 +536,7 @@ async function requestImageRun(req,res){
   const revision=Number(row.revision||0);
   if(revision!==requestedRevision)return res.status(409).json({ok:false,error:"target_no_elegible",reason:"revision_changed",target_id,revision});
   const target_name=String(row.name||req.body?.target_name||req.body?.title||req.body?.name||"").trim().slice(0,240);
+  const stylePick=imageStyleFor("ttendencias|"+target_id+"|r"+revision+"|"+Date.now());
   const context_snapshot={
     name:target_name,
     revision,
@@ -525,7 +546,10 @@ async function requestImageRun(req,res){
     group_title:String(row.group_title||"").trim(),
     rank_at_explanation:Number(row.rank_at_explanation||row._rank||row.rank||0)||null,
     explained_at:row.explained_at||null,
-    verification_sources:Array.isArray(row.verification_sources)?row.verification_sources.slice(0,8):[]
+    verification_sources:Array.isArray(row.verification_sources)?row.verification_sources.slice(0,8):[],
+    image_style:stylePick.text,
+    image_style_name:stylePick.name,
+    image_style_index:stylePick.index
   };
   const attempt=Math.max(1,(Number(row.ai_image_attempt||0)||0)+1);
   const jobPath=IMAGE_RUN_DIR+"/"+target_id+".json";
@@ -549,13 +573,13 @@ async function requestImageRun(req,res){
     version:1,command_id,requested_at,updated_at:requested_at,status:"REQUESTED",phase:"queued",
     mode:"manual_pc_chat_image",executor:"pc_chat_ttendencias_dedicated",project:"ttendencias",launcher_arg:"tendencias",
     task:"image",target_id,trend_id:target_id,target_name,revision,attempt,
-    chat_command_version:3,
-    instruction_profile:"ttendencias_gag_v1",
+    chat_command_version:5,
+    instruction_profile:"ttendencias_gag_v5_varied_style_single_gag",
     context_snapshot,
     instructions:{
       scope:"Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
       context:"Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
-      visual:"Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+      visual:"Más gag, menos barroquismo: una sola idea visual fuerte, pocos elementos y acabado cuidado. Respeta image_style del context_snapshot; en regeneraciones el estilo puede cambiar.",
       sensitivity:"No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
       political_guard:"Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
       lifecycle:"Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
