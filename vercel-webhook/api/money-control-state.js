@@ -10,11 +10,11 @@ function authToken(req){
   return h.startsWith("Bearer ")?h.slice(7).trim():"";
 }
 function tokenMatches(req){
-  const expected=String(process.env.MONEYCONTROL_STATE_TOKEN||"");
   const supplied=authToken(req);
-  if(!expected||!supplied)return false;
-  const a=Buffer.from(expected),b=Buffer.from(supplied);
-  return a.length===b.length&&crypto.timingSafeEqual(a,b);
+  if(!supplied)return false;
+  const candidates=[process.env.MONEYCONTROL_STATE_TOKEN,process.env.MONEYWIZ_SYNC_TOKEN].map(x=>String(x||"")).filter(Boolean);
+  const b=Buffer.from(supplied);
+  return candidates.some(expected=>{const a=Buffer.from(expected);return a.length===b.length&&crypto.timingSafeEqual(a,b)});
 }
 function blobOptions(extra={}){
   return {
