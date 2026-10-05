@@ -2,7 +2,8 @@ import crypto from "node:crypto";
 import { Readable } from "node:stream";
 import { get, put } from "@vercel/blob";
 
-const PATHNAME="money-control/money-control.snapshot.json";
+const SNAPSHOT_PATH="money-control/money-control.snapshot.json";
+const PATCH_PATH="money-control/moneywiz-user-patch-v1.json";
 const MAX_BYTES=3*1024*1024;
 
 function authToken(req){
@@ -28,23 +29,38 @@ function blobOptions(extra={}){
     ...extra
   };
 }
-function validEnvelope(x){
+function snapshotEnvelope(x){
   if(!x||typeof x!=="object"||Array.isArray(x))return false;
   const allowed=new Set(["format","version","kdf","iterations","salt","iv","data"]);
   if(Object.keys(x).some(k=>!allowed.has(k)))return false;
   return x.format==="money-control-snapshot"&&
-    Number(x.version||1)===1&&
-    x.kdf==="PBKDF2-SHA256"&&
+    Number(x.version||1)===1&&x.kdf==="PBKDF2-SHA256"&&
     Number.isInteger(x.iterations)&&x.iterations>=200000&&
     typeof x.salt==="string"&&x.salt.length>=16&&
     typeof x.iv==="string"&&x.iv.length>=12&&
     typeof x.data==="string"&&x.data.length>=32;
+}
+function patchEnvelope(x){
+  if(!x||typeof x!=="object"||Array.isArray(x))return false;
+  const allowed=new Set(["format","version","kdf","iterations","salt","iv","data","sourceImportedAt","snapshotDate"]);
+  if(Object.keys(x).some(k=>!allowed.has(k)))return false;
+  return x.format==="moneywiz-user-patch"&&
+    Number(x.version||1)===1&&x.kdf==="PBKDF2-SHA256"&&
+    Number.isInteger(x.iterations)&&x.iterations>=200000&&
+    typeof x.salt==="string"&&x.salt.length>=16&&
+    typeof x.iv==="string"&&x.iv.length>=12&&
+    typeof x.data==="string"&&x.data.length>=32&&
+    /^\d{4}-\d{2}-\d{2}$/.test(String(x.snapshotDate||""))&&
+    typeof x.sourceImportedAt==="string"&&x.sourceImportedAt.length>=10;
 }
 function json(res,status,payload){
   res.status(status);
   res.setHeader("content-type","application/json; charset=utf-8");
   res.setHeader("cache-control","no-store");
   return res.end(JSON.stringify(payload));
+}
+function kindOf(req){
+  try{return new URL(req.url||"/","http://localhost").searchParams.get("kind")==="moneywiz-patch"?"patch":"snapshot"}catch{return"snapshot"}
 }
 async function bodyText(req){
   if(typeof req.body==="string")return req.body;
@@ -62,8 +78,9 @@ async function bodyText(req){
 export default async function handler(req,res){
   try{
     if(!process.env.BLOB_STORE_ID)return json(res,503,{ok:false,error:"blob_not_configured"});
+    const kind=kindOf(req),pathname=kind==="patch"?PATCH_PATH:SNAPSHOT_PATH;
     if(req.method==="GET"){
-      const result=await get(PATHNAME,blobOptions({
+      const result=await get(pathname,blobOptions({
         useCache:false,
         ifNoneMatch:req.headers["if-none-match"]||undefined
       }));
@@ -90,14 +107,15 @@ export default async function handler(req,res){
       if(Buffer.byteLength(raw,"utf8")>MAX_BYTES)return json(res,413,{ok:false,error:"too_large"});
       let envelope;
       try{envelope=JSON.parse(raw)}catch{return json(res,400,{ok:false,error:"invalid_json"})}
-      if(!validEnvelope(envelope))return json(res,400,{ok:false,error:"invalid_snapshot"});
-      const blob=await put(PATHNAME,JSON.stringify(envelope),blobOptions({
+      if(kind==="patch"?!patchEnvelope(envelope):!snapshotEnvelope(envelope))return json(res,400,{ok:false,error:kind==="patch"?"invalid_patch":"invalid_snapshot"});
+      const blob=await put(pathname,JSON.stringify(envelope),blobOptions({
         allowOverwrite:true,
         addRandomSuffix:false,
         cacheControlMaxAge:60,
         contentType:"application/json"
       }));
-      return json(res,200,{ok:true,pathname:blob.pathname,etag:blob.etag||null});
+      console.log("money-control-storage-write",kind,pathname,Buffer.byteLength(raw,"utf8"));
+      return json(res,200,{ok:true,kind,pathname:blob.pathname,etag:blob.etag||null});
     }
     res.setHeader("allow","GET, POST");
     return json(res,405,{ok:false,error:"method_not_allowed"});
