@@ -15,6 +15,8 @@ on:
       - "vercel-webhook/test/ttittulares-image-ui.test.mjs"
       - "vercel-webhook/test/ttittulares-source-table.test.mjs"
       - "vercel-webhook/test/ttittulares-search-x.test.mjs"
+      - "vercel-webhook/test/ttittulares-actions.test.mjs"
+      - "vercel-webhook/test/ttittulares-actions.test.mjs"
       - "vercel-webhook/api/ttittulares-control.js"
       - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
@@ -120,11 +122,12 @@ jobs:
           assert 'id="imageBar"' not in html and 'id="runImages"' not in html
           assert "Mensaje confirmado en ChatGPT" in html
           assert 'provider==="chat-imagegen"' in html and 'origin==="executing_chat"' in html
-          assert "🔁 Rehacer remate + IA" in html
+          assert "🔁 Rehacer remate" in html and "🔁 Rehacer remate + IA" not in html
           assert "const imageInFlight=" in html and "imagen pendiente cancelada" in html, "La imagen no debe bloquear la publicación"
           assert manifest["start_url"] == "/ttittulares/"
           prompt=Path("ttittulares/editorial-run-prompt.md").read_text(encoding="utf-8")
-          assert "misma conversación ejecutora" in prompt and "provider:\"chat-imagegen\"" in prompt
+          assert "esa misma conversación ejecuta la pasada editorial real" in prompt
+          assert "reparación visual automática" in prompt and "NO llama directamente a ImageGen" in prompt
           assert "No uses el ImageGen interno" not in prompt and "crea exactamente UN trabajo visual" not in prompt
           run_api=Path("vercel-webhook/api/ttittulares-run.js").read_text(encoding="utf-8")
           run_status=Path("vercel-webhook/api/ttittulares-run-status.js").read_text(encoding="utf-8")
@@ -216,7 +219,7 @@ jobs:
           node --check vercel-webhook/api/ttittulares-run.js
           node --check ttittulares/tremending/capture_tweet.mjs
           node --check vercel-webhook/ttittulares/sw.js
-          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs vercel-webhook/test/ttittulares-source-table.test.mjs vercel-webhook/test/ttittulares-search-x.test.mjs
+          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs vercel-webhook/test/ttittulares-source-table.test.mjs vercel-webhook/test/ttittulares-search-x.test.mjs vercel-webhook/test/ttittulares-actions.test.mjs
 
       - name: Resultado
         run: echo "TTiTTulares listo para preview técnico sin cambiar control-mode"
