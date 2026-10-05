@@ -26862,9 +26862,9 @@
       ],
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -26892,13 +26892,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://cadenaser.com/resizer/v2/Z2ZS5XBNSNA2XHLZXOZ3VAHWSM.jpg?auth=8103cd07f250a876be66cb60e5757bfc217e96897b63fc96b6399223e2a79773&quality=70&width=1200&height=675&smart=true",
-        "source": "Cadena SER · 5/10/2026",
-        "source_url": "https://cadenaser.com/cmadrid/2026/10/05/ayuso-habla-ya-de-un-posible-pucherazo-ante-el-adelanto-electoral-y-pide-no-votar-por-correo-va-a-ser-la-campana-mas-sucia-radio-madrid/",
-        "alt": "Imagen de archivo relacionada con Abascal",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/97392049c7ee-r0-ai1-791197556459.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ef45d3a0fcc8d75c7e02ec3fafa6c4bd98f3fa2e94112bb0b2704d9450a74dad",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2580305,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "97392049c7ee",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-97392049c7ee-r0-a1-1791197556459"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/97392049c7ee-r0-ai1-791197556459.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/97392049c7ee-r0-ai1-791197556459.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ef45d3a0fcc8d75c7e02ec3fafa6c4bd98f3fa2e94112bb0b2704d9450a74dad",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2580305,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "97392049c7ee",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-97392049c7ee-r0-a1-1791197556459"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/97392049c7ee-r0-ai1-791197556459.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T10:54:23.870Z"
     },
     {
       "id": "113916b38ea5",
@@ -27235,6 +27274,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-05T10:52:28.050614Z",
+  "updated_at": "2026-10-05T10:54:23.870Z",
   "count": 556
 }
