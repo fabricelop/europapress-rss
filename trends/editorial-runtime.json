@@ -1,57 +1,68 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T07:15:00+02:00",
-  "last_completed_at": "2026-10-05T07:16:30+02:00",
+  "last_started_at": "2026-10-05T07:45:00+02:00",
+  "last_completed_at": "2026-10-05T07:58:00+02:00",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "76d87468c3c4",
+    "866c74f7de20"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T07:16:30+02:00",
+  "updated_at": "2026-10-05T07:58:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T071500+0200",
+    "run_id": "tr-chat-20261005T074500+0200",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-05T07:15:00+02:00",
-    "updated_at": "2026-10-05T07:16:30+02:00",
-    "finished_at": "2026-10-05T07:16:30+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-05T07:45:00+02:00",
+    "updated_at": "2026-10-05T07:58:00+02:00",
+    "finished_at": "2026-10-05T07:58:00+02:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-05T07:15:00+02:00",
+    "requested_at": "2026-10-05T07:45:00+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 2,
+      "trends_explained": 2,
+      "explanation_groups": 2,
+      "new_cards": 2,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
       "remates_omitted": 0,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada directa completada 0/0. La cola editorial autoritativa sigue vacía; se releyó main y no hay revisiones activas que investigar o redactar. Se disparó el saneamiento visual de Pendientes <24 h con run_id propio. Sin ImageGen directo ni despliegues Vercel.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Pasada directa completada 2/2. Flávio Bolsonaro y Adelante Andalucía quedaron explicadas, sincronizadas en requests y retiradas de la cola; main se releyó y la cola quedó a 0. Hubo un conflicto de escritura concurrente resuelto por relectura y reintento. Sin ImageGen directo ni despliegues Vercel.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-05T07:48:20+02:00",
+        "phase": "persisting",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro",
+        "reason": "GitHub rechazó una escritura por conflicto de concurrencia; se releyó main y el reintento quedó verificado."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
@@ -59,42 +70,167 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro",
+        "selected": "🌶️ Brasil contó casi todo y decidió volver a contar candidatos.",
+        "total_chars": 259
+      },
+      {
+        "trend_id": "866c74f7de20",
+        "title": "Adelante Andalucía",
+        "selected": "🌶️ Del pleno a la calle, y la pancarta ya pide horas extra.",
+        "total_chars": 226
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-05T07:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando estado autoritativo · cola editorial 0"
-      },
-      {
-        "at": "2026-10-05T07:15:20+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento de Pendientes solicitado · ventana 24 h"
-      },
-      {
-        "at": "2026-10-05T07:16:00+02:00",
+        "at": "2026-10-05T07:46:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola, trigger y runtime"
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro",
+        "message": "Releyendo estado autoritativo de Flávio Bolsonaro"
       },
       {
-        "at": "2026-10-05T07:16:30+02:00",
+        "at": "2026-10-05T07:46:20+02:00",
+        "phase": "investigating",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro",
+        "message": "Contrastando fuentes sobre el resultado de la primera vuelta"
+      },
+      {
+        "at": "2026-10-05T07:46:50+02:00",
+        "phase": "investigating",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro",
+        "message": "Hecho esencial verificado · 47,04% frente a 45,15% y segunda vuelta el 25 de octubre"
+      },
+      {
+        "at": "2026-10-05T07:47:05+02:00",
+        "phase": "drafting",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-05T07:47:15+02:00",
+        "phase": "drafting",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro",
+        "message": "Comprobando límite de 280 caracteres · 259"
+      },
+      {
+        "at": "2026-10-05T07:47:35+02:00",
+        "phase": "remate_selection",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-05T07:48:20+02:00",
+        "phase": "persisting",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro",
+        "message": "Conflicto de escritura concurrente · releyendo SHA y reintentando"
+      },
+      {
+        "at": "2026-10-05T07:53:20+02:00",
+        "phase": "persisting",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro",
+        "message": "Ficha, requests y cola persistidos"
+      },
+      {
+        "at": "2026-10-05T07:53:40+02:00",
+        "phase": "verifying",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-05T07:54:00+02:00",
+        "phase": "verifying",
+        "trend_id": "866c74f7de20",
+        "title": "Adelante Andalucía",
+        "message": "Releyendo estado autoritativo de Adelante Andalucía"
+      },
+      {
+        "at": "2026-10-05T07:54:15+02:00",
+        "phase": "investigating",
+        "trend_id": "866c74f7de20",
+        "title": "Adelante Andalucía",
+        "message": "Contrastando movilizaciones por vivienda en Granada y Jerez"
+      },
+      {
+        "at": "2026-10-05T07:54:35+02:00",
+        "phase": "investigating",
+        "trend_id": "866c74f7de20",
+        "title": "Adelante Andalucía",
+        "message": "Hecho esencial verificado · apoyo a las protestas y defensa de una huelga general"
+      },
+      {
+        "at": "2026-10-05T07:54:50+02:00",
+        "phase": "drafting",
+        "trend_id": "866c74f7de20",
+        "title": "Adelante Andalucía",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-05T07:55:00+02:00",
+        "phase": "drafting",
+        "trend_id": "866c74f7de20",
+        "title": "Adelante Andalucía",
+        "message": "Comprobando límite de 280 caracteres · 226"
+      },
+      {
+        "at": "2026-10-05T07:55:20+02:00",
+        "phase": "remate_selection",
+        "trend_id": "866c74f7de20",
+        "title": "Adelante Andalucía",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-05T07:56:00+02:00",
+        "phase": "persisting",
+        "trend_id": "866c74f7de20",
+        "title": "Adelante Andalucía",
+        "message": "Guardando ficha Explicada y actualizando requests"
+      },
+      {
+        "at": "2026-10-05T07:56:20+02:00",
+        "phase": "persisting",
+        "trend_id": "866c74f7de20",
+        "title": "Adelante Andalucía",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-05T07:57:00+02:00",
+        "phase": "verifying",
+        "trend_id": "866c74f7de20",
+        "title": "Adelante Andalucía",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-05T07:57:20+02:00",
+        "phase": "verifying",
+        "trend_id": "866c74f7de20",
+        "title": "Adelante Andalucía",
+        "message": "Tendencia cerrada y verificada · cola 0"
+      },
+      {
+        "at": "2026-10-05T07:58:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial verificada · 0 activos"
+        "message": "Pasada completada 2/2 · cola editorial verificada a 0"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "radar": {
-      "captured_at": "2026-10-05T07:11:00+02:00",
+      "captured_at": "2026-10-05T07:51:41+02:00",
       "queue_count": 0,
       "top10": [
         "#ConexiónHonduras4",
@@ -112,28 +248,28 @@
     },
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261005T071500+0200",
+      "run_id": "tr-chat-20261005T074500+0200",
       "status": "triggered"
     }
   },
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "trends_processed": 2,
+    "trends_explained": 2,
+    "explanation_groups": 2,
+    "new_cards": 2,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
-    "incidents": 0,
+    "incidents": 1,
     "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
     "fallback_images_ready": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 2,
     "remates_omitted": 0,
     "pending_repair_triggered": 1
   },
