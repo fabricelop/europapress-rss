@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T07:51:57.284012Z",
+  "updated_at": "2026-10-05T07:54:27.567Z",
   "items": [
     {
       "event_id": "5e81f8cd481d",
@@ -52,7 +52,7 @@
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005091421_690.jpg",
         "source": "Ayuntamiento de Madrid / Europa Press",
@@ -71,19 +71,59 @@
         "alt": "Relojes entre los objetos perdidos subastados por el Ayuntamiento de Madrid"
       },
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
       "image_delivery": "app",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005091421_690.jpg",
-        "source": "Ayuntamiento de Madrid / Europa Press",
-        "source_url": "https://www.europapress.es/madrid/noticia-ayuntamiento-subasta-mas-5600-objetos-perdidos-joyas-relojes-articulos-lujo-tecnologia-20261005091421.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Relojes entre los objetos perdidos subastados por el Ayuntamiento de Madrid"
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5e81f8cd481d-r1-ai1-791186720528.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "4312051ed21b38beb8913fc24bdbb30e2e71105ea9c046bf251fc7f089032709",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2692002,
+        "context_guard": {
+          "version": 3,
+          "event_id": "5e81f8cd481d",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-5e81f8cd481d-r1-a1-1791186720528"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5e81f8cd481d-r1-ai1-791186720528.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5e81f8cd481d-r1-ai1-791186720528.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "4312051ed21b38beb8913fc24bdbb30e2e71105ea9c046bf251fc7f089032709",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2692002,
+        "context_guard": {
+          "version": 3,
+          "event_id": "5e81f8cd481d",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-5e81f8cd481d-r1-a1-1791186720528"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5e81f8cd481d-r1-ai1-791186720528.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T07:54:27.567Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T07:54:27.567Z"
     }
   ],
   "count": 11
