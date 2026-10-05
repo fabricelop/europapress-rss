@@ -1,40 +1,46 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T10:15:00+02:00",
-  "last_completed_at": "2026-10-05T10:16:30+02:00",
+  "last_started_at": "2026-10-05T10:45:00+02:00",
+  "last_completed_at": "2026-10-05T10:49:30+02:00",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "3db95918a884",
+    "4aeef5ae1e7b",
+    "ca5905adf489",
+    "28a7a4ae6c7d",
+    "571bfe869955"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T10:16:30+02:00",
+  "updated_at": "2026-10-05T10:49:30+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T101500+0200",
+    "run_id": "tr-chat-20261005T104500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-05T10:15:00+02:00",
-    "updated_at": "2026-10-05T10:16:30+02:00",
-    "finished_at": "2026-10-05T10:16:30+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-05T10:45:00+02:00",
+    "updated_at": "2026-10-05T10:49:30+02:00",
+    "finished_at": "2026-10-05T10:49:30+02:00",
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-05T10:15:00+02:00",
+    "requested_at": "2026-10-05T10:45:00+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "trends_processed": 5,
+      "trends_explained": 5,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 2,
+      "grouped_into_existing_card": 4,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -44,13 +50,13 @@
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 1,
       "remates_selected": 0,
-      "remates_omitted": 0,
+      "remates_omitted": 1,
       "pending_repair_triggered": 1,
-      "pending_cards_reviewed": 32
+      "pending_cards_reviewed": 15
     },
-    "message": "Pasada directa completada sin trabajo editorial nuevo. Cola final 0, sin preparing/update, sin reexplicaciones pendientes y sin problematic activo en el Top 10. Se revisaron 32 Pendientes recientes y se solicitó su reparación visual independiente. Sin ImageGen directo ni despliegue Vercel.",
+    "message": "Pasada completada: 5 revisiones cerradas en 1 grupo electoral; cola final 0. Sin ImageGen directo ni despliegue Vercel.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -63,77 +69,154 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-05T10:15:00+02:00",
+        "at": "2026-10-05T10:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada directa; cola activa 0 y 32 Pendientes recientes a sanear visualmente."
+        "message": "Preparando pasada directa; cola activa 5. Solicitando saneamiento visual independiente de Pendientes."
       },
       {
-        "at": "2026-10-05T10:15:20+02:00",
+        "at": "2026-10-05T10:46:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 32 tarjetas recientes"
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Releyendo estado autoritativo del grupo electoral"
       },
       {
-        "at": "2026-10-05T10:15:35+02:00",
+        "at": "2026-10-05T10:46:20+02:00",
+        "phase": "investigating",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Contrastadas fuentes actuales sobre la convocatoria del 29-N y la disolución de las Cortes"
+      },
+      {
+        "at": "2026-10-05T10:46:35+02:00",
+        "phase": "investigating",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Hecho esencial verificado; evaluando agrupación de #Elecciones, Pedro Sánchez, 29-N, PSOE y Cortés"
+      },
+      {
+        "at": "2026-10-05T10:46:50+02:00",
+        "phase": "drafting",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-05T10:47:00+02:00",
+        "phase": "drafting",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Comprobando límite de X: 196 caracteres"
+      },
+      {
+        "at": "2026-10-05T10:47:10+02:00",
+        "phase": "remate_selection",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Sin remate · explicación factual suficiente"
+      },
+      {
+        "at": "2026-10-05T10:47:20+02:00",
+        "phase": "persisting",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-05T10:47:40+02:00",
+        "phase": "persisting",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-05T10:47:55+02:00",
+        "phase": "persisting",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Retirando revisiones cerradas de la cola"
+      },
+      {
+        "at": "2026-10-05T10:48:20+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Releyendo main: cola, requests y ficha Explicada"
+      },
+      {
+        "at": "2026-10-05T10:48:35+02:00",
+        "phase": "verifying",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-05T10:48:50+02:00",
+        "phase": "verifying",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-05T10:49:05+02:00",
+        "phase": "verifying",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
+        "message": "Revisando Pendientes · 15 tarjetas recientes"
+      },
+      {
+        "at": "2026-10-05T10:49:15+02:00",
+        "phase": "verifying",
+        "trend_id": "3db95918a884",
+        "title": "#Elecciones + grupo electoral",
         "message": "Reparación visual independiente solicitada para Pendientes"
       },
       {
-        "at": "2026-10-05T10:16:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola, requests y reexplicaciones"
-      },
-      {
-        "at": "2026-10-05T10:16:30+02:00",
+        "at": "2026-10-05T10:49:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial final 0; sin revisiones activas ni reexplicaciones pendientes"
+        "message": "Pasada completada: 5 revisiones cerradas en 1 grupo electoral; cola final 0. Sin ImageGen directo ni despliegue Vercel."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "radar": {
-      "captured_at": "2026-10-05T10:11:31+02:00",
+      "captured_at": "2026-10-05T10:41:11+02:00",
       "queue_count": 0,
       "top10": [
+        "#Elecciones",
+        "Pedro Sánchez",
         "#FelizLunes",
+        "#LaHora5O",
         "#ConexiónHonduras4",
         "Frente Amplio",
+        "Cortés",
         "Lula",
-        "#LaHora5O",
-        "Sanchez",
-        "#Buenosdías",
-        "Docentes",
-        "Yola",
-        "Los Rocho"
+        "29-N",
+        "PSOE"
       ],
       "new_entries": []
     },
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261005T101500+0200",
+      "run_id": "tr-chat-20261005T104500+0200",
       "status": "triggered",
-      "trigger_commit_sha": "e3ec4ef6fa94ef77e4e4c6b0c66a396429ed8123",
+      "trigger_commit_sha": "6d3dc26cd3f67fbceb328023e38fa16b1121a688",
       "direct_imagegen": false,
-      "pending_cards_reviewed": 32
+      "pending_cards_reviewed": 15
     }
   },
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
-    "revisions_updated": 0,
-    "grouped_into_existing_card": 0,
+    "trends_processed": 5,
+    "trends_explained": 5,
+    "explanation_groups": 1,
+    "new_cards": 1,
+    "revisions_updated": 2,
+    "grouped_into_existing_card": 4,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -143,10 +226,10 @@
     "imagegen_attempts": 0,
     "fallback_images_ready": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 0,
+    "explanations_verified_under_280": 1,
     "remates_selected": 0,
-    "remates_omitted": 0,
+    "remates_omitted": 1,
     "pending_repair_triggered": 1,
-    "pending_cards_reviewed": 32
+    "pending_cards_reviewed": 15
   }
 }
