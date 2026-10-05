@@ -28850,7 +28850,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -28914,13 +28913,30 @@
       ],
       "duplicate_of": null,
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_choice": "none",
-      "image_status": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
       "image_pending": false,
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.ugt.es/sites/default/files/manifestacion_vivienda.jpeg",
+        "source": "UGT · 5/10/2026",
+        "source_url": "https://www.ugt.es/ugt-y-ccoo-acuerdan-la-convocatoria-de-una-huelga-general-este-otono",
+        "alt": "Imagen de archivo relacionada con CCOO",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.ugt.es/sites/default/files/manifestacion_vivienda.jpeg",
+        "source": "UGT · 5/10/2026",
+        "source_url": "https://www.ugt.es/ugt-y-ccoo-acuerdan-la-convocatoria-de-una-huelga-general-este-otono",
+        "alt": "Imagen de archivo relacionada con CCOO",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-05T20:19:00+02:00",
+  "updated_at": "2026-10-05T18:23:11.720023Z",
   "count": 569
 }
