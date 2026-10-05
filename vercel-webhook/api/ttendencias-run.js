@@ -148,8 +148,22 @@ async function readMainJsonWithSha(path){
   const r=await gh(u,{cache:"no-store",headers:{"cache-control":"no-cache"}});
   if(r.status===404)return {sha:null,doc:null};
   if(!r.ok)throw new Error("GitHub main GET "+path+": "+r.status+" "+await r.text());
-  const f=await r.json(),raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-  return {sha:f.sha,doc:JSON.parse(raw||"{}")}
+  const f=await r.json();
+  let encoded=String(f.content||"").replace(/\n/g,"");
+  // GitHub Contents API deja content vacío para ficheros grandes (>1 MB).
+  // En ese caso, el blob por SHA sigue siendo autoritativo y devuelve el
+  // contenido base64 completo, evitando falsos not_pending_explained.
+  if(!encoded && f.sha){
+    const br=await gh("https://api.github.com/repos/"+REPO+"/git/blobs/"+encodeURIComponent(f.sha),{
+      cache:"no-store",headers:{"cache-control":"no-cache"}
+    });
+    if(!br.ok)throw new Error("GitHub blob GET "+path+": "+br.status+" "+await br.text());
+    const blob=await br.json();
+    encoded=String(blob.content||"").replace(/\n/g,"");
+  }
+  const raw=Buffer.from(encoded,"base64").toString("utf8");
+  if(!raw.trim())throw new Error("GitHub main GET "+path+": contenido vacío");
+  return {sha:f.sha,doc:JSON.parse(raw)}
 }
 async function writeMainJson(path,doc,sha,message){
   const body={message,content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64"),branch:MAIN_BRANCH};
