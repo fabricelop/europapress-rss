@@ -28894,9 +28894,9 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -28910,13 +28910,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005142548_1200.jpg",
-        "source": "Europa Press · 5/10/2026",
-        "source_url": "https://www.europapress.es/nacional/noticia-sanchez-afronta-urnas-psoe-senalado-causas-hijas-zapatero-juez-elecciones-20261005142548.html",
-        "alt": "Imagen de archivo relacionada con Leire",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/c4d952aa817b-r0-ai3-791232399679.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 3,
+        "sha256": "6d457f81a28d0adda578043cb29fd4c3302d287005e284200f78e9ee4f3bfb32",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2224123,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "c4d952aa817b",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-recover-c4d952aa817b-r0-a3-1791232399679"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/c4d952aa817b-r0-ai3-791232399679.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/c4d952aa817b-r0-ai3-791232399679.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 3,
+        "sha256": "6d457f81a28d0adda578043cb29fd4c3302d287005e284200f78e9ee4f3bfb32",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2224123,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "c4d952aa817b",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-recover-c4d952aa817b-r0-a3-1791232399679"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/c4d952aa817b-r0-ai3-791232399679.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 3,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T20:37:44.140Z"
     },
     {
       "id": "d00966faa802",
@@ -29387,6 +29426,6 @@
       "ai_image_last_attempt_at": "2026-10-05T20:29:22.674Z"
     }
   ],
-  "updated_at": "2026-10-05T20:35:27.577Z",
+  "updated_at": "2026-10-05T20:37:44.140Z",
   "count": 569
 }
