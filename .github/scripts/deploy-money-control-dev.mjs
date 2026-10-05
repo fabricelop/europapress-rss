@@ -18,21 +18,27 @@ const prefix=root?root+"/":"";
 
 const sources=[
   {local:"vercel-webhook/money-control/index.html",file:prefix+"money-control/index.html"},
-  {local:"vercel-webhook/api/money-control-interpret.js",file:prefix+"api/money-control-interpret.js"}
+  {local:"vercel-webhook/api/money-control-interpret.js",file:prefix+"api/money-control-interpret.js"},
+  {local:"vercel-webhook/api/money-control-moneywiz-upload.js",file:prefix+"api/money-control-moneywiz-upload.js"}
 ];
 
 const sourcePackage=JSON.parse(await fs.readFile(path.resolve("vercel-webhook/package.json"),"utf8"));
 const aiVersion=String(sourcePackage?.dependencies?.ai||"").replace(/^[~^]/,"");
+const blobVersion=String(sourcePackage?.dependencies?.["@vercel/blob"]||"").replace(/^[~^]/,"");
 if(!aiVersion)throw new Error("Missing ai dependency in vercel-webhook/package.json");
+if(!blobVersion)throw new Error("Missing @vercel/blob dependency in vercel-webhook/package.json");
 const minimalPackage=Buffer.from(JSON.stringify({
   private:true,
   type:"module",
-  dependencies:{ai:aiVersion}
+  dependencies:{ai:aiVersion,"@vercel/blob":blobVersion}
 },null,2)+"\n");
 
 const minimalConfig={
   "$schema":"https://openapi.vercel.sh/vercel.json",
-  functions:{"api/money-control-interpret.js":{maxDuration:60}},
+  functions:{
+    "api/money-control-interpret.js":{maxDuration:60},
+    "api/money-control-moneywiz-upload.js":{maxDuration:30}
+  },
   git:{deploymentEnabled:false},
   rewrites:[
     {source:"/api/money-control-snapshot",destination:"https://europapress-rss.vercel.app/api/money-control-snapshot"},
