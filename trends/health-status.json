@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-05T07:45:41.032927+00:00",
+  "checked_at": "2026-10-05T13:23:35.668649+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 7,
-      "captured_age_minutes": 0.2,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.1,
-      "run_id": 37279438674,
+      "age_minutes": 1.2,
+      "run_id": 37316273696,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -66,7 +66,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 45,
+      "invalid_count": 46,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -76,9 +76,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 3,
+      "pending_count": 0,
       "overdue_count": 0,
-      "oldest_age_minutes": 0.1,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -86,21 +86,17 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "0c2f4be392df",
-        "87d194456cfe",
-        "70b83466c26a"
-      ],
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola con 45 estado(s) inválido(s)"
+    "cola con 46 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 45 estado(s) inválido(s) | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola con 46 estado(s) inválido(s) | config TTendencias incompatible con el modo activo"
 }
