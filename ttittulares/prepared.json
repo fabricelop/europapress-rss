@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T22:42:05.572140Z",
+  "updated_at": "2026-10-05T23:09:39.497Z",
   "items": [
     {
       "event_id": "343b685c3a46",
@@ -481,15 +481,15 @@
       "trend_context": null,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "fallback_image": {
         "url": "https://www.lavanguardia.com/files/og_thumbnail/uploads/2026/10/05/6ac3820f8c065.jpeg",
         "source": "www.lavanguardia.com",
@@ -507,8 +507,55 @@
         "generated": false,
         "alt": "Amazon rebaja sus dispositivos en octubre: qué Kindle, Fire TV y Echo compensa comprar en la Fiesta de Ofertas Prime 2026"
       },
-      "ai_image": null,
-      "archive_image_search_attempted_at": "2026-10-05T22:42:05.572140Z"
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d2d27eefeff8-r1-ai1-791240130340.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "e4ffd039824bef96ec98cf25218f4e778d884fd21ef8922195264b7d8134ef0e",
+        "width": 1672,
+        "height": 941,
+        "bytes": 1758424,
+        "context_guard": {
+          "version": 3,
+          "event_id": "d2d27eefeff8",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-d2d27eefeff8-r1-a1-1791240130340"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/d2d27eefeff8-r1-ai1-791240130340.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "archive_image_search_attempted_at": "2026-10-05T22:42:05.572140Z",
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T23:09:39.497Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T23:09:39.497Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d2d27eefeff8-r1-ai1-791240130340.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "e4ffd039824bef96ec98cf25218f4e778d884fd21ef8922195264b7d8134ef0e",
+        "width": 1672,
+        "height": 941,
+        "bytes": 1758424,
+        "context_guard": {
+          "version": 3,
+          "event_id": "d2d27eefeff8",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-d2d27eefeff8-r1-a1-1791240130340"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/d2d27eefeff8-r1-ai1-791240130340.png",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     }
   ],
   "count": 11
