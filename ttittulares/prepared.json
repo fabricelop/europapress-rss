@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T17:08:40.518641Z",
+  "updated_at": "2026-10-05T17:10:31.774Z",
   "items": [
     {
       "event_id": "c4d5307a5b7c",
@@ -51,14 +51,14 @@
       "with_image": true,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
-      "image_status": "none",
+      "image_choice": "ai",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "archive_image_search_attempted_at": "2026-10-05T16:43:34.547198Z",
       "fallback_image_search_attempted_at": "2026-10-05T16:43:34.547198Z",
       "archive_image": {
@@ -77,9 +77,54 @@
         "generated": false,
         "alt": "Los jesuitas expulsan al sacerdote Francesc Peris por abusar de más de una veintena de menores"
       },
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-05T16:45:12.464Z",
-      "ai_image_failure_reason": "ImageGen quedó inactivo tras el envío; {\"marker\":true,\"commandScoped\":true,\"turns\":0,\"generating\":false,\"imagesAfterMarker\":0,\"candidates\":0,\"canvases\":0,\"top\":[]}"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T17:10:31.774Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/c4d5307a5b7c-r1-ai1-791219402003.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ec8a43fe46fc4078105da506d64102181c21aa76f4feec4d67efd5c43859fa96",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2792841,
+        "context_guard": {
+          "version": 3,
+          "event_id": "c4d5307a5b7c",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-c4d5307a5b7c-r1-a2-1791219402003"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/c4d5307a5b7c-r1-ai1-791219402003.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T17:10:31.774Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/c4d5307a5b7c-r1-ai1-791219402003.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ec8a43fe46fc4078105da506d64102181c21aa76f4feec4d67efd5c43859fa96",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2792841,
+        "context_guard": {
+          "version": 3,
+          "event_id": "c4d5307a5b7c",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-c4d5307a5b7c-r1-a2-1791219402003"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/c4d5307a5b7c-r1-ai1-791219402003.png",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     },
     {
       "event_id": "274b7cb6a513",
