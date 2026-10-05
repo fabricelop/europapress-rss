@@ -143,7 +143,46 @@ export default async function handler(req, res) {
       if (chatId !== allowedChat) return res.status(200).json({ ok: true });
       const data = cq.data || "";
 
-      if (data.startsWith("emergency:")) {
+      if (data.startsWith("tt:")) {
+        const parts = data.split(":");
+        const action = parts[1] || "";
+        const id = parts.slice(2).join(":") || "";
+        if (!["p", "d"].includes(action) || !id) {
+          await safeTelegram("answerCallbackQuery", {
+            callback_query_id: cq.id,
+            text: "Acción no válida."
+          });
+          return res.status(200).json({ ok: true, ignored: true });
+        }
+        const decision = action === "p" ? "ttp" : "ttd";
+        try {
+          const stored = await appendRequest(
+            requestObj(update, "emergency_action", decision + "|" + id),
+            EMERGENCY_QUEUE
+          );
+          await safeTelegram("answerCallbackQuery", {
+            callback_query_id: cq.id,
+            text: stored
+              ? (action === "p" ? "✅ Publicado: guardando estado." : "🗑 Desestimado: guardando estado.")
+              : "✅ Estado ya registrado."
+          });
+          // El mensaje se conserva hasta que el workflow de decisiones haya persistido
+          // el estado terminal y lo añada a la cola de borrado.
+          return res.status(200).json({ ok: true, stored, event_id: id, decision });
+        } catch (e) {
+          console.error("TTiTTulares callback persistence failed", {
+            event_id: id,
+            decision,
+            error: String(e?.message || e)
+          });
+          await safeTelegram("answerCallbackQuery", {
+            callback_query_id: cq.id,
+            text: "No se pudo guardar el estado. El mensaje se conserva.",
+            show_alert: true
+          });
+          return res.status(200).json({ ok: false, stored: false, event_id: id, decision });
+        }
+      } else if (data.startsWith("emergency:")) {
         const parts=data.split(":"); const action=parts[1]||""; const id=parts.slice(2).join(":")||"";
         if(action==="prepare"){
           const original=msg.text||"";
