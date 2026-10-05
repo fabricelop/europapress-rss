@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-ad443d46cc7d-r0-a1-1791219115696",
-  "requested_at": "2026-10-05T16:51:55.695768Z",
-  "updated_at": "2026-10-05T16:52:23.074Z",
-  "status": "RUNNING",
-  "phase": "capture_wait",
+  "command_id": "tr-img-recover-ad443d46cc7d-r0-a2-1791230430028",
+  "requested_at": "2026-10-05T20:00:30.024Z",
+  "updated_at": "2026-10-05T20:00:30.024Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,9 +14,9 @@
   "trend_id": "ad443d46cc7d",
   "target_name": "#EleccionesEspaña",
   "revision": 0,
-  "attempt": 1,
+  "attempt": 2,
   "auto_repair": true,
-  "auto_repair_attempt": 1,
+  "auto_repair_attempt": 2,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
   "context_snapshot": {
@@ -49,12 +49,6 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Esperando el raster generado por ImageGen en la misma pestaña. Intento 1/2.",
-  "pc_upload_secret_hash": "19e9134d0ad00795a90c4d65f7fbfa75358cfbe789a2acadf2ebc3ba98665682",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-05T16:52:10.837Z",
-  "bridge_version": null,
-  "target_handoff_id": "CC9AF6FFA537F30F5BE48F8F1E7A6C64",
-  "target_handoff_at": "2026-10-05T16:52:19.300Z",
-  "pc_launched_at": "2026-10-05T16:52:21.752Z"
+  "message": "Reintento automático tras detectar job IA obsoleto.",
+  "bridge_version": null
 }
