@@ -1,0 +1,32 @@
+name: Smoke Money Control production
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/smoke-money-control-production.yml"
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: POST exacto a producción
+        env:
+          PAYLOAD: "{\"text\":\"Transferencia que viene de la cuenta de BBVA, hacia CI Comun: FECHA DE OPERACIÓN\\tCONCEPTO\\tFECHA VALOR\\tIMPORTE\\tSALDO\\n05/10/2026\\tTRANSF CTA DE:FABRICE LOPEZ ILL\\t05/10/2026\\t200,00 EUR\\t6.793,01 EUR  Ya estaba en los movimientos de bbva. Estos son los ultimos de bbva: Resultado de la búsqueda\\nFecha\\nConcepto\\nFraccionar\\t\\nImporte\\nSaldo\\nNotas\\t\\nArchivos adjuntos\\t\\nAcciones\\t\\nDetalle\\n05 octubreOct\\n2026\\nAdeudo mensual de tarjeta\\n4552232382975194\\n−\\n100\\n,\\n99\\nEUR\\n− 100,99 EUR\\n1.029\\n,\\n18\\nEUR\\n1.029,18 EUR\\n\\n02 octubreOct\\n2026\\nTransferencia realizada\\nFabrice lopez illac\\n−\\n200\\n,\\n00\\nEUR\\n− 200,00 EUR\\n1.130\\n,\\n17\\nEUR\\n1.130,17 EUR\",\"today\":\"2026-10-05\",\"defaultAccount\":\"\",\"accounts\":[{\"id\":\"1\",\"name\":\"BBVA\",\"group\":\"Cuentas\"},{\"id\":\"2\",\"name\":\"CI Comun\",\"group\":\"Cuentas\"}]}"
+        run: |
+          printf '%s' "$PAYLOAD" > /tmp/payload.json
+          curl --fail-with-body -sS https://europapress-rss.vercel.app/api/money-control-interpret -H 'content-type: application/json' --data-binary @/tmp/payload.json > /tmp/response.json
+          cat /tmp/response.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/response.json','utf8'));
+          const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,' ').trim().replace(/\s+/g,' ');
+          if(!x.ok)throw new Error('Respuesta no OK: '+JSON.stringify(x));
+          if(x.model!=='deterministic-transfer-parser')throw new Error('Parser inesperado: '+x.model);
+          const m=(x.interpretation.movements||[])[0];
+          if(!m||m.kind!=='transfer'||norm(m.account)!=='BBVA'||norm(m.destinationAccount)!=='CI COMUN'||Math.abs(Number(m.amount))!==200)throw new Error('Transferencia incorrecta: '+JSON.stringify(m));
+          if(m.existingSide!=='source'||m.sourceDate!=='2026-10-02'||m.destinationDate!=='2026-10-05')throw new Error('Patas/fechas incorrectas: '+JSON.stringify(m));
+          const b=(x.interpretation.balances||[])[0];
+          if(!b||norm(b.account)!=='CI COMUN'||Math.abs(Number(b.balance)-6793.01)>.001)throw new Error('Saldo incorrecto: '+JSON.stringify(b));
+          console.log('MONEY_CONTROL_PRODUCTION_SMOKE_OK');
+          NODE
