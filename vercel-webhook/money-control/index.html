@@ -19,6 +19,29 @@
 :root[data-theme="dark"] .signal-card.danger{background:#241313;border-color:#5f2d2d}:root[data-theme="dark"] .badge.fulfilled{background:#153326;color:#70d6a7}
 :root[data-theme="dark"] .meter,:root[data-theme="dark"] .bars{background:#111821}
 :root[data-theme="dark"] .logo{background:#e7edf4;color:#111827}
+:root[data-theme="dark"] .suggest,
+:root[data-theme="dark"] .options,
+:root[data-theme="dark"] .moves-account-filter,
+:root[data-theme="dark"] .ingest-preview{background:#111821;color:var(--text);border-color:var(--line)}
+:root[data-theme="dark"] .suggest strong,
+:root[data-theme="dark"] .options strong,
+:root[data-theme="dark"] .options label,
+:root[data-theme="dark"] .modal-card h1,
+:root[data-theme="dark"] .modal-card h2,
+:root[data-theme="dark"] .modal-card h3{color:#f3f6fa}
+:root[data-theme="dark"] .actions button,
+:root[data-theme="dark"] .tab{background:#111821;color:#eef3f8;border-color:var(--line)}
+:root[data-theme="dark"] .actions button:hover,
+:root[data-theme="dark"] .tab:hover{background:#1b2531}
+:root[data-theme="dark"] .tab.active{background:#26364a;color:#fff;border-color:#52647a}
+:root[data-theme="dark"] .moves-account-filter strong{color:#cfe2ff}
+:root[data-theme="dark"] .callout{color:#c2d1e4}
+:root[data-theme="dark"] .modal-card .muted,
+:root[data-theme="dark"] .suggest .meta,
+:root[data-theme="dark"] .options .meta{color:#b3bfcd}
+:root[data-theme="dark"] .badge{background:#253140;color:#d9e2ec}
+:root[data-theme="dark"] .badge.new{background:#17355b;color:#9ec8ff}
+:root[data-theme="dark"] .badge.review{background:#493719;color:#ffd38a}
 </style></head><body>
 <div id="unlock" class="unlock"><div class="unlock-card"><div class="brand"><div class="logo">€</div><div><strong>Money Control</strong><small>preview cifrada</small></div></div><h1>Desbloquear</h1><p>Los datos financieros de esta página están cifrados. La clave se usa solo en este navegador y no se envía al servidor.</p><form id="unlock-form"><input id="password" type="password" autocomplete="current-password" placeholder="Clave de acceso" autofocus><button type="submit">Abrir Money Control</button><div id="unlock-error" class="error"></div></form></div></div>
 <div id="app" class="app"><div class="shell"><aside><div class="brand"><div class="logo">€</div><div><strong>Money Control</strong><small>sobre copia MoneyWiz</small></div></div><div class="navs"><button class="nav active" data-v="home">Inicio</button><button class="nav" data-v="moves">Movimientos <b id="newbadge"></b></button><button class="nav" data-v="scheduled">Programados</button><button class="nav" data-v="accounts">Cuentas</button><button class="nav" data-v="cards">Tarjetas</button><button class="nav" data-v="analytics">Análisis</button><button class="nav" data-v="control">Control</button><button class="nav" data-v="ingest">Entrada</button></div><div class="aside-note">Snapshot <span id="snapshot"></span><br>Datos cifrados · cambios solo en este navegador<br><button id="theme-toggle" class="tiny" style="margin-top:10px">🌙 Oscuro</button> <button id="lock-now" class="tiny" style="margin-top:10px">Bloquear</button> <button id="export-state" class="tiny" style="margin-top:10px">Exportar estado</button> <button id="import-state" class="tiny" style="margin-top:10px">Importar estado</button> <button id="reset-local" class="tiny" style="margin-top:10px">Reiniciar prueba local</button><input id="import-state-file" type="file" accept="application/json,.json" hidden></div></aside><main><header><div><h1 id="title">Inicio</h1><p id="sub">Liquidez, próximos pagos y novedades</p></div></header>
