@@ -5,7 +5,6 @@ on:
   push:
     branches: [main]
     paths:
-      - "trends/telegram-manual-explained.json"
       - "ttittulares/tremending/items.json"
       - "trends/enrich_explained_images.py"
       - ".github/workflows/ttendencias-image-enrich.yml"
@@ -16,7 +15,7 @@ permissions:
 
 concurrency:
   group: ttendencias-real-images
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   enrich:
@@ -89,10 +88,3 @@ jobs:
           echo "No se pudo persistir la foto tras cinco intentos" >&2
           exit 1
 
-
-      - name: Lanzar entrega visual TTendencias
-        if: success()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-        run: gh workflow run send-ttendencias-explained-telegram.yml --repo "$REPO" --ref main
