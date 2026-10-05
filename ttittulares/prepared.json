@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T23:35:06.556760Z",
+  "updated_at": "2026-10-05T23:37:13.284Z",
   "items": [
     {
       "event_id": "343b685c3a46",
@@ -622,7 +622,7 @@
       "trend_context": null,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image": {
         "url": "https://album.mediaset.es/eimg/2026/10/05/manifestacion-en-barcelona-16-9-aspect-ratio-default-1056484_da39.jpg",
         "source": "www.telecinco.es",
@@ -641,15 +641,62 @@
         "alt": "La multitudinaria protesta por la vivienda en Barcelona acaba con cargas policiales, contenedores quemados y varios detenidos"
       },
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "fallback_image_search_attempted_at": "2026-10-05T23:35:06.556760Z",
-      "ai_image": null,
-      "archive_image_search_attempted_at": "2026-10-05T23:35:06.556760Z"
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/cb3094c17d49-r1-ai1-791243310796.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f495d14a399f917a9edbb64b63be9c071bf7c0267101921e5571db03294310fd",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 2183370,
+        "context_guard": {
+          "version": 3,
+          "event_id": "cb3094c17d49",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-cb3094c17d49-r1-a1-1791243310796"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/cb3094c17d49-r1-ai1-791243310796.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "archive_image_search_attempted_at": "2026-10-05T23:35:06.556760Z",
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T23:37:13.284Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T23:37:13.284Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/cb3094c17d49-r1-ai1-791243310796.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f495d14a399f917a9edbb64b63be9c071bf7c0267101921e5571db03294310fd",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 2183370,
+        "context_guard": {
+          "version": 3,
+          "event_id": "cb3094c17d49",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-cb3094c17d49-r1-a1-1791243310796"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/cb3094c17d49-r1-ai1-791243310796.png",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     }
   ],
   "count": 11
