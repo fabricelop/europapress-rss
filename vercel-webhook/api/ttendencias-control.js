@@ -1184,7 +1184,7 @@ async function stateSnapshot(fresh = false) {
   // La API autenticada queda reservada para escrituras y operaciones que
   // realmente necesitan SHA/consistencia transaccional.
   const strong = fresh ? readJson : readPublicJson;
-  const [recent, requests, explained, explainedCopyState, health, prepared, editorialConfig, editorialQueue, remateRatings] = await Promise.all([
+  const [recent, requests, explained, explainedCopyState, health, prepared, editorialConfig, editorialQueue, remateRatings, telegramImageDeliveries] = await Promise.all([
     readPublicJson(RECENT),
     strong(REQUESTS),
     strong(EXPLAINED),
