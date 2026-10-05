@@ -27222,9 +27222,9 @@
       ],
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -27250,13 +27250,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://imagenes.elpais.com/resizer/v2/XDM5JJ7VZRGO3LDGJ3XBSXR53E.jpg?auth=4e5d500278f688acc798e761a7ed5568f5212f9b440dae319c47f58c0121fc64&width=1200",
-        "source": "El País · 5/10/2026",
-        "source_url": "https://elpais.com/espana/2026-10-05/sanchez-adelanta-las-elecciones-al-29-de-noviembre-necesitamos-una-mayoria-progresista-mucho-mas-amplia.html",
-        "alt": "Imagen de archivo relacionada con Parlamento",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/e70952da286d-r0-ai1-791197556459.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f8dbd66ee6135db482207bd5f6f2ef0cf798c3db6f6b17475648745f0f4c9a79",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2622685,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "e70952da286d",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-e70952da286d-r0-a1-1791197556459"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/e70952da286d-r0-ai1-791197556459.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/e70952da286d-r0-ai1-791197556459.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f8dbd66ee6135db482207bd5f6f2ef0cf798c3db6f6b17475648745f0f4c9a79",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2622685,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "e70952da286d",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-e70952da286d-r0-a1-1791197556459"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/e70952da286d-r0-ai1-791197556459.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T10:59:42.321Z"
     },
     {
       "id": "8f1e6f88689d",
@@ -27352,6 +27391,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-05T10:57:41.428Z",
+  "updated_at": "2026-10-05T10:59:42.321Z",
   "count": 556
 }
