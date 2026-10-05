@@ -112,7 +112,15 @@ async function readMainJson(path){
   return JSON.parse(raw||"{}")
 }
 async function imageEligibility(targetId){
-  const [explained,copyState]=await Promise.all([readMainJson(EXPLAINED_PATH),readMainJson(EXPLAINED_COPY_STATE_PATH)]);
+  // El ciclo de imagen necesita consistencia fuerte: RAW/CDN puede tardar unos
+  // segundos en reflejar una revisión recién explicada y provocar un falso
+  // not_pending_explained después de que ImageGen ya haya generado el raster.
+  const [explainedRead,copyStateRead]=await Promise.all([
+    readMainJsonWithSha(EXPLAINED_PATH),
+    readMainJsonWithSha(EXPLAINED_COPY_STATE_PATH)
+  ]);
+  const explained=explainedRead.doc||{};
+  const copyState=copyStateRead.doc||{};
   const rows=(explained.items||[]).filter(x=>String(x.id||"")===String(targetId));
   rows.sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||String(b.explained_at||"").localeCompare(String(a.explained_at||"")));
   const row=rows[0]||null;
@@ -136,7 +144,8 @@ async function writeControlJson(path,doc,sha,message){
   return r.json()
 }
 async function readMainJsonWithSha(path){
-  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(MAIN_BRANCH));
+  const u="https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(MAIN_BRANCH)+"&t="+Date.now();
+  const r=await gh(u,{cache:"no-store",headers:{"cache-control":"no-cache"}});
   if(r.status===404)return {sha:null,doc:null};
   if(!r.ok)throw new Error("GitHub main GET "+path+": "+r.status+" "+await r.text());
   const f=await r.json(),raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
