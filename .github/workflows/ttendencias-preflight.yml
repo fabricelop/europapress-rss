@@ -104,6 +104,9 @@ jobs:
           assert "No uses el ImageGen interno" not in prompt
           assert "TTendencias no envía noticias, candidatos, eventos ni estados a TTiTTulares" in prompt
           assert "NO hagas ningún puente a TTiTTulares" in prompt
+          assert "Esto NO elimina Próximas tendencias" in prompt
+          assert "TTITTULARES_STATUS" in py and "build_upcoming" in py
+          assert "Próximas tendencias" in top and "upcomingList" in top
           legacy=Path(".github/workflows/ai-image-generate.yml").read_text(encoding="utf-8")
           assert "LEGACY_AI_IMAGE_GENERATOR_DISABLED" in legacy
           assert "TT_IMAGE_ENDPOINT" not in legacy and "cairosvg" not in legacy and '"provider": "chat-svg"' not in legacy
