@@ -1,12 +1,12 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T18:15:00+02:00",
-  "last_completed_at": "2026-10-05T18:23:00+02:00",
-  "updated_at": "2026-10-05T18:23:00+02:00",
+  "last_started_at": "2026-10-05T18:45:00+02:00",
+  "last_completed_at": "2026-10-05T18:50:00+02:00",
+  "updated_at": "2026-10-05T18:50:00+02:00",
   "status": "success",
   "processed_ids": [
-    "97e1b3a8b829"
+    "ad443d46cc7d"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -16,7 +16,7 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T181500+0200",
+    "run_id": "tr-chat-20261005T184500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
@@ -24,9 +24,9 @@
     "total": 1,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-05T18:15:00+02:00",
-    "updated_at": "2026-10-05T18:23:00+02:00",
-    "finished_at": "2026-10-05T18:23:00+02:00",
+    "started_at": "2026-10-05T18:45:00+02:00",
+    "updated_at": "2026-10-05T18:50:00+02:00",
+    "finished_at": "2026-10-05T18:50:00+02:00",
     "incident_count": 0,
     "incidents": [],
     "summary": {
@@ -42,10 +42,10 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "vercel_deploys": 0,
-      "pending_cards_reviewed": 3,
-      "pending_with_closer_reviewed": 0,
-      "pending_without_closer_reviewed": 3,
-      "pending_visual_repair_candidates": 3,
+      "pending_cards_reviewed": 9,
+      "pending_with_closer_reviewed": 4,
+      "pending_without_closer_reviewed": 5,
+      "pending_visual_repair_candidates": 9,
       "pending_repair_triggered": 1,
       "problematic_top10_retried": 0
     },
@@ -56,144 +56,205 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [],
-    "message": "Pasada completada: #TEM5O r0 explicada y verificada como TT#1 por el programa Todo es mentira del 5-O sobre el adelanto electoral al 29-N. Cola 0; sin reexplicaciones ni problemáticas Top 10. 3 Pendientes recientes revisadas; imágenes disponibles y remates vacíos deliberados.",
+    "remate_selections": [
+      {
+        "trend_id": "ad443d46cc7d",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.1,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.6
+          },
+          {
+            "id": "c2",
+            "total": 6.6,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.3,
+            "punch": 1.3,
+            "originality": 0.9,
+            "length_fit": 1,
+            "repetition_penalty": 0.3
+          },
+          {
+            "id": "c3",
+            "total": 7.5,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": 0.3
+          },
+          {
+            "id": "c4",
+            "total": 6.9,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.4,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0.3
+          },
+          {
+            "id": "c5",
+            "total": 6.7,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.4,
+            "punch": 1.3,
+            "originality": 0.9,
+            "length_fit": 1,
+            "repetition_penalty": 0.3
+          }
+        ],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "Omitido por neutralidad editorial en contenido electoral"
+      }
+    ],
+    "message": "Pasada completada: #EleccionesEspaña r0 explicada y verificada como TT#1 por el adelanto electoral al 29-N. Cola 0; sin reexplicaciones ni problemáticas Top 10. 9 Pendientes recientes revisadas y reparación visual solicitada.",
     "activity": [
       {
-        "at": "2026-10-05T18:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
-        "message": "Inicio de pasada · 1 entrada activa; preparando verificación JIT de #TEM5O"
-      },
-      {
-        "at": "2026-10-05T18:15:20+02:00",
+        "at": "2026-10-05T18:45:50+02:00",
         "phase": "verifying",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
-        "message": "Releyendo estado autoritativo de #TEM5O"
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
+        "message": "Revisión JIT confirmada · #EleccionesEspaña r0 sigue preparing y ocupa TT#1"
       },
       {
-        "at": "2026-10-05T18:16:00+02:00",
-        "phase": "verifying",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
-        "message": "Revisión JIT confirmada · #TEM5O r0 sigue preparing y ocupa TT#1"
-      },
-      {
-        "at": "2026-10-05T18:16:05+02:00",
+        "at": "2026-10-05T18:46:00+02:00",
         "phase": "investigating",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
-        "message": "Buscando detonante actual de #TEM5O"
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
+        "message": "Buscando detonante actual de #EleccionesEspaña"
       },
       {
-        "at": "2026-10-05T18:18:30+02:00",
+        "at": "2026-10-05T18:46:35+02:00",
         "phase": "investigating",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
-        "message": "Contrastando fuente 1/2 · Mediaset confirma el programa de hoy y el análisis de Risto"
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
+        "message": "Contrastando fuente 1/2 · RTVE confirma elecciones anticipadas el 29-N"
       },
       {
-        "at": "2026-10-05T18:19:00+02:00",
+        "at": "2026-10-05T18:46:45+02:00",
         "phase": "investigating",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
-        "message": "Contrastando fuente 2/2 · RTVE confirma el adelanto electoral al 29-N"
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
+        "message": "Contrastando fuente 2/2 · Europa Press confirma convocatoria y contexto parlamentario"
       },
       {
-        "at": "2026-10-05T18:19:10+02:00",
+        "at": "2026-10-05T18:46:55+02:00",
         "phase": "investigating",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
-        "message": "Hecho esencial verificado · #TEM5O corresponde a Todo es mentira del 5-O y su cobertura del adelanto electoral"
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
+        "message": "Hecho esencial verificado · el adelanto electoral al 29-N es el detonante actual"
       },
       {
-        "at": "2026-10-05T18:19:15+02:00",
+        "at": "2026-10-05T18:47:00+02:00",
         "phase": "drafting",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
         "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-05T18:19:40+02:00",
+        "at": "2026-10-05T18:47:25+02:00",
         "phase": "drafting",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
-        "message": "Comprobando límite de X · 210 caracteres"
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
+        "message": "Comprobando límite de X · 190 caracteres"
       },
       {
-        "at": "2026-10-05T18:19:45+02:00",
+        "at": "2026-10-05T18:47:30+02:00",
         "phase": "remate_selection",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
-        "message": "Sin remate · contenido político; explicación factual suficiente"
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
+        "message": "Generando candidatos de remate"
       },
       {
-        "at": "2026-10-05T18:20:00+02:00",
+        "at": "2026-10-05T18:47:35+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-05T18:47:45+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
+        "message": "Sin remate · contenido electoral; explicación factual suficiente"
+      },
+      {
+        "at": "2026-10-05T18:48:00+02:00",
         "phase": "persisting",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
         "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-05T18:20:20+02:00",
+        "at": "2026-10-05T18:48:20+02:00",
         "phase": "persisting",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
         "message": "Actualizando requests"
       },
       {
-        "at": "2026-10-05T18:20:40+02:00",
+        "at": "2026-10-05T18:48:45+02:00",
+        "phase": "persisting",
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-05T18:49:00+02:00",
         "phase": "verifying",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
         "message": "Releyendo main"
       },
       {
-        "at": "2026-10-05T18:20:45+02:00",
+        "at": "2026-10-05T18:49:10+02:00",
         "phase": "verifying",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
         "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-05T18:21:05+02:00",
+        "at": "2026-10-05T18:49:20+02:00",
         "phase": "verifying",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
+        "trend_id": "ad443d46cc7d",
+        "title": "#EleccionesEspaña",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-05T18:21:10+02:00",
+        "at": "2026-10-05T18:49:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes y comprobando si entró trabajo nuevo"
+        "message": "Revisando Pendientes · 9 tarjetas recientes reales"
       },
       {
-        "at": "2026-10-05T18:22:00+02:00",
+        "at": "2026-10-05T18:49:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 3 tarjetas recientes reales"
+        "message": "Pendientes revisadas · 4 con remate; 5 sin remate deliberado o por sensibilidad; reparación visual solicitada"
       },
       {
-        "at": "2026-10-05T18:22:20+02:00",
+        "at": "2026-10-05T18:49:50+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Pendientes revisadas · alvise y #TEM5O sin remate por política; Medvedev sin remate por sensibilidad; imágenes disponibles"
+        "message": "Releyendo main · comprobando si entró trabajo nuevo"
       },
       {
-        "at": "2026-10-05T18:22:40+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending y 0 problematic vigentes en Top 10"
-      },
-      {
-        "at": "2026-10-05T18:23:00+02:00",
+        "at": "2026-10-05T18:50:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -204,7 +265,7 @@
     "remaining_active_ids": [],
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261005T181500+0200",
+      "run_id": "tr-chat-20261005T184500+0200",
       "status": "triggered",
       "direct_imagegen": false
     },
