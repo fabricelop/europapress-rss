@@ -148,11 +148,11 @@ jobs:
           assert '$WorkerId = "ttittulares-dedicated-v' in listener
           assert "$LaunchConfirmSeconds = 30" in listener
           assert "direct-node" in listener
-          assert "TTendencias unchanged" in listener and "tendenciasBefore" in listener and "tendenciasWritten" in listener
-          assert "EDITORIAL PROCESS STARTED direct-node-real-default-message" in listener and "MODO:\\s*ENVIO REAL" in listener
+          assert "No procesa TTendencias" in listener
+          assert "EDITORIAL PROCESS STARTED direct-node-real-explicit-message" in listener and "MODO:\\s*ENVIO REAL" in listener
           assert 'ArgumentList @($Runner,"titulares","--enviar")' in listener
           assert "RedirectStandardOutput" in listener and "ttittulares-launch-" in listener
-          assert "if ($realMode -and $defaultMessage -and ($messageSent -or $executionLaunched -or $responseStarted))" in listener
+          assert "if ($realMode -and ($messageSent -or $executionLaunched -or $responseStarted))" in listener
           assert "TTITTULARES V15 INSTALADO Y ACTIVO" in installer_v15
           assert 'node Ejecutar.js titulares --enviar' in installer_v15
           assert 'Mensaje editorial: Ejecuta TTiTTulares' in installer_v15
