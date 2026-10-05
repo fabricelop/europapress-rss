@@ -322,8 +322,8 @@ export default async function handler(req, res) {
             callback_query_id:cq.id,
             text:status === "published" ? "Marcada como publicada." : "Desestimada."
           });
-          const deleted = await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:msg.message_id});
-          return res.status(200).json({ok:true,stored:true,event_id:id,status,telegram_deleted:deleted!==null});
+          const telegram_delete=await deleteTtiPackageNow(id,msg.message_id,allowedChat);
+          return res.status(200).json({ok:true,stored:true,event_id:id,status,telegram_delete});
         } catch (e) {
           console.error("TTiTTulares close from Telegram", e);
           await safeTelegram("answerCallbackQuery",{
