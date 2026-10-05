@@ -13,8 +13,8 @@ test("Listas conserva acciones esenciales",()=>{
   assert.match(html,/📋 Copiar tuit/);
   assert.match(html,/✓ Ya publicado/);
   assert.match(html,/Desestimar/);
-  assert.match(script,/api\("published",\{event_id:item\.event_id\}\)/);
-  assert.match(script,/api\("dismiss",\{event_id:item\.event_id\}\)/);
+  assert.match(script,/close\("published","¿Confirmas que ya has publicado esta noticia\?"\)/);
+  assert.match(script,/close\("dismiss","¿Desestimar esta noticia\?"\)/);
 });
 
 test("alta manual solo noticia e instrucciones",()=>{
