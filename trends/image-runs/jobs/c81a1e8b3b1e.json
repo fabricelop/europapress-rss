@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-auto-c81a1e8b3b1e-r1-a1-1791231852536",
   "requested_at": "2026-10-05T20:24:12.534941Z",
-  "updated_at": "2026-10-05T20:28:12.603Z",
+  "updated_at": "2026-10-05T20:28:14.032Z",
   "status": "RUNNING",
-  "phase": "target_handoff",
+  "phase": "pc_launch",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -49,11 +49,12 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Target exacto de ChatGPT entregado al bridge.",
+  "message": "PC ha abierto el chat de imagen; esperando inicio de generación.",
   "pc_upload_secret_hash": "64e9317ba50f34ef82bbeae665bc82c37019f682cd0b5191cb29f5a61642a7d7",
-  "pc_worker_id": "ttendencias-dedicated-v13",
+  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
   "pc_picked_up_at": "2026-10-05T20:28:02.938Z",
   "bridge_version": null,
   "target_handoff_id": "C9F452535B94F3BD12835398892EB772",
-  "target_handoff_at": "2026-10-05T20:28:12.603Z"
+  "target_handoff_at": "2026-10-05T20:28:12.603Z",
+  "pc_launched_at": "2026-10-05T20:28:14.032Z"
 }
