@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-05T21:18:46.841481+00:00",
+  "checked_at": "2026-10-05T21:25:19.905337+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -19,7 +19,7 @@
       "ok": true
     },
     "requests_json": {
-      "ok": true
+      "ok": false
     },
     "bot_state_json": {
       "ok": true
@@ -42,7 +42,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 7,
-      "captured_age_minutes": 0.3,
+      "captured_age_minutes": 6.8,
       "noise_count": 0
     },
     "listener": {
@@ -52,9 +52,9 @@
     },
     "refresh": {
       "ok": true,
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.0,
+      "age_minutes": 1.2,
       "run_id": 37374869695,
       "reason": null,
       "repairable": true,
@@ -63,45 +63,14 @@
     "telegram_sender": {
       "ok": true,
       "outcome": "no-aplica"
-    },
-    "request_queue": {
-      "ok": false,
-      "invalid_count": 46,
-      "noise_count": 0
-    },
-    "ready_consistency": {
-      "ok": true,
-      "orphan_count": 0,
-      "orphan_items": []
-    },
-    "editorial_queue": {
-      "ok": true,
-      "pending_count": 4,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0.0,
-      "warning_after_minutes": 30,
-      "overdue_items": [],
-      "repairable": false
-    },
-    "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "d208a3da8e37",
-        "ff705e6c6b90",
-        "c9d48615f2ca",
-        "d51a0992d740"
-      ],
-      "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola con 46 estado(s) inválido(s)"
+    "requests_json: JSON inválido o ilegible"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 46 estado(s) inválido(s) | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "config TTendencias incompatible con el modo activo | requests_json: JSON inválido o ilegible"
 }
