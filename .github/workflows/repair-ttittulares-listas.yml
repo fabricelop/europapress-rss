@@ -192,7 +192,7 @@ jobs:
           rm -rf /tmp/tt-control-branch
           git worktree add -B "$CONTROL" /tmp/tt-control-branch "origin/$CONTROL"
           python3 - <<'PY'
-          import json, pathlib, subprocess, time
+          import hashlib, json, pathlib, subprocess, time
           from datetime import datetime, timezone
 
           MAIN=pathlib.Path(".")
@@ -262,19 +262,25 @@ jobs:
 
               job_path=CTRL/f"ttittulares/image-runs/jobs/{eid}.json"
               old=load_old(job_path)
-              if int(old.get("revision") or rev)==rev and str(old.get("status") or "").upper() in active:
-                  continue
-
               attempt=int(old.get("auto_repair_attempt") or 0)
-              finished=str(old.get("finished_at") or old.get("updated_at") or "")
+              old_status=str(old.get("status") or "").upper()
+              finished=str(old.get("finished_at") or old.get("updated_at") or old.get("requested_at") or "")
               age=999999
               if finished:
                   try:
                       dt=datetime.fromisoformat(finished.replace("Z","+00:00"))
                       age=(now-dt).total_seconds()
                   except Exception: pass
+
+              # Un job REQUESTED/RUNNING puede quedar muerto si el bridge o Chat
+              # no devuelve raster. No debe bloquear la reparación para siempre.
+              if int(old.get("revision") or rev)==rev and old_status in active:
+                  active_ttl=45*60 if old_status=="REQUESTED" else 12*60
+                  if age<active_ttl:
+                      continue
+
               cooldown=300 if attempt<3 else 3600
-              if old and age<cooldown:
+              if old and old_status not in active and age<cooldown:
                   continue
 
               attempt+=1
