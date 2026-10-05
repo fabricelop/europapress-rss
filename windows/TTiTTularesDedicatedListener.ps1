@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-05-v31-authoritative-ack
+# official-pipeline-restart-token: 2026-10-05-v32-image-pickup-retry
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -25,7 +25,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v31"
+$WorkerId = "ttittulares-dedicated-v32"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -895,21 +895,25 @@ while ($true) {
         if($slots -le 0){break}
         $commandId=[string]$job.command_id
         $targetId=[string]$job.target_id
-        if(-not $commandId -or -not $targetId -or (Seen-ImageCommand $state $commandId)){continue}
+        if(-not $commandId -or -not $targetId){continue}
         $recent=$true
         try{$requested=[DateTimeOffset]::Parse([string]$job.requested_at);if(([DateTimeOffset]::UtcNow-$requested).TotalHours -gt 12){$recent=$false}}catch{}
         if(-not $recent){Mark-ImageCommand $state $commandId $false;Save-State $state;continue}
         $statusDoc=Read-ImageJob $targetId
         if(-not $statusDoc -or [string]$statusDoc.command_id -ne $commandId){Mark-ImageCommand $state $commandId $false;Save-State $state;continue}
         if(Is-TerminalImageStatus ([string]$statusDoc.status)){Mark-ImageCommand $state $commandId $false;Save-State $state;continue}
+        # Un REQUESTED es autoritativamente pendiente aunque un intento anterior
+        # de picked_up lo haya dejado por error en image_commands. Esto permite
+        # recuperarse de 409/5xx transitorios sin reemitir el job.
+        $requestedStatus=([string]$statusDoc.status).ToUpperInvariant() -eq "REQUESTED"
+        if((Seen-ImageCommand $state $commandId) -and -not $requestedStatus){continue}
         Write-Log "IMAGE NEW target=$targetId command=$commandId name=$($job.target_name)"
         $uploadSecret=New-ImageUploadSecret
         $uploadHash=Get-Sha256Hex $uploadSecret
         if(-not (Send-ImageAck $targetId $commandId "picked_up" "" $uploadHash "")){
-          # El servidor ya movió o rechazó el trabajo. No relanzar el mismo
-          # command_id en cada sondeo; una nueva petición tendrá otro id.
-          Mark-ImageCommand $state $commandId $false
-          Save-State $state
+          # No consumir el command_id por un fallo de transporte/409 transitorio.
+          # Si el servidor lo hizo terminal, el siguiente sondeo lo detectará.
+          Write-Log "IMAGE PICKUP RETRYABLE target=$targetId command=$commandId"
           continue
         }
         $message=Build-ImageMessage $statusDoc
