@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-71d6534cdb5a-r0-a1-1791194088016",
+  "requested_at": "2026-10-05T09:54:48.015907Z",
+  "updated_at": "2026-10-05T09:54:48.015907Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "71d6534cdb5a",
+  "trend_id": "71d6534cdb5a",
+  "target_name": "pucherazo",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "pucherazo",
+    "revision": 0,
+    "explanation": "TT#14 pucherazo es tendencia porque Ayuso ha pedido no votar por correo el 29-N, ha hablado de posibles «adulteraciones» y ha advertido de un posible fraude electoral.",
+    "closer_text": "",
+    "trend_names": [
+      "pucherazo"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 14,
+    "explained_at": "2026-10-05T11:54:00+02:00",
+    "verification_sources": [
+      "https://www.europapress.es/madrid/noticia-ayuso-pide-espanoles-no-voten-correo-29n-espera-tres-escanos-mas-madrid-regularizaciones-20261005105606.html",
+      "https://cadenaser.com/cmadrid/2026/10/05/ayuso-habla-ya-de-un-posible-pucherazo-ante-el-adelanto-electoral-y-pide-no-votar-por-correo-va-a-ser-la-campana-mas-sucia-radio-madrid/"
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}

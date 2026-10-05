@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-9871cf5658af-r0-a1-1791194088016",
+  "requested_at": "2026-10-05T09:54:48.015907Z",
+  "updated_at": "2026-10-05T09:54:48.015907Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "9871cf5658af",
+  "trend_id": "9871cf5658af",
+  "target_name": "Granollers",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "Granollers",
+    "revision": 0,
+    "explanation": "TT#21 Granollers es tendencia por las lluvias torrenciales de esta mañana: se han inundado calles y vías ferroviarias, se han suspendido clases y Protección Civil ha pedido reducir la movilidad.",
+    "closer_text": "",
+    "trend_names": [
+      "Granollers"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 21,
+    "explained_at": "2026-10-05T11:54:00+02:00",
+    "verification_sources": [
+      "https://cadenaser.com/cataluna/2026/10/05/ultima-hora-de-las-lluvias-en-cataluna-nuevo-aviso-por-lluvias-torrenciales-e-inundaciones-sercat/",
+      "https://laciutat.cat/es/laciutatdebarcelona/alerta-maxima-en-granollers-84-litros-lluvia-calles-inundadas-este-lunes_902174_102_amp.html"
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
