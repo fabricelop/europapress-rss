@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T14:12:59.867641Z",
+  "updated_at": "2026-10-05T14:15:20.946Z",
   "items": [
     {
       "event_id": "c4e91a3b1a12",
@@ -52,10 +52,10 @@
       "trend_context": [],
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -71,12 +71,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T14:10:05.642111Z",
       "image": {
-        "url": "https://www.cope.es/files/og_thumbnail/uploads/2026/10/05/6ac361b109b6a.jpeg",
-        "source": "www.cope.es",
-        "source_url": "https://www.cope.es/emisoras/castilla-la-mancha/noticias/castilla-mancha-elecciones-29-n-asi-reaccionan-psoe-pp-ministras-regionales-20261005_3449702.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Castilla-La Mancha ante las elecciones del 29-N: así reaccionan PSOE, PP y las ministras regionales"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/c4e91a3b1a12-r1-ai1-791209583719.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "2332e50b4a850b10a74eae8270f581a99850cd8900abc624111fc724a12d5a70",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2593094,
+        "context_guard": {
+          "version": 3,
+          "event_id": "c4e91a3b1a12",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-c4e91a3b1a12-r1-a1-1791209583719"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/c4e91a3b1a12-r1-ai1-791209583719.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://www.cope.es/files/og_thumbnail/uploads/2026/10/05/6ac361b109b6a.jpeg",
@@ -85,7 +99,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Castilla-La Mancha ante las elecciones del 29-N: así reaccionan PSOE, PP y las ministras regionales"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/c4e91a3b1a12-r1-ai1-791209583719.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "2332e50b4a850b10a74eae8270f581a99850cd8900abc624111fc724a12d5a70",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2593094,
+        "context_guard": {
+          "version": 3,
+          "event_id": "c4e91a3b1a12",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-c4e91a3b1a12-r1-a1-1791209583719"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/c4e91a3b1a12-r1-ai1-791209583719.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T14:15:20.946Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T14:15:20.946Z"
     }
   ],
   "count": 11
