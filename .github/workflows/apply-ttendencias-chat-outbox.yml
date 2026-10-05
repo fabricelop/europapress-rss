@@ -40,6 +40,7 @@ jobs:
               x=bykey[k]
               r.update(status='explained',explained_at=explained_at,last_attempt_at=explained_at,
                        explanation=x['explanation'],closer_text=x.get('closer_text',''),rank_at_explanation=x['rank'],
+                       category=x.get('category','Otros'),
                        source='editorial_chat_direct',verification_sources=x.get('verification_sources',[]),
                        news_disposition='ignored',news_note=x.get('news_note',''),
                        group_id='grp-'+x['id'],explanation_group_id='grp-'+x['id'],group_title=x['name'],
@@ -56,9 +57,11 @@ jobs:
               arr[:]=[e for e in arr if not (str(e.get('id'))==x['id'] and int(e.get('revision',0))==x['revision'])]
               arr.append({'id':x['id'],'name':x['name'],'revision':x['revision'],'status':'explained',
                           'explained_at':explained_at,'explanation':x['explanation'],'closer_text':x.get('closer_text',''),
-                          'rank':x['rank'],'source':'editorial_chat_direct','verification_sources':x.get('verification_sources',[]),
+                          'rank':x['rank'],'category':x.get('category','Otros'),
+                          'source':'editorial_chat_direct','verification_sources':x.get('verification_sources',[]),
                           'group_id':'grp-'+x['id'],'explanation_group_id':'grp-'+x['id'],'trend_names':[x['name']]})
           exp['updated_at']=explained_at
+          exp['count']=len(arr)
           ep.write_text(json.dumps(exp,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
           qp=Path('trends/editorial-queue.json'); q=json.loads(qp.read_text(encoding='utf-8'))
