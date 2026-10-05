@@ -321,7 +321,32 @@ function showRunIncidents(s){
  $("incidentDetails").textContent=buildDiagnostic(s);
  $("incidentSheet").classList.add("show")
 }
+function runStateRank(s){
+ const st=String(s?.status||"").toUpperCase(),p=String(s?.phase||"").toLowerCase();
+ if(st==="ERROR"||["DONE","DONE_WITH_INCIDENTS"].includes(st))return 100;
+ if(["closing","finalizing","done"].includes(p))return 90;
+ if(["verifying","verification"].includes(p))return 80;
+ if(["persisting","outbox"].includes(p))return 70;
+ if(["drafting","redacting","writing","remate_selection"].includes(p))return 60;
+ if(["investigating","research","refreshing","image_searching"].includes(p))return 50;
+ if(p==="chat_launch")return 40;
+ if(p==="pc_ack")return 30;
+ if(st==="RUNNING"||st==="PROCESSING")return 20;
+ if(st==="REQUESTED"||["preparing","prepare"].includes(p))return 10;
+ return 0
+}
+function shouldRenderRunState(next,prev){
+ if(!prev)return true;
+ const nextId=String(next?.command_id||next?.run_id||""),prevId=String(prev?.command_id||prev?.run_id||"");
+ if(nextId&&prevId&&nextId!==prevId)return true;
+ const nt=Date.parse(next?.updated_at||next?.started_at||next?.requested_at||"");
+ const pt=Date.parse(prev?.updated_at||prev?.started_at||prev?.requested_at||"");
+ const nr=runStateRank(next),pr=runStateRank(prev);
+ if(nr<pr&&Number.isFinite(nt)&&Number.isFinite(pt)&&nt<=pt+5000)return false;
+ return !(nr<pr&&String(next?.status||"").toUpperCase()==="REQUESTED"&&pr>=30)
+}
 function runVisual(s){
+ if(!shouldRenderRunState(s,lastRunTelemetry))return;
  lastRunTelemetry=s;
  const bar=$("runBar"),head=$("runHeadline"),el=$("runState"),btn=$("runNow"),warn=$("runIncident"),prog=$("runProgress"),fill=$("runProgressFill"),lastEditorial=$("lastEditorial");
   const active=Boolean(s?.active)||["REQUESTED","RUNNING"].includes(String(s?.status||""));
