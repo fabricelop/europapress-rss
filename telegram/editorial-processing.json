@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T05:36:19.629821Z",
+  "updated_at": "2026-10-05T05:44:48.802Z",
   "items": [
     {
       "event_id": "5aa7c3036ce0",
@@ -9807,11 +9807,25 @@
       "url": "",
       "sources": [],
       "source_count": 0,
-      "selected_at": "2026-10-05T05:19:52.999Z",
-      "status": "SKIPPED_DUPLICATE",
-      "reconciled_from_event_id": "6503399040ac",
-      "reconciliation_reason": "Mismo resultado presidencial ya publicado: la segunda vuelta del 25 de octubre entre Flávio Bolsonaro y Lula ya constaba en 6503399040ac. La totalización oficial al 99,99% (47,03% frente a 45,16%) confirma el mismo desenlace y no aporta un cambio sustantivo.",
-      "reconciled_at": "2026-10-05T05:33:44.246859Z"
+      "selected_at": "2026-10-05T05:44:48.802Z",
+      "status": "PROCESSING",
+      "selection_mode": "MANUAL_REOPEN_OUTCOME",
+      "force_user_elaborate": true,
+      "user_validated": true,
+      "user_validated_at": "2026-10-05T05:44:48.802Z",
+      "previous_outcome": {
+        "status": "SKIPPED_DUPLICATE",
+        "filter_reason": "",
+        "reconciliation_reason": "Mismo resultado presidencial ya publicado: la segunda vuelta del 25 de octubre entre Flávio Bolsonaro y Lula ya constaba en 6503399040ac. La totalización oficial al 99,99% (47,03% frente a 45,16%) confirma el mismo desenlace y no aporta un cambio sustantivo.",
+        "problem_reason": "",
+        "duplicate_of_event_id": "6503399040ac",
+        "finished_at": "2026-10-05T05:33:44.246859Z"
+      },
+      "reopened_at": "2026-10-05T05:44:48.802Z",
+      "reopened_source": "web_processing_outcome",
+      "revision": 1,
+      "with_image": true,
+      "image_mode": "ai_plus_fallback"
     },
     {
       "id": "6dfa84a1fe38",
@@ -9858,7 +9872,7 @@
         "Europa Press"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-04T21:52:31.609108Z",
       "last_seen": "2026-10-05T05:33:06.246829Z",
       "status": "READY",
