@@ -7,6 +7,7 @@ const PATCH_PATH="money-control/moneywiz-user-patch-v1.json";
 const MAX_BYTES=3*1024*1024;
 const MONEYWIZ_BACKUP_PREFIX="moneywiz-backups/";
 const MONEYWIZ_BACKUP_MAX_BYTES=180*1024*1024;
+const MONEYWIZ_PROCESSED_PREFIX="moneywiz-processed/";
 
 function authToken(req){
   const h=String(req.headers.authorization||"");
@@ -40,6 +41,59 @@ function cleanMoneyWizFilename(v){
 }
 function requestParams(req){
   try{return new URL(req.url||"/","http://localhost").searchParams}catch{return new URLSearchParams()}
+}
+
+async function signedPrivateUrl(pathname,operation,validUntil){
+  const signed=await issueSignedToken({
+    pathname,
+    operations:[operation],
+    validUntil,
+    token:process.env.BLOB_READ_WRITE_TOKEN
+  });
+  const opts={operation,pathname,access:"private",validUntil};
+  if(operation==="get")opts.useCache=false;
+  if(operation==="put"){
+    opts.allowedContentTypes=["application/json"];
+    opts.maximumSizeInBytes=3*1024*1024;
+    opts.addRandomSuffix=false;
+    opts.allowOverwrite=true;
+    opts.cacheControlMaxAge=60;
+  }
+  return (await presignUrl(signed,opts)).presignedUrl;
+}
+async function dispatchMoneyWizProcessing({current,previous}){
+  const githubToken=String(process.env.GITHUB_TOKEN||"");
+  const repo=String(process.env.GITHUB_REPO||"fabricelop/europapress-rss").replace(/^https?:\/\/github\.com\//,"").replace(/\.git$/,"");
+  if(!githubToken||!repo.includes("/"))throw new Error("github_dispatch_not_configured");
+  const validUntil=Date.now()+40*60*1000;
+  const currentUrl=await signedPrivateUrl(current.pathname,"get",validUntil);
+  const previousUrl=await signedPrivateUrl(previous.pathname,"get",validUntil);
+  const stem=String(current.filename||"moneywiz").replace(/\.zip$/i,"").replace(/[^A-Za-z0-9._-]/g,"_");
+  const processedPath=MONEYWIZ_PROCESSED_PREFIX+stem+".json";
+  const processedPutUrl=await signedPrivateUrl(processedPath,"put",validUntil);
+  const response=await fetch("https://api.github.com/repos/"+repo+"/dispatches",{
+    method:"POST",
+    headers:{
+      "authorization":"Bearer "+githubToken,
+      "accept":"application/vnd.github+json",
+      "x-github-api-version":"2022-11-28",
+      "content-type":"application/json",
+      "user-agent":"money-control-moneywiz"
+    },
+    body:JSON.stringify({
+      event_type:"moneywiz_backup_uploaded",
+      client_payload:{
+        current_url:currentUrl,
+        previous_url:previousUrl,
+        current_filename:current.filename,
+        previous_filename:previous.filename,
+        processed_put_url:processedPutUrl,
+        processed_path:processedPath
+      }
+    })
+  });
+  if(response.status!==204)throw new Error("github_dispatch_"+response.status);
+  return {processedPath};
 }
 
 function blobOptions(extra={}){
@@ -99,6 +153,27 @@ async function bodyText(req){
 export default async function handler(req,res){
   try{
     const params=requestParams(req);
+    if(params.get("kind")==="moneywiz-processed"){
+      if(!tokenMatches(req))return json(res,401,{ok:false,error:"unauthorized"});
+      if(req.method!=="GET"){
+        res.setHeader("allow","GET");
+        return json(res,405,{ok:false,error:"method_not_allowed"});
+      }
+      if(!process.env.BLOB_READ_WRITE_TOKEN)return json(res,503,{ok:false,error:"backup_blob_not_configured"});
+      const listed=await list(privateBlobOptions({prefix:MONEYWIZ_PROCESSED_PREFIX,limit:100}));
+      const latest=(listed.blobs||[])
+        .filter(b=>String(b.pathname||"").toLowerCase().endsWith(".json"))
+        .sort((a,b)=>String(b.uploadedAt||"").localeCompare(String(a.uploadedAt||"")))[0];
+      if(!latest)return json(res,404,{ok:false,error:"not_found"});
+      const result=await get(latest.pathname,privateBlobOptions({useCache:false}));
+      if(!result||result.statusCode!==200)return json(res,404,{ok:false,error:"not_found"});
+      res.status(200);
+      res.setHeader("content-type","application/json; charset=utf-8");
+      res.setHeader("cache-control","private, no-store");
+      res.setHeader("x-content-type-options","nosniff");
+      return Readable.fromWeb(result.stream).pipe(res);
+    }
+
     if(params.get("kind")==="moneywiz-backup"){
       if(!moneyWizUploadTokenMatches(req))return json(res,401,{ok:false,error:"unauthorized"});
       if(!process.env.BLOB_READ_WRITE_TOKEN)return json(res,503,{ok:false,error:"backup_blob_not_configured"});
@@ -165,11 +240,30 @@ export default async function handler(req,res){
       if(action==="confirm"){
         const pathname=String(body.pathname||"");
         if(!pathname.startsWith(MONEYWIZ_BACKUP_PREFIX)||!pathname.toLowerCase().endsWith(".zip"))return json(res,400,{ok:false,error:"invalid_pathname"});
+        let meta;
+        try{meta=await head(pathname,privateBlobOptions())}catch(_){return json(res,404,{ok:false,error:"not_found"})}
+        const listed=await list(privateBlobOptions({prefix:MONEYWIZ_BACKUP_PREFIX,limit:100}));
+        const backups=(listed.blobs||[])
+          .filter(b=>String(b.pathname||"").toLowerCase().endsWith(".zip"))
+          .map(b=>({
+            pathname:b.pathname,
+            filename:String(b.pathname||"").slice(MONEYWIZ_BACKUP_PREFIX.length),
+            size:Number(b.size||0),
+            uploadedAt:b.uploadedAt||null
+          }))
+          .sort((a,b)=>String(a.uploadedAt||"").localeCompare(String(b.uploadedAt||"")));
+        const idx=backups.findIndex(b=>b.pathname===pathname);
+        const current=idx>=0?backups[idx]:{pathname,filename:pathname.slice(MONEYWIZ_BACKUP_PREFIX.length),size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null};
+        const previous=idx>0?backups[idx-1]:null;
+        if(!previous){
+          return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,seedOnly:true,processingQueued:false});
+        }
         try{
-          const meta=await head(pathname,privateBlobOptions());
-          return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,etag:meta.etag||null});
-        }catch(_){
-          return json(res,404,{ok:false,error:"not_found"});
+          const queued=await dispatchMoneyWizProcessing({current,previous});
+          return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,seedOnly:false,processingQueued:true,...queued});
+        }catch(error){
+          console.error("moneywiz-dispatch",error);
+          return json(res,502,{ok:false,error:"processing_dispatch_failed",pathname});
         }
       }
 
