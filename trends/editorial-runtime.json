@@ -1,32 +1,32 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T08:45:00+02:00",
-  "last_completed_at": "2026-10-05T08:48:10+02:00",
+  "last_started_at": "2026-10-05T09:15:00+02:00",
+  "last_completed_at": "2026-10-05T09:17:40+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T08:48:10+02:00",
+  "updated_at": "2026-10-05T09:17:40+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T084500+0200",
+    "run_id": "tr-chat-20261005T091500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-05T08:45:00+02:00",
-    "updated_at": "2026-10-05T08:48:10+02:00",
-    "finished_at": "2026-10-05T08:48:10+02:00",
+    "started_at": "2026-10-05T09:15:00+02:00",
+    "updated_at": "2026-10-05T09:17:40+02:00",
+    "finished_at": "2026-10-05T09:17:40+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-05T08:45:00+02:00",
+    "requested_at": "2026-10-05T09:15:00+02:00",
     "partial": false,
     "summary": {
       "trends_processed": 0,
@@ -49,68 +49,68 @@
       "remates_omitted": 0,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada directa completada 0/0. La cola editorial permaneció a 0 tras releer main. El saneamiento visual de Pendientes terminó correctamente y no creó nuevos jobs IA; el flujo de entrega de Explicadas quedó lanzado de forma independiente.",
+    "message": "Pasada directa completada 0/0. La cola editorial permaneció a 0 tras releer main. El saneamiento visual terminó correctamente sin crear jobs IA nuevos; el flujo de entrega de Explicadas quedó lanzado de forma independiente.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": null,
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-05T08:45:00+02:00",
+        "at": "2026-10-05T09:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Releyendo cola y estado autoritativo de TTendencias"
       },
       {
-        "at": "2026-10-05T08:47:07+02:00",
+        "at": "2026-10-05T09:15:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual de Pendientes activado"
+        "message": "Comprobando saneamiento visual y cola tras el trigger"
       },
       {
-        "at": "2026-10-05T08:47:11+02:00",
+        "at": "2026-10-05T09:17:31+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial verificada a 0; reparador visual en curso"
+        "message": "Saneamiento visual completado sin nuevos jobs IA"
       },
       {
-        "at": "2026-10-05T08:48:10+02:00",
+        "at": "2026-10-05T09:17:40+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual completado sin nuevos jobs IA; cola editorial final 0"
+        "message": "Cola editorial final 0; entrega de Explicadas lanzada de forma independiente"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "radar": {
-      "captured_at": "2026-10-05T08:41:08+02:00",
+      "captured_at": "2026-10-05T09:11:06+02:00",
       "queue_count": 0,
       "top10": [
         "#FelizLunes",
         "#ConexiónHonduras4",
         "Frente Amplio",
         "Lula",
-        "Sanchez",
+        "Sánchez",
         "Claudia Pina",
         "Yola",
         "Flávio Bolsonaro",
         "#FelizDomingo",
-        "#Buenosdías"
+        "#BuenosDías"
       ],
       "new_entries": []
     },
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261005T084500+0200",
+      "run_id": "tr-chat-20261005T091500+0200",
       "status": "completed",
-      "workflow_run_id": 37274182618,
+      "workflow_run_id": 37276836803,
       "ai_image_status": "no_new_jobs",
-      "delivery_workflow_run_id": 37274266268,
+      "delivery_workflow_run_id": 37276919765,
       "delivery_status": "in_progress"
     }
   },
