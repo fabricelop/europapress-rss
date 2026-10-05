@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T08:24:50.736414Z",
+  "updated_at": "2026-10-05T08:25:06.125Z",
   "items": [
     {
       "event_id": "0ba07e3b94d7",
@@ -64,10 +64,10 @@
       "trend_context": [],
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -82,12 +82,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T08:14:20.939903Z",
       "image": {
-        "url": "https://e01-phantom-elmundo.uecdn.es/80967d90828e1c0b2697384419fd4e2a/resize/1200/f/webp/assets/multimedia/imagenes/2022/09/22/16638322785389.jpg",
-        "source": "www.elmundo.es",
-        "source_url": "https://www.elmundo.es/yodona/horoscopo/2026/10/05/6aba4eb8e85ece577e8b4595.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Horóscopo de hoy lunes 5 de octubre de 2026"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/0ba07e3b94d7-r1-ai1-791188586857.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "0ecb1ce6d6505aeb07ac7c4bf79c36b65823d058d350aa0ca5d3b513a3935cf0",
+        "width": 1600,
+        "height": 900,
+        "bytes": 609702,
+        "context_guard": {
+          "version": 3,
+          "event_id": "0ba07e3b94d7",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-0ba07e3b94d7-r1-a2-1791188586857"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/0ba07e3b94d7-r1-ai1-791188586857.jpg",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://e01-phantom-elmundo.uecdn.es/80967d90828e1c0b2697384419fd4e2a/resize/1200/f/webp/assets/multimedia/imagenes/2022/09/22/16638322785389.jpg",
@@ -97,9 +111,32 @@
         "generated": false,
         "alt": "Horóscopo de hoy lunes 5 de octubre de 2026"
       },
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-05T08:16:30.651Z",
-      "ai_image_failure_reason": "CDP timeout Page.navigate"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T08:25:06.125Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/0ba07e3b94d7-r1-ai1-791188586857.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "0ecb1ce6d6505aeb07ac7c4bf79c36b65823d058d350aa0ca5d3b513a3935cf0",
+        "width": 1600,
+        "height": 900,
+        "bytes": 609702,
+        "context_guard": {
+          "version": 3,
+          "event_id": "0ba07e3b94d7",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-0ba07e3b94d7-r1-a2-1791188586857"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/0ba07e3b94d7-r1-ai1-791188586857.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T08:25:06.125Z"
     }
   ],
   "count": 11
