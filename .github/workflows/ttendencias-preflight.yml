@@ -20,7 +20,6 @@ on:
       - "vercel-webhook/ttendencias/**"
       - "vercel-webhook/test/ttendencias-image-ui.test.mjs"
       - "vercel-webhook/api/ttendencias-control.js"
-      - "vercel-webhook/api/ttendencias-top10-push.js"
 
 permissions:
   contents: read
@@ -71,7 +70,6 @@ jobs:
           node --check /tmp/ttendencias-index.js
           node --check /tmp/ttendencias-explicadas.js
           node --check vercel-webhook/api/ttendencias-control.js
-          node --check vercel-webhook/api/ttendencias-top10-push.js
           node --check vercel-webhook/ttendencias/sw.js
           node --test vercel-webhook/test/ttendencias-image-ui.test.mjs
 
@@ -104,6 +102,8 @@ jobs:
           prompt=Path("trends/editorial-run-prompt.md").read_text(encoding="utf-8")
           assert "misma conversación" in prompt and "provider:\"chat-imagegen\"" in prompt
           assert "No uses el ImageGen interno" not in prompt
+          assert "TTendencias no envía noticias, candidatos, eventos ni estados a TTiTTulares" in prompt
+          assert "NO hagas ningún puente a TTiTTulares" in prompt
           legacy=Path(".github/workflows/ai-image-generate.yml").read_text(encoding="utf-8")
           assert "LEGACY_AI_IMAGE_GENERATOR_DISABLED" in legacy
           assert "TT_IMAGE_ENDPOINT" not in legacy and "cairosvg" not in legacy and '"provider": "chat-svg"' not in legacy
