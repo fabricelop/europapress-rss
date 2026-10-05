@@ -60,7 +60,6 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <div><div class="brand">TTiTTulares</div><div class="sub">Control editorial web</div></div>
  <div class="spacer"></div>
  <button class="iconbtn" id="submitNews" title="Mandar noticia a elaborar">＋</button>
- <button class="iconbtn" id="notify" title="Activar notificaciones">🔔</button>
  <button class="iconbtn" id="refresh" title="Recargar">↻</button>
  <button class="iconbtn" id="settings" title="Ajustes">⚙</button>
 </header>
@@ -95,7 +94,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 <div class="sheet" id="settingsSheet"><div class="panel">
  <h2>Acceso</h2><p>Las acciones que modifican estado requieren el token privado.</p>
  <input id="tokenInput" type="password" autocomplete="off" placeholder="Token de control">
- <div class="actions"><button class="btn" id="settingsCancel">Cancelar</button><button class="btn" id="testToken">Probar acceso</button><button class="btn" id="testPush">Probar notificación</button><button class="btn primary" id="saveToken">Guardar</button></div>
+ <div class="actions"><button class="btn" id="settingsCancel">Cancelar</button><button class="btn" id="testToken">Probar acceso</button><button class="btn primary" id="saveToken">Guardar</button></div>
  <div class="meta" id="accessStatus" style="margin-top:9px"></div>
 </div></div>
 <div class="sheet" id="sourcesSheet"><div class="panel">
@@ -574,52 +573,17 @@ async function api(action,extra={}){
  if(r.status===401){$("settings").style.display="";throw new Error("Acceso no autorizado. Toca ⚙ para guardar el acceso en este dispositivo.")}
  if(!r.ok)throw new Error(d.error||"No se pudo aplicar la acción");return d
 }
-function b64ToUint8(s){const pad="=".repeat((4-s.length%4)%4),b64=(s+pad).replace(/-/g,"+").replace(/_/g,"/"),raw=atob(b64);return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
-async function syncNotifyButton(){
+async function retireLegacyNotifications(){
+ try{if("clearAppBadge" in navigator)await navigator.clearAppBadge()}catch(_){}
  try{
-  if(!("serviceWorker" in navigator)||!("PushManager" in window)){ $("notify").style.display="none"; return }
-  const reg=await navigator.serviceWorker.ready;
-  const sub=await reg.pushManager.getSubscription();
-  const enabled=Notification.permission==="granted"&&!!sub&&localStorage.getItem("ttittulares-push-enabled")==="1";
-  $("notify").style.display=enabled?"none":"";
- }catch(_){$("notify").style.display=""}
+  if("serviceWorker" in navigator&&"PushManager" in window){
+   const reg=await navigator.serviceWorker.ready;
+   const sub=await reg.pushManager.getSubscription();
+   if(sub)await sub.unsubscribe();
+  }
+ }catch(_){}
+ localStorage.removeItem("ttittulares-push-enabled");
 }
-function sameKey(a,b){
- if(!a||!b)return false;
- const x=new Uint8Array(a),y=b instanceof Uint8Array?b:new Uint8Array(b);
- if(x.length!==y.length)return false;
- for(let i=0;i<x.length;i++)if(x[i]!==y[i])return false;
- return true
-}
-async function ensurePushSubscription(){
- if(!("serviceWorker" in navigator)||!("PushManager" in window))throw new Error("Este dispositivo no admite notificaciones web");
- if(!token())throw new Error("Guarda primero el acceso");
- const permission=Notification.permission==="granted"?"granted":await Notification.requestPermission();
- if(permission!=="granted")throw new Error("Notificaciones no autorizadas");
- const reg=await navigator.serviceWorker.ready;
- const pk=await fetch("/api/ttittulares-push",{cache:"no-store"}).then(r=>r.json());
- if(!pk.ok||!pk.publicKey)throw new Error("No se pudo obtener la clave push");
- const wanted=b64ToUint8(pk.publicKey);
- let sub=await reg.pushManager.getSubscription();
- const current=sub?.options?.applicationServerKey;
- if(sub&&current&&!sameKey(current,wanted)){await sub.unsubscribe();sub=null}
- if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:wanted});
- const headers={"content-type":"application/json","authorization":"Bearer "+token()};
- const r=await fetch("/api/ttittulares-push",{method:"POST",headers,body:JSON.stringify({action:"subscribe",subscription:sub.toJSON()})});
- if(!r.ok)throw new Error(r.status===401?"Acceso no autorizado":"No se pudo registrar el móvil");
- localStorage.setItem("ttittulares-push-enabled","1");
- return sub
-}
-async function enablePush(){
- try{
-  await ensurePushSubscription();
-  $("notify").style.display="none";toast("Notificaciones activadas");
- }catch(e){
-  if(String(e.message||"").includes("Guarda primero")){$("settings").style.display="";$("settings").click()}
-  toast(e.message||"No se pudieron activar las notificaciones")
- }
-}
-async function badge(){const n=(model.prepared||[]).length;try{if("setAppBadge" in navigator){if(n)await navigator.setAppBadge(n);else if("clearAppBadge" in navigator)await navigator.clearAppBadge()}}catch(_){}}
 async function imagePngBlob(url,preview){
  const proxySrc=API+"?view=image-proxy&url="+encodeURIComponent(url);
  // Usar preferentemente los píxeles YA cargados: no repetir una descarga remota
@@ -802,7 +766,7 @@ function render(){
  renderTiming();
  $("health").textContent=(Number.isFinite(healthy)?healthy:"—")+"/"+(Number.isFinite(total)?total:"—")+" fuentes funcionando";
  $("health").classList.toggle("bad",Number.isFinite(healthy)&&Number.isFinite(total)&&healthy<total);
- renderList();updateImageControl();badge();if($("sourcesSheet").classList.contains("show"))renderSourcesSheet()
+ renderList();updateImageControl();if($("sourcesSheet").classList.contains("show"))renderSourcesSheet()
 }
 let lastRenderedView="",lastReadyRendering=null,lastTremendingRendering=null;
 function renderList(){
@@ -1257,7 +1221,6 @@ document.querySelectorAll(".stat[data-view]").forEach(x=>x.onclick=()=>setView(x
 const runImagesButton=$("runImages");if(runImagesButton)runImagesButton.onclick=requestPendingImages;
 $("incidentClose").onclick=()=>$("incidentSheet").classList.remove("show");
 $("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buildDiagnostic(lastRunTelemetry||{}));toast("Diagnóstico copiado")}catch(_){toast("No se pudo copiar el diagnóstico")}};
-$("notify").onclick=enablePush;
 $("refresh").onclick=()=>{toast("Recargando");load();loadRunStatus();refreshImageRuns()};
 $("submitNews").onclick=()=>{
  $("submitTitle").value="";$("submitInstruction").value="";$("submitStatus").textContent="";
@@ -1309,21 +1272,6 @@ $("settings").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textC
 $("settingsCancel").onclick=()=>$("settingsSheet").classList.remove("show");
 $("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttittulares-control-token",v);else localStorage.removeItem("ttittulares-control-token");$("settingsSheet").classList.remove("show");toast(v?"Token guardado":"Token eliminado")};
 $("testToken").onclick=async()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttittulares-control-token",v);try{const d=await api("ping");$("accessStatus").textContent=d.backend?.ok?"✓ Acceso correcto · GitHub operativo":"Backend no disponible"}catch(e){$("accessStatus").textContent=e.message}};
-$("testPush").onclick=async()=>{
- const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttittulares-control-token",v);
- try{
-   await ensurePushSubscription();
-   const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
-   const r=await fetch("/api/ttittulares-push",{method:"POST",headers,body:JSON.stringify({action:"test"})});
-   const d=await r.json();
-   if(!r.ok){
-     const a=Array.isArray(d.attempts)?d.attempts[0]:null;
-     const detail=a?.reason?(" · "+a.reason):(a?.status?(" · HTTP "+a.status):"");
-     throw new Error((d.error||"No se pudo enviar la prueba")+detail)
-   }
-   $("accessStatus").textContent=d.delivered?"✓ Notificación de prueba enviada":"No se entregó ninguna notificación";
- }catch(e){$("accessStatus").textContent=e.message}
-};
 $("health").onclick=()=>{renderSourcesSheet();$("sourcesSheet").classList.add("show")};
 $("health").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$("health").click()}};
 $("sourcesClose").onclick=()=>$("sourcesSheet").classList.remove("show");
@@ -1331,7 +1279,7 @@ $("sourcesSheet").onclick=e=>{if(e.target===$("sourcesSheet"))$("sourcesSheet").
 $("reworkCancel").onclick=()=>{$("reworkSheet").classList.remove("show");reworkItem=null};
 $("reworkSend").onclick=async()=>{if(!reworkItem)return;const instruction=$("reworkInstruction").value.trim();if(!instruction){toast("Escribe qué quieres cambiar");return}if(!confirm("¿Mandar esta noticia de nuevo a elaboración con estas instrucciones?"))return;const old=[...model.prepared];model.prepared=model.prepared.filter(x=>x.event_id!==reworkItem.event_id);render();try{await api("rework",{event_id:reworkItem.event_id,instruction});$("reworkSheet").classList.remove("show");toast("Enviada a elaboración");reworkItem=null;setView("processing");setTimeout(()=>load(true),1000)}catch(e){model.prepared=old;render();toast(e.message)}};
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)queuePassiveLoad(250)});window.addEventListener("pageshow",()=>queuePassiveLoad(250));
-if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttittulares/sw.js").then(()=>syncNotifyButton()).catch(()=>{});
+if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttittulares/sw.js",{updateViaCache:"none"}).then(reg=>{reg.update().catch(()=>{});retireLegacyNotifications()}).catch(()=>{});
 if(hasGoodState)render();else setView(view);if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshImageRuns();setInterval(()=>{if(!document.hidden)queuePassiveLoad(0)},60000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
 </script>
 </body></html>
