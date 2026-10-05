@@ -2,23 +2,19 @@
   "project": "TTendencias",
   "engine": "chat-direct",
   "last_started_at": "2026-10-05T16:45:00+02:00",
-  "last_completed_at": "2026-10-05T15:02:23.847Z",
-  "updated_at": "2026-10-05T15:02:23.847Z",
+  "last_completed_at": "2026-10-05T15:03:24.081Z",
+  "updated_at": "2026-10-05T15:03:24.081Z",
   "status": "success",
   "processed_ids": [
     "26bb59be27a6",
     "4bcc67659c7e",
     "97e1b3a8b829"
   ],
-  "remaining_ids": [
-    "97e1b3a8b829"
-  ],
+  "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "97e1b3a8b829"
-  ],
+  "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
@@ -31,8 +27,8 @@
     "trend_id": null,
     "title": null,
     "started_at": "2026-10-05T16:45:00+02:00",
-    "updated_at": "2026-10-05T15:02:23.847Z",
-    "finished_at": "2026-10-05T15:02:23.847Z",
+    "updated_at": "2026-10-05T15:03:24.081Z",
+    "finished_at": "2026-10-05T15:03:24.081Z",
     "incident_count": 1,
     "incidents": [
       {
@@ -50,7 +46,7 @@
       "revisions_updated": 1,
       "trends_problematic": 1,
       "incidents": 1,
-      "queue_remaining": 1,
+      "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
@@ -68,15 +64,8 @@
       "recent_considered": 100
     },
     "remate_selections": [],
-    "message": "Pasada completada con incidencia: alvise r1 y Medvedev r0 quedan explained; #TEM5O r0 sigue problematic tras un segundo reintento sin vínculo verificable. Relectura final: 0 preparing/update y 0 rewrite_pending. Pendientes recientes revisadas: 16.",
+    "message": "Pasada completada con una incidencia editorial: alvise r1 y Medvedev r0 quedan explained; #TEM5O r0 quedó problematic tras dos intentos sin detonante verificable y su registro terminal ya fue consumido. Relectura final: cola vacía, 0 preparing/update y 0 rewrite_pending; 16 Pendientes recientes revisadas.",
     "activity": [
-      {
-        "at": "2026-10-05T14:57:02.798Z",
-        "phase": "drafting",
-        "trend_id": "4bcc67659c7e",
-        "title": "Medvedev",
-        "message": "Comprobando límite de X"
-      },
       {
         "at": "2026-10-05T14:57:02.798Z",
         "phase": "remate_selection",
@@ -209,6 +198,13 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada completada con incidencia: alvise r1 y Medvedev r0 quedan explained; #TEM5O r0 sigue problematic tras un segundo reintento sin vínculo verificable. Relectura final: 0 preparing/update y 0 rewrite_pending. Pendientes recientes revisadas: 16."
+      },
+      {
+        "at": "2026-10-05T15:03:24.081Z",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificación terminal · cola vacía y sin revisiones activas"
       }
     ],
     "queue_complete": true,
@@ -219,9 +215,7 @@
       "status": "triggered",
       "direct_imagegen": false
     },
-    "remaining_problematic_ids": [
-      "97e1b3a8b829"
-    ]
+    "remaining_problematic_ids": []
   },
   "error": null
 }
