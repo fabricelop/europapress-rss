@@ -27348,9 +27348,9 @@
       ],
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -27390,15 +27390,54 @@
         "generated": false
       },
       "image": {
-        "url": "https://cadenaser.com/resizer/v2/OQD7L2N7QZAOHIVTFRIQWE5PNQ.jpg?auth=0d6fcf7056ac8757ebc9657f2cf841fcc976613cade4f5b16a6964f0083eea8d&quality=70&width=1200&height=675&smart=true",
-        "source": "Cadena SER · 5/10/2026",
-        "source_url": "https://cadenaser.com/nacional/2026/10/05/pp-y-vox-asientan-su-mayoria-absoluta-en-plena-crisis-de-la-vivienda-cadena-ser/",
-        "alt": "Imagen de archivo relacionada con PP y Vox",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/8f1e6f88689d-r1-ai1-791197556459.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d3c76a6404a98eb9427a8375f5df7adcd052616a99cb8cf57501cff7ae1c267d",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2820769,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "8f1e6f88689d",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-8f1e6f88689d-r1-a1-1791197556459"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/8f1e6f88689d-r1-ai1-791197556459.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/8f1e6f88689d-r1-ai1-791197556459.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d3c76a6404a98eb9427a8375f5df7adcd052616a99cb8cf57501cff7ae1c267d",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2820769,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "8f1e6f88689d",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-8f1e6f88689d-r1-a1-1791197556459"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/8f1e6f88689d-r1-ai1-791197556459.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T11:01:34.852Z"
     }
   ],
-  "updated_at": "2026-10-05T13:01:25+02:00",
+  "updated_at": "2026-10-05T11:01:34.852Z",
   "count": 556
 }
