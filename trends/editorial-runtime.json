@@ -1,32 +1,32 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T09:15:00+02:00",
-  "last_completed_at": "2026-10-05T09:17:40+02:00",
+  "last_started_at": "2026-10-05T09:44:51.536+02:00",
+  "last_completed_at": "2026-10-05T09:58:30+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T09:17:40+02:00",
+  "updated_at": "2026-10-05T09:58:30+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T091500+0200",
+    "run_id": "tr-chat-20261005T094545+0200",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-05T09:15:00+02:00",
-    "updated_at": "2026-10-05T09:17:40+02:00",
-    "finished_at": "2026-10-05T09:17:40+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-05T09:45:45+02:00",
+    "updated_at": "2026-10-05T09:58:30+02:00",
+    "finished_at": "2026-10-05T09:58:30+02:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-05T09:15:00+02:00",
+    "requested_at": "2026-10-05T09:45:45+02:00",
     "partial": false,
     "summary": {
       "trends_processed": 0,
@@ -37,81 +37,207 @@
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 3,
       "remates_selected": 0,
       "remates_omitted": 0,
-      "pending_repair_triggered": 1
+      "pending_repair_triggered": 1,
+      "jit_skipped_concurrent": 3,
+      "final_verified_explanations": 3
     },
-    "message": "Pasada directa completada 0/0. La cola editorial permaneció a 0 tras releer main. El saneamiento visual terminó correctamente sin crear jobs IA nuevos; el flujo de entrega de Explicadas quedó lanzado de forma independiente.",
-    "incident_count": 0,
-    "incidents": [],
-    "ratings_snapshot": null,
+    "incident_count": 1,
+    "incidents": [
+      {
+        "trend_id": "70b83466c26a",
+        "type": "persistence_connector_argument_rejected",
+        "message": "Un intento de commit atómico fue rechazado por argumentos del conector; no se aplicó. La relectura JIT posterior confirmó que la revisión quedó cerrada íntegramente por la ejecución concurrente."
+      }
+    ],
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
+      "updated_at": "2026-10-04T17:29:26.880Z",
+      "total_ratings": 153,
+      "recent_considered": 30
+    },
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-05T09:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo cola y estado autoritativo de TTendencias"
+        "at": "2026-10-05T09:54:15+02:00",
+        "phase": "drafting",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Comprobando límite de X"
       },
       {
-        "at": "2026-10-05T09:15:30+02:00",
+        "at": "2026-10-05T09:54:20+02:00",
+        "phase": "drafting",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Sin remate · explicación factual suficiente por sensibilidad"
+      },
+      {
+        "at": "2026-10-05T09:56:15+02:00",
+        "phase": "verifying",
+        "trend_id": "87d194456cfe",
+        "title": "Docentes",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-05T09:56:25+02:00",
+        "phase": "verifying",
+        "trend_id": "87d194456cfe",
+        "title": "Docentes",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-05T09:56:35+02:00",
+        "phase": "verifying",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Releyendo estado autoritativo de Los Rocho"
+      },
+      {
+        "at": "2026-10-05T09:57:00+02:00",
+        "phase": "investigating",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Buscando detonante actual de Los Rocho"
+      },
+      {
+        "at": "2026-10-05T09:57:10+02:00",
+        "phase": "investigating",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Contrastando fuente 1/2 · información publicada hoy"
+      },
+      {
+        "at": "2026-10-05T09:57:20+02:00",
+        "phase": "investigating",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Contrastando fuente 2/2 · contexto judicial y UCO"
+      },
+      {
+        "at": "2026-10-05T09:57:30+02:00",
+        "phase": "investigating",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Hecho esencial verificado con atribución explícita"
+      },
+      {
+        "at": "2026-10-05T09:57:40+02:00",
+        "phase": "drafting",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-05T09:57:50+02:00",
+        "phase": "drafting",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Comprobando límite de X · 239 caracteres"
+      },
+      {
+        "at": "2026-10-05T09:58:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Sin remate · asunto de amenazas graves"
+      },
+      {
+        "at": "2026-10-05T09:58:10+02:00",
+        "phase": "persisting",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-05T09:58:25+02:00",
+        "phase": "persisting",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-05T09:58:40+02:00",
+        "phase": "persisting",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-05T10:00:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Comprobando saneamiento visual y cola tras el trigger"
+        "message": "Releyendo main antes del cierre"
       },
       {
-        "at": "2026-10-05T09:17:31+02:00",
+        "at": "2026-10-05T09:58:15+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual completado sin nuevos jobs IA"
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-05T09:17:40+02:00",
+        "at": "2026-10-05T09:58:18+02:00",
+        "phase": "verifying",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-05T09:58:21+02:00",
+        "phase": "verifying",
+        "trend_id": "70b83466c26a",
+        "title": "Los Rocho",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-05T09:58:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial final 0; entrega de Explicadas lanzada de forma independiente"
+        "message": "Cola final 0; requests preparing/update 0; rewrite_pending 0"
       }
     ],
+    "message": "Pasada cerrada: 3/3 revisiones quedaron resueltas en main durante las revalidaciones JIT; esta ejecución no sobrescribió cierres concurrentes. Cola final 0, requests preparing/update 0 y rewrite_pending 0.",
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "radar": {
-      "captured_at": "2026-10-05T09:11:06+02:00",
+      "captured_at": "2026-10-05T09:51:12+02:00",
       "queue_count": 0,
       "top10": [
         "#FelizLunes",
         "#ConexiónHonduras4",
         "Frente Amplio",
         "Lula",
-        "Sánchez",
-        "Claudia Pina",
+        "#LaHora5O",
+        "Sanchez",
+        "#Buenosdías",
+        "Docentes",
         "Yola",
-        "Flávio Bolsonaro",
-        "#FelizDomingo",
-        "#BuenosDías"
+        "Los Rocho"
       ],
-      "new_entries": []
+      "new_entries": [
+        "#LaHora5O",
+        "Docentes",
+        "Los Rocho"
+      ]
     },
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261005T091500+0200",
-      "status": "completed",
-      "workflow_run_id": 37276836803,
-      "ai_image_status": "no_new_jobs",
-      "delivery_workflow_run_id": 37276919765,
-      "delivery_status": "in_progress"
+      "run_id": "tr-1791186291536-2436be",
+      "status": "requested"
     }
   },
   "summary": {
@@ -123,17 +249,19 @@
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
-    "incidents": 0,
+    "incidents": 1,
     "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
     "fallback_images_ready": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 0,
+    "explanations_verified_under_280": 3,
     "remates_selected": 0,
     "remates_omitted": 0,
-    "pending_repair_triggered": 1
+    "pending_repair_triggered": 1,
+    "jit_skipped_concurrent": 3,
+    "final_verified_explanations": 3
   },
   "error": null
 }
