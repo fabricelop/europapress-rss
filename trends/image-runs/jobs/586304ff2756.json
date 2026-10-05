@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-586304ff2756-r0-a1-1791203284950",
+  "requested_at": "2026-10-05T12:28:04.941758Z",
+  "updated_at": "2026-10-05T12:28:04.941758Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "586304ff2756",
+  "trend_id": "586304ff2756",
+  "target_name": "SALF",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "SALF",
+    "revision": 0,
+    "explanation": "TT#20 SALF es tendencia por el adelanto al 29-N: Se Acabó La Fiesta ha manifestado su intención de concurrir a las generales, aunque aún no está decidido si Alvise Pérez encabezará la candidatura.",
+    "closer_text": "",
+    "trend_names": [
+      "SALF"
+    ],
+    "group_title": "SALF ante las elecciones generales del 29-N",
+    "rank_at_explanation": 20,
+    "explained_at": "2026-10-05T14:22:30+02:00",
+    "verification_sources": [
+      {
+        "source": "HuffPost · 5/10/2026",
+        "url": "https://www.huffingtonpost.es/politica/candidatos-elecciones-29n-encabeza-lista-partido-f202610.html"
+      },
+      {
+        "source": "El País · 5/10/2026",
+        "url": "https://elpais.com/espana/2026-10-05/el-tiron-de-vox-mantiene-al-bloque-de-la-derecha-en-el-50-en-plena-conmocion-por-maricarmen.html"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
