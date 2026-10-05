@@ -29,7 +29,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python3 - <<'PY'
-          import json, os, pathlib, urllib.parse, urllib.request
+          import json, os, pathlib, re, unicodedata, urllib.parse, urllib.request
           from datetime import datetime, timezone
 
           p=pathlib.Path("telegram/ttittulares-keyboard-refresh.json")
@@ -38,6 +38,20 @@ jobs:
           chat=os.environ["TELEGRAM_CHAT_ID"].strip()
           endpoint=f"https://api.telegram.org/bot{token}/editMessageReplyMarkup"
           changed=False
+
+          def x_search_keywords(row):
+              raw=str(row.get("title") or row.get("tweet") or "").replace("\n"," ")
+              words=re.findall(r"[^\W_]+",raw,flags=re.UNICODE)
+              stop=set("el la los las un una unos unas de del al en a ante por para con sin sobre entre que quien quienes como cual cuales su sus y e o u es son ha han fue ser se le les lo este esta estos estas ese esa esos esas tras desde hasta durante muy mas hoy ayer mañana ultima ultimas hora directo noticia noticias actualidad cuenta explica explican anuncia anunciaron nueva nuevo nuevas nuevos ahora segundo primera primero centenar personas persona hombres mujeres supera supero desvela reactiva aprueba confirma detiene investiga consigue gana pierde critica pide asegura publica celebran ocurrido denuncian".split())
+              good=[];seen=set()
+              for word in words:
+                  key=unicodedata.normalize("NFD",word).encode("ascii","ignore").decode().lower()
+                  if len(key)<3 or key in stop or key.isdigit() or key in seen:
+                      continue
+                  seen.add(key);good.append(word)
+                  if len(good)==3:
+                      break
+              return " ".join(good[:3]) or "noticias"
 
           for row in d.get("items",[]):
               if row.get("status")!="pending":
@@ -48,12 +62,16 @@ jobs:
               image_url=str(row["image_url"])
               copy_url="https://tt-control.fabricelop.workers.dev/copy-image?"+urllib.parse.urlencode({"src":image_url})
               x_url="https://tt-control.fabricelop.workers.dev/x-compose?"+urllib.parse.urlencode({"text":tweet})
+              x_search="https://x.com/search?"+urllib.parse.urlencode({"q":x_search_keywords(row),"src":"typed_query","f":"live"})
               keyboard={
                   "inline_keyboard":[
                       [{"text":"🖼️ Copiar imagen","url":copy_url}],
                       [
                           {"text":"📋 Copiar tuit","copy_text":{"text":tweet}},
                           {"text":"✍️ Abrir en X","url":x_url}
+                      ],
+                      [
+                          {"text":"🔎 Buscar en X","url":x_search}
                       ],
                       [
                           {"text":"🗑 Desestimar","callback_data":"tt:d:"+eid},
