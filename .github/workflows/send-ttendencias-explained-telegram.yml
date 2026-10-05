@@ -5,8 +5,10 @@ on:
   push:
     branches: [main]
     paths:
+      # El raster se guarda antes que el JSON editorial. Disparar aquí por
+      # generated-images crea una ejecución prematura que valid_ai() no puede
+      # entregar y que compite con la ejecución útil del JSON ya actualizado.
       - "trends/telegram-manual-explained.json"
-      - "trends/generated-images/**"
       - "trends/send_explained_telegram.py"
       - ".github/workflows/send-ttendencias-explained-telegram.yml"
   schedule:
