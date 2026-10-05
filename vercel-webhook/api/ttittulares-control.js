@@ -10,8 +10,6 @@ const PROCESSING="telegram/editorial-processing.json";
 const EVENTS="telegram/events.json";
 const MANUAL_ARCHIVE="ttittulares/manual-submissions.json";
 const TREMENDING="ttittulares/tremending/items.json";
-const TREND_REQUESTS="trends/requests.json";
-const TREND_EDITORIAL_QUEUE="trends/editorial-queue.json";
 // Tokens de control ya emitidos. No rotar ni eliminar salvo revocación de seguridad explícita.
 const CONTROL_TOKEN_HASHES=[
   "2663da5223c2313c3670a7843a0cdfabfd2dd7c8fad1ed168247866a3b1262e5",
@@ -162,121 +160,38 @@ function manualEventId(url,title){
   return "manual-"+crypto.createHash("sha256").update(base).digest("hex").slice(0,12)
 }
 function tremendingEntryId(value){return idOf(value)}
-function tremendingEventId(item){
-  const id=tremendingEntryId(item?.id);if(!id)throw new Error("Entrada Tremending no válida");
-  return "tremending-"+crypto.createHash("sha256").update(id).digest("hex").slice(0,12)
+function deleteTremendingFromDoc(doc,entry,now){
+  doc.items||=[];
+  const index=doc.items.findIndex(x=>tremendingEntryId(x.id)===entry);
+  if(index<0)throw new Error("La entrada Tremending ya no está en la bandeja");
+  const [deleted]=doc.items.splice(index,1);
+  doc.scan=doc.scan||{};
+  const seen=new Set(Array.isArray(doc.scan.seen_urls)?doc.scan.seen_urls:[]);
+  const url=canonicalUrl(deleted?.url||"");
+  if(url)seen.add(url);
+  doc.scan.seen_urls=[...seen].sort();
+  doc.scan.deleted_count=Number(doc.scan.deleted_count||0)+1;
+  doc.scan.last_deleted_at=now;
+  doc.updated_at=now;
+  return {doc,deleted,url}
 }
-function selectedTremendingTweet(item){
-  const wanted=idOf(item?.selected_tweet_id);
-  const tweet=(item?.tweets||[]).find(x=>idOf(x?.id)===wanted);
-  return tweet&&String(tweet.url||"").startsWith("https://x.com/")?tweet:null
-}
-async function selectTremendingTweet(entryId,tweetId){
-  const entry=tremendingEntryId(entryId),tweet=tremendingEntryId(tweetId);if(!entry||!tweet)throw new Error("Falta la entrada o el tuit elegido");
-  const now=new Date().toISOString();let chosen=null;
-  await mutateJson(TREMENDING,"Elegir tuit Tremending desde TTiTTulares",doc=>{
-    doc.items||=[];const item=doc.items.find(x=>tremendingEntryId(x.id)===entry);
-    if(!item)throw new Error("No se encuentra la entrada Tremending");
-    chosen=(item.tweets||[]).find(x=>tremendingEntryId(x.id)===tweet);
-    if(!chosen)throw new Error("Ese tuit no pertenece a esta entrada");
-    item.selected_tweet_id=tweet;item.selected_tweet_url=chosen.url;item.selected_tweet_author=chosen.author||"";
-    item.image={status:"pending_capture",tweet_id:tweet,tweet_url:chosen.url,requested_at:now};
-    if(!item.status||item.status==="postponed")item.status="pending";
-    item.updated_at=now;doc.updated_at=now;return doc
+async function deleteTremending(entryId){
+  const entry=tremendingEntryId(entryId);if(!entry)throw new Error("Falta entry_id");
+  const now=new Date().toISOString();let deleted=null;
+  const next=await mutateJson(TREMENDING,"Borrar entrada Tremending leída",doc=>{
+    const result=deleteTremendingFromDoc(doc,entry,now);deleted=result.deleted;return result.doc
   });
-  return {ok:true,entry_id:entry,tweet:chosen,image_status:"pending_capture"}
+  const stillThere=(next.items||[]).some(x=>tremendingEntryId(x.id)===entry);
+  if(stillThere)throw new Error("La entrada Tremending sigue presente después del borrado");
+  return {ok:true,entry_id:entry,deleted:true,remaining_count:(next.items||[]).length,url:deleted?.url||null}
 }
-async function markTremending(entryId,status){
-  const entry=tremendingEntryId(entryId);if(!entry)throw new Error("Falta entry_id");const now=new Date().toISOString();
-  await mutateJson(TREMENDING,status==="discarded"?"Descartar entrada Tremending":"Posponer entrada Tremending",doc=>{
-    doc.items||=[];const item=doc.items.find(x=>tremendingEntryId(x.id)===entry);if(!item)throw new Error("No se encuentra la entrada Tremending");
-    item.status=status;item.updated_at=now;if(status==="discarded")item.discarded_at=now;else item.postponed_at=now;doc.updated_at=now;return doc
-  });
-  return {ok:true,entry_id:entry,status}
-}
-function shortTremendingTrendTitle(title){
-  const clean=String(title||"").replace(/\s+/g," ").trim();
-  const pair=clean.match(/\bentre\s+([A-ZÁÉÍÓÚÑ][\p{L}.-]*(?:\s+[A-ZÁÉÍÓÚÑ][\p{L}.-]*){1,2})\s+y\s+([A-ZÁÉÍÓÚÑ][\p{L}.-]*(?:\s+[A-ZÁÉÍÓÚÑ][\p{L}.-]*){1,2})(?=\s+en\b|[,:;“"]|$)/u);
-  if(pair){
-    const first=pair[1].trim().split(/\s+/).at(-1),second=pair[2].trim().split(/\s+/).at(-1);
-    const candidate=first+(/^[ií]/i.test(second)?" e ":" y ")+second;
-    if(candidate.length<=56)return candidate;
-  }
-  const phrase=clean.split(/[“":;!?]/,1)[0].trim().replace(/[.,\s]+$/g,"");
-  const words=phrase.split(/\s+/),chosen=[];
-  for(const word of words){if((chosen.join(" ")+(chosen.length?" ":"")+word).length>55)break;chosen.push(word);}
-  return chosen.join(" ")||clean.slice(0,55).trim()||"Tremending";
-}
-async function sendTremending(entryId,destination){
-  const entry=tremendingEntryId(entryId),target=String(destination||"");
-  if(!["news","trend"].includes(target))throw new Error("Destino Tremending no válido");
-  const {doc:inbox}=await readJson(TREMENDING);
-  const item=(inbox.items||[]).find(x=>tremendingEntryId(x.id)===entry);
-  if(!item)throw new Error("No se encuentra la entrada Tremending");
-  if(String(item.status||"").toLowerCase()==="discarded")throw new Error("La entrada está descartada");
-  const tweet=selectedTremendingTweet(item);if(!tweet)throw new Error("Elige primero el tuit que quieres usar");
-  const now=new Date().toISOString(),eventId=tremendingEventId(item),title=String(item.title||"Entrada Tremending").trim(),url=canonicalUrl(item.url||"");
-  const requestedNews=target==="news",requestedTrend=target==="trend";
-  const capture=(item.image&&item.image.status==="ready"&&/^https:\/\//i.test(String(item.image.url||"")))?{
-    url:String(item.image.url),source:"X / Tremending",source_url:String(tweet.url||""),rights_status:"tweet_capture",generated:false,
-    alt:"Captura del tuit seleccionado para "+title
-  }:null;
-  let closed=null;
-
-  if(requestedNews){
-    const {doc:decisions}=await readJson(DECISIONS);
-    closed=(decisions.items||[]).find(x=>idOf(x.event_id)===eventId&&["published","dismissed"].includes(String(x.status||"").toLowerCase()))||null;
-    if(!closed){
-      await mutateJson(EVENTS,"Registrar entrada Tremending para TTiTTulares",doc=>{
-        doc.events||=[];let ev=doc.events.find(x=>idOf(x.id||x.event_id)===eventId);
-        if(!ev){ev={id:eventId,canonical_title:title,url,appearances:[{source:"Público · Tremending",url,first_seen:now}],sources:["Público · Tremending"],source_count:1,first_seen:now,last_seen:now,status:"PROCESSING",revision:1,tremending_origin:true,tremending_id:entry};doc.events.push(ev)}
-        else Object.assign(ev,{status:"PROCESSING",last_seen:now,tremending_origin:true,tremending_id:entry});
-        doc.updated_at=now;return doc
-      });
-      await mutateJson(PROCESSING,"Enviar entrada Tremending a elaboración",doc=>{
-        doc.items||=[];let row=[...(doc.items||[])].reverse().find(x=>idOf(x.event_id)===eventId);if(!row){row={event_id:eventId};doc.items.push(row)}
-        Object.assign(row,{
-          event_id:eventId,title,url,sources:["Público · Tremending"],source_count:1,drafted_source_count:1,selected_at:now,status:"PROCESSING",
-          selection_mode:"TREMENDING_USER",manual_submission:true,tremending_origin:true,tremending_id:entry,tremending_tweet:tweet,
-          with_image:true,disable_ai_image:true,image_mode:"tweet_capture_only",image_strategy:"tweet_capture_only",
-          fallback_image_status:capture?"ready":"pending_capture",fallback_image:capture||undefined,
-          image:capture||undefined,image_choice:capture?"fallback":"none",image_status:capture?"ready":"pending_capture",image_pending:!capture
-        });
-        delete row.ai_image;delete row.ai_image_status;delete row.ai_image_attempt;delete row.ai_image_last_attempt_status;delete row.dismissed_at;delete row.delivered_at;
-        doc.updated_at=now;return doc
-      });
-    }
-  }
-
-  if(requestedTrend){
-    const trendId="tremending-"+crypto.createHash("sha256").update(entry).digest("hex").slice(0,12),name=shortTremendingTrendTitle(title);
-    const trendContext="Entrada seleccionada desde Público/Tremending. Titula con el nombre corto \""+name+"\" y redacta \"TT 🗯️ "+name+" es tendencia por/porque ...\" con un remate opcional 🌶️ en la línea siguiente. No utilizar TT#0 ni repetir título, ni copiar el titular completo. Verifica los hechos y atribuye opiniones. Usa exclusivamente la captura del tuit seleccionado como imagen; NO generes imagen IA.";
-    await mutateJson(TREND_REQUESTS,"Enviar entrada Tremending a TTendencias",doc=>{
-      doc.requests||=[];let row=doc.requests.find(x=>idOf(x.id)===trendId);if(!row){row={id:trendId,revision:0};doc.requests.push(row)}
-      Object.assign(row,{
-        id:trendId,name,rank:0,status:"preparing",requested_at:now,reexplain:false,with_image:true,disable_ai_image:true,image_strategy:"tweet_capture_only",
-        alternatives_target:0,task:"explain",requested_together:[name],auto_queued:false,tremending_origin:true,tremending_id:entry,
-        article_title:title,source_url:url,selected_tweet:tweet,selected_tweet_image:capture,rewrite_instruction:trendContext
-      });
-      doc.updated_at=now;return doc
-    });
-    await mutateJson(TREND_EDITORIAL_QUEUE,"Incorporar entrada Tremending a cola TTendencias",doc=>{
-      doc.project||="TTendencias";doc.items||=[];doc.items=doc.items.filter(x=>idOf(x.id)!==trendId);
-      doc.items.push({
-        id:trendId,name,rank:0,status:"preparing",requested_at:now,revision:0,rewrite_instruction:trendContext,
-        with_image:true,disable_ai_image:true,image_strategy:"tweet_capture_only",task:"explain",batch_id:null,requested_together:[name],
-        captured_with:[],auto_queued:false,tremending_origin:true,tremending_id:entry,article_title:title,source_url:url,
-        selected_tweet:tweet,selected_tweet_image:capture
-      });
-      doc.count=doc.items.length;doc.updated_at=now;return doc
-    });
-  }
-
-  await mutateJson(TREMENDING,"Registrar destino editorial de Tremending",doc=>{
-    doc.items||=[];const row=doc.items.find(x=>tremendingEntryId(x.id)===entry);if(!row)throw new Error("No se encuentra la entrada Tremending");
-    row.status="sent";row.destinations=[...new Set([...(row.destinations||[]),target])];row.sent_at=now;row.updated_at=now;doc.updated_at=now;return doc
-  });
-  return {ok:true,entry_id:entry,event_id:eventId,destination:target,news_queued:requestedNews&&!closed,trend_queued:requestedTrend,duplicate_news:!!closed}
+function processingOutcomeVisible(item,decision){
+  const status=String(item?.status||"").toUpperCase();
+  if(!["DISMISSED","SKIPPED_DUPLICATE","ERROR","CANCELLED"].includes(status)||item?.history_hidden_at)return false;
+  if(status!=="DISMISSED")return true;
+  const source=String(item?.dismissal_source||decision?.decision_source||"").toLowerCase();
+  if(item?.manual_user_dismissed===true||["web_user","telegram_emergency_callback","manual_user"].includes(source))return false;
+  return Boolean(String(item?.filter_reason||"").trim()||String(item?.reconciliation_reason||"").trim()||String(item?.problem_reason||"").trim())
 }
 function threeSourceSpeedMinutes(event){
   const general=new Set(Array.isArray(event.sources)?event.sources:[]);
@@ -306,8 +221,9 @@ async function closePrepared(eventId,status){
   await mutateJson(DECISIONS,`${status==="published"?"Publicar":"Desestimar"} TTiTTulares desde web`,doc=>{
     doc.project||="TTiTTulares";doc.items||=[];
     const old=doc.items.find(x=>idOf(x.event_id)===id);
-    if(old)Object.assign(old,{status,updated_at:now,...(cancelPendingImage?{image_cancelled_by_publication:true,image_cancelled_at:now,image_cancel_reason:"published_before_image_complete"}:{})});
-    else doc.items.push({event_id:id,status,updated_at:now,...(cancelPendingImage?{image_cancelled_by_publication:true,image_cancelled_at:now,image_cancel_reason:"published_before_image_complete"}:{})});
+    const source={decision_source:"web_user"};
+    if(old)Object.assign(old,{status,updated_at:now,...source,...(cancelPendingImage?{image_cancelled_by_publication:true,image_cancelled_at:now,image_cancel_reason:"published_before_image_complete"}:{})});
+    else doc.items.push({event_id:id,status,updated_at:now,...source,...(cancelPendingImage?{image_cancelled_by_publication:true,image_cancelled_at:now,image_cancel_reason:"published_before_image_complete"}:{})});
     doc.updated_at=now;return doc
   });
   await Promise.all([
@@ -318,6 +234,7 @@ async function closePrepared(eventId,status){
       for(const item of doc.items||[])if(idOf(item.event_id)===id){
         item.status=status==="published"?"PUBLISHED":"DISMISSED";
         item[status==="published"?"published_at":"dismissed_at"]=now;
+        if(status==="dismissed"){item.manual_user_dismissed=true;item.dismissal_source="web_user";item.history_hidden_at=now;item.history_hidden_source="web_user_dismissal"}
         if(cancelPendingImage){
           item.image_cancelled_by_publication=true;
           item.image_cancelled_at=now;
@@ -720,6 +637,7 @@ export default async function handler(req,res){
         fresh?readJson(PROCESSING):readPublicJson(PROCESSING),readPublicJson(EVENTS),readJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
+      const decisionMap=new Map((decisions.doc?.items||[]).map(x=>[String(x.event_id||""),x]));
       const closedIds=new Set((decisions.doc?.items||[])
         .filter(x=>["published","dismissed"].includes(String(x.status||"").toLowerCase()))
         .map(x=>String(x.event_id||"")));
@@ -772,7 +690,7 @@ export default async function handler(req,res){
         }));
       const processingItems=[...queueProcessing,...syntheticRewrites];
       const processingOutcomes=(queue.doc?.items||[])
-        .filter(x=>["DISMISSED","SKIPPED_DUPLICATE","ERROR","CANCELLED"].includes(String(x.status||"").toUpperCase())&&!x.history_hidden_at)
+        .filter(x=>processingOutcomeVisible(x,decisionMap.get(String(x.event_id||""))))
         .map(x=>{
           const ev=eventMap.get(String(x.event_id||""))||{};
           return {
@@ -838,9 +756,11 @@ export default async function handler(req,res){
         return av-bv||String(b.first_seen||"").localeCompare(String(a.first_seen||""))
       });
       const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,processing_outcomes:processingOutcomes,processing_outcomes_count:processingOutcomes.length,problematic_count:problematicItems.length,problematic_items:problematicItems,trend_candidates_count:0,trend_candidates:[],ready_count:visiblePrepared.length,one_source_count:oneSourceCount,two_source_count:twoSourceCount,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
-      const tremendingItems=(tremending.doc?.items||[]).map(x=>({
-        id:tremendingEntryId(x.id),title:String(x.title||"Entrada sin título"),url:String(x.url||""),description:String(x.description||""),published_at:x.published_at||null,first_seen_at:x.first_seen_at||null,last_seen_at:x.last_seen_at||null,status:String(x.status||"pending"),destinations:Array.isArray(x.destinations)?x.destinations:[],tweets:Array.isArray(x.tweets)?x.tweets:[],selected_tweet_id:x.selected_tweet_id||null,image:x.image||{status:"not_selected"},article_status:x.article_status||"pending"
-      })).filter(x=>x.id).sort((a,b)=>String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
+      const tremendingItems=(tremending.doc?.items||[])
+        .filter(x=>!["discarded","sent"].includes(String(x.status||"").toLowerCase()))
+        .map(x=>({
+          id:tremendingEntryId(x.id),title:String(x.title||"Entrada sin título"),url:String(x.url||""),description:String(x.description||""),published_at:x.published_at||null,first_seen_at:x.first_seen_at||null,last_seen_at:x.last_seen_at||null,tweets:Array.isArray(x.tweets)?x.tweets:[],article_status:x.article_status||"pending"
+        })).filter(x=>x.id).sort((a,b)=>String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
       const isWidget=String(req.query?.view||"")==="widget";
       // La app principal debe reflejar inmediatamente Publicado/Desestimado de
       // Telegram. No permitimos que Vercel/CDN conserve una Lista cerrada.
@@ -877,11 +797,7 @@ export default async function handler(req,res){
     if(action==="regenerate-image")return res.status(200).json(await requestImageRegeneration(body.event_id));
     if(action==="use-fallback-image")return res.status(200).json(await useFallbackImage(body.event_id));
     if(action==="check")return res.status(200).json(await markUserValidated(body.event_id));
-    if(action==="select-tremending-tweet")return res.status(200).json(await selectTremendingTweet(body.entry_id,body.tweet_id));
-    if(action==="send-tremending")return res.status(200).json(await sendTremending(body.entry_id,body.destination));
-    if(action==="postpone-tremending")return res.status(200).json(await markTremending(body.entry_id,"postponed"));
-    if(action==="reactivate-tremending")return res.status(200).json(await markTremending(body.entry_id,"pending"));
-    if(action==="discard-tremending")return res.status(200).json(await markTremending(body.entry_id,"discarded"));
+    if(action==="delete-tremending"||action==="discard-tremending")return res.status(200).json(await deleteTremending(body.entry_id));
     if(action==="prepare3")return res.status(200).json(await manualPrepare(body.event_id));
     if(action==="reopen-outcome")return res.status(200).json(await reopenProcessingOutcome(body.event_id));
     if(action==="hide-outcome")return res.status(200).json(await hideProcessingOutcome(body.event_id));
