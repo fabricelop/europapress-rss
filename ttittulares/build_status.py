@@ -22,9 +22,6 @@ prepared = load(TT / "prepared.json", {"items":[]})
 decisions = load(TT / "decisions.json", {"items":[]})
 terminal_ids = {str(x.get("event_id") or "") for x in decisions.get("items", []) if str(x.get("status") or "").lower() in {"published","dismissed"}}
 visible_prepared = [x for x in prepared.get("items", []) if str(x.get("event_id") or "") not in terminal_ids]
-trend_candidates_doc = load(TT / "trend-candidates.json", {"items":[]})
-# TTendencias bridge: candidate stories stay separate until user promotes them.
-
 event_map = {}
 for event in events_doc.get("events", []):
     event_id = str(event.get("id") or "")
@@ -82,27 +79,6 @@ for item in processing.get("items", []):
         "sources": list(ev.get("sources") or item.get("sources") or []),
     })
 problematic_items.sort(key=lambda x: str(x.get("problematic_at") or x.get("selected_at") or ""), reverse=True)
-
-trend_candidates = []
-for item in trend_candidates_doc.get("items", []):
-    if str(item.get("status") or "candidate").lower() not in {"candidate", "pending", ""}:
-        continue
-    trend_candidates.append({
-        "candidate_id": str(item.get("candidate_id") or item.get("id") or ""),
-        "event_id": str(item.get("event_id") or item.get("ttittulares_event_id") or ""),
-        "title": str(item.get("title") or item.get("news_title") or "Posible noticia desde TTendencias"),
-        "explanation": str(item.get("explanation") or ""),
-        "url": str(item.get("url") or item.get("source_url") or ""),
-        "trend_names": list(item.get("trend_names") or []),
-        "trend_context": list(item.get("trend_context") or []),
-        "search_terms": list(item.get("search_terms") or item.get("trend_names") or []),
-        "source_count": int(item.get("source_count") or len(item.get("sources") or [])),
-        "sources": list(item.get("sources") or []),
-        "source_evidence": list(item.get("source_evidence") or []),
-        "detected_at": item.get("detected_at") or item.get("created_at") or item.get("updated_at"),
-        "origin": "TTendencias",
-    })
-trend_candidates.sort(key=lambda x: str(x.get("detected_at") or ""), reverse=True)
 
 def parse_dt(value):
     if not value:
@@ -173,10 +149,10 @@ out = {
     "processing_count":len(processing_items),
     "processing_items":processing_items,
     "ready_count":len(visible_prepared),
-    "problematic_count":len(problematic_items) + len(trend_candidates),
+    "problematic_count":len(problematic_items),
     "problematic_items":problematic_items,
-    "trend_candidates_count":len(trend_candidates),
-    "trend_candidates":trend_candidates,
+    "trend_candidates_count":0,
+    "trend_candidates":[],
     "one_source_count":one_source_count,
     "two_source_count":two_source_count,
     "three_source_count":len(three_source_items),
@@ -191,4 +167,4 @@ out = {
     "events":event_map,
 }
 save(TT / "status.json", out)
-print("STATUS", "sources=",out["healthy_source_count"],"/",out["configured_sources"],"processing=",out["processing_count"],"trends=",out["trend_candidates_count"],"ready=",out["ready_count"])
+print("STATUS", "sources=",out["healthy_source_count"],"/",out["configured_sources"],"processing=",out["processing_count"],"problematic=",out["problematic_count"],"ready=",out["ready_count"])
