@@ -756,7 +756,7 @@
       "percentage": 25.0,
       "first_seen": "2026-10-05T11:02:58.950766Z",
       "last_seen": "2026-10-05T17:32:48.209616Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -814,7 +814,10 @@
         }
       ],
       "drafted_source_count": 4,
-      "verified_source_count": 4
+      "verified_source_count": 4,
+      "reconciled_from_event_id": "ce0711629a35",
+      "reconciliation_reason": "Mismo hecho ya publicado: Mónica García se mostró dispuesta a liderar Frente Amplio, sin novedad material independiente.",
+      "reconciled_at": "2026-10-05T17:37:42.839934Z"
     },
     {
       "id": "51b8150531db",
@@ -2728,5 +2731,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-05T17:37:34.737061Z"
+  "updated_at": "2026-10-05T17:37:42.839934Z"
 }
