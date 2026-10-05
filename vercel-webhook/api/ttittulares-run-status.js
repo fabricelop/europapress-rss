@@ -167,7 +167,7 @@ function normalizeTrace(t,errors){
   }
   const incident_count=Math.max(Number(t.incident_count||0),incidents.length);
   const heartbeat_age_seconds=updated?Math.max(0,Math.round((Date.now()-stamp(updated))/1000)):null;
-  return {
+  return ensureErrorIncident({
     run_id:t.run_id||t.command_id||null,
     command_id:t.command_id||t.run_id||null,
     source:t.source||"chat",
@@ -186,6 +186,7 @@ function normalizeTrace(t,errors){
     finished_at:finished,
     duration_seconds:started&&finished?seconds(started,finished):null,
     message:t.message||null,
+    pc_failure_detail:t.pc_failure_detail||null,
     summary:t.summary||null,
     generation_started_at:t.generation_started_at||null,
     generation_finished_at:t.generation_finished_at||null,
@@ -197,7 +198,15 @@ function normalizeTrace(t,errors){
     incident_count,
     incidents,
     activity:Array.isArray(t.activity)?t.activity.slice(-20):[]
-  }
+  })
+}
+function ensureErrorIncident(run){
+  if(String(run?.status||"").toUpperCase()!=="ERROR")return run;
+  const existing=Array.isArray(run.incidents)?run.incidents.filter(x=>String(x?.reason||"").trim()):[];
+  if(existing.length)return {...run,incidents:existing,incident_count:Math.max(Number(run.incident_count||0),existing.length)};
+  const reason=String(run.pc_failure_detail||run.message||"La ejecución terminó con error sin detalle adicional.").trim();
+  const incident={at:run.finished_at||run.updated_at||new Date().toISOString(),event_id:run.event_id||null,phase:run.phase||"error",reason:reason.slice(0,1200)};
+  return {...run,incidents:[incident],incident_count:Math.max(1,Number(run.incident_count||0))};
 }
 function manualFallback(items,request,ack){
   const command_id=String(request.command_id||"").trim();
@@ -258,7 +267,7 @@ function manualFallback(items,request,ack){
           :staleRunning?new Date().toISOString()
       :(["DONE","ERROR"].includes(status)&&last?(field(last.body,"finished_at")||last.created_at):null);
 
-  return {
+  return ensureErrorIncident({
     run_id:command_id,command_id,source:"mobile",source_label:"Móvil→PC",status,phase,
     current:0,total:0,event_id:null,title:null,requested_at,started_at:effectiveStarted,updated_at,finished_at,
     start_delay_seconds:effectiveStarted?seconds(requested_at,effectiveStarted):null,
@@ -266,7 +275,7 @@ function manualFallback(items,request,ack){
     message:message||"Orden móvil registrada; esperando al PC para recogerla (máx. 90 s).",
     summary:null,incident_count:0,incidents:[],
     pc_ack_stage:ackStage||null,pc_worker_id:ackMatches?(ack?.worker_id||null):null,pc_picked_up_at:pickedAt||null,pc_launched_at:launchedAt||null,pc_failed_at:failedAt||null,pc_failure_detail:failedDetail||null
-  }
+  })
 }
 
 export default async function handler(req,res){
@@ -324,9 +333,9 @@ export default async function handler(req,res){
       const age=Date.now()-stamp(freshAt);
       const deadline=latest.status==="REQUESTED"?START_ACK_MS:STALE_MS;
       if(Number.isFinite(age)&&age>=0&&age<deadline)active=latest;
-      else latest={...latest,status:"ERROR",finished_at:new Date().toISOString(),message:latest.status==="REQUESTED"
+      else latest=ensureErrorIncident({...latest,status:"ERROR",phase:"error",finished_at:new Date().toISOString(),message:latest.status==="REQUESTED"
         ?"No se ha recibido RUNNING en 90 segundos: el PC no ha recogido la orden móvil."
-        :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")}
+        :(latest.message||"La ejecución dejó de actualizar la telemetría durante más de 20 minutos.")})
     }
 
     let fallback=null;
@@ -370,7 +379,8 @@ export default async function handler(req,res){
       if(!traceAlreadyTerminal){
         if(!errors.length)errors=await readErrors();
         const inc=incidentsFor(errors,fallback.started_at||fallback.requested_at,fallback.finished_at);
-        terminalCandidates.push({...fallback,incidents:inc,incident_count:inc.length})
+        const merged=[...(Array.isArray(fallback.incidents)?fallback.incidents:[]),...inc];
+        terminalCandidates.push(ensureErrorIncident({...fallback,incidents:merged,incident_count:Math.max(Number(fallback.incident_count||0),merged.length)}))
       }
     }
     terminalCandidates.sort((a,b)=>{
