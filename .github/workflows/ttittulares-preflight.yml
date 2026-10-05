@@ -99,8 +99,9 @@ jobs:
           assert cfg["radar"]["minimum_sources"] == 4
           assert cfg["radar"]["waiting_ttl_hours"] == 24
           assert cfg["images"]["mode"] == "ai_plus_fallback"
-          assert cfg["images"]["generate"] is True
-          assert cfg["images"]["ai_attempts_initial"] == 1
+          assert cfg["images"]["generate"] is False
+          assert cfg["images"]["ai_attempts_initial"] == 0
+          assert cfg["images"]["generation_mode"] == "manual_selected_jobs"
           assert cfg["images"]["non_blocking"] is True
           assert cfg["images"]["fallback_enabled"] is True
           assert mode["mode"] in {"telegram","parallel","web"}
@@ -127,7 +128,8 @@ jobs:
           assert manifest["start_url"] == "/ttittulares/"
           prompt=Path("ttittulares/editorial-run-prompt.md").read_text(encoding="utf-8")
           assert "esa misma conversación ejecuta la pasada editorial real" in prompt
-          assert "reparación visual automática" in prompt and "NO llama directamente a ImageGen" in prompt
+          assert "reparación visual automática" in prompt and "no llama directamente a ImageGen" in prompt
+          assert "no invoques ImageGen" in prompt
           assert "No uses el ImageGen interno" not in prompt and "crea exactamente UN trabajo visual" not in prompt
           run_api=Path("vercel-webhook/api/ttittulares-run.js").read_text(encoding="utf-8")
           run_status=Path("vercel-webhook/api/ttittulares-run-status.js").read_text(encoding="utf-8")
