@@ -120,7 +120,6 @@ async function reconcileNativeAgainstSnapshot(){
   const real=(DATA.transactions||[]).filter(t=>!String(t.gid||'').startsWith('PROV:'));
   const kept=[];
   for(const p of (STATE.nativeTransactions||[])){
-    if(p?.source==='balance_adjustment'&&String(p.date||'')<=String(DATA.snapshotDate||'')){changed=true;continue}
     const matches=real.filter(t=>t.accountId===p.accountId&&dayDiff(t.date,p.date)<=2&&Math.abs(Number(t.amount||0)-Number(p.amount||0))<.005&&sim(t.description||t.payee,p.description||p.payee)>=.86);
     if(matches.length!==1){kept.push(p);continue}
     const m=matches[0],rev=STATE.review?.[p.gid];
