@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-71d6534cdb5a-r0-a1-1791194088016",
-  "requested_at": "2026-10-05T09:54:48.015907Z",
-  "updated_at": "2026-10-05T09:58:21.220Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-auto-71d6534cdb5a-r0-a2-1791195438574",
+  "requested_at": "2026-10-05T10:17:18.573880Z",
+  "updated_at": "2026-10-05T10:17:18.573880Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,9 +14,9 @@
   "trend_id": "71d6534cdb5a",
   "target_name": "pucherazo",
   "revision": 0,
-  "attempt": 1,
+  "attempt": 2,
   "auto_repair": true,
-  "auto_repair_attempt": 1,
+  "auto_repair_attempt": 2,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
   "context_snapshot": {
@@ -43,13 +43,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":true,\"submitted\":false,\"userTurns\":0,\"generating\":false,\"inConversation\":false,\"commandOutsideComposer\":false,\"send\":true,\"sendDisabled\":false,",
-  "pc_upload_secret_hash": "521af6bc2787bb20ad39f113d94e50664c5a0bc3fb582d9ce25eab0ca0f1c694",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-05T09:57:23.272Z",
-  "bridge_version": null,
-  "target_handoff_id": "5466EEFD4A5947C4FC21A114D620CB21",
-  "target_handoff_at": "2026-10-05T09:57:58.968Z",
-  "pc_launched_at": "2026-10-05T09:58:00.130Z",
-  "finished_at": "2026-10-05T09:58:21.220Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
