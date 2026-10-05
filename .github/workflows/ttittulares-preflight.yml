@@ -18,7 +18,6 @@ on:
       - "vercel-webhook/test/ttittulares-actions.test.mjs"
       - "vercel-webhook/test/ttittulares-actions.test.mjs"
       - "vercel-webhook/api/ttittulares-control.js"
-      - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
       - "vercel-webhook/api/ttittulares-run.js"
       - "windows/TTiTTularesDedicatedListener.ps1"
@@ -44,7 +43,6 @@ on:
       - "vercel-webhook/test/ttittulares-source-table.test.mjs"
       - "vercel-webhook/test/ttittulares-search-x.test.mjs"
       - "vercel-webhook/api/ttittulares-control.js"
-      - "vercel-webhook/api/ttittulares-widget.js"
       - "vercel-webhook/api/ttittulares-run-status.js"
       - "windows/Install-TTiTTulares-v15.ps1"
       - "vercel-webhook/api/ttendencias-control.js"
@@ -216,7 +214,6 @@ jobs:
           PY
           node --check /tmp/ttittulares-inline.js
           node --check vercel-webhook/api/ttittulares-control.js
-          node --check vercel-webhook/api/ttittulares-widget.js
           node --check vercel-webhook/api/ttittulares-run-status.js
           node --check vercel-webhook/api/ttittulares-run.js
           node --check ttittulares/tremending/capture_tweet.mjs
