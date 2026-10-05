@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T16:51:03.797Z",
+  "updated_at": "2026-10-05T16:52:14.035Z",
   "items": [
     {
       "event_id": "c4d5307a5b7c",
@@ -141,14 +141,14 @@
       "with_image": true,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
-      "image_status": "none",
+      "image_choice": "ai",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "archive_image_search_attempted_at": "2026-10-05T16:43:34.547198Z",
       "fallback_image_search_attempted_at": "2026-10-05T16:43:34.547198Z",
       "archive_image": {
@@ -166,6 +166,54 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "El rey Felipe VI firma de forma telemática el decreto para la convocatoria de elecciones generales - Telecinco"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/274b7cb6a513-r1-ai1-791218567226.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "05ba63af3ed9664a325b564ee5fc92419b50fcb95ab660533dc2fc4cabc27dcb",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2449983,
+        "context_guard": {
+          "version": 3,
+          "event_id": "274b7cb6a513",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-274b7cb6a513-r1-a1-1791218567226"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/274b7cb6a513-r1-ai1-791218567226.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T16:52:14.035Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T16:52:14.035Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/274b7cb6a513-r1-ai1-791218567226.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "05ba63af3ed9664a325b564ee5fc92419b50fcb95ab660533dc2fc4cabc27dcb",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2449983,
+        "context_guard": {
+          "version": 3,
+          "event_id": "274b7cb6a513",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-274b7cb6a513-r1-a1-1791218567226"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/274b7cb6a513-r1-ai1-791218567226.png",
+        "handoff": "pc-bridge-direct-materialized"
       }
     }
   ],
