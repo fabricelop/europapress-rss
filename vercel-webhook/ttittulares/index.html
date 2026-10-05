@@ -416,7 +416,11 @@ function runVisual(s){
    head.textContent="Ejecución";el.textContent=s?.enabled===false?"Disparo móvil no disponible":"Lista para ejecutar";
  }
 }
-function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?5000:60000)}
+function scheduleRunPoll(fast){
+ clearTimeout(runPoll);
+ if(document.hidden){runPoll=null;return}
+ runPoll=setTimeout(loadRunStatus,fast?5000:300000)
+}
 function friendlyRunError(value,retryAt){
  const raw=String(value||"");
  const when=retryAt?new Date(retryAt):null;
@@ -547,13 +551,42 @@ async function requestPendingImages(){
  updateImageControl();
  toast(errors.length?(ok+" solicitadas · "+errors.length+" con error"):(ok+" imagen"+(ok===1?"":"es")+" solicitada"+(ok===1?"":"s")))
 }
-function scheduleImageRunPoll(fast){clearTimeout(imageRunPoll);imageRunPoll=setTimeout(refreshImageRuns,fast?4000:15000)}
+function scheduleImageRunPoll(fast){
+ clearTimeout(imageRunPoll);
+ if(document.hidden){imageRunPoll=null;return}
+ imageRunPoll=setTimeout(refreshImageRuns,fast?5000:300000)
+}
 async function refreshImageRuns(){
+ if(document.hidden){scheduleImageRunPoll(false);return}
  const selected=selectedImageKeys();
- const items=(model.prepared||[]).filter(item=>imageSelectable(item)||selected.has(imageSelectionKey(item))||imageRuns.has(String(item.event_id||"")));
+ const prepared=(model.prepared||[]);
+ const preparedIds=new Set(prepared.map(x=>String(x.event_id||"")).filter(Boolean));
+ const recentCutoff=Date.now()-45*60*1000;
+ let latestById=new Map();
+ try{
+   const ir=await fetch(RUN_STATUS_API+"?view=image-index&t="+Date.now(),{cache:"no-store"});
+   if(ir.ok){
+     const idx=await ir.json().catch(()=>({}));
+     for(const job of (idx.jobs||[])){
+       const id=String(job?.target_id||job?.event_id||"");if(!id||!preparedIds.has(id))continue;
+       const previous=latestById.get(id);
+       if(!previous||Date.parse(job?.requested_at||0)>=Date.parse(previous?.requested_at||0))latestById.set(id,job)
+     }
+   }
+ }catch(_){}
+
+ const candidates=[];
+ for(const item of prepared){
+   const id=String(item.event_id||"");if(!id)continue;
+   const known=imageRuns.get(id),job=latestById.get(id);
+   const requestedAt=Date.parse(job?.requested_at||"");
+   const recent=Number.isFinite(requestedAt)&&requestedAt>=recentCutoff;
+   if(imageRunActive(known)||recent||selected.has(imageSelectionKey(item)))candidates.push(item)
+ }
+
  let terminalChanged=false,changed=false;
  const terminalIds=[];
- await Promise.all(items.map(async item=>{
+ await Promise.all(candidates.map(async item=>{
    const id=String(item.event_id||"");if(!id)return;
    const before=imageRuns.get(id);
    try{
@@ -568,13 +601,13 @@ async function refreshImageRuns(){
      }
    }catch(_){}
  }));
- for(const id of [...imageRuns.keys()])if(!(model.prepared||[]).some(x=>String(x.event_id||"")===id))imageRuns.delete(id);
+ for(const id of [...imageRuns.keys()])if(!preparedIds.has(id))imageRuns.delete(id);
  if(changed){lastReadyRendering=null;renderList()}
  updateImageControl();
 
  if(terminalChanged){
    const set=selectedImageKeys();
-   for(const item of (model.prepared||[])){
+   for(const item of prepared){
      if(terminalIds.includes(String(item.event_id||"")))set.delete(imageSelectionKey(item));
    }
    saveSelectedImageKeys(set);
@@ -1285,9 +1318,13 @@ $("sourcesClose").onclick=()=>$("sourcesSheet").classList.remove("show");
 $("sourcesSheet").onclick=e=>{if(e.target===$("sourcesSheet"))$("sourcesSheet").classList.remove("show")};
 $("reworkCancel").onclick=()=>{$("reworkSheet").classList.remove("show");reworkItem=null};
 $("reworkSend").onclick=async()=>{if(!reworkItem)return;const instruction=$("reworkInstruction").value.trim();if(!instruction){toast("Escribe qué quieres cambiar");return}if(!confirm("¿Mandar esta noticia de nuevo a elaboración con estas instrucciones?"))return;const old=[...model.prepared];model.prepared=model.prepared.filter(x=>x.event_id!==reworkItem.event_id);render();try{await api("rework",{event_id:reworkItem.event_id,instruction});$("reworkSheet").classList.remove("show");toast("Enviada a elaboración");reworkItem=null;setView("processing");setTimeout(()=>load(true),1000)}catch(e){model.prepared=old;render();toast(e.message)}};
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)queuePassiveLoad(250)});window.addEventListener("pageshow",()=>queuePassiveLoad(250));
+document.addEventListener("visibilitychange",()=>{
+ if(document.hidden){clearTimeout(runPoll);clearTimeout(imageRunPoll);return}
+ queuePassiveLoad(250);loadRunStatus();refreshImageRuns()
+});
+window.addEventListener("pageshow",()=>{queuePassiveLoad(250);loadRunStatus();refreshImageRuns()});
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttittulares/sw.js",{updateViaCache:"none"}).then(reg=>{reg.update().catch(()=>{});retireLegacyNotifications()}).catch(()=>{});
-if(hasGoodState)render();else setView(view);if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshImageRuns();setInterval(()=>{if(!document.hidden)queuePassiveLoad(0)},60000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
+if(hasGoodState)render();else setView(view);if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshImageRuns();setInterval(()=>{if(!document.hidden)queuePassiveLoad(0)},300000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
 </script>
 </body></html>
 <!-- quote-candidates: conversation-low-engagement-v1 -->
