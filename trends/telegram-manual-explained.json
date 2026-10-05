@@ -25621,13 +25621,13 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
       "fallback_image_status": "ready",
       "rewrite_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "fallback_image": {
         "url": "https://opengraph.githubassets.com/488a667d35fcf7bdb33131723dc89715c6800ef4055680493e35e8a6e1b665f0/fabricelop/europapress-rss",
         "source": "TTendencias radar · 5/10/2026 08:11",
@@ -25637,15 +25637,54 @@
         "generated": false
       },
       "image": {
-        "url": "https://opengraph.githubassets.com/488a667d35fcf7bdb33131723dc89715c6800ef4055680493e35e8a6e1b665f0/fabricelop/europapress-rss",
-        "source": "TTendencias radar · 5/10/2026 08:11",
-        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
-        "alt": "Imagen de archivo relacionada con #BuenosDías",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/012a4789404e-r3-ai1-791181329076.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "370f0dc127bffcef5388b620efd1c8140acaad9e0f9b883f0eeda75797de7290",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2170640,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "012a4789404e",
+          "revision": 3,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-012a4789404e-r3-a1-1791181329076"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/012a4789404e-r3-ai1-791181329076.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/012a4789404e-r3-ai1-791181329076.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "370f0dc127bffcef5388b620efd1c8140acaad9e0f9b883f0eeda75797de7290",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2170640,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "012a4789404e",
+          "revision": 3,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-012a4789404e-r3-a1-1791181329076"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/012a4789404e-r3-ai1-791181329076.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T06:23:28.137Z"
     }
   ],
-  "updated_at": "2026-10-05T06:22:06.577036Z",
+  "updated_at": "2026-10-05T06:23:28.137Z",
   "count": 542
 }
