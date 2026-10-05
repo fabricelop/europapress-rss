@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
-const html=fs.readFileSync(new URL('../ttittulares/index.html',import.meta.url),'utf8'),script=html.match(/<script>([\s\S]*?)<\/script>/)[1];new vm.Script(script);
+const html=fs.readFileSync(new URL('../ttittulares/index.html',import.meta.url),'utf8'),script=html.match(/<script>([\s\S]*?)<\/script>/)[1],control=fs.readFileSync(new URL('../api/ttittulares-control.js',import.meta.url),'utf8'),runStatus=fs.readFileSync(new URL('../api/ttittulares-run-status.js',import.meta.url),'utf8');new vm.Script(script);
 class Element{constructor(){this.children=[];this.dataset={};this.style={};this.hidden=false;this.classList={add(){},toggle(){},contains(){return false}}}querySelector(k){return (this.nodes||={})[k]||=new Element()}appendChild(e){this.children.push(e)}getAttribute(k){return this[k]}replaceWith(){}}
 for(const images of ['both','ai','archive','none'])test('acciones y copias: '+images,async()=>{
  const item={event_id:'test',title:'Prueba',tweet:{text:'Hecho factual\n\n🌶️ Remate.'},ai_image_status:'failed'};
@@ -12,3 +12,6 @@ for(const images of ['both','ai','archive','none'])test('acciones y copias: '+im
  for(const [selector,action] of [['.rework','rework'],['.published','published'],['.dismiss','dismiss']]){await card.querySelector(selector).onclick();assert.equal(calls.at(-1)[0],action)}
 });
 test('alta manual solo noticia e instrucciones',()=>{assert.ok(!html.includes('submitUrl'));assert.match(html,/placeholder="Noticia" required/);assert.match(script,/api\("submit",\{title,instruction\}\)/)});
+
+test('TTendencias queda desacoplado de TTiTTulares',()=>{assert.match(html,/No comprobadas/);assert.ok(!html.includes('>Tendencias</button>'));assert.ok(!html.includes('promote-trend'));assert.ok(!control.includes('TREND_CANDIDATES'));assert.ok(!control.includes('promoteTrendCandidate'));assert.match(control,/trend_candidates_count:0,trend_candidates:\[\]/)});
+test('el panel muestra el motivo de un error terminal',()=>{assert.match(html,/id="runErrorDetail"/);assert.match(script,/Qué pasó:/);assert.match(script,/Qué hacer:/);assert.match(runStatus,/ensureErrorIncident/);assert.match(runStatus,/pc_failure_detail/)});
