@@ -1,32 +1,39 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T01:15:00+02:00",
-  "last_completed_at": "2026-10-06T01:17:30+02:00",
-  "updated_at": "2026-10-06T01:17:30+02:00",
+  "last_started_at": "2026-10-06T01:45:00+02:00",
+  "last_completed_at": "2026-10-06T01:48:30+02:00",
+  "updated_at": "2026-10-06T01:48:30+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_problematic_ids": [
+    "455e00b92028"
+  ],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T011500+0200",
+    "run_id": "tr-chat-20261006T014500+0200",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T01:15:00+02:00",
-    "updated_at": "2026-10-06T01:17:30+02:00",
-    "finished_at": "2026-10-06T01:17:30+02:00",
-    "incident_count": 0,
-    "incidents": [],
+    "started_at": "2026-10-06T01:45:00+02:00",
+    "updated_at": "2026-10-06T01:48:30+02:00",
+    "finished_at": "2026-10-06T01:48:30+02:00",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "code": "RADAR_STALE",
+        "message": "trends/recent.json sigue en la captura 2026-10-05T23:18:31+02:00; se solicitó refresco pero no se materializó durante esta pasada."
+      }
+    ],
     "summary": {
       "trends_processed": 0,
       "trends_explained": 0,
@@ -36,12 +43,12 @@
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 2,
+      "fallback_images_ready": 0,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
@@ -51,56 +58,70 @@
       "pending_repair_triggered": 1,
       "problematic_top10_retried": 0
     },
-    "message": "Pasada completada sin trabajo editorial nuevo: 0 preparing/update, 0 reexplicaciones y 0 problematic en Top 10. Revisadas 5 tarjetas Pendientes; 3 siguen con IA pendiente y el reparador visual quedó solicitado. El radar seguía en la captura de 23:18, por lo que se pidió refresco. Sin ImageGen directo ni despliegues.",
+    "message": "Pasada completada sin trabajo editorial nuevo: cola 0. Revisadas 5 tarjetas Pendientes; 3 siguen con IA pendiente y el reparador visual quedó solicitado. El radar continúa en la captura de 23:18 pese al refresco solicitado. Sin ImageGen directo ni despliegues.",
     "activity": [
       {
-        "at": "2026-10-06T01:15:00+02:00",
+        "at": "2026-10-06T01:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada directa · cola inicial 0"
       },
       {
-        "at": "2026-10-06T01:15:20+02:00",
+        "at": "2026-10-06T01:45:20+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual de Pendientes solicitado"
       },
       {
-        "at": "2026-10-06T01:15:35+02:00",
+        "at": "2026-10-06T01:45:35+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Radar con más de 20 minutos · refresco solicitado"
+        "message": "Radar desactualizado · refresco solicitado"
       },
       {
-        "at": "2026-10-06T01:16:20+02:00",
+        "at": "2026-10-06T01:46:20+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando estado autoritativo de requests y Explicadas"
+      },
+      {
+        "at": "2026-10-06T01:46:50+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando Pendientes · 5 tarjetas"
       },
       {
-        "at": "2026-10-06T01:16:35+02:00",
+        "at": "2026-10-06T01:47:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "3 Pendientes con IA pendiente · reparación visual ya solicitada"
       },
       {
-        "at": "2026-10-06T01:17:00+02:00",
+        "at": "2026-10-06T01:47:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · verificando cola, requests activas y reexplicaciones"
+        "message": "1 problematic detectado · Después de 8; no está en la última captura Top 10"
       },
       {
-        "at": "2026-10-06T01:17:30+02:00",
+        "at": "2026-10-06T01:48:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · verificando cola, trigger visual y radar"
+      },
+      {
+        "at": "2026-10-06T01:48:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 0 preparing/update, 0 reexplicaciones y 0 problematic Top 10"
+        "message": "Pasada cerrada · cola 0; 5 Pendientes revisadas; radar sigue desactualizado"
       }
     ],
     "ratings_snapshot": {
@@ -113,10 +134,12 @@
     "remate_selections": [],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [],
+    "remaining_problematic_ids": [
+      "455e00b92028"
+    ],
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261006T011500+0200",
+      "run_id": "tr-chat-20261006T014500+0200",
       "status": "triggered",
       "direct_imagegen": false,
       "pending_cards_reviewed": 5,
@@ -136,7 +159,7 @@
   },
   "visual_repair": {
     "requested": true,
-    "run_id": "tr-chat-20261006T011500+0200",
+    "run_id": "tr-chat-20261006T014500+0200",
     "status": "triggered",
     "direct_imagegen": false,
     "pending_cards_reviewed": 5,
