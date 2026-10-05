@@ -27880,9 +27880,9 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "none",
-      "image_choice": "none",
-      "image_status": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
       "news_disposition": "ignored",
@@ -27903,7 +27903,22 @@
       "anticipated_news_title": "",
       "anticipated_entered_top10_at": null,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/XVOPGA743ZHA3E2K2Y4FLFITSA.png?auth=dee05497a883475e9530bb4e498c2115f778bf0857e407a3a2a17c95a33f5dd9&width=1200",
+        "source": "El País · 5/10/2026",
+        "source_url": "https://elpais.com/espana/2026-10-05/el-tiron-de-vox-mantiene-al-bloque-de-la-derecha-en-el-50-en-plena-conmocion-por-maricarmen.html",
+        "alt": "Imagen de archivo relacionada con SALF",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/XVOPGA743ZHA3E2K2Y4FLFITSA.png?auth=dee05497a883475e9530bb4e498c2115f778bf0857e407a3a2a17c95a33f5dd9&width=1200",
+        "source": "El País · 5/10/2026",
+        "source_url": "https://elpais.com/espana/2026-10-05/el-tiron-de-vox-mantiene-al-bloque-de-la-derecha-en-el-50-en-plena-conmocion-por-maricarmen.html",
+        "alt": "Imagen de archivo relacionada con SALF",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "4cce8b25488a",
@@ -27949,9 +27964,9 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "none",
-      "image_choice": null,
-      "image_status": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
       "news_disposition": "ignored",
@@ -27970,9 +27985,26 @@
       "anticipated_social_source_count": 5,
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
+      "anticipated_entered_top10_at": null,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://eldistrito.es/wp-content/uploads/2025/09/fraude-electoral-indra-2023.jpg",
+        "source": "El Distrito · 5/10/2026",
+        "source_url": "https://eldistrito.es/indra-correos-ley-nietos-las-armas-sanchez-pucherazo-elecciones-del-29-noviembre/",
+        "alt": "Imagen de archivo relacionada con Indra",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://eldistrito.es/wp-content/uploads/2025/09/fraude-electoral-indra-2023.jpg",
+        "source": "El Distrito · 5/10/2026",
+        "source_url": "https://eldistrito.es/indra-correos-ley-nietos-las-armas-sanchez-pucherazo-elecciones-del-29-noviembre/",
+        "alt": "Imagen de archivo relacionada con Indra",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-05T14:24:00+02:00",
+  "updated_at": "2026-10-05T12:29:19.606304Z",
   "count": 561
 }
