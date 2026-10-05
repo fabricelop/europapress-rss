@@ -1,60 +1,56 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T09:45:45+02:00",
-  "last_completed_at": "2026-10-05T10:00:05+02:00",
+  "last_started_at": "2026-10-05T10:15:00+02:00",
+  "last_completed_at": "2026-10-05T10:16:30+02:00",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [
-    "0c2f4be392df",
-    "87d194456cfe",
-    "70b83466c26a"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T10:00:05+02:00",
+  "updated_at": "2026-10-05T10:16:30+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T094545+0200",
+    "run_id": "tr-chat-20261005T101500+0200",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-05T09:45:45+02:00",
-    "updated_at": "2026-10-05T10:00:05+02:00",
-    "finished_at": "2026-10-05T10:00:05+02:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-05T10:15:00+02:00",
+    "updated_at": "2026-10-05T10:16:30+02:00",
+    "finished_at": "2026-10-05T10:16:30+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-05T09:45:45+02:00",
+    "requested_at": "2026-10-05T10:15:00+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 3,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 3,
+      "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 3,
-      "remates_selected": 1,
-      "remates_omitted": 2,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 0,
       "pending_repair_triggered": 1,
-      "pending_cards_reviewed": 33
+      "pending_cards_reviewed": 32
     },
-    "message": "Pasada directa completada 3/3. #LaHora5O, Docentes y Los Rocho quedaron explicados y verificados por id+revision; cola final 0 y sin reexplicaciones pendientes. Se revisaron 33 Pendientes recientes y se lanzó su reparación visual independiente. Sin ImageGen directo ni despliegue Vercel.",
+    "message": "Pasada directa completada sin trabajo editorial nuevo. Cola final 0, sin preparing/update, sin reexplicaciones pendientes y sin problematic activo en el Top 10. Se revisaron 32 Pendientes recientes y se solicitó su reparación visual independiente. Sin ImageGen directo ni despliegue Vercel.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -64,182 +60,49 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "0c2f4be392df",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "reconciled_concurrent_card_without_remate"
-      },
-      {
-        "trend_id": "87d194456cfe",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": "persisted_concurrent_card",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "70b83466c26a",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "serious_threats"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-05T09:47:00+02:00",
-        "phase": "verifying",
-        "trend_id": "0c2f4be392df",
-        "title": "#LaHora5O",
-        "message": "Releyendo estado autoritativo de #LaHora5O"
+        "at": "2026-10-05T10:15:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada directa; cola activa 0 y 32 Pendientes recientes a sanear visualmente."
       },
       {
-        "at": "2026-10-05T09:48:20+02:00",
-        "phase": "investigating",
-        "trend_id": "0c2f4be392df",
-        "title": "#LaHora5O",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-05T09:49:00+02:00",
-        "phase": "drafting",
-        "trend_id": "0c2f4be392df",
-        "title": "#LaHora5O",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-05T09:49:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "0c2f4be392df",
-        "title": "#LaHora5O",
-        "message": "Sin remate · explicación factual suficiente"
-      },
-      {
-        "at": "2026-10-05T09:50:00+02:00",
-        "phase": "verifying",
-        "trend_id": "0c2f4be392df",
-        "title": "#LaHora5O",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-05T09:51:30+02:00",
-        "phase": "verifying",
-        "trend_id": "87d194456cfe",
-        "title": "Docentes",
-        "message": "Releyendo estado autoritativo de Docentes"
-      },
-      {
-        "at": "2026-10-05T09:52:00+02:00",
-        "phase": "investigating",
-        "trend_id": "87d194456cfe",
-        "title": "Docentes",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-05T09:52:10+02:00",
-        "phase": "drafting",
-        "trend_id": "87d194456cfe",
-        "title": "Docentes",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-05T09:52:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": "87d194456cfe",
-        "title": "Docentes",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-05T09:52:30+02:00",
-        "phase": "persisting",
-        "trend_id": "87d194456cfe",
-        "title": "Docentes",
-        "message": "Guardando ficha Explicada y actualizando requests"
-      },
-      {
-        "at": "2026-10-05T09:53:00+02:00",
-        "phase": "verifying",
-        "trend_id": "87d194456cfe",
-        "title": "Docentes",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-05T09:54:00+02:00",
-        "phase": "verifying",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Releyendo estado autoritativo de Los Rocho"
-      },
-      {
-        "at": "2026-10-05T09:55:00+02:00",
-        "phase": "investigating",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Hecho esencial verificado con atribución"
-      },
-      {
-        "at": "2026-10-05T09:55:30+02:00",
-        "phase": "drafting",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-05T09:55:45+02:00",
-        "phase": "remate_selection",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Sin remate · contexto sensible"
-      },
-      {
-        "at": "2026-10-05T09:56:20+02:00",
-        "phase": "persisting",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Persistencia reintentada tras conflicto de concurrencia"
-      },
-      {
-        "at": "2026-10-05T09:57:00+02:00",
-        "phase": "verifying",
-        "trend_id": "70b83466c26a",
-        "title": "Los Rocho",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-05T09:57:30+02:00",
+        "at": "2026-10-05T10:15:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Sincronizando categoría faltante de #LaHora5O y releyendo main"
+        "message": "Revisando Pendientes · 32 tarjetas recientes"
       },
       {
-        "at": "2026-10-05T09:58:00+02:00",
+        "at": "2026-10-05T10:15:35+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación visual independiente solicitada para Pendientes"
+      },
+      {
+        "at": "2026-10-05T10:16:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: cola, requests y reexplicaciones"
+      },
+      {
+        "at": "2026-10-05T10:16:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial final 0; tres revisiones cerradas y verificadas"
-      },
-      {
-        "at": "2026-10-05T10:00:05+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola final 0; 3 revisiones cerradas y verificadas"
+        "message": "Cola editorial final 0; sin revisiones activas ni reexplicaciones pendientes"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "radar": {
-      "captured_at": "2026-10-05T09:51:12+02:00",
+      "captured_at": "2026-10-05T10:11:31+02:00",
       "queue_count": 0,
       "top10": [
         "#FelizLunes",
@@ -253,41 +116,37 @@
         "Yola",
         "Los Rocho"
       ],
-      "new_entries": [
-        "#LaHora5O",
-        "Docentes",
-        "Los Rocho"
-      ]
+      "new_entries": []
     },
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-1791184508840-32ba42",
+      "run_id": "tr-chat-20261005T101500+0200",
       "status": "triggered",
-      "trigger_commit_sha": "4200e6cbed577215b53296ee2c762e552b2a3113",
+      "trigger_commit_sha": "e3ec4ef6fa94ef77e4e4c6b0c66a396429ed8123",
       "direct_imagegen": false,
-      "pending_cards_reviewed": 33
+      "pending_cards_reviewed": 32
     }
   },
   "summary": {
-    "trends_processed": 3,
-    "trends_explained": 3,
-    "explanation_groups": 3,
-    "new_cards": 3,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
-    "incidents": 1,
+    "incidents": 0,
     "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
-    "fallback_images_ready": 3,
+    "fallback_images_ready": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 3,
-    "remates_selected": 1,
-    "remates_omitted": 2,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
+    "remates_omitted": 0,
     "pending_repair_triggered": 1,
-    "pending_cards_reviewed": 33
+    "pending_cards_reviewed": 32
   }
 }
