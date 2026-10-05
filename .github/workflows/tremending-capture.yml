@@ -1,11 +1,11 @@
-name: Tremending captura legado desactivada
+name: Tremending legado desactivado
 
 on:
   workflow_dispatch:
 
 jobs:
-  disabled:
-    if: ${{ false }}
+  noop:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Desactivado: Tremending es ahora una bandeja de lectura y no selecciona ni envía tuits."
+      - name: Tremending solo lectura
+        run: echo "Tremending no selecciona, captura ni envía tuits. Workflow legado desactivado."
