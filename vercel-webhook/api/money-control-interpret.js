@@ -118,10 +118,15 @@ const schema={
           description:{type:"string"},
           kind:{type:"string",enum:["income","expense","transfer","unknown"]},
           destinationAccount:{type:"string"},
+          sourceDate:{type:"string"},
+          destinationDate:{type:"string"},
+          sourceDescription:{type:"string"},
+          destinationDescription:{type:"string"},
+          existingSide:{type:"string",enum:["none","source","destination","both","unknown"]},
           confidence:{type:"number"},
           note:{type:"string"}
         },
-        required:["account","date","amount","description","kind","destinationAccount","confidence","note"]
+        required:["account","date","amount","description","kind","destinationAccount","sourceDate","destinationDate","sourceDescription","destinationDescription","existingSide","confidence","note"]
       }
     },
     balances:{
@@ -197,7 +202,13 @@ export default async function handler(req,res){
       "If a bank row contains both operation date and value date, use operation date unless the user explicitly says otherwise.",
       "If a screenshot/table has a SALDO column, those are observed balances, not movements.",
       "Do not duplicate the same visible transaction just because it appears in both text and image.",
+      "Distinguish NEW DATA from CONTEXT/HISTORY. Rows introduced with phrases such as 'ya estaba', 'ya existe', 'estos son los últimos movimientos', 'historial', 'como referencia' or equivalent are evidence about movements already present in Money Control, not additional new movements to import.",
       "For transfers between known accounts use kind=transfer, source account in account, destination in destinationAccount, and amount as a negative number representing money leaving the source.",
+      "For every transfer, sourceDate and destinationDate are the dates for each bank side when known; otherwise use the main transfer date. sourceDescription and destinationDescription are the bank-side concepts when known; otherwise use the general description.",
+      "For non-transfer movements set sourceDate, destinationDate, sourceDescription and destinationDescription to empty strings and existingSide='none'.",
+      "If the user explicitly says one side of a transfer already exists in Money Control, encode it in existingSide: source, destination, or both. Use existingSide='unknown' only when the user says a side exists but it is unclear which one. Otherwise use 'none'.",
+      "Example: user says a +200 row arrived in CI Comun from BBVA and says the -200 BBVA movement was already there. Return ONE transfer BBVA -> CI Comun, existingSide='source'; do not return the historical BBVA row as a separate expense.",
+      "An incoming bank-table row can have a positive amount even though transfer.amount must be negative because it represents money leaving the source; infer direction from the user's prose and account context.",
       "Return dates as YYYY-MM-DD. Confidence is 0..1.",
       "If uncertain, preserve the candidate with lower confidence and explain in warnings; do not fabricate certainty."
     ].join("\n");
