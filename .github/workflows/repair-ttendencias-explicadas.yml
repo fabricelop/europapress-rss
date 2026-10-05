@@ -176,7 +176,14 @@ jobs:
               job_path=CTRL/f"trends/image-runs/jobs/{tid}.json"
               old=load(job_path)
               old_status=str(old.get("status") or "").upper()
-              if int(old.get("revision") or revision)==revision and old_status in ACTIVE:
+              old_updated=parse_dt(old.get("updated_at") or old.get("requested_at"))
+              old_age=(now-old_updated).total_seconds() if old_updated else None
+              # Un job activo solo bloquea la reparación mientras tenga actividad reciente.
+              # El bridge trabaja de uno en uno: REQUESTED tolera hasta 45 min de cola;
+              # RUNNING/GENERATING/PERSISTING no puede quedar vivo más de 12 min sin señal.
+              active_ttl=2700 if old_status=="REQUESTED" else 720
+              same_revision=int(old.get("revision") or revision)==revision
+              if same_revision and old_status in ACTIVE and old_age is not None and old_age < active_ttl:
                   continue
 
               auto_attempt=int(old.get("auto_repair_attempt") or 0)
