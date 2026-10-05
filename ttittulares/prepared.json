@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T19:12:58.340Z",
+  "updated_at": "2026-10-05T19:14:52.171Z",
   "items": [
     {
       "event_id": "3f7e4e830b37",
@@ -183,10 +183,10 @@
       },
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -202,12 +202,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T19:08:52.708693Z",
       "image": {
-        "url": "https://imagenes.20minutos.es/files/image_1920_1080/files/fp/uploads/imagenes/2026/06/01/6a1da02f865e13-91437835.r_d.1062-544-10000.jpeg",
-        "source": "www.20minutos.es",
-        "source_url": "https://www.20minutos.es/nacional/maria-jesus-montero-cristina-narbona-rebeca-torro-dirigiran-campana-psoe-para-las-elecciones-generales-29-n_7045176_0.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "María Jesús Montero, Cristina Narbona y Rebeca Torró dirigirán la campaña del PSOE para las elecciones generales del 29-N"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/98c2af9e0b2e-r1-ai1-791227423733.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "9175bc18c2498c1aff6b9895222c0395f16f339dec18314eb5662ec899c85c3d",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2719414,
+        "context_guard": {
+          "version": 3,
+          "event_id": "98c2af9e0b2e",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-98c2af9e0b2e-r1-a1-1791227423733"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/98c2af9e0b2e-r1-ai1-791227423733.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://imagenes.20minutos.es/files/image_1920_1080/files/fp/uploads/imagenes/2026/06/01/6a1da02f865e13-91437835.r_d.1062-544-10000.jpeg",
@@ -216,7 +230,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "María Jesús Montero, Cristina Narbona y Rebeca Torró dirigirán la campaña del PSOE para las elecciones generales del 29-N"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/98c2af9e0b2e-r1-ai1-791227423733.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "9175bc18c2498c1aff6b9895222c0395f16f339dec18314eb5662ec899c85c3d",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2719414,
+        "context_guard": {
+          "version": 3,
+          "event_id": "98c2af9e0b2e",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-98c2af9e0b2e-r1-a1-1791227423733"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/98c2af9e0b2e-r1-ai1-791227423733.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T19:14:52.171Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T19:14:52.171Z"
     }
   ],
   "count": 11
