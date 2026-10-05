@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-10-05T05:01:39+02:00",
+  "captured_at": "2026-10-05T05:11:12+02:00",
   "primary_source": "whatstrends",
   "selection_method": "fresh-anchor",
   "sources_used": [
@@ -68,9 +68,9 @@
       "rank": 5,
       "name": "Sánchez",
       "entered_top10_at": "2026-10-05T05:01:39+02:00",
-      "movement": "new",
-      "previous_rank": null,
-      "rank_delta": null
+      "movement": "flat",
+      "previous_rank": 5,
+      "rank_delta": 0
     },
     {
       "rank": 6,
@@ -100,23 +100,21 @@
       "rank": 9,
       "name": "San Francisco de Asís",
       "entered_top10_at": "2026-10-05T04:11:16+02:00",
-      "movement": "up",
-      "previous_rank": 10,
-      "rank_delta": 1
+      "movement": "flat",
+      "previous_rank": 9,
+      "rank_delta": 0
     },
     {
       "rank": 10,
       "name": "Cataluña",
       "entered_top10_at": "2026-10-05T04:11:16+02:00",
-      "movement": "down",
-      "previous_rank": 9,
-      "rank_delta": -1
+      "movement": "flat",
+      "previous_rank": 10,
+      "rank_delta": 0
     }
   ],
-  "unchanged_from_previous": false,
-  "new_entries": [
-    "Sánchez"
-  ],
+  "unchanged_from_previous": true,
+  "new_entries": [],
   "upcoming": [
     {
       "name": "Alonso",
@@ -132,13 +130,8 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 18.0,
-      "movement": "up",
+      "movement": "flat",
       "rank_history": [
-        {
-          "captured_at": "2026-10-05T03:51:15+02:00",
-          "best_rank": 19,
-          "source_count": 4
-        },
         {
           "captured_at": "2026-10-05T04:01:22+02:00",
           "best_rank": 19,
@@ -173,6 +166,11 @@
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 15,
           "source_count": 7
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 15,
+          "source_count": 7
         }
       ],
       "observations": 8,
@@ -195,13 +193,8 @@
       ],
       "best_observed_rank": 15,
       "mean_observed_rank": 17.4,
-      "movement": "up",
+      "movement": "flat",
       "rank_history": [
-        {
-          "captured_at": "2026-10-05T03:51:15+02:00",
-          "best_rank": 13,
-          "source_count": 4
-        },
         {
           "captured_at": "2026-10-05T04:01:22+02:00",
           "best_rank": 13,
@@ -236,6 +229,11 @@
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 15,
           "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 15,
+          "source_count": 5
         }
       ],
       "observations": 8,
@@ -245,6 +243,70 @@
       "news_title": "Brasil se asoma a unas elecciones marcadas por el duelo \"por la mínima\" entre Lula y Flávio Bolsonaro: \"La clave es el 3% de indecisos\"",
       "news_status": "PUBLISHED",
       "news_first_seen": "2026-10-04T12:12:34.370105Z"
+    },
+    {
+      "name": "Alexia",
+      "social_source_count": 6,
+      "social_sources": [
+        "cyberkendra",
+        "snaplytics",
+        "superx",
+        "trendswe",
+        "whatstrends",
+        "xtrendsiamrohit"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 39.5,
+      "movement": "flat",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-05T04:01:22+02:00",
+          "best_rank": 12,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T04:11:16+02:00",
+          "best_rank": 12,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T04:21:15+02:00",
+          "best_rank": 12,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T04:31:10+02:00",
+          "best_rank": 12,
+          "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-05T04:41:18+02:00",
+          "best_rank": 12,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T04:51:22+02:00",
+          "best_rank": 12,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T05:01:39+02:00",
+          "best_rank": 12,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 12,
+          "source_count": 6
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-10-04T20:21:33+02:00",
+      "news_source_count": 2,
+      "news_event_id": "c8bee5fc85c6",
+      "news_title": "El tenso reencuentro entre Cristina Porta y Alexia Rivas por el que Emma García ha tenido que intervenir: \"A mí me hablas bien\" - Telecinco",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-10-04T15:34:11.184450Z"
     },
     {
       "name": "Nubes",
@@ -259,13 +321,8 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 13.0,
-      "movement": "up",
+      "movement": "flat",
       "rank_history": [
-        {
-          "captured_at": "2026-10-05T03:51:15+02:00",
-          "best_rank": 14,
-          "source_count": 6
-        },
         {
           "captured_at": "2026-10-05T04:01:22+02:00",
           "best_rank": 14,
@@ -298,6 +355,11 @@
         },
         {
           "captured_at": "2026-10-05T05:01:39+02:00",
+          "best_rank": 11,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
           "best_rank": 11,
           "source_count": 6
         }
@@ -323,7 +385,7 @@
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 16.2,
-      "movement": "up",
+      "movement": "flat",
       "rank_history": [
         {
           "captured_at": "2026-10-05T04:31:10+02:00",
@@ -344,79 +406,20 @@
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 12,
           "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 12,
+          "source_count": 6
         }
       ],
-      "observations": 4,
+      "observations": 5,
       "first_detected_at": "2026-10-05T04:31:10+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Alexia",
-      "social_source_count": 6,
-      "social_sources": [
-        "cyberkendra",
-        "snaplytics",
-        "superx",
-        "trendswe",
-        "whatstrends",
-        "xtrendsiamrohit"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 39.5,
-      "movement": "flat",
-      "rank_history": [
-        {
-          "captured_at": "2026-10-05T03:51:15+02:00",
-          "best_rank": 12,
-          "source_count": 6
-        },
-        {
-          "captured_at": "2026-10-05T04:01:22+02:00",
-          "best_rank": 12,
-          "source_count": 6
-        },
-        {
-          "captured_at": "2026-10-05T04:11:16+02:00",
-          "best_rank": 12,
-          "source_count": 6
-        },
-        {
-          "captured_at": "2026-10-05T04:21:15+02:00",
-          "best_rank": 12,
-          "source_count": 6
-        },
-        {
-          "captured_at": "2026-10-05T04:31:10+02:00",
-          "best_rank": 12,
-          "source_count": 5
-        },
-        {
-          "captured_at": "2026-10-05T04:41:18+02:00",
-          "best_rank": 12,
-          "source_count": 6
-        },
-        {
-          "captured_at": "2026-10-05T04:51:22+02:00",
-          "best_rank": 12,
-          "source_count": 6
-        },
-        {
-          "captured_at": "2026-10-05T05:01:39+02:00",
-          "best_rank": 12,
-          "source_count": 6
-        }
-      ],
-      "observations": 8,
-      "first_detected_at": "2026-10-04T20:21:33+02:00",
-      "news_source_count": 2,
-      "news_event_id": "c8bee5fc85c6",
-      "news_title": "El tenso reencuentro entre Cristina Porta y Alexia Rivas por el que Emma García ha tenido que intervenir: \"A mí me hablas bien\" - Telecinco",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-10-04T15:34:11.184450Z"
     },
     {
       "name": "Pacheta",
@@ -431,7 +434,7 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 16.8,
-      "movement": "up",
+      "movement": "flat",
       "rank_history": [
         {
           "captured_at": "2026-10-05T04:11:16+02:00",
@@ -462,9 +465,14 @@
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 14,
           "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 14,
+          "source_count": 6
         }
       ],
-      "observations": 6,
+      "observations": 7,
       "first_detected_at": "2026-10-05T04:11:16+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -485,13 +493,8 @@
       ],
       "best_observed_rank": 18,
       "mean_observed_rank": 21.3,
-      "movement": "up",
+      "movement": "flat",
       "rank_history": [
-        {
-          "captured_at": "2026-10-05T03:51:15+02:00",
-          "best_rank": 21,
-          "source_count": 4
-        },
         {
           "captured_at": "2026-10-05T04:01:22+02:00",
           "best_rank": 21,
@@ -524,6 +527,11 @@
         },
         {
           "captured_at": "2026-10-05T05:01:39+02:00",
+          "best_rank": 18,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
           "best_rank": 18,
           "source_count": 6
         }
@@ -549,13 +557,8 @@
       ],
       "best_observed_rank": 24,
       "mean_observed_rank": 26.7,
-      "movement": "up",
+      "movement": "flat",
       "rank_history": [
-        {
-          "captured_at": "2026-10-05T03:51:15+02:00",
-          "best_rank": 22,
-          "source_count": 4
-        },
         {
           "captured_at": "2026-10-05T04:01:22+02:00",
           "best_rank": 22,
@@ -590,6 +593,11 @@
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 24,
           "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 24,
+          "source_count": 6
         }
       ],
       "observations": 8,
@@ -612,7 +620,7 @@
       ],
       "best_observed_rank": 11,
       "mean_observed_rank": 11.0,
-      "movement": "up",
+      "movement": "flat",
       "rank_history": [
         {
           "captured_at": "2026-10-05T04:31:10+02:00",
@@ -633,9 +641,14 @@
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 11,
           "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 11,
+          "source_count": 5
         }
       ],
-      "observations": 4,
+      "observations": 5,
       "first_detected_at": "2026-10-05T04:31:10+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -657,11 +670,6 @@
       "mean_observed_rank": 21.6,
       "movement": "flat",
       "rank_history": [
-        {
-          "captured_at": "2026-10-05T03:51:15+02:00",
-          "best_rank": 24,
-          "source_count": 5
-        },
         {
           "captured_at": "2026-10-05T04:01:22+02:00",
           "best_rank": 24,
@@ -694,6 +702,11 @@
         },
         {
           "captured_at": "2026-10-05T05:01:39+02:00",
+          "best_rank": 21,
+          "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
           "best_rank": 21,
           "source_count": 5
         }
@@ -749,15 +762,87 @@
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 15,
           "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 15,
+          "source_count": 5
         }
       ],
-      "observations": 6,
+      "observations": 7,
       "first_detected_at": "2026-10-05T04:11:16+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
+    },
+    {
+      "name": "Junts",
+      "social_source_count": 5,
+      "social_sources": [
+        "cyberkendra",
+        "snaplytics",
+        "trendswe",
+        "whatstrends",
+        "xtrendsiamrohit"
+      ],
+      "best_observed_rank": 21,
+      "mean_observed_rank": 22.2,
+      "movement": "flat",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-05T05:01:39+02:00",
+          "best_rank": 21,
+          "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 21,
+          "source_count": 5
+        }
+      ],
+      "observations": 2,
+      "first_detected_at": "2026-10-05T05:01:39+02:00",
+      "news_source_count": 1,
+      "news_event_id": "4e274bcb13e5",
+      "news_title": "Con Junts empezó y sin Junts se acaba",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-10-04T05:43:47.410819Z"
+    },
+    {
+      "name": "Malasia",
+      "social_source_count": 6,
+      "social_sources": [
+        "cyberkendra",
+        "snaplytics",
+        "superx",
+        "trendswe",
+        "whatstrends",
+        "xtrendsiamrohit"
+      ],
+      "best_observed_rank": 33,
+      "mean_observed_rank": 35.7,
+      "movement": "flat",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-05T05:01:39+02:00",
+          "best_rank": 33,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 33,
+          "source_count": 6
+        }
+      ],
+      "observations": 2,
+      "first_detected_at": "2026-10-05T05:01:39+02:00",
+      "news_source_count": 2,
+      "news_event_id": "71ab82796014",
+      "news_title": "Max Verstappen consigue su primera victoria del año bajo la lluvia de Malasia y Alonso hace bueno su sábado para ser 8º",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-10-05T01:03:04.264993Z"
     },
     {
       "name": "Isabel Pantoja",
@@ -771,13 +856,8 @@
       ],
       "best_observed_rank": 20,
       "mean_observed_rank": 20.4,
-      "movement": "up",
+      "movement": "flat",
       "rank_history": [
-        {
-          "captured_at": "2026-10-05T03:51:15+02:00",
-          "best_rank": 16,
-          "source_count": 3
-        },
         {
           "captured_at": "2026-10-05T04:01:22+02:00",
           "best_rank": 16,
@@ -812,6 +892,11 @@
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 20,
           "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 20,
+          "source_count": 5
         }
       ],
       "observations": 8,
@@ -821,63 +906,6 @@
       "news_title": null,
       "news_status": null,
       "news_first_seen": null
-    },
-    {
-      "name": "Junts",
-      "social_source_count": 5,
-      "social_sources": [
-        "cyberkendra",
-        "snaplytics",
-        "trendswe",
-        "whatstrends",
-        "xtrendsiamrohit"
-      ],
-      "best_observed_rank": 21,
-      "mean_observed_rank": 22.2,
-      "movement": "new",
-      "rank_history": [
-        {
-          "captured_at": "2026-10-05T05:01:39+02:00",
-          "best_rank": 21,
-          "source_count": 5
-        }
-      ],
-      "observations": 1,
-      "first_detected_at": "2026-10-05T05:01:39+02:00",
-      "news_source_count": 1,
-      "news_event_id": "4e274bcb13e5",
-      "news_title": "Con Junts empezó y sin Junts se acaba",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-10-04T05:43:47.410819Z"
-    },
-    {
-      "name": "Malasia",
-      "social_source_count": 6,
-      "social_sources": [
-        "cyberkendra",
-        "snaplytics",
-        "superx",
-        "trendswe",
-        "whatstrends",
-        "xtrendsiamrohit"
-      ],
-      "best_observed_rank": 33,
-      "mean_observed_rank": 35.7,
-      "movement": "new",
-      "rank_history": [
-        {
-          "captured_at": "2026-10-05T05:01:39+02:00",
-          "best_rank": 33,
-          "source_count": 6
-        }
-      ],
-      "observations": 1,
-      "first_detected_at": "2026-10-05T05:01:39+02:00",
-      "news_source_count": 2,
-      "news_event_id": "71ab82796014",
-      "news_title": "Max Verstappen consigue su primera victoria del año bajo la lluvia de Malasia y Alonso hace bueno su sábado para ser 8º",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-10-05T01:03:04.264993Z"
     },
     {
       "name": "Ciccone",
@@ -893,11 +921,6 @@
       "mean_observed_rank": 23.8,
       "movement": "flat",
       "rank_history": [
-        {
-          "captured_at": "2026-10-05T03:51:15+02:00",
-          "best_rank": 27,
-          "source_count": 4
-        },
         {
           "captured_at": "2026-10-05T04:01:22+02:00",
           "best_rank": 27,
@@ -932,6 +955,11 @@
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 23,
           "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 23,
+          "source_count": 5
         }
       ],
       "observations": 8,
@@ -954,15 +982,20 @@
       ],
       "best_observed_rank": 24,
       "mean_observed_rank": 25.2,
-      "movement": "new",
+      "movement": "flat",
       "rank_history": [
         {
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 24,
           "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 24,
+          "source_count": 5
         }
       ],
-      "observations": 1,
+      "observations": 2,
       "first_detected_at": "2026-10-05T05:01:39+02:00",
       "news_source_count": 2,
       "news_event_id": "5874fbe977bd",
@@ -981,15 +1014,20 @@
       ],
       "best_observed_rank": 13,
       "mean_observed_rank": 14.8,
-      "movement": "new",
+      "movement": "flat",
       "rank_history": [
         {
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 13,
           "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 13,
+          "source_count": 4
         }
       ],
-      "observations": 1,
+      "observations": 2,
       "first_detected_at": "2026-10-05T05:01:39+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -1010,15 +1048,20 @@
       ],
       "best_observed_rank": 38,
       "mean_observed_rank": 41.7,
-      "movement": "new",
+      "movement": "flat",
       "rank_history": [
         {
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 38,
           "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 38,
+          "source_count": 6
         }
       ],
-      "observations": 1,
+      "observations": 2,
       "first_detected_at": "2026-10-05T05:01:39+02:00",
       "news_source_count": 2,
       "news_event_id": "71ab82796014",
@@ -1069,9 +1112,14 @@
           "captured_at": "2026-10-05T05:01:39+02:00",
           "best_rank": 26,
           "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-05T05:11:12+02:00",
+          "best_rank": 26,
+          "source_count": 5
         }
       ],
-      "observations": 6,
+      "observations": 7,
       "first_detected_at": "2026-10-05T04:11:16+02:00",
       "news_source_count": 0,
       "news_event_id": "bece9800a28e",
@@ -1090,7 +1138,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-05T05:01:39+02:00"
+      "fetched_at": "2026-10-05T05:11:12+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -1115,7 +1163,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-05T05:01:39+02:00"
+      "fetched_at": "2026-10-05T05:11:12+02:00"
     },
     "tweets24": {
       "ok": false,
@@ -1124,7 +1172,7 @@
       "update_hint": "Updated 4 days ago Live Twitter Trending Topics in Spain About Twitter (X) Trends in Spa",
       "age_minutes": null,
       "freshness": "invalid",
-      "fetched_at": "2026-10-05T05:01:39+02:00"
+      "fetched_at": "2026-10-05T05:11:13+02:00"
     },
     "superx": {
       "ok": true,
@@ -1184,7 +1232,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-05T05:01:40+02:00"
+      "fetched_at": "2026-10-05T05:11:14+02:00"
     },
     "twtdata": {
       "ok": false,
@@ -1193,7 +1241,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-05T05:01:40+02:00"
+      "fetched_at": "2026-10-05T05:11:14+02:00"
     },
     "snaplytics": {
       "ok": true,
@@ -1251,9 +1299,9 @@
       ],
       "error": null,
       "update_hint": "Trending now Oct 5, 2026 02:00 UTC",
-      "age_minutes": 61.7,
+      "age_minutes": 71.2,
       "freshness": "aging",
-      "fetched_at": "2026-10-05T05:01:41+02:00"
+      "fetched_at": "2026-10-05T05:11:14+02:00"
     },
     "whatstrends": {
       "ok": true,
@@ -1313,7 +1361,7 @@
       "update_hint": "Last updated: 21 minutes ago # Tweets 1 #ConexiónHonduras4 <10K posts 2 Asraf <10K posts 3 Fre",
       "age_minutes": 21.0,
       "freshness": "fresh",
-      "fetched_at": "2026-10-05T05:01:41+02:00"
+      "fetched_at": "2026-10-05T05:11:15+02:00"
     },
     "cyberkendra": {
       "ok": true,
@@ -1370,10 +1418,10 @@
         "Esponjitas"
       ],
       "error": null,
-      "update_hint": "Last updated 5 October 2026, 8:31 AM IST · refreshes every 30 minutes · verified by Cyber Ken",
+      "update_hint": "Last updated 5 October 2026, 8:41 AM IST · refreshes every 30 minutes · verified by Cyber Ken",
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-05T05:01:42+02:00"
+      "fetched_at": "2026-10-05T05:11:16+02:00"
     },
     "xtrendsiamrohit": {
       "ok": true,
@@ -1430,10 +1478,10 @@
         "among us"
       ],
       "error": null,
-      "update_hint": "updated 20 minutes ago",
-      "age_minutes": 20.0,
+      "update_hint": "updated 30 minutes ago",
+      "age_minutes": 30.0,
       "freshness": "fresh",
-      "fetched_at": "2026-10-05T05:01:44+02:00"
+      "fetched_at": "2026-10-05T05:11:18+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -1493,7 +1541,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-05T05:01:45+02:00"
+      "fetched_at": "2026-10-05T05:11:19+02:00"
     },
     "xtrendssaroj": {
       "ok": false,
@@ -1502,7 +1550,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-05T05:01:46+02:00"
+      "fetched_at": "2026-10-05T05:11:21+02:00"
     }
   }
 }
