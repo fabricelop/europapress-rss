@@ -1,23 +1,23 @@
 {
   "project": "TTendencias",
-  "engine": "chat-direct",
-  "last_started_at": "2026-10-05T10:45:00+02:00",
-  "last_completed_at": "2026-10-05T10:49:30+02:00",
+  "engine": "chatgpt-automation-outbox",
+  "last_started_at": "2026-10-05T11:20:56+02:00",
+  "last_completed_at": "2026-10-05T11:20:56+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
-    "3db95918a884",
-    "4aeef5ae1e7b",
-    "ca5905adf489",
-    "28a7a4ae6c7d",
-    "571bfe869955"
+    "c75f7bc51d0f"
   ],
-  "remaining_ids": [],
+  "remaining_ids": [
+    "c75f7bc51d0f"
+  ],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T10:49:30+02:00",
+  "updated_at": "2026-10-05T11:20:56+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_problematic_ids": [
+    "c75f7bc51d0f"
+  ],
   "last_run": {
     "version": 1,
     "canonical": true,
@@ -231,5 +231,6 @@
     "remates_omitted": 1,
     "pending_repair_triggered": 1,
     "pending_cards_reviewed": 15
-  }
+  },
+  "error": null
 }
