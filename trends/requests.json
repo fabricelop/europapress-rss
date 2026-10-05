@@ -30305,7 +30305,7 @@
       "id": "97e1b3a8b829",
       "name": "#TEM5O",
       "rank": 6,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-05T16:32:02+02:00",
       "revision": 0,
       "reexplain": false,
@@ -30319,7 +30319,11 @@
         "#TEM5O",
         "Medvedev"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-10-05T16:54:42+02:00",
+      "problem_reason": "Tras dos búsquedas distintas no se ha podido identificar con suficiente fiabilidad el detonante actual de #TEM5O en España. No se publica explicación para evitar inventar contexto.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "4bcc67659c7e",
@@ -30342,6 +30346,6 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-05T16:47:00+02:00",
+  "updated_at": "2026-10-05T16:54:42+02:00",
   "count": 609
 }
