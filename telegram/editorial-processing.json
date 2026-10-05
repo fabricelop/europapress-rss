@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T05:44:57.353Z",
+  "updated_at": "2026-10-05T05:45:05.629Z",
   "items": [
     {
       "event_id": "5aa7c3036ce0",
@@ -9361,7 +9361,7 @@
       "percentage": 50,
       "first_seen": "2026-10-04T01:53:38.434381Z",
       "last_seen": "2026-10-05T01:12:45.903499Z",
-      "status": "SKIPPED_DUPLICATE",
+      "status": "PROCESSING",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -9384,8 +9384,8 @@
       "eligible_at": "2026-10-05T01:12:45.903499Z",
       "event_id": "b98f9e50d03c",
       "title": "Habrá segunda vuelta en Brasil: con el 90% escrutado, Flávio Bolsonaro aventaja a Lula en cuatro millones de votos",
-      "selection_mode": "AUTO_WEB",
-      "selected_at": "2026-10-05T01:13:14.351596Z",
+      "selection_mode": "MANUAL_REOPEN_OUTCOME",
+      "selected_at": "2026-10-05T05:45:05.629Z",
       "source_evidence": [
         {
           "source": "Público",
@@ -9462,9 +9462,21 @@
       ],
       "drafted_source_count": 8,
       "verified_source_count": 8,
-      "reconciled_from_event_id": "6503399040ac",
-      "reconciliation_reason": "Mismo resultado electoral ya publicado: la segunda vuelta Lula-Flávio Bolsonaro y la ventaja de Flávio con el 90% escrutado ya constaban en la noticia 6503399040ac; esta entrada no aporta un cambio sustantivo del desenlace.",
-      "reconciled_at": "2026-10-05T01:33:19.598033Z"
+      "force_user_elaborate": true,
+      "user_validated": true,
+      "user_validated_at": "2026-10-05T05:45:05.629Z",
+      "previous_outcome": {
+        "status": "SKIPPED_DUPLICATE",
+        "filter_reason": "",
+        "reconciliation_reason": "Mismo resultado electoral ya publicado: la segunda vuelta Lula-Flávio Bolsonaro y la ventaja de Flávio con el 90% escrutado ya constaban en la noticia 6503399040ac; esta entrada no aporta un cambio sustantivo del desenlace.",
+        "problem_reason": "",
+        "duplicate_of_event_id": "6503399040ac",
+        "finished_at": "2026-10-05T01:33:19.598033Z"
+      },
+      "reopened_at": "2026-10-05T05:45:05.629Z",
+      "reopened_source": "web_processing_outcome",
+      "with_image": true,
+      "image_mode": "ai_plus_fallback"
     },
     {
       "id": "7d5a3fbc86f6",
