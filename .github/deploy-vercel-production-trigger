@@ -1,8 +1,4 @@
 TT Apps production deploy trigger
-Reason: show images in TTendencias Pendientes + reduce pending-page polling
-Requested: 2026-10-05T20:31:11.745Z
-Includes:
-- Visible thumbnails in collapsed pending cards
-- AI image preferred; fallback image otherwise
-- Pending page idle polling 5 min
-- No image polling while tab hidden
+Reason: TTendencias Pendientes thumbnails + lower polling
+Includes commit: 8523eca1854a604b4ca3f2832d64b4a1c69751f0
+Telegram workflow fix: d4312eff1e051a505e0f1dad745bd07fed5a9c35
