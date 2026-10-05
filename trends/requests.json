@@ -1679,12 +1679,12 @@
     {
       "id": "571bfe869955",
       "name": "PSOE",
-      "rank": 3,
-      "status": "explained",
-      "requested_at": "2026-09-24T08:16:22.633Z",
-      "revision": 2,
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-10-05T10:31:39+02:00",
+      "revision": 3,
       "reexplain": true,
-      "with_image": false,
+      "with_image": true,
       "alternatives_target": 0,
       "batch_id": "654bce607dda",
       "requested_together": [
@@ -1694,7 +1694,18 @@
       "ready_at": "2026-09-24T10:27:47+02:00",
       "delivery_confirmation": "prepared_web",
       "editorial_engine": "chatgpt-automation-outbox",
-      "explained_at": "2026-09-24T08:38:11.925Z"
+      "captured_with": [
+        "#Elecciones",
+        "Pedro Sánchez",
+        "#FelizLunes",
+        "#LaHora5O",
+        "#ConexiónHonduras4",
+        "Frente Amplio",
+        "Cortés",
+        "Lula",
+        "29-N",
+        "PSOE"
+      ]
     },
     {
       "id": "cb7b33217e93",
@@ -20063,10 +20074,10 @@
     {
       "id": "3db95918a884",
       "name": "#Elecciones",
-      "revision": 0,
-      "status": "explained",
-      "requested_at": "2026-10-02T14:45:13.105Z",
-      "rank": 17,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-05T10:31:39+02:00",
+      "rank": 1,
       "with_image": true,
       "alternatives_target": 0,
       "anticipated": true,
@@ -20083,7 +20094,6 @@
       "closer_text": "",
       "rank_at_explanation": 17,
       "last_attempt_at": "2026-10-02T16:53:00+02:00",
-      "explained_at": "2026-10-02T16:53:00+02:00",
       "source": "editorial_chat_direct",
       "verification_sources": [
         {
@@ -20125,7 +20135,20 @@
       "trend_names": [
         "#Elecciones"
       ],
-      "ai_image_block_reason": "political_context"
+      "ai_image_block_reason": "political_context",
+      "reexplain": true,
+      "captured_with": [
+        "#Elecciones",
+        "Pedro Sánchez",
+        "#FelizLunes",
+        "#LaHora5O",
+        "#ConexiónHonduras4",
+        "Frente Amplio",
+        "Cortés",
+        "Lula",
+        "29-N",
+        "PSOE"
+      ]
     },
     {
       "id": "418afb769d6a",
@@ -28942,8 +28965,71 @@
       "fallback_image_status": "pending",
       "rewrite_pending": false,
       "last_attempt_at": "2026-10-05T09:56:00+02:00"
+    },
+    {
+      "id": "4aeef5ae1e7b",
+      "name": "Pedro Sánchez",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-10-05T10:31:39+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "8e0c37db17be",
+      "requested_together": [
+        "Pedro Sánchez"
+      ],
+      "captured_with": [
+        "Pedro Sánchez",
+        "Cortés",
+        "29-N"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "ca5905adf489",
+      "name": "Cortés",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-10-05T10:31:39+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "8e0c37db17be",
+      "requested_together": [
+        "Cortés"
+      ],
+      "captured_with": [
+        "Pedro Sánchez",
+        "Cortés",
+        "29-N"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "28a7a4ae6c7d",
+      "name": "29-N",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-10-05T10:31:39+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "8e0c37db17be",
+      "requested_together": [
+        "29-N"
+      ],
+      "captured_with": [
+        "Pedro Sánchez",
+        "Cortés",
+        "29-N"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-05T09:58:10+02:00",
+  "updated_at": "2026-10-05T10:31:39+02:00",
   "count": 584
 }
