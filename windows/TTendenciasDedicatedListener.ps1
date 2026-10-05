@@ -25,7 +25,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 
-$WorkerId = "ttendencias-dedicated-v12"
+$WorkerId = "ttendencias-dedicated-v13"
 $PollSeconds = 15
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
