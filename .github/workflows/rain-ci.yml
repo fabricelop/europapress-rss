@@ -1,0 +1,47 @@
+name: RainETA CI
+
+on:
+  pull_request:
+    paths:
+      - "vercel-webhook/rain/**"
+      - "vercel-webhook/api/rain-*.js"
+      - "vercel-webhook/lib/rain-*.js"
+      - "vercel-webhook/lib/radar-*.js"
+      - "vercel-webhook/test/rain-*.test.js"
+      - "vercel-webhook/test/radar-*.test.js"
+      - "vercel-webhook/vercel.json"
+      - ".github/scripts/smoke-rain-api.mjs"
+      - ".github/workflows/rain-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install runtime dependencies
+        run: npm install --prefix vercel-webhook --no-audit --no-fund
+      - name: Syntax
+        run: |
+          node --check vercel-webhook/api/rain-forecast.js
+          node --check vercel-webhook/api/rain-geocode.js
+          node --check vercel-webhook/api/rain-nowcast.js
+          node - <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('vercel-webhook/rain/index.html','utf8');
+          const chunks=[...html.matchAll(/<script(?![^>]*src=)[^>]*>([\s\S]*?)<\/script>/gi)];
+          if(!chunks.length)throw new Error('Inline script no encontrado');
+          for(const m of chunks)new Function(m[1]);
+          console.log('RAIN_HTML_SYNTAX_OK');
+          NODE
+      - name: Unit tests
+        run: node --test vercel-webhook/test/rain-forecast-core.test.js vercel-webhook/test/radar-nowcast-core.test.js
+      - name: Live source smoke
+        run: node .github/scripts/smoke-rain-api.mjs
