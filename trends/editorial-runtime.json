@@ -1,78 +1,87 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
-  "last_started_at": "2026-10-05T11:50:35+02:00",
-  "last_completed_at": "2026-10-05T11:22:00+02:00",
+  "engine": "chat-direct",
+  "last_started_at": "2026-10-05T11:45:00+02:00",
+  "last_completed_at": "2026-10-05T11:56:05+02:00",
   "last_slot": null,
-  "status": "waiting",
+  "status": "success",
   "processed_ids": [
-    "26bb59be27a6",
-    "c75f7bc51d0f"
-  ],
-  "remaining_ids": [
     "96df52cb77aa",
     "71d6534cdb5a",
+    "26bb59be27a6",
     "9871cf5658af",
     "c75f7bc51d0f"
   ],
-  "api_failover_enabled": false,
-  "updated_at": "2026-10-05T11:50:35+02:00",
-  "queue_complete": false,
-  "remaining_active_ids": [
-    "96df52cb77aa",
-    "71d6534cdb5a",
-    "9871cf5658af"
+  "remaining_ids": [
+    "c75f7bc51d0f"
   ],
+  "api_failover_enabled": false,
+  "updated_at": "2026-10-05T11:56:05+02:00",
+  "queue_complete": true,
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [
     "c75f7bc51d0f"
   ],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T111500+0200",
+    "run_id": "tr-chat-20261005T114500+0200",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-05T11:15:00+02:00",
-    "updated_at": "2026-10-05T11:22:00+02:00",
-    "finished_at": "2026-10-05T11:22:00+02:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-05T11:45:00+02:00",
+    "updated_at": "2026-10-05T11:56:05+02:00",
+    "finished_at": "2026-10-05T11:56:05+02:00",
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-05T11:15:00+02:00",
+    "requested_at": "2026-10-05T11:45:00+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 4,
+      "trends_processed": 5,
       "trends_explained": 3,
-      "explanation_groups": 2,
-      "new_cards": 2,
+      "explanation_groups": 3,
+      "new_cards": 3,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 1,
+      "trends_problematic": 2,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 3,
       "queue_remaining": 1,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
+      "explanations_verified_under_280": 3,
       "remates_selected": 0,
-      "remates_omitted": 2,
-      "pending_repair_triggered": 1,
-      "pending_cards_reviewed": 31
+      "remates_omitted": 3,
+      "pending_repair_triggered": 1
     },
-    "message": "Pasada completada con 3 revisiones explicadas y 1 problematic; sin ImageGen directo ni despliegue Vercel.",
-    "incident_count": 1,
+    "message": "Pasada completada: 3 explicadas, 2 problematic y 0 revisiones preparing/update.",
+    "incident_count": 3,
     "incidents": [
       {
-        "at": "2026-10-05T11:21:00+02:00",
+        "at": "2026-10-05T11:51:11+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "reason": "El primer TTENDENCIAS_CHAT_OUTBOX_V1 encontró conflictos de rebase en requests.json y editorial-queue.json por escrituras concurrentes. Se releyó main y el reintento terminó correctamente."
+      },
+      {
+        "at": "2026-10-05T11:50:35+02:00",
+        "phase": "investigating",
+        "trend_id": "26bb59be27a6",
+        "title": "alvise",
+        "reason": "Tras al menos dos búsquedas actuales distintas no se encontró un detonante único y verificable; se marcó problematic sin inventar explicación."
+      },
+      {
+        "at": "2026-10-05T11:50:35+02:00",
         "phase": "investigating",
         "trend_id": "c75f7bc51d0f",
         "title": "#5OctubrESP",
-        "reason": "Dos búsquedas distintas no aportaron un detonante actual verificable; se conserva como problematic para reintento mientras siga en Top 10."
+        "reason": "Tras varias búsquedas exactas no se identificó un significado o detonante verificable; permanece problematic para reintento mientras corresponda."
       }
     ],
     "ratings_snapshot": {
@@ -85,191 +94,179 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-05T11:16:30+02:00",
-        "phase": "investigating",
-        "trend_id": "b4c3409ccc4d",
-        "title": "Feijoo",
-        "message": "Contrastando la reacción de Feijóo al adelanto electoral del 29-N"
+        "at": "2026-10-05T11:46:00+02:00",
+        "phase": "verifying",
+        "trend_id": "96df52cb77aa",
+        "title": "sanchismo",
+        "message": "Releyendo estado autoritativo de sanchismo"
       },
       {
-        "at": "2026-10-05T11:17:00+02:00",
+        "at": "2026-10-05T11:46:20+02:00",
         "phase": "investigating",
-        "trend_id": "b4c3409ccc4d",
-        "title": "Feijoo + Con V",
-        "message": "Hecho esencial verificado; Con V corresponde al mensaje de Óscar Puente sobre vivienda y fondos buitre"
+        "trend_id": "96df52cb77aa",
+        "title": "sanchismo",
+        "message": "Hecho esencial verificado · reacciones al adelanto del 29-N"
       },
       {
-        "at": "2026-10-05T11:17:20+02:00",
+        "at": "2026-10-05T11:46:40+02:00",
         "phase": "drafting",
-        "trend_id": "b4c3409ccc4d",
-        "title": "Feijoo + Con V",
-        "message": "Redactando explicación factual conjunta de las reacciones al 29-N"
+        "trend_id": "96df52cb77aa",
+        "title": "sanchismo",
+        "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-05T11:17:35+02:00",
+        "at": "2026-10-05T11:47:00+02:00",
         "phase": "remate_selection",
-        "trend_id": "b4c3409ccc4d",
-        "title": "Feijoo + Con V",
+        "trend_id": "96df52cb77aa",
+        "title": "sanchismo",
         "message": "Sin remate · contenido político"
       },
       {
-        "at": "2026-10-05T11:18:20+02:00",
-        "phase": "investigating",
-        "trend_id": "914cf3da7267",
-        "title": "Ángel Arroyo",
-        "message": "Contrastadas EFE y Europa Press sobre su fallecimiento y trayectoria"
+        "at": "2026-10-05T11:47:10+02:00",
+        "phase": "verifying",
+        "trend_id": "71d6534cdb5a",
+        "title": "pucherazo",
+        "message": "Releyendo estado autoritativo de pucherazo"
       },
       {
-        "at": "2026-10-05T11:18:40+02:00",
+        "at": "2026-10-05T11:47:30+02:00",
+        "phase": "investigating",
+        "trend_id": "71d6534cdb5a",
+        "title": "pucherazo",
+        "message": "Hecho esencial verificado · declaraciones de Ayuso sobre voto por correo"
+      },
+      {
+        "at": "2026-10-05T11:47:50+02:00",
         "phase": "drafting",
-        "trend_id": "914cf3da7267",
-        "title": "Ángel Arroyo",
-        "message": "Redactando obituario factual y respetuoso"
+        "trend_id": "71d6534cdb5a",
+        "title": "pucherazo",
+        "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-05T11:18:55+02:00",
+        "at": "2026-10-05T11:48:00+02:00",
         "phase": "remate_selection",
-        "trend_id": "914cf3da7267",
-        "title": "Ángel Arroyo",
-        "message": "Sin remate · fallecimiento"
+        "trend_id": "71d6534cdb5a",
+        "title": "pucherazo",
+        "message": "Sin remate · contenido político"
       },
       {
-        "at": "2026-10-05T11:19:25+02:00",
+        "at": "2026-10-05T11:48:10+02:00",
+        "phase": "verifying",
+        "trend_id": "26bb59be27a6",
+        "title": "alvise",
+        "message": "Releyendo estado autoritativo de alvise"
+      },
+      {
+        "at": "2026-10-05T11:48:30+02:00",
+        "phase": "investigating",
+        "trend_id": "26bb59be27a6",
+        "title": "alvise",
+        "message": "Dos búsquedas distintas sin detonante actual verificable"
+      },
+      {
+        "at": "2026-10-05T11:48:40+02:00",
+        "phase": "verifying",
+        "trend_id": "9871cf5658af",
+        "title": "Granollers",
+        "message": "Releyendo estado autoritativo de Granollers"
+      },
+      {
+        "at": "2026-10-05T11:49:00+02:00",
+        "phase": "investigating",
+        "trend_id": "9871cf5658af",
+        "title": "Granollers",
+        "message": "Hecho esencial verificado · lluvias torrenciales e inundaciones"
+      },
+      {
+        "at": "2026-10-05T11:49:20+02:00",
+        "phase": "drafting",
+        "trend_id": "9871cf5658af",
+        "title": "Granollers",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-05T11:49:30+02:00",
+        "phase": "remate_selection",
+        "trend_id": "9871cf5658af",
+        "title": "Granollers",
+        "message": "Sin remate · episodio meteorológico sensible"
+      },
+      {
+        "at": "2026-10-05T11:49:45+02:00",
         "phase": "investigating",
         "trend_id": "c75f7bc51d0f",
         "title": "#5OctubrESP",
-        "message": "Primera búsqueda sin detonante verificable"
+        "message": "Búsquedas exactas sin significado o detonante fiable"
       },
       {
-        "at": "2026-10-05T11:19:40+02:00",
-        "phase": "investigating",
-        "trend_id": "c75f7bc51d0f",
-        "title": "#5OctubrESP",
-        "message": "Segunda búsqueda distinta sin fuentes fiables; se conserva para reintento como problematic"
-      },
-      {
-        "at": "2026-10-05T11:20:00+02:00",
+        "at": "2026-10-05T11:50:00+02:00",
         "phase": "persisting",
-        "trend_id": "b4c3409ccc4d",
-        "title": "Feijoo + Con V",
-        "message": "Guardando fichas y estados editoriales verificados"
+        "trend_id": null,
+        "title": null,
+        "message": "Guardando lote verificado y estados problemáticos"
       },
       {
-        "at": "2026-10-05T11:20:20+02:00",
+        "at": "2026-10-05T11:51:11+02:00",
         "phase": "persisting",
-        "trend_id": "914cf3da7267",
-        "title": "Ángel Arroyo",
-        "message": "Actualizando requests y retirando revisiones cerradas de la cola"
+        "trend_id": null,
+        "title": null,
+        "message": "Primer aplicador chocó en rebase con escrituras concurrentes; se reintenta sobre main fresco"
       },
       {
-        "at": "2026-10-05T11:20:40+02:00",
-        "phase": "persisting",
-        "trend_id": "c75f7bc51d0f",
-        "title": "#5OctubrESP",
-        "message": "Persistiendo estado problematic y diagnóstico de búsqueda"
-      },
-      {
-        "at": "2026-10-05T11:21:00+02:00",
+        "at": "2026-10-05T11:53:58+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola, requests y fichas Explicadas"
+        "message": "Reintento aplicado correctamente; verificando id+revision y textos persistidos"
       },
       {
-        "at": "2026-10-05T11:21:20+02:00",
-        "phase": "verifying",
-        "trend_id": "b4c3409ccc4d",
-        "title": "Feijoo + Con V",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-05T11:21:30+02:00",
-        "phase": "verifying",
-        "trend_id": "914cf3da7267",
-        "title": "Ángel Arroyo",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-05T11:21:40+02:00",
-        "phase": "verifying",
-        "trend_id": "c75f7bc51d0f",
-        "title": "#5OctubrESP",
-        "message": "Problematic verificado y conservado en cola para reintento"
-      },
-      {
-        "at": "2026-10-05T11:21:50+02:00",
+        "at": "2026-10-05T11:55:59+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 31 tarjetas recientes; reparación visual independiente ya solicitada"
+        "message": "Categorías persistidas y cola sin preparing/update"
       },
       {
-        "at": "2026-10-05T11:22:00+02:00",
+        "at": "2026-10-05T11:56:05+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada con 3 revisiones explicadas y 1 problematic; sin ImageGen directo ni despliegue Vercel."
+        "message": "Pasada completada: 3 explicadas, 2 problematic y 0 revisiones activas pendientes"
       }
     ],
-    "queue_complete": false,
-    "remaining_active_ids": [
-      "c75f7bc51d0f"
-    ],
+    "queue_complete": true,
+    "remaining_active_ids": [],
     "remaining_problematic_ids": [
       "c75f7bc51d0f"
     ],
-    "radar": {
-      "captured_at": "2026-10-05T11:11:29+02:00",
-      "queue_count": 1,
-      "top10": [
-        "#Elecciones",
-        "Pedro Sánchez",
-        "#LaHora5O",
-        "Feijoo",
-        "#FelizLunes",
-        "Cortés",
-        "29-N",
-        "Con V",
-        "Ángel Arroyo",
-        "#5OctubrESP"
-      ],
-      "new_entries": [
-        "Feijoo",
-        "Con V",
-        "Ángel Arroyo",
-        "#5OctubrESP"
-      ]
-    },
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261005T111500+0200",
+      "run_id": "tr-chat-20261005T114500+0200",
       "status": "triggered",
-      "trigger_commit_sha": "5194e1337bbb4e689a5d9ede227189bafece1735",
-      "direct_imagegen": false,
-      "pending_cards_reviewed": 31
+      "workflow_run_id": 37293278934,
+      "direct_imagegen": false
     }
   },
   "summary": {
-    "trends_processed": 4,
+    "trends_processed": 5,
     "trends_explained": 3,
-    "explanation_groups": 2,
-    "new_cards": 2,
+    "explanation_groups": 3,
+    "new_cards": 3,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "trends_problematic": 1,
+    "trends_problematic": 2,
     "trends_dismissed": 0,
-    "incidents": 1,
+    "incidents": 3,
     "queue_remaining": 1,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
     "fallback_images_ready": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 2,
+    "explanations_verified_under_280": 3,
     "remates_selected": 0,
-    "remates_omitted": 2,
-    "pending_repair_triggered": 1,
-    "pending_cards_reviewed": 31
+    "remates_omitted": 3,
+    "pending_repair_triggered": 1
   },
   "error": null
 }
