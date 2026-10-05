@@ -1,0 +1,32 @@
+name: Cleanup backups 20261005
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/cleanup-backups-20261005.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  delete-old-backups:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete 20261004 backup branches
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for branch in BackupTtittulares20261004 BackupTtendencias20261004; do
+            code="$(curl -sS -o /tmp/resp -w "%{http_code}"               -X DELETE               -H "Authorization: Bearer $GH_TOKEN"               -H "Accept: application/vnd.github+json"               -H "X-GitHub-Api-Version: 2022-11-28"               "https://api.github.com/repos/$REPO/git/refs/heads/$branch")"
+            if [ "$code" = "204" ] || [ "$code" = "422" ]; then
+              echo "DELETE_OK_OR_ABSENT $branch HTTP $code"
+            else
+              cat /tmp/resp
+              echo "Delete failed for $branch: HTTP $code" >&2
+              exit 1
+            fi
+          done
