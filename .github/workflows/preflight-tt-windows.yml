@@ -8,6 +8,7 @@ on:
       - "windows/TTendenciasDedicatedListener.ps1"
       - "windows/TT-AutoUpdater.ps1"
       - "windows/TT-LocalWatchdog.ps1"
+      - "windows/Install-TT-RestartSafe.ps1"
       - "windows/TTiTTularesImageBridge.js"
       - "windows/TTendenciasImageBridge.js"
       - ".github/workflows/preflight-tt-windows.yml"
@@ -30,7 +31,8 @@ jobs:
             "windows/TTiTTularesDedicatedListener.ps1",
             "windows/TTendenciasDedicatedListener.ps1",
             "windows/TT-AutoUpdater.ps1",
-            "windows/TT-LocalWatchdog.ps1"
+            "windows/TT-LocalWatchdog.ps1",
+            "windows/Install-TT-RestartSafe.ps1"
           )
           foreach ($p in $files) {
             $tokens=$null; $errors=$null
