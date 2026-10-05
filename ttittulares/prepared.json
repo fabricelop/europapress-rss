@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T07:40:15.051634Z",
+  "updated_at": "2026-10-05T07:42:26.445Z",
   "items": [
     {
       "event_id": "85e4c453f33c",
@@ -199,10 +199,10 @@
       "trend_context": [],
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -217,12 +217,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T07:39:27.344506Z",
       "image": {
-        "url": "https://img.rtve.es/imagenes/sanchez-convoca-elecciones-anticipadas-29-noviembre-llegado-momento-decidir-futuro-quereis/01791180512451.jpg",
-        "source": "www.rtve.es",
-        "source_url": "https://www.rtve.es/noticias/20261005/sanchez-convoca-elecciones-anticipadas-29-noviembre-llegado-momento-decidir-futuro-quereis/17253132.shtml",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Sánchez anuncia elecciones generales para el domingo 29 de noviembre"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/7148ee6b509f-r1-ai1-791186017936.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "82c78811deb1b05309f79f47c9ddc162869cc27c4c168442c74c9fdf0dc212b0",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2139916,
+        "context_guard": {
+          "version": 3,
+          "event_id": "7148ee6b509f",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-7148ee6b509f-r1-a1-1791186017936"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/7148ee6b509f-r1-ai1-791186017936.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img.rtve.es/imagenes/sanchez-convoca-elecciones-anticipadas-29-noviembre-llegado-momento-decidir-futuro-quereis/01791180512451.jpg",
@@ -231,7 +245,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Sánchez anuncia elecciones generales para el domingo 29 de noviembre"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/7148ee6b509f-r1-ai1-791186017936.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "82c78811deb1b05309f79f47c9ddc162869cc27c4c168442c74c9fdf0dc212b0",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2139916,
+        "context_guard": {
+          "version": 3,
+          "event_id": "7148ee6b509f",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-7148ee6b509f-r1-a1-1791186017936"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/7148ee6b509f-r1-ai1-791186017936.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T07:42:26.445Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T07:42:26.445Z"
     }
   ],
   "count": 11
