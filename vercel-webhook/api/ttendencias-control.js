@@ -122,11 +122,17 @@ function reconcileTelegramDeliveryState(explainedDoc, deliveryDoc) {
   }
   doc.items = doc.items.map(row => {
     const id = String(row?.id || "").trim();
-    const delivery = (id && byId.get(id)) || byName.get(norm(row?.name));
+    const leaderId = String(row?.group_leader_id || "").trim();
+    const directDelivery = id ? byId.get(id) : null;
+    const leaderDelivery = !directDelivery && leaderId ? byId.get(leaderId) : null;
+    const delivery = directDelivery || leaderDelivery || byName.get(norm(row?.name));
     if (!delivery) return row;
     const itemRevision = Number(row?.revision || 0);
     const deliveryRevision = Number(delivery?.revision || 0);
-    if (deliveryRevision < itemRevision) return row;
+    // En una tarjeta agrupada la revision del miembro no tiene por que coincidir
+    // con la revision del lider. Si el lider ya fue publicado/descartado, el grupo
+    // completo debe cerrarse aunque el miembro tenga una revision numericamente mayor.
+    if (!leaderDelivery && deliveryRevision < itemRevision) return row;
     const merged = { ...row };
     const status = String(delivery?.status || "").toLowerCase();
     if (["published", "dismissed"].includes(status)) {
@@ -146,7 +152,7 @@ function reconcileTelegramDeliveryState(explainedDoc, deliveryDoc) {
         context_guard: {
           version: 3,
           scope: "current_item_only",
-          target_id: id || String(delivery?.event_id || ""),
+          target_id: (leaderDelivery ? leaderId : id) || String(delivery?.event_id || ""),
           revision: deliveryRevision,
         },
       };
