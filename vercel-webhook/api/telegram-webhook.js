@@ -92,7 +92,7 @@ async function closeTtiFromTelegram(eventId, status, messageId) {
     }
   );
 
-  await Promise.all([
+  await Promise.allSettled([
     mutateJsonFile("ttittulares/prepared.json", "Retirar noticia cerrada desde Telegram", (doc) => {
       doc.items = (Array.isArray(doc.items) ? doc.items : []).filter(x => String(x.event_id || "") !== id);
       doc.updated_at = now;
@@ -325,27 +325,15 @@ export default async function handler(req, res) {
           await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"Acción no válida.",show_alert:true});
           return res.status(200).json({ok:true,stored:false});
         }
-        const decision = action === "p" ? "ttp" : "ttd";
         try {
-          const stored = await appendRequest(
-            requestObj(update,"emergency_action",decision+"|"+id),
-            EMERGENCY_QUEUE
-          );
-          let dispatched = false;
-          try {
-            dispatched = await dispatchWorkflow("process-ttittulares-telegram-decisions.yml");
-          } catch (dispatchError) {
-            console.error("TTiTTulares decision workflow dispatch failed", dispatchError);
-          }
+          const status = action === "p" ? "published" : "dismissed";
+          await closeTtiFromTelegram(id,status,Number(msg.message_id || 0));
           await safeTelegram("answerCallbackQuery",{
             callback_query_id:cq.id,
-            text:stored
-              ? (action === "p" ? "✅ Publicado: guardando estado." : "🗑 Desestimado: guardando estado.")
-              : "✅ Estado ya registrado."
+            text:status === "published" ? "✅ Publicado." : "🗑 Desestimado."
           });
-          // No borrar aquí: process-ttittulares-telegram-decisions.yml serializa
-          // el cierre, persiste todos los ficheros y solo entonces borra Telegram.
-          return res.status(200).json({ok:true,stored,dispatched,event_id:id,decision});
+          const telegram_delete=await deleteTtiPackageNow(id,msg.message_id,allowedChat);
+          return res.status(200).json({ok:true,stored:true,event_id:id,status,telegram_delete});
         } catch (e) {
           console.error("TTiTTulares queue from Telegram", e);
           await safeTelegram("answerCallbackQuery",{
