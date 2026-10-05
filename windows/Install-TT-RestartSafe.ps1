@@ -1,6 +1,6 @@
 # Install-TT-RestartSafe.ps1
 # Instalacion unificada para TTiTTulares + TTendencias resistente a reinicios/caidas.
-$InstallerVersion="restart-safe-v5-with-selorecordamos"
+$InstallerVersion="restart-safe-v6-raw-bootstrap"
 $ErrorActionPreference="Stop"
 $BaseDir="C:\TTiTTulares"
 $Startup=[Environment]::GetFolderPath("Startup")
@@ -16,15 +16,14 @@ $files=@(
 )
 
 function Raw([string]$path){
-  $api="https://api.github.com/repos/fabricelop/europapress-rss/contents/"+$path+"?ref=main&t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-  $doc=Invoke-RestMethod -Uri $api -Headers @{
-    "Accept"="application/vnd.github+json"
-    "User-Agent"="TT-restart-safe-installer-v4"
-    "Cache-Control"="no-cache"
-  } -Method Get -UseBasicParsing -TimeoutSec 30
-  if(-not $doc.content){throw "GitHub API sin contenido: $path"}
-  $b=[Convert]::FromBase64String(([string]$doc.content -replace "\s",""))
-  if(-not $b -or $b.Length -lt 100){throw "Descarga vacia/corta: $path"}
+  $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+$path+"?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  $wc=New-Object System.Net.WebClient
+  try{
+    $wc.Headers["User-Agent"]="TT-restart-safe-installer-v6"
+    $wc.Headers["Cache-Control"]="no-cache"
+    $b=$wc.DownloadData($url)
+  }finally{$wc.Dispose()}
+  if(-not $b -or $b.Length -lt 100){throw "RAW vacio/corto: $path"}
   return $b
 }
 function ValidatePs([string]$f){
