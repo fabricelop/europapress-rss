@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T15:53:24.629Z",
+  "updated_at": "2026-10-05T15:54:41.707Z",
   "items": [
     {
       "event_id": "2157dee96096",
@@ -387,10 +387,10 @@
       },
       "archive_image_status": "pending",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -405,13 +405,53 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T15:46:27.193952Z",
       "image": {
-        "url": "https://static.eldiario.es/clip/eca088fe-6dd0-4d0c-b5b4-a882c09af6ef_facebook-aspect-ratio-1200-675_default_0_x859y799.jpg",
-        "source": "elDiario.es",
-        "source_url": "https://www.eldiario.es/politica/jueza-utiliza-respuesta-almeida-desahucio-maricarmen-frenar-desalojos-empresa-municipal_1_13557460.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Una jueza detiene ocho desahucios y recuerda al Ayuntamiento de Almeida cómo se ha resuelto el caso de Maricarmen"
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/b9a5870f7e35-r1-ai1-791215287935.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "301f22722e38b56105267cadc18633bab3f6fbfdf0537e42b39a2f1ac94828d9",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2915964,
+        "context_guard": {
+          "version": 3,
+          "event_id": "b9a5870f7e35",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-b9a5870f7e35-r1-a1-1791215287935"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/b9a5870f7e35-r1-ai1-791215287935.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/b9a5870f7e35-r1-ai1-791215287935.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "301f22722e38b56105267cadc18633bab3f6fbfdf0537e42b39a2f1ac94828d9",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2915964,
+        "context_guard": {
+          "version": 3,
+          "event_id": "b9a5870f7e35",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-b9a5870f7e35-r1-a1-1791215287935"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/b9a5870f7e35-r1-ai1-791215287935.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T15:54:41.707Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T15:54:41.707Z"
     },
     {
       "event_id": "92bacfd8775d",
