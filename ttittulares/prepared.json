@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T20:10:17.778Z",
+  "updated_at": "2026-10-05T20:12:25.492Z",
   "items": [
     {
       "event_id": "3afed462f04a",
@@ -175,10 +175,10 @@
       },
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -194,12 +194,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T19:50:11.717499Z",
       "image": {
-        "url": "https://s1.abcstatics.com/abc/www/multimedia/espana/2026/10/05/aznar-U63035186625IVb-1200x630@diario_abc.jpeg",
-        "source": "www.abc.es",
-        "source_url": "https://www.abc.es/sevilla/cultura/jose-maria-aznar-sanchez-logra-formar-gobierno-20261005203601-nts.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Aznar, ante las elecciones: «Si Sánchez forma otra vez gobierno, la Monarquía se terminaría»"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/b19a11053faf-r1-ai1-791230783124.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "487d5c5b4473397ec45be24d38eb086270a3aa7dbee9ae1d5c44a39f35be9d59",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2435066,
+        "context_guard": {
+          "version": 3,
+          "event_id": "b19a11053faf",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-b19a11053faf-r1-a1-1791230783124"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/b19a11053faf-r1-ai1-791230783124.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://s1.abcstatics.com/abc/www/multimedia/espana/2026/10/05/aznar-U63035186625IVb-1200x630@diario_abc.jpeg",
@@ -208,7 +222,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Aznar, ante las elecciones: «Si Sánchez forma otra vez gobierno, la Monarquía se terminaría»"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/b19a11053faf-r1-ai1-791230783124.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "487d5c5b4473397ec45be24d38eb086270a3aa7dbee9ae1d5c44a39f35be9d59",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2435066,
+        "context_guard": {
+          "version": 3,
+          "event_id": "b19a11053faf",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-b19a11053faf-r1-a1-1791230783124"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/b19a11053faf-r1-ai1-791230783124.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T20:12:25.492Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T20:12:25.492Z"
     }
   ],
   "count": 11
