@@ -8,7 +8,7 @@ on:
       - "ttittulares/prepared.json"
       - ".github/workflows/repair-ttittulares-listas.yml"
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/20 * * * *"
 
 permissions:
   contents: write
@@ -346,11 +346,3 @@ jobs:
           echo "No se pudo encolar reparación IA" >&2
           exit 1
 
-
-      - name: Lanzar entrega o reparación Telegram
-        if: success()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-        run: |
-          gh workflow run send-ttittulares-ready-telegram.yml --repo "$REPO" --ref main
