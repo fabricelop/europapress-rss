@@ -34,7 +34,13 @@ function privateBlobOptions(extra={}){
   return {access:"private",token:process.env.BLOB_READ_WRITE_TOKEN||undefined,...extra};
 }
 function cleanMoneyWizFilename(v){
+  if(v&&typeof v==="object"){
+    for(const key of ["name","filename","displayName","path","url","value"]){
+      if(v[key]!=null){const found=cleanMoneyWizFilename(v[key]);if(found)return found}
+    }
+  }
   let name=String(v||"").trim().replace(/\\/g,"/").split("/").pop()||"";
+  try{name=decodeURIComponent(name)}catch(_){}
   if(!/moneywiz/i.test(name))return "";
   if(!/\.zip$/i.test(name))name+=".zip";
   if(name.length>180)return "";
