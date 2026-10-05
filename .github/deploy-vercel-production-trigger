@@ -1,8 +1,8 @@
 TT Apps production deploy trigger
-Reason: reduce Vercel Fluid Active CPU polling
-Requested: 2026-10-05T20:18:13.190Z
+Reason: show images in TTendencias Pendientes + reduce pending-page polling
+Requested: 2026-10-05T20:31:11.745Z
 Includes:
-- TTiTTulares image polling: index + recent/active jobs only
-- TTiTTulares idle polling: 5 min
-- TTendencias idle polling: 5 min
-- No polling while tab hidden
+- Visible thumbnails in collapsed pending cards
+- AI image preferred; fallback image otherwise
+- Pending page idle polling 5 min
+- No image polling while tab hidden
