@@ -632,9 +632,12 @@ export default async function handler(req,res){
       if(String(req.query?.view||"")==="image-proxy")return await proxyPreparedImage(req.query?.url,res);
       const github_rate_limit=await probeGithubRate(false);
       const fresh=String(req.query?.fresh||"")==="1";
+      // La lectura de la app debe ser barata y seguir funcionando aunque el
+      // token REST esté temporalmente agotado. RAW público es suficiente para
+      // pintar el estado; las acciones de escritura siguen usando REST + SHA.
       const [prepared,status,config,queue,events,decisions,manualArchive,remateRatings,tremending]=await Promise.all([
-        readJson(PREPARED),fresh?readJson("ttittulares/status.json"):readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
-        fresh?readJson(PROCESSING):readPublicJson(PROCESSING),readPublicJson(EVENTS),readJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(REMATE_RATINGS),fresh?readJson(TREMENDING):readPublicJson(TREMENDING)
+        readPublicJson(PREPARED),readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
+        readPublicJson(PROCESSING),readPublicJson(EVENTS),readPublicJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const decisionMap=new Map((decisions.doc?.items||[]).map(x=>[String(x.event_id||""),x]));
