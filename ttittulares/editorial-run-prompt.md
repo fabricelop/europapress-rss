@@ -10,6 +10,23 @@ Cuando el usuario envía «Ejecuta TTiTTulares» a una conversación, esa misma 
 
 Una ejecución normal `Ejecuta TTiTTulares` redacta y materializa todas las noticias PROCESSING en Listas cuando tienen texto+remate. No espera imágenes. El tramo visual pertenece al **mismo proceso oficial**, pero se ejecuta de forma asíncrona mediante `.github/workflows/repair-ttittulares-listas.yml` y el bridge local: **cada noticia que entra en READY/Listas dispara su reparación visual inmediatamente, sin esperar a que termine el lote editorial**; detecta IA ausente/incorrecta, encola la generación y continúa hasta Telegram de forma independiente. Los controles manuales del panel quedan como override, no como requisito del flujo normal.
 
+
+### Contrato visual persistente de Gag IA
+
+Todo job automático o manual de TTiTTulares debe seguir este criterio:
+- **más gag, menos barroquismo**;
+- UNA sola idea visual fuerte por imagen, entendible en 1–2 segundos;
+- pocos elementos protagonistas y fondo solo cuando ayuda directamente al chiste;
+- acabado cuidado, expresivo y bien dibujado: simplificar la composición NO significa hacer un dibujo pobre, infantil o esquemático;
+- el gag debe derivar de los hechos verificados y del remate exacto, no limitarse a ilustrar literalmente el titular;
+- el job asigna `image_style`, `image_style_name` e `image_style_index` desde un banco variable de estilos. Respeta el estilo asignado y evita convertir todas las noticias en el mismo cómic cinematográfico;
+- el banco rota entre tinta/acuarela editorial, cómic europeo, póster gráfico sofisticado, absurdo semirrealista, stop-motion/clay, retro 60s, grabado moderno, pop art refinado, cartoon 3D y novela gráfica;
+- una regeneración puede usar otro estilo para producir una alternativa verdaderamente distinta;
+- elimina personajes, carteles, símbolos y objetos que no refuercen directamente el gag central;
+- evita collage, split-screen, infografía, interfaz, screenshot y exceso de texto dentro de la imagen.
+
+La coherencia de TTiTTulares está en el **criterio del gag**, no en repetir un único acabado visual.
+
 ## Orden y progreso
 
 Lee `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `telegram/editorial-processing.json`, `telegram/events.json`, `ttittulares/prepared.json` y `ttittulares/execution-errors.json`. Procesa todas las noticias PROCESSING. Las PROBLEMATIC históricas NO se reintentan automáticamente: solo entran en esta pasada si `user_validated:true` (botón **Check**/validación explícita) o si el radar las ha reabierto como PROCESSING por una revisión material posterior. Relee estado fresco antes de cada operación. Una incidencia individual no detiene el resto del lote. RUNTRACE muestra únicamente items realmente intentados y avanza después de cada intento. ERROR se reserva para un fallo global.
