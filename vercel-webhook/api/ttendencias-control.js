@@ -25,6 +25,7 @@ const HEALTH = "trends/health-status.json";
 const EDITORIAL_CONFIG = "trends/editorial-config.json";
 const EDITORIAL_QUEUE = "trends/editorial-queue.json";
 const PUSH_STATE = "trends/push-state.json";
+const TELEGRAM_IMAGE_DELIVERIES = "trends/telegram-image-deliveries.json";
 const REFRESH_TRIGGER = "trends/refresh-trigger.txt";
 
 function b64decode(s) {
@@ -95,6 +96,66 @@ function reconcileExplainedView(explainedDoc, requestsDoc) {
     if (name) representedNames.add(name);
   }
   if (missing.length) doc.items.push(...missing);
+  return doc;
+}
+
+function reconcileTelegramDeliveryState(explainedDoc, deliveryDoc) {
+  const doc = {
+    ...(explainedDoc || {}),
+    items: (explainedDoc?.items || []).map(row => ({ ...row })),
+  };
+  const deliveries = Array.isArray(deliveryDoc?.items) ? deliveryDoc.items : [];
+  const byId = new Map();
+  const byName = new Map();
+  const when = row => String(row?.published_at || row?.dismissed_at || row?.delivered_at || "");
+  const choose = (prev, row) => {
+    if (!prev) return row;
+    const rr = Number(row?.revision || 0), pr = Number(prev?.revision || 0);
+    if (rr !== pr) return rr > pr ? row : prev;
+    return when(row) > when(prev) ? row : prev;
+  };
+  for (const row of deliveries) {
+    const id = String(row?.event_id || "").trim();
+    const name = norm(row?.name);
+    if (id) byId.set(id, choose(byId.get(id), row));
+    if (name) byName.set(name, choose(byName.get(name), row));
+  }
+  doc.items = doc.items.map(row => {
+    const id = String(row?.id || "").trim();
+    const delivery = (id && byId.get(id)) || byName.get(norm(row?.name));
+    if (!delivery) return row;
+    const itemRevision = Number(row?.revision || 0);
+    const deliveryRevision = Number(delivery?.revision || 0);
+    if (deliveryRevision < itemRevision) return row;
+    const merged = { ...row };
+    const status = String(delivery?.status || "").toLowerCase();
+    if (["published", "dismissed"].includes(status)) {
+      merged.telegram_package_status = status;
+      if (delivery.published_at) merged.published_at = delivery.published_at;
+      if (delivery.dismissed_at) merged.dismissed_at = delivery.dismissed_at;
+    }
+    const imageUrl = String(delivery?.image_url || "").trim();
+    if (/^https:\/\//i.test(imageUrl)) {
+      merged.ai_image = {
+        ...(merged.ai_image || {}),
+        url: imageUrl,
+        generated: true,
+        provider: "chat-imagegen",
+        origin: "executing_chat",
+        sha256: delivery.image_sha256 || merged.ai_image?.sha256 || null,
+        context_guard: {
+          version: 3,
+          scope: "current_item_only",
+          target_id: id || String(delivery?.event_id || ""),
+          revision: deliveryRevision,
+        },
+      };
+      merged.ai_image_status = "ready";
+      merged.ai_image_regenerate_requested = false;
+      delete merged.ai_image_regeneration_error;
+    }
+    return merged;
+  });
   return doc;
 }
 
@@ -1133,6 +1194,7 @@ async function stateSnapshot(fresh = false) {
     readPublicJson(EDITORIAL_CONFIG),
     strong(EDITORIAL_QUEUE),
     readPublicJson(REMATE_RATINGS),
+    readPublicJson(TELEGRAM_IMAGE_DELIVERIES),
   ]);
 
   // Autorreparación del refresco: si GitHub retrasa o pierde ejecuciones cron,
@@ -1162,7 +1224,7 @@ async function stateSnapshot(fresh = false) {
   }
 
   const explainedView=annotateRemateRatings(
-    annotateExplainedCopyState(reconcileExplainedView(explained.doc, requests.doc), explainedCopyState.doc),
+    annotateExplainedCopyState(reconcileTelegramDeliveryState(reconcileExplainedView(explained.doc, requests.doc), telegramImageDeliveries.doc), explainedCopyState.doc),
     remateRatings.doc
   );
   const pendingExplained=buildPendingExplainedView(explainedView);
