@@ -1910,7 +1910,7 @@
       "percentage": 43.8,
       "first_seen": "2026-10-05T17:14:11.844796Z",
       "last_seen": "2026-10-05T17:32:48.209616Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -2000,7 +2000,10 @@
         }
       ],
       "drafted_source_count": 7,
-      "verified_source_count": 7
+      "verified_source_count": 7,
+      "reconciled_from_event_id": "a22a9a8e65fe",
+      "reconciliation_reason": "Mismo hecho ya publicado: Nobel de Medicina 2026 a Karl Deisseroth, Peter Hegemann y Georg Nagel por optogenética, sin novedad material independiente.",
+      "reconciled_at": "2026-10-05T17:35:00.749209Z"
     },
     {
       "id": "8161f26a388e",
@@ -2716,5 +2719,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-05T17:34:15.114740Z"
+  "updated_at": "2026-10-05T17:35:00.749209Z"
 }
