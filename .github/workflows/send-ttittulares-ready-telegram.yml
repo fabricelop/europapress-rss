@@ -143,7 +143,32 @@ jobs:
               a=item.get("archive_image") or item.get("fallback_image") or {}
               return a if isinstance(a,dict) and str(a.get("url") or "").strip() else {}
 
-          def keyboard_for(eid,tweet,image_url,archive_copy_url=""):
+          def x_search_keywords(item):
+              raw=str((item.get("quote_search") or {}).get("query") or item.get("title") or "")
+              raw=raw.replace("\n"," ")
+              words=[w for w in __import__("re").findall(r"[^\W_]+",raw,flags=__import__("re").UNICODE)]
+              stop=set("el la los las un una unos unas de del al en a ante por para con sin sobre entre que quien quienes como cual cuales su sus y e o u es son ha han fue ser se le les lo este esta estos estas ese esa esos esas tras desde hasta durante muy mas más hoy ayer mañana ultima última ultimas últimas hora directo noticia noticias actualidad cuenta explica explican anuncia anunciaron nueva nuevo nuevas nuevos ahora segundo primera primero centenar personas persona hombres mujeres supera supero superó desvela reactiva aprueba confirma detiene investiga consigue gana pierde critica pide asegura publica celebran ocurrido denuncian".split())
+              good=[]
+              seen=set()
+              for word in words:
+                  key=__import__("unicodedata").normalize("NFD",word).encode("ascii","ignore").decode().lower()
+                  if len(key)<3 or key in stop or key.isdigit() or key in seen:
+                      continue
+                  seen.add(key);good.append(word)
+                  if len(good)==3:
+                      break
+              if len(good)<2:
+                  fallback=[w for w in words if len(w)>=3 and not w.isdigit()]
+                  for word in fallback:
+                      key=word.lower()
+                      if key not in {x.lower() for x in good}:
+                          good.append(word)
+                      if len(good)>=2:
+                          break
+              return " ".join(good[:3]) or "noticias"
+
+          def keyboard_for(eid,tweet,image_url,item,archive_copy_url=""):
+              x_search="https://x.com/search?"+urllib.parse.urlencode({"q":x_search_keywords(item),"src":"typed_query","f":"live"})
               rows=[
                   [{"text":"🖼️ Copiar imagen IA","url":"https://tt-control.fabricelop.workers.dev/copy-image?"+urllib.parse.urlencode({"src":image_url})}]
               ]
@@ -152,6 +177,9 @@ jobs:
               rows.append([
                   {"text":"📋 Copiar tuit","copy_text":{"text":tweet}},
                   {"text":"✍️ Abrir en X","url":"https://tt-control.fabricelop.workers.dev/x-compose?"+urllib.parse.urlencode({"text":tweet})}
+              ])
+              rows.append([
+                  {"text":"🔎 Buscar en X","url":x_search}
               ])
               # Estos callbacks YA están soportados por el webhook Vercel actualmente desplegado.
               # El workflow process-ttittulares-telegram-decisions.yml aplica el cierre real.
@@ -224,7 +252,7 @@ jobs:
                   except Exception as e:
                       print(f"TTITTULARES_ARCHIVE_WARNING event={eid} error={e}")
 
-              keyboard=keyboard_for(eid,tweet,image_url,archive_copy_url)
+              keyboard=keyboard_for(eid,tweet,image_url,item,archive_copy_url)
 
               if current:
                   try:
@@ -232,7 +260,7 @@ jobs:
                   except Exception as e:
                       print(f"TTITTULARES_KEYBOARD_WARNING event={eid} error={e}")
                   patches={
-                      "buttons_version":3,
+                      "buttons_version":4,
                       "buttons_updated_at":nowz()
                   }
                   if archive_mid:
@@ -268,7 +296,7 @@ jobs:
                   "telegram_message_id":message_id,
                   "delivered_at":nowz(),
                   "status":"sent",
-                  "buttons_version":3
+                  "buttons_version":4
               }
               if archive_mid:
                   row.update({
