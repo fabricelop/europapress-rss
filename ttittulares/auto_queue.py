@@ -5,6 +5,8 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
+from telegram.content_filters import content_filter_reason, run_filter_regressions
 RADAR=ROOT/'telegram'/'events.json'
 QUEUE=ROOT/'telegram'/'editorial-processing.json'
 DECISIONS=ROOT/'ttittulares'/'decisions.json'
@@ -134,6 +136,10 @@ def queue_eligible(radar, queue, decisions, prepared=None, verbose=False, minimu
         if st not in {'ELIGIBLE','ELIGIBLE_UPDATE'}: continue
         eid=str(row.get('id') or row.get('event_id') or '')
         if not eid: continue
+        filter_reason=content_filter_reason(row_title(row),row_url(row))
+        if filter_reason:
+            if verbose: print('AUTO_QUEUE_CONTENT_FILTER_SKIPPED',eid,filter_reason)
+            continue
         if is_routine_lottery_result(row):
             if verbose: print('AUTO_QUEUE_ROUTINE_DRAW_SKIPPED',eid)
             continue
@@ -185,6 +191,9 @@ def queue_eligible(radar, queue, decisions, prepared=None, verbose=False, minimu
     return added
 
 def selftest():
+    run_filter_regressions()
+    assert content_filter_reason('Horscopo de hoy lunes 5 de octubre de 2026','https://www.elmundo.es/yodona/horoscopo/2026/10/05/x.html')=='astrology_daily'
+    assert content_filter_reason('Un estudio científico analiza por qué creemos en los horóscopos','https://example.test/ciencia') is None
     a={'title':'Garamendi ve ilegal una huelga general por la vivienda','url':'u1'}
     b={'title':'Garamendi considera ilegal la huelga general de vivienda','url':'u2'}
     c={'title':'Verstappen logra la pole en Sepang','url':'u3'}
