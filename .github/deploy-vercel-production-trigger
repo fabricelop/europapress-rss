@@ -1,4 +1,6 @@
 TT Apps production deploy trigger
-Reason: TTendencias Pendientes thumbnails + lower polling
-Includes commit: 8523eca1854a604b4ca3f2832d64b4a1c69751f0
-Telegram workflow fix: d4312eff1e051a505e0f1dad745bd07fed5a9c35
+Reason: TTendencias rate-limit fix for Ya explicado
+Includes:
+- 6ebca1e980bbff51ba182217b23d5b2b76b215ee reduce authenticated GitHub reads on archive
+- accurate rate-limit error propagation and probing
+- previous pending thumbnails/polling fixes
