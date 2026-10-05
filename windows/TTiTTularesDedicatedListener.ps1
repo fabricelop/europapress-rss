@@ -550,12 +550,16 @@ function Build-ImageMessage($Job) {
   $tweetText=""
   $remate=""
   $factualSummary=""
+  $imageStyle="Más gag, menos barroquismo. Una sola idea visual fuerte, composición limpia, pocos elementos protagonistas y acabado cuidado sin recargar."
 
   try {
     if ($Job.context_snapshot) {
       $tweetText=[string]$Job.context_snapshot.tweet_text
       $remate=[string]$Job.context_snapshot.remate
       $factualSummary=[string]$Job.context_snapshot.factual_summary
+      if (-not [string]::IsNullOrWhiteSpace([string]$Job.context_snapshot.image_style)) {
+        $imageStyle=[string]$Job.context_snapshot.image_style
+      }
     }
   } catch {}
 
@@ -576,14 +580,15 @@ $remate
 CONTEXTO FACTUAL COMPLEMENTARIO:
 $factualSummary
 
-ESTILO VISUAL OBLIGATORIO:
-Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios, humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Incorporar carteles, objetos y elementos del entorno que permitan entender el chiste de un vistazo. Expresiones faciales exageradas, composición dinámica, profundidad, iluminación dramática y acabado pulido tipo portada/editorial. Texto en español únicamente cuando sea necesario para el gag y perfectamente integrado en la escena. Evitar caricatura genérica, evitar collage, evitar aspecto fotográfico puro y evitar infografía.
+DIRECCIÓN VISUAL ASIGNADA:
+$imageStyle
 
-CONSTRUCCIÓN:
-1. ESCENA: extrae una descripción factual concreta exclusivamente del texto exacto y del contexto.
-2. GAG VISUAL: crea una metáfora o situación absurda derivada directamente de ese hecho.
-3. REMATE VISUAL: añade un detalle que traduzca visualmente la guindilla exacta.
-4. La imagen debe parecer una escena única y coherente, como una viñeta editorial de gran presupuesto, con un gag principal inmediatamente reconocible y pocos detalles humorísticos secundarios, solo cuando refuercen el chiste.
+CONSTRUCCIÓN OBLIGATORIA:
+1. Decide internamente UN solo gag central derivado del hecho y del remate.
+2. Haz que se entienda en 1-2 segundos con pocos elementos protagonistas.
+3. Acabado cuidado, expresivo y bien dibujado, pero sin barroquismo ni acumulación decorativa.
+4. Elimina cualquier objeto, cartel, símbolo o personaje que no refuerce directamente ese único chiste.
+5. No te limites a ilustrar literalmente la noticia.
 
 REGLAS:
 - No inventes hechos externos.
