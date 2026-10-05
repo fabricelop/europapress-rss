@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T16:49:40.965Z",
+  "updated_at": "2026-10-05T16:49:54.293Z",
   "items": [
     {
       "event_id": "c4d5307a5b7c",
@@ -141,14 +141,14 @@
       "with_image": true,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
-      "image_status": "none",
+      "image_choice": "ai",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "archive_image_search_attempted_at": "2026-10-05T16:43:34.547198Z",
       "fallback_image_search_attempted_at": "2026-10-05T16:43:34.547198Z",
       "archive_image": {
@@ -166,6 +166,54 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Adelanto de las elecciones generales, en directo | El PSOE carga contra el PP y Vox por cuestionar el sistema electoral: “Es seguro al 100%”"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/e99ed92226a1-r1-ai1-791218567226.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d6555c8054078ca7c8c30fd3674655b77237c9b83329543012d8b56e6ebfd880",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2419095,
+        "context_guard": {
+          "version": 3,
+          "event_id": "e99ed92226a1",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-e99ed92226a1-r1-a1-1791218567226"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/e99ed92226a1-r1-ai1-791218567226.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T16:49:54.293Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T16:49:54.293Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/e99ed92226a1-r1-ai1-791218567226.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d6555c8054078ca7c8c30fd3674655b77237c9b83329543012d8b56e6ebfd880",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2419095,
+        "context_guard": {
+          "version": 3,
+          "event_id": "e99ed92226a1",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-e99ed92226a1-r1-a1-1791218567226"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/e99ed92226a1-r1-ai1-791218567226.png",
+        "handoff": "pc-bridge-direct-materialized"
       }
     },
     {
