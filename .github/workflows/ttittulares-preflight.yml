@@ -6,7 +6,13 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/ttittulares-preflight.yml"
-      - "ttittulares/**"
+      - "ttittulares/**/*.py"
+      - "ttittulares/**/*.js"
+      - "ttittulares/**/*.mjs"
+      - "ttittulares/**/*.md"
+      - "ttittulares/app.js"
+      - "ttittulares/config.json"
+      - "ttittulares/control-mode.json"
       - "telegram/radar_no_d1.py"
       - "telegram/source_telemetry.py"
       - "telegram/source_publication.py"
@@ -33,7 +39,13 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/ttittulares-preflight.yml"
-      - "ttittulares/**"
+      - "ttittulares/**/*.py"
+      - "ttittulares/**/*.js"
+      - "ttittulares/**/*.mjs"
+      - "ttittulares/**/*.md"
+      - "ttittulares/app.js"
+      - "ttittulares/config.json"
+      - "ttittulares/control-mode.json"
       - "telegram/radar_no_d1.py"
       - "telegram/source_telemetry.py"
       - "telegram/source_publication.py"
@@ -51,6 +63,10 @@ on:
       - ".github/workflows/tremending-capture.yml"
       - ".github/workflows/ai-image-generate.yml"
       - ".github/workflows/ttittulares-ai-image-apply.yml"
+
+concurrency:
+  group: ttittulares-preflight
+  cancel-in-progress: true
 
 permissions:
   contents: read
