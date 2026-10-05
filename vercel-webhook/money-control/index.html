@@ -83,10 +83,14 @@ function sim(a,b){a=norm(a);b=norm(b);if(!a||!b)return 0;if(a===b)return 1;const
 async function derive(password,salt,iterations){const material=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations,hash:'SHA-256'},material,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
 async function deriveStateKey(password){return derive(password,new TextEncoder().encode('money-control-state-v1'),310000)}
 async function loadEnvelope(){for(const url of SNAPSHOT_URLS){try{const r=await fetch(url+'?t='+Date.now(),{cache:'no-store'});if(r.ok){const x=await r.json();if(x?.format==='money-control-snapshot')return {enc:{salt:x.salt,iv:x.iv,data:x.data,iter:x.iterations},aad:'money-control-snapshot-v1',external:true,source:url}}}catch(_){}}return {enc:ENC,aad:'money-control-preview-v1',external:false,source:'embedded'}}
-async function refreshExternalSnapshot(){if(!DATA||!DATA._externalSnapshot||!SESSION_PASSWORD||document.hidden)return false;try{const env=await loadEnvelope();if(!env.external)return false;const key=await derive(SESSION_PASSWORD,b64u(env.enc.salt),env.enc.iter),fresh=await decryptPayload(key,env);const oldRev=String(DATA.sourceImportedAt||DATA.snapshotDate||''),newRev=String(fresh.sourceImportedAt||fresh.snapshotDate||'');if(oldRev===newRev&&DATA._externalSnapshot)return false;DATA_KEY=key;DATA=fresh;DATA._externalSnapshot=true;await applyPersistedMoneyWizPatchIfNewer();await reconcileBrowserProvisionals();await reconcileNativeAgainstSnapshot();if(syncCardAdjustments())await saveState();$('#snapshot').textContent=dshort(DATA.snapshotDate)+' · sincronizado';renderAll();toast('Datos financieros actualizados');return true}catch(_){return false}}
+async function refreshExternalSnapshot(){if(!DATA||!DATA._externalSnapshot||!SESSION_PASSWORD||document.hidden)return false;try{const env=await loadEnvelope();if(!env.external)return false;const key=await derive(SESSION_PASSWORD,b64u(env.enc.salt),env.enc.iter),fresh=await decryptPayload(key,env);const oldRev=String(DATA.sourceImportedAt||DATA.snapshotDate||''),newRev=String(fresh.sourceImportedAt||fresh.snapshotDate||'');if(oldRev===newRev&&DATA._externalSnapshot)return false;DATA_KEY=key;DATA=fresh;DATA._externalSnapshot=true;await applyPersistedMoneyWizPatchIfNewer();await applyLatestMoneyWizAutoPatchIfNewer();await reconcileBrowserProvisionals();await reconcileNativeAgainstSnapshot();if(syncCardAdjustments())await saveState();$('#snapshot').textContent=dshort(DATA.snapshotDate)+' · sincronizado';renderAll();toast('Datos financieros actualizados');return true}catch(_){return false}}
 function validateSnapshotData(x,external=false){if(!x||typeof x!=='object')throw new Error('snapshot inválido');for(const k of ['accounts','transactions','scheduled'])if(!Array.isArray(x[k]))throw new Error('snapshot sin '+k);if(!/^\d{4}-\d{2}-\d{2}$/.test(String(x.snapshotDate||'')))throw new Error('snapshot sin fecha');if(external){for(const k of ['cardsBase','expenseCategoriesBase','historicalAliases','incomeCategoriesBase','merchantBase','monthlyBase'])if(!Array.isArray(x[k]))throw new Error('snapshot externo sin '+k);for(const k of ['controlBase','healthBase','mtdBase'])if(!x[k]||typeof x[k]!=='object'||Array.isArray(x[k]))throw new Error('snapshot externo sin '+k);if(!x.sourceImportedAt)throw new Error('snapshot externo sin sourceImportedAt')}return x}
 async function decryptPayload(key,env){const raw=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64u(env.enc.iv),additionalData:new TextEncoder().encode(env.aad)},key,b64u(env.enc.data));return validateSnapshotData(JSON.parse(new TextDecoder().decode(raw)),!!env.external)}
 function moneyWizSyncTokenFromHash(){try{return new URLSearchParams(location.hash.replace(/^#/,'' )).get('mwsync')||''}catch{return''}}
+const MONEYWIZ_SYNC_TOKEN_KEY='mc_moneywiz_sync_token';
+function moneyWizStoredSyncToken(){return localStorage.getItem(MONEYWIZ_SYNC_TOKEN_KEY)||''}
+function rememberMoneyWizSyncToken(token){if(token)localStorage.setItem(MONEYWIZ_SYNC_TOKEN_KEY,token)}
+
 async function gunzipBytes(bytes){if(typeof DecompressionStream==='undefined')throw new Error('gzip_no_disponible');const ds=new DecompressionStream('gzip'),stream=new Blob([bytes]).stream().pipeThrough(ds);return new Uint8Array(await new Response(stream).arrayBuffer())}
 async function loadMoneyWizBootstrapPatch(token){
   const r=await fetch('/money-control/moneywiz-bootstrap-patch-v1.json?t='+Date.now(),{cache:'no-store'});
@@ -189,8 +193,131 @@ async function applyPersistedMoneyWizPatchIfNewer(){
   applyMoneyWizPatch(patch);
   return true;
 }
+function validMoneyWizAutoPatch(patch){
+  return !!patch&&patch.format==='moneywiz-auto-patch'&&Number(patch.version)===1&&
+    Array.isArray(patch.accountsUpsert)&&Array.isArray(patch.transactionsUpsert)&&Array.isArray(patch.transactionDeletes)&&
+    /^\d{4}-\d{2}-\d{2}$/.test(String(patch.snapshotDate||''))&&typeof patch.sourceImportedAt==='string';
+}
+async function loadLatestMoneyWizAutoPatch(){
+  const token=moneyWizStoredSyncToken();if(!token)return null;
+  try{
+    const r=await fetch('/api/money-control-snapshot?kind=moneywiz-processed&t='+Date.now(),{
+      cache:'no-store',headers:{'authorization':'Bearer '+token}
+    });
+    if(r.status===404)return null;
+    if(!r.ok)throw new Error('auto_patch_http_'+r.status);
+    const patch=await r.json();
+    if(!validMoneyWizAutoPatch(patch))throw new Error('auto_patch_invalido');
+    return patch;
+  }catch(err){console.error('MoneyWiz auto patch load',err);return null}
+}
+function applyMoneyWizAutoPatch(patch){
+  const existingAccounts=new Map((DATA.accounts||[]).map(a=>[String(a.gid||''),a]));
+  let nextAccountId=Math.max(0,...(DATA.accounts||[]).map(a=>Number(a.id)||0))+1;
+  for(const src of patch.accountsUpsert||[]){
+    const gid=String(src.gid||'');if(!gid)continue;
+    const old=existingAccounts.get(gid);
+    if(old){
+      Object.assign(old,{
+        name:src.name||old.name,
+        currency:src.currency||old.currency,
+        archived:!!src.archived,
+        includeNetWorth:src.includeNetWorth,
+        sourceGroup:src.sourceGroup??old.sourceGroup,
+        lastMovementDate:src.lastMovementDate||old.lastMovementDate
+      });
+    }else{
+      const created={
+        id:nextAccountId++,gid,name:src.name||'Nueva cuenta',currency:src.currency||'EUR',
+        balance:0,role:'OTHER',archived:!!src.archived,
+        includeNetWorth:src.includeNetWorth??1,sourceGroup:src.sourceGroup||'Otros',
+        lastMovementDate:src.lastMovementDate||null
+      };
+      DATA.accounts.push(created);existingAccounts.set(gid,created);
+    }
+  }
+
+  const accountById=new Map((DATA.accounts||[]).map(a=>[Number(a.id),a]));
+  const tx=new Map((DATA.transactions||[]).map(t=>[String(t.gid||t.id),t]));
+  const balanceDelta=new Map();
+  const addDelta=(aid,amount)=>{aid=Number(aid);if(!aid||!Number.isFinite(Number(amount)))return;balanceDelta.set(aid,(balanceDelta.get(aid)||0)+Number(amount))};
+
+  for(const gid of patch.transactionDeletes||[]){
+    const old=tx.get(String(gid));if(!old)continue;
+    addDelta(old.accountId,-Number(old.amount||0));
+    tx.delete(String(gid));
+  }
+
+  for(const src of patch.transactionsUpsert||[]){
+    const gid=String(src.gid||src.id||'');if(!gid)continue;
+    const old=tx.get(gid);
+    if(old)addDelta(old.accountId,-Number(old.amount||0));
+    const acct=existingAccounts.get(String(src.accountGid||''))||[...existingAccounts.values()].find(a=>a.name===src.accountName);
+    if(!acct)continue;
+    const item={
+      ...(old||{}),
+      id:old?.id??src.id,
+      gid,
+      accountId:acct.id,
+      accountName:acct.name,
+      kind:src.kind,
+      amount:Number(src.amount||0),
+      date:src.date,
+      description:src.description||'',
+      payee:src.payee||null,
+      categories:Array.isArray(src.categories)?src.categories:[],
+      sourceState:src.sourceState||'NEW',
+      reviewState:old?.reviewState||src.reviewState||'UNREVIEWED',
+      counterpartGid:src.counterpartGid||null
+    };
+    addDelta(acct.id,item.amount);
+    tx.set(gid,item);
+  }
+
+  for(const [aid,delta] of balanceDelta){
+    const acct=accountById.get(Number(aid));if(acct)acct.balance=Math.round((Number(acct.balance||0)+delta)*100)/100;
+  }
+
+  for(const item of tx.values()){
+    if(!item.counterpartGid)continue;
+    const cp=tx.get(String(item.counterpartGid));
+    if(cp){
+      item.counterpartId=cp.id;
+      item.counterpart={gid:cp.gid,accountId:cp.accountId,accountName:cp.accountName};
+    }
+  }
+
+  DATA.transactions=[...tx.values()].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||Number(b.id||0)-Number(a.id||0));
+  DATA.snapshotDate=patch.snapshotDate;
+  DATA.sourceImportedAt=patch.sourceImportedAt;
+  DATA._moneywizAutoStats=patch.stats||null;
+  DATA._externalSnapshot=true;
+}
+async function applyLatestMoneyWizAutoPatchIfNewer(){
+  if(!DATA||!SESSION_PASSWORD||!moneyWizStoredSyncToken())return false;
+  const patch=await loadLatestMoneyWizAutoPatch();if(!patch)return false;
+  const cur=String(DATA.sourceImportedAt||DATA.snapshotDate||''),next=String(patch.sourceImportedAt||patch.snapshotDate||'');
+  if(cur>=next)return false;
+  applyMoneyWizAutoPatch(patch);
+  return true;
+}
+async function refreshMoneyWizAutoPatch(){
+  if(!DATA||!SESSION_PASSWORD||document.hidden)return false;
+  try{
+    if(!await applyLatestMoneyWizAutoPatchIfNewer())return false;
+    await reconcileBrowserProvisionals();
+    await reconcileNativeAgainstSnapshot();
+    if(syncCardAdjustments())await saveState();
+    $('#snapshot').textContent=dshort(DATA.snapshotDate)+' · MoneyWiz';
+    renderAll();
+    const st=DATA._moneywizAutoStats||{};
+    toast('MoneyWiz: '+Number(st.new||0)+' nuevos · '+Number(st.modified||0)+' modificados');
+    return true;
+  }catch(err){console.error('MoneyWiz auto refresh',err);return false}
+}
 async function applyMoneyWizBootstrapIfRequested(){
   const token=moneyWizSyncTokenFromHash();if(!token||!DATA||!DATA_KEY||!SESSION_PASSWORD)return false;
+  rememberMoneyWizSyncToken(token);
   try{
     const patch=await loadMoneyWizBootstrapPatch(token);
     const cur=String(DATA.sourceImportedAt||DATA.snapshotDate||''),next=String(patch.sourceImportedAt||patch.snapshotDate||'');
@@ -349,13 +476,13 @@ async function applyIngestPreview(){const p=INGEST_PREVIEW;if(!p)return;let adde
 function render(v){if(v==='home')renderHome();if(v==='moves')renderMoves();if(v==='scheduled')renderScheduled();if(v==='accounts')renderAccounts();if(v==='cards')renderCards();if(v==='analytics')renderAnalytics();if(v==='control')renderControl();if(v==='ingest')renderIngest()}
 function renderAll(){renderHome();const fresh=txs().filter(t=>{const r=txReview(t);return ['NEW','MODIFIED'].includes(r.source)&&r.state==='UNREVIEWED'}).length;$('#newbadge').textContent=fresh||''}
 $('#restore-control').onclick=async()=>{const n=(STATE.controlDismissed||[]).length;STATE.controlDismissed=[];await saveState();toast(n?`${n} aviso${n===1?'':'s'} restaurado${n===1?'':'s'}`:'No había avisos ocultados');renderControl()};
-async function unlockWithPassword(pw,{remember=true,silent=false}={}){if(!pw)return false;try{const env=await loadEnvelope();SESSION_PASSWORD=pw;DATA_KEY=await derive(pw,b64u(env.enc.salt),env.enc.iter);STATE_KEY=await deriveStateKey(pw);DATA=await decryptPayload(DATA_KEY,env);DATA._externalSnapshot=env.external;STATE=await loadState();if(stateSyncToken())await pullRemoteState();await applyPersistedMoneyWizPatchIfNewer();await reconcileBrowserProvisionals();await reconcileNativeAgainstSnapshot();await applyMoneyWizBootstrapIfRequested();if(syncCardAdjustments())await saveState()}catch(err){SESSION_PASSWORD=null;DATA_KEY=null;STATE_KEY=null;DATA=null;STATE=null;sessionStorage.removeItem(SESSION_PASSWORD_KEY);if(!silent)$('#unlock-error').textContent='Clave incorrecta o datos dañados.';return false}if(remember)sessionStorage.setItem(SESSION_PASSWORD_KEY,pw);$('#password').value='';$('#unlock').style.display='none';$('#app').style.display='block';$('#snapshot').textContent=dshort(DATA.snapshotDate)+(DATA._externalSnapshot?' · sincronizado':' · preview');try{renderAll()}catch(err){console.error('Money Control render error',err);toast('Error de interfaz: los datos siguen cargados')}return true}
+async function unlockWithPassword(pw,{remember=true,silent=false}={}){if(!pw)return false;try{const env=await loadEnvelope();SESSION_PASSWORD=pw;DATA_KEY=await derive(pw,b64u(env.enc.salt),env.enc.iter);STATE_KEY=await deriveStateKey(pw);DATA=await decryptPayload(DATA_KEY,env);DATA._externalSnapshot=env.external;STATE=await loadState();if(stateSyncToken())await pullRemoteState();await applyPersistedMoneyWizPatchIfNewer();await applyMoneyWizBootstrapIfRequested();await applyLatestMoneyWizAutoPatchIfNewer();await reconcileBrowserProvisionals();await reconcileNativeAgainstSnapshot();if(syncCardAdjustments())await saveState()}catch(err){SESSION_PASSWORD=null;DATA_KEY=null;STATE_KEY=null;DATA=null;STATE=null;sessionStorage.removeItem(SESSION_PASSWORD_KEY);if(!silent)$('#unlock-error').textContent='Clave incorrecta o datos dañados.';return false}if(remember)sessionStorage.setItem(SESSION_PASSWORD_KEY,pw);$('#password').value='';$('#unlock').style.display='none';$('#app').style.display='block';$('#snapshot').textContent=dshort(DATA.snapshotDate)+(DATA._externalSnapshot?' · sincronizado':' · preview');try{renderAll()}catch(err){console.error('Money Control render error',err);toast('Error de interfaz: los datos siguen cargados')}return true}
 $('#unlock-form').addEventListener('submit',async e=>{e.preventDefault();$('#unlock-error').textContent='';await unlockWithPassword($('#password').value,{remember:true,silent:false})});
 async function restoreSessionUnlock(){const pw=sessionStorage.getItem(SESSION_PASSWORD_KEY);if(!pw)return false;return unlockWithPassword(pw,{remember:true,silent:true})}
 function lockMoneyControl(){sessionStorage.removeItem(SESSION_PASSWORD_KEY);SESSION_PASSWORD=null;DATA_KEY=null;STATE_KEY=null;location.reload()}
 
 $$('.nav').forEach(b=>b.onclick=()=>setView(b.dataset.v));$('#moves-account-select').onchange=e=>{accountFilter=e.target.value?Number(e.target.value):null;renderMoves()};
 $('#scheduled-account-select').onchange=e=>{scheduledAccountFilter=e.target.value?Number(e.target.value):null;renderScheduled()};$('#create-scheduled').onclick=createScheduledFromForm;$('#create-move').onclick=createManualMovement;$$('.tab').forEach(b=>b.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');filter=b.dataset.f;renderMoves()});$('#closemodal').onclick=()=>$('#modal').classList.remove('show');$('#confirm').onclick=confirmMatch;$('#ing-analyze').onclick=analyzeIngest;$('#ing-apply').onclick=applyIngestPreview;$('#ing-clear').onclick=clearIngest;$('#theme-toggle').onclick=toggleTheme;$('#lock-now').onclick=lockMoneyControl;
-setInterval(()=>refreshExternalSnapshot(),60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshExternalSnapshot()});$('#export-state').onclick=exportStateFile;$('#import-state').onclick=()=>$('#import-state-file').click();$('#import-state-file').onchange=async e=>{await importStateFile(e.target.files?.[0]);e.target.value=''};$('#reset-local').onclick=async()=>{if(confirm('¿Borrar únicamente tus cambios de esta web de prueba?')){localStorage.removeItem('mc_state_v1');STATE=baseState();toast('Estado local reiniciado');renderAll()}};
+setInterval(()=>{refreshExternalSnapshot();refreshMoneyWizAutoPatch()},60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden){refreshExternalSnapshot();refreshMoneyWizAutoPatch()}});$('#export-state').onclick=exportStateFile;$('#import-state').onclick=()=>$('#import-state-file').click();$('#import-state-file').onchange=async e=>{await importStateFile(e.target.files?.[0]);e.target.value=''};$('#reset-local').onclick=async()=>{if(confirm('¿Borrar únicamente tus cambios de esta web de prueba?')){localStorage.removeItem('mc_state_v1');STATE=baseState();toast('Estado local reiniciado');renderAll()}};
 restoreSessionUnlock();
 </script></body></html>
