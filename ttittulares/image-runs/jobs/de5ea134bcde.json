@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-de5ea134bcde-r1-a1-1791203814872",
+  "requested_at": "2026-10-05T12:36:54.872762Z",
+  "updated_at": "2026-10-05T12:36:54.872762Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "de5ea134bcde",
+  "event_id": "de5ea134bcde",
+  "target_name": "Un menor pierde una mano a causa de una granada en las protestas educativas en Francia",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v8_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "title": "Un menor pierde una mano a causa de una granada en las protestas educativas en Francia",
+    "revision": 1,
+    "factual_summary": "Un estudiante de 15 años perdió una mano durante una protesta frente al instituto Auguste Béhal de Lens tras recoger una granada aturdidora policial que explotó. Fue trasladado a un hospital de Lille y su vida no corre peligro. La IGPN investiga las circunstancias.",
+    "tweet_text": "Un joven de 15 años perdió una mano en Lens durante las protestas estudiantiles en Francia tras recoger una granada aturdidora policial del suelo. La IGPN investiga el incidente.\n\n🌶️ Fue hospitalizado y su vida no corre peligro.",
+    "remate": "🌶️ Fue hospitalizado y su vida no corre peligro.",
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Texto en español únicamente cuando sea necesario para el gag. Evitar caricatura genérica, collage, aspecto fotográfico puro e infografía. Un gag principal inmediatamente reconocible y pocos detalles secundarios, solo si refuerzan el chiste.",
+    "image_prompt": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Texto en español únicamente cuando sea necesario para el gag. Evitar caricatura genérica, collage, aspecto fotográfico puro e infografía. Un gag principal inmediatamente reconocible y pocos detalles secundarios, solo si refuerzan el chiste.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nUn joven de 15 años perdió una mano en Lens durante las protestas estudiantiles en Francia tras recoger una granada aturdidora policial del suelo. La IGPN investiga el incidente.\n\n🌶️ Fue hospitalizado y su vida no corre peligro.\n\nREMATE EXACTO:\n🌶️ Fue hospitalizado y su vida no corre peligro.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nUn estudiante de 15 años perdió una mano durante una protesta frente al instituto Auguste Béhal de Lens tras recoger una granada aturdidora policial que explotó. Fue trasladado a un hospital de Lille y su vida no corre peligro. La IGPN investiga las circunstancias.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.lavanguardia.com/internacional/20261005/11651305/protestas-profesores-previa-huelga-francia-afectan-mas-400-centros.html",
+    "citations": [
+      {
+        "source": "La Vanguardia",
+        "url": "https://www.lavanguardia.com/internacional/20261005/11651305/protestas-profesores-previa-huelga-francia-afectan-mas-400-centros.html"
+      },
+      {
+        "source": "El Debate",
+        "url": "https://www.eldebate.com/internacional/20261005/joven-15-anos-pierde-mano-durante-protestas-estudiantiles-francia_466245_amp.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
