@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T15:54:41.707Z",
+  "updated_at": "2026-10-05T15:56:25.313Z",
   "items": [
     {
       "event_id": "2157dee96096",
@@ -497,10 +497,10 @@
       },
       "archive_image_status": "pending",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -515,13 +515,53 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T15:47:01.253851Z",
       "image": {
-        "url": "https://imagenes.20minutos.es/files/image_1920_1080/files/fp/uploads/imagenes/2026/09/27/6ab8fc3780fe03-18917968.r_d.772-6-10000.jpeg",
-        "source": "20minutos",
-        "source_url": "https://www.20minutos.es/internacional/eeuu-confia-seguridad-base-reino-unido-desvincula-retirada-bombarderos-redada-antiterrorista_7045078_0.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "EE.UU. retira todos sus bombarderos de una base aérea en Reino Unido tras un incidente de seguridad - EFE - Agencia de noticias"
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/92bacfd8775d-r1-ai1-791215287935.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "4918fe741995aff4a2ccfff2db2e1529df2e7ffaf02acfb00ad4d6d22389f55a",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2803423,
+        "context_guard": {
+          "version": 3,
+          "event_id": "92bacfd8775d",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-92bacfd8775d-r1-a1-1791215287935"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/92bacfd8775d-r1-ai1-791215287935.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/92bacfd8775d-r1-ai1-791215287935.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "4918fe741995aff4a2ccfff2db2e1529df2e7ffaf02acfb00ad4d6d22389f55a",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2803423,
+        "context_guard": {
+          "version": 3,
+          "event_id": "92bacfd8775d",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-92bacfd8775d-r1-a1-1791215287935"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/92bacfd8775d-r1-ai1-791215287935.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T15:56:25.313Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T15:56:25.313Z"
     }
   ],
   "count": 11
