@@ -28297,10 +28297,10 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 1,
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -28314,15 +28314,53 @@
         "generated": false
       },
       "image": {
-        "url": "https://imagenes.elpais.com/resizer/v2/HP6IMWRODJOK7MTQ3PAGRRWBMU.jpg?auth=b91f2c1d9916f5cb9bd0fa02fa339c485017255b56a73a54d64be281a90547f1&width=1200",
-        "source": "El País · 2/10/2026",
-        "source_url": "https://elpais.com/espana/2026-10-02/rajoy-y-gonzalez-piden-elecciones-ya-y-un-pacto-de-estado-sobre-la-vivienda-y-la-invasion-de-ceuta.html",
-        "alt": "Imagen de archivo relacionada con Rajoy",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/9e7f4fbc3572-r0-ai1-791206551141.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "9b6c31d893bd9609ba5bb305f175e7661976e92a1af660c4c07ab57dc33170b0",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2549907,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "9e7f4fbc3572",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-9e7f4fbc3572-r0-a1-1791206551141"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/9e7f4fbc3572-r0-ai1-791206551141.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/9e7f4fbc3572-r0-ai1-791206551141.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "9b6c31d893bd9609ba5bb305f175e7661976e92a1af660c4c07ab57dc33170b0",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2549907,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "9e7f4fbc3572",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-9e7f4fbc3572-r0-a1-1791206551141"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/9e7f4fbc3572-r0-ai1-791206551141.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T13:29:50.166Z"
     }
   ],
-  "updated_at": "2026-10-05T13:28:10.229Z",
+  "updated_at": "2026-10-05T13:29:50.166Z",
   "count": 563
 }
