@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T05:37:19.555899Z",
+  "updated_at": "2026-10-05T05:39:06.899Z",
   "items": [
     {
       "event_id": "6dfa84a1fe38",
@@ -72,10 +72,10 @@
       "trend_context": [],
       "image_strategy": "ai_plus_fallback",
       "image_mode": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -90,12 +90,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T05:36:19.982169Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005072952_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/madrid/noticia-valdecarros-recibira-luz-verde-ayuntamiento-madrid-construccion-primeras-13371-viviendas-20261005072952.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Valdecarros recibirá luz verde del Ayuntamiento de Madrid para la construcción de las primeras 13.371 viviendas"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/6dfa84a1fe38-r1-ai1-791178642269.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "57a4efaf4ca77e2f4cbb0cc538b72985c973e3e5d521f969929adeb086f9885d",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2854386,
+        "context_guard": {
+          "version": 3,
+          "event_id": "6dfa84a1fe38",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-6dfa84a1fe38-r1-a1-1791178642269"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/6dfa84a1fe38-r1-ai1-791178642269.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005072952_1200.jpg",
@@ -104,7 +118,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Valdecarros recibirá luz verde del Ayuntamiento de Madrid para la construcción de las primeras 13.371 viviendas"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/6dfa84a1fe38-r1-ai1-791178642269.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "57a4efaf4ca77e2f4cbb0cc538b72985c973e3e5d521f969929adeb086f9885d",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2854386,
+        "context_guard": {
+          "version": 3,
+          "event_id": "6dfa84a1fe38",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-6dfa84a1fe38-r1-a1-1791178642269"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/6dfa84a1fe38-r1-ai1-791178642269.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T05:39:06.899Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T05:39:06.899Z"
     }
   ],
   "count": 11
