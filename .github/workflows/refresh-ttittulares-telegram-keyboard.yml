@@ -51,6 +51,13 @@ jobs:
                   seen.add(key);good.append(word)
                   if len(good)==3:
                       break
+              if len(good)<2:
+                  for word in words:
+                      key=unicodedata.normalize("NFD",word).encode("ascii","ignore").decode().lower()
+                      if len(key)>=3 and not key.isdigit() and key not in seen:
+                          seen.add(key);good.append(word)
+                      if len(good)>=2:
+                          break
               return " ".join(good[:3]) or "noticias"
 
           for row in d.get("items",[]):
