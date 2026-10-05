@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-c4d952aa817b-r0-a1-1791222764882",
+  "requested_at": "2026-10-05T17:52:44.882278Z",
+  "updated_at": "2026-10-05T17:52:44.882278Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "c4d952aa817b",
+  "trend_id": "c4d952aa817b",
+  "target_name": "Leire",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "Leire",
+    "revision": 0,
+    "explanation": "TT#9 Leire es tendencia porque el 29-N vuelve a poner el caso Leire Díez en campaña: la jueza Beatriz Biedma declarará el 8 de octubre ante Pedraz como perjudicada por presuntas maniobras para desacreditarla.\n🌶️ La campaña ya trae calendario electoral y judicial.",
+    "closer_text": "🌶️ La campaña ya trae calendario electoral y judicial.",
+    "trend_names": [
+      "Leire"
+    ],
+    "group_title": "Caso Leire Díez y declaración de Beatriz Biedma",
+    "rank_at_explanation": 9,
+    "explained_at": "2026-10-05T19:50:00+02:00",
+    "verification_sources": [
+      {
+        "source": "Europa Press · 5/10/2026",
+        "url": "https://www.europapress.es/nacional/noticia-sanchez-afronta-urnas-psoe-senalado-causas-hijas-zapatero-juez-elecciones-20261005142548.html"
+      },
+      {
+        "source": "RTVE · 30/9/2026",
+        "url": "https://www.rtve.es/noticias/20260930/jueza-badajoz-beatriz-biedma-aporta-pedraz-videos-insultos-amenazas/17247446.shtml"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
