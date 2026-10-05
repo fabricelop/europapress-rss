@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-26bb59be27a6-r1-a1-1791212003079",
-  "requested_at": "2026-10-05T14:53:23.079579Z",
-  "updated_at": "2026-10-05T14:53:23.079579Z",
+  "command_id": "tr-img-recover-26bb59be27a6-r1-a2-1791230430026",
+  "requested_at": "2026-10-05T20:00:30.024Z",
+  "updated_at": "2026-10-05T20:00:30.024Z",
   "status": "REQUESTED",
   "phase": "queued",
   "mode": "automatic_explained_repair",
@@ -14,9 +14,9 @@
   "trend_id": "26bb59be27a6",
   "target_name": "alvise",
   "revision": 1,
-  "attempt": 1,
+  "attempt": 2,
   "auto_repair": true,
-  "auto_repair_attempt": 1,
+  "auto_repair_attempt": 2,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
   "context_snapshot": {
@@ -49,5 +49,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Reparación automática de imagen IA para tendencia Explicada."
+  "message": "Reintento automático tras detectar job IA obsoleto."
 }
