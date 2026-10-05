@@ -1,46 +1,39 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T23:15:00+02:00",
-  "last_completed_at": "2026-10-05T23:28:10+02:00",
-  "updated_at": "2026-10-05T23:28:10+02:00",
+  "last_started_at": "2026-10-05T23:45:00+02:00",
+  "last_completed_at": "2026-10-05T23:46:40+02:00",
+  "updated_at": "2026-10-05T23:46:40+02:00",
   "status": "success",
-  "processed_ids": [
-    "d208a3da8e37",
-    "ff705e6c6b90",
-    "c9d48615f2ca",
-    "d51a0992d740"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "455e00b92028"
-  ],
+  "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T231500+0200",
+    "run_id": "tr-chat-20261005T234500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "current": 4,
-    "total": 4,
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-05T23:15:00+02:00",
-    "updated_at": "2026-10-05T23:28:10+02:00",
-    "finished_at": "2026-10-05T23:28:10+02:00",
+    "started_at": "2026-10-05T23:45:00+02:00",
+    "updated_at": "2026-10-05T23:46:40+02:00",
+    "finished_at": "2026-10-05T23:46:40+02:00",
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 4,
-      "trends_explained": 4,
-      "explanation_groups": 3,
-      "new_cards": 2,
-      "revisions_updated": 4,
-      "grouped_into_existing_card": 2,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
+      "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -50,315 +43,79 @@
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 4,
-      "remates_selected": 2,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "pending_cards_reviewed": 0,
       "pending_remates_repaired": 0,
       "pending_repair_triggered": 1,
       "problematic_top10_retried": 0
     },
-    "message": "Pasada completada: 4 revisiones cerradas; #FirstDates5O y Bélgica materializadas, Cervera y Gomis agrupadas en #CórdobaTenerife. Después de 8 salió del Top 10 antes del reintento. Cola preparing/update vacía. Sin ImageGen directo ni despliegues.",
+    "message": "Pasada completada sin trabajo editorial nuevo: cola, requests activas y reexplicaciones pendientes en 0. Se solicitó refresco del radar por antigüedad y se activó el saneamiento visual de Pendientes. Sin ImageGen directo ni despliegues.",
     "activity": [
       {
-        "at": "2026-10-05T23:20:35+02:00",
-        "phase": "drafting",
-        "trend_id": "d208a3da8e37",
-        "title": "#FirstDates5O",
-        "message": "Redactando explicación factual y comprobando límite de X"
+        "at": "2026-10-05T23:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Iniciando pasada directa · cola inicial 0"
       },
       {
-        "at": "2026-10-05T23:20:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "d208a3da8e37",
-        "title": "#FirstDates5O",
-        "message": "Remate seleccionado para #FirstDates5O"
+        "at": "2026-10-05T23:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes y reexplicaciones antes de cerrar"
       },
       {
-        "at": "2026-10-05T23:21:20+02:00",
-        "phase": "verifying",
-        "trend_id": "d208a3da8e37",
-        "title": "#FirstDates5O",
-        "message": "Tendencia cerrada y verificada en los tres estados"
+        "at": "2026-10-05T23:45:10+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Radar con más de 20 minutos · refresco solicitado"
       },
       {
-        "at": "2026-10-05T23:22:00+02:00",
-        "phase": "verifying",
-        "trend_id": "ff705e6c6b90",
-        "title": "Cervera",
-        "message": "Releyendo estado autoritativo de Cervera"
-      },
-      {
-        "at": "2026-10-05T23:22:35+02:00",
-        "phase": "investigating",
-        "trend_id": "ff705e6c6b90",
-        "title": "Cervera",
-        "message": "Hecho esencial verificado · Cervera pertenece al Córdoba-Tenerife ya explicado"
-      },
-      {
-        "at": "2026-10-05T23:22:50+02:00",
-        "phase": "drafting",
-        "trend_id": "ff705e6c6b90",
-        "title": "Cervera",
-        "message": "Actualizando la explicación del grupo para cubrir a Cervera"
-      },
-      {
-        "at": "2026-10-05T23:23:00+02:00",
-        "phase": "persisting",
-        "trend_id": "ff705e6c6b90",
-        "title": "Cervera",
-        "message": "Guardando Cervera dentro del grupo #CórdobaTenerife"
-      },
-      {
-        "at": "2026-10-05T23:23:25+02:00",
-        "phase": "verifying",
-        "trend_id": "ff705e6c6b90",
-        "title": "Cervera",
-        "message": "Cervera cerrado dentro del grupo #CórdobaTenerife"
-      },
-      {
-        "at": "2026-10-05T23:24:00+02:00",
-        "phase": "verifying",
-        "trend_id": "c9d48615f2ca",
-        "title": "Bélgica",
-        "message": "Releyendo estado autoritativo de Bélgica"
-      },
-      {
-        "at": "2026-10-05T23:25:00+02:00",
-        "phase": "investigating",
-        "trend_id": "c9d48615f2ca",
-        "title": "Bélgica",
-        "message": "Resultado final verificado · Francia 4-1 Bélgica"
-      },
-      {
-        "at": "2026-10-05T23:25:15+02:00",
-        "phase": "drafting",
-        "trend_id": "c9d48615f2ca",
-        "title": "Bélgica",
-        "message": "Redactando explicación factual y comprobando límite de X"
-      },
-      {
-        "at": "2026-10-05T23:25:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "c9d48615f2ca",
-        "title": "Bélgica",
-        "message": "Remate seleccionado para Bélgica"
-      },
-      {
-        "at": "2026-10-05T23:25:50+02:00",
-        "phase": "verifying",
-        "trend_id": "c9d48615f2ca",
-        "title": "Bélgica",
-        "message": "Bélgica cerrada y retirada de la cola"
-      },
-      {
-        "at": "2026-10-05T23:26:00+02:00",
-        "phase": "verifying",
-        "trend_id": "d51a0992d740",
-        "title": "Gomis",
-        "message": "Releyendo estado autoritativo de Gomis"
-      },
-      {
-        "at": "2026-10-05T23:26:35+02:00",
-        "phase": "investigating",
-        "trend_id": "d51a0992d740",
-        "title": "Gomis",
-        "message": "Hecho esencial verificado · Chris Gomis marcó el 1-1 del Córdoba-Tenerife"
-      },
-      {
-        "at": "2026-10-05T23:26:50+02:00",
-        "phase": "drafting",
-        "trend_id": "d51a0992d740",
-        "title": "Gomis",
-        "message": "Actualizando la explicación del grupo para cubrir a Gomis"
-      },
-      {
-        "at": "2026-10-05T23:27:00+02:00",
-        "phase": "persisting",
-        "trend_id": "d51a0992d740",
-        "title": "Gomis",
-        "message": "Guardando Gomis dentro del grupo #CórdobaTenerife"
-      },
-      {
-        "at": "2026-10-05T23:27:25+02:00",
-        "phase": "verifying",
-        "trend_id": "d51a0992d740",
-        "title": "Gomis",
-        "message": "Gomis cerrado dentro del grupo #CórdobaTenerife"
-      },
-      {
-        "at": "2026-10-05T23:27:40+02:00",
+        "at": "2026-10-05T23:46:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · 0 preparing/update; verificando cierres y grupos"
+        "message": "Releyendo main · verificando cola, requests, reexplicaciones y estado del radar"
       },
       {
-        "at": "2026-10-05T23:28:10+02:00",
+        "at": "2026-10-05T23:46:40+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 4 revisiones explicadas; cola preparing/update vacía"
+        "message": "Pasada cerrada · 0 preparing/update y 0 reexplicaciones pendientes"
       }
     ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
+      "updated_at": "2026-10-04T17:29:26.880Z",
       "total_ratings": 153,
-      "recent_considered": 100,
-      "updated_at": "2026-10-04T17:29:26.880Z"
+      "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "d208a3da8e37",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "F1",
-            "total": 8.2,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "F2",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "F3",
-            "total": 7.3,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "F4",
-            "total": 7.1,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "F5",
-            "total": 7.4,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "F1",
-        "selected_score": 8.2,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "c9d48615f2ca",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "B1",
-            "total": 8.3,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 2,
-            "punch": 1.9,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "B2",
-            "total": 7.7,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "B3",
-            "total": 7.5,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "B4",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "B5",
-            "total": 7.6,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "B1",
-        "selected_score": 8.3,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [
-      "455e00b92028"
-    ],
+    "remaining_problematic_ids": [],
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261005T231500+0200",
+      "run_id": "tr-chat-20261005T234500+0200",
       "status": "triggered",
       "direct_imagegen": false
     },
     "radar": {
       "captured_at": "2026-10-05T23:18:31+02:00",
       "queue_count": 0,
-      "processed": [
-        "#FirstDates5O",
-        "Cervera",
-        "Bélgica",
-        "Gomis"
-      ],
-      "refresh_requested": true,
-      "problematic_skipped_after_top10_exit": [
-        "Después de 8"
-      ]
+      "processed": [],
+      "refresh_requested": true
     }
   },
   "visual_repair": {
     "requested": true,
-    "run_id": "tr-chat-20261005T231500+0200",
+    "run_id": "tr-chat-20261005T234500+0200",
     "status": "triggered",
     "direct_imagegen": false
   }
