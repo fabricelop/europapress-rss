@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-97392049c7ee-r0-a1-1791197556459",
+  "requested_at": "2026-10-05T10:52:36.458564Z",
+  "updated_at": "2026-10-05T10:52:36.458564Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "97392049c7ee",
+  "trend_id": "97392049c7ee",
+  "target_name": "Abascal",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "Abascal",
+    "revision": 0,
+    "explanation": "TT#3 Abascal es tendencia por su reacción al 29-N: celebra el adelanto, pide desconfiar de las encuestas y anima a votar presencialmente; Ayuso también ha pedido no usar el voto por correo.",
+    "closer_text": "",
+    "trend_names": [
+      "Abascal",
+      "Votar"
+    ],
+    "group_title": "Reacciones sobre el voto tras el adelanto del 29-N",
+    "rank_at_explanation": 3,
+    "explained_at": "2026-10-05T12:49:30+02:00",
+    "verification_sources": [
+      {
+        "source": "EFE · 5/10/2026",
+        "url": "https://efe.com/espana/2026-10-05/abascal-elecciones-generales-29-noviembre/"
+      },
+      {
+        "source": "Cadena SER · 5/10/2026",
+        "url": "https://cadenaser.com/cmadrid/2026/10/05/ayuso-habla-ya-de-un-posible-pucherazo-ante-el-adelanto-electoral-y-pide-no-votar-por-correo-va-a-ser-la-campana-mas-sucia-radio-madrid/"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
