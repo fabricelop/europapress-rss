@@ -15,14 +15,14 @@
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 55%)}button{font:inherit;touch-action:manipulation}a{touch-action:manipulation}
 .top{position:sticky;top:0;z-index:20;background:#0b0e14ee;backdrop-filter:blur(14px);border-bottom:1px solid #252b36;padding:13px max(12px,env(safe-area-inset-left));display:flex;align-items:center;gap:10px}.brand{font-size:19px;font-weight:850}.sub{font-size:11px;color:#8f9bad}.spacer{flex:1}
-.iconbtn{border:1px solid #303846;background:#141a24;color:#edf3ff;border-radius:11px;height:42px;padding:0 12px;font-weight:750}.iconbtn b{margin-left:3px}.iconbtn.tweets{min-width:92px;position:relative}.iconbtn.tweets.hasReady{background:#631d27;border-color:#b64b59;color:#fff}.unreadBadge{display:none;position:absolute;top:-7px;right:-7px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#c63e4d;color:#fff;border:2px solid #0b0e14;font-size:11px;font-weight:900;align-items:center;justify-content:center;line-height:1}.unreadBadge.show{display:inline-flex}
+.iconbtn{border:1px solid #303846;background:#141a24;color:#edf3ff;border-radius:11px;height:42px;padding:0 12px;font-weight:750}.iconbtn b{margin-left:3px}.iconbtn.tweets{min-width:92px;position:relative}.iconbtn.tweets.hasReady{background:#631d27;border-color:#b64b59;color:#fff}
 main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}.summary h1{font-size:23px;margin:0 0 5px}.meta{color:#8f9bad;font-size:12px;line-height:1.45}.badge{border:1px solid #343c4a;background:#131923;border-radius:12px;padding:7px 10px;font-size:11px;color:#c7d1df;max-width:100%;line-height:1.35}.badge.good{border-color:#2f8f5b;background:#102d20;color:#9ee6b8}.badge.warn{border-color:#a77b1b;background:#3a2b0d;color:#ffd978}.badge.bad{border-color:#a83b46;background:#38171a;color:#ffadb5}.scheduleTiming{line-height:1.55}.scheduleTiming .late{color:#ff8d99}.scheduleTiming .ok{color:#9fdfbb}.workingCount{margin-top:4px;color:#ffc178;font-weight:800;border:0;background:transparent;padding:0;cursor:pointer;text-align:left}.workingCount:not(.idle){text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}.workingCount.idle{color:#8f9bad;font-weight:650;cursor:default;text-decoration:none}.workingItems{display:grid;gap:8px;margin:12px 0}.workingItem{border:1px solid #344052;background:#0d131c;border-radius:11px;padding:10px 11px}.workingItemName{font-weight:800;color:#edf3ff}.workingItemMeta{margin-top:4px;font-size:11px;color:#91a0b4}
 
 .runbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #354255;background:#101721;border-radius:14px;padding:11px 12px;margin:0 0 14px;min-height:68px}.runmain{display:grid;gap:4px;min-width:0;flex:1}.runline{display:flex;align-items:center;gap:8px;min-width:0}.runbar strong{font-size:13px;min-width:0}.runbar span{font-size:11px;color:#8f9bad;line-height:1.35}.runbar span.running{color:#ffc178}.runbar span.done{color:#8ee6a8}.runbar span.error{color:#ff9ca5}.runbar .primary:disabled{opacity:.45;cursor:not-allowed}.runbar .primary[hidden]{display:none}.runbar.active{align-items:stretch}.runbar.active .runmain{width:100%}.runprogress{height:5px;background:#252f3c;border-radius:999px;overflow:hidden;margin-top:4px}.runprogress[hidden]{display:none}.runprogress i{display:block;height:100%;width:0;background:#6f8fb8;border-radius:999px;transition:width .35s ease}.runactivity{display:grid;gap:3px;margin-top:5px;padding-top:5px;border-top:1px solid #273241}.runactivity:empty{display:none}.runactivity div{font-size:10px;line-height:1.3;color:#7f91a8;white-space:normal;overflow-wrap:anywhere}.runactivity div:last-child{color:#c4d3e6}.runactivity time{color:#697c94;margin-right:5px}.incidentBtn{border:1px solid #7b5b25;background:#2a2114;color:#ffc178;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:850;cursor:pointer;white-space:nowrap}.incidentBtn.severe{border-color:#7d3038;background:#2a171a;color:#ff9ca5}.diag{white-space:pre-wrap;word-break:break-word;background:#090d13;border:1px solid #2d3745;border-radius:11px;padding:11px;max-height:44vh;overflow:auto;color:#cbd7e8;font:11px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace}
 .list{display:grid;gap:9px}.card{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:11px;background:#11161e;border:1px solid #262e3a;border-radius:15px;padding:12px 13px;min-height:72px}.card.pending{background:#2a1418;border-color:#7a3039}.card.inprogress{background:#2a2412;border-color:#7b6728}.card.explained{background:#102a47;border-color:#2d5b88}.card.problematic{background:#24172f;border-color:#66417f}.card.dismissed{background:#171b21;border-color:#3e4650}.card.explaining{background:#13281d;border-color:#376d4c}.card.novelty{background:#2e1f11;border-color:#8a5727}.entryTime{font-size:11px;color:#8fa4bd;margin-left:auto;white-space:nowrap;text-align:right;line-height:1.25}.entryAge{display:block;color:#6f86a1;margin-top:2px}.rank{font-weight:900;font-size:20px;color:#778399;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}.rankMove{font-size:14px;line-height:1;margin-top:5px;font-weight:950}.rankMove.up{color:#54d881}.rankMove.down{color:#ff7180}.rankMove.flat{color:#9aa6b7}.rankMove.new{color:#72a7ff;font-size:10px;letter-spacing:.04em}.nameLine{display:flex;align-items:center;gap:8px;min-width:0}.name{font-weight:790;font-size:16px;line-height:1.2;overflow-wrap:anywhere}.infoBtn{display:none;width:24px;height:24px;min-width:24px;border-radius:50%;border:1px solid #4b5c72;background:#18212f;color:#b9c9dc;font-size:13px;font-weight:900;align-items:center;justify-content:center;padding:0}.infoBtn.show{display:inline-flex}.problemInfo{display:none;margin-top:7px;padding:8px 9px;border:1px solid #5d4932;border-radius:9px;background:#17130f;color:#e0c7a1;font-size:11px;line-height:1.4}.problemInfo.show{display:block}.state{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:6px;color:#aab5c5}.state .explainable{cursor:pointer;color:#8ee6a8;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}.dot{width:8px;height:8px;border-radius:50%}.dot.pending{background:#ff6574}.dot.inprogress{background:#f1c94d}.dot.explained{background:#4b91ff}.dot.dismissed{background:#778399}.dot.problematic{background:#a66be2}.dot.explaining{background:#42c879}.dot.novelty{background:#ff993d}.detail{font-size:11px;color:#7f8b9c;margin-top:4px}.slot{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:7px;min-width:112px}.slot .action{width:100%}.action{border:1px solid #38465a;background:#18212f;color:#dce7f7;border-radius:10px;padding:8px 10px;font-weight:750;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.action.xsearch{color:#eef5ff;border-color:#3b5878}.action.prepare{border-color:#5576a6;background:#1b2d46;color:#dcecff}.action:disabled{opacity:.55;cursor:default}.action.warn{color:#ffd18b}
 .radarBlock{margin-top:24px;padding-top:18px;border-top:1px solid #252d38}.radarHead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:10px}.radarHead h2{font-size:19px;margin:0}.radarHint{font-size:11px;color:#8491a3;text-align:right}.radarCard{border-color:#3a4657}.radarCard .rank{font-size:17px}.signal{color:#9fc7ff}.empty{padding:42px 10px;text-align:center;color:#9aa6b7}
 .sheet{position:fixed;inset:0;background:#0009;z-index:50;display:none;align-items:flex-end}.sheet.show{display:flex}.panel{width:100%;max-width:560px;margin:0 auto;background:#111720;border:1px solid #354052;border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom))}.panel h2{margin:0 0 8px}.panel p{font-size:13px;color:#9eabba;line-height:1.45}#explainedText{white-space:pre-line}.panel input{width:100%;background:#0a0f16;border:1px solid #364153;color:#eef3fa;border-radius:11px;padding:12px;font:inherit;margin-bottom:11px}.panel textarea{width:100%;min-height:130px;background:#0a0f16;border:1px solid #364153;color:#eef3fa;border-radius:11px;padding:12px;font:inherit;margin:10px 0 11px;resize:vertical}.row{display:flex;gap:8px}.row button{flex:1}.primary,.secondary{border:1px solid #34445b;background:#18212f;color:#dce7f7;border-radius:11px;padding:10px 11px;font-weight:760}.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;transition:.2s;background:#1a2330;border:1px solid #3b485b;border-radius:10px;padding:9px 12px;z-index:80;max-width:90vw;text-align:center;font-size:12px}.toast.show{opacity:1;transform:translateX(-50%)}
-.top{display:block}.topLine{display:flex;align-items:center;gap:8px}.nav3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:8px}.navTab{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:39px;border:1px solid #303846;background:#141a24;color:#dce7f7;border-radius:10px;padding:7px 5px;font-weight:800;text-decoration:none;white-space:nowrap}.navTab.active{border-color:#5e789d;background:#202a39;color:#fff}.navTab.pending{border-color:#347fb9;background:#103150;color:#b9e1ff}.navTab.pending.hasReady{background:#174d79;border-color:#64b6f2;color:#fff}@media(max-width:560px){.top{padding-top:max(10px,env(safe-area-inset-top))}.brand{font-size:17px}.navTab{font-size:12px;padding:7px 3px}main{padding:12px 9px 30px}.summary{grid-template-columns:1fr}.card{grid-template-columns:34px minmax(0,1fr) auto;padding:11px 9px}.rank{font-size:17px}.name{font-size:15px}.action{padding:7px 8px;font-size:12px}}
+.top{display:block}.topLine{display:flex;align-items:center;gap:8px}.nav3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:8px}.navTab{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:39px;border:1px solid #303846;background:#141a24;color:#dce7f7;border-radius:10px;padding:7px 5px;font-weight:800;text-decoration:none;white-space:nowrap}.navTab.active{border-color:#5e789d;background:#202a39;color:#fff}.navTab.pending.hasReady{background:#631d27;border-color:#b64b59;color:#fff}@media(max-width:560px){.top{padding-top:max(10px,env(safe-area-inset-top))}.brand{font-size:17px}.navTab{font-size:12px;padding:7px 3px}main{padding:12px 9px 30px}.summary{grid-template-columns:1fr}.card{grid-template-columns:34px minmax(0,1fr) auto;padding:11px 9px}.rank{font-size:17px}.name{font-size:15px}.action{padding:7px 8px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -30,7 +30,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
   <div class="topLine"><div class="brand">TTendencias</div><div class="spacer"></div><button class="iconbtn" id="refreshBtn" title="Recargar datos">↻</button><button class="iconbtn" id="settingsBtn" title="Acceso">⚙</button></div>
   <nav class="nav3">
     <a class="navTab active" id="top10Btn" href="/ttendencias/">TOP 10</a>
-    <a class="navTab pending" id="preparedBtn" href="/ttendencias/explicadas/" title="Ver pendientes de publicar">Pendientes<span class="unreadBadge" id="unreadExplainedBadge"></span></a>
+    <a class="navTab pending" id="preparedBtn" href="/ttendencias/explicadas/" title="Ver pendientes de publicar">Pendientes</a>
     <a class="navTab" id="historyBtn" href="/ttendencias/historico/" title="Ver histórico">Histórico</a>
   </nav>
 </header>
@@ -49,13 +49,10 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
 
 <div class="sheet" id="sheet"><div class="panel">
   <h2>Acceso</h2>
-  <p>Las acciones de control requieren el token privado. Puedes activar avisos silenciosos y agrupados cuando entren nuevas tendencias en el Top 10.</p>
+  <p>Las acciones de control requieren el token privado.</p>
   <input id="tokenInput" type="password" autocomplete="off" placeholder="Token de control">
   <div class="row"><button class="secondary" id="cancelToken">Cancelar</button><button class="secondary" id="testToken">Probar</button><button class="primary" id="saveToken">Guardar</button></div>
   <div class="meta" id="accessStatus" style="margin-top:10px"></div>
-  <button class="secondary" id="badgeBtn" type="button" style="width:100%;margin-top:14px">Activar avisos de nuevos TT</button>
-  <button class="secondary" id="pushTestBtn" type="button" style="width:100%;margin-top:8px;display:none">Enviar aviso de prueba</button>
-  <div class="meta" id="badgeStatus" style="margin-top:8px"></div>
 </div></div>
 <div class="sheet" id="problemRetrySheet"><div class="panel">
   <h2>Pista para explicar tendencia</h2>
@@ -151,68 +148,16 @@ function freshnessText(v){
  if(mins<=30)return "● Atención: "+mins+" min sin nueva captura";
  return "● Desactualizado: "+mins+" min";
 }
-async function updateBadge(unread=0){
- const n=Math.max(0,Number(unread)||0);
+async function retireLegacyNotifications(){
+ document.title="TTendencias Control";
+ try{if("clearAppBadge" in navigator)await navigator.clearAppBadge()}catch(_){}
  try{
-   if(n&&"setAppBadge" in navigator)await navigator.setAppBadge(n);
-   else if(!n&&"clearAppBadge" in navigator)await navigator.clearAppBadge();
+   if("serviceWorker" in navigator&&"PushManager" in window){
+     const reg=await navigator.serviceWorker.ready;
+     const sub=await reg.pushManager.getSubscription();
+     if(sub)await sub.unsubscribe();
+   }
  }catch(_){}
- document.title=(n?"("+n+") ":"")+"TTendencias Control";
-}
-
-function appServerKey(value){
- const s=String(value||"").replace(/-/g,"+").replace(/_/g,"/");
- const raw=atob(s+"=".repeat((4-s.length%4)%4)),out=new Uint8Array(raw.length);
- for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);
- return out;
-}
-async function currentPushSubscription(){
- if(!("serviceWorker" in navigator)||!("PushManager" in window))return null;
- const reg=await navigator.serviceWorker.ready;
- return reg.pushManager.getSubscription();
-}
-async function refreshPushStatus(){
- const s=$("badgeStatus"),b=$("badgeBtn"),t=$("pushTestBtn");
- if(!("serviceWorker" in navigator)||!("PushManager" in window)||typeof Notification==="undefined"){
-   s.textContent="Web Push no está disponible aquí. En iPhone, abre la app instalada desde la pantalla de inicio.";
-   b.textContent="Avisos no disponibles";b.disabled=true;t.style.display="none";return;
- }
- b.disabled=false;
- const sub=await currentPushSubscription().catch(()=>null);
- if(Notification.permission==="denied"){
-   s.textContent="Avisos bloqueados en los ajustes del sistema/navegador.";
-   b.textContent="Avisos bloqueados";b.disabled=true;t.style.display="none";return;
- }
- if(sub){
-   s.textContent="✓ Avisos de nuevos TT · silenciosos · agrupados";
-   b.textContent="Desactivar avisos";t.style.display="block";return;
- }
- s.textContent=Notification.permission==="granted"?"Permiso concedido, pero este dispositivo aún no está suscrito.":"Avisos al móvil desactivados.";
- b.textContent="Activar avisos de nuevos TT";t.style.display="none";
-}
-async function activatePush(){
- if(!token()){showToast("Guarda primero el token de control");$("tokenInput").focus();return}
- if(!("serviceWorker" in navigator)||!("PushManager" in window)||typeof Notification==="undefined"){showToast("Web Push no disponible en este dispositivo");return}
- let permission=Notification.permission;
- if(permission==="default")permission=await Notification.requestPermission();
- if(permission!=="granted"){showToast("Permiso de notificaciones no concedido");await refreshPushStatus();return}
- const reg=await navigator.serviceWorker.ready;
- let sub=await reg.pushManager.getSubscription();
- if(!sub){
-   const r=await fetch(API+"?view=push-key&t="+Date.now(),{cache:"no-store"});
-   const d=await r.json();
-   if(!r.ok||!d?.publicKey)throw new Error(d?.error||"No se pudo obtener la clave Web Push");
-   sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:appServerKey(d.publicKey)});
- }
- await api("push-subscribe",[],{subscription:sub.toJSON()});
- await updateBadge(model?.pendingExplainedRecent?.length||0);showToast("Avisos de nuevos TT activados");await refreshPushStatus();
-}
-async function deactivatePush(){
- const sub=await currentPushSubscription();
- if(!sub){await refreshPushStatus();return}
- await api("push-unsubscribe",[],{subscription:sub.toJSON()});
- await sub.unsubscribe();
- showToast("Avisos desactivados");await refreshPushStatus();
 }
 
 function explanationNames(x){
@@ -388,12 +333,10 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
    .map(x=>({...x,_rank:rankAtExplanation(x)}))
    .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x);
  const serverPending=Array.isArray(explained.pending_items)?explained.pending_items:null;
- const pendingExplainedRecent=serverPending
-   ? [...serverPending]
-   : collapsePendingExplained([...(explained.items||[])]
-       .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x)
-       .filter(pendingExplainedEligible)
-       .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||""))));
+ const pendingExplainedRecent=collapsePendingExplained([...(serverPending||explained.items||[])]
+   .map(x=>archivedLocal.has(x.copy_key)?({...x,copied:true,copy_source:x.copy_source||"local-archive-guard"}):x)
+   .filter(pendingExplainedEligible)
+   .sort((a,b)=>String(b.explained_at||"").localeCompare(String(a.explained_at||""))));
  const sourceTotal=Object.keys(recent.sources||{}).length;
  const sourceProblemCount=Math.max(0,sourceTotal-Number(recent.source_count||0));
  return {captured_at:recent.captured_at||null,reliability:recent.reliability||null,source_count:recent.source_count||0,non_stale_source_count:recent.non_stale_source_count||0,source_total:sourceTotal,source_problem_count:sourceProblemCount,items,upcoming,progress,prepared:preparedItems,explainedRecent,pendingExplainedRecent,elaboratingItems:processing.map(x=>({id:x.id||null,name:x.name||"Tendencia",rank:Number(x.rank||0),status:String(x.status||""),revision:Number(x.revision||0),requested_at:x.requested_at||null,reexplain:Boolean(x.reexplain),rewrite_instruction:x.rewrite_instruction||""})),health,editorial_config:editorialConfig||{},editorial_queue:editorialQueue||{items:[]}};
@@ -410,12 +353,8 @@ function render(){
  quality.classList.add(total>0&&operativas/total>=0.7?"good":total>0&&operativas/total>=0.45?"warn":"bad");
  const elaboratingItems=model.elaboratingItems||[],elaborating=elaboratingItems.length;
  const working=$("workingCount");working.textContent="En elaboración: "+elaborating;working.classList.toggle("idle",elaborating===0);working.disabled=elaborating===0;working.title=elaborating?"Ver tendencias en elaboración":"";
- const unread=(model.pendingExplainedRecent||[]).length;
- const unreadBadge=$("unreadExplainedBadge");
- unreadBadge.textContent=unread>99?"99+":String(unread);
- unreadBadge.classList.toggle("show",unread>0);
- $("preparedBtn").classList.toggle("hasReady",unread>0);
- updateBadge(unread);
+ const hasPending=(model.pendingExplainedRecent||[]).length>0;
+ $("preparedBtn").classList.toggle("hasReady",hasPending);
  const list=$("list");list.innerHTML="";
  for(const item of model.items||[]){
    const card=document.createElement("div");card.className="card "+item.status;
@@ -786,12 +725,10 @@ $("incidentClose").onclick=()=>$("incidentSheet").classList.remove("show");
 $("incidentCopy").onclick=async()=>{try{await navigator.clipboard.writeText(buildDiagnostic(lastRunTelemetry||{}));showToast("Diagnóstico copiado")}catch(_){showToast("No se pudo copiar el diagnóstico")}};
 $("incidentSheet").addEventListener("click",e=>{if(e.target===$("incidentSheet"))$("incidentSheet").classList.remove("show")});
 $("refreshBtn").onclick=()=>{showToast("Recargando datos");load();loadRunStatus();refreshMainImageMonitor()};
-$("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado":"Sin token guardado";$("sheet").classList.add("show");refreshPushStatus().catch(()=>{});loadRunStatus()};
+$("settingsBtn").onclick=()=>{$("tokenInput").value=token();$("accessStatus").textContent=token()?"Token guardado":"Sin token guardado";$("sheet").classList.add("show");loadRunStatus()};
 $("cancelToken").onclick=()=>$("sheet").classList.remove("show");
 $("testToken").onclick=async()=>{const v=$("tokenInput").value.trim();if(!v)return;$("accessStatus").textContent="Comprobando…";try{const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+v},body:JSON.stringify({action:"ping"})});const d=await r.json();$("accessStatus").textContent=r.ok&&d?.backend?.ok?"✓ Acceso correcto · GitHub operativo":r.status===401?"✕ Token no válido":"⚠ Backend no disponible"}catch(_){$("accessStatus").textContent="✕ No se pudo comprobar"}};
-$("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado");refreshPushStatus().catch(()=>{})};
-$("badgeBtn").onclick=async()=>{try{const sub=await currentPushSubscription();if(sub)await deactivatePush();else await activatePush()}catch(e){showToast(e.message||"No se pudieron cambiar los avisos");await refreshPushStatus().catch(()=>{})}};
-$("pushTestBtn").onclick=async()=>{try{showToast("Enviando aviso de prueba…");const d=await api("push-test",[]);showToast(d.delivered>0?"Aviso de prueba enviado":"No se pudo entregar el aviso")}catch(e){showToast(e.message||"Falló el aviso de prueba")}};
+$("saveToken").onclick=()=>{const v=$("tokenInput").value.trim();if(v)localStorage.setItem("ttendencias-control-token",v);else localStorage.removeItem("ttendencias-control-token");$("sheet").classList.remove("show");showToast(v?"Token guardado":"Token eliminado")};
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").classList.remove("show")});
 async function refreshShellIfNeeded(){
  try{
@@ -804,7 +741,7 @@ async function refreshShellIfNeeded(){
 }
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)queuePassiveRefresh(250)});window.addEventListener("pageshow",()=>queuePassiveRefresh(250));window.addEventListener("focus",()=>queuePassiveRefresh(300));window.addEventListener("storage",e=>{if(e.key==="ttendencias-last-action")queuePassiveRefresh(150)});
 if("serviceWorker" in navigator){
- navigator.serviceWorker.register("/ttendencias/sw.js",{updateViaCache:"none"}).then(reg=>reg.update().catch(()=>{})).catch(()=>{});
+ navigator.serviceWorker.register("/ttendencias/sw.js",{updateViaCache:"none"}).then(reg=>{reg.update().catch(()=>{});retireLegacyNotifications()}).catch(()=>{});
  navigator.serviceWorker.addEventListener("controllerchange",()=>{
    if(sessionStorage.getItem("ttendencias-sw-reloaded")==="1")return;
    sessionStorage.setItem("ttendencias-sw-reloaded","1");
