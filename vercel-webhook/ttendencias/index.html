@@ -557,7 +557,11 @@ function runVisual(s){
    head.textContent="Ejecución";el.textContent=s?.enabled===false?"Disparo móvil no disponible":"Lista para ejecutar";
  }
 }
-function scheduleRunPoll(fast){clearTimeout(runPoll);runPoll=setTimeout(loadRunStatus,fast?3000:60000)}
+function scheduleRunPoll(fast){
+ clearTimeout(runPoll);
+ if(document.hidden){runPoll=null;return}
+ runPoll=setTimeout(loadRunStatus,fast?3000:300000)
+}
 function friendlyRunError(value,retryAt){
  const raw=String(value||"");const when=retryAt?new Date(retryAt):null;
  return (/rate limit|temporalmente limitado/i.test(raw)?("GitHub temporalmente limitado"+(when&&!Number.isNaN(when.getTime())?" · reintento tras "+hhmm(when):"")+" · datos conservados"):(raw.slice(0,180)||"No se pudo consultar el estado de ejecución"));
@@ -620,13 +624,18 @@ function updateMainImageControl(){
  if(bar)bar.classList.remove("active")
 }
 async function refreshMainImageMonitor(){
+ if(document.hidden){clearTimeout(imageMonitorPoll);imageMonitorPoll=null;return}
+ let active=false;
  try{
    const r=await fetch(RUN_STATUS_API+"?view=image-monitor&t="+Date.now(),{cache:"no-store"});
    const d=await r.json().catch(()=>({}));
-   if(r.ok&&d?.ok){imageMonitorData=d;updateMainImageControl()}
+   if(r.ok&&d?.ok){
+     imageMonitorData=d;updateMainImageControl();
+     active=Number(d.active_count||0)>0
+   }
  }catch(_){}
  clearTimeout(imageMonitorPoll);
- imageMonitorPoll=setTimeout(refreshMainImageMonitor,15000)
+ imageMonitorPoll=setTimeout(refreshMainImageMonitor,active?15000:300000)
 }
 
 async function api(action,names,extra={}){
@@ -739,7 +748,12 @@ async function refreshShellIfNeeded(){
  }catch(_){}
  return false
 }
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)queuePassiveRefresh(250)});window.addEventListener("pageshow",()=>queuePassiveRefresh(250));window.addEventListener("focus",()=>queuePassiveRefresh(300));window.addEventListener("storage",e=>{if(e.key==="ttendencias-last-action")queuePassiveRefresh(150)});
+document.addEventListener("visibilitychange",()=>{
+ if(document.hidden){clearTimeout(runPoll);clearTimeout(imageMonitorPoll);return}
+ queuePassiveRefresh(250);loadRunStatus();refreshMainImageMonitor()
+});
+window.addEventListener("pageshow",()=>{queuePassiveRefresh(250);loadRunStatus();refreshMainImageMonitor()});
+window.addEventListener("focus",()=>queuePassiveRefresh(300));window.addEventListener("storage",e=>{if(e.key==="ttendencias-last-action")queuePassiveRefresh(150)});
 if("serviceWorker" in navigator){
  navigator.serviceWorker.register("/ttendencias/sw.js",{updateViaCache:"none"}).then(reg=>{reg.update().catch(()=>{});retireLegacyNotifications()}).catch(()=>{});
  navigator.serviceWorker.addEventListener("controllerchange",()=>{
@@ -748,6 +762,6 @@ if("serviceWorker" in navigator){
    location.reload();
  });
 }
-if(model)render();if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshMainImageMonitor();setInterval(()=>{if(!document.hidden)queuePassiveRefresh(0)},60000);setInterval(()=>{if(!document.hidden&&model)renderScheduleTiming()},15000);
+if(model)render();if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshMainImageMonitor();setInterval(()=>{if(!document.hidden)queuePassiveRefresh(0)},300000);setInterval(()=>{if(!document.hidden&&model)renderScheduleTiming()},15000);
 </script>
 </body></html>
