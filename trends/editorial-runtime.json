@@ -1,8 +1,8 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T02:45:00+02:00",
-  "last_completed_at": "2026-10-05T02:52:00+02:00",
+  "last_started_at": "2026-10-05T03:15:00+02:00",
+  "last_completed_at": "2026-10-05T03:19:00+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [
@@ -10,31 +10,29 @@
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T02:52:00+02:00",
+  "updated_at": "2026-10-05T03:19:00+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [
     "f354c321182d"
   ],
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "run_id": "tr-chat-20261005T024500+0200",
+    "run_id": "tr-chat-20261005T031500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-05T02:45:00+02:00",
-    "updated_at": "2026-10-05T02:52:00+02:00",
-    "finished_at": "2026-10-05T02:52:00+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-05T03:15:00+02:00",
+    "updated_at": "2026-10-05T03:19:00+02:00",
+    "finished_at": "2026-10-05T03:19:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-05T02:45:00+02:00",
+    "requested_at": "2026-10-05T03:15:00+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -44,12 +42,13 @@
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "remates_selected": 1,
+      "remates_selected": 0,
       "remates_omitted": 0,
-      "pending_cards_checked": 11,
-      "pending_visual_repair_requested": 3
+      "pending_cards_checked": 0,
+      "pending_candidates_reconciled": 3,
+      "pending_visual_repair_requested": 0
     },
-    "message": "Ejecución cerrada · 1/1 tendencia explicada y cola final verificada",
+    "message": "Pasada directa completada sin trabajo editorial nuevo. Cola final 0; no hay reexplicaciones ni Pendientes vigentes tras reconciliar grupos archivados/copied. El saneamiento visual se disparó y terminó correctamente sin crear jobs nuevos, porque no eran necesarios.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -59,81 +58,84 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "de137cffcc1a",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": 8.2,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-05T02:45:00+02:00",
+        "at": "2026-10-05T03:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando ejecución · 1 tendencia activa"
+        "message": "Inicio de pasada directa · cola autoritativa 0"
       },
       {
-        "at": "2026-10-05T02:46:00+02:00",
-        "phase": "verifying",
-        "trend_id": "de137cffcc1a",
-        "title": null,
-        "message": "Releyendo estado autoritativo"
-      },
-      {
-        "at": "2026-10-05T02:47:00+02:00",
-        "phase": "investigating",
-        "trend_id": "de137cffcc1a",
-        "title": null,
-        "message": "Contrastando fuentes actuales"
-      },
-      {
-        "at": "2026-10-05T02:48:00+02:00",
-        "phase": "drafting",
-        "trend_id": "de137cffcc1a",
-        "title": null,
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-05T02:48:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "de137cffcc1a",
-        "title": null,
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-05T02:49:30+02:00",
-        "phase": "persisting",
-        "trend_id": "de137cffcc1a",
-        "title": null,
-        "message": "Guardando ficha Explicada y cerrando request"
-      },
-      {
-        "at": "2026-10-05T02:50:30+02:00",
-        "phase": "verifying",
-        "trend_id": "de137cffcc1a",
-        "title": null,
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-05T02:51:15+02:00",
+        "at": "2026-10-05T03:15:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 11 tarjetas vigentes; 3 reparaciones visuales pendientes"
+        "message": "Revisando solicitudes activas y reexplicaciones"
       },
       {
-        "at": "2026-10-05T02:52:00+02:00",
+        "at": "2026-10-05T03:15:20+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes y estado de copia/archivo"
+      },
+      {
+        "at": "2026-10-05T03:15:25+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual reactivado por trigger de ejecución"
+      },
+      {
+        "at": "2026-10-05T03:18:20+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparador visual completado correctamente"
+      },
+      {
+        "at": "2026-10-05T03:18:45+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Reconciliando candidatos con grupos archivados/copied"
+      },
+      {
+        "at": "2026-10-05T03:18:50+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Sin Pendientes vigentes · 3 aparentes candidatos ya estaban archivados por grupo"
+      },
+      {
+        "at": "2026-10-05T03:19:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Ejecución cerrada · 1/1 tendencia explicada y cola final verificada"
+        "message": "Ejecución completada · cola editorial final 0"
       }
-    ]
+    ],
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": [],
+    "radar": {
+      "captured_at": "2026-10-05T03:11:27+02:00",
+      "top10": [
+        "#ConexiónHonduras4",
+        "Asraf",
+        "Frente Amplio",
+        "Lula",
+        "Sanchez",
+        "Omar",
+        "#NASCARenDAZN",
+        "#BahrainGP",
+        "Claudia Pina",
+        "#elsecreto"
+      ],
+      "new_entries": []
+    }
   },
   "summary": {
     "trends_processed": 1,
