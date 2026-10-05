@@ -41,5 +41,6 @@ jobs:
           console.log('MONEY_CONTROL_DEV_VALIDATED');
           NODE
           node --check vercel-webhook/api/money-control-interpret.js
+          node --check vercel-webhook/api/money-control-moneywiz-upload.js
       - name: Publicar preview mínima Money Control
         run: node .github/scripts/deploy-money-control-dev.mjs
