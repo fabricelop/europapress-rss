@@ -29,7 +29,7 @@ const f=await invoke(forecast,location);
 assert.equal(f.status,200,'forecast HTTP '+f.status+' '+JSON.stringify(f.json));
 assert.ok(Array.isArray(f.json.timeline),'timeline ausente');
 assert.ok(f.json.sources?.health?.available>0,'ninguna fuente forecast disponible');
-console.log('FORECAST_OK',{points:f.json.timeline.length,health:f.json.sources.health,next:f.json.nextEvent?.start||null});
+console.log('FORECAST_OK',{points:f.json.timeline.length,health:f.json.sources.health,next:f.json.nextEvent?.start||null});\nconsole.log('FORECAST_SOURCES',JSON.stringify({deterministic:f.json.sources.deterministic,ensembles:f.json.sources.ensembles}));
 
 const n=await invoke(nowcast,location);
 assert.equal(n.status,200,'nowcast HTTP '+n.status+' '+JSON.stringify(n.json));
