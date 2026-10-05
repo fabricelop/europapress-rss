@@ -1,44 +1,36 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T01:45:00+02:00",
-  "last_completed_at": "2026-10-05T01:53:20+02:00",
+  "last_started_at": "2026-10-05T02:15:00+02:00",
+  "last_completed_at": "2026-10-05T02:17:10+02:00",
   "last_slot": null,
   "status": "success",
-  "processed_ids": [
-    "2dd1283eb26c",
-    "aecd944b5e7c",
-    "a90056474d8d"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T01:53:20+02:00",
+  "updated_at": "2026-10-05T02:17:10+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_problematic_ids": ["f354c321182d"],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T014500+0200",
+    "run_id": "tr-chat-20261005T021500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-05T01:45:00+02:00",
-    "updated_at": "2026-10-05T01:53:20+02:00",
-    "finished_at": "2026-10-05T01:53:20+02:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-05T02:15:00+02:00",
+    "updated_at": "2026-10-05T02:17:10+02:00",
+    "finished_at": "2026-10-05T02:17:10+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-05T01:45:00+02:00",
+    "requested_at": "2026-10-05T02:15:00+02:00",
     "partial": false,
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 3,
-      "explanation_groups": 2,
-      "new_cards": 1,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -48,185 +40,32 @@
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "pending_cards_checked": 10,
-      "pending_visual_repair_requested": 4
+      "pending_visual_repair_requested": 3
     },
-    "message": "Ejecución cerrada · 3 revisiones tratadas, cola editorial vacía",
+    "message": "Ejecución cerrada · cola editorial vacía y estado final verificado",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
+      "updated_at": "2026-10-04T17:29:26.880Z",
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "revision": 1,
-        "selected": "🌶️ La bandera verde también ha entrado al top 10."
-      },
-      {
-        "trend_id": "a90056474d8d",
-        "title": "#elsecreto",
-        "revision": 0,
-        "selected": "🌶️ La serie ya necesita caja fuerte para tanto secreto."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
-      {
-        "at": "2026-10-05T01:47:50+02:00",
-        "phase": "verifying",
-        "trend_id": "2dd1283eb26c",
-        "title": "Omar",
-        "message": "Tendencia cerrada y verificada · Omar r0 agrupado sin tarjeta duplicada"
-      },
-      {
-        "at": "2026-10-05T01:48:00+02:00",
-        "phase": "verifying",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Releyendo estado autoritativo de #NASCARenDAZN"
-      },
-      {
-        "at": "2026-10-05T01:48:10+02:00",
-        "phase": "investigating",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Comprobando estado actual del South Point 400 antes de redactar"
-      },
-      {
-        "at": "2026-10-05T01:48:40+02:00",
-        "phase": "investigating",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Hecho esencial verificado · carrera en curso en Las Vegas; Briscoe ganó la primera etapa"
-      },
-      {
-        "at": "2026-10-05T01:48:50+02:00",
-        "phase": "drafting",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Redactando explicación factual de #NASCARenDAZN"
-      },
-      {
-        "at": "2026-10-05T01:49:00+02:00",
-        "phase": "drafting",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Comprobando límite de X · 242 caracteres Unicode"
-      },
-      {
-        "at": "2026-10-05T01:49:05+02:00",
-        "phase": "remate_selection",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-05T01:49:15+02:00",
-        "phase": "remate_selection",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-05T01:49:30+02:00",
-        "phase": "persisting",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Actualizando requests · #NASCARenDAZN r1"
-      },
-      {
-        "at": "2026-10-05T01:49:40+02:00",
-        "phase": "persisting",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Retirando revisión de la cola · #NASCARenDAZN r1"
-      },
-      {
-        "at": "2026-10-05T01:50:00+02:00",
-        "phase": "verifying",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Tendencia cerrada y verificada · #NASCARenDAZN r1"
-      },
-      {
-        "at": "2026-10-05T01:50:10+02:00",
-        "phase": "verifying",
-        "trend_id": "a90056474d8d",
-        "title": "#elsecreto",
-        "message": "Releyendo estado autoritativo de #elsecreto"
-      },
-      {
-        "at": "2026-10-05T01:50:30+02:00",
-        "phase": "investigating",
-        "trend_id": "a90056474d8d",
-        "title": "#elsecreto",
-        "message": "Hecho esencial verificado · capítulo de El secreto emitido esta noche en Antena 3"
-      },
-      {
-        "at": "2026-10-05T01:50:40+02:00",
-        "phase": "drafting",
-        "trend_id": "a90056474d8d",
-        "title": "#elsecreto",
-        "message": "Redactando explicación factual de #elsecreto"
-      },
-      {
-        "at": "2026-10-05T01:50:50+02:00",
-        "phase": "drafting",
-        "trend_id": "a90056474d8d",
-        "title": "#elsecreto",
-        "message": "Comprobando límite de X · 266 caracteres Unicode"
-      },
-      {
-        "at": "2026-10-05T01:51:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "a90056474d8d",
-        "title": "#elsecreto",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-05T01:51:20+02:00",
-        "phase": "persisting",
-        "trend_id": "a90056474d8d",
-        "title": "#elsecreto",
-        "message": "Actualizando requests · #elsecreto r0"
-      },
-      {
-        "at": "2026-10-05T01:51:30+02:00",
-        "phase": "persisting",
-        "trend_id": "a90056474d8d",
-        "title": "#elsecreto",
-        "message": "Retirando revisión de la cola · #elsecreto r0"
-      },
-      {
-        "at": "2026-10-05T01:53:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola final vacía y revisiones verificadas"
-      },
-      {
-        "at": "2026-10-05T01:53:20+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Ejecución cerrada · 3 revisiones tratadas, cola editorial vacía"
-      }
+      {"at":"2026-10-05T02:15:00+02:00","phase":"preparing","trend_id":null,"title":null,"message":"Preparando ejecución · cola editorial inicial vacía; verificando estado autoritativo"},
+      {"at":"2026-10-05T02:15:40+02:00","phase":"verifying","trend_id":null,"title":null,"message":"Radar fresco · captura 02:11; sin preparing/update ni rewrite_pending"},
+      {"at":"2026-10-05T02:16:30+02:00","phase":"verifying","trend_id":null,"title":null,"message":"Revisando Pendientes · 10 tarjetas vigentes; 3 con IA pendiente enviadas al reparador"},
+      {"at":"2026-10-05T02:17:10+02:00","phase":"closing","trend_id":null,"title":null,"message":"Ejecución cerrada · cola editorial vacía y estado final verificado"}
     ]
   },
   "summary": {
-    "trends_processed": 3,
-    "trends_explained": 3,
-    "explanation_groups": 2,
-    "new_cards": 1,
-    "revisions_updated": 1,
-    "grouped_into_existing_card": 1,
+    "trends_processed": 0,
+    "trends_explained": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -236,10 +75,9 @@
     "imagegen_attempts": 0,
     "fallback_images_ready": 0,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 2,
+    "remates_selected": 0,
     "remates_omitted": 0,
     "pending_cards_checked": 10,
-    "pending_visual_repair_requested": 4
+    "pending_visual_repair_requested": 3
   }
 }
