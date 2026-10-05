@@ -1,11 +1,13 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
-  "last_started_at": "2026-10-05T17:00:37+02:00",
-  "last_completed_at": "2026-10-05T17:00:37+02:00",
-  "updated_at": "2026-10-05T17:00:37+02:00",
+  "engine": "chat-direct",
+  "last_started_at": "2026-10-05T16:45:00+02:00",
+  "last_completed_at": "2026-10-05T15:02:23.847Z",
+  "updated_at": "2026-10-05T15:02:23.847Z",
   "status": "success",
   "processed_ids": [
+    "26bb59be27a6",
+    "4bcc67659c7e",
     "97e1b3a8b829"
   ],
   "remaining_ids": [
@@ -29,15 +31,15 @@
     "trend_id": null,
     "title": null,
     "started_at": "2026-10-05T16:45:00+02:00",
-    "updated_at": "2026-10-05T16:58:15+02:00",
-    "finished_at": "2026-10-05T16:58:15+02:00",
+    "updated_at": "2026-10-05T15:02:23.847Z",
+    "finished_at": "2026-10-05T15:02:23.847Z",
     "incident_count": 1,
     "incidents": [
       {
         "trend_id": "97e1b3a8b829",
         "title": "#TEM5O",
         "type": "unverified_trigger",
-        "message": "Tras dos búsquedas distintas no se identificó un detonante actual fiable; queda problematic para reintento."
+        "message": "Tras el reintento obligatorio con consultas alternativas no se encontró una fuente indexada que vincule directamente #TEM5O con un detonante concreto; permanece problematic."
       }
     ],
     "summary": {
@@ -53,10 +55,10 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "vercel_deploys": 0,
-      "pending_cards_reviewed": 0,
-      "pending_without_closer_reviewed": 0,
+      "pending_cards_reviewed": 16,
+      "pending_without_closer_reviewed": 6,
       "pending_repair_triggered": 1,
-      "problematic_top10_retried": 0
+      "problematic_top10_retried": 1
     },
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
@@ -66,57 +68,8 @@
       "recent_considered": 100
     },
     "remate_selections": [],
-    "message": "Pasada completada: alvise r1 y Medvedev r0 explicadas; #TEM5O r0 queda problematic por falta de detonante verificable. No queda ningún preparing/update.",
+    "message": "Pasada completada con incidencia: alvise r1 y Medvedev r0 quedan explained; #TEM5O r0 sigue problematic tras un segundo reintento sin vínculo verificable. Relectura final: 0 preparing/update y 0 rewrite_pending. Pendientes recientes revisadas: 16.",
     "activity": [
-      {
-        "at": "2026-10-05T14:55:29.826Z",
-        "phase": "persisting",
-        "trend_id": "26bb59be27a6",
-        "title": "alvise",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-05T14:55:56.857Z",
-        "phase": "verifying",
-        "trend_id": "97e1b3a8b829",
-        "title": "#TEM5O",
-        "message": "Releyendo estado autoritativo de #TEM5O"
-      },
-      {
-        "at": "2026-10-05T14:57:02.798Z",
-        "phase": "verifying",
-        "trend_id": "4bcc67659c7e",
-        "title": "Medvedev",
-        "message": "Releyendo estado autoritativo de Medvedev"
-      },
-      {
-        "at": "2026-10-05T14:57:02.798Z",
-        "phase": "investigating",
-        "trend_id": "4bcc67659c7e",
-        "title": "Medvedev",
-        "message": "Contrastando fuente 1/2 · Reuters"
-      },
-      {
-        "at": "2026-10-05T14:57:02.798Z",
-        "phase": "investigating",
-        "trend_id": "4bcc67659c7e",
-        "title": "Medvedev",
-        "message": "Contrastando fuente 2/2 · Cadena SER"
-      },
-      {
-        "at": "2026-10-05T14:57:02.798Z",
-        "phase": "investigating",
-        "trend_id": "4bcc67659c7e",
-        "title": "Medvedev",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-05T14:57:02.798Z",
-        "phase": "drafting",
-        "trend_id": "4bcc67659c7e",
-        "title": "Medvedev",
-        "message": "Redactando explicación factual"
-      },
       {
         "at": "2026-10-05T14:57:02.798Z",
         "phase": "drafting",
@@ -207,6 +160,55 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada cerrada: 2 explicadas y 1 problematic; sin backlog editorial activo"
+      },
+      {
+        "at": "2026-10-05T14:59:52.178Z",
+        "phase": "investigating",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Reintento problematic · búsqueda alternativa 1/2"
+      },
+      {
+        "at": "2026-10-05T14:59:52.178Z",
+        "phase": "investigating",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Reintento problematic · búsqueda alternativa 2/2"
+      },
+      {
+        "at": "2026-10-05T14:59:52.178Z",
+        "phase": "investigating",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "No verificado · falta vínculo directo entre #TEM5O y el supuesto detonante"
+      },
+      {
+        "at": "2026-10-05T14:59:52.178Z",
+        "phase": "persisting",
+        "trend_id": "97e1b3a8b829",
+        "title": "#TEM5O",
+        "message": "Registrando segundo intento problematic"
+      },
+      {
+        "at": "2026-10-05T15:02:23.847Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · 0 preparing/update y 0 rewrite_pending"
+      },
+      {
+        "at": "2026-10-05T15:02:23.847Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento de Pendientes completado · 16 tarjetas revisadas, 6 sin remate justificadas"
+      },
+      {
+        "at": "2026-10-05T15:02:23.847Z",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada completada con incidencia: alvise r1 y Medvedev r0 quedan explained; #TEM5O r0 sigue problematic tras un segundo reintento sin vínculo verificable. Relectura final: 0 preparing/update y 0 rewrite_pending. Pendientes recientes revisadas: 16."
       }
     ],
     "queue_complete": true,
