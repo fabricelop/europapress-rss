@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-05-v32-image-pickup-retry
+# official-pipeline-restart-token: 2026-10-05-v33-image-lock-recovery
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -25,7 +25,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v32"
+$WorkerId = "ttittulares-dedicated-v33"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -312,12 +312,30 @@ function Test-ImageBridgeBusy {
   try {
     $lock = Get-Content -LiteralPath $ImageBridgeLockPath -Raw -Encoding UTF8 | ConvertFrom-Json
     $pidValue = [int]$lock.pid
-    if ($pidValue -gt 0) {
-      $p = Get-Process -Id $pidValue -ErrorAction SilentlyContinue
-      if ($p) {
-        Write-Log "IMAGE LOCAL LOCK ACTIVE pid=$pidValue command=$($lock.command_id) target=$($lock.target_id)"
-        return $true
+    $targetId = [string]$lock.target_id
+    $commandId = [string]$lock.command_id
+    $p = if($pidValue -gt 0){Get-Process -Id $pidValue -ErrorAction SilentlyContinue}else{$null}
+    if ($p) {
+      $terminal = $false
+      if($targetId){
+        $remote = Read-ImageJob $targetId
+        if($remote -and [string]$remote.command_id -eq $commandId -and (Is-TerminalImageStatus ([string]$remote.status))){
+          $terminal = $true
+        }
       }
+      $tooOld = $false
+      try {
+        $started=[DateTimeOffset]::Parse([string]$lock.started_at)
+        $tooOld=(([DateTimeOffset]::UtcNow-$started).TotalMinutes -gt 12)
+      } catch {}
+      if($terminal -or $tooOld){
+        Write-Log "IMAGE LOCAL LOCK STALE pid=$pidValue command=$commandId target=$targetId terminal=$terminal too_old=$tooOld"
+        try{Stop-Process -Id $pidValue -Force -ErrorAction SilentlyContinue}catch{}
+        Remove-Item -LiteralPath $ImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+        return $false
+      }
+      Write-Log "IMAGE LOCAL LOCK ACTIVE pid=$pidValue command=$commandId target=$targetId"
+      return $true
     }
   } catch {}
   Remove-Item -LiteralPath $ImageBridgeLockPath -Force -ErrorAction SilentlyContinue
