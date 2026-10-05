@@ -1,10 +1,12 @@
 import crypto from "node:crypto";
 import { Readable } from "node:stream";
-import { get, put } from "@vercel/blob";
+import { get, head, issueSignedToken, list, presignUrl, put } from "@vercel/blob";
 
 const SNAPSHOT_PATH="money-control/money-control.snapshot.json";
 const PATCH_PATH="money-control/moneywiz-user-patch-v1.json";
 const MAX_BYTES=3*1024*1024;
+const MONEYWIZ_BACKUP_PREFIX="moneywiz-backups/";
+const MONEYWIZ_BACKUP_MAX_BYTES=180*1024*1024;
 
 function authToken(req){
   const h=String(req.headers.authorization||"");
@@ -21,6 +23,25 @@ function tokenMatches(req){
   }
   return false;
 }
+function moneyWizUploadTokenMatches(req){
+  const supplied=authToken(req),expected=String(process.env.MONEYWIZ_UPLOAD_TOKEN||"");
+  if(!supplied||!expected)return false;
+  const a=Buffer.from(expected),b=Buffer.from(supplied);
+  return a.length===b.length&&crypto.timingSafeEqual(a,b);
+}
+function privateBlobOptions(extra={}){
+  return {access:"private",token:process.env.BLOB_READ_WRITE_TOKEN||undefined,...extra};
+}
+function cleanMoneyWizFilename(v){
+  const name=String(v||"").trim().replace(/\\/g,"/").split("/").pop()||"";
+  if(!/^i?MoneyWiz[-_].*\.zip$/i.test(name))return "";
+  if(name.length>180)return "";
+  return name.replace(/[^A-Za-z0-9._-]/g,"_");
+}
+function requestParams(req){
+  try{return new URL(req.url||"/","http://localhost").searchParams}catch{return new URLSearchParams()}
+}
+
 function blobOptions(extra={}){
   return {
     access:"public",
@@ -77,6 +98,84 @@ async function bodyText(req){
 
 export default async function handler(req,res){
   try{
+    const params=requestParams(req);
+    if(params.get("kind")==="moneywiz-backup"){
+      if(!moneyWizUploadTokenMatches(req))return json(res,401,{ok:false,error:"unauthorized"});
+      if(!process.env.BLOB_READ_WRITE_TOKEN)return json(res,503,{ok:false,error:"backup_blob_not_configured"});
+
+      if(req.method==="GET"){
+        const result=await list(privateBlobOptions({prefix:MONEYWIZ_BACKUP_PREFIX,limit:100}));
+        const backups=(result.blobs||[])
+          .filter(b=>String(b.pathname||"").toLowerCase().endsWith(".zip"))
+          .map(b=>({
+            pathname:b.pathname,
+            filename:String(b.pathname||"").slice(MONEYWIZ_BACKUP_PREFIX.length),
+            size:Number(b.size||0),
+            uploadedAt:b.uploadedAt||null,
+            etag:b.etag||null
+          }))
+          .sort((a,b)=>String(b.uploadedAt||"").localeCompare(String(a.uploadedAt||"")));
+        return json(res,200,{ok:true,count:backups.length,backups,hasMore:!!result.hasMore});
+      }
+
+      if(req.method!=="POST"){
+        res.setHeader("allow","GET, POST");
+        return json(res,405,{ok:false,error:"method_not_allowed"});
+      }
+
+      let body={};
+      try{body=JSON.parse(await bodyText(req)||"{}")}catch{return json(res,400,{ok:false,error:"invalid_json"})}
+      const action=String(body.action||"prepare");
+
+      if(action==="prepare"){
+        const filename=cleanMoneyWizFilename(body.filename),sizeBytes=Number(body.sizeBytes||0);
+        if(!filename)return json(res,400,{ok:false,error:"invalid_filename"});
+        if(!Number.isFinite(sizeBytes)||sizeBytes<=0||sizeBytes>MONEYWIZ_BACKUP_MAX_BYTES)return json(res,413,{ok:false,error:"invalid_size"});
+        const pathname=MONEYWIZ_BACKUP_PREFIX+filename;
+        try{
+          const existing=await head(pathname,privateBlobOptions());
+          if(existing&&Number(existing.size||0)===sizeBytes){
+            return json(res,200,{ok:true,alreadyExists:true,pathname,size:Number(existing.size||0),uploadedAt:existing.uploadedAt||null});
+          }
+        }catch(_){}
+
+        const validUntil=Date.now()+20*60*1000;
+        const signed=await issueSignedToken({
+          pathname,
+          operations:["put"],
+          validUntil,
+          allowedContentTypes:["application/zip","application/x-zip-compressed","application/octet-stream"],
+          maximumSizeInBytes:MONEYWIZ_BACKUP_MAX_BYTES,
+          token:process.env.BLOB_READ_WRITE_TOKEN
+        });
+        const {presignedUrl}=await presignUrl(signed,{
+          operation:"put",
+          pathname,
+          access:"private",
+          validUntil,
+          allowedContentTypes:["application/zip","application/x-zip-compressed","application/octet-stream"],
+          maximumSizeInBytes:MONEYWIZ_BACKUP_MAX_BYTES,
+          addRandomSuffix:false,
+          allowOverwrite:false,
+          cacheControlMaxAge:60
+        });
+        return json(res,200,{ok:true,alreadyExists:false,pathname,presignedUrl,expiresAt:new Date(validUntil).toISOString()});
+      }
+
+      if(action==="confirm"){
+        const pathname=String(body.pathname||"");
+        if(!pathname.startsWith(MONEYWIZ_BACKUP_PREFIX)||!pathname.toLowerCase().endsWith(".zip"))return json(res,400,{ok:false,error:"invalid_pathname"});
+        try{
+          const meta=await head(pathname,privateBlobOptions());
+          return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,etag:meta.etag||null});
+        }catch(_){
+          return json(res,404,{ok:false,error:"not_found"});
+        }
+      }
+
+      return json(res,400,{ok:false,error:"unknown_action"});
+    }
+
     if(!process.env.BLOB_STORE_ID)return json(res,503,{ok:false,error:"blob_not_configured"});
     const kind=kindOf(req),pathname=kind==="patch"?PATCH_PATH:SNAPSHOT_PATH;
     if(req.method==="GET"){
