@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T18:45:00+02:00",
-  "last_completed_at": "2026-10-05T18:50:00+02:00",
-  "updated_at": "2026-10-05T18:50:00+02:00",
+  "last_started_at": "2026-10-05T19:15:00+02:00",
+  "last_completed_at": "2026-10-05T19:21:00+02:00",
+  "updated_at": "2026-10-05T19:21:00+02:00",
   "status": "success",
   "processed_ids": [
     "ad443d46cc7d"
@@ -16,25 +16,23 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T184500+0200",
+    "run_id": "tr-chat-20261005T191500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-05T19:15:00+02:00",
+    "updated_at": "2026-10-05T19:21:00+02:00",
+    "finished_at": "2026-10-05T19:21:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-05T18:45:00+02:00",
-    "updated_at": "2026-10-05T18:50:00+02:00",
-    "finished_at": "2026-10-05T18:50:00+02:00",
-    "incident_count": 0,
-    "incidents": [],
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "trends_problematic": 0,
       "incidents": 0,
       "queue_remaining": 0,
@@ -42,13 +40,19 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "vercel_deploys": 0,
-      "pending_cards_reviewed": 9,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 3,
+      "remates_omitted": 0,
+      "pending_cards_reviewed": 7,
       "pending_with_closer_reviewed": 4,
-      "pending_without_closer_reviewed": 5,
-      "pending_visual_repair_candidates": 9,
+      "pending_without_closer_reviewed": 3,
+      "pending_remates_repaired": 3,
+      "pending_visual_repair_candidates": 7,
       "pending_repair_triggered": 1,
       "problematic_top10_retried": 0
     },
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
@@ -56,26 +60,241 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [],
-    "message": "Pasada completada: 1 tendencia explicada y verificada. Cola editorial vacía. 9 Pendientes recientes revisadas; reparación visual solicitada.",
+    "remate_selections": [
+      {
+        "trend_id": "26bb59be27a6",
+        "revision": 1,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.3,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c2",
+            "total": 7.6,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 8.1,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 7.2,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 7,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
+        "selected_candidate": "c3",
+        "selected_score": 8.1,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "4bcc67659c7e",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c2",
+            "total": 8.7,
+            "ratings_affinity": 2.4,
+            "trend_specificity": 2,
+            "punch": 1.9,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 7.5,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c4",
+            "total": 7.6,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c5",
+            "total": 7.2,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.7,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "ad443d46cc7d",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c2",
+            "total": 7.6,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 8.3,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
+        "selected_candidate": "c4",
+        "selected_score": 8.3,
+        "no_remate_reason": null
+      }
+    ],
+    "message": "Pasada completada sin trabajo editorial nuevo. Cola 0; 7 Pendientes recientes revisadas, 3 remates reparados y reparación visual solicitada.",
     "activity": [
       {
-        "at": "2026-10-05T18:50:00+02:00",
+        "at": "2026-10-05T19:15:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando estado autoritativo y Pendientes"
+      },
+      {
+        "at": "2026-10-05T19:17:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": null,
+        "title": null,
+        "message": "Pendientes · evaluando 3 remates ausentes"
+      },
+      {
+        "at": "2026-10-05T19:18:00+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Sincronizando remates reparados en fichas y requests"
+      },
+      {
+        "at": "2026-10-05T19:19:00+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Remates reparados · verificando persistencia y cola"
+      },
+      {
+        "at": "2026-10-05T19:20:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola 0, sin revisiones activas ni reexplicaciones"
+      },
+      {
+        "at": "2026-10-05T19:21:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 1 tendencia explicada y cola editorial vacía"
+        "message": "Pasada cerrada · sin trabajo editorial nuevo; 3 remates reparados"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
+    "remaining_problematic_ids": [],
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261005T184500+0200",
+      "run_id": "tr-chat-20261005T191500+0200",
       "status": "triggered",
       "direct_imagegen": false
-    },
-    "remaining_problematic_ids": []
-  },
-  "error": null
+    }
+  }
 }
