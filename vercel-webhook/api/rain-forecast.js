@@ -17,14 +17,12 @@ const DET_MODELS = [
 
 const ENS_MODELS = [
   { id: 'ecmwf_ifs025_ensemble', label: 'ECMWF ENS', weight: 1.25 },
-  { id: 'ecmwf_aifs025_ensemble', label: 'ECMWF AIFS ENS', weight: 1.0 },
   { id: 'dwd_icon_eu_eps', label: 'ICON-EU EPS', weight: 1.1 },
   { id: 'ncep_gefs025', label: 'NOAA GEFS', weight: 0.9 },
   { id: 'ukmo_global_ensemble_20km', label: 'UKMO MOGREPS-G', weight: 0.95 },
-  { id: 'cmc_gem_geps', label: 'CMC GEPS', weight: 0.75 },
 ];
 
-const timeoutMs = 8_500;
+const timeoutMs = 7_500;
 
 function json(res, status, body) {
   res.statusCode = status;
@@ -57,6 +55,17 @@ async function fetchJson(url, timeout = timeoutMs) {
   }
 }
 
+async function settleInBatches(items, worker, batchSize = 2) {
+  const results = [];
+  for (let index = 0; index < items.length; index += batchSize) {
+    const batch = items.slice(index, index + batchSize);
+    const settled = await Promise.allSettled(batch.map(worker));
+    results.push(...settled);
+    if (index + batchSize < items.length) await new Promise((resolve) => setTimeout(resolve, 250));
+  }
+  return results;
+}
+
 function isoTime(value) {
   if (Number.isFinite(Number(value))) return new Date(Number(value) * 1000).toISOString();
   const parsed = Date.parse(value);
@@ -73,7 +82,7 @@ async function fetchDeterministic(model, lat, lon) {
     latitude: String(lat),
     longitude: String(lon),
     hourly: 'precipitation',
-    forecast_days: '4',
+    forecast_hours: '73',
     timeformat: 'unixtime',
     timezone: 'GMT',
     models: model.id,
@@ -100,7 +109,7 @@ async function fetchEnsemble(model, lat, lon) {
     latitude: String(lat),
     longitude: String(lon),
     hourly: 'precipitation',
-    forecast_days: '4',
+    forecast_hours: '73',
     timeformat: 'unixtime',
     timezone: 'GMT',
     models: model.id,
@@ -197,7 +206,7 @@ export default async function handler(req, res) {
   const nowMs = Date.now();
   const [detSettled, ensSettled, guidanceSettled, radarSettled] = await Promise.all([
     Promise.allSettled(DET_MODELS.map((model) => fetchDeterministic(model, lat, lon))),
-    Promise.allSettled(ENS_MODELS.map((model) => fetchEnsemble(model, lat, lon))),
+    settleInBatches(ENS_MODELS, (model) => fetchEnsemble(model, lat, lon), 2),
     Promise.allSettled([fetchQuarterHourGuidance(lat, lon)]),
     Promise.allSettled([fetchRadarMetadata()]),
   ]);
