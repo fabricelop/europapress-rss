@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-012a4789404e-r3-a1-1791181329076",
+  "requested_at": "2026-10-05T06:22:09.075971Z",
+  "updated_at": "2026-10-05T06:22:09.075971Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "012a4789404e",
+  "trend_id": "012a4789404e",
+  "target_name": "#BuenosDías",
+  "revision": 3,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "#BuenosDías",
+    "revision": 3,
+    "explanation": "TT#10 #BuenosDías es tendencia por los saludos y mensajes de ánimo con los que usuarios y cuentas españolas reciben el lunes en X; es una etiqueta recurrente, no una noticia concreta.\n🌶️ Hasta el buenos días ha aprendido a fichar en tendencias.",
+    "closer_text": "🌶️ Hasta el buenos días ha aprendido a fichar en tendencias.",
+    "trend_names": [
+      "#BuenosDías"
+    ],
+    "group_title": "#BuenosDías",
+    "rank_at_explanation": 10,
+    "explained_at": "2026-10-05T08:20:10+02:00",
+    "verification_sources": [
+      {
+        "source": "TTendencias radar · 5/10/2026 08:11",
+        "url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json"
+      },
+      {
+        "source": "Policía de Boadilla / X · saludo matinal del lunes",
+        "url": "https://fantasi.twstalker.com/sdelavargaglez"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
