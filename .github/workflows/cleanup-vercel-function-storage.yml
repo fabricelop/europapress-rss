@@ -5,12 +5,13 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/cleanup-vercel-function-storage.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  purge-nonready-deployments:
+  purge-safe-batch:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -18,7 +19,7 @@ jobs:
       TEAM_ID: team_H8xHbBIbIKnsaLeITszidyOK
       PROJECT_ID: prj_X1UxNqQasd8Ouf7jUpxNccbQdASf
     steps:
-      - name: Purge CANCELED ERROR BLOCKED deployments only
+      - name: Purge safe deployment batch
         shell: bash
         run: |
           set -euo pipefail
@@ -28,7 +29,16 @@ jobs:
           const teamId=process.env.TEAM_ID;
           const projectId=process.env.PROJECT_ID;
           const headers={Authorization:`Bearer ${token}`,"Content-Type":"application/json"};
-          const deletable=new Set(["CANCELED","ERROR","BLOCKED"]);
+          const MAX_DELETE=190;
+          const OLD_READY_MS=7*24*60*60*1000;
+          const nonReadyStates=new Set(["CANCELED","ERROR","BLOCKED"]);
+
+          async function getJson(url){
+            const r=await fetch(url,{headers});
+            if(!r.ok)throw new Error(`GET ${url} -> ${r.status} ${await r.text()}`);
+            return r.json();
+          }
+
           async function listAll(){
             let until=null, all=[];
             for(let page=0;page<100;page++){
@@ -37,9 +47,7 @@ jobs:
               u.searchParams.set("teamId",teamId);
               u.searchParams.set("limit","100");
               if(until)u.searchParams.set("until",String(until));
-              const r=await fetch(u,{headers});
-              if(!r.ok)throw new Error(`list failed ${r.status} ${await r.text()}`);
-              const d=await r.json();
+              const d=await getJson(u);
               const rows=d.deployments||[];
               all.push(...rows);
               const next=d.pagination?.next;
@@ -48,37 +56,108 @@ jobs:
             }
             return all;
           }
+
+          async function listAliases(){
+            const u=new URL("https://api.vercel.com/v4/aliases");
+            u.searchParams.set("projectId",projectId);
+            u.searchParams.set("teamId",teamId);
+            u.searchParams.set("limit","100");
+            const d=await getJson(u);
+            return d.aliases||[];
+          }
+
           const before=await listAll();
-          const targets=before.filter(d=>deletable.has(String(d.state||d.readyState||"").toUpperCase()));
-          const ready=before.filter(d=>String(d.state||d.readyState||"").toUpperCase()==="READY");
-          console.log(JSON.stringify({before:before.length,ready:ready.length,targets:targets.length,
-            targetStates:targets.reduce((a,d)=>{const s=String(d.state||d.readyState);a[s]=(a[s]||0)+1;return a;},{})},null,2));
-          let ok=0, already=0, failed=0;
-          const pool=6;
-          let idx=0;
-          async function worker(){
-            while(true){
-              const i=idx++;
-              if(i>=targets.length)return;
-              const d=targets[i];
-              const u=new URL(`https://api.vercel.com/v13/deployments/${encodeURIComponent(d.uid||d.id)}`);
-              u.searchParams.set("teamId",teamId);
+          const aliasesBefore=await listAliases();
+          const aliasIds=new Set(aliasesBefore.map(a=>a.deploymentId||a.deployment?.id).filter(Boolean));
+          const project=await getJson(`https://api.vercel.com/v9/projects/${projectId}?teamId=${teamId}`);
+          const currentProd=project.latestDeployments?.find(d=>d.target==="production")?.id
+            || project.latestDeployment?.id || null;
+
+          const ready=before.filter(d=>String(d.state||d.readyState||"").toUpperCase()==="READY")
+                            .sort((a,b)=>b.created-a.created);
+          const newestReadyIds=new Set(ready.slice(0,20).map(d=>d.uid||d.id));
+          const rollbackIds=new Set(before.filter(d=>d.isRollbackCandidate).map(d=>d.uid||d.id));
+          if(currentProd) rollbackIds.add(currentProd);
+
+          function protectedDeployment(d){
+            const id=d.uid||d.id;
+            return aliasIds.has(id)||newestReadyIds.has(id)||rollbackIds.has(id);
+          }
+          const nonready=before
+            .filter(d=>nonReadyStates.has(String(d.state||d.readyState||"").toUpperCase()))
+            .filter(d=>!protectedDeployment(d))
+            .sort((a,b)=>a.created-b.created);
+
+          const oldReady=ready
+            .filter(d=>(Date.now()-Number(d.created||0))>OLD_READY_MS)
+            .filter(d=>!protectedDeployment(d))
+            .sort((a,b)=>a.created-b.created);
+
+          const targets=[...nonready,...oldReady].slice(0,MAX_DELETE);
+          console.log(JSON.stringify({
+            total_before:before.length,
+            ready_before:ready.length,
+            aliases_protected:[...aliasIds],
+            current_production:currentProd,
+            newest_ready_protected:newestReadyIds.size,
+            rollback_protected:[...rollbackIds],
+            nonready_candidates:nonready.length,
+            old_ready_candidates:oldReady.length,
+            selected:targets.length,
+            selected_nonready:targets.filter(d=>nonReadyStates.has(String(d.state||d.readyState||"").toUpperCase())).length,
+            selected_ready:targets.filter(d=>String(d.state||d.readyState||"").toUpperCase()==="READY").length
+          },null,2));
+
+          async function removeOne(d){
+            const id=d.uid||d.id;
+            const u=new URL(`https://api.vercel.com/v13/deployments/${encodeURIComponent(id)}`);
+            u.searchParams.set("teamId",teamId);
+            for(let attempt=0;attempt<2;attempt++){
               const r=await fetch(u,{method:"DELETE",headers});
-              if(r.ok){ok++;continue}
-              if(r.status===404){already++;continue}
-              failed++;
-              console.error("DELETE_FAILED",d.uid||d.id,d.state||d.readyState,r.status,await r.text());
+              if(r.ok||r.status===404)return {ok:true,status:r.status,id};
+              const body=await r.text();
+              if(r.status===429&&attempt===0){
+                let reset=0;
+                try{reset=Number(JSON.parse(body)?.error?.limit?.reset||0)}catch{}
+                const ms=Math.max(1000,Math.min(11*60*1000,(reset||Date.now()+10*60*1000)-Date.now()+1500));
+                console.log("RATE_LIMIT_WAIT",id,ms);
+                await new Promise(resolve=>setTimeout(resolve,ms));
+                continue;
+              }
+              return {ok:false,status:r.status,id,body};
             }
           }
-          await Promise.all(Array.from({length:pool},()=>worker()));
-          console.log(JSON.stringify({deleted:ok,already_absent:already,failed},null,2));
-          if(failed)process.exit(2);
+
+          let deleted=0;
+          for(const d of targets){
+            const res=await removeOne(d);
+            if(!res.ok){
+              console.error("DELETE_FAILED",JSON.stringify(res));
+              process.exit(2);
+            }
+            deleted++;
+          }
+
           const after=await listAll();
-          const remaining=after.filter(d=>deletable.has(String(d.state||d.readyState||"").toUpperCase()));
-          const readyAfter=after.filter(d=>String(d.state||d.readyState||"").toUpperCase()==="READY");
-          console.log(JSON.stringify({after:after.length,ready_after:readyAfter.length,remaining_nonready:remaining.length},null,2));
-          if(readyAfter.length!==ready.length){
-            console.error("READY_COUNT_CHANGED",ready.length,readyAfter.length);
+          const aliasesAfter=await listAliases();
+          const mapBefore=new Map(aliasesBefore.map(a=>[a.alias,a.deploymentId||a.deployment?.id]));
+          const mapAfter=new Map(aliasesAfter.map(a=>[a.alias,a.deploymentId||a.deployment?.id]));
+          const aliasDrift=[...mapBefore].filter(([name,id])=>mapAfter.get(name)!==id);
+          const prodAfter=(await getJson(`https://api.vercel.com/v9/projects/${projectId}?teamId=${teamId}`))
+            .latestDeployments?.find(d=>d.target==="production")?.id || currentProd;
+          if(aliasDrift.length){
+            console.error("ALIAS_DRIFT",JSON.stringify(aliasDrift));
             process.exit(3);
           }
+          if(currentProd&&prodAfter!==currentProd){
+            console.error("PRODUCTION_CHANGED",currentProd,prodAfter);
+            process.exit(4);
+          }
+          console.log(JSON.stringify({
+            deleted,
+            total_after:after.length,
+            aliases_unchanged:aliasesAfter.length,
+            production_unchanged:prodAfter,
+            remaining_nonready:after.filter(d=>nonReadyStates.has(String(d.state||d.readyState||"").toUpperCase())).length
+          },null,2));
           NODE
