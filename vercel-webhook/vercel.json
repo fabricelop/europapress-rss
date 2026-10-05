@@ -364,7 +364,7 @@
   "github": {
     "autoJobCancelation": false
   },
-  "ignoreCommand": "! (git log -1 --pretty=%B | grep -Eq '^deploy-money-control-' || grep -Eq '^deploy-image-flicker-cache-20261004' .deploy-trigger)",
+  "ignoreCommand": "! (git log -1 --pretty=%B | grep -Eq '^(deploy-money-control-|rain:)' || grep -Eq '^deploy-image-flicker-cache-20261004' .deploy-trigger)",
   "git": {
     "deploymentEnabled": false
   }
