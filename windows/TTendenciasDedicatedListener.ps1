@@ -863,7 +863,7 @@ while ($true) {
 
         $commandId = [string]$job.command_id
         $targetId = [string]$job.target_id
-        if (-not $commandId -or -not $targetId -or (Seen-ImageCommand $state $commandId)) { continue }
+        if (-not $commandId -or -not $targetId) { continue }
 
         # No reproducir trabajos muy antiguos al reinstalar.
         $recent = $true
@@ -887,6 +887,21 @@ while ($true) {
           Mark-ImageCommand $state $commandId $false
           Save-State $state
           continue
+        }
+
+        # Un command_id puede quedar en image_commands aunque el ACK inicial no
+        # llegara a accepted (p. ej. backend/cuota/cache temporal). Si el job
+        # autoritativo sigue siendo ESTE command_id, continúa REQUESTED/queued y
+        # no está activo localmente, debe volver a ser intentable.
+        $seenBefore = Seen-ImageCommand $state $commandId
+        if ($seenBefore) {
+          $locallyActive = @($state.active_image_commands) -contains $commandId
+          $remoteStatus = ([string]$statusDoc.status).ToUpperInvariant()
+          $remotePhase = ([string]$statusDoc.phase).ToLowerInvariant()
+          $retryableSeen = (-not $locallyActive) -and $remoteStatus -eq "REQUESTED" -and
+            ([string]::IsNullOrWhiteSpace($remotePhase) -or $remotePhase -eq "queued" -or $remotePhase -eq "requested")
+          if (-not $retryableSeen) { continue }
+          Write-Log "IMAGE RETRY SEEN target=$targetId command=$commandId status=$remoteStatus phase=$remotePhase"
         }
 
         Write-Log "IMAGE NEW target=$targetId command=$commandId name=$($job.target_name)"
