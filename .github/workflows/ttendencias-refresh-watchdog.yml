@@ -3,7 +3,7 @@ name: TTendencias refresh watchdog
 on:
   workflow_dispatch:
   schedule:
-    - cron: "8,23,38,53 * * * *"
+    - cron: "8,38 * * * *"
 
 permissions:
   actions: write
