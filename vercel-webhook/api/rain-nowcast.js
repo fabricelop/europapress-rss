@@ -26,7 +26,8 @@ async function maskFor(host,frame,lat,lon){
 function median(a){const x=a.filter(Number.isFinite).sort((p,q)=>p-q);if(!x.length)return null;const m=Math.floor(x.length/2);return x.length%2?x[m]:(x[m-1]+x[m])/2}
 function frameStep(a){const d=[];for(let i=1;i<a.length;i++){const v=(a[i].time-a[i-1].time)/60;if(v>0&&v<=30)d.push(v)}return median(d)||10}
 function geo(motion,lat,step){
-  const deg=(360/(256*(2**ZOOM)))*STRIDE,ekm=motion.dx*deg*111.32*Math.cos(lat*Math.PI/180),nkm=-motion.dy*deg*110.57,h=Math.max(1/60,step/60);
+  const kmPerMaskPixel=(156543.03392*Math.cos(lat*Math.PI/180)/(2**ZOOM)/1000)*STRIDE,h=Math.max(1/60,step/60);
+  const ekm=motion.dx*kmPerMaskPixel,nkm=-motion.dy*kmPerMaskPixel;
   return{eastKmh:ekm/h,northKmh:nkm/h,speedKmh:Math.hypot(ekm,nkm)/h,bearingDegrees:(Math.atan2(ekm,nkm)*180/Math.PI+360)%360};
 }
 
