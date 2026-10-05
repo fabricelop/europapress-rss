@@ -18,8 +18,7 @@ const prefix=root?root+"/":"";
 
 const sources=[
   {local:"vercel-webhook/money-control/index.html",file:prefix+"money-control/index.html"},
-  {local:"vercel-webhook/api/money-control-interpret.js",file:prefix+"api/money-control-interpret.js"},
-  {local:"vercel-webhook/api/money-control-moneywiz-upload.js",file:prefix+"api/money-control-moneywiz-upload.js"}
+  {local:"vercel-webhook/api/money-control-interpret.js",file:prefix+"api/money-control-interpret.js"}
 ];
 
 const sourcePackage=JSON.parse(await fs.readFile(path.resolve("vercel-webhook/package.json"),"utf8"));
@@ -36,8 +35,7 @@ const minimalPackage=Buffer.from(JSON.stringify({
 const minimalConfig={
   "$schema":"https://openapi.vercel.sh/vercel.json",
   functions:{
-    "api/money-control-interpret.js":{maxDuration:60},
-    "api/money-control-moneywiz-upload.js":{maxDuration:30}
+    "api/money-control-interpret.js":{maxDuration:60}
   },
   git:{deploymentEnabled:false},
   rewrites:[
