@@ -149,7 +149,7 @@ Todo job de imagen —creado automáticamente por el reparador o manualmente des
 - `closer_text`/remate exacto;
 - contexto de grupo/rango y fuentes de verificación cuando estén disponibles.
 
-Ese snapshot es la fuente autoritativa para el gag. El chat de imagen no reescribe ni reinvestiga la explicación: convierte ese contexto en una sola escena cómica, satírica, irónica y exagerada, evitando una ilustración literal.
+Ese snapshot es la fuente autoritativa para el gag. El chat de imagen no reescribe ni reinvestiga la explicación: primero decide internamente cuál es el único gag central y después lo convierte en una escena clara y bien acabada. La variedad está en el estilo asignado; la coherencia está en el criterio de una sola idea fuerte, sin barroquismo ni ilustración literal.
 
 Política puede usar sátira situacional basada en los hechos del snapshot, sin inventar acusaciones, propaganda, llamadas al voto ni presentar juicios partidistas como hechos. No se hace humor de víctimas, duelo, abuso o sufrimiento humano.
 
@@ -292,10 +292,15 @@ Después de persistir `explained`, `.github/workflows/repair-ttendencias-explica
 Para cada job automático o manual:
 - genera UNA sola imagen para ese `target_id + revision`;
 - usa exclusivamente el `context_snapshot` del job;
-- caricatura satírica editorial expresiva, colorida y exagerada, con un gag visual dominante;
-- una sola escena narrativa, pocos elementos principales, composición 16:9 y casi sin texto;
-- evita retrato neutro, póster promocional, collage, split-screen, infografía e ilustración meramente literal;
-- no reutilices rasters, prompts o elementos de otra tendencia;
+- **principio fijo: más gag, menos barroquismo**: una sola idea visual fuerte, lectura en 1–2 segundos, pocos elementos protagonistas y fondo solo si refuerza el chiste;
+- el acabado debe ser cuidado, expresivo y bien resuelto; simplificar la composición NO significa hacer un dibujo pobre, infantil o esquemático;
+- el job asigna `image_style`, `image_style_name` e `image_style_index` desde un banco de estilos variables. **Respeta ese estilo para esta imagen y no lo sustituyas por un acabado fijo de cómic cinematográfico**;
+- el banco rota entre caricatura tinta/acuarela, cómic europeo, póster gráfico sofisticado, absurdo semirrealista, stop-motion/clay, retro 60s, grabado moderno, pop art refinado, cartoon 3D y novela gráfica;
+- en regeneraciones puede cambiar el estilo para buscar una solución realmente distinta;
+- una sola escena narrativa, composición 16:9 y casi sin texto;
+- elimina personajes, símbolos, carteles y objetos que no refuercen directamente el gag central;
+- evita retrato neutro, collage, split-screen, infografía, interfaz, screenshot e ilustración meramente literal;
+- no reutilices rasters, prompts, gags ni elementos de otra tendencia;
 - `context_guard={"version":3,"trend_id":"<id>","revision":<revision>,"scope":"current_item_only"}`.
 
 Los asuntos meteorológicos son válidos mientras el hecho no tenga como centro muertes/víctimas/sufrimiento. Los asuntos políticos son válidos con sátira situacional factual y neutral, sin propaganda ni persuasión política.
