@@ -14,12 +14,15 @@ on:
       - "trends/apply_ai_image_outbox.py"
       - "trends/migrate_legacy_chat_svg.py"
       - "trends/editorial-run-prompt.md"
-      - "trends/telegram-manual-explained.json"
       - ".github/workflows/ai-image-generate.yml"
       - ".github/workflows/ttendencias-ai-image-apply.yml"
       - "vercel-webhook/ttendencias/**"
       - "vercel-webhook/test/ttendencias-image-ui.test.mjs"
       - "vercel-webhook/api/ttendencias-control.js"
+
+concurrency:
+  group: ttendencias-preflight
+  cancel-in-progress: true
 
 permissions:
   contents: read
