@@ -1,0 +1,33 @@
+name: Test Money Control semantic transfers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "vercel-webhook/money-control/index.html"
+      - "vercel-webhook/api/money-control-interpret.js"
+      - ".github/scripts/test-money-control-semantic-transfer.mjs"
+      - ".github/workflows/test-money-control-semantic-transfer.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node --check vercel-webhook/api/money-control-interpret.js
+      - run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('vercel-webhook/money-control/index.html','utf8');
+          const m=html.match(/<script>([\s\S]*)<\/script>/);
+          if(!m)throw new Error('Script no encontrado');
+          new Function(m[1]);
+          console.log('MONEY_CONTROL_HTML_SYNTAX_OK');
+          NODE
+      - run: node .github/scripts/test-money-control-semantic-transfer.mjs
