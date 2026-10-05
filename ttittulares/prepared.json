@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T09:15:16.719323Z",
+  "updated_at": "2026-10-05T09:16:05.977Z",
   "items": [
     {
       "event_id": "0e333c91f316",
@@ -133,10 +133,10 @@
       },
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -152,12 +152,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T09:11:04.266745Z",
       "image": {
-        "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/10/05/6ac362d9c38e39-61705539.png",
-        "source": "www.20minutos.es",
-        "source_url": "https://www.20minutos.es/cataluna/barcelona/catalunya-envia-un-es-alert-valles-oriental-maresme-por-las-lluvias-ya-hay-coches-atrapados-granollers_7044739_0.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Catalunya envía una tercera Es-Alert al litoral y prelitoral catalán por lluvias torrenciales y pide al Vallès Oriental confinarse"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/1447042650be-r1-ai1-791191578468.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "83b384c160955dfe67a30678526a13fc5bf9fdd0eb0216db45f21162bb36d6d1",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2750948,
+        "context_guard": {
+          "version": 3,
+          "event_id": "1447042650be",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-1447042650be-r1-a1-1791191578468"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/1447042650be-r1-ai1-791191578468.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/10/05/6ac362d9c38e39-61705539.png",
@@ -166,7 +180,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Catalunya envía una tercera Es-Alert al litoral y prelitoral catalán por lluvias torrenciales y pide al Vallès Oriental confinarse"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/1447042650be-r1-ai1-791191578468.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "83b384c160955dfe67a30678526a13fc5bf9fdd0eb0216db45f21162bb36d6d1",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2750948,
+        "context_guard": {
+          "version": 3,
+          "event_id": "1447042650be",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-1447042650be-r1-a1-1791191578468"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/1447042650be-r1-ai1-791191578468.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T09:16:05.977Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T09:16:05.977Z"
     },
     {
       "event_id": "46b3e7bd3149",
