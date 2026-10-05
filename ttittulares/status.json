@@ -1,74 +1,391 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T17:04:06.665405Z",
+  "updated_at": "2026-10-05T17:07:52.269983Z",
   "radar_at": "2026-10-05T17:03:40.209317Z",
-  "processing_count": 4,
+  "processing_count": 3,
   "processing_items": [
     {
-      "event_id": "4856b4425e53",
-      "title": "RTVE, Atresmedia y Mediaset se postulan para un cara a cara electoral entre Pedro Sánchez y Núñez Feijóo",
-      "url": "https://www.20minutos.es/television/rtve-atresmedia-mediaset-se-postulan-para-un-cara-cara-electoral-entre-pedro-sanchez-nunez-feijoo_7045132_0.html",
-      "selected_at": "2026-10-05T17:04:06.484777Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 5,
-      "sources": [
-        "20minutos",
-        "La Vanguardia",
-        "Onda Cero",
-        "Servimedia",
-        "Telecinco Noticias"
-      ]
-    },
-    {
-      "event_id": "a404cacfabc8",
-      "title": "Última hora de la crisis de vivienda y del adelanto de las elecciones generales, en directo | El PSOE defiende el voto por correo e insta a Feijóo a desautorizar a Ayuso y a Abascal por sembrar dudas",
-      "url": "https://www.publico.es/politica/ultima-hora-crisis-vivienda-decision-sanchez-directo.html",
-      "selected_at": "2026-10-05T17:04:06.481994Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 4,
-      "sources": [
-        "Antena 3 Noticias",
-        "Cadena SER",
-        "El HuffPost",
-        "Público"
-      ]
-    },
-    {
-      "event_id": "bc23a7732d3c",
-      "title": "¡Medvedev da un pelotazo a un espectador y es descalificado contra Djokovic!",
+      "id": "bc23a7732d3c",
+      "canonical_title": "¡Medvedev da un pelotazo a un espectador y es descalificado contra Djokovic!",
       "url": "https://www.sport.es/es/noticias/tenis/medvedev-da-pelotazo-espectador-descalificado-135025119",
-      "selected_at": "2026-10-05T16:42:57.028540Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 4,
+      "appearances": [
+        {
+          "source": "Antena 3 Noticias",
+          "source_type": "general",
+          "title": "Medvedev, descalificado en Pekín por darle un pelotazo en el ojo a un espectador de la grada",
+          "url": "https://www.antena3.com/noticias/deportes/tenis/medvedev-descalificado-pekin-darle-pelotazo-ojo-espectador-grada_202610056ac3c107f7f8f566d14dc4e6.html",
+          "first_seen": "2026-10-05T16:33:59.637306Z",
+          "last_seen": "2026-10-05T16:42:32.738146Z"
+        },
+        {
+          "source": "Mundo Deportivo",
+          "source_type": "sport",
+          "title": "Djokovic: \"Lo siento por Medvedev, yo también fui descalificado y es horrible\"",
+          "url": "https://www.mundodeportivo.com/tenis/20261005/1004234983/djokovic-siento-medvedev-descalificado-horrible.html",
+          "first_seen": "2026-10-05T16:33:59.637306Z",
+          "last_seen": "2026-10-05T16:42:32.738146Z"
+        },
+        {
+          "source": "EL PAÍS",
+          "source_type": "general",
+          "title": "Un pelotazo a un aficionado le cuesta la descalificación a Medvedev en su pulso con Djokovic en Pekín",
+          "url": "https://elpais.com/deportes/tenis/2026-10-05/un-pelotazo-a-un-aficionado-le-cuesta-la-descalificacion-a-medvedev-en-su-pulso-con-djokovic-en-pekin.html",
+          "first_seen": "2026-10-05T16:42:32.738146Z",
+          "last_seen": "2026-10-05T16:42:32.738146Z"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "Medvedev, descalificado ante Djokovic tras darle un pelotazo en el ojo a un espectador",
+          "url": "https://www.20minutos.es/deportes/tenis/medvedev-descalificado-ante-djokovic-tras-darle-un-pelotazo-ojo-un-espectador_7045072_0.html",
+          "first_seen": "2026-10-05T16:42:32.738146Z",
+          "last_seen": "2026-10-05T16:42:32.738146Z"
+        },
+        {
+          "source": "El Mundo",
+          "source_type": "general",
+          "title": "Medvedev, descalificado por pelotazo a un espectador, deja a Djokovic en la final de Pekn",
+          "url": "https://www.elmundo.es/deportes/2026/10/05/6ac3beb8fc6c83265c8b4588.html",
+          "first_seen": "2026-10-05T16:42:32.738146Z",
+          "last_seen": "2026-10-05T16:42:32.738146Z"
+        },
+        {
+          "source": "laSexta Noticias",
+          "source_type": "general",
+          "title": "Lamentable La última de Medvedev: descalificado ante Djokovic por darle un 'pelotazo' a un aficionado en la cara laSexta Deportes 05 de octubre de 2026, 16:57",
+          "url": "https://www.lasexta.com/noticias/deportes/tenis/ultima-medvedev-descalificado-djokovic-darle-pelotazo-aficionado-cara_202610056ac3baeb916cda53dca4911d.html",
+          "first_seen": "2026-10-05T16:42:32.738146Z",
+          "last_seen": "2026-10-05T16:42:32.738146Z"
+        },
+        {
+          "source": "SPORT",
+          "source_type": "sport",
+          "title": "¡Medvedev da un pelotazo a un espectador y es descalificado contra Djokovic!",
+          "url": "https://www.sport.es/es/noticias/tenis/medvedev-da-pelotazo-espectador-descalificado-135025119",
+          "first_seen": "2026-10-05T16:42:32.738146Z",
+          "last_seen": "2026-10-05T16:42:32.738146Z"
+        }
+      ],
       "sources": [
         "Antena 3 Noticias",
         "EL PAÍS",
         "20minutos",
         "El Mundo"
-      ]
-    },
-    {
-      "event_id": "b3536d7a7d33",
-      "title": "Nobel de Medicina para Deisseroth, Hegemann y Nagel por sus descubrimientos en optogenética - EFE - Agencia de noticias",
-      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5HekZlczBwbngtMUlnUS1RejJ5RWkzTUVXcklweXFrdWdabVFQNERaOGJGeUZfSExPMElwVGNlZFhTeHFORkFjbjVDTkdLVHd4VjRYWEdDMFdxdGZfUGlxTXI4TzAyVXlkTVV2WktCX2xrc09VWUstblJDcTNlZWs?oc=5",
-      "selected_at": "2026-10-05T16:42:57.025435Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 6,
-      "sources": [
-        "Onda Cero",
-        "Público",
-        "Telecinco Noticias",
-        "EFE",
+      ],
+      "source_count": 4,
+      "percentage": 25,
+      "first_seen": "2026-10-05T15:14:17.344950Z",
+      "last_seen": "2026-10-05T16:42:32.738146Z",
+      "status": "PROCESSING",
+      "notified": false,
+      "revision": 1,
+      "sport_sources": [
+        "Mundo Deportivo",
+        "SPORT"
+      ],
+      "social_sources": [],
+      "discovery_sources": [],
+      "source_families": [
+        "Atresmedia",
+        "EL PAÍS",
         "20minutos",
         "El Mundo"
-      ]
+      ],
+      "outlet_count": 5,
+      "sport_source_count": 2,
+      "eligible_at": "2026-10-05T16:42:32.738146Z",
+      "event_id": "bc23a7732d3c",
+      "title": "¡Medvedev da un pelotazo a un espectador y es descalificado contra Djokovic!",
+      "selection_mode": "AUTO_WEB",
+      "selected_at": "2026-10-05T16:42:57.028540Z",
+      "source_evidence": [
+        {
+          "source": "Antena 3 Noticias",
+          "source_type": "general",
+          "title": "Medvedev, descalificado en Pekín por darle un pelotazo en el ojo a un espectador de la grada",
+          "url": "https://www.antena3.com/noticias/deportes/tenis/medvedev-descalificado-pekin-darle-pelotazo-ojo-espectador-grada_202610056ac3c107f7f8f566d14dc4e6.html",
+          "first_seen": "2026-10-05T16:33:59.637306Z",
+          "last_seen": "2026-10-05T16:42:32.738146Z",
+          "source_family": "Atresmedia"
+        },
+        {
+          "source": "EL PAÍS",
+          "source_type": "general",
+          "title": "Un pelotazo a un aficionado le cuesta la descalificación a Medvedev en su pulso con Djokovic en Pekín",
+          "url": "https://elpais.com/deportes/tenis/2026-10-05/un-pelotazo-a-un-aficionado-le-cuesta-la-descalificacion-a-medvedev-en-su-pulso-con-djokovic-en-pekin.html",
+          "first_seen": "2026-10-05T16:42:32.738146Z",
+          "last_seen": "2026-10-05T16:42:32.738146Z",
+          "source_family": "EL PAÍS"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "Medvedev, descalificado ante Djokovic tras darle un pelotazo en el ojo a un espectador",
+          "url": "https://www.20minutos.es/deportes/tenis/medvedev-descalificado-ante-djokovic-tras-darle-un-pelotazo-ojo-un-espectador_7045072_0.html",
+          "first_seen": "2026-10-05T16:42:32.738146Z",
+          "last_seen": "2026-10-05T16:42:32.738146Z",
+          "source_family": "20minutos"
+        },
+        {
+          "source": "El Mundo",
+          "source_type": "general",
+          "title": "Medvedev, descalificado por pelotazo a un espectador, deja a Djokovic en la final de Pekn",
+          "url": "https://www.elmundo.es/deportes/2026/10/05/6ac3beb8fc6c83265c8b4588.html",
+          "first_seen": "2026-10-05T16:42:32.738146Z",
+          "last_seen": "2026-10-05T16:42:32.738146Z",
+          "source_family": "El Mundo"
+        }
+      ],
+      "drafted_source_count": 4,
+      "verified_source_count": 4
+    },
+    {
+      "id": "a404cacfabc8",
+      "canonical_title": "Última hora de la crisis de vivienda y del adelanto de las elecciones generales, en directo | El PSOE defiende el voto por correo e insta a Feijóo a desautorizar a Ayuso y a Abascal por sembrar dudas",
+      "url": "https://www.publico.es/politica/ultima-hora-crisis-vivienda-decision-sanchez-directo.html",
+      "appearances": [
+        {
+          "source": "Público · Tremending",
+          "source_type": "social",
+          "title": "Última hora de la crisis de vivienda y del adelanto de las elecciones generales, en directo | El PSOE defiende el voto por correo e insta a Feijóo a desautorizar a Ayuso y a Abascal por sembrar dudas",
+          "url": "https://www.publico.es/politica/ultima-hora-crisis-vivienda-decision-sanchez-directo.html",
+          "first_seen": "2026-10-05T16:52:21.476169Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z"
+        },
+        {
+          "source": "Cadena SER",
+          "source_type": "general",
+          "title": "Ayuso y Abascal azuzan la idea de un posible pucherazo ante el adelanto electoral y piden no votar por correo",
+          "url": "https://cadenaser.com/cmadrid/2026/10/05/ayuso-habla-ya-de-un-posible-pucherazo-ante-el-adelanto-electoral-y-pide-no-votar-por-correo-va-a-ser-la-campana-mas-sucia-radio-madrid/",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z"
+        },
+        {
+          "source": "El HuffPost",
+          "source_type": "general",
+          "title": "Francino hace un símil futbolístico para sentenciar a Ayuso y Abascal por poner en duda el voto por correo: \"Vaya mierda de equipo\"",
+          "url": "https://www.huffingtonpost.es/virales/francinomil-futbolistico-sentenciar-ayuso-abascal-poner-duda-voto-correo-vaya-mierda-equipo-f202610.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z"
+        },
+        {
+          "source": "Público",
+          "source_type": "general",
+          "title": "El PSOE defiende el voto por correo e insta a Feijóo a desautorizar a Ayuso y a Abascal por sembrar dudas",
+          "url": "https://www.publico.es/politica/ultima-hora-crisis-vivienda-decision-sanchez-directo.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z"
+        },
+        {
+          "source": "Antena 3 Noticias",
+          "source_type": "general",
+          "title": "Ayuso y Abascal piden evitar el voto por correo en las elecciones del 29 de noviembre",
+          "url": "https://www.antena3.com/noticias/espana/ayuso-abascal-piden-evitar-voto-correo-elecciones-29-noviembre_202610056ac3be70916cda53dca49367.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z"
+        }
+      ],
+      "sources": [
+        "Cadena SER",
+        "El HuffPost",
+        "Público",
+        "Antena 3 Noticias"
+      ],
+      "source_count": 4,
+      "percentage": 25.0,
+      "first_seen": "2026-10-05T16:52:21.476169Z",
+      "last_seen": "2026-10-05T17:03:40.209317Z",
+      "status": "PROCESSING",
+      "notified": false,
+      "revision": 1,
+      "sport_sources": [],
+      "social_sources": [
+        "Público · Tremending"
+      ],
+      "discovery_sources": [],
+      "source_families": [
+        "Cadena SER",
+        "El HuffPost",
+        "Público",
+        "Atresmedia"
+      ],
+      "outlet_count": 4,
+      "sport_source_count": 0,
+      "eligible_at": "2026-10-05T17:03:40.209317Z",
+      "event_id": "a404cacfabc8",
+      "title": "Última hora de la crisis de vivienda y del adelanto de las elecciones generales, en directo | El PSOE defiende el voto por correo e insta a Feijóo a desautorizar a Ayuso y a Abascal por sembrar dudas",
+      "selection_mode": "AUTO_WEB",
+      "selected_at": "2026-10-05T17:04:06.481994Z",
+      "source_evidence": [
+        {
+          "source": "Cadena SER",
+          "source_type": "general",
+          "title": "Ayuso y Abascal azuzan la idea de un posible pucherazo ante el adelanto electoral y piden no votar por correo",
+          "url": "https://cadenaser.com/cmadrid/2026/10/05/ayuso-habla-ya-de-un-posible-pucherazo-ante-el-adelanto-electoral-y-pide-no-votar-por-correo-va-a-ser-la-campana-mas-sucia-radio-madrid/",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z",
+          "source_family": "Cadena SER"
+        },
+        {
+          "source": "El HuffPost",
+          "source_type": "general",
+          "title": "Francino hace un símil futbolístico para sentenciar a Ayuso y Abascal por poner en duda el voto por correo: \"Vaya mierda de equipo\"",
+          "url": "https://www.huffingtonpost.es/virales/francinomil-futbolistico-sentenciar-ayuso-abascal-poner-duda-voto-correo-vaya-mierda-equipo-f202610.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z",
+          "source_family": "El HuffPost"
+        },
+        {
+          "source": "Público",
+          "source_type": "general",
+          "title": "El PSOE defiende el voto por correo e insta a Feijóo a desautorizar a Ayuso y a Abascal por sembrar dudas",
+          "url": "https://www.publico.es/politica/ultima-hora-crisis-vivienda-decision-sanchez-directo.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z",
+          "source_family": "Público"
+        },
+        {
+          "source": "Antena 3 Noticias",
+          "source_type": "general",
+          "title": "Ayuso y Abascal piden evitar el voto por correo en las elecciones del 29 de noviembre",
+          "url": "https://www.antena3.com/noticias/espana/ayuso-abascal-piden-evitar-voto-correo-elecciones-29-noviembre_202610056ac3be70916cda53dca49367.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z",
+          "source_family": "Atresmedia"
+        }
+      ],
+      "drafted_source_count": 4,
+      "verified_source_count": 4
+    },
+    {
+      "id": "4856b4425e53",
+      "canonical_title": "RTVE, Atresmedia y Mediaset se postulan para un cara a cara electoral entre Pedro Sánchez y Núñez Feijóo",
+      "url": "https://www.20minutos.es/television/rtve-atresmedia-mediaset-se-postulan-para-un-cara-cara-electoral-entre-pedro-sanchez-nunez-feijoo_7045132_0.html",
+      "appearances": [
+        {
+          "source": "La Vanguardia",
+          "source_type": "general",
+          "title": "RTVE y Mediaset proponen sendos cara a cara para el 17 de noviembre y Atresmedia, para el 23",
+          "url": "https://www.lavanguardia.com/politica/20261005/11651711/rtve-mediaset-proponen-sendos-cara-cara-17-noviembre-atresmedia-23.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "RTVE, Atresmedia y Mediaset se postulan para un cara a cara electoral entre Pedro Sánchez y Núñez Feijóo",
+          "url": "https://www.20minutos.es/television/rtve-atresmedia-mediaset-se-postulan-para-un-cara-cara-electoral-entre-pedro-sanchez-nunez-feijoo_7045132_0.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z"
+        },
+        {
+          "source": "Servimedia",
+          "source_type": "general",
+          "title": "Atresmedia ofrece a Sánchez y Feijóo celebrar un debate electoral cara a cara el 23 de noviembre",
+          "url": "https://www.servimedia.es/noticias/atresmedia-ofrece-sanchez-feijoo-celebrar-debate-electoral-cara-cara-23-noviembre/1413390460",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z"
+        },
+        {
+          "source": "Onda Cero",
+          "source_type": "general",
+          "title": "La reacción de Alsina al adelanto electoral: \"Si Sánchez plantea las elecciones como un plebiscito, Feijóo también\"",
+          "url": "https://www.ondacero.es/noticias/espana/reaccion-alsina-adelanto-electoral-sanchez-plantea-elecciones-como-plebiscito-feijoo-tambien_202610056ac36c951c30184d44b52fbb.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z"
+        },
+        {
+          "source": "Telecinco Noticias",
+          "source_type": "general",
+          "title": "Feijóo reclama la confianza de los españoles y Abascal pide no confiar en las encuestas ni en Pedro Sánchez - Telecinco",
+          "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxPUWU4VTFtOEZuYmhTbDVTV0piZl9HclNvVDMwRnBmZm1vcmh0dTV3djZuNTN1Yi03SUpHZ0MwaGlTYmQ1Y3gzRF93dDVmTHRTQmlfcGhBd1N2TlFfSFpFN0RHNG02X2xOUHhCUVRFRjJaaXpIU2Jfd0FfeXVoTEVrZ3U5WGJBcXJPT3F0ZjN5Mm45NDczV1lsU0lQbDRFSnJxdDlZTWlZV2pUS09HVTZ4MFdRY25uV1ZCUEJtZUk3UkV0S1ZzMTVDbmhWbU1wenpBdkFmVVhuUEs1WU1vSkw4bFN0bGc?oc=5",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z"
+        }
+      ],
+      "sources": [
+        "La Vanguardia",
+        "20minutos",
+        "Servimedia",
+        "Onda Cero",
+        "Telecinco Noticias"
+      ],
+      "source_count": 5,
+      "percentage": 31.2,
+      "first_seen": "2026-10-05T17:03:40.209317Z",
+      "last_seen": "2026-10-05T17:03:40.209317Z",
+      "status": "PROCESSING",
+      "notified": false,
+      "revision": 1,
+      "sport_sources": [],
+      "social_sources": [],
+      "discovery_sources": [],
+      "source_families": [
+        "La Vanguardia",
+        "20minutos",
+        "Servimedia",
+        "Atresmedia",
+        "Mediaset"
+      ],
+      "outlet_count": 5,
+      "sport_source_count": 0,
+      "eligible_at": "2026-10-05T17:03:40.209317Z",
+      "event_id": "4856b4425e53",
+      "title": "RTVE, Atresmedia y Mediaset se postulan para un cara a cara electoral entre Pedro Sánchez y Núñez Feijóo",
+      "selection_mode": "AUTO_WEB",
+      "selected_at": "2026-10-05T17:04:06.484777Z",
+      "source_evidence": [
+        {
+          "source": "La Vanguardia",
+          "source_type": "general",
+          "title": "RTVE y Mediaset proponen sendos cara a cara para el 17 de noviembre y Atresmedia, para el 23",
+          "url": "https://www.lavanguardia.com/politica/20261005/11651711/rtve-mediaset-proponen-sendos-cara-cara-17-noviembre-atresmedia-23.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z",
+          "source_family": "La Vanguardia"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "RTVE, Atresmedia y Mediaset se postulan para un cara a cara electoral entre Pedro Sánchez y Núñez Feijóo",
+          "url": "https://www.20minutos.es/television/rtve-atresmedia-mediaset-se-postulan-para-un-cara-cara-electoral-entre-pedro-sanchez-nunez-feijoo_7045132_0.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z",
+          "source_family": "20minutos"
+        },
+        {
+          "source": "Servimedia",
+          "source_type": "general",
+          "title": "Atresmedia ofrece a Sánchez y Feijóo celebrar un debate electoral cara a cara el 23 de noviembre",
+          "url": "https://www.servimedia.es/noticias/atresmedia-ofrece-sanchez-feijoo-celebrar-debate-electoral-cara-cara-23-noviembre/1413390460",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z",
+          "source_family": "Servimedia"
+        },
+        {
+          "source": "Onda Cero",
+          "source_type": "general",
+          "title": "La reacción de Alsina al adelanto electoral: \"Si Sánchez plantea las elecciones como un plebiscito, Feijóo también\"",
+          "url": "https://www.ondacero.es/noticias/espana/reaccion-alsina-adelanto-electoral-sanchez-plantea-elecciones-como-plebiscito-feijoo-tambien_202610056ac36c951c30184d44b52fbb.html",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z",
+          "source_family": "Atresmedia"
+        },
+        {
+          "source": "Telecinco Noticias",
+          "source_type": "general",
+          "title": "Feijóo reclama la confianza de los españoles y Abascal pide no confiar en las encuestas ni en Pedro Sánchez - Telecinco",
+          "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxPUWU4VTFtOEZuYmhTbDVTV0piZl9HclNvVDMwRnBmZm1vcmh0dTV3djZuNTN1Yi03SUpHZ0MwaGlTYmQ1Y3gzRF93dDVmTHRTQmlfcGhBd1N2TlFfSFpFN0RHNG02X2xOUHhCUVRFRjJaaXpIU2Jfd0FfeXVoTEVrZ3U5WGJBcXJPT3F0ZjN5Mm45NDczV1lsU0lQbDRFSnJxdDlZTWlZV2pUS09HVTZ4MFdRY25uV1ZCUEJtZUk3UkV0S1ZzMTVDbmhWbU1wenpBdkFmVVhuUEs1WU1vSkw4bFN0bGc?oc=5",
+          "first_seen": "2026-10-05T17:03:40.209317Z",
+          "last_seen": "2026-10-05T17:03:40.209317Z",
+          "source_family": "Mediaset"
+        }
+      ],
+      "drafted_source_count": 5,
+      "verified_source_count": 5
     }
   ],
-  "ready_count": 2,
+  "ready_count": 3,
   "problematic_count": 0,
   "problematic_items": [],
   "trend_candidates_count": 0,
