@@ -63,7 +63,9 @@ async function signedPrivateUrl(pathname,operation,validUntil){
 }
 async function dispatchMoneyWizProcessing({current,previous}){
   const githubToken=String(process.env.GITHUB_TOKEN||"");
-  const repo=String(process.env.GITHUB_REPO||"fabricelop/europapress-rss").replace(/^https?:\/\/github\.com\//,"").replace(/\.git$/,"");
+  let repo=String(process.env.GITHUB_REPO||"fabricelop/europapress-rss").replace(/^https?:\/\/github\.com\//,"").replace(/\.git$/,"");
+  if(!repo.includes("/"))repo="fabricelop/"+repo;
+  repo=repo.split("/").filter(Boolean).slice(-2).join("/");
   if(!githubToken||!repo.includes("/"))throw new Error("github_dispatch_not_configured");
   const validUntil=Date.now()+40*60*1000;
   const currentUrl=await signedPrivateUrl(current.pathname,"get",validUntil);
