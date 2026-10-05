@@ -55,9 +55,76 @@ function sim(a,b){a=norm(a);b=norm(b);if(!a||!b)return 0;if(a===b)return 1;const
 async function derive(password,salt,iterations){const material=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations,hash:'SHA-256'},material,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
 async function deriveStateKey(password){return derive(password,new TextEncoder().encode('money-control-state-v1'),310000)}
 async function loadEnvelope(){for(const url of SNAPSHOT_URLS){try{const r=await fetch(url+'?t='+Date.now(),{cache:'no-store'});if(r.ok){const x=await r.json();if(x?.format==='money-control-snapshot')return {enc:{salt:x.salt,iv:x.iv,data:x.data,iter:x.iterations},aad:'money-control-snapshot-v1',external:true,source:url}}}catch(_){}}return {enc:ENC,aad:'money-control-preview-v1',external:false,source:'embedded'}}
-async function refreshExternalSnapshot(){if(!DATA||!DATA._externalSnapshot||!SESSION_PASSWORD||document.hidden)return false;try{const env=await loadEnvelope();if(!env.external)return false;const key=await derive(SESSION_PASSWORD,b64u(env.enc.salt),env.enc.iter),fresh=await decryptPayload(key,env);const oldRev=String(DATA.sourceImportedAt||DATA.snapshotDate||''),newRev=String(fresh.sourceImportedAt||fresh.snapshotDate||'');if(oldRev===newRev&&DATA._externalSnapshot)return false;DATA_KEY=key;DATA=fresh;DATA._externalSnapshot=true;await reconcileBrowserProvisionals();if(syncCardAdjustments())await saveState();$('#snapshot').textContent=dshort(DATA.snapshotDate)+' · sincronizado';renderAll();toast('Datos financieros actualizados');return true}catch(_){return false}}
+async function refreshExternalSnapshot(){if(!DATA||!DATA._externalSnapshot||!SESSION_PASSWORD||document.hidden)return false;try{const env=await loadEnvelope();if(!env.external)return false;const key=await derive(SESSION_PASSWORD,b64u(env.enc.salt),env.enc.iter),fresh=await decryptPayload(key,env);const oldRev=String(DATA.sourceImportedAt||DATA.snapshotDate||''),newRev=String(fresh.sourceImportedAt||fresh.snapshotDate||'');if(oldRev===newRev&&DATA._externalSnapshot)return false;DATA_KEY=key;DATA=fresh;DATA._externalSnapshot=true;await reconcileBrowserProvisionals();await reconcileNativeAgainstSnapshot();if(syncCardAdjustments())await saveState();$('#snapshot').textContent=dshort(DATA.snapshotDate)+' · sincronizado';renderAll();toast('Datos financieros actualizados');return true}catch(_){return false}}
 function validateSnapshotData(x,external=false){if(!x||typeof x!=='object')throw new Error('snapshot inválido');for(const k of ['accounts','transactions','scheduled'])if(!Array.isArray(x[k]))throw new Error('snapshot sin '+k);if(!/^\d{4}-\d{2}-\d{2}$/.test(String(x.snapshotDate||'')))throw new Error('snapshot sin fecha');if(external){for(const k of ['cardsBase','expenseCategoriesBase','historicalAliases','incomeCategoriesBase','merchantBase','monthlyBase'])if(!Array.isArray(x[k]))throw new Error('snapshot externo sin '+k);for(const k of ['controlBase','healthBase','mtdBase'])if(!x[k]||typeof x[k]!=='object'||Array.isArray(x[k]))throw new Error('snapshot externo sin '+k);if(!x.sourceImportedAt)throw new Error('snapshot externo sin sourceImportedAt')}return x}
 async function decryptPayload(key,env){const raw=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64u(env.enc.iv),additionalData:new TextEncoder().encode(env.aad)},key,b64u(env.enc.data));return validateSnapshotData(JSON.parse(new TextDecoder().decode(raw)),!!env.external)}
+function moneyWizSyncTokenFromHash(){try{return new URLSearchParams(location.hash.replace(/^#/,'' )).get('mwsync')||''}catch{return''}}
+async function gunzipBytes(bytes){if(typeof DecompressionStream==='undefined')throw new Error('gzip_no_disponible');const ds=new DecompressionStream('gzip'),stream=new Blob([bytes]).stream().pipeThrough(ds);return new Uint8Array(await new Response(stream).arrayBuffer())}
+async function loadMoneyWizBootstrapPatch(token){
+  const r=await fetch('/money-control/moneywiz-bootstrap-patch-v1.json?t='+Date.now(),{cache:'no-store'});
+  if(!r.ok)throw new Error('patch_http_'+r.status);
+  const env=await r.json();
+  if(env?.format!=='moneywiz-bootstrap-patch'||Number(env.version)!==1||env.kdf!=='PBKDF2-SHA256'||env.compression!=='gzip')throw new Error('patch_invalido');
+  const key=await derive(token,b64u(env.salt),Number(env.iterations||310000));
+  const gz=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64u(env.iv),additionalData:new TextEncoder().encode('moneywiz-bootstrap-patch-v1')},key,b64u(env.data));
+  const raw=await gunzipBytes(new Uint8Array(gz)),patch=JSON.parse(new TextDecoder().decode(raw));
+  if(patch?.format!=='moneywiz-bootstrap-patch'||Number(patch.version)!==1||!Array.isArray(patch.accounts)||!Array.isArray(patch.transactionsUpsert)||!Array.isArray(patch.scheduled))throw new Error('patch_payload_invalido');
+  return patch;
+}
+function applyMoneyWizPatch(patch){
+  DATA.accounts=patch.accounts;
+  const tx=new Map((DATA.transactions||[]).map(t=>[String(t.gid||t.id),t]));
+  for(const t of patch.transactionsUpsert||[])tx.set(String(t.gid||t.id),t);
+  DATA.transactions=[...tx.values()].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||Number(b.id||0)-Number(a.id||0));
+  DATA.scheduled=patch.scheduled;
+  for(const k of ['cardsBase','historicalAliases','monthlyBase','mtdBase','merchantBase','expenseCategoriesBase','incomeCategoriesBase','controlBase','healthBase'])if(k in patch)DATA[k]=patch[k];
+  DATA.snapshotDate=patch.snapshotDate;
+  DATA.sourceImportedAt=patch.sourceImportedAt;
+  DATA._externalSnapshot=true;
+}
+async function reconcileNativeAgainstSnapshot(){
+  if(!STATE||!DATA)return false;
+  let changed=false;
+  const real=(DATA.transactions||[]).filter(t=>!String(t.gid||'').startsWith('PROV:'));
+  const kept=[];
+  for(const p of (STATE.nativeTransactions||[])){
+    if(p?.source==='balance_adjustment'&&String(p.date||'')<=String(DATA.snapshotDate||'')){changed=true;continue}
+    const matches=real.filter(t=>t.accountId===p.accountId&&dayDiff(t.date,p.date)<=2&&Math.abs(Number(t.amount||0)-Number(p.amount||0))<.005&&sim(t.description||t.payee,p.description||p.payee)>=.86);
+    if(matches.length!==1){kept.push(p);continue}
+    const m=matches[0],rev=STATE.review?.[p.gid];
+    if(rev&&!STATE.review[m.gid])STATE.review[m.gid]={...rev};
+    for(const ov of Object.values(STATE.occ||{}))if(ov?.matchedGid===p.gid)ov.matchedGid=m.gid;
+    STATE.seen=(STATE.seen||[]).map(x=>x===p.gid?m.gid:x);
+    if(STATE.cardAdjustments?.[p.gid]){STATE.cardAdjustments[m.gid]=STATE.cardAdjustments[p.gid];delete STATE.cardAdjustments[p.gid]}
+    changed=true;
+  }
+  if(changed){STATE.nativeTransactions=kept;await saveState()}
+  return changed;
+}
+async function persistCurrentSnapshotWithToken(token){
+  const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),iterations=310000;
+  const key=await derive(SESSION_PASSWORD,salt,iterations),clean={...DATA};delete clean._externalSnapshot;
+  const raw=new TextEncoder().encode(JSON.stringify(clean)),ct=await crypto.subtle.encrypt({name:'AES-GCM',iv,additionalData:new TextEncoder().encode('money-control-snapshot-v1')},key,raw);
+  const envelope={format:'money-control-snapshot',version:1,kdf:'PBKDF2-SHA256',iterations,salt:b64(salt),iv:b64(iv),data:b64(ct)};
+  const r=await fetch('/api/money-control-snapshot',{method:'POST',headers:{'content-type':'application/json','authorization':'Bearer '+token},body:JSON.stringify(envelope)});
+  if(!r.ok)throw new Error('snapshot_upload_'+r.status);
+  DATA_KEY=key;DATA._externalSnapshot=true;
+}
+async function applyMoneyWizBootstrapIfRequested(){
+  const token=moneyWizSyncTokenFromHash();if(!token||!DATA||!DATA_KEY||!SESSION_PASSWORD)return false;
+  try{
+    const patch=await loadMoneyWizBootstrapPatch(token);
+    const cur=String(DATA.sourceImportedAt||DATA.snapshotDate||''),next=String(patch.sourceImportedAt||patch.snapshotDate||'');
+    if(cur>=next){history.replaceState(null,'',location.pathname+location.search);return false}
+    applyMoneyWizPatch(patch);
+    await reconcileBrowserProvisionals();
+    await reconcileNativeAgainstSnapshot();
+    if(syncCardAdjustments())await saveState();
+    await persistCurrentSnapshotWithToken(token);
+    history.replaceState(null,'',location.pathname+location.search);
+    return true;
+  }catch(err){console.error('MoneyWiz bootstrap',err);toast('No se pudo aplicar la actualización MoneyWiz');return false}
+}
 const STATE_SYNC_URL='/api/money-control-state';let STATE_UPDATED_AT='1970-01-01T00:00:00.000Z',remotePushTimer=null;
 function baseState(){return {roles:{},occ:{},review:{},nativeTransactions:[],provisional:[],aliases:[],seen:[],controlDismissed:[],localScheduled:[],cardAdjustments:{}}}
 async function decryptStateEnvelope(x){const raw=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64u(x.iv)},STATE_KEY,b64u(x.data));return Object.assign(baseState(),JSON.parse(new TextDecoder().decode(raw)))}
@@ -198,7 +265,7 @@ async function applyIngestPreview(){const p=INGEST_PREVIEW;if(!p)return;let adde
 function render(v){if(v==='home')renderHome();if(v==='moves')renderMoves();if(v==='scheduled')renderScheduled();if(v==='accounts')renderAccounts();if(v==='cards')renderCards();if(v==='analytics')renderAnalytics();if(v==='control')renderControl();if(v==='ingest')renderIngest()}
 function renderAll(){renderHome();const fresh=txs().filter(t=>{const r=txReview(t);return ['NEW','MODIFIED'].includes(r.source)&&r.state==='UNREVIEWED'}).length;$('#newbadge').textContent=fresh||''}
 $('#restore-control').onclick=async()=>{const n=(STATE.controlDismissed||[]).length;STATE.controlDismissed=[];await saveState();toast(n?`${n} aviso${n===1?'':'s'} restaurado${n===1?'':'s'}`:'No había avisos ocultados');renderControl()};
-async function unlockWithPassword(pw,{remember=true,silent=false}={}){if(!pw)return false;try{const env=await loadEnvelope();SESSION_PASSWORD=pw;DATA_KEY=await derive(pw,b64u(env.enc.salt),env.enc.iter);STATE_KEY=await deriveStateKey(pw);DATA=await decryptPayload(DATA_KEY,env);DATA._externalSnapshot=env.external;STATE=await loadState();if(stateSyncToken())await pullRemoteState();await reconcileBrowserProvisionals();if(syncCardAdjustments())await saveState()}catch(err){SESSION_PASSWORD=null;DATA_KEY=null;STATE_KEY=null;DATA=null;STATE=null;sessionStorage.removeItem(SESSION_PASSWORD_KEY);if(!silent)$('#unlock-error').textContent='Clave incorrecta o datos dañados.';return false}if(remember)sessionStorage.setItem(SESSION_PASSWORD_KEY,pw);$('#password').value='';$('#unlock').style.display='none';$('#app').style.display='block';$('#snapshot').textContent=dshort(DATA.snapshotDate)+(DATA._externalSnapshot?' · sincronizado':' · preview');try{renderAll()}catch(err){console.error('Money Control render error',err);toast('Error de interfaz: los datos siguen cargados')}return true}
+async function unlockWithPassword(pw,{remember=true,silent=false}={}){if(!pw)return false;try{const env=await loadEnvelope();SESSION_PASSWORD=pw;DATA_KEY=await derive(pw,b64u(env.enc.salt),env.enc.iter);STATE_KEY=await deriveStateKey(pw);DATA=await decryptPayload(DATA_KEY,env);DATA._externalSnapshot=env.external;STATE=await loadState();if(stateSyncToken())await pullRemoteState();await reconcileBrowserProvisionals();await reconcileNativeAgainstSnapshot();await applyMoneyWizBootstrapIfRequested();if(syncCardAdjustments())await saveState()}catch(err){SESSION_PASSWORD=null;DATA_KEY=null;STATE_KEY=null;DATA=null;STATE=null;sessionStorage.removeItem(SESSION_PASSWORD_KEY);if(!silent)$('#unlock-error').textContent='Clave incorrecta o datos dañados.';return false}if(remember)sessionStorage.setItem(SESSION_PASSWORD_KEY,pw);$('#password').value='';$('#unlock').style.display='none';$('#app').style.display='block';$('#snapshot').textContent=dshort(DATA.snapshotDate)+(DATA._externalSnapshot?' · sincronizado':' · preview');try{renderAll()}catch(err){console.error('Money Control render error',err);toast('Error de interfaz: los datos siguen cargados')}return true}
 $('#unlock-form').addEventListener('submit',async e=>{e.preventDefault();$('#unlock-error').textContent='';await unlockWithPassword($('#password').value,{remember:true,silent:false})});
 async function restoreSessionUnlock(){const pw=sessionStorage.getItem(SESSION_PASSWORD_KEY);if(!pw)return false;return unlockWithPassword(pw,{remember:true,silent:true})}
 function lockMoneyControl(){sessionStorage.removeItem(SESSION_PASSWORD_KEY);SESSION_PASSWORD=null;DATA_KEY=null;STATE_KEY=null;location.reload()}
