@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T13:15:00+02:00",
-  "last_completed_at": "2026-10-05T13:16:30+02:00",
-  "updated_at": "2026-10-05T13:16:30+02:00",
+  "last_started_at": "2026-10-05T13:45:00+02:00",
+  "last_completed_at": "2026-10-05T13:46:00+02:00",
+  "updated_at": "2026-10-05T13:46:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -13,15 +13,29 @@
   "remaining_problematic_ids": [],
   "error": null,
   "last_run": {
-    "run_id": "tr-chat-20261005T131500+0200",
+    "version": 1,
+    "canonical": true,
+    "run_id": "tr-chat-20261005T134500+0200",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-05T13:15:00+02:00",
-    "updated_at": "2026-10-05T13:16:30+02:00",
-    "finished_at": "2026-10-05T13:16:30+02:00",
     "current": 0,
     "total": 0,
+    "trend_id": null,
+    "title": null,
+    "started_at": "2026-10-05T13:45:00+02:00",
+    "incident_count": 0,
+    "incidents": [],
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
+      "updated_at": "2026-10-04T17:29:26.880Z",
+      "total_ratings": 153,
+      "recent_considered": 100
+    },
+    "remate_selections": [],
+    "status": "DONE",
+    "phase": "closing",
+    "updated_at": "2026-10-05T13:46:00+02:00",
+    "finished_at": "2026-10-05T13:46:00+02:00",
     "summary": {
       "trends_processed": 0,
       "trends_explained": 0,
@@ -41,40 +55,30 @@
       "pending_repair_triggered": 1
     },
     "message": "Pasada completada: cola editorial 0, sin reexplicaciones activas; saneamiento visual de Pendientes solicitado.",
-    "incident_count": 0,
-    "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
-      "updated_at": "2026-10-04T17:29:26.880Z",
-      "total_ratings": 153,
-      "recent_considered": 100
-    },
-    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-05T13:15:00+02:00",
+        "at": "2026-10-05T13:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Revisando cola, reexplicaciones y Pendientes"
       },
       {
-        "at": "2026-10-05T13:15:30+02:00",
+        "at": "2026-10-05T13:45:20+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
         "message": "Reparación visual de Pendientes solicitada"
       },
       {
-        "at": "2026-10-05T13:16:00+02:00",
+        "at": "2026-10-05T13:45:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main y verificando que no quedan revisiones activas"
       },
       {
-        "at": "2026-10-05T13:16:30+02:00",
+        "at": "2026-10-05T13:46:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -86,7 +90,7 @@
     "remaining_problematic_ids": [],
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261005T131500+0200",
+      "run_id": "tr-chat-20261005T134500+0200",
       "status": "triggered",
       "direct_imagegen": false
     }
