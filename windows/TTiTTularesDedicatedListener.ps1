@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-05-v33-image-lock-recovery
+# official-pipeline-restart-token: 2026-10-05-v34-safe-image-lock-recovery
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -25,7 +25,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v33"
+$WorkerId = "ttittulares-dedicated-v34"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -329,8 +329,13 @@ function Test-ImageBridgeBusy {
         $tooOld=(([DateTimeOffset]::UtcNow-$started).TotalMinutes -gt 12)
       } catch {}
       if($terminal -or $tooOld){
-        Write-Log "IMAGE LOCAL LOCK STALE pid=$pidValue command=$commandId target=$targetId terminal=$terminal too_old=$tooOld"
-        try{Stop-Process -Id $pidValue -Force -ErrorAction SilentlyContinue}catch{}
+        $isBridge=$false
+        try{
+          $proc=Get-CimInstance Win32_Process -Filter ("ProcessId="+$pidValue) -ErrorAction SilentlyContinue
+          $isBridge=($proc -and [string]$proc.CommandLine -like "*TTiTTularesImageBridge.js*")
+        }catch{}
+        Write-Log "IMAGE LOCAL LOCK STALE pid=$pidValue command=$commandId target=$targetId terminal=$terminal too_old=$tooOld bridge_pid=$isBridge"
+        if($isBridge){try{Stop-Process -Id $pidValue -Force -ErrorAction SilentlyContinue}catch{}}
         Remove-Item -LiteralPath $ImageBridgeLockPath -Force -ErrorAction SilentlyContinue
         return $false
       }
