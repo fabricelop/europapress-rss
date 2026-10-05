@@ -46,7 +46,7 @@ function planningDate(){const t=todayIso();return t>DATA.snapshotDate?t:DATA.sna
 function statusForDate(d){const p=planningDate();return d<p?'OVERDUE':d===p?'DUE':'UPCOMING'}
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const b64u=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
-const b64=a=>btoa(String.fromCharCode(...new Uint8Array(a)));
+const b64=a=>{const u=new Uint8Array(a);let out='';for(let i=0;i<u.length;i+=32768)out+=String.fromCharCode(...u.subarray(i,i+32768));return btoa(out)};
 const SESSION_PASSWORD_KEY='mc_session_password_v1';let DATA=null,DATA_KEY=null,STATE_KEY=null,SESSION_PASSWORD=null,STATE=null,filter='pending',accountFilter=null,scheduledAccountFilter=null,modalTx=null,modalCandidates=[],selectedOcc=null;if(!sessionStorage.getItem('mc_device_id'))sessionStorage.setItem('mc_device_id',crypto.randomUUID());
 function isRemovedAccount(a){return norm(a?.name).includes('MONTE OIZ')||norm(a?.name).includes('MONTEOIZ')}
 function isSantaEulalia(a){return norm(a?.name).includes('SANTA EULALIA')}
@@ -172,7 +172,12 @@ async function applyMoneyWizBootstrapIfRequested(){
     await reconcileNativeAgainstSnapshot();
     if(syncCardAdjustments())await saveState();
     history.replaceState(null,'',location.pathname+location.search);
-    toast(remoteSaved?'MoneyWiz actualizado y sincronizado':'MoneyWiz actualizado en este navegador');
+    if(remoteSaved){
+      toast('MoneyWiz actualizado y sincronizado');
+      setTimeout(()=>location.replace('/money-control/'),500);
+    }else{
+      toast('MoneyWiz actualizado, pero no se pudo guardar en el servidor');
+    }
     return true;
   }catch(err){console.error('MoneyWiz bootstrap',err);toast('No se pudo aplicar la actualización MoneyWiz');return false}
 }
