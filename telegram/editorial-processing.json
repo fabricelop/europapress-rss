@@ -2919,7 +2919,7 @@
       "percentage": 68.8,
       "first_seen": "2026-10-04T21:59:29.326907Z",
       "last_seen": "2026-10-05T17:53:33.178696Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "notified": false,
       "revision": 1,
       "sport_sources": [
@@ -3051,7 +3051,10 @@
         }
       ],
       "drafted_source_count": 11,
-      "verified_source_count": 11
+      "verified_source_count": 11,
+      "reconciled_from_event_id": "99814a7415f8",
+      "reconciliation_reason": "Mismo partido e incidente ya publicado: Medvedev fue descalificado ante Djokovic tras golpear con una pelota a un espectador; esta nueva entrada no aporta una novedad material independiente.",
+      "reconciled_at": "2026-10-05T18:08:34.191844Z"
     },
     {
       "id": "6c9f68787859",
@@ -3711,5 +3714,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-05T18:05:50.427381Z"
+  "updated_at": "2026-10-05T18:08:34.191844Z"
 }
