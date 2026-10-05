@@ -34,10 +34,22 @@ function privateBlobOptions(extra={}){
   return {access:"private",token:process.env.BLOB_READ_WRITE_TOKEN||undefined,...extra};
 }
 function cleanMoneyWizFilename(v){
-  const name=String(v||"").trim().replace(/\\/g,"/").split("/").pop()||"";
-  if(!/^i?MoneyWiz[-_].*\.zip$/i.test(name))return "";
+  let name=String(v||"").trim().replace(/\\/g,"/").split("/").pop()||"";
+  if(!/moneywiz/i.test(name))return "";
+  if(!/\.zip$/i.test(name))name+=".zip";
   if(name.length>180)return "";
   return name.replace(/[^A-Za-z0-9._-]/g,"_");
+}
+function parseSizeBytes(v){
+  if(typeof v==="number"&&Number.isFinite(v))return v;
+  const raw=String(v??"").trim().replace(",",".");
+  const n=parseFloat(raw.replace(/[^0-9.]/g,""));
+  if(!Number.isFinite(n))return 0;
+  const u=raw.toUpperCase();
+  if(u.includes("GB"))return n*1024*1024*1024;
+  if(u.includes("MB"))return n*1024*1024;
+  if(u.includes("KB"))return n*1024;
+  return n;
 }
 function requestParams(req){
   try{return new URL(req.url||"/","http://localhost").searchParams}catch{return new URLSearchParams()}
@@ -216,13 +228,13 @@ export default async function handler(req,res){
       });
 
       if(action==="prepare"){
-        const filename=cleanMoneyWizFilename(body.filename),sizeBytes=Number(body.sizeBytes||0);
+        const filename=cleanMoneyWizFilename(body.filename),sizeBytes=parseSizeBytes(body.sizeBytes);
         if(!filename)return json(res,400,{ok:false,error:"invalid_filename"});
-        if(!Number.isFinite(sizeBytes)||sizeBytes<=0||sizeBytes>MONEYWIZ_BACKUP_MAX_BYTES)return json(res,413,{ok:false,error:"invalid_size"});
+        if(sizeBytes>MONEYWIZ_BACKUP_MAX_BYTES)return json(res,413,{ok:false,error:"invalid_size"});
         const pathname=MONEYWIZ_BACKUP_PREFIX+filename;
         try{
           const existing=await head(pathname,privateBlobOptions());
-          if(existing&&Number(existing.size||0)===sizeBytes){
+          if(existing&&(!sizeBytes||Number(existing.size||0)===Math.round(sizeBytes))){
             return json(res,200,{ok:true,alreadyExists:true,pathname,size:Number(existing.size||0),uploadedAt:existing.uploadedAt||null});
           }
         }catch(_){}
@@ -251,11 +263,13 @@ export default async function handler(req,res){
       }
 
       if(action==="confirm"){
-        const pathname=String(body.pathname||"");
-        if(!pathname.startsWith(MONEYWIZ_BACKUP_PREFIX)||!pathname.toLowerCase().endsWith(".zip"))return json(res,400,{ok:false,error:"invalid_pathname"});
+        let pathname=String(body.pathname||"");
+        const listed=await list(privateBlobOptions({prefix:MONEYWIZ_BACKUP_PREFIX,limit:100}));
+        const uploaded=(listed.blobs||[]).filter(b=>String(b.pathname||"").toLowerCase().endsWith(".zip")).sort((a,b)=>String(b.uploadedAt||"").localeCompare(String(a.uploadedAt||"")));
+        if(!pathname.startsWith(MONEYWIZ_BACKUP_PREFIX)||!pathname.toLowerCase().endsWith(".zip"))pathname=uploaded[0]?.pathname||"";
+        if(!pathname)return json(res,404,{ok:false,error:"no_backup_uploaded"});
         let meta;
         try{meta=await head(pathname,privateBlobOptions())}catch(_){return json(res,404,{ok:false,error:"not_found"})}
-        const listed=await list(privateBlobOptions({prefix:MONEYWIZ_BACKUP_PREFIX,limit:100}));
         const backups=(listed.blobs||[])
           .filter(b=>String(b.pathname||"").toLowerCase().endsWith(".zip"))
           .map(b=>({
