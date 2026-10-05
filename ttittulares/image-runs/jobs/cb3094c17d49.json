@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-cb3094c17d49-r1-a1-1791243310796",
+  "requested_at": "2026-10-05T23:35:10.796674Z",
+  "updated_at": "2026-10-05T23:35:10.796674Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "cb3094c17d49",
+  "event_id": "cb3094c17d49",
+  "target_name": "La multitudinaria protesta por la vivienda en Barcelona acaba con cargas policiales, contenedores quemados y varios detenidos",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "La multitudinaria protesta por la vivienda en Barcelona acaba con cargas policiales, contenedores quemados y varios detenidos",
+    "revision": 1,
+    "factual_summary": "La manifestación por el derecho a la vivienda en Barcelona reunió a 20.000 personas según la Guardia Urbana y 120.000 según los organizadores. La marcha transcurrió sin incidentes hasta el tramo final; tras ser desconvocada, grupos lanzaron objetos, quemaron contenedores y los Mossos realizaron cargas. Varios jóvenes fueron detenidos.",
+    "tweet_text": "20.000 personas, según la Guardia Urbana, marcharon por la vivienda en Barcelona. Al terminar, hubo objetos lanzados, contenedores quemados, cargas de los Mossos y varios detenidos.\n\n🌶️ La protesta por la vivienda acabó con más cargas que una hipoteca.",
+    "remate": "🌶️ La protesta por la vivienda acabó con más cargas que una hipoteca.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
+    "image_style_name": "stop_motion",
+    "image_style_index": 4,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\n20.000 personas, según la Guardia Urbana, marcharon por la vivienda en Barcelona. Al terminar, hubo objetos lanzados, contenedores quemados, cargas de los Mossos y varios detenidos.\n\n🌶️ La protesta por la vivienda acabó con más cargas que una hipoteca.\n\nREMATE EXACTO:\n🌶️ La protesta por la vivienda acabó con más cargas que una hipoteca.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLa manifestación por el derecho a la vivienda en Barcelona reunió a 20.000 personas según la Guardia Urbana y 120.000 según los organizadores. La marcha transcurrió sin incidentes hasta el tramo final; tras ser desconvocada, grupos lanzaron objetos, quemaron contenedores y los Mossos realizaron cargas. Varios jóvenes fueron detenidos.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.huffingtonpost.es/politica/la-multitudinaria-protesta-vivienda-barcelona-acaba-cargas-policiales-contenedores-quemados-detenidos-f202610.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/catalunya/2026-10-05/miles-de-personas-se-manifiestan-por-la-crisis-de-la-vivienda-en-barcelona.html"
+      },
+      {
+        "source": "Telecinco Noticias",
+        "url": "https://www.telecinco.es/noticias/catalunya/20261005/tension-manifestacion-vivienda-barcelona-acaba-cargas-centro_18_020359116.html"
+      },
+      {
+        "source": "laSexta Noticias",
+        "url": "https://www.lasexta.com/noticias/sociedad/cargas-policiales-contenedores-incendiados-manifestacion-vivienda-barcelona_202610056ac40b02375d342262749c00.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
