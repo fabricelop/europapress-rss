@@ -25755,12 +25755,30 @@
       "duplicate_of": null,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true,
-      "fallback_image_status": "pending",
-      "rewrite_pending": false
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_status": "ready",
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005090901_1200.jpg",
+        "source": "Europa Press · 5/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-sanchez-anuncia-elecciones-anticipadas-29-noviembre-20261005090901.html",
+        "alt": "Imagen de archivo relacionada con #LaHora5O",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005090901_1200.jpg",
+        "source": "Europa Press · 5/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-sanchez-anuncia-elecciones-anticipadas-29-noviembre-20261005090901.html",
+        "alt": "Imagen de archivo relacionada con #LaHora5O",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-05T08:28:56+02:00",
+  "updated_at": "2026-10-05T07:50:40.673166Z",
   "count": 542
 }
