@@ -5,6 +5,7 @@ from pathlib import Path
 from datetime import datetime,timezone,timedelta
 from source_telemetry import update_source_telemetry
 from source_publication import feed_publication, enrich_html_rows, latest_official_feed
+from content_filters import content_filter_reason, run_filter_regressions
 
 SOURCES=[
 ("Europa Press","https://www.europapress.es/noticias/","html"),
@@ -1155,6 +1156,7 @@ if "--selftest-dedupe" in sys.argv:
  raise SystemExit(0)
 
 run_seed_memory_regressions()
+run_filter_regressions()
 
 now=utcnow()
 events_doc=load(EVENTS,{"version":3,"events":[]})
@@ -1163,6 +1165,50 @@ initial_event_count=len(events)
 processed_doc=load(PROCESSED,{"version":1,"events":[]})
 processed=processed_doc.get("events",[])
 seeds_doc=load(SEEDS,{"version":1,"items":[]})
+content_filter_hits=[]
+
+def record_content_filter(item,reason,stage):
+ content_filter_hits.append({
+  "reason":reason,
+  "stage":stage,
+  "source":str(item.get("source") or ""),
+  "title":str(item.get("title") or item.get("canonical_title") or ""),
+  "url":str(item.get("url") or ""),
+  "event_id":str(item.get("id") or item.get("event_id") or ""),
+  "filtered_at":iso(now),
+ })
+ print("CONTENT_FILTERED",reason,stage,str(item.get("source") or ""),str(item.get("title") or item.get("canonical_title") or "")[:120])
+
+def build_content_filter_log(previous,hits):
+ prev=previous if isinstance(previous,dict) else {}
+ recent=[dict(x) for x in (prev.get("recent") or []) if isinstance(x,dict)]
+ index={}
+ for pos,item in enumerate(recent):
+  key=(str(item.get("reason") or ""),str(item.get("source") or ""),str(item.get("url") or ""),str(item.get("title") or ""))
+  index[key]=pos
+ for hit in hits:
+  key=(hit["reason"],hit["source"],hit["url"],hit["title"])
+  pos=index.get(key)
+  if pos is None:
+   item=dict(hit);item["first_filtered_at"]=hit["filtered_at"];item["last_filtered_at"]=hit["filtered_at"];item["hits"]=1
+   recent.append(item);index[key]=len(recent)-1
+  else:
+   item=recent[pos];item["last_filtered_at"]=hit["filtered_at"];item["filtered_at"]=hit["filtered_at"];item["hits"]=int(item.get("hits") or 1)+1
+   stages=set(item.get("stages") or ([item.get("stage")] if item.get("stage") else []));stages.add(hit["stage"]);item["stages"]=sorted(x for x in stages if x)
+ total_by_reason=dict(prev.get("total_by_reason") or {})
+ run_by_reason={}
+ for hit in hits:
+  reason=hit["reason"]
+  total_by_reason[reason]=int(total_by_reason.get(reason) or 0)+1
+  run_by_reason[reason]=int(run_by_reason.get(reason) or 0)+1
+ recent.sort(key=lambda x:str(x.get("last_filtered_at") or x.get("filtered_at") or ""),reverse=True)
+ return {
+  "updated_at":iso(now),
+  "run_filtered_count":len(hits),
+  "run_by_reason":run_by_reason,
+  "total_by_reason":total_by_reason,
+  "recent":recent[:200],
+ }
 
 # Migración suave de eventos antiguos.
 for e in events:
@@ -1189,6 +1235,14 @@ seed_items=[
  x for x in (seeds_doc.get("items") or [])
  if x.get("first_seen") and dtv(x.get("first_seen"))>=cutoff
 ]
+clean_seed_items=[]
+for seed in seed_items:
+ reason=content_filter_reason(seed.get("canonical_title") or seed.get("title") or "",seed.get("url") or seed.get("source_url") or "")
+ if reason:
+  record_content_filter(seed,reason,"seed_cleanup")
+  continue
+ clean_seed_items.append(seed)
+seed_items=clean_seed_items
 seed_events=[]
 for seed in seed_items:
  event=seed_to_event(seed)
@@ -1235,6 +1289,48 @@ if social:
 source_article_telemetry=update_source_telemetry(
  rows,source_status,events_doc.get("source_article_telemetry"),events,now
 )
+
+# Preservamos la telemetría de salud con todas las filas extraídas, pero los
+# filtros editoriales se aplican ANTES de cualquier clustering/deduplicación.
+# Así un horóscopo no puede sumar una fuente a un evento artificial por fecha.
+filtered_rows=[]
+for row in rows:
+ reason=content_filter_reason(row.get("title") or "",row.get("url") or "")
+ if reason:
+  record_content_filter(row,reason,"source_row_precluster")
+  continue
+ filtered_rows.append(row)
+rows=filtered_rows
+
+# Defensa frente a estado activo persistido por una versión anterior.
+# Quitamos solo las apariciones filtradas; el resto del acontecimiento se conserva.
+clean_events=[]
+for event in events:
+ kept_apps=[]
+ removed_reasons=[]
+ for app in event.get("appearances") or []:
+  reason=content_filter_reason(app.get("title") or "",app.get("url") or "")
+  if reason:
+   record_content_filter(dict(app,event_id=event.get("id")),reason,"existing_event_appearance_cleanup")
+   removed_reasons.append(reason)
+   continue
+  kept_apps.append(app)
+ if len(kept_apps)!=(len(event.get("appearances") or [])):
+  event["appearances"]=kept_apps
+  if kept_apps:
+   if content_filter_reason(event.get("canonical_title") or "",event.get("url") or ""):
+    best=max(kept_apps,key=lambda x:len(str(x.get("title") or "")))
+    event["canonical_title"]=best.get("title") or event.get("canonical_title")
+    event["url"]=best.get("url") or event.get("url")
+   recalc_event_sources(event)
+  else:
+   record_content_filter(event,removed_reasons[0] if removed_reasons else "astrology_daily","existing_event_removed")
+   continue
+ clean_events.append(event)
+events=clean_events
+
+content_filter_log=build_content_filter_log(events_doc.get("content_filter_log"),content_filter_hits)
+print("CONTENT_FILTER_SUMMARY",content_filter_log["run_filtered_count"],content_filter_log["run_by_reason"])
 print("SOURCES_OK",len(set(healthy)),sorted(set(healthy)))
 print("SPORT_SOURCES_OK",len(set(sport_healthy)),sorted(set(sport_healthy)))
 print("SOURCES_CONFIGURED",TOTAL_SOURCES)
@@ -1469,7 +1565,8 @@ events_doc={"version":6,"configured_sources":TOTAL_SOURCES,"configured_source_fa
             "healthy_sources":sorted(set(healthy)),"healthy_source_count":len(set(healthy)),
             "healthy_source_families":healthy_families,"healthy_source_family_count":len(healthy_families),
             "healthy_sport_sources":sorted(set(sport_healthy)),"source_failures":source_failures,
-            "source_status":source_status,"source_article_telemetry":source_article_telemetry,"source_recovery":source_recovery,"discovery_sources":[x[0] for x in DISCOVERY_SOURCES],"events":events}
+            "source_status":source_status,"source_article_telemetry":source_article_telemetry,"source_recovery":source_recovery,
+            "content_filter_log":content_filter_log,"discovery_sources":[x[0] for x in DISCOVERY_SOURCES],"events":events}
 processed_doc={"version":1,"updated_at":iso(now),"events":processed}
 save(EVENTS,events_doc);save(SEEDS,seeds_doc);save(PROCESSED,processed_doc)
 print("RESULT rows",len(rows),"active_events",len(events),"seed_events",len(seed_items),"review_sent",sent,"auto_queued",0,"expired",expired)
