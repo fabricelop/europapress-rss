@@ -230,7 +230,7 @@ async function readJson(path) {
   // GitHub Contents API omite `content` en ficheros grandes (>1 MB).
   // Recuperar el blob por SHA evita interpretar como {} requests/explained reales.
   if (!encoded && file.sha) {
-    const br = await gh(`https://api.github.com/repos/${REPO}/git/blobs/${encodeURIComponent(file.sha)}`, {
+    const br = await gh(`git/blobs/${encodeURIComponent(file.sha)}`, {
       cache: "no-store",
       headers: { "cache-control": "no-cache" },
     });
