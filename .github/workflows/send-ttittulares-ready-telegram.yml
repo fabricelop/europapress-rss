@@ -184,8 +184,8 @@ jobs:
               # Estos callbacks YA están soportados por el webhook Vercel actualmente desplegado.
               # El workflow process-ttittulares-telegram-decisions.yml aplica el cierre real.
               rows.append([
-                  {"text":"🗑 Desestimar","callback_data":"emergency:ttd:"+eid},
-                  {"text":"✅ Publicado","callback_data":"emergency:ttp:"+eid}
+                  {"text":"🗑 Desestimar","callback_data":"tt:d:"+eid},
+                  {"text":"✅ Publicado","callback_data":"tt:p:"+eid}
               ])
               return {"inline_keyboard":rows}
 
