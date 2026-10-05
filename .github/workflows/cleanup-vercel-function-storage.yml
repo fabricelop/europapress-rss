@@ -1,0 +1,84 @@
+name: Cleanup Vercel Function Storage
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/cleanup-vercel-function-storage.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  purge-nonready-deployments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      TEAM_ID: team_H8xHbBIbIKnsaLeITszidyOK
+      PROJECT_ID: prj_X1UxNqQasd8Ouf7jUpxNccbQdASf
+    steps:
+      - name: Purge CANCELED ERROR BLOCKED deployments only
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$VERCEL_TOKEN"
+          node <<'NODE'
+          const token=process.env.VERCEL_TOKEN;
+          const teamId=process.env.TEAM_ID;
+          const projectId=process.env.PROJECT_ID;
+          const headers={Authorization:`Bearer ${token}`,"Content-Type":"application/json"};
+          const deletable=new Set(["CANCELED","ERROR","BLOCKED"]);
+          async function listAll(){
+            let until=null, all=[];
+            for(let page=0;page<100;page++){
+              const u=new URL("https://api.vercel.com/v6/deployments");
+              u.searchParams.set("projectId",projectId);
+              u.searchParams.set("teamId",teamId);
+              u.searchParams.set("limit","100");
+              if(until)u.searchParams.set("until",String(until));
+              const r=await fetch(u,{headers});
+              if(!r.ok)throw new Error(`list failed ${r.status} ${await r.text()}`);
+              const d=await r.json();
+              const rows=d.deployments||[];
+              all.push(...rows);
+              const next=d.pagination?.next;
+              if(!next||!rows.length||next===until)break;
+              until=next;
+            }
+            return all;
+          }
+          const before=await listAll();
+          const targets=before.filter(d=>deletable.has(String(d.state||d.readyState||"").toUpperCase()));
+          const ready=before.filter(d=>String(d.state||d.readyState||"").toUpperCase()==="READY");
+          console.log(JSON.stringify({before:before.length,ready:ready.length,targets:targets.length,
+            targetStates:targets.reduce((a,d)=>{const s=String(d.state||d.readyState);a[s]=(a[s]||0)+1;return a;},{})},null,2));
+          let ok=0, already=0, failed=0;
+          const pool=6;
+          let idx=0;
+          async function worker(){
+            while(true){
+              const i=idx++;
+              if(i>=targets.length)return;
+              const d=targets[i];
+              const u=new URL(`https://api.vercel.com/v13/deployments/${encodeURIComponent(d.uid||d.id)}`);
+              u.searchParams.set("teamId",teamId);
+              const r=await fetch(u,{method:"DELETE",headers});
+              if(r.ok){ok++;continue}
+              if(r.status===404){already++;continue}
+              failed++;
+              console.error("DELETE_FAILED",d.uid||d.id,d.state||d.readyState,r.status,await r.text());
+            }
+          }
+          await Promise.all(Array.from({length:pool},()=>worker()));
+          console.log(JSON.stringify({deleted:ok,already_absent:already,failed},null,2));
+          if(failed)process.exit(2);
+          const after=await listAll();
+          const remaining=after.filter(d=>deletable.has(String(d.state||d.readyState||"").toUpperCase()));
+          const readyAfter=after.filter(d=>String(d.state||d.readyState||"").toUpperCase()==="READY");
+          console.log(JSON.stringify({after:after.length,ready_after:readyAfter.length,remaining_nonready:remaining.length},null,2));
+          if(readyAfter.length!==ready.length){
+            console.error("READY_COUNT_CHANGED",ready.length,readyAfter.length);
+            process.exit(3);
+          }
+          NODE
