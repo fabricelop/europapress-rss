@@ -61,6 +61,10 @@ async function signedPrivateUrl(pathname,operation,validUntil){
   }
   return (await presignUrl(signed,opts)).presignedUrl;
 }
+function moneyWizProcessedPath(filename){
+  const stem=String(filename||"moneywiz").replace(/\.zip$/i,"").replace(/[^A-Za-z0-9._-]/g,"_");
+  return MONEYWIZ_PROCESSED_PREFIX+stem+".json";
+}
 async function dispatchMoneyWizProcessing({current,previous}){
   const githubToken=String(process.env.GITHUB_TOKEN||"");
   let repo=String(process.env.GITHUB_REPO||"fabricelop/europapress-rss").replace(/^https?:\/\/github\.com\//,"").replace(/\.git$/,"");
@@ -70,8 +74,7 @@ async function dispatchMoneyWizProcessing({current,previous}){
   const validUntil=Date.now()+40*60*1000;
   const currentUrl=await signedPrivateUrl(current.pathname,"get",validUntil);
   const previousUrl=await signedPrivateUrl(previous.pathname,"get",validUntil);
-  const stem=String(current.filename||"moneywiz").replace(/\.zip$/i,"").replace(/[^A-Za-z0-9._-]/g,"_");
-  const processedPath=MONEYWIZ_PROCESSED_PREFIX+stem+".json";
+  const processedPath=moneyWizProcessedPath(current.filename);
   const processedPutUrl=await signedPrivateUrl(processedPath,"put",validUntil);
   const response=await fetch("https://api.github.com/repos/"+repo+"/dispatches",{
     method:"POST",
@@ -258,8 +261,15 @@ export default async function handler(req,res){
         const current=idx>=0?backups[idx]:{pathname,filename:pathname.slice(MONEYWIZ_BACKUP_PREFIX.length),size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null};
         const previous=idx>0?backups[0]:null;
         if(!previous){
-          return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,seedOnly:true,processingQueued:false});
+          return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,seedOnly:true,processingQueued:false,alreadyProcessed:false});
         }
+        const processedPath=moneyWizProcessedPath(current.filename);
+        try{
+          const processed=await head(processedPath,privateBlobOptions());
+          if(processed){
+            return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,seedOnly:false,processingQueued:false,alreadyProcessed:true,processedPath});
+          }
+        }catch(_){}
         try{
           const queued=await dispatchMoneyWizProcessing({current,previous});
           return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,seedOnly:false,processingQueued:true,...queued});
