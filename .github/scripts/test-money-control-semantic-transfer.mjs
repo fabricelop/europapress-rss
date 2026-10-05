@@ -23,7 +23,7 @@ function allTxs(){return TXS}
 function dayDiff(a,b){return Math.round(Math.abs(new Date(a+"T12:00:00")-new Date(b+"T12:00:00"))/86400000)}
 function norm(v){return String(v||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toUpperCase().replace(/\\b(RECIBO|SEPA|PAGO|TARJETA)\\b/g," ").replace(/[^A-Z0-9]+/g," ").trim().replace(/\\s+/g," ")}
 function sim(a,b){a=norm(a);b=norm(b);if(!a||!b)return 0;if(a===b)return 1;const A=new Set(a.split(" ")),B=new Set(b.split(" "));let inter=0;A.forEach(x=>B.has(x)&&inter++);const j=inter/Math.max(1,new Set([...A,...B]).size);const bg=s=>{const z=new Set();for(let i=0;i<s.length-1;i++)z.add(s.slice(i,i+2));return z};const X=bg(a),Y=bg(b);let bi=0;X.forEach(x=>Y.has(x)&&bi++);const dice=2*bi/Math.max(1,X.size+Y.size);return Math.max(j,dice)}
-function parseDateInput(s){s=String(s||"").trim();let m=s.match(/^(\\d{2})\\/(\\d{2})\\/(\\d{4})$/);if(m)return \`${m[3]}-${m[2]}-${m[1]}\`;if(/^\\d{4}-\\d{2}-\\d{2}$/.test(s))return s;return null}
+function parseDateInput(s){s=String(s||"").trim();let m=s.match(/^(\\d{2})\\/(\\d{2})\\/(\\d{4})$/);if(m)return m[3]+"-"+m[2]+"-"+m[1];if(/^\\d{4}-\\d{2}-\\d{2}$/.test(s))return s;return null}
 function semanticAccount(name,fallbackId=null){if(name){const n=norm(name);return ACCOUNTS.find(a=>norm(a.name)===n)||null}return ACCOUNTS.find(a=>a.id===fallbackId)||null}
 function effectiveBalance(a){return Number(a.balance)}
 function todayIso(){return "2026-10-05"}
