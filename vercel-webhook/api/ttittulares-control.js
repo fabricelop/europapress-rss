@@ -634,7 +634,7 @@ export default async function handler(req,res){
       const fresh=String(req.query?.fresh||"")==="1";
       const [prepared,status,config,queue,events,decisions,manualArchive,remateRatings,tremending]=await Promise.all([
         readJson(PREPARED),fresh?readJson("ttittulares/status.json"):readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
-        fresh?readJson(PROCESSING):readPublicJson(PROCESSING),readPublicJson(EVENTS),readJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
+        fresh?readJson(PROCESSING):readPublicJson(PROCESSING),readPublicJson(EVENTS),readJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(REMATE_RATINGS),fresh?readJson(TREMENDING):readPublicJson(TREMENDING)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const decisionMap=new Map((decisions.doc?.items||[]).map(x=>[String(x.event_id||""),x]));
