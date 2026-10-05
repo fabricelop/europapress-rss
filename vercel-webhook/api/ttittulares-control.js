@@ -808,9 +808,9 @@ export default async function handler(req,res){
       if(String(req.query?.view||"")==="image-proxy")return await proxyPreparedImage(req.query?.url,res);
       const github_rate_limit=await probeGithubRate(false);
       const fresh=String(req.query?.fresh||"")==="1";
-      const [prepared,status,config,queue,events,decisions,manualArchive,trendCandidates,remateRatings,tremending]=await Promise.all([
+      const [prepared,status,config,queue,events,decisions,manualArchive,remateRatings,tremending]=await Promise.all([
         readJson(PREPARED),fresh?readJson("ttittulares/status.json"):readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
-        fresh?readJson(PROCESSING):readPublicJson(PROCESSING),readPublicJson(EVENTS),readJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(TREND_CANDIDATES),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
+        fresh?readJson(PROCESSING):readPublicJson(PROCESSING),readPublicJson(EVENTS),readJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const closedIds=new Set((decisions.doc?.items||[])
@@ -905,23 +905,6 @@ export default async function handler(req,res){
           sources:Array.isArray(ev.sources)?ev.sources:(Array.isArray(x.sources)?x.sources:[])
         }
       }).sort((a,b)=>String(b.problematic_at||b.selected_at||"").localeCompare(String(a.problematic_at||a.selected_at||"")));
-      const trendCandidateItems=(trendCandidates.doc?.items||[])
-        .filter(x=>["candidate","pending",""].includes(String(x.status||"").toLowerCase()))
-        .map(x=>({
-          candidate_id:trendCandidateId(x),
-          event_id:idOf(x.event_id||x.ttittulares_event_id),
-          title:String(x.title||x.news_title||"Posible noticia desde TTendencias"),
-          explanation:String(x.explanation||""),
-          url:String(x.url||x.source_url||""),
-          trend_names:Array.isArray(x.trend_names)?x.trend_names:[],
-          search_terms:Array.isArray(x.search_terms)?x.search_terms:(Array.isArray(x.trend_names)?x.trend_names:[]),
-          source_count:Number(x.source_count||(Array.isArray(x.sources)?x.sources.length:0)),
-          sources:Array.isArray(x.sources)?x.sources:[],
-          source_evidence:Array.isArray(x.source_evidence)?x.source_evidence:[],
-          detected_at:x.detected_at||x.created_at||x.updated_at||null,
-          origin:"TTendencias"
-        }))
-        .sort((a,b)=>String(b.detected_at||"").localeCompare(String(a.detected_at||"")));
       const visibleWaitingEvent=e=>{
         const id=String(e.id||e.event_id||"");
         return ["WAITING","UPDATE_WAITING"].includes(String(e.status||""))
@@ -947,7 +930,7 @@ export default async function handler(req,res){
         const bv=Number.isFinite(b.source3_minutes)?b.source3_minutes:Number.MAX_SAFE_INTEGER;
         return av-bv||String(b.first_seen||"").localeCompare(String(a.first_seen||""))
       });
-      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,processing_outcomes:processingOutcomes,processing_outcomes_count:processingOutcomes.length,problematic_count:problematicItems.length+trendCandidateItems.length,problematic_items:problematicItems,trend_candidates_count:trendCandidateItems.length,trend_candidates:trendCandidateItems,ready_count:visiblePrepared.length,one_source_count:oneSourceCount,two_source_count:twoSourceCount,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
+      const liveStatus={...(status.doc||{}),processing_count:processingItems.length,processing_items:processingItems,processing_outcomes:processingOutcomes,processing_outcomes_count:processingOutcomes.length,problematic_count:problematicItems.length,problematic_items:problematicItems,trend_candidates_count:0,trend_candidates:[],ready_count:visiblePrepared.length,one_source_count:oneSourceCount,two_source_count:twoSourceCount,three_source_count:threeSourceItems.length,three_source_items:threeSourceItems};
       const tremendingItems=(tremending.doc?.items||[]).map(x=>({
         id:tremendingEntryId(x.id),title:String(x.title||"Entrada sin título"),url:String(x.url||""),description:String(x.description||""),published_at:x.published_at||null,first_seen_at:x.first_seen_at||null,last_seen_at:x.last_seen_at||null,status:String(x.status||"pending"),destinations:Array.isArray(x.destinations)?x.destinations:[],tweets:Array.isArray(x.tweets)?x.tweets:[],selected_tweet_id:x.selected_tweet_id||null,image:x.image||{status:"not_selected"},article_status:x.article_status||"pending"
       })).filter(x=>x.id).sort((a,b)=>String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
@@ -964,13 +947,13 @@ export default async function handler(req,res){
             listas:Number(liveStatus.ready_count??visiblePrepared.length)||0,
             elaboracion:Number(liveStatus.processing_count||0),
             creciendo:Number(liveStatus.three_source_count||0),
-            tendencias:Number(liveStatus.problematic_count||0)
+            no_comprobadas:Number(liveStatus.problematic_count||0)
           },
           links:{
             listas:"/ttittulares/?view=ready",
             elaboracion:"/ttittulares/?view=processing",
             creciendo:"/ttittulares/?view=growing",
-            tendencias:"/ttittulares/?view=problematic"
+            no_comprobadas:"/ttittulares/?view=problematic"
           }
         })
       }
@@ -992,8 +975,6 @@ export default async function handler(req,res){
     if(action==="postpone-tremending")return res.status(200).json(await markTremending(body.entry_id,"postponed"));
     if(action==="reactivate-tremending")return res.status(200).json(await markTremending(body.entry_id,"pending"));
     if(action==="discard-tremending")return res.status(200).json(await markTremending(body.entry_id,"discarded"));
-    if(action==="promote-trend")return res.status(200).json(await promoteTrendCandidate(body.candidate_id));
-    if(action==="dismiss-trend")return res.status(200).json(await dismissTrendCandidate(body.candidate_id));
     if(action==="prepare3")return res.status(200).json(await manualPrepare(body.event_id));
     if(action==="reopen-outcome")return res.status(200).json(await reopenProcessingOutcome(body.event_id));
     if(action==="hide-outcome")return res.status(200).json(await hideProcessingOutcome(body.event_id));
