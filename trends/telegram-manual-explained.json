@@ -28753,7 +28753,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -28817,13 +28816,30 @@
       ],
       "duplicate_of": null,
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_choice": "none",
-      "image_status": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
       "image_pending": false,
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005142548_1200.jpg",
+        "source": "Europa Press · 5/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-sanchez-afronta-urnas-psoe-senalado-causas-hijas-zapatero-juez-elecciones-20261005142548.html",
+        "alt": "Imagen de archivo relacionada con Leire",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005142548_1200.jpg",
+        "source": "Europa Press · 5/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-sanchez-afronta-urnas-psoe-senalado-causas-hijas-zapatero-juez-elecciones-20261005142548.html",
+        "alt": "Imagen de archivo relacionada con Leire",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-05T19:50:00+02:00",
+  "updated_at": "2026-10-05T17:52:42.841135Z",
   "count": 568
 }
