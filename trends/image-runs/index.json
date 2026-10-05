@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-05T18:23:14.474166Z",
+  "updated_at": "2026-10-05T20:00:30.024Z",
   "jobs": [
     {
       "command_id": "tr-img-1790917396130-cd06b6",
@@ -1035,18 +1035,6 @@
       "auto_repair_attempt": 1
     },
     {
-      "command_id": "tr-img-auto-26bb59be27a6-r1-a1-1791212003079",
-      "target_id": "26bb59be27a6",
-      "trend_id": "26bb59be27a6",
-      "target_name": "alvise",
-      "revision": 1,
-      "requested_at": "2026-10-05T14:53:23.079579Z",
-      "status_path": "trends/image-runs/jobs/26bb59be27a6.json",
-      "executor": "pc_chat_ttendencias_dedicated",
-      "auto_repair": true,
-      "auto_repair_attempt": 1
-    },
-    {
       "command_id": "tr-img-auto-4bcc67659c7e-r0-a1-1791212316014",
       "target_id": "4bcc67659c7e",
       "trend_id": "4bcc67659c7e",
@@ -1071,30 +1059,6 @@
       "auto_repair_attempt": 1
     },
     {
-      "command_id": "tr-img-auto-ad443d46cc7d-r0-a1-1791219115696",
-      "target_id": "ad443d46cc7d",
-      "trend_id": "ad443d46cc7d",
-      "target_name": "#EleccionesEspaña",
-      "revision": 0,
-      "requested_at": "2026-10-05T16:51:55.695768Z",
-      "status_path": "trends/image-runs/jobs/ad443d46cc7d.json",
-      "executor": "pc_chat_ttendencias_dedicated",
-      "auto_repair": true,
-      "auto_repair_attempt": 1
-    },
-    {
-      "command_id": "tr-img-auto-c4d952aa817b-r0-a1-1791222764882",
-      "target_id": "c4d952aa817b",
-      "trend_id": "c4d952aa817b",
-      "target_name": "Leire",
-      "revision": 0,
-      "requested_at": "2026-10-05T17:52:44.882278Z",
-      "status_path": "trends/image-runs/jobs/c4d952aa817b.json",
-      "executor": "pc_chat_ttendencias_dedicated",
-      "auto_repair": true,
-      "auto_repair_attempt": 1
-    },
-    {
       "command_id": "tr-img-auto-d00966faa802-r0-a1-1791224594475",
       "target_id": "d00966faa802",
       "trend_id": "d00966faa802",
@@ -1105,6 +1069,42 @@
       "executor": "pc_chat_ttendencias_dedicated",
       "auto_repair": true,
       "auto_repair_attempt": 1
+    },
+    {
+      "command_id": "tr-img-recover-26bb59be27a6-r1-a2-1791230430026",
+      "target_id": "26bb59be27a6",
+      "trend_id": "26bb59be27a6",
+      "target_name": "alvise",
+      "revision": 1,
+      "requested_at": "2026-10-05T20:00:30.024Z",
+      "status_path": "trends/image-runs/jobs/26bb59be27a6.json",
+      "executor": "pc_chat_ttendencias_dedicated",
+      "auto_repair": true,
+      "auto_repair_attempt": 2
+    },
+    {
+      "command_id": "tr-img-recover-c4d952aa817b-r0-a2-1791230430027",
+      "target_id": "c4d952aa817b",
+      "trend_id": "c4d952aa817b",
+      "target_name": "Leire",
+      "revision": 0,
+      "requested_at": "2026-10-05T20:00:30.024Z",
+      "status_path": "trends/image-runs/jobs/c4d952aa817b.json",
+      "executor": "pc_chat_ttendencias_dedicated",
+      "auto_repair": true,
+      "auto_repair_attempt": 2
+    },
+    {
+      "command_id": "tr-img-recover-ad443d46cc7d-r0-a2-1791230430028",
+      "target_id": "ad443d46cc7d",
+      "trend_id": "ad443d46cc7d",
+      "target_name": "#EleccionesEspaña",
+      "revision": 0,
+      "requested_at": "2026-10-05T20:00:30.024Z",
+      "status_path": "trends/image-runs/jobs/ad443d46cc7d.json",
+      "executor": "pc_chat_ttendencias_dedicated",
+      "auto_repair": true,
+      "auto_repair_attempt": 2
     }
   ]
 }
