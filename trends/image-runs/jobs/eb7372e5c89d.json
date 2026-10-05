@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-eb7372e5c89d-r0-a1-1791235075889",
+  "requested_at": "2026-10-05T21:17:55.882237Z",
+  "updated_at": "2026-10-05T21:17:55.882237Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "eb7372e5c89d",
+  "trend_id": "eb7372e5c89d",
+  "target_name": "Aznar",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Aznar",
+    "revision": 0,
+    "explanation": "TT#3 Aznar es tendencia porque sostiene que si Sánchez vuelve a formar Gobierno tras el 29-N «la monarquía que hemos conocido se terminaría» y presenta las elecciones como de carácter «prácticamente constituyente».\n🌶️ Aznar ha puesto la Corona sobre la urna.",
+    "closer_text": "🌶️ Aznar ha puesto la Corona sobre la urna.",
+    "trend_names": [
+      "Aznar"
+    ],
+    "group_title": "Aznar y la monarquía ante las elecciones del 29-N",
+    "rank_at_explanation": 3,
+    "explained_at": "2026-10-05T22:53:10+02:00",
+    "verification_sources": [
+      {
+        "source": "El País · 5/10/2026",
+        "url": "https://elpais.com/espana/elecciones-generales/2026-10-05/aznar-sobre-si-sanchez-vuelve-a-formar-gobierno-el-29-n-la-monarquia-que-hemos-conocido-se-terminaria.html"
+      },
+      {
+        "source": "Cadena SER · 5/10/2026",
+        "url": "https://cadenaser.com/nacional/2026/10/05/aznar-asegura-que-si-la-coalicion-actual-de-gobierno-gana-las-elecciones-el-sistema-constitucional-que-hemos-conocido-se-termina-cadena-ser/"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+    "image_style_name": "tinta_acuarela",
+    "image_style_index": 0
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
