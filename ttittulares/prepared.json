@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T13:42:00.433Z",
+  "updated_at": "2026-10-05T13:43:58.764Z",
   "items": [
     {
       "event_id": "54e963e5c902",
@@ -314,10 +314,10 @@
       "trend_context": [],
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -333,12 +333,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T13:39:32.268629Z",
       "image": {
-        "url": "https://static.eldiario.es/clip/4fc11c58-0db6-4972-b437-b60f9dacf3ca_facebook-aspect-ratio-1200-675_default_0_x1103y377.jpg",
-        "source": "www.eldiario.es",
-        "source_url": "https://www.eldiario.es/catalunya/ministro-industria-jordi-hereu-sera-candidato-psc-elecciones-generales_1_13563229.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "El ministro de Industria Jordi Hereu será el candidato del PSC en las elecciones generales del 29 de noviembre"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5926c72c5a68-r1-ai1-791207654059.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "6c9e4eb8365052dc8376e4f1feccc391e89a07a67a271f7fa5710a678e67a9de",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2352861,
+        "context_guard": {
+          "version": 3,
+          "event_id": "5926c72c5a68",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-5926c72c5a68-r1-a1-1791207654059"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5926c72c5a68-r1-ai1-791207654059.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://static.eldiario.es/clip/4fc11c58-0db6-4972-b437-b60f9dacf3ca_facebook-aspect-ratio-1200-675_default_0_x1103y377.jpg",
@@ -347,7 +361,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "El ministro de Industria Jordi Hereu será el candidato del PSC en las elecciones generales del 29 de noviembre"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/5926c72c5a68-r1-ai1-791207654059.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "6c9e4eb8365052dc8376e4f1feccc391e89a07a67a271f7fa5710a678e67a9de",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2352861,
+        "context_guard": {
+          "version": 3,
+          "event_id": "5926c72c5a68",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-5926c72c5a68-r1-a1-1791207654059"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/5926c72c5a68-r1-ai1-791207654059.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T13:43:58.764Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T13:43:58.764Z"
     }
   ],
   "count": 11
