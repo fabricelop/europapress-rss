@@ -2,13 +2,6 @@
   "items": [
     {
       "at": "2026-09-27T21:37:11.072687Z",
-      "event_id": "0ec9b53c91e8-r1",
-      "phase": "outbox",
-      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T21:37:11.072687Z",
       "event_id": "3e4fa144266f-r1",
       "phase": "outbox",
       "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
@@ -1395,6 +1388,13 @@
     },
     {
       "at": "2026-10-05T10:11:50.634710Z",
+      "event_id": "b224d67dc5e4-r1",
+      "phase": "outbox",
+      "reason": "b224d67dc5e4-r1.json: ValueError: el tweet debe terminar con dos saltos y su remate 🌶️",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento b224d67dc5e4-r1: b224d67dc5e4-r1.json: ValueError: el tweet debe terminar con dos saltos y su remate 🌶️. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-05T10:35:15.893823Z",
       "event_id": "b224d67dc5e4-r1",
       "phase": "outbox",
       "reason": "b224d67dc5e4-r1.json: ValueError: el tweet debe terminar con dos saltos y su remate 🌶️",
