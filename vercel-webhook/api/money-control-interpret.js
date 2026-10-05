@@ -24,7 +24,7 @@ function norm(v){
 }
 
 function parseMoneyInput(v){
-  let x=String(v||"").replace(/\u00a0/g," ").trim().replace(/\b(EUR|USD|GBP|CHF)\b/gi,"").replace(/[€$£]/g,"").replace(/\s/g,"");
+  let x=String(v||"").replace(/[−–—]/g,"-").replace(/\u00a0/g," ").trim().replace(/\b(EUR|USD|GBP|CHF)\b/gi,"").replace(/[€$£]/g,"").replace(/\s/g,"");
   if(!x)return null;
   if(x.includes(","))x=x.replace(/\./g,"").replace(",",".");
   else if(/^[-+]?\d{1,3}(\.\d{3})+$/.test(x))x=x.replace(/\./g,"");
@@ -42,6 +42,164 @@ function resolveKnownAccount(label,accounts,defaultAccount=""){
     return n&&(n.includes(wanted)||wanted.includes(n));
   });
   return fuzzy.length===1?fuzzy[0]:null;
+}
+
+
+function escapeRegExp(v){return String(v||"").replace(/[$.*+?^{}()|[\]\\]/g,"\\$&")}
+
+function parseFlexibleDates(text){
+  const src=String(text||"");
+  const out=[];
+  let m;
+  const numeric=/\b(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})\b/g;
+  while((m=numeric.exec(src))){
+    const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);
+    const iso=String(y).padStart(4,"0")+"-"+String(mo).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+    const dt=new Date(iso+"T12:00:00");
+    if(!Number.isNaN(dt.getTime())&&dt.getFullYear()===y&&dt.getMonth()+1===mo&&dt.getDate()===d)out.push({iso,index:m.index,end:m.index+m[0].length,raw:m[0]});
+  }
+  const months={ENERO:1,FEBRERO:2,MARZO:3,ABRIL:4,MAYO:5,JUNIO:6,JULIO:7,AGOSTO:8,SEPTIEMBRE:9,SETIEMBRE:9,OCTUBRE:10,NOVIEMBRE:11,DICIEMBRE:12};
+  const textual=/\b(\d{1,2})\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)[\p{L}]*\s+(\d{4})\b/giu;
+  while((m=textual.exec(src))){
+    const d=Number(m[1]),mo=months[norm(m[2])],y=Number(m[3]);
+    if(!mo)continue;
+    const iso=String(y).padStart(4,"0")+"-"+String(mo).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+    out.push({iso,index:m.index,end:m.index+m[0].length,raw:m[0]});
+  }
+  return out.sort((a,b)=>a.index-b.index);
+}
+
+function parseMoneyTokens(text){
+  const src=String(text||"").replace(/[−–—]/g,"-");
+  const out=[];
+  const re=/[-+]?\s*(?:\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?|\d+[.,]\d{1,2})\s*(?:EUR|€)?/gi;
+  let m;
+  while((m=re.exec(src))){
+    const value=parseMoneyInput(m[0]);
+    if(value===null)continue;
+    out.push({value,index:m.index,end:m.index+m[0].length,raw:m[0]});
+  }
+  return out;
+}
+
+function findDirectedTransferAccounts(text,accounts,defaultAccount=""){
+  const n=norm(text);
+  if(!n)return null;
+  for(const source of accounts){
+    const sn=escapeRegExp(norm(source.name));
+    for(const destination of accounts){
+      if(source.id===destination.id)continue;
+      const dn=escapeRegExp(norm(destination.name));
+      const patterns=[
+        new RegExp("(?:VIENE\\s+)?DE(?:\\s+LA\\s+CUENTA\\s+DE)?\\s+"+sn+"[\\s\\S]{0,140}?(?:HACIA|PARA|DESTINO|A)\\s+"+dn+"(?:\\b|$)"),
+        new RegExp("(?:DESDE|ORIGEN)\\s+"+sn+"[\\s\\S]{0,140}?(?:HACIA|PARA|DESTINO|A)\\s+"+dn+"(?:\\b|$)"),
+        new RegExp("\\b"+sn+"\\s+(?:HACIA|A|PARA)\\s+"+dn+"(?:\\b|$)")
+      ];
+      if(patterns.some(re=>re.test(n)))return{source,destination};
+    }
+  }
+  const fallback=resolveKnownAccount("",accounts,defaultAccount);
+  if(fallback){
+    for(const source of accounts){
+      if(source.id===fallback.id)continue;
+      const sn=escapeRegExp(norm(source.name));
+      if(new RegExp("(?:VIENE\\s+)?DE(?:\\s+LA\\s+CUENTA\\s+DE)?\\s+"+sn+"(?:\\b|$)").test(n))return{source,destination:fallback};
+    }
+  }
+  return null;
+}
+
+function cleanTransferDescription(v,fallback){
+  let x=String(v||"").replace(/\s+/g," ").trim();
+  x=x.replace(/^(?:CONCEPTO|FECHA\s+VALOR|IMPORTE|SALDO)\s*/i,"").trim();
+  return x||fallback;
+}
+
+function parseNaturalTransfer(text,accounts,defaultAccount,today){
+  const src=String(text||"").replace(/\u00a0/g," ").trim();
+  if(!src||!/(?:\btransferencia\b|\btransf\b)/i.test(src))return null;
+  const pair=findDirectedTransferAccounts(src,accounts,defaultAccount);
+  if(!pair)return null;
+
+  const marker=/(?:\bya\s+(?:estaba|existe|figuraba|aparec[ií]a)\b|\bestos\s+son\s+los\s+[uú]ltimos\b|\bhistorial\b|\bcomo\s+referencia\b)/i.exec(src);
+  const fresh=marker?src.slice(0,marker.index):src;
+  const history=marker?src.slice(marker.index):"";
+  const freshMoney=parseMoneyTokens(fresh);
+  if(!freshMoney.length)return null;
+  const amountToken=freshMoney[0];
+  const amount=Math.abs(Number(amountToken.value));
+  if(!Number.isFinite(amount)||amount<=0)return null;
+
+  const freshDates=parseFlexibleDates(fresh);
+  const destinationDate=freshDates[0]?.iso||today;
+  let destinationDescription="";
+  if(freshDates.length>=2&&freshDates[0].end<=freshDates[1].index){
+    destinationDescription=fresh.slice(freshDates[0].end,freshDates[1].index);
+  }else if(freshDates.length&&freshDates[0].end<=amountToken.index){
+    destinationDescription=fresh.slice(freshDates[0].end,amountToken.index);
+  }
+  const generic="Transferencia "+pair.source.name+" → "+pair.destination.name;
+  destinationDescription=cleanTransferDescription(destinationDescription,generic);
+
+  const historyMoney=parseMoneyTokens(history);
+  const historyDates=parseFlexibleDates(history);
+  const sourceCandidates=historyMoney.filter(x=>x.value<0&&Math.abs(Math.abs(x.value)-amount)<0.005);
+  const destinationCandidates=historyMoney.filter(x=>x.value>0&&Math.abs(x.value-amount)<0.005);
+  const sourceHit=sourceCandidates[0]||null;
+  const destinationHit=destinationCandidates[0]||null;
+
+  function precedingDate(token){
+    if(!token)return null;
+    const ds=historyDates.filter(d=>d.index<=token.index);
+    return ds.length?ds[ds.length-1]:null;
+  }
+  const sourceDateToken=precedingDate(sourceHit);
+  const sourceDate=sourceDateToken?.iso||destinationDate;
+  let sourceDescription=generic;
+  if(sourceHit&&sourceDateToken&&sourceDateToken.end<=sourceHit.index){
+    sourceDescription=cleanTransferDescription(history.slice(sourceDateToken.end,sourceHit.index),generic);
+  }
+
+  let existingSide="none";
+  if(sourceHit&&destinationHit)existingSide="both";
+  else if(sourceHit)existingSide="source";
+  else if(destinationHit)existingSide="destination";
+  else if(marker){
+    const hn=norm(history);
+    if(hn.includes(norm(pair.source.name)))existingSide="source";
+    else if(hn.includes(norm(pair.destination.name)))existingSide="destination";
+    else existingSide="unknown";
+  }
+
+  const balances=[];
+  if(/\bSALDO\b/i.test(fresh)&&freshMoney.length>=2){
+    const balanceToken=freshMoney[freshMoney.length-1];
+    if(balanceToken!==amountToken&&Number.isFinite(balanceToken.value)){
+      balances.push({account:pair.destination.name,date:destinationDate,balance:balanceToken.value,confidence:1,note:"Saldo observado en la entrada de la transferencia"});
+    }
+  }
+
+  return{
+    summary:"He entendido una transferencia de "+pair.source.name+" a "+pair.destination.name+(existingSide==="source"?", cuya salida de origen ya estaba registrada":"")+".",
+    movements:[{
+      account:pair.source.name,
+      date:destinationDate,
+      amount:-amount,
+      description:generic,
+      kind:"transfer",
+      destinationAccount:pair.destination.name,
+      sourceDate,
+      destinationDate,
+      sourceDescription,
+      destinationDescription,
+      existingSide,
+      confidence:1,
+      note:existingSide==="source"?"El usuario aporta la salida de la cuenta origen como movimiento ya existente.":""
+    }],
+    balances,
+    instructions:[],
+    warnings:[]
+  };
 }
 
 function parseSimpleBalances(text,accounts,defaultAccount,today){
@@ -187,6 +345,8 @@ export default async function handler(req,res){
     if(userText&&!imageDataUrl){
       const simple=parseSimpleBalances(userText,accounts,defaultAccount,today);
       if(simple)return reply(res,200,{ok:true,model:"deterministic-balance-parser",interpretation:simple});
+      const transfer=parseNaturalTransfer(userText,accounts,defaultAccount,today);
+      if(transfer)return reply(res,200,{ok:true,model:"deterministic-transfer-parser",interpretation:transfer});
     }
 
     const instructions=[
