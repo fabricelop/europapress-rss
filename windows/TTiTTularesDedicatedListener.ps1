@@ -24,8 +24,8 @@ $DirectTriggerRefreshSeconds = 60
 $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
-# Protocol compatibility: producción Vercel antigua exige v19; el código local sigue siendo v20/v28.
-$WorkerId = "ttittulares-dedicated-v19"
+# Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
+$WorkerId = "ttittulares-dedicated-v31"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
