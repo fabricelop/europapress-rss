@@ -80,6 +80,7 @@ console.log("MONEY_CONTROL_PARTIAL_TRANSFER_TEST_OK");
 new Function(harness)();
 
 function endpointAssert(cond,msg){if(!cond)throw new Error(msg)}
+const endpointNorm=v=>String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z0-9]+/g," ").trim().replace(/\s+/g," ");
 
 const exactText="Transferencia que viene de la cuenta de BBVA, hacia CI Comun: FECHA DE OPERACIÓN\tCONCEPTO\tFECHA VALOR\tIMPORTE\tSALDO\n05/10/2026\tTRANSF CTA DE:FABRICE LOPEZ ILL\t05/10/2026\t200,00 EUR\t6.793,01 EUR  Ya estaba en los movimientos de bbva. Estos son los ultimos de bbva: Resultado de la búsqueda\nFecha\nConcepto\nFraccionar\t\nImporte\nSaldo\nNotas\t\nArchivos adjuntos\t\nAcciones\t\nDetalle\n05 octubreOct\n2026\nAdeudo mensual de tarjeta\n4552232382975194\n−\n100\n,\n99\nEUR\n− 100,99 EUR\n1.029\n,\n18\nEUR\n1.029,18 EUR\n\n02 octubreOct\n2026\nTransferencia realizada\nFabrice lopez illac\n−\n200\n,\n00\nEUR\n− 200,00 EUR\n1.130\n,\n17\nEUR\n1.130,17 EUR";
 let endpointStatus=0, endpointBody="";
@@ -91,11 +92,11 @@ const payload=JSON.parse(endpointBody);
 endpointAssert(payload.model==="deterministic-transfer-parser","Debe usar deterministic-transfer-parser, obtuvo "+payload.model);
 const tm=(payload.interpretation.movements||[])[0];
 endpointAssert(tm?.kind==="transfer","Debe devolver transferencia");
-endpointAssert(norm(tm.account)==="BBVA"&&norm(tm.destinationAccount)==="CI COMUN","Debe interpretar BBVA -> CI Comun");
+endpointAssert(endpointNorm(tm.account)==="BBVA"&&endpointNorm(tm.destinationAccount)==="CI COMUN","Debe interpretar BBVA -> CI Comun");
 endpointAssert(Math.abs(Number(tm.amount))===200,"Debe interpretar 200 EUR");
 endpointAssert(tm.existingSide==="source","Debe marcar la pata BBVA como existente");
 endpointAssert(tm.sourceDate==="2026-10-02","Debe detectar 02/10/2026 como fecha origen, obtuvo "+tm.sourceDate);
 endpointAssert(tm.destinationDate==="2026-10-05","Debe detectar 05/10/2026 como fecha destino");
 const tb=(payload.interpretation.balances||[])[0];
-endpointAssert(tb&&norm(tb.account)==="CI COMUN"&&Math.abs(Number(tb.balance)-6793.01)<0.001,"Debe detectar saldo CI Comun 6.793,01");
+endpointAssert(tb&&endpointNorm(tb.account)==="CI COMUN"&&Math.abs(Number(tb.balance)-6793.01)<0.001,"Debe detectar saldo CI Comun 6.793,01");
 console.log("MONEY_CONTROL_ENDPOINT_TRANSFER_TEST_OK");
