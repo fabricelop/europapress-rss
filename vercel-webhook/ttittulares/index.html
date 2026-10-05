@@ -117,7 +117,7 @@ const RUN_API="/api/ttittulares-run";
 const RUN_STATUS_API="/api/ttittulares-run-status";
 const IMAGE_RUN_STATUS=RUN_STATUS_API+"?view=image-job&id=";
 const $=id=>document.getElementById(id);
-const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards",TREMENDING_OPEN_KEY="ttittulares-open-tremending",IMAGE_SELECTED_KEY="ttittulares-image-selected-v1";
+const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards",TREMENDING_OPEN_KEY="ttittulares-open-tremending",TREMENDING_DELETED_KEY="ttittulares-deleted-tremending",IMAGE_SELECTED_KEY="ttittulares-image-selected-v1";
 const DATA_CACHE_KEY="ttittulares-last-model",RUN_CACHE_KEY="ttittulares-last-run-status";
 const GITHUB_RATE_KEY="github-rate-state-v1";
 function updateGithubRate(rate){
@@ -137,11 +137,11 @@ function loadUiSet(key){try{return new Set((JSON.parse(sessionStorage.getItem(ke
 function selectedImageKeys(){try{return new Set((JSON.parse(localStorage.getItem(IMAGE_SELECTED_KEY)||"[]")||[]).map(String))}catch(_){return new Set()}}
 function saveSelectedImageKeys(set){try{localStorage.setItem(IMAGE_SELECTED_KEY,JSON.stringify([...set].slice(-300)))}catch(_){}}
 function imageSelectionKey(item){return String(item?.event_id||"")+":r"+String(Number(item?.revision||1))}
-function persistUiState(){try{sessionStorage.setItem(PENDING_KEY,JSON.stringify([...pendingClosed]));sessionStorage.setItem(OPEN_KEY,JSON.stringify([...openCards]));sessionStorage.setItem(TREMENDING_OPEN_KEY,JSON.stringify([...tremendingOpen]))}catch(_){}}
+function persistUiState(){try{sessionStorage.setItem(PENDING_KEY,JSON.stringify([...pendingClosed]));sessionStorage.setItem(OPEN_KEY,JSON.stringify([...openCards]));sessionStorage.setItem(TREMENDING_OPEN_KEY,JSON.stringify([...tremendingOpen]));sessionStorage.setItem(TREMENDING_DELETED_KEY,JSON.stringify([...tremendingDeleted]))}catch(_){}}
 const REQUESTED_VIEW=new URLSearchParams(location.search).get("view");
 const INITIAL_VIEW=["ready","processing","problematic","growing","tremending"].includes(REQUESTED_VIEW)?REQUESTED_VIEW:"ready";
 const cachedModel=loadLocalJson(DATA_CACHE_KEY);
-let model=cachedModel||{prepared:[],status:{},config:{},tremending:{items:[]}},hasGoodState=Boolean(cachedModel),reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),tremendingOpen=loadUiSet(TREMENDING_OPEN_KEY),tremendingPreview=new Map(),imageRuns=new Map(),loadSeq=0,runPoll=null,imageRunPoll=null,imageTerminalRefreshActive=false;
+let model=cachedModel||{prepared:[],status:{},config:{},tremending:{items:[]}},hasGoodState=Boolean(cachedModel),reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),tremendingOpen=loadUiSet(TREMENDING_OPEN_KEY),tremendingDeleted=loadUiSet(TREMENDING_DELETED_KEY),tremendingPreview=new Map(),imageRuns=new Map(),loadSeq=0,runPoll=null,imageRunPoll=null,imageTerminalRefreshActive=false;
 let uiInteractionVersion=0,uiHoldUntil=0,passiveRefreshTimer=null;
 function markUiInteraction(){uiInteractionVersion++;uiHoldUntil=Math.max(uiHoldUntil,Date.now()+1400)}
 function uiInteractionActive(){return Date.now()<uiHoldUntil||Boolean(document.querySelector(".sheet.show,dialog[open]"))}
@@ -786,7 +786,7 @@ function renderSourcesSheet(){
 }
 function render(){
  const s=model.status||{},healthy=Number(s.healthy_source_count),total=Number(s.configured_sources);
- $("readyCount").textContent=(model.prepared||[]).length;$("processingCount").textContent=Number(s.processing_count||0);$("problematicCount").textContent=Number(s.problematic_count||0);$("oneSourceCount").textContent=Number(s.one_source_count||0);$("twoSourceCount").textContent=Number(s.two_source_count||0);$("growingCount").textContent=Number(s.three_source_count||0);$("tremendingCount").textContent=(model.tremending?.items||[]).length;
+ $("readyCount").textContent=(model.prepared||[]).length;$("processingCount").textContent=Number(s.processing_count||0);$("problematicCount").textContent=Number(s.problematic_count||0);$("oneSourceCount").textContent=Number(s.one_source_count||0);$("twoSourceCount").textContent=Number(s.two_source_count||0);$("growingCount").textContent=Number(s.three_source_count||0);$("tremendingCount").textContent=(model.tremending?.items||[]).filter(x=>!tremendingDeleted.has(String(x.id||""))).length;
  renderTiming();
  $("health").textContent=(Number.isFinite(healthy)?healthy:"—")+"/"+(Number.isFinite(total)?total:"—")+" fuentes funcionando";
  $("health").classList.toggle("bad",Number.isFinite(healthy)&&Number.isFinite(total)&&healthy<total);
@@ -834,7 +834,7 @@ function renderList(){
 }
 function renderTremending(list){
  $("viewTitle").textContent="Tremending · lectura";
- const items=[...(model.tremending?.items||[])].sort((a,b)=>String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
+ const items=[...(model.tremending?.items||[])].filter(x=>!tremendingDeleted.has(String(x.id||""))).sort((a,b)=>String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
  if(!items.length){list.innerHTML='<div class="empty">No hay artículos Tremending pendientes de leer.</div>';return}
  const previousCards=new Map([...list.querySelectorAll("article.tremendingCard[data-tremending-id]")].map(node=>[node.dataset.tremendingId,node]));
  const desired=[];
@@ -885,15 +885,15 @@ function renderTremending(list){
   const del=document.createElement("button");del.className="btn danger";del.textContent="Borrar";
   del.onclick=async()=>{
     if(!confirm("¿Borrar esta entrada de Tremending? No volverá a aparecer en la bandeja."))return;
-    const oldItems=[...(model.tremending?.items||[])],oldOpen=new Set(tremendingOpen),oldPreview=new Map(tremendingPreview);
-    model.tremending.items=oldItems.filter(x=>String(x.id)!==id);tremendingOpen.delete(id);tremendingPreview.delete(key);persistUiState();lastTremendingRendering=null;render();
+    const oldItems=[...(model.tremending?.items||[])],oldOpen=new Set(tremendingOpen),oldDeleted=new Set(tremendingDeleted),oldPreview=new Map(tremendingPreview);
+    tremendingDeleted.add(id);model.tremending.items=oldItems.filter(x=>String(x.id)!==id);tremendingOpen.delete(id);tremendingPreview.delete(key);persistUiState();lastTremendingRendering=null;render();
     try{
       const result=await api("delete-tremending",{entry_id:item.id});
       if(result.deleted!==true)throw new Error("El servidor no confirmó el borrado");
       toast("Borrada de Tremending");
       await load(true);setView("tremending");
     }catch(e){
-      model.tremending.items=oldItems;tremendingOpen=oldOpen;tremendingPreview=oldPreview;persistUiState();lastTremendingRendering=null;render();
+      model.tremending.items=oldItems;tremendingOpen=oldOpen;tremendingDeleted=oldDeleted;tremendingPreview=oldPreview;persistUiState();lastTremendingRendering=null;render();
       toast("No se pudo borrar: "+e.message)
     }
   };
