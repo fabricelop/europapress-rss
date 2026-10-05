@@ -74,3 +74,10 @@ test("Salidas recientes excluye descartes manuales y conserva descartes con caus
   assert.match(control,/manual_user_dismissed=true/);
   assert.match(control,/history_hidden_source="web_user_dismissal"/);
 });
+
+test("Tremending usa lectura autoritativa tras borrar y oculta borrados locales",()=>{
+  assert.match(control,/fresh\?readJson\(TREMENDING\):readPublicJson\(TREMENDING\)/);
+  assert.match(script,/TREMENDING_DELETED_KEY/);
+  assert.match(script,/tremendingDeleted\.add\(id\)/);
+  assert.match(script,/filter\(x=>!tremendingDeleted\.has\(String\(x\.id\|\|""\)\)\)/);
+});
