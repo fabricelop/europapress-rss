@@ -57,15 +57,15 @@ jobs:
           }
 
       - name: Build production
-        working-directory: vercel-webhook
         shell: bash
         run: |
           set -euo pipefail
+          # El proyecto Vercel ya tiene rootDirectory=vercel-webhook.
+          # Ejecutar CLI desde la raíz evita resolver vercel-webhook/vercel-webhook.
           npx --yes vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
           npx --yes vercel@latest build --prod --token="$VERCEL_TOKEN"
 
       - name: Deploy production prebuilt
-        working-directory: vercel-webhook
         shell: bash
         run: |
           set -euo pipefail
