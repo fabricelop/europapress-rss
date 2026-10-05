@@ -35,6 +35,26 @@ const MAIN_BRANCH="main";
 const PREPARED_PATH="ttittulares/prepared.json";
 const CROSS_IMAGE_STATE_PATH="trends/telegram-manual-explained.json";
 const RASTER_REGISTRY_PATH="shared/image-raster-registry.json";
+
+const IMAGE_STYLE_BASE="PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag nace del hecho/remate y no se limita a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ";
+const IMAGE_STYLE_BANK=[
+  ["tinta_acuarela","Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero."],
+  ["comic_europeo","Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición dinámica pero despejada."],
+  ["poster_grafico","Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil."],
+  ["absurdo_semirrealista","Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual."],
+  ["stop_motion","Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo."],
+  ["retro_60s","Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia."],
+  ["grabado_moderno","Grabado o linograbado moderno de alta calidad, textura rica, contraste controlado y un único foco narrativo."],
+  ["pop_art","Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos."],
+  ["cartoon_3d","Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona."],
+  ["novela_grafica","Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria."]
+];
+function imageStyleFor(seed){
+  const h=crypto.createHash("sha256").update(String(seed||"")).digest();
+  const index=h.readUInt32BE(0)%IMAGE_STYLE_BANK.length;
+  const [name,detail]=IMAGE_STYLE_BANK[index];
+  return {index,name,text:IMAGE_STYLE_BASE+"ESTILO ASIGNADO PARA ESTA IMAGEN: "+detail};
+}
 const STATUS_PREFIX="RUNSTATUS ";
 const TRACE_PREFIX="TTITTULARES_RUNTRACE_V1\n";
 const ACTIVE_MS=20*60*1000;
@@ -513,13 +533,17 @@ async function requestImageRun(req,res){
   const row=eligible.row||{},revision=Number(row.revision||1);
   if(revision!==requestedRevision)return res.status(409).json({ok:false,error:"target_no_elegible",reason:"revision_changed",target_id,revision});
   const target_name=String(row.title||req.body?.target_name||"").trim().slice(0,240);
+  const stylePick=imageStyleFor("ttittulares|"+target_id+"|r"+revision+"|"+Date.now());
   const context_snapshot={
     title:target_name,revision,
     factual_summary:String(row.factual_summary||"").trim(),
     tweet_text:String(row.tweet?.text||"").trim(),
     remate:String(row.tweet?.remate||"").trim(),
     url:String(row.url||"").trim(),
-    citations:Array.isArray(row.citations)?row.citations.slice(0,8):[]
+    citations:Array.isArray(row.citations)?row.citations.slice(0,8):[],
+    image_style:stylePick.text,
+    image_style_name:stylePick.name,
+    image_style_index:stylePick.index
   };
   const jobPath=IMAGE_RUN_DIR+"/"+target_id+".json",existing=await readControlJson(jobPath),previous=existing.doc||{};
   const status=String(previous.status||"").toUpperCase(),phase=String(previous.phase||"").toLowerCase();
@@ -530,12 +554,12 @@ async function requestImageRun(req,res){
   const doc={
     version:1,command_id,requested_at,updated_at:requested_at,status:"REQUESTED",phase:"queued",
     mode:"manual_pc_chat_image",executor:"pc_chat_ttittulares_dedicated",project:"ttittulares",launcher_arg:"titulares",
-    task:"image",target_id,event_id:target_id,target_name,revision,regenerate:Boolean(eligible.hasAi),chat_command_version:3,
-    instruction_profile:"ttittulares_gag_v1",context_snapshot,
+    task:"image",target_id,event_id:target_id,target_name,revision,regenerate:Boolean(eligible.hasAi),chat_command_version:5,
+    instruction_profile:"ttittulares_gag_v9_varied_style_single_gag",context_snapshot,
     instructions:{
       scope:"Genera UNA sola imagen IA para esta noticia y no proceses ninguna otra entrada.",
       context:"Usa context_snapshot como contexto factual autoritativo. No reinvestigues ni reescribas la noticia.",
-      visual:"Gag visual claramente cómico, satírico, irónico y exagerado; una sola escena 16:9 con idea específica del hecho, evitando ilustración literal.",
+      visual:"Más gag, menos barroquismo: una sola idea visual fuerte, pocos elementos y acabado cuidado. Respeta image_style del context_snapshot; en regeneraciones el estilo puede cambiar.",
       sensitivity:"No conviertas víctimas, muertes, duelo, violencia grave, abuso, menores en contexto sensible o sufrimiento humano en objeto del gag.",
       political_guard:"Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
       lifecycle:"El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
