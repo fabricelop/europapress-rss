@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-5926c72c5a68-r1-a1-1791207654059",
+  "requested_at": "2026-10-05T13:40:54.059418Z",
+  "updated_at": "2026-10-05T13:40:54.059418Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "5926c72c5a68",
+  "event_id": "5926c72c5a68",
+  "target_name": "El ministro de Industria Jordi Hereu será el candidato del PSC en las elecciones generales del 29 de noviembre",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v8_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "title": "El ministro de Industria Jordi Hereu será el candidato del PSC en las elecciones generales del 29 de noviembre",
+    "revision": 1,
+    "factual_summary": "El ministro de Industria y Turismo y exalcalde de Barcelona Jordi Hereu será el candidato del PSC por Barcelona en las elecciones generales del 29 de noviembre. El partido celebrará una ejecutiva extraordinaria el martes y prevé ratificar la candidatura en su Consell Nacional del sábado.",
+    "tweet_text": "Jordi Hereu, ministro de Industria y Turismo, será el candidato del PSC por Barcelona en las generales del 29-N. El partido prevé ratificarlo el sábado.\n\n🌶️ El adelanto le ha puesto una papeleta encima de la cartera de Industria.",
+    "remate": "🌶️ El adelanto le ha puesto una papeleta encima de la cartera de Industria.",
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Texto en español únicamente cuando sea necesario para el gag. Evitar caricatura genérica, collage, aspecto fotográfico puro e infografía. Un gag principal inmediatamente reconocible y pocos detalles secundarios, solo si refuerzan el chiste.",
+    "image_prompt": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Texto en español únicamente cuando sea necesario para el gag. Evitar caricatura genérica, collage, aspecto fotográfico puro e infografía. Un gag principal inmediatamente reconocible y pocos detalles secundarios, solo si refuerzan el chiste.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nJordi Hereu, ministro de Industria y Turismo, será el candidato del PSC por Barcelona en las generales del 29-N. El partido prevé ratificarlo el sábado.\n\n🌶️ El adelanto le ha puesto una papeleta encima de la cartera de Industria.\n\nREMATE EXACTO:\n🌶️ El adelanto le ha puesto una papeleta encima de la cartera de Industria.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl ministro de Industria y Turismo y exalcalde de Barcelona Jordi Hereu será el candidato del PSC por Barcelona en las elecciones generales del 29 de noviembre. El partido celebrará una ejecutiva extraordinaria el martes y prevé ratificar la candidatura en su Consell Nacional del sábado.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.eldiario.es/catalunya/ministro-industria-jordi-hereu-sera-candidato-psc-elecciones-generales_1_13563229.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/catalunya/noticia-jordi-hereu-sera-candidato-psc-generales-20261005152936.html"
+      },
+      {
+        "source": "elDiario.es",
+        "url": "https://www.eldiario.es/catalunya/ministro-industria-jordi-hereu-sera-candidato-psc-elecciones-generales_1_13563229.html"
+      },
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/cataluna/barcelona/hereu-candidato-psc-las-generales-para-evitar-que-decaiga-financiacion-singular-traspaso-rodalies_7045023_0.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
