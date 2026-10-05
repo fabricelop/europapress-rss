@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T09:11:24.467Z",
+  "updated_at": "2026-10-05T09:12:20.812Z",
   "items": [
     {
       "event_id": "2ca63960dcb8",
@@ -39,10 +39,10 @@
       },
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -58,12 +58,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T09:07:34.241851Z",
       "image": {
-        "url": "https://img.rtve.es/imagenes/carlos-alcaraz-jaume-munar-aseguran-finalista-espanol-tokio/01791111721875.jpg",
-        "source": "RTVE",
-        "source_url": "https://www.rtve.es/deportes/20261004/carlos-alcaraz-jaume-munar-aseguran-finalista-espanol-tokio/17252750.shtml",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "¿A qué hora juega Alcaraz hoy contra Munar? Horario, TV y dónde ver el partido de semifinales del ATP 500 de Tokio"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/2ca63960dcb8-r1-ai1-791191317550.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b044eb10f1a89fb76333a19c7ccdca3cf1a711319ce2f9ee083384f56c3520d7",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2775138,
+        "context_guard": {
+          "version": 3,
+          "event_id": "2ca63960dcb8",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-2ca63960dcb8-r1-a1-1791191317550"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/2ca63960dcb8-r1-ai1-791191317550.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img.rtve.es/imagenes/carlos-alcaraz-jaume-munar-aseguran-finalista-espanol-tokio/01791111721875.jpg",
@@ -72,7 +86,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "¿A qué hora juega Alcaraz hoy contra Munar? Horario, TV y dónde ver el partido de semifinales del ATP 500 de Tokio"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/2ca63960dcb8-r1-ai1-791191317550.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b044eb10f1a89fb76333a19c7ccdca3cf1a711319ce2f9ee083384f56c3520d7",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2775138,
+        "context_guard": {
+          "version": 3,
+          "event_id": "2ca63960dcb8",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-2ca63960dcb8-r1-a1-1791191317550"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/2ca63960dcb8-r1-ai1-791191317550.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T09:12:20.812Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T09:12:20.812Z"
     },
     {
       "event_id": "0e333c91f316",
