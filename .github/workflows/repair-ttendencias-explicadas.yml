@@ -10,7 +10,7 @@ on:
       - "trends/pending-repair-trigger.json"
       - ".github/workflows/repair-ttendencias-explicadas.yml"
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/20 * * * *"
 
 permissions:
   contents: write
@@ -287,9 +287,3 @@ jobs:
               sleep $((n*2))
             done
           fi
-
-      - name: Lanzar entrega al bot TTendencias
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-        run: gh workflow run send-ttendencias-explained-telegram.yml --repo "$REPO" --ref main
