@@ -152,7 +152,7 @@ def default_state() -> dict:
     return {
         "project": "TTiTTulares",
         "source": "Público · Tremending",
-        "version": 1,
+        "version": 2,
         "updated_at": None,
         "scan": {"last_run_at": None, "last_success_at": None, "recent_pages": 8, "recovery_page": None, "capture_from": CAPTURE_FROM_DEFAULT, "capture_local_date": CAPTURE_LOCAL_DATE_DEFAULT, "last_error": None},
         "items": [],
@@ -190,11 +190,7 @@ def merge_listing_item(existing: dict | None, candidate: dict, seen_at: str) -> 
     item.setdefault("first_seen_at", seen_at)
     item["last_seen_at"] = seen_at
     item.setdefault("status", "pending")
-    item.setdefault("destinations", [])
     item.setdefault("tweets", [])
-    item.setdefault("selected_tweet_id", None)
-    item.setdefault("selected_tweet_url", None)
-    item.setdefault("image", {"status": "not_selected"})
     return item
 
 
@@ -358,9 +354,9 @@ def selftest() -> None:
     </body></html>"""
     parsed = extract_article(article, "https://www.publico.es/tremending/prueba.html")
     assert [x["id"] for x in parsed["tweets"]] == ["2104511140961341531", "12345"]
-    old = {"url": rows[0]["url"], "status": "postponed", "selected_tweet_id": "123"}
+    old = {"url": rows[0]["url"], "status": "pending"}
     merged = merge_listing_item(old, rows[0], now_iso())
-    assert merged["status"] == "postponed" and merged["selected_tweet_id"] == "123"
+    assert merged["status"] == "pending" and "selected_tweet_id" not in merged and "destinations" not in merged
     assert parse_iso("2026-09-29T22:00:00Z") == parse_iso(CAPTURE_FROM_DEFAULT)
     assert parse_iso("2026-09-30T00:00:00+02:00") == parse_iso(CAPTURE_FROM_DEFAULT)
     print("TREMENDING_SELFTEST_OK")
