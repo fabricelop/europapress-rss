@@ -4857,7 +4857,7 @@
       "percentage": 81.2,
       "first_seen": "2026-10-05T11:23:07.689792Z",
       "last_seen": "2026-10-05T18:38:54.294537Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "notified": false,
       "revision": 1,
       "sport_sources": [
@@ -5010,8 +5010,11 @@
         }
       ],
       "drafted_source_count": 13,
-      "verified_source_count": 13
+      "verified_source_count": 13,
+      "reconciled_from_event_id": "ab5d3c369bd0",
+      "reconciliation_reason": "Mismo anuncio ya publicado: Pedro Sánchez convocó elecciones generales para el 29 de noviembre; esta entrada repite el hecho esencial sin una novedad material independiente.",
+      "reconciled_at": "2026-10-05T18:43:01.945556Z"
     }
   ],
-  "updated_at": "2026-10-05T18:42:35.660441Z"
+  "updated_at": "2026-10-05T18:43:01.945556Z"
 }
