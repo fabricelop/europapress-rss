@@ -29331,10 +29331,10 @@
       ],
       "auto_queued": true,
       "last_attempt_at": "2026-10-05T11:20:00+02:00",
-      "problematic_at": "2026-10-05T11:20:56+02:00",
-      "problem_reason": "No se pudo determinar con fiabilidad el detonante actual de #5OctubrESP tras dos búsquedas distintas: el hashtag no aparece respaldado por fuentes actuales verificables ni por una noticia asociable sin especulación.",
+      "problematic_at": "2026-10-05T11:50:35+02:00",
+      "problem_reason": "Tras varias búsquedas exactas del hashtag y variantes no aparece una fuente fiable que identifique su significado o detonante actual. No se publica una explicación por inferencia.",
       "source": "editorial_chat_direct",
-      "problematic_attempts": 1,
+      "problematic_attempts": 2,
       "editorial_engine": "chatgpt-automation-outbox"
     },
     {
@@ -29361,7 +29361,7 @@
       "id": "26bb59be27a6",
       "name": "alvise",
       "revision": 0,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-05T09:26:06.535Z",
       "rank": 11,
       "with_image": true,
@@ -29375,7 +29375,11 @@
       "requested_together": [
         "alvise"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "problematic_at": "2026-10-05T11:50:35+02:00",
+      "problem_reason": "Tras al menos dos búsquedas actuales distintas no aparece un detonante único y verificable que explique el pico de «alvise» hoy; los resultados localizados tratan sondeos, causas judiciales previas y organización territorial de SALF, sin vínculo suficiente con la tendencia actual.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "71d6534cdb5a",
@@ -29418,6 +29422,6 @@
       "auto_queued": false
     }
   ],
-  "updated_at": "2026-10-05T09:26:07.737Z",
+  "updated_at": "2026-10-05T11:50:35+02:00",
   "count": 591
 }
