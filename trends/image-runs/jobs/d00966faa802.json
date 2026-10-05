@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-d00966faa802-r0-a1-1791224594475",
+  "requested_at": "2026-10-05T18:23:14.474166Z",
+  "updated_at": "2026-10-05T18:23:14.474166Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "d00966faa802",
+  "trend_id": "d00966faa802",
+  "target_name": "CCOO",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "CCOO",
+    "revision": 0,
+    "explanation": "TT#2 CCOO es tendencia porque CCOO y UGT han acordado convocar una huelga general de 24 horas este otoño por vivienda y salarios; la fecha aún no está fijada y el acuerdo debe ratificarse.\n🌶️ El recibo del alquiler ya ha pedido 24 horas de huelga.",
+    "closer_text": "🌶️ El recibo del alquiler ya ha pedido 24 horas de huelga.",
+    "trend_names": [
+      "CCOO"
+    ],
+    "group_title": "CCOO y UGT acuerdan una huelga general por vivienda y salarios",
+    "rank_at_explanation": 2,
+    "explained_at": "2026-10-05T20:19:00+02:00",
+    "verification_sources": [
+      {
+        "source": "UGT · 5/10/2026",
+        "url": "https://www.ugt.es/ugt-y-ccoo-acuerdan-la-convocatoria-de-una-huelga-general-este-otono"
+      },
+      {
+        "source": "Cadena SER · 5/10/2026",
+        "url": "https://cadenaser.com/nacional/2026/10/05/ccoo-y-ugt-convocan-una-huelga-general-en-otono-sin-concretar-la-fecha-cadena-ser/"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
