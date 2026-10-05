@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T18:18:10.397Z",
+  "updated_at": "2026-10-05T18:20:24.821Z",
   "items": [
     {
       "event_id": "34a6be6549a2",
@@ -585,10 +585,10 @@
       },
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -604,12 +604,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T18:11:57.125019Z",
       "image": {
-        "url": "https://www.lavanguardia.com/files/og_thumbnail/uploads/2026/10/05/6ac3dcc94d96a.jpeg",
-        "source": "www.lavanguardia.com",
-        "source_url": "https://www.lavanguardia.com/cultura/20261005/11651721/roban-libro-excepcional-francia-cuya-cubierta-bronce-creada-salvador-dali.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Roban en Francia un ‘Libro del Apocalipsis’ único con cubierta de bronce creada por Salvador Dalí"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/82a5860c8e56-r1-ai1-791224183613.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "8341b469c4288eff172f75f3f003aabc670cb1431245150a6a61e2876eac7dfe",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2697246,
+        "context_guard": {
+          "version": 3,
+          "event_id": "82a5860c8e56",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-82a5860c8e56-r1-a1-1791224183613"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/82a5860c8e56-r1-ai1-791224183613.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://www.lavanguardia.com/files/og_thumbnail/uploads/2026/10/05/6ac3dcc94d96a.jpeg",
@@ -618,7 +632,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Roban en Francia un ‘Libro del Apocalipsis’ único con cubierta de bronce creada por Salvador Dalí"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/82a5860c8e56-r1-ai1-791224183613.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "8341b469c4288eff172f75f3f003aabc670cb1431245150a6a61e2876eac7dfe",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2697246,
+        "context_guard": {
+          "version": 3,
+          "event_id": "82a5860c8e56",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-82a5860c8e56-r1-a1-1791224183613"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/82a5860c8e56-r1-ai1-791224183613.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T18:20:24.821Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T18:20:24.821Z"
     }
   ],
   "count": 11
