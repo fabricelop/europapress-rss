@@ -10,11 +10,15 @@ function authToken(req){
   return h.startsWith("Bearer ")?h.slice(7).trim():"";
 }
 function tokenMatches(req){
-  const expected=String(process.env.MONEYCONTROL_BRIDGE_TOKEN||"");
   const supplied=authToken(req);
-  if(!expected||!supplied)return false;
-  const a=Buffer.from(expected),b=Buffer.from(supplied);
-  return a.length===b.length&&crypto.timingSafeEqual(a,b);
+  if(!supplied)return false;
+  for(const expected of [process.env.MONEYCONTROL_BRIDGE_TOKEN,process.env.MONEYWIZ_SYNC_TOKEN]){
+    const value=String(expected||"");
+    if(!value)continue;
+    const a=Buffer.from(value),b=Buffer.from(supplied);
+    if(a.length===b.length&&crypto.timingSafeEqual(a,b))return true;
+  }
+  return false;
 }
 function blobOptions(extra={}){
   return {
