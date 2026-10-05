@@ -206,6 +206,14 @@ export default async function handler(req,res){
       let body={};
       try{body=JSON.parse(await bodyText(req)||"{}")}catch{return json(res,400,{ok:false,error:"invalid_json"})}
       const action=String(body.action||"prepare");
+      console.log("moneywiz-shortcut-request",{
+        action,
+        filenameType:typeof body.filename,
+        filenamePreview:String(body.filename??"").slice(0,120),
+        sizeType:typeof body.sizeBytes,
+        sizePreview:String(body.sizeBytes??"").slice(0,120),
+        pathnamePreview:String(body.pathname??"").slice(0,120)
+      });
 
       if(action==="prepare"){
         const filename=cleanMoneyWizFilename(body.filename),sizeBytes=Number(body.sizeBytes||0);
