@@ -234,6 +234,8 @@ function buildMessage(job){
   const group=String(ctx.group_title||"");
   const trendNames=Array.isArray(ctx.trend_names)?ctx.trend_names.join(", "):"";
   const sources=Array.isArray(ctx.verification_sources)?ctx.verification_sources.map(x=>String(x&&x.source||"")).filter(Boolean).join(", "):"";
+  const style=String(ctx.image_style||"").trim()||"Más gag, menos barroquismo. Una sola idea visual fuerte, composición limpia, pocos elementos protagonistas, acabado cuidado y estilo editorial variable; evita ilustración literal.";
+  const styleName=String(ctx.image_style_name||"variable").trim();
   return [
     "TTENDENCIAS_IMAGE_JOB_V4 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA SOLA imagen GAG IA para '"+name+"'.",
     "",
@@ -248,10 +250,10 @@ function buildMessage(job){
     group?("Grupo editorial: "+group):"",
     sources?("Fuentes verificadas: "+sources):"",
     "",
-    "ESTILO VISUAL OBLIGATORIO:",
-    "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en los hechos de la explicación. Crear un gag visual específico a partir de la tendencia y su detonante, no una representación literal ni una caricatura genérica del nombre. Expresiones faciales exageradas, composición dinámica, profundidad, iluminación dramática y acabado pulido tipo portada/editorial. Texto en español únicamente cuando sea necesario para el gag y perfectamente integrado.",
+    "DIRECCIÓN VISUAL ASIGNADA ("+styleName+"):",
+    style,
     "",
-    "CONSTRUCCIÓN: una sola escena factual concreta; un gag principal inmediatamente reconocible; el remate visual debe traducir la guindilla cuando exista. Si no hay remate, crea el gag a partir del hecho factual, sin inventar otro.",
+    "CONSTRUCCIÓN OBLIGATORIA: primero decide internamente cuál es el gag central. La imagen debe expresar UNA sola idea fuerte, entenderse en 1-2 segundos y tener pocos elementos protagonistas. Bien dibujada y pulida, pero sin barroquismo ni decoración innecesaria. El remate visual debe traducir la guindilla cuando exista; si no hay remate, parte del hecho factual sin inventar otro.",
     "No inventes hechos externos. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. No escribas la explicación completa dentro de la imagen. Genera exactamente UNA imagen. No proceses otra tendencia ni persistas la imagen: el puente local recoge el raster."
   ].filter(Boolean).join("\n")
 }
