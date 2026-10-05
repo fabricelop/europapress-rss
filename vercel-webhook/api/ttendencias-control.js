@@ -291,7 +291,15 @@ async function readJson(path) {
     cache: "no-store",
     headers: { "cache-control": "no-cache" },
   });
-  if (!r.ok) throw new Error(`GitHub GET ${path}: ${r.status} ${await r.text()}`);
+  if (!r.ok) {
+    const body=await r.text();
+    const e=new Error(`GitHub GET ${path}: ${r.status} ${body}`);
+    if(r.status===403 && /rate limit exceeded/i.test(body)){
+      const rate=captureGithubRate(r);
+      e.statusCode=429;e.githubRateLimit={...rate,limited:true};
+    }
+    throw e;
+  }
   const file = await r.json();
   let encoded = String(file.content || "").replace(/\n/g, "");
   // GitHub Contents API omite `content` en ficheros grandes (>1 MB).
@@ -1114,9 +1122,11 @@ async function retryNames(names) {
 async function markExplanationCopied(copyKey, source = "copy-button") {
   const key = String(copyKey || "").trim();
   if (!/^explanation-v1:[a-f0-9]{24}$/.test(key)) throw new Error("Explicación no válida.");
+  // Validar contra lecturas públicas: "Ya explicado" no debe gastar
+  // dos llamadas REST autenticadas antes de la única escritura necesaria.
   const [{ doc: explained }, { doc: requests }] = await Promise.all([
-    readJson(EXPLAINED),
-    readJson(REQUESTS),
+    readPublicJson(EXPLAINED),
+    readPublicJson(REQUESTS),
   ]);
   // El panel muestra la vista reconciliada: una request explicada más reciente puede
   // sustituir la revisión persistida en EXPLAINED. El botón debe validar contra esa
@@ -1184,7 +1194,7 @@ async function rateRemate(ratingKey, rating) {
 }
 
 async function stateSnapshot(fresh = false) {
-  const github_rate_limit = await probeGithubRate(false);
+  const github_rate_limit = await probeGithubRate(true);
   // El panel solo necesita contenido para pintar el estado. Usar RAW aquí
   // evita gastar el rate limit REST autenticado de GitHub en cada polling.
   // La API autenticada queda reservada para escrituras y operaciones que
