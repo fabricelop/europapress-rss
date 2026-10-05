@@ -709,7 +709,7 @@ TTENDENCIAS_IMAGE_JOB_V4 $commandId $targetId | Usa ImageGen AHORA y genera UNA 
 CONTEXTO FACTUAL AUTORITATIVO (úsalo DIRECTAMENTE; no necesitas abrir GitHub ni reinvestigar):
 $contextJson
 
-Genera un gag visual editorial 16:9, cómico, satírico, irónico y exagerado basado ESPECÍFICAMENTE en la explicación y el remate de context_snapshot. Evita una ilustración literal y una caricatura genérica del nombre de la tendencia. Una sola escena coherente, un gag principal claro, sin infografía, collage, interfaz ni captura de pantalla. No inventes hechos externos. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster.
+Respeta OBLIGATORIAMENTE image_style e image_style_name de context_snapshot. Principio fijo: más gag, menos barroquismo; UNA sola idea visual fuerte, lectura inmediata, pocos elementos protagonistas y acabado cuidado sin recargar. No ilustres literalmente el titular ni mezcles varias metáforas. Una sola escena coherente, sin infografía, collage, interfaz ni captura de pantalla. No inventes hechos externos. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster.
 "@
 }
 
