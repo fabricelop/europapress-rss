@@ -27751,9 +27751,9 @@
       ],
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -27785,13 +27785,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://cadenaser.com/resizer/v2/7IOXSHZUUVLJHPEMP73SPN555M.jpg?auth=9d04a590dcd80d068502396a24e8fd426419b20463daf896a5a816a5f8b0f00f&quality=70&width=1200&height=675&smart=true",
-        "source": "Cadena SER · 5/10/2026",
-        "source_url": "https://cadenaser.com/nacional/2026/10/05/los-tribunales-en-tiempo-de-elecciones-las-causas-que-marcaran-el-camino-al-29-n-cadena-ser/",
-        "alt": "Imagen de archivo relacionada con Ley de Nietos",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/a8963036b538-r0-ai1-791203199590.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "04c3c1a08f497ddb7503ff424dbca3e6088c732fd9e8d67f3b4dafc5223a989f",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2559372,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "a8963036b538",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-a8963036b538-r0-a1-1791203199590"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/a8963036b538-r0-ai1-791203199590.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/a8963036b538-r0-ai1-791203199590.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "04c3c1a08f497ddb7503ff424dbca3e6088c732fd9e8d67f3b4dafc5223a989f",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2559372,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "a8963036b538",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-a8963036b538-r0-a1-1791203199590"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/a8963036b538-r0-ai1-791203199590.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T12:28:23.787Z"
     },
     {
       "id": "586304ff2756",
@@ -27863,6 +27902,6 @@
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-05T12:28:02.456886Z",
+  "updated_at": "2026-10-05T12:28:23.787Z",
   "count": 560
 }
