@@ -26287,7 +26287,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -26364,9 +26363,28 @@
         }
       ],
       "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true,
-      "rewrite_pending": false
+      "image_status": "ready",
+      "image_pending": false,
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005102608_1200.jpg",
+        "source": "Europa Press · 5/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-feijoo-apela-cambio-reconstruccion-nacional-cree-sanchez-merece-mayor-castigos-20261005102608.html",
+        "alt": "Imagen de archivo relacionada con Feijoo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005102608_1200.jpg",
+        "source": "Europa Press · 5/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-feijoo-apela-cambio-reconstruccion-nacional-cree-sanchez-merece-mayor-castigos-20261005102608.html",
+        "alt": "Imagen de archivo relacionada con Feijoo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "914cf3da7267",
@@ -26379,7 +26397,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -26446,11 +26463,30 @@
         }
       ],
       "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true,
-      "rewrite_pending": false
+      "image_status": "ready",
+      "image_pending": false,
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005091229_1200_v2.jpg",
+        "source": "Europa Press · 5/10/2026",
+        "source_url": "https://www.europapress.es/deportes/ciclismo-00396/noticia-fallece-exciclista-angel-arroyo-pionero-segundo-tour-francia-1983-20261005091229.html",
+        "alt": "Imagen de archivo relacionada con Ángel Arroyo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261005091229_1200_v2.jpg",
+        "source": "Europa Press · 5/10/2026",
+        "source_url": "https://www.europapress.es/deportes/ciclismo-00396/noticia-fallece-exciclista-angel-arroyo-pionero-segundo-tour-francia-1983-20261005091229.html",
+        "alt": "Imagen de archivo relacionada con Ángel Arroyo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-05T11:20:00+02:00",
+  "updated_at": "2026-10-05T09:20:38.026451Z",
   "count": 548
 }
