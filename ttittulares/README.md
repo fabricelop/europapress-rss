@@ -1,5 +1,7 @@
 # TTiTTulares · control web
 
+> TTendencias está desacoplado: no envía candidatos ni noticias a TTiTTulares y TTiTTulares no consume su antigua cola `trend-candidates.json`.
+
 Esta carpeta es independiente de TTendencias y contiene el estado de la futura app web de TTiTTulares.
 
 ## Flujo previsto
@@ -24,6 +26,7 @@ La comprobación y recuperación de cada fuente se realiza dentro de su propio w
 
 - **Listas**: noticias ya redactadas y pendientes de decisión/publicación.
 - **En elaboración**: noticias que ya alcanzaron al menos 4 fuentes y están en la cola editorial.
+- **No comprobadas**: incidencias editoriales internas de TTiTTulares que requieren validación explícita; no son tendencias.
 
 No hay vista de noticias con 1, 2 o 3 fuentes.
 
