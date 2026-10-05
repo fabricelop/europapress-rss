@@ -1,36 +1,40 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T04:45:00+02:00",
-  "last_completed_at": "2026-10-05T04:46:30+02:00",
+  "last_started_at": "2026-10-05T05:15:00+02:00",
+  "last_completed_at": "2026-10-05T05:16:30+02:00",
   "last_slot": null,
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
-  "updated_at": "2026-10-05T04:46:30+02:00",
+  "updated_at": "2026-10-05T05:16:30+02:00",
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T044500+0200",
+    "run_id": "tr-chat-20261005T051500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-05T04:45:00+02:00",
-    "updated_at": "2026-10-05T04:46:30+02:00",
-    "finished_at": "2026-10-05T04:46:30+02:00",
+    "started_at": "2026-10-05T05:15:00+02:00",
+    "updated_at": "2026-10-05T05:16:30+02:00",
+    "finished_at": "2026-10-05T05:16:30+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "requested_at": "2026-10-05T04:45:00+02:00",
+    "requested_at": "2026-10-05T05:15:00+02:00",
     "partial": false,
     "summary": {
       "trends_processed": 0,
       "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
+      "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -40,13 +44,12 @@
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "vercel_deploys": 0,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 14,
-      "pending_cards_checked": 41,
-      "pending_visual_repair_requested": 41,
-      "pending_visual_jobs_observed_at_close": 0
+      "remates_omitted": 0,
+      "pending_recent_reconciled": 0
     },
-    "message": "Pasada directa completada sin trabajo editorial nuevo. Cola final 0, sin reexplicaciones ni problemáticas. Se revisaron 41 tarjetas Pendientes recientes y se solicitó reparación visual automática para todas; 14 remates vacíos se mantienen deliberadamente por política, sensibilidad o desastre. El disparador quedó persistido; los jobs IA aún no eran visibles en la rama de control al cierre.",
+    "message": "Pasada directa completada sin trabajo editorial nuevo. Cola, requests y reexplicaciones verificados en main; 0 activos. El saneamiento de Pendientes fue solicitado y la vista reconciliada reciente queda en 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -56,194 +59,71 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "9055ec2f483b",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitive_extremist_confrontation"
-      },
-      {
-        "trend_id": "04cad2c98b47",
-        "revision": 3,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      },
-      {
-        "trend_id": "2bd1d3d69584",
-        "revision": 1,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      },
-      {
-        "trend_id": "a601c0a3ce58",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      },
-      {
-        "trend_id": "eff24d42fd29",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "disaster_context"
-      },
-      {
-        "trend_id": "8cd0489c3cae",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "migration_sensitive"
-      },
-      {
-        "trend_id": "37b5073e4e9a",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      },
-      {
-        "trend_id": "2ec45c3617a4",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "migration_sensitive"
-      },
-      {
-        "trend_id": "31fa73ae74f1",
-        "revision": 2,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      },
-      {
-        "trend_id": "205740091d52",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "violent_incident"
-      },
-      {
-        "trend_id": "b9ad7ec5bc7e",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      },
-      {
-        "trend_id": "b52739680491",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      },
-      {
-        "trend_id": "e9992fb90d72",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "disaster_context"
-      },
-      {
-        "trend_id": "3c18a6c57e58",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "mixed_political_sensitive_context"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-05T04:45:00+02:00",
+        "at": "2026-10-05T05:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada directa · cola autoritativa 0 · activando saneamiento de Pendientes"
+        "message": "Revisando cola, reexplicaciones y Pendientes"
       },
       {
-        "at": "2026-10-05T04:45:20+02:00",
+        "at": "2026-10-05T05:15:20+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual de Pendientes solicitado"
+      },
+      {
+        "at": "2026-10-05T05:15:45+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main y reconciliando Pendientes recientes por id+revision y grupo"
+        "message": "Pendientes recientes reconciliados · 0 vigentes"
       },
       {
-        "at": "2026-10-05T04:45:40+02:00",
+        "at": "2026-10-05T05:16:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reparación visual solicitada · comprobando jobs automáticos en la rama de control"
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-05T04:46:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento textual completado · 14 remates vacíos se mantienen por política, sensibilidad o contexto de desastre · releyendo main final"
-      },
-      {
-        "at": "2026-10-05T04:46:30+02:00",
+        "at": "2026-10-05T05:16:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Ejecución completada · cola editorial final 0 · reparación visual solicitada para 41 Pendientes"
+        "message": "Cola editorial verificada · 0 activos"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "radar": {
-      "captured_at": "2026-10-05T04:41:18+02:00",
+      "captured_at": "2026-10-05T05:11:12+02:00",
+      "queue_count": 0,
       "top10": [
         "#ConexiónHonduras4",
         "Asraf",
         "Frente Amplio",
         "Lula",
-        "Sanchez",
+        "Sánchez",
         "#NASCARenDAZN",
         "Claudia Pina",
         "#FelizDomingo",
-        "Cataluña",
-        "San Francisco de Asís"
-      ],
-      "new_entries": []
+        "San Francisco de Asís",
+        "Cataluña"
+      ]
     }
   },
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
+    "revisions_updated": 0,
+    "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -253,10 +133,9 @@
     "imagegen_attempts": 0,
     "fallback_images_ready": 0,
     "vercel_deploys": 0,
+    "explanations_verified_under_280": 0,
     "remates_selected": 0,
-    "remates_omitted": 14,
-    "pending_cards_checked": 41,
-    "pending_visual_repair_requested": 41,
-    "pending_visual_jobs_observed_at_close": 0
+    "remates_omitted": 0,
+    "pending_recent_reconciled": 0
   }
 }
