@@ -1,4 +1,5 @@
 # TTendenciasDedicatedListener.ps1
+# official-pipeline-restart-token: 2026-10-05-v13-authoritative-ack
 # Listener dedicado de TTendencias: editorial + cola automática/manual de imágenes IA por entrada.
 # No procesa TTiTTulares.
 
@@ -17,6 +18,12 @@ $StatusBase = "https://europapress-rss.vercel.app"
 $ListenerSnapshotUrl = "$StatusBase/api/ttendencias-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
+$DirectTriggerApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/trends/run-now-trigger.json?ref=control%2Fttendencias-run-trigger"
+$DirectAckApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/trends/run-ack.json?ref=control%2Fttendencias-run-trigger"
+$DirectTriggerRefreshSeconds = 60
+$script:DirectTriggerCache = $null
+$script:DirectTriggerAt = [DateTimeOffset]::MinValue
+$script:LastAckConflict = $null
 
 $WorkerId = "ttendencias-dedicated-v12"
 $PollSeconds = 15
@@ -112,9 +119,71 @@ function Read-ListenerSnapshot {
   return $script:ListenerSnapshotCache
 }
 
+function Read-TriggerDirect([switch]$Force) {
+  $now=[DateTimeOffset]::UtcNow
+  if(-not $Force -and $script:DirectTriggerCache -and (($now-$script:DirectTriggerAt).TotalSeconds -lt $DirectTriggerRefreshSeconds)){
+    return $script:DirectTriggerCache
+  }
+  try{
+    $doc=Invoke-RestMethod -Uri (CacheBust $DirectTriggerApi) -Headers @{
+      "Accept"="application/vnd.github+json"
+      "User-Agent"="TTendencias-Dedicated-Listener-DirectTrigger"
+      "Cache-Control"="no-cache"
+    } -TimeoutSec 12
+    if($doc -and $doc.content){
+      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
+      $parsed=$raw|ConvertFrom-Json
+      if($parsed -and $parsed.command_id){
+        $script:DirectTriggerCache=$parsed
+        $script:DirectTriggerAt=$now
+        return $parsed
+      }
+    }
+  }catch{
+    Write-Log "DIRECT TRIGGER ERROR :: $($_.Exception.Message)"
+  }
+  return $script:DirectTriggerCache
+}
+
 function Read-Trigger {
+  $snapshot=$null
   $r=Read-ListenerSnapshot
-  if($r -and $r.trigger){return $r.trigger}
+  if($r -and $r.trigger){$snapshot=$r.trigger}
+  $direct=Read-TriggerDirect
+  if($direct -and $direct.command_id){
+    if(-not $snapshot -or -not $snapshot.command_id){return $direct}
+    try{
+      $dt=[DateTimeOffset]::Parse([string]$direct.requested_at)
+      $st=[DateTimeOffset]::Parse([string]$snapshot.requested_at)
+      if($dt -ge $st){return $direct}
+    }catch{
+      if([string]$direct.command_id -ne [string]$snapshot.command_id){return $direct}
+    }
+  }
+  return $snapshot
+}
+
+function Confirm-DirectTriggerCurrent([string]$CommandId){
+  try{
+    $d=Read-TriggerDirect -Force
+    return ($d -and [string]$d.command_id -eq [string]$CommandId)
+  }catch{return $false}
+}
+
+function Read-AckDirect {
+  try{
+    $doc=Invoke-RestMethod -Uri (CacheBust $DirectAckApi) -Headers @{
+      "Accept"="application/vnd.github+json"
+      "User-Agent"="TTendencias-Dedicated-Listener-DirectAck"
+      "Cache-Control"="no-cache"
+    } -TimeoutSec 12
+    if($doc -and $doc.content){
+      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
+      return ($raw|ConvertFrom-Json)
+    }
+  }catch{
+    Write-Log "DIRECT ACK ERROR :: $($_.Exception.Message)"
+  }
   return $null
 }
 
@@ -169,6 +238,7 @@ function Ensure-StateFields($State) {
 }
 
 function Send-Ack([string]$CommandId,[string]$Stage) {
+  $script:LastAckConflict = $null
   try {
     $payload = @{
       task = "pc_ack"
@@ -183,7 +253,26 @@ function Send-Ack([string]$CommandId,[string]$Stage) {
     $code = 0
     try { $code = [int]$_.Exception.Response.StatusCode } catch {}
     if ($code -eq 409) {
-      Write-Log "ACK CONFLICT $Stage command=$CommandId"
+      $body = ""
+      $reason = ""
+      try {
+        $resp = $_.Exception.Response
+        if ($resp) {
+          $stream = $resp.GetResponseStream()
+          if ($stream) {
+            $reader = New-Object System.IO.StreamReader($stream)
+            try { $body = $reader.ReadToEnd() } finally { $reader.Dispose(); $stream.Dispose() }
+          }
+        }
+      } catch {}
+      try {
+        if ($body) {
+          $parsed = $body | ConvertFrom-Json
+          $reason = [string]$parsed.error
+        }
+      } catch {}
+      $script:LastAckConflict = [pscustomobject]@{ reason=$reason; body=$body }
+      Write-Log "ACK CONFLICT $Stage command=$CommandId reason=$reason"
       return "CONFLICT"
     }
     Write-Log "ACK ERROR $Stage command=$CommandId :: $($_.Exception.Message)"
@@ -684,7 +773,31 @@ while ($true) {
           Save-State $state
         } else {
           $ack = Send-Ack $commandId "picked_up"
-          if ($ack -eq "OK") {
+          $localFallback = $false
+          if ($ack -eq "CONFLICT") {
+            $remoteAck = Read-AckDirect
+            $remoteLaunched = ($remoteAck -and [string]$remoteAck.command_id -eq $commandId -and [string]$remoteAck.stage -eq "launched")
+            if ($remoteLaunched) {
+              Write-Log "ACK CONFLICT RESOLVED command=$commandId reason=remote-ack-launched worker=$($remoteAck.worker_id)"
+              $state.last_command_id = $commandId
+              $state.conflict_command_id = ""
+              $state.conflict_first_at = ""
+              Save-State $state
+              $ack = "REMOTE_LAUNCHED"
+            } else {
+              $reason = ""
+              if ($script:LastAckConflict) { $reason = [string]$script:LastAckConflict.reason }
+              $remoteMatches = ($remoteAck -and [string]$remoteAck.command_id -eq $commandId)
+              $staleBackendConflict = (-not $remoteMatches) -and (Confirm-DirectTriggerCurrent $commandId) -and
+                ([string]::IsNullOrWhiteSpace($reason) -or $reason -eq "command_id ya no es el actual")
+              if ($staleBackendConflict) {
+                $localFallback = $true
+                Write-Log "ACK 409 BYPASSED command=$commandId reason=stale-backend-trigger"
+              }
+            }
+          }
+
+          if ($ack -eq "OK" -or $localFallback) {
             try {
               # Editorial usa el mismo lanzador robusto que las imágenes:
               # solo damos ACK launched cuando Ejecutar.js confirma que el mensaje
@@ -695,32 +808,34 @@ while ($true) {
               if ($messageSent) {
                 $launched = Send-Ack $commandId "launched"
                 if ($launched -ne "OK") { Write-Log "LAUNCH ACK WARNING command=$commandId result=$launched" }
+                $state.last_command_id = $commandId
+                $state.conflict_command_id = ""
+                $state.conflict_first_at = ""
+                Save-State $state
               } else {
-                Write-Log "LAUNCH NOT CONFIRMED command=$commandId; no launched ACK"
+                Write-Log "LAUNCH NOT CONFIRMED command=$commandId; no launched ACK; command remains retryable"
               }
-              $state.last_command_id = $commandId
-              $state.conflict_command_id = ""
-              $state.conflict_first_at = ""
-              Save-State $state
             } catch {
               Write-Log "LAUNCH ERROR command=$commandId :: $($_.Exception.Message)"
             }
           } elseif ($ack -eq "CONFLICT") {
+            # Nunca consumir una orden por timeout: solo el ACK directo en launched
+            # demuestra que otra instancia la ejecutó.
             if ([string]$state.conflict_command_id -ne $commandId) {
               $state.conflict_command_id = $commandId
               $state.conflict_first_at = [DateTimeOffset]::UtcNow.ToString("o")
               Save-State $state
             } else {
-              try {
-                $first = [DateTimeOffset]::Parse([string]$state.conflict_first_at)
-                if (([DateTimeOffset]::UtcNow - $first).TotalSeconds -ge $ClaimRetrySeconds) {
-                  Write-Log "CONFLICT SETTLED command=$commandId"
-                  $state.last_command_id = $commandId
-                  $state.conflict_command_id = ""
-                  $state.conflict_first_at = ""
-                  Save-State $state
-                }
-              } catch {}
+              $remoteAck = Read-AckDirect
+              if ($remoteAck -and [string]$remoteAck.command_id -eq $commandId -and [string]$remoteAck.stage -eq "launched") {
+                Write-Log "CONFLICT SETTLED command=$commandId reason=remote-ack-launched worker=$($remoteAck.worker_id)"
+                $state.last_command_id = $commandId
+                $state.conflict_command_id = ""
+                $state.conflict_first_at = ""
+                Save-State $state
+              } else {
+                Write-Log "CONFLICT RETAINED command=$commandId; no authoritative launched ACK"
+              }
             }
           }
         }
