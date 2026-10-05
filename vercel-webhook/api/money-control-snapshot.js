@@ -254,7 +254,7 @@ export default async function handler(req,res){
           .sort((a,b)=>String(a.uploadedAt||"").localeCompare(String(b.uploadedAt||"")));
         const idx=backups.findIndex(b=>b.pathname===pathname);
         const current=idx>=0?backups[idx]:{pathname,filename:pathname.slice(MONEYWIZ_BACKUP_PREFIX.length),size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null};
-        const previous=idx>0?backups[idx-1]:null;
+        const previous=idx>0?backups[0]:null;
         if(!previous){
           return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,seedOnly:true,processingQueued:false});
         }
