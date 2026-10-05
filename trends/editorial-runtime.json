@@ -1,14 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-05T15:15:00+02:00",
-  "last_completed_at": "2026-10-05T15:21:30+02:00",
-  "updated_at": "2026-10-05T15:21:30+02:00",
+  "last_started_at": "2026-10-05T15:45:00+02:00",
+  "last_completed_at": "2026-10-05T15:45:00+02:00",
+  "updated_at": "2026-10-05T15:45:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "fb7d494952cf",
-    "9e7f4fbc3572"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -17,24 +14,24 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261005T151500+0200",
+    "run_id": "tr-chat-20261005T154500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "current": 2,
-    "total": 2,
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-05T15:15:00+02:00",
-    "updated_at": "2026-10-05T15:21:30+02:00",
-    "finished_at": "2026-10-05T15:21:30+02:00",
+    "started_at": "2026-10-05T15:45:00+02:00",
+    "updated_at": "2026-10-05T15:45:00+02:00",
+    "finished_at": "2026-10-05T15:45:00+02:00",
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 2,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "trends_problematic": 0,
       "incidents": 0,
@@ -43,8 +40,8 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "vercel_deploys": 0,
-      "pending_cards_reviewed": 21,
-      "pending_without_closer_reviewed": 7,
+      "pending_cards_reviewed": 0,
+      "pending_without_closer_reviewed": 0,
       "pending_repair_triggered": 1,
       "problematic_top10_retried": 0
     },
@@ -55,153 +52,36 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "fb7d494952cf",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_election_logistics"
-      },
-      {
-        "trend_id": "9e7f4fbc3572",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      }
-    ],
-    "message": "Pasada completada: Correos y Rajoy explicadas y verificadas; cola y reexplicaciones a 0. Se revisaron 21 Pendientes recientes y se solicitó su reparación visual automática.",
+    "remate_selections": [],
+    "message": "Pasada completada sin trabajo editorial nuevo: cola, preparing/update y reexplicaciones a 0. Reparación visual de Pendientes solicitada y verificada.",
     "activity": [
       {
-        "at": "2026-10-05T15:15:00+02:00",
+        "at": "2026-10-05T15:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada editorial · 0 revisiones activas"
+        "message": "Inicio de pasada editorial · 0 revisiones activas; comprobando reexplicaciones y Pendientes"
       },
       {
-        "at": "2026-10-05T15:15:20+02:00",
+        "at": "2026-10-05T15:45:00+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
         "message": "Reparación visual de Pendientes solicitada"
       },
       {
-        "at": "2026-10-05T15:16:00+02:00",
+        "at": "2026-10-05T15:45:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 21 tarjetas recientes"
+        "message": "Releyendo main · cola, preparing/update y reexplicaciones a 0"
       },
       {
-        "at": "2026-10-05T15:16:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": null,
-        "title": null,
-        "message": "7 Pendientes sin remate revisados · ninguno se fuerza"
-      },
-      {
-        "at": "2026-10-05T15:17:00+02:00",
-        "phase": "verifying",
-        "trend_id": "fb7d494952cf",
-        "title": "Correos",
-        "message": "Releyendo estado autoritativo de Correos"
-      },
-      {
-        "at": "2026-10-05T15:17:20+02:00",
-        "phase": "investigating",
-        "trend_id": "fb7d494952cf",
-        "title": "Correos",
-        "message": "Contrastando plazos del voto por correo 1/2"
-      },
-      {
-        "at": "2026-10-05T15:17:40+02:00",
-        "phase": "investigating",
-        "trend_id": "fb7d494952cf",
-        "title": "Correos",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-05T15:18:00+02:00",
-        "phase": "drafting",
-        "trend_id": "fb7d494952cf",
-        "title": "Correos",
-        "message": "Redactando explicación factual · Correos"
-      },
-      {
-        "at": "2026-10-05T15:18:20+02:00",
-        "phase": "persisting",
-        "trend_id": "fb7d494952cf",
-        "title": "Correos",
-        "message": "Guardando ficha Explicada y actualizando request"
-      },
-      {
-        "at": "2026-10-05T15:18:50+02:00",
-        "phase": "verifying",
-        "trend_id": "fb7d494952cf",
-        "title": "Correos",
-        "message": "Correos cerrada y verificada"
-      },
-      {
-        "at": "2026-10-05T15:19:00+02:00",
-        "phase": "verifying",
-        "trend_id": "9e7f4fbc3572",
-        "title": "Rajoy",
-        "message": "Releyendo estado autoritativo de Rajoy"
-      },
-      {
-        "at": "2026-10-05T15:19:10+02:00",
-        "phase": "investigating",
-        "trend_id": "9e7f4fbc3572",
-        "title": "Rajoy",
-        "message": "Contrastando el llamamiento a elecciones y el adelanto al 29-N"
-      },
-      {
-        "at": "2026-10-05T15:19:20+02:00",
-        "phase": "investigating",
-        "trend_id": "9e7f4fbc3572",
-        "title": "Rajoy",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-05T15:19:30+02:00",
-        "phase": "drafting",
-        "trend_id": "9e7f4fbc3572",
-        "title": "Rajoy",
-        "message": "Redactando explicación factual · Rajoy"
-      },
-      {
-        "at": "2026-10-05T15:19:50+02:00",
-        "phase": "persisting",
-        "trend_id": "9e7f4fbc3572",
-        "title": "Rajoy",
-        "message": "Guardando ficha Explicada y actualizando request"
-      },
-      {
-        "at": "2026-10-05T15:20:20+02:00",
-        "phase": "verifying",
-        "trend_id": "9e7f4fbc3572",
-        "title": "Rajoy",
-        "message": "Rajoy cerrada y verificada"
-      },
-      {
-        "at": "2026-10-05T15:21:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola, requests y reexplicaciones a 0"
-      },
-      {
-        "at": "2026-10-05T15:21:30+02:00",
+        "at": "2026-10-05T15:45:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada con 2/2 explicadas y cola editorial a 0"
+        "message": "Pasada cerrada con 0/0 y reparación visual solicitada"
       }
     ],
     "queue_complete": true,
@@ -209,7 +89,7 @@
     "remaining_problematic_ids": [],
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261005T151500+0200",
+      "run_id": "tr-chat-20261005T154500+0200",
       "status": "triggered",
       "direct_imagegen": false
     }
