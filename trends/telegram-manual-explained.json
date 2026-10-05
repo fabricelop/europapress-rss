@@ -27102,9 +27102,9 @@
       ],
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -27132,13 +27132,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://imagenes2.fotos.europapress.es/preview/7821901.jpg?s=1000",
-        "source": "Europa Press · 5/10/2026",
-        "source_url": "https://fotos.europapress.es/temasactualidad/f7821901",
-        "alt": "Imagen de archivo relacionada con Adamuz",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/0f5bf1e8b366-r0-ai1-791197556459.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d0b1e9406fda8c818b1deac4aa59477a48f16133b4daa13b23c06f225ecd0168",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2653334,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "0f5bf1e8b366",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-0f5bf1e8b366-r0-a1-1791197556459"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/0f5bf1e8b366-r0-ai1-791197556459.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/0f5bf1e8b366-r0-ai1-791197556459.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d0b1e9406fda8c818b1deac4aa59477a48f16133b4daa13b23c06f225ecd0168",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2653334,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "0f5bf1e8b366",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-0f5bf1e8b366-r0-a1-1791197556459"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/0f5bf1e8b366-r0-ai1-791197556459.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T10:57:41.428Z"
     },
     {
       "id": "e70952da286d",
@@ -27313,6 +27352,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-05T10:56:00.805Z",
+  "updated_at": "2026-10-05T10:57:41.428Z",
   "count": 556
 }
