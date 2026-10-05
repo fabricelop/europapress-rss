@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-fb7d494952cf-r0-a1-1791206551141",
+  "requested_at": "2026-10-05T13:22:31.140650Z",
+  "updated_at": "2026-10-05T13:22:31.140650Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "fb7d494952cf",
+  "trend_id": "fb7d494952cf",
+  "target_name": "Correos",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "Correos",
+    "revision": 0,
+    "explanation": "TT#11 Correos es tendencia porque el voto por correo para las generales del 29-N podrá solicitarse del 6 de octubre al 19 de noviembre, en oficinas o por vía telemática.",
+    "closer_text": "",
+    "trend_names": [
+      "Correos"
+    ],
+    "group_title": "Voto por correo para las elecciones generales del 29-N",
+    "rank_at_explanation": 11,
+    "explained_at": "2026-10-05T15:18:30+02:00",
+    "verification_sources": [
+      {
+        "source": "laSexta · 5/10/2026",
+        "url": "https://www.lasexta.com/elecciones/generales/cuando-puede-pedir-voto-correo-elecciones-generales-29-noviembre_202610056ac359e5f7f8f566d14d6f17.html"
+      },
+      {
+        "source": "EFE · 5/10/2026",
+        "url": "https://efe.com/espana/2026-10-05/calendario-elecciones-generales-29-noviembre/"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
