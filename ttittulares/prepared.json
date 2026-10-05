@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-05T08:20:53.601584Z",
+  "updated_at": "2026-10-05T08:22:12.406Z",
   "items": [
     {
       "event_id": "6e3a4134016f",
@@ -569,10 +569,10 @@
       "trend_context": [],
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -587,12 +587,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-05T08:18:22.228261Z",
       "image": {
-        "url": "https://www.servimedia.es/sites/default/files/noticias/img-servimedia-default.png",
-        "source": "www.servimedia.es",
-        "source_url": "https://www.servimedia.es/noticias/feijoo-comparecera-genova-tras-convocatoria-electoral-sanchez/1413389988",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Feijóo comparecerá en Génova tras la convocatoria electoral de Sánchez"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d9d617069e91-r1-ai1-791188390930.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b87f8605c6053d3e68dc821d84cc2d1d527cd787b073dcdbc74839a18e4ba7bf",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2619865,
+        "context_guard": {
+          "version": 3,
+          "event_id": "d9d617069e91",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-d9d617069e91-r1-a1-1791188390930"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/d9d617069e91-r1-ai1-791188390930.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://www.servimedia.es/sites/default/files/noticias/img-servimedia-default.png",
@@ -601,7 +615,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Feijóo comparecerá en Génova tras la convocatoria electoral de Sánchez"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d9d617069e91-r1-ai1-791188390930.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b87f8605c6053d3e68dc821d84cc2d1d527cd787b073dcdbc74839a18e4ba7bf",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2619865,
+        "context_guard": {
+          "version": 3,
+          "event_id": "d9d617069e91",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-d9d617069e91-r1-a1-1791188390930"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/d9d617069e91-r1-ai1-791188390930.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-05T08:22:12.406Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-05T08:22:12.406Z"
     }
   ],
   "count": 11
