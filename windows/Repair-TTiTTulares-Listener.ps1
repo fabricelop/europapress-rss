@@ -3,19 +3,33 @@ $ErrorActionPreference="Stop"
 $BaseDir="C:\TTiTTulares"
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 
-function Get-GitHubFile([string]$remote,[string]$dest){
+function Get-GitHubFile([string]$remote,[string]$dest,[string]$kind="ps"){
   $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+$remote+"?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-  $tmp=$dest+".repair.new.ps1"
+  $tmp=$dest+$(if($kind -eq "js"){".repair.new.js"}else{".repair.new.ps1"})
   Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing -Headers @{
-    "User-Agent"="TTiTTulares-listener-repair-raw"
-    "Cache-Control"="no-cache"
+    "User-Agent"="TTiTTulares-listener-repair-raw-v2"
+    "Cache-Control"="no-cache, no-store"
+    "Pragma"="no-cache"
   } -TimeoutSec 30
   if(-not (Test-Path -LiteralPath $tmp) -or (Get-Item -LiteralPath $tmp).Length -lt 100){
     throw "RAW vacío/corto: $remote"
   }
-  $t=$null;$e=$null
-  [Management.Automation.Language.Parser]::ParseFile($tmp,[ref]$t,[ref]$e)|Out-Null
-  if($e.Count -gt 0){throw "PowerShell invalido en $remote :: "+$e[0].Message}
+  if($kind -eq "js"){
+    $node=Get-Command node.exe -ErrorAction SilentlyContinue
+    if(-not $node){$node=Get-Command node -ErrorAction SilentlyContinue}
+    if(-not $node){throw "Node no disponible para validar $remote"}
+    $old=$ErrorActionPreference
+    try{
+      $ErrorActionPreference="Continue"
+      & $node.Source --check $tmp 1>$null 2>$null
+      $code=$LASTEXITCODE
+    }finally{$ErrorActionPreference=$old}
+    if($code -ne 0){throw "JavaScript invalido en $remote"}
+  }else{
+    $t=$null;$e=$null
+    [Management.Automation.Language.Parser]::ParseFile($tmp,[ref]$t,[ref]$e)|Out-Null
+    if($e.Count -gt 0){throw "PowerShell invalido en $remote :: "+$e[0].Message}
+  }
   Move-Item -LiteralPath $tmp -Destination $dest -Force
 }
 
@@ -24,10 +38,19 @@ $listener=Join-Path $BaseDir "TTiTTularesDedicatedListener.ps1"
 $trendListener=Join-Path $BaseDir "TTendenciasDedicatedListener.ps1"
 $watchdog=Join-Path $BaseDir "TT-LocalWatchdog.ps1"
 $updater=Join-Path $BaseDir "TT-AutoUpdater.ps1"
-Get-GitHubFile "windows/TTiTTularesDedicatedListener.ps1" $listener
-Get-GitHubFile "windows/TTendenciasDedicatedListener.ps1" $trendListener
-Get-GitHubFile "windows/TT-LocalWatchdog.ps1" $watchdog
-Get-GitHubFile "windows/TT-AutoUpdater.ps1" $updater
+$ttBridge=Join-Path $BaseDir "TTiTTularesImageBridge.js"
+$trBridge=Join-Path $BaseDir "TTendenciasImageBridge.js"
+Get-GitHubFile "windows/TTiTTularesDedicatedListener.ps1" $listener "ps"
+Get-GitHubFile "windows/TTendenciasDedicatedListener.ps1" $trendListener "ps"
+Get-GitHubFile "windows/TT-LocalWatchdog.ps1" $watchdog "ps"
+Get-GitHubFile "windows/TT-AutoUpdater.ps1" $updater "ps"
+Get-GitHubFile "windows/TTiTTularesImageBridge.js" $ttBridge "js"
+Get-GitHubFile "windows/TTendenciasImageBridge.js" $trBridge "js"
+
+$listenerText=Get-Content -LiteralPath $listener -Raw -Encoding UTF8
+if($listenerText -notmatch 'ttittulares-dedicated-v43'){throw "Se descargó un listener anterior; se esperaba v43"}
+$bridgeText=Get-Content -LiteralPath $ttBridge -Raw -Encoding UTF8
+if($bridgeText -notmatch 'ttittulares-image-bridge-v32-strict-submit'){throw "Se descargó un bridge anterior; se esperaba v32"}
 
 foreach($pat in @("*TTiTTularesDedicatedListener.ps1*","*TTendenciasDedicatedListener.ps1*","*TT-LocalWatchdog.ps1*","*TT-AutoUpdater.ps1*")){
   @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
@@ -78,8 +101,9 @@ foreach($lockName in @("ttittulares-image-bridge.lock.json","ttendencias-image-b
 function Start-Hidden([string]$file,[string]$name){
   $out=Join-Path $BaseDir ($name+".repair.out.log")
   $err=Join-Path $BaseDir ($name+".repair.err.log")
+  Remove-Item -LiteralPath $out,$err -Force -ErrorAction SilentlyContinue
   $p=Start-Process powershell.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-File",$file) -WindowStyle Hidden -RedirectStandardOutput $out -RedirectStandardError $err -PassThru
-  Start-Sleep -Milliseconds 900
+  Start-Sleep -Seconds 2
   $p.Refresh()
   if($p.HasExited){
     # Un segundo arranque de un listener singleton puede salir porque otra
@@ -92,7 +116,13 @@ function Start-Hidden([string]$file,[string]$name){
     if($live.Count -gt 0){
       return [pscustomobject]@{Id=[int]$live[0].ProcessId}
     }
-    if(Test-Path $err){Get-Content $err -Tail 30}
+    Write-Host ("ARRANQUE FALLIDO "+$name+" ExitCode="+$p.ExitCode) -ForegroundColor Red
+    if(Test-Path $err){Write-Host "--- stderr ---";Get-Content $err -Tail 40}
+    if(Test-Path $out){Write-Host "--- stdout ---";Get-Content $out -Tail 40}
+    if($name -eq "ttittulares-listener"){
+      $diag=Join-Path $BaseDir "ttittulares-mobile-trigger.log"
+      if(Test-Path $diag){Write-Host "--- listener log ---";Get-Content $diag -Tail 40}
+    }
     throw "$name no quedo activo"
   }
   return $p
@@ -114,7 +144,7 @@ $tcount=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Ob
   ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like "*TTendenciasDedicatedListener.ps1*"
 }).Count
 
-Write-Host "TT automation reparada: listeners + watchdog + updater + locks de imagen" -ForegroundColor Green
+Write-Host "TT automation reparada: listener v43 + bridges v32 + watchdog + updater" -ForegroundColor Green
 Write-Host ("TTiTTulares listeners activos: "+$count)
 Write-Host ("TTendencias listeners activos: "+$tcount)
 Write-Host ("PID TTiTTulares: "+$l.Id)
