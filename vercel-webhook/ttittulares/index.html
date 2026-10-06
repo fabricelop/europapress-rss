@@ -635,7 +635,8 @@ async function refreshImageRuns(){
      imageTerminalRefreshActive=false
    }
  }
- const hasActive=[...imageRuns.values()].some(imageRunActive);\n scheduleImageRunPoll(hasActive?"active":(candidates.length?"pending":"idle"))
+ const hasActive=[...imageRuns.values()].some(imageRunActive);
+ scheduleImageRunPoll(hasActive?"active":(candidates.length?"pending":"idle"))
 }
 async function api(action,extra={}){
  const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
