@@ -366,14 +366,15 @@ function render(){
   renderTimeline();renderEvents();renderSources();renderRadar();
   const completed=state.lastCompletedAt||d.generatedAt;
   const radarStamp=n?.radarTime||d.radar?.frames?.at(-1)?.time*1000||null;
-  $('updated').textContent='Última actualización '+fmtTimeSeconds(completed)+(radarStamp?' · radar '+fmtTime(radarStamp):'');
+  $('updated').textContent='Actualización '+fmtTimeSeconds(completed)+' · modelos '+fmtTime(d.generatedAt)+(radarStamp?' · radar '+fmtTime(radarStamp):'');
 }
 function renderTimeline(){
   const a=state.data.timeline||[],mx=Math.max(50,...a.map(x=>x.probability));
   $('timeline').innerHTML=a.map(x=>{
     const probable=(x.probability>=45&&x.precipitation>=.03)||x.probability>=65||x.precipitation>=.25;
     const maybe=!probable&&x.probability>=35&&x.precipitation>=.02;
-    const cls=probable?'':maybe?'maybe':'dry';
+    const band=x.probability>=85?'p85':x.probability>=70?'p70':x.probability>=50?'p50':'p35';
+    const cls=probable?band:maybe?band+' maybe':'dry';
     const height=probable||maybe?Math.max(5,Math.round(x.probability/mx*100)):0;
     return '<div class="bar '+cls+'" style="height:'+height+'%" title="'+fmtDateTime(x.time)+' · '+x.probability+'% · '+x.precipitation+' mm"></div>';
   }).join('');
@@ -495,15 +496,18 @@ async function searchPlace(){
 
 function recordFeedback(raining){
   if(!state.currentLocation||!samePlace(state.loc,state.currentLocation))return;
-  const auto=automaticRainState();
-  state.feedback.push({
-    time:Date.now(),
+  const auto=automaticRainState(),now=Date.now();
+  const row={
+    time:now,
     lat:state.currentLocation.lat,lon:state.currentLocation.lon,
     raining:Boolean(raining),predicted:Boolean(auto.raining),
     radarWetFraction:Number.isFinite(Number(state.nowcast?.currentWetFraction))?Number(state.nowcast.currentWetFraction):null,
     modelPrecip:Number(state.data?.quarterHour?.current?.precipitation)||0,
     threshold:calibratedRadarThreshold()
-  });
+  };
+  const last=state.feedback.at(-1);
+  if(last&&samePlace(last,row,.0015)&&now-last.time<90_000)state.feedback[state.feedback.length-1]=row;
+  else state.feedback.push(row);
   state.feedback=state.feedback.slice(-120);persistFeedback();render();
 }
 function toggleSavedLocation(){
