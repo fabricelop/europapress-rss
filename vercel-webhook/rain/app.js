@@ -56,11 +56,15 @@ function locationKey(loc){return Number(loc.lat).toFixed(4)+','+Number(loc.lon).
 function persistLocations(){localStorage.setItem('raineta.locations',JSON.stringify(state.savedLocations))}
 function persistFeedback(){localStorage.setItem('raineta.feedback',JSON.stringify(state.feedback.slice(-120)))}
 function isSaved(loc=state.loc){return state.savedLocations.some(x=>samePlace(x,loc,.0015))}
+function recentTruthFor(loc,maxAgeMinutes=12){
+  if(!loc)return null;
+  const cutoff=Date.now()-maxAgeMinutes*60_000;
+  const item=[...state.feedback].reverse().find(x=>x.time>=cutoff&&samePlace(x,loc,.0015));
+  return item?Boolean(item.raining):null;
+}
 function currentTruth(maxAgeMinutes=12){
   if(!state.currentLocation||!samePlace(state.loc,state.currentLocation))return null;
-  const cutoff=Date.now()-maxAgeMinutes*60_000;
-  const item=[...state.feedback].reverse().find(x=>x.time>=cutoff&&samePlace(x,state.currentLocation,.0015));
-  return item?Boolean(item.raining):null;
+  return recentTruthFor(state.currentLocation,maxAgeMinutes);
 }
 function calibratedRadarThreshold(){
   if(!state.currentLocation)return .22;
@@ -555,10 +559,12 @@ async function renderLocationsSummary(force=false){
     const left=document.createElement('button');left.className='openLoc';
     const right=document.createElement('div');
     if(result.status==='fulfilled'){
-      const s=result.value;
-      const next=s.next&&!s.raining?(Date.parse(s.next.start)>Date.now()?' · lluvia '+until(s.next.start):''):'';
-      left.innerHTML='<strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>'+(s.raining?'Precipitación detectada':'Sin precipitación ahora')+next+'</small>';
-      right.innerHTML='<div class="locNow '+(s.raining?'wet':'')+'">'+(s.raining?'LLUEVE':'NO LLUEVE')+'</div><div class="locTemp">'+(Number.isFinite(s.temperature)?s.temperature.toFixed(1).replace('.',',')+' °C':'—')+'</div>';
+      const s=result.value,truth=loc.isCurrent?recentTruthFor(loc):null;
+      const raining=truth===null?s.raining:truth;
+      const next=s.next&&!raining?(Date.parse(s.next.start)>Date.now()?' · lluvia '+until(s.next.start):''):'';
+      const source=truth===null?(raining?'Precipitación detectada':'Sin precipitación ahora'):(raining?'Confirmado: llueve':'Confirmado: no llueve');
+      left.innerHTML='<strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>'+source+next+'</small>';
+      right.innerHTML='<div class="locNow '+(raining?'wet':'')+'">'+(raining?'LLUEVE':'NO LLUEVE')+'</div><div class="locTemp">'+(Number.isFinite(s.temperature)?s.temperature.toFixed(1).replace('.',',')+' °C':'—')+'</div>';
     }else{
       left.innerHTML='<strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>No se pudieron actualizar los datos</small>';
       right.innerHTML='<div class="locNow">—</div>';
