@@ -37,7 +37,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.2',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.3',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -429,6 +429,23 @@ function conditionLabel(row={}){
   const p=weatherParts(row);
   return p.phenomenon?p.primary+' · '+p.phenomenon.toLowerCase():p.primary;
 }
+function conditionVisual(row={}){
+  const p=weatherParts(row),rate=Number(row.precipitation)||0,code=Number(row.weatherCode),snow=Number(row.snowfall)||0;
+  if([95,96,99].includes(code))return{key:'storm',icon:'⚡',label:'Tormenta'};
+  if(snow>=.02||[71,73,75,77,85,86].includes(code))return{key:'snow',icon:'❄',label:snow>=.5?'Nieve intensa':'Nieve'};
+  if([80,81,82].includes(code))return{key:'showers',icon:'◒',label:'Chubascos'};
+  if(rate>.05){
+    if(rate<.5)return{key:'drizzle',icon:'·',label:'Llovizna'};
+    if(rate<2.5)return{key:'light',icon:'↓',label:'Lluvia débil'};
+    if(rate<7.5)return{key:'moderate',icon:'↓↓',label:'Lluvia moderada'};
+    return{key:'heavy',icon:'▼',label:'Lluvia fuerte'};
+  }
+  if([45,48].includes(code))return{key:'fog',icon:'≋',label:'Niebla'};
+  if(p.primary==='Nublado')return{key:'cloudy',icon:'●',label:'Nublado'};
+  if(p.primary==='Parcialmente nublado')return{key:'partly',icon:'◐',label:'Parcialmente nublado'};
+  if(p.primary==='Despejado')return{key:'clear',icon:'○',label:'Despejado'};
+  return{key:'dry',icon:'—',label:'Seco'};
+}
 function renderSelectedHour(){
   const row=canonicalTimelineRows()?.[state.selectedHourIndex];
   if(!row){state.selectedHourIndex=null;return false}
@@ -538,8 +555,8 @@ function renderShortNowcast(){
     : near||rain.raining?intensityLabel(labelRate):'Seco';
   $('shortDetail').textContent=decision.mode==='episode_pause'
     ? decision.correction?.resumeAt
-      ? 'Pausa observada · posible reanudación '+fmtTime(decision.correction.resumeAt)+' ('+decision.correction.resumeSource+') · episodio previo hasta '+fmtTime(decision.correction.episode.end)
-      : 'Pausa seca observada · reevaluando si el episodio ha terminado · previsión previa hasta '+fmtTime(decision.correction?.episode?.end)
+      ? 'Pausa observada · posible reanudación '+fmtTime(decision.correction.resumeAt)+' ('+decision.correction.resumeSource+') · fin previsto del tramo '+fmtTime(decision.correction.episode.end)
+      : 'Pausa seca observada · reevaluando si el episodio ha terminado · fin previsto del tramo '+fmtTime(decision.correction?.episode?.end)
     : decision.mode==='episode_ended_early'
       ? 'Episodio recortado: sigue seco · terminó ~'+fmtTime(decision.correction?.observedEnd)+' en vez de '+fmtTime(decision.correction?.episode?.end)
       : rain.raining
@@ -566,7 +583,7 @@ function renderShortNowcast(){
           ? formatCountdownMs(Date.parse(dry.end)-now)
           : near?formatCountdownMs(Date.parse(ev.start)-now):'>2 h';
   $('shortWindow').textContent=decision.mode==='episode_pause'
-    ? 'Pausa dentro del episodio · previsión previa hasta '+fmtTime(decision.correction?.episode?.end)
+    ? 'Pausa dentro del episodio · fin previsto del tramo '+fmtTime(decision.correction?.episode?.end)
     : decision.mode==='episode_ended_early'
       ? 'Tramo anterior cerrado ~'+fmtTime(decision.correction?.observedEnd)+(ev?.start?' · siguiente '+fmtTime(ev.start):'')
       : near
@@ -1166,20 +1183,22 @@ function recordEpisodeEarlyEnd(correction){
 function feedbackEpisodeCorrection(now=Date.now()){
   const feedback=recentFeedbackFor(state.currentLocation,60);
   if(!feedback||feedback.raining!==false||!samePlace(state.loc,state.currentLocation))return null;
-  let episode=rawOngoingEpisode(now);
-  if(!episode&&feedback.predictedEpisodeEnd){
+  let episode=null;
+  if(feedback.predictedEpisodeEnd){
     const start=Date.parse(feedback.predictedEpisodeStart||''),end=Date.parse(feedback.predictedEpisodeEnd||''),maxEnd=Date.parse(feedback.predictedEpisodeMaxEnd||feedback.predictedEpisodeEnd||'');
-    if(Number.isFinite(end)&&end>now){
+    const issued=Number(feedback.time)||now,legacyTooLong=Number.isFinite(end)&&end-issued>3*3600_000;
+    if(!legacyTooLong&&Number.isFinite(end)&&end>now){
       episode={
-        start:Number.isFinite(start)?start:Number(feedback.time)||now,
+        start:Number.isFinite(start)?start:issued,
         end,
-        maxEnd:Number.isFinite(maxEnd)?maxEnd:end,
-        source:feedback.predictedEpisodeSource||'previsión previa',
+        maxEnd:Number.isFinite(maxEnd)?Math.min(maxEnd,issued+3*3600_000):end,
+        source:feedback.predictedEpisodeSource||'RainETA',
         confidence:Number(feedback.predictedEpisodeConfidence)||.45,
         candidates:[]
       };
     }
   }
+  if(!episode)episode=canonicalEpisodeSnapshot(now);
   if(!episode)return null;
   const dryAgeMinutes=Math.max(0,(now-Number(feedback.time))/60_000),streak=dryFeedbackStreak(60),dry=localDryEvidence();
   const nextWet=nextProjectedWetTime(now,Math.min(episode.maxEnd,now+120*60_000));
@@ -1318,7 +1337,8 @@ function chooseDisplayEvent(){
   return chooseModelEvent(now,radarDryWindow());
 }
 function buildRainDecision(){
-  const now=Date.now(),rain=currentRainState(),correction=feedbackEpisodeCorrection(now);
+  const now=Date.now(),rain=currentRainState(),learningCorrection=feedbackEpisodeCorrection(now);
+  const correction=currentTruth(4)===false?learningCorrection:null;
   let dry=radarDryWindow(),event=chooseDisplayEvent();
   if(correction?.mode==='pause'){
     dry=null;
@@ -1421,7 +1441,7 @@ function render(){
     $('heroLabel').textContent='Pausa dentro del episodio';
     $('eta').innerHTML='No llueve <span>ahora</span>';
     $('metricStartLabel').textContent=correction?.resumeAt?'Puede reanudarse':'Reevaluación';
-    $('metricEndLabel').textContent='Previsión anterior';
+    $('metricEndLabel').textContent='Fin previsto del tramo';
     $('metricConfLabel').textContent='Confianza';
     $('metricDurLabel').textContent='Seco observado';
     $('start').textContent=correction?.resumeAt?fmtDateTime(correction.resumeAt):'sin nuevo pulso detectado';
@@ -1436,7 +1456,7 @@ function render(){
     $('heroLabel').textContent='Episodio recalculado';
     $('eta').innerHTML='No llueve <span>ahora</span>';
     $('metricStartLabel').textContent='Terminó aprox.';
-    $('metricEndLabel').textContent='Previsión anterior';
+    $('metricEndLabel').textContent='Fin previsto del tramo';
     $('metricConfLabel').textContent='Corrección';
     $('metricDurLabel').textContent='Siguiente riesgo';
     $('start').textContent=correction?.observedEnd?fmtDateTime(correction.observedEnd):'—';
@@ -1598,49 +1618,68 @@ function eventHourlyRows(event){
     return t<end&&t+60*60_000>start;
   });
 }
-function quarterHourSupports(timeMs){
-  const times=(state.data?.quarterHour?.time||[]).map(Date.parse).filter(Number.isFinite);
-  return times.length&&timeMs>=times[0]-8*60_000&&timeMs<=times.at(-1)+8*60_000;
+function quarterHourCoverage(){
+  const times=(state.data?.quarterHour?.time||[]).map(Date.parse).filter(Number.isFinite).sort((a,b)=>a-b);
+  if(!times.length)return null;
+  return{start:times[0]-8*60_000,end:times.at(-1)+8*60_000};
 }
-function eventHalfHourRows(event){
-  const hourly=canonicalTimelineRows(),short=shortPoints();
-  const eventStart=Date.parse(event.start),eventEnd=Date.parse(event.end);
-  if(!Number.isFinite(eventStart)||!Number.isFinite(eventEnd)||eventEnd<=eventStart)return[];
-  const first=Math.floor(eventStart/(30*60_000))*(30*60_000),rows=[];
-  for(let slot=first;slot<eventEnd;slot+=30*60_000){
-    const slotEnd=slot+30*60_000,center=slot+15*60_000;
-    const base=hourly.find(row=>{
-      const t=Date.parse(row.time);return t<=center&&center<t+60*60_000;
-    })||hourly.reduce((best,row)=>{
-      const d=Math.abs(Date.parse(row.time)-center);return !best||d<best.d?{row,d}:best;
-    },null)?.row;
-    if(!base)continue;
-    const shortBucket=short.filter(p=>p.time>=slot&&p.time<slotEnd);
-    const shortWet=shortBucket.filter(p=>p.wet);
-    let probability=Number(base.probability)||0,rate=Number(base.precipitation)||0,source='horaria';
-    if(shortBucket.length){
+function quarterHourSupports(timeMs){
+  const coverage=quarterHourCoverage();
+  return Boolean(coverage&&timeMs>=coverage.start&&timeMs<=coverage.end);
+}
+function detail15MinuteCoverage(){
+  const now=Date.now(),qh=quarterHourCoverage();
+  let end=qh?.end||0;
+  if(state.nowcast?.status==='ok'&&Array.isArray(state.nowcast?.series)&&state.nowcast.series.length)end=Math.max(end,now+120*60_000);
+  return end>now?{start:now-15*60_000,end}:null;
+}
+function baseTimelineRowAt(timeMs,rows=canonicalTimelineRows()){
+  return rows.find(row=>{
+    const t=Date.parse(row.time);return t<=timeMs&&timeMs<t+60*60_000;
+  })||rows.reduce((best,row)=>{
+    const d=Math.abs(Date.parse(row.time)-timeMs);return !best||d<best.d?{row,d}:best;
+  },null)?.row||null;
+}
+function detailRow(slot,minutes,hourly,short){
+  const slotEnd=slot+minutes*60_000,center=slot+minutes*30_000,base=baseTimelineRowAt(center,hourly);
+  if(!base)return null;
+  let probability=Number(base.probability)||0,rate=Number(base.precipitation)||0,source=minutes===15?'Modelo 15 min':'Consenso 30 min';
+  if(minutes===15){
+    const shortBucket=short.filter(p=>p.time>=slot&&p.time<slotEnd),shortWet=shortBucket.filter(p=>p.wet);
+    if(shortBucket.length&&slot<=Date.now()+120*60_000){
       probability=Math.round((shortWet.length?Math.max(...shortWet.map(p=>p.probability)):Math.max(...shortBucket.map(p=>p.probability),0))*100);
       rate=shortWet.length?shortWet.reduce((sum,p)=>sum+p.rate,0)/shortWet.length:0;
-      source='nowcast';
+      source='Radar / nowcast';
     }else if(quarterHourSupports(center)){
-      const q1=quarterHourRateAt(slot+7.5*60_000),q2=quarterHourRateAt(slot+22.5*60_000);
-      rate=(q1+q2)/2;
-      source='guía 15 min';
+      rate=quarterHourRateAt(center);
+      const signal=rate<=.05?0:Math.min(.82,.30+Math.log1p(rate)*.26);
+      probability=Math.max(probability,Math.round(signal*100));
+      source='Modelo 15 min';
     }
-    rows.push({
-      ...base,
-      time:new Date(slot).toISOString(),
-      end:new Date(slotEnd).toISOString(),
-      probability:Math.max(0,Math.min(100,Math.round(probability))),
-      precipitation:Math.max(0,rate),
-      detailSource:source,
-      partialStart:Math.max(slot,eventStart),
-      partialEnd:Math.min(slotEnd,eventEnd)
-    });
+  }
+  const row={
+    ...base,time:new Date(slot).toISOString(),end:new Date(slotEnd).toISOString(),
+    probability:Math.max(0,Math.min(100,Math.round(probability))),
+    precipitation:Math.max(0,rate),detailSource:source,detailMinutes:minutes
+  };
+  return{...row,visual:conditionVisual(row)};
+}
+function eventDetailRows(event){
+  const hourly=canonicalTimelineRows(),short=shortPoints(),coverage=detail15MinuteCoverage();
+  const eventStart=Date.parse(event.start),eventEnd=Date.parse(event.end);
+  if(!Number.isFinite(eventStart)||!Number.isFinite(eventEnd)||eventEnd<=eventStart)return[];
+  const rows=[],now=Date.now(),visibleStart=Math.max(eventStart,now-15*60_000);
+  let slot=Math.floor(visibleStart/(15*60_000))*(15*60_000);
+  const fineEnd=coverage?.end||0;
+  while(slot<eventEnd){
+    const minutes=slot<fineEnd?15:30;
+    const row=detailRow(slot,minutes,hourly,short);
+    if(row)rows.push({...row,partialStart:Math.max(slot,eventStart),partialEnd:Math.min(slot+minutes*60_000,eventEnd)});
+    slot+=minutes*60_000;
   }
   return rows;
 }
-function fmtHalfHourRange(start,end){
+function fmtDetailRange(start,end){
   return fmtTime(start)+'–'+fmtTime(end);
 }
 
@@ -1668,7 +1707,7 @@ function semanticHour(row,peak,eventLength){
   return{key:'heavy',label:'Lluvia fuerte',phenomenon:weather.phenomenon};
 }
 function semanticSegments(event){
-  const rows=eventHourlyRows(event);
+  const rows=eventDetailRows(event);
   if(!rows.length)return[];
   const peak=Math.max(...rows.map(r=>Number(r.precipitation)||0));
   const classified=rows.map(row=>({...row,semantic:semanticHour(row,peak,rows.length)}));
@@ -1676,9 +1715,9 @@ function semanticSegments(event){
   for(const row of classified){
     const last=groups.at(-1);
     if(last&&last.key===row.semantic.key){
-      last.rows.push(row);last.end=new Date(Date.parse(row.time)+3600_000).toISOString();
+      last.rows.push(row);last.end=row.end;
     }else{
-      groups.push({key:row.semantic.key,label:row.semantic.label,start:row.time,end:new Date(Date.parse(row.time)+3600_000).toISOString(),rows:[row]});
+      groups.push({key:row.semantic.key,label:row.semantic.label,start:row.time,end:row.end,rows:[row]});
     }
   }
   return groups.map(group=>{
@@ -1713,8 +1752,8 @@ function renderTimeline(){
     const height=signal==='wet'
       ?Math.max(8,Math.round(10+Math.sqrt(Math.min(precipitation,maxIntensity)/maxIntensity)*90))
       :signal==='possible'?Math.max(5,Math.min(18,Math.round(5+precipitation/maxIntensity*20))):0;
-    const selected=state.selectedHourIndex===index?' selected':'';
-    return '<button type="button" class="bar '+cls+selected+'" data-hour-index="'+index+'" style="height:'+height+'%" aria-label="'+fmtDateTime(x.time)+'" title="'+fmtDateTime(x.time)+' · prob. '+x.probability+'% · intensidad '+precipitation.toFixed(1)+' mm/h"></button>';
+    const selected=state.selectedHourIndex===index?' selected':'',visual=conditionVisual(x);
+    return '<button type="button" class="bar '+cls+' wx-'+visual.key+selected+'" data-hour-index="'+index+'" style="height:'+height+'%" aria-label="'+fmtDateTime(x.time)+' · '+visual.label+'" title="'+fmtDateTime(x.time)+' · '+visual.label+' · prob. '+x.probability+'% · intensidad '+precipitation.toFixed(1)+' mm/h"></button>';
   }).join('');
   $('timeline').querySelectorAll('[data-hour-index]').forEach(el=>el.onclick=()=>selectTimelineHour(el.dataset.hourIndex));
   const ticks=[],lines=[],tickEvery=state.timelineHours<=24?3:6;
@@ -1755,20 +1794,19 @@ function renderEvents(){
     const total=Number(e.totalExpectedPrecipitation||0),peak=Number(e.maxExpectedPrecipitation||0);
     const avgProb=pct(e.averageProbability??e.peakProbability),maxProb=pct(e.peakProbability);
     const families=e.independentFamilyCount||e.providerCount||0;
-    const rows=eventHalfHourRows(e),segments=semanticSegments(e);
+    const rows=eventDetailRows(e),segments=semanticSegments(e);
     const segmentsHtml='<div class="eventSegments"><div class="segmentTitle">Lectura rápida del episodio</div>'+
-      segments.map(segment=>'<div class="eventSegment"><span class="segmentTime">'+fmtSegmentRange(segment.start,segment.end)+'</span><span class="segmentText"><strong>'+segment.label+'</strong><small>Prob. media '+segment.avgProb+'% · intensidad '+segment.rateText+'</small></span></div>').join('')+
+      segments.map(segment=>'<div class="eventSegment wx-'+conditionVisual(segment.rows[0]||{}).key+'"><span class="segmentTime">'+fmtSegmentRange(segment.start,segment.end)+'</span><span class="segmentText"><strong>'+segment.label+'</strong><small>Prob. media '+segment.avgProb+'% · intensidad '+segment.rateText+'</small></span></div>').join('')+
       '</div>';
-    const halfHourly=rows.map(row=>{
-      const weather=weatherParts(row);
-      const prob=Math.round(Number(row.probability)||0)+'%';
+    const detailRows=rows.map(row=>{
+      const visual=row.visual||conditionVisual(row),prob=Math.round(Number(row.probability)||0)+'%';
       const rate=(Number(row.precipitation)||0).toFixed(1).replace('.',',')+' mm/h';
-      const phenomenon=weather.phenomenon?'<span class="ehPhenomenon">'+weather.phenomenon+'</span>':'';
-      const source=row.detailSource==='nowcast'?' · nowcast':row.detailSource==='guía 15 min'?' · guía 15 min':'';
-      return '<div class="eventHour"><b>'+fmtHalfHourRange(row.time,row.end)+'</b><span class="ehCondition">'+weather.primary+phenomenon+'<span class="ehPhenomenon">'+source+'</span></span><span class="ehProb">'+prob+'</span><span class="ehRate">'+rate+'</span></div>';
+      return '<div class="eventHour wx-'+visual.key+'"><b>'+fmtDetailRange(row.time,row.end)+'</b><span class="ehCondition"><span class="wxIcon">'+visual.icon+'</span>'+visual.label+'<span class="ehPhenomenon">'+row.detailSource+'</span></span><span class="ehProb">'+prob+'</span><span class="ehRate">'+rate+'</span></div>';
     }).join('');
     const header='<div class="eventHourHead"><span>Tramo</span><span>Tiempo</span><span>Prob.</span><span>Intens.</span></div>';
-    const details='<details class="hourDetails"><summary>Ver detalle cada 30 min ('+rows.length+')</summary><div class="eventHours">'+header+halfHourly+'</div></details>';
+    const fineCount=rows.filter(r=>r.detailMinutes===15).length,coarseCount=rows.filter(r=>r.detailMinutes===30).length;
+    const detailLabel=fineCount&&coarseCount?'15 min mientras hay dato · después 30 min':fineCount?'detalle cada 15 min':'detalle cada 30 min';
+    const details='<details class="hourDetails"><summary>Ver '+detailLabel+' ('+rows.length+')</summary><div class="eventHours">'+header+detailRows+'</div></details>';
     blocks.push('<div class="event"><div><strong>'+fmtDateTime(e.start)+' → '+fmtTime(e.end)+'</strong>'+
       '<small>Ventana de '+dur+' h · '+total.toFixed(1).replace('.',',')+' mm estimados · no implica lluvia continua</small>'+
       '<small>Pico '+peak.toFixed(1).replace('.',',')+' mm/h · prob. media '+avgProb+'% · máx. '+maxProb+'% · '+families+' familias</small></div>'+
@@ -1792,7 +1830,7 @@ function renderSources(){
       ? 'RATE '+(opera.resolutionKm||2)+' km / 5 min · '+fmtTime(opera.observedAt)+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+opMotion
       : 'backend sin compuesto reciente'},
     {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'?'movimiento + intensidad dBZ':state.nowcast?.status||'solo mapa'},
-    {label:'Guía 15 min',ok:state.data.sources.quarterHour,detail:'modelo/interpolación'},
+    {label:'Modelo 15 min',ok:state.data.sources.quarterHour,detail:'guía temporal; puede ser interpolada según zona/modelo'},
     ...state.data.sources.deterministic.map(x=>({label:x.label,ok:x.ok,detail:'determinista'})),
     ...state.data.sources.ensembles.map(x=>({label:x.label,ok:x.ok,detail:x.members?x.members+' miembros':'ensemble'}))
   ];
@@ -2084,9 +2122,35 @@ async function searchPlace(){
   }catch{$('results').textContent='No se pudo buscar'}
 }
 
+function canonicalEpisodeSnapshot(now=Date.now()){
+  const radarEvent=chooseDisplayEvent();
+  if(radarEvent?.end&&['radar','opera','radarFusion','observed'].includes(radarEvent.kind)){
+    const end=Date.parse(radarEvent.end),start=Date.parse(radarEvent.start||'');
+    if(Number.isFinite(end)&&end>now){
+      return{
+        start:Number.isFinite(start)?start:now,
+        end, maxEnd:end,
+        source:radarEvent.kind==='radarFusion'?'RainViewer+OPERA':radarEvent.kind,
+        confidence:Number(radarEvent.confidence)||0
+      };
+    }
+  }
+  const current=canonicalEvents().find(e=>Date.parse(e.start)<=now+5*60_000&&Date.parse(e.end)>now);
+  if(current){
+    const start=Date.parse(current.start),end=Math.min(Date.parse(current.end),now+180*60_000);
+    if(Number.isFinite(start)&&Number.isFinite(end)&&end>now){
+      return{start,end,maxEnd:end,source:'RainETA canónico',confidence:Number(current.timingConfidence)||Number(current.peakProbability)||.45};
+    }
+  }
+  if(radarEvent?.end){
+    const start=Date.parse(radarEvent.start||''),end=Math.min(Date.parse(radarEvent.end),now+180*60_000);
+    if(Number.isFinite(end)&&end>now)return{start:Number.isFinite(start)?start:now,end,maxEnd:end,source:'RainETA',confidence:Number(radarEvent.confidence)||.4};
+  }
+  return null;
+}
 function recordFeedback(raining){
   if(!state.currentLocation||!samePlace(state.loc,state.currentLocation))return;
-  const auto=automaticRainState(),now=Date.now(),episode=rawOngoingEpisode(now);
+  const auto=automaticRainState(),now=Date.now(),episode=canonicalEpisodeSnapshot(now);
   const row={
     time:now,
     lat:state.currentLocation.lat,lon:state.currentLocation.lon,
