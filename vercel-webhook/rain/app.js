@@ -38,7 +38,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.5',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.6',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -360,27 +360,30 @@ async function computeNowcast(meta){
 }
 
 function automaticRainState(){
-  const radarWet=Number(state.nowcast?.currentWetFraction);
-  const radarOk=state.nowcast?.status==='ok'||state.nowcast?.status==='motion_uncertain';
-  const radarRain=radarOk&&Number.isFinite(radarWet)&&radarWet>=CANONICAL_RADAR_THRESHOLD;
+  const now=Date.now(),n=state.nowcast;
+  const radarWet=Number(n?.currentWetFraction),radarRate=Number(n?.currentRadarRate)||0;
+  const radarAge=now-Date.parse(n?.radarTime||'');
+  const radarFresh=(n?.status==='ok'||n?.status==='motion_uncertain')&&Number.isFinite(radarAge)&&radarAge<=12*60_000;
+  const radarRain=radarFresh&&Number.isFinite(radarWet)&&radarWet>=CANONICAL_RADAR_THRESHOLD&&radarRate>=.08;
+  const radarStrong=radarRain&&(radarRate>=2.5||radarWet>=.48);
+  const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH)||0,operaQuality=Number(opera?.sample?.quality);
+  const operaFresh=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5);
+  const operaRain=operaFresh&&operaRate>=.05,operaStrong=operaRain&&operaRate>=2.5;
+  const corroborated=radarRain&&operaRain;
+  const raining=corroborated||radarStrong||operaStrong;
   const modelP=Number(state.data?.quarterHour?.current?.precipitation)||0;
-  const modelRain=modelP>=.1;
-  const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH),operaQuality=Number(opera?.sample?.quality);
-  const operaFresh=opera?.sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5;
-  const operaRain=operaFresh&&operaRate>=.05;
-  const radarRate=Number(state.nowcast?.currentRadarRate)||0;
-  let raining=radarOk?(radarRain||(modelRain&&radarWet>=.08)):modelRain;
-  if(operaRain)raining=true;
-  else if(operaFresh&&operaRate<.02){
-    const strongLocalRadar=radarOk&&(radarRate>=.35||radarWet>=Math.max(.42,CANONICAL_RADAR_THRESHOLD*1.8));
-    if(!strongLocalRadar)raining=false;
-  }
-  const source=operaFresh?(radarOk?'radar+OPERA+modelo':'OPERA+modelo'):(radarOk?'radar+modelo':'modelo');
-  return{raining,source,label:raining?'Llueve ahora':'No llueve ahora'};
+  const possible=!raining&&(radarRain||operaRain||modelP>=.1);
+  const source=corroborated?'radar+radar europeo'
+    : radarStrong?'radar fuerte'
+      : operaStrong?'radar europeo fuerte'
+        : possible?'señal no confirmada'
+          :'sin señal superficial';
+  const label=raining?'Llueve ahora':possible?'Lluvia no confirmada':'No llueve ahora';
+  return{raining,possible,source,label,radarRain,operaRain,radarStrong,operaStrong,radarRate,operaRate};
 }
 function currentRainState(){
   const truth=currentTruth();
-  if(truth!==null)return{raining:truth,source:'feedback',label:truth?'Llueve ahora':'No llueve ahora'};
+  if(truth!==null)return{raining:truth,possible:false,source:'feedback',label:truth?'Llueve ahora':'No llueve ahora'};
   return automaticRainState();
 }
 function formatCountdownMs(ms){
@@ -438,12 +441,11 @@ function conditionLabel(row={}){
 }
 function conditionVisual(row={}){
   const p=weatherParts(row),rate=Number(row.precipitation)||0,code=Number(row.weatherCode),snow=Number(row.snowfall)||0;
-  if([95,96,99].includes(code))return{key:'storm',icon:'⚡',label:'Tormenta'};
+  const thunder=[95,96,99].includes(code),showers=[80,81,82].includes(code);
+  if(rate>=7.5)return{key:'heavy',icon:thunder?'⚡▼':'▼',label:thunder?'Tormenta con lluvia fuerte':showers?'Chubasco fuerte':'Lluvia fuerte'};
+  if(thunder)return{key:'storm',icon:'⚡',label:'Tormenta'};
   if(snow>=.02||[71,73,75,77,85,86].includes(code))return{key:'snow',icon:'❄',label:snow>=.5?'Nieve intensa':'Nieve'};
-  if([80,81,82].includes(code)){
-    if(rate>=7.5)return{key:'heavy',icon:'▼',label:'Chubasco fuerte'};
-    return{key:'showers',icon:'◒',label:'Chubascos'};
-  }
+  if(showers)return{key:'showers',icon:'◒',label:'Chubascos'};
   if(rate>.05){
     if(rate<.5)return{key:'drizzle',icon:'·',label:'Llovizna'};
     if(rate<2.5)return{key:'light',icon:'↓',label:'Lluvia débil'};
@@ -988,6 +990,8 @@ function consensusDecisionText(decision=buildRainDecision()){
   const modelLabel=decision.modelRisk==null?'sin dato':('riesgo '+Math.round(decision.modelRisk)+' %');
   const practical=decision.mode==='rain_now'
     ? 'lluvia ahora'
+    : decision.mode==='possible_now'
+      ? 'señal de precipitación no confirmada en superficie'
     : decision.mode==='episode_pause'
       ? decision.correction?.resumeAt
         ? 'pausa seca · posible reanudación '+fmtTime(decision.correction.resumeAt)
@@ -1370,6 +1374,7 @@ function buildRainDecision(){
         : null;
   let mode='dry_unknown';
   if(rain.raining)mode='rain_now';
+  else if(rain.possible&&!correction)mode='possible_now';
   else if(correction?.mode==='pause')mode='episode_pause';
   else if(correction?.mode==='pause_unresolved')mode='episode_pause';
   else if(correction?.mode==='ended_early')mode='episode_ended_early';
@@ -1692,6 +1697,7 @@ function semanticHour(row,peak,eventLength){
   const p=(Number(row.probability)||0)/100,rate=Number(row.precipitation)||0;
   const signal=row.canonicalSignal||classifyRainHour({probability:p,expectedPrecipitation:rate});
   const weather=weatherParts(row);
+  if(rate>=7.5)return{key:'heavy',label:'Lluvia fuerte',phenomenon:weather.phenomenon};
   if(signal==='possible')return{key:'possible',label:'Riesgo bajo / intermitente',phenomenon:weather.phenomenon};
   const peakLike=eventLength>=3&&p>=.70&&rate>=Math.max(.12,peak*.72);
   if(peakLike)return{key:'peak',label:'Tramo más probable',phenomenon:weather.phenomenon};
@@ -1730,6 +1736,26 @@ function semanticSegments(event){
     return{...group,avgProb,rateText,phenomenonText};
   });
 }
+function heavyRainWindows(rows=[]){
+  const heavy=rows.filter(row=>(Number(row.precipitation)||0)>=7.5).sort((a,b)=>Date.parse(a.time)-Date.parse(b.time));
+  const groups=[];
+  for(const row of heavy){
+    const start=Date.parse(row.time),end=Date.parse(row.end||row.time);
+    if(!Number.isFinite(start)||!Number.isFinite(end))continue;
+    const last=groups.at(-1);
+    if(last&&start<=last.end+60_000){
+      last.end=Math.max(last.end,end);
+      last.peak=Math.max(last.peak,Number(row.precipitation)||0);
+    }else{
+      groups.push({start,end,peak:Number(row.precipitation)||0});
+    }
+  }
+  return groups;
+}
+function heavyWindowsText(groups=[]){
+  return groups.map(g=>fmtTime(g.start)+'–'+fmtTime(g.end)+' · pico '+g.peak.toFixed(1).replace('.',',')+' mm/h').join(' · ');
+}
+
 function dryWindowBetween(a,b){
   if(!a||!b)return null;
   const start=Date.parse(a.end),end=Date.parse(b.start),minutes=Math.round((end-start)/60_000);
@@ -1792,9 +1818,10 @@ function renderEvents(){
     const total=Number(e.totalExpectedPrecipitation||0),peak=Number(e.maxExpectedPrecipitation||0);
     const avgProb=pct(e.averageProbability??e.peakProbability),maxProb=pct(e.peakProbability);
     const families=e.independentFamilyCount||e.providerCount||0;
-    const rows=eventDetailRows(e),segments=semanticSegments(e);
-    const heavyEpisode=peak>=7.5||rows.some(row=>(Number(row.precipitation)||0)>=7.5);
-    const heavyAlert=heavyEpisode?'<span class="eventAlert">⚠ LLUVIA FUERTE · ≥7,5 mm/h</span>':'';
+    const rows=eventDetailRows(e),segments=semanticSegments(e),heavyWindows=heavyRainWindows(rows);
+    const heavyAlert=heavyWindows.length
+      ? '<div class="eventHeavyNotice"><strong>⚠ Tramos de lluvia fuerte</strong><span>'+heavyWindowsText(heavyWindows)+'</span></div>'
+      : '';
     const segmentsHtml='<div class="eventSegments"><div class="segmentTitle">Lectura rápida del episodio</div>'+
       segments.map(segment=>'<div class="eventSegment wx-'+conditionVisual(segment.rows[0]||{}).key+'"><span class="segmentTime">'+fmtSegmentRange(segment.start,segment.end)+'</span><span class="segmentText"><strong>'+segment.label+'</strong><small>Prob. media '+segment.avgProb+'% · intensidad '+segment.rateText+'</small></span></div>').join('')+
       '</div>';
@@ -1807,7 +1834,7 @@ function renderEvents(){
     const fineCount=rows.filter(r=>r.detailMinutes===15).length,coarseCount=rows.filter(r=>r.detailMinutes===30).length;
     const detailLabel=fineCount&&coarseCount?'15 min mientras hay dato · después 30 min':fineCount?'detalle cada 15 min':'detalle cada 30 min';
     const details='<details class="hourDetails"><summary>Ver '+detailLabel+' ('+rows.length+')</summary><div class="eventHours">'+header+detailRows+'</div></details>';
-    blocks.push('<div class="event'+(heavyEpisode?' eventHeavy':'')+'"><div>'+heavyAlert+'<strong>'+fmtDateTime(e.start)+' → '+fmtTime(e.end)+'</strong>'+
+    blocks.push('<div class="event"><div>'+heavyAlert+'<strong>'+fmtDateTime(e.start)+' → '+fmtTime(e.end)+'</strong>'+
       '<small>Ventana de '+dur+' h · '+total.toFixed(1).replace('.',',')+' mm estimados · no implica lluvia continua</small>'+
       '<small>Pico '+peak.toFixed(1).replace('.',',')+' mm/h · prob. media '+avgProb+'% · máx. '+maxProb+'% · '+families+' familias</small></div>'+
       '<div class="prob">'+maxProb+'%</div>'+segmentsHtml+details+'</div>');
