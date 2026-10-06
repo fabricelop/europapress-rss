@@ -1,18 +1,31 @@
-name: TTendencias Telegram Listener (retirado)
+name: Reparar callbacks Telegram TTendencias
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
+      - ".github/scripts/fix_ttendencias_telegram_callbacks.py"
       - ".github/workflows/ttendencias-telegram-bot.yml"
 
-concurrency:
-  group: ttendencias-telegram-listener
-  cancel-in-progress: true
+permissions:
+  contents: write
 
 jobs:
-  retired:
+  patch:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Listener antiguo retirado; usa ttendencias-listener.yml"
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Aplicar parche
+        run: |
+          python3 .github/scripts/fix_ttendencias_telegram_callbacks.py
+          node --check api/telegram-webhook.js
+          git config user.name "ttendencias-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add api/telegram-webhook.js
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Corregir borrado Publicado/Desestimar en Telegram TTendencias"
+          git pull --rebase origin main
+          git push origin HEAD:main
