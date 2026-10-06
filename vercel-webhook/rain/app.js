@@ -868,22 +868,17 @@ function semanticHour(row,peak,eventLength){
   const p=(Number(row.probability)||0)/100,rate=Number(row.precipitation)||0;
   const signal=row.canonicalSignal||classifyRainHour({probability:p,expectedPrecipitation:rate});
   const weather=weatherParts(row);
-  const thunder=weather.phenomenon==='Tormenta prevista',showers=weather.phenomenon==='Chubascos';
-  if(signal==='possible')return{key:'possible',label:'Riesgo bajo / intermitente'};
-  if(thunder)return{key:'storm',label:rate<.5?'Precipitación débil con riesgo de tormenta':'Lluvia con riesgo de tormenta'};
+  if(signal==='possible')return{key:'possible',label:'Riesgo bajo / intermitente',phenomenon:weather.phenomenon};
   const peakLike=eventLength>=3&&p>=.70&&rate>=Math.max(.12,peak*.72);
-  if(peakLike)return{key:'peak',label:'Tramo más probable'};
-  if(showers)return p<.65
-    ?{key:'showers-light',label:'Chubascos aislados'}
-    :{key:'showers',label:'Chubascos probables'};
+  if(peakLike)return{key:'peak',label:'Tramo más probable',phenomenon:weather.phenomenon};
   if(rate<.5)return p<.66
-    ?{key:'drizzle-intermittent',label:'Llovizna intermitente'}
-    :{key:'drizzle',label:'Llovizna / lluvia muy débil'};
+    ?{key:'drizzle-intermittent',label:'Llovizna intermitente',phenomenon:weather.phenomenon}
+    :{key:'drizzle',label:'Llovizna / lluvia muy débil',phenomenon:weather.phenomenon};
   if(rate<2.5)return p<.66
-    ?{key:'light-intermittent',label:'Lluvia débil intermitente'}
-    :{key:'light',label:'Lluvia débil probable'};
-  if(rate<7.5)return{key:'moderate',label:'Lluvia moderada'};
-  return{key:'heavy',label:'Lluvia fuerte'};
+    ?{key:'light-intermittent',label:'Lluvia débil intermitente',phenomenon:weather.phenomenon}
+    :{key:'light',label:'Lluvia débil probable',phenomenon:weather.phenomenon};
+  if(rate<7.5)return{key:'moderate',label:'Lluvia moderada',phenomenon:weather.phenomenon};
+  return{key:'heavy',label:'Lluvia fuerte',phenomenon:weather.phenomenon};
 }
 function semanticSegments(event){
   const rows=eventHourlyRows(event);
@@ -902,11 +897,13 @@ function semanticSegments(event){
   return groups.map(group=>{
     const probs=group.rows.map(r=>Number(r.probability)||0);
     const rates=group.rows.map(r=>Number(r.precipitation)||0);
+    const phenomena=[...new Set(group.rows.map(r=>r.semantic.phenomenon).filter(Boolean))];
     const minRate=Math.min(...rates),maxRate=Math.max(...rates),avgProb=Math.round(probs.reduce((a,b)=>a+b,0)/probs.length);
     const rateText=Math.abs(maxRate-minRate)<.05
       ?maxRate.toFixed(1).replace('.',',')+' mm/h'
       :minRate.toFixed(1).replace('.',',')+'–'+maxRate.toFixed(1).replace('.',',')+' mm/h';
-    return{...group,avgProb,rateText};
+    const phenomenonText=phenomena.map(x=>x==='Tormenta prevista'?'riesgo de tormenta':x.toLowerCase()).join(' · ');
+    return{...group,avgProb,rateText,phenomenonText};
   });
 }
 function dryWindowBetween(a,b){
