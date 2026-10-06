@@ -106,6 +106,7 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - RainViewer y OPERA se cruzan: si sus ETAs son próximas, RainETA calcula una ETA fusionada; si discrepan mucho, mantiene la discrepancia visible y prioriza la fuente más fiable.
 - Se inicia un **marcador local de acierto por fuente y horizonte** para RainViewer, OPERA y modelos en +15/+30/+60/+90/+120 min. Solo influye de forma suave cuando ya hay suficientes verificaciones independientes.
 - `Mis lugares` añade la **mejor ventana seca de las próximas 24 h**, además de próxima lluvia, duración y tiempo seco actual.
+- El radar incorpora **▶ HASTA LLUVIA**: anima desde la posición actual y se detiene automáticamente en la ETA canónica de llegada al punto; se desactiva si la ETA queda fuera de +120 min o la proyección radar no es fiable.
 - La tarjeta 0–120 min usa también la proyección espacial de OPERA para intensidad/probabilidad, conservando el RainDecision canónico como única decisión visible.
 
 ## Motor canónico y Mis lugares v0.14
