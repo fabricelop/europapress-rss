@@ -1,20 +1,16 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T14:45:00.000Z",
-  "last_completed_at": "2026-10-06T14:51:45.000Z",
-  "updated_at": "2026-10-06T14:51:45.000Z",
+  "last_started_at": "2026-10-06T18:15:00.000Z",
+  "last_completed_at": "2026-10-06T18:20:50.000Z",
+  "updated_at": "2026-10-06T18:20:50.000Z",
   "status": "success",
   "processed_ids": [
-    "48607a1c170b",
-    "66d564cde59e",
-    "a0262fb01a96",
-    "60849355f544",
-    "2e51a7a10dd3",
-    "892ed4e530dc",
-    "19d12722eb8a",
-    "a1caaebc2161",
-    "69fbf1d94af2"
+    "ea86f62a43db",
+    "682a8cab1c48",
+    "c0facbdb74f7",
+    "ae89708e6a12",
+    "31fa73ae74f1"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -24,25 +20,25 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T144500Z",
+    "run_id": "tr-chat-20261006T181500Z",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-06T14:45:00.000Z",
-    "updated_at": "2026-10-06T14:51:45.000Z",
-    "finished_at": "2026-10-06T14:51:45.000Z",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-06T18:15:00.000Z",
+    "updated_at": "2026-10-06T18:20:50.000Z",
+    "finished_at": "2026-10-06T18:20:50.000Z",
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "trends_processed": 5,
+      "trends_explained": 5,
+      "explanation_groups": 5,
+      "new_cards": 4,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -54,60 +50,277 @@
       "fallback_images_ready": 0,
       "visual_jobs_queued": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 5,
+      "remates_selected": 5,
       "remates_omitted": 0,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada cerrada · cola editorial final 0 · saneamiento visual de Pendientes activado",
+    "message": "Pasada cerrada · 5 explicadas y verificadas · cola editorial final 0",
     "activity": [
       {
-        "at": "2026-10-06T14:45:00.000Z",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada · cola editorial efectiva 0"
+        "at": "2026-10-06T18:16:25.000Z",
+        "phase": "investigating",
+        "trend_id": "ea86f62a43db",
+        "title": "El PP",
+        "message": "Hecho esencial verificado · debate del PP sobre voto por correo"
       },
       {
-        "at": "2026-10-06T14:45:02.000Z",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual de Pendientes solicitado"
+        "at": "2026-10-06T18:16:40.000Z",
+        "phase": "drafting",
+        "trend_id": "ea86f62a43db",
+        "title": "El PP",
+        "message": "Explicación factual redactada y dentro del límite de X"
       },
       {
-        "at": "2026-10-06T14:45:06.000Z",
+        "at": "2026-10-06T18:16:55.000Z",
+        "phase": "remate_selection",
+        "trend_id": "ea86f62a43db",
+        "title": "El PP",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-06T18:17:05.000Z",
+        "phase": "investigating",
+        "trend_id": "682a8cab1c48",
+        "title": "Dictador",
+        "message": "Hecho esencial verificado · declaraciones de Ayuso sobre Sánchez"
+      },
+      {
+        "at": "2026-10-06T18:17:20.000Z",
+        "phase": "drafting",
+        "trend_id": "682a8cab1c48",
+        "title": "Dictador",
+        "message": "Explicación factual redactada y dentro del límite de X"
+      },
+      {
+        "at": "2026-10-06T18:17:30.000Z",
+        "phase": "remate_selection",
+        "trend_id": "682a8cab1c48",
+        "title": "Dictador",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-06T18:17:45.000Z",
+        "phase": "investigating",
+        "trend_id": "c0facbdb74f7",
+        "title": "Carvajal",
+        "message": "Hecho esencial verificado · negociación Getafe-Carvajal"
+      },
+      {
+        "at": "2026-10-06T18:18:00.000Z",
+        "phase": "drafting",
+        "trend_id": "c0facbdb74f7",
+        "title": "Carvajal",
+        "message": "Explicación factual redactada y dentro del límite de X"
+      },
+      {
+        "at": "2026-10-06T18:18:10.000Z",
+        "phase": "remate_selection",
+        "trend_id": "c0facbdb74f7",
+        "title": "Carvajal",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-06T18:18:25.000Z",
+        "phase": "investigating",
+        "trend_id": "ae89708e6a12",
+        "title": "#TreValliVaresine",
+        "message": "Resultado final verificado · victoria de Jarno Widar"
+      },
+      {
+        "at": "2026-10-06T18:18:40.000Z",
+        "phase": "drafting",
+        "trend_id": "ae89708e6a12",
+        "title": "#TreValliVaresine",
+        "message": "Explicación factual redactada y dentro del límite de X"
+      },
+      {
+        "at": "2026-10-06T18:18:50.000Z",
+        "phase": "remate_selection",
+        "trend_id": "ae89708e6a12",
+        "title": "#TreValliVaresine",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-06T18:19:05.000Z",
+        "phase": "investigating",
+        "trend_id": "31fa73ae74f1",
+        "title": "Frente Amplio",
+        "message": "Hecho esencial verificado · Maíllo, Podemos y calendario del Frente Amplio"
+      },
+      {
+        "at": "2026-10-06T18:19:20.000Z",
+        "phase": "drafting",
+        "trend_id": "31fa73ae74f1",
+        "title": "Frente Amplio",
+        "message": "Reexplicación factual redactada y dentro del límite de X"
+      },
+      {
+        "at": "2026-10-06T18:19:30.000Z",
+        "phase": "remate_selection",
+        "trend_id": "31fa73ae74f1",
+        "title": "Frente Amplio",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-06T18:19:45.000Z",
+        "phase": "persisting",
+        "trend_id": "31fa73ae74f1",
+        "title": "Frente Amplio",
+        "message": "Guardando fichas Explicadas"
+      },
+      {
+        "at": "2026-10-06T18:20:15.000Z",
+        "phase": "persisting",
+        "trend_id": "31fa73ae74f1",
+        "title": "Frente Amplio",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-06T18:20:25.000Z",
+        "phase": "persisting",
+        "trend_id": "31fa73ae74f1",
+        "title": "Frente Amplio",
+        "message": "Retirando revisiones de la cola"
+      },
+      {
+        "at": "2026-10-06T18:20:40.000Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main antes de declarar cola vacía"
+        "trend_id": "31fa73ae74f1",
+        "title": "Frente Amplio",
+        "message": "Releyendo main · 5 revisiones consistentes y cola editorial 0"
       },
       {
-        "at": "2026-10-06T14:51:38.000Z",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola autoritativa releída · 0 preparing/update/rewrite_pending"
-      },
-      {
-        "at": "2026-10-06T14:51:45.000Z",
+        "at": "2026-10-06T18:20:50.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · cola editorial final 0 · saneamiento visual de Pendientes activado"
+        "message": "Pasada cerrada · 5 explicadas y verificadas · cola editorial final 0"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": []
+    "remaining_problematic_ids": [],
+    "ratings_snapshot": {
+      "source": "trends/remate-ratings.json",
+      "sample_size": 100,
+      "average": 3.13,
+      "distribution": {
+        "1": 16,
+        "2": 11,
+        "3": 26,
+        "4": 38,
+        "5": 9
+      }
+    },
+    "remate_selections": [
+      {
+        "trend_id": "ea86f62a43db",
+        "revision": 0,
+        "candidate_count": 1,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": null,
+            "ratings_affinity": null,
+            "trend_specificity": null,
+            "punch": null,
+            "originality": null,
+            "length_fit": true,
+            "repetition_penalty": null
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "682a8cab1c48",
+        "revision": 0,
+        "candidate_count": 1,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": null,
+            "ratings_affinity": null,
+            "trend_specificity": null,
+            "punch": null,
+            "originality": null,
+            "length_fit": true,
+            "repetition_penalty": null
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "c0facbdb74f7",
+        "revision": 0,
+        "candidate_count": 1,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": null,
+            "ratings_affinity": null,
+            "trend_specificity": null,
+            "punch": null,
+            "originality": null,
+            "length_fit": true,
+            "repetition_penalty": null
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "ae89708e6a12",
+        "revision": 0,
+        "candidate_count": 1,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": null,
+            "ratings_affinity": null,
+            "trend_specificity": null,
+            "punch": null,
+            "originality": null,
+            "length_fit": true,
+            "repetition_penalty": null
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "31fa73ae74f1",
+        "revision": 3,
+        "candidate_count": 1,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": null,
+            "ratings_affinity": null,
+            "trend_specificity": null,
+            "punch": null,
+            "originality": null,
+            "length_fit": true,
+            "repetition_penalty": null
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": null,
+        "no_remate_reason": null
+      }
+    ]
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
     "status": "triggered",
-    "direct_imagegen": false,
-    "ai_images_ready_observed": 3,
-    "fallback_images_ready": 6
+    "direct_imagegen": false
   },
   "error": null
 }
