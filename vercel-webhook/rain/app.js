@@ -40,7 +40,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.17.0',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.17.1',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -317,6 +317,9 @@ async function loadForecast(force=false){
 
 function radarTileUrl(meta,frame,size=512,zoom=RADAR_ZOOM){
   const point=forecastCoords();return meta.host+frame.path+'/'+size+'/'+zoom+'/'+point.lat+'/'+point.lon+'/2/0_0.png';
+}
+function radarDisplayImageUrl(meta,frame,size=512,zoom=RADAR_ZOOM){
+  const point=forecastCoords();return meta.host+frame.path+'/'+size+'/'+zoom+'/'+point.lat+'/'+point.lon+'/2/1_1.png';
 }
 async function imageMask(url){
   const r=await timeoutFetch(url,8500,{mode:'cors',cache:'no-store'});
@@ -2248,7 +2251,7 @@ function showProjectedRadar(minutes){
   }
   clearRadarVisual();
   const reliable=nowcastReliableHorizon(),within=minutes<=reliable;
-  const url=radarTileUrl(r,latest,512,RADAR_ZOOM);
+  const url=radarDisplayImageUrl(r,latest,512,RADAR_ZOOM);
   state.map.addSource('raineta-radar-projection',{type:'image',url,coordinates:projectionCoordinates(minutes)});
   const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
   state.map.addLayer({
@@ -2261,7 +2264,7 @@ function showProjectedRadar(minutes){
   if(within){
     const evolution=Number(state.nowcast?.evolution?.score)||0;
     const shape=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
-    $('radarMotion').textContent='ETA calculada con movimiento local de los ecos · evolución '+shape+' · horizonte radar útil ~'+reliable+' min. El mapa sigue siendo una referencia visual del último eco.';
+    $('radarMotion').textContent='Proyección visual del mismo radar observado, desplazada según el movimiento de los ecos · evolución '+shape+' · horizonte radar útil ~'+reliable+' min.';
   }else{
     $('radarMotion').textContent='A partir de ~'+reliable+' min RainETA deja de confiar en la extrapolación radar y da el relevo a modelos/consenso. La imagen atenuada es solo una referencia visual.';
   }
