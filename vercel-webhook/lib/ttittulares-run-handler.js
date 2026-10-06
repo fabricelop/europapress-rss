@@ -174,18 +174,6 @@ async function readRawJsonWithSha(path,branch){
 async function readControlJson(path){
   return readRawJsonWithSha(path,TRIGGER_BRANCH)
 }
-// Solo para resolver un 409 real: Contents API devuelve el blob SHA autoritativo.
-// No se usa en polling normal, para preservar la cuota REST.
-async function readControlJsonAuthoritative(path){
-  const filePath=String(path||"").split("/").map(encodeURIComponent).join("/");
-  const ref=encodeURIComponent(TRIGGER_BRANCH);
-  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+filePath+"?ref="+ref,{method:"GET"});
-  if(r.status===404)return {sha:null,doc:null};
-  if(!r.ok)throw new Error("GitHub control authoritative GET "+path+": "+r.status+" "+await r.text());
-  const j=await r.json();
-  const raw=Buffer.from(String(j.content||"").replace(/\s/g,""),"base64").toString("utf8");
-  return {sha:String(j.sha||"")||null,doc:JSON.parse(raw||"{}")}
-}
 async function writeControlJson(path,doc,sha,message){
   const body={message,content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64"),branch:TRIGGER_BRANCH};
   if(sha)body.sha=sha;
@@ -504,46 +492,25 @@ async function requestImagePcAck(req,res){
       await writeControlJson(path,writeNext,writeBase.sha,"PC Chat Gag IA TTiTTulares "+stage+" "+target_id+" "+command_id);
       return res.status(200).json({ok:true,...writeNext})
     }catch(e){
-      if(!/409/.test(String(e))||attempt===4)throw e;
-      // raw.githubusercontent puede servir durante unos segundos el blob anterior
-      // aunque lleve cache-buster. Tras un 409 pedimos UNA lectura autoritativa del
-      // Contents API para obtener el SHA exacto y cortar la tormenta de conflictos.
-      const fresh=await readControlJsonAuthoritative(path),cur=fresh.doc||{};
-      if(String(cur.command_id||"")!==command_id){
+      if(!/409/.test(String(e)))throw e;
+      // No gastar una lectura REST adicional para resolver el conflicto: cuando
+      // GitHub está en rate-limit esa lectura convertía un 409 recuperable en 500.
+      // picked_up es el único ACK que DEBE persistir antes de abrir el bridge,
+      // porque fija el secreto de subida. El listener lo reintentará en su próximo
+      // sondeo. progress/launched son telemetría y no deben bloquear ImageGen.
+      if(stage==="picked_up"){
+        return res.status(409).json({ok:false,retryable:true,error:"ack_write_conflict",target_id,command_id,stage});
+      }
+      if(stage==="progress"||stage==="launched"){
+        return res.status(200).json({ok:true,deferred:true,target_id,command_id,stage,message:"ACK telemétrico diferido por conflicto GitHub"});
+      }
+      if(attempt===4)throw e;
+      await new Promise(r=>setTimeout(r,120*(attempt+1)));
+      writeBase=await readControlJson(path);
+      if(String(writeBase.doc?.command_id||"")!==command_id){
         return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
       }
-      if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(cur.status||"").toUpperCase())){
-        return res.status(200).json({ok:true,idempotent:true,target_id,command_id,status:cur.status,phase:cur.phase||null});
-      }
-      const t=new Date().toISOString(),merged={...cur,updated_at:t,pc_worker_id:worker_id};
-      if(stage==="cancelled"){
-        merged.status="CANCELLED";merged.phase="stale_target";merged.finished_at=t;
-        merged.message=String(req.body?.reason||"La entrada ya no está vigente.").slice(0,240);
-      }else if(stage==="done"){
-        const prepared=await readMainJson(PREPARED_PATH);
-        const persisted=(prepared.items||[]).find(x=>String(x.event_id||"")===target_id&&Number(x.revision||0)===Number(cur.revision||0)&&String(x.ai_image?.context_guard?.command_id||"")===command_id&&String(x.ai_image?.url||"").trim());
-        if(!persisted)return res.status(409).json({ok:false,error:"image_not_persisted_yet"});
-        merged.status="DONE";merged.phase="done";merged.finished_at=t;merged.message="Gag IA materializado y visible en Listas.";
-      }else if(stage==="failed"){
-        const reason=String(req.body?.reason||"El puente de imagen no pudo completar el trabajo.").slice(0,240);
-        merged.status="ERROR";merged.phase=cur.upload_sha256?"image_bridge_failed":"pc_launch_failed";merged.finished_at=t;merged.message=reason;
-        await markPreparedImageFailed(target_id,cur.revision,reason).catch(()=>{});
-      }else if(stage==="progress"){
-        const phase=String(req.body?.phase||"pc_progress").trim().slice(0,80)||"pc_progress";
-        const detail=String(req.body?.detail||"").trim().slice(0,240);
-        merged.status="RUNNING";merged.phase=phase;merged.pc_picked_up_at=cur.pc_picked_up_at||t;
-        merged.message=detail||("Progreso de imagen: "+phase);
-      }else{
-        merged.status="RUNNING";merged.phase=stage==="picked_up"?"pc_pickup":"pc_launch";
-        if(stage==="picked_up"){
-          merged.pc_picked_up_at=cur.pc_picked_up_at||t;
-          if(req.body?.upload_secret_hash)merged.pc_upload_secret_hash=String(req.body.upload_secret_hash).toLowerCase();
-        }
-        if(stage==="launched"){merged.pc_picked_up_at=cur.pc_picked_up_at||t;merged.pc_launched_at=cur.pc_launched_at||t}
-        merged.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":"Prompt enviado en la pestaña fija; esperando ImageGen.";
-      }
-      writeBase=fresh;writeNext=merged;
-      await new Promise(r=>setTimeout(r,40*(attempt+1)));
+      writeNext={...writeBase.doc,...writeNext,updated_at:new Date().toISOString(),pc_worker_id:worker_id};
     }
   }
 }
