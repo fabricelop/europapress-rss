@@ -1,13 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T11:45:00.000Z",
-  "last_completed_at": "2026-10-06T11:57:00.000Z",
-  "updated_at": "2026-10-06T11:58:00.000Z",
+  "last_started_at": "2026-10-06T12:15:00.000Z",
+  "last_completed_at": "2026-10-06T12:20:10.000Z",
+  "updated_at": "2026-10-06T12:20:10.000Z",
   "status": "success",
-  "processed_ids": [
-    "055fc118dcee"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -16,24 +14,24 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T114500Z",
+    "run_id": "tr-chat-20261006T121500Z",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "current": 1,
-    "total": 1,
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T11:45:00.000Z",
-    "updated_at": "2026-10-06T11:57:00.000Z",
-    "finished_at": "2026-10-06T11:57:00.000Z",
+    "started_at": "2026-10-06T12:15:00.000Z",
+    "updated_at": "2026-10-06T12:20:10.000Z",
+    "finished_at": "2026-10-06T12:20:10.000Z",
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -46,90 +44,55 @@
       "fallback_images_ready": 0,
       "visual_jobs_queued": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "pending_repair_triggered": 1,
-      "pending_repair_examined": 0
+      "pending_repair_examined": 1
     },
-    "message": "Pasada completada · #Mañaneros6O explicada y verificada · cola editorial 0.",
+    "message": "Pasada completada sin trabajo editorial nuevo · cola 0 · 1 Pendiente revisada (#Mañaneros6O), con IA ya válida; saneamiento visual completado sin crear jobs nuevos.",
     "activity": [
       {
-        "at": "2026-10-06T11:45:00.000Z",
+        "at": "2026-10-06T12:15:00.000Z",
         "phase": "preparing",
-        "trend_id": "055fc118dcee",
-        "title": "#Mañaneros6O",
-        "message": "Iniciando pasada directa · 1 tendencia activa · releyendo estado autoritativo de #Mañaneros6O"
+        "trend_id": null,
+        "title": null,
+        "message": "Iniciando pasada directa · cola editorial 0 · revisando estado autoritativo"
       },
       {
-        "at": "2026-10-06T11:47:00.000Z",
+        "at": "2026-10-06T12:15:05.000Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Cola editorial 0 · sin requests activas ni rewrite_pending"
+      },
+      {
+        "at": "2026-10-06T12:15:10.000Z",
         "phase": "verifying",
         "trend_id": "055fc118dcee",
         "title": "#Mañaneros6O",
-        "message": "Releyendo estado autoritativo de #Mañaneros6O"
+        "message": "Revisando Pendientes · 1 tarjeta vigente · IA ya válida"
       },
       {
-        "at": "2026-10-06T11:49:00.000Z",
-        "phase": "investigating",
-        "trend_id": "055fc118dcee",
-        "title": "#Mañaneros6O",
-        "message": "Hecho esencial verificado · emisión de hoy de Mañaneros 360 en La 1"
-      },
-      {
-        "at": "2026-10-06T11:50:00.000Z",
-        "phase": "drafting",
-        "trend_id": "055fc118dcee",
-        "title": "#Mañaneros6O",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-06T11:51:00.000Z",
-        "phase": "drafting",
-        "trend_id": "055fc118dcee",
-        "title": "#Mañaneros6O",
-        "message": "Comprobando límite de X · texto final dentro de 279 caracteres"
-      },
-      {
-        "at": "2026-10-06T11:52:00.000Z",
-        "phase": "remate_selection",
-        "trend_id": "055fc118dcee",
-        "title": "#Mañaneros6O",
-        "message": "5 candidatos evaluados con ratings · remate seleccionado"
-      },
-      {
-        "at": "2026-10-06T11:53:00.000Z",
-        "phase": "persisting",
-        "trend_id": "055fc118dcee",
-        "title": "#Mañaneros6O",
-        "message": "Guardando ficha Explicada mediante outbox directo de chat"
-      },
-      {
-        "at": "2026-10-06T11:56:37.000Z",
+        "at": "2026-10-06T12:18:56.000Z",
         "phase": "verifying",
         "trend_id": "055fc118dcee",
         "title": "#Mañaneros6O",
-        "message": "Releyendo main · commit editorial aplicado"
+        "message": "Saneamiento visual lanzado · workflow 37462360822 en ejecución"
       },
       {
-        "at": "2026-10-06T11:56:45.000Z",
+        "at": "2026-10-06T12:20:04.000Z",
         "phase": "verifying",
         "trend_id": "055fc118dcee",
         "title": "#Mañaneros6O",
-        "message": "Verificando id+revision y texto persistido · requests y Explicadas coinciden"
+        "message": "Saneamiento visual completado correctamente · 0 jobs IA nuevos"
       },
       {
-        "at": "2026-10-06T11:56:50.000Z",
-        "phase": "verifying",
-        "trend_id": "055fc118dcee",
-        "title": "#Mañaneros6O",
-        "message": "Tendencia cerrada y verificada · cola editorial 0"
-      },
-      {
-        "at": "2026-10-06T11:57:00.000Z",
+        "at": "2026-10-06T12:20:10.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 1 tendencia explicada · cola editorial 0"
+        "message": "Pasada cerrada · sin trabajo editorial nuevo · cola final 0"
       }
     ],
     "ratings_snapshot": {
@@ -139,68 +102,7 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "055fc118dcee",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.1,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          },
-          {
-            "id": "c3",
-            "total": 7.6,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c4",
-            "total": 7.2,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c5",
-            "total": 6.5,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.5,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.1,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
@@ -209,13 +111,13 @@
       "persisted_trigger": true,
       "status": "completed_success",
       "phase": "verified",
-      "command_id": "tr-chat-20261006T114500Z",
+      "command_id": "tr-chat-20261006T121500Z",
       "direct_imagegen": false,
-      "workflow_run_id": 37458678708,
-      "post_explained_repair_run_id": 37459788196,
-      "post_explained_repair_status": "completed",
-      "post_explained_repair_conclusion": "success",
-      "post_explained_repair_completed_at": "2026-10-06T11:57:54.000Z"
+      "workflow_run_id": 37462360822,
+      "workflow_status": "completed",
+      "workflow_conclusion": "success",
+      "completed_at": "2026-10-06T12:20:04.000Z",
+      "ai_repair_jobs_queued": 0
     }
   },
   "visual_repair": {
@@ -223,13 +125,13 @@
     "persisted_trigger": true,
     "status": "completed_success",
     "phase": "verified",
-    "command_id": "tr-chat-20261006T114500Z",
+    "command_id": "tr-chat-20261006T121500Z",
     "direct_imagegen": false,
-    "workflow_run_id": 37458678708,
-    "post_explained_repair_run_id": 37459788196,
-    "post_explained_repair_status": "completed",
-    "post_explained_repair_conclusion": "success",
-    "post_explained_repair_completed_at": "2026-10-06T11:57:54.000Z"
+    "workflow_run_id": 37462360822,
+    "workflow_status": "completed",
+    "workflow_conclusion": "success",
+    "completed_at": "2026-10-06T12:20:04.000Z",
+    "ai_repair_jobs_queued": 0
   },
   "error": null
 }
