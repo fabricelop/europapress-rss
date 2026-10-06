@@ -2022,6 +2022,7 @@ function radarArrivalTarget(){
   const baseMs=Number(latest.time)*1000,startMs=Date.parse(ev.start);
   if(!Number.isFinite(baseMs)||!Number.isFinite(startMs))return{status:'no_eta',event:ev};
   const rawMinutes=(startMs-baseMs)/60_000;
+  if(decision?.mode==='possible_now'&&(ev.active||rawMinutes<=2.5))return{status:'signal_now',target:0,event:ev,rawMinutes};
   if(ev.active||rawMinutes<=2.5)return{status:'now',target:0,event:ev,rawMinutes};
   if(rawMinutes>120)return{status:'later',event:ev,rawMinutes};
   const canProject=state.nowcast?.status==='ok'&&state.nowcast?.motion&&Number(state.nowcast?.confidence)>=.22;
@@ -2043,6 +2044,8 @@ function updateRadarArrivalButton(){
   button.classList.remove('running');
   if(target.status==='ready'){
     button.disabled=false;button.textContent='▶ HASTA LLUVIA';
+  }else if(target.status==='signal_now'){
+    button.disabled=false;button.textContent='● SEÑAL RADAR AHORA';
   }else if(target.status==='now'){
     button.disabled=false;button.textContent='● LLUVIA AHORA';
   }else if(target.status==='later'){
@@ -2063,9 +2066,11 @@ function playRadarUntilRain(){
   const target=radarArrivalTarget(),slider=$('frame'),button=$('radarArrival');
   if(!slider||!button)return;
   if(state.playMode==='arrival'){stopRadarPlayback();return}
-  if(target.status==='now'){
+  if(target.status==='signal_now'||target.status==='now'){
     stopRadarPlayback();slider.value='0';showRadarOffset(0);
-    $('radarPosition').textContent='La lluvia ya está en tu ubicación';
+    $('radarPosition').textContent=target.status==='signal_now'
+      ? 'El radar marca precipitación sobre el punto, no confirmada en superficie'
+      : 'La lluvia ya está en tu ubicación';
     return;
   }
   if(target.status!=='ready'){
