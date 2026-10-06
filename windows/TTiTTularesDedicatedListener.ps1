@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v45-control-head-sha
+# official-pipeline-restart-token: 2026-10-06-v46-control-head-anon-api
 # compatibility validator: ttittulares-dedicated-v44
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v45"
+$WorkerId = "ttittulares-dedicated-v46"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -90,9 +90,28 @@ function CacheBust([string]$Url) {
 
 function Get-ControlHeadSha([switch]$Force) {
   $now=[DateTimeOffset]::UtcNow
-  if(-not $Force -and $script:ControlHeadSha -and (($now-$script:ControlHeadAt).TotalSeconds -lt 15)){
+  # Una sola resolución de rama cada 90 s como máximo. El resto de lecturas
+  # usan raw.githubusercontent con SHA inmutable y no consumen REST.
+  if($script:ControlHeadSha -and (($now-$script:ControlHeadAt).TotalSeconds -lt 90)){
     return $script:ControlHeadSha
   }
+  try{
+    $refUrl="https://api.github.com/repos/fabricelop/europapress-rss/git/ref/heads/control/ttittulares-run-trigger-v2"
+    $r=Invoke-RestMethod -Uri (CacheBust $refUrl) -Headers @{
+      "Accept"="application/vnd.github+json"
+      "User-Agent"="TTiTTulares-Control-Head-Anonymous-v46"
+      "Cache-Control"="no-cache"
+    } -TimeoutSec 12
+    $sha=[string]$r.object.sha
+    if($sha -match '^[0-9a-fA-F]{40}$'){
+      $script:ControlHeadSha=$sha.ToLowerInvariant()
+      $script:ControlHeadAt=$now
+      return $script:ControlHeadSha
+    }
+  }catch{
+    Write-Log "CONTROL HEAD ANON API WARNING :: $($_.Exception.Message)"
+  }
+  # Fallback si la cuota anónima del IP también estuviera temporalmente agotada.
   try{
     $git=Get-Command git.exe -ErrorAction SilentlyContinue
     if(-not $git){$git=Get-Command git -ErrorAction SilentlyContinue}
@@ -111,7 +130,7 @@ function Get-ControlHeadSha([switch]$Force) {
       }
     }
   }catch{
-    Write-Log "CONTROL HEAD WARNING :: $($_.Exception.Message)"
+    Write-Log "CONTROL HEAD GIT WARNING :: $($_.Exception.Message)"
   }
   return ""
 }
