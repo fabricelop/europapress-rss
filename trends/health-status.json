@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-06T00:49:45.748726+00:00",
+  "checked_at": "2026-10-06T00:51:09.408646+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -19,7 +19,7 @@
       "ok": true
     },
     "requests_json": {
-      "ok": false
+      "ok": true
     },
     "bot_state_json": {
       "ok": true
@@ -39,12 +39,11 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
       "non_stale_sources": 7,
-      "captured_age_minutes": 211.2,
-      "noise_count": 0,
-      "repair_started": true
+      "captured_age_minutes": 0.2,
+      "noise_count": 0
     },
     "listener": {
       "ok": true,
@@ -53,9 +52,9 @@
     },
     "refresh": {
       "ok": true,
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.0,
+      "age_minutes": 1.2,
       "run_id": 37396021576,
       "reason": null,
       "repairable": true,
@@ -64,16 +63,46 @@
     "telegram_sender": {
       "ok": true,
       "outcome": "no-aplica"
+    },
+    "request_queue": {
+      "ok": false,
+      "invalid_count": 47,
+      "noise_count": 0
+    },
+    "ready_consistency": {
+      "ok": true,
+      "orphan_count": 0,
+      "orphan_items": []
+    },
+    "editorial_queue": {
+      "ok": true,
+      "pending_count": 5,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0.1,
+      "warning_after_minutes": 30,
+      "overdue_items": [],
+      "repairable": false
+    },
+    "editorial_runtime": {
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "23be980f29a1",
+        "d48c6c588f9a",
+        "1b4b1a7f2126",
+        "27c1c417bffd",
+        "d42da110d710"
+      ],
+      "contradictory_success": false
     }
   },
-  "repairs_started": [
-    "relanzado refresco Top 10"
-  ],
+  "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "requests_json: JSON inválido o ilegible"
+    "cola con 47 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "config TTendencias incompatible con el modo activo | requests_json: JSON inválido o ilegible"
+  "last_alert_signature": "cola con 47 estado(s) inválido(s) | config TTendencias incompatible con el modo activo"
 }
