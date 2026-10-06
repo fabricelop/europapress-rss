@@ -1,4 +1,4 @@
-# RainETA v0.15
+# RainETA v0.15.1
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,11 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Episodios a 30 minutos v0.15.1
+- El detalle de `Episodios previstos` se muestra en bloques de **30 min** en vez de horas completas.
+- En las primeras 2 h usa el nowcast canónico RainViewer + OPERA; después aprovecha la guía de 15 min cuando está disponible y conserva el consenso horario como base.
+- Cada fila indica si está afinada con `nowcast` o `guía 15 min`, evitando presentar interpolación como observación.
 
 ## OPERA espacial, aprendizaje y huecos secos v0.15
 - OPERA NIMBUS RATE aporta un **segundo nowcast espacial independiente**: se comparan varios compuestos de 5 min, se estima movimiento del eco y se proyecta una ETA 0–120 min sin crear una función Serverless adicional.
