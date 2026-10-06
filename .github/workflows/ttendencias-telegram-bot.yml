@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - ".github/scripts/fix_ttendencias_telegram_callbacks.py"
+      - "vercel-webhook/api/telegram-webhook.js"
       - ".github/workflows/ttendencias-telegram-bot.yml"
 
 permissions:
