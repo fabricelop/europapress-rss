@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-ad1a64057f9a-r0-a1-1791323777318",
+  "requested_at": "2026-10-06T21:56:17.316936Z",
+  "updated_at": "2026-10-06T21:56:17.316936Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "ad1a64057f9a",
+  "trend_id": "ad1a64057f9a",
+  "target_name": "split",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "split",
+    "revision": 0,
+    "explanation": "TT#9 split es tendencia porque Croacia-España se jugó hoy en el Stadion Poljud de Split, donde la Roja remontó 1-2 y aseguró su pase a cuartos de la Nations League.\n🌶️ Split terminó sellando el billete español.",
+    "closer_text": "🌶️ Split terminó sellando el billete español.",
+    "trend_names": [
+      "split"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 9,
+    "explained_at": "2026-10-06T21:50:42.629Z",
+    "verification_sources": [],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+    "image_style_name": "tinta_acuarela",
+    "image_style_index": 0
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
