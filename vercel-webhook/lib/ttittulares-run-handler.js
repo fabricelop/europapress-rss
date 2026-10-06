@@ -435,7 +435,9 @@ async function requestImagePcAck(req,res){
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
-  if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase()))return res.status(409).json({ok:false,error:"job ya terminal",status:job.status});
+  if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase())){
+    return res.status(200).json({ok:true,idempotent:true,target_id,command_id,status:job.status,phase:job.phase||null});
+  }
 
   if(stage==="picked_up"){
     const uploadHash=String(req.body?.upload_secret_hash||"").toLowerCase();
@@ -478,8 +480,55 @@ async function requestImagePcAck(req,res){
     if(stage==="launched"){next.pc_picked_up_at=job.pc_picked_up_at||now;next.pc_launched_at=now}
     next.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":"Prompt enviado en la pestaña fija; esperando ImageGen.";
   }
-  await writeControlJson(path,next,existing.sha,"PC Chat Gag IA TTiTTulares "+stage+" "+target_id+" "+command_id);
-  return res.status(200).json({ok:true,...next})
+  // ACKs del bridge pueden solaparse (picked_up/progress/launched). Un 409 de SHA
+  // no debe convertir un avance válido en ERROR ni provocar una tormenta de reintentos.
+  // Releemos el job actual y reaplicamos SOLO este cambio, preservando cualquier avance
+  // concurrente más reciente. Los estados terminales del mismo command_id son idempotentes.
+  let writeBase=existing,writeNext=next;
+  for(let attempt=0;attempt<5;attempt++){
+    try{
+      await writeControlJson(path,writeNext,writeBase.sha,"PC Chat Gag IA TTiTTulares "+stage+" "+target_id+" "+command_id);
+      return res.status(200).json({ok:true,...writeNext})
+    }catch(e){
+      if(!/409/.test(String(e))||attempt===4)throw e;
+      const fresh=await readControlJson(path),cur=fresh.doc||{};
+      if(String(cur.command_id||"")!==command_id){
+        return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
+      }
+      if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(cur.status||"").toUpperCase())){
+        return res.status(200).json({ok:true,idempotent:true,target_id,command_id,status:cur.status,phase:cur.phase||null});
+      }
+      const t=new Date().toISOString(),merged={...cur,updated_at:t,pc_worker_id:worker_id};
+      if(stage==="cancelled"){
+        merged.status="CANCELLED";merged.phase="stale_target";merged.finished_at=t;
+        merged.message=String(req.body?.reason||"La entrada ya no está vigente.").slice(0,240);
+      }else if(stage==="done"){
+        const prepared=await readMainJson(PREPARED_PATH);
+        const persisted=(prepared.items||[]).find(x=>String(x.event_id||"")===target_id&&Number(x.revision||0)===Number(cur.revision||0)&&String(x.ai_image?.context_guard?.command_id||"")===command_id&&String(x.ai_image?.url||"").trim());
+        if(!persisted)return res.status(409).json({ok:false,error:"image_not_persisted_yet"});
+        merged.status="DONE";merged.phase="done";merged.finished_at=t;merged.message="Gag IA materializado y visible en Listas.";
+      }else if(stage==="failed"){
+        const reason=String(req.body?.reason||"El puente de imagen no pudo completar el trabajo.").slice(0,240);
+        merged.status="ERROR";merged.phase=cur.upload_sha256?"image_bridge_failed":"pc_launch_failed";merged.finished_at=t;merged.message=reason;
+        await markPreparedImageFailed(target_id,cur.revision,reason).catch(()=>{});
+      }else if(stage==="progress"){
+        const phase=String(req.body?.phase||"pc_progress").trim().slice(0,80)||"pc_progress";
+        const detail=String(req.body?.detail||"").trim().slice(0,240);
+        merged.status="RUNNING";merged.phase=phase;merged.pc_picked_up_at=cur.pc_picked_up_at||t;
+        merged.message=detail||("Progreso de imagen: "+phase);
+      }else{
+        merged.status="RUNNING";merged.phase=stage==="picked_up"?"pc_pickup":"pc_launch";
+        if(stage==="picked_up"){
+          merged.pc_picked_up_at=cur.pc_picked_up_at||t;
+          if(req.body?.upload_secret_hash)merged.pc_upload_secret_hash=String(req.body.upload_secret_hash).toLowerCase();
+        }
+        if(stage==="launched"){merged.pc_picked_up_at=cur.pc_picked_up_at||t;merged.pc_launched_at=cur.pc_launched_at||t}
+        merged.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":"Prompt enviado en la pestaña fija; esperando ImageGen.";
+      }
+      writeBase=fresh;writeNext=merged;
+      await new Promise(r=>setTimeout(r,40*(attempt+1)));
+    }
+  }
 }
 
 async function requestImageUpload(req,res){
