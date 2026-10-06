@@ -214,7 +214,7 @@ async function fetchRadarMeta(){
   };
 }
 async function fetchOperaMeta(){
-  const r=await fetch('/api/rain-opera',{cache:'no-store'});
+  const r=await fetch('/api/rain-opera');
   if(!r.ok)throw new Error('OPERA HTTP '+r.status);
   return r.json();
 }
