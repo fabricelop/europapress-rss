@@ -435,6 +435,49 @@ function quarterHourRateAt(timeMs){
   }
   return 0;
 }
+function nativeQuarterHourLikely(loc=state.loc){
+  const lat=Number(loc?.lat),lon=Number(loc?.lon);
+  if(!Number.isFinite(lat)||!Number.isFinite(lon))return false;
+  // Open-Meteo documents native 15-min precipitation only for limited Central-European / North-American domains.
+  // Iberia (including Madrid) is therefore treated as interpolated, never as native 15-min guidance.
+  const centralEurope=lat>=43.5&&lat<=56.5&&lon>=-5&&lon<=22;
+  const northAmerica=lat>=25&&lat<=55&&lon>=-130&&lon<=-60;
+  return centralEurope||northAmerica;
+}
+function modelPointAt(timeMs){
+  const rows=state.data?.timeline||[];
+  const best=rows.reduce((acc,row)=>{
+    const d=Math.abs(Date.parse(row.time)-timeMs);
+    return !acc||d<acc.d?{row,d}:acc;
+  },null);
+  if(!best||best.d>90*60_000)return{probability:0,rate:0,row:null};
+  return{
+    probability:Math.max(0,Math.min(1,(Number(best.row.probability)||0)/100)),
+    rate:Math.max(0,Number(best.row.precipitation)||0),
+    row:best.row
+  };
+}
+function nowcastReliability(){
+  const rv=Math.max(0,Math.min(1,Number(state.nowcast?.evolution?.score)||Number(state.nowcast?.confidence)||0));
+  const op=operaNowcastInfo(),age=Number(state.data?.opera?.ageMinutes);
+  const opFresh=op?Math.max(0,Math.min(1,1-Math.max(0,age-10)/30)):0;
+  const opScore=op?(Number(op.confidence)||0)*opFresh:0;
+  return Math.max(rv,opScore);
+}
+function radarBlendWeight(horizonMinutes,reliability=nowcastReliability()){
+  const r=Math.max(0,Math.min(1,Number(reliability)||0));
+  const full=12+18*r;
+  const zero=48+42*r;
+  if(horizonMinutes<=full)return .9;
+  if(horizonMinutes>=zero)return 0;
+  return .9*(1-(horizonMinutes-full)/Math.max(1,zero-full));
+}
+function nowcastReliableHorizon(){
+  const rv=Math.max(20,Math.min(90,Number(state.nowcast?.reliableHorizonMinutes)||45));
+  const op=operaNowcastInfo(),opH=op?Math.max(20,Math.min(80,25+50*(Number(op.confidence)||0))):0;
+  return Math.round(Math.max(rv,opH));
+}
+
 function intensityLabel(rate){
   if(rate<=0.05)return'Seco';
   if(rate<0.5)return'Llovizna';
@@ -530,10 +573,10 @@ function shortPoints(){
     ev=nextModelEventAfter(correction.episode.maxEnd+5*60_000);
   }
   const radarBase=Date.parse(n?.radarTime||''),series=Array.isArray(n?.series)?n.series:[];
-  const eventStart=ev?Date.parse(ev.start):Infinity,eventEnd=ev?.end?Date.parse(ev.end):eventStart+45*60_000;
-  const points=[];
+  const eventStart=ev?.start?Date.parse(ev.start):Infinity,eventEnd=ev?.end?Date.parse(ev.end):Infinity;
+  const native15=nativeQuarterHourLikely(),reliability=nowcastReliability(),points=[];
   for(let i=0;i<=24;i++){
-    const time=now+i*5*60_000;
+    const time=now+i*5*60_000,horizon=Math.max(0,(time-now)/60_000);
     let radar=null;
     if(Number.isFinite(radarBase)&&series.length){
       radar=series.reduce((best,row)=>{
@@ -541,38 +584,41 @@ function shortPoints(){
         return !best||d<best.d?{row,d}:best;
       },null)?.row||null;
     }
-    const operaPoint=operaPointAt(time),modelRate=quarterHourRateAt(time);
+    const operaPoint=operaPointAt(time),model=modelPointAt(time);
+    const native15Rate=native15?quarterHourRateAt(time):0;
+    const modelRate=native15&&native15Rate>0?Math.max(model.rate*.35,native15Rate):model.rate;
+    const modelProb=model.probability;
     const radarRate=Number(radar?.radarRate)||0,operaRate=Number(operaPoint?.rateMmH)||0;
-    const radarProb=Number(radar?.probability),operaProb=Number(operaPoint?.probability);
+    const radarProb=Math.max(0,Math.min(1,Number(radar?.probability)||0));
+    const operaProb=Math.max(0,Math.min(1,Number(operaPoint?.probability)||0));
     const wetFraction=Number(radar?.wetFraction)||0,operaWetFraction=Number(operaPoint?.wetFraction)||0;
-    const horizon=Math.max(0,(time-now)/60_000),radarWeight=Math.max(.42,.9-horizon*.004);
-    const inEvent=Boolean(ev)&&time>=eventStart&&time<=eventEnd;
     const radarWet=wetFraction>=.10&&radarRate>=.03,operaWet=operaWetFraction>=.10&&operaRate>=.03;
-    const nowcastRates=[radarWet?radarRate:null,operaWet?operaRate:null].filter(Number.isFinite);
-    const nowcastRate=nowcastRates.length?nowcastRates.reduce((a,b)=>a+b,0)/nowcastRates.length:0;
-    let rate=0;
-    if(rainNow&&i===0)rate=Math.max(radarRate,operaRate,modelRate,Number(n?.currentRadarRate)||0,Number(state.data?.opera?.sample?.rateMmH)||0);
-    else if(inEvent){
-      if(nowcastRate>0)rate=nowcastRate*radarWeight+modelRate*(1-radarWeight);
-      else rate=modelRate;
+    const sourceRates=[radarWet?radarRate:null,operaWet?operaRate:null].filter(Number.isFinite);
+    const sourceProbs=[radar?radarProb:null,operaPoint?operaProb:null].filter(Number.isFinite);
+    const nowcastRate=sourceRates.length?sourceRates.reduce((a,b)=>a+b,0)/sourceRates.length:0;
+    const nowcastProb=sourceProbs.length?sourceProbs.reduce((a,b)=>a+b,0)/sourceProbs.length:0;
+    const blend=sourceProbs.length?radarBlendWeight(horizon,reliability):0;
+    let rate=nowcastRate*blend+modelRate*(1-blend);
+    let probability=nowcastProb*blend+modelProb*(1-blend);
+    const inEvent=Boolean(ev)&&time>=eventStart&&time<=eventEnd;
+    if(!inEvent&&probability<.34&&rate<.05){probability*=.45;rate*=.35}
+    if(rainNow&&i===0){
+      rate=Math.max(radarRate,operaRate,Number(n?.currentRadarRate)||0,Number(state.data?.opera?.sample?.rateMmH)||0,rate);
+      probability=Math.max(probability,.78);
     }
-    const modelSignal=modelRate<=.05?0:Math.min(.76,.25+Math.log1p(modelRate)*.24);
-    let probability=Math.max(Number.isFinite(radarProb)?radarProb:0,Number.isFinite(operaProb)?operaProb:0,modelSignal*.5);
-    if(!inEvent&&!rainNow)probability=0;
-    if(inEvent&&rate>0)probability=Math.max(probability,.35);
     if(i===0){
-      const truth=currentTruth();
-      if(truth===true){probability=1;rate=Math.max(rate,.1)}
-      if(truth===false){probability=0;rate=0}
+      const localTruth=currentTruth();
+      if(localTruth===true){probability=1;rate=Math.max(rate,.1)}
+      if(localTruth===false){probability=0;rate=0}
     }
+    const wet=i===0
+      ? rainNow&&rate>.03
+      : probability>=.36&&rate>=.03;
     points.push({
-      time,
-      probability:Math.max(0,Math.min(1,probability||0)),
-      rate:Math.max(0,rate||0),
-      radarRate,operaRate,modelRate,
-      wetFraction,operaWetFraction,
-      inEvent,
-      wet:i===0 ? (rainNow&&rate>.03) : inEvent&&(rate>=.03||radarWet||operaWet)
+      time,probability:Math.max(0,Math.min(1,probability||0)),rate:Math.max(0,rate||0),
+      radarRate,operaRate,modelRate,wetFraction,operaWetFraction,inEvent,wet,
+      blendWeight:blend,
+      dominantSource:blend>=.66?'radar':blend>=.20?'mixed':'models'
     });
   }
   return points;
