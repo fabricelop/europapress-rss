@@ -263,9 +263,7 @@ async function computeNowcast(meta){
   return{...base,status:'ok',confidence:motion.confidence,event,motion:{...radarGeo(motion,state.loc.lat,step),samples:motion.samples,consistency:motion.consistency},series};
 }
 
-function currentRainState(){
-  const truth=currentTruth();
-  if(truth!==null)return{raining:truth,source:'feedback',label:truth?'Llueve ahora':'No llueve ahora'};
+function automaticRainState(){
   const radarWet=Number(state.nowcast?.currentWetFraction);
   const radarOk=state.nowcast?.status==='ok'||state.nowcast?.status==='motion_uncertain';
   const radarRain=radarOk&&Number.isFinite(radarWet)&&radarWet>=calibratedRadarThreshold();
@@ -273,6 +271,11 @@ function currentRainState(){
   const modelRain=modelP>=.1;
   const raining=radarOk?(radarRain||(modelRain&&radarWet>=.08)):modelRain;
   return{raining,source:radarOk?'radar+modelo':'modelo',label:raining?'Llueve ahora':'No llueve ahora'};
+}
+function currentRainState(){
+  const truth=currentTruth();
+  if(truth!==null)return{raining:truth,source:'feedback',label:truth?'Llueve ahora':'No llueve ahora'};
+  return automaticRainState();
 }
 function feedbackStats(){
   if(!state.currentLocation)return{count:0,accuracy:null};
@@ -438,6 +441,7 @@ async function refreshRadar(){
     state.data={...state.data,radar,sources};
     state.nowcast=await computeNowcast(radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
     state.lastRadarRefresh=Date.now();
+    state.lastCompletedAt=new Date().toISOString();
     render();
   }catch(e){
     if(state.nowcast)state.nowcast={...state.nowcast,refreshError:String(e?.message||e)};
@@ -451,15 +455,21 @@ async function load(force=false){
     state.data=await loadForecast(force);
     state.nowcast=await computeNowcast(state.data.radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
     state.lastRadarRefresh=Date.now();
+    state.lastCompletedAt=new Date().toISOString();
     render();
   }catch(e){
     $('eta').textContent='Sin datos';$('summary').textContent=String(e?.message||e);
   }finally{state.loading=false}
 }
 function setLocation(loc){
-  state.loc={name:loc.name||'Ubicación',lat:Number(loc.lat),lon:Number(loc.lon)};
+  const next={name:loc.name||'Ubicación',lat:Number(loc.lat),lon:Number(loc.lon),isCurrent:Boolean(loc.isCurrent)};
+  state.loc=next;
+  if(next.isCurrent){
+    state.currentLocation={...next};
+    localStorage.setItem('raineta.currentLocation',JSON.stringify(state.currentLocation));
+  }
   localStorage.setItem('raineta.loc',JSON.stringify(state.loc));state.frameIndex=0;
-  $('dlg').close();load(true);
+  $('dlg').close();showDetail();load(true);
 }
 async function searchPlace(){
   const q=$('q').value.trim();if(q.length<2)return;
@@ -476,23 +486,112 @@ async function searchPlace(){
     for(const x of ranked){
       const b=document.createElement('button');
       b.textContent=x.name+(x.admin1?' · '+x.admin1:'')+(x.country?' · '+x.country:'');
-      b.onclick=()=>setLocation({name:x.name,lat:x.latitude,lon:x.longitude});
+      b.onclick=()=>setLocation({name:x.name,lat:x.latitude,lon:x.longitude,isCurrent:false});
       $('results').appendChild(b);
     }
     if(!$('results').children.length)$('results').textContent='Sin resultados';
   }catch{$('results').textContent='No se pudo buscar'}
 }
 
+function recordFeedback(raining){
+  if(!state.currentLocation||!samePlace(state.loc,state.currentLocation))return;
+  const auto=automaticRainState();
+  state.feedback.push({
+    time:Date.now(),
+    lat:state.currentLocation.lat,lon:state.currentLocation.lon,
+    raining:Boolean(raining),predicted:Boolean(auto.raining),
+    radarWetFraction:Number.isFinite(Number(state.nowcast?.currentWetFraction))?Number(state.nowcast.currentWetFraction):null,
+    modelPrecip:Number(state.data?.quarterHour?.current?.precipitation)||0,
+    threshold:calibratedRadarThreshold()
+  });
+  state.feedback=state.feedback.slice(-120);persistFeedback();render();
+}
+function toggleSavedLocation(){
+  if(state.loc.isCurrent)return;
+  const idx=state.savedLocations.findIndex(x=>samePlace(x,state.loc,.0015));
+  if(idx>=0)state.savedLocations.splice(idx,1);
+  else state.savedLocations.push({name:state.loc.name,lat:state.loc.lat,lon:state.loc.lon,isCurrent:false});
+  persistLocations();render();
+}
+async function fetchQuickSummary(loc){
+  const p=new URLSearchParams({
+    latitude:String(loc.lat),longitude:String(loc.lon),
+    current:'temperature_2m,precipitation,rain,showers',
+    minutely_15:'precipitation',forecast_minutely_15:'16',
+    timeformat:'unixtime',timezone:'GMT'
+  });
+  const d=await fetchJson('https://api.open-meteo.com/v1/forecast?'+p,8000);
+  const time=(d.minutely_15?.time||[]).map(iso),prec=(d.minutely_15?.precipitation||[]).map(v=>Number(v)||0);
+  const events=detectQuarterHourEvents(time,prec),next=events.find(e=>Date.parse(e.end)>Date.now())||null;
+  const precipitation=Number(d.current?.precipitation)||0;
+  return{
+    location:loc,
+    temperature:Number(d.current?.temperature_2m),
+    raining:precipitation>=.1,
+    precipitation,
+    next
+  };
+}
+function allLocations(){
+  const out=[];
+  if(state.currentLocation)out.push({...state.currentLocation,isCurrent:true,name:'Mi ubicación'});
+  for(const loc of state.savedLocations)if(!out.some(x=>samePlace(x,loc,.0015)))out.push({...loc,isCurrent:false});
+  return out;
+}
+async function renderLocationsSummary(force=false){
+  if(state.locationsLoading)return;
+  state.locationsLoading=true;
+  const holder=$('locationCards'),locations=allLocations();
+  holder.innerHTML=locations.length?'<div class="status">Actualizando '+locations.length+' lugares…</div>':'<div class="status">Todavía no tienes lugares. Usa “Añadir lugar” o guarda uno desde su detalle.</div>';
+  if(!locations.length){$('locationsUpdated').textContent=fmtTimeSeconds(Date.now());state.locationsLoading=false;return}
+  const settled=await Promise.allSettled(locations.map(fetchQuickSummary));
+  holder.innerHTML='';
+  settled.forEach((result,index)=>{
+    const loc=locations[index],card=document.createElement('div');card.className='locationCard';
+    const left=document.createElement('button');left.className='openLoc';
+    const right=document.createElement('div');
+    if(result.status==='fulfilled'){
+      const s=result.value;
+      const next=s.next&&!s.raining?(Date.parse(s.next.start)>Date.now()?' · lluvia '+until(s.next.start):''):'';
+      left.innerHTML='<strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>'+(s.raining?'Precipitación detectada':'Sin precipitación ahora')+next+'</small>';
+      right.innerHTML='<div class="locNow '+(s.raining?'wet':'')+'">'+(s.raining?'LLUEVE':'NO LLUEVE')+'</div><div class="locTemp">'+(Number.isFinite(s.temperature)?s.temperature.toFixed(1).replace('.',',')+' °C':'—')+'</div>';
+    }else{
+      left.innerHTML='<strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>No se pudieron actualizar los datos</small>';
+      right.innerHTML='<div class="locNow">—</div>';
+    }
+    left.onclick=()=>setLocation(loc);
+    if(!loc.isCurrent){
+      const remove=document.createElement('button');remove.className='removeLoc';remove.textContent='×';remove.title='Quitar';
+      remove.onclick=e=>{e.stopPropagation();state.savedLocations=state.savedLocations.filter(x=>!samePlace(x,loc,.0015));persistLocations();renderLocationsSummary(true)};
+      right.appendChild(remove);
+    }
+    card.append(left,right);holder.appendChild(card);
+  });
+  $('locationsUpdated').textContent=fmtTimeSeconds(Date.now());
+  state.locationsLoading=false;
+}
+function showDetail(){
+  state.view='detail';$('detailView').hidden=false;$('locationsView').hidden=true;$('place').hidden=false;$('viewToggle').textContent='☷';
+}
+function showLocations(){
+  state.view='locations';$('detailView').hidden=true;$('locationsView').hidden=false;$('place').hidden=true;$('viewToggle').textContent='←';renderLocationsSummary();
+}
+
 $('place').onclick=()=>$('dlg').showModal();
 $('close').onclick=()=>$('dlg').close();
-$('refresh').onclick=()=>load(true);
+$('viewToggle').onclick=()=>state.view==='locations'?showDetail():showLocations();
+$('refresh').onclick=()=>state.view==='locations'?renderLocationsSummary(true):load(true);
+$('savePlace').onclick=toggleSavedLocation;
+$('feedbackYes').onclick=()=>recordFeedback(true);
+$('feedbackNo').onclick=()=>recordFeedback(false);
+$('addLocation').onclick=()=>$('dlg').showModal();
 $('search').onclick=searchPlace;
 $('q').onkeydown=e=>{if(e.key==='Enter')searchPlace()};
 $('geo').onclick=()=>{
   if(!navigator.geolocation){$('results').textContent='Geolocalización no disponible';return}
   $('results').textContent='Obteniendo ubicación…';
   navigator.geolocation.getCurrentPosition(
-    p=>setLocation({name:'Mi ubicación',lat:Number(p.coords.latitude.toFixed(5)),lon:Number(p.coords.longitude.toFixed(5))}),
+    p=>setLocation({name:'Mi ubicación',lat:Number(p.coords.latitude.toFixed(5)),lon:Number(p.coords.longitude.toFixed(5)),isCurrent:true}),
     e=>$('results').textContent=e.message,
     {enableHighAccuracy:true,timeout:15000,maximumAge:60000}
   );
