@@ -1,5 +1,5 @@
 # TTendenciasDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v14-cdp-preflight-auto-recovery
+# official-pipeline-restart-token: 2026-10-06-v15-abandoned-mutex-recovery
 # Listener dedicado de TTendencias: editorial + cola automática/manual de imágenes IA por entrada.
 # No procesa TTiTTulares.
 
@@ -26,7 +26,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 
-$WorkerId = "ttendencias-dedicated-v14"
+$WorkerId = "ttendencias-dedicated-v15"
 $PollSeconds = 15
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
@@ -40,7 +40,13 @@ $script:ListenerSnapshotAt = [DateTimeOffset]::MinValue
 $script:LastStrongSnapshotAt = [DateTimeOffset]::MinValue
 $script:ListenerMutex=New-Object System.Threading.Mutex($false,"Local\TTendenciasDedicatedListenerSingleton")
 $script:ListenerMutexOwned=$false
-try{$script:ListenerMutexOwned=$script:ListenerMutex.WaitOne(0,$false)}catch{}
+try{
+  $script:ListenerMutexOwned=$script:ListenerMutex.WaitOne(0,$false)
+}catch [System.Threading.AbandonedMutexException]{
+  $script:ListenerMutexOwned=$true
+}catch{
+  $script:ListenerMutexOwned=$false
+}
 if(-not $script:ListenerMutexOwned){exit 0}
 
 function Write-Log([string]$Text) {
