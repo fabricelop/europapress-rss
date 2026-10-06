@@ -14782,7 +14782,7 @@
       "percentage": 43.8,
       "first_seen": "2026-10-06T11:33:06.571124Z",
       "last_seen": "2026-10-06T11:42:31.392186Z",
-      "status": "PROBLEMATIC",
+      "status": "DISMISSED",
       "notified": false,
       "revision": 1,
       "sport_sources": [
@@ -14875,7 +14875,12 @@
       "verified_source_count": 7,
       "problematic_at": "2026-10-06T12:07:31.789505Z",
       "problem_reason": "transport_write_blocked",
-      "problematic_attempts": 1
+      "problematic_attempts": 1,
+      "dismissed_at": "2026-10-06T12:13:25.636Z",
+      "manual_user_dismissed": true,
+      "dismissal_source": "web_user",
+      "history_hidden_at": "2026-10-06T12:13:25.636Z",
+      "history_hidden_source": "web_user_dismissal"
     },
     {
       "id": "48bca90f6447",
@@ -15069,7 +15074,7 @@
         "EL PAÍS"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-06T11:12:53.056822Z",
       "last_seen": "2026-10-06T11:52:46.914162Z",
       "status": "PROCESSING",
@@ -15185,7 +15190,7 @@
         "Cadena SER"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-06T11:03:31.767130Z",
       "last_seen": "2026-10-06T12:04:28.238446Z",
       "status": "PROCESSING",
@@ -15293,7 +15298,7 @@
         "Cadena SER"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-06T11:12:53.056822Z",
       "last_seen": "2026-10-06T12:04:28.238446Z",
       "status": "PROCESSING",
@@ -15401,7 +15406,7 @@
         "elDiario.es"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-06T11:33:06.571124Z",
       "last_seen": "2026-10-06T12:04:28.238446Z",
       "status": "PROCESSING",
@@ -15509,7 +15514,7 @@
         "20minutos"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-06T11:42:31.392186Z",
       "last_seen": "2026-10-06T12:04:28.238446Z",
       "status": "PROCESSING",
@@ -15573,5 +15578,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-06T12:13:15.097806Z"
+  "updated_at": "2026-10-06T12:13:25.636Z"
 }
