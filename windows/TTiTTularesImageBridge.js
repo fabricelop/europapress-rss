@@ -185,6 +185,19 @@ async function waitComposer(cdp,timeoutMs=60000){
   }
   throw Error("La pestaña dedicada no mostró compositor en "+timeoutMs+" ms; "+JSON.stringify(last||{}).slice(0,400))
 }
+async function ensureChatRootFromFreshTarget(cdp){
+  let st=null;
+  try{st=await cdp.eval("(()=>({url:location.href,ready:document.readyState}))()")}catch{}
+  if(st&&String(st.url||"").includes("chatgpt.com"))return;
+  let scheduled=false;
+  try{
+    scheduled=Boolean(await cdp.eval("(()=>{setTimeout(()=>location.replace("+JSON.stringify(CHAT_ROOT)+"),0);return true})()"))
+  }catch(e){console.log("BRIDGE LOCATION REPLACE WARNING :: "+String(e&&e.message||e))}
+  if(!scheduled){
+    try{await cdp.call("Page.navigate",{url:CHAT_ROOT},8000)}catch(e){console.log("BRIDGE PAGE NAVIGATE LAST RESORT WARNING :: "+String(e&&e.message||e))}
+  }
+  await sleep(800)
+}
 async function resetToFreshConversation(cdp){
   const st=await waitComposer(cdp,12000);
   const url=String(st&&st.url||"");
@@ -237,13 +250,15 @@ async function openFreshDedicatedConversation(){
     try{cdp.close()}catch{}
     const staleId=String(t&&t.id||"");
     await closeFixedTargetById(staleId);
-    // createFixedTarget YA abre CHAT_ROOT. No volver a llamar Page.navigate:
-    // una segunda navegación era la que dejaba el renderer bloqueado en CDP.
+    // Target.createTarget puede devolver inicialmente about:blank. En vez de
+    // depender de Page.navigate (el punto que se bloqueaba), programamos la
+    // navegación desde el propio renderer y esperamos después el compositor.
     t=await createFixedTarget();
     cdp=new CDP(t.webSocketDebuggerUrl);
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
+    await ensureChatRootFromFreshTarget(cdp);
     await waitComposer(cdp,60000);
     await progress("composer_ready","Pestaña fija recreada desde cero; compositor disponible.");
     console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id)+" previous="+staleId);
