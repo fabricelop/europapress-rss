@@ -156,7 +156,7 @@ async function writeTrigger(doc,sha){
 }
 
 function gitBlobSha(buf){
-  const head=Buffer.from("blob "+buf.length+"\\0","utf8");
+  const head=Buffer.from("blob "+buf.length+"\0","utf8");
   return crypto.createHash("sha1").update(head).update(buf).digest("hex")
 }
 async function readRawJsonWithSha(path,branch){
