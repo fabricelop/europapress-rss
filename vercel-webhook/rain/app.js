@@ -339,7 +339,12 @@ async function searchPlace(){
     const p=new URLSearchParams({name:q,count:'8',language:'es',format:'json'});
     const d=await fetchJson('https://geocoding-api.open-meteo.com/v1/search?'+p,7000);
     $('results').textContent='';
-    for(const x of d.results||[]){
+    const ranked=[...(d.results||[])].sort((a,b)=>{
+      const aes=String(a.country_code||'').toUpperCase()==='ES'?0:1;
+      const bes=String(b.country_code||'').toUpperCase()==='ES'?0:1;
+      return aes-bes;
+    });
+    for(const x of ranked){
       const b=document.createElement('button');
       b.textContent=x.name+(x.admin1?' · '+x.admin1:'')+(x.country?' · '+x.country:'');
       b.onclick=()=>setLocation({name:x.name,lat:x.latitude,lon:x.longitude});
