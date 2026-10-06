@@ -6,15 +6,16 @@ $ErrorActionPreference = "Stop"
 $BaseDir = "C:\TTiTTulares"
 
 function Get-MainFile([string]$RepoPath,[string]$OutFile) {
-  $api = "https://api.github.com/repos/fabricelop/europapress-rss/contents/" + $RepoPath + "?ref=main&t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-  $doc = Invoke-RestMethod -Uri $api -Headers @{
-    "Accept" = "application/vnd.github+json"
+  # Leer directamente del CDN raw público evita consumir la cuota REST de GitHub.
+  $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  $rawUrl = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" + $RepoPath + "?t=" + $stamp
+  Invoke-WebRequest -Uri $rawUrl -OutFile $OutFile -Headers @{
     "User-Agent" = "TT-image-hotfix"
     "Cache-Control" = "no-cache"
-  } -TimeoutSec 20
-  if (-not $doc.content) { throw "GitHub API sin contenido para $RepoPath" }
-  $raw = [Convert]::FromBase64String(([string]$doc.content -replace "\s",""))
-  [IO.File]::WriteAllBytes($OutFile,$raw)
+  } -TimeoutSec 30 -UseBasicParsing
+  if (-not (Test-Path -LiteralPath $OutFile) -or (Get-Item -LiteralPath $OutFile).Length -lt 100) {
+    throw "Descarga raw inválida para $RepoPath"
+  }
 }
 
 function Validate-PowerShell([string]$File,[string[]]$Needles) {
@@ -77,6 +78,8 @@ Validate-PowerShell $tmpTitleListener @(
 )
 Validate-Node $tmpTitleBridge @(
   'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
+  'BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback"',
+  'BRIDGE_PATCH="v31-rotating-trusted-submit"',
   'original-fetch-img',
   'canvas-from-img-',
   'image-element-screenshot-'
@@ -115,5 +118,5 @@ if($titleProc.HasExited){throw "TTiTTulares listener no quedó activo"}
 Write-Host "HOTFIX IMAGEN ACTIVO" -ForegroundColor Green
 Write-Host "TTendencias PID: $($trendProc.Id)"
 Write-Host "TTiTTulares PID: $($titleProc.Id)"
-Write-Host "Bridge: v29 visible-composer + DOM fallback"
+Write-Host "Bridge: v31 visible-composer + trusted click + DOM/keyboard fallback"
 Write-Host "Falso negativo de Ejecutar.js: ya no aborta el job; lo verifica el bridge."
