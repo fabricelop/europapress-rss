@@ -3697,7 +3697,7 @@
       "percentage": 25,
       "first_seen": "2026-10-06T18:36:35.651290Z",
       "last_seen": "2026-10-06T19:09:18.377646Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -3756,7 +3756,10 @@
       ],
       "drafted_source_count": 4,
       "verified_source_count": 4,
-      "automatic_redaction_requested_at": "2026-10-06T19:52:13.982212+00:00"
+      "automatic_redaction_requested_at": "2026-10-06T19:52:13.982212+00:00",
+      "reconciled_from_event_id": "d68a08e05fdd",
+      "reconciliation_reason": "Mismo hecho esencial ya publicado: Génova se desmarcó de las dudas de Ayuso y defendió el voto por correo como sistema garantista. La formulación posterior de Sémper frente a Ayuso y Azcón no aporta una novedad material independiente.",
+      "reconciled_at": "2026-10-06T19:52:39.912951Z"
     },
     {
       "id": "72cecec23f1f",
@@ -4782,5 +4785,5 @@
       "delivery_confirmation": "prepared_web"
     }
   ],
-  "updated_at": "2026-10-06T19:47:55.720888Z"
+  "updated_at": "2026-10-06T19:52:39.912951Z"
 }
