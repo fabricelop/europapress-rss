@@ -132,14 +132,14 @@ async function fetchEns(model){
 async function fetchQuarterHour(){
   const p=new URLSearchParams({
     latitude:String(state.loc.lat),longitude:String(state.loc.lon),
-    current:'precipitation,rain,showers',
+    current:'temperature_2m,precipitation,rain,showers',
     minutely_15:'precipitation',forecast_minutely_15:'32',
     timeformat:'unixtime',timezone:'GMT'
   });
   const d=await fetchJson('https://api.open-meteo.com/v1/forecast?'+p,8000);
   const h=d.minutely_15||{},times=(h.time||[]).map(iso),prec=(h.precipitation||[]).map(v=>Number(v)||0);
   return {
-    current:{time:d.current?.time?iso(d.current.time):null,precipitation:Number(d.current?.precipitation)||0},
+    current:{time:d.current?.time?iso(d.current.time):null,temperature:Number(d.current?.temperature_2m),precipitation:Number(d.current?.precipitation)||0,rain:Number(d.current?.rain)||0,showers:Number(d.current?.showers)||0},
     time:times,precipitation:prec,events:detectQuarterHourEvents(times,prec),
     interpolated:true
   };
