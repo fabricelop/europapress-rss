@@ -1,5 +1,5 @@
 # TTendenciasDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-05-v13-authoritative-ack
+# official-pipeline-restart-token: 2026-10-06-v14-cdp-preflight-auto-recovery
 # Listener dedicado de TTendencias: editorial + cola automática/manual de imágenes IA por entrada.
 # No procesa TTiTTulares.
 
@@ -9,6 +9,7 @@ $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
 $Runner = Join-Path $BaseDir "Ejecutar.js"
 $ImageBridge = Join-Path $BaseDir "TTendenciasImageBridge.js"
 $ImageBridgeLockPath = Join-Path $BaseDir "ttendencias-image-bridge.lock.json"
+$OtherImageBridgeLockPath = Join-Path $BaseDir "ttittulares-image-bridge.lock.json"
 $StatePath = Join-Path $BaseDir "ttendencias-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttendencias-mobile-trigger.log"
 $WatchdogPath = Join-Path $BaseDir "TT-LocalWatchdog.ps1"
@@ -25,7 +26,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 
-$WorkerId = "ttendencias-dedicated-v13"
+$WorkerId = "ttendencias-dedicated-v14"
 $PollSeconds = 15
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
@@ -467,6 +468,61 @@ function Publish-ImageTargetHint([string]$BeforeSnapshot,[string]$HintPath,[stri
   }
 }
 
+function Test-OtherImageBridgeBusy {
+  if (-not (Test-Path -LiteralPath $OtherImageBridgeLockPath)) { return $false }
+  try {
+    $lock = Get-Content -LiteralPath $OtherImageBridgeLockPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $pidValue = [int]$lock.pid
+    if($pidValue -gt 0 -and (Get-Process -Id $pidValue -ErrorAction SilentlyContinue)){ return $true }
+  } catch {}
+  Remove-Item -LiteralPath $OtherImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+  return $false
+}
+
+function Test-DedicatedChromeCdpHealthy {
+  try {
+    $v=Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/version?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 3
+    if(-not $v -or -not $v.webSocketDebuggerUrl){ return $false }
+    $targets=Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/list?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 4
+    $pages=@($targets | Where-Object { [string]$_.type -eq "page" -and $_.webSocketDebuggerUrl })
+    if($pages.Count -eq 0){ return $false }
+    $chatPages=@($pages | Where-Object {
+      $u=[string]$_.url
+      $u -like "https://chatgpt.com/*" -or $u -eq "https://chatgpt.com/"
+    })
+    return ($chatPages.Count -gt 0)
+  } catch { return $false }
+}
+
+function Restart-DedicatedChromeCdp([string]$CommandId,[string]$Reason) {
+  if(Test-OtherImageBridgeBusy){
+    Write-Log "CHROME CDP RECOVERY DEFERRED command=$CommandId reason=ttittulares-image-active"
+    return $false
+  }
+  Write-Log "CHROME CDP RECOVERY START command=$CommandId reason=$Reason"
+  try {
+    $roots=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
+      ($_.Name -ieq "chrome.exe" -or $_.Name -ieq "msedge.exe") -and
+      [string]$_.CommandLine -match '--remote-debugging-port(?:=|\s+)9223(?:\s|$)'
+    })
+    foreach($p in $roots){ try{& taskkill.exe /PID $p.ProcessId /T /F 1>$null 2>$null}catch{} }
+    Start-Sleep -Seconds 2
+    & schtasks.exe /Run /TN "TT Chrome Auto" 1>$null 2>$null
+    $deadline=(Get-Date).AddSeconds(25)
+    while((Get-Date) -lt $deadline){
+      if(Test-DedicatedChromeCdpHealthy){
+        Write-Log "CHROME CDP RECOVERY OK command=$CommandId killed=$($roots.Count)"
+        return $true
+      }
+      Start-Sleep -Seconds 1
+    }
+    Write-Log "CHROME CDP RECOVERY FAILED command=$CommandId reason=endpoint-or-chat-not-ready"
+  } catch {
+    Write-Log "CHROME CDP RECOVERY ERROR command=$CommandId :: $($_.Exception.Message)"
+  }
+  return $false
+}
+
 function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadSecret,[string]$TargetSnapshot = "[]",[string]$TargetHintPath = "") {
   if (-not (Test-Path -LiteralPath $ImageBridge)) {
     Write-Log "IMAGE BRIDGE ERROR missing=$ImageBridge"
@@ -902,6 +958,26 @@ while ($true) {
             ([string]::IsNullOrWhiteSpace($remotePhase) -or $remotePhase -eq "queued" -or $remotePhase -eq "requested")
           if (-not $retryableSeen) { continue }
           Write-Log "IMAGE RETRY SEEN target=$targetId command=$commandId status=$remoteStatus phase=$remotePhase"
+        }
+
+        # PRE-FLIGHT tras reinicios/OOM de Chrome: no consumir el job hasta
+        # tener CDP y una pestaña ChatGPT utilizables.
+        if(-not (Test-DedicatedChromeCdpHealthy)){
+          if(Test-OtherImageBridgeBusy){
+            Write-Log "IMAGE CHROME PREFLIGHT WAIT target=$targetId command=$commandId reason=ttittulares-image-active"
+            continue
+          }
+          Write-Log "IMAGE CHROME PREFLIGHT FAILED target=$targetId command=$commandId"
+          if(-not (Restart-DedicatedChromeCdp $commandId "preflight-unhealthy")){
+            Write-Log "IMAGE CHROME PREFLIGHT RETRY target=$targetId command=$commandId"
+            continue
+          }
+          Start-Sleep -Seconds 2
+          if(-not (Test-DedicatedChromeCdpHealthy)){
+            Write-Log "IMAGE CHROME PREFLIGHT STILL UNHEALTHY target=$targetId command=$commandId"
+            continue
+          }
+          Write-Log "IMAGE CHROME PREFLIGHT RECOVERED target=$targetId command=$commandId"
         }
 
         Write-Log "IMAGE NEW target=$targetId command=$commandId name=$($job.target_name)"
