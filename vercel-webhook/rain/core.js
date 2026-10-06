@@ -148,9 +148,41 @@ export function buildConsensus({ deterministic = [], ensembles = [], nowMs = Dat
   });
 }
 
-function bridgeSingleHourGaps(flags) {
-  const out=[...flags];
-  for(let i=1;i<flags.length-1;i++) if(!flags[i]&&flags[i-1]&&flags[i+1]) out[i]=true;
+export function classifyRainHour(point={},{
+  minimumProbability=.48,
+  minimumExpected=.06,
+  strongProbability=.64,
+  strongExpected=.035,
+  veryStrongProbability=.78,
+  veryStrongExpected=.02,
+  heavyExpected=.35,
+  possibleProbability=.36,
+  possibleExpected=.02
+}={}){
+  const probability=Math.max(0,Number(point.probability)||0);
+  const expected=Math.max(0,Number(point.expectedPrecipitation)||0);
+  const wet=
+    (probability>=minimumProbability&&expected>=minimumExpected)||
+    (probability>=strongProbability&&expected>=strongExpected)||
+    (probability>=veryStrongProbability&&expected>=veryStrongExpected)||
+    expected>=heavyExpected;
+  if(wet)return'wet';
+  const possible=
+    (probability>=possibleProbability&&expected>=possibleExpected)||
+    (probability>=.58&&expected>=.012)||
+    expected>=.15;
+  return possible?'possible':'dry';
+}
+
+function bridgeOnlyCredibleSingleHourGaps(points,states){
+  const out=[...states];
+  for(let i=1;i<states.length-1;i++){
+    if(states[i]!=='possible'||states[i-1]!=='wet'||states[i+1]!=='wet')continue;
+    const gap=points[i],left=points[i-1],right=points[i+1];
+    const gapP=Number(gap.probability)||0,gapE=Number(gap.expectedPrecipitation)||0;
+    const neighborAmount=Math.min(Number(left.expectedPrecipitation)||0,Number(right.expectedPrecipitation)||0);
+    if(gapP>=.46&&gapE>=.035&&neighborAmount>=.10)out[i]='wet';
+  }
   return out;
 }
 
@@ -170,25 +202,29 @@ function findBoundaryWindow(points,index,direction,low=0.22,high=0.66){
   return {earliest:points[earliestIndex]?.time??start,latest:points[latestIndex]?.time??start};
 }
 
-export function detectRainEvents(points=[],{minimumProbability=0.45,minimumExpected=0.03,strongProbability=0.65,heavyExpected=0.25}={}){
+export function detectRainEvents(points=[],options={}){
   if(!points.length) return [];
-  const wet=bridgeSingleHourGaps(points.map(point=>{
-    const probability=Number(point.probability)||0,expected=Number(point.expectedPrecipitation)||0;
-    return (probability>=minimumProbability&&expected>=minimumExpected)||probability>=strongProbability||expected>=heavyExpected;
-  }));
+  const states=bridgeOnlyCredibleSingleHourGaps(points,points.map(point=>classifyRainHour(point,options)));
   const events=[];let i=0;
   while(i<points.length){
-    if(!wet[i]){i++;continue}
+    if(states[i]!=='wet'){i++;continue}
     const startIndex=i;
-    while(i+1<points.length&&wet[i+1]) i++;
+    while(i+1<points.length&&states[i+1]==='wet') i++;
     const endIndex=i,segment=points.slice(startIndex,endIndex+1);
-    const peak=segment.reduce((best,row)=>row.probability>best.probability?row:best,segment[0]);
-    const totalExpected=segment.reduce((sum,row)=>sum+row.expectedPrecipitation,0);
-    const meanTimingConfidence=segment.reduce((sum,row)=>sum+row.timingConfidence,0)/segment.length;
+    const peakProbabilityRow=segment.reduce((best,row)=>row.probability>best.probability?row:best,segment[0]);
+    const peakAmountRow=segment.reduce((best,row)=>row.expectedPrecipitation>best.expectedPrecipitation?row:best,segment[0]);
+    const totalExpected=segment.reduce((sum,row)=>sum+(Number(row.expectedPrecipitation)||0),0);
+    const meanExpected=totalExpected/Math.max(1,segment.length);
+    const meanProbability=segment.reduce((sum,row)=>sum+(Number(row.probability)||0),0)/Math.max(1,segment.length);
+    const meanTimingConfidence=segment.reduce((sum,row)=>sum+(Number(row.timingConfidence)||0),0)/Math.max(1,segment.length);
+    const variance=segment.reduce((sum,row)=>sum+((Number(row.expectedPrecipitation)||0)-meanExpected)**2,0)/Math.max(1,segment.length);
+    const variation=meanExpected>0?Math.sqrt(variance)/meanExpected:0;
+    const durationHours=endIndex-startIndex+1;
+    const character=durationHours>=5&&variation<.45?'persistente':variation>.8?'por pulsos':'variable';
     const horizonHours=Math.max(0,(Date.parse(points[startIndex].time)-Date.now())/3_600_000);
     const horizonPadding=horizonHours<6?1:horizonHours<24?2:3;
-    const startWindow=findBoundaryWindow(points,startIndex,'start');
-    const endWindow=findBoundaryWindow(points,endIndex,'end');
+    const startWindow=findBoundaryWindow(points,startIndex,'start',.28,.70);
+    const endWindow=findBoundaryWindow(points,endIndex,'end',.28,.70);
     if(startWindow.earliest&&startWindow.latest){
       startWindow.earliest=new Date(Date.parse(startWindow.earliest)-Math.max(0,horizonPadding-1)*3_600_000).toISOString();
       startWindow.latest=new Date(Date.parse(startWindow.latest)+Math.max(0,horizonPadding-1)*3_600_000).toISOString();
@@ -198,11 +234,16 @@ export function detectRainEvents(points=[],{minimumProbability=0.45,minimumExpec
       start:points[startIndex].time,
       end:new Date(likelyEndMs).toISOString(),
       startWindow,endWindow,
-      peakTime:peak.time,
-      peakProbability:peak.probability,
-      maxExpectedPrecipitation:Math.max(...segment.map(row=>row.expectedPrecipitation)),
+      peakTime:peakProbabilityRow.time,
+      peakProbability:peakProbabilityRow.probability,
+      peakExpectedTime:peakAmountRow.time,
+      maxExpectedPrecipitation:Number(peakAmountRow.expectedPrecipitation)||0,
+      averageExpectedPrecipitation:meanExpected,
+      averageProbability:meanProbability,
       totalExpectedPrecipitation:totalExpected,
       timingConfidence:meanTimingConfidence,
+      durationHours,
+      character,
       providerCount:Math.max(...segment.map(row=>row.providerCount||0)),
       independentFamilyCount:Math.max(...segment.map(row=>row.independentFamilyCount||0)),
     });
