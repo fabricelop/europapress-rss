@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-06T09:20:14.402Z",
+  "updated_at": "2026-10-06T09:21:52.794Z",
   "items": [
     {
       "event_id": "3a128ed49102",
@@ -491,15 +491,63 @@
       "fallback_image_status": "none",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "none",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "MANUAL",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "fallback_image_search_attempted_at": "2026-10-06T09:11:46.985064Z",
-      "fallback_image_failure_reason": "No se encontró una imagen HTTPS verificable en las páginas de las fuentes del acontecimiento."
+      "fallback_image_failure_reason": "No se encontró una imagen HTTPS verificable en las páginas de las fuentes del acontecimiento.",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/manual-218637915-r1-ai1-791277938193.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b0d53d397a6af677595936d63c25493341a4a65a07f2b4662cb9908cb9a79f75",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 1914170,
+        "context_guard": {
+          "version": 3,
+          "event_id": "manual-218637915",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-manual-218637915-r1-a1-1791277938193"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/manual-218637915-r1-ai1-791277938193.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-06T09:21:52.794Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T09:21:52.794Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/manual-218637915-r1-ai1-791277938193.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b0d53d397a6af677595936d63c25493341a4a65a07f2b4662cb9908cb9a79f75",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 1914170,
+        "context_guard": {
+          "version": 3,
+          "event_id": "manual-218637915",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-manual-218637915-r1-a1-1791277938193"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/manual-218637915-r1-ai1-791277938193.png",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     },
     {
       "event_id": "manual-218637911",
