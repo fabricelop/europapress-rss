@@ -31486,11 +31486,11 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selected_tweet_image": null,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image": {
@@ -31502,13 +31502,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://www.programacion-tv-hoy.es/images/social-programacion-tv-hoy.jpg",
-        "source": "Programación TV Hoy · 6/10/2026",
-        "source_url": "https://www.programacion-tv-hoy.es/canal/cuatro",
-        "alt": "Imagen de archivo relacionada con #TEM6O",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/19d12722eb8a-r0-ai1-791297948521.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "bd962377f6e9019b6edb798a6b29d53b87cdee71b641dc8aeb6527034f9f101f",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 798831,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "19d12722eb8a",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-19d12722eb8a-r0-a1-1791297948521"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/19d12722eb8a-r0-ai1-791297948521.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/19d12722eb8a-r0-ai1-791297948521.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "bd962377f6e9019b6edb798a6b29d53b87cdee71b641dc8aeb6527034f9f101f",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 798831,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "19d12722eb8a",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-19d12722eb8a-r0-a1-1791297948521"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/19d12722eb8a-r0-ai1-791297948521.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T14:48:06.113Z"
     },
     {
       "id": "a1caaebc2161",
@@ -31643,6 +31682,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-06T16:47:26+02:00",
+  "updated_at": "2026-10-06T14:48:06.113Z",
   "count": 593
 }
