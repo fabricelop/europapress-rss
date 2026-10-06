@@ -15,9 +15,16 @@
     },
     "api/money-control-state.js": {
       "maxDuration": 30
+    },
+    "api/ttittulares-push.js": {
+      "maxDuration": 20
     }
   },
   "rewrites": [
+    {
+      "source": "/api/rain-opera",
+      "destination": "/api/ttittulares-push?mode=rain-opera"
+    },
     {
       "source": "/rain/",
       "destination": "/rain/index.html"
