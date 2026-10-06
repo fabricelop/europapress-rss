@@ -27,6 +27,7 @@ jobs:
             /windows/TTiTTularesDedicatedListener.ps1
             /windows/TTendenciasDedicatedListener.ps1
             /windows/Install-ImageBridge-Hotfix.ps1
+            /windows/TT-LocalWatchdog.ps1
       - name: Validar sintaxis Node
         run: |
           node --check windows/TTiTTularesImageBridge.js
@@ -37,7 +38,8 @@ jobs:
           $files=@(
             "windows/TTiTTularesDedicatedListener.ps1",
             "windows/TTendenciasDedicatedListener.ps1",
-            "windows/Install-ImageBridge-Hotfix.ps1"
+            "windows/Install-ImageBridge-Hotfix.ps1",
+            "windows/TT-LocalWatchdog.ps1"
           )
           foreach($file in $files){
             $tokens=$null; $errors=$null
