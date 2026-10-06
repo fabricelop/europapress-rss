@@ -439,7 +439,8 @@ function nativeQuarterHourLikely(loc=state.loc){
   const lat=Number(loc?.lat),lon=Number(loc?.lon);
   if(!Number.isFinite(lat)||!Number.isFinite(lon))return false;
   // Open-Meteo documents native 15-min precipitation only for limited Central-European / North-American domains.
-  // Iberia (including Madrid) is therefore treated as interpolated, never as native 15-min guidance.
+  // Iberia is explicitly treated as interpolated, never as native 15-min guidance.
+  if(lat>=35&&lat<=44.5&&lon>=-10&&lon<=4.5)return false;
   const centralEurope=lat>=43.5&&lat<=56.5&&lon>=-5&&lon<=22;
   const northAmerica=lat>=25&&lat<=55&&lon>=-130&&lon<=-60;
   return centralEurope||northAmerica;
