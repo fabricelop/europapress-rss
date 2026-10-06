@@ -357,7 +357,10 @@ function renderShortNowcast(){
   $('shortWindow').textContent=near
     ? fmtTime(ev.start)+(ev.end?'–'+fmtTime(ev.end):'')+(ev.kind==='radar'?' · '+uncertaintyText(ev):'')
     : 'Ventana corta estable';
-  $('shortConfidence').textContent=near?pct(ev.confidence)+'%':'—';
+  const leadMinutes=near?Math.max(0,(Date.parse(ev.start)-now)/60_000):120;
+  const shortConfidence=near?calibratedConfidence(ev.confidence,leadMinutes):null;
+  $('shortConfidence').textContent=shortConfidence!=null?pct(shortConfidence)+'%':'—';
+  renderRadarSkill();
 
   const maxRate=Math.max(.5,...points.map(p=>p.rate));
   $('minuteStrip').innerHTML=points.map((p,i)=>{
@@ -400,6 +403,76 @@ function updateLiveCountdown(){
       ? (ev.end?formatCountdownMs(Date.parse(ev.end)-now):'—')
       : near?formatCountdownMs(Date.parse(ev.start)-now):'>2 h';
   }
+}
+
+function radarSkillKey(){return 'raineta.radarSkill.'+locationKey(state.loc)}
+function readRadarSkill(){
+  return readLocal(radarSkillKey(),{snapshots:[],scores:[]});
+}
+function writeRadarSkill(data){
+  try{localStorage.setItem(radarSkillKey(),JSON.stringify(data))}catch{}
+}
+function updateRadarValidation(){
+  const n=state.nowcast;
+  const radarMs=Date.parse(n?.radarTime||'');
+  const series=Array.isArray(n?.series)?n.series:[];
+  if(!Number.isFinite(radarMs)||!series.length||!Number.isFinite(Number(n?.currentWetFraction)))return;
+  const threshold=(state.currentLocation&&samePlace(state.loc,state.currentLocation))?calibratedRadarThreshold():.22;
+  const actualWet=Number(n.currentWetFraction)>=threshold;
+  const data=readRadarSkill(),targets=[15,30,60,90];
+  data.snapshots=Array.isArray(data.snapshots)?data.snapshots:[];
+  data.scores=Array.isArray(data.scores)?data.scores:[];
+  for(const snap of data.snapshots){
+    const age=(radarMs-Number(snap.radarMs))/60_000;
+    if(age<8||age>100)continue;
+    snap.done=snap.done||{};
+    for(const lead of targets){
+      if(snap.done[lead]||Math.abs(age-lead)>5.5)continue;
+      const point=(snap.points||[]).reduce((best,p)=>{
+        const d=Math.abs(Number(p.minute)-lead);
+        return !best||d<best.d?{p,d}:best;
+      },null)?.p;
+      if(!point)continue;
+      const predicted=Number(point.probability)>=.30;
+      data.scores.push({time:radarMs,lead,correct:predicted===actualWet,predicted,actual:actualWet,probability:Number(point.probability)||0});
+      snap.done[lead]=true;
+    }
+  }
+  const duplicate=data.snapshots.some(s=>Number(s.radarMs)===radarMs);
+  if(!duplicate){
+    data.snapshots.push({
+      radarMs,
+      points:series.map(p=>({minute:Number(p.minute)||0,probability:Number(p.probability)||0})),
+      done:{}
+    });
+  }
+  data.snapshots=data.snapshots.filter(s=>radarMs-Number(s.radarMs)<4*3600_000).slice(-40);
+  data.scores=data.scores.slice(-300);
+  writeRadarSkill(data);
+}
+function radarSkillStats(){
+  const data=readRadarSkill(),targets=[15,30,60,90],out={};
+  for(const lead of targets){
+    const rows=(data.scores||[]).filter(x=>Number(x.lead)===lead);
+    out[lead]={n:rows.length,accuracy:rows.length?rows.filter(x=>x.correct).length/rows.length:null};
+  }
+  return out;
+}
+function calibratedConfidence(raw,leadMinutes){
+  const stats=radarSkillStats(),lead=[15,30,60,90].reduce((a,b)=>Math.abs(b-leadMinutes)<Math.abs(a-leadMinutes)?b:a,15);
+  const s=stats[lead];
+  if(!s||s.n<6||s.accuracy==null)return raw;
+  return Math.max(.05,Math.min(.98,.76*raw+.24*s.accuracy));
+}
+function renderRadarSkill(){
+  const stats=radarSkillStats();
+  const ready=[15,30,60,90].filter(lead=>stats[lead].n>=3);
+  if(!ready.length){
+    const n=[15,30,60,90].reduce((sum,lead)=>sum+stats[lead].n,0);
+    $('skillText').textContent='Autoevaluación radar: '+(n?'aprendiendo ('+n+' comprobaciones)':'iniciando historial…');
+    return;
+  }
+  $('skillText').textContent='Autoevaluación radar · '+ready.map(lead=>lead+' min '+Math.round(stats[lead].accuracy*100)+'% ('+stats[lead].n+')').join(' · ');
 }
 
 function feedbackStats(){
@@ -568,6 +641,7 @@ async function refreshRadar(){
     sources.health={available:all.filter(x=>x.ok).length+(sources.quarterHour?1:0)+1,total:all.length+2};
     state.data={...state.data,radar,sources};
     state.nowcast=await computeNowcast(radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
+    updateRadarValidation();
     state.lastRadarRefresh=Date.now();
     state.lastCompletedAt=new Date().toISOString();
     render();
@@ -582,6 +656,7 @@ async function load(force=false){
   try{
     state.data=await loadForecast(force);
     state.nowcast=await computeNowcast(state.data.radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
+    updateRadarValidation();
     state.lastRadarRefresh=Date.now();
     state.lastCompletedAt=new Date().toISOString();
     render();
