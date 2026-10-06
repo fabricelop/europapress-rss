@@ -22,6 +22,7 @@ const ENS_MODELS=[
 ];
 const FORECAST_TTL=20*60_000;
 const RADAR_REFRESH_MS=5*60_000;
+const CANONICAL_RADAR_THRESHOLD=.22;
 const RADAR_FRAMES=5;
 const RADAR_ZOOM=7;
 const ANALYSIS_SIZE=97;
@@ -361,7 +362,7 @@ async function computeNowcast(meta){
 function automaticRainState(){
   const radarWet=Number(state.nowcast?.currentWetFraction);
   const radarOk=state.nowcast?.status==='ok'||state.nowcast?.status==='motion_uncertain';
-  const radarRain=radarOk&&Number.isFinite(radarWet)&&radarWet>=calibratedRadarThreshold();
+  const radarRain=radarOk&&Number.isFinite(radarWet)&&radarWet>=CANONICAL_RADAR_THRESHOLD;
   const modelP=Number(state.data?.quarterHour?.current?.precipitation)||0;
   const modelRain=modelP>=.1;
   const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH),operaQuality=Number(opera?.sample?.quality);
@@ -371,7 +372,7 @@ function automaticRainState(){
   let raining=radarOk?(radarRain||(modelRain&&radarWet>=.08)):modelRain;
   if(operaRain)raining=true;
   else if(operaFresh&&operaRate<.02){
-    const strongLocalRadar=radarOk&&(radarRate>=.35||radarWet>=Math.max(.42,calibratedRadarThreshold()*1.8));
+    const strongLocalRadar=radarOk&&(radarRate>=.35||radarWet>=Math.max(.42,CANONICAL_RADAR_THRESHOLD*1.8));
     if(!strongLocalRadar)raining=false;
   }
   const source=operaFresh?(radarOk?'radar+OPERA+modelo':'OPERA+modelo'):(radarOk?'radar+modelo':'modelo');
@@ -836,7 +837,7 @@ function updateSourceSkill(){
 }
 function renderSourceSkill(){
   const el=$('sourceSkillText');if(!el)return;
-  const stats=sourceSkillStats(),labels={rainviewer:'RainViewer',opera:'OPERA',models:'Modelos'};
+  const stats=sourceSkillStats(),labels={rainviewer:'Radar',opera:'Radar europeo',models:'Modelos'};
   const ready=Object.entries(stats).filter(([,s])=>s.n>=3&&s.accuracy!=null).sort((a,b)=>b[1].accuracy-a[1].accuracy);
   const n=Object.values(stats).reduce((sum,s)=>sum+s.n,0);
   if(!ready.length){
@@ -969,7 +970,7 @@ function consensusDecisionText(decision=buildRainDecision()){
   if(!state.data)return'';
   const n=state.nowcast,radarUsable=n?.status==='ok'||n?.status==='motion_uncertain';
   const radarWet=radarUsable&&Number.isFinite(Number(n?.currentWetFraction))
-    ? Number(n.currentWetFraction)>=calibratedRadarThreshold()
+    ? Number(n.currentWetFraction)>=CANONICAL_RADAR_THRESHOLD
     : null;
   const radarLabel=radarWet===null?'sin nowcast fiable':radarWet?'lluvia':'seco';
   const opera=state.data?.opera,sample=opera?.sample;
@@ -1084,7 +1085,7 @@ function dryFeedbackStreak(maxAgeMinutes=25){
 function localDryEvidence(){
   const n=state.nowcast,radarWet=Number(n?.currentWetFraction),radarRate=Number(n?.currentRadarRate);
   const radarFresh=Boolean((n?.status==='ok'||n?.status==='motion_uncertain')&&n?.radarTime&&(Date.now()-Date.parse(n.radarTime))<=20*60_000);
-  const radarDry=radarFresh&&Number.isFinite(radarWet)&&radarWet<calibratedRadarThreshold()&&(Number.isFinite(radarRate)?radarRate<.05:true);
+  const radarDry=radarFresh&&Number.isFinite(radarWet)&&radarWet<CANONICAL_RADAR_THRESHOLD&&(Number.isFinite(radarRate)?radarRate<.05:true);
   const opera=state.data?.opera,sample=opera?.sample,operaRate=Number(sample?.rateMmH),operaQuality=Number(sample?.quality);
   const operaFresh=Boolean(sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5&&Number.isFinite(operaRate));
   const operaDry=operaFresh&&operaRate<.02;
@@ -2045,40 +2046,61 @@ function renderRadar(){
   updateRadarArrivalButton();
 }
 
-async function refreshRadar(){
-  if(state.radarLoading||!state.data)return;
+async function refreshRadar(renderAfter=true){
+  if(state.radarLoading||!state.data)return false;
   state.radarLoading=true;
   try{
-    const radar=await fetchRadarMeta();
-    const sources={...state.data.sources,radar:true};
+    const [qhResult,radarResult,operaResult]=await Promise.allSettled([
+      fetchQuarterHour(),fetchRadarMeta(),fetchOperaMeta()
+    ]);
+    const quarterHour=qhResult.status==='fulfilled'?qhResult.value:state.data.quarterHour;
+    const radar=radarResult.status==='fulfilled'?radarResult.value:state.data.radar;
+    const opera=operaResult.status==='fulfilled'?operaResult.value:state.data.opera;
+    const sources={
+      ...state.data.sources,
+      quarterHour:Boolean(quarterHour),
+      radar:Boolean(radar),
+      opera:Boolean(opera?.ok)
+    };
     const all=[...(sources.deterministic||[]),...(sources.ensembles||[])];
-    sources.health={available:all.filter(x=>x.ok).length+(sources.quarterHour?1:0)+1+(sources.opera?1:0),total:all.length+3};
-    state.data={...state.data,radar,sources};
-    state.nowcast=await computeNowcast(radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
+    sources.health={
+      available:all.filter(x=>x.ok).length+(sources.quarterHour?1:0)+(sources.radar?1:0)+(sources.opera?1:0),
+      total:all.length+3
+    };
+    state.data={...state.data,quarterHour,radar,opera,sources,liveUpdatedAt:new Date().toISOString()};
+    state.nowcast=radar
+      ? await computeNowcast(radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}))
+      : state.nowcast;
     if(state.playMode==='arrival')stopRadarPlayback();
     recordRadarEtaObservation();
     updateRadarValidation();
     state.lastRadarRefresh=Date.now();
     state.lastCompletedAt=new Date().toISOString();
-    render();
+    if(renderAfter)render();
+    return true;
   }catch(e){
     if(state.nowcast)state.nowcast={...state.nowcast,refreshError:String(e?.message||e)};
+    return false;
   }finally{state.radarLoading=false}
 }
 
 async function load(force=false){
   if(state.loading)return;state.loading=true;
-  $('eta').textContent='Calculando…';$('summary').textContent='Fusionando radar, modelos y ensembles.';
+  $('eta').textContent='Calculando…';$('summary').hidden=false;$('summary').textContent='Fusionando radar, modelos y ensembles.';
   try{
     state.data=await loadForecast(force);
-    state.nowcast=await computeNowcast(state.data.radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
+    const cachedLiveAge=Number(state.data?.cacheAgeMs)||0;
+    const refreshed=cachedLiveAge>90_000?await refreshRadar(false):false;
+    if(!refreshed){
+      state.nowcast=await computeNowcast(state.data.radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
+      state.lastRadarRefresh=Date.now();
+    }
     recordRadarEtaObservation();
     updateRadarValidation();
-    state.lastRadarRefresh=Date.now();
     state.lastCompletedAt=new Date().toISOString();
     render();
   }catch(e){
-    $('eta').textContent='Sin datos';$('summary').textContent=String(e?.message||e);
+    $('eta').textContent='Sin datos';$('summary').hidden=false;$('summary').textContent=String(e?.message||e);
   }finally{state.loading=false}
 }
 function setLocation(loc){
