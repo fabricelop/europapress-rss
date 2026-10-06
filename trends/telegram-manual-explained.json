@@ -31377,11 +31377,11 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selected_tweet_image": null,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image": {
@@ -31393,13 +31393,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261006122343_1200.jpg",
-        "source": "Europa Press · 6/10/2026",
-        "source_url": "https://www.europapress.es/nacional/noticia-semper-insiste-decision-tc-amnistia-fue-atropello-gobierno-obtener-benericio-politico-20261006122343.html",
-        "alt": "Imagen de archivo relacionada con Borja Sémper",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/892ed4e530dc-r0-ai1-791297571997.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f165c19c818b9532d204ea9027669e281903781b98878b7bdb752e1794e24b06",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 2576884,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "892ed4e530dc",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-892ed4e530dc-r0-a1-1791297571997"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/892ed4e530dc-r0-ai1-791297571997.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/892ed4e530dc-r0-ai1-791297571997.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f165c19c818b9532d204ea9027669e281903781b98878b7bdb752e1794e24b06",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 2576884,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "892ed4e530dc",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-892ed4e530dc-r0-a1-1791297571997"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/892ed4e530dc-r0-ai1-791297571997.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T14:44:55.472Z"
     },
     {
       "id": "19d12722eb8a",
@@ -31451,6 +31490,6 @@
       "selected_tweet_image": null
     }
   ],
-  "updated_at": "2026-10-06T14:41:52.755Z",
+  "updated_at": "2026-10-06T14:44:55.472Z",
   "count": 591
 }
