@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-06T18:12:11.469Z",
+  "updated_at": "2026-10-06T18:12:51.029Z",
   "items": [
     {
       "event_id": "7503755f8b55",
@@ -764,7 +764,7 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "image_choice": "fallback",
       "selection_mode": "DIRECT_RECOVERY",
       "image_status": "pending",
@@ -788,7 +788,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Azcón dice que traerá a sus hijos a Zaragoza para votar presencialmente"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-06T18:12:51.029Z",
+      "ai_image_failure_reason": "Fallback no pudo escribir el prompt completo"
     },
     {
       "event_id": "8fb1efa5eb42",
