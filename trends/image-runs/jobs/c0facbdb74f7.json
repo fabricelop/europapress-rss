@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-c0facbdb74f7-r0-a1-1791311041004",
+  "requested_at": "2026-10-06T18:24:00.994866Z",
+  "updated_at": "2026-10-06T18:24:00.994866Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "c0facbdb74f7",
+  "trend_id": "c0facbdb74f7",
+  "target_name": "Carvajal",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Carvajal",
+    "revision": 0,
+    "explanation": "TT#16 Carvajal es tendencia porque el Getafe negocia ficharlo como agente libre; Ángel Torres dice que pasó el reconocimiento y que falta encajar la operación con LaLiga.\n🌶️ Del Bernabéu al Coliseum hay menos kilómetros que papeleo.",
+    "closer_text": "🌶️ Del Bernabéu al Coliseum hay menos kilómetros que papeleo.",
+    "trend_names": [
+      "Carvajal"
+    ],
+    "group_title": "Dani Carvajal negocia su incorporación al Getafe",
+    "rank_at_explanation": 16,
+    "explained_at": "2026-10-06T20:20:00+02:00",
+    "verification_sources": [
+      {
+        "source": "Cadena SER · 6/10/2026",
+        "url": "https://cadenaser.com/nacional/2026/10/06/getafe-y-carvajal-negocian-para-una-incorporacion-inmediata-despues-del-ofrecimiento-del-jugador-cadena-ser/"
+      },
+      {
+        "source": "AS · 6/10/2026",
+        "url": "https://as.com/futbol/primera/angel-torres-carvajal-ha-pasado-el-reconocimiento-falta-el-acuerdo-con-laliga-f202610-n/"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}

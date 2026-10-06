@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-682a8cab1c48-r0-a1-1791311041004",
+  "requested_at": "2026-10-06T18:24:00.994866Z",
+  "updated_at": "2026-10-06T18:24:00.994866Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "682a8cab1c48",
+  "trend_id": "682a8cab1c48",
+  "target_name": "Dictador",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Dictador",
+    "revision": 0,
+    "explanation": "TT#11 Dictador es tendencia por las críticas de Ayuso a Sánchez: ha dicho que no es demócrata y lo comparó con Maduro al hablar de las elecciones del 29-N.\n🌶️ La precampaña ha estrenado el diccionario antes que los carteles.",
+    "closer_text": "🌶️ La precampaña ha estrenado el diccionario antes que los carteles.",
+    "trend_names": [
+      "Dictador"
+    ],
+    "group_title": "Ayuso, Sánchez y el término dictador",
+    "rank_at_explanation": 11,
+    "explained_at": "2026-10-06T20:19:55+02:00",
+    "verification_sources": [
+      {
+        "source": "El País · 5/10/2026",
+        "url": "https://elpais.com/espana/madrid/2026-10-05/ayuso-sanchez-no-es-un-democrata-maduro-tambien-convocaba-elecciones.html"
+      },
+      {
+        "source": "El País · 1/10/2026",
+        "url": "https://elpais.com/espana/madrid/2026-10-01/ayuso-ve-en-la-acampada-de-sol-un-complot-para-perpetuar-a-sanchez-se-nos-ha-colado-un-dictador.html"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
+    "image_style_name": "pop_art",
+    "image_style_index": 7
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
