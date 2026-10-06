@@ -73,6 +73,8 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 
 ## Interfaz y motor v0.8
 - El resumen superior deja de duplicar la cuenta atrás: muestra la **hora prevista** de inicio; la cuenta atrás en vivo queda solo en 0–120 min.
+- La ETA de corto plazo se estabiliza con los últimos barridos radar: un único barrido atípico no mueve por sí solo toda la previsión; la app muestra además cuándo la ETA ha sido revisada.
+- Tarjeta superior, banda 0–120 min y episodios comparten la misma ETA canónica para evitar contradicciones visuales.
 - La velocidad del radar se etiqueta como **desplazamiento del eco de precipitación**, no viento.
 - Las barras de 72 h son interactivas. Al tocarlas, la tarjeta 0–120 min cambia a detalle de esa hora con estado meteorológico, temperatura, probabilidad, intensidad, nubosidad, nieve y confianza.
 - La lógica de 72 h y la de Episodios usan el mismo clasificador. Las señales marginales quedan como barras tenues y no se convierten automáticamente en episodios continuos.
