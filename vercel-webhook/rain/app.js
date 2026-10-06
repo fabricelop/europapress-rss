@@ -37,7 +37,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false
+  data:null,nowcast:null,map:null,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.5.0'
 };
 
 function iso(v){
@@ -281,6 +281,121 @@ function currentRainState(){
   if(truth!==null)return{raining:truth,source:'feedback',label:truth?'Llueve ahora':'No llueve ahora'};
   return automaticRainState();
 }
+function formatCountdownMs(ms){
+  const total=Math.max(0,Math.floor(ms/1000));
+  const h=Math.floor(total/3600),m=Math.floor((total%3600)/60),s=total%60;
+  if(h>0)return h+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+function quarterHourRateAt(timeMs){
+  const qh=state.data?.quarterHour;
+  if(!qh?.time?.length)return 0;
+  let best=-1,dist=Infinity;
+  for(let i=0;i<qh.time.length;i++){
+    const d=Math.abs(Date.parse(qh.time[i])-timeMs);
+    if(d<dist){dist=d;best=i}
+  }
+  const amount=best>=0?Number(qh.precipitation?.[best])||0:0;
+  return amount*4;
+}
+function intensityLabel(rate){
+  if(rate<=0.05)return'Seco';
+  if(rate<0.5)return'Llovizna';
+  if(rate<2.5)return'Lluvia débil';
+  if(rate<7.5)return'Lluvia moderada';
+  return'Lluvia fuerte';
+}
+function shortPoints(){
+  const now=Date.now(),n=state.nowcast,qh=state.data?.quarterHour;
+  const radarBase=Date.parse(n?.radarTime||'');
+  const series=Array.isArray(n?.series)?n.series:[];
+  const points=[];
+  for(let i=0;i<=24;i++){
+    const time=now+i*5*60_000;
+    let radar=null;
+    if(Number.isFinite(radarBase)&&series.length){
+      radar=series.reduce((best,row)=>{
+        const d=Math.abs((radarBase+(Number(row.minute)||0)*60_000)-time);
+        return !best||d<best.d?{row,d}:best;
+      },null)?.row||null;
+    }
+    let modelAmount=0;
+    if(qh?.time?.length){
+      let best=-1,dist=Infinity;
+      for(let j=0;j<qh.time.length;j++){
+        const d=Math.abs(Date.parse(qh.time[j])-time);
+        if(d<dist){dist=d;best=j}
+      }
+      modelAmount=best>=0?Number(qh.precipitation?.[best])||0:0;
+    }
+    const rate=modelAmount*4;
+    const radarProb=Number(radar?.probability);
+    const modelSignal=rate<=.05?0:Math.min(.72,.28+Math.log1p(rate)*.22);
+    let probability=Number.isFinite(radarProb)?Math.max(radarProb,modelSignal*.55):modelSignal;
+    if(i===0){
+      const truth=currentTruth();
+      if(truth===true)probability=1;
+      if(truth===false)probability=0;
+    }
+    points.push({time,probability:Math.max(0,Math.min(1,probability||0)),rate,wetFraction:Number(radar?.wetFraction)||0});
+  }
+  return points;
+}
+function renderShortNowcast(){
+  const points=shortPoints(),ev=chooseDisplayEvent(),now=Date.now(),rain=currentRainState();
+  const near=ev&&Date.parse(ev.start)<=now+120*60_000;
+  let rate=quarterHourRateAt(rain.raining?now:(near?Date.parse(ev.start):now));
+  if(rain.raining&&rate<=.05)rate=Math.max(.2,Number(state.data?.quarterHour?.current?.precipitation||0)*4);
+  $('shortState').textContent=rain.raining?intensityLabel(rate):(near?intensityLabel(Math.max(rate,.08)):'Seco');
+  $('shortDetail').textContent=rain.raining
+    ? 'Detectado ahora · radar + observación'
+    : near?'Llegada más probable '+fmtTime(ev.start)+' · radar + modelos':'Sin lluvia probable en las próximas 2 h';
+  $('shortEtaLabel').textContent=rain.raining?'Fin estimado':near?'Empieza en':'Próximo cambio';
+  $('shortCountdown').textContent=rain.raining
+    ? (ev?.end?formatCountdownMs(Date.parse(ev.end)-now):'—')
+    : near?formatCountdownMs(Date.parse(ev.start)-now):'>2 h';
+  $('shortWindow').textContent=near
+    ? fmtTime(ev.start)+(ev.end?'–'+fmtTime(ev.end):'')+(ev.kind==='radar'?' · '+uncertaintyText(ev):'')
+    : 'Ventana corta estable';
+  $('shortConfidence').textContent=near?pct(ev.confidence)+'%':'—';
+
+  const maxRate=Math.max(.5,...points.map(p=>p.rate));
+  $('minuteStrip').innerHTML=points.map((p,i)=>{
+    const wet=p.probability>=.25||p.rate>=.08;
+    const high=p.probability>=.7||p.rate>=5;
+    const height=wet?Math.max(6,Math.min(100,12+p.probability*58+(p.rate/maxRate)*30)):3;
+    return '<div class="minuteCol '+(wet?'wet ':'')+(high?'high ':'')+(i===0?'now':'')+'" title="'+fmtTime(p.time)+' · '+Math.round(p.probability*100)+'% · '+p.rate.toFixed(1)+' mm/h"><i class="minuteMark" style="height:'+height+'%"></i></div>';
+  }).join('');
+  const ticks=[];
+  for(let i=0;i<=24;i+=6){
+    const left=i/24*100;
+    ticks.push('<span class="minuteTick" style="left:'+left+'%">'+fmtTime(points[i].time)+'</span>');
+  }
+  $('minuteAxis').innerHTML=ticks.join('');
+}
+function updateLiveCountdown(){
+  if(!state.data)return;
+  const ev=chooseDisplayEvent(),now=Date.now(),truth=currentTruth();
+  if(!ev){
+    $('heroLabel').textContent='Próxima lluvia';
+    return;
+  }
+  if(truth===false&&Date.parse(ev.start)<=now&&(!ev.end||Date.parse(ev.end)>now))return;
+  if(ev.active){
+    $('heroLabel').textContent='Lluvia ahora';
+    $('eta').innerHTML='<span>Ahora</span>';
+  }else{
+    const diff=Date.parse(ev.start)-now;
+    if(diff>0&&diff<=120*60_000){
+      $('heroLabel').textContent='Empieza en';
+      $('eta').innerHTML='<span>'+formatCountdownMs(diff)+'</span>';
+    }else{
+      $('heroLabel').textContent='Próxima lluvia';
+    }
+  }
+  if($('shortCountdown'))renderShortNowcast();
+}
+
 function feedbackStats(){
   if(!state.currentLocation)return{count:0,accuracy:null};
   const rows=state.feedback.filter(x=>samePlace(x,state.currentLocation,.0015)).slice(-40);
@@ -368,10 +483,11 @@ function render(){
   const h=d.sources.health;
   $('health').textContent=h.available+' de '+h.total+' capas disponibles · radar '+(n?.status==='ok'?'analizado':n?.status==='motion_uncertain'?'sin movimiento fiable':'degradado');
   $('sourceCount').textContent=h.available+'/'+h.total;
-  renderTimeline();renderEvents();renderSources();renderRadar();
+  renderShortNowcast();renderTimeline();renderEvents();renderSources();renderRadar();
   const completed=state.lastCompletedAt||d.generatedAt;
   const radarStamp=n?.radarTime||d.radar?.frames?.at(-1)?.time*1000||null;
   $('updated').textContent='Actualización '+fmtTimeSeconds(completed)+' · modelos '+fmtTime(d.generatedAt)+(radarStamp?' · radar '+fmtTime(radarStamp):'');
+  updateLiveCountdown();
 }
 function renderTimeline(){
   const a=state.data.timeline||[],mx=Math.max(50,...a.map(x=>x.probability));
@@ -419,7 +535,7 @@ function initMap(){
   if(state.map||!window.L)return;
   state.map=L.map('map',{zoomControl:false,minZoom:4,maxZoom:12}).setView([state.loc.lat,state.loc.lon],7);
   L.control.zoom({position:'bottomright'}).addTo(state.map);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(state.map);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:20,attribution:'© OpenStreetMap contributors © CARTO'}).addTo(state.map);
   state.marker=L.circleMarker([state.loc.lat,state.loc.lon],{radius:6,color:'#fff',weight:2,fillColor:'#4fc6ff',fillOpacity:1}).addTo(state.map);
 }
 function renderRadar(){
@@ -613,9 +729,19 @@ $('play').onclick=function(){
   if(!state.frames.length)return;this.textContent='❚❚';
   state.playTimer=setInterval(()=>{state.frameIndex=(state.frameIndex+1)%state.frames.length;showRadarFrame()},1200);
 };
-if('serviceWorker'in navigator)navigator.serviceWorker.register('/rain/sw.js').catch(()=>{});
+if('serviceWorker'in navigator){
+  navigator.serviceWorker.register('/rain/sw.js',{updateViaCache:'none'}).then(reg=>{
+    reg.update().catch(()=>{});
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{
+      if(sessionStorage.getItem('raineta.swReloaded')==='1')return;
+      sessionStorage.setItem('raineta.swReloaded','1');
+      location.reload();
+    });
+  }).catch(()=>{});
+}
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'&&Date.now()-state.lastRadarRefresh>RADAR_REFRESH_MS)refreshRadar();
 });
 setInterval(()=>{if(document.visibilityState==='visible')refreshRadar()},RADAR_REFRESH_MS);
+setInterval(()=>{if(document.visibilityState==='visible'&&state.data)updateLiveCountdown()},1000);
 load();
