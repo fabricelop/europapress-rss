@@ -1192,7 +1192,9 @@ function renderProcessing(list){
      persistUiState();renderList();
      try{
        await api("clear-outcomes",{});
-       for(const id of optimistic)pendingClosed.delete(id);
+       // Mantener los tombstones locales hasta que una lectura remota confirme
+       // que las salidas ya no existen. GitHub RAW puede tardar unos segundos
+       // en reflejar el commit y, si los quitamos aquí, reaparecen brevemente.
        persistUiState();
        toast("Salidas recientes borradas");
        await load(true);setView("processing")
@@ -1243,7 +1245,9 @@ function renderProcessing(list){
        if(id)pendingClosed.add(id);persistUiState();renderList();
        try{
          await api("hide-outcome",{event_id:item.event_id});
-         if(id)pendingClosed.delete(id);
+         // No liberar todavía el ocultado optimista: GitHub RAW puede servir
+         // durante unos segundos la versión previa al commit. load() retirará
+         // este tombstone solo cuando el backend ya no devuelva la salida.
          persistUiState();
          toast("Salida borrada");
          await load(true);setView("processing")
