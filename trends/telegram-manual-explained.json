@@ -29725,9 +29725,9 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -29741,14 +29741,53 @@
         "generated": false
       },
       "image": {
-        "url": "https://static.grupojoly.com/clip/f065ed9f-b37d-4dbd-8b2a-2a3322cca363_facebook-aspect-ratio_default_0.jpg",
-        "source": "El Día de Córdoba · 5/10/2026",
-        "source_url": "https://www.eldiadecordoba.es/cordobacf/cordoba-cf-tumba-tenerife_0_2008159099.html",
-        "alt": "Imagen de archivo relacionada con #CórdobaTenerife",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/a4291a531100-r0-ai2-791247908070.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "sha256": "49a25757fc9da36a973d2f984414ac825daeed2b8fd35718bacf6d03d7300f30",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2202477,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "a4291a531100",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-a4291a531100-r0-a2-1791247908070"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/a4291a531100-r0-ai2-791247908070.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
-      "last_attempt_at": "2026-10-05T23:27:10+02:00"
+      "last_attempt_at": "2026-10-05T23:27:10+02:00",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/a4291a531100-r0-ai2-791247908070.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "sha256": "49a25757fc9da36a973d2f984414ac825daeed2b8fd35718bacf6d03d7300f30",
+        "width": 1672,
+        "height": 941,
+        "bytes": 2202477,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "a4291a531100",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-a4291a531100-r0-a2-1791247908070"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/a4291a531100-r0-ai2-791247908070.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 2,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T01:09:42.647Z"
     },
     {
       "id": "d208a3da8e37",
@@ -30217,6 +30256,6 @@
       "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-06T00:57:19.426247Z",
+  "updated_at": "2026-10-06T01:09:42.647Z",
   "count": 581
 }
