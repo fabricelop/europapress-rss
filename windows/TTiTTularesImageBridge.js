@@ -170,6 +170,24 @@ async function waitComposer(cdp,timeoutMs=60000){
   }
   throw Error("La pestaña dedicada no mostró compositor en "+timeoutMs+" ms; "+JSON.stringify(last||{}).slice(0,400))
 }
+async function resetToFreshConversation(cdp){
+  const st=await waitComposer(cdp,12000);
+  const url=String(st&&st.url||"");
+  if(/\/c\//.test(url)){
+    let clicked=false;
+    try{
+      clicked=Boolean(await cdp.eval("(()=>{const els=[...document.querySelectorAll('a,button')];const label=x=>String(x.getAttribute('aria-label')||x.getAttribute('title')||x.innerText||'');const b=els.find(x=>/new chat|nuevo chat/i.test(label(x)))||els.find(x=>x.tagName==='A'&&x.getAttribute('href')==='/');if(!b)return false;b.click();return true})()"))
+    }catch{}
+    if(clicked){
+      await sleep(700);
+      await waitComposer(cdp,30000);
+      console.log("BRIDGE FIXED TAB NEW CHAT via=dom");
+      return
+    }
+    try{await cdp.call("Page.navigate",{url:CHAT_ROOT},8000)}catch(e){console.log("BRIDGE PAGE NAVIGATE FALLBACK WARNING :: "+String(e&&e.message||e))}
+    await waitComposer(cdp,30000)
+  }
+}
 async function openFreshDedicatedConversation(){
   let t=await fixedTarget(true);
   await progress("fixed_tab","Pestaña física dedicada disponible: "+String(t.id));
@@ -178,32 +196,33 @@ async function openFreshDedicatedConversation(){
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    try{await cdp.call("Page.navigate",{url:CHAT_ROOT},30000)}catch(e){console.log("BRIDGE PAGE NAVIGATE WARNING :: "+String(e&&e.message||e))}
-    await waitComposer(cdp,60000);
-    await progress("composer_ready","ChatGPT cargado en la pestaña fija; compositor disponible.");
-    // Si ChatGPT restaurase una conversación previa al navegar a raíz, pulsa "Nuevo chat"
-    // dentro de LA MISMA pestaña. El target CDP no cambia.
+
+    let reused=false;
     try{
-      const st=await cdp.eval("(()=>({url:location.href}))()");
-      if(st&&/\/c\//.test(String(st.url||""))){
-        await cdp.eval("(()=>{const els=[...document.querySelectorAll('a,button')];const b=els.find(x=>/new chat|nuevo chat/i.test(String(x.getAttribute('aria-label')||x.getAttribute('title')||x.innerText||'')));if(!b)return false;b.click();return true})()");
-        await sleep(700);
-        await waitComposer(cdp,30000)
-      }
-    }catch{}
+      await resetToFreshConversation(cdp);
+      reused=true
+    }catch(e){
+      console.log("BRIDGE EXISTING COMPOSER NOT READY :: "+String(e&&e.message||e))
+    }
+    if(!reused){
+      try{await cdp.call("Page.navigate",{url:CHAT_ROOT},8000)}catch(e){console.log("BRIDGE PAGE NAVIGATE WARNING :: "+String(e&&e.message||e))}
+      await waitComposer(cdp,45000);
+      await resetToFreshConversation(cdp)
+    }
+    await progress("composer_ready",reused?"Compositor reutilizado en la pestaña fija; conversación nueva disponible.":"ChatGPT cargado en la pestaña fija; compositor disponible.");
     const meta=await cdp.eval("(()=>({url:location.href,title:document.title||''}))()");
-    console.log("BRIDGE FIXED TAB FRESH CONVERSATION target="+String(t.id)+" url="+String(meta&&meta.url||""));
+    console.log("BRIDGE FIXED TAB FRESH CONVERSATION target="+String(t.id)+" url="+String(meta&&meta.url||"")+" reused="+reused);
     return cdp
   }catch(e){
     try{cdp.close()}catch{}
-    // El target persistido pudo morir entre /json/list y la conexión. Crear uno nuevo una sola vez.
     t=await createFixedTarget();
     cdp=new CDP(t.webSocketDebuggerUrl);
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    try{await cdp.call("Page.navigate",{url:CHAT_ROOT},30000)}catch(e){console.log("BRIDGE PAGE NAVIGATE WARNING :: "+String(e&&e.message||e))}
-    await waitComposer(cdp,60000);
+    try{await cdp.call("Page.navigate",{url:CHAT_ROOT},8000)}catch(e){console.log("BRIDGE PAGE NAVIGATE WARNING :: "+String(e&&e.message||e))}
+    await waitComposer(cdp,45000);
+    await resetToFreshConversation(cdp);
     await progress("composer_ready","Pestaña fija recreada; compositor disponible.");
     console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id));
     return cdp
