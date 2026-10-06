@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-06T15:11:14.890Z",
+  "updated_at": "2026-10-06T15:12:11.864Z",
   "items": [
     {
       "event_id": "ad3a365ffec5",
@@ -570,7 +570,7 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "image_choice": "fallback",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
@@ -585,7 +585,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "La Euroliga rechaza, por ahora, la oferta de la NBA"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-06T15:12:11.864Z",
+      "ai_image_failure_reason": "CDP timeout Page.navigate"
     }
   ],
   "count": 11
