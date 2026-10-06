@@ -1737,8 +1737,11 @@ function quarterHourSupports(timeMs){
 }
 function detail15MinuteCoverage(){
   const now=Date.now(),qh=quarterHourCoverage();
-  let end=qh?.end||0;
-  if(state.nowcast?.status==='ok'&&Array.isArray(state.nowcast?.series)&&state.nowcast.series.length)end=Math.max(end,now+120*60_000);
+  let end=0;
+  if(nativeQuarterHourLikely())end=qh?.end||0;
+  if(state.nowcast?.status==='ok'&&Array.isArray(state.nowcast?.series)&&state.nowcast.series.length){
+    end=Math.max(end,now+nowcastReliableHorizon()*60_000);
+  }
   return end>now?{start:now-15*60_000,end}:null;
 }
 function baseTimelineRowAt(timeMs,rows=canonicalTimelineRows()){
