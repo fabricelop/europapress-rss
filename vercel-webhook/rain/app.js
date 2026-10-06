@@ -2251,7 +2251,7 @@ function showProjectedRadar(minutes){
   const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
   state.map.addLayer({
     id:'raineta-radar-projection',type:'raster',source:'raineta-radar-projection',
-    paint:{'raster-opacity':within ? .66 : .22,'raster-fade-duration':0}
+    paint:{'raster-opacity':within ? .66 : minutes<=120 ? .22 : .12,'raster-fade-duration':0}
   },before);
   const projectedAt=latest.time*1000+minutes*60_000;
   $('radarTime').textContent=fmtTime(projectedAt);
@@ -2375,14 +2375,22 @@ function renderRadar(){
   state.frames=r.frames.slice(-12);
   const latest=state.frames.at(-1),oldest=state.frames[0];
   const availablePast=Math.max(5,Math.round((latest.time-oldest.time)/60/5)*5);
-  $('frame').min=String(-availablePast);$('frame').max='120';$('frame').step='5';
+  $('frame').min=String(-availablePast);$('frame').max=String(RADAR_VISUAL_HORIZON_MINUTES);$('frame').step='5';
   $('radarPastLabel').textContent='−'+availablePast+' min';
   state.radarOffset=Math.max(-availablePast,Math.min(RADAR_VISUAL_HORIZON_MINUTES,state.radarOffset||0));
   $('frame').value=state.radarOffset;
+  const reliable=nowcastReliableHorizon(),evolution=Number(state.nowcast?.evolution?.score)||0;
   if($('radarHandoff')){
-    const reliable=nowcastReliableHorizon(),evolution=Number(state.nowcast?.evolution?.score)||0;
     const label=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
-    $('radarHandoff').innerHTML='<b>Radar útil ~'+reliable+' min</b><span>evolución '+label+' · después mandan modelos/consenso</span>';
+    $('radarHandoff').innerHTML='<b>Radar útil ~'+reliable+' min</b><span>evolución '+label+' · proyección visual disponible hasta 3 h · después del límite manda el consenso</span>';
+  }
+  if($('radarReliableMarker')){
+    const min=-availablePast,max=RADAR_VISUAL_HORIZON_MINUTES,left=(reliable-min)/(max-min)*100;
+    $('radarReliableMarker').style.left=Math.max(0,Math.min(100,left))+'%';
+    $('radarReliableMarker').title='Horizonte radar fiable ~'+fmtTime(latest.time*1000+reliable*60_000);
+  }
+  if($('radarReliableLabel')){
+    $('radarReliableLabel').textContent='fiable hasta ~'+fmtTime(latest.time*1000+reliable*60_000);
   }
   if(state.mapLoaded)showRadarOffset(state.radarOffset);
   updateRadarArrivalButton();
