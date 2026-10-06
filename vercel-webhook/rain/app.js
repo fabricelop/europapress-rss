@@ -20,7 +20,8 @@ const ENS_MODELS=[
   {id:'bom_access_global_ensemble',label:'BOM ACCESS-GE',family:'BOM',weight:.72},
   {id:'google_weathernext2_ensemble',label:'Google WeatherNext 2',family:'GOOGLE',weight:.92},
 ];
-const FORECAST_TTL=8*60_000;
+const FORECAST_TTL=20*60_000;
+const RADAR_REFRESH_MS=5*60_000;
 const RADAR_FRAMES=5;
 const RADAR_ZOOM=7;
 const ANALYSIS_SIZE=72;
@@ -29,7 +30,7 @@ const MAX_SHIFT=9;
 const $=id=>document.getElementById(id);
 const state={
   loc:JSON.parse(localStorage.getItem('raineta.loc')||'null')||{name:'Madrid',lat:40.4168,lon:-3.7038},
-  data:null,nowcast:null,map:null,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false
+  data:null,nowcast:null,map:null,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0
 };
 
 function iso(v){
@@ -328,12 +329,27 @@ function showRadarFrame(){
   state.radarLayer=L.tileLayer(r.host+f.path+'/256/{z}/{x}/{y}/2/1_1.png',{tileSize:256,opacity:.76,maxNativeZoom:7,maxZoom:12,attribution:'Weather data by RainViewer'}).addTo(state.map);
   $('frame').value=state.frameIndex;$('radarTime').textContent=fmtTime(f.time*1000);
 }
+async function refreshRadar(){
+  if(state.radarLoading||!state.data)return;
+  state.radarLoading=true;
+  try{
+    const radar=await fetchRadarMeta();
+    state.data={...state.data,radar,sources:{...state.data.sources,radar:true}};
+    state.nowcast=await computeNowcast(radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
+    state.lastRadarRefresh=Date.now();
+    render();
+  }catch(e){
+    if(state.nowcast)state.nowcast={...state.nowcast,refreshError:String(e?.message||e)};
+  }finally{state.radarLoading=false}
+}
+
 async function load(force=false){
   if(state.loading)return;state.loading=true;
   $('eta').textContent='Calculando…';$('summary').textContent='Fusionando radar, modelos y ensembles.';
   try{
     state.data=await loadForecast(force);
     state.nowcast=await computeNowcast(state.data.radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
+    state.lastRadarRefresh=Date.now();
     render();
   }catch(e){
     $('eta').textContent='Sin datos';$('summary').textContent=String(e?.message||e);
@@ -387,4 +403,8 @@ $('play').onclick=function(){
   state.playTimer=setInterval(()=>{state.frameIndex=(state.frameIndex+1)%state.frames.length;showRadarFrame()},1200);
 };
 if('serviceWorker'in navigator)navigator.serviceWorker.register('/rain/sw.js').catch(()=>{});
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'&&Date.now()-state.lastRadarRefresh>RADAR_REFRESH_MS)refreshRadar();
+});
+setInterval(()=>{if(document.visibilityState==='visible')refreshRadar()},RADAR_REFRESH_MS);
 load();
