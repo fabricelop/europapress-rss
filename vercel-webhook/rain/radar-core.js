@@ -22,6 +22,96 @@ export function estimateTranslation(prev,cur,w,h,{maxShift=8}={}){
   const stable=clamp01(1-Math.abs(pd-cd)/Math.max(.01,pd,cd));
   return{...best,confidence:clamp01(.6*best.score+.22*unique+.18*stable),prevDensity:pd,curDensity:cd};
 }
+function patchOverlap(prev,cur,w,h,cx,cy,dx,dy,radius){
+  let inter=0,union=0,pwet=0,cwet=0;
+  const x0=Math.max(0,Math.floor(cx-radius)),x1=Math.min(w-1,Math.ceil(cx+radius));
+  const y0=Math.max(0,Math.floor(cy-radius)),y1=Math.min(h-1,Math.ceil(cy+radius));
+  for(let y=y0;y<=y1;y++){
+    const py=y-dy;if(py<0||py>=h)continue;
+    for(let x=x0;x<=x1;x++){
+      const px=x-dx;if(px<0||px>=w)continue;
+      const a=prev[py*w+px]?1:0,b=cur[y*w+x]?1:0;
+      pwet+=a;cwet+=b;
+      if(a||b){union++;if(a&&b)inter++}
+    }
+  }
+  if(union<4||Math.max(pwet,cwet)<3)return{score:-Infinity,intersection:inter,union,pwet,cwet};
+  const iou=inter/union,coverage=inter/Math.max(1,Math.min(pwet,cwet));
+  return{score:.72*iou+.28*coverage,intersection:inter,union,pwet,cwet};
+}
+function gridCenters(size,margin,count){
+  if(count<=1)return[(size-1)/2];
+  const span=Math.max(0,size-1-margin*2);
+  return Array.from({length:count},(_,i)=>margin+span*i/(count-1));
+}
+export function estimateLocalFlow(prev,cur,w,h,{maxShift=7,grid=5,patchRadius=8}={}){
+  if(!prev||!cur||prev.length!==cur.length||prev.length!==w*h)return null;
+  const margin=Math.min(Math.floor(Math.min(w,h)/3),patchRadius+maxShift+1);
+  const xs=gridCenters(w,margin,grid),ys=gridCenters(h,margin,grid),vectors=[];
+  for(const y of ys)for(const x of xs){
+    let best={score:-Infinity,dx:0,dy:0},second=-Infinity;
+    for(let dy=-maxShift;dy<=maxShift;dy++)for(let dx=-maxShift;dx<=maxShift;dx++){
+      const r=patchOverlap(prev,cur,w,h,x,y,dx,dy,patchRadius);
+      if(r.score>best.score){second=best.score;best={...r,dx,dy}}
+      else if(r.score>second)second=r.score;
+    }
+    if(!Number.isFinite(best.score))continue;
+    const unique=clamp01((best.score-Math.max(0,second))/.10);
+    const densityStable=clamp01(1-Math.abs(best.pwet-best.cwet)/Math.max(3,best.pwet,best.cwet));
+    const confidence=clamp01(.62*best.score+.20*unique+.18*densityStable);
+    if(confidence<.18)continue;
+    vectors.push({x,y,dx:best.dx,dy:best.dy,confidence,score:best.score});
+  }
+  if(!vectors.length)return null;
+  const confidence=vectors.reduce((s,v)=>s+v.confidence,0)/vectors.length;
+  const coverage=vectors.length/Math.max(1,xs.length*ys.length);
+  return{vectors,confidence:clamp01(confidence*(.72+.28*coverage)),coverage,gridX:xs.length,gridY:ys.length};
+}
+export function flowVectorAt(flow,x,y,fallback={dx:0,dy:0,confidence:0}){
+  const vectors=flow?.vectors||[];
+  if(!vectors.length)return fallback;
+  const near=vectors.map(v=>({...v,d2:(v.x-x)**2+(v.y-y)**2})).sort((a,b)=>a.d2-b.d2).slice(0,6);
+  let sw=0,dx=0,dy=0,conf=0;
+  for(const v of near){
+    const weight=Math.max(.02,v.confidence)/(v.d2+25);
+    sw+=weight;dx+=v.dx*weight;dy+=v.dy*weight;conf+=v.confidence*weight;
+  }
+  if(sw<=0)return fallback;
+  return{dx:dx/sw,dy:dy/sw,confidence:clamp01(conf/sw)};
+}
+export function evolutionReliability(prev,cur,w,h,motion){
+  if(!prev||!cur||!motion)return{score:0,overlap:0,densityStable:0};
+  const pd=maskDensity(prev),cd=maskDensity(cur);
+  const pwet=Math.round(pd*prev.length),cwet=Math.round(cd*cur.length);
+  const r=overlap(prev,cur,w,h,Math.round(motion.dx),Math.round(motion.dy),pwet,cwet);
+  const densityStable=clamp01(1-Math.abs(pd-cd)/Math.max(.01,pd,cd));
+  const overlapScore=Number.isFinite(r.score)?clamp01(r.score):0;
+  const score=clamp01(.5*overlapScore+.25*densityStable+.25*clamp01(motion.consistency??motion.confidence??0));
+  return{score,overlap:overlapScore,densityStable,densityChange:cd-pd};
+}
+export function projectPointSeriesFlow(mask,w,h,flow,motion,{horizonMinutes=120,sourceStepMinutes=10,outputStepMinutes=5,radius=1,intensityGrid=null,reliability=1}={}){
+  if(!motion||!mask?.length)return[];
+  const cx=(w-1)/2,cy=(h-1)/2,steps=Math.floor(horizonMinutes/outputStepMinutes),rows=[];
+  const baseReliability=clamp01((motion.confidence||0)*.58+(flow?.confidence||0)*.42)*clamp01(reliability);
+  for(let i=0;i<=steps;i++){
+    const minute=i*outputStepMinutes;
+    let x=cx,y=cy,remaining=minute;
+    while(remaining>0){
+      const dt=Math.min(outputStepMinutes,remaining),vec=flowVectorAt(flow,x,y,motion),f=dt/Math.max(1,sourceStepMinutes);
+      x-=vec.dx*f;y-=vec.dy*f;remaining-=dt;
+    }
+    const wetFraction=wetNear(mask,w,h,x,y,radius);
+    const radarRate=valueNear(intensityGrid,w,h,x,y,radius);
+    const horizonPenalty=Math.max(.08,1-.86*(minute/Math.max(1,horizonMinutes)));
+    const flowPenalty=Math.max(.55,.82+.18*(flow?.coverage||0));
+    rows.push({
+      minute,wetFraction,
+      probability:clamp01(wetFraction*baseReliability*horizonPenalty*flowPenalty),
+      radarRate,sampleX:x,sampleY:y
+    });
+  }
+  return rows;
+}
 function median(a){const x=a.filter(Number.isFinite).sort((p,q)=>p-q);if(!x.length)return null;const m=Math.floor(x.length/2);return x.length%2?x[m]:(x[m-1]+x[m])/2}
 function wmedian(entries){const x=entries.filter(e=>Number.isFinite(e.value)&&Number.isFinite(e.weight)&&e.weight>0).sort((a,b)=>a.value-b.value);if(!x.length)return null;const total=x.reduce((s,e)=>s+e.weight,0);let c=0;for(const e of x){c+=e.weight;if(c>=total/2)return e.value}return x.at(-1).value}
 export function combineMotionEstimates(est=[]){
