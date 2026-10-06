@@ -37,7 +37,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.0',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.1',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -1329,6 +1329,51 @@ function eventHourlyRows(event){
     return t<end&&t+60*60_000>start;
   });
 }
+function quarterHourSupports(timeMs){
+  const times=(state.data?.quarterHour?.time||[]).map(Date.parse).filter(Number.isFinite);
+  return times.length&&timeMs>=times[0]-8*60_000&&timeMs<=times.at(-1)+8*60_000;
+}
+function eventHalfHourRows(event){
+  const hourly=canonicalTimelineRows(),short=shortPoints();
+  const eventStart=Date.parse(event.start),eventEnd=Date.parse(event.end);
+  if(!Number.isFinite(eventStart)||!Number.isFinite(eventEnd)||eventEnd<=eventStart)return[];
+  const first=Math.floor(eventStart/(30*60_000))*(30*60_000),rows=[];
+  for(let slot=first;slot<eventEnd;slot+=30*60_000){
+    const slotEnd=slot+30*60_000,center=slot+15*60_000;
+    const base=hourly.find(row=>{
+      const t=Date.parse(row.time);return t<=center&&center<t+60*60_000;
+    })||hourly.reduce((best,row)=>{
+      const d=Math.abs(Date.parse(row.time)-center);return !best||d<best.d?{row,d}:best;
+    },null)?.row;
+    if(!base)continue;
+    const shortBucket=short.filter(p=>p.time>=slot&&p.time<slotEnd);
+    const shortWet=shortBucket.filter(p=>p.wet);
+    let probability=Number(base.probability)||0,rate=Number(base.precipitation)||0,source='horaria';
+    if(shortBucket.length){
+      probability=Math.round((shortWet.length?Math.max(...shortWet.map(p=>p.probability)):Math.max(...shortBucket.map(p=>p.probability),0))*100);
+      rate=shortWet.length?shortWet.reduce((sum,p)=>sum+p.rate,0)/shortWet.length:0;
+      source='nowcast';
+    }else if(quarterHourSupports(center)){
+      const q1=quarterHourRateAt(slot+7.5*60_000),q2=quarterHourRateAt(slot+22.5*60_000);
+      rate=(q1+q2)/2;
+      source='guía 15 min';
+    }
+    rows.push({
+      ...base,
+      time:new Date(slot).toISOString(),
+      end:new Date(slotEnd).toISOString(),
+      probability:Math.max(0,Math.min(100,Math.round(probability))),
+      precipitation:Math.max(0,rate),
+      detailSource:source,
+      partialStart:Math.max(slot,eventStart),
+      partialEnd:Math.min(slotEnd,eventEnd)
+    });
+  }
+  return rows;
+}
+function fmtHalfHourRange(start,end){
+  return fmtTime(start)+'–'+fmtTime(end);
+}
 
 function fmtSegmentRange(start,end){
   const a=new Date(start),b=new Date(end);
@@ -1435,20 +1480,20 @@ function renderEvents(){
     const total=Number(e.totalExpectedPrecipitation||0),peak=Number(e.maxExpectedPrecipitation||0);
     const avgProb=pct(e.averageProbability??e.peakProbability),maxProb=pct(e.peakProbability);
     const families=e.independentFamilyCount||e.providerCount||0;
-    const rows=eventHourlyRows(e),segments=semanticSegments(e);
+    const rows=eventHalfHourRows(e),segments=semanticSegments(e);
     const segmentsHtml='<div class="eventSegments"><div class="segmentTitle">Lectura rápida del episodio</div>'+
       segments.map(segment=>'<div class="eventSegment"><span class="segmentTime">'+fmtSegmentRange(segment.start,segment.end)+'</span><span class="segmentText"><strong>'+segment.label+'</strong><small>Prob. media '+segment.avgProb+'% · intensidad '+segment.rateText+'</small></span></div>').join('')+
       '</div>';
-    const hourly=rows.map(row=>{
-      const hour=String(new Date(row.time).getHours()).padStart(2,'0')+' h';
+    const halfHourly=rows.map(row=>{
       const weather=weatherParts(row);
       const prob=Math.round(Number(row.probability)||0)+'%';
       const rate=(Number(row.precipitation)||0).toFixed(1).replace('.',',')+' mm/h';
       const phenomenon=weather.phenomenon?'<span class="ehPhenomenon">'+weather.phenomenon+'</span>':'';
-      return '<div class="eventHour"><b>'+hour+'</b><span class="ehCondition">'+weather.primary+phenomenon+'</span><span class="ehProb">'+prob+'</span><span class="ehRate">'+rate+'</span></div>';
+      const source=row.detailSource==='nowcast'?' · nowcast':row.detailSource==='guía 15 min'?' · guía 15 min':'';
+      return '<div class="eventHour"><b>'+fmtHalfHourRange(row.time,row.end)+'</b><span class="ehCondition">'+weather.primary+phenomenon+'<span class="ehPhenomenon">'+source+'</span></span><span class="ehProb">'+prob+'</span><span class="ehRate">'+rate+'</span></div>';
     }).join('');
-    const header='<div class="eventHourHead"><span>Hora</span><span>Tiempo</span><span>Prob.</span><span>Intens.</span></div>';
-    const details='<details class="hourDetails"><summary>Ver detalle hora a hora ('+rows.length+')</summary><div class="eventHours">'+header+hourly+'</div></details>';
+    const header='<div class="eventHourHead"><span>Tramo</span><span>Tiempo</span><span>Prob.</span><span>Intens.</span></div>';
+    const details='<details class="hourDetails"><summary>Ver detalle cada 30 min ('+rows.length+')</summary><div class="eventHours">'+header+halfHourly+'</div></details>';
     blocks.push('<div class="event"><div><strong>'+fmtDateTime(e.start)+' → '+fmtTime(e.end)+'</strong>'+
       '<small>Ventana de '+dur+' h · '+total.toFixed(1).replace('.',',')+' mm estimados · no implica lluvia continua</small>'+
       '<small>Pico '+peak.toFixed(1).replace('.',',')+' mm/h · prob. media '+avgProb+'% · máx. '+maxProb+'% · '+families+' familias</small></div>'+
