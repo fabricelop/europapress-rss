@@ -95,7 +95,22 @@ async function readAck(strong=false){return await readControl(ACK_PATH,strong)}
 
 async function readImageControl(path,strong=false){
   if(strong){
-    try{return await readControl(path,true)}catch(_){}
+    try{
+      const r=await gh(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`,{cache:"no-store"});
+      if(r.ok){
+        const f=await r.json();
+        const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+        return JSON.parse(raw||"{}")
+      }
+      if(r.status===404)return {};
+      let detail="";try{detail=await r.text()}catch(_){}
+      const e=new Error("Strong GitHub image read unavailable "+r.status+" "+String(detail||"").slice(0,500));
+      e.statusCode=503;e.strongUnavailable=true;throw e
+    }catch(err){
+      if(err&&err.strongUnavailable)throw err;
+      const e=new Error("Strong GitHub image read unavailable: "+String(err&&err.message||err));
+      e.statusCode=503;e.strongUnavailable=true;throw e
+    }
   }
   try{
     const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
