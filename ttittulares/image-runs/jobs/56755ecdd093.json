@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-56755ecdd093-r1-a1-1791312920328",
+  "requested_at": "2026-10-06T18:55:20.326523Z",
+  "updated_at": "2026-10-06T18:55:20.326523Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "56755ecdd093",
+  "event_id": "56755ecdd093",
+  "target_name": "Puigdemont celebra la amnistía pero no aclara cuándo regresará a España",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Puigdemont celebra la amnistía pero no aclara cuándo regresará a España",
+    "revision": 1,
+    "factual_summary": "Carles Puigdemont ha celebrado desde Waterloo el aval del Tribunal Constitucional a la amnistía, pero sostiene que la medida no resuelve el conflicto político entre Cataluña y España. No ha concretado cuándo regresará a España.",
+    "tweet_text": "Puigdemont celebra el aval del TC a la amnistía, pero dice que «hoy no se soluciona nada» del conflicto entre Cataluña y España y no aclara cuándo regresará.\n\n🌶️ La puerta judicial se abre; el calendario de vuelta sigue cerrado.",
+    "remate": "🌶️ La puerta judicial se abre; el calendario de vuelta sigue cerrado.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.",
+    "image_style_name": "grabado_moderno",
+    "image_style_index": 6,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nPuigdemont celebra el aval del TC a la amnistía, pero dice que «hoy no se soluciona nada» del conflicto entre Cataluña y España y no aclara cuándo regresará.\n\n🌶️ La puerta judicial se abre; el calendario de vuelta sigue cerrado.\n\nREMATE EXACTO:\n🌶️ La puerta judicial se abre; el calendario de vuelta sigue cerrado.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nCarles Puigdemont ha celebrado desde Waterloo el aval del Tribunal Constitucional a la amnistía, pero sostiene que la medida no resuelve el conflicto político entre Cataluña y España. No ha concretado cuándo regresará a España.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.europapress.es/catalunya/noticia-puigdemont-celebra-amnistia-dice-hoy-no-soluciona-nada-conflicto-politico-20261006181919.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/catalunya/noticia-puigdemont-celebra-amnistia-dice-hoy-no-soluciona-nada-conflicto-politico-20261006181919.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/2026-10-06/puigdemont-tras-la-sentencia-del-constitucional-hoy-no-se-soluciona-nada-entre-cataluna-y-espana.html"
+      },
+      {
+        "source": "RTVE",
+        "url": "https://www.rtve.es/noticias/20261006/carles-puigdemont-amnistia-directo-video-cronica/17255962.shtml"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
