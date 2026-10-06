@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-ddeddd19a005-r0-a1-1791325666056",
-  "requested_at": "2026-10-06T22:27:46.053990Z",
-  "updated_at": "2026-10-06T22:36:38.663Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-auto-ddeddd19a005-r0-a2-1791326918838",
+  "requested_at": "2026-10-06T22:48:38.835673Z",
+  "updated_at": "2026-10-06T22:48:38.835673Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,9 +14,9 @@
   "trend_id": "ddeddd19a005",
   "target_name": "#TierraDeNadie4",
   "revision": 0,
-  "attempt": 1,
+  "attempt": 2,
   "auto_repair": true,
-  "auto_repair_attempt": 1,
+  "auto_repair_attempt": 2,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
@@ -34,9 +34,9 @@
       "https://www.eldiario.es/vertele/noticias/supervivientes-all-stars-3-activa-protocolo-abandono-marta-penate-rota-lagrimas_1_13567363.html",
       "https://vibrasencorte.es/television/realities/marta-penate-protocolo-abandono-supervivientes-all-stars-3/"
     ],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
-    "image_style_name": "stop_motion",
-    "image_style_index": 4
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
@@ -45,13 +45,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":true,\"submitted\":false,\"userTurns\":0,\"turns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisable",
-  "pc_upload_secret_hash": "789e5aba86a0eb497f41228f234bb3aa09382404eff5773febb470bd99972765",
-  "pc_worker_id": "ttendencias-image-bridge-v33-rehydrate-submit",
-  "pc_picked_up_at": "2026-10-06T22:35:40.876Z",
-  "bridge_version": null,
-  "target_handoff_id": "6170424E05FF0C6AC125A8ACF4BDC3D5",
-  "target_handoff_at": "2026-10-06T22:35:53.822Z",
-  "pc_launched_at": "2026-10-06T22:35:55.021Z",
-  "finished_at": "2026-10-06T22:36:38.663Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
