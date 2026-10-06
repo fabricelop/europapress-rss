@@ -57,7 +57,7 @@
       "percentage": 31.2,
       "first_seen": "2026-10-06T13:57:22.891635Z",
       "last_seen": "2026-10-06T18:11:39.692241Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -125,7 +125,10 @@
         }
       ],
       "drafted_source_count": 5,
-      "verified_source_count": 5
+      "verified_source_count": 5,
+      "reconciled_from_event_id": "d9d3acd3d17b",
+      "reconciliation_reason": "Mismo hecho esencial ya publicado sobre las declaraciones de Robert De Niro contra Trump y el voto por correo; sin novedad material independiente.",
+      "reconciled_at": "2026-10-06T18:20:15.271324Z"
     },
     {
       "id": "0a547c91aca8",
@@ -2942,5 +2945,5 @@
       "verified_source_count": 5
     }
   ],
-  "updated_at": "2026-10-06T18:15:43.649688Z"
+  "updated_at": "2026-10-06T18:20:15.271324Z"
 }
