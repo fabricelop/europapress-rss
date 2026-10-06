@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v36-cdp-preflight-auto-recovery
+# official-pipeline-restart-token: 2026-10-06-v37-force-restart-after-chrome-oom
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -26,7 +26,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v36"
+$WorkerId = "ttittulares-dedicated-v37"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
