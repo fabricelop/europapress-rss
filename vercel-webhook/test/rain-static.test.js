@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent} from '../rain/core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,wetNear} from '../rain/radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,wetNear,valueNear} from '../rain/radar-core.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
 
@@ -57,4 +57,13 @@ test('marginal probabilities do not become continuous rain',()=>{
     independentFamilyCount:6
   }));
   assert.equal(detectRainEvents(points).length,0);
+});
+
+test('projected radar intensity follows motion',()=>{
+  const w=40,h=40,m=mask(w,h,10,18,6,5),rates=new Float32Array(w*h);
+  for(let y=18;y<23;y++)for(let x=10;x<16;x++)rates[y*w+x]=2.4;
+  assert.equal(valueNear(rates,w,h,2,2,0),0);
+  assert.ok(valueNear(rates,w,h,12,20,1)>2);
+  const series=projectPointSeries(m,w,h,{dx:4,dy:0,confidence:.9},{horizonMinutes:40,sourceStepMinutes:10,outputStepMinutes:5,radius:0,intensityGrid:rates});
+  assert.ok(series.some(row=>row.radarRate>2));
 });
