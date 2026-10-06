@@ -31167,11 +31167,11 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selected_tweet_image": null,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image": {
@@ -31183,13 +31183,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261006124901_1200.jpg",
-        "source": "Europa Press · 6/10/2026",
-        "source_url": "https://www.europapress.es/catalunya/noticia-supremo-levanta-orden-detencion-contra-puigdemont-aval-tc-amnistiar-malversacion-20261006124901.html",
-        "alt": "Imagen de archivo relacionada con Constitucional",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/48607a1c170b-r0-ai1-791297290578.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "01accf88a9de546ba9d1072db0986a31f9f92a63f0a68095d2adae3b39d1ec85",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2511563,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "48607a1c170b",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-48607a1c170b-r0-a1-1791297290578"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/48607a1c170b-r0-ai1-791297290578.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/48607a1c170b-r0-ai1-791297290578.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "01accf88a9de546ba9d1072db0986a31f9f92a63f0a68095d2adae3b39d1ec85",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2511563,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "48607a1c170b",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-48607a1c170b-r0-a1-1791297290578"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/48607a1c170b-r0-ai1-791297290578.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T14:37:30.836Z"
     },
     {
       "id": "2e51a7a10dd3",
@@ -31241,6 +31280,6 @@
       "selected_tweet_image": null
     }
   ],
-  "updated_at": "2026-10-06T14:33:10.000Z",
+  "updated_at": "2026-10-06T14:37:30.836Z",
   "count": 589
 }
