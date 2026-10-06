@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-auto-dcfc8e6ef8b5-r1-a4-1791315642764",
   "requested_at": "2026-10-06T19:40:42.763420Z",
-  "updated_at": "2026-10-06T20:38:14.271Z",
-  "status": "RUNNING",
-  "phase": "pc_pickup",
+  "updated_at": "2026-10-06T20:44:39.877Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -47,8 +47,9 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "PC ha recogido la solicitud de imagen.",
+  "message": "No apareció un raster ImageGen capturable en 3 minutos; {\"marker\":true,\"commandScoped\":false,\"turns\":0,\"generating\":false,\"imagesAfterMarker\":0,\"candidates\":0,\"canvases\":0,\"top\":[]}",
   "pc_upload_secret_hash": "58852d8b1b825445ac024c98df336363b5913eb302ae9df8b6bbff1d92e8bd6f",
-  "pc_worker_id": "ttittulares-dedicated-v41",
-  "pc_picked_up_at": "2026-10-06T20:38:14.271Z"
+  "pc_worker_id": "ttittulares-image-bridge-v31-trusted-submit",
+  "pc_picked_up_at": "2026-10-06T20:38:14.271Z",
+  "finished_at": "2026-10-06T20:44:39.877Z"
 }
