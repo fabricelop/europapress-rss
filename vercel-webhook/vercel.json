@@ -327,7 +327,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache"
+          "value": "no-cache, no-store, must-revalidate"
         },
         {
           "key": "X-Content-Type-Options",
@@ -347,7 +347,20 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; connect-src 'self' https://api.open-meteo.com https://ensemble-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://tilecache.rainviewer.com https://*.rainviewer.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tilecache.rainviewer.com https://*.rainviewer.com; manifest-src 'self'; worker-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; connect-src 'self' https://api.open-meteo.com https://ensemble-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://tilecache.rainviewer.com https://*.rainviewer.com; img-src 'self' data: blob: https://*.basemaps.cartocdn.com https://tilecache.rainviewer.com https://*.rainviewer.com; manifest-src 'self'; worker-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/rain/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/rain/"
         }
       ]
     }
