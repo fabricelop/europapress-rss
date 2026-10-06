@@ -265,9 +265,15 @@ function persistedActiveRequestsFallback(doc,request){
     return at>=reqAt;
   });
   const latestActiveAt=Math.max(...rows.map(x=>stamp(x?.last_attempt_at||x?.updated_at||x?.requested_at)).filter(Boolean),0);
-  // Si ya hubo cierres posteriores a la orden y aún quedan revisiones activas,
-  // la pasada sigue realmente trabajando aunque RUNTRACE no haya actualizado.
-  if(!completedAfter && (!latestActiveAt || latestActiveAt<reqAt))return null;
+
+  // IMPORTANTE: una request en preparing/update NO equivale por sí sola a una
+  // ejecución viva. Si no hay actividad persistida reciente, es backlog atascado,
+  // no PROCESSING. Antes se fabricaba updated_at~=now y el panel podía contar horas.
+  const ACTIVE_REQUEST_STALE_MS=7*60*1000;
+  const activeAge=latestActiveAt?Date.now()-latestActiveAt:Infinity;
+  if(!latestActiveAt || activeAge<0 || activeAge>ACTIVE_REQUEST_STALE_MS)return null;
+  if(!completedAfter && latestActiveAt<reqAt)return null;
+
   rows.sort((a,b)=>stamp(a?.requested_at)-stamp(b?.requested_at));
   const current=rows[0]||{};
   return normalizeTrace({
@@ -278,12 +284,12 @@ function persistedActiveRequestsFallback(doc,request){
     phase:"persisting",
     requested_at:request?.requested_at||null,
     started_at:request?.requested_at||null,
-    updated_at:new Date(Math.max(Date.now()-1000,latestActiveAt||Date.now())).toISOString(),
+    updated_at:new Date(latestActiveAt).toISOString(),
     current:0,
     total:rows.length,
     trend_id:current.id||null,
     title:current.name||null,
-    message:rows.length+" tendencia"+(rows.length===1?"":"s")+" aún en elaboración; actividad editorial persistida en main."
+    message:rows.length+" tendencia"+(rows.length===1?"":"s")+" aún en elaboración; actividad editorial persistida reciente en main."
   });
 }
 
