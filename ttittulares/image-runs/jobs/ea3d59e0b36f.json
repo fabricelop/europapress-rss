@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tt-img-auto-ea3d59e0b36f-r1-a2-1791299330979",
-  "requested_at": "2026-10-06T15:08:50.978367Z",
-  "updated_at": "2026-10-06T15:15:14.617Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tt-img-recover-ea3d59e0b36f-r1-a3-1791303446156",
+  "requested_at": "2026-10-06T16:17:26.156Z",
+  "updated_at": "2026-10-06T16:17:26.156Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -15,7 +15,7 @@
   "revision": 1,
   "regenerate": true,
   "auto_repair": true,
-  "auto_repair_attempt": 2,
+  "auto_repair_attempt": 3,
   "chat_command_version": 7,
   "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
   "context_snapshot": {
@@ -51,9 +51,5 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "CDP timeout Page.navigate",
-  "pc_upload_secret_hash": "59b2e0871502ccd5544c1b84bbd816d530c4f5c0d372fdcd431fea5b1f5475d2",
-  "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-06T15:14:45.639Z",
-  "finished_at": "2026-10-06T15:15:14.617Z"
+  "message": "Reintento inmediato tras corregir timeout CDP Page.navigate"
 }
