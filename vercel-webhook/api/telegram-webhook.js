@@ -327,6 +327,10 @@ export default async function handler(req, res) {
           return res.status(200).json({ ok: true, ignored: true });
         }
         const status = action === "p" ? "published" : "dismissed";
+        await safeTelegram("answerCallbackQuery", {
+          callback_query_id: cq.id,
+          text: status === "published" ? "Guardando publicación…" : "Guardando descarte…"
+        });
         const now = new Date().toISOString();
         const mids = [];
         let matched = false;
@@ -374,13 +378,15 @@ export default async function handler(req, res) {
             return changed;
           });
           const currentMid = Number(msg.message_id || 0); if (currentMid && !mids.includes(currentMid)) mids.push(currentMid);
-          if (!matched) { await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "No encuentro el paquete vigente.", show_alert: true }); return res.status(200).json({ ok: false, matched: false }); }
+          if (!matched) {
+            await safeTelegram("sendMessage", { chat_id: allowedChat, text: "⚠️ No encuentro el paquete vigente de TTendencias." });
+            return res.status(200).json({ ok: false, matched: false });
+          }
           for (const mid of mids) await safeTelegram("deleteMessage", { chat_id: allowedChat, message_id: mid });
-          await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: status === "published" ? "Publicada." : "Desestimada." });
           return res.status(200).json({ ok: true, status, event_id: id, revision, deleted: mids.length });
         } catch (e) {
           console.error("TTendencias callback persistence failed", { id, revision, status, error: String(e?.message || e) });
-          await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "No se pudo guardar el estado. El mensaje se conserva.", show_alert: true });
+          await safeTelegram("sendMessage", { chat_id: allowedChat, text: "⚠️ No se pudo guardar el estado de TTendencias; el mensaje se conserva." });
           return res.status(200).json({ ok: false, status, event_id: id, revision });
         }
       } else if (data.startsWith("tt:")) {
