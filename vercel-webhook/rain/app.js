@@ -38,7 +38,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.6',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.7',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -219,6 +219,26 @@ async function fetchQuarterHour(){
     interpolated:true
   };
 }
+async function fetchWeekForecast(){
+  const point=forecastCoords(),p=new URLSearchParams({
+    latitude:String(point.lat),longitude:String(point.lon),
+    hourly:'precipitation_probability,precipitation,weather_code',
+    forecast_days:'8',timeformat:'unixtime',timezone:'auto'
+  });
+  const d=await fetchJson('https://api.open-meteo.com/v1/forecast?'+p,8000);
+  const h=d.hourly||{},offset=Number(d.utc_offset_seconds)||0;
+  const times=h.time||[],prob=h.precipitation_probability||[],prec=h.precipitation||[],codes=h.weather_code||[];
+  return{
+    timezone:d.timezone||null,
+    utcOffsetSeconds:offset,
+    rows:times.map((t,i)=>({
+      unix:Number(t),
+      probability:Number(prob[i])||0,
+      precipitation:Number(prec[i])||0,
+      weatherCode:Number(codes[i])
+    })).filter(r=>Number.isFinite(r.unix))
+  };
+}
 async function fetchRadarMeta(){
   const d=await fetchJson('https://api.rainviewer.com/public/weather-maps.json',6000);
   return {
@@ -241,18 +261,20 @@ async function loadForecast(force=false){
   if(!force){
     try{
       const c=JSON.parse(localStorage.getItem(k)||'null');
-      if(c&&Date.now()-c.savedAt<FORECAST_TTL&&c.data){return {...c.data,cacheAgeMs:Date.now()-c.savedAt}}
+      if(c&&Date.now()-c.savedAt<FORECAST_TTL&&c.data&&c.data.week){return {...c.data,cacheAgeMs:Date.now()-c.savedAt}}
     }catch{}
   }
-  const [det,ens,qh,radar,opera]=await Promise.all([
+  const [det,ens,qh,radar,opera,week]=await Promise.all([
     pool(DET_MODELS,fetchDet,3),pool(ENS_MODELS,fetchEns,2),
-    Promise.allSettled([fetchQuarterHour()]),Promise.allSettled([fetchRadarMeta()]),Promise.allSettled([fetchOperaMeta()])
+    Promise.allSettled([fetchQuarterHour()]),Promise.allSettled([fetchRadarMeta()]),Promise.allSettled([fetchOperaMeta()]),
+    Promise.allSettled([fetchWeekForecast()])
   ]);
   const deterministic=det.filter(x=>x.status==='fulfilled').map(x=>x.value);
   const ensembles=ens.filter(x=>x.status==='fulfilled').map(x=>x.value);
   const quarterHour=qh[0]?.status==='fulfilled'?qh[0].value:null;
   const radarMeta=radar[0]?.status==='fulfilled'?radar[0].value:null;
   const operaMeta=opera[0]?.status==='fulfilled'?opera[0].value:null;
+  const weekForecast=week[0]?.status==='fulfilled'?week[0].value:null;
   if(!deterministic.length&&!ensembles.length&&!quarterHour)throw new Error('No responde ninguna fuente de previsión');
   const now=Date.now(),end=now+72*3600_000;
   const consensus=buildConsensus({deterministic,ensembles,nowMs:now}).filter(r=>{
@@ -278,6 +300,7 @@ async function loadForecast(force=false){
     quarterHour,
     radar:radarMeta,
     opera:operaMeta,
+    week:weekForecast,
     sources:{
       deterministic:sourceStatus(DET_MODELS,det),
       ensembles:sourceStatus(ENS_MODELS,ens),
