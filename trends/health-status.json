@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-06T16:12:18.746498+00:00",
+  "checked_at": "2026-10-06T18:28:29.613520+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 9.9,
-      "run_id": 37492489746,
+      "age_minutes": 1.3,
+      "run_id": 37509464835,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,34 +75,24 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 2,
-      "overdue_count": 2,
-      "oldest_age_minutes": 50.1,
+      "ok": true,
+      "pending_count": 5,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0.0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "ea86f62a43db",
-          "name": "El PP",
-          "status": "preparing",
-          "age_minutes": 50.1
-        },
-        {
-          "id": "682a8cab1c48",
-          "name": "Dictador",
-          "status": "preparing",
-          "age_minutes": 50.1
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "ea86f62a43db",
-        "682a8cab1c48"
+        "d62b113bc862",
+        "ee0429b53af9",
+        "5804c9053892",
+        "8c662bc087c6",
+        "57a3966c6a88"
       ],
       "contradictory_success": false
     }
@@ -110,10 +100,9 @@
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola con 47 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 50.1 min"
+    "cola con 47 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 47 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 50.1 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola con 47 estado(s) inválido(s) | config TTendencias incompatible con el modo activo"
 }
