@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-20e34b5dbeed-r1-a1-1791284947183",
+  "requested_at": "2026-10-06T11:09:07.183068Z",
+  "updated_at": "2026-10-06T11:09:07.183068Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "20e34b5dbeed",
+  "event_id": "20e34b5dbeed",
+  "target_name": "El juez Calama rechaza el intento de Zapatero de suspender la nueva tasación de las joyas halladas en su despacho",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "El juez Calama rechaza el intento de Zapatero de suspender la nueva tasación de las joyas halladas en su despacho",
+    "revision": 1,
+    "factual_summary": "El juez José Luis Calama rechaza suspender la nueva tasación de las joyas halladas en el despacho de José Luis Rodríguez Zapatero. La firma Yanes seguirá con la pericial y el expresidente podrá encargar una contrapericial.",
+    "tweet_text": "El juez Calama rechaza suspender la nueva tasación de las joyas halladas en el despacho de Zapatero; Yanes hará la pericial y el expresidente podrá pedir una contrapericial.\n\n🌶️ Las joyas ya tienen más tasaciones que una vivienda antes de la hipoteca.",
+    "remate": "🌶️ Las joyas ya tienen más tasaciones que una vivienda antes de la hipoteca.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
+    "image_style_name": "pop_art",
+    "image_style_index": 7,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl juez Calama rechaza suspender la nueva tasación de las joyas halladas en el despacho de Zapatero; Yanes hará la pericial y el expresidente podrá pedir una contrapericial.\n\n🌶️ Las joyas ya tienen más tasaciones que una vivienda antes de la hipoteca.\n\nREMATE EXACTO:\n🌶️ Las joyas ya tienen más tasaciones que una vivienda antes de la hipoteca.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl juez José Luis Calama rechaza suspender la nueva tasación de las joyas halladas en el despacho de José Luis Rodríguez Zapatero. La firma Yanes seguirá con la pericial y el expresidente podrá encargar una contrapericial.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.ondacero.es/noticias/espana/juez-calama-rechaza-intento-zapatero-suspender-nueva-tasacion-joyas-halladas-despacho_202610066ac4c35d375d34226274f088.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/2026-10-06/el-juez-rechaza-que-un-perito-elegido-por-zapatero-participe-en-la-tasacion-que-hara-la-firma-elegida-para-valorar-sus-joyas.html"
+      },
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/nacional/2026/10/06/el-juez-rechaza-apartar-a-yanes-de-la-tasacion-de-las-joyas-de-zapatero-y-le-emplaza-a-pedir-una-contra-pericial-cadena-ser/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
