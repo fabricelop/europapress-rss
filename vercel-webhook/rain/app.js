@@ -1629,7 +1629,7 @@ function render(){
   const h=d.sources.health;
   $('health').textContent=h.available+' de '+h.total+' capas disponibles · radar '+(n?.status==='ok'?'analizado':n?.status==='motion_uncertain'?'sin movimiento fiable':'degradado');
   $('sourceCount').textContent=h.available+'/'+h.total;
-  renderShortNowcast();renderTimeline();renderEvents();renderSources();renderRadar();
+  renderShortNowcast();renderTimeline();renderWeekForecast();renderEvents();renderSources();renderRadar();
   const completed=state.lastCompletedAt||d.generatedAt;
   const radarStamp=n?.radarTime||d.radar?.frames?.at(-1)?.time*1000||null;
   $('updated').textContent='Actualización '+fmtTimeSeconds(completed)+' · modelos '+fmtTime(d.generatedAt)+(radarStamp?' · radar '+fmtTime(radarStamp):'');
@@ -1815,6 +1815,75 @@ function dryWindowBetween(a,b){
   return{start:a.end,end:b.start,minutes};
 }
 
+function weekLocalMs(unix,offsetSeconds=0){
+  return (Number(unix)+Number(offsetSeconds||0))*1000;
+}
+function weekDateKey(unix,offsetSeconds=0){
+  return new Date(weekLocalMs(unix,offsetSeconds)).toISOString().slice(0,10);
+}
+function weekHour(unix,offsetSeconds=0){
+  return new Date(weekLocalMs(unix,offsetSeconds)).getUTCHours();
+}
+function weekDayLabel(unix,offsetSeconds=0){
+  const d=new Date(weekLocalMs(unix,offsetSeconds));
+  const raw=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'short',timeZone:'UTC'}).format(d).replace('.','');
+  return raw.charAt(0).toUpperCase()+raw.slice(1);
+}
+function weekWetHour(row){
+  const p=Number(row.probability)||0,mm=Number(row.precipitation)||0;
+  return (p>=40&&mm>=.10)||(p>=32&&mm>=.35);
+}
+function weekRainRanges(rows=[],offsetSeconds=0){
+  const wet=rows.filter(weekWetHour).sort((a,b)=>a.unix-b.unix),groups=[];
+  for(const row of wet){
+    const start=row.unix,end=row.unix+3600,last=groups.at(-1);
+    if(last&&start<=last.end+1){
+      last.end=Math.max(last.end,end);
+      last.maxProb=Math.max(last.maxProb,Number(row.probability)||0);
+      last.total+=Number(row.precipitation)||0;
+      last.peak=Math.max(last.peak,Number(row.precipitation)||0);
+    }else{
+      groups.push({start,end,maxProb:Number(row.probability)||0,total:Number(row.precipitation)||0,peak:Number(row.precipitation)||0});
+    }
+  }
+  return groups.map(g=>({
+    ...g,
+    label:String(weekHour(g.start,offsetSeconds)).padStart(2,'0')+':00–'+String(weekHour(g.end,offsetSeconds)).padStart(2,'0')+':00'
+  }));
+}
+function weekDays(week=state.data?.week){
+  if(!week?.rows?.length)return[];
+  const offset=Number(week.utcOffsetSeconds)||0;
+  const nowUnix=Math.floor(Date.now()/1000),today=weekDateKey(nowUnix,offset),byDay=new Map();
+  for(const row of week.rows){
+    const key=weekDateKey(row.unix,offset);
+    if(key<=today)continue;
+    if(!byDay.has(key))byDay.set(key,[]);
+    byDay.get(key).push(row);
+  }
+  return [...byDay.entries()].slice(0,7).map(([key,rows])=>{
+    const ranges=weekRainRanges(rows,offset),maxProb=Math.max(0,...rows.map(r=>Number(r.probability)||0));
+    const total=ranges.reduce((s,r)=>s+r.total,0),peak=Math.max(0,...ranges.map(r=>r.peak));
+    return{key,label:weekDayLabel(rows[0].unix,offset),yes:ranges.length>0,ranges,maxProb,total,peak};
+  });
+}
+function renderWeekForecast(){
+  const root=$('weekDays'),summary=$('weekSummary');
+  if(!root||!summary)return;
+  const days=weekDays();
+  if(!days.length){
+    summary.textContent='sin datos';
+    root.innerHTML='<div class="weekEmpty">No hay previsión semanal disponible ahora.</div>';
+    return;
+  }
+  const rainy=days.filter(d=>d.yes);
+  summary.textContent=rainy.length?rainy.length+' de 7 días con lluvia':'7 días sin lluvia relevante';
+  root.innerHTML=days.map(day=>{
+    if(!day.yes)return '<div class="weekDay"><div class="weekName">'+day.label+'</div><div class="weekNo">NO</div><div class="weekInfo">Sin tramo de lluvia con señal suficiente</div></div>';
+    const ranges=day.ranges.slice(0,4).map(r=>'<span>'+r.label+' · '+Math.round(r.maxProb)+'% · ~'+r.total.toFixed(1).replace('.',',')+' mm</span>').join('');
+    return '<div class="weekDay rainy"><div class="weekName">'+day.label+'</div><div class="weekYes">SÍ</div><div class="weekInfo">'+ranges+'<small>Total orientativo ~'+day.total.toFixed(1).replace('.',',')+' mm · pico horario ~'+day.peak.toFixed(1).replace('.',',')+' mm/h</small></div></div>';
+  }).join('');
+}
 function renderTimeline(){
   const full=canonicalTimelineRows(),a=full.slice(0,state.timelineHours);
   $('timelineTitle').textContent='Próximas '+state.timelineHours+' horas';
