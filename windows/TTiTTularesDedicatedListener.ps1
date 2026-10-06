@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v40-image-bridge-v29
+# official-pipeline-restart-token: 2026-10-06-v41-cross-lock-recovery
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v40"
+$WorkerId = "ttittulares-dedicated-v41"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -439,7 +439,30 @@ function Test-OtherImageBridgeBusy {
   try {
     $lock = Get-Content -LiteralPath $OtherImageBridgeLockPath -Raw -Encoding UTF8 | ConvertFrom-Json
     $pidValue = [int]$lock.pid
-    if($pidValue -gt 0 -and (Get-Process -Id $pidValue -ErrorAction SilentlyContinue)){ return $true }
+    $p = if($pidValue -gt 0){Get-Process -Id $pidValue -ErrorAction SilentlyContinue}else{$null}
+    if($p){
+      $tooOld=$false
+      try{
+        $started=[DateTimeOffset]::Parse([string]$lock.started_at)
+        $tooOld=(([DateTimeOffset]::UtcNow-$started).TotalMinutes -gt 12)
+      }catch{}
+      if(-not $tooOld){ return $true }
+
+      $isOtherBridge=$false
+      try{
+        $proc=Get-CimInstance Win32_Process -Filter ("ProcessId="+$pidValue) -ErrorAction SilentlyContinue
+        $isOtherBridge=($proc -and [string]$proc.CommandLine -like "*TTendenciasImageBridge.js*")
+      }catch{}
+      if($isOtherBridge){
+        Write-Log "IMAGE OTHER LOCK STALE project=ttendencias pid=$pidValue command=$([string]$lock.command_id) target=$([string]$lock.target_id) age_gt_12m=1"
+        try{Stop-Process -Id $pidValue -Force -ErrorAction SilentlyContinue}catch{}
+        Remove-Item -LiteralPath $OtherImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+        return $false
+      }
+      # PID reutilizado por otro proceso: este lock ya no es válido.
+      Remove-Item -LiteralPath $OtherImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+      return $false
+    }
   } catch {}
   Remove-Item -LiteralPath $OtherImageBridgeLockPath -Force -ErrorAction SilentlyContinue
   return $false
