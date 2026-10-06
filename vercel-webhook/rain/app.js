@@ -365,7 +365,7 @@ function automaticRainState(){
   const radarAge=now-Date.parse(n?.radarTime||'');
   const radarFresh=(n?.status==='ok'||n?.status==='motion_uncertain')&&Number.isFinite(radarAge)&&radarAge<=12*60_000;
   const radarRain=radarFresh&&Number.isFinite(radarWet)&&radarWet>=CANONICAL_RADAR_THRESHOLD&&radarRate>=.08;
-  const radarStrong=radarRain&&(radarRate>=2.5||radarWet>=.48);
+  const radarStrong=radarRain&&radarRate>=2.5&&radarWet>=CANONICAL_RADAR_THRESHOLD;
   const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH)||0,operaQuality=Number(opera?.sample?.quality);
   const operaFresh=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5);
   const operaRain=operaFresh&&operaRate>=.05,operaStrong=operaRain&&operaRate>=2.5;
