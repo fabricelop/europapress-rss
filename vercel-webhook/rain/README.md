@@ -1,4 +1,4 @@
-# RainETA v0.15.7
+# RainETA v0.15.8
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,12 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Hotfix de recursión de feedback v0.15.8
+- Corrige `Maximum call stack size exceeded` cuando existía un `No llueve` reciente pero ya no debía gobernar el estado actual.
+- Las correcciones de episodio por feedback solo se calculan mientras ese feedback sigue vigente como verdad actual.
+- `canonicalEpisodeSnapshot()` deja de reconstruir episodios a través de la línea canónica; usa directamente los eventos de modelo para romper cualquier ciclo `decisión → corrección → episodio → decisión`.
+- El hotfix no cambia la previsión de 7 días ni las reglas de lluvia fuerte.
 
 ## Vista compacta y previsión 7 días v0.15.7
 - Se eliminan de la vista principal las explicaciones repetidas de `pausa dentro del episodio`, el texto auxiliar de Episodios y las métricas largas de aprendizaje.
