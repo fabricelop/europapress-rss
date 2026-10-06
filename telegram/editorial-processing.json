@@ -4057,7 +4057,7 @@
       "percentage": 25,
       "first_seen": "2026-10-06T19:09:18.377646Z",
       "last_seen": "2026-10-06T19:21:18.383084Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -4116,7 +4116,10 @@
       ],
       "drafted_source_count": 4,
       "verified_source_count": 4,
-      "automatic_redaction_requested_at": "2026-10-06T19:52:13.982212+00:00"
+      "automatic_redaction_requested_at": "2026-10-06T19:52:13.982212+00:00",
+      "reconciled_from_event_id": "4199e45f5398",
+      "reconciliation_reason": "Mismo avance judicial ya publicado: el Supremo concedió 48 horas a las partes antes de decidir sobre el voto ligado a la ley de nietos para el 29-N. No hay una resolución posterior ni una actualización material independiente.",
+      "reconciled_at": "2026-10-06T19:59:25.883Z"
     },
     {
       "id": "0bffdc89d17a",
@@ -4721,7 +4724,7 @@
         "elDiario.es"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-06T13:36:08.351385Z",
       "last_seen": "2026-10-06T19:42:53.609724Z",
       "status": "READY",
@@ -4787,5 +4790,5 @@
       "delivery_confirmation": "prepared_web"
     }
   ],
-  "updated_at": "2026-10-06T19:54:08.934061Z"
+  "updated_at": "2026-10-06T19:59:25.883Z"
 }
