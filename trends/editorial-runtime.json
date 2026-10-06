@@ -1,16 +1,17 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T18:15:00.000Z",
-  "last_completed_at": "2026-10-06T18:20:50.000Z",
-  "updated_at": "2026-10-06T18:20:50.000Z",
+  "last_started_at": "2026-10-06T19:50:41.614Z",
+  "last_completed_at": "2026-10-06T20:05:03.828Z",
+  "updated_at": "2026-10-06T20:05:03.828Z",
   "status": "success",
   "processed_ids": [
-    "ea86f62a43db",
-    "682a8cab1c48",
-    "c0facbdb74f7",
-    "ae89708e6a12",
-    "31fa73ae74f1"
+    "d62b113bc862",
+    "ee0429b53af9",
+    "5804c9053892",
+    "8c662bc087c6",
+    "57a3966c6a88",
+    "2d7c95e389d0"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -20,29 +21,38 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T181500Z",
+    "run_id": "tr-20261006T194743-chat",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-06T18:15:00.000Z",
-    "updated_at": "2026-10-06T18:20:50.000Z",
-    "finished_at": "2026-10-06T18:20:50.000Z",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-10-06T19:50:41.614Z",
+    "updated_at": "2026-10-06T20:05:03.828Z",
+    "finished_at": "2026-10-06T20:05:03.828Z",
+    "current": 6,
+    "total": 6,
     "trend_id": null,
     "title": null,
-    "incident_count": 0,
-    "incidents": [],
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-06T19:59:07.575Z",
+        "phase": "persisting",
+        "trend_id": "8c662bc087c6",
+        "title": "María Jesús Montero",
+        "reason": "Conflicto SHA 409 durante la persistencia; se releyó main y se reconcilió sin perder cambios del reparador visual."
+      }
+    ],
     "summary": {
-      "trends_processed": 5,
-      "trends_explained": 5,
+      "trends_processed": 6,
+      "trends_explained": 6,
       "explanation_groups": 5,
-      "new_cards": 4,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 0,
+      "new_cards": 3,
+      "revisions_updated": 0,
+      "grouped_into_existing_card": 2,
+      "grouped_members_total": 3,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
@@ -50,152 +60,153 @@
       "fallback_images_ready": 0,
       "visual_jobs_queued": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 5,
-      "remates_selected": 5,
-      "remates_omitted": 0,
+      "explanations_verified_under_280": 6,
+      "remates_selected": 2,
+      "remates_reused": 1,
+      "remates_omitted": 2,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada cerrada · 5 explicadas y verificadas · cola editorial final 0",
+    "message": "Pasada cerrada · 6 revisiones explicadas y verificadas · cola editorial final 0",
     "activity": [
       {
-        "at": "2026-10-06T18:16:25.000Z",
-        "phase": "investigating",
-        "trend_id": "ea86f62a43db",
-        "title": "El PP",
-        "message": "Hecho esencial verificado · debate del PP sobre voto por correo"
+        "at": "2026-10-06T19:50:41.614Z",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada editorial · 6 revisiones activas · sin reexplicaciones pendientes"
       },
       {
-        "at": "2026-10-06T18:16:40.000Z",
-        "phase": "drafting",
-        "trend_id": "ea86f62a43db",
-        "title": "El PP",
-        "message": "Explicación factual redactada y dentro del límite de X"
-      },
-      {
-        "at": "2026-10-06T18:16:55.000Z",
-        "phase": "remate_selection",
-        "trend_id": "ea86f62a43db",
-        "title": "El PP",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-06T18:17:05.000Z",
-        "phase": "investigating",
-        "trend_id": "682a8cab1c48",
-        "title": "Dictador",
-        "message": "Hecho esencial verificado · declaraciones de Ayuso sobre Sánchez"
-      },
-      {
-        "at": "2026-10-06T18:17:20.000Z",
-        "phase": "drafting",
-        "trend_id": "682a8cab1c48",
-        "title": "Dictador",
-        "message": "Explicación factual redactada y dentro del límite de X"
-      },
-      {
-        "at": "2026-10-06T18:17:30.000Z",
-        "phase": "remate_selection",
-        "trend_id": "682a8cab1c48",
-        "title": "Dictador",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-06T18:17:45.000Z",
-        "phase": "investigating",
-        "trend_id": "c0facbdb74f7",
-        "title": "Carvajal",
-        "message": "Hecho esencial verificado · negociación Getafe-Carvajal"
-      },
-      {
-        "at": "2026-10-06T18:18:00.000Z",
-        "phase": "drafting",
-        "trend_id": "c0facbdb74f7",
-        "title": "Carvajal",
-        "message": "Explicación factual redactada y dentro del límite de X"
-      },
-      {
-        "at": "2026-10-06T18:18:10.000Z",
-        "phase": "remate_selection",
-        "trend_id": "c0facbdb74f7",
-        "title": "Carvajal",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-06T18:18:25.000Z",
-        "phase": "investigating",
-        "trend_id": "ae89708e6a12",
-        "title": "#TreValliVaresine",
-        "message": "Resultado final verificado · victoria de Jarno Widar"
-      },
-      {
-        "at": "2026-10-06T18:18:40.000Z",
-        "phase": "drafting",
-        "trend_id": "ae89708e6a12",
-        "title": "#TreValliVaresine",
-        "message": "Explicación factual redactada y dentro del límite de X"
-      },
-      {
-        "at": "2026-10-06T18:18:50.000Z",
-        "phase": "remate_selection",
-        "trend_id": "ae89708e6a12",
-        "title": "#TreValliVaresine",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-06T18:19:05.000Z",
-        "phase": "investigating",
-        "trend_id": "31fa73ae74f1",
-        "title": "Frente Amplio",
-        "message": "Hecho esencial verificado · Maíllo, Podemos y calendario del Frente Amplio"
-      },
-      {
-        "at": "2026-10-06T18:19:20.000Z",
-        "phase": "drafting",
-        "trend_id": "31fa73ae74f1",
-        "title": "Frente Amplio",
-        "message": "Reexplicación factual redactada y dentro del límite de X"
-      },
-      {
-        "at": "2026-10-06T18:19:30.000Z",
-        "phase": "remate_selection",
-        "trend_id": "31fa73ae74f1",
-        "title": "Frente Amplio",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-06T18:19:45.000Z",
-        "phase": "persisting",
-        "trend_id": "31fa73ae74f1",
-        "title": "Frente Amplio",
-        "message": "Guardando fichas Explicadas"
-      },
-      {
-        "at": "2026-10-06T18:20:15.000Z",
-        "phase": "persisting",
-        "trend_id": "31fa73ae74f1",
-        "title": "Frente Amplio",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-06T18:20:25.000Z",
-        "phase": "persisting",
-        "trend_id": "31fa73ae74f1",
-        "title": "Frente Amplio",
-        "message": "Retirando revisiones de la cola"
-      },
-      {
-        "at": "2026-10-06T18:20:40.000Z",
+        "at": "2026-10-06T19:55:19.351Z",
         "phase": "verifying",
-        "trend_id": "31fa73ae74f1",
-        "title": "Frente Amplio",
-        "message": "Releyendo main · 5 revisiones consistentes y cola editorial 0"
+        "trend_id": "d62b113bc862",
+        "title": "Getafe",
+        "message": "Revisión vigente confirmada y agrupada con Carvajal"
       },
       {
-        "at": "2026-10-06T18:20:50.000Z",
+        "at": "2026-10-06T19:55:19.351Z",
+        "phase": "investigating",
+        "trend_id": "d62b113bc862",
+        "title": "Getafe",
+        "message": "Hecho esencial verificado · mismo episodio Getafe-Carvajal"
+      },
+      {
+        "at": "2026-10-06T19:55:19.351Z",
+        "phase": "verifying",
+        "trend_id": "d62b113bc862",
+        "title": "Getafe",
+        "message": "Tendencia cerrada y verificada · agrupada con Carvajal"
+      },
+      {
+        "at": "2026-10-06T19:56:31.011Z",
+        "phase": "verifying",
+        "trend_id": "ee0429b53af9",
+        "title": "#Elecciones29Noviembre",
+        "message": "Revisión vigente confirmada"
+      },
+      {
+        "at": "2026-10-06T19:56:31.011Z",
+        "phase": "investigating",
+        "trend_id": "ee0429b53af9",
+        "title": "#Elecciones29Noviembre",
+        "message": "Misma convocatoria del 29-N ya explicada en Sánchez"
+      },
+      {
+        "at": "2026-10-06T19:56:31.011Z",
+        "phase": "verifying",
+        "trend_id": "ee0429b53af9",
+        "title": "#Elecciones29Noviembre",
+        "message": "Tendencia cerrada y verificada · agrupada con Sánchez 29-N"
+      },
+      {
+        "at": "2026-10-06T19:57:32.851Z",
+        "phase": "investigating",
+        "trend_id": "5804c9053892",
+        "title": "Pablo García",
+        "message": "Hecho esencial verificado · hat-trick y clasificación de España sub-21"
+      },
+      {
+        "at": "2026-10-06T19:57:32.851Z",
+        "phase": "drafting",
+        "trend_id": "5804c9053892",
+        "title": "Pablo García",
+        "message": "Explicación factual redactada y comprobada bajo 280 caracteres"
+      },
+      {
+        "at": "2026-10-06T19:57:32.851Z",
+        "phase": "remate_selection",
+        "trend_id": "5804c9053892",
+        "title": "Pablo García",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-06T19:57:32.851Z",
+        "phase": "verifying",
+        "trend_id": "5804c9053892",
+        "title": "Pablo García",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-06T19:59:07.575Z",
+        "phase": "investigating",
+        "trend_id": "8c662bc087c6",
+        "title": "María Jesús Montero",
+        "message": "Hecho esencial verificado · declaraciones sobre la huelga; Mopongo agrupado"
+      },
+      {
+        "at": "2026-10-06T19:59:07.575Z",
+        "phase": "drafting",
+        "trend_id": "8c662bc087c6",
+        "title": "María Jesús Montero",
+        "message": "Explicación factual conjunta redactada y comprobada bajo 280 caracteres"
+      },
+      {
+        "at": "2026-10-06T19:59:07.575Z",
+        "phase": "remate_selection",
+        "trend_id": "8c662bc087c6",
+        "title": "María Jesús Montero",
+        "message": "Sin remate · contenido político"
+      },
+      {
+        "at": "2026-10-06T19:59:07.575Z",
+        "phase": "persisting",
+        "trend_id": "8c662bc087c6",
+        "title": "María Jesús Montero",
+        "message": "Conflicto SHA detectado; relectura y reconciliación completadas"
+      },
+      {
+        "at": "2026-10-06T19:59:07.575Z",
+        "phase": "verifying",
+        "trend_id": "57a3966c6a88",
+        "title": "Mopongo",
+        "message": "Montero + Mopongo cerradas y verificadas"
+      },
+      {
+        "at": "2026-10-06T20:03:17.745Z",
+        "phase": "verifying",
+        "trend_id": "2d7c95e389d0",
+        "title": "Perisic",
+        "message": "Revisión vigente confirmada"
+      },
+      {
+        "at": "2026-10-06T20:03:17.745Z",
+        "phase": "investigating",
+        "trend_id": "2d7c95e389d0",
+        "title": "Perisic",
+        "message": "Gol del 1-0 verificado; no se atribuye resultado final"
+      },
+      {
+        "at": "2026-10-06T20:03:17.745Z",
+        "phase": "drafting",
+        "trend_id": "2d7c95e389d0",
+        "title": "Perisic",
+        "message": "Explicación de 220 caracteres persistida con remate"
+      },
+      {
+        "at": "2026-10-06T20:05:03.828Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 5 explicadas y verificadas · cola editorial final 0"
+        "message": "Relectura final de main · cola 0 y sin reexplicaciones pendientes"
       }
     ],
     "queue_complete": true,
@@ -203,113 +214,37 @@
     "remaining_problematic_ids": [],
     "ratings_snapshot": {
       "source": "trends/remate-ratings.json",
-      "sample_size": 100,
-      "average": 3.13,
+      "sample_size": 153,
+      "average": 3.0980392156862746,
       "distribution": {
-        "1": 16,
-        "2": 11,
-        "3": 26,
-        "4": 38,
-        "5": 9
+        "1": 21,
+        "2": 24,
+        "3": 40,
+        "4": 55,
+        "5": 13
       }
     },
     "remate_selections": [
       {
-        "trend_id": "ea86f62a43db",
+        "trend_id": "5804c9053892",
         "revision": 0,
-        "candidate_count": 1,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": null,
-            "ratings_affinity": null,
-            "trend_specificity": null,
-            "punch": null,
-            "originality": null,
-            "length_fit": true,
-            "repetition_penalty": null
-          }
-        ],
+        "candidate_count": 3,
         "selected_candidate": "c1",
         "selected_score": null,
         "no_remate_reason": null
       },
       {
-        "trend_id": "682a8cab1c48",
+        "trend_id": "8c662bc087c6",
         "revision": 0,
-        "candidate_count": 1,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": null,
-            "ratings_affinity": null,
-            "trend_specificity": null,
-            "punch": null,
-            "originality": null,
-            "length_fit": true,
-            "repetition_penalty": null
-          }
-        ],
-        "selected_candidate": "c1",
+        "candidate_count": 0,
+        "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": null
+        "no_remate_reason": "political_content"
       },
       {
-        "trend_id": "c0facbdb74f7",
+        "trend_id": "2d7c95e389d0",
         "revision": 0,
-        "candidate_count": 1,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": null,
-            "ratings_affinity": null,
-            "trend_specificity": null,
-            "punch": null,
-            "originality": null,
-            "length_fit": true,
-            "repetition_penalty": null
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "ae89708e6a12",
-        "revision": 0,
-        "candidate_count": 1,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": null,
-            "ratings_affinity": null,
-            "trend_specificity": null,
-            "punch": null,
-            "originality": null,
-            "length_fit": true,
-            "repetition_penalty": null
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "31fa73ae74f1",
-        "revision": 3,
-        "candidate_count": 1,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": null,
-            "ratings_affinity": null,
-            "trend_specificity": null,
-            "punch": null,
-            "originality": null,
-            "length_fit": true,
-            "repetition_penalty": null
-          }
-        ],
+        "candidate_count": 3,
         "selected_candidate": "c1",
         "selected_score": null,
         "no_remate_reason": null
