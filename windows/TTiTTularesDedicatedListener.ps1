@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v46-control-head-anon-api
+# official-pipeline-restart-token: 2026-10-06-v47-direct-job-first
 # compatibility validator: ttittulares-dedicated-v44
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v46"
+$WorkerId = "ttittulares-dedicated-v47"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -295,6 +295,11 @@ function Read-ImageJobDirect([string]$TargetId) {
 
 function Read-ImageJob([string]$TargetId) {
   if (-not $TargetId) { return $null }
+  # La rama de control resuelta por SHA inmutable es autoritativa. Consultarla
+  # antes que Vercel evita que un endpoint atrasado devuelva el command_id previo
+  # y haga que el listener descarte el job nuevo como si fuera obsoleto.
+  $direct=Read-ImageJobDirect $TargetId
+  if($direct){return $direct}
   try {
     $doc=Invoke-RestMethod -Uri (CacheBust ($ImageJobUrlBase + [uri]::EscapeDataString($TargetId))) -Headers @{
       "Cache-Control" = "no-cache"
@@ -304,7 +309,7 @@ function Read-ImageJob([string]$TargetId) {
   } catch {
     Write-Log "IMAGE JOB API WARNING target=$TargetId :: $($_.Exception.Message)"
   }
-  return Read-ImageJobDirect $TargetId
+  return $null
 }
 
 function Load-State {
