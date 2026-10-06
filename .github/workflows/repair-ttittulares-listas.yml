@@ -279,7 +279,20 @@ jobs:
                   if age<active_ttl:
                       continue
 
-              cooldown=300 if attempt<3 else 3600
+              # Los fallos de transporte/CDP no deben dejar Listas sin IA durante
+              # una hora después de que el bridge ya haya sido corregido. Conservamos
+              # el backoff largo para fallos genéricos repetidos, pero los errores de
+              # lanzamiento del navegador se vuelven a intentar pronto.
+              last_message=str(old.get("message") or "").lower()
+              transient_bridge_failure=any(token in last_message for token in (
+                  "cdp timeout page.navigate",
+                  "timeout cdp",
+                  "no se encontró ninguna conversación",
+                  "no se encontro ninguna conversacion",
+                  "pestaña dedicada no mostró compositor",
+                  "pestana dedicada no mostro compositor",
+              ))
+              cooldown=60 if transient_bridge_failure else (300 if attempt<3 else 3600)
               if old and old_status not in active and age<cooldown:
                   continue
 
