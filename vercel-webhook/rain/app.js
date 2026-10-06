@@ -371,8 +371,7 @@ function automaticRainState(){
   const operaRain=operaFresh&&operaRate>=.05,operaStrong=operaRain&&operaRate>=2.5;
   const corroborated=radarRain&&operaRain;
   const raining=corroborated||radarStrong||operaStrong;
-  const modelP=Number(state.data?.quarterHour?.current?.precipitation)||0;
-  const possible=!raining&&(radarRain||operaRain||modelP>=.1);
+  const possible=!raining&&(radarRain||operaRain);
   const source=corroborated?'radar+radar europeo'
     : radarStrong?'radar fuerte'
       : operaStrong?'radar europeo fuerte'
@@ -1575,6 +1574,7 @@ function render(){
   const current=d.quarterHour?.current||{};
   $('nowRain').textContent='Ahora: '+nowState.label;
   $('nowRain').classList.toggle('wet',nowState.raining);
+  $('nowRain').classList.toggle('possible',Boolean(nowState.possible&&!nowState.raining));
   $('tempNow').textContent=Number.isFinite(current.temperature)?current.temperature.toFixed(1).replace('.',',')+' °C':'— °C';
   const savedHere=isSaved();
   $('savePlace').textContent=state.loc.isCurrent
