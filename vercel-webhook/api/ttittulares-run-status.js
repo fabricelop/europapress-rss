@@ -58,9 +58,28 @@ async function comments(){
   }
 }
 async function triggerReady(){return true}
-async function readControl(path){
-  // El canal de control exige consistencia fuerte. GitHub REST refleja el HEAD
-  // de la rama; RAW puede servir temporalmente el commit anterior.
+async function readControl(path,strong=false){
+  // El polling de la UI no necesita SHA ni consistencia transaccional: RAW primero.
+  // El listener del PC puede pedir strong=1 cuando necesita el HEAD exacto.
+  if(strong){
+    try{
+      const r=await gh(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`,{cache:"no-store"});
+      if(r.ok){
+        const f=await r.json();
+        const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
+        return JSON.parse(raw||"{}")
+      }
+      if(r.status===404)return {}
+    }catch(_){}
+  }
+  try{
+    const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
+    const u=`https://raw.githubusercontent.com/${REPO}/${encodeURIComponent(TRIGGER_BRANCH)}/${clean}?t=${Date.now()}`;
+    const r=await fetch(u,{cache:"no-store",headers:{"cache-control":"no-cache","user-agent":"ttittulares-run-status-control-read"}});
+    if(r.ok)return JSON.parse(await r.text()||"{}");
+    if(r.status===404)return {}
+  }catch(_){}
+  // REST solo como fallback excepcional si RAW no responde.
   try{
     const r=await gh(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`,{cache:"no-store"});
     if(r.ok){
@@ -69,26 +88,10 @@ async function readControl(path){
       return JSON.parse(raw||"{}")
     }
   }catch(_){}
-  try{
-    const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
-    const u=`https://raw.githubusercontent.com/${REPO}/${encodeURIComponent(TRIGGER_BRANCH)}/${clean}?t=${Date.now()}`;
-    const r=await fetch(u,{cache:"no-store",headers:{"cache-control":"no-cache","user-agent":"ttittulares-run-status-control-read"}});
-    if(r.ok)return JSON.parse(await r.text()||"{}")
-  }catch(_){}
   return {}
 }
-async function readTrigger(){
-  try{
-    const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+TRIGGER_PATH+"?ref="+encodeURIComponent(TRIGGER_BRANCH),{cache:"no-store"});
-    if(!r.ok)return {doc:await readControl(TRIGGER_PATH)};
-    const f=await r.json();
-    const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-    return {doc:JSON.parse(raw||"{}")}
-  }catch(_){
-    return {doc:await readControl(TRIGGER_PATH)}
-  }
-}
-async function readAck(){return await readControl(ACK_PATH)}
+async function readTrigger(strong=false){return {doc:await readControl(TRIGGER_PATH,strong)}}
+async function readAck(strong=false){return await readControl(ACK_PATH,strong)}
 
 async function readImageControl(path,strong=false){
   if(strong){
@@ -105,15 +108,9 @@ async function readImageControl(path,strong=false){
 }
 
 async function readAckFresh(){
-  try{
-    const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+ACK_PATH+"?ref="+encodeURIComponent(TRIGGER_BRANCH),{cache:"no-store"});
-    if(!r.ok)return await readAck();
-    const f=await r.json();
-    const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-    return JSON.parse(raw||"{}")
-  }catch(_){
-    return await readAck()
-  }
+  // La interfaz tolera unos segundos de propagación; no gastar REST en cada poll.
+  // listener-snapshot?strong=1 conserva la lectura fuerte para el proceso local.
+  return await readAck(false)
 }
 async function readErrors(){
   try{
@@ -286,7 +283,7 @@ export default async function handler(req,res){
     if(view==="listener-snapshot"){
       const strong=String(req.query?.strong||"")==="1";
       const [trigger,imageIndex0]=await Promise.all([
-        readImageControl(TRIGGER_PATH,strong),
+        readControl(TRIGGER_PATH,strong),
         readImageControl(IMAGE_RUN_INDEX_PATH,strong)
       ]);
       const image_index=(imageIndex0&&typeof imageIndex0==="object")?imageIndex0:{version:1,jobs:[]};
