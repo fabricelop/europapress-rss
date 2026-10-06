@@ -453,8 +453,17 @@ function clearSelectedHour(){
   state.selectedHourIndex=null;
   renderShortNowcast();renderTimeline();
 }
+function operaPointAt(timeMs){
+  const n=operaNowcastInfo(),base=Date.parse(n?.observedAt||state.data?.opera?.observedAt||'');
+  if(!n?.series?.length||!Number.isFinite(base))return null;
+  const best=n.series.reduce((acc,row)=>{
+    const t=base+(Number(row.minute)||0)*60_000,d=Math.abs(t-timeMs);
+    return !acc||d<acc.d?{row,d,time:t}:acc;
+  },null);
+  return best&&best.d<=8*60_000?best.row:null;
+}
 function shortPoints(){
-  const now=Date.now(),n=state.nowcast,qh=state.data?.quarterHour,ev=chooseDisplayEvent(),rainNow=currentRainState().raining;
+  const now=Date.now(),n=state.nowcast,ev=chooseDisplayEvent(),rainNow=currentRainState().raining;
   const radarBase=Date.parse(n?.radarTime||''),series=Array.isArray(n?.series)?n.series:[];
   const eventStart=ev?Date.parse(ev.start):Infinity,eventEnd=ev?.end?Date.parse(ev.end):eventStart+45*60_000;
   const points=[];
@@ -467,21 +476,23 @@ function shortPoints(){
         return !best||d<best.d?{row,d}:best;
       },null)?.row||null;
     }
-    const modelRate=quarterHourRateAt(time);
-    const radarRate=Number(radar?.radarRate)||0;
-    const radarProb=Number(radar?.probability);
-    const wetFraction=Number(radar?.wetFraction)||0;
+    const operaPoint=operaPointAt(time),modelRate=quarterHourRateAt(time);
+    const radarRate=Number(radar?.radarRate)||0,operaRate=Number(operaPoint?.rateMmH)||0;
+    const radarProb=Number(radar?.probability),operaProb=Number(operaPoint?.probability);
+    const wetFraction=Number(radar?.wetFraction)||0,operaWetFraction=Number(operaPoint?.wetFraction)||0;
     const horizon=Math.max(0,(time-now)/60_000),radarWeight=Math.max(.42,.9-horizon*.004);
     const inEvent=Boolean(ev)&&time>=eventStart&&time<=eventEnd;
-    const radarWet=wetFraction>=.10&&radarRate>=.03;
+    const radarWet=wetFraction>=.10&&radarRate>=.03,operaWet=operaWetFraction>=.10&&operaRate>=.03;
+    const nowcastRates=[radarWet?radarRate:null,operaWet?operaRate:null].filter(Number.isFinite);
+    const nowcastRate=nowcastRates.length?nowcastRates.reduce((a,b)=>a+b,0)/nowcastRates.length:0;
     let rate=0;
-    if(rainNow&&i===0)rate=Math.max(radarRate,modelRate,Number(n?.currentRadarRate)||0);
+    if(rainNow&&i===0)rate=Math.max(radarRate,operaRate,modelRate,Number(n?.currentRadarRate)||0,Number(state.data?.opera?.sample?.rateMmH)||0);
     else if(inEvent){
-      if(radarWet)rate=radarRate*radarWeight+modelRate*(1-radarWeight);
+      if(nowcastRate>0)rate=nowcastRate*radarWeight+modelRate*(1-radarWeight);
       else rate=modelRate;
     }
     const modelSignal=modelRate<=.05?0:Math.min(.76,.25+Math.log1p(modelRate)*.24);
-    let probability=Number.isFinite(radarProb)?Math.max(radarProb,modelSignal*.5):modelSignal;
+    let probability=Math.max(Number.isFinite(radarProb)?radarProb:0,Number.isFinite(operaProb)?operaProb:0,modelSignal*.5);
     if(!inEvent&&!rainNow)probability=0;
     if(inEvent&&rate>0)probability=Math.max(probability,.35);
     if(i===0){
@@ -493,11 +504,10 @@ function shortPoints(){
       time,
       probability:Math.max(0,Math.min(1,probability||0)),
       rate:Math.max(0,rate||0),
-      radarRate,
-      modelRate,
-      wetFraction,
+      radarRate,operaRate,modelRate,
+      wetFraction,operaWetFraction,
       inEvent,
-      wet:rainNow&&i===0 ? rate>.03 : inEvent&&(rate>=.03||radarWet)
+      wet:rainNow&&i===0 ? rate>.03 : inEvent&&(rate>=.03||radarWet||operaWet)
     });
   }
   return points;
@@ -514,10 +524,10 @@ function renderShortNowcast(){
     ? arrivalPoints.reduce((sum,p)=>sum+p.rate,0)/arrivalPoints.length
     : 0;
   const peakRate=wetPoints.length?Math.max(...wetPoints.map(p=>p.rate)):0;
-  const labelRate=rain.raining?Math.max(Number(state.nowcast?.currentRadarRate)||0,arrivalRate):arrivalRate;
+  const labelRate=rain.raining?Math.max(Number(state.nowcast?.currentRadarRate)||0,Number(state.data?.opera?.sample?.rateMmH)||0,arrivalRate):arrivalRate;
   $('shortState').textContent=near||rain.raining?intensityLabel(labelRate):'Seco';
   $('shortDetail').textContent=rain.raining
-    ? 'Radar: '+labelRate.toFixed(1)+' mm/h ahora · actualización '+fmtTime(state.nowcast?.radarTime||Date.now())
+    ? 'Nowcast: '+labelRate.toFixed(1)+' mm/h ahora · RainViewer '+fmtTime(state.nowcast?.radarTime||Date.now())+(state.data?.opera?.observedAt?' · OPERA '+fmtTime(state.data.opera.observedAt):'')
     : delayedByRadar
       ? 'Radar sin precipitación proyectada hasta ~'+fmtTime(dry.end)+'. Los modelos mantienen riesgo después.'
       : near
@@ -532,7 +542,7 @@ function renderShortNowcast(){
       ? formatCountdownMs(Date.parse(dry.end)-now)
       : near?formatCountdownMs(Date.parse(ev.start)-now):'>2 h';
   $('shortWindow').textContent=near
-    ? fmtTime(ev.start)+(ev.end?'–'+fmtTime(ev.end):'')+(ev.kind==='radar'?' · '+uncertaintyText(ev):'')
+    ? fmtTime(ev.start)+(ev.end?'–'+fmtTime(ev.end):'')+(['radar','opera','radarFusion'].includes(ev.kind)?' · '+uncertaintyText(ev):'')
     : dry
       ? 'Ventana seca radar · '+fmtTime(dry.start)+'–'+fmtTime(dry.end)
       : 'Ventana corta estable';
@@ -769,8 +779,8 @@ function consensusDecisionText(decision=buildRainDecision()){
   const opera=state.data?.opera,sample=opera?.sample;
   const operaFresh=Boolean(sample?.ok&&Number(opera?.ageMinutes)<=20);
   const operaRate=Number(sample?.rateMmH);
-  const operaLabel=operaFresh&&Number.isFinite(operaRate)
-    ? operaRate.toFixed(1).replace('.',',')+' mm/h'
+  const operaEta=operaEventCandidate(decision.now),operaLabel=operaFresh&&Number.isFinite(operaRate)
+    ? operaRate.toFixed(1).replace('.',',')+' mm/h'+(operaEta&&!operaEta.active?' · ETA '+fmtTime(operaEta.start):operaEta?.active?' · lluvia ahora':'')
     : 'sin dato reciente';
   const modelLabel=decision.modelRisk==null?'sin dato':('riesgo '+Math.round(decision.modelRisk)+' %');
   const practical=decision.mode==='rain_now'
