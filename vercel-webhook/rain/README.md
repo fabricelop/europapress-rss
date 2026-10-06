@@ -1,4 +1,4 @@
-# RainETA v0.15.4
+# RainETA v0.15.5
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,13 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Alerta visual de lluvia fuerte v0.15.5
+- RainETA considera **lluvia fuerte** a partir de **7,5 mm/h**.
+- Si cualquier tramo de un episodio alcanza ese nivel, el episodio completo se marca con **línea roja superior**, borde rojo y etiqueta `LLUVIA FUERTE`.
+- Los tramos concretos de lluvia fuerte usan rojo también en el detalle y en la línea inferior del gráfico temporal.
+- Un chubasco que alcance 7,5 mm/h o más se muestra como **Chubasco fuerte** y recibe la misma señal roja.
+- La leyenda muestra explícitamente `Fuerte ≥7,5 mm/h`.
 
 ## Resumen limpio y sincronización canónica v0.15.4
 - En estado seco se elimina el párrafo largo redundante de la cabecera: queda un único resumen compacto de fuentes y decisión.
