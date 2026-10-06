@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v35-cdp-renderer-auto-recovery
+# official-pipeline-restart-token: 2026-10-06-v36-cdp-preflight-auto-recovery
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -26,7 +26,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v35"
+$WorkerId = "ttittulares-dedicated-v36"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -359,6 +359,23 @@ function Test-OtherImageBridgeBusy {
   } catch {}
   Remove-Item -LiteralPath $OtherImageBridgeLockPath -Force -ErrorAction SilentlyContinue
   return $false
+}
+
+function Test-DedicatedChromeCdpHealthy {
+  try {
+    $v=Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/version?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 3
+    if(-not $v -or -not $v.webSocketDebuggerUrl){ return $false }
+    $targets=Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/list?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 4
+    $pages=@($targets | Where-Object { [string]$_.type -eq "page" -and $_.webSocketDebuggerUrl })
+    if($pages.Count -eq 0){ return $false }
+    $chatPages=@($pages | Where-Object {
+      $u=[string]$_.url
+      $u -like "https://chatgpt.com/*" -or $u -eq "https://chatgpt.com/"
+    })
+    return ($chatPages.Count -gt 0)
+  } catch {
+    return $false
+  }
 }
 
 function Restart-DedicatedChromeCdp([string]$CommandId,[string]$Reason) {
@@ -1025,6 +1042,29 @@ while ($true) {
         # recuperarse de 409/5xx transitorios sin reemitir el job.
         $requestedStatus=([string]$statusDoc.status).ToUpperInvariant() -eq "REQUESTED"
         if((Seen-ImageCommand $state $commandId) -and -not $requestedStatus){continue}
+        # PRE-FLIGHT: no consumir el job con Chrome/CDP roto. Un fallo previo de
+        # Chrome puede dejar 9223 vivo pero sin una pestaña ChatGPT utilizable.
+        # Reparamos antes del picked_up para que el job siga siendo reintentable.
+        if(-not (Test-DedicatedChromeCdpHealthy)){
+          if(Test-OtherImageBridgeBusy){
+            Write-Log "IMAGE CHROME PREFLIGHT WAIT target=$targetId command=$commandId reason=ttendencias-image-active"
+            continue
+          }
+          Write-Log "IMAGE CHROME PREFLIGHT FAILED target=$targetId command=$commandId"
+          if(-not (Restart-DedicatedChromeCdp $commandId "preflight-unhealthy")){
+            Write-Log "IMAGE CHROME PREFLIGHT RETRY target=$targetId command=$commandId"
+            continue
+          }
+          Start-Sleep -Seconds 2
+          if(-not (Test-DedicatedChromeCdpHealthy)){
+            Write-Log "IMAGE CHROME PREFLIGHT STILL UNHEALTHY target=$targetId command=$commandId"
+            continue
+          }
+          Write-Log "IMAGE CHROME PREFLIGHT RECOVERED target=$targetId command=$commandId"
+          $state.last_chrome_recovery_command_id=$commandId
+          $state.last_chrome_recovery_at=[DateTimeOffset]::UtcNow.ToString("o")
+          Save-State $state
+        }
         $forceChromeRecovery=$false
         try{$forceChromeRecovery=[bool]$statusDoc.force_chrome_recovery}catch{}
         if($forceChromeRecovery){
