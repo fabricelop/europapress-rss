@@ -560,7 +560,7 @@ function renderShortNowcast(){
     : decision.mode==='episode_ended_early'
       ? 'Episodio recortado: sigue seco · terminó ~'+fmtTime(decision.correction?.observedEnd)+' en vez de '+fmtTime(decision.correction?.episode?.end)
       : rain.raining
-        ? 'Nowcast: '+labelRate.toFixed(1)+' mm/h ahora · RainViewer '+fmtTime(state.nowcast?.radarTime||Date.now())+(state.data?.opera?.observedAt?' · OPERA '+fmtTime(state.data.opera.observedAt):'')
+        ? 'Radar / nowcast: '+labelRate.toFixed(1)+' mm/h ahora · RainViewer '+fmtTime(state.nowcast?.radarTime||Date.now())+(state.data?.opera?.observedAt?' · OPERA '+fmtTime(state.data.opera.observedAt):'')
         : delayedByRadar
           ? 'Radar sin precipitación proyectada hasta ~'+fmtTime(dry.end)+'. Los modelos mantienen riesgo después.'
           : near
