@@ -1194,12 +1194,11 @@ async function rateRemate(ratingKey, rating) {
 }
 
 async function stateSnapshot(fresh = false) {
-  const github_rate_limit = await probeGithubRate(true);
-  // El panel solo necesita contenido para pintar el estado. Usar RAW aquí
-  // evita gastar el rate limit REST autenticado de GitHub en cada polling.
-  // La API autenticada queda reservada para escrituras y operaciones que
-  // realmente necesitan SHA/consistencia transaccional.
-  const strong = fresh ? readJson : readPublicJson;
+  const github_rate_limit = await probeGithubRate(false);
+  // El panel solo pinta estado, incluso en un refresh manual. RAW evita gastar
+  // la cuota REST primaria; REST autenticado queda reservado para escrituras,
+  // SHA y operaciones que necesitan consistencia transaccional.
+  const strong = readPublicJson;
   const [recent, requests, explained, explainedCopyState, health, prepared, editorialConfig, editorialQueue, remateRatings, telegramImageDeliveries] = await Promise.all([
     readPublicJson(RECENT),
     strong(REQUESTS),
