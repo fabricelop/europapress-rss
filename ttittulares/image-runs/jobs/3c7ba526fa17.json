@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-auto-3c7ba526fa17-r1-a1-1791312920328",
   "requested_at": "2026-10-06T18:55:20.326523Z",
-  "updated_at": "2026-10-06T19:16:09.488Z",
-  "status": "RUNNING",
-  "phase": "composer_ready",
+  "updated_at": "2026-10-06T19:16:10.996Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -51,8 +51,9 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "Compositor reutilizado en la pestaña fija; conversación nueva disponible.",
+  "message": "Fallback no pudo escribir el prompt completo len=0 expected>=500",
   "pc_upload_secret_hash": "d48662d4e363d08a8319c0e77c242c6296436245670009761521a235ec8adb6f",
   "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-06T19:16:06.677Z"
+  "pc_picked_up_at": "2026-10-06T19:16:06.677Z",
+  "finished_at": "2026-10-06T19:16:10.996Z"
 }
