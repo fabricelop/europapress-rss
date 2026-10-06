@@ -1,11 +1,8 @@
 TT Apps production deploy trigger
-Reason: persistir contrato visual variable Gag IA y consolidar despliegue
+Reason: corregir botones Telegram TTendencias Publicado/Desestimar
 Includes:
-- TTendencias + TTiTTulares
-- estilos visuales variables por job
-- una sola idea visual fuerte
-- más gag, menos barroquismo
-- acabado cuidado sin recargar
-- rutas automática y manual de Gag IA
-- cancelar despliegues de producción obsoletos en cola
-Source main before trigger: 765a9c3bc7dc0aa50d44cfffda8c06aaf1818800
+- handler tx: en vercel-webhook/api/telegram-webhook.js
+- respuesta inmediata al callback
+- listener de paquetes continuo en modo web
+- watchdog periódico del listener
+Source main before trigger: 6ce7fb63d08200dc4bc908a8b9b048d85d36641c
