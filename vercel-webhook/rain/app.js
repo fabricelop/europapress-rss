@@ -2735,10 +2735,11 @@ $('play').onclick=function(){
   const slider=$('frame');if(Number(slider.value)>=Number(slider.max))slider.value=slider.min;
   this.textContent='❚❚';state.playMode='loop';
   state.playTimer=setInterval(()=>{
-    let next=Number(slider.value)+5;
+    const current=Number(slider.value)||0;
+    let next=current<0?Math.min(0,current+5):current+1;
     if(next>Number(slider.max))next=Number(slider.min);
-    slider.value=next;showRadarOffset(next);
-  },700);
+    slider.value=String(next);showRadarOffset(next);
+  },90);
 };
 if('serviceWorker'in navigator){
   navigator.serviceWorker.register('/rain/sw.js',{updateViaCache:'none'}).then(reg=>{
