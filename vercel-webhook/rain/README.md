@@ -3,7 +3,7 @@
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
 ## Motor por horizonte
-- **0–3 h:** la banda corta combina radar, radar europeo y modelos. El radar puede proyectarse visualmente hasta 3 h, pero solo tiene autoridad dentro de su horizonte fiable dinámico; después el peso cae a cero y mandan modelos/consenso.
+- **0–4 h:** la banda corta mantiene su detalle 0–180 min, mientras el mapa radar puede avanzar visualmente hasta 4 h. El radar solo tiene autoridad dentro de su horizonte fiable dinámico; después el peso cae a cero y mandan modelos/consenso.
 - **0–8 h:** añade guía de precipitación a 15 minutos de Open-Meteo, marcada explícitamente como potencialmente interpolada en España.
 - **0–72 h:** fusiona deterministas y ensembles. La influencia de ensembles aumenta con el horizonte y la confianza queda limitada progresivamente cuanto más lejos está el episodio.
 
@@ -103,7 +103,7 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 
 ## HASTA LLUVIA continuo y radar visual 4 h v0.17.2
 - Recupera **▶ HASTA LLUVIA** como botón principal también cuando la ETA procede de modelos/consenso.
-- Si hay una ETA dentro de las próximas **4 horas** y existe movimiento radar utilizable, la animación avanza hasta esa hora aunque ya esté fuera del horizonte radar fiable.
+- Si hay una ETA dentro de las próximas **4 horas**, la animación avanza hasta esa hora aunque la ETA proceda de modelos/consenso. Si no existe movimiento radar suficientemente fiable, conserva el último radar atenuado como referencia visual y no lo presenta como predicción física.
 - La animación futura pasa de saltos de 5 minutos a **pasos de 1 minuto** y actualiza las coordenadas de la misma capa radar, reduciendo parpadeos y dando una evolución visual más continua.
 - El slider del radar se amplía hasta **+240 min**. La banda corta permanece en 0–180 min.
 - Fuera del horizonte fiable la imagen se atenúa progresivamente; la ETA deja claro que la hora la decide el consenso/modelos y que la extrapolación radar es solo orientativa.
