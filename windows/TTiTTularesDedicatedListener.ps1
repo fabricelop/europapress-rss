@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v37-force-restart-after-chrome-oom
+# official-pipeline-restart-token: 2026-10-06-v38-image-queue-direct-fallback
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -21,12 +21,18 @@ $ImageJobUrlBase = "$StatusBase/api/ttittulares-run-status?view=image-job&strong
 $RunUrl = "$StatusBase/api/ttittulares-run"
 $DirectTriggerApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/run-now-trigger.json?ref=control%2Fttittulares-run-trigger-v2"
 $DirectAckApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/run-ack.json?ref=control%2Fttittulares-run-trigger-v2"
+$DirectImageIndexApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/image-runs/index.json?ref=control%2Fttittulares-run-trigger-v2"
+$DirectImageJobApiBase = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/image-runs/jobs/"
+$DirectImageRefQuery = "?ref=control%2Fttittulares-run-trigger-v2"
+$DirectImageRefreshSeconds = 60
+$script:DirectImageIndexCache = $null
+$script:DirectImageIndexAt = [DateTimeOffset]::MinValue
 $DirectTriggerRefreshSeconds = 60
 $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v37"
+$WorkerId = "ttittulares-dedicated-v38"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -175,23 +181,93 @@ function Read-AckDirect {
   return $null
 }
 
+function Read-ImageIndexDirect([switch]$Force) {
+  $now=[DateTimeOffset]::UtcNow
+  if(-not $Force -and $script:DirectImageIndexCache -and (($now-$script:DirectImageIndexAt).TotalSeconds -lt $DirectImageRefreshSeconds)){
+    return $script:DirectImageIndexCache
+  }
+  try{
+    $doc=Invoke-RestMethod -Uri (CacheBust $DirectImageIndexApi) -Headers @{
+      "Accept"="application/vnd.github+json"
+      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectImageIndex"
+      "Cache-Control"="no-cache"
+    } -TimeoutSec 12
+    if($doc -and $doc.content){
+      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
+      $parsed=$raw|ConvertFrom-Json
+      if($parsed){
+        $script:DirectImageIndexCache=$parsed
+        $script:DirectImageIndexAt=$now
+        return $parsed
+      }
+    }
+  }catch{
+    Write-Log "DIRECT IMAGE INDEX ERROR :: $($_.Exception.Message)"
+  }
+  return $script:DirectImageIndexCache
+}
+
 function Read-ImageIndex {
+  $snapshot=$null
   $r=Read-ListenerSnapshot
-  if($r -and $r.image_index){return $r.image_index}
+  if($r -and $r.image_index){$snapshot=$r.image_index}
+
+  # La pestaña fija ya no depende de Ejecutar.js. Para evitar que un snapshot
+  # Vercel obsoleto deje la cola invisible, contrastamos con GitHub como máximo
+  # una vez por minuto (<=60 lecturas/h, muy lejos del límite de 5.000/h).
+  $direct=Read-ImageIndexDirect
+  if($direct -and $direct.jobs){
+    if(-not $snapshot -or -not $snapshot.jobs){return $direct}
+    try{
+      $sj=@($snapshot.jobs);$dj=@($direct.jobs)
+      if($dj.Count -gt $sj.Count){return $direct}
+      $sLast=$sj|Select-Object -Last 1
+      $dLast=$dj|Select-Object -Last 1
+      if($dLast -and (-not $sLast -or [string]$dLast.command_id -ne [string]$sLast.command_id)){
+        $sd=if($sLast){[DateTimeOffset]::Parse([string]$sLast.requested_at)}else{[DateTimeOffset]::MinValue}
+        $dd=[DateTimeOffset]::Parse([string]$dLast.requested_at)
+        if($dd -ge $sd){return $direct}
+      }
+    }catch{
+      return $direct
+    }
+  }
+  if($snapshot){return $snapshot}
+  if($direct){return $direct}
   return [pscustomobject]@{ jobs = @() }
+}
+
+function Read-ImageJobDirect([string]$TargetId) {
+  if(-not $TargetId){return $null}
+  try{
+    $url=$DirectImageJobApiBase+[uri]::EscapeDataString($TargetId)+".json"+$DirectImageRefQuery
+    $doc=Invoke-RestMethod -Uri (CacheBust $url) -Headers @{
+      "Accept"="application/vnd.github+json"
+      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectImageJob"
+      "Cache-Control"="no-cache"
+    } -TimeoutSec 12
+    if($doc -and $doc.content){
+      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
+      return ($raw|ConvertFrom-Json)
+    }
+  }catch{
+    Write-Log "DIRECT IMAGE JOB ERROR target=$TargetId :: $($_.Exception.Message)"
+  }
+  return $null
 }
 
 function Read-ImageJob([string]$TargetId) {
   if (-not $TargetId) { return $null }
   try {
-    return Invoke-RestMethod -Uri (CacheBust ($ImageJobUrlBase + [uri]::EscapeDataString($TargetId))) -Headers @{
+    $doc=Invoke-RestMethod -Uri (CacheBust ($ImageJobUrlBase + [uri]::EscapeDataString($TargetId))) -Headers @{
       "Cache-Control" = "no-cache"
       "User-Agent" = "TTiTTulares-Dedicated-Listener"
     } -TimeoutSec 12
+    if($doc){return $doc}
   } catch {
-    Write-Log "IMAGE JOB ERROR target=$TargetId :: $($_.Exception.Message)"
-    return $null
+    Write-Log "IMAGE JOB API WARNING target=$TargetId :: $($_.Exception.Message)"
   }
+  return Read-ImageJobDirect $TargetId
 }
 
 function Load-State {
@@ -894,6 +970,9 @@ $state = Load-State
 Ensure-StateFields $state
 Save-State $state
 $CustomMessageSupport = Test-CustomChatMessageSupport
+if(-not $CustomMessageSupport){
+  Write-Log "CUSTOM MESSAGE SUPPORT unavailable; ignored for image queue because fixed-tab bridge is self-sufficient"
+}
 
 # Diagnóstico inicial: confirma que el proceso sigue vivo y que ve el trigger remoto.
 $probe = Read-Trigger
@@ -902,6 +981,7 @@ if ($probe -and $probe.command_id) {
 } else {
   Write-Log "TRIGGER PROBE FAILED"
 }
+$script:DirectImageIndexAt=[DateTimeOffset]::MinValue
 $imageProbe=Read-ImageIndex
 Write-Log "IMAGE PROBE jobs=$(@($imageProbe.jobs).Count) seen=$(@($state.image_commands).Count) active=$(@($state.active_image_commands).Count)"
 $loopCount = 0
@@ -1024,7 +1104,7 @@ while ($true) {
       $localBridgeBusy=Test-ImageBridgeBusy
     }
     $slots=if($localBridgeBusy){0}else{[Math]::Max(0,$MaxParallelImageChats-@($state.active_image_commands).Count)}
-    if($slots -gt 0 -and $CustomMessageSupport){
+    if($slots -gt 0){
       $jobs=@();if($idx -and $idx.jobs){$jobs=@($idx.jobs)}
       foreach($job in $jobs){
         if($slots -le 0){break}
@@ -1109,8 +1189,6 @@ while ($true) {
         Write-Log "IMAGE FIXED TAB BRIDGE STARTED target=$targetId command=$commandId"
         Mark-ImageCommand $state $commandId $true;Save-State $state;$slots--
       }
-    }elseif($slots -gt 0 -and -not $CustomMessageSupport){
-      Write-Log "IMAGE QUEUE WAITING: custom message support unavailable"
     }
   } catch {
     Write-Log "IMAGE LOOP ERROR :: $($_.Exception.Message)"
