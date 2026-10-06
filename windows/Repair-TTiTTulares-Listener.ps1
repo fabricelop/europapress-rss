@@ -1,7 +1,7 @@
 # Repair-TTiTTulares-Listener.ps1
 $ErrorActionPreference="Stop"
 $BaseDir="C:\TTiTTulares"
-$SourceRef="842f65542b606b0a1ed20dcbdde0bdc499da4d44"
+$SourceRef="7bdfb0694fa057d7c923310821cf150b624833be"
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 
 function Get-GitHubFile([string]$remote,[string]$dest,[string]$kind="ps"){
@@ -49,9 +49,13 @@ Get-GitHubFile "windows/TTiTTularesImageBridge.js" $ttBridge "js"
 Get-GitHubFile "windows/TTendenciasImageBridge.js" $trBridge "js"
 
 $listenerText=Get-Content -LiteralPath $listener -Raw -Encoding UTF8
-if($listenerText -notmatch 'ttittulares-dedicated-v44'){throw "Se descargó un listener anterior; se esperaba v44"}
+if($listenerText -notmatch 'ttittulares-dedicated-v44'){throw "Se descargó un listener TTiTTulares anterior; se esperaba v44"}
+$trendListenerText=Get-Content -LiteralPath $trendListener -Raw -Encoding UTF8
+if($trendListenerText -notmatch 'ttendencias-dedicated-v16'){throw "Se descargó un listener TTendencias anterior; se esperaba v16"}
 $bridgeText=Get-Content -LiteralPath $ttBridge -Raw -Encoding UTF8
-if($bridgeText -notmatch 'ttittulares-image-bridge-v32-strict-submit'){throw "Se descargó un bridge anterior; se esperaba v32"}
+if($bridgeText -notmatch 'ttittulares-image-bridge-v32-strict-submit'){throw "Se descargó un bridge TTiTTulares anterior; se esperaba v32"}
+$trendBridgeText=Get-Content -LiteralPath $trBridge -Raw -Encoding UTF8
+if($trendBridgeText -notmatch 'ttendencias-image-bridge-v32-strict-submit'){throw "Se descargó un bridge TTendencias anterior; se esperaba v32"}
 
 foreach($pat in @("*TTiTTularesDedicatedListener.ps1*","*TTendenciasDedicatedListener.ps1*","*TT-LocalWatchdog.ps1*","*TT-AutoUpdater.ps1*")){
   @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
@@ -145,7 +149,7 @@ $tcount=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Ob
   ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like "*TTendenciasDedicatedListener.ps1*"
 }).Count
 
-Write-Host "TT automation reparada: listener v44 + bridges v32 + watchdog + updater" -ForegroundColor Green
+Write-Host "TT automation reparada: TTiTTulares v44 + TTendencias v16 + bridges v32 + watchdog + updater" -ForegroundColor Green
 Write-Host ("TTiTTulares listeners activos: "+$count)
 Write-Host ("TTendencias listeners activos: "+$tcount)
 Write-Host ("PID TTiTTulares: "+$l.Id)
