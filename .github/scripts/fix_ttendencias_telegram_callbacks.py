@@ -1,6 +1,6 @@
 from pathlib import Path
 
-p = Path("api/telegram-webhook.js")
+p = Path("vercel-webhook/api/telegram-webhook.js")
 s = p.read_text(encoding="utf-8")
 marker = '      if (data.startsWith("tt:")) {'
 if 'data.startsWith("tx:")' in s:
