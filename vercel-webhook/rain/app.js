@@ -37,7 +37,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.9.0',renameTarget:null,selectedHourIndex:null,radarOffset:0
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.10.0',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -402,17 +402,25 @@ function compassDirection(degrees){
   const dirs=['N','NE','E','SE','S','SO','O','NO'];
   return dirs[Math.round(((Number(degrees)%360)+360)%360/45)%8];
 }
-function conditionLabel(row={}){
+function weatherParts(row={}){
   const code=Number(row.weatherCode),snow=Number(row.snowfall)||0,rate=Number(row.precipitation)||0;
   const signal=classifyRainHour({probability:(Number(row.probability)||0)/100,expectedPrecipitation:rate});
-  if(snow>=.02||[71,73,75,77,85,86].includes(code))return snow>=.5?'Nieve intensa':'Nieve';
-  if([95,96,99].includes(code))return'Tormenta';
-  if(signal==='wet'||(signal==='possible'&&rate>=.05))return intensityLabel(rate);
-  if([45,48].includes(code))return'Niebla';
-  const cloud=Number(row.cloudCover);
-  if(code===0||Number.isFinite(cloud)&&cloud<20)return'Despejado';
-  if([1,2].includes(code)||Number.isFinite(cloud)&&cloud<65)return'Parcialmente nublado';
-  return'Nublado';
+  const thunder=[95,96,99].includes(code);
+  let primary;
+  if(snow>=.02||[71,73,75,77,85,86].includes(code))primary=snow>=.5?'Nieve intensa':'Nieve';
+  else if(signal==='wet'||(signal==='possible'&&rate>=.05))primary=intensityLabel(rate);
+  else if([45,48].includes(code))primary='Niebla';
+  else{
+    const cloud=Number(row.cloudCover);
+    if(code===0||Number.isFinite(cloud)&&cloud<20)primary='Despejado';
+    else if([1,2].includes(code)||Number.isFinite(cloud)&&cloud<65)primary='Parcialmente nublado';
+    else primary='Nublado';
+  }
+  return{primary,phenomenon:thunder?'Tormenta prevista':null};
+}
+function conditionLabel(row={}){
+  const p=weatherParts(row);
+  return p.phenomenon?p.primary+' · '+p.phenomenon.toLowerCase():p.primary;
 }
 function renderSelectedHour(){
   const row=canonicalTimelineRows()?.[state.selectedHourIndex];
@@ -850,7 +858,9 @@ function eventHourlyRows(event){
 }
 
 function renderTimeline(){
-  const a=canonicalTimelineRows();
+  const full=canonicalTimelineRows(),a=full.slice(0,state.timelineHours);
+  $('timelineTitle').textContent='Próximas '+state.timelineHours+' horas';
+  document.querySelectorAll('.rangeBtn').forEach(btn=>btn.classList.toggle('active',Number(btn.dataset.hours)===state.timelineHours));
   const maxIntensity=Math.max(.25,Math.min(6,Math.max(...a.map(x=>Number(x.precipitation)||0))));
   $('timeline').innerHTML=a.map((x,index)=>{
     const probability=(Number(x.probability)||0)/100,precipitation=Number(x.precipitation)||0;
@@ -864,10 +874,10 @@ function renderTimeline(){
     return '<button type="button" class="bar '+cls+selected+'" data-hour-index="'+index+'" style="height:'+height+'%" aria-label="'+fmtDateTime(x.time)+'" title="'+fmtDateTime(x.time)+' · prob. '+x.probability+'% · intensidad '+precipitation.toFixed(1)+' mm/h"></button>';
   }).join('');
   $('timeline').querySelectorAll('[data-hour-index]').forEach(el=>el.onclick=()=>selectTimelineHour(el.dataset.hourIndex));
-  const ticks=[],lines=[];
+  const ticks=[],lines=[],tickEvery=state.timelineHours<=24?3:6;
   for(let i=0;i<a.length;i++){
     const dt=new Date(a[i].time),hour=dt.getHours();
-    if(i===0||hour%6===0){
+    if(i===0||hour%tickEvery===0){
       const left=a.length>1?i/(a.length-1)*100:0;
       const day=(i===0||hour===0)?new Intl.DateTimeFormat('es-ES',{weekday:'short'}).format(dt).replace('.',''):'';
       ticks.push('<span class="tick" style="left:'+left+'%"><b>'+String(hour).padStart(2,'0')+'</b>'+(day?'<span class="tickDay">'+day+'</span>':'')+'</span>');
@@ -892,15 +902,17 @@ function renderEvents(){
     const after=dryHours!=null&&dryHours>=1?' · después ~'+Math.round(dryHours)+' h secas':'';
     const hourly=eventHourlyRows(e).map(row=>{
       const hour=String(new Date(row.time).getHours()).padStart(2,'0')+' h';
-      const label=conditionLabel(row);
+      const weather=weatherParts(row);
       const prob=Math.round(Number(row.probability)||0)+'%';
       const rate=(Number(row.precipitation)||0).toFixed(1).replace('.',',')+' mm/h';
-      return '<div class="eventHour"><b>'+hour+'</b><span>'+label+'</span><span class="ehProb">'+prob+'</span><span class="ehRate">'+rate+'</span></div>';
+      const phenomenon=weather.phenomenon?'<span class="ehPhenomenon">'+weather.phenomenon+'</span>':'';
+      return '<div class="eventHour"><b>'+hour+'</b><span class="ehCondition">'+weather.primary+phenomenon+'</span><span class="ehProb">'+prob+'</span><span class="ehRate">'+rate+'</span></div>';
     }).join('');
+    const header='<div class="eventHourHead"><span>Hora</span><span>Tiempo</span><span>Prob.</span><span>Intens.</span></div>';
     return '<div class="event"><div><strong>'+fmtDateTime(e.start)+' → '+fmtTime(e.end)+'</strong>'+
       '<small>'+dur+' h · '+(e.character||'variable')+' · '+total.toFixed(1)+' mm estimados</small>'+
-      '<small>pico '+peak.toFixed(1)+' mm/h · prob. media '+avgProb+'% · máx. '+maxProb+'% · '+families+' familias'+after+'</small></div>'+
-      '<div class="prob">'+maxProb+'%</div><div class="eventHours">'+hourly+'</div></div>';
+      '<small>Pico '+peak.toFixed(1)+' mm/h · prob. media '+avgProb+'% · máx. '+maxProb+'% · '+families+' familias'+after+'</small></div>'+
+      '<div class="prob">'+maxProb+'%</div><div class="eventHours">'+header+hourly+'</div></div>';
   }).join('')||'<div class="status">Sin episodios relevantes.</div>';
 }
 
@@ -1235,6 +1247,15 @@ $('renameCancel').onclick=()=>{state.renameTarget=null;$('renameDlg').close()};
 $('renameSave').onclick=saveRenameLocation;
 $('renameInput').onkeydown=e=>{if(e.key==='Enter')saveRenameLocation()};
 $('shortBack').onclick=clearSelectedHour;
+document.querySelectorAll('.rangeBtn').forEach(btn=>btn.onclick=()=>{
+  const hours=Number(btn.dataset.hours);
+  if(![24,48,72].includes(hours))return;
+  state.timelineHours=hours;
+  localStorage.setItem('raineta.timelineHours',JSON.stringify(hours));
+  if(state.selectedHourIndex!==null&&state.selectedHourIndex>=hours)state.selectedHourIndex=null;
+  renderTimeline();
+  if(state.selectedHourIndex===null)renderShortNowcast();
+});
 $('search').onclick=searchPlace;
 $('q').onkeydown=e=>{if(e.key==='Enter')searchPlace()};
 $('geo').onclick=()=>{
