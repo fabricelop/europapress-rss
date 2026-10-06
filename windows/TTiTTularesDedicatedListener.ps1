@@ -1025,6 +1025,21 @@ while ($true) {
         # recuperarse de 409/5xx transitorios sin reemitir el job.
         $requestedStatus=([string]$statusDoc.status).ToUpperInvariant() -eq "REQUESTED"
         if((Seen-ImageCommand $state $commandId) -and -not $requestedStatus){continue}
+        $forceChromeRecovery=$false
+        try{$forceChromeRecovery=[bool]$statusDoc.force_chrome_recovery}catch{}
+        if($forceChromeRecovery){
+          if(Test-OtherImageBridgeBusy){
+            Write-Log "IMAGE FORCE CHROME RECOVERY WAIT target=$targetId command=$commandId reason=ttendencias-image-active"
+            continue
+          }
+          if(-not (Restart-DedicatedChromeCdp $commandId "force_chrome_recovery")){
+            Write-Log "IMAGE FORCE CHROME RECOVERY RETRY target=$targetId command=$commandId"
+            continue
+          }
+          $state.last_chrome_recovery_command_id=$commandId
+          $state.last_chrome_recovery_at=[DateTimeOffset]::UtcNow.ToString("o")
+          Save-State $state
+        }
         Write-Log "IMAGE NEW target=$targetId command=$commandId name=$($job.target_name)"
         $uploadSecret=New-ImageUploadSecret
         $uploadHash=Get-Sha256Hex $uploadSecret
