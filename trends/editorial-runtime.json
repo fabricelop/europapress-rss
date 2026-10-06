@@ -1,14 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T00:15:00+02:00",
-  "last_completed_at": "2026-10-07T00:21:00+02:00",
-  "updated_at": "2026-10-07T00:21:00+02:00",
+  "last_started_at": "2026-10-07T00:45:00+02:00",
+  "last_completed_at": "2026-10-07T00:45:00+02:00",
+  "updated_at": "2026-10-07T00:45:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "ddeddd19a005",
-    "8e250d6dfae4"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -17,25 +14,25 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-20261007T001500-chat",
+    "run_id": "tr-20261007T004500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T00:15:00+02:00",
-    "updated_at": "2026-10-07T00:21:00+02:00",
-    "finished_at": "2026-10-07T00:21:00+02:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-07T00:45:00+02:00",
+    "updated_at": "2026-10-07T00:45:00+02:00",
+    "finished_at": "2026-10-07T00:45:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
       "trends_problematic": 0,
@@ -48,113 +45,57 @@
       "fallback_images_ready": 0,
       "visual_jobs_queued": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_reused": 0,
       "remates_omitted": 0,
       "pending_repair_triggered": 1,
-      "pending_cards_reviewed": 0,
+      "pending_cards_reviewed": 10,
       "visual_repair_triggered": 1
     },
-    "message": "Pasada cerrada · 2/2 explicadas · cola editorial vacía",
+    "message": "Pasada cerrada · 0 nuevas · 10 Pendientes revisadas · cola editorial vacía",
     "activity": [
       {
-        "at": "2026-10-07T00:15:00+02:00",
+        "at": "2026-10-07T00:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada directa iniciada · 2 entradas activas"
+        "message": "Pasada directa iniciada · cola editorial 0"
       },
       {
-        "at": "2026-10-07T00:15:20+02:00",
+        "at": "2026-10-07T00:45:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual de Pendientes solicitado"
       },
       {
-        "at": "2026-10-07T00:16:00+02:00",
-        "phase": "verifying",
-        "trend_id": "ddeddd19a005",
-        "title": "#TierraDeNadie4",
-        "message": "Releyendo estado autoritativo de #TierraDeNadie4"
-      },
-      {
-        "at": "2026-10-07T00:16:20+02:00",
-        "phase": "investigating",
-        "trend_id": "ddeddd19a005",
-        "title": "#TierraDeNadie4",
-        "message": "Contrastando la gala, el protocolo de abandono y la presentadora"
-      },
-      {
-        "at": "2026-10-07T00:16:45+02:00",
-        "phase": "drafting",
-        "trend_id": "ddeddd19a005",
-        "title": "#TierraDeNadie4",
-        "message": "Redactando explicación factual y comprobando límite de X"
-      },
-      {
-        "at": "2026-10-07T00:17:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "ddeddd19a005",
-        "title": "#TierraDeNadie4",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-07T00:17:10+02:00",
-        "phase": "verifying",
-        "trend_id": "8e250d6dfae4",
-        "title": "#Codigo10",
-        "message": "Releyendo estado autoritativo de #Codigo10"
-      },
-      {
-        "at": "2026-10-07T00:17:30+02:00",
-        "phase": "investigating",
-        "trend_id": "8e250d6dfae4",
-        "title": "#Codigo10",
-        "message": "Contrastando emisión, episodio y formato actual de Código 10"
-      },
-      {
-        "at": "2026-10-07T00:17:50+02:00",
-        "phase": "drafting",
-        "trend_id": "8e250d6dfae4",
-        "title": "#Codigo10",
-        "message": "Redactando explicación factual y comprobando límite de X"
-      },
-      {
-        "at": "2026-10-07T00:18:05+02:00",
-        "phase": "remate_selection",
-        "trend_id": "8e250d6dfae4",
-        "title": "#Codigo10",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-07T00:18:20+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Aplicando lote editorial atómico sobre las 2 revisiones vigentes"
-      },
-      {
-        "at": "2026-10-07T00:20:16+02:00",
+        "at": "2026-10-07T00:45:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Commit editorial aplicado correctamente en main"
+        "message": "Revisando Pendientes · 10 tarjetas"
       },
       {
-        "at": "2026-10-07T00:20:40+02:00",
+        "at": "2026-10-07T00:45:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificados requests, fichas Explicadas y cola editorial vacía"
+        "message": "10/10 con remate; reparación visual solicitada"
       },
       {
-        "at": "2026-10-07T00:21:00+02:00",
+        "at": "2026-10-07T00:45:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola editorial sigue vacía"
+      },
+      {
+        "at": "2026-10-07T00:45:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 2/2 explicadas · cola editorial vacía"
+        "message": "Pasada cerrada · 0 nuevas · 10 Pendientes revisadas"
       }
     ],
     "queue_complete": true,
@@ -175,20 +116,7 @@
         "5": 13
       }
     },
-    "remate_selections": [
-      {
-        "trend_id": "ddeddd19a005",
-        "revision": 0,
-        "title": "#TierraDeNadie4",
-        "closer_text": "🌶️ En Honduras hasta la puerta de salida tiene protocolo."
-      },
-      {
-        "trend_id": "8e250d6dfae4",
-        "revision": 2,
-        "title": "#Codigo10",
-        "closer_text": "🌶️ El prime time también entra con cinta policial."
-      }
-    ]
+    "remate_selections": []
   },
   "visual_repair": {
     "requested": true,
