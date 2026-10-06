@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v41-cross-lock-recovery
+# official-pipeline-restart-token: 2026-10-06-v42-control-raw-direct
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -19,11 +19,11 @@ $StatusBase = "https://europapress-rss.vercel.app"
 $ListenerSnapshotUrl = "$StatusBase/api/ttittulares-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttittulares-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttittulares-run"
-$DirectTriggerApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/run-now-trigger.json?ref=control%2Fttittulares-run-trigger-v2"
-$DirectAckApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/run-ack.json?ref=control%2Fttittulares-run-trigger-v2"
-$DirectImageIndexApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/image-runs/index.json?ref=control%2Fttittulares-run-trigger-v2"
-$DirectImageJobApiBase = "https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/image-runs/jobs/"
-$DirectImageRefQuery = "?ref=control%2Fttittulares-run-trigger-v2"
+$ControlRawBase = "https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttittulares-run-trigger-v2"
+$DirectTriggerRaw = "$ControlRawBase/ttittulares/run-now-trigger.json"
+$DirectAckRaw = "$ControlRawBase/ttittulares/run-ack.json"
+$DirectImageIndexRaw = "$ControlRawBase/ttittulares/image-runs/index.json"
+$DirectImageJobRawBase = "$ControlRawBase/ttittulares/image-runs/jobs/"
 $DirectImageRefreshSeconds = 60
 $script:DirectImageIndexCache = $null
 $script:DirectImageIndexAt = [DateTimeOffset]::MinValue
@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v41"
+$WorkerId = "ttittulares-dedicated-v42"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -127,22 +127,18 @@ function Read-TriggerDirect([switch]$Force) {
     return $script:DirectTriggerCache
   }
   try{
-    $doc=Invoke-RestMethod -Uri (CacheBust $DirectTriggerApi) -Headers @{
-      "Accept"="application/vnd.github+json"
-      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectTrigger"
-      "Cache-Control"="no-cache"
+    $parsed=Invoke-RestMethod -Uri (CacheBust $DirectTriggerRaw) -Headers @{
+      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectTrigger-Raw"
+      "Cache-Control"="no-cache, no-store"
+      "Pragma"="no-cache"
     } -TimeoutSec 12
-    if($doc -and $doc.content){
-      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
-      $parsed=$raw|ConvertFrom-Json
-      if($parsed -and $parsed.command_id){
-        $script:DirectTriggerCache=$parsed
-        $script:DirectTriggerAt=$now
-        return $parsed
-      }
+    if($parsed -and $parsed.command_id){
+      $script:DirectTriggerCache=$parsed
+      $script:DirectTriggerAt=$now
+      return $parsed
     }
   }catch{
-    Write-Log "DIRECT TRIGGER ERROR :: $($_.Exception.Message)"
+    Write-Log "DIRECT TRIGGER RAW ERROR :: $($_.Exception.Message)"
   }
   return $script:DirectTriggerCache
 }
@@ -174,17 +170,13 @@ function Confirm-DirectTriggerCurrent([string]$CommandId){
 
 function Read-AckDirect {
   try{
-    $doc=Invoke-RestMethod -Uri (CacheBust $DirectAckApi) -Headers @{
-      "Accept"="application/vnd.github+json"
-      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectAck"
-      "Cache-Control"="no-cache"
+    return Invoke-RestMethod -Uri (CacheBust $DirectAckRaw) -Headers @{
+      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectAck-Raw"
+      "Cache-Control"="no-cache, no-store"
+      "Pragma"="no-cache"
     } -TimeoutSec 12
-    if($doc -and $doc.content){
-      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
-      return ($raw|ConvertFrom-Json)
-    }
   }catch{
-    Write-Log "DIRECT ACK ERROR :: $($_.Exception.Message)"
+    Write-Log "DIRECT ACK RAW ERROR :: $($_.Exception.Message)"
   }
   return $null
 }
@@ -195,22 +187,18 @@ function Read-ImageIndexDirect([switch]$Force) {
     return $script:DirectImageIndexCache
   }
   try{
-    $doc=Invoke-RestMethod -Uri (CacheBust $DirectImageIndexApi) -Headers @{
-      "Accept"="application/vnd.github+json"
-      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectImageIndex"
-      "Cache-Control"="no-cache"
+    $parsed=Invoke-RestMethod -Uri (CacheBust $DirectImageIndexRaw) -Headers @{
+      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectImageIndex-Raw"
+      "Cache-Control"="no-cache, no-store"
+      "Pragma"="no-cache"
     } -TimeoutSec 12
-    if($doc -and $doc.content){
-      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
-      $parsed=$raw|ConvertFrom-Json
-      if($parsed){
-        $script:DirectImageIndexCache=$parsed
-        $script:DirectImageIndexAt=$now
-        return $parsed
-      }
+    if($parsed){
+      $script:DirectImageIndexCache=$parsed
+      $script:DirectImageIndexAt=$now
+      return $parsed
     }
   }catch{
-    Write-Log "DIRECT IMAGE INDEX ERROR :: $($_.Exception.Message)"
+    Write-Log "DIRECT IMAGE INDEX RAW ERROR :: $($_.Exception.Message)"
   }
   return $script:DirectImageIndexCache
 }
@@ -248,18 +236,14 @@ function Read-ImageIndex {
 function Read-ImageJobDirect([string]$TargetId) {
   if(-not $TargetId){return $null}
   try{
-    $url=$DirectImageJobApiBase+[uri]::EscapeDataString($TargetId)+".json"+$DirectImageRefQuery
-    $doc=Invoke-RestMethod -Uri (CacheBust $url) -Headers @{
-      "Accept"="application/vnd.github+json"
-      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectImageJob"
-      "Cache-Control"="no-cache"
+    $url=$DirectImageJobRawBase+[uri]::EscapeDataString($TargetId)+".json"
+    return Invoke-RestMethod -Uri (CacheBust $url) -Headers @{
+      "User-Agent"="TTiTTulares-Dedicated-Listener-DirectImageJob-Raw"
+      "Cache-Control"="no-cache, no-store"
+      "Pragma"="no-cache"
     } -TimeoutSec 12
-    if($doc -and $doc.content){
-      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
-      return ($raw|ConvertFrom-Json)
-    }
   }catch{
-    Write-Log "DIRECT IMAGE JOB ERROR target=$TargetId :: $($_.Exception.Message)"
+    Write-Log "DIRECT IMAGE JOB RAW ERROR target=$TargetId :: $($_.Exception.Message)"
   }
   return $null
 }
