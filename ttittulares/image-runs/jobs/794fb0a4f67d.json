@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-794fb0a4f67d-r1-a1-1791283709894",
+  "requested_at": "2026-10-06T10:48:29.894640Z",
+  "updated_at": "2026-10-06T10:48:29.894640Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "794fb0a4f67d",
+  "event_id": "794fb0a4f67d",
+  "target_name": "Alcaraz - Lehecka: horario y dónde ver hoy por TV la final del ATP de Tokio",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Alcaraz - Lehecka: horario y dónde ver hoy por TV la final del ATP de Tokio",
+    "revision": 1,
+    "factual_summary": "Carlos Alcaraz disputa este martes la final del ATP 500 de Tokio contra Jiri Lehecka tras remontar a Jaume Munar en semifinales. El partido está previsto a las 11:00, hora peninsular española, y se emite en Movistar Plus+. Alcaraz busca revalidar el título.",
+    "tweet_text": "Alcaraz disputa hoy a las 11:00 la final del ATP 500 de Tokio ante Jiri Lehecka. El español busca revalidar el título; el partido se verá en Movistar Plus+.\n\n🌶️ Tokio le ha reservado una última escala con raqueta checa.",
+    "remate": "🌶️ Tokio le ha reservado una última escala con raqueta checa.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia.",
+    "image_style_name": "retro_60s",
+    "image_style_index": 5,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nAlcaraz disputa hoy a las 11:00 la final del ATP 500 de Tokio ante Jiri Lehecka. El español busca revalidar el título; el partido se verá en Movistar Plus+.\n\n🌶️ Tokio le ha reservado una última escala con raqueta checa.\n\nREMATE EXACTO:\n🌶️ Tokio le ha reservado una última escala con raqueta checa.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nCarlos Alcaraz disputa este martes la final del ATP 500 de Tokio contra Jiri Lehecka tras remontar a Jaume Munar en semifinales. El partido está previsto a las 11:00, hora peninsular española, y se emite en Movistar Plus+. Alcaraz busca revalidar el título.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.elmundo.es/como/2026/10/06/6ac4aaaae4d4d8591e8b4590.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/deportes/tenis/2026-10-05/carlos-alcaraz-jiri-lehecka-cuando-y-donde-ver-la-final-del-torneo-de-tokio.html"
+      },
+      {
+        "source": "AS",
+        "url": "https://as.com/tenis/mas_tenis/a-que-hora-es-el-alcaraz-vs-lehecka-final-del-atp-500-de-tokio-horario-tv-y-como-ver-el-partido-f202610-n/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
