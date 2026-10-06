@@ -213,6 +213,11 @@ async function fetchRadarMeta(){
     attribution:'Weather data by RainViewer'
   };
 }
+async function fetchOperaMeta(){
+  const r=await fetch('/api/rain-opera',{cache:'no-store'});
+  if(!r.ok)throw new Error('OPERA HTTP '+r.status);
+  return r.json();
+}
 function sourceStatus(defs,settled){
   return defs.map((m,i)=>({id:m.id,label:m.label,ok:settled[i]?.status==='fulfilled',members:settled[i]?.status==='fulfilled'?(settled[i].value.memberCount||null):null,error:settled[i]?.status==='rejected'?String(settled[i].reason?.message||settled[i].reason):null}));
 }
@@ -224,14 +229,15 @@ async function loadForecast(force=false){
       if(c&&Date.now()-c.savedAt<FORECAST_TTL&&c.data){return {...c.data,cacheAgeMs:Date.now()-c.savedAt}}
     }catch{}
   }
-  const [det,ens,qh,radar]=await Promise.all([
+  const [det,ens,qh,radar,opera]=await Promise.all([
     pool(DET_MODELS,fetchDet,3),pool(ENS_MODELS,fetchEns,2),
-    Promise.allSettled([fetchQuarterHour()]),Promise.allSettled([fetchRadarMeta()])
+    Promise.allSettled([fetchQuarterHour()]),Promise.allSettled([fetchRadarMeta()]),Promise.allSettled([fetchOperaMeta()])
   ]);
   const deterministic=det.filter(x=>x.status==='fulfilled').map(x=>x.value);
   const ensembles=ens.filter(x=>x.status==='fulfilled').map(x=>x.value);
   const quarterHour=qh[0]?.status==='fulfilled'?qh[0].value:null;
   const radarMeta=radar[0]?.status==='fulfilled'?radar[0].value:null;
+  const operaMeta=opera[0]?.status==='fulfilled'?opera[0].value:null;
   if(!deterministic.length&&!ensembles.length&&!quarterHour)throw new Error('No responde ninguna fuente de previsión');
   const now=Date.now(),end=now+72*3600_000;
   const consensus=buildConsensus({deterministic,ensembles,nowMs:now}).filter(r=>{
@@ -256,14 +262,15 @@ async function loadForecast(force=false){
     nextEvent:chooseNextEvent(events,now),
     quarterHour,
     radar:radarMeta,
+    opera:operaMeta,
     sources:{
       deterministic:sourceStatus(DET_MODELS,det),
       ensembles:sourceStatus(ENS_MODELS,ens),
-      quarterHour:Boolean(quarterHour),radar:Boolean(radarMeta)
+      quarterHour:Boolean(quarterHour),radar:Boolean(radarMeta),opera:Boolean(operaMeta?.ok)
     }
   };
   const all=[...data.sources.deterministic,...data.sources.ensembles];
-  data.sources.health={available:all.filter(x=>x.ok).length+(quarterHour?1:0)+(radarMeta?1:0),total:all.length+2};
+  data.sources.health={available:all.filter(x=>x.ok).length+(quarterHour?1:0)+(radarMeta?1:0)+(operaMeta?.ok?1:0),total:all.length+3};
   try{localStorage.setItem(k,JSON.stringify({savedAt:Date.now(),data}))}catch{}
   return data;
 }
@@ -888,6 +895,7 @@ function renderEvents(){
 
 function renderSources(){
   const list=[
+    {label:'EUMETNET OPERA',ok:Boolean(state.data.sources.opera),detail:state.data.opera?.ok?'RATE 1 km / 5 min · '+fmtTime(state.data.opera.observedAt):'backend sin compuesto reciente'},
     {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'?'movimiento + intensidad dBZ':state.nowcast?.status||'solo mapa'},
     {label:'Guía 15 min',ok:state.data.sources.quarterHour,detail:'modelo/interpolación'},
     ...state.data.sources.deterministic.map(x=>({label:x.label,ok:x.ok,detail:'determinista'})),
@@ -1028,7 +1036,7 @@ async function refreshRadar(){
     const radar=await fetchRadarMeta();
     const sources={...state.data.sources,radar:true};
     const all=[...(sources.deterministic||[]),...(sources.ensembles||[])];
-    sources.health={available:all.filter(x=>x.ok).length+(sources.quarterHour?1:0)+1,total:all.length+2};
+    sources.health={available:all.filter(x=>x.ok).length+(sources.quarterHour?1:0)+1+(sources.opera?1:0),total:all.length+3};
     state.data={...state.data,radar,sources};
     state.nowcast=await computeNowcast(radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
     recordRadarEtaObservation();
