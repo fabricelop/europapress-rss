@@ -37,7 +37,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.6.0',renameTarget:null
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.6.0',renameTarget:null
 };
 
 function iso(v){
@@ -627,27 +627,71 @@ function renderSources(){
   ];
   $('sources').innerHTML=list.map(x=>'<div class="source"><span>'+x.label+'<small>'+x.detail+'</small></span><i class="'+(x.ok?'ok':'bad')+'">'+(x.ok?'OK':'—')+'</i></div>').join('');
 }
+function locationGeoJSON(){
+  return {type:'FeatureCollection',features:[{type:'Feature',geometry:{type:'Point',coordinates:[state.loc.lon,state.loc.lat]},properties:{}}]};
+}
 function initMap(){
-  if(state.map||!window.L)return;
-  state.map=L.map('map',{zoomControl:false,minZoom:4,maxZoom:12}).setView([state.loc.lat,state.loc.lon],7);
-  L.control.zoom({position:'bottomright'}).addTo(state.map);
-  if(typeof L.maplibreGL==='function'){
-    L.maplibreGL({style:'https://tiles.openfreemap.org/styles/fiord',attribution:'© OpenFreeMap © OpenStreetMap contributors'}).addTo(state.map);
-  }
-  state.marker=L.circleMarker([state.loc.lat,state.loc.lon],{radius:6,color:'#fff',weight:2,fillColor:'#4fc6ff',fillOpacity:1}).addTo(state.map);
+  if(state.map||!window.maplibregl)return;
+  state.map=new maplibregl.Map({
+    container:'map',
+    style:'https://tiles.openfreemap.org/styles/fiord',
+    center:[state.loc.lon,state.loc.lat],
+    zoom:7,
+    minZoom:4,
+    maxZoom:12,
+    attributionControl:false
+  });
+  state.map.addControl(new maplibregl.NavigationControl({showCompass:false}),'bottom-right');
+  state.map.addControl(new maplibregl.AttributionControl({compact:true,customAttribution:'© OpenFreeMap · © OpenStreetMap contributors'}));
+  state.map.on('load',()=>{
+    state.mapLoaded=true;
+    state.map.addSource('raineta-location',{type:'geojson',data:locationGeoJSON()});
+    state.map.addLayer({
+      id:'raineta-location',
+      type:'circle',
+      source:'raineta-location',
+      paint:{
+        'circle-radius':6,
+        'circle-color':'#4fc6ff',
+        'circle-stroke-color':'#ffffff',
+        'circle-stroke-width':2
+      }
+    });
+    showRadarFrame();
+  });
+}
+function updateMapLocation(){
+  if(!state.map||!state.mapLoaded)return;
+  state.map.jumpTo({center:[state.loc.lon,state.loc.lat]});
+  const src=state.map.getSource('raineta-location');
+  if(src?.setData)src.setData(locationGeoJSON());
 }
 function renderRadar(){
   initMap();if(!state.map)return;
-  state.map.setView([state.loc.lat,state.loc.lon],state.map.getZoom());
-  state.marker.setLatLng([state.loc.lat,state.loc.lon]);
+  updateMapLocation();
   const r=state.data.radar;if(!r?.frames?.length){$('radarTime').textContent='sin radar';return}
   state.frames=r.frames.slice(-10);state.frameIndex=Math.min(state.frameIndex||state.frames.length-1,state.frames.length-1);
-  $('frame').max=state.frames.length-1;$('frame').value=state.frameIndex;showRadarFrame();
+  $('frame').max=state.frames.length-1;$('frame').value=state.frameIndex;
+  if(state.mapLoaded)showRadarFrame();
 }
 function showRadarFrame(){
-  const f=state.frames[state.frameIndex],r=state.data.radar;if(!f||!r)return;
-  if(state.radarLayer)state.map.removeLayer(state.radarLayer);
-  state.radarLayer=L.tileLayer(r.host+f.path+'/256/{z}/{x}/{y}/2/1_1.png',{tileSize:256,opacity:.76,maxNativeZoom:7,maxZoom:12,attribution:'Weather data by RainViewer'}).addTo(state.map);
+  const f=state.frames[state.frameIndex],r=state.data.radar;if(!f||!r||!state.map||!state.mapLoaded)return;
+  if(state.map.getLayer('raineta-radar'))state.map.removeLayer('raineta-radar');
+  if(state.map.getSource('raineta-radar'))state.map.removeSource('raineta-radar');
+  state.map.addSource('raineta-radar',{
+    type:'raster',
+    tiles:[r.host+f.path+'/256/{z}/{x}/{y}/2/1_1.png'],
+    tileSize:256,
+    maxzoom:7,
+    attribution:'Weather data by RainViewer'
+  });
+  const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
+  state.map.addLayer({
+    id:'raineta-radar',
+    type:'raster',
+    source:'raineta-radar',
+    paint:{'raster-opacity':.76,'raster-fade-duration':0}
+  },before);
   $('frame').value=state.frameIndex;$('radarTime').textContent=fmtTime(f.time*1000);
 }
 async function refreshRadar(){
