@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear} from '../rain/radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear} from '../rain/radar-core.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
 
@@ -131,4 +131,16 @@ test('evolution reliability penalizes changing echo shape',()=>{
   const unstable=evolutionReliability(prev,changed,w,h,motion);
   assert.ok(stable.score>unstable.score);
   assert.ok(stable.densityStable>=unstable.densityStable);
+});
+
+
+test('several local flows stabilize the motion field',()=>{
+  const w=72,h=72;
+  const m0=mask(w,h,14,29,12,10),m1=mask(w,h,18,27,12,10),m2=mask(w,h,22,25,12,10);
+  const f1=estimateLocalFlow(m0,m1,w,h,{maxShift:8,grid:5,patchRadius:9});
+  const f2=estimateLocalFlow(m1,m2,w,h,{maxShift:8,grid:5,patchRadius:9});
+  const combined=combineLocalFlows([f1,f2]);
+  assert.ok(combined);
+  assert.equal(combined.historySamples,2);
+  assert.ok(combined.confidence>0);
 });
