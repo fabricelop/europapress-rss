@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-06T10:50:07.687Z",
+  "updated_at": "2026-10-06T10:52:18.095Z",
   "items": [
     {
       "event_id": "794fb0a4f67d",
@@ -199,8 +199,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -208,13 +208,53 @@
       "image_delivery": "app",
       "fallback_image_search_attempted_at": "2026-10-06T10:48:49.943894Z",
       "image": {
-        "url": "https://imagenes.elpais.com/resizer/v2/NWUNNXHDYNHPJIAEMRNPOKTSRI.jpg?auth=8e0a6acdf212eda843a9724661ccda268624fc36a62eddbc0d7113245f88c6fb&width=1200",
-        "source": "EL PAÍS",
-        "source_url": "https://elpais.com/espana/2026-10-06/hallado-el-cadaver-de-un-hombre-con-un-cuchillo-clavado-en-el-pecho-en-una-calle-de-la-localidad-murciana-de-lorca.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Hallan el cadáver de un hombre con un cuchillo en el pecho en una calle de Lorca, Murcia - Telecinco"
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/9150a825b468-r1-ai1-791283839017.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "74e75ceee870223a3333ce705a2f10f20328a122f66386bb746105326664766c",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2013266,
+        "context_guard": {
+          "version": 3,
+          "event_id": "9150a825b468",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-9150a825b468-r1-a1-1791283839017"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/9150a825b468-r1-ai1-791283839017.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/9150a825b468-r1-ai1-791283839017.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "74e75ceee870223a3333ce705a2f10f20328a122f66386bb746105326664766c",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2013266,
+        "context_guard": {
+          "version": 3,
+          "event_id": "9150a825b468",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-9150a825b468-r1-a1-1791283839017"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/9150a825b468-r1-ai1-791283839017.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-06T10:52:18.095Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T10:52:18.095Z"
     }
   ],
   "count": 11
