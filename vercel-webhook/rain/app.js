@@ -504,7 +504,9 @@ function confidenceMarkup(value){
 function decisionBasisInfo(decision){
   const ev=decision?.event,now=decision?.now||Date.now(),reliable=nowcastReliableHorizon();
   const lead=ev?.start?Math.max(0,(Date.parse(ev.start)-now)/60_000):0;
-  const radarDriven=['radar','opera','radarFusion','observed'].includes(ev?.kind);
+  if(ev?.kind==='observed'||decision?.mode==='episode_pause'||decision?.mode==='episode_ended_early')return{label:'Tu observación + RainETA',key:'radar'};
+  if(decision?.dry?.reliableHorizonMinutes)return{label:'Basado en radar',key:'radar'};
+  const radarDriven=['radar','opera','radarFusion'].includes(ev?.kind);
   if(decision?.mode==='rain_now'||decision?.mode==='possible_now'||radarDriven&&lead<=reliable){
     return{label:'Basado en radar',key:'radar'};
   }
