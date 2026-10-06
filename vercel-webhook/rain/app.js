@@ -249,6 +249,12 @@ async function fetchRadarMeta(){
     attribution:'Weather data by RainViewer'
   };
 }
+function radarFreshness(meta,maxAgeMinutes=20){
+  const latest=meta?.frames?.at?.(-1);
+  const latestMs=Number(latest?.time)*1000;
+  const ageMinutes=Number.isFinite(latestMs)?Math.max(0,(Date.now()-latestMs)/60_000):Infinity;
+  return{ok:Boolean(meta?.host&&latest&&ageMinutes<=maxAgeMinutes),ageMinutes,latestTime:Number(latest?.time)||null};
+}
 async function fetchOperaMeta(){
   const point=forecastCoords(),p=new URLSearchParams({lat:String(point.lat),lon:String(point.lon),motion:'1'});
   const r=await fetch('/api/rain-opera?'+p);
@@ -306,7 +312,7 @@ async function loadForecast(force=false){
     sources:{
       deterministic:sourceStatus(DET_MODELS,det),
       ensembles:sourceStatus(ENS_MODELS,ens),
-      quarterHour:Boolean(quarterHour),radar:Boolean(radarMeta),opera:Boolean(operaMeta?.ok)
+      quarterHour:Boolean(quarterHour),radar:radarFreshness(radarMeta).ok,opera:Boolean(operaMeta?.ok)
     }
   };
   const all=[...data.sources.deterministic,...data.sources.ensembles];
@@ -363,6 +369,8 @@ function radarGeo(motion,lat,step){
 }
 async function computeNowcast(meta){
   if(!meta?.host||!meta.frames?.length)return{status:'no_radar',confidence:0,event:null};
+  const freshness=radarFreshness(meta);
+  if(!freshness.ok)return{status:'stale_radar',confidence:0,event:null,radarTime:freshness.latestTime?new Date(freshness.latestTime*1000).toISOString():null,radarAgeMinutes:freshness.ageMinutes};
   const frames=meta.frames.slice(-RADAR_FRAMES);
   if(frames.length<3)return{status:'insufficient_frames',confidence:0,event:null};
   const settled=await Promise.allSettled(frames.map(async f=>({...await imageMask(radarTileUrl(meta,f)),time:f.time,path:f.path})));
