@@ -80,14 +80,30 @@ function Start-Hidden([string]$file,[string]$name){
   $p=Start-Process powershell.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-File",$file) -WindowStyle Hidden -RedirectStandardOutput $out -RedirectStandardError $err -PassThru
   Start-Sleep -Milliseconds 900
   $p.Refresh()
-  if($p.HasExited){if(Test-Path $err){Get-Content $err -Tail 30};throw "$name no quedo activo"}
+  if($p.HasExited){
+    # Un segundo arranque de un listener singleton puede salir porque otra
+    # instancia válida ya ganó la carrera. Verificar antes de declarar fallo.
+    $base=[IO.Path]::GetFileName($file)
+    $live=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
+      ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and
+      [string]$_.CommandLine -like ("*"+$base+"*")
+    })
+    if($live.Count -gt 0){
+      return [pscustomobject]@{Id=[int]$live[0].ProcessId}
+    }
+    if(Test-Path $err){Get-Content $err -Tail 30}
+    throw "$name no quedo activo"
+  }
   return $p
 }
 
-$u=Start-Hidden $updater "tt-auto-updater"
-$w=Start-Hidden $watchdog "tt-local-watchdog"
+# Arrancar primero los listeners para evitar una carrera con el watchdog:
+# si el watchdog arranca antes, puede crear el listener y hacer que el segundo
+# proceso salga por el mutex singleton, pareciendo falsamente un fallo.
 $l=Start-Hidden $listener "ttittulares-listener"
 $tl=Start-Hidden $trendListener "ttendencias-listener"
+$u=Start-Hidden $updater "tt-auto-updater"
+$w=Start-Hidden $watchdog "tt-local-watchdog"
 Start-Sleep -Seconds 5
 
 $count=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
