@@ -1,11 +1,13 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T13:15:00.000Z",
-  "last_completed_at": "2026-10-06T13:25:10.000Z",
-  "updated_at": "2026-10-06T13:25:10.000Z",
+  "last_started_at": "2026-10-06T13:45:00.000Z",
+  "last_completed_at": "2026-10-06T13:58:35.089Z",
+  "updated_at": "2026-10-06T13:58:35.089Z",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "15a8bb795fe3"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -14,25 +16,25 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T131500Z",
+    "run_id": "tr-chat-20261006T134500Z",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-06T13:45:00.000Z",
+    "updated_at": "2026-10-06T13:58:35.089Z",
+    "finished_at": "2026-10-06T13:58:35.089Z",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T13:15:00.000Z",
-    "updated_at": "2026-10-06T13:25:10.000Z",
-    "finished_at": "2026-10-06T13:25:10.000Z",
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
       "new_cards": 0,
-      "revisions_updated": 0,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -42,57 +44,140 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
-      "visual_jobs_queued": 0,
+      "visual_jobs_queued": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
-      "pending_repair_triggered": 1,
-      "pending_repair_examined": 0
+      "pending_repair_triggered": 1
     },
-    "message": "Pasada completada sin trabajo editorial nuevo · radar 15:21 · cola final 0 · saneamiento de Pendientes completado; 0 jobs IA nuevos.",
+    "message": "Pasada completada 1/1. Puigdemont r1 quedó reexplicado y verificado con el detonante actual del TC y la retirada de la orden nacional de detención; cola editorial final 0. El job visual automático ya está RUNNING y continuará de forma independiente.",
     "activity": [
       {
-        "at": "2026-10-06T13:15:00.000Z",
+        "at": "2026-10-06T13:45:00.000Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada directa · cola editorial 0 · activando saneamiento de Pendientes"
+        "message": "Iniciando pasada directa · cola editorial 1 · activando saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-06T13:19:29.000Z",
+        "at": "2026-10-06T13:47:00.000Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento de Pendientes arrancado · workflow 37469889545"
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Releyendo estado autoritativo de Puigdemont"
       },
       {
-        "at": "2026-10-06T13:19:40.000Z",
+        "at": "2026-10-06T13:47:05.000Z",
+        "phase": "investigating",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-06T13:47:10.000Z",
+        "phase": "investigating",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Contrastando fuente 1/2 · EFE"
+      },
+      {
+        "at": "2026-10-06T13:47:15.000Z",
+        "phase": "investigating",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Contrastando fuente 2/2 · RTVE/El País"
+      },
+      {
+        "at": "2026-10-06T13:47:20.000Z",
+        "phase": "investigating",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Hecho esencial verificado · TC avala la amnistía de la malversación y Llarena deja sin efecto la orden nacional de detención"
+      },
+      {
+        "at": "2026-10-06T13:49:00.000Z",
+        "phase": "drafting",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-06T13:50:00.000Z",
+        "phase": "drafting",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Comprobando límite de X · texto final 247 caracteres Unicode"
+      },
+      {
+        "at": "2026-10-06T13:51:00.000Z",
+        "phase": "remate_selection",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-06T13:52:00.000Z",
+        "phase": "remate_selection",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-06T13:52:05.000Z",
+        "phase": "remate_selection",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Remate seleccionado · la orden de detención se quedó sin asiento en el vuelo de vuelta"
+      },
+      {
+        "at": "2026-10-06T13:54:00.000Z",
+        "phase": "persisting",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-06T13:55:00.000Z",
+        "phase": "persisting",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-06T13:56:00.000Z",
+        "phase": "persisting",
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-06T13:57:00.000Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo cola editorial mientras avanza el saneamiento"
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-06T13:25:04.000Z",
+        "at": "2026-10-06T13:57:05.000Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual completado correctamente · workflow 37469889545 · 0 jobs IA nuevos"
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-06T13:25:06.000Z",
+        "at": "2026-10-06T13:57:10.000Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · radar 15:21 y cola editorial siguen en 0"
+        "trend_id": "15a8bb795fe3",
+        "title": "Puigdemont",
+        "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-06T13:25:10.000Z",
+        "at": "2026-10-06T13:58:35.089Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · sin trabajo editorial nuevo · cola final 0"
+        "message": "Pasada cerrada · Puigdemont r1 verificada · cola final 0 · job visual automático en RUNNING"
       }
     ],
     "ratings_snapshot": {
@@ -102,36 +187,74 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "15a8bb795fe3",
+        "revision": 1,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "text": "🌶️ La orden de detención se quedó sin asiento en el vuelo de vuelta.",
+            "total": 8.8,
+            "ratings_affinity": 2.6,
+            "trend_specificity": 2,
+            "punch": 1.9,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
+            "text": "🌶️ Waterloo acaba de perder una reserva de larga estancia.",
+            "total": 8
+          },
+          {
+            "id": "c3",
+            "text": "🌶️ El regreso ya no necesita GPS: solo calendario y billete.",
+            "total": 7.6
+          },
+          {
+            "id": "c4",
+            "text": "🌶️ La maleta de Waterloo acaba de pasar a equipaje de mano.",
+            "total": 8.5
+          },
+          {
+            "id": "c5",
+            "text": "🌶️ Llarena ha borrado una parada del itinerario judicial.",
+            "total": 7.2
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.8,
+        "no_remate_reason": null
+      }
+    ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "visual_repair": {
       "requested": true,
       "persisted_trigger": true,
-      "status": "completed_success",
-      "phase": "verified",
-      "command_id": "tr-chat-20261006T131500Z",
+      "status": "running",
+      "phase": "capture_wait",
+      "command_id": "tr-img-auto-15a8bb795fe3-r1-a1-1791294951700",
       "direct_imagegen": false,
-      "workflow_run_id": 37469889545,
-      "workflow_status": "completed",
-      "workflow_conclusion": "success",
-      "completed_at": "2026-10-06T13:25:04.000Z",
-      "ai_repair_jobs_queued": 0
+      "target_id": "15a8bb795fe3",
+      "revision": 1,
+      "auto_repair_attempt": 1
     }
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "completed_success",
-    "phase": "verified",
-    "command_id": "tr-chat-20261006T131500Z",
+    "status": "running",
+    "phase": "capture_wait",
+    "command_id": "tr-img-auto-15a8bb795fe3-r1-a1-1791294951700",
     "direct_imagegen": false,
-    "workflow_run_id": 37469889545,
-    "workflow_status": "completed",
-    "workflow_conclusion": "success",
-    "completed_at": "2026-10-06T13:25:04.000Z",
-    "ai_repair_jobs_queued": 0
+    "target_id": "15a8bb795fe3",
+    "revision": 1,
+    "auto_repair_attempt": 1
   },
   "error": null
 }
