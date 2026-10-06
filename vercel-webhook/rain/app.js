@@ -11,9 +11,13 @@ const DET_MODELS=[
 ];
 const ENS_MODELS=[
   {id:'ecmwf_ifs025_ensemble',label:'ECMWF ENS',family:'ECMWF',weight:1.25},
+  {id:'ecmwf_aifs025_ensemble',label:'ECMWF AIFS ENS',family:'ECMWF',weight:1.00},
   {id:'dwd_icon_eu_eps',label:'ICON-EU EPS',family:'DWD',weight:1.10},
   {id:'ncep_gefs025',label:'NOAA GEFS',family:'NOAA',weight:.90},
   {id:'ukmo_global_ensemble_20km',label:'UKMO MOGREPS-G',family:'UKMO',weight:.95},
+  {id:'gem_global_ensemble',label:'CMC GEPS',family:'CMC',weight:.82},
+  {id:'bom_access_global_ensemble',label:'BOM ACCESS-GE',family:'BOM',weight:.72},
+  {id:'google_weathernext2_ensemble',label:'Google WeatherNext 2',family:'GOOGLE',weight:.92},
 ];
 const FORECAST_TTL=8*60_000;
 const RADAR_FRAMES=5;
