@@ -449,7 +449,7 @@ function shortPoints(){
     }
     const modelSignal=modelRate<=.05?0:Math.min(.76,.25+Math.log1p(modelRate)*.24);
     let probability=Number.isFinite(radarProb)?Math.max(radarProb,modelSignal*.5):modelSignal;
-    if(!inEvent&&!rainNow)probability=Math.min(probability,.18);
+    if(!inEvent&&!rainNow)probability=0;
     if(inEvent&&rate>0)probability=Math.max(probability,.35);
     if(i===0){
       const truth=currentTruth();
@@ -606,6 +606,96 @@ function feedbackStats(){
   return{count:rows.length,accuracy:evaluable.length?correct/evaluable.length:null};
 }
 
+function etaRadarHistoryKey(){return 'raineta.radarEtaHistory.'+locationKey(state.loc)}
+function readRadarEtaHistory(){return readLocal(etaRadarHistoryKey(),[])}
+function writeRadarEtaHistory(rows){
+  try{localStorage.setItem(etaRadarHistoryKey(),JSON.stringify(rows.slice(-12)))}catch{}
+}
+function recordRadarEtaObservation(){
+  const n=state.nowcast;
+  if(n?.status!=='ok'||!n.event?.start||!n.radarTime)return;
+  const radarMs=Date.parse(n.radarTime),startMs=Date.parse(n.event.start),endMs=Date.parse(n.event.end||'');
+  if(!Number.isFinite(radarMs)||!Number.isFinite(startMs))return;
+  let rows=readRadarEtaHistory().filter(x=>radarMs-Number(x.radarMs)<75*60_000);
+  if(rows.some(x=>Number(x.radarMs)===radarMs))return;
+  rows.push({
+    radarMs,startMs,endMs:Number.isFinite(endMs)?endMs:null,
+    confidence:Number(n.confidence)||0,
+    uncertainty:Number(n.event.uncertaintyMinutes)||null,
+    speed:Number(n.motion?.speedKmh)||null,
+    bearing:Number(n.motion?.bearingDegrees)||null
+  });
+  rows.sort((a,b)=>a.radarMs-b.radarMs);
+  writeRadarEtaHistory(rows);
+}
+function medianNumber(values){
+  const a=values.filter(Number.isFinite).sort((x,y)=>x-y);
+  if(!a.length)return null;
+  const m=Math.floor(a.length/2);
+  return a.length%2?a[m]:(a[m-1]+a[m])/2;
+}
+function stabilizedRadarEvent(){
+  const n=state.nowcast,raw=n?.event;
+  if(n?.status!=='ok'||!raw?.start)return raw||null;
+  const radarMs=Date.parse(n.radarTime||''),rawStart=Date.parse(raw.start),rawEnd=Date.parse(raw.end||'');
+  const recent=readRadarEtaHistory()
+    .filter(x=>Number.isFinite(Number(x.startMs))&&(!Number.isFinite(radarMs)||radarMs-Number(x.radarMs)<=35*60_000))
+    .slice(-3);
+  if(!recent.some(x=>Number(x.radarMs)===radarMs)&&Number.isFinite(rawStart)){
+    recent.push({radarMs,startMs:rawStart,endMs:Number.isFinite(rawEnd)?rawEnd:null,confidence:Number(n.confidence)||0});
+  }
+  const rows=recent.slice(-3);
+  if(rows.length<2)return {...raw,rawStart:raw.start,stabilizedStart:raw.start,stabilizationSamples:rows.length||1,stabilized:false};
+  const stableStartMs=medianNumber(rows.map(x=>Number(x.startMs)));
+  const stableEndMs=medianNumber(rows.map(x=>Number(x.endMs)));
+  const latestConfidence=Number(n.confidence)||0;
+  const lastTwo=rows.slice(-2).map(x=>Number(x.startMs));
+  const repeatedShift=lastTwo.length===2&&Math.abs(lastTwo[1]-lastTwo[0])<=8*60_000;
+  const trustLatest=latestConfidence>=.80&&repeatedShift;
+  const chosenStartMs=trustLatest?rawStart:stableStartMs;
+  const chosenEndMs=trustLatest&&Number.isFinite(rawEnd)?rawEnd:stableEndMs;
+  const spreadMinutes=Math.max(...rows.map(x=>Math.abs(Number(x.startMs)-chosenStartMs)))/60_000;
+  return {
+    ...raw,
+    start:new Date(chosenStartMs).toISOString(),
+    end:Number.isFinite(chosenEndMs)?new Date(chosenEndMs).toISOString():raw.end,
+    rawStart:raw.start,
+    stabilizedStart:new Date(chosenStartMs).toISOString(),
+    stabilizationSamples:rows.length,
+    stabilized:Math.abs(rawStart-chosenStartMs)>=60_000,
+    stabilizationDeltaMinutes:Math.round((rawStart-chosenStartMs)/60_000),
+    uncertaintyMinutes:Math.max(Number(raw.uncertaintyMinutes)||0,Math.round(spreadMinutes))
+  };
+}
+function canonicalEtaHistoryKey(){return 'raineta.canonicalEta.'+locationKey(state.loc)}
+function etaTrendText(ev){
+  if(!ev?.start)return'';
+  const marker=ev.kind==='radar'?(state.nowcast?.radarTime||'radar'):(state.data?.generatedAt||'model');
+  let rows=readLocal(canonicalEtaHistoryKey(),[]);
+  let current=rows.find(x=>x.marker===marker);
+  if(!current){
+    current={marker,time:Date.now(),start:Date.parse(ev.start),kind:ev.kind};
+    rows.push(current);rows=rows.slice(-10);
+    try{localStorage.setItem(canonicalEtaHistoryKey(),JSON.stringify(rows))}catch{}
+  }
+  const idx=rows.findIndex(x=>x.marker===marker),prev=idx>0?rows[idx-1]:null;
+  const parts=[];
+  if(ev.kind==='radar'&&ev.event?.stabilizationSamples>=2){
+    const s=ev.event;
+    if(s.stabilized&&Math.abs(Number(s.stabilizationDeltaMinutes)||0)>=4){
+      const sign=s.stabilizationDeltaMinutes>0?'+':'';
+      parts.push('ETA estabilizada con '+s.stabilizationSamples+' barridos · último barrido '+sign+s.stabilizationDeltaMinutes+' min frente al consenso reciente');
+    }else{
+      parts.push('ETA contrastada con '+s.stabilizationSamples+' barridos recientes');
+    }
+  }
+  if(prev&&Number.isFinite(prev.start)){
+    const delta=Math.round((Date.parse(ev.start)-Number(prev.start))/60_000);
+    if(Math.abs(delta)>=5)parts.push('revisión '+(delta>0?'+':'')+delta+' min desde '+fmtTime(prev.time));
+  }
+  return parts.join(' · ');
+}
+
 function refineWithQuarterHour(event,qh){
   if(!event||!qh?.events?.length)return event;
   const e0=Date.parse(event.start),best=qh.events.map(e=>({...e,dist:Math.abs(Date.parse(e.start)-e0)})).sort((a,b)=>a.dist-b.dist)[0];
@@ -615,11 +705,13 @@ function refineWithQuarterHour(event,qh){
 function chooseDisplayEvent(){
   const now=Date.now(),n=state.nowcast,d=state.data,rainNow=currentRainState(),truth=currentTruth();
   if(n?.status==='ok'&&rainNow.raining){
-    return{kind:truth===true?'observed':'radar',active:true,start:n.radarTime||new Date(now).toISOString(),end:n.event?.end||null,confidence:truth===true?1:n.confidence,uncertainty:n.event?.uncertaintyMinutes||8,event:n.event};
+    const stabilized=stabilizedRadarEvent();
+    return{kind:truth===true?'observed':'radar',active:true,start:n.radarTime||new Date(now).toISOString(),end:stabilized?.end||n.event?.end||null,confidence:truth===true?1:n.confidence,uncertainty:stabilized?.uncertaintyMinutes||n.event?.uncertaintyMinutes||8,event:stabilized||n.event};
   }
-  if(n?.status==='ok'&&n.event&&n.confidence>=.30&&Date.parse(n.event.start)<=now+125*60_000){
-    const active=Date.parse(n.event.start)<=now&&truth!==false;
-    return{kind:'radar',active,start:n.event.start,end:n.event.end,confidence:n.confidence,uncertainty:n.event.uncertaintyMinutes,event:n.event};
+  const radarEvent=stabilizedRadarEvent();
+  if(n?.status==='ok'&&radarEvent&&n.confidence>=.30&&Date.parse(radarEvent.start)<=now+125*60_000){
+    const active=Date.parse(radarEvent.start)<=now&&truth!==false;
+    return{kind:'radar',active,start:radarEvent.start,end:radarEvent.end,confidence:n.confidence,uncertainty:radarEvent.uncertaintyMinutes,event:radarEvent};
   }
   let e=d?.nextEvent||null;if(!e)return null;
   e=refineWithQuarterHour(e,d.quarterHour);
@@ -690,6 +782,7 @@ function render(){
         ? 'Registradas '+countLabel+(stats.accuracy!=null?' · acierto provisional '+Math.round(stats.accuracy*100)+'%':'')+' · umbral radar local '+threshold+'%.'
         : 'Tu respuesta queda en este dispositivo y sirve para medir aciertos y calibrar la detección local.';
   }
+  $('etaTrend').textContent=etaTrendText(ev);
   const h=d.sources.health;
   $('health').textContent=h.available+' de '+h.total+' capas disponibles · radar '+(n?.status==='ok'?'analizado':n?.status==='motion_uncertain'?'sin movimiento fiable':'degradado');
   $('sourceCount').textContent=h.available+'/'+h.total;
@@ -895,6 +988,7 @@ async function refreshRadar(){
     sources.health={available:all.filter(x=>x.ok).length+(sources.quarterHour?1:0)+1,total:all.length+2};
     state.data={...state.data,radar,sources};
     state.nowcast=await computeNowcast(radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
+    recordRadarEtaObservation();
     updateRadarValidation();
     state.lastRadarRefresh=Date.now();
     state.lastCompletedAt=new Date().toISOString();
@@ -910,6 +1004,7 @@ async function load(force=false){
   try{
     state.data=await loadForecast(force);
     state.nowcast=await computeNowcast(state.data.radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
+    recordRadarEtaObservation();
     updateRadarValidation();
     state.lastRadarRefresh=Date.now();
     state.lastCompletedAt=new Date().toISOString();
