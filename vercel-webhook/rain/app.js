@@ -37,7 +37,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.8.0',renameTarget:null,selectedHourIndex:null,radarOffset:0
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.9.0',renameTarget:null,selectedHourIndex:null,radarOffset:0
 };
 
 function iso(v){
@@ -397,7 +397,7 @@ function conditionLabel(row={}){
   return'Nublado';
 }
 function renderSelectedHour(){
-  const row=state.data?.timeline?.[state.selectedHourIndex];
+  const row=canonicalTimelineRows()?.[state.selectedHourIndex];
   if(!row){state.selectedHourIndex=null;return false}
   $('nowcastBody').hidden=true;$('selectedBody').hidden=false;$('shortBack').hidden=false;
   $('shortState').textContent=conditionLabel(row);
@@ -792,12 +792,51 @@ function render(){
   $('updated').textContent='Actualización '+fmtTimeSeconds(completed)+' · modelos '+fmtTime(d.generatedAt)+(radarStamp?' · radar '+fmtTime(radarStamp):'');
   updateLiveCountdown();
 }
+function canonicalTimelineRows(){
+  const base=(state.data?.timeline||[]).map(row=>({...row}));
+  if(!base.length||!state.nowcast)return base;
+  const now=Date.now(),cutoff=now+120*60_000,points=shortPoints();
+  for(const row of base){
+    const start=Date.parse(row.time),end=start+60*60_000;
+    if(end<=now||start>cutoff)continue;
+    const bucket=points.filter(p=>p.time>=Math.max(start,now)&&p.time<Math.min(end,cutoff+5*60_000));
+    if(!bucket.length)continue;
+    const wet=bucket.filter(p=>p.wet);
+    row.canonicalShort=true;
+    row.canonicalSignal=wet.length?'wet':'dry';
+    row.probability=wet.length?Math.round(Math.max(...wet.map(p=>p.probability))*100):0;
+    row.precipitation=wet.length?Math.max(...wet.map(p=>p.rate)):0;
+    row.confidence=Math.round((chooseDisplayEvent()?.confidence||0)*100);
+  }
+  return base;
+}
+function canonicalEvents(){
+  const rows=canonicalTimelineRows();
+  const points=rows.map(row=>({
+    time:row.time,
+    probability:(Number(row.probability)||0)/100,
+    expectedPrecipitation:Number(row.precipitation)||0,
+    timingConfidence:(Number(row.confidence)||0)/100,
+    providerCount:row.independentFamilies||0,
+    independentFamilyCount:row.independentFamilies||0
+  }));
+  return detectRainEvents(points);
+}
+function eventHourlyRows(event){
+  const rows=canonicalTimelineRows();
+  const start=Date.parse(event.start),end=Date.parse(event.end);
+  return rows.filter(row=>{
+    const t=Date.parse(row.time);
+    return t<end&&t+60*60_000>start;
+  });
+}
+
 function renderTimeline(){
-  const a=state.data.timeline||[];
+  const a=canonicalTimelineRows();
   const maxIntensity=Math.max(.25,Math.min(6,Math.max(...a.map(x=>Number(x.precipitation)||0))));
   $('timeline').innerHTML=a.map((x,index)=>{
     const probability=(Number(x.probability)||0)/100,precipitation=Number(x.precipitation)||0;
-    const signal=classifyRainHour({probability,expectedPrecipitation:precipitation});
+    const signal=x.canonicalSignal||classifyRainHour({probability,expectedPrecipitation:precipitation});
     const band=probabilityBand(probability);
     const cls=signal==='wet'?band:signal==='possible'?band+' possible':'dry';
     const height=signal==='wet'
@@ -825,21 +864,25 @@ function renderTimeline(){
 
 function renderEvents(){
   const now=Date.now();
-  const events=(state.data.events||[]).filter(e=>Date.parse(e.end)>now).slice(0,8);
+  const events=canonicalEvents().filter(e=>Date.parse(e.end)>now).slice(0,8);
   $('events').innerHTML=events.map((e,index)=>{
     const dur=Math.max(1,Math.round((Date.parse(e.end)-Date.parse(e.start))/3600_000));
     const total=Number(e.totalExpectedPrecipitation||0),peak=Number(e.maxExpectedPrecipitation||0);
     const avgProb=pct(e.averageProbability??e.peakProbability),maxProb=pct(e.peakProbability);
     const families=e.independentFamilyCount||e.providerCount||0;
     const next=events[index+1],dryHours=next?Math.max(0,(Date.parse(next.start)-Date.parse(e.end))/3600_000):null;
-    const startWindow=e.startWindow?.earliest&&e.startWindow?.latest
-      ? 'inicio probable '+fmtTime(e.startWindow.earliest)+'–'+fmtTime(e.startWindow.latest)
-      : 'inicio '+fmtTime(e.start);
     const after=dryHours!=null&&dryHours>=1?' · después ~'+Math.round(dryHours)+' h secas':'';
+    const hourly=eventHourlyRows(e).map(row=>{
+      const hour=String(new Date(row.time).getHours()).padStart(2,'0')+' h';
+      const label=conditionLabel(row);
+      const prob=Math.round(Number(row.probability)||0)+'%';
+      const rate=(Number(row.precipitation)||0).toFixed(1).replace('.',',')+' mm/h';
+      return '<div class="eventHour"><b>'+hour+'</b><span>'+label+'</span><span class="ehProb">'+prob+'</span><span class="ehRate">'+rate+'</span></div>';
+    }).join('');
     return '<div class="event"><div><strong>'+fmtDateTime(e.start)+' → '+fmtTime(e.end)+'</strong>'+
       '<small>'+dur+' h · '+(e.character||'variable')+' · '+total.toFixed(1)+' mm estimados</small>'+
-      '<small>pico '+peak.toFixed(1)+' mm/h '+fmtTime(e.peakExpectedTime||e.peakTime)+' · prob. media '+avgProb+'% · máx. '+maxProb+'%</small>'+
-      '<small>'+startWindow+' · '+families+' familias'+after+'</small></div><div class="prob">'+maxProb+'%</div></div>';
+      '<small>pico '+peak.toFixed(1)+' mm/h · prob. media '+avgProb+'% · máx. '+maxProb+'% · '+families+' familias'+after+'</small></div>'+
+      '<div class="prob">'+maxProb+'%</div><div class="eventHours">'+hourly+'</div></div>';
   }).join('')||'<div class="status">Sin episodios relevantes.</div>';
 }
 
@@ -1183,6 +1226,10 @@ $('geo').onclick=()=>{
   );
 };
 $('frame').oninput=function(){showRadarOffset(Number(this.value))};
+$('radarNow').onclick=function(){
+  if(state.playTimer){clearInterval(state.playTimer);state.playTimer=null;$('play').textContent='▶'}
+  $('frame').value='0';showRadarOffset(0);
+};
 $('play').onclick=function(){
   if(state.playTimer){clearInterval(state.playTimer);state.playTimer=null;this.textContent='▶';return}
   if(!state.frames.length)return;
