@@ -1,4 +1,4 @@
-# RainETA v0.4
+# RainETA v0.5
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -39,6 +39,15 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Lugares guardados con la misma pantalla de detalle y una vista resumen rápida de lluvia actual y temperatura.
 - La vista de resumen usa una observación manual reciente para la ubicación GPS cuando existe.
 
+## Interfaz v0.5
+- Cuenta atrás en vivo cuando la lluvia está a menos de 2 horas.
+- Banda de **0–120 min en pasos de 5 minutos**, combinando proyección radar con guía de precipitación a 15 min.
+- La altura de la banda corta refleja señal de precipitación; el color destaca tramos de mayor probabilidad/señal.
+- Clasificación orientativa de intensidad: seco, llovizna, débil, moderada o fuerte.
+- Mapa base CARTO oscuro para evitar los bloqueos 403 observados con los tiles públicos directos de OpenStreetMap.
+- PWA **network-first** con actualización forzada del service worker y assets versionados; la app instalada deja de quedarse fijada en una versión antigua.
+- RainETA muestra la versión visible en cabecera para poder comprobar inmediatamente qué build está ejecutando el móvil.
+
 ## Radar
 RainViewer aporta los últimos barridos. RainETA descarga una imagen centrada en la ubicación, genera una máscara de precipitación en el dispositivo, calcula traslación entre barridos y proyecta el píxel de la ubicación cada 5 minutos hasta 120 minutos.
 
@@ -50,7 +59,7 @@ RainETA no añade ninguna Serverless Function al proyecto Vercel. Las consultas 
 ## Fuentes
 - Open-Meteo Forecast / Ensemble / Geocoding.
 - RainViewer Weather Maps API.
-- OpenStreetMap para mapa base.
+- CARTO para mapa base, con datos © OpenStreetMap contributors.
 
 AEMET OpenData queda como futura capa adicional. Requiere API key y no se embebe una clave privada en una PWA pública. El radar español ya participa indirectamente cuando está incluido por el agregador de radar utilizado, pero RainETA no lo presenta como una conexión AEMET directa mientras no exista esa integración.
 
