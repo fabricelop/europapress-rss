@@ -20760,13 +20760,13 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 1,
       "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "rewrite_pending": false,
       "explained_at": "2026-10-06T20:20:10+02:00",
       "fallback_image": {
@@ -20778,13 +20778,51 @@
         "generated": false
       },
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261006100728_1200.jpg",
-        "source": "Europa Press · 6/10/2026",
-        "source_url": "https://www.europapress.es/andalucia/noticia-maillo-reafirma-no-sera-candidato-frente-amplio-29n-invita-podemos-sentarse-debatir-primarias-20261006100728.html",
-        "alt": "Imagen de archivo relacionada con Frente Amplio",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/31fa73ae74f1-r3-ai1-791311040995.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "0da4a6997491e6fe5797a68a461925de23b97575a0a49fa965733d5c4fee2310",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1873835,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "31fa73ae74f1",
+          "revision": 3,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-31fa73ae74f1-r3-a1-1791311040995"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/31fa73ae74f1-r3-ai1-791311040995.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/31fa73ae74f1-r3-ai1-791311040995.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "0da4a6997491e6fe5797a68a461925de23b97575a0a49fa965733d5c4fee2310",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1873835,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "31fa73ae74f1",
+          "revision": 3,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-31fa73ae74f1-r3-a1-1791311040995"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/31fa73ae74f1-r3-ai1-791311040995.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T18:26:14.116Z"
     },
     {
       "id": "1a9669df5b5e",
@@ -32115,6 +32153,6 @@
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-06T20:24:42+02:00",
+  "updated_at": "2026-10-06T18:26:14.116Z",
   "count": 593
 }
