@@ -1,8 +1,7 @@
 TT Apps production deploy trigger
-Reason: corregir botones Telegram TTendencias Publicado/Desestimar
+Reason: corregir TTiTTulares (Borrar salidas, Validar a elaboración e imágenes visibles en Listas)
 Includes:
-- handler tx: en vercel-webhook/api/telegram-webhook.js
-- respuesta inmediata al callback
-- listener de paquetes continuo en modo web
-- watchdog periódico del listener
-Source main before trigger: 6ce7fb63d08200dc4bc908a8b9b048d85d36641c
+- Validar No comprobadas mueve inmediatamente a PROCESSING
+- Borrar/ Borrar todo mantiene ocultación local si GitHub está limitado
+- Listas muestra miniatura de IA o archivo en la tarjeta
+Source main before trigger: e594a88fc99f8b2677f240e96480e0b280d2538b
