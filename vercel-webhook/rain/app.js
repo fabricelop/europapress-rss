@@ -2146,9 +2146,9 @@ function renderSources(){
     {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opera?.ok
       ? 'EUMETNET OPERA · RATE '+(opera.resolutionKm||2)+' km / 5 min · '+fmtTime(opera.observedAt)+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+(opNow?.status==='ok'?' · flujo local · útil ~'+Math.round(Number(opNow.reliableHorizonMinutes)||45)+' min':'')+opMotion
       : 'EUMETNET OPERA sin compuesto reciente'},
-    {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'
-      ? 'flujo local + evolución · útil ~'+nowcastReliableHorizon()+' min'
-      : state.nowcast?.status||'solo mapa'},
+    {label:'Radar RainViewer',ok:Boolean(state.data.sources.radar),detail:state.nowcast?.status==='ok'
+      ? 'observación reciente · flujo local + evolución · útil ~'+nowcastReliableHorizon()+' min'
+      : state.nowcast?.status==='stale_radar'?'observación demasiado antigua; excluida de ETA':state.nowcast?.status||'solo mapa'},
     {label:nativeQuarterHourLikely()?'Modelo 15 min nativo':'Guía temporal',ok:state.data.sources.quarterHour,detail:nativeQuarterHourLikely()
       ? 'resolución de 15 min disponible para esta zona'
       : 'en esta ubicación el dato de 15 min se trata como interpolado; no amplía la resolución real'},
@@ -2442,7 +2442,7 @@ async function refreshRadar(renderAfter=true){
     const sources={
       ...state.data.sources,
       quarterHour:Boolean(quarterHour),
-      radar:Boolean(radar),
+      radar:radarFreshness(radar).ok,
       opera:Boolean(opera?.ok)
     };
     const all=[...(sources.deterministic||[]),...(sources.ensembles||[])];
