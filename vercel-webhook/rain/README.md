@@ -1,4 +1,4 @@
-# RainETA v0.15.8
+# RainETA v0.16.0
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,17 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Nowcast v2: flujo local + relevo a modelos v0.16.0
+- RainViewer deja de proyectarse con un único vector rígido para la decisión de lluvia. El cliente estima **movimiento local** en una malla de zonas y sigue el eco que puede alcanzar el punto.
+- Se mide la **evolución/deformación** entre los dos últimos barridos. Si la precipitación crece, se rompe o cambia mucho de forma, baja la confianza y se acorta el horizonte radar.
+- El horizonte radar útil pasa a ser dinámico (aprox. 20–90 min). Fuera de él, la decisión deja de usar el radar como fuente dominante y da el relevo a consenso/modelos.
+- OPERA usa el mismo principio de flujo local y fiabilidad de evolución en el backend existente `/api/rain-opera`; no se añade ninguna Serverless Function.
+- El 0–120 min mezcla radar/OPERA con modelos de forma progresiva: radar domina al principio y su peso llega a cero cuando termina su horizonte fiable.
+- En España el `minutely_15` de Open-Meteo se trata como **interpolación horaria**, no como una predicción nativa de 15 min: ya no puede desplazar inicio/fin de episodios ni prolongar artificialmente el detalle fino.
+- La tarjeta corta muestra `Radar útil ~N min` y el relevo posterior a modelos. El mapa atenúa las proyecciones posteriores al horizonte fiable y las marca como referencia visual.
+- `HASTA LLUVIA` solo anima hasta una ETA respaldada por radar dentro de ese horizonte. Si la ETA procede del relevo a modelos, se indica `ETA POR MODELOS` y no se anima un mapa radar engañoso.
+- AEMET queda como fuente candidata prioritaria para España, pero su integración programática requiere una API Key de AEMET OpenData; no hay una clave configurada actualmente en el proyecto.
 
 ## Hotfix de recursión de feedback v0.15.8
 - Corrige `Maximum call stack size exceeded` cuando existía un `No llueve` reciente pero ya no debía gobernar el estado actual.
