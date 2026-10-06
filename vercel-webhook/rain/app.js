@@ -45,6 +45,12 @@ function until(v){
   if(m<60)return m+' min';
   const h=Math.floor(m/60),r=m%60;return h+' h'+(r?' '+r+' min':'');
 }
+function durationText(start,end){
+  if(!start||!end)return'—';
+  const m=Math.max(0,Math.round((Date.parse(end)-Date.parse(start))/60000));
+  if(m<60)return m+' min';
+  const h=Math.floor(m/60),r=m%60;return h+' h'+(r?' '+r+' min':'');
+}
 function pct(v){return Math.round(Math.max(0,Math.min(1,Number(v)||0))*100)}
 function cacheKey(){return 'raineta.forecast.'+state.loc.lat.toFixed(2)+','+state.loc.lon.toFixed(2)}
 function timeoutFetch(url,ms=9000,opts={}){
@@ -251,14 +257,14 @@ function render(){
   if(!ev){
     $('eta').textContent='Sin lluvia';
     $('summary').textContent='No hay episodio con consenso suficiente en las próximas 72 horas.';
-    $('start').textContent='—';$('end').textContent='—';$('conf').textContent='—';$('unc').textContent='—';
+    $('start').textContent='—';$('end').textContent='—';$('conf').textContent='—';$('dur').textContent='—';
   }else{
     if(ev.active)$('eta').innerHTML='Lluvia <span>ahora</span>';
     else $('eta').innerHTML='<span>'+until(ev.start)+'</span>';
     $('start').textContent=fmtDateTime(ev.start);
     $('end').textContent=ev.end?fmtDateTime(ev.end):'por determinar';
     $('conf').textContent=pct(ev.confidence)+'%';
-    $('unc').textContent=uncertaintyText(ev);
+    $('dur').textContent=durationText(ev.start,ev.end);
     if(ev.kind==='radar'){
       const speed=n?.motion?.speedKmh?Math.round(n.motion.speedKmh)+' km/h':'movimiento estimado';
       if(ev.active){
