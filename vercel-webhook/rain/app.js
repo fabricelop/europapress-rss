@@ -747,7 +747,7 @@ function radarDryWindow(){
   const radarMs=Date.parse(n.radarTime),confidence=Number(n.confidence)||0;
   if(!Number.isFinite(radarMs)||(now-radarMs)>20*60_000)return null;
   const event=stabilizedRadarEvent();
-  const requiredConfidence=event?.start?.30:.48;
+  const requiredConfidence=event?.start ? .30 : .48;
   if(confidence<requiredConfidence)return null;
   const horizonEnd=radarMs+120*60_000;
   let endMs=event?.start?Math.min(Date.parse(event.start),horizonEnd):horizonEnd;
@@ -772,8 +772,15 @@ function chooseModelEvent(now,dry){
     if(!Number.isFinite(start)||!Number.isFinite(end)||end<=now)continue;
     let radarDelayed=false;
     if(Number.isFinite(dryEnd)&&start<dryEnd){
-      if(end<=dryEnd)continue;
-      start=dryEnd;radarDelayed=true;
+      const rawEnd=Date.parse(raw.end);
+      if(end<=dryEnd&&Number.isFinite(rawEnd)&&rawEnd>dryEnd){
+        e={...raw};
+        start=dryEnd;end=rawEnd;radarDelayed=true;
+      }else if(end<=dryEnd){
+        continue;
+      }else{
+        start=dryEnd;radarDelayed=true;
+      }
     }
     if(start>=end)continue;
     const active=start<=now&&end>now&&currentTruth()!==false;
@@ -1030,9 +1037,12 @@ function renderTimeline(){
 
 function renderEvents(){
   const now=Date.now();
-  const events=canonicalEvents().filter(e=>Date.parse(e.end)>now).slice(0,8);
-  if(!events.length){$('events').innerHTML='<div class="status">Sin episodios relevantes.</div>';return}
-  const blocks=[],radarDry=radarDryWindow();
+  const events=canonicalEvents().filter(e=>Date.parse(e.end)>now).slice(0,8),radarDry=radarDryWindow();
+  if(!events.length){
+    $('events').innerHTML=(radarDry?'<div class="dryWindow"><strong>Radar: ventana seca probable · '+durationText(radarDry.start,radarDry.end)+'</strong><span>hasta ~'+fmtTime(radarDry.end)+(radarDry.operaDry?' · OPERA seco ahora':'')+'</span></div>':'')+'<div class="status">Sin episodios relevantes.</div>';
+    return;
+  }
+  const blocks=[];
   if(radarDry){
     const first=events[0],endsBeforeFirst=!first||Date.parse(radarDry.end)<=Date.parse(first.start)+5*60_000;
     if(endsBeforeFirst){
