@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-recover-ad3a365ffec5-r1-a8-1791308532634",
   "requested_at": "2026-10-06T17:42:12.634Z",
-  "updated_at": "2026-10-06T17:42:12.634Z",
-  "status": "REQUESTED",
-  "phase": "queued",
+  "updated_at": "2026-10-06T18:02:18.382Z",
+  "status": "RUNNING",
+  "phase": "pc_pickup",
   "mode": "manual_recovery_after_chrome_oom",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -47,7 +47,10 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "Reintento limpio tras reinicio de Chrome y reparación de listener.",
+  "message": "PC ha recogido la solicitud de imagen.",
   "force_chrome_recovery": true,
-  "force_chrome_recovery_reason": "post_chrome_oom_clean_recovery"
+  "force_chrome_recovery_reason": "post_chrome_oom_clean_recovery",
+  "pc_upload_secret_hash": "3befa9be3f775196fcb8643d18f31885bf556b4e5f7ea3cd2f0ad4f610a768f7",
+  "pc_worker_id": "ttittulares-dedicated-v38",
+  "pc_picked_up_at": "2026-10-06T18:02:18.382Z"
 }
