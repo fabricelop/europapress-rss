@@ -354,8 +354,13 @@ function automaticRainState(){
   const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH),operaQuality=Number(opera?.sample?.quality);
   const operaFresh=opera?.sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5;
   const operaRain=operaFresh&&operaRate>=.05;
+  const radarRate=Number(state.nowcast?.currentRadarRate)||0;
   let raining=radarOk?(radarRain||(modelRain&&radarWet>=.08)):modelRain;
   if(operaRain)raining=true;
+  else if(operaFresh&&operaRate<.02){
+    const strongLocalRadar=radarOk&&(radarRate>=.35||radarWet>=Math.max(.42,calibratedRadarThreshold()*1.8));
+    if(!strongLocalRadar)raining=false;
+  }
   const source=operaFresh?(radarOk?'radar+OPERA+modelo':'OPERA+modelo'):(radarOk?'radar+modelo':'modelo');
   return{raining,source,label:raining?'Llueve ahora':'No llueve ahora'};
 }
