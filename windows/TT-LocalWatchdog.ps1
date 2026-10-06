@@ -1,5 +1,6 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
+# watchdog-restart-refresh-v2
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
 $BaseDir="C:\TTiTTulares"
@@ -91,12 +92,41 @@ function Read-RawJson([string]$Url){
   }catch{return $null}
 }
 
+function RefreshListenerFromMain([string]$Project,[string]$Script){
+  try{
+    $name=Split-Path -Leaf $Script
+    if($name -notin @("TTiTTularesDedicatedListener.ps1","TTendenciasDedicatedListener.ps1")){return $true}
+    $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/"+$name+"?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+    $tmp=$Script+".watchdog-refresh.ps1"
+    Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing -Headers @{"Cache-Control"="no-cache";"User-Agent"="TT-Watchdog-Listener-Refresh-v2"} -TimeoutSec 20
+    $tokens=$null;$errors=$null
+    [Management.Automation.Language.Parser]::ParseFile($tmp,[ref]$tokens,[ref]$errors)|Out-Null
+    if($errors.Count -gt 0){throw "PowerShell remoto invalido: "+$errors[0].Message}
+    $txt=Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
+    if($Project -eq "ttittulares" -and $txt -notmatch 'ttittulares-dedicated-v41'){
+      throw "Listener TTiTTulares remoto aun no es v41"
+    }
+    $changed=$true
+    if(Test-Path -LiteralPath $Script){
+      try{$changed=((Get-FileHash $tmp -Algorithm SHA256).Hash -ne (Get-FileHash $Script -Algorithm SHA256).Hash)}catch{}
+    }
+    Move-Item -LiteralPath $tmp -Destination $Script -Force
+    Log ("LISTENER REFRESH "+$Project+" changed="+[int]$changed+" file="+$name)
+    return $true
+  }catch{
+    try{Remove-Item -LiteralPath ($Script+".watchdog-refresh.ps1") -Force -ErrorAction SilentlyContinue}catch{}
+    Log ("LISTENER REFRESH WARNING "+$Project+" :: "+$_.Exception.Message)
+    return $false
+  }
+}
+
 function RestartListenerForQueue([string]$Project,[string]$Pattern,[string]$Script,[string]$Tag,[string]$Reason){
   $now=[DateTimeOffset]::UtcNow
   try{
     if(($now-$script:LastQueueRestart[$Project]).TotalMinutes -lt 5){return}
   }catch{}
   Log "QUEUE HEALTH RESTART $Project :: $Reason"
+  [void](RefreshListenerFromMain $Project $Script)
   @(PsProcs $Pattern)|ForEach-Object{try{Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue}catch{}}
   Start-Sleep -Milliseconds 700
   [void](StartHiddenPs $Script $Tag)
