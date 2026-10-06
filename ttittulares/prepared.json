@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-06T06:46:29.657Z",
+  "updated_at": "2026-10-06T06:48:05.470Z",
   "items": [
     {
       "event_id": "e875d0151ab5",
@@ -561,8 +561,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -577,12 +577,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-06T06:42:41.758751Z",
       "image": {
-        "url": "https://img-prod-api2.mediasetplay.mediaset.it/api/images/mp/v5/esp/MD00000020254488/image_keyframe_poster/1200/630?r=K1XiQzdyQOZBnhdsJ+Ce1d1aGIw=",
-        "source": "www.mediasetinfinity.es",
-        "source_url": "https://www.mediasetinfinity.es/programas-tv/en-boca-de-todos/2026/top-videos/nacho-abad-elecciones-29-noviembre-pedro-sanchez-doblado-brazo-40_020254488/player/",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Nacho Abad avisa de no dar por derrotado a Sánchez en las elecciones del 29-N"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/cd8b38d187b9-r1-ai1-791268984465.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "721fd819f59a99a34e32f66bc0fb88f527310e4237db7efd2e19b4220d537078",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 1900975,
+        "context_guard": {
+          "version": 3,
+          "event_id": "cd8b38d187b9",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-cd8b38d187b9-r1-a1-1791268984465"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/cd8b38d187b9-r1-ai1-791268984465.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img-prod-api2.mediasetplay.mediaset.it/api/images/mp/v5/esp/MD00000020254488/image_keyframe_poster/1200/630?r=K1XiQzdyQOZBnhdsJ+Ce1d1aGIw=",
@@ -591,7 +605,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Nacho Abad avisa de no dar por derrotado a Sánchez en las elecciones del 29-N"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/cd8b38d187b9-r1-ai1-791268984465.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "721fd819f59a99a34e32f66bc0fb88f527310e4237db7efd2e19b4220d537078",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 1900975,
+        "context_guard": {
+          "version": 3,
+          "event_id": "cd8b38d187b9",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-cd8b38d187b9-r1-a1-1791268984465"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/cd8b38d187b9-r1-ai1-791268984465.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-06T06:48:05.470Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T06:48:05.470Z"
     }
   ],
   "count": 11
