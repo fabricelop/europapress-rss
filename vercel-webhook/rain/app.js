@@ -1630,7 +1630,7 @@ function updateRadarArrivalButton(){
   if(target.status==='ready'){
     button.disabled=false;button.textContent='▶ HASTA LLUVIA';
   }else if(target.status==='now'){
-    button.disabled=true;button.textContent='● LLUVIA AHORA';
+    button.disabled=false;button.textContent='● LLUVIA AHORA';
   }else if(target.status==='later'){
     button.disabled=true;button.textContent='ETA > 2 H';
   }else if(target.status==='no_projection'){
