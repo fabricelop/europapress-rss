@@ -1,22 +1,21 @@
 {
   "version": 1,
-  "command_id": "tt-img-auto-2be7f32cd992-r1-a7-1791314522666",
-  "requested_at": "2026-10-06T19:22:02.666087Z",
-  "updated_at": "2026-10-06T19:23:20.912Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
-  "mode": "automatic_ready_repair",
+  "command_id": "tt-img-fix-2be7f32cd992-1791314965583",
+  "requested_at": "2026-10-06T19:29:25.580Z",
+  "updated_at": "2026-10-06T19:29:25.580Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
+  "launcher_arg": "titulares",
   "task": "image",
   "target_id": "2be7f32cd992",
   "event_id": "2be7f32cd992",
   "target_name": "La Euroliga rechaza, por ahora, la oferta de la NBA",
   "revision": 1,
-  "regenerate": true,
-  "auto_repair": true,
-  "auto_repair_attempt": 7,
-  "chat_command_version": 7,
+  "regenerate": false,
+  "chat_command_version": 5,
   "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
   "context_snapshot": {
     "title": "La Euroliga rechaza, por ahora, la oferta de la NBA",
@@ -24,10 +23,6 @@
     "factual_summary": "Los clubes de la Euroliga han rechazado por ahora la propuesta de la NBA para organizar una competición conjunta. La Euroliga mantiene su hoja de ruta y varios medios señalan que prevé ampliar la competición a 24 equipos la próxima temporada.",
     "tweet_text": "Los clubes de la Euroliga rechazan por ahora la propuesta de la NBA para organizar una competición conjunta. La Euroliga prevé ampliar su formato a 24 equipos la próxima temporada.\n\n🌶️ La NBA llamó a Europa y la Euroliga dejó el balón botando.",
     "remate": "🌶️ La NBA llamó a Europa y la Euroliga dejó el balón botando.",
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
-    "image_style_name": "novela_grafica",
-    "image_style_index": 9,
-    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLos clubes de la Euroliga rechazan por ahora la propuesta de la NBA para organizar una competición conjunta. La Euroliga prevé ampliar su formato a 24 equipos la próxima temporada.\n\n🌶️ La NBA llamó a Europa y la Euroliga dejó el balón botando.\n\nREMATE EXACTO:\n🌶️ La NBA llamó a Europa y la Euroliga dejó el balón botando.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLos clubes de la Euroliga han rechazado por ahora la propuesta de la NBA para organizar una competición conjunta. La Euroliga mantiene su hoja de ruta y varios medios señalan que prevé ampliar la competición a 24 equipos la próxima temporada.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
     "url": "https://www.lavanguardia.com/deportes/baloncesto/20261006/11652459/euroliga-rechaza-nba.html",
     "citations": [
       {
@@ -46,18 +41,18 @@
         "source": "Cadena SER",
         "url": "https://cadenaser.com/nacional/2026/10/06/los-clubes-de-la-euroliga-rechazan-la-oferta-de-la-nba-para-organizar-competicion-conjunta-cadena-ser/"
       }
-    ]
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag nace del hecho/remate y no se limita a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición dinámica pero despejada.",
+    "image_style_name": "comic_europeo",
+    "image_style_index": 1
   },
   "instructions": {
-    "scope": "Una sola noticia y una sola imagen.",
-    "exact_input": "Usa literalmente tweet_text y remate.",
-    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
-    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
-    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+    "scope": "Genera UNA sola imagen IA para esta noticia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto factual autoritativo. No reinvestigues ni reescribas la noticia.",
+    "visual": "Más gag, menos barroquismo: una sola idea visual fuerte, pocos elementos y acabado cuidado. Respeta image_style del context_snapshot; en regeneraciones el estilo puede cambiar.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso, menores en contexto sensible o sufrimiento humano en objeto del gag.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
   },
-  "message": "Fallback no pudo escribir el prompt completo len=0 expected>=500",
-  "pc_upload_secret_hash": "13b2370d4550798dcc4416c851e9f04f1a4fa222cb7fe7b5d412e56447efafec",
-  "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-06T19:23:15.966Z",
-  "finished_at": "2026-10-06T19:23:20.912Z"
+  "message": "Reintento controlado tras corregir escritura del compositor."
 }
