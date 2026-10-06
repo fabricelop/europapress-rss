@@ -339,7 +339,7 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
 const BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback";
-const BRIDGE_PATCH="v30-strict-submit-proof";
+const BRIDGE_PATCH="v31-rotating-trusted-submit";
 // compatibility validator for installed listeners: ttittulares-image-bridge-v1
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
@@ -518,7 +518,7 @@ async function reacquireCommandChat(job){
 
 async function ensureSubmitted(cdp,job){
   const deadline=Date.now()+45000;
-  let current=cdp,last=null,lastAttemptAt=0,reacquires=0,triggeredAt=0;
+  let current=cdp,last=null,lastAttemptAt=0,reacquires=0,triggeredAt=0,submitAttempts=0;
   while(Date.now()<deadline){
     let st=null;
     try{
@@ -552,25 +552,39 @@ async function ensureSubmitted(cdp,job){
 
     if(st&&st.composerMarker&&Date.now()-lastAttemptAt>=1200){
       lastAttemptAt=Date.now();
-      let triggered=false;
-      try{
-        triggered=Boolean(await current.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const b=[...document.querySelectorAll('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]')].find(x=>{try{const r=x.getBoundingClientRect(),s=getComputedStyle(x);return !x.disabled&&s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0}catch(_){return false}})||null;if(b){b.click();return true}const form=c&&c.closest&&c.closest('form');if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return true}return false})()"));
-      }catch{}
-      if(!triggered){
+      submitAttempts++;
+      let triggered=false,method="none";
+      const mode=(submitAttempts-1)%3;
+
+      if(mode===0){
+        try{
+          triggered=Boolean(await current.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const b=[...document.querySelectorAll('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]')].find(x=>{try{const r=x.getBoundingClientRect(),s=getComputedStyle(x);return !x.disabled&&s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0}catch(_){return false}})||null;if(b){b.click();return true}const form=c&&c.closest&&c.closest('form');if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return true}return false})()"));
+          method="dom-click";
+        }catch{}
+      }else if(mode===1){
+        try{
+          const point=await current.eval("(()=>{const b=[...document.querySelectorAll('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]')].find(x=>{try{const r=x.getBoundingClientRect(),s=getComputedStyle(x);return !x.disabled&&s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0}catch(_){return false}})||null;if(!b)return null;const r=b.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}})()");
+          if(point&&Number.isFinite(point.x)&&Number.isFinite(point.y)){
+            await current.call("Input.dispatchMouseEvent",{type:"mousePressed",x:point.x,y:point.y,button:"left",clickCount:1},5000);
+            await current.call("Input.dispatchMouseEvent",{type:"mouseReleased",x:point.x,y:point.y,button:"left",clickCount:1},5000);
+            triggered=true;method="trusted-mouse";
+          }
+        }catch{}
+      }else{
         try{
           const focused=Boolean(await current.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");if(!c)return false;c.focus();return true})()"));
           if(focused){
-            await current.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-            await current.call("Input.dispatchKeyEvent",{type:"char",text:"\r",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-            await current.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-            triggered=true;
+            await current.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13},5000);
+            await current.call("Input.dispatchKeyEvent",{type:"char",text:"\r",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13},5000);
+            await current.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13},5000);
+            triggered=true;method="trusted-enter";
           }
         }catch{}
       }
-      if(triggered&&!triggeredAt)triggeredAt=Date.now();
-      console.log("BRIDGE SUBMIT RECOVERY "+(triggered?"TRIGGERED":"WAIT")+" sendDisabled="+Boolean(st.sendDisabled)+" generating="+Boolean(st.generating));
-    }
 
+      if(triggered&&!triggeredAt)triggeredAt=Date.now();
+      console.log("BRIDGE SUBMIT RECOVERY "+(triggered?"TRIGGERED":"WAIT")+" method="+method+" attempt="+submitAttempts+" sendDisabled="+Boolean(st.sendDisabled)+" generating="+Boolean(st.generating));
+    }
     await sleep(650);
   }
   throw Error("No hubo evidencia suficiente de envío del prompt ImageGen; "+JSON.stringify(last||{}).slice(0,700))
@@ -715,12 +729,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v30-strict-submit",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v31-trusted-submit",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v30-strict-submit",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v31-trusted-submit",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -756,7 +770,7 @@ async function uploadImage(image){
       console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
       if(generationAttempt===1){
         await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v30-strict-submit"});
+        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v31-trusted-submit"});
         if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
@@ -783,7 +797,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v30-strict-submit",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v31-trusted-submit",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
