@@ -172,6 +172,18 @@ async function readRawJsonWithSha(path,branch){
 async function readControlJson(path){
   return readRawJsonWithSha(path,TRIGGER_BRANCH)
 }
+// Solo para resolver un 409 real: Contents API devuelve el blob SHA autoritativo.
+// No se usa en polling normal, para preservar la cuota REST.
+async function readControlJsonAuthoritative(path){
+  const filePath=String(path||"").split("/").map(encodeURIComponent).join("/");
+  const ref=encodeURIComponent(TRIGGER_BRANCH);
+  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+filePath+"?ref="+ref,{method:"GET"});
+  if(r.status===404)return {sha:null,doc:null};
+  if(!r.ok)throw new Error("GitHub control authoritative GET "+path+": "+r.status+" "+await r.text());
+  const j=await r.json();
+  const raw=Buffer.from(String(j.content||"").replace(/\s/g,""),"base64").toString("utf8");
+  return {sha:String(j.sha||"")||null,doc:JSON.parse(raw||"{}")}
+}
 async function writeControlJson(path,doc,sha,message){
   const body={message,content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64"),branch:TRIGGER_BRANCH};
   if(sha)body.sha=sha;
@@ -491,7 +503,10 @@ async function requestImagePcAck(req,res){
       return res.status(200).json({ok:true,...writeNext})
     }catch(e){
       if(!/409/.test(String(e))||attempt===4)throw e;
-      const fresh=await readControlJson(path),cur=fresh.doc||{};
+      // raw.githubusercontent puede servir durante unos segundos el blob anterior
+      // aunque lleve cache-buster. Tras un 409 pedimos UNA lectura autoritativa del
+      // Contents API para obtener el SHA exacto y cortar la tormenta de conflictos.
+      const fresh=await readControlJsonAuthoritative(path),cur=fresh.doc||{};
       if(String(cur.command_id||"")!==command_id){
         return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
       }
