@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "command_id": "tr-img-1791104989476-b5765f",
-  "requested_at": "2026-10-04T09:09:49.476Z",
-  "updated_at": "2026-10-04T09:14:18.870Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
-  "mode": "manual_pc_chat_image",
+  "command_id": "tr-img-auto-2bd1d3d69584-r2-a1-1791278509397",
+  "requested_at": "2026-10-06T09:21:49.397078Z",
+  "updated_at": "2026-10-06T09:21:49.397078Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -13,44 +13,43 @@
   "target_id": "2bd1d3d69584",
   "trend_id": "2bd1d3d69584",
   "target_name": "Sánchez",
-  "revision": 1,
-  "attempt": 1,
-  "chat_command_version": 3,
-  "instruction_profile": "ttendencias_gag_v1",
+  "revision": 2,
+  "attempt": 2,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "Sánchez",
-    "revision": 1,
-    "explanation": "TT#6 Sánchez es tendencia porque sopesa adelantar las elecciones tras caer en el Congreso sus dos decretos de vivienda con los votos de PP, Vox y Junts; Moncloa mantiene abierta la decisión y Sumar se reúne hoy ante ese escenario.",
+    "revision": 2,
+    "explanation": "TT#2 Sánchez es tendencia porque el BOE ha formalizado hoy la disolución del Congreso y el Senado y las elecciones del 29-N que convocó ayer; el Gobierno prevé reaprobar además los decretos de vivienda rechazados para llevarlos a la Diputación Permanente.",
     "closer_text": "",
     "trend_names": [
       "Sánchez"
     ],
-    "group_title": "Sánchez sopesa adelantar elecciones tras la derrota en vivienda",
-    "rank_at_explanation": 6,
-    "explained_at": "2026-10-04T11:03:30+02:00",
+    "group_title": "Sánchez y las elecciones generales del 29-N",
+    "rank_at_explanation": 2,
+    "explained_at": "2026-10-06T09:20:47.153Z",
     "verification_sources": [
       {
-        "source": "RTVE · 4/10/2026",
-        "url": "https://www.rtve.es/noticias/20261004/sumar-reune-evaluar-vivienda-posibilidad-adelanto-electoral/17252395.shtml"
+        "source": "Cadena SER · 6/10/2026",
+        "url": "https://cadenaser.com/nacional/2026/10/06/el-boe-publica-el-decreto-de-disolucion-de-las-cortes-y-la-convocatoria-de-elecciones-para-el-29-de-noviembre-cadena-ser/"
       },
       {
-        "source": "El País · 4/10/2026",
-        "url": "https://elpais.com/espana/2026-10-04/la-mayoria-del-psoe-y-el-gobierno-anima-a-sanchez-a-convocar-elecciones-ya-ahora-hay-una-oportunidad.html"
+        "source": "El País · 6/10/2026",
+        "url": "https://elpais.com/expres/2026-10-06/claves-del-adelanto-electoral-del-29n-por-que-ahora-que-pasara-con-los-decretos-de-la-vivienda.html"
       }
-    ]
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona.",
+    "image_style_name": "cartoon_3d",
+    "image_style_index": 8
   },
   "instructions": {
-    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
-    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
-    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
-    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
-    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
-    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "No apareció un raster ImageGen capturable en 3 minutos; eval_error=CDP timeout Runtime.evaluate",
-  "pc_upload_secret_hash": "d82db4e8a34eaf6572bd9ed4e63281370a2f4b8bcbb67404fc084c918cc7e5e7",
-  "pc_worker_id": "ttendencias-image-bridge-v1",
-  "pc_picked_up_at": "2026-10-04T09:10:10.937Z",
-  "pc_launched_at": "2026-10-04T09:10:18.455Z",
-  "finished_at": "2026-10-04T09:14:18.870Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
