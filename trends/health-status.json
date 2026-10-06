@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-06T09:21:35.389621+00:00",
+  "checked_at": "2026-10-06T16:12:18.746498+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 7,
-      "captured_age_minutes": 0.2,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.2,
-      "run_id": 37442259085,
+      "age_minutes": 9.9,
+      "run_id": 37492489746,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,28 +75,45 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 2,
+      "overdue_count": 2,
+      "oldest_age_minutes": 50.1,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "ea86f62a43db",
+          "name": "El PP",
+          "status": "preparing",
+          "age_minutes": 50.1
+        },
+        {
+          "id": "682a8cab1c48",
+          "name": "Dictador",
+          "status": "preparing",
+          "age_minutes": 50.1
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "ea86f62a43db",
+        "682a8cab1c48"
+      ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola con 47 estado(s) inválido(s)"
+    "cola con 47 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 50.1 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 47 estado(s) inválido(s) | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola con 47 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 50.1 min | config TTendencias incompatible con el modo activo"
 }
