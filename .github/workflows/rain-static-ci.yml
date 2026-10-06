@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - "vercel-webhook/rain/**"
+      - "vercel-webhook/lib/ttittulares-push-handler.js"
       - "vercel-webhook/test/rain-static.test.js"
       - "vercel-webhook/vercel.json"
       - ".github/scripts/smoke-rain-static.mjs"
@@ -25,6 +26,7 @@ jobs:
           node --check vercel-webhook/rain/core.js
           node --check vercel-webhook/rain/radar-core.js
           node --check vercel-webhook/rain/sw.js
+          node --check vercel-webhook/lib/ttittulares-push-handler.js
       - name: Unit tests
         run: node --test vercel-webhook/test/rain-static.test.js
       - name: Live source smoke
