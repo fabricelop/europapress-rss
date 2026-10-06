@@ -1290,9 +1290,12 @@ async function load(silent=false,passive=false){
   const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),processing_outcomes:processingOutcomesRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),problematic_items:problematicRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),trend_candidates:[],trend_candidates_count:0,three_source_items:growingRaw.filter(x=>!pendingClosed.has(String(x.event_id||"")))};
   status.processing_count=status.processing_items.length;status.processing_outcomes_count=status.processing_outcomes.length;status.problematic_count=status.problematic_items.length;status.three_source_count=status.three_source_items.length;
   model={prepared:preparedRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),status,config:d.config||{},tremending:d.tremending||{items:[]}};
-  hasGoodState=true;localStorage.setItem(DATA_CACHE_KEY,JSON.stringify(model));
+  hasGoodState=true;
   if(LINKED_EVENT_ID&&model.prepared.some(x=>String(x.event_id)===LINKED_EVENT_ID)){view="ready";openCards.add(LINKED_EVENT_ID);persistUiState()}
+  // Pintar primero: una caché local llena nunca debe dejar la app en "Cargando" con contadores a 0.
   render();
+  try{localStorage.setItem(DATA_CACHE_KEY,JSON.stringify(model))}
+  catch(_){try{localStorage.removeItem(DATA_CACHE_KEY)}catch(__){}}
   if(LINKED_EVENT_ID)requestAnimationFrame(()=>{const card=[...document.querySelectorAll("#list .card")].find(x=>x.dataset.eventId===LINKED_EVENT_ID);if(card)card.scrollIntoView({block:"start"})})
  }catch(e){
   if(seq===loadSeq){
