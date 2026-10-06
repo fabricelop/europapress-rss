@@ -24,8 +24,8 @@ const FORECAST_TTL=20*60_000;
 const RADAR_REFRESH_MS=5*60_000;
 const RADAR_FRAMES=5;
 const RADAR_ZOOM=7;
-const ANALYSIS_SIZE=72;
-const MAX_SHIFT=9;
+const ANALYSIS_SIZE=97;
+const MAX_SHIFT=12;
 
 const $=id=>document.getElementById(id);
 const state={
@@ -180,6 +180,7 @@ async function imageMask(url){
   }
   const canvas=document.createElement('canvas');canvas.width=ANALYSIS_SIZE;canvas.height=ANALYSIS_SIZE;
   const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.clearRect(0,0,ANALYSIS_SIZE,ANALYSIS_SIZE);
+  ctx.imageSmoothingEnabled=false;
   ctx.drawImage(bitmap,0,0,ANALYSIS_SIZE,ANALYSIS_SIZE);
   if(bitmap.close)bitmap.close();
   const d=ctx.getImageData(0,0,ANALYSIS_SIZE,ANALYSIS_SIZE).data,mask=new Uint8Array(ANALYSIS_SIZE*ANALYSIS_SIZE);
@@ -219,7 +220,7 @@ async function computeNowcast(meta){
   const center=(ANALYSIS_SIZE-1)/2,current=wetNear(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,center,center,1.5);
   const base={status:'motion_uncertain',confidence:motion?.confidence||0,event:null,rainingNow:current>=.10,currentWetFraction:current,radarTime:new Date(latest.time*1000).toISOString(),decodedFrames:masks.length};
   if(!motion||motion.samples<2||motion.confidence<.22)return base;
-  const series=projectPointSeries(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:1.5});
+  const series=projectPointSeries(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:0});
   let event=detectNowcastEvent(series,{enterWetFraction:.10,exitWetFraction:.035,minConsecutive:2,stepMinutes:5});
   if(event){
     const t=latest.time*1000;
