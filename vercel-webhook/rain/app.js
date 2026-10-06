@@ -28,9 +28,16 @@ const ANALYSIS_SIZE=97;
 const MAX_SHIFT=12;
 
 const $=id=>document.getElementById(id);
+function readLocal(key,fallback){
+  try{const value=JSON.parse(localStorage.getItem(key)||'null');return value??fallback}catch{return fallback}
+}
+const initialLoc=readLocal('raineta.loc',{name:'Madrid',lat:40.4168,lon:-3.7038,isCurrent:false});
 const state={
-  loc:JSON.parse(localStorage.getItem('raineta.loc')||'null')||{name:'Madrid',lat:40.4168,lon:-3.7038},
-  data:null,nowcast:null,map:null,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0
+  loc:{...initialLoc,isCurrent:Boolean(initialLoc.isCurrent)},
+  currentLocation:readLocal('raineta.currentLocation',null),
+  savedLocations:readLocal('raineta.locations',[]),
+  feedback:readLocal('raineta.feedback',[]),
+  data:null,nowcast:null,map:null,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false
 };
 
 function iso(v){
@@ -41,6 +48,33 @@ function fmtDateTime(v){
   return new Intl.DateTimeFormat('es-ES',{weekday:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
 }
 function fmtTime(v){return new Intl.DateTimeFormat('es-ES',{hour:'2-digit',minute:'2-digit'}).format(new Date(v))}
+function fmtTimeSeconds(v){return new Intl.DateTimeFormat('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date(v))}
+function samePlace(a,b,tolerance=.003){
+  return Boolean(a&&b&&Math.abs(Number(a.lat)-Number(b.lat))<=tolerance&&Math.abs(Number(a.lon)-Number(b.lon))<=tolerance);
+}
+function locationKey(loc){return Number(loc.lat).toFixed(4)+','+Number(loc.lon).toFixed(4)}
+function persistLocations(){localStorage.setItem('raineta.locations',JSON.stringify(state.savedLocations))}
+function persistFeedback(){localStorage.setItem('raineta.feedback',JSON.stringify(state.feedback.slice(-120)))}
+function isSaved(loc=state.loc){return state.savedLocations.some(x=>samePlace(x,loc,.0015))}
+function currentTruth(maxAgeMinutes=12){
+  if(!state.currentLocation||!samePlace(state.loc,state.currentLocation))return null;
+  const cutoff=Date.now()-maxAgeMinutes*60_000;
+  const item=[...state.feedback].reverse().find(x=>x.time>=cutoff&&samePlace(x,state.currentLocation,.0015));
+  return item?Boolean(item.raining):null;
+}
+function calibratedRadarThreshold(){
+  if(!state.currentLocation)return .22;
+  const rows=state.feedback.filter(x=>samePlace(x,state.currentLocation,.0015)&&Number.isFinite(x.radarWetFraction)).slice(-40);
+  if(rows.length<5)return .22;
+  let best={threshold:.22,score:-1};
+  for(let threshold=.08;threshold<=.72;threshold+=.04){
+    let correct=0;
+    for(const row of rows)if((row.radarWetFraction>=threshold)===Boolean(row.raining))correct++;
+    const score=correct/rows.length-Math.abs(threshold-.22)*.03;
+    if(score>best.score)best={threshold,score};
+  }
+  return best.threshold;
+}
 function until(v){
   const m=Math.round((new Date(v)-Date.now())/60000);
   if(m<=0)return'ahora';
