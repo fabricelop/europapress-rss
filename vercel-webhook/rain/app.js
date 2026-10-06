@@ -768,13 +768,26 @@ function renderShortNowcast(){
         : dry
           ? 'Ventana seca radar · '+fmtTime(dry.start)+'–'+fmtTime(dry.end)
           : 'Ventana corta estable';
-  const leadMinutes=near?Math.max(0,(Date.parse(ev.start)-now)/60_000):dry?Math.max(0,(Date.parse(dry.end)-now)/60_000):120;
+  const leadMinutes=near?Math.max(0,(Date.parse(ev.start)-now)/60_000):dry?Math.max(0,(Date.parse(dry.end)-now)/60_000):SHORT_HORIZON_MINUTES;
   const shortConfidence=near?calibratedConfidence(ev.confidence,leadMinutes):dry?calibratedConfidence(dry.confidence,leadMinutes):null;
-  $('shortConfidence').textContent=shortConfidence!=null?pct(shortConfidence)+'%':'—';
+  if(shortConfidence!=null){
+    const grade=confidenceGrade(shortConfidence);
+    $('shortConfidence').textContent=grade.label+' · '+grade.percent+'%';
+  }else $('shortConfidence').textContent='—';
   const reliable=nowcastReliableHorizon(),evolution=Number(state.nowcast?.evolution?.score)||0;
   const evolutionLabel=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
   if($('blendLegend')){
-    $('blendLegend').innerHTML='<span><b>0–'+reliable+' min</b> radar + radar europeo</span><span><b>después</b> transición a modelos</span>';
+    $('blendLegend').innerHTML='<span><b>Radar útil ~'+reliable+' min</b></span><span>la autoridad pasa gradualmente a modelos</span>';
+  }
+  if($('shortSourceZones')){
+    const thresholds=radarBlendThresholds(nowcastReliability()),full=Math.min(SHORT_HORIZON_MINUTES,Math.round(thresholds.full)),zero=Math.min(SHORT_HORIZON_MINUTES,Math.round(thresholds.zero));
+    const radarPct=Math.max(0,Math.min(100,full/SHORT_HORIZON_MINUTES*100));
+    const mixedPct=Math.max(0,Math.min(100,(zero-full)/SHORT_HORIZON_MINUTES*100));
+    const modelPct=Math.max(0,100-radarPct-mixedPct);
+    $('shortSourceZones').innerHTML=
+      '<span class="sourceZone radar" style="width:'+radarPct+'%"><b>RADAR</b><small>0–'+full+'m</small></span>'+
+      '<span class="sourceZone mixed" style="width:'+mixedPct+'%"><b>MEZCLA</b><small>'+full+'–'+zero+'m</small></span>'+
+      '<span class="sourceZone models" style="width:'+modelPct+'%"><b>MODELOS</b><small>'+zero+'–180m</small></span>';
   }
   if($('nowcastQuality')){
     $('nowcastQuality').textContent='Evolución '+evolutionLabel+' · radar útil ~'+reliable+' min';
@@ -787,7 +800,7 @@ function renderShortNowcast(){
     const wet=Boolean(p.wet);
     const band=probabilityBand(p.probability);
     const height=wet?Math.max(8,Math.min(100,8+Math.sqrt(Math.min(p.rate,maxRate)/maxRate)*92)):3;
-    return '<div class="minuteCol '+(wet?'wet '+band+' ':'')+(i===0?'now':'')+'" title="'+fmtTime(p.time)+' · prob. '+Math.round(p.probability*100)+'% · intensidad '+p.rate.toFixed(1)+' mm/h"><i class="minuteMark" style="height:'+height+'%"></i></div>';
+    return '<div class="minuteCol src-'+p.dominantSource+' '+(wet?'wet '+band+' ':'')+(i===0?'now':'')+'" title="'+fmtTime(p.time)+' · '+(p.dominantSource==='radar'?'radar':p.dominantSource==='mixed'?'radar + modelos':'modelos')+' · prob. '+Math.round(p.probability*100)+'% · intensidad '+p.rate.toFixed(1)+' mm/h"><i class="minuteMark" style="height:'+height+'%"></i></div>';
   }).join('');
   const ticks=[],lastIndex=points.length-1;
   for(let i=0;i<=lastIndex;i+=6){
