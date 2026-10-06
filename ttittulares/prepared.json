@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-06T14:43:13.632Z",
+  "updated_at": "2026-10-06T14:45:28.988Z",
   "items": [
     {
       "event_id": "472708c5d2ca",
@@ -165,11 +165,11 @@
       "trend_context": [],
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "selection_mode": "AUTO_WEB",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
@@ -184,12 +184,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-06T14:27:11.221391Z",
       "image": {
-        "url": "https://static.eldiario.es/clip/dff4b1ed-2fe9-4f33-bf73-1232295202bc_facebook-aspect-ratio-1200-675_default_0.jpg",
-        "source": "elDiario.es",
-        "source_url": "https://www.eldiario.es/economia/paramount-culmina-compra-warner-bros-crea-enorme-imperio-mediatico_1_13566592.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Paramount Skydance cierra la compra de Warner Bros Discovery por 110.000 millones de dólares"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/4df7bb863f62-r1-ai1-791297644418.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f494d76ac0294251c497bdb5b496d4e1c43f03f7a49014f8f5946dc6dd3bcd1b",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2419658,
+        "context_guard": {
+          "version": 3,
+          "event_id": "4df7bb863f62",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-4df7bb863f62-r1-a1-1791297644418"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/4df7bb863f62-r1-ai1-791297644418.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://static.eldiario.es/clip/dff4b1ed-2fe9-4f33-bf73-1232295202bc_facebook-aspect-ratio-1200-675_default_0.jpg",
@@ -198,7 +212,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Paramount Skydance cierra la compra de Warner Bros Discovery por 110.000 millones de dólares"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/4df7bb863f62-r1-ai1-791297644418.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f494d76ac0294251c497bdb5b496d4e1c43f03f7a49014f8f5946dc6dd3bcd1b",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2419658,
+        "context_guard": {
+          "version": 3,
+          "event_id": "4df7bb863f62",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-4df7bb863f62-r1-a1-1791297644418"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/4df7bb863f62-r1-ai1-791297644418.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-06T14:45:28.988Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T14:45:28.988Z"
     },
     {
       "event_id": "9c1fba226f5e",
