@@ -28,7 +28,7 @@ const RADAR_ZOOM=7;
 const ANALYSIS_SIZE=97;
 const MAX_SHIFT=12;
 const SHORT_HORIZON_MINUTES=180;
-const RADAR_VISUAL_HORIZON_MINUTES=180;
+const RADAR_VISUAL_HORIZON_MINUTES=240;
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -40,7 +40,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.17.1',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.17.2',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -2228,6 +2228,7 @@ function nearestObservedFrame(offsetMinutes){
 function showObservedRadar(offsetMinutes){
   const r=state.data?.radar,f=nearestObservedFrame(offsetMinutes);if(!r||!f||!state.mapLoaded)return;
   clearRadarVisual();
+  state.radarProjectionImageKey=null;
   state.map.addSource('raineta-radar',{
     type:'raster',
     tiles:[r.host+f.path+'/256/{z}/{x}/{y}/2/1_1.png'],
@@ -2249,24 +2250,35 @@ function showProjectedRadar(minutes){
     $('radarMotion').textContent='RainETA no prolonga el eco hasta que su evolución sea suficientemente coherente.';
     return;
   }
-  clearRadarVisual();
+  removeRadarLayer('raineta-radar');
   const reliable=nowcastReliableHorizon(),within=minutes<=reliable;
-  const url=radarDisplayImageUrl(r,latest,512,RADAR_ZOOM);
-  state.map.addSource('raineta-radar-projection',{type:'image',url,coordinates:projectionCoordinates(minutes)});
+  const url=radarDisplayImageUrl(r,latest,512,RADAR_ZOOM),coordinates=projectionCoordinates(minutes);
   const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
-  state.map.addLayer({
-    id:'raineta-radar-projection',type:'raster',source:'raineta-radar-projection',
-    paint:{'raster-opacity':within ? .66 : minutes<=120 ? .22 : .12,'raster-fade-duration':0}
-  },before);
+  let source=state.map.getSource('raineta-radar-projection');
+  const imageKey=latest.path;
+  if(!source||state.radarProjectionImageKey!==imageKey){
+    removeRadarLayer('raineta-radar-projection');
+    state.map.addSource('raineta-radar-projection',{type:'image',url,coordinates});
+    state.map.addLayer({
+      id:'raineta-radar-projection',type:'raster',source:'raineta-radar-projection',
+      paint:{'raster-opacity':.66,'raster-fade-duration':0}
+    },before);
+    state.radarProjectionImageKey=imageKey;
+    source=state.map.getSource('raineta-radar-projection');
+  }else if(typeof source.setCoordinates==='function'){
+    source.setCoordinates(coordinates);
+  }
+  const opacity=within?.66:minutes<=120?.28:minutes<=180?.20:.14;
+  if(state.map.getLayer('raineta-radar-projection'))state.map.setPaintProperty('raineta-radar-projection','raster-opacity',opacity);
   const projectedAt=latest.time*1000+minutes*60_000;
   $('radarTime').textContent=fmtTime(projectedAt);
-  $('radarPosition').textContent=(within?'Radar útil':'Fuera del radar fiable')+' · +'+minutes+' min · '+fmtTime(projectedAt);
+  $('radarPosition').textContent=(within?'Radar útil':'Proyección orientativa')+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
   if(within){
     const evolution=Number(state.nowcast?.evolution?.score)||0;
     const shape=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
-    $('radarMotion').textContent='Proyección visual del mismo radar observado, desplazada según el movimiento de los ecos · evolución '+shape+' · horizonte radar útil ~'+reliable+' min.';
+    $('radarMotion').textContent='Proyección continua del radar observado · evolución '+shape+' · horizonte radar útil ~'+reliable+' min.';
   }else{
-    $('radarMotion').textContent='A partir de ~'+reliable+' min RainETA deja de confiar en la extrapolación radar y da el relevo a modelos/consenso. La imagen atenuada es solo una referencia visual.';
+    $('radarMotion').textContent='Fuera del horizonte fiable (~'+reliable+' min), la imagen sigue avanzando solo como referencia visual; la ETA y la decisión pasan a modelos/consenso.';
   }
 }
 function showRadarOffset(offset=state.radarOffset){
