@@ -1,0 +1,30 @@
+name: Validar bridges de imagen
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "windows/TTiTTularesImageBridge.js"
+      - "windows/TTendenciasImageBridge.js"
+      - ".github/workflows/validate-image-bridges.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  node-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /windows/TTiTTularesImageBridge.js
+            /windows/TTendenciasImageBridge.js
+      - name: Validar sintaxis Node
+        run: |
+          node --check windows/TTiTTularesImageBridge.js
+          node --check windows/TTendenciasImageBridge.js
