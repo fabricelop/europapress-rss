@@ -339,7 +339,7 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
 const BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback";
-const BRIDGE_PATCH="v31-rotating-trusted-submit";
+const BRIDGE_PATCH="v32-strict-submit-proof";
 // compatibility validator for installed listeners: ttittulares-image-bridge-v1
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
@@ -522,7 +522,7 @@ async function ensureSubmitted(cdp,job){
   while(Date.now()<deadline){
     let st=null;
     try{
-      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=("+VISIBLE_COMPOSER_EXPR+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const bodyText=String((root&&root.innerText)||'');const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"],[data-testid*=\"user\" i],[class*=\"user-message\" i]')].filter(el=>String(el.innerText||el.textContent||'').includes(command));const submitted=userTurns.length>0;const turns=root.querySelectorAll('[data-message-author-role],[data-testid^=\"conversation-turn-\"],article').length;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const send=[...document.querySelectorAll('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]')].find(b=>{try{const r=b.getBoundingClientRect(),s=getComputedStyle(b);return !b.disabled&&s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0}catch(_){return false}})||null;const inConversation=/\\/c\\//.test(location.pathname);const commandOutsideComposer=bodyText.includes(command)&&!composerMarker;return {composerMarker,submitted,userTurns:userTurns.length,turns,generating,inConversation,commandOutsideComposer,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
+      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=("+VISIBLE_COMPOSER_EXPR+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const bodyText=String((root&&root.innerText)||'');const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"],[data-testid^=\"conversation-turn-\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const role=String(el.getAttribute&&el.getAttribute('data-message-author-role')||'').toLowerCase();const isUser=role==='user'||Boolean(el.querySelector&&el.querySelector('[data-message-author-role=\"user\"]'));return isUser&&String(el.innerText||el.textContent||'').includes(command)});const submitted=!composerMarker&&userTurns.length>0;const turns=root.querySelectorAll('[data-message-author-role],[data-testid^=\"conversation-turn-\"],article').length;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const send=[...document.querySelectorAll('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]')].find(b=>{try{const r=b.getBoundingClientRect(),s=getComputedStyle(b);return !b.disabled&&s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0}catch(_){return false}})||null;const inConversation=/\\/c\\//.test(location.pathname);const commandOutsideComposer=bodyText.includes(command)&&!composerMarker;return {composerMarker,submitted,userTurns:userTurns.length,turns,generating,inConversation,commandOutsideComposer,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
     }catch{}
 
     if(!st){
@@ -539,7 +539,8 @@ async function ensureSubmitted(cdp,job){
       st && triggeredAt &&
       st.inConversation &&
       !st.composerMarker &&
-      (st.generating || (st.commandOutsideComposer && Number(st.turns||0)>0)) &&
+      Number(st.turns||0)>0 &&
+      (st.generating || st.commandOutsideComposer) &&
       (Date.now()-triggeredAt)>=500
     );
 
@@ -729,12 +730,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v31-trusted-submit",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v32-strict-submit",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v31-trusted-submit",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v32-strict-submit",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -770,7 +771,7 @@ async function uploadImage(image){
       console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
       if(generationAttempt===1){
         await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v31-trusted-submit"});
+        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v32-strict-submit"});
         if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
@@ -797,7 +798,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v31-trusted-submit",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v32-strict-submit",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
