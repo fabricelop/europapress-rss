@@ -282,6 +282,7 @@ function render(){
   }
   const h=d.sources.health;
   $('health').textContent=h.available+' de '+h.total+' capas disponibles · radar '+(n?.status==='ok'?'analizado':n?.status==='motion_uncertain'?'sin movimiento fiable':'degradado');
+  $('sourceCount').textContent=h.available+'/'+h.total;
   renderTimeline();renderEvents();renderSources();renderRadar();
   $('updated').textContent='Actualizado '+fmtTime(d.generatedAt)+(d.cacheAgeMs?' · caché '+Math.round(d.cacheAgeMs/60000)+' min':'');
 }
