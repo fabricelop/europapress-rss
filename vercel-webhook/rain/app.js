@@ -1054,7 +1054,7 @@ function etaTrendText(ev){
 }
 
 function refineWithQuarterHour(event,qh){
-  if(!event||!qh?.events?.length)return event;
+  if(!event||!qh?.events?.length||!nativeQuarterHourLikely())return event;
   const e0=Date.parse(event.start),best=qh.events.map(e=>({...e,dist:Math.abs(Date.parse(e.start)-e0)})).sort((a,b)=>a.dist-b.dist)[0];
   if(!best||best.dist>3*3600_000)return event;
   return{...event,displayStart:best.start,displayEnd:best.end,quarterHourRefined:true};
