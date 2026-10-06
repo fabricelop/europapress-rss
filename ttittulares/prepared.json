@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-06T11:20:04.211824Z",
+  "updated_at": "2026-10-06T11:20:32.010Z",
   "items": [
     {
       "event_id": "42f008a44acb",
@@ -204,8 +204,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -221,12 +221,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-06T11:16:42.035139Z",
       "image": {
-        "url": "https://cdn.socy.cloud/TVEE/v1/_20/f/202610/TVEE/upload_742829621791230068_nf8ttnj1pnfh99lndn0_mgn8frv2hb.jpg",
-        "source": "stories.rtve.es",
-        "source_url": "https://stories.rtve.es/noticias/newstory/stories/c6ef74a8effe5b2cba8f?r=MATSPC",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "CCOO y UGT acuerdan la convocatoria de una huelga general de 24 horas este otoo, aunque no concretan fecha, para reivindicar salarios dignos para acceder a una vivienda digna."
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/aa7ed65dad92-r1-ai1-791285404509.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "0bda388443d6dc6d05339c3e9c3665a3ca9def12853e0e43d9b8a17b48bc9940",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1992449,
+        "context_guard": {
+          "version": 3,
+          "event_id": "aa7ed65dad92",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-aa7ed65dad92-r1-a1-1791285404509"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/aa7ed65dad92-r1-ai1-791285404509.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://cdn.socy.cloud/TVEE/v1/_20/f/202610/TVEE/upload_742829621791230068_nf8ttnj1pnfh99lndn0_mgn8frv2hb.jpg",
@@ -235,7 +249,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "CCOO y UGT acuerdan la convocatoria de una huelga general de 24 horas este otoo, aunque no concretan fecha, para reivindicar salarios dignos para acceder a una vivienda digna."
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/aa7ed65dad92-r1-ai1-791285404509.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "0bda388443d6dc6d05339c3e9c3665a3ca9def12853e0e43d9b8a17b48bc9940",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1992449,
+        "context_guard": {
+          "version": 3,
+          "event_id": "aa7ed65dad92",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-aa7ed65dad92-r1-a1-1791285404509"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/aa7ed65dad92-r1-ai1-791285404509.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-06T11:20:32.010Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T11:20:32.010Z"
     },
     {
       "event_id": "manual-f9fe5f46bd6a",
