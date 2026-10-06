@@ -176,6 +176,33 @@ async function bodyText(req){
 export default async function handler(req,res){
   try{
     const params=requestParams(req);
+    if(params.get("kind")==="moneywiz-status"){
+      if(!tokenMatches(req))return json(res,401,{ok:false,error:"unauthorized"});
+      if(req.method!=="GET"){
+        res.setHeader("allow","GET");
+        return json(res,405,{ok:false,error:"method_not_allowed"});
+      }
+      if(!process.env.BLOB_READ_WRITE_TOKEN)return json(res,503,{ok:false,error:"backup_blob_not_configured"});
+      const [backupList,processedList]=await Promise.all([
+        list(privateBlobOptions({prefix:MONEYWIZ_BACKUP_PREFIX,limit:100})),
+        list(privateBlobOptions({prefix:MONEYWIZ_PROCESSED_PREFIX,limit:100}))
+      ]);
+      const latestBackup=(backupList.blobs||[])
+        .filter(b=>String(b.pathname||"").toLowerCase().endsWith(".zip"))
+        .map(b=>({
+          filename:String(b.pathname||"").slice(MONEYWIZ_BACKUP_PREFIX.length),
+          pathname:b.pathname,
+          size:Number(b.size||0),
+          uploadedAt:b.uploadedAt||null
+        }))
+        .sort((a,b)=>String(b.uploadedAt||"").localeCompare(String(a.uploadedAt||"")))[0]||null;
+      const latestProcessed=(processedList.blobs||[])
+        .filter(b=>String(b.pathname||"").toLowerCase().endsWith(".json"))
+        .map(b=>({pathname:b.pathname,uploadedAt:b.uploadedAt||null,size:Number(b.size||0)}))
+        .sort((a,b)=>String(b.uploadedAt||"").localeCompare(String(a.uploadedAt||"")))[0]||null;
+      return json(res,200,{ok:true,latestBackup,latestProcessed});
+    }
+
     if(params.get("kind")==="moneywiz-processed"){
       if(!tokenMatches(req))return json(res,401,{ok:false,error:"unauthorized"});
       if(req.method!=="GET"){
