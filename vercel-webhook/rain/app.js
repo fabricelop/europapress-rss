@@ -2609,50 +2609,39 @@ async function renderLocationsSummary(force=false){
     const right=document.createElement('div');
     if(result.status==='fulfilled'){
       const s=result.value,truth=loc.isCurrent?recentTruthFor(loc,4):null;
-      const raining=truth===null?s.raining:truth,now=Date.now();
+      const raining=truth===null?s.raining:truth;
       const sameCurrent=Boolean(state.data&&samePlace(loc,state.loc,.0015));
-      const localDecision=sameCurrent?buildRainDecision():null;
-      const source=truth===null?(raining?'Precipitación detectada':'Sin precipitación ahora'):(raining?'Confirmado: llueve':'Confirmado: no llueve');
-      let forecast;
-      if(localDecision?.mode==='episode_pause'){
-        forecast=localDecision.correction?.resumeAt
-          ? 'Pausa seca · posible reanudación '+quickWhen(localDecision.correction.resumeAt)+' · previsión anterior hasta '+quickWhen(localDecision.correction.episode.end)
-          : 'Pausa seca · reevaluando si el episodio ha terminado';
-      }else if(localDecision?.mode==='episode_ended_early'){
-        forecast=localDecision.event?.start
-          ? 'Episodio cerrado antes · siguiente riesgo '+quickWhen(localDecision.event.start)
-          : 'Episodio cerrado antes · sin lluvia inmediata';
-      }else if(raining){
-        const end=s.active?.end;
-        forecast=end
-          ? 'Fin aprox. '+quickWhen(end)+' · '+durationText(now,end)+' restantes'
-          : 'Fin todavía no determinado';
-        if(s.active&&s.following)forecast+=' · siguiente pulso '+quickWhen(s.following.start);
+      const decision=sameCurrent?buildRainDecision():null;
+      let nowText=raining?'LLUEVE':'NO LLUEVE',nextStart=null,nextEnd=null;
+      if(decision){
+        if(decision.mode==='possible_now')nowText='SEÑAL RADAR';
+        else if(decision.mode==='episode_pause'||decision.mode==='episode_ended_early')nowText='NO LLUEVE';
+        else nowText=decision.rain?.raining?'LLUEVE':'NO LLUEVE';
+        nextStart=decision.rain?.raining?Date.now():decision.event?.start?Date.parse(decision.event.start):null;
+        nextEnd=decision.event?.end?Date.parse(decision.event.end):null;
       }else{
-        const future=s.nextFuture;
-        if(future){
-          forecast='Próxima lluvia '+quickWhen(future.start)+' · ~'+durationText(future.start,future.end)+' · seco '+durationText(now,future.start);
-        }else if(s.active){
-          forecast='Pausa seca dentro del episodio · sin nuevo pulso futuro confirmado';
-        }else{
-          forecast='Sin lluvia prevista en las próximas '+s.horizonHours+' h';
-        }
+        nextStart=raining?Date.now():s.nextFuture?.start?Date.parse(s.nextFuture.start):null;
+        nextEnd=(raining?s.active?.end:s.nextFuture?.end)?Date.parse(raining?s.active.end:s.nextFuture.end):null;
       }
-      const bestDry=s.bestDry
-        ? '<span class="locBestDry">Mejor hueco seco · '+quickWhen(s.bestDry.start)+'–'+quickWhen(s.bestDry.end)+' · '+durationText(s.bestDry.start,s.bestDry.end)+'</span>'
-        : '';
-      left.innerHTML='<strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>'+source+'</small><span class="locForecast">'+forecast+'</span>'+bestDry;
-      right.innerHTML='<div class="locNow '+(raining?'wet':'')+'">'+(raining?'LLUEVE':'NO LLUEVE')+'</div><div class="locTemp">'+(Number.isFinite(s.temperature)?s.temperature.toFixed(1).replace('.',',')+' °C':'—')+'</div>';
+      const nextText=nextStart!=null?(raining?'Ahora':quickWhen(nextStart)):'Sin lluvia 24 h';
+      const endText=nextEnd!=null?quickWhen(nextEnd):'—';
+      const temp=Number.isFinite(s.temperature)?s.temperature.toFixed(1).replace('.',',')+' °C':'—';
+      left.innerHTML=
+        '<span class="locTitle"><strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>'+temp+'</small></span>'+
+        '<span class="locQuickGrid">'+
+          '<span><small>Ahora</small><b class="'+(nowText==='LLUEVE'?'wet':'')+'">'+nowText+'</b></span>'+
+          '<span><small>Próxima lluvia</small><b>'+nextText+'</b></span>'+
+          '<span><small>Hasta cuándo</small><b>'+endText+'</b></span>'+
+        '</span>';
     }else{
-      left.innerHTML='<strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>No se pudieron actualizar los datos</small>';
-      right.innerHTML='<div class="locNow">—</div>';
+      left.innerHTML='<span class="locTitle"><strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>sin datos</small></span><span class="locQuickGrid"><span><small>Ahora</small><b>—</b></span><span><small>Próxima lluvia</small><b>—</b></span><span><small>Hasta cuándo</small><b>—</b></span></span>';
     }
     left.onclick=()=>setLocation(loc);
     if(!loc.isCurrent){
       const actions=document.createElement('div');actions.className='locActions';
-      const rename=document.createElement('button');rename.className='locAction';rename.textContent='✎ Renombrar';rename.title='Renombrar';
+      const rename=document.createElement('button');rename.className='locAction';rename.textContent='✎';rename.title='Renombrar';
       rename.onclick=e=>{e.stopPropagation();openRenameLocation(loc)};
-      const remove=document.createElement('button');remove.className='locAction danger';remove.textContent='🗑 Eliminar';remove.title='Eliminar';
+      const remove=document.createElement('button');remove.className='locAction danger';remove.textContent='🗑';remove.title='Eliminar';
       remove.onclick=e=>{e.stopPropagation();deleteSavedLocation(loc)};
       actions.append(rename,remove);right.appendChild(actions);
     }
@@ -2661,6 +2650,7 @@ async function renderLocationsSummary(force=false){
   $('locationsUpdated').textContent=fmtTimeSeconds(Date.now());
   state.locationsLoading=false;
 }
+
 function showDetail(){
   state.view='detail';$('detailView').hidden=false;$('locationsView').hidden=true;$('place').hidden=false;$('viewToggle').textContent='☷';
 }
