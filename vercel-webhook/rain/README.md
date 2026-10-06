@@ -1,4 +1,4 @@
-# RainETA v0.17.1
+# RainETA v0.17.2
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,14 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## HASTA LLUVIA continuo y radar visual 4 h v0.17.2
+- Recupera **▶ HASTA LLUVIA** como botón principal también cuando la ETA procede de modelos/consenso.
+- Si hay una ETA dentro de las próximas **4 horas** y existe movimiento radar utilizable, la animación avanza hasta esa hora aunque ya esté fuera del horizonte radar fiable.
+- La animación futura pasa de saltos de 5 minutos a **pasos de 1 minuto** y actualiza las coordenadas de la misma capa radar, reduciendo parpadeos y dando una evolución visual más continua.
+- El slider del radar se amplía hasta **+240 min**. La banda corta permanece en 0–180 min.
+- Fuera del horizonte fiable la imagen se atenúa progresivamente; la ETA deja claro que la hora la decide el consenso/modelos y que la extrapolación radar es solo orientativa.
+- El botón manual ▶ también usa pasos de 1 minuto en el futuro (los fotogramas observados históricos siguen saltando de barrido en barrido).
 
 ## Continuidad visual AHORA → proyección v0.17.1
 - Corrige el salto visual entre el radar real de `AHORA` y `+5 min`.
