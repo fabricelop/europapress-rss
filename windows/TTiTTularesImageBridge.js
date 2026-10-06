@@ -178,7 +178,7 @@ async function openFreshDedicatedConversation(){
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+    try{await cdp.call("Page.navigate",{url:CHAT_ROOT},30000)}catch(e){console.log("BRIDGE PAGE NAVIGATE WARNING :: "+String(e&&e.message||e))}
     await waitComposer(cdp,60000);
     await progress("composer_ready","ChatGPT cargado en la pestaña fija; compositor disponible.");
     // Si ChatGPT restaurase una conversación previa al navegar a raíz, pulsa "Nuevo chat"
@@ -202,7 +202,7 @@ async function openFreshDedicatedConversation(){
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+    try{await cdp.call("Page.navigate",{url:CHAT_ROOT},30000)}catch(e){console.log("BRIDGE PAGE NAVIGATE WARNING :: "+String(e&&e.message||e))}
     await waitComposer(cdp,60000);
     await progress("composer_ready","Pestaña fija recreada; compositor disponible.");
     console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id));
