@@ -28,3 +28,20 @@ test('radar translation and projected arrival',()=>{
  assert.ok(detectNowcastEvent(s,{enterWetFraction:.1,exitWetFraction:.05,minConsecutive:1}));
 });
 test('wetNear distinguishes dry/wet',()=>{const m=mask(20,20,8,8,4,4);assert.equal(wetNear(m,20,20,2,2,1),0);assert.ok(wetNear(m,20,20,9,9,1)>.5)});
+
+test('confidence is capped at long horizons and counts independent families',()=>{
+ const time='2026-10-08T12:00:00Z';
+ const r=buildConsensus({
+   nowMs:Date.parse('2026-10-06T00:00:00Z'),
+   deterministic:[
+     {id:'ifs',family:'ECMWF',weight:1,rows:[{time,precipitation:.5}]},
+     {id:'icon',family:'DWD',weight:1,rows:[{time,precipitation:.5}]}
+   ],
+   ensembles:[
+     {id:'ens',family:'ECMWF',weight:1,rows:[{time,probability:1,median:.5}]},
+     {id:'eps',family:'DWD',weight:1,rows:[{time,probability:1,median:.5}]}
+   ]
+ });
+ assert.equal(r[0].independentFamilyCount,2);
+ assert.ok(r[0].timingConfidence<=.68);
+});
