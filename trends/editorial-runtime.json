@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T07:15:00+02:00",
-  "last_completed_at": "2026-10-06T07:15:40+02:00",
-  "updated_at": "2026-10-06T07:15:40+02:00",
+  "last_started_at": "2026-10-06T07:45:00+02:00",
+  "last_completed_at": "2026-10-06T07:45:30+02:00",
+  "updated_at": "2026-10-06T07:45:30+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -14,7 +14,7 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T071500+0200",
+    "run_id": "tr-chat-20261006T074500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
@@ -22,9 +22,9 @@
     "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T07:15:00+02:00",
-    "updated_at": "2026-10-06T07:15:40+02:00",
-    "finished_at": "2026-10-06T07:15:40+02:00",
+    "started_at": "2026-10-06T07:45:00+02:00",
+    "updated_at": "2026-10-06T07:45:30+02:00",
+    "finished_at": "2026-10-06T07:45:30+02:00",
     "incident_count": 0,
     "incidents": [],
     "summary": {
@@ -49,38 +49,31 @@
       "remates_omitted": 0,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada completada 0/0. Cola y requests sin revisiones activas; no hay rewrite_pending. Radar fresco de 07:11:16. Pendientes: 1 tarjeta vigente (#FelizMartes), ya con remate, archivo e IA válidos. Saneamiento visual disparado; sin ImageGen directo ni despliegues Vercel.",
+    "message": "Pasada completada 0/0. Cola y requests sin revisiones activas; no hay rewrite_pending. Radar fresco de 07:41:26. Pendientes: 1 tarjeta vigente (#FelizMartes), ya con remate e IA válidos. Saneamiento visual disparado; sin ImageGen directo ni despliegues Vercel.",
     "activity": [
       {
-        "at": "2026-10-06T07:15:00+02:00",
+        "at": "2026-10-06T07:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada directa · cola inicial 0"
       },
       {
-        "at": "2026-10-06T07:15:10+02:00",
+        "at": "2026-10-06T07:45:10+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual: trigger persistido en main"
       },
       {
-        "at": "2026-10-06T07:15:20+02:00",
+        "at": "2026-10-06T07:45:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando Pendientes · 1 tarjeta vigente; paquete visual completo"
       },
       {
-        "at": "2026-10-06T07:15:30+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Estado autoritativo verificado · cola 0, requests activos 0, reexplicaciones 0"
-      },
-      {
-        "at": "2026-10-06T07:15:40+02:00",
+        "at": "2026-10-06T07:45:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -112,12 +105,16 @@
       "complete": 1
     },
     "radar": {
-      "captured_at": "2026-10-06T07:11:16+02:00",
-      "queue_updated_at": "2026-10-06T07:11:24+02:00",
+      "captured_at": "2026-10-06T07:41:26+02:00",
+      "queue_updated_at": "2026-10-06T07:41:36+02:00",
       "queue_count": 0,
       "refresh_requested": false,
       "refresh_materialized": false,
-      "new_entries": []
+      "new_entries": [
+        "Sánchez",
+        "CCOO",
+        "Cortes"
+      ]
     }
   },
   "visual_repair": {
