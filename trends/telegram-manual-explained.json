@@ -30712,11 +30712,9 @@
       ],
       "news_disposition": "ignored",
       "news_note": "Reexplicación política actualizada al hecho ya formalizado: elecciones del 29-N publicadas en BOE y continuidad de los decretos de vivienda.",
-      "disable_ai_image": false,
       "ai_image_status": "pending",
-      "ai_image_block_reason": null,
       "image_strategy": null,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "image_failure_reason": null,
       "explanation_group_id": "grp-sanchez-elecciones-29n-20261006",
@@ -30748,9 +30746,28 @@
         }
       ],
       "ai_image_attempt": 0,
-      "explained_at": "2026-10-06T09:20:47.153Z"
+      "explained_at": "2026-10-06T09:20:47.153Z",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/IELSMNQUXBE23EMFTGGPOT63HE.jpg?auth=83959a9052810497401ff24635300a8b8174327d247a040d6b2c2d0d782cc028&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER · 6/10/2026",
+        "source_url": "https://cadenaser.com/nacional/2026/10/06/el-boe-publica-el-decreto-de-disolucion-de-las-cortes-y-la-convocatoria-de-elecciones-para-el-29-de-noviembre-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Sánchez",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://cadenaser.com/resizer/v2/IELSMNQUXBE23EMFTGGPOT63HE.jpg?auth=83959a9052810497401ff24635300a8b8174327d247a040d6b2c2d0d782cc028&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER · 6/10/2026",
+        "source_url": "https://cadenaser.com/nacional/2026/10/06/el-boe-publica-el-decreto-de-disolucion-de-las-cortes-y-la-convocatoria-de-elecciones-para-el-29-de-noviembre-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Sánchez",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-06T09:20:47.153Z",
+  "updated_at": "2026-10-06T09:21:47.063337Z",
   "count": 584
 }
