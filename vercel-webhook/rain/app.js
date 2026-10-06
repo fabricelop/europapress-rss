@@ -2133,22 +2133,31 @@ function showObservedRadar(offsetMinutes){
 function showProjectedRadar(minutes){
   const r=state.data?.radar,latest=state.frames.at(-1),motion=state.nowcast?.motion;
   if(!r||!latest||!state.mapLoaded)return;
-  if(!motion||state.nowcast?.status!=='ok'||Number(state.nowcast?.confidence)<.22){
+  if(!motion||state.nowcast?.status!=='ok'||Number(state.nowcast?.confidence)<.20){
     showObservedRadar(0);
-    $('radarPosition').textContent='Proyección no disponible con suficiente fiabilidad';
-    $('radarMotion').textContent='Se mantiene el último radar observado hasta que el movimiento del eco sea estable.';
+    $('radarPosition').textContent='Proyección radar no fiable';
+    $('radarMotion').textContent='RainETA no prolonga el eco hasta que su evolución sea suficientemente coherente.';
     return;
   }
   clearRadarVisual();
+  const reliable=nowcastReliableHorizon(),within=minutes<=reliable;
   const url=radarTileUrl(r,latest,512,RADAR_ZOOM);
   state.map.addSource('raineta-radar-projection',{type:'image',url,coordinates:projectionCoordinates(minutes)});
   const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
-  state.map.addLayer({id:'raineta-radar-projection',type:'raster',source:'raineta-radar-projection',paint:{'raster-opacity':.76,'raster-fade-duration':0}},before);
-  const speed=Math.round(Number(motion.speedKmh)||0),dir=compassDirection(motion.bearingDegrees);
+  state.map.addLayer({
+    id:'raineta-radar-projection',type:'raster',source:'raineta-radar-projection',
+    paint:{'raster-opacity':within ? .66 : .22,'raster-fade-duration':0}
+  },before);
   const projectedAt=latest.time*1000+minutes*60_000;
   $('radarTime').textContent=fmtTime(projectedAt);
-  $('radarPosition').textContent='Proyección +'+minutes+' min · '+fmtTime(projectedAt);
-  $('radarMotion').textContent='Extrapolación del último eco: desplazamiento de la precipitación '+speed+' km/h'+(dir?' hacia '+dir:'')+' · confianza '+pct(state.nowcast.confidence)+'%. No es una observación futura.';
+  $('radarPosition').textContent=(within?'Radar útil':'Fuera del radar fiable')+' · +'+minutes+' min · '+fmtTime(projectedAt);
+  if(within){
+    const evolution=Number(state.nowcast?.evolution?.score)||0;
+    const shape=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
+    $('radarMotion').textContent='ETA calculada con movimiento local de los ecos · evolución '+shape+' · horizonte radar útil ~'+reliable+' min. El mapa sigue siendo una referencia visual del último eco.';
+  }else{
+    $('radarMotion').textContent='A partir de ~'+reliable+' min RainETA deja de confiar en la extrapolación radar y da el relevo a modelos/consenso. La imagen atenuada es solo una referencia visual.';
+  }
 }
 function showRadarOffset(offset=state.radarOffset){
   state.radarOffset=Math.max(Number($('frame')?.min)||-90,Math.min(120,Number(offset)||0));
