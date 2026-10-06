@@ -789,26 +789,85 @@ function renderConsensusDecision(decision=buildRainDecision()){
   el.textContent=consensusDecisionText(decision);
 }
 
+function operaNowcastInfo(){
+  const opera=state.data?.opera,nowcast=opera?.nowcast;
+  if(!opera?.ok||Number(opera.ageMinutes)>20||nowcast?.status!=='ok'||!Array.isArray(nowcast.series))return null;
+  return nowcast;
+}
+function operaEventCandidate(now=Date.now()){
+  const n=operaNowcastInfo(),e=n?.event;
+  if(!e?.start||Number(n.confidence)<.22)return null;
+  const start=Date.parse(e.start),end=Date.parse(e.end||'');
+  if(!Number.isFinite(start)||!Number.isFinite(end)||end<=now)return null;
+  return{
+    kind:'opera',
+    active:start<=now&&end>now&&currentTruth()!==false,
+    start:e.start,end:e.end,
+    confidence:Number(n.confidence)||0,
+    uncertainty:Number(e.uncertaintyMinutes)||10,
+    event:e,
+    motion:n.motion||null
+  };
+}
+function blendIso(a,b,wa,wb){
+  const ta=Date.parse(a||''),tb=Date.parse(b||'');
+  if(!Number.isFinite(ta))return b||null;
+  if(!Number.isFinite(tb))return a||null;
+  const total=Math.max(.001,wa+wb);
+  return new Date((ta*wa+tb*wb)/total).toISOString();
+}
+function fuseRadarEvents(rv,op,now=Date.now()){
+  if(!rv)return op;
+  if(!op)return rv;
+  const delta=Math.abs(Date.parse(rv.start)-Date.parse(op.start))/60_000;
+  if(delta>30){
+    const winner=(Number(rv.confidence)||0)>=(Number(op.confidence)||0)?rv:op;
+    const alternate=winner===rv?op:rv;
+    return{...winner,disagreementMinutes:Math.round(delta),alternate};
+  }
+  const rw=Math.max(.1,Number(rv.confidence)||0),ow=Math.max(.1,Number(op.confidence)||0);
+  const start=blendIso(rv.start,op.start,rw,ow),end=blendIso(rv.end,op.end,rw,ow);
+  const agreement=Math.max(0,1-delta/30);
+  const confidence=Math.min(.97,.48*rw+.42*ow+.10*agreement);
+  return{
+    kind:'radarFusion',
+    active:Date.parse(start)<=now&&(!end||Date.parse(end)>now),
+    start,end,confidence,
+    uncertainty:Math.max(4,Math.round(((Number(rv.uncertainty)||8)+(Number(op.uncertainty)||10))/2+delta*.25)),
+    event:{start,end},
+    sources:['RainViewer','OPERA'],
+    rainViewer:rv,
+    opera:op,
+    motion:rw>=ow?state.nowcast?.motion:op.motion
+  };
+}
 function radarDryWindow(){
   const n=state.nowcast,now=Date.now();
   if(n?.status!=='ok'||!n.radarTime||!Array.isArray(n.series)||!n.series.length)return null;
   if(currentRainState().raining)return null;
-  const radarMs=Date.parse(n.radarTime),confidence=Number(n.confidence)||0;
+  const radarMs=Date.parse(n.radarTime),radarConfidence=Number(n.confidence)||0;
   if(!Number.isFinite(radarMs)||(now-radarMs)>20*60_000)return null;
-  const event=stabilizedRadarEvent();
+  const event=stabilizedRadarEvent(),operaEvent=operaEventCandidate(now);
   const requiredConfidence=event?.start ? .30 : .48;
-  if(confidence<requiredConfidence)return null;
-  const horizonEnd=radarMs+120*60_000;
-  let endMs=event?.start?Math.min(Date.parse(event.start),horizonEnd):horizonEnd;
+  if(radarConfidence<requiredConfidence)return null;
+  const horizonEnd=radarMs+120*60_000,starts=[];
+  if(event?.start&&Date.parse(event.start)>now)starts.push(Date.parse(event.start));
+  if(operaEvent?.start&&operaEvent.confidence>=.28&&Date.parse(operaEvent.start)>now)starts.push(Date.parse(operaEvent.start));
+  let endMs=starts.length?Math.min(horizonEnd,...starts):horizonEnd;
   if(!Number.isFinite(endMs)||endMs<=now+15*60_000)return null;
   const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH),operaQuality=Number(opera?.sample?.quality);
   const operaDry=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5&&operaRate<.02);
+  const confidence=operaDry&&operaNowcastInfo()
+    ? Math.min(.96,.68*radarConfidence+.32*(Number(opera.nowcast.confidence)||0)+.04)
+    : radarConfidence;
   return{
     start:new Date(Math.max(now,radarMs)).toISOString(),
     end:new Date(endMs).toISOString(),
     confidence,
+    radarConfidence,
     operaDry,
-    fullHorizon:!event?.start||Date.parse(event.start)>=horizonEnd-2*60_000,
+    operaEta:operaEvent?.start||null,
+    fullHorizon:starts.length===0||Math.min(...starts)>=horizonEnd-2*60_000,
     minutes:Math.max(0,Math.round((endMs-now)/60_000))
   };
 }
@@ -861,16 +920,29 @@ function pulseSequenceText(ev){
   return'Después: seco ~'+durationText(current.end,next.start)+' · siguiente pulso '+fmtTime(next.start)+'.';
 }
 function chooseDisplayEvent(){
-  const now=Date.now(),n=state.nowcast,rainNow=currentRainState(),truth=currentTruth();
-  if(n?.status==='ok'&&rainNow.raining){
-    const stabilized=stabilizedRadarEvent();
-    return{kind:truth===true?'observed':'radar',active:true,start:n.radarTime||new Date(now).toISOString(),end:stabilized?.end||n.event?.end||null,confidence:truth===true?1:n.confidence,uncertainty:stabilized?.uncertaintyMinutes||n.event?.uncertaintyMinutes||8,event:stabilized||n.event};
+  const now=Date.now(),n=state.nowcast,rainNow=currentRainState(),truth=currentTruth(),radarEvent=stabilizedRadarEvent();
+  const rv=n?.status==='ok'&&radarEvent&&Number(n.confidence)>=.30&&Date.parse(radarEvent.end||radarEvent.start)>now
+    ? {kind:'radar',active:Date.parse(radarEvent.start)<=now&&truth!==false,start:radarEvent.start,end:radarEvent.end,confidence:Number(n.confidence)||0,uncertainty:radarEvent.uncertaintyMinutes||8,event:radarEvent,motion:n.motion||null}
+    : null;
+  const op=operaEventCandidate(now);
+  if(rainNow.raining){
+    const activeRv=rv?.active?rv:null,activeOp=op?.active?op:null,radarChoice=fuseRadarEvents(activeRv,activeOp,now);
+    if(truth===true){
+      return{kind:'observed',active:true,start:new Date(now).toISOString(),end:radarChoice?.end||null,confidence:1,uncertainty:radarChoice?.uncertainty||8,event:radarChoice?.event||null};
+    }
+    if(radarChoice)return radarChoice;
+    const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH);
+    if(opera?.sample?.ok&&Number(opera.ageMinutes)<=20&&operaRate>=.05){
+      return{kind:'opera',active:true,start:opera.observedAt||new Date(now).toISOString(),end:op?.end||null,confidence:Number(opera.nowcast?.confidence)||.55,uncertainty:op?.uncertainty||12,event:op?.event||null,motion:opera.nowcast?.motion||null};
+    }
+    if(n?.status==='ok'){
+      return{kind:'radar',active:true,start:n.radarTime||new Date(now).toISOString(),end:rv?.end||null,confidence:Number(n.confidence)||.5,uncertainty:rv?.uncertainty||8,event:rv?.event||null,motion:n.motion||null};
+    }
   }
-  const radarEvent=stabilizedRadarEvent();
-  if(n?.status==='ok'&&radarEvent&&n.confidence>=.30&&Date.parse(radarEvent.start)<=now+125*60_000){
-    const active=Date.parse(radarEvent.start)<=now&&truth!==false;
-    return{kind:'radar',active,start:radarEvent.start,end:radarEvent.end,confidence:n.confidence,uncertainty:radarEvent.uncertaintyMinutes,event:radarEvent};
-  }
+  const futureRv=rv&&Date.parse(rv.start)<=now+125*60_000?rv:null;
+  const futureOp=op&&Date.parse(op.start)<=now+125*60_000?op:null;
+  const radarChoice=fuseRadarEvents(futureRv,futureOp,now);
+  if(radarChoice)return radarChoice;
   return chooseModelEvent(now,radarDryWindow());
 }
 function buildRainDecision(){
@@ -928,7 +1000,7 @@ function recordRainDecisionSnapshot(decision=buildRainDecision()){
   try{localStorage.setItem(key,JSON.stringify(rows))}catch{}
 }
 function uncertaintyText(ev){
-  if(ev.kind==='radar')return'± '+ev.uncertainty+' min';
+  if(['radar','opera','radarFusion'].includes(ev.kind))return'± '+ev.uncertainty+' min';
   const e=ev.event;
   if(e?.startWindow?.earliest&&e?.startWindow?.latest)return fmtTime(e.startWindow.earliest)+'–'+fmtTime(e.startWindow.latest);
   return ev.kind==='model15'?'resolución 15 min':'resolución horaria';
