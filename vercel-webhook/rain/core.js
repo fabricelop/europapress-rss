@@ -170,9 +170,12 @@ function findBoundaryWindow(points,index,direction,low=0.22,high=0.66){
   return {earliest:points[earliestIndex]?.time??start,latest:points[latestIndex]?.time??start};
 }
 
-export function detectRainEvents(points=[],{minimumProbability=0.45}={}){
+export function detectRainEvents(points=[],{minimumProbability=0.45,minimumExpected=0.03,strongProbability=0.65,heavyExpected=0.25}={}){
   if(!points.length) return [];
-  const wet=bridgeSingleHourGaps(points.map(point=>point.probability>=minimumProbability||point.expectedPrecipitation>=WET_THRESHOLD_MM));
+  const wet=bridgeSingleHourGaps(points.map(point=>{
+    const probability=Number(point.probability)||0,expected=Number(point.expectedPrecipitation)||0;
+    return (probability>=minimumProbability&&expected>=minimumExpected)||probability>=strongProbability||expected>=heavyExpected;
+  }));
   const events=[];let i=0;
   while(i<points.length){
     if(!wet[i]){i++;continue}

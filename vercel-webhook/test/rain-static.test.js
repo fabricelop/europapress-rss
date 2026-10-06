@@ -45,3 +45,16 @@ test('confidence is capped at long horizons and counts independent families',()=
  assert.equal(r[0].independentFamilyCount,2);
  assert.ok(r[0].timingConfidence<=.68);
 });
+
+test('marginal probabilities do not become continuous rain',()=>{
+  const base=Date.parse('2026-10-06T10:00:00Z');
+  const points=Array.from({length:12},(_,i)=>({
+    time:new Date(base+i*3600e3).toISOString(),
+    probability:.38,
+    expectedPrecipitation:.04,
+    timingConfidence:.6,
+    providerCount:8,
+    independentFamilyCount:6
+  }));
+  assert.equal(detectRainEvents(points).length,0);
+});
