@@ -1,5 +1,5 @@
-const CACHE='raineta-v8';
-const ASSETS=['/rain/','/rain/index.html','/rain/app.js?v=0.6.0','/rain/core.js','/rain/radar-core.js','/rain/manifest.webmanifest','/rain/icon.svg'];
+const CACHE='raineta-v9';
+const ASSETS=['/rain/','/rain/index.html','/rain/app.js?v=0.6.1','/rain/core.js','/rain/radar-core.js','/rain/manifest.webmanifest','/rain/icon.svg'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(
@@ -15,10 +15,6 @@ self.addEventListener('activate',event=>{
     const keys=await caches.keys();
     await Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)));
     await self.clients.claim();
-    const windows=await self.clients.matchAll({type:'window'});
-    for(const client of windows){
-      try{await client.navigate(client.url)}catch{}
-    }
   })());
 });
 
