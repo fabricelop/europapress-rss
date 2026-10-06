@@ -1,4 +1,4 @@
-# RainETA v0.5
+# RainETA v0.6
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -49,6 +49,15 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - RainETA muestra la versión visible en cabecera para poder comprobar inmediatamente qué build está ejecutando el móvil.
 - Autoevaluación radar: cada barrido posterior comprueba previsiones anteriores a 15/30/60/90 min; el histórico local se usa para calibrar gradualmente la confianza cuando ya hay muestra suficiente.
 
+## Interfaz v0.6
+- Código de color más contrastado y coherente en 0–120 min y 72 h.
+- Regla visual única: **color = probabilidad de lluvia** y **altura = intensidad prevista (mm/h)**.
+- Eje de 72 h simplificado a horas sin minutos para evitar solapamientos.
+- Temperatura actual más visible.
+- Confirmación clara de feedback GPS: botón seleccionado, hora exacta y texto “registrado”.
+- Lugares guardados: renombrar y eliminar desde “Mis lugares”.
+- Mapa base OpenFreeMap/MapLibre, sin API key ni marca de agua “API key required”.
+
 ## Radar
 RainViewer aporta los últimos barridos. RainETA descarga una imagen centrada en la ubicación, genera una máscara de precipitación en el dispositivo, calcula traslación entre barridos y proyecta el píxel de la ubicación cada 5 minutos hasta 120 minutos.
 
@@ -60,7 +69,7 @@ RainETA no añade ninguna Serverless Function al proyecto Vercel. Las consultas 
 ## Fuentes
 - Open-Meteo Forecast / Ensemble / Geocoding.
 - RainViewer Weather Maps API.
-- CARTO para mapa base, con datos © OpenStreetMap contributors.
+- OpenFreeMap/MapLibre para mapa base, con datos © OpenStreetMap contributors y sin API key.
 
 AEMET OpenData queda como futura capa adicional. Requiere API key y no se embebe una clave privada en una PWA pública. El radar español ya participa indirectamente cuando está incluido por el agregador de radar utilizado, pero RainETA no lo presenta como una conexión AEMET directa mientras no exista esa integración.
 
