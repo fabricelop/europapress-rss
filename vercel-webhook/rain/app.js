@@ -713,7 +713,7 @@ function renderRadarSkill(){
   }
   if(episodeStats.count){
     text+=' · finales de episodio: '+episodeStats.count+' corrección'+(episodeStats.count===1?'':'es');
-    if(episodeStats.bias>0)text+=' · ajuste local '+Math.round(episodeStats.bias)+' min antes';
+    if(episodeStats.bias>0)text+=' · sesgo observado '+Math.round(episodeStats.bias)+' min antes';
   }
   $('skillText').textContent=text;
 }
@@ -1211,7 +1211,7 @@ function feedbackEpisodeCorrection(now=Date.now()){
   return{mode:'pause_unresolved',episode,resumeAt:null,confidence:Math.max(.25,episode.confidence*.65),observedEnd:Number(feedback.time),dryAgeMinutes,streak,dry,nextWet:null};
 }
 function nextModelEventAfter(minStartMs){
-  const bias=episodeEndBiasMinutes();
+  const bias=0;
   for(const raw of state.data?.events||[]){
     const start=Date.parse(raw.start),end=Date.parse(raw.end);
     if(!Number.isFinite(start)||!Number.isFinite(end)||start<minStartMs||end<=start)continue;
@@ -1273,7 +1273,7 @@ function chooseModelEvent(now,dry){
         start=dryEnd;radarDelayed=true;
       }
     }
-    const endBias=episodeEndBiasMinutes();
+    const endBias=0;
     if(endBias>0&&e.quarterHourRefined!==true)end=Math.max(start+15*60_000,end-endBias*60_000);
     if(start>=end)continue;
     const active=start<=now&&end>now&&currentTruth()!==false;
