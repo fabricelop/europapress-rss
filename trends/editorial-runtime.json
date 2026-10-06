@@ -1,11 +1,13 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T11:15:00.000Z",
-  "last_completed_at": "2026-10-06T11:19:00.000Z",
-  "updated_at": "2026-10-06T11:19:00.000Z",
+  "last_started_at": "2026-10-06T11:45:00.000Z",
+  "last_completed_at": "2026-10-06T11:57:00.000Z",
+  "updated_at": "2026-10-06T11:57:00.000Z",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "055fc118dcee"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -14,24 +16,24 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T111500Z",
+    "run_id": "tr-chat-20261006T114500Z",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "current": 0,
-    "total": 0,
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T11:15:00.000Z",
-    "updated_at": "2026-10-06T11:19:00.000Z",
-    "finished_at": "2026-10-06T11:19:00.000Z",
+    "started_at": "2026-10-06T11:45:00.000Z",
+    "updated_at": "2026-10-06T11:57:00.000Z",
+    "finished_at": "2026-10-06T11:57:00.000Z",
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -44,45 +46,161 @@
       "fallback_images_ready": 0,
       "visual_jobs_queued": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
       "pending_repair_triggered": 1,
       "pending_repair_examined": 0
     },
-    "message": "Pasada completada con cola editorial vacía. Saneamiento visual ejecutado correctamente: 0 Pendientes elegibles y 0 jobs IA nuevos.",
+    "message": "Pasada completada · #Mañaneros6O explicada y verificada · cola editorial 0.",
     "activity": [
       {
-        "at": "2026-10-06T11:15:00.000Z",
+        "at": "2026-10-06T11:45:00.000Z",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada directa · cola editorial 0 · revisando Pendientes y saneamiento visual"
+        "trend_id": "055fc118dcee",
+        "title": "#Mañaneros6O",
+        "message": "Iniciando pasada directa · 1 tendencia activa · releyendo estado autoritativo de #Mañaneros6O"
       },
       {
-        "at": "2026-10-06T11:17:05.000Z",
+        "at": "2026-10-06T11:47:00.000Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual activado · workflow de reparación detectado"
+        "trend_id": "055fc118dcee",
+        "title": "#Mañaneros6O",
+        "message": "Releyendo estado autoritativo de #Mañaneros6O"
       },
       {
-        "at": "2026-10-06T11:18:11.000Z",
+        "at": "2026-10-06T11:49:00.000Z",
+        "phase": "investigating",
+        "trend_id": "055fc118dcee",
+        "title": "#Mañaneros6O",
+        "message": "Hecho esencial verificado · emisión de hoy de Mañaneros 360 en La 1"
+      },
+      {
+        "at": "2026-10-06T11:50:00.000Z",
+        "phase": "drafting",
+        "trend_id": "055fc118dcee",
+        "title": "#Mañaneros6O",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-06T11:51:00.000Z",
+        "phase": "drafting",
+        "trend_id": "055fc118dcee",
+        "title": "#Mañaneros6O",
+        "message": "Comprobando límite de X · texto final dentro de 279 caracteres"
+      },
+      {
+        "at": "2026-10-06T11:52:00.000Z",
+        "phase": "remate_selection",
+        "trend_id": "055fc118dcee",
+        "title": "#Mañaneros6O",
+        "message": "5 candidatos evaluados con ratings · remate seleccionado"
+      },
+      {
+        "at": "2026-10-06T11:53:00.000Z",
+        "phase": "persisting",
+        "trend_id": "055fc118dcee",
+        "title": "#Mañaneros6O",
+        "message": "Guardando ficha Explicada mediante outbox directo de chat"
+      },
+      {
+        "at": "2026-10-06T11:56:37.000Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual verificado · 0 Pendientes elegibles · 0 jobs IA nuevos"
+        "trend_id": "055fc118dcee",
+        "title": "#Mañaneros6O",
+        "message": "Releyendo main · commit editorial aplicado"
       },
       {
-        "at": "2026-10-06T11:19:00.000Z",
+        "at": "2026-10-06T11:56:45.000Z",
+        "phase": "verifying",
+        "trend_id": "055fc118dcee",
+        "title": "#Mañaneros6O",
+        "message": "Verificando id+revision y texto persistido · requests y Explicadas coinciden"
+      },
+      {
+        "at": "2026-10-06T11:56:50.000Z",
+        "phase": "verifying",
+        "trend_id": "055fc118dcee",
+        "title": "#Mañaneros6O",
+        "message": "Tendencia cerrada y verificada · cola editorial 0"
+      },
+      {
+        "at": "2026-10-06T11:57:00.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · cola editorial 0 · saneamiento visual correcto"
+        "message": "Pasada cerrada · 1 tendencia explicada · cola editorial 0"
       }
     ],
-    "ratings_snapshot": null,
-    "remate_selections": [],
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
+      "updated_at": "2026-10-04T17:29:26.880Z",
+      "total_ratings": 153,
+      "recent_considered": 100
+    },
+    "remate_selections": [
+      {
+        "trend_id": "055fc118dcee",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.1,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
+            "total": 7,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.3
+          },
+          {
+            "id": "c3",
+            "total": 7.6,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c4",
+            "total": 7.2,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c5",
+            "total": 6.5,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.5,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.3
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.1,
+        "no_remate_reason": null
+      }
+    ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
@@ -91,9 +209,11 @@
       "persisted_trigger": true,
       "status": "completed_success",
       "phase": "verified",
-      "command_id": "tr-chat-20261006T111500Z",
+      "command_id": "tr-chat-20261006T114500Z",
       "direct_imagegen": false,
-      "workflow_run_id": 37455369935
+      "workflow_run_id": 37458678708,
+      "post_explained_repair_run_id": 37459788196,
+      "post_explained_repair_status": "in_progress"
     }
   },
   "visual_repair": {
@@ -101,9 +221,11 @@
     "persisted_trigger": true,
     "status": "completed_success",
     "phase": "verified",
-    "command_id": "tr-chat-20261006T111500Z",
+    "command_id": "tr-chat-20261006T114500Z",
     "direct_imagegen": false,
-    "workflow_run_id": 37455369935
+    "workflow_run_id": 37458678708,
+    "post_explained_repair_run_id": 37459788196,
+    "post_explained_repair_status": "in_progress"
   },
   "error": null
 }
