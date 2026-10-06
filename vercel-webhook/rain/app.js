@@ -2177,13 +2177,15 @@ function radarArrivalTarget(){
   if(!latest||!ev?.start)return{status:'no_eta',event:ev||null};
   const baseMs=Number(latest.time)*1000,startMs=Date.parse(ev.start);
   if(!Number.isFinite(baseMs)||!Number.isFinite(startMs))return{status:'no_eta',event:ev};
-  const rawMinutes=(startMs-baseMs)/60_000;
-  if(decision?.mode==='possible_now'&&(ev.active||rawMinutes<=2.5))return{status:'signal_now',target:0,event:ev,rawMinutes};
-  if(ev.active||rawMinutes<=2.5)return{status:'now',target:0,event:ev,rawMinutes};
-  if(rawMinutes>120)return{status:'later',event:ev,rawMinutes};
-  const canProject=state.nowcast?.status==='ok'&&state.nowcast?.motion&&Number(state.nowcast?.confidence)>=.22;
-  if(!canProject)return{status:'no_projection',event:ev,rawMinutes};
-  return{status:'ready',target:Math.max(0,Math.min(120,Math.ceil(rawMinutes/5)*5)),event:ev,rawMinutes};
+  const rawMinutes=(startMs-baseMs)/60_000,reliable=nowcastReliableHorizon();
+  if(decision?.mode==='possible_now'&&(ev.active||rawMinutes<=2.5))return{status:'signal_now',target:0,event:ev,rawMinutes,reliable};
+  if(ev.active||rawMinutes<=2.5)return{status:'now',target:0,event:ev,rawMinutes,reliable};
+  if(rawMinutes>120)return{status:'later',event:ev,rawMinutes,reliable};
+  const radarDriven=['radar','opera','radarFusion'].includes(ev.kind);
+  if(!radarDriven||rawMinutes>reliable)return{status:'model_handoff',event:ev,rawMinutes,reliable};
+  const canProject=state.nowcast?.status==='ok'&&state.nowcast?.motion&&Number(state.nowcast?.confidence)>=.20;
+  if(!canProject)return{status:'no_projection',event:ev,rawMinutes,reliable};
+  return{status:'ready',target:Math.max(0,Math.min(reliable,Math.ceil(rawMinutes/5)*5)),event:ev,rawMinutes,reliable};
 }
 function stopRadarPlayback(){
   if(state.playTimer){clearInterval(state.playTimer);state.playTimer=null}
