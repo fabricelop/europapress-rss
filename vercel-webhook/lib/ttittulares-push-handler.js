@@ -1,4 +1,4 @@
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,nowcastUncertaintyMinutes,valueNear} from "../rain/radar-core.js";
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,nowcastUncertaintyMinutes} from "../rain/radar-core.js";
 const S3='https://s3.waw3-1.cloudferro.com/openradar-24h';
 
 function floor5(date){
