@@ -31022,11 +31022,11 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selected_tweet_image": null,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image": {
@@ -31038,15 +31038,54 @@
         "generated": false
       },
       "image": {
-        "url": "https://img.rtve.es/imagenes/independentismo-victoria-rotunda-puigdemont-volver-espana/01791285648412.jpg",
-        "source": "RTVE · 6/10/2026",
-        "source_url": "https://www.rtve.es/noticias/20261006/independentismo-victoria-rotunda-puigdemont-volver-espana/17255210.shtml",
-        "alt": "Imagen de archivo relacionada con Puigdemont",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/15a8bb795fe3-r1-ai2-791296378239.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "sha256": "a4ce8948f358df4b18df40dd1ab6c7aba941b3e9c208b7a71f25af1ebf997d6e",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 675463,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "15a8bb795fe3",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-15a8bb795fe3-r1-a2-1791296378239"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/15a8bb795fe3-r1-ai2-791296378239.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/15a8bb795fe3-r1-ai2-791296378239.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "sha256": "a4ce8948f358df4b18df40dd1ab6c7aba941b3e9c208b7a71f25af1ebf997d6e",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 675463,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "15a8bb795fe3",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-15a8bb795fe3-r1-a2-1791296378239"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/15a8bb795fe3-r1-ai2-791296378239.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 2,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T14:21:09.492Z"
     }
   ],
-  "updated_at": "2026-10-06T13:55:49.411024Z",
+  "updated_at": "2026-10-06T14:21:09.492Z",
   "count": 587
 }
