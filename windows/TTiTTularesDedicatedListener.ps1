@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-05-v34-safe-image-lock-recovery
+# official-pipeline-restart-token: 2026-10-06-v35-cdp-renderer-auto-recovery
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -9,6 +9,7 @@ $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
 $Runner = Join-Path $BaseDir "Ejecutar.js"
 $ImageBridge = Join-Path $BaseDir "TTiTTularesImageBridge.js"
 $ImageBridgeLockPath = Join-Path $BaseDir "ttittulares-image-bridge.lock.json"
+$OtherImageBridgeLockPath = Join-Path $BaseDir "ttendencias-image-bridge.lock.json"
 $StatePath = Join-Path $BaseDir "ttittulares-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $WatchdogPath = Join-Path $BaseDir "TT-LocalWatchdog.ps1"
@@ -25,7 +26,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v34"
+$WorkerId = "ttittulares-dedicated-v35"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -203,6 +204,8 @@ function Load-State {
     conflict_first_at = ""
     image_commands = @()
     active_image_commands = @()
+    last_chrome_recovery_command_id = ""
+    last_chrome_recovery_at = ""
   }
 }
 
@@ -211,7 +214,7 @@ function Save-State($State) {
 }
 
 function Ensure-StateFields($State) {
-  foreach ($n in @("last_command_id","conflict_command_id","conflict_first_at")) {
+  foreach ($n in @("last_command_id","conflict_command_id","conflict_first_at","last_chrome_recovery_command_id","last_chrome_recovery_at")) {
     if (-not ($State.PSObject.Properties.Name -contains $n)) {
       $State | Add-Member -NotePropertyName $n -NotePropertyValue "" -Force
     }
@@ -344,6 +347,89 @@ function Test-ImageBridgeBusy {
     }
   } catch {}
   Remove-Item -LiteralPath $ImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+  return $false
+}
+
+function Test-OtherImageBridgeBusy {
+  if (-not (Test-Path -LiteralPath $OtherImageBridgeLockPath)) { return $false }
+  try {
+    $lock = Get-Content -LiteralPath $OtherImageBridgeLockPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $pidValue = [int]$lock.pid
+    if($pidValue -gt 0 -and (Get-Process -Id $pidValue -ErrorAction SilentlyContinue)){ return $true }
+  } catch {}
+  Remove-Item -LiteralPath $OtherImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+  return $false
+}
+
+function Restart-DedicatedChromeCdp([string]$CommandId,[string]$Reason) {
+  if(Test-OtherImageBridgeBusy){
+    Write-Log "CHROME CDP RECOVERY DEFERRED command=$CommandId reason=ttendencias-image-active"
+    return $false
+  }
+  Write-Log "CHROME CDP RECOVERY START command=$CommandId reason=$Reason"
+  try {
+    $roots=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
+      ($_.Name -ieq "chrome.exe" -or $_.Name -ieq "msedge.exe") -and
+      [string]$_.CommandLine -match '--remote-debugging-port(?:=|\s+)9223(?:\s|$)'
+    })
+    foreach($p in $roots){
+      try{& taskkill.exe /PID $p.ProcessId /T /F 1>$null 2>$null}catch{}
+    }
+    Start-Sleep -Seconds 2
+    & schtasks.exe /Run /TN "TT Chrome Auto" 1>$null 2>$null
+    $deadline=(Get-Date).AddSeconds(25)
+    while((Get-Date) -lt $deadline){
+      try{
+        $v=Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/version" -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 3
+        if($v.webSocketDebuggerUrl){
+          Write-Log "CHROME CDP RECOVERY OK command=$CommandId killed=$($roots.Count)"
+          return $true
+        }
+      }catch{}
+      Start-Sleep -Seconds 1
+    }
+    Write-Log "CHROME CDP RECOVERY FAILED command=$CommandId reason=endpoint-not-ready"
+  } catch {
+    Write-Log "CHROME CDP RECOVERY ERROR command=$CommandId :: $($_.Exception.Message)"
+  }
+  return $false
+}
+
+function Recover-ChromeCdpFromRecentImageFailure($State,$Index) {
+  if(-not $Index -or -not $Index.jobs){ return $false }
+  $jobs=@($Index.jobs | Select-Object -Last 10)
+  [array]::Reverse($jobs)
+  foreach($j in $jobs){
+    $target=[string]$j.target_id
+    $command=[string]$j.command_id
+    if(-not $target -or -not $command){ continue }
+    $doc=Read-ImageJob $target
+    if(-not $doc -or [string]$doc.command_id -ne $command){ continue }
+    if(([string]$doc.status).ToUpperInvariant() -ne "ERROR"){ continue }
+    $reason=[string]$doc.message
+    if($reason -notmatch 'CDP timeout (Runtime\.evaluate|Page\.navigate)|no mostró compositor|no mostro compositor'){ continue }
+    $recent=$false
+    try{
+      $at=[DateTimeOffset]::Parse([string]$doc.updated_at)
+      $recent=(([DateTimeOffset]::UtcNow-$at).TotalMinutes -le 15)
+    }catch{}
+    if(-not $recent){ continue }
+    if([string]$State.last_chrome_recovery_command_id -eq $command){
+      try{
+        $last=[DateTimeOffset]::Parse([string]$State.last_chrome_recovery_at)
+        if(([DateTimeOffset]::UtcNow-$last).TotalMinutes -lt 15){ return $false }
+      }catch{}
+    }
+    if(Test-OtherImageBridgeBusy){
+      Write-Log "CHROME CDP RECOVERY WAIT command=$command reason=ttendencias-image-active"
+      return $false
+    }
+    $ok=Restart-DedicatedChromeCdp $command $reason
+    $State.last_chrome_recovery_command_id=$command
+    $State.last_chrome_recovery_at=[DateTimeOffset]::UtcNow.ToString("o")
+    Save-State $State
+    return $ok
+  }
   return $false
 }
 
@@ -916,6 +1002,10 @@ while ($true) {
     Refresh-ActiveImages $state $idx
     Save-State $state
     $localBridgeBusy=Test-ImageBridgeBusy
+    if(-not $localBridgeBusy){
+      [void](Recover-ChromeCdpFromRecentImageFailure $state $idx)
+      $localBridgeBusy=Test-ImageBridgeBusy
+    }
     $slots=if($localBridgeBusy){0}else{[Math]::Max(0,$MaxParallelImageChats-@($state.active_image_commands).Count)}
     if($slots -gt 0 -and $CustomMessageSupport){
       $jobs=@();if($idx -and $idx.jobs){$jobs=@($idx.jobs)}
