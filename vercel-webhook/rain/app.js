@@ -2244,15 +2244,10 @@ function showObservedRadar(offsetMinutes){
 function showProjectedRadar(minutes){
   const r=state.data?.radar,latest=state.frames.at(-1),motion=state.nowcast?.motion;
   if(!r||!latest||!state.mapLoaded)return;
-  if(!motion||state.nowcast?.status!=='ok'||Number(state.nowcast?.confidence)<.20){
-    showObservedRadar(0);
-    $('radarPosition').textContent='Proyección radar no fiable';
-    $('radarMotion').textContent='RainETA no prolonga el eco hasta que su evolución sea suficientemente coherente.';
-    return;
-  }
+  const canMove=state.nowcast?.status==='ok'&&motion&&Number(state.nowcast?.confidence)>=.20;
   removeRadarLayer('raineta-radar');
-  const reliable=nowcastReliableHorizon(),within=minutes<=reliable;
-  const url=radarDisplayImageUrl(r,latest,512,RADAR_ZOOM),coordinates=projectionCoordinates(minutes);
+  const reliable=nowcastReliableHorizon(),within=canMove&&minutes<=reliable;
+  const url=radarDisplayImageUrl(r,latest,512,RADAR_ZOOM),coordinates=projectionCoordinates(canMove?minutes:0);
   const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
   let source=state.map.getSource('raineta-radar-projection');
   const imageKey=latest.path;
@@ -2272,13 +2267,18 @@ function showProjectedRadar(minutes){
   if(state.map.getLayer('raineta-radar-projection'))state.map.setPaintProperty('raineta-radar-projection','raster-opacity',opacity);
   const projectedAt=latest.time*1000+minutes*60_000;
   $('radarTime').textContent=fmtTime(projectedAt);
-  $('radarPosition').textContent=(within?'Radar útil':'Proyección orientativa')+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-  if(within){
-    const evolution=Number(state.nowcast?.evolution?.score)||0;
-    const shape=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
-    $('radarMotion').textContent='Proyección continua del radar observado · evolución '+shape+' · horizonte radar útil ~'+reliable+' min.';
+  if(canMove){
+    $('radarPosition').textContent=(within?'Radar útil':'Proyección orientativa')+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+    if(within){
+      const evolution=Number(state.nowcast?.evolution?.score)||0;
+      const shape=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
+      $('radarMotion').textContent='Proyección continua del radar observado · evolución '+shape+' · horizonte radar útil ~'+reliable+' min.';
+    }else{
+      $('radarMotion').textContent='Fuera del horizonte fiable (~'+reliable+' min), la imagen sigue avanzando solo como referencia visual; la ETA y la decisión pasan a modelos/consenso.';
+    }
   }else{
-    $('radarMotion').textContent='Fuera del horizonte fiable (~'+reliable+' min), la imagen sigue avanzando solo como referencia visual; la ETA y la decisión pasan a modelos/consenso.';
+    $('radarPosition').textContent='Referencia visual orientativa · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+    $('radarMotion').textContent='Sin movimiento radar suficientemente fiable: se conserva el último radar como referencia visual atenuada mientras la ETA y la decisión proceden de modelos/consenso.';
   }
 }
 function showRadarOffset(offset=state.radarOffset){
@@ -2303,14 +2303,15 @@ function radarArrivalTarget(){
   if(decision?.mode==='possible_now'&&(ev.active||rawMinutes<=2.5))return{status:'signal_now',target:0,event:ev,rawMinutes,reliable};
   if(ev.active||rawMinutes<=2.5)return{status:'now',target:0,event:ev,rawMinutes,reliable};
   if(rawMinutes>RADAR_VISUAL_HORIZON_MINUTES)return{status:'later',event:ev,rawMinutes,reliable};
-  const canProject=state.nowcast?.status==='ok'&&state.nowcast?.motion&&Number(state.nowcast?.confidence)>=.20;
-  if(!canProject)return{status:'no_projection',event:ev,rawMinutes,reliable};
   const radarDriven=['radar','opera','radarFusion'].includes(ev.kind);
-  const modelBased=!radarDriven||rawMinutes>reliable;
+  const canProject=state.nowcast?.status==='ok'&&state.nowcast?.motion&&Number(state.nowcast?.confidence)>=.20;
+  const sourceType=radarDriven&&rawMinutes<=reliable?'radar':radarDriven?'radar+modelos':'modelos';
   return{
-    status:modelBased?'ready_model':'ready',
-    target:Math.max(0,Math.min(RADAR_VISUAL_HORIZON_MINUTES,Math.ceil(rawMinutes))),
-    event:ev,rawMinutes,reliable,modelBased
+    status:'ready',
+    target:Math.max(0,Math.min(RADAR_VISUAL_HORIZON_MINUTES,rawMinutes)),
+    event:ev,rawMinutes,reliable,sourceType,
+    modelBased:sourceType!=='radar',
+    canProject
   };
 }
 function stopRadarPlayback(){
@@ -2326,30 +2327,33 @@ function updateRadarArrivalButton(){
   const button=$('radarArrival');if(!button||state.playMode==='arrival')return;
   const target=radarArrivalTarget();
   button.classList.remove('running');
-  if(target.status==='ready'||target.status==='ready_model'){
+  if(target.status==='ready'){
     button.disabled=false;button.textContent='▶ HASTA LLUVIA';
-    button.title=target.status==='ready_model'
-      ? 'Avanza hasta la ETA del consenso/modelos; fuera del radar fiable la imagen es orientativa'
-      : 'Avanza el radar hasta la ETA de lluvia';
+    button.title=target.sourceType==='radar'
+      ? 'Avanza hasta la ETA respaldada por radar'
+      : 'Avanza hasta la ETA del consenso/modelos; fuera del radar fiable la imagen es orientativa';
   }else if(target.status==='signal_now'){
     button.disabled=false;button.textContent='● SEÑAL RADAR AHORA';button.title='';
   }else if(target.status==='now'){
     button.disabled=false;button.textContent='● LLUVIA AHORA';button.title='';
   }else if(target.status==='later'){
     button.disabled=true;button.textContent='ETA > 4 H';button.title='';
-  }else if(target.status==='no_projection'){
-    button.disabled=true;button.textContent='SIN PROYECCIÓN';button.title='';
   }else{
     button.disabled=true;button.textContent='SIN ETA';button.title='';
   }
 }
 function markRadarArrival(target){
   const ev=target?.event;if(!ev)return;
-  const source=radarArrivalSource(ev);
-  $('radarPosition').textContent='Llegada estimada · '+fmtTime(ev.start)+' · +'+target.target+' min';
-  $('radarMotion').textContent=target.modelBased
-    ? 'RainETA se detiene en la ETA de '+source+' ('+fmtTime(ev.start)+'). Desde ~'+target.reliable+' min la imagen radar es solo referencia visual; la hora la decide el consenso.'
-    : 'RainETA se detiene aquí: '+source+' sitúa el inicio de la lluvia sobre tu ubicación alrededor de '+fmtTime(ev.start)+(ev.uncertainty?' · '+uncertaintyText(ev):'')+'.';
+  const source=target.sourceType==='radar+modelos'?'radar + modelos':radarArrivalSource(ev);
+  $('radarPosition').textContent='Llegada estimada · '+fmtTime(ev.start)+' · +'+Math.round(target.target)+' min';
+  if(target.sourceType==='radar'){
+    $('radarMotion').textContent='RainETA se detiene aquí: '+source+' sitúa el inicio de la lluvia sobre tu ubicación alrededor de '+fmtTime(ev.start)+(ev.uncertainty?' · '+uncertaintyText(ev):'')+'.';
+  }else{
+    const visual=target.canProject
+      ? 'La proyección visual es orientativa fuera del horizonte fiable.'
+      : 'Sin movimiento radar fiable, el último radar se mantiene atenuado solo como referencia visual orientativa.';
+    $('radarMotion').textContent='RainETA se detiene en la ETA de '+source+' ('+fmtTime(ev.start)+'). '+visual+' La hora y la decisión las fija el consenso/modelos.';
+  }
 }
 function playRadarUntilRain(){
   const target=radarArrivalTarget(),slider=$('frame'),button=$('radarArrival');
@@ -2362,10 +2366,9 @@ function playRadarUntilRain(){
       : 'La lluvia ya está en tu ubicación';
     return;
   }
-  if(target.status!=='ready'&&target.status!=='ready_model'){
+  if(target.status!=='ready'){
     updateRadarArrivalButton();
     if(target.status==='later')$('radarPosition').textContent='La llegada prevista queda fuera de las próximas 4 h';
-    else if(target.status==='no_projection')$('radarPosition').textContent='Hay ETA, pero no hay movimiento radar suficiente para animarla';
     else $('radarPosition').textContent='Todavía no hay una ETA de lluvia que pueda mostrarse en el radar';
     return;
   }
@@ -2375,8 +2378,7 @@ function playRadarUntilRain(){
   slider.value=String(current);showRadarOffset(current);
   state.playMode='arrival';
   button.disabled=false;button.classList.add('running');button.textContent='❚❚ HASTA LLUVIA';
-  const remaining=Math.max(1,target.target-current);
-  const tickMs=Math.max(55,Math.min(150,9000/remaining));
+  const tickMs=100;
   state.playTimer=setInterval(()=>{
     const currentOffset=Number(slider.value)||0;
     const next=Math.min(target.target,currentOffset+1);
