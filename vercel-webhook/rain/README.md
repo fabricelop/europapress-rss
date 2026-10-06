@@ -1,4 +1,4 @@
-# RainETA v0.15.3
+# RainETA v0.15.4
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,16 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Resumen limpio y sincronización canónica v0.15.4
+- En estado seco se elimina el párrafo largo redundante de la cabecera: queda un único resumen compacto de fuentes y decisión.
+- `OPERA` se presenta al usuario como **Radar europeo**; el nombre técnico EUMETNET OPERA permanece en Fuentes y modelos.
+- La ETA canónica deja de moverse con el historial guardado en cada navegador. Los barridos anteriores solo sirven como diagnóstico de variación, no para cambiar la hora principal.
+- Cuando RainViewer y el radar europeo discrepan mucho, la fuente se elige por la confianza del dato actual, no por un marcador aprendido localmente.
+- El aprendizaje local sigue registrándose y mostrándose, pero no modifica por sí solo la previsión canónica hasta disponer de sincronización entre dispositivos.
+- Radar, radar europeo y guía de 15 min se refrescan juntos cada 5 min, alineados a los mismos límites del reloj. Al volver a una pestaña se actualizan si llevan más de 90 s sin refrescar.
+- Si se abre la app con una caché de previsión lenta, los datos vivos se actualizan antes de renderizar cuando esa caché tiene más de 90 s.
+- Para reducir diferencias de GPS entre dispositivos, las fuentes meteorológicas usan un punto de cálculo común redondeado a ~0,001°; el mapa conserva la ubicación real.
 
 ## Coherencia entre dispositivos y detalle adaptativo v0.15.3
 - El feedback `No llueve` solo modifica visualmente el estado durante unos minutos; después la decisión vuelve al cálculo canónico compartido por radar/OPERA/modelos, reduciendo divergencias entre móvil y web.
