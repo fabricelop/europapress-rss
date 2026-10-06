@@ -1,4 +1,4 @@
-# RainETA v0.10
+# RainETA v0.11
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -94,13 +94,20 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Episodios previstos muestra una tabla horaria legible con columnas Hora / Tiempo / Prob. / Intens.
 - “Tormenta” deja de sustituir a la intensidad de precipitación: la fila puede mostrar, por ejemplo, `Llovizna` y debajo `Tormenta prevista`.
 
+## Episodios semánticos v0.11
+- Un episodio largo se presenta como **ventana meteorológica**, no como lluvia continua.
+- Cada episodio se divide en tramos consecutivos comprensibles: tramo más probable, llovizna intermitente, lluvia débil, chubascos aislados, riesgo bajo/intermitente o precipitación con riesgo de tormenta.
+- Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
+- El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
+- Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
 ## Radar
 RainViewer aporta los últimos barridos. RainETA descarga una imagen centrada en la ubicación, genera una máscara de precipitación en el dispositivo, calcula traslación entre barridos y proyecta el píxel de la ubicación cada 5 minutos hasta 120 minutos.
 
 El radar se refresca cada 5 minutos mientras la PWA está visible; los modelos se cachean durante 20 minutos para no malgastar ancho de banda ni CPU.
 
 ## Arquitectura y coste
-RainETA no añade ninguna Serverless Function al proyecto Vercel. Las consultas se realizan directamente desde el navegador a APIs públicas con CORS y el nowcasting se ejecuta en el dispositivo. Esto evita el límite de funciones del plan Hobby y reduce Fluid Active CPU.
+RainETA reutiliza una función serverless ya existente para el backend cacheado de OPERA y mantiene el resto del nowcasting en el dispositivo. Así evita aumentar el número total de funciones del proyecto y reduce llamadas repetidas al proveedor europeo.
 
 ## Fuentes
 - Open-Meteo Forecast / Ensemble / Geocoding.
