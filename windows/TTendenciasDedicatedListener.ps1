@@ -1,5 +1,5 @@
 # TTendenciasDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v15-abandoned-mutex-recovery
+# official-pipeline-restart-token: 2026-10-06-v16-no-kernel-mutex
 # Listener dedicado de TTendencias: editorial + cola automática/manual de imágenes IA por entrada.
 # No procesa TTiTTulares.
 
@@ -26,7 +26,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 
-$WorkerId = "ttendencias-dedicated-v15"
+$WorkerId = "ttendencias-dedicated-v16"
 $PollSeconds = 15
 $LaunchConfirmSeconds = 30
 $ClaimRetrySeconds = 38
@@ -38,16 +38,9 @@ $SnapshotCacheSeconds = 12
 $script:ListenerSnapshotCache = $null
 $script:ListenerSnapshotAt = [DateTimeOffset]::MinValue
 $script:LastStrongSnapshotAt = [DateTimeOffset]::MinValue
-$script:ListenerMutex=New-Object System.Threading.Mutex($false,"Local\TTendenciasDedicatedListenerSingleton")
-$script:ListenerMutexOwned=$false
-try{
-  $script:ListenerMutexOwned=$script:ListenerMutex.WaitOne(0,$false)
-}catch [System.Threading.AbandonedMutexException]{
-  $script:ListenerMutexOwned=$true
-}catch{
-  $script:ListenerMutexOwned=$false
-}
-if(-not $script:ListenerMutexOwned){exit 0}
+# v16: no usar mutex de kernel. El reparador y TT-LocalWatchdog
+# deduplican por CommandLine/PID; un mutex retenido podía impedir arrancar
+# antes incluso de escribir el primer log.
 
 function Write-Log([string]$Text) {
   $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $Text"
