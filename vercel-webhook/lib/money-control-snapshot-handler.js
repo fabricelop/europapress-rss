@@ -119,6 +119,69 @@ async function dispatchMoneyWizProcessing({current,previous}){
   return {processedPath};
 }
 
+async function confirmMoneyWizBackup(pathname){
+  const listed=await list(privateBlobOptions({prefix:MONEYWIZ_BACKUP_PREFIX,limit:100}));
+  const uploaded=(listed.blobs||[])
+    .filter(b=>String(b.pathname||"").toLowerCase().endsWith(".zip"))
+    .sort((a,b)=>String(b.uploadedAt||"").localeCompare(String(a.uploadedAt||"")));
+  if(!String(pathname||"").startsWith(MONEYWIZ_BACKUP_PREFIX)||!String(pathname||"").toLowerCase().endsWith(".zip")){
+    pathname=uploaded[0]?.pathname||"";
+  }
+  if(!pathname)return {status:404,payload:{ok:false,error:"no_backup_uploaded"}};
+
+  let meta;
+  try{meta=await head(pathname,privateBlobOptions())}
+  catch(_){return {status:404,payload:{ok:false,error:"not_found"}}}
+
+  const backups=(listed.blobs||[])
+    .filter(b=>String(b.pathname||"").toLowerCase().endsWith(".zip"))
+    .map(b=>({
+      pathname:b.pathname,
+      filename:String(b.pathname||"").slice(MONEYWIZ_BACKUP_PREFIX.length),
+      size:Number(b.size||0),
+      uploadedAt:b.uploadedAt||null
+    }))
+    .sort((a,b)=>String(a.uploadedAt||"").localeCompare(String(b.uploadedAt||"")));
+
+  const idx=backups.findIndex(b=>b.pathname===pathname);
+  const current=idx>=0?backups[idx]:{
+    pathname,
+    filename:pathname.slice(MONEYWIZ_BACKUP_PREFIX.length),
+    size:Number(meta.size||0),
+    uploadedAt:meta.uploadedAt||null
+  };
+  const previous=idx>0?backups[0]:null;
+
+  if(!previous){
+    return {status:200,payload:{
+      ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,
+      seedOnly:true,processingQueued:false,alreadyProcessed:false
+    }};
+  }
+
+  const processedPath=moneyWizProcessedPath(current.filename);
+  try{
+    const processed=await head(processedPath,privateBlobOptions());
+    if(processed){
+      return {status:200,payload:{
+        ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,
+        seedOnly:false,processingQueued:false,alreadyProcessed:true,processedPath
+      }};
+    }
+  }catch(_){}
+
+  try{
+    const queued=await dispatchMoneyWizProcessing({current,previous});
+    return {status:200,payload:{
+      ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,
+      seedOnly:false,processingQueued:true,...queued
+    }};
+  }catch(error){
+    console.error("moneywiz-dispatch",error);
+    return {status:502,payload:{ok:false,error:"processing_dispatch_failed",pathname}};
+  }
+}
+
 function blobOptions(extra={}){
   return {
     access:"public",
@@ -292,7 +355,14 @@ export default async function handler(req,res){
         try{
           const existing=await head(pathname,privateBlobOptions());
           if(existing&&(!sizeBytes||Number(existing.size||0)===Math.round(sizeBytes))){
-            return json(res,200,{ok:true,alreadyExists:true,pathname,size:Number(existing.size||0),uploadedAt:existing.uploadedAt||null,presignedUrl:null,protocolVersion:2});
+            const confirmed=await confirmMoneyWizBackup(pathname);
+            return json(res,confirmed.status,{
+              ...confirmed.payload,
+              alreadyExists:true,
+              presignedUrl:null,
+              protocolVersion:3,
+              implicitConfirm:true
+            });
           }
         }catch(_){}
 
@@ -320,42 +390,8 @@ export default async function handler(req,res){
       }
 
       if(action==="confirm"){
-        let pathname=String(body.pathname||"");
-        const listed=await list(privateBlobOptions({prefix:MONEYWIZ_BACKUP_PREFIX,limit:100}));
-        const uploaded=(listed.blobs||[]).filter(b=>String(b.pathname||"").toLowerCase().endsWith(".zip")).sort((a,b)=>String(b.uploadedAt||"").localeCompare(String(a.uploadedAt||"")));
-        if(!pathname.startsWith(MONEYWIZ_BACKUP_PREFIX)||!pathname.toLowerCase().endsWith(".zip"))pathname=uploaded[0]?.pathname||"";
-        if(!pathname)return json(res,404,{ok:false,error:"no_backup_uploaded"});
-        let meta;
-        try{meta=await head(pathname,privateBlobOptions())}catch(_){return json(res,404,{ok:false,error:"not_found"})}
-        const backups=(listed.blobs||[])
-          .filter(b=>String(b.pathname||"").toLowerCase().endsWith(".zip"))
-          .map(b=>({
-            pathname:b.pathname,
-            filename:String(b.pathname||"").slice(MONEYWIZ_BACKUP_PREFIX.length),
-            size:Number(b.size||0),
-            uploadedAt:b.uploadedAt||null
-          }))
-          .sort((a,b)=>String(a.uploadedAt||"").localeCompare(String(b.uploadedAt||"")));
-        const idx=backups.findIndex(b=>b.pathname===pathname);
-        const current=idx>=0?backups[idx]:{pathname,filename:pathname.slice(MONEYWIZ_BACKUP_PREFIX.length),size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null};
-        const previous=idx>0?backups[0]:null;
-        if(!previous){
-          return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,seedOnly:true,processingQueued:false,alreadyProcessed:false});
-        }
-        const processedPath=moneyWizProcessedPath(current.filename);
-        try{
-          const processed=await head(processedPath,privateBlobOptions());
-          if(processed){
-            return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,seedOnly:false,processingQueued:false,alreadyProcessed:true,processedPath});
-          }
-        }catch(_){}
-        try{
-          const queued=await dispatchMoneyWizProcessing({current,previous});
-          return json(res,200,{ok:true,pathname,size:Number(meta.size||0),uploadedAt:meta.uploadedAt||null,seedOnly:false,processingQueued:true,...queued});
-        }catch(error){
-          console.error("moneywiz-dispatch",error);
-          return json(res,502,{ok:false,error:"processing_dispatch_failed",pathname});
-        }
+        const confirmed=await confirmMoneyWizBackup(String(body.pathname||""));
+        return json(res,confirmed.status,confirmed.payload);
       }
 
       return json(res,400,{ok:false,error:"unknown_action"});
