@@ -214,7 +214,8 @@ async function fetchRadarMeta(){
   };
 }
 async function fetchOperaMeta(){
-  const r=await fetch('/api/rain-opera');
+  const p=new URLSearchParams({lat:String(state.loc.lat),lon:String(state.loc.lon)});
+  const r=await fetch('/api/rain-opera?'+p);
   if(!r.ok)throw new Error('OPERA HTTP '+r.status);
   return r.json();
 }
@@ -350,8 +351,13 @@ function automaticRainState(){
   const radarRain=radarOk&&Number.isFinite(radarWet)&&radarWet>=calibratedRadarThreshold();
   const modelP=Number(state.data?.quarterHour?.current?.precipitation)||0;
   const modelRain=modelP>=.1;
-  const raining=radarOk?(radarRain||(modelRain&&radarWet>=.08)):modelRain;
-  return{raining,source:radarOk?'radar+modelo':'modelo',label:raining?'Llueve ahora':'No llueve ahora'};
+  const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH),operaQuality=Number(opera?.sample?.quality);
+  const operaFresh=opera?.sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5;
+  const operaRain=operaFresh&&operaRate>=.05;
+  let raining=radarOk?(radarRain||(modelRain&&radarWet>=.08)):modelRain;
+  if(operaRain)raining=true;
+  const source=operaFresh?(radarOk?'radar+OPERA+modelo':'OPERA+modelo'):(radarOk?'radar+modelo':'modelo');
+  return{raining,source,label:raining?'Llueve ahora':'No llueve ahora'};
 }
 function currentRainState(){
   const truth=currentTruth();
@@ -895,7 +901,9 @@ function renderEvents(){
 
 function renderSources(){
   const list=[
-    {label:'EUMETNET OPERA',ok:Boolean(state.data.sources.opera),detail:state.data.opera?.ok?'RATE 1 km / 5 min · '+fmtTime(state.data.opera.observedAt):'backend sin compuesto reciente'},
+    {label:'EUMETNET OPERA',ok:Boolean(state.data.sources.opera),detail:state.data.opera?.ok
+      ? 'RATE '+(state.data.opera.resolutionKm||2)+' km / 5 min · '+fmtTime(state.data.opera.observedAt)+(state.data.opera.sample?.ok?' · '+Number(state.data.opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')
+      : 'backend sin compuesto reciente'},
     {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'?'movimiento + intensidad dBZ':state.nowcast?.status||'solo mapa'},
     {label:'Guía 15 min',ok:state.data.sources.quarterHour,detail:'modelo/interpolación'},
     ...state.data.sources.deterministic.map(x=>({label:x.label,ok:x.ok,detail:'determinista'})),
