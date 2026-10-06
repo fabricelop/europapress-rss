@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-42f008a44acb-r1-a1-1791285404509",
+  "requested_at": "2026-10-06T11:16:44.508919Z",
+  "updated_at": "2026-10-06T11:16:44.508919Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "42f008a44acb",
+  "event_id": "42f008a44acb",
+  "target_name": "El PP pide a la Audiencia Nacional la imputación del PSOE por financiación ilegal y cuatro delitos más",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "El PP pide a la Audiencia Nacional la imputación del PSOE por financiación ilegal y cuatro delitos más",
+    "revision": 1,
+    "factual_summary": "El PP ha presentado ante la Audiencia Nacional una solicitud para que se impute al PSOE por financiación ilegal y otros cuatro delitos. La petición se formula en el primer día de la precampaña electoral.",
+    "tweet_text": "El PP pide a la Audiencia Nacional que impute al PSOE por financiación ilegal y otros cuatro delitos. La solicitud llega en el primer día de precampaña.\n\n🌶️ La precampaña ya ha estrenado juzgado antes que cartel.",
+    "remate": "🌶️ La precampaña ya ha estrenado juzgado antes que cartel.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
+    "image_style_name": "pop_art",
+    "image_style_index": 7,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl PP pide a la Audiencia Nacional que impute al PSOE por financiación ilegal y otros cuatro delitos. La solicitud llega en el primer día de precampaña.\n\n🌶️ La precampaña ya ha estrenado juzgado antes que cartel.\n\nREMATE EXACTO:\n🌶️ La precampaña ya ha estrenado juzgado antes que cartel.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl PP ha presentado ante la Audiencia Nacional una solicitud para que se impute al PSOE por financiación ilegal y otros cuatro delitos. La petición se formula en el primer día de la precampaña electoral.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.abc.es/espana/pp-pide-audiencia-nacional-imputacion-psoe-sufragar-20261006125549-nt.html",
+    "citations": [
+      {
+        "source": "Servimedia",
+        "url": "https://www.servimedia.es/noticias/pp-solicita-imputacion-psoe-financiacion-ilegal-otros-cuatro-delitos/1413397395"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/2026-10-06/el-pp-pide-la-imputacion-del-psoe-a-la-audiencia-nacional-en-el-primer-dia-de-precampana.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
