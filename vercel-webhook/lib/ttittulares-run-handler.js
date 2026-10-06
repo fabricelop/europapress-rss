@@ -155,12 +155,22 @@ async function writeTrigger(doc,sha){
   return r.json()
 }
 
-async function readControlJson(path){
-  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(TRIGGER_BRANCH));
+function gitBlobSha(buf){
+  const head=Buffer.from("blob "+buf.length+"\\0","utf8");
+  return crypto.createHash("sha1").update(head).update(buf).digest("hex")
+}
+async function readRawJsonWithSha(path,branch){
+  const refPath=String(branch||"main").split("/").map(encodeURIComponent).join("/");
+  const filePath=String(path||"").split("/").map(encodeURIComponent).join("/");
+  const url="https://raw.githubusercontent.com/"+REPO+"/"+refPath+"/"+filePath+"?t="+Date.now();
+  const r=await fetch(url,{cache:"no-store",headers:{"user-agent":"TTiTTulares-Control-Raw/1.0","cache-control":"no-cache"}});
   if(r.status===404)return {sha:null,doc:null};
-  if(!r.ok)throw new Error("GitHub control GET "+path+": "+r.status+" "+await r.text());
-  const f=await r.json(),raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-  return {sha:f.sha,doc:JSON.parse(raw||"{}")}
+  if(!r.ok)throw new Error("GitHub raw GET "+path+": "+r.status+" "+await r.text());
+  const buf=Buffer.from(await r.arrayBuffer());
+  return {sha:gitBlobSha(buf),doc:JSON.parse(buf.toString("utf8")||"{}")}
+}
+async function readControlJson(path){
+  return readRawJsonWithSha(path,TRIGGER_BRANCH)
 }
 async function writeControlJson(path,doc,sha,message){
   const body={message,content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64"),branch:TRIGGER_BRANCH};
@@ -171,12 +181,7 @@ async function writeControlJson(path,doc,sha,message){
 }
 
 async function readMainJsonWithSha(path){
-  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(MAIN_BRANCH),{cache:"no-store"});
-  if(r.status===404)return {sha:null,doc:null};
-  if(!r.ok)throw new Error("GitHub main GET "+path+": "+r.status+" "+await r.text());
-  const file=await r.json();
-  const raw=Buffer.from(String(file.content||"").replace(/\n/g,""),"base64").toString("utf8");
-  return {sha:file.sha,doc:JSON.parse(raw||"{}")}
+  return readRawJsonWithSha(path,MAIN_BRANCH)
 }
 async function readMainJson(path){
   const x=await readMainJsonWithSha(path);
