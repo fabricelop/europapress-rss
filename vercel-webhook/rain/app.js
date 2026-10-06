@@ -2,15 +2,16 @@ import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourE
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
 
 const DET_MODELS=[
-  {id:'ecmwf_ifs025',label:'ECMWF IFS',family:'ECMWF',weight:1.25},
+  {id:'ecmwf_ifs',label:'ECMWF IFS 9 km',family:'ECMWF',weight:1.32},
   {id:'ecmwf_aifs025',label:'ECMWF AIFS',family:'ECMWF',weight:1.05},
   {id:'icon_seamless',label:'DWD ICON',family:'DWD',weight:1.10},
   {id:'gfs_seamless',label:'NOAA GFS',family:'NOAA',weight:.90},
   {id:'meteofrance_seamless',label:'Météo-France',family:'METEOFRANCE',weight:1.00},
   {id:'gem_seamless',label:'CMC GEM',family:'CMC',weight:.75},
+  {id:'ukmo_global_deterministic_10km',label:'UKMO Global 10 km',family:'UKMO',weight:1.02},
 ];
 const ENS_MODELS=[
-  {id:'ecmwf_ifs025_ensemble',label:'ECMWF ENS',family:'ECMWF',weight:1.25},
+  {id:'ecmwf_ifs_europe_ensemble',label:'ECMWF ENS Europe 9 km',family:'ECMWF',weight:1.30},
   {id:'ecmwf_aifs025_ensemble',label:'ECMWF AIFS ENS',family:'ECMWF',weight:1.00},
   {id:'dwd_icon_eu_eps',label:'ICON-EU EPS',family:'DWD',weight:1.10},
   {id:'ncep_gefs025',label:'NOAA GEFS',family:'NOAA',weight:.90},
