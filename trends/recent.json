@@ -1,20 +1,22 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-10-07T00:31:50+02:00",
+  "captured_at": "2026-10-07T00:41:22+02:00",
   "primary_source": "xtrendsiamrohit",
   "selection_method": "fresh-anchor",
   "sources_used": [
+    "getdaytrends",
     "cyberkendra",
     "xtrendsiamrohit"
   ],
-  "source_count": 5,
-  "non_stale_source_count": 4,
+  "source_count": 6,
+  "non_stale_source_count": 6,
   "fresh_sources": [
+    "snaplytics",
     "whatstrends",
     "xtrendsiamrohit"
   ],
-  "reliability": "medium",
+  "reliability": "high",
   "top10": [
     "Merino",
     "#TierraDeNadie4",
@@ -113,22 +115,81 @@
   "new_entries": [],
   "upcoming": [
     {
-      "name": "Puigdemont",
-      "social_source_count": 3,
+      "name": "María Jesús Montero",
+      "social_source_count": 5,
       "social_sources": [
         "cyberkendra",
+        "getdaytrends",
+        "snaplytics",
+        "whatstrends",
+        "xtrendsiamrohit"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 24.4,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-06T23:16:06+02:00",
+          "best_rank": 11,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-06T23:24:16+02:00",
+          "best_rank": 11,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-06T23:31:47+02:00",
+          "best_rank": 11,
+          "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-06T23:41:22+02:00",
+          "best_rank": 11,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-07T00:11:31+02:00",
+          "best_rank": 11,
+          "source_count": 6
+        },
+        {
+          "captured_at": "2026-10-07T00:22:03+02:00",
+          "best_rank": 15,
+          "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T00:31:50+02:00",
+          "best_rank": 15,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 15,
+          "source_count": 5
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-10-06T23:02:02+02:00",
+      "news_source_count": 4,
+      "news_event_id": "e2a82f5f88e2",
+      "news_title": "María Jesús Montero asegura que la huelga general se convoca «contra la oposición»",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-10-06T13:57:22.891635Z"
+    },
+    {
+      "name": "Puigdemont",
+      "social_source_count": 4,
+      "social_sources": [
+        "cyberkendra",
+        "snaplytics",
         "whatstrends",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 19.7,
+      "mean_observed_rank": 19.5,
       "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-06T23:11:40+02:00",
-          "best_rank": 13,
-          "source_count": 6
-        },
         {
           "captured_at": "2026-10-06T23:16:06+02:00",
           "best_rank": 13,
@@ -163,6 +224,11 @@
           "captured_at": "2026-10-07T00:31:50+02:00",
           "best_rank": 16,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 16,
+          "source_count": 4
         }
       ],
       "observations": 8,
@@ -174,22 +240,60 @@
       "news_first_seen": "2026-10-06T16:20:17.759683Z"
     },
     {
-      "name": "Constitucional",
-      "social_source_count": 3,
+      "name": "Pablo García",
+      "social_source_count": 4,
       "social_sources": [
         "cyberkendra",
+        "getdaytrends",
+        "whatstrends",
+        "xtrendsiamrohit"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 16.0,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-07T00:11:31+02:00",
+          "best_rank": 13,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:22:03+02:00",
+          "best_rank": 13,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:31:50+02:00",
+          "best_rank": 13,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 13,
+          "source_count": 4
+        }
+      ],
+      "observations": 4,
+      "first_detected_at": "2026-10-07T00:11:31+02:00",
+      "news_source_count": 5,
+      "news_event_id": "ee627d813706",
+      "news_title": "España pasa por encima de Rumanía y sella el pase para el Europeo sub-21 al son de Pablo García y Gonzalo",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-10-06T21:19:07.617682Z"
+    },
+    {
+      "name": "Constitucional",
+      "social_source_count": 4,
+      "social_sources": [
+        "cyberkendra",
+        "snaplytics",
         "whatstrends",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 21,
-      "mean_observed_rank": 26.3,
+      "mean_observed_rank": 26.2,
       "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-06T23:11:40+02:00",
-          "best_rank": 21,
-          "source_count": 5
-        },
         {
           "captured_at": "2026-10-06T23:16:06+02:00",
           "best_rank": 21,
@@ -224,6 +328,11 @@
           "captured_at": "2026-10-07T00:31:50+02:00",
           "best_rank": 21,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 21,
+          "source_count": 4
         }
       ],
       "observations": 8,
@@ -235,112 +344,58 @@
       "news_first_seen": "2026-10-06T16:20:17.759683Z"
     },
     {
-      "name": "Pablo García",
-      "social_source_count": 3,
+      "name": "Modric",
+      "social_source_count": 4,
       "social_sources": [
         "cyberkendra",
-        "whatstrends",
+        "getdaytrends",
+        "snaplytics",
         "xtrendsiamrohit"
       ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 17.0,
-      "movement": "flat",
+      "best_observed_rank": 11,
+      "mean_observed_rank": 19.2,
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-07T00:11:31+02:00",
-          "best_rank": 13,
+          "best_rank": 11,
           "source_count": 3
         },
         {
           "captured_at": "2026-10-07T00:22:03+02:00",
-          "best_rank": 13,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-10-07T00:31:50+02:00",
-          "best_rank": 13,
-          "source_count": 3
-        }
-      ],
-      "observations": 3,
-      "first_detected_at": "2026-10-07T00:11:31+02:00",
-      "news_source_count": 5,
-      "news_event_id": "ee627d813706",
-      "news_title": "España pasa por encima de Rumanía y sella el pase para el Europeo sub-21 al son de Pablo García y Gonzalo",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-10-06T21:19:07.617682Z"
-    },
-    {
-      "name": "María Jesús Montero",
-      "social_source_count": 3,
-      "social_sources": [
-        "cyberkendra",
-        "whatstrends",
-        "xtrendsiamrohit"
-      ],
-      "best_observed_rank": 15,
-      "mean_observed_rank": 22.0,
-      "movement": "down",
-      "rank_history": [
-        {
-          "captured_at": "2026-10-06T23:11:40+02:00",
           "best_rank": 11,
-          "source_count": 6
-        },
-        {
-          "captured_at": "2026-10-06T23:16:06+02:00",
-          "best_rank": 11,
-          "source_count": 6
-        },
-        {
-          "captured_at": "2026-10-06T23:24:16+02:00",
-          "best_rank": 11,
-          "source_count": 6
-        },
-        {
-          "captured_at": "2026-10-06T23:31:47+02:00",
-          "best_rank": 11,
-          "source_count": 5
-        },
-        {
-          "captured_at": "2026-10-06T23:41:22+02:00",
-          "best_rank": 11,
-          "source_count": 6
-        },
-        {
-          "captured_at": "2026-10-07T00:11:31+02:00",
-          "best_rank": 11,
-          "source_count": 6
-        },
-        {
-          "captured_at": "2026-10-07T00:22:03+02:00",
-          "best_rank": 15,
           "source_count": 4
         },
         {
           "captured_at": "2026-10-07T00:31:50+02:00",
-          "best_rank": 15,
-          "source_count": 3
+          "best_rank": 11,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 11,
+          "source_count": 4
         }
       ],
-      "observations": 8,
-      "first_detected_at": "2026-10-06T23:02:02+02:00",
-      "news_source_count": 4,
-      "news_event_id": "e2a82f5f88e2",
-      "news_title": "María Jesús Montero asegura que la huelga general se convoca «contra la oposición»",
-      "news_status": "ELIGIBLE",
-      "news_first_seen": "2026-10-06T13:57:22.891635Z"
+      "observations": 4,
+      "first_detected_at": "2026-10-07T00:11:31+02:00",
+      "news_source_count": 1,
+      "news_event_id": "b6bed6d8f107",
+      "news_title": "El orgullo intacto de Modric frente a la campeonsima",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-10-06T21:03:13.923182Z"
     },
     {
       "name": "Jorge Jesus",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
         "cyberkendra",
+        "getdaytrends",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 12,
       "mean_observed_rank": 12.0,
-      "movement": "down",
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-06T23:24:16+02:00",
@@ -371,9 +426,14 @@
           "captured_at": "2026-10-07T00:31:50+02:00",
           "best_rank": 12,
           "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 12,
+          "source_count": 3
         }
       ],
-      "observations": 6,
+      "observations": 7,
       "first_detected_at": "2026-10-06T23:24:16+02:00",
       "news_source_count": 5,
       "news_event_id": "72cecec23f1f",
@@ -383,20 +443,16 @@
     },
     {
       "name": "Feijóo",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
+        "snaplytics",
         "superx",
         "whatstrends"
       ],
       "best_observed_rank": 12,
-      "mean_observed_rank": 12.5,
-      "movement": "flat",
+      "mean_observed_rank": 17.3,
+      "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-06T23:11:40+02:00",
-          "best_rank": 12,
-          "source_count": 4
-        },
         {
           "captured_at": "2026-10-06T23:16:06+02:00",
           "best_rank": 12,
@@ -431,6 +487,11 @@
           "captured_at": "2026-10-07T00:31:50+02:00",
           "best_rank": 12,
           "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 12,
+          "source_count": 3
         }
       ],
       "observations": 8,
@@ -443,20 +504,16 @@
     },
     {
       "name": "PP y VOX",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
+        "snaplytics",
         "superx",
         "whatstrends"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 16.0,
-      "movement": "flat",
+      "mean_observed_rank": 21.3,
+      "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-06T23:11:40+02:00",
-          "best_rank": 15,
-          "source_count": 5
-        },
         {
           "captured_at": "2026-10-06T23:16:06+02:00",
           "best_rank": 15,
@@ -491,6 +548,11 @@
           "captured_at": "2026-10-07T00:31:50+02:00",
           "best_rank": 15,
           "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 15,
+          "source_count": 3
         }
       ],
       "observations": 8,
@@ -503,22 +565,28 @@
     },
     {
       "name": "Parlamento",
-      "social_source_count": 2,
+      "social_source_count": 3,
       "social_sources": [
+        "snaplytics",
         "superx",
         "whatstrends"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 17.0,
-      "movement": "new",
+      "mean_observed_rank": 18.7,
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-07T00:31:50+02:00",
           "best_rank": 11,
           "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 11,
+          "source_count": 3
         }
       ],
-      "observations": 1,
+      "observations": 2,
       "first_detected_at": "2026-10-07T00:31:50+02:00",
       "news_source_count": 2,
       "news_event_id": "270fe8f193f8",
@@ -527,57 +595,18 @@
       "news_first_seen": "2026-10-06T10:32:40.173816Z"
     },
     {
-      "name": "Modric",
-      "social_source_count": 2,
-      "social_sources": [
-        "cyberkendra",
-        "xtrendsiamrohit"
-      ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 11.0,
-      "movement": "down",
-      "rank_history": [
-        {
-          "captured_at": "2026-10-07T00:11:31+02:00",
-          "best_rank": 11,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-10-07T00:22:03+02:00",
-          "best_rank": 11,
-          "source_count": 4
-        },
-        {
-          "captured_at": "2026-10-07T00:31:50+02:00",
-          "best_rank": 11,
-          "source_count": 2
-        }
-      ],
-      "observations": 3,
-      "first_detected_at": "2026-10-07T00:11:31+02:00",
-      "news_source_count": 1,
-      "news_event_id": "b6bed6d8f107",
-      "news_title": "El orgullo intacto de Modric frente a la campeonsima",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-10-06T21:03:13.923182Z"
-    },
-    {
       "name": "Mopongo",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "whatstrends",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 20,
-      "mean_observed_rank": 27.3,
-      "movement": "flat",
+      "mean_observed_rank": 32.2,
+      "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-06T23:11:40+02:00",
-          "best_rank": 14,
-          "source_count": 5
-        },
         {
           "captured_at": "2026-10-06T23:16:06+02:00",
           "best_rank": 14,
@@ -612,10 +641,275 @@
           "captured_at": "2026-10-07T00:31:50+02:00",
           "best_rank": 20,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 20,
+          "source_count": 4
         }
       ],
       "observations": 8,
       "first_detected_at": "2026-10-06T23:02:02+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Cortes",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "whatstrends"
+      ],
+      "best_observed_rank": 11,
+      "mean_observed_rank": 24.0,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-06T23:41:22+02:00",
+          "best_rank": 11,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:11:31+02:00",
+          "best_rank": 11,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:22:03+02:00",
+          "best_rank": 11,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:31:50+02:00",
+          "best_rank": 11,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 11,
+          "source_count": 3
+        }
+      ],
+      "observations": 5,
+      "first_detected_at": "2026-10-06T23:41:22+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Votar",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "whatstrends"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 30.3,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-06T23:16:06+02:00",
+          "best_rank": 13,
+          "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-06T23:24:16+02:00",
+          "best_rank": 13,
+          "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-06T23:31:47+02:00",
+          "best_rank": 13,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-06T23:41:22+02:00",
+          "best_rank": 13,
+          "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T00:11:31+02:00",
+          "best_rank": 13,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:22:03+02:00",
+          "best_rank": 13,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:31:50+02:00",
+          "best_rank": 13,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 13,
+          "source_count": 3
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-10-06T21:06:39+02:00",
+      "news_source_count": 1,
+      "news_event_id": "c97298055e3a",
+      "news_title": "La derecha agita las dudas sobre el voto por correo en el arranque de la precampaa: insta a votar \"presencialmente\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-10-06T19:09:18.377646Z"
+    },
+    {
+      "name": "arantxa",
+      "social_source_count": 3,
+      "social_sources": [
+        "cyberkendra",
+        "getdaytrends",
+        "xtrendsiamrohit"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-07T00:22:03+02:00",
+          "best_rank": 14,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:31:50+02:00",
+          "best_rank": 14,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 14,
+          "source_count": 3
+        }
+      ],
+      "observations": 3,
+      "first_detected_at": "2026-10-07T00:22:03+02:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Abascal",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "whatstrends"
+      ],
+      "best_observed_rank": 12,
+      "mean_observed_rank": 21.0,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-07T00:31:50+02:00",
+          "best_rank": 12,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 12,
+          "source_count": 2
+        }
+      ],
+      "observations": 2,
+      "first_detected_at": "2026-10-07T00:31:50+02:00",
+      "news_source_count": 4,
+      "news_event_id": "49f7786dcba4",
+      "news_title": "Críticas a Ayuso y Abascal por alimentar la conspiración de un posible fraude electoral: \"Siguiendo el guion del trumpismo\"",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-10-06T18:11:39.692241Z"
+    },
+    {
+      "name": "Andalucía",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "whatstrends"
+      ],
+      "best_observed_rank": 18,
+      "mean_observed_rank": 26.3,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-07T00:22:03+02:00",
+          "best_rank": 18,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:31:50+02:00",
+          "best_rank": 18,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 18,
+          "source_count": 3
+        }
+      ],
+      "observations": 3,
+      "first_detected_at": "2026-10-07T00:22:03+02:00",
+      "news_source_count": 1,
+      "news_event_id": "cb0e1854b966",
+      "news_title": "La Junta aprueba este miércoles la Primera Estrategia del viñedo y el vino de Andalucía 2028-2031",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-10-06T19:42:53.609724Z"
+    },
+    {
+      "name": "Óscar Puente",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "whatstrends"
+      ],
+      "best_observed_rank": 15,
+      "mean_observed_rank": 19.0,
+      "movement": "new",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 15,
+          "source_count": 2
+        }
+      ],
+      "observations": 1,
+      "first_detected_at": "2026-10-07T00:41:22+02:00",
+      "news_source_count": 5,
+      "news_event_id": "a8ee599de879",
+      "news_title": "Indignación en redes tras la burla del PP a un accidente que sufrió Óscar Puente: \"Estos son los que van a cuidar al prójimo\"",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-10-06T18:11:39.692241Z"
+    },
+    {
+      "name": "Aznar",
+      "social_source_count": 3,
+      "social_sources": [
+        "snaplytics",
+        "superx",
+        "whatstrends"
+      ],
+      "best_observed_rank": 19,
+      "mean_observed_rank": 24.3,
+      "movement": "new",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 19,
+          "source_count": 3
+        }
+      ],
+      "observations": 1,
+      "first_detected_at": "2026-10-07T00:41:22+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -632,15 +926,20 @@
       ],
       "best_observed_rank": 27,
       "mean_observed_rank": 29.0,
-      "movement": "new",
+      "movement": "flat",
       "rank_history": [
         {
           "captured_at": "2026-10-07T00:31:50+02:00",
           "best_rank": 27,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 27,
+          "source_count": 3
         }
       ],
-      "observations": 1,
+      "observations": 2,
       "first_detected_at": "2026-10-07T00:31:50+02:00",
       "news_source_count": 4,
       "news_event_id": "9c02390d90f6-r2",
@@ -649,104 +948,30 @@
       "news_first_seen": "2026-10-06T18:11:39.692241Z"
     },
     {
-      "name": "Cortes",
-      "social_source_count": 2,
+      "name": "Leire",
+      "social_source_count": 3,
       "social_sources": [
+        "snaplytics",
         "superx",
         "whatstrends"
       ],
-      "best_observed_rank": 11,
-      "mean_observed_rank": 17.0,
-      "movement": "flat",
+      "best_observed_rank": 27,
+      "mean_observed_rank": 36.3,
+      "movement": "new",
       "rank_history": [
         {
-          "captured_at": "2026-10-06T23:41:22+02:00",
-          "best_rank": 11,
+          "captured_at": "2026-10-07T00:41:22+02:00",
+          "best_rank": 27,
           "source_count": 3
-        },
-        {
-          "captured_at": "2026-10-07T00:11:31+02:00",
-          "best_rank": 11,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-10-07T00:22:03+02:00",
-          "best_rank": 11,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-10-07T00:31:50+02:00",
-          "best_rank": 11,
-          "source_count": 2
         }
       ],
-      "observations": 4,
-      "first_detected_at": "2026-10-06T23:41:22+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Votar",
-      "social_source_count": 2,
-      "social_sources": [
-        "superx",
-        "whatstrends"
-      ],
-      "best_observed_rank": 13,
-      "mean_observed_rank": 21.0,
-      "movement": "flat",
-      "rank_history": [
-        {
-          "captured_at": "2026-10-06T23:11:40+02:00",
-          "best_rank": 13,
-          "source_count": 5
-        },
-        {
-          "captured_at": "2026-10-06T23:16:06+02:00",
-          "best_rank": 13,
-          "source_count": 5
-        },
-        {
-          "captured_at": "2026-10-06T23:24:16+02:00",
-          "best_rank": 13,
-          "source_count": 4
-        },
-        {
-          "captured_at": "2026-10-06T23:31:47+02:00",
-          "best_rank": 13,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-10-06T23:41:22+02:00",
-          "best_rank": 13,
-          "source_count": 4
-        },
-        {
-          "captured_at": "2026-10-07T00:11:31+02:00",
-          "best_rank": 13,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-10-07T00:22:03+02:00",
-          "best_rank": 13,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-10-07T00:31:50+02:00",
-          "best_rank": 13,
-          "source_count": 2
-        }
-      ],
-      "observations": 8,
-      "first_detected_at": "2026-10-06T21:06:39+02:00",
-      "news_source_count": 1,
-      "news_event_id": "c97298055e3a",
-      "news_title": "La derecha agita las dudas sobre el voto por correo en el arranque de la precampaa: insta a votar \"presencialmente\"",
+      "observations": 1,
+      "first_detected_at": "2026-10-07T00:41:22+02:00",
+      "news_source_count": 2,
+      "news_event_id": "a649b30e8029",
+      "news_title": "El juez del 'caso Leire' reclama información al PSOE y pregunta a Anticorrupción sobre la petición del PP de imputarlo - Telecinco",
       "news_status": "WAITING",
-      "news_first_seen": "2026-10-06T19:09:18.377646Z"
+      "news_first_seen": "2026-10-06T22:33:45.287250Z"
     },
     {
       "name": "#FelizMartes",
@@ -757,135 +982,21 @@
       ],
       "best_observed_rank": 14,
       "mean_observed_rank": 29.5,
-      "movement": "new",
+      "movement": "flat",
       "rank_history": [
         {
           "captured_at": "2026-10-07T00:31:50+02:00",
           "best_rank": 14,
           "source_count": 2
-        }
-      ],
-      "observations": 1,
-      "first_detected_at": "2026-10-07T00:31:50+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Arantxa",
-      "social_source_count": 2,
-      "social_sources": [
-        "cyberkendra",
-        "xtrendsiamrohit"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "down",
-      "rank_history": [
-        {
-          "captured_at": "2026-10-07T00:22:03+02:00",
-          "best_rank": 14,
-          "source_count": 3
         },
         {
-          "captured_at": "2026-10-07T00:31:50+02:00",
+          "captured_at": "2026-10-07T00:41:22+02:00",
           "best_rank": 14,
           "source_count": 2
         }
       ],
       "observations": 2,
-      "first_detected_at": "2026-10-07T00:22:03+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
-      "name": "Abascal",
-      "social_source_count": 1,
-      "social_sources": [
-        "whatstrends"
-      ],
-      "best_observed_rank": 12,
-      "mean_observed_rank": 12.0,
-      "movement": "new",
-      "rank_history": [
-        {
-          "captured_at": "2026-10-07T00:31:50+02:00",
-          "best_rank": 12,
-          "source_count": 1
-        }
-      ],
-      "observations": 1,
       "first_detected_at": "2026-10-07T00:31:50+02:00",
-      "news_source_count": 4,
-      "news_event_id": "49f7786dcba4",
-      "news_title": "Críticas a Ayuso y Abascal por alimentar la conspiración de un posible fraude electoral: \"Siguiendo el guion del trumpismo\"",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-10-06T18:11:39.692241Z"
-    },
-    {
-      "name": "Andalucía",
-      "social_source_count": 2,
-      "social_sources": [
-        "superx",
-        "whatstrends"
-      ],
-      "best_observed_rank": 18,
-      "mean_observed_rank": 23.0,
-      "movement": "flat",
-      "rank_history": [
-        {
-          "captured_at": "2026-10-07T00:22:03+02:00",
-          "best_rank": 18,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-10-07T00:31:50+02:00",
-          "best_rank": 18,
-          "source_count": 2
-        }
-      ],
-      "observations": 2,
-      "first_detected_at": "2026-10-07T00:22:03+02:00",
-      "news_source_count": 1,
-      "news_event_id": "cb0e1854b966",
-      "news_title": "La Junta aprueba este miércoles la Primera Estrategia del viñedo y el vino de Andalucía 2028-2031",
-      "news_status": "WAITING",
-      "news_first_seen": "2026-10-06T19:42:53.609724Z"
-    },
-    {
-      "name": "Vicente Vallés",
-      "social_source_count": 2,
-      "social_sources": [
-        "cyberkendra",
-        "xtrendsiamrohit"
-      ],
-      "best_observed_rank": 17,
-      "mean_observed_rank": 17.0,
-      "movement": "flat",
-      "rank_history": [
-        {
-          "captured_at": "2026-10-07T00:11:31+02:00",
-          "best_rank": 16,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-10-07T00:22:03+02:00",
-          "best_rank": 17,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-10-07T00:31:50+02:00",
-          "best_rank": 17,
-          "source_count": 2
-        }
-      ],
-      "observations": 3,
-      "first_detected_at": "2026-10-07T00:11:31+02:00",
       "news_source_count": 0,
       "news_event_id": null,
       "news_title": null,
@@ -903,16 +1014,32 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-07T00:31:50+02:00"
+      "fetched_at": "2026-10-07T00:41:22+02:00"
     },
     "getdaytrends": {
-      "ok": false,
-      "trends": [],
-      "error": "HTTPError: 522 Server Error: <none> for url: https://getdaytrends.com/es/spain/",
+      "ok": true,
+      "trends": [
+        "Merino",
+        "#TierraDeNadie4",
+        "#codigo10",
+        "Croacia",
+        "Maradona",
+        "Unai Simón",
+        "#FirstDates6O",
+        "Perisic",
+        "split",
+        "Zubimendi",
+        "Modric",
+        "Jorge Jesus",
+        "Pablo García",
+        "arantxa",
+        "María Jesús Montero"
+      ],
+      "error": null,
       "update_hint": null,
       "age_minutes": null,
-      "freshness": "error",
-      "fetched_at": "2026-10-07T00:31:50+02:00"
+      "freshness": "unknown",
+      "fetched_at": "2026-10-07T00:41:22+02:00"
     },
     "tweets24": {
       "ok": false,
@@ -921,7 +1048,7 @@
       "update_hint": "Updated 6 days ago Live Twitter Trending Topics in Spain About Twitter (X) Trends in Spa",
       "age_minutes": null,
       "freshness": "invalid",
-      "fetched_at": "2026-10-07T00:32:10+02:00"
+      "fetched_at": "2026-10-07T00:41:23+02:00"
     },
     "superx": {
       "ok": true,
@@ -981,7 +1108,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-07T00:32:10+02:00"
+      "fetched_at": "2026-10-07T00:41:23+02:00"
     },
     "twtdata": {
       "ok": false,
@@ -990,67 +1117,67 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-07T00:32:11+02:00"
+      "fetched_at": "2026-10-07T00:41:23+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "Merino",
-        "PSOE",
-        "Sánchez",
-        "Croacia",
         "#TierraDeNadie4",
+        "PSOE",
+        "#Codigo10",
+        "Sánchez",
         "Correos",
+        "Croacia",
         "Maradona",
+        "Adamuz",
+        "#FirstDates6O",
+        "Frente Amplio",
+        "Messi",
         "#Horizonte",
+        "29-N",
+        "#AlCieloConElla",
         "Unai Simón",
         "Perisic",
-        "Adamuz",
-        "Frente Amplio",
-        "#FirstDates6O",
-        "#Elecciones",
-        "29-N",
-        "Cucurella",
-        "#LaIslaDeLasTentaciones9",
         "CCOO",
-        "Pedri",
         "Puigdemont",
         "Rajoy",
+        "Eva Marie Saint",
         "Parlamento",
         "Óscar Puente",
-        "Oyarzabal",
-        "Feijóo",
+        "Pedri",
+        "Cucurella",
         "Constitucional",
+        "Feijóo",
         "Aznar",
-        "Abascal",
-        "Messi",
         "Alvise",
-        "PP y Vox",
+        "Abascal",
         "Supremo",
-        "Zubimendi",
-        "Split",
-        "El PP",
+        "PP y Vox",
         "Andalucía",
-        "Modric",
-        "Lamine",
+        "El PP",
+        "Oyarzabal",
         "Leire",
+        "Cristiano",
         "Cortes",
-        "Cristiano Ronaldo",
+        "Split",
+        "Zubimendi",
         "María Jesús Montero",
-        "Lagarto",
+        "Torres",
         "Figaredo",
-        "Votar",
+        "Modric",
         "Senado",
-        "Borja Semper",
+        "Miguel Bernardeau",
         "Mopongo",
-        "Pumpido",
-        "SALF"
+        "Borja Semper",
+        "Votar",
+        "Pubill"
       ],
       "error": null,
-      "update_hint": "Trending now Oct 6, 2026 21:00 UTC",
-      "age_minutes": 92.2,
-      "freshness": "stale",
-      "fetched_at": "2026-10-07T00:32:11+02:00"
+      "update_hint": "Trending now Oct 6, 2026 22:00 UTC",
+      "age_minutes": 41.4,
+      "freshness": "fresh",
+      "fetched_at": "2026-10-07T00:41:24+02:00"
     },
     "whatstrends": {
       "ok": true,
@@ -1110,7 +1237,7 @@
       "update_hint": "Last updated: 23 minutes ago # Tweets 1 PSOE <10K posts 2 Sánchez <10K posts 3 Correos <10K po",
       "age_minutes": 23.0,
       "freshness": "fresh",
-      "fetched_at": "2026-10-07T00:32:11+02:00"
+      "fetched_at": "2026-10-07T00:41:24+02:00"
     },
     "cyberkendra": {
       "ok": true,
@@ -1159,10 +1286,10 @@
         "#STAYSPAIN"
       ],
       "error": null,
-      "update_hint": "Last updated 7 October 2026, 4:02 AM IST · refreshes every 30 minutes · verified by Cyber Ken",
+      "update_hint": "Last updated 7 October 2026, 4:11 AM IST · refreshes every 30 minutes · verified by Cyber Ken",
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-07T00:32:13+02:00"
+      "fetched_at": "2026-10-07T00:41:26+02:00"
     },
     "xtrendsiamrohit": {
       "ok": true,
@@ -1219,10 +1346,10 @@
         "#MCCLegends"
       ],
       "error": null,
-      "update_hint": "updated 21 minutes ago",
-      "age_minutes": 21.0,
+      "update_hint": "updated 30 minutes ago",
+      "age_minutes": 30.0,
       "freshness": "fresh",
-      "fetched_at": "2026-10-07T00:32:14+02:00"
+      "fetched_at": "2026-10-07T00:41:28+02:00"
     },
     "trendswe": {
       "ok": false,
@@ -1231,7 +1358,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-07T00:32:15+02:00"
+      "fetched_at": "2026-10-07T00:41:29+02:00"
     },
     "xtrendssaroj": {
       "ok": false,
@@ -1240,7 +1367,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-07T00:32:45+02:00"
+      "fetched_at": "2026-10-07T00:41:59+02:00"
     }
   }
 }
