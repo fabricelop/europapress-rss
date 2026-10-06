@@ -185,9 +185,18 @@ async function deleteTremending(entryId){
   if(stillThere)throw new Error("La entrada Tremending sigue presente después del borrado");
   return {ok:true,entry_id:entry,deleted:true,remaining_count:(next.items||[]).length,url:deleted?.url||null}
 }
-function processingOutcomeVisible(item,decision){
+function clearlyAlreadyPublished(item,decision,publishedIds){
+  const id=String(item?.event_id||item?.id||"").trim();
+  if(id&&String(decision?.status||"").toLowerCase()==="published")return true;
+  const duplicateId=String(item?.duplicate_of_event_id||item?.reconciled_from_event_id||"").trim();
+  return Boolean(duplicateId&&publishedIds?.has(duplicateId))
+}
+function processingOutcomeVisible(item,decision,publishedIds){
   const status=String(item?.status||"").toUpperCase();
   if(!["DISMISSED","SKIPPED_DUPLICATE","ERROR","CANCELLED"].includes(status)||item?.history_hidden_at)return false;
+  // Si existe una relación explícita con una noticia que consta publicada,
+  // no hay decisión útil que pedir al usuario: se elimina de Revisión.
+  if(clearlyAlreadyPublished(item,decision,publishedIds))return false;
   if(status!=="DISMISSED")return true;
   const source=String(item?.dismissal_source||decision?.decision_source||"").toLowerCase();
   if(item?.manual_user_dismissed===true||["web_user","telegram_emergency_callback","manual_user"].includes(source))return false;
@@ -660,6 +669,11 @@ export default async function handler(req,res){
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const decisionMap=new Map((decisions.doc?.items||[]).map(x=>[String(x.event_id||""),x]));
+      const publishedIds=new Set([
+        ...(decisions.doc?.items||[]).filter(x=>String(x.status||"").toLowerCase()==="published").map(x=>String(x.event_id||"")),
+        ...(events.doc?.events||[]).filter(x=>String(x.status||"").toUpperCase()==="PUBLISHED").map(x=>String(x.id||x.event_id||"")),
+        ...(manualArchive.doc?.items||[]).filter(x=>String(x.status||"").toUpperCase()==="PUBLISHED").map(x=>String(x.event_id||""))
+      ].filter(Boolean));
       const closedIds=new Set((decisions.doc?.items||[])
         .filter(x=>["published","dismissed"].includes(String(x.status||"").toLowerCase()))
         .map(x=>String(x.event_id||"")));
@@ -712,7 +726,7 @@ export default async function handler(req,res){
         }));
       const processingItems=[...queueProcessing,...syntheticRewrites];
       const processingOutcomes=(queue.doc?.items||[])
-        .filter(x=>processingOutcomeVisible(x,decisionMap.get(String(x.event_id||""))))
+        .filter(x=>processingOutcomeVisible(x,decisionMap.get(String(x.event_id||"")),publishedIds))
         .map(x=>{
           const ev=eventMap.get(String(x.event_id||""))||{};
           return {
@@ -734,7 +748,10 @@ export default async function handler(req,res){
         })
         .sort((a,b)=>String(b.finished_at||b.selected_at||"").localeCompare(String(a.finished_at||a.selected_at||"")))
         .slice(0,20);
-      const problematicItems=(queue.doc?.items||[]).filter(x=>String(x.status||"")==="PROBLEMATIC"&&!preparedIds.has(String(x.event_id||""))&&!closedIds.has(String(x.event_id||""))).map(x=>{
+      const problematicItems=(queue.doc?.items||[]).filter(x=>{
+        const id=String(x.event_id||"");
+        return String(x.status||"")==="PROBLEMATIC"&&!preparedIds.has(id)&&!closedIds.has(id)&&!clearlyAlreadyPublished(x,decisionMap.get(id),publishedIds)
+      }).map(x=>{
         const ev=eventMap.get(String(x.event_id||""))||{};
         return {
           event_id:String(x.event_id||""),
