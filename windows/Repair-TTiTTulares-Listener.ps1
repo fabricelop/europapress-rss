@@ -4,20 +4,21 @@ $BaseDir="C:\TTiTTulares"
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 
 function Get-GitHubFile([string]$remote,[string]$dest){
-  $api="https://api.github.com/repos/fabricelop/europapress-rss/contents/"+$remote+"?ref=main&t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-  $doc=Invoke-RestMethod -Uri $api -Headers @{
-    "Accept"="application/vnd.github+json"
-    "User-Agent"="TTiTTulares-listener-repair"
+  $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+$remote+"?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  $tmp=$dest+".repair.new.ps1"
+  Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing -Headers @{
+    "User-Agent"="TTiTTulares-listener-repair-raw"
     "Cache-Control"="no-cache"
   } -TimeoutSec 30
-  if(-not $doc.content){throw "Sin contenido GitHub: $remote"}
-  $tmp=$dest+".repair.new.ps1"
-  [IO.File]::WriteAllBytes($tmp,[Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
+  if(-not (Test-Path -LiteralPath $tmp) -or (Get-Item -LiteralPath $tmp).Length -lt 100){
+    throw "RAW vacío/corto: $remote"
+  }
   $t=$null;$e=$null
   [Management.Automation.Language.Parser]::ParseFile($tmp,[ref]$t,[ref]$e)|Out-Null
   if($e.Count -gt 0){throw "PowerShell invalido en $remote :: "+$e[0].Message}
   Move-Item -LiteralPath $tmp -Destination $dest -Force
 }
+
 
 $listener=Join-Path $BaseDir "TTiTTularesDedicatedListener.ps1"
 $trendListener=Join-Path $BaseDir "TTendenciasDedicatedListener.ps1"
