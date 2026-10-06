@@ -474,10 +474,12 @@ function nowcastReliability(){
   const opScore=op?(Number(op.confidence)||0)*opFresh:0;
   return Math.max(rv,opScore);
 }
-function radarBlendWeight(horizonMinutes,reliability=nowcastReliability()){
+function radarBlendThresholds(reliability=nowcastReliability()){
   const r=Math.max(0,Math.min(1,Number(reliability)||0));
-  const full=12+18*r;
-  const zero=48+42*r;
+  return{full:12+18*r,zero:48+42*r};
+}
+function radarBlendWeight(horizonMinutes,reliability=nowcastReliability()){
+  const {full,zero}=radarBlendThresholds(reliability);
   if(horizonMinutes<=full)return .9;
   if(horizonMinutes>=zero)return 0;
   return .9*(1-(horizonMinutes-full)/Math.max(1,zero-full));
@@ -486,6 +488,72 @@ function nowcastReliableHorizon(){
   const rv=Math.max(20,Math.min(90,Number(state.nowcast?.reliableHorizonMinutes)||45));
   const op=operaNowcastInfo(),opH=op?Math.max(20,Math.min(80,25+50*(Number(op.confidence)||0))):0;
   return Math.round(Math.max(rv,opH));
+}
+
+function confidenceGrade(value){
+  const p=pct(value);
+  if(p>=75)return{label:'ALTA',key:'high',percent:p};
+  if(p>=50)return{label:'MEDIA',key:'medium',percent:p};
+  return{label:'BAJA',key:'low',percent:p};
+}
+function confidenceMarkup(value){
+  if(value==null||!Number.isFinite(Number(value)))return'—';
+  const g=confidenceGrade(value);
+  return '<span class="confGrade '+g.key+'">'+g.label+'</span><small class="confPct">'+g.percent+'%</small>';
+}
+function decisionBasisInfo(decision){
+  const ev=decision?.event,now=decision?.now||Date.now(),reliable=nowcastReliableHorizon();
+  const lead=ev?.start?Math.max(0,(Date.parse(ev.start)-now)/60_000):0;
+  const radarDriven=['radar','opera','radarFusion','observed'].includes(ev?.kind);
+  if(decision?.mode==='rain_now'||decision?.mode==='possible_now'||radarDriven&&lead<=reliable){
+    return{label:'Basado en radar',key:'radar'};
+  }
+  const blend=radarBlendWeight(Math.min(SHORT_HORIZON_MINUTES,lead),nowcastReliability());
+  if(ev&&lead<=SHORT_HORIZON_MINUTES&&blend>=.20)return{label:'Radar + modelos',key:'mixed'};
+  return{label:'Basado principalmente en modelos',key:'models'};
+}
+function renderDecisionBasis(decision){
+  const el=$('decisionBasis');if(!el)return;
+  const basis=decisionBasisInfo(decision),g=decision?.confidence!=null?confidenceGrade(decision.confidence):null;
+  el.className='decisionBasis '+basis.key;
+  el.innerHTML='<span>'+basis.label+'</span>'+(g?'<b>Confianza '+g.label.toLowerCase()+' <small>'+g.percent+'%</small></b>':'');
+  if(($('metricConfLabel')?.textContent||'').toLowerCase().includes('confianza')&&decision?.confidence!=null){
+    $('conf').innerHTML=confidenceMarkup(decision.confidence);
+  }
+}
+function importantPhenomenon(){
+  const now=Date.now(),limit=now+24*3600_000;
+  for(const event of canonicalEvents()){
+    if(Date.parse(event.end)<=now||Date.parse(event.start)>limit)continue;
+    const rows=eventDetailRows(event);
+    const severe=rows.filter(row=>{
+      const rate=Number(row.precipitation)||0,code=Number(row.weatherCode);
+      return rate>=7.5||[95,96,99].includes(code);
+    });
+    if(!severe.length)continue;
+    const groups=[];
+    for(const row of severe){
+      const start=Date.parse(row.time),end=Date.parse(row.end),rate=Number(row.precipitation)||0,storm=[95,96,99].includes(Number(row.weatherCode));
+      const last=groups.at(-1);
+      if(last&&start<=last.end+60_000&&last.storm===storm){
+        last.end=Math.max(last.end,end);last.peak=Math.max(last.peak,rate);
+      }else groups.push({start,end,peak:rate,storm});
+    }
+    const g=groups[0];
+    return{
+      kind:g.storm?'storm':'heavy',
+      title:g.storm?'Tormenta prevista':'Lluvia fuerte prevista',
+      start:g.start,end:g.end,peak:g.peak
+    };
+  }
+  return null;
+}
+function renderImportantPhenomenon(){
+  const el=$('importantPhenomenon');if(!el)return;
+  const item=importantPhenomenon();
+  if(!item){el.hidden=true;el.innerHTML='';return}
+  el.hidden=false;el.className='importantPhenomenon '+item.kind;
+  el.innerHTML='<strong>'+(item.kind==='storm'?'⚡ ':'⚠ ')+item.title+'</strong><span>'+fmtDateTime(item.start)+'–'+fmtTime(item.end)+(item.peak>=7.5?' · pico ~'+item.peak.toFixed(1).replace('.',',')+' mm/h':'')+'</span>';
 }
 
 function intensityLabel(rate){
