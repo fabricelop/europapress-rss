@@ -931,11 +931,11 @@ function etaTrendText(ev){
   const idx=rows.findIndex(x=>x.marker===marker),prev=idx>0?rows[idx-1]:null;
   const parts=[];
   if(ev.kind==='radarFusion'){
-    parts.push('ETA cruzada RainViewer + OPERA');
+    parts.push('ETA cruzada radar + radar europeo');
   }
   if(ev.disagreementMinutes){
-    const chosen=ev.kind==='opera'?'OPERA':'RainViewer';
-    parts.push('RainViewer y OPERA discrepan ~'+ev.disagreementMinutes+' min · se prioriza '+chosen+(ev.adaptiveChoice?' con historial local':''));
+    const chosen=ev.kind==='opera'?'radar europeo':'radar RainViewer';
+    parts.push('Radar y radar europeo discrepan ~'+ev.disagreementMinutes+' min · se prioriza '+chosen);
   }
   if(ev.kind==='radar'&&ev.event?.stabilizationSamples>=2){
     const s=ev.event,spread=Number(s.historicalSpreadMinutes)||0;
@@ -1818,9 +1818,9 @@ function renderSources(){
     ? ' · movimiento '+(Number.isFinite(opSpeed)?Math.round(opSpeed)+' km/h'+(opDir?' '+opDir:''):'calculado')+(opEvent?.start?' · ETA '+fmtTime(opEvent.start):' · sin llegada en 2 h')
     : opNow?.status?' · nowcast '+opNow.status:'';
   const list=[
-    {label:'EUMETNET OPERA',ok:Boolean(state.data.sources.opera),detail:opera?.ok
-      ? 'RATE '+(opera.resolutionKm||2)+' km / 5 min · '+fmtTime(opera.observedAt)+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+opMotion
-      : 'backend sin compuesto reciente'},
+    {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opera?.ok
+      ? 'EUMETNET OPERA · RATE '+(opera.resolutionKm||2)+' km / 5 min · '+fmtTime(opera.observedAt)+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+opMotion
+      : 'EUMETNET OPERA sin compuesto reciente'},
     {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'?'movimiento + intensidad dBZ':state.nowcast?.status||'solo mapa'},
     {label:'Modelo 15 min',ok:state.data.sources.quarterHour,detail:'guía temporal; puede ser interpolada según zona/modelo'},
     ...state.data.sources.deterministic.map(x=>({label:x.label,ok:x.ok,detail:'determinista'})),
@@ -2382,9 +2382,17 @@ if('serviceWorker'in navigator){
     reg.update().catch(()=>{});
   }).catch(()=>{});
 }
+function scheduleAlignedLiveRefresh(){
+  const now=Date.now(),lag=8_000;
+  const next=Math.ceil(now/RADAR_REFRESH_MS)*RADAR_REFRESH_MS+lag;
+  setTimeout(async()=>{
+    if(document.visibilityState==='visible')await refreshRadar();
+    scheduleAlignedLiveRefresh();
+  },Math.max(5_000,next-now));
+}
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible'&&Date.now()-state.lastRadarRefresh>RADAR_REFRESH_MS)refreshRadar();
+  if(document.visibilityState==='visible'&&Date.now()-state.lastRadarRefresh>90_000)refreshRadar();
 });
-setInterval(()=>{if(document.visibilityState==='visible')refreshRadar()},RADAR_REFRESH_MS);
+scheduleAlignedLiveRefresh();
 setInterval(()=>{if(document.visibilityState==='visible'&&state.data)updateLiveCountdown()},1000);
 load();
