@@ -1,4 +1,4 @@
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes} from "../rain/radar-core.js";
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes} from "../rain/radar-core.js";
 const S3='https://s3.waw3-1.cloudferro.com/openradar-24h';
 
 function floor5(date){
@@ -111,7 +111,15 @@ async function buildOperaNowcast(frames,lat,lon){
   }
   const motion=combineMotionEstimates(norm);
   const previous=grids.at(-2),previousMask=previous?operaMask(previous.window):null;
-  const localFlow=motion&&previousMask?estimateLocalFlow(previousMask,latestMask,latest.window.width,latest.window.height,{maxShift:8,grid:5,patchRadius:10}):null;
+  const localFlows=[];
+  if(motion){
+    for(let i=1;i<grids.length;i++){
+      const prevMask=operaMask(grids[i-1].window),curMask=operaMask(grids[i].window);
+      const flow=estimateLocalFlow(prevMask,curMask,latest.window.width,latest.window.height,{maxShift:8,grid:5,patchRadius:10});
+      if(flow)localFlows.push(flow);
+    }
+  }
+  const localFlow=combineLocalFlows(localFlows);
   const evolution=motion&&previousMask?evolutionReliability(previousMask,latestMask,latest.window.width,latest.window.height,motion):{score:0,overlap:0,densityStable:0};
   const point=summarizeOperaPoint(latest.window);
   const baseConfidence=Math.max(0,Math.min(.98,(motion?.confidence||0)*(.72+.28*evolution.score)));
