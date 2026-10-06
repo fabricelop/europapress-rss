@@ -37,7 +37,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.6.0',renameTarget:null
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.6.1',renameTarget:null
 };
 
 function iso(v){
@@ -904,11 +904,6 @@ $('play').onclick=function(){
 if('serviceWorker'in navigator){
   navigator.serviceWorker.register('/rain/sw.js',{updateViaCache:'none'}).then(reg=>{
     reg.update().catch(()=>{});
-    navigator.serviceWorker.addEventListener('controllerchange',()=>{
-      if(sessionStorage.getItem('raineta.swReloaded')==='1')return;
-      sessionStorage.setItem('raineta.swReloaded','1');
-      location.reload();
-    });
   }).catch(()=>{});
 }
 document.addEventListener('visibilitychange',()=>{
