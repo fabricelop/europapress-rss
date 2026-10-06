@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071018">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>RainETA</title>
+<link rel="manifest" href="/rain/manifest.webmanifest">
+<link rel="icon" href="/rain/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/rain/icon.svg">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<style>
+:root{color-scheme:dark;--b:#071018;--c:#101c26;--m:#8fa7b8;--r:#5cc8ff;--l:#223444;--g:#50d890;--bad:#ff7b7b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 60% -10%,#17304a,var(--b) 42%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f5f9fb}
+button,input{font:inherit}.app{max-width:760px;margin:auto;padding:calc(env(safe-area-inset-top) + 15px) 14px calc(38px + env(safe-area-inset-bottom))}
+header,.head{display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-size:19px;font-weight:850}.actions{display:flex;gap:7px}.place,.iconbtn{border:1px solid var(--l);background:var(--c);color:#fff;padding:9px 12px;border-radius:999px}.iconbtn{width:42px;padding:9px 0}
+.card{margin-top:13px;background:rgba(16,28,38,.93);border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:16px}.hero{padding:22px}.k{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--m);font-weight:800}
+.eta{font-size:clamp(38px,11vw,66px);line-height:1;letter-spacing:-.055em;margin:8px 0}.eta span{color:var(--r)}.sub,.status,small{color:var(--m)}.status{font-size:12px;margin-top:10px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:18px}.metric{background:rgba(0,0,0,.17);border-radius:14px;padding:10px}.metric small{display:block;font-size:10px;text-transform:uppercase}.metric b{display:block;margin-top:4px;font-size:13px}
+.head{margin-bottom:10px}.head h2{font-size:16px;margin:0}.head small{font-size:11px}#timeline{height:105px;display:flex;gap:2px;align-items:end;overflow:hidden}.bar{flex:1;min-width:3px;background:linear-gradient(#5cc8ff,#2878c7);border-radius:4px 4px 0 0}.bar.d{background:#29404f;opacity:.45}
+.events{display:grid;gap:7px}.event{display:grid;grid-template-columns:1fr auto;gap:10px;padding:10px;border-radius:14px;background:rgba(255,255,255,.035)}.event small{display:block;margin-top:3px}.prob{color:var(--r);font-weight:850}
+#map{height:330px;border-radius:17px;overflow:hidden;background:#17232b}.radar{display:flex;gap:9px;align-items:center;margin-top:9px}.radar input{flex:1}.round{width:40px;height:40px;border:0;border-radius:50%;font-size:18px}
+.sourceCard summary{cursor:pointer;font-weight:800;list-style:none;display:flex;justify-content:space-between;align-items:center}.sourceCard summary::-webkit-details-marker{display:none}.sourceCard summary:after{content:'＋';color:var(--m)}.sourceCard[open] summary:after{content:'−'}.sources{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}.source{font-size:11px;padding:8px;border-radius:10px;background:rgba(255,255,255,.03);display:flex;justify-content:space-between;gap:8px}.source span small{display:block;margin-top:2px}.source i{font-style:normal;font-weight:800}.source i.ok{color:var(--g)}.source i.bad{color:var(--bad)}
+dialog{border:1px solid #2b4353;background:#0b1720;color:#fff;border-radius:20px;width:min(520px,calc(100% - 24px));padding:18px}.search{display:flex;gap:7px}.search input{flex:1;min-width:0;background:#08121a;color:#fff;border:1px solid var(--l);border-radius:12px;padding:12px}.search button,.geo{border:0;border-radius:12px;background:#4dbfff;color:#041019;font-weight:800;padding:0 14px}.geo{width:100%;padding:12px;margin:12px 0}.results button{width:100%;text-align:left;border:0;color:#fff;background:rgba(255,255,255,.04);padding:10px;border-radius:10px;margin-top:5px}
+.foot{text-align:center;color:var(--m);font-size:11px;margin:13px 8px 0}
+@media(max-width:560px){.metrics{grid-template-columns:1fr 1fr}.sources{grid-template-columns:1fr}.hero{padding:18px}#map{height:300px}}
+</style>
+</head>
+<body>
+<main class="app">
+<header><div class="brand">🌧 RainETA</div><div class="actions"><button class="iconbtn" id="refresh" aria-label="Actualizar">↻</button><button class="place" id="place">Madrid</button></div></header>
+
+<section class="card hero">
+<div class="k">Próxima lluvia</div>
+<div class="eta" id="eta">Calculando…</div>
+<div class="sub" id="summary">Fusionando radar, modelos y ensembles.</div>
+<div class="metrics">
+<div class="metric"><small>Inicio</small><b id="start">—</b></div>
+<div class="metric"><small>Fin</small><b id="end">—</b></div>
+<div class="metric"><small>Confianza</small><b id="conf">—</b></div>
+<div class="metric"><small>Duración</small><b id="dur">—</b></div>
+</div>
+<div class="status" id="health"></div><div class="status" id="updated"></div>
+</section>
+
+<section class="card"><div class="head"><h2>Próximas 72 horas</h2><small>consenso horario</small></div><div id="timeline"></div></section>
+<section class="card"><div class="head"><h2>Episodios previstos</h2><small>inicio · fin · pico</small></div><div class="events" id="events"></div></section>
+<section class="card"><div class="head"><h2>Radar real</h2><small id="radarTime">últimos barridos</small></div><div id="map"></div><div class="radar"><button class="round" id="play">▶</button><input id="frame" type="range" min="0" max="0" value="0"></div><div class="status">Los últimos barridos se analizan en el propio dispositivo para estimar movimiento y ETA 0–2 h cuando la señal es suficientemente estable.</div></section>
+<details class="card sourceCard"><summary><span>Fuentes y modelos</span><small id="sourceCount">estado</small></summary><div class="sources" id="sources"></div></details>
+<div class="foot">Open-Meteo · RainViewer · OpenStreetMap. RainETA muestra incertidumbre: cuanto más lejano el horizonte, menos precisa es la hora.</div>
+</main>
+
+<dialog id="dlg"><div class="head"><h2>Cambiar lugar</h2><button class="place" id="close">Cerrar</button></div><button class="geo" id="geo">Usar mi ubicación exacta</button><div class="search"><input id="q" placeholder="Ciudad o localidad" autocomplete="off"><button id="search">Buscar</button></div><div class="results" id="results"></div></dialog>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script type="module" src="/rain/app.js"></script>
+</body>
+</html>
