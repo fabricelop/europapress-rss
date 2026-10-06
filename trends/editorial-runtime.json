@@ -2,8 +2,8 @@
   "project": "TTendencias",
   "engine": "chat-direct",
   "last_started_at": "2026-10-06T10:45:00.000Z",
-  "last_completed_at": "2026-10-06T10:52:15.000Z",
-  "updated_at": "2026-10-06T10:52:15.000Z",
+  "last_completed_at": "2026-10-06T10:53:00.000Z",
+  "updated_at": "2026-10-06T10:53:00.000Z",
   "status": "success",
   "processed_ids": [
     "651447f8ff6c"
@@ -25,8 +25,8 @@
     "trend_id": null,
     "title": null,
     "started_at": "2026-10-06T10:45:00.000Z",
-    "updated_at": "2026-10-06T10:52:15.000Z",
-    "finished_at": "2026-10-06T10:52:15.000Z",
+    "updated_at": "2026-10-06T10:53:00.000Z",
+    "finished_at": "2026-10-06T10:53:00.000Z",
     "incident_count": 0,
     "incidents": [],
     "summary": {
@@ -51,7 +51,7 @@
       "remates_omitted": 0,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada completada 1/1. #StarWarsGalacticRacerEnGAME r0 quedó explicada y verificada; cola final 0. La reparación visual automática quedó lanzada de forma independiente.",
+    "message": "Pasada completada 1/1. #StarWarsGalacticRacerEnGAME r0 quedó explicada y verificada; cola final 0. La reparación visual automática terminó correctamente.",
     "activity": [
       {
         "at": "2026-10-06T10:45:00.000Z",
@@ -180,11 +180,11 @@
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-06T10:52:15.000Z",
+        "at": "2026-10-06T10:53:00.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 1/1 explicada · cola final 0 · reparación visual lanzada"
+        "message": "Pasada cerrada · 1/1 explicada · cola final 0 · reparación visual completada"
       }
     ],
     "ratings_snapshot": {
@@ -262,8 +262,8 @@
     "visual_repair": {
       "requested": true,
       "persisted_trigger": true,
-      "status": "running",
-      "phase": "workflow_dispatch",
+      "status": "completed_success",
+      "phase": "verified",
       "command_id": "tr-chat-20261006T104500Z",
       "direct_imagegen": false,
       "workflow_run_id": 37452572912
@@ -272,8 +272,8 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "running",
-    "phase": "workflow_dispatch",
+    "status": "completed_success",
+    "phase": "verified",
     "command_id": "tr-chat-20261006T104500Z",
     "direct_imagegen": false,
     "workflow_run_id": 37452572912
