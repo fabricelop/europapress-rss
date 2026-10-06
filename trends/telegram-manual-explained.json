@@ -31272,11 +31272,11 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selected_tweet_image": null,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image": {
@@ -31288,13 +31288,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://imagenes.elpais.com/resizer/v2/CAILFN3B7JATZJ67ECLI2MBPPI.jpg?auth=24de060a64cebbd3049ecc41e9235e4531481c885eb01f08f75977316d479e31&width=1200",
-        "source": "El País · 6/10/2026",
-        "source_url": "https://elpais.com/espana/elecciones-generales/2026-10-06/el-pp-inicia-la-precampana-con-un-video-en-el-que-se-burla-de-una-grave-lesion-de-oscar-puente-miedo-tu-esguince.html",
-        "alt": "Imagen de archivo relacionada con Óscar Puente",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/2e51a7a10dd3-r0-ai1-791297571997.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "7c3b0f6e418d916a66fcb228b188fe2ca63725e993844a41125046df47536aa1",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2070564,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "2e51a7a10dd3",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-2e51a7a10dd3-r0-a1-1791297571997"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/2e51a7a10dd3-r0-ai1-791297571997.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/2e51a7a10dd3-r0-ai1-791297571997.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "7c3b0f6e418d916a66fcb228b188fe2ca63725e993844a41125046df47536aa1",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2070564,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "2e51a7a10dd3",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-2e51a7a10dd3-r0-a1-1791297571997"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/2e51a7a10dd3-r0-ai1-791297571997.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T14:41:52.755Z"
     },
     {
       "id": "892ed4e530dc",
@@ -31412,6 +31451,6 @@
       "selected_tweet_image": null
     }
   ],
-  "updated_at": "2026-10-06T14:35:10.000Z",
+  "updated_at": "2026-10-06T14:41:52.755Z",
   "count": 591
 }
