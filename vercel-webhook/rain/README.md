@@ -1,9 +1,9 @@
-# RainETA v0.16.0
+# RainETA v0.17.0
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
 ## Motor por horizonte
-- **0–2 h:** analiza varios barridos de RainViewer en el navegador. Estima el desplazamiento de la precipitación y proyecta su llegada al punto. El estado “llueve ahora” usa el centro exacto de la muestra de radar; si el movimiento no es suficientemente estable, no inventa una ETA.
+- **0–3 h:** la banda corta combina radar, radar europeo y modelos. El radar puede proyectarse visualmente hasta 3 h, pero solo tiene autoridad dentro de su horizonte fiable dinámico; después el peso cae a cero y mandan modelos/consenso.
 - **0–8 h:** añade guía de precipitación a 15 minutos de Open-Meteo, marcada explícitamente como potencialmente interpolada en España.
 - **0–72 h:** fusiona deterministas y ensembles. La influencia de ensembles aumenta con el horizonte y la confianza queda limitada progresivamente cuanto más lejos está el episodio.
 
@@ -100,6 +100,17 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Interfaz por fuente y radar extendido v0.17.0
+- La banda corta pasa de **0–120 min a 0–180 min** en pasos de 5 minutos.
+- El fondo/encabezado de la banda diferencia visualmente **RADAR**, **MEZCLA** y **MODELOS**, de acuerdo con el peso real del nowcast.
+- La extrapolación visual del mapa radar se amplía hasta **+180 min**. Más allá del horizonte fiable se atenúa aún más; no se utiliza como evidencia canónica.
+- El slider del radar marca explícitamente **fiable hasta ~HH:MM**.
+- La tarjeta principal muestra una línea compacta `Basado en radar / Radar + modelos / Basado principalmente en modelos` y confianza **ALTA / MEDIA / BAJA**, manteniendo el porcentaje en pequeño.
+- Se añade **Próximo fenómeno importante** solo cuando en las próximas 24 h hay lluvia fuerte o tormenta.
+- Los episodios lejanos aparecen plegados en una sola línea; se abren para ver evolución y detalle 15/30 min. Los episodios activos o dentro de 3 h se abren automáticamente.
+- `Mis lugares` se reduce a tres datos rápidos: **Ahora**, **Próxima lluvia** y **Hasta cuándo**.
+- AEMET sigue preparado como siguiente fuente española, pero no se activa sin `AEMET_API_KEY`; no se añade una función Serverless nueva.
 
 ## Nowcast v2: flujo local + relevo a modelos v0.16.0
 - RainViewer deja de proyectarse con un único vector rígido para la decisión de lluvia. El cliente estima **movimiento local** en una malla de zonas y sigue el eco que puede alcanzar el punto.
