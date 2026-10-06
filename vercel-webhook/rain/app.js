@@ -1761,11 +1761,11 @@ function detailRow(slot,minutes,hourly,short){
       probability=Math.round((shortWet.length?Math.max(...shortWet.map(p=>p.probability)):Math.max(...shortBucket.map(p=>p.probability),0))*100);
       rate=shortWet.length?shortWet.reduce((sum,p)=>sum+p.rate,0)/shortWet.length:0;
       source='Radar / nowcast';
-    }else if(quarterHourSupports(center)){
+    }else if(nativeQuarterHourLikely()&&quarterHourSupports(center)){
       rate=quarterHourRateAt(center);
       const signal=rate<=.05?0:Math.min(.82,.30+Math.log1p(rate)*.26);
       probability=Math.max(probability,Math.round(signal*100));
-      source='Modelo 15 min';
+      source='Modelo 15 min nativo';
     }
   }
   const row={
