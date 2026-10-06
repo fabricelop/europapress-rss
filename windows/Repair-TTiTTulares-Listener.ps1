@@ -1,10 +1,11 @@
 # Repair-TTiTTulares-Listener.ps1
 $ErrorActionPreference="Stop"
 $BaseDir="C:\TTiTTulares"
+$SourceRef="842f65542b606b0a1ed20dcbdde0bdc499da4d44"
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 
 function Get-GitHubFile([string]$remote,[string]$dest,[string]$kind="ps"){
-  $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+$remote+"?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/"+$SourceRef+"/"+$remote
   $tmp=$dest+$(if($kind -eq "js"){".repair.new.js"}else{".repair.new.ps1"})
   Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing -Headers @{
     "User-Agent"="TTiTTulares-listener-repair-raw-v2"
