@@ -693,6 +693,15 @@ function renderShortNowcast(){
   const leadMinutes=near?Math.max(0,(Date.parse(ev.start)-now)/60_000):dry?Math.max(0,(Date.parse(dry.end)-now)/60_000):120;
   const shortConfidence=near?calibratedConfidence(ev.confidence,leadMinutes):dry?calibratedConfidence(dry.confidence,leadMinutes):null;
   $('shortConfidence').textContent=shortConfidence!=null?pct(shortConfidence)+'%':'—';
+  const reliable=nowcastReliableHorizon(),evolution=Number(state.nowcast?.evolution?.score)||0;
+  const evolutionLabel=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
+  if($('blendLegend')){
+    $('blendLegend').innerHTML='<span><b>0–'+reliable+' min</b> radar + radar europeo</span><span><b>después</b> transición a modelos</span>';
+  }
+  if($('nowcastQuality')){
+    $('nowcastQuality').textContent='Evolución '+evolutionLabel+' · radar útil ~'+reliable+' min';
+    $('nowcastQuality').className='nowcastQuality '+(evolution>=.72?'good':evolution>=.48?'medium':'low');
+  }
   renderRadarSkill();
 
   const maxRate=Math.max(.35,Math.min(12,Math.max(...points.map(p=>p.rate))));
@@ -2030,10 +2039,14 @@ function renderSources(){
     : opNow?.status?' · nowcast '+opNow.status:'';
   const list=[
     {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opera?.ok
-      ? 'EUMETNET OPERA · RATE '+(opera.resolutionKm||2)+' km / 5 min · '+fmtTime(opera.observedAt)+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+opMotion
+      ? 'EUMETNET OPERA · RATE '+(opera.resolutionKm||2)+' km / 5 min · '+fmtTime(opera.observedAt)+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+(opNow?.status==='ok'?' · flujo local · útil ~'+Math.round(Number(opNow.reliableHorizonMinutes)||45)+' min':'')+opMotion
       : 'EUMETNET OPERA sin compuesto reciente'},
-    {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'?'movimiento + intensidad dBZ':state.nowcast?.status||'solo mapa'},
-    {label:'Modelo 15 min',ok:state.data.sources.quarterHour,detail:'guía temporal; puede ser interpolada según zona/modelo'},
+    {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'
+      ? 'flujo local + evolución · útil ~'+nowcastReliableHorizon()+' min'
+      : state.nowcast?.status||'solo mapa'},
+    {label:nativeQuarterHourLikely()?'Modelo 15 min nativo':'Guía temporal',ok:state.data.sources.quarterHour,detail:nativeQuarterHourLikely()
+      ? 'resolución de 15 min disponible para esta zona'
+      : 'en esta ubicación el dato de 15 min se trata como interpolado; no amplía la resolución real'},
     ...state.data.sources.deterministic.map(x=>({label:x.label,ok:x.ok,detail:'determinista'})),
     ...state.data.sources.ensembles.map(x=>({label:x.label,ok:x.ok,detail:x.members?x.members+' miembros':'ensemble'}))
   ];
