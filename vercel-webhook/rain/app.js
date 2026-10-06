@@ -99,6 +99,37 @@ function probabilityBand(value){
   const p=Number(value)||0;
   return p>=.85?'p85':p>=.70?'p70':p>=.50?'p50':'p35';
 }
+const RADAR_PALETTE=[
+  {dbz:0,rgba:[130,123,105,73]},
+  {dbz:5,rgba:[146,136,113,100]},
+  {dbz:10,rgba:[206,192,135,150]},
+  {dbz:15,rgba:[136,221,238,255]},
+  {dbz:20,rgba:[0,163,224,255]},
+  {dbz:25,rgba:[0,119,170,255]},
+  {dbz:30,rgba:[0,85,136,255]},
+  {dbz:35,rgba:[255,238,0,255]},
+  {dbz:40,rgba:[255,170,0,255]},
+  {dbz:45,rgba:[255,68,0,255]},
+  {dbz:50,rgba:[193,0,0,255]},
+  {dbz:55,rgba:[255,170,255,255]},
+  {dbz:60,rgba:[255,119,255,255]},
+  {dbz:65,rgba:[255,255,255,255]}
+];
+function radarDbzFromRgba(r,g,b,a){
+  if(a<45)return null;
+  let best=null,bestDist=Infinity;
+  for(const entry of RADAR_PALETTE){
+    const [er,eg,eb,ea]=entry.rgba;
+    const dist=(r-er)**2+(g-eg)**2+(b-eb)**2+((a-ea)*.65)**2;
+    if(dist<bestDist){bestDist=dist;best=entry.dbz}
+  }
+  return bestDist<7000?best:null;
+}
+function dbzToRainRate(dbz){
+  if(!Number.isFinite(dbz)||dbz<10)return 0;
+  const z=10**(dbz/10);
+  return Math.min(80,(z/200)**(1/1.6));
+}
 function cacheKey(){return 'raineta.forecast.'+state.loc.lat.toFixed(2)+','+state.loc.lon.toFixed(2)}
 function timeoutFetch(url,ms=9000,opts={}){
   const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);
@@ -228,15 +259,17 @@ async function imageMask(url){
   ctx.imageSmoothingEnabled=false;
   ctx.drawImage(bitmap,0,0,ANALYSIS_SIZE,ANALYSIS_SIZE);
   if(bitmap.close)bitmap.close();
-  const d=ctx.getImageData(0,0,ANALYSIS_SIZE,ANALYSIS_SIZE).data,mask=new Uint8Array(ANALYSIS_SIZE*ANALYSIS_SIZE);
+  const d=ctx.getImageData(0,0,ANALYSIS_SIZE,ANALYSIS_SIZE).data,mask=new Uint8Array(ANALYSIS_SIZE*ANALYSIS_SIZE),rateGrid=new Float32Array(ANALYSIS_SIZE*ANALYSIS_SIZE);
   let wet=0;
   for(let i=0,p=0;i<mask.length;i++,p+=4){
-    const a=d[p+3],rgb=d[p]+d[p+1]+d[p+2];
-    const v=a>14&&rgb>24?1:0;mask[i]=v;wet+=v;
+    const dbz=radarDbzFromRgba(d[p],d[p+1],d[p+2],d[p+3]);
+    const rate=dbzToRainRate(dbz);
+    const v=Number.isFinite(dbz)&&dbz>=10?1:0;
+    mask[i]=v;rateGrid[i]=rate;wet+=v;
   }
   const density=wet/mask.length;
   if(density>.90)throw new Error('radar mask opaca');
-  return{mask,width:ANALYSIS_SIZE,height:ANALYSIS_SIZE,density};
+  return{mask,rateGrid,width:ANALYSIS_SIZE,height:ANALYSIS_SIZE,density};
 }
 function frameStep(frames){
   const d=[];for(let i=1;i<frames.length;i++){const v=(frames[i].time-frames[i-1].time)/60;if(v>0&&v<=30)d.push(v)}
@@ -262,10 +295,11 @@ async function computeNowcast(meta){
     if(m)estimates.push(m);
   }
   const motion=combineMotionEstimates(estimates),latest=masks.at(-1),step=frameStep(masks);
-  const center=(ANALYSIS_SIZE-1)/2,current=wetNear(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,center,center,1.5);
-  const base={status:'motion_uncertain',confidence:motion?.confidence||0,event:null,rainingNow:current>=.10,currentWetFraction:current,radarTime:new Date(latest.time*1000).toISOString(),decodedFrames:masks.length};
+  const center=(ANALYSIS_SIZE-1)/2,current=wetNear(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,center,center,0);
+  const currentRadarRate=latest.rateGrid?.[Math.round(center)*ANALYSIS_SIZE+Math.round(center)]||0;
+  const base={status:'motion_uncertain',confidence:motion?.confidence||0,event:null,rainingNow:current>=.10,currentWetFraction:current,currentRadarRate,radarTime:new Date(latest.time*1000).toISOString(),decodedFrames:masks.length};
   if(!motion||motion.samples<2||motion.confidence<.22)return base;
-  const series=projectPointSeries(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:0});
+  const series=projectPointSeries(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:0,intensityGrid:latest.rateGrid});
   let event=detectNowcastEvent(series,{enterWetFraction:.10,exitWetFraction:.035,minConsecutive:2,stepMinutes:5});
   if(event){
     const t=latest.time*1000;
