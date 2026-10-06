@@ -1,4 +1,4 @@
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,nowcastUncertaintyMinutes} from "../rain/radar-core.js";
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes} from "../rain/radar-core.js";
 const S3='https://s3.waw3-1.cloudferro.com/openradar-24h';
 
 function floor5(date){
@@ -110,21 +110,36 @@ async function buildOperaNowcast(frames,lat,lon){
     }
   }
   const motion=combineMotionEstimates(norm);
-  const point=summarizeOperaPoint(latest.window),base={
+  const previous=grids.at(-2),previousMask=previous?operaMask(previous.window):null;
+  const localFlow=motion&&previousMask?estimateLocalFlow(previousMask,latestMask,latest.window.width,latest.window.height,{maxShift:8,grid:5,patchRadius:10}):null;
+  const evolution=motion&&previousMask?evolutionReliability(previousMask,latestMask,latest.window.width,latest.window.height,motion):{score:0,overlap:0,densityStable:0};
+  const point=summarizeOperaPoint(latest.window);
+  const baseConfidence=Math.max(0,Math.min(.98,(motion?.confidence||0)*(.72+.28*evolution.score)));
+  const reliableHorizonMinutes=Math.round(20+50*Math.max(0,Math.min(1,evolution.score*.7+baseConfidence*.3)));
+  const base={
     status:'motion_uncertain',
-    confidence:motion?.confidence||0,
+    confidence:baseConfidence,
     event:null,
     observedAt:latest.observedAt.toISOString(),
     decodedFrames:grids.length,
-    currentRateMmH:point?.ok?point.rateMmH:0
+    currentRateMmH:point?.ok?point.rateMmH:0,
+    evolution,
+    reliableHorizonMinutes,
+    localFlowCoverage:Number(localFlow?.coverage)||0
   };
-  if(!motion||motion.confidence<.20)return base;
+  if(!motion||baseConfidence<.20)return base;
   const geo=operaMotionGeo(motion,latest.window.resolution,5);
   if(!Number.isFinite(geo.speedKmh)||geo.speedKmh<2||geo.speedKmh>220)return{...base,motion:{...geo,samples:motion.samples,consistency:motion.consistency}};
-  const series=projectPointSeries(
-    latestMask,latest.window.width,latest.window.height,motion,
-    {horizonMinutes:120,sourceStepMinutes:5,outputStepMinutes:5,radius:1,intensityGrid:latest.window.rates}
-  ).map(row=>({
+  const rawSeries=localFlow
+    ? projectPointSeriesFlow(
+        latestMask,latest.window.width,latest.window.height,localFlow,motion,
+        {horizonMinutes:120,sourceStepMinutes:5,outputStepMinutes:5,radius:1,intensityGrid:latest.window.rates,reliability:evolution.score}
+      )
+    : projectPointSeries(
+        latestMask,latest.window.width,latest.window.height,motion,
+        {horizonMinutes:120,sourceStepMinutes:5,outputStepMinutes:5,radius:1,intensityGrid:latest.window.rates}
+      );
+  const series=rawSeries.map(row=>({
     minute:row.minute,
     wetFraction:row.wetFraction,
     probability:row.probability,
@@ -138,7 +153,7 @@ async function buildOperaNowcast(frames,lat,lon){
   );
   const qualityValues=Array.from(latest.window.qualities||[]).filter(v=>Number.isFinite(v)&&v>0);
   const patchQuality=qualityValues.length?medianFinite(qualityValues):null;
-  const confidence=Math.max(0,Math.min(.95,motion.confidence*(patchQuality==null?1:(.72+.28*Math.max(0,Math.min(1,patchQuality))))));
+  const confidence=Math.max(0,Math.min(.95,baseConfidence*(patchQuality==null?1:(.72+.28*Math.max(0,Math.min(1,patchQuality))))));
   if(event){
     const baseMs=latest.observedAt.getTime();
     event={
@@ -153,7 +168,7 @@ async function buildOperaNowcast(frames,lat,lon){
     status:'ok',
     confidence,
     event,
-    motion:{...geo,samples:motion.samples,consistency:motion.consistency,gridDxPer5Min:motion.dx,gridDyPer5Min:motion.dy},
+    motion:{...geo,samples:motion.samples,consistency:motion.consistency,gridDxPer5Min:motion.dx,gridDyPer5Min:motion.dy,localFlow:Boolean(localFlow)},
     series,
     patchQuality
   };
