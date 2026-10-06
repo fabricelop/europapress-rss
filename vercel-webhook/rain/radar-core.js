@@ -37,13 +37,25 @@ export function wetNear(mask,w,h,x,y,r=1){
   for(let yy=Math.max(0,Math.floor(y-r));yy<=Math.min(h-1,Math.ceil(y+r));yy++)for(let xx=Math.max(0,Math.floor(x-r));xx<=Math.min(w-1,Math.ceil(x+r));xx++){total++;wet+=mask[yy*w+xx]?1:0}
   return total?wet/total:0;
 }
-export function projectPointSeries(mask,w,h,motion,{horizonMinutes=120,sourceStepMinutes=10,outputStepMinutes=5,radius=1}={}){
+export function valueNear(grid,w,h,x,y,r=1){
+  if(!grid?.length)return 0;
+  const values=[];
+  for(let yy=Math.max(0,Math.floor(y-r));yy<=Math.min(h-1,Math.ceil(y+r));yy++)for(let xx=Math.max(0,Math.floor(x-r));xx<=Math.min(w-1,Math.ceil(x+r));xx++){
+    const value=Number(grid[yy*w+xx]);
+    if(Number.isFinite(value)&&value>0)values.push(value);
+  }
+  if(!values.length)return 0;
+  values.sort((a,b)=>a-b);
+  return values[Math.floor(values.length/2)];
+}
+export function projectPointSeries(mask,w,h,motion,{horizonMinutes=120,sourceStepMinutes=10,outputStepMinutes=5,radius=1,intensityGrid=null}={}){
   if(!motion||!mask?.length)return[];
   const cx=(w-1)/2,cy=(h-1)/2,steps=Math.floor(horizonMinutes/outputStepMinutes),rows=[];
   for(let i=0;i<=steps;i++){
     const minute=i*outputStepMinutes,f=minute/sourceStepMinutes,x=cx-motion.dx*f,y=cy-motion.dy*f;
     const wetFraction=wetNear(mask,w,h,x,y,radius),penalty=1-.52*(minute/Math.max(1,horizonMinutes));
-    rows.push({minute,wetFraction,probability:clamp01(wetFraction*motion.confidence*Math.max(.35,penalty)),sampleX:x,sampleY:y});
+    const radarRate=valueNear(intensityGrid,w,h,x,y,radius);
+    rows.push({minute,wetFraction,probability:clamp01(wetFraction*motion.confidence*Math.max(.35,penalty)),radarRate,sampleX:x,sampleY:y});
   }
   return rows;
 }
