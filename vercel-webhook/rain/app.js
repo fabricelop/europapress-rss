@@ -1,5 +1,5 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,classifyRainHour,bestDryWindow} from './core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
 
 const DET_MODELS=[
   {id:'ecmwf_ifs',label:'ECMWF IFS 9 km',family:'ECMWF',weight:1.32},
@@ -23,7 +23,7 @@ const ENS_MODELS=[
 const FORECAST_TTL=20*60_000;
 const RADAR_REFRESH_MS=5*60_000;
 const CANONICAL_RADAR_THRESHOLD=.22;
-const RADAR_FRAMES=5;
+const RADAR_FRAMES=6;
 const RADAR_ZOOM=7;
 const ANALYSIS_SIZE=97;
 const MAX_SHIFT=12;
@@ -38,7 +38,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.8',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.16.0',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -368,18 +368,31 @@ async function computeNowcast(meta){
     const m=estimateTranslation(masks[i-1].mask,masks[i].mask,ANALYSIS_SIZE,ANALYSIS_SIZE,{maxShift:MAX_SHIFT});
     if(m)estimates.push(m);
   }
-  const motion=combineMotionEstimates(estimates),latest=masks.at(-1),step=frameStep(masks);
+  const motion=combineMotionEstimates(estimates),latest=masks.at(-1),previous=masks.at(-2),step=frameStep(masks);
   const center=(ANALYSIS_SIZE-1)/2,current=wetNear(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,center,center,0);
   const currentRadarRate=latest.rateGrid?.[Math.round(center)*ANALYSIS_SIZE+Math.round(center)]||0;
-  const base={status:'motion_uncertain',confidence:motion?.confidence||0,event:null,rainingNow:current>=.10,currentWetFraction:current,currentRadarRate,radarTime:new Date(latest.time*1000).toISOString(),decodedFrames:masks.length};
-  if(!motion||motion.samples<2||motion.confidence<.22)return base;
-  const series=projectPointSeries(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:0,intensityGrid:latest.rateGrid});
+  const localFlows=[];
+  if(motion){
+    for(let i=Math.max(1,masks.length-3);i<masks.length;i++){
+      const flow=estimateLocalFlow(masks[i-1].mask,masks[i].mask,ANALYSIS_SIZE,ANALYSIS_SIZE,{maxShift:Math.min(9,MAX_SHIFT),grid:5,patchRadius:9});
+      if(flow)localFlows.push(flow);
+    }
+  }
+  const localFlow=combineLocalFlows(localFlows);
+  const evolution=motion?evolutionReliability(previous.mask,latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion):{score:0,overlap:0,densityStable:0};
+  const confidence=Math.max(0,Math.min(.98,(motion?.confidence||0)*(.72+.28*evolution.score)));
+  const reliableHorizonMinutes=Math.round(25+55*Math.max(0,Math.min(1,evolution.score*.7+confidence*.3)));
+  const base={status:'motion_uncertain',confidence,event:null,rainingNow:current>=.10,currentWetFraction:current,currentRadarRate,radarTime:new Date(latest.time*1000).toISOString(),decodedFrames:masks.length,evolution,reliableHorizonMinutes,localFlowCoverage:Number(localFlow?.coverage)||0};
+  if(!motion||motion.samples<2||confidence<.20)return base;
+  const series=localFlow
+    ? projectPointSeriesFlow(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,localFlow,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:1,intensityGrid:latest.rateGrid,reliability:evolution.score})
+    : projectPointSeries(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:1,intensityGrid:latest.rateGrid});
   let event=detectNowcastEvent(series,{enterWetFraction:.10,exitWetFraction:.035,minConsecutive:2,stepMinutes:5});
   if(event){
     const t=latest.time*1000;
-    event={...event,start:new Date(t+event.startMinute*60_000).toISOString(),end:new Date(t+event.endMinute*60_000).toISOString(),uncertaintyMinutes:nowcastUncertaintyMinutes(motion.confidence,event.startMinute)};
+    event={...event,start:new Date(t+event.startMinute*60_000).toISOString(),end:new Date(t+event.endMinute*60_000).toISOString(),uncertaintyMinutes:nowcastUncertaintyMinutes(confidence,event.startMinute)};
   }
-  return{...base,status:'ok',confidence:motion.confidence,event,motion:{...radarGeo(motion,state.loc.lat,step),samples:motion.samples,consistency:motion.consistency},series};
+  return{...base,status:'ok',confidence,event,motion:{...radarGeo(motion,state.loc.lat,step),samples:motion.samples,consistency:motion.consistency,localFlow:Boolean(localFlow)},series};
 }
 
 function automaticRainState(){
@@ -429,6 +442,50 @@ function quarterHourRateAt(timeMs){
   }
   return 0;
 }
+function nativeQuarterHourLikely(loc=state.loc){
+  const lat=Number(loc?.lat),lon=Number(loc?.lon);
+  if(!Number.isFinite(lat)||!Number.isFinite(lon))return false;
+  // Open-Meteo documents native 15-min precipitation only for limited Central-European / North-American domains.
+  // Iberia is explicitly treated as interpolated, never as native 15-min guidance.
+  if(lat>=35&&lat<=44.5&&lon>=-10&&lon<=4.5)return false;
+  const centralEurope=lat>=43.5&&lat<=56.5&&lon>=-5&&lon<=22;
+  const northAmerica=lat>=25&&lat<=55&&lon>=-130&&lon<=-60;
+  return centralEurope||northAmerica;
+}
+function modelPointAt(timeMs){
+  const rows=state.data?.timeline||[];
+  const best=rows.reduce((acc,row)=>{
+    const d=Math.abs(Date.parse(row.time)-timeMs);
+    return !acc||d<acc.d?{row,d}:acc;
+  },null);
+  if(!best||best.d>90*60_000)return{probability:0,rate:0,row:null};
+  return{
+    probability:Math.max(0,Math.min(1,(Number(best.row.probability)||0)/100)),
+    rate:Math.max(0,Number(best.row.precipitation)||0),
+    row:best.row
+  };
+}
+function nowcastReliability(){
+  const rv=Math.max(0,Math.min(1,Number(state.nowcast?.evolution?.score)||Number(state.nowcast?.confidence)||0));
+  const op=operaNowcastInfo(),age=Number(state.data?.opera?.ageMinutes);
+  const opFresh=op?Math.max(0,Math.min(1,1-Math.max(0,age-10)/30)):0;
+  const opScore=op?(Number(op.confidence)||0)*opFresh:0;
+  return Math.max(rv,opScore);
+}
+function radarBlendWeight(horizonMinutes,reliability=nowcastReliability()){
+  const r=Math.max(0,Math.min(1,Number(reliability)||0));
+  const full=12+18*r;
+  const zero=48+42*r;
+  if(horizonMinutes<=full)return .9;
+  if(horizonMinutes>=zero)return 0;
+  return .9*(1-(horizonMinutes-full)/Math.max(1,zero-full));
+}
+function nowcastReliableHorizon(){
+  const rv=Math.max(20,Math.min(90,Number(state.nowcast?.reliableHorizonMinutes)||45));
+  const op=operaNowcastInfo(),opH=op?Math.max(20,Math.min(80,25+50*(Number(op.confidence)||0))):0;
+  return Math.round(Math.max(rv,opH));
+}
+
 function intensityLabel(rate){
   if(rate<=0.05)return'Seco';
   if(rate<0.5)return'Llovizna';
@@ -524,10 +581,10 @@ function shortPoints(){
     ev=nextModelEventAfter(correction.episode.maxEnd+5*60_000);
   }
   const radarBase=Date.parse(n?.radarTime||''),series=Array.isArray(n?.series)?n.series:[];
-  const eventStart=ev?Date.parse(ev.start):Infinity,eventEnd=ev?.end?Date.parse(ev.end):eventStart+45*60_000;
-  const points=[];
+  const eventStart=ev?.start?Date.parse(ev.start):Infinity,eventEnd=ev?.end?Date.parse(ev.end):Infinity;
+  const native15=nativeQuarterHourLikely(),reliability=nowcastReliability(),points=[];
   for(let i=0;i<=24;i++){
-    const time=now+i*5*60_000;
+    const time=now+i*5*60_000,horizon=Math.max(0,(time-now)/60_000);
     let radar=null;
     if(Number.isFinite(radarBase)&&series.length){
       radar=series.reduce((best,row)=>{
@@ -535,38 +592,41 @@ function shortPoints(){
         return !best||d<best.d?{row,d}:best;
       },null)?.row||null;
     }
-    const operaPoint=operaPointAt(time),modelRate=quarterHourRateAt(time);
+    const operaPoint=operaPointAt(time),model=modelPointAt(time);
+    const native15Rate=native15?quarterHourRateAt(time):0;
+    const modelRate=native15&&native15Rate>0?Math.max(model.rate*.35,native15Rate):model.rate;
+    const modelProb=model.probability;
     const radarRate=Number(radar?.radarRate)||0,operaRate=Number(operaPoint?.rateMmH)||0;
-    const radarProb=Number(radar?.probability),operaProb=Number(operaPoint?.probability);
+    const radarProb=Math.max(0,Math.min(1,Number(radar?.probability)||0));
+    const operaProb=Math.max(0,Math.min(1,Number(operaPoint?.probability)||0));
     const wetFraction=Number(radar?.wetFraction)||0,operaWetFraction=Number(operaPoint?.wetFraction)||0;
-    const horizon=Math.max(0,(time-now)/60_000),radarWeight=Math.max(.42,.9-horizon*.004);
-    const inEvent=Boolean(ev)&&time>=eventStart&&time<=eventEnd;
     const radarWet=wetFraction>=.10&&radarRate>=.03,operaWet=operaWetFraction>=.10&&operaRate>=.03;
-    const nowcastRates=[radarWet?radarRate:null,operaWet?operaRate:null].filter(Number.isFinite);
-    const nowcastRate=nowcastRates.length?nowcastRates.reduce((a,b)=>a+b,0)/nowcastRates.length:0;
-    let rate=0;
-    if(rainNow&&i===0)rate=Math.max(radarRate,operaRate,modelRate,Number(n?.currentRadarRate)||0,Number(state.data?.opera?.sample?.rateMmH)||0);
-    else if(inEvent){
-      if(nowcastRate>0)rate=nowcastRate*radarWeight+modelRate*(1-radarWeight);
-      else rate=modelRate;
+    const sourceRates=[radarWet?radarRate:null,operaWet?operaRate:null].filter(Number.isFinite);
+    const sourceProbs=[radar?radarProb:null,operaPoint?operaProb:null].filter(Number.isFinite);
+    const nowcastRate=sourceRates.length?sourceRates.reduce((a,b)=>a+b,0)/sourceRates.length:0;
+    const nowcastProb=sourceProbs.length?sourceProbs.reduce((a,b)=>a+b,0)/sourceProbs.length:0;
+    const blend=sourceProbs.length?radarBlendWeight(horizon,reliability):0;
+    let rate=nowcastRate*blend+modelRate*(1-blend);
+    let probability=nowcastProb*blend+modelProb*(1-blend);
+    const inEvent=Boolean(ev)&&time>=eventStart&&time<=eventEnd;
+    if(!inEvent&&probability<.34&&rate<.05){probability*=.45;rate*=.35}
+    if(rainNow&&i===0){
+      rate=Math.max(radarRate,operaRate,Number(n?.currentRadarRate)||0,Number(state.data?.opera?.sample?.rateMmH)||0,rate);
+      probability=Math.max(probability,.78);
     }
-    const modelSignal=modelRate<=.05?0:Math.min(.76,.25+Math.log1p(modelRate)*.24);
-    let probability=Math.max(Number.isFinite(radarProb)?radarProb:0,Number.isFinite(operaProb)?operaProb:0,modelSignal*.5);
-    if(!inEvent&&!rainNow)probability=0;
-    if(inEvent&&rate>0)probability=Math.max(probability,.35);
     if(i===0){
-      const truth=currentTruth();
-      if(truth===true){probability=1;rate=Math.max(rate,.1)}
-      if(truth===false){probability=0;rate=0}
+      const localTruth=currentTruth();
+      if(localTruth===true){probability=1;rate=Math.max(rate,.1)}
+      if(localTruth===false){probability=0;rate=0}
     }
+    const wet=i===0
+      ? rainNow&&rate>.03
+      : probability>=.36&&rate>=.03;
     points.push({
-      time,
-      probability:Math.max(0,Math.min(1,probability||0)),
-      rate:Math.max(0,rate||0),
-      radarRate,operaRate,modelRate,
-      wetFraction,operaWetFraction,
-      inEvent,
-      wet:i===0 ? (rainNow&&rate>.03) : inEvent&&(rate>=.03||radarWet||operaWet)
+      time,probability:Math.max(0,Math.min(1,probability||0)),rate:Math.max(0,rate||0),
+      radarRate,operaRate,modelRate,wetFraction,operaWetFraction,inEvent,wet,
+      blendWeight:blend,
+      dominantSource:blend>=.66?'radar':blend>=.20?'mixed':'models'
     });
   }
   return points;
@@ -641,6 +701,15 @@ function renderShortNowcast(){
   const leadMinutes=near?Math.max(0,(Date.parse(ev.start)-now)/60_000):dry?Math.max(0,(Date.parse(dry.end)-now)/60_000):120;
   const shortConfidence=near?calibratedConfidence(ev.confidence,leadMinutes):dry?calibratedConfidence(dry.confidence,leadMinutes):null;
   $('shortConfidence').textContent=shortConfidence!=null?pct(shortConfidence)+'%':'—';
+  const reliable=nowcastReliableHorizon(),evolution=Number(state.nowcast?.evolution?.score)||0;
+  const evolutionLabel=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
+  if($('blendLegend')){
+    $('blendLegend').innerHTML='<span><b>0–'+reliable+' min</b> radar + radar europeo</span><span><b>después</b> transición a modelos</span>';
+  }
+  if($('nowcastQuality')){
+    $('nowcastQuality').textContent='Evolución '+evolutionLabel+' · radar útil ~'+reliable+' min';
+    $('nowcastQuality').className='nowcastQuality '+(evolution>=.72?'good':evolution>=.48?'medium':'low');
+  }
   renderRadarSkill();
 
   const maxRate=Math.max(.35,Math.min(12,Math.max(...points.map(p=>p.rate))));
@@ -993,7 +1062,7 @@ function etaTrendText(ev){
 }
 
 function refineWithQuarterHour(event,qh){
-  if(!event||!qh?.events?.length)return event;
+  if(!event||!qh?.events?.length||!nativeQuarterHourLikely())return event;
   const e0=Date.parse(event.start),best=qh.events.map(e=>({...e,dist:Math.abs(Date.parse(e.start)-e0)})).sort((a,b)=>a.dist-b.dist)[0];
   if(!best||best.dist>3*3600_000)return event;
   return{...event,displayStart:best.start,displayEnd:best.end,quarterHourRefined:true};
@@ -1279,7 +1348,7 @@ function radarDryWindow(){
   const event=stabilizedRadarEvent(),operaEvent=operaEventCandidate(now);
   const requiredConfidence=event?.start ? .30 : .48;
   if(radarConfidence<requiredConfidence)return null;
-  const horizonEnd=radarMs+120*60_000,starts=[];
+  const horizonEnd=radarMs+nowcastReliableHorizon()*60_000,starts=[];
   if(event?.start&&Date.parse(event.start)>now)starts.push(Date.parse(event.start));
   if(operaEvent?.start&&operaEvent.confidence>=.28&&Date.parse(operaEvent.start)>now)starts.push(Date.parse(operaEvent.start));
   let endMs=starts.length?Math.min(horizonEnd,...starts):horizonEnd;
@@ -1297,6 +1366,7 @@ function radarDryWindow(){
     operaDry,
     operaEta:operaEvent?.start||null,
     fullHorizon:starts.length===0||Math.min(...starts)>=horizonEnd-2*60_000,
+    reliableHorizonMinutes:nowcastReliableHorizon(),
     minutes:Math.max(0,Math.round((endMs-now)/60_000))
   };
 }
@@ -1370,8 +1440,10 @@ function chooseDisplayEvent(){
       return{kind:'radar',active:true,start:n.radarTime||new Date(now).toISOString(),end:rv?.end||null,confidence:Number(n.confidence)||.5,uncertainty:rv?.uncertainty||8,event:rv?.event||null,motion:n.motion||null};
     }
   }
-  const futureRv=rv&&Date.parse(rv.start)<=now+125*60_000?rv:null;
-  const futureOp=op&&Date.parse(op.start)<=now+125*60_000?op:null;
+  const rvHorizon=Math.max(20,Math.min(90,Number(n?.reliableHorizonMinutes)||45));
+  const opHorizon=op?Math.max(20,Math.min(80,25+50*(Number(op.confidence)||0))):0;
+  const futureRv=rv&&Date.parse(rv.start)<=now+rvHorizon*60_000?rv:null;
+  const futureOp=op&&Date.parse(op.start)<=now+opHorizon*60_000?op:null;
   const radarChoice=fuseRadarEvents(futureRv,futureOp,now);
   if(radarChoice)return radarChoice;
   return chooseModelEvent(now,radarDryWindow());
@@ -1685,8 +1757,11 @@ function quarterHourSupports(timeMs){
 }
 function detail15MinuteCoverage(){
   const now=Date.now(),qh=quarterHourCoverage();
-  let end=qh?.end||0;
-  if(state.nowcast?.status==='ok'&&Array.isArray(state.nowcast?.series)&&state.nowcast.series.length)end=Math.max(end,now+120*60_000);
+  let end=0;
+  if(nativeQuarterHourLikely())end=qh?.end||0;
+  if(state.nowcast?.status==='ok'&&Array.isArray(state.nowcast?.series)&&state.nowcast.series.length){
+    end=Math.max(end,now+nowcastReliableHorizon()*60_000);
+  }
   return end>now?{start:now-15*60_000,end}:null;
 }
 function baseTimelineRowAt(timeMs,rows=canonicalTimelineRows()){
@@ -1706,11 +1781,11 @@ function detailRow(slot,minutes,hourly,short){
       probability=Math.round((shortWet.length?Math.max(...shortWet.map(p=>p.probability)):Math.max(...shortBucket.map(p=>p.probability),0))*100);
       rate=shortWet.length?shortWet.reduce((sum,p)=>sum+p.rate,0)/shortWet.length:0;
       source='Radar / nowcast';
-    }else if(quarterHourSupports(center)){
+    }else if(nativeQuarterHourLikely()&&quarterHourSupports(center)){
       rate=quarterHourRateAt(center);
       const signal=rate<=.05?0:Math.min(.82,.30+Math.log1p(rate)*.26);
       probability=Math.max(probability,Math.round(signal*100));
-      source='Modelo 15 min';
+      source='Modelo 15 min nativo';
     }
   }
   const row={
@@ -1972,10 +2047,14 @@ function renderSources(){
     : opNow?.status?' · nowcast '+opNow.status:'';
   const list=[
     {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opera?.ok
-      ? 'EUMETNET OPERA · RATE '+(opera.resolutionKm||2)+' km / 5 min · '+fmtTime(opera.observedAt)+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+opMotion
+      ? 'EUMETNET OPERA · RATE '+(opera.resolutionKm||2)+' km / 5 min · '+fmtTime(opera.observedAt)+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+(opNow?.status==='ok'?' · flujo local · útil ~'+Math.round(Number(opNow.reliableHorizonMinutes)||45)+' min':'')+opMotion
       : 'EUMETNET OPERA sin compuesto reciente'},
-    {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'?'movimiento + intensidad dBZ':state.nowcast?.status||'solo mapa'},
-    {label:'Modelo 15 min',ok:state.data.sources.quarterHour,detail:'guía temporal; puede ser interpolada según zona/modelo'},
+    {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'
+      ? 'flujo local + evolución · útil ~'+nowcastReliableHorizon()+' min'
+      : state.nowcast?.status||'solo mapa'},
+    {label:nativeQuarterHourLikely()?'Modelo 15 min nativo':'Guía temporal',ok:state.data.sources.quarterHour,detail:nativeQuarterHourLikely()
+      ? 'resolución de 15 min disponible para esta zona'
+      : 'en esta ubicación el dato de 15 min se trata como interpolado; no amplía la resolución real'},
     ...state.data.sources.deterministic.map(x=>({label:x.label,ok:x.ok,detail:'determinista'})),
     ...state.data.sources.ensembles.map(x=>({label:x.label,ok:x.ok,detail:x.members?x.members+' miembros':'ensemble'}))
   ];
@@ -2070,27 +2149,36 @@ function showObservedRadar(offsetMinutes){
   const latest=state.frames.at(-1),delta=Math.round((f.time-latest.time)/60);
   $('radarTime').textContent=fmtTime(f.time*1000);
   $('radarPosition').textContent=delta<0?'Observado '+Math.abs(delta)+' min antes · '+fmtTime(f.time*1000):'Último radar observado · '+fmtTime(f.time*1000);
-  $('radarMotion').textContent='Imagen observada real de RainViewer. Desliza a la derecha de AHORA para ver la proyección.';
+  $('radarMotion').textContent='Imagen observada real de RainViewer. A la derecha de AHORA la proyección es orientativa y pierde peso conforme avanza el horizonte.';
 }
 function showProjectedRadar(minutes){
   const r=state.data?.radar,latest=state.frames.at(-1),motion=state.nowcast?.motion;
   if(!r||!latest||!state.mapLoaded)return;
-  if(!motion||state.nowcast?.status!=='ok'||Number(state.nowcast?.confidence)<.22){
+  if(!motion||state.nowcast?.status!=='ok'||Number(state.nowcast?.confidence)<.20){
     showObservedRadar(0);
-    $('radarPosition').textContent='Proyección no disponible con suficiente fiabilidad';
-    $('radarMotion').textContent='Se mantiene el último radar observado hasta que el movimiento del eco sea estable.';
+    $('radarPosition').textContent='Proyección radar no fiable';
+    $('radarMotion').textContent='RainETA no prolonga el eco hasta que su evolución sea suficientemente coherente.';
     return;
   }
   clearRadarVisual();
+  const reliable=nowcastReliableHorizon(),within=minutes<=reliable;
   const url=radarTileUrl(r,latest,512,RADAR_ZOOM);
   state.map.addSource('raineta-radar-projection',{type:'image',url,coordinates:projectionCoordinates(minutes)});
   const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
-  state.map.addLayer({id:'raineta-radar-projection',type:'raster',source:'raineta-radar-projection',paint:{'raster-opacity':.76,'raster-fade-duration':0}},before);
-  const speed=Math.round(Number(motion.speedKmh)||0),dir=compassDirection(motion.bearingDegrees);
+  state.map.addLayer({
+    id:'raineta-radar-projection',type:'raster',source:'raineta-radar-projection',
+    paint:{'raster-opacity':within ? .66 : .22,'raster-fade-duration':0}
+  },before);
   const projectedAt=latest.time*1000+minutes*60_000;
   $('radarTime').textContent=fmtTime(projectedAt);
-  $('radarPosition').textContent='Proyección +'+minutes+' min · '+fmtTime(projectedAt);
-  $('radarMotion').textContent='Extrapolación del último eco: desplazamiento de la precipitación '+speed+' km/h'+(dir?' hacia '+dir:'')+' · confianza '+pct(state.nowcast.confidence)+'%. No es una observación futura.';
+  $('radarPosition').textContent=(within?'Radar útil':'Fuera del radar fiable')+' · +'+minutes+' min · '+fmtTime(projectedAt);
+  if(within){
+    const evolution=Number(state.nowcast?.evolution?.score)||0;
+    const shape=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
+    $('radarMotion').textContent='ETA calculada con movimiento local de los ecos · evolución '+shape+' · horizonte radar útil ~'+reliable+' min. El mapa sigue siendo una referencia visual del último eco.';
+  }else{
+    $('radarMotion').textContent='A partir de ~'+reliable+' min RainETA deja de confiar en la extrapolación radar y da el relevo a modelos/consenso. La imagen atenuada es solo una referencia visual.';
+  }
 }
 function showRadarOffset(offset=state.radarOffset){
   state.radarOffset=Math.max(Number($('frame')?.min)||-90,Math.min(120,Number(offset)||0));
@@ -2099,10 +2187,10 @@ function showRadarOffset(offset=state.radarOffset){
   else showProjectedRadar(state.radarOffset);
 }
 function radarArrivalSource(ev){
-  if(ev?.kind==='radarFusion')return'RainViewer + OPERA';
-  if(ev?.kind==='opera')return'OPERA';
-  if(ev?.kind==='radar')return'RainViewer';
-  if(ev?.kind==='model15')return'modelos + guía 15 min';
+  if(ev?.kind==='radarFusion')return'radar + radar europeo';
+  if(ev?.kind==='opera')return'radar europeo';
+  if(ev?.kind==='radar')return'radar RainViewer';
+  if(ev?.kind==='model15')return'modelos';
   return'modelos';
 }
 function radarArrivalTarget(){
@@ -2110,13 +2198,15 @@ function radarArrivalTarget(){
   if(!latest||!ev?.start)return{status:'no_eta',event:ev||null};
   const baseMs=Number(latest.time)*1000,startMs=Date.parse(ev.start);
   if(!Number.isFinite(baseMs)||!Number.isFinite(startMs))return{status:'no_eta',event:ev};
-  const rawMinutes=(startMs-baseMs)/60_000;
-  if(decision?.mode==='possible_now'&&(ev.active||rawMinutes<=2.5))return{status:'signal_now',target:0,event:ev,rawMinutes};
-  if(ev.active||rawMinutes<=2.5)return{status:'now',target:0,event:ev,rawMinutes};
-  if(rawMinutes>120)return{status:'later',event:ev,rawMinutes};
-  const canProject=state.nowcast?.status==='ok'&&state.nowcast?.motion&&Number(state.nowcast?.confidence)>=.22;
-  if(!canProject)return{status:'no_projection',event:ev,rawMinutes};
-  return{status:'ready',target:Math.max(0,Math.min(120,Math.ceil(rawMinutes/5)*5)),event:ev,rawMinutes};
+  const rawMinutes=(startMs-baseMs)/60_000,reliable=nowcastReliableHorizon();
+  if(decision?.mode==='possible_now'&&(ev.active||rawMinutes<=2.5))return{status:'signal_now',target:0,event:ev,rawMinutes,reliable};
+  if(ev.active||rawMinutes<=2.5)return{status:'now',target:0,event:ev,rawMinutes,reliable};
+  if(rawMinutes>120)return{status:'later',event:ev,rawMinutes,reliable};
+  const radarDriven=['radar','opera','radarFusion'].includes(ev.kind);
+  if(!radarDriven||rawMinutes>reliable)return{status:'model_handoff',event:ev,rawMinutes,reliable};
+  const canProject=state.nowcast?.status==='ok'&&state.nowcast?.motion&&Number(state.nowcast?.confidence)>=.20;
+  if(!canProject)return{status:'no_projection',event:ev,rawMinutes,reliable};
+  return{status:'ready',target:Math.max(0,Math.min(reliable,Math.ceil(rawMinutes/5)*5)),event:ev,rawMinutes,reliable};
 }
 function stopRadarPlayback(){
   if(state.playTimer){clearInterval(state.playTimer);state.playTimer=null}
@@ -2137,6 +2227,8 @@ function updateRadarArrivalButton(){
     button.disabled=false;button.textContent='● SEÑAL RADAR AHORA';
   }else if(target.status==='now'){
     button.disabled=false;button.textContent='● LLUVIA AHORA';
+  }else if(target.status==='model_handoff'){
+    button.disabled=false;button.textContent='ETA POR MODELOS';
   }else if(target.status==='later'){
     button.disabled=true;button.textContent='ETA > 2 H';
   }else if(target.status==='no_projection'){
@@ -2164,8 +2256,11 @@ function playRadarUntilRain(){
   }
   if(target.status!=='ready'){
     updateRadarArrivalButton();
-    if(target.status==='later')$('radarPosition').textContent='La llegada prevista queda fuera de la proyección radar de +120 min';
-    else if(target.status==='no_projection')$('radarPosition').textContent='Hay ETA, pero el movimiento de RainViewer no es suficientemente fiable para animar la proyección';
+    if(target.status==='model_handoff'){
+      $('radarPosition').textContent='ETA '+fmtTime(target.event.start)+' · fuera del horizonte radar fiable (~'+target.reliable+' min)';
+      $('radarMotion').textContent='La hora procede del relevo radar → modelos/consenso. No se anima el mapa hasta esa ETA porque sería engañoso.';
+    }else if(target.status==='later')$('radarPosition').textContent='La llegada prevista queda fuera de las próximas 2 h';
+    else if(target.status==='no_projection')$('radarPosition').textContent='Hay ETA, pero el radar no es suficientemente fiable para animarla';
     else $('radarPosition').textContent='Todavía no hay una ETA de lluvia que pueda mostrarse en el radar';
     return;
   }
@@ -2200,6 +2295,11 @@ function renderRadar(){
   $('radarPastLabel').textContent='−'+availablePast+' min';
   state.radarOffset=Math.max(-availablePast,Math.min(120,state.radarOffset||0));
   $('frame').value=state.radarOffset;
+  if($('radarHandoff')){
+    const reliable=nowcastReliableHorizon(),evolution=Number(state.nowcast?.evolution?.score)||0;
+    const label=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
+    $('radarHandoff').innerHTML='<b>Radar útil ~'+reliable+' min</b><span>evolución '+label+' · después mandan modelos/consenso</span>';
+  }
   if(state.mapLoaded)showRadarOffset(state.radarOffset);
   updateRadarArrivalButton();
 }
