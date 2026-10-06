@@ -1,2 +1,6 @@
-deploy-image-flicker-cache-20261004-ttittulares-fix-20261006
-TTiTTulares: borrar salidas + validar a elaboración + miniaturas Listas
+deploy-image-flicker-cache-20261004-rate-limit-guard-20261006-v1
+TT apps: reducir consumo REST GitHub sin cambiar flujos editoriales
+- TTiTTulares run-status RAW-first; strong solo listener
+- TTendencias RUNTRACE cache 30s
+- TTendencias state GET usa RAW incluso en refresh manual
+- polling activo UI 10s en ambas apps
