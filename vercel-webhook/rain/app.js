@@ -375,9 +375,10 @@ function renderShortNowcast(){
 }
 function updateLiveCountdown(){
   if(!state.data)return;
-  const ev=chooseDisplayEvent(),now=Date.now(),truth=currentTruth();
+  const ev=chooseDisplayEvent(),now=Date.now(),truth=currentTruth(),rain=currentRainState();
   if(!ev){
     $('heroLabel').textContent='Próxima lluvia';
+    if($('shortCountdown'))$('shortCountdown').textContent='>2 h';
     return;
   }
   if(truth===false&&Date.parse(ev.start)<=now&&(!ev.end||Date.parse(ev.end)>now))return;
@@ -393,7 +394,12 @@ function updateLiveCountdown(){
       $('heroLabel').textContent='Próxima lluvia';
     }
   }
-  if($('shortCountdown'))renderShortNowcast();
+  if($('shortCountdown')){
+    const near=Date.parse(ev.start)<=now+120*60_000;
+    $('shortCountdown').textContent=rain.raining
+      ? (ev.end?formatCountdownMs(Date.parse(ev.end)-now):'—')
+      : near?formatCountdownMs(Date.parse(ev.start)-now):'>2 h';
+  }
 }
 
 function feedbackStats(){
