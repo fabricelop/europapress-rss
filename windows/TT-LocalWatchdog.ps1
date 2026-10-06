@@ -1,6 +1,6 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
-# watchdog-restart-refresh-v2
+# watchdog-restart-refresh-v3-v42
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
 $BaseDir="C:\TTiTTulares"
@@ -103,8 +103,8 @@ function RefreshListenerFromMain([string]$Project,[string]$Script){
     [Management.Automation.Language.Parser]::ParseFile($tmp,[ref]$tokens,[ref]$errors)|Out-Null
     if($errors.Count -gt 0){throw "PowerShell remoto invalido: "+$errors[0].Message}
     $txt=Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
-    if($Project -eq "ttittulares" -and $txt -notmatch 'ttittulares-dedicated-v41'){
-      throw "Listener TTiTTulares remoto aun no es v41"
+    if($Project -eq "ttittulares" -and $txt -notmatch 'ttittulares-dedicated-v42'){
+      throw "Listener TTiTTulares remoto aun no es v42"
     }
     $changed=$true
     if(Test-Path -LiteralPath $Script){
