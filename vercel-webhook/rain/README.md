@@ -86,7 +86,7 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - “Episodios previstos” se recalcula sobre esa línea temporal canónica y añade detalle **hora por hora** con estado, probabilidad e intensidad.
 - El radar incorpora un botón **AHORA** para volver inmediatamente al último barrido observado.
 - Se añade backend `/api/rain-opera` con caché CDN para descubrir el último compuesto EUMETNET OPERA NIMBUS RATE (1 km / 5 min) sin consumir una consulta MeteoGate por dispositivo.
-- OPERA aparece ya en el panel de fuentes; el siguiente paso es muestrear el COG en el punto para incorporarlo al consenso de intensidad.
+- El backend ya muestrea el COG `RATE` en la coordenada solicitada, devuelve mm/h + calidad del píxel y puede actuar como evidencia independiente de lluvia actual cuando el barrido está fresco.
 
 ## Radar
 RainViewer aporta los últimos barridos. RainETA descarga una imagen centrada en la ubicación, genera una máscara de precipitación en el dispositivo, calcula traslación entre barridos y proyecta el píxel de la ubicación cada 5 minutos hasta 120 minutos.
