@@ -1778,6 +1778,8 @@ function render(){
         : 'Tu respuesta queda en este dispositivo y sirve para medir aciertos y calibrar la detección local.';
   }
   renderConsensusDecision(decision);
+  renderDecisionBasis(decision);
+  renderImportantPhenomenon();
   recordRainDecisionSnapshot(decision);
   updateSourceSkill();
   renderSourceSkill();
