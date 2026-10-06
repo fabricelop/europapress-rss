@@ -1,6 +1,6 @@
 const loc={lat:'40.4168',lon:'-3.7038'};
 const det=['ecmwf_ifs025','ecmwf_aifs025','icon_seamless','gfs_seamless','meteofrance_seamless','gem_seamless'];
-const ens=['ecmwf_ifs025_ensemble','dwd_icon_eu_eps','ncep_gefs025','ukmo_global_ensemble_20km'];
+const ens=['ecmwf_ifs025_ensemble','ecmwf_aifs025_ensemble','dwd_icon_eu_eps','ncep_gefs025','ukmo_global_ensemble_20km','gem_global_ensemble','bom_access_global_ensemble','google_weathernext2_ensemble'];
 async function check(url){const c=new AbortController(),t=setTimeout(()=>c.abort(),12000);try{const r=await fetch(url,{signal:c.signal});const text=await r.text();if(!r.ok)throw Error(r.status+' '+text.slice(0,180));return JSON.parse(text)}finally{clearTimeout(t)}}
 let ok=0;
 for(const model of det){
@@ -17,4 +17,4 @@ const qh=await check('https://api.open-meteo.com/v1/forecast?'+q);console.log('Q
 const radar=await check('https://api.rainviewer.com/public/weather-maps.json');if(!(radar.radar?.past||[]).length)throw Error('RainViewer sin frames');console.log('RADAR_OK',radar.radar.past.length,radar.host);
 const geo=await check('https://geocoding-api.open-meteo.com/v1/search?name=Madrid&count=2&language=es&format=json');if(!geo.results?.length)throw Error('geocode vacío');console.log('GEO_OK',geo.results[0].name);
 if(ok<3)throw Error('Solo '+ok+' modelos deterministas disponibles');
-if(ensOk<2)throw Error('Solo '+ensOk+' ensembles disponibles');
+if(ensOk<5)throw Error('Solo '+ensOk+' ensembles disponibles');
