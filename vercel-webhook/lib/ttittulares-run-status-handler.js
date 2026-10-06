@@ -58,35 +58,22 @@ async function comments(){
   }
 }
 async function triggerReady(){return true}
+function controlRawUrl(path){
+  const ref="refs/heads/"+String(TRIGGER_BRANCH||"").split("/").map(encodeURIComponent).join("/");
+  const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
+  return "https://raw.githubusercontent.com/"+REPO+"/"+ref+"/"+clean+"?t="+Date.now()
+}
 async function readControl(path,strong=false){
-  // El polling de la UI no necesita SHA ni consistencia transaccional: RAW primero.
-  // El listener del PC puede pedir strong=1 cuando necesita el HEAD exacto.
-  if(strong){
-    try{
-      const r=await gh(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`,{cache:"no-store"});
-      if(r.ok){
-        const f=await r.json();
-        const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-        return JSON.parse(raw||"{}")
-      }
-      if(r.status===404)return {}
-    }catch(_){}
-  }
+  // Tanto la UI como el listener solo necesitan el JSON actual. RAW no consume
+  // la cuota REST de GitHub; strong=1 significa no usar caché, no usar Contents API.
   try{
-    const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
-    const u=`https://raw.githubusercontent.com/${REPO}/${encodeURIComponent(TRIGGER_BRANCH)}/${clean}?t=${Date.now()}`;
-    const r=await fetch(u,{cache:"no-store",headers:{"cache-control":"no-cache","user-agent":"ttittulares-run-status-control-read"}});
+    const r=await fetch(controlRawUrl(path),{cache:"no-store",headers:{
+      "cache-control":"no-cache, no-store, max-age=0",
+      "pragma":"no-cache",
+      "user-agent":strong?"ttittulares-run-status-strong-raw":"ttittulares-run-status-control-raw"
+    }});
     if(r.ok)return JSON.parse(await r.text()||"{}");
-    if(r.status===404)return {}
-  }catch(_){}
-  // REST solo como fallback excepcional si RAW no responde.
-  try{
-    const r=await gh(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`,{cache:"no-store"});
-    if(r.ok){
-      const f=await r.json();
-      const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-      return JSON.parse(raw||"{}")
-    }
+    if(r.status===404)return {};
   }catch(_){}
   return {}
 }
@@ -94,32 +81,7 @@ async function readTrigger(strong=false){return {doc:await readControl(TRIGGER_P
 async function readAck(strong=false){return await readControl(ACK_PATH,strong)}
 
 async function readImageControl(path,strong=false){
-  if(strong){
-    try{
-      const r=await gh(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(TRIGGER_BRANCH)}`,{cache:"no-store"});
-      if(r.ok){
-        const f=await r.json();
-        const raw=Buffer.from(String(f.content||"").replace(/\n/g,""),"base64").toString("utf8");
-        return JSON.parse(raw||"{}")
-      }
-      if(r.status===404)return {};
-      let detail="";try{detail=await r.text()}catch(_){}
-      const e=new Error("Strong GitHub image read unavailable "+r.status+" "+String(detail||"").slice(0,500));
-      e.statusCode=503;e.strongUnavailable=true;throw e
-    }catch(err){
-      if(err&&err.strongUnavailable)throw err;
-      const e=new Error("Strong GitHub image read unavailable: "+String(err&&err.message||err));
-      e.statusCode=503;e.strongUnavailable=true;throw e
-    }
-  }
-  try{
-    const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
-    const u="https://raw.githubusercontent.com/"+REPO+"/"+encodeURIComponent(TRIGGER_BRANCH)+"/"+clean+"?t="+Date.now();
-    const r=await fetch(u,{cache:"no-store",headers:{"cache-control":"no-cache","user-agent":"ttittulares-image-status-read"}});
-    if(r.ok)return JSON.parse(await r.text()||"{}");
-    if(r.status===404)return {}
-  }catch(_){}
-  try{return await readControl(path)}catch(_){return {}}
+  return readControl(path,strong)
 }
 
 async function readAckFresh(){
