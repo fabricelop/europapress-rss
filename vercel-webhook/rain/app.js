@@ -38,7 +38,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.4',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.5',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -440,7 +440,10 @@ function conditionVisual(row={}){
   const p=weatherParts(row),rate=Number(row.precipitation)||0,code=Number(row.weatherCode),snow=Number(row.snowfall)||0;
   if([95,96,99].includes(code))return{key:'storm',icon:'⚡',label:'Tormenta'};
   if(snow>=.02||[71,73,75,77,85,86].includes(code))return{key:'snow',icon:'❄',label:snow>=.5?'Nieve intensa':'Nieve'};
-  if([80,81,82].includes(code))return{key:'showers',icon:'◒',label:'Chubascos'};
+  if([80,81,82].includes(code)){
+    if(rate>=7.5)return{key:'heavy',icon:'▼',label:'Chubasco fuerte'};
+    return{key:'showers',icon:'◒',label:'Chubascos'};
+  }
   if(rate>.05){
     if(rate<.5)return{key:'drizzle',icon:'·',label:'Llovizna'};
     if(rate<2.5)return{key:'light',icon:'↓',label:'Lluvia débil'};
@@ -1790,6 +1793,8 @@ function renderEvents(){
     const avgProb=pct(e.averageProbability??e.peakProbability),maxProb=pct(e.peakProbability);
     const families=e.independentFamilyCount||e.providerCount||0;
     const rows=eventDetailRows(e),segments=semanticSegments(e);
+    const heavyEpisode=peak>=7.5||rows.some(row=>(Number(row.precipitation)||0)>=7.5);
+    const heavyAlert=heavyEpisode?'<span class="eventAlert">⚠ LLUVIA FUERTE · ≥7,5 mm/h</span>':'';
     const segmentsHtml='<div class="eventSegments"><div class="segmentTitle">Lectura rápida del episodio</div>'+
       segments.map(segment=>'<div class="eventSegment wx-'+conditionVisual(segment.rows[0]||{}).key+'"><span class="segmentTime">'+fmtSegmentRange(segment.start,segment.end)+'</span><span class="segmentText"><strong>'+segment.label+'</strong><small>Prob. media '+segment.avgProb+'% · intensidad '+segment.rateText+'</small></span></div>').join('')+
       '</div>';
@@ -1802,7 +1807,7 @@ function renderEvents(){
     const fineCount=rows.filter(r=>r.detailMinutes===15).length,coarseCount=rows.filter(r=>r.detailMinutes===30).length;
     const detailLabel=fineCount&&coarseCount?'15 min mientras hay dato · después 30 min':fineCount?'detalle cada 15 min':'detalle cada 30 min';
     const details='<details class="hourDetails"><summary>Ver '+detailLabel+' ('+rows.length+')</summary><div class="eventHours">'+header+detailRows+'</div></details>';
-    blocks.push('<div class="event"><div><strong>'+fmtDateTime(e.start)+' → '+fmtTime(e.end)+'</strong>'+
+    blocks.push('<div class="event'+(heavyEpisode?' eventHeavy':'')+'"><div>'+heavyAlert+'<strong>'+fmtDateTime(e.start)+' → '+fmtTime(e.end)+'</strong>'+
       '<small>Ventana de '+dur+' h · '+total.toFixed(1).replace('.',',')+' mm estimados · no implica lluvia continua</small>'+
       '<small>Pico '+peak.toFixed(1).replace('.',',')+' mm/h · prob. media '+avgProb+'% · máx. '+maxProb+'% · '+families+' familias</small></div>'+
       '<div class="prob">'+maxProb+'%</div>'+segmentsHtml+details+'</div>');
