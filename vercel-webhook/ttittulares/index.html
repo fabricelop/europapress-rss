@@ -70,7 +70,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <div class="stats">
   <button class="stat active" data-view="ready"><b id="readyCount">0</b>Listas</button>
   <button class="stat" data-view="processing"><b id="processingCount">0</b>En elaboración</button>
-  <button class="stat" data-view="problematic"><b id="problematicCount">0</b>No comprobadas</button>
+  <button class="stat" data-view="review"><b id="reviewCount">0</b>Revisión</button>
   <button class="stat" data-view="growing"><b id="growingCount">0</b>Creciendo</button>
   <button class="stat" data-view="tremending"><b id="tremendingCount">0</b>Tremending</button>
  </div>
@@ -141,7 +141,8 @@ function saveSelectedImageKeys(set){try{localStorage.setItem(IMAGE_SELECTED_KEY,
 function imageSelectionKey(item){return String(item?.event_id||"")+":r"+String(Number(item?.revision||1))}
 function persistUiState(){try{sessionStorage.setItem(PENDING_KEY,JSON.stringify([...pendingClosed]));sessionStorage.setItem(OPEN_KEY,JSON.stringify([...openCards]));sessionStorage.setItem(TREMENDING_OPEN_KEY,JSON.stringify([...tremendingOpen]));sessionStorage.setItem(TREMENDING_DELETED_KEY,JSON.stringify([...tremendingDeleted]))}catch(_){}}
 const REQUESTED_VIEW=new URLSearchParams(location.search).get("view");
-const INITIAL_VIEW=["ready","processing","problematic","growing","tremending"].includes(REQUESTED_VIEW)?REQUESTED_VIEW:"ready";
+const NORMALIZED_REQUESTED_VIEW=REQUESTED_VIEW==="problematic"?"review":REQUESTED_VIEW;
+const INITIAL_VIEW=["ready","processing","review","growing","tremending"].includes(NORMALIZED_REQUESTED_VIEW)?NORMALIZED_REQUESTED_VIEW:"ready";
 const cachedModel=loadLocalJson(DATA_CACHE_KEY);
 let model=cachedModel||{prepared:[],status:{},config:{},tremending:{items:[]}},hasGoodState=Boolean(cachedModel),reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),tremendingOpen=loadUiSet(TREMENDING_OPEN_KEY),tremendingDeleted=loadUiSet(TREMENDING_DELETED_KEY),tremendingPreview=new Map(),imageRuns=new Map(),loadSeq=0,runPoll=null,imageRunPoll=null,imageTerminalRefreshActive=false;
 let uiInteractionVersion=0,uiHoldUntil=0,passiveRefreshTimer=null;
@@ -751,7 +752,7 @@ function tweetFor(item){
  const legacy=Array.isArray(item?.variants)?item.variants:[];
  return legacy.find(v=>String(v?.label||"").toUpperCase()==="A")||legacy.find(v=>String(v?.remate||"").trim())||null
 }
-function setView(next){view=next;document.querySelectorAll(".stat").forEach(x=>x.classList.toggle("active",x.dataset.view===view));renderList()}
+function setView(next){view=next==="problematic"?"review":next;document.querySelectorAll(".stat").forEach(x=>x.classList.toggle("active",x.dataset.view===view));renderList()}
 function sourceTypeLabel(t){return t==="general"?"Generales":t==="sport"?"Deportes":t==="social"?"Social / tendencias":"Descubrimiento internacional"}
 function sourceAgeInfo(value,nowMs=Date.now()){
  const at=value?Date.parse(value):NaN;
@@ -821,7 +822,7 @@ function renderSourcesSheet(){
 }
 function render(){
  const s=model.status||{},healthy=Number(s.healthy_source_count),total=Number(s.configured_sources);
- $("readyCount").textContent=(model.prepared||[]).length;$("processingCount").textContent=Number(s.processing_count||0);$("problematicCount").textContent=Number(s.problematic_count||0);$("oneSourceCount").textContent=Number(s.one_source_count||0);$("twoSourceCount").textContent=Number(s.two_source_count||0);$("growingCount").textContent=Number(s.three_source_count||0);$("tremendingCount").textContent=(model.tremending?.items||[]).filter(x=>!tremendingDeleted.has(String(x.id||""))).length;
+ $("readyCount").textContent=(model.prepared||[]).length;$("processingCount").textContent=Number(s.processing_count||0);$("reviewCount").textContent=Number(s.problematic_count||0)+Number(s.processing_outcomes_count||0);$("oneSourceCount").textContent=Number(s.one_source_count||0);$("twoSourceCount").textContent=Number(s.two_source_count||0);$("growingCount").textContent=Number(s.three_source_count||0);$("tremendingCount").textContent=(model.tremending?.items||[]).filter(x=>!tremendingDeleted.has(String(x.id||""))).length;
  renderTiming();
  $("health").textContent=(Number.isFinite(healthy)?healthy:"—")+"/"+(Number.isFinite(total)?total:"—")+" fuentes funcionando";
  $("health").classList.toggle("bad",Number.isFinite(healthy)&&Number.isFinite(total)&&healthy<total);
@@ -864,7 +865,7 @@ function renderList(){
  lastRenderedView=view;lastReadyRendering=null;lastTremendingRendering=null;
  list.innerHTML="";
  if(view==="processing"){renderProcessing(list);return}
- if(view==="problematic"){renderProblematic(list);return}
+ if(view==="review"){renderReview(list);return}
  if(view==="growing"){renderGrowing(list);return}
 }
 function renderTremending(list){
@@ -1098,40 +1099,6 @@ function renderReady(list,preservedImages=new Map()){
   list.appendChild(card)
  }
 }
-function renderProblematic(list){
- $("viewTitle").textContent="No comprobadas";
- const items=[...(model.status?.problematic_items||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
- if(!items.length){list.innerHTML='<div class="empty">No hay noticias pendientes de comprobación.</div>';return}
- for(const item of items){
-   const card=document.createElement("article");card.className="queuecard";
-   const chips=(item.sources||[]).map(src=>'<span class="chip">'+String(typeof src==="string"?src:(src.name||src.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
-   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="problem-reason"></div><div class="verification-hint" hidden></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn check">✓ En elaboración</button><button class="btn danger dismiss-problematic">Descartar</button></div>';
-   card.querySelector(".title").textContent=item.title||"Noticia sin título";
-   const attempts=Number(item.problematic_attempts||1);
-   card.querySelector(".sources").textContent="Pendiente de comprobar · intento "+attempts+" · "+fmt(item.problematic_at||item.selected_at);
-   card.querySelector(".count").textContent=Number(item.source_count||0)+" fuentes";
-   card.querySelector(".problem-reason").textContent=item.problem_reason||"No se pudo verificar suficientemente.";
-   const hint=card.querySelector(".verification-hint"),check=card.querySelector(".check");
-   if(item.user_validated){
-     hint.hidden=false;hint.textContent="✓ Dada por válida · entrará en el siguiente pase editorial";
-     check.textContent="✓ Validada";check.disabled=true
-   }else{
-     check.onclick=async()=>{
-       if(!confirm("¿Dar esta noticia por válida? Entrará en el siguiente pase editorial de TTiTTulares."))return;
-       check.disabled=true;
-       try{await api("check",{event_id:item.event_id});toast("Enviada a elaboración");await load(true);setView("processing")}
-       catch(err){check.disabled=false;toast(err.message)}
-     }
-   }
-   card.querySelector(".dismiss-problematic").onclick=async()=>{
-     if(!confirm("¿Descartar esta noticia?"))return;
-     const id=String(item.event_id||"");pendingClosed.add(id);persistUiState();renderList();
-     try{await api("dismiss",{event_id:item.event_id});toast("Noticia descartada");await load(true);setView("problematic")}
-     catch(err){pendingClosed.delete(id);persistUiState();renderList();toast(err.message)}
-   };
-   list.appendChild(card)
- }
-}
 function processingOutcomeReason(item){
  const exact=String(item.reconciliation_reason||"").trim();
  if(exact)return exact;
@@ -1159,54 +1126,72 @@ function processingOutcomeLabel(item){
  if(s==="CANCELLED")return "Cancelada";
  return s||"Salida"
 }
-function renderProcessing(list){
- $("viewTitle").textContent="En elaboración";
- const items=[...(model.status?.processing_items||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
+function reviewTime(item,kind){
+ const raw=kind==="problematic"?(item.problematic_at||item.selected_at):(item.finished_at||item.reconciled_at||item.dismissed_at||item.updated_at||item.selected_at);
+ const t=Date.parse(raw||"");
+ return Number.isFinite(t)?t:0
+}
+function renderReview(list){
+ $("viewTitle").textContent="Revisión";
+ const problematic=[...(model.status?.problematic_items||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
  const outcomes=[...(model.status?.processing_outcomes||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
- if(!items.length&&!outcomes.length){list.innerHTML='<div class="empty">No hay noticias en elaboración ni salidas recientes.</div>';return}
- if(!items.length){
-   const empty=document.createElement("div");empty.className="empty";empty.textContent="No hay noticias actualmente en elaboración.";list.appendChild(empty)
- }
- for(const item of items){
-   const card=document.createElement("article");card.className="queuecard";
-   const chips=(item.sources||[]).map(s=>'<span class="chip">'+String(typeof s==="string"?s:(s.name||s.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
-   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn danger dismiss-processing">Desestimar</button></div>';
-   card.querySelector(".title").textContent=item.title||"Noticia sin título";
-   card.querySelector(".sources").textContent="Entrada "+fmt(item.selected_at)+(item.trend_origin?" · TTendencias":"")+(item.selection_mode==="REWRITE"?" · Rehacer":"");
-   card.querySelector(".count").textContent=Number(item.source_count||0)+" fuentes";
-   card.querySelector(".dismiss-processing").onclick=async()=>{
-     if(!confirm("¿Desestimar esta noticia? Se quitará de todas las listas."))return;
-     pendingClosed.add(String(item.event_id||""));persistUiState();renderList();try{await api("dismiss",{event_id:item.event_id});toast("Noticia desestimada");await load(true);setView("processing")}catch(err){pendingClosed.delete(String(item.event_id||""));persistUiState();renderList();toast(err.message)}
-   };
-   list.appendChild(card)
- }
+ const rows=[
+   ...problematic.map(item=>({kind:"problematic",item})),
+   ...outcomes.map(item=>({kind:"outcome",item}))
+ ].sort((a,b)=>reviewTime(b.item,b.kind)-reviewTime(a.item,a.kind));
+ if(!rows.length){list.innerHTML='<div class="empty">No hay noticias pendientes de revisión.</div>';return}
+
  if(outcomes.length){
-   const header=document.createElement("div");header.style.cssText="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 2px 8px";
-   const title=document.createElement("div");title.textContent="Salidas recientes de elaboración";title.style.cssText="font-size:1.25rem;font-weight:800;line-height:1.2";
-   const clear=document.createElement("button");clear.className="btn danger";clear.textContent="Borrar todo";
+   const bar=document.createElement("div");bar.style.cssText="display:flex;justify-content:flex-end;margin:0 2px 10px";
+   const clear=document.createElement("button");clear.className="btn danger";clear.textContent="Borrar salidas";
    clear.onclick=async()=>{
-     if(!confirm("¿Borrar de esta bandeja todas las salidas recientes actuales? Las nuevas salidas seguirán apareciendo."))return;
+     if(!confirm("¿Borrar las salidas ya cerradas de Revisión? Las pendientes de comprobar se conservarán."))return;
      clear.disabled=true;
      const optimistic=[];
      for(const outcome of outcomes){const id=String(outcome.event_id||"");if(id&&!pendingClosed.has(id)){pendingClosed.add(id);optimistic.push(id)}}
      persistUiState();renderList();
      try{
        await api("clear-outcomes",{});
-       // Mantener los tombstones locales hasta que una lectura remota confirme
-       // que las salidas ya no existen. GitHub RAW puede tardar unos segundos
-       // en reflejar el commit y, si los quitamos aquí, reaparecen brevemente.
        persistUiState();
-       toast("Salidas recientes borradas");
-       await load(true);setView("processing")
+       toast("Salidas de revisión borradas");
+       await load(true);setView("review")
      }catch(err){
        persistUiState();renderList();
        toast("Borradas de este dispositivo · sincronización pendiente: "+err.message)
      }
    };
-   header.append(title,clear);list.appendChild(header);
-   for(const item of outcomes){
-     const card=document.createElement("article");card.className="queuecard";
-     const chips=(item.sources||[]).map(s=>'<span class="chip">'+String(typeof s==="string"?s:(s.name||s.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
+   bar.appendChild(clear);list.appendChild(bar)
+ }
+
+ for(const row of rows){
+   const item=row.item,card=document.createElement("article");card.className="queuecard";
+   const chips=(item.sources||[]).map(src=>'<span class="chip">'+String(typeof src==="string"?src:(src.name||src.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
+   if(row.kind==="problematic"){
+     card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="problem-reason"></div><div class="verification-hint" hidden></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn check">✓ En elaboración</button><button class="btn danger dismiss-problematic">Descartar</button></div>';
+     card.querySelector(".title").textContent=item.title||"Noticia sin título";
+     const attempts=Number(item.problematic_attempts||1);
+     card.querySelector(".sources").textContent="Pendiente de comprobar · intento "+attempts+" · "+fmt(item.problematic_at||item.selected_at);
+     card.querySelector(".count").textContent=Number(item.source_count||0)+" fuentes";
+     card.querySelector(".problem-reason").textContent=item.problem_reason||"No se pudo verificar suficientemente.";
+     const hint=card.querySelector(".verification-hint"),check=card.querySelector(".check");
+     if(item.user_validated){
+       hint.hidden=false;hint.textContent="✓ Dada por válida · entrará en elaboración";
+       check.textContent="✓ Validada";check.disabled=true
+     }else{
+       check.onclick=async()=>{
+         if(!confirm("¿Dar esta noticia por válida y mandarla a elaboración?"))return;
+         check.disabled=true;
+         try{await api("check",{event_id:item.event_id});toast("Enviada a elaboración");await load(true);setView("processing")}
+         catch(err){check.disabled=false;toast(err.message)}
+       }
+     }
+     card.querySelector(".dismiss-problematic").onclick=async()=>{
+       if(!confirm("¿Descartar esta noticia?"))return;
+       const id=String(item.event_id||"");pendingClosed.add(id);persistUiState();renderList();
+       try{await api("dismiss",{event_id:item.event_id});toast("Noticia descartada");await load(true);setView("review")}
+       catch(err){pendingClosed.delete(id);persistUiState();renderList();toast(err.message)}
+     }
+   }else{
      card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="problem-reason"></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn primary reopen-outcome">Elaborar igualmente</button><button class="btn danger hide-outcome">Borrar</button></div>';
      card.querySelector(".title").textContent=item.title||"Noticia sin título";
      card.querySelector(".sources").textContent=processingOutcomeLabel(item)+" · "+fmt(item.finished_at||item.selected_at);
@@ -1216,12 +1201,7 @@ function renderProcessing(list){
        if(!confirm("¿Volver a elaborar esta noticia de todas formas? El siguiente pase respetará esta decisión aunque antes se descartara como duplicada o no material."))return;
        const btn=card.querySelector(".reopen-outcome"),id=String(item.event_id||"");btn.disabled=true;
        const previousItems=[...(model.status?.processing_items||[])],previousOutcomes=[...(model.status?.processing_outcomes||[])];
-       // Movimiento optimista: la decisión del usuario se refleja al instante.
-       // El backend sigue siendo autoritativo y, si falla, hacemos rollback visual.
-       const optimistic={
-         ...item,status:"PROCESSING",selected_at:new Date().toISOString(),
-         selection_mode:"MANUAL_REOPEN_OUTCOME",force_user_elaborate:true
-       };
+       const optimistic={...item,status:"PROCESSING",selected_at:new Date().toISOString(),selection_mode:"MANUAL_REOPEN_OUTCOME",force_user_elaborate:true};
        model.status.processing_outcomes=previousOutcomes.filter(x=>String(x.event_id||"")!==id);
        model.status.processing_items=[optimistic,...previousItems.filter(x=>String(x.event_id||"")!==id)];
        model.status.processing_outcomes_count=model.status.processing_outcomes.length;
@@ -1232,32 +1212,47 @@ function renderProcessing(list){
          toast("Reabierta para elaboración");
          await load(true);setView("processing")
        }catch(err){
-         model.status.processing_items=previousItems;
-         model.status.processing_outcomes=previousOutcomes;
-         model.status.processing_count=previousItems.length;
-         model.status.processing_outcomes_count=previousOutcomes.length;
+         model.status.processing_items=previousItems;model.status.processing_outcomes=previousOutcomes;
+         model.status.processing_count=previousItems.length;model.status.processing_outcomes_count=previousOutcomes.length;
          renderList();toast(err.message)
        }
      };
      card.querySelector(".hide-outcome").onclick=async()=>{
-       if(!confirm("¿Borrar esta salida de la bandeja? No volverá a aparecer."))return;
+       if(!confirm("¿Borrar esta salida de Revisión? No volverá a aparecer."))return;
        const btn=card.querySelector(".hide-outcome"),id=String(item.event_id||"");btn.disabled=true;
        if(id)pendingClosed.add(id);persistUiState();renderList();
        try{
          await api("hide-outcome",{event_id:item.event_id});
-         // No liberar todavía el ocultado optimista: GitHub RAW puede servir
-         // durante unos segundos la versión previa al commit. load() retirará
-         // este tombstone solo cuando el backend ya no devuelva la salida.
          persistUiState();
          toast("Salida borrada");
-         await load(true);setView("processing")
+         await load(true);setView("review")
        }catch(err){
          persistUiState();renderList();
          toast("Salida borrada de este dispositivo · sincronización pendiente: "+err.message)
        }
-     };
-     list.appendChild(card)
+     }
    }
+   list.appendChild(card)
+ }
+}
+function renderProcessing(list){
+ $("viewTitle").textContent="En elaboración";
+ const items=[...(model.status?.processing_items||[])].filter(x=>!pendingClosed.has(String(x.event_id||"")));
+ if(!items.length){list.innerHTML='<div class="empty">No hay noticias actualmente en elaboración.</div>';return}
+ for(const item of items){
+   const card=document.createElement("article");card.className="queuecard";
+   const chips=(item.sources||[]).map(s=>'<span class="chip">'+String(typeof s==="string"?s:(s.name||s.source||"Fuente")).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</span>').join("");
+   card.innerHTML='<div class="head"><div><div class="title"></div><div class="sources"></div></div><div class="count"></div></div><div class="sources-list">'+chips+'</div><div class="actions"><button class="btn danger dismiss-processing">Desestimar</button></div>';
+   card.querySelector(".title").textContent=item.title||"Noticia sin título";
+   card.querySelector(".sources").textContent="Entrada "+fmt(item.selected_at)+(item.trend_origin?" · TTendencias":"")+(item.selection_mode==="REWRITE"?" · Rehacer":"");
+   card.querySelector(".count").textContent=Number(item.source_count||0)+" fuentes";
+   card.querySelector(".dismiss-processing").onclick=async()=>{
+     if(!confirm("¿Desestimar esta noticia? Se quitará de todas las listas."))return;
+     const id=String(item.event_id||"");pendingClosed.add(id);persistUiState();renderList();
+     try{await api("dismiss",{event_id:item.event_id});toast("Noticia desestimada");await load(true);setView("processing")}
+     catch(err){pendingClosed.delete(id);persistUiState();renderList();toast(err.message)}
+   };
+   list.appendChild(card)
  }
 }
 async function load(silent=false,passive=false){
