@@ -1,6 +1,6 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
-# watchdog-restart-refresh-v5-v44
+# watchdog-restart-refresh-v6-no-kernel-mutex
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
 $BaseDir="C:\TTiTTulares"
@@ -19,10 +19,6 @@ public static class TTKeepAwake {
   [void][TTKeepAwake]::SetThreadExecutionState(0x80000001)
 }catch{}
 
-$mutex=New-Object System.Threading.Mutex($false,"Local\TTAutomationWatchdog")
-$owned=$false
-try{$owned=$mutex.WaitOne(0,$false)}catch{}
-if(-not $owned){exit 0}
 
 function Log([string]$Text){
   try{
@@ -204,7 +200,5 @@ try{
     Start-Sleep -Seconds $IntervalSeconds
   }
 }finally{
-  try{if($owned){$mutex.ReleaseMutex()}}catch{}
   try{[void][TTKeepAwake]::SetThreadExecutionState(0x80000000)}catch{}
-  try{$mutex.Dispose()}catch{}
 }
