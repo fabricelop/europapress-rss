@@ -95,7 +95,7 @@ async function readAck(strong=false){return await readControl(ACK_PATH,strong)}
 
 async function readImageControl(path,strong=false){
   if(strong){
-    try{return await readControl(path)}catch(_){}
+    try{return await readControl(path,true)}catch(_){}
   }
   try{
     const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
