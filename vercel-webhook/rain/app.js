@@ -360,8 +360,9 @@ function render(){
   $('feedbackCard').hidden=!isCurrent;
   if(isCurrent){
     const stats=feedbackStats(),threshold=Math.round(calibratedRadarThreshold()*100);
+    const countLabel=stats.count===1?'1 comprobación':stats.count+' comprobaciones';
     $('feedbackStatus').textContent=stats.count
-      ? 'Registradas '+stats.count+' comprobaciones'+(stats.accuracy!=null?' · acierto '+Math.round(stats.accuracy*100)+'%':'')+' · umbral radar local '+threshold+'%.'
+      ? 'Registradas '+countLabel+(stats.accuracy!=null?' · acierto provisional '+Math.round(stats.accuracy*100)+'%':'')+' · umbral radar local '+threshold+'%.'
       : 'Tu respuesta queda en este dispositivo y sirve para medir aciertos y calibrar la detección local.';
   }
   const h=d.sources.health;
