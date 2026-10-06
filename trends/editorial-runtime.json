@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T01:45:00+02:00",
-  "last_completed_at": "2026-10-06T01:48:30+02:00",
-  "updated_at": "2026-10-06T01:48:30+02:00",
+  "last_started_at": "2026-10-06T02:15:00+02:00",
+  "last_completed_at": "2026-10-06T02:16:00+02:00",
+  "updated_at": "2026-10-06T02:16:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -16,7 +16,7 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T014500+0200",
+    "run_id": "tr-chat-20261006T021500+0200",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
@@ -24,9 +24,9 @@
     "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T01:45:00+02:00",
-    "updated_at": "2026-10-06T01:48:30+02:00",
-    "finished_at": "2026-10-06T01:48:30+02:00",
+    "started_at": "2026-10-06T02:15:00+02:00",
+    "updated_at": "2026-10-06T02:16:00+02:00",
+    "finished_at": "2026-10-06T02:16:00+02:00",
     "incident_count": 1,
     "incidents": [
       {
@@ -61,63 +61,70 @@
     "message": "Pasada completada sin trabajo editorial nuevo: cola 0. Revisadas 5 tarjetas Pendientes; 3 siguen con IA pendiente y el reparador visual quedó solicitado. El radar continúa en la captura de 23:18 pese al refresco solicitado. Sin ImageGen directo ni despliegues.",
     "activity": [
       {
-        "at": "2026-10-06T01:45:00+02:00",
+        "at": "2026-10-06T02:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada directa · cola inicial 0"
       },
       {
-        "at": "2026-10-06T01:45:20+02:00",
+        "at": "2026-10-06T02:15:10+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual de Pendientes solicitado"
       },
       {
-        "at": "2026-10-06T01:45:35+02:00",
+        "at": "2026-10-06T02:15:20+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Radar desactualizado · refresco solicitado"
+        "message": "Radar desactualizado · solicitando refresco"
       },
       {
-        "at": "2026-10-06T01:46:20+02:00",
+        "at": "2026-10-06T02:15:25+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Refresco de radar solicitado"
+      },
+      {
+        "at": "2026-10-06T02:15:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando estado autoritativo de requests y Explicadas"
       },
       {
-        "at": "2026-10-06T01:46:50+02:00",
+        "at": "2026-10-06T02:15:35+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando Pendientes · 5 tarjetas"
       },
       {
-        "at": "2026-10-06T01:47:10+02:00",
+        "at": "2026-10-06T02:15:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "3 Pendientes con IA pendiente · reparación visual ya solicitada"
       },
       {
-        "at": "2026-10-06T01:47:30+02:00",
+        "at": "2026-10-06T02:15:45+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "1 problematic detectado · Después de 8; no está en la última captura Top 10"
       },
       {
-        "at": "2026-10-06T01:48:00+02:00",
+        "at": "2026-10-06T02:15:50+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main · verificando cola, trigger visual y radar"
       },
       {
-        "at": "2026-10-06T01:48:30+02:00",
+        "at": "2026-10-06T02:16:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -139,7 +146,7 @@
     ],
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261006T014500+0200",
+      "run_id": "tr-chat-20261006T021500+0200",
       "status": "triggered",
       "direct_imagegen": false,
       "pending_cards_reviewed": 5,
@@ -159,7 +166,7 @@
   },
   "visual_repair": {
     "requested": true,
-    "run_id": "tr-chat-20261006T014500+0200",
+    "run_id": "tr-chat-20261006T021500+0200",
     "status": "triggered",
     "direct_imagegen": false,
     "pending_cards_reviewed": 5,
