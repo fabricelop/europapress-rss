@@ -228,30 +228,54 @@ export default async function handler(req,res){
       if(!moneyWizUploadTokenMatches(req))return json(res,401,{ok:false,error:"unauthorized"});
       if(!process.env.BLOB_READ_WRITE_TOKEN)return json(res,503,{ok:false,error:"backup_blob_not_configured"});
 
+      let body={};
       if(req.method==="GET"){
-        const result=await list(privateBlobOptions({prefix:MONEYWIZ_BACKUP_PREFIX,limit:100}));
-        const backups=(result.blobs||[])
-          .filter(b=>String(b.pathname||"").toLowerCase().endsWith(".zip"))
-          .map(b=>({
-            pathname:b.pathname,
-            filename:String(b.pathname||"").slice(MONEYWIZ_BACKUP_PREFIX.length),
-            size:Number(b.size||0),
-            uploadedAt:b.uploadedAt||null,
-            etag:b.etag||null
-          }))
-          .sort((a,b)=>String(b.uploadedAt||"").localeCompare(String(a.uploadedAt||"")));
-        return json(res,200,{ok:true,count:backups.length,backups,hasMore:!!result.hasMore});
-      }
-
-      if(req.method!=="POST"){
+        const action=String(params.get("action")||(params.has("filename")?"prepare":"")).trim().toLowerCase();
+        if(action==="list"){
+          const result=await list(privateBlobOptions({prefix:MONEYWIZ_BACKUP_PREFIX,limit:100}));
+          const backups=(result.blobs||[])
+            .filter(b=>String(b.pathname||"").toLowerCase().endsWith(".zip"))
+            .map(b=>({
+              pathname:b.pathname,
+              filename:String(b.pathname||"").slice(MONEYWIZ_BACKUP_PREFIX.length),
+              size:Number(b.size||0),
+              uploadedAt:b.uploadedAt||null,
+              etag:b.etag||null
+            }))
+            .sort((a,b)=>String(b.uploadedAt||"").localeCompare(String(a.uploadedAt||"")));
+          return json(res,200,{ok:true,count:backups.length,backups,hasMore:!!result.hasMore});
+        }
+        if(action!=="prepare"&&action!=="confirm"){
+          console.warn("moneywiz-shortcut-invalid-get",{
+            action:action||null,
+            hasFilename:params.has("filename"),
+            hasSize:params.has("sizeBytes"),
+            hasPathname:params.has("pathname")
+          });
+          res.setHeader("allow","POST, GET");
+          return json(res,405,{
+            ok:false,
+            error:"moneywiz_wrong_method",
+            message:"Use POST JSON for prepare/confirm, or GET with action=prepare/confirm and query parameters.",
+            expectedMethod:"POST",
+            expectedAction:"prepare"
+          });
+        }
+        body={action};
+        for(const key of ["filename","sizeBytes","pathname"]){
+          const value=params.get(key);
+          if(value!=null&&value!=="")body[key]=value;
+        }
+      }else if(req.method==="POST"){
+        try{body=JSON.parse(await bodyText(req)||"{}")}catch{return json(res,400,{ok:false,error:"invalid_json"})}
+      }else{
         res.setHeader("allow","GET, POST");
         return json(res,405,{ok:false,error:"method_not_allowed"});
       }
 
-      let body={};
-      try{body=JSON.parse(await bodyText(req)||"{}")}catch{return json(res,400,{ok:false,error:"invalid_json"})}
-      const action=String(body.action||"prepare");
+      const action=String(body.action||"prepare").trim().toLowerCase();
       console.log("moneywiz-shortcut-request",{
+        method:req.method,
         action,
         filenameType:typeof body.filename,
         filenamePreview:String(body.filename??"").slice(0,120),
@@ -268,7 +292,7 @@ export default async function handler(req,res){
         try{
           const existing=await head(pathname,privateBlobOptions());
           if(existing&&(!sizeBytes||Number(existing.size||0)===Math.round(sizeBytes))){
-            return json(res,200,{ok:true,alreadyExists:true,pathname,size:Number(existing.size||0),uploadedAt:existing.uploadedAt||null});
+            return json(res,200,{ok:true,alreadyExists:true,pathname,size:Number(existing.size||0),uploadedAt:existing.uploadedAt||null,presignedUrl:null,protocolVersion:2});
           }
         }catch(_){}
 
@@ -292,7 +316,7 @@ export default async function handler(req,res){
           allowOverwrite:false,
           cacheControlMaxAge:60
         });
-        return json(res,200,{ok:true,alreadyExists:false,pathname,presignedUrl,expiresAt:new Date(validUntil).toISOString()});
+        return json(res,200,{ok:true,alreadyExists:false,pathname,presignedUrl,expiresAt:new Date(validUntil).toISOString(),protocolVersion:2});
       }
 
       if(action==="confirm"){
