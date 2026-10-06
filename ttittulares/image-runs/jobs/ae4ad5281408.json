@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-ae4ad5281408-r1-a1-1791264961840",
+  "requested_at": "2026-10-06T05:36:01.840311Z",
+  "updated_at": "2026-10-06T05:36:01.840311Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "ae4ad5281408",
+  "event_id": "ae4ad5281408",
+  "target_name": "Pedro Sánchez convoca elecciones el domingo 29 de noviembre",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Pedro Sánchez convoca elecciones el domingo 29 de noviembre",
+    "revision": 1,
+    "factual_summary": "Pedro Sánchez anunció la disolución de las Cortes y la convocatoria de elecciones generales anticipadas para el 29 de noviembre. RTVE y EFE confirman el anuncio; el decreto de convocatoria se publica el 6 de octubre.",
+    "tweet_text": "Pedro Sánchez ha anunciado la disolución de las Cortes y elecciones generales anticipadas para el 29 de noviembre. El decreto de convocatoria se publica este martes.\n\n🌶️ Noviembre acaba de recibir una cita que no tenía en la agenda.",
+    "remate": "🌶️ Noviembre acaba de recibir una cita que no tenía en la agenda.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+    "image_style_name": "tinta_acuarela",
+    "image_style_index": 0,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nPedro Sánchez ha anunciado la disolución de las Cortes y elecciones generales anticipadas para el 29 de noviembre. El decreto de convocatoria se publica este martes.\n\n🌶️ Noviembre acaba de recibir una cita que no tenía en la agenda.\n\nREMATE EXACTO:\n🌶️ Noviembre acaba de recibir una cita que no tenía en la agenda.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nPedro Sánchez anunció la disolución de las Cortes y la convocatoria de elecciones generales anticipadas para el 29 de noviembre. RTVE y EFE confirman el anuncio; el decreto de convocatoria se publica el 6 de octubre.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.cope.es/actualidad/espana/al-minuto/sanchez-decide-convoca-no-adelanto-electoral-sigue-directo-analisis-posibles-fechas-significa-decretos-vivienda-20261005_3449372.html",
+    "citations": [
+      {
+        "source": "RTVE",
+        "url": "https://www.rtve.es/noticias/20261005/sanchez-convoca-elecciones-anticipadas-29-noviembre-llegado-momento-decidir-futuro-quereis/17253132.shtml"
+      },
+      {
+        "source": "EFE",
+        "url": "https://efe.com/espana/2026-10-05/sanchez-convoca-elecciones-generales-29-noviembre/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
