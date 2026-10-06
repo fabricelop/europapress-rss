@@ -356,38 +356,73 @@ export default async function handler(req, res) {
         }
 
         try {
+          // La entrega es la fuente autoritativa del cierre del paquete Telegram.
+          // Basta una escritura para cerrar visualmente TTendencias; la tarjeta
+          // explicada se reconcilia desde este ledger en ttendencias-control.
+          let deliveryMatched = false;
           await mutateTrendJson("trends/telegram-image-deliveries.json", (doc) => {
             let changed = false;
             for (const row of (doc.items || [])) {
               if (String(row.event_id || "") !== id || Number(row.revision || 0) !== revision) continue;
-              matched = true; changed = true; row.status = status; row.decision_source = "telegram_webhook";
+              matched = true; deliveryMatched = true; changed = true;
+              row.status = status;
+              row.decision_source = "telegram_webhook";
               row[status === "published" ? "published_at" : "dismissed_at"] = now;
-              for (const k of ["telegram_message_id", "archive_telegram_message_id"]) { const mid = Number(row[k] || 0); if (mid && !mids.includes(mid)) mids.push(mid); }
+              for (const k of ["telegram_message_id", "archive_telegram_message_id"]) {
+                const mid = Number(row[k] || 0);
+                if (mid && !mids.includes(mid)) mids.push(mid);
+              }
             }
             if (changed) doc.updated_at = now;
             return changed;
           });
-          await mutateTrendJson("trends/telegram-manual-explained.json", (doc) => {
-            let changed = false;
-            for (const row of (doc.items || [])) {
-              if (String(row.id || "") !== id || Number(row.revision || 0) !== revision) continue;
-              matched = true; changed = true; row.telegram_package_status = status; row.telegram_package_updated_at = now; row.telegram_decision_source = "telegram_webhook";
-              row[status === "published" ? "telegram_published_at" : "telegram_dismissed_at"] = now;
-            }
-            if (changed) doc.updated_at = now;
-            return changed;
-          });
-          const currentMid = Number(msg.message_id || 0); if (currentMid && !mids.includes(currentMid)) mids.push(currentMid);
-          if (!matched) {
+
+          const currentMid = Number(msg.message_id || 0);
+          if (currentMid && !mids.includes(currentMid)) mids.push(currentMid);
+
+          if (!deliveryMatched) {
             await safeTelegram("sendMessage", { chat_id: allowedChat, text: "⚠️ No encuentro el paquete vigente de TTendencias." });
             return res.status(200).json({ ok: false, matched: false });
           }
+
+          // En cuanto el ledger autoritativo queda cerrado, retirar el paquete
+          // de Telegram sin esperar una segunda escritura GitHub.
           for (const mid of mids) await safeTelegram("deleteMessage", { chat_id: allowedChat, message_id: mid });
+
+          // Sincronización secundaria: útil para inspección humana, pero nunca
+          // debe bloquear el cierre ni hacer que el botón parezca no responder.
+          try {
+            await mutateTrendJson("trends/telegram-manual-explained.json", (doc) => {
+              let changed = false;
+              for (const row of (doc.items || [])) {
+                if (String(row.id || "") !== id || Number(row.revision || 0) !== revision) continue;
+                changed = true;
+                row.telegram_package_status = status;
+                row.telegram_package_updated_at = now;
+                row.telegram_decision_source = "telegram_webhook";
+                row[status === "published" ? "telegram_published_at" : "telegram_dismissed_at"] = now;
+              }
+              if (changed) doc.updated_at = now;
+              return changed;
+            });
+          } catch (syncError) {
+            console.error("TTendencias secondary explained sync failed", {
+              id, revision, status, error: String(syncError?.message || syncError)
+            });
+          }
+
           return res.status(200).json({ ok: true, status, event_id: id, revision, deleted: mids.length });
         } catch (e) {
-          console.error("TTendencias callback persistence failed", { id, revision, status, error: String(e?.message || e) });
-          await safeTelegram("sendMessage", { chat_id: allowedChat, text: "⚠️ No se pudo guardar el estado de TTendencias; el mensaje se conserva." });
-          return res.status(200).json({ ok: false, status, event_id: id, revision });
+          const raw = String(e?.message || e);
+          console.error("TTendencias callback persistence failed", { id, revision, status, error: raw });
+          const rateLimited = /rate limit|403/i.test(raw);
+          await safeTelegram("sendMessage", {
+            chat_id: allowedChat,
+            text: rateLimited
+              ? "⚠️ GitHub está temporalmente limitado. No he borrado el paquete; vuelve a pulsar Publicado dentro de unos minutos."
+              : "⚠️ No se pudo guardar el estado de TTendencias; el mensaje se conserva."
+          });
+          return res.status(200).json({ ok: false, status, event_id: id, revision, rate_limited: rateLimited });
         }
       } else if (data.startsWith("tt:")) {
         const parts = data.split(":");
