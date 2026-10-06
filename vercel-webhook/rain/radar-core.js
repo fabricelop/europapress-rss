@@ -67,6 +67,26 @@ export function estimateLocalFlow(prev,cur,w,h,{maxShift=7,grid=5,patchRadius=8}
   const coverage=vectors.length/Math.max(1,xs.length*ys.length);
   return{vectors,confidence:clamp01(confidence*(.72+.28*coverage)),coverage,gridX:xs.length,gridY:ys.length};
 }
+export function combineLocalFlows(flows=[]){
+  const valid=flows.filter(f=>f?.vectors?.length);
+  if(!valid.length)return null;
+  const maxLen=Math.max(...valid.map(f=>f.vectors.length)),vectors=[];
+  for(let i=0;i<maxLen;i++){
+    const samples=valid.map(f=>f.vectors[i]).filter(Boolean);
+    if(!samples.length)continue;
+    const dx=wmedian(samples.map(v=>({value:v.dx,weight:Math.max(.05,v.confidence||0)})));
+    const dy=wmedian(samples.map(v=>({value:v.dy,weight:Math.max(.05,v.confidence||0)})));
+    const spread=median(samples.map(v=>Math.hypot(v.dx-dx,v.dy-dy)))||0;
+    const consistency=clamp01(1-spread/3);
+    const mean=samples.reduce((s,v)=>s+(v.confidence||0),0)/samples.length;
+    const ref=samples.at(-1);
+    vectors.push({x:ref.x,y:ref.y,dx,dy,confidence:clamp01(.68*mean+.32*consistency),consistency});
+  }
+  if(!vectors.length)return null;
+  const confidence=vectors.reduce((s,v)=>s+v.confidence,0)/vectors.length;
+  const coverage=valid.reduce((s,f)=>s+(Number(f.coverage)||0),0)/valid.length;
+  return{vectors,confidence:clamp01(confidence),coverage,historySamples:valid.length};
+}
 export function flowVectorAt(flow,x,y,fallback={dx:0,dy:0,confidence:0}){
   const vectors=flow?.vectors||[];
   if(!vectors.length)return fallback;
