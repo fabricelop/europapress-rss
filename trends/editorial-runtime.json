@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T14:15:00.000Z",
-  "last_completed_at": "2026-10-06T14:37:00.000Z",
-  "updated_at": "2026-10-06T14:37:00.000Z",
+  "last_started_at": "2026-10-06T14:45:00.000Z",
+  "last_completed_at": "2026-10-06T14:51:45.000Z",
+  "updated_at": "2026-10-06T14:51:45.000Z",
   "status": "success",
   "processed_ids": [
     "48607a1c170b",
@@ -24,239 +24,77 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T141500Z",
+    "run_id": "tr-chat-20261006T144500Z",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "current": 6,
-    "total": 6,
+    "started_at": "2026-10-06T14:45:00.000Z",
+    "updated_at": "2026-10-06T14:51:45.000Z",
+    "finished_at": "2026-10-06T14:51:45.000Z",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T14:15:00.000Z",
-    "updated_at": "2026-10-06T14:37:00.000Z",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-06T14:30:57.000Z",
-        "type": "github_write_recovered",
-        "message": "El primer intento de commit atómico devolvió un error interno de GitHub; se releyó main y la persistencia se completó después con escrituras por SHA."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "summary": {
-      "trends_processed": 9,
-      "trends_explained": 9,
-      "explanation_groups": 6,
-      "new_cards": 6,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 3,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
+      "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 6,
-      "ai_images_ready_observed": 3,
+      "fallback_images_ready": 0,
       "visual_jobs_queued": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 6,
-      "remates_selected": 1,
-      "remates_omitted": 5,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 0,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada cerrada · 9 revisiones / 6 grupos verificados · cola final 0 · reparación visual activada",
+    "message": "Pasada cerrada · cola editorial final 0 · saneamiento visual de Pendientes activado",
     "activity": [
       {
-        "at": "2026-10-06T14:35:30.000Z",
-        "phase": "investigating",
-        "trend_id": "a1caaebc2161",
-        "title": "Figaredo",
-        "message": "Buscando detonante actual"
+        "at": "2026-10-06T14:45:00.000Z",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada · cola editorial efectiva 0"
       },
       {
-        "at": "2026-10-06T14:35:35.000Z",
-        "phase": "investigating",
-        "trend_id": "a1caaebc2161",
-        "title": "Figaredo",
-        "message": "Contrastando fuentes · propuesta de modelo mixto de pensiones"
+        "at": "2026-10-06T14:45:02.000Z",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual de Pendientes solicitado"
       },
       {
-        "at": "2026-10-06T14:35:40.000Z",
-        "phase": "investigating",
-        "trend_id": "a1caaebc2161",
-        "title": "Figaredo",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-06T14:35:45.000Z",
-        "phase": "drafting",
-        "trend_id": "a1caaebc2161",
-        "title": "Figaredo",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-06T14:35:50.000Z",
-        "phase": "drafting",
-        "trend_id": "a1caaebc2161",
-        "title": "Figaredo",
-        "message": "Sin remate · explicación política factual suficiente"
-      },
-      {
-        "at": "2026-10-06T14:35:55.000Z",
+        "at": "2026-10-06T14:45:06.000Z",
         "phase": "verifying",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Releyendo estado autoritativo de Carlos Alcaraz"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main antes de declarar cola vacía"
       },
       {
-        "at": "2026-10-06T14:36:00.000Z",
-        "phase": "investigating",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Contrastando resultado final · ATP y crónica deportiva"
-      },
-      {
-        "at": "2026-10-06T14:36:05.000Z",
-        "phase": "investigating",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Hecho esencial verificado · campeón en Tokio ante Lehecka"
-      },
-      {
-        "at": "2026-10-06T14:36:10.000Z",
-        "phase": "drafting",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-06T14:36:15.000Z",
-        "phase": "remate_selection",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-06T14:36:18.000Z",
-        "phase": "remate_selection",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Evaluando candidatos con ratings"
-      },
-      {
-        "at": "2026-10-06T14:36:20.000Z",
-        "phase": "remate_selection",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Remate seleccionado · Tokio le tenía el trofeo guardado en recepción"
-      },
-      {
-        "at": "2026-10-06T14:36:22.000Z",
-        "phase": "persisting",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Guardando fichas Explicadas de Figaredo y Carlos Alcaraz"
-      },
-      {
-        "at": "2026-10-06T14:36:32.000Z",
-        "phase": "drafting",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Comprobando límite de X · texto final 232 caracteres Unicode"
-      },
-      {
-        "at": "2026-10-06T14:36:34.000Z",
-        "phase": "persisting",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-06T14:36:36.000Z",
-        "phase": "persisting",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Retirando revisiones finales de la cola"
-      },
-      {
-        "at": "2026-10-06T14:36:38.000Z",
+        "at": "2026-10-06T14:51:38.000Z",
         "phase": "verifying",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Releyendo main"
+        "trend_id": null,
+        "title": null,
+        "message": "Cola autoritativa releída · 0 preparing/update/rewrite_pending"
       },
       {
-        "at": "2026-10-06T14:36:40.000Z",
-        "phase": "verifying",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-06T14:36:42.000Z",
-        "phase": "verifying",
-        "trend_id": "69fbf1d94af2",
-        "title": "Carlos Alcaraz",
-        "message": "Tendencia cerrada y verificada · cola efectiva 0"
-      },
-      {
-        "at": "2026-10-06T14:37:00.000Z",
+        "at": "2026-10-06T14:51:45.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 9 revisiones / 6 grupos verificados · cola final 0 · reparación visual activada"
-      }
-    ],
-    "finished_at": "2026-10-06T14:37:00.000Z",
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
-      "updated_at": "2026-10-04T17:29:26.880Z",
-      "total_ratings": 153,
-      "recent_considered": 100
-    },
-    "remate_selections": [
-      {
-        "trend_id": "69fbf1d94af2",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "text": "🌶️ Tokio le tenía el trofeo guardado en recepción.",
-            "total": 8.7,
-            "ratings_affinity": 2.4,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "text": "🌶️ El título de Tokio volvió a la misma taquilla.",
-            "total": 7.8
-          },
-          {
-            "id": "c3",
-            "text": "🌶️ Lehecka llegó a la final y encontró la copa con nombre y apellidos.",
-            "total": 7.4
-          },
-          {
-            "id": "c4",
-            "text": "🌶️ Alcaraz volvió y Tokio todavía no había cambiado la etiqueta del campeón.",
-            "total": 8.1
-          },
-          {
-            "id": "c5",
-            "text": "🌶️ La copa de Tokio ya sabe el camino al equipaje de Alcaraz.",
-            "total": 8.4
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.7,
-        "no_remate_reason": null
+        "message": "Pasada cerrada · cola editorial final 0 · saneamiento visual de Pendientes activado"
       }
     ],
     "queue_complete": true,
