@@ -334,7 +334,10 @@ async function refreshRadar(){
   state.radarLoading=true;
   try{
     const radar=await fetchRadarMeta();
-    state.data={...state.data,radar,sources:{...state.data.sources,radar:true}};
+    const sources={...state.data.sources,radar:true};
+    const all=[...(sources.deterministic||[]),...(sources.ensembles||[])];
+    sources.health={available:all.filter(x=>x.ok).length+(sources.quarterHour?1:0)+1,total:all.length+2};
+    state.data={...state.data,radar,sources};
     state.nowcast=await computeNowcast(radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
     state.lastRadarRefresh=Date.now();
     render();
