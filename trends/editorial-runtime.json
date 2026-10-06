@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T03:15:00+02:00",
-  "last_completed_at": "2026-10-06T03:19:55.764+02:00",
-  "updated_at": "2026-10-06T03:19:55.764+02:00",
+  "last_started_at": "2026-10-06T03:45:00+02:00",
+  "last_completed_at": "2026-10-06T03:49:00+02:00",
+  "updated_at": "2026-10-06T03:49:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -14,7 +14,7 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T031500+0200",
+    "run_id": "tr-chat-20261006T034500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
@@ -22,9 +22,9 @@
     "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T03:15:00+02:00",
-    "updated_at": "2026-10-06T03:19:55.764+02:00",
-    "finished_at": "2026-10-06T03:19:55.764+02:00",
+    "started_at": "2026-10-06T03:45:00+02:00",
+    "updated_at": "2026-10-06T03:49:00+02:00",
+    "finished_at": "2026-10-06T03:49:00+02:00",
     "incident_count": 0,
     "incidents": [],
     "summary": {
@@ -49,38 +49,38 @@
       "remates_omitted": 0,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada completada 0/0. Radar de 03:11:44 y cola de 03:11:53 sin revisiones activas. Reparación visual ejecutada con éxito: archivo al día y 0 jobs IA nuevos. Sin ImageGen directo ni despliegues Vercel.",
+    "message": "Pasada completada 0/0. Radar de 03:42:00 y cola de 03:42:09 sin revisiones activas; 0 requests activas, 0 problemáticas y 0 reexplicaciones pendientes. Reparación visual completada con éxito sin nuevos jobs IA. Sin ImageGen directo ni despliegues Vercel.",
     "activity": [
       {
-        "at": "2026-10-06T03:15:00+02:00",
+        "at": "2026-10-06T03:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada directa · cola inicial 0"
       },
       {
-        "at": "2026-10-06T03:15:20+02:00",
+        "at": "2026-10-06T03:46:31+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual de Pendientes solicitado"
       },
       {
-        "at": "2026-10-06T03:18:23+02:00",
+        "at": "2026-10-06T03:48:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola editorial sin revisiones activas"
+        "message": "Releyendo main · cola 0, requests activos 0 y sin reexplicaciones pendientes"
       },
       {
-        "at": "2026-10-06T03:19:02+02:00",
+        "at": "2026-10-06T03:47:55+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reparación visual completada · archivo al día y 0 jobs IA nuevos"
+        "message": "Reparación visual completada · workflow correcto y sin nuevos jobs IA"
       },
       {
-        "at": "2026-10-06T03:19:55.764+02:00",
+        "at": "2026-10-06T03:49:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -100,16 +100,16 @@
     "remaining_problematic_ids": [],
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261006T031500+0200",
+      "run_id": "tr-chat-20261006T034500+0200",
       "status": "completed_success",
-      "workflow_run_id": 37398394531,
+      "workflow_run_id": 37400863119,
       "archive_status": "up_to_date",
       "ai_jobs_queued": 0,
       "direct_imagegen": false
     },
     "radar": {
-      "captured_at": "2026-10-06T03:11:44+02:00",
-      "queue_updated_at": "2026-10-06T03:11:53+02:00",
+      "captured_at": "2026-10-06T03:42:00+02:00",
+      "queue_updated_at": "2026-10-06T03:42:09+02:00",
       "queue_count": 0,
       "refresh_requested": false,
       "refresh_materialized": false
@@ -117,9 +117,9 @@
   },
   "visual_repair": {
     "requested": true,
-    "run_id": "tr-chat-20261006T031500+0200",
+    "run_id": "tr-chat-20261006T034500+0200",
     "status": "completed_success",
-    "workflow_run_id": 37398394531,
+    "workflow_run_id": 37400863119,
     "archive_status": "up_to_date",
     "ai_jobs_queued": 0,
     "direct_imagegen": false
