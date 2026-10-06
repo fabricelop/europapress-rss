@@ -50,6 +50,11 @@ class CDP{
       setTimeout(()=>{if(this.pending.delete(id))bad(Error("CDP timeout "+method))},Math.max(800,Number(timeoutMs)||4000));
     })
   }
+  fire(method,params={}){
+    const id=++this.seq;
+    this.ws.send(JSON.stringify({id,method,params}));
+    return id
+  }
   async eval(expression,awaitPromise=false){
     const r=await this.call("Runtime.evaluate",{expression,returnByValue:true,awaitPromise,userGesture:true},4500);
     if(r&&r.exceptionDetails)throw Error(r.exceptionDetails.text||"Runtime.evaluate");
@@ -189,14 +194,24 @@ async function ensureChatRootFromFreshTarget(cdp){
   let st=null;
   try{st=await cdp.eval("(()=>({url:location.href,ready:document.readyState}))()")}catch{}
   if(st&&String(st.url||"").includes("chatgpt.com"))return;
-  let scheduled=false;
+  let sent=false;
   try{
-    scheduled=Boolean(await cdp.eval("(()=>{setTimeout(()=>location.replace("+JSON.stringify(CHAT_ROOT)+"),0);return true})()"))
-  }catch(e){console.log("BRIDGE LOCATION REPLACE WARNING :: "+String(e&&e.message||e))}
-  if(!scheduled){
-    try{await cdp.call("Page.navigate",{url:CHAT_ROOT},8000)}catch(e){console.log("BRIDGE PAGE NAVIGATE LAST RESORT WARNING :: "+String(e&&e.message||e))}
+    // No esperamos respuesta: al cambiar location el propio execution context
+    // puede destruirse antes de contestar. Lo importante es que el comando
+    // quede enviado al renderer.
+    cdp.fire("Runtime.evaluate",{
+      expression:"location.replace("+JSON.stringify(CHAT_ROOT)+")",
+      returnByValue:false,
+      awaitPromise:false,
+      userGesture:true
+    });
+    sent=true;
+    console.log("BRIDGE LOCATION REPLACE FIRED")
+  }catch(e){console.log("BRIDGE LOCATION REPLACE FIRE WARNING :: "+String(e&&e.message||e))}
+  if(!sent){
+    try{cdp.fire("Page.navigate",{url:CHAT_ROOT});sent=true}catch(e){console.log("BRIDGE PAGE NAVIGATE FIRE WARNING :: "+String(e&&e.message||e))}
   }
-  await sleep(800)
+  await sleep(1200)
 }
 async function resetToFreshConversation(cdp){
   const st=await waitComposer(cdp,12000);
