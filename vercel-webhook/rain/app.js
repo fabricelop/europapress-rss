@@ -38,7 +38,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.7',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.8',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -514,7 +514,7 @@ function operaPointAt(timeMs){
   return best&&best.d<=8*60_000?best.row:null;
 }
 function shortPoints(){
-  const now=Date.now(),n=state.nowcast,correction=feedbackEpisodeCorrection(now),rawEvent=chooseDisplayEvent(),rainNow=currentRainState().raining;
+  const now=Date.now(),n=state.nowcast,truth=currentTruth(4),correction=truth===false?feedbackEpisodeCorrection(now):null,rawEvent=chooseDisplayEvent(),rainNow=currentRainState().raining;
   let ev=rawEvent;
   if(correction?.mode==='pause'){
     ev={kind:'resume',active:false,start:new Date(correction.resumeAt).toISOString(),end:new Date(correction.episode.end).toISOString(),confidence:Number(correction.confidence)||0};
@@ -1377,8 +1377,8 @@ function chooseDisplayEvent(){
   return chooseModelEvent(now,radarDryWindow());
 }
 function buildRainDecision(){
-  const now=Date.now(),rain=currentRainState(),learningCorrection=feedbackEpisodeCorrection(now);
-  const correction=currentTruth(4)===false?learningCorrection:null;
+  const now=Date.now(),rain=currentRainState(),truth=currentTruth(4);
+  const correction=truth===false?feedbackEpisodeCorrection(now):null;
   let dry=radarDryWindow(),event=chooseDisplayEvent();
   if(correction?.mode==='pause'){
     dry=null;
@@ -2306,11 +2306,11 @@ function canonicalEpisodeSnapshot(now=Date.now()){
       };
     }
   }
-  const current=canonicalEvents().find(e=>Date.parse(e.start)<=now+5*60_000&&Date.parse(e.end)>now);
+  const current=(state.data?.events||[]).find(e=>Date.parse(e.start)<=now+5*60_000&&Date.parse(e.end)>now);
   if(current){
     const start=Date.parse(current.start),end=Math.min(Date.parse(current.end),now+180*60_000);
     if(Number.isFinite(start)&&Number.isFinite(end)&&end>now){
-      return{start,end,maxEnd:end,source:'RainETA canónico',confidence:Number(current.timingConfidence)||Number(current.peakProbability)||.45};
+      return{start,end,maxEnd:end,source:'RainETA modelo',confidence:Number(current.timingConfidence)||Number(current.peakProbability)||.45};
     }
   }
   if(radarEvent?.end){
