@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent} from '../rain/core.js';
+import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,wetNear,valueNear} from '../rain/radar-core.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
@@ -66,4 +66,27 @@ test('projected radar intensity follows motion',()=>{
   assert.ok(valueNear(rates,w,h,12,20,1)>2);
   const series=projectPointSeries(m,w,h,{dx:4,dy:0,confidence:.9},{horizonMinutes:40,sourceStepMinutes:10,outputStepMinutes:5,radius:0,intensityGrid:rates});
   assert.ok(series.some(row=>row.radarRate>2));
+});
+
+test('low amount high-ish probability is possible, not continuous rain',()=>{
+  assert.equal(classifyRainHour({probability:.62,expectedPrecipitation:.018}),'possible');
+  assert.equal(classifyRainHour({probability:.70,expectedPrecipitation:.01}),'dry');
+});
+
+test('rain events split across a weak dry window',()=>{
+  const base=Date.parse('2026-10-06T10:00:00Z');
+  const vals=[
+    [.72,.18],[.76,.24],[.68,.14],
+    [.42,.02],[.34,.01],
+    [.71,.16],[.66,.11]
+  ];
+  const points=vals.map(([probability,expectedPrecipitation],i)=>({
+    time:new Date(base+i*3600e3).toISOString(),
+    probability,expectedPrecipitation,timingConfidence:.75,providerCount:8,independentFamilyCount:6
+  }));
+  const events=detectRainEvents(points);
+  assert.equal(events.length,2);
+  assert.equal(events[0].durationHours,3);
+  assert.equal(events[1].durationHours,2);
+  assert.ok(events[0].totalExpectedPrecipitation>.5);
 });
