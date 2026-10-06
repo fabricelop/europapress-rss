@@ -20701,7 +20701,6 @@
       "reexplain": true,
       "rewrite_instruction": "",
       "rewrite_with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -20761,16 +20760,31 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_block_reason": null,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "rewrite_pending": false,
-      "explained_at": "2026-10-06T20:20:10+02:00"
+      "explained_at": "2026-10-06T20:20:10+02:00",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261006100728_1200.jpg",
+        "source": "Europa Press · 6/10/2026",
+        "source_url": "https://www.europapress.es/andalucia/noticia-maillo-reafirma-no-sera-candidato-frente-amplio-29n-invita-podemos-sentarse-debatir-primarias-20261006100728.html",
+        "alt": "Imagen de archivo relacionada con Frente Amplio",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261006100728_1200.jpg",
+        "source": "Europa Press · 6/10/2026",
+        "source_url": "https://www.europapress.es/andalucia/noticia-maillo-reafirma-no-sera-candidato-frente-amplio-29n-invita-podemos-sentarse-debatir-primarias-20261006100728.html",
+        "alt": "Imagen de archivo relacionada con Frente Amplio",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "1a9669df5b5e",
@@ -31852,15 +31866,30 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_block_reason": null,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "image_choice": "none",
-      "rewrite_pending": false
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "rewrite_pending": false,
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/pp-insiste-agitar-bulo-pucherazo-voto-correo/01791284396851.jpg",
+        "source": "RTVE · 6/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261006/pp-insiste-agitar-bulo-pucherazo-voto-correo/17255128.shtml",
+        "alt": "Imagen de archivo relacionada con El PP",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.rtve.es/imagenes/pp-insiste-agitar-bulo-pucherazo-voto-correo/01791284396851.jpg",
+        "source": "RTVE · 6/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261006/pp-insiste-agitar-bulo-pucherazo-voto-correo/17255128.shtml",
+        "alt": "Imagen de archivo relacionada con El PP",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "682a8cab1c48",
@@ -31920,7 +31949,6 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_block_reason": null,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
       "image_status": "none",
@@ -31928,7 +31956,8 @@
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "none",
       "image_choice": "none",
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "c0facbdb74f7",
@@ -31988,15 +32017,30 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_block_reason": null,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "image_choice": "none",
-      "rewrite_pending": false
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "rewrite_pending": false,
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/QRQPKOX2AREX5GGYFNVD7JF5XI.jpg?auth=f2a26497a9b2232c695e82b2b253f8068909f9fbc15d1be577b10dd3537a6cea&quality=70&width=1200&height=675&focal=1503,271",
+        "source": "Cadena SER · 6/10/2026",
+        "source_url": "https://cadenaser.com/nacional/2026/10/06/getafe-y-carvajal-negocian-para-una-incorporacion-inmediata-despues-del-ofrecimiento-del-jugador-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Carvajal",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://cadenaser.com/resizer/v2/QRQPKOX2AREX5GGYFNVD7JF5XI.jpg?auth=f2a26497a9b2232c695e82b2b253f8068909f9fbc15d1be577b10dd3537a6cea&quality=70&width=1200&height=675&focal=1503,271",
+        "source": "Cadena SER · 6/10/2026",
+        "source_url": "https://cadenaser.com/nacional/2026/10/06/getafe-y-carvajal-negocian-para-una-incorporacion-inmediata-despues-del-ofrecimiento-del-jugador-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Carvajal",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "ae89708e6a12",
@@ -32056,7 +32100,6 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_block_reason": null,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
       "image_status": "none",
@@ -32064,9 +32107,10 @@
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "none",
       "image_choice": "none",
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-06T20:20:10+02:00",
+  "updated_at": "2026-10-06T18:23:58.824727Z",
   "count": 593
 }
