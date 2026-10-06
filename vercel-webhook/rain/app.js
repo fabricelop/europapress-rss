@@ -1422,8 +1422,10 @@ function chooseDisplayEvent(){
       return{kind:'radar',active:true,start:n.radarTime||new Date(now).toISOString(),end:rv?.end||null,confidence:Number(n.confidence)||.5,uncertainty:rv?.uncertainty||8,event:rv?.event||null,motion:n.motion||null};
     }
   }
-  const futureRv=rv&&Date.parse(rv.start)<=now+125*60_000?rv:null;
-  const futureOp=op&&Date.parse(op.start)<=now+125*60_000?op:null;
+  const rvHorizon=Math.max(20,Math.min(90,Number(n?.reliableHorizonMinutes)||45));
+  const opHorizon=op?Math.max(20,Math.min(80,25+50*(Number(op.confidence)||0))):0;
+  const futureRv=rv&&Date.parse(rv.start)<=now+rvHorizon*60_000?rv:null;
+  const futureOp=op&&Date.parse(op.start)<=now+opHorizon*60_000?op:null;
   const radarChoice=fuseRadarEvents(futureRv,futureOp,now);
   if(radarChoice)return radarChoice;
   return chooseModelEvent(now,radarDryWindow());
