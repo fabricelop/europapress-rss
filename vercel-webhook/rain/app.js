@@ -1426,7 +1426,7 @@ function uncertaintyText(ev){
 function render(){
   const d=state.data,n=state.nowcast,decision=buildRainDecision(),ev=decision.event,nowState=decision.rain,truth=currentTruth();
   $('place').textContent=state.loc.name;
-  $('summary').hidden=false;
+  $('summary').hidden=true;
   $('metricStartLabel').textContent='Inicio';
   $('metricEndLabel').textContent='Fin';
   $('metricConfLabel').textContent='Confianza';
@@ -1443,6 +1443,7 @@ function render(){
     $('end').textContent=episode?.end?fmtDateTime(episode.end):'—';
     $('conf').textContent=pct(decision.confidence)+'%';
     $('dur').textContent=durationText(correction?.observedEnd||decision.now,decision.now);
+    $('summary').hidden=false;
     $('summary').textContent=correction?.resumeAt
       ? 'Tu observación confirma una pausa seca. RainETA conserva el episodio, pero lo divide: posible nuevo pulso alrededor de '+fmtTime(correction.resumeAt)+' según '+correction.resumeSource+'.'
       : 'Tu observación confirma que ahora está seco. RainETA ya no considera lluvia continua: está comprobando si el tramo ha terminado antes de lo previsto.';
@@ -1458,6 +1459,7 @@ function render(){
     $('end').textContent=episode?.end?fmtDateTime(episode.end):'—';
     $('conf').textContent=minutesEarly?minutesEarly+' min antes':'ajustado';
     $('dur').textContent=ev?.start?fmtDateTime(ev.start):'sin episodio inmediato';
+    $('summary').hidden=false;
     $('summary').textContent='El tramo previsto se ha cerrado antes: la observación de “No llueve” y la evidencia local ya no sostienen lluvia continua.'+(minutesEarly?' RainETA registra un final ~'+minutesEarly+' min anterior a la previsión.':'')+' Esta corrección queda guardada para aprender la duración local de futuros episodios.';
   }else if(decision.mode==='dry_now'){
     $('heroLabel').textContent='Ventana seca';
@@ -1486,6 +1488,7 @@ function render(){
     $('dur').textContent=durationText(ev.start,ev.end);
     if(truth===false&&Date.parse(ev.start)<=Date.now()&&(!ev.end||Date.parse(ev.end)>Date.now())){
       $('eta').textContent='No llueve ahora';
+      $('summary').hidden=false;
       $('summary').textContent='Tu observación contradice la señal automática; queda registrada para calibrar la detección local.';
     }else if(ev.kind==='observed'){
       $('summary').textContent='Confirmado por ti en esta ubicación'+(ev.end?' · fin estimado '+fmtTime(ev.end):'')+'.';
