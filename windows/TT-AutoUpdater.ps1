@@ -18,16 +18,32 @@ function Log([string]$Text){
 
 function Get-MainSha {
   try {
+    $git=Get-Command git.exe -ErrorAction SilentlyContinue
+    if(-not $git){$git=Get-Command git -ErrorAction SilentlyContinue}
+    if($git){
+      $oldPrompt=$env:GIT_TERMINAL_PROMPT
+      try{
+        $env:GIT_TERMINAL_PROMPT="0"
+        $line=& $git.Source ls-remote "https://github.com/fabricelop/europapress-rss.git" "refs/heads/main" 2>$null | Select-Object -First 1
+      }finally{
+        if($null -eq $oldPrompt){Remove-Item Env:GIT_TERMINAL_PROMPT -ErrorAction SilentlyContinue}else{$env:GIT_TERMINAL_PROMPT=$oldPrompt}
+      }
+      if([string]$line -match '^([0-9a-fA-F]{40})\s'){return $Matches[1].ToLowerInvariant()}
+    }
+  } catch {
+    Log ("MAIN SHA GIT WARNING :: "+$_.Exception.Message)
+  }
+  try {
     $uri="https://api.github.com/repos/fabricelop/europapress-rss/commits/main?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
     $doc=Invoke-RestMethod -Uri $uri -Headers @{
       "Accept"="application/vnd.github+json"
-      "User-Agent"="TT-auto-updater-api-v5"
+      "User-Agent"="TT-auto-updater-api-v6"
       "Cache-Control"="no-cache"
     } -TimeoutSec 20
     $sha=[string]$doc.sha
     if($sha -match "^[0-9a-fA-F]{40}$"){return $sha.ToLowerInvariant()}
   } catch {
-    Log ("MAIN SHA WARNING :: "+$_.Exception.Message)
+    Log ("MAIN SHA API WARNING :: "+$_.Exception.Message)
   }
   return ""
 }
@@ -37,7 +53,7 @@ function Download-Raw([string]$Path,[string]$MainSha){
   $uri="https://raw.githubusercontent.com/fabricelop/europapress-rss/"+$ref+"/"+$Path+"?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
   $wc=New-Object System.Net.WebClient
   try{
-    $wc.Headers["User-Agent"]="TT-auto-updater-raw-v5"
+    $wc.Headers["User-Agent"]="TT-auto-updater-raw-v6"
     $wc.Headers["Cache-Control"]="no-cache"
     $bytes=$wc.DownloadData($uri)
   }finally{
@@ -135,13 +151,13 @@ function CheckOnce {
       StartListener ([string]$m.Local)
     }
     $ref=if($mainSha){$mainSha}else{"main"}
-    Log ("CHECK OK raw-v5 ref="+$ref+" downloads="+$downloads+" restarts="+$restart.Count)
+    Log ("CHECK OK raw-v6 ref="+$ref+" downloads="+$downloads+" restarts="+$restart.Count)
   }catch{
     Log ("CHECK ERROR :: "+$_.Exception.Message)
   }
 }
 
-Log ("START raw-v5 interval="+$IntervalSeconds+" once="+$Once+" pid="+$PID)
+Log ("START raw-v6 interval="+$IntervalSeconds+" once="+$Once+" pid="+$PID)
 do{
   CheckOnce
   if($Once){break}
