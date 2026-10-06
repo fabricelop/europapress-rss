@@ -5,7 +5,7 @@
       "maxDuration": 10
     },
     "api/ttendencias-control.js": {
-      "maxDuration": 30
+      "maxDuration": 300
     },
     "api/ai-image.js": {
       "maxDuration": 60
@@ -13,17 +13,38 @@
     "api/money-control-snapshot.js": {
       "maxDuration": 30
     },
-    "api/money-control-state.js": {
-      "maxDuration": 30
-    },
-    "api/ttittulares-push.js": {
-      "maxDuration": 20
+    "api/ttittulares-control.js": {
+      "maxDuration": 300
     }
   },
   "rewrites": [
     {
+      "source": "/api/ttendencias-run",
+      "destination": "/api/ttendencias-control?__handler=run"
+    },
+    {
+      "source": "/api/ttendencias-run-status",
+      "destination": "/api/ttendencias-control?__handler=status"
+    },
+    {
+      "source": "/api/ttittulares-run",
+      "destination": "/api/ttittulares-control?__handler=run"
+    },
+    {
+      "source": "/api/ttittulares-run-status",
+      "destination": "/api/ttittulares-control?__handler=status"
+    },
+    {
+      "source": "/api/ttittulares-push",
+      "destination": "/api/ttittulares-control?__handler=push"
+    },
+    {
+      "source": "/api/money-control-state",
+      "destination": "/api/money-control-snapshot?__handler=state"
+    },
+    {
       "source": "/api/rain-opera",
-      "destination": "/api/ttittulares-push?mode=rain-opera"
+      "destination": "/api/ttittulares-control?__handler=push&mode=rain-opera"
     },
     {
       "source": "/rain/",
