@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-06T12:31:22.748201Z",
+  "updated_at": "2026-10-06T12:31:41.079Z",
   "items": [
     {
       "event_id": "42f008a44acb",
@@ -856,8 +856,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -865,13 +865,53 @@
       "image_delivery": "app",
       "fallback_image_search_attempted_at": "2026-10-06T12:27:09.494270Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261006134736_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/catalunya/noticia-turull-junts-ve-decision-tc-victoria-independentismo-puigdemont-20261006134736.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Turull (Junts) ve en la decisión del TC una \"victoria del independentismo\" y de Puigdemont"
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/ab7d8eb2f797-r1-ai1-791289715087.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "90f9c0d10b259fd7641b5ccdbf7db2914c43f61af98d949a449a75692a577db3",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2187174,
+        "context_guard": {
+          "version": 3,
+          "event_id": "ab7d8eb2f797",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-ab7d8eb2f797-r1-a1-1791289715087"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/ab7d8eb2f797-r1-ai1-791289715087.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/ab7d8eb2f797-r1-ai1-791289715087.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "90f9c0d10b259fd7641b5ccdbf7db2914c43f61af98d949a449a75692a577db3",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2187174,
+        "context_guard": {
+          "version": 3,
+          "event_id": "ab7d8eb2f797",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-ab7d8eb2f797-r1-a1-1791289715087"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/ab7d8eb2f797-r1-ai1-791289715087.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-06T12:31:41.079Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T12:31:41.079Z"
     }
   ],
   "count": 11
