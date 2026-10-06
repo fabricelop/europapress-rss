@@ -1,4 +1,4 @@
-# RainETA v0.3
+# RainETA v0.4
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -30,6 +30,14 @@ Ensembles:
 - Google WeatherNext 2 64 miembros
 
 Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO, BOM y Google.
+
+## Interfaz v0.4
+- Hora exacta de la última actualización de la app, hora del último consenso de modelos y hora del último radar.
+- Gráfico de 72 h con eje temporal cada 6 horas, huecos secos y color por probabilidad de lluvia: 35–49 %, 50–69 %, 70–84 % y 85–100 %.
+- Temperatura actual.
+- Ubicación GPS con feedback manual **Sí llueve / No llueve**. La observación se guarda solo en el dispositivo y, tras suficientes observaciones, calibra el umbral local del radar.
+- Lugares guardados con la misma pantalla de detalle y una vista resumen rápida de lluvia actual y temperatura.
+- La vista de resumen usa una observación manual reciente para la ubicación GPS cuando existe.
 
 ## Radar
 RainViewer aporta los últimos barridos. RainETA descarga una imagen centrada en la ubicación, genera una máscara de precipitación en el dispositivo, calcula traslación entre barridos y proyecta el píxel de la ubicación cada 5 minutos hasta 120 minutos.
