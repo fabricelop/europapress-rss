@@ -38,7 +38,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.6',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.7',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -219,6 +219,26 @@ async function fetchQuarterHour(){
     interpolated:true
   };
 }
+async function fetchWeekForecast(){
+  const point=forecastCoords(),p=new URLSearchParams({
+    latitude:String(point.lat),longitude:String(point.lon),
+    hourly:'precipitation_probability,precipitation,weather_code',
+    forecast_days:'8',timeformat:'unixtime',timezone:'auto'
+  });
+  const d=await fetchJson('https://api.open-meteo.com/v1/forecast?'+p,8000);
+  const h=d.hourly||{},offset=Number(d.utc_offset_seconds)||0;
+  const times=h.time||[],prob=h.precipitation_probability||[],prec=h.precipitation||[],codes=h.weather_code||[];
+  return{
+    timezone:d.timezone||null,
+    utcOffsetSeconds:offset,
+    rows:times.map((t,i)=>({
+      unix:Number(t),
+      probability:Number(prob[i])||0,
+      precipitation:Number(prec[i])||0,
+      weatherCode:Number(codes[i])
+    })).filter(r=>Number.isFinite(r.unix))
+  };
+}
 async function fetchRadarMeta(){
   const d=await fetchJson('https://api.rainviewer.com/public/weather-maps.json',6000);
   return {
@@ -241,18 +261,20 @@ async function loadForecast(force=false){
   if(!force){
     try{
       const c=JSON.parse(localStorage.getItem(k)||'null');
-      if(c&&Date.now()-c.savedAt<FORECAST_TTL&&c.data){return {...c.data,cacheAgeMs:Date.now()-c.savedAt}}
+      if(c&&Date.now()-c.savedAt<FORECAST_TTL&&c.data&&c.data.week){return {...c.data,cacheAgeMs:Date.now()-c.savedAt}}
     }catch{}
   }
-  const [det,ens,qh,radar,opera]=await Promise.all([
+  const [det,ens,qh,radar,opera,week]=await Promise.all([
     pool(DET_MODELS,fetchDet,3),pool(ENS_MODELS,fetchEns,2),
-    Promise.allSettled([fetchQuarterHour()]),Promise.allSettled([fetchRadarMeta()]),Promise.allSettled([fetchOperaMeta()])
+    Promise.allSettled([fetchQuarterHour()]),Promise.allSettled([fetchRadarMeta()]),Promise.allSettled([fetchOperaMeta()]),
+    Promise.allSettled([fetchWeekForecast()])
   ]);
   const deterministic=det.filter(x=>x.status==='fulfilled').map(x=>x.value);
   const ensembles=ens.filter(x=>x.status==='fulfilled').map(x=>x.value);
   const quarterHour=qh[0]?.status==='fulfilled'?qh[0].value:null;
   const radarMeta=radar[0]?.status==='fulfilled'?radar[0].value:null;
   const operaMeta=opera[0]?.status==='fulfilled'?opera[0].value:null;
+  const weekForecast=week[0]?.status==='fulfilled'?week[0].value:null;
   if(!deterministic.length&&!ensembles.length&&!quarterHour)throw new Error('No responde ninguna fuente de previsión');
   const now=Date.now(),end=now+72*3600_000;
   const consensus=buildConsensus({deterministic,ensembles,nowMs:now}).filter(r=>{
@@ -278,6 +300,7 @@ async function loadForecast(force=false){
     quarterHour,
     radar:radarMeta,
     opera:operaMeta,
+    week:weekForecast,
     sources:{
       deterministic:sourceStatus(DET_MODELS,det),
       ensembles:sourceStatus(ENS_MODELS,ens),
@@ -561,6 +584,9 @@ function renderShortNowcast(){
     : 0;
   const peakRate=wetPoints.length?Math.max(...wetPoints.map(p=>p.rate)):0;
   const labelRate=rain.raining?Math.max(Number(state.nowcast?.currentRadarRate)||0,Number(state.data?.opera?.sample?.rateMmH)||0,arrivalRate):arrivalRate;
+  const compactCorrection=decision.mode==='episode_pause'||decision.mode==='episode_ended_early';
+  $('shortDetail').hidden=compactCorrection;
+  $('shortWindow').hidden=compactCorrection;
   $('shortState').textContent=decision.mode==='episode_pause'||decision.mode==='episode_ended_early'
     ? 'Seco ahora'
     : decision.mode==='possible_now'
@@ -1464,10 +1490,8 @@ function render(){
     $('end').textContent=episode?.end?fmtDateTime(episode.end):'—';
     $('conf').textContent=pct(decision.confidence)+'%';
     $('dur').textContent=durationText(correction?.observedEnd||decision.now,decision.now);
-    $('summary').hidden=false;
-    $('summary').textContent=correction?.resumeAt
-      ? 'Tu observación confirma una pausa seca. RainETA conserva el episodio, pero lo divide: posible nuevo pulso alrededor de '+fmtTime(correction.resumeAt)+' según '+correction.resumeSource+'.'
-      : 'Tu observación confirma que ahora está seco. RainETA ya no considera lluvia continua: está comprobando si el tramo ha terminado antes de lo previsto.';
+    $('summary').textContent='';
+    $('summary').hidden=true;
   }else if(decision.mode==='episode_ended_early'){
     const correction=decision.correction,episode=correction?.episode,minutesEarly=Math.max(0,Math.round((Number(episode?.end)-Number(correction?.observedEnd))/60_000));
     $('heroLabel').textContent='Episodio recalculado';
@@ -1480,8 +1504,8 @@ function render(){
     $('end').textContent=episode?.end?fmtDateTime(episode.end):'—';
     $('conf').textContent=minutesEarly?minutesEarly+' min antes':'ajustado';
     $('dur').textContent=ev?.start?fmtDateTime(ev.start):'sin episodio inmediato';
-    $('summary').hidden=false;
-    $('summary').textContent='El tramo previsto se ha cerrado antes: la observación de “No llueve” y la evidencia local ya no sostienen lluvia continua.'+(minutesEarly?' RainETA registra un final ~'+minutesEarly+' min anterior a la previsión.':'')+' Esta corrección queda guardada para aprender la duración local de futuros episodios.';
+    $('summary').textContent='';
+    $('summary').hidden=true;
   }else if(decision.mode==='possible_now'){
     const radarRate=Number(nowState.radarRate)||0,operaRate=Number(nowState.operaRate)||0;
     const opera=state.data?.opera,operaFresh=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20);
@@ -1606,7 +1630,7 @@ function render(){
   const h=d.sources.health;
   $('health').textContent=h.available+' de '+h.total+' capas disponibles · radar '+(n?.status==='ok'?'analizado':n?.status==='motion_uncertain'?'sin movimiento fiable':'degradado');
   $('sourceCount').textContent=h.available+'/'+h.total;
-  renderShortNowcast();renderTimeline();renderEvents();renderSources();renderRadar();
+  renderShortNowcast();renderTimeline();renderWeekForecast();renderEvents();renderSources();renderRadar();
   const completed=state.lastCompletedAt||d.generatedAt;
   const radarStamp=n?.radarTime||d.radar?.frames?.at(-1)?.time*1000||null;
   $('updated').textContent='Actualización '+fmtTimeSeconds(completed)+' · modelos '+fmtTime(d.generatedAt)+(radarStamp?' · radar '+fmtTime(radarStamp):'');
@@ -1792,6 +1816,75 @@ function dryWindowBetween(a,b){
   return{start:a.end,end:b.start,minutes};
 }
 
+function weekLocalMs(unix,offsetSeconds=0){
+  return (Number(unix)+Number(offsetSeconds||0))*1000;
+}
+function weekDateKey(unix,offsetSeconds=0){
+  return new Date(weekLocalMs(unix,offsetSeconds)).toISOString().slice(0,10);
+}
+function weekHour(unix,offsetSeconds=0){
+  return new Date(weekLocalMs(unix,offsetSeconds)).getUTCHours();
+}
+function weekDayLabel(unix,offsetSeconds=0){
+  const d=new Date(weekLocalMs(unix,offsetSeconds));
+  const raw=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'short',timeZone:'UTC'}).format(d).replace('.','');
+  return raw.charAt(0).toUpperCase()+raw.slice(1);
+}
+function weekWetHour(row){
+  const p=Number(row.probability)||0,mm=Number(row.precipitation)||0;
+  return (p>=40&&mm>=.10)||(p>=32&&mm>=.35);
+}
+function weekRainRanges(rows=[],offsetSeconds=0){
+  const wet=rows.filter(weekWetHour).sort((a,b)=>a.unix-b.unix),groups=[];
+  for(const row of wet){
+    const start=row.unix,end=row.unix+3600,last=groups.at(-1);
+    if(last&&start<=last.end+1){
+      last.end=Math.max(last.end,end);
+      last.maxProb=Math.max(last.maxProb,Number(row.probability)||0);
+      last.total+=Number(row.precipitation)||0;
+      last.peak=Math.max(last.peak,Number(row.precipitation)||0);
+    }else{
+      groups.push({start,end,maxProb:Number(row.probability)||0,total:Number(row.precipitation)||0,peak:Number(row.precipitation)||0});
+    }
+  }
+  return groups.map(g=>({
+    ...g,
+    label:String(weekHour(g.start,offsetSeconds)).padStart(2,'0')+':00–'+String(weekHour(g.end,offsetSeconds)).padStart(2,'0')+':00'
+  }));
+}
+function weekDays(week=state.data?.week){
+  if(!week?.rows?.length)return[];
+  const offset=Number(week.utcOffsetSeconds)||0;
+  const nowUnix=Math.floor(Date.now()/1000),today=weekDateKey(nowUnix,offset),byDay=new Map();
+  for(const row of week.rows){
+    const key=weekDateKey(row.unix,offset);
+    if(key<=today)continue;
+    if(!byDay.has(key))byDay.set(key,[]);
+    byDay.get(key).push(row);
+  }
+  return [...byDay.entries()].slice(0,7).map(([key,rows])=>{
+    const ranges=weekRainRanges(rows,offset),maxProb=Math.max(0,...rows.map(r=>Number(r.probability)||0));
+    const total=ranges.reduce((s,r)=>s+r.total,0),peak=Math.max(0,...ranges.map(r=>r.peak));
+    return{key,label:weekDayLabel(rows[0].unix,offset),yes:ranges.length>0,ranges,maxProb,total,peak};
+  });
+}
+function renderWeekForecast(){
+  const root=$('weekDays'),summary=$('weekSummary');
+  if(!root||!summary)return;
+  const days=weekDays();
+  if(!days.length){
+    summary.textContent='sin datos';
+    root.innerHTML='<div class="weekEmpty">No hay previsión semanal disponible ahora.</div>';
+    return;
+  }
+  const rainy=days.filter(d=>d.yes);
+  summary.textContent=rainy.length?rainy.length+' de 7 días con lluvia':'7 días sin lluvia relevante';
+  root.innerHTML=days.map(day=>{
+    if(!day.yes)return '<div class="weekDay"><div class="weekName">'+day.label+'</div><div class="weekNo">NO</div><div class="weekInfo">Sin tramo de lluvia con señal suficiente</div></div>';
+    const ranges=day.ranges.slice(0,4).map(r=>'<span>'+r.label+' · '+Math.round(r.maxProb)+'% · ~'+r.total.toFixed(1).replace('.',',')+' mm</span>').join('');
+    return '<div class="weekDay rainy"><div class="weekName">'+day.label+'</div><div class="weekYes">SÍ</div><div class="weekInfo">'+ranges+'<small>Total orientativo ~'+day.total.toFixed(1).replace('.',',')+' mm · pico horario ~'+day.peak.toFixed(1).replace('.',',')+' mm/h</small></div></div>';
+  }).join('');
+}
 function renderTimeline(){
   const full=canonicalTimelineRows(),a=full.slice(0,state.timelineHours);
   $('timelineTitle').textContent='Próximas '+state.timelineHours+' horas';
@@ -1828,11 +1921,7 @@ function renderTimeline(){
 function renderEvents(){
   const decision=buildRainDecision(),now=decision.now;
   const events=canonicalEvents().filter(e=>Date.parse(e.end)>now).slice(0,8),radarDry=decision.dry;
-  const correctionHtml=decision.mode==='episode_pause'
-    ? '<div class="dryWindow dryWindowPrimary"><strong>PAUSA SECA observada dentro del episodio</strong><span>'+(decision.correction?.resumeAt?'posible reanudación ~'+fmtTime(decision.correction.resumeAt):'reevaluando el final del tramo')+'</span></div>'
-    : decision.mode==='episode_ended_early'
-      ? '<div class="dryWindow dryWindowPrimary"><strong>Episodio anterior recortado</strong><span>fin observado ~'+fmtTime(decision.correction?.observedEnd)+' · antes se esperaba hasta '+fmtTime(decision.correction?.episode?.end)+'</span></div>'
-      : '';
+  const correctionHtml='';
   if(!events.length){
     $('events').innerHTML=correctionHtml+(radarDry?'<div class="dryWindow"><strong>Radar: ventana seca probable · '+durationText(radarDry.start,radarDry.end)+'</strong><span>hasta ~'+fmtTime(radarDry.end)+(radarDry.operaDry?' · OPERA seco ahora':'')+'</span></div>':'')+'<div class="status">Sin episodios relevantes.</div>';
     return;
