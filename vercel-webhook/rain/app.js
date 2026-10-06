@@ -1,5 +1,5 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,classifyRainHour,bestDryWindow} from './core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
 
 const DET_MODELS=[
   {id:'ecmwf_ifs',label:'ECMWF IFS 9 km',family:'ECMWF',weight:1.32},
@@ -23,7 +23,7 @@ const ENS_MODELS=[
 const FORECAST_TTL=20*60_000;
 const RADAR_REFRESH_MS=5*60_000;
 const CANONICAL_RADAR_THRESHOLD=.22;
-const RADAR_FRAMES=5;
+const RADAR_FRAMES=6;
 const RADAR_ZOOM=7;
 const ANALYSIS_SIZE=97;
 const MAX_SHIFT=12;
@@ -371,7 +371,14 @@ async function computeNowcast(meta){
   const motion=combineMotionEstimates(estimates),latest=masks.at(-1),previous=masks.at(-2),step=frameStep(masks);
   const center=(ANALYSIS_SIZE-1)/2,current=wetNear(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,center,center,0);
   const currentRadarRate=latest.rateGrid?.[Math.round(center)*ANALYSIS_SIZE+Math.round(center)]||0;
-  const localFlow=motion?estimateLocalFlow(previous.mask,latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,{maxShift:Math.min(9,MAX_SHIFT),grid:5,patchRadius:9}):null;
+  const localFlows=[];
+  if(motion){
+    for(let i=Math.max(1,masks.length-3);i<masks.length;i++){
+      const flow=estimateLocalFlow(masks[i-1].mask,masks[i].mask,ANALYSIS_SIZE,ANALYSIS_SIZE,{maxShift:Math.min(9,MAX_SHIFT),grid:5,patchRadius:9});
+      if(flow)localFlows.push(flow);
+    }
+  }
+  const localFlow=combineLocalFlows(localFlows);
   const evolution=motion?evolutionReliability(previous.mask,latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion):{score:0,overlap:0,densityStable:0};
   const confidence=Math.max(0,Math.min(.98,(motion?.confidence||0)*(.72+.28*evolution.score)));
   const reliableHorizonMinutes=Math.round(25+55*Math.max(0,Math.min(1,evolution.score*.7+confidence*.3)));
