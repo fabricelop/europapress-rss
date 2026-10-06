@@ -8801,7 +8801,7 @@
       "percentage": 37.5,
       "first_seen": "2026-10-06T05:22:55.303357Z",
       "last_seen": "2026-10-06T05:44:05.822233Z",
-      "status": "PROCESSING",
+      "status": "DISMISSED",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -8879,7 +8879,10 @@
         }
       ],
       "drafted_source_count": 6,
-      "verified_source_count": 6
+      "verified_source_count": 6,
+      "reconciled_from_event_id": "20584a238843",
+      "reconciliation_reason": "Mismo acontecimiento y misma URL de la convocatoria electoral del 29 de noviembre que el evento 20584a238843, ya desestimado por el usuario; la entrada actual no aporta una actualización material independiente.",
+      "reconciled_at": "2026-10-06T06:05:35.133248Z"
     },
     {
       "id": "a6b8cc7309b6",
@@ -9209,5 +9212,5 @@
       "verified_source_count": 5
     }
   ],
-  "updated_at": "2026-10-06T06:04:48.672809Z"
+  "updated_at": "2026-10-06T06:05:35.133248Z"
 }
