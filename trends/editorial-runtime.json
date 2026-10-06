@@ -1,11 +1,13 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T10:15:00.000Z",
-  "last_completed_at": "2026-10-06T10:20:00.000Z",
-  "updated_at": "2026-10-06T10:20:00.000Z",
+  "last_started_at": "2026-10-06T10:45:00.000Z",
+  "last_completed_at": "2026-10-06T10:52:15.000Z",
+  "updated_at": "2026-10-06T10:52:15.000Z",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "651447f8ff6c"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -14,24 +16,24 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T101500Z",
+    "run_id": "tr-chat-20261006T104500Z",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "current": 0,
-    "total": 0,
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T10:15:00.000Z",
-    "updated_at": "2026-10-06T10:20:00.000Z",
-    "finished_at": "2026-10-06T10:20:00.000Z",
+    "started_at": "2026-10-06T10:45:00.000Z",
+    "updated_at": "2026-10-06T10:52:15.000Z",
+    "finished_at": "2026-10-06T10:52:15.000Z",
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -44,43 +46,145 @@
       "fallback_images_ready": 0,
       "visual_jobs_queued": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
-      "pending_repair_triggered": 1,
-      "pending_under_24h_scanned": 5,
-      "pending_missing_closer": 0,
-      "pending_ai_invalid_or_missing": 0
+      "pending_repair_triggered": 1
     },
-    "message": "Pasada completada 0/0. Radar fresco; sin cola activa, problematic ni reexplicaciones. 5 Pendientes <24 h siguen completos; saneamiento visual ejecutado con éxito.",
+    "message": "Pasada completada 1/1. #StarWarsGalacticRacerEnGAME r0 quedó explicada y verificada; cola final 0. La reparación visual automática quedó lanzada de forma independiente.",
     "activity": [
       {
-        "at": "2026-10-06T10:15:00.000Z",
+        "at": "2026-10-06T10:45:00.000Z",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada directa · cola inicial 0 · revisando Pendientes"
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Iniciando pasada directa · 1 tendencia activa · preparando saneamiento y verificación JIT"
       },
       {
-        "at": "2026-10-06T10:16:00.000Z",
+        "at": "2026-10-06T10:46:00.000Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 5 tarjetas; estado editorial/paquetes sin cambios desde la última verificación"
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Releyendo estado autoritativo de #StarWarsGalacticRacerEnGAME · r0 sigue activa"
       },
       {
-        "at": "2026-10-06T10:19:04.000Z",
+        "at": "2026-10-06T10:46:20.000Z",
+        "phase": "investigating",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-06T10:46:40.000Z",
+        "phase": "investigating",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Contrastando fuente 1/2 · lanzamiento mundial confirmado para hoy"
+      },
+      {
+        "at": "2026-10-06T10:47:00.000Z",
+        "phase": "investigating",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Contrastando fuente 2/2 · GAME confirma fecha y catálogo activo"
+      },
+      {
+        "at": "2026-10-06T10:47:10.000Z",
+        "phase": "investigating",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-06T10:47:20.000Z",
+        "phase": "drafting",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-06T10:47:30.000Z",
+        "phase": "drafting",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Comprobando límite de X · 227 caracteres"
+      },
+      {
+        "at": "2026-10-06T10:47:35.000Z",
+        "phase": "remate_selection",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-06T10:47:38.000Z",
+        "phase": "remate_selection",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-06T10:47:40.000Z",
+        "phase": "remate_selection",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-06T10:47:55.000Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual completado correctamente · sin cambios editoriales necesarios"
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Releyendo main antes de persistir · r0 sigue activa en puesto 6"
       },
       {
-        "at": "2026-10-06T10:20:00.000Z",
+        "at": "2026-10-06T10:48:00.000Z",
+        "phase": "persisting",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-06T10:51:40.000Z",
+        "phase": "persisting",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-06T10:51:40.000Z",
+        "phase": "persisting",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-06T10:51:58.000Z",
+        "phase": "verifying",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-06T10:52:05.000Z",
+        "phase": "verifying",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-06T10:52:10.000Z",
+        "phase": "verifying",
+        "trend_id": "651447f8ff6c",
+        "title": "#StarWarsGalacticRacerEnGAME",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-06T10:52:15.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 0/0 editorial; cola 0; Pendientes saneados"
+        "message": "Pasada cerrada · 1/1 explicada · cola final 0 · reparación visual lanzada"
       }
     ],
     "ratings_snapshot": {
@@ -90,33 +194,89 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "651447f8ff6c",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.4,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
+            "total": 7.8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 7.3,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 7.9,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c5",
+            "total": 8.8,
+            "ratings_affinity": 2.4,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
+        "selected_candidate": "c5",
+        "selected_score": 8.8,
+        "no_remate_reason": null
+      }
+    ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "visual_repair": {
       "requested": true,
       "persisted_trigger": true,
-      "status": "completed_success",
-      "phase": "verified",
-      "command_id": "tr-chat-20261006T101500Z",
+      "status": "running",
+      "phase": "workflow_dispatch",
+      "command_id": "tr-chat-20261006T104500Z",
       "direct_imagegen": false,
-      "workflow_run_id": 37448874281
-    },
-    "pending_scan": {
-      "under_24h": 5,
-      "missing_closer": 0,
-      "ai_invalid_or_missing": 0,
-      "complete": 5
+      "workflow_run_id": 37452572912
     }
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "completed_success",
-    "backlog_detected": 0,
+    "status": "running",
+    "phase": "workflow_dispatch",
+    "command_id": "tr-chat-20261006T104500Z",
     "direct_imagegen": false,
-    "workflow_run_id": 37448874281
+    "workflow_run_id": 37452572912
   },
   "error": null
 }
