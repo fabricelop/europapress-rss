@@ -269,18 +269,37 @@ async function closePrepared(eventId,status){
 async function markUserValidated(eventId){
   const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
   const now=new Date().toISOString();
-  await mutateJson(PROCESSING,"Validar noticia no comprobada TTiTTulares",doc=>{
+  await mutateJson(PROCESSING,"Validar y mover a elaboración noticia no comprobada TTiTTulares",doc=>{
     doc.items||=[];
     const item=[...doc.items].reverse().find(x=>idOf(x.event_id)===id);
     if(!item)throw new Error("No se encuentra la noticia");
-    if(String(item.status||"")!=="PROBLEMATIC")throw new Error("La noticia ya no está en No comprobadas");
-    item.user_validated=true;
-    item.user_validated_at=now;
-    item.user_validation_source="web_check";
-    item.user_validation_version=Number(item.user_validation_version||0)+1;
+    const status=String(item.status||"").toUpperCase();
+    if(status==="PROCESSING"&&item.user_validated)return doc;
+    if(status!=="PROBLEMATIC")throw new Error("La noticia ya no está en No comprobadas");
+    Object.assign(item,{
+      status:"PROCESSING",
+      selected_at:now,
+      selection_mode:"MANUAL_VALIDATED_PROBLEMATIC",
+      user_validated:true,
+      user_validated_at:now,
+      user_validation_source:"web_check",
+      user_validation_version:Number(item.user_validation_version||0)+1,
+      with_image:true,
+      image_mode:item.image_mode||"ai_plus_fallback"
+    });
+    for(const k of ["problem_reason","problematic_at","history_hidden_at","history_hidden_source"])delete item[k];
     doc.updated_at=now;return doc
   });
-  return {ok:true,event_id:id,status:"PROBLEMATIC",user_validated:true,user_validated_at:now}
+  await mutateJson(EVENTS,"Mover noticia validada a elaboración TTiTTulares",doc=>{
+    for(const event of doc.events||[])if(idOf(event.id||event.event_id)===id){
+      event.status="PROCESSING";
+      event.processing_at=now;
+      event.user_validated=true;
+      event.user_validated_at=now;
+    }
+    doc.updated_at=now;return doc
+  });
+  return {ok:true,event_id:id,status:"PROCESSING",user_validated:true,user_validated_at:now,message:"Enviada a elaboración"}
 }
 async function requestImageRegeneration(eventId){
   const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
