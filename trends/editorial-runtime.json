@@ -1,13 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T09:47:37.410+02:00",
-  "last_completed_at": "2026-10-06T09:54:05.634+02:00",
-  "updated_at": "2026-10-06T09:54:05.634+02:00",
+  "last_started_at": "2026-10-06T10:15:00+02:00",
+  "last_completed_at": "2026-10-06T10:22:01.202+02:00",
+  "updated_at": "2026-10-06T10:22:01.202+02:00",
   "status": "success",
-  "processed_ids": [
-    "6cfce703c3c8"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -16,24 +14,24 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T094737.410+0200",
+    "run_id": "tr-chat-20261006T101500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "current": 1,
-    "total": 1,
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T09:47:37.410+02:00",
-    "updated_at": "2026-10-06T09:54:05.634+02:00",
-    "finished_at": "2026-10-06T09:54:05.634+02:00",
+    "started_at": "2026-10-06T10:15:00+02:00",
+    "updated_at": "2026-10-06T10:22:01.202+02:00",
+    "finished_at": "2026-10-06T10:22:01.202+02:00",
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -46,124 +44,54 @@
       "fallback_images_ready": 0,
       "visual_jobs_queued": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 1,
+      "remates_omitted": 0,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada completada 1/1. #LaHora6O quedó explicada y verificada en main; cola autoritativa 0. Sin remate por contexto político. Reparación visual disparada de forma separada; sin ImageGen directo ni despliegues Vercel.",
+    "message": "Pasada completada 0/0. No había nuevas entradas editoriales; la cola autoritativa sigue en 0. El único Pendiente reciente de la pasada anterior (#LaHora6O) quedó con Gag IA válido y paquete publicado. Sin ImageGen directo ni despliegues Vercel.",
     "activity": [
       {
-        "at": "2026-10-06T09:47:37.410+02:00",
+        "at": "2026-10-06T10:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada directa · cola inicial 1"
+        "message": "Iniciando pasada directa · cola inicial 0"
       },
       {
-        "at": "2026-10-06T09:47:52.365+02:00",
+        "at": "2026-10-06T10:15:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando estado autoritativo · radar 10:11 y cola editorial 0"
+      },
+      {
+        "at": "2026-10-06T10:15:00+02:00",
         "phase": "verifying",
         "trend_id": "6cfce703c3c8",
         "title": "#LaHora6O",
-        "message": "Releyendo estado autoritativo de #LaHora6O"
+        "message": "Revisando Pendientes · 1 tarjeta reciente de la pasada anterior"
       },
       {
-        "at": "2026-10-06T09:50:18.688+02:00",
-        "phase": "investigating",
-        "trend_id": "6cfce703c3c8",
-        "title": "#LaHora6O",
-        "message": "Buscando detonante actual de #LaHora6O"
-      },
-      {
-        "at": "2026-10-06T09:50:46.509+02:00",
-        "phase": "investigating",
-        "trend_id": "6cfce703c3c8",
-        "title": "#LaHora6O",
-        "message": "Contrastando fuente 1/2 · programación oficial de RTVE"
-      },
-      {
-        "at": "2026-10-06T09:50:50.028+02:00",
-        "phase": "investigating",
-        "trend_id": "6cfce703c3c8",
-        "title": "#LaHora6O",
-        "message": "Contrastando fuente 2/2 · cobertura del adelanto electoral en La Hora de La 1"
-      },
-      {
-        "at": "2026-10-06T09:50:53.277+02:00",
-        "phase": "investigating",
-        "trend_id": "6cfce703c3c8",
-        "title": "#LaHora6O",
-        "message": "Hecho esencial verificado · edición del 6 de octubre de La Hora de La 1 en emisión y conversación electoral"
-      },
-      {
-        "at": "2026-10-06T09:51:16.177+02:00",
-        "phase": "drafting",
-        "trend_id": "6cfce703c3c8",
-        "title": "#LaHora6O",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-06T09:51:34.481+02:00",
-        "phase": "drafting",
-        "trend_id": "6cfce703c3c8",
-        "title": "#LaHora6O",
-        "message": "Comprobando límite de X · 177 caracteres"
-      },
-      {
-        "at": "2026-10-06T09:51:37.137+02:00",
-        "phase": "remate_selection",
-        "trend_id": "6cfce703c3c8",
-        "title": "#LaHora6O",
-        "message": "Sin remate · explicación factual suficiente por contexto político"
-      },
-      {
-        "at": "2026-10-06T09:51:39.936+02:00",
-        "phase": "persisting",
-        "trend_id": "6cfce703c3c8",
-        "title": "#LaHora6O",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-06T09:51:52.428+02:00",
-        "phase": "persisting",
-        "trend_id": "6cfce703c3c8",
-        "title": "#LaHora6O",
-        "message": "Actualizando requests mediante aplicador del chat"
-      },
-      {
-        "at": "2026-10-06T09:53:34.673+02:00",
-        "phase": "persisting",
-        "trend_id": "6cfce703c3c8",
-        "title": "#LaHora6O",
-        "message": "Retirando revisión de la cola · aplicado en main"
-      },
-      {
-        "at": "2026-10-06T09:53:37.817+02:00",
+        "at": "2026-10-06T10:15:00+02:00",
         "phase": "verifying",
         "trend_id": "6cfce703c3c8",
         "title": "#LaHora6O",
-        "message": "Releyendo main"
+        "message": "Reparación visual solicitada al iniciar la ejecución"
       },
       {
-        "at": "2026-10-06T09:53:41.166+02:00",
+        "at": "2026-10-06T10:20:42+02:00",
         "phase": "verifying",
         "trend_id": "6cfce703c3c8",
         "title": "#LaHora6O",
-        "message": "Verificando id+revision y texto persistido"
+        "message": "Pendiente 1/1 · Gag IA válido y paquete publicado"
       },
       {
-        "at": "2026-10-06T09:53:43.945+02:00",
-        "phase": "verifying",
-        "trend_id": "6cfce703c3c8",
-        "title": "#LaHora6O",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-06T09:54:05.634+02:00",
+        "at": "2026-10-06T10:22:01.202+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 1/1; cola 0; sin incidencias"
+        "message": "Pasada cerrada · 0/0; cola 0; Pendientes recientes saneados"
       }
     ],
     "ratings_snapshot": {
@@ -173,49 +101,37 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "6cfce703c3c8",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      }
-    ],
+    "remate_selections": [],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "visual_repair": {
       "requested": true,
       "persisted_trigger": true,
-      "status": "triggered",
-      "backlog_detected": 1,
+      "status": "completed_for_recent_pending",
+      "backlog_detected": 0,
       "direct_imagegen": false
     },
     "pending_scan": {
       "under_24h": 1,
       "missing_closer": 0,
-      "ai_invalid_or_missing": 1,
-      "complete": 0
+      "ai_invalid_or_missing": 0,
+      "complete": 1
     },
     "radar": {
-      "captured_at": "2026-10-06T09:41:19+02:00",
-      "queue_updated_at": "2026-10-06T09:51:41.932+02:00",
+      "captured_at": "2026-10-06T10:11:15+02:00",
+      "queue_updated_at": "2026-10-06T10:11:22+02:00",
       "queue_count": 0,
       "refresh_requested": false,
       "refresh_materialized": false,
-      "new_entries": [
-        "#LaHora6O"
-      ]
+      "new_entries": []
     }
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "triggered",
-    "backlog_detected": 1,
+    "status": "completed_for_recent_pending",
+    "backlog_detected": 0,
     "direct_imagegen": false
   },
   "error": null
