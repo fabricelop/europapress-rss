@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v38-image-queue-direct-fallback
+# official-pipeline-restart-token: 2026-10-06-v39-abandoned-mutex-recovery
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v38"
+$WorkerId = "ttittulares-dedicated-v39"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -45,7 +45,15 @@ $script:ListenerSnapshotAt = [DateTimeOffset]::MinValue
 $script:LastStrongSnapshotAt = [DateTimeOffset]::MinValue
 $script:ListenerMutex=New-Object System.Threading.Mutex($false,"Local\TTiTTularesDedicatedListenerSingleton")
 $script:ListenerMutexOwned=$false
-try{$script:ListenerMutexOwned=$script:ListenerMutex.WaitOne(0,$false)}catch{}
+try{
+  $script:ListenerMutexOwned=$script:ListenerMutex.WaitOne(0,$false)
+}catch [System.Threading.AbandonedMutexException]{
+  # Un proceso anterior murió sin liberar el mutex. En .NET esta excepción
+  # significa que ESTE proceso ha adquirido el mutex y debe continuar.
+  $script:ListenerMutexOwned=$true
+}catch{
+  $script:ListenerMutexOwned=$false
+}
 if(-not $script:ListenerMutexOwned){exit 0}
 
 function Write-Log([string]$Text) {
