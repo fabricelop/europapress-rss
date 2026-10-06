@@ -31908,13 +31908,13 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 1,
       "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "rewrite_pending": false,
       "fallback_image": {
         "url": "https://img.rtve.es/imagenes/pp-insiste-agitar-bulo-pucherazo-voto-correo/01791284396851.jpg",
@@ -31925,13 +31925,51 @@
         "generated": false
       },
       "image": {
-        "url": "https://img.rtve.es/imagenes/pp-insiste-agitar-bulo-pucherazo-voto-correo/01791284396851.jpg",
-        "source": "RTVE · 6/10/2026",
-        "source_url": "https://www.rtve.es/noticias/20261006/pp-insiste-agitar-bulo-pucherazo-voto-correo/17255128.shtml",
-        "alt": "Imagen de archivo relacionada con El PP",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ea86f62a43db-r0-ai1-791311041004.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ee8a80281264c2f18a7034ba68f3de00ea445ec7cfad56f9115d04ec635c9ac2",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2224115,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ea86f62a43db",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-ea86f62a43db-r0-a1-1791311041004"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ea86f62a43db-r0-ai1-791311041004.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ea86f62a43db-r0-ai1-791311041004.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ee8a80281264c2f18a7034ba68f3de00ea445ec7cfad56f9115d04ec635c9ac2",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2224115,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ea86f62a43db",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-ea86f62a43db-r0-a1-1791311041004"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ea86f62a43db-r0-ai1-791311041004.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T18:28:26.652Z"
     },
     {
       "id": "682a8cab1c48",
@@ -32153,6 +32191,6 @@
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-06T18:26:14.116Z",
+  "updated_at": "2026-10-06T18:28:26.652Z",
   "count": 593
 }
