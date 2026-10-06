@@ -1,10 +1,48 @@
-const CACHE='raineta-v5';
-const ASSETS=['/rain/','/rain/index.html','/rain/app.js','/rain/core.js','/rain/radar-core.js','/rain/manifest.webmanifest','/rain/icon.svg'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('fetch',e=>{
-  const u=new URL(e.request.url);
-  if(e.request.method!=='GET'||u.origin!==location.origin)return;
-  if(u.pathname.startsWith('/api/'))return;
-  e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r})));
+const CACHE='raineta-v6';
+const ASSETS=['/rain/','/rain/index.html','/rain/app.js?v=0.5.0','/rain/core.js','/rain/radar-core.js','/rain/manifest.webmanifest','/rain/icon.svg'];
+
+self.addEventListener('install',event=>{
+  event.waitUntil(
+    caches.open(CACHE)
+      .then(cache=>cache.addAll(ASSETS))
+      .catch(()=>{})
+      .then(()=>self.skipWaiting())
+  );
+});
+
+self.addEventListener('activate',event=>{
+  event.waitUntil(
+    caches.keys()
+      .then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key))))
+      .then(()=>self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch',event=>{
+  const request=event.request;
+  if(request.method!=='GET')return;
+  const url=new URL(request.url);
+  if(url.origin!==location.origin||url.pathname.startsWith('/api/'))return;
+
+  const isRainAsset=url.pathname==='/rain/'||url.pathname==='/rain'||url.pathname.startsWith('/rain/');
+  if(!isRainAsset)return;
+
+  event.respondWith((async()=>{
+    try{
+      const fresh=await fetch(request,{cache:'no-store'});
+      if(fresh&&fresh.ok){
+        const cache=await caches.open(CACHE);
+        cache.put(request,fresh.clone()).catch(()=>{});
+      }
+      return fresh;
+    }catch(error){
+      const cached=await caches.match(request);
+      if(cached)return cached;
+      if(request.mode==='navigate'){
+        const shell=await caches.match('/rain/index.html');
+        if(shell)return shell;
+      }
+      throw error;
+    }
+  })());
 });
