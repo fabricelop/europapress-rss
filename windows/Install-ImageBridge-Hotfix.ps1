@@ -65,10 +65,10 @@ Validate-PowerShell $tmpTrendListener @(
   'Start-ImageBridge $commandId $targetId $uploadSecret'
 )
 Validate-Node $tmpTrendBridge @(
-  'BRIDGE_MODE="capture-only-v10-img-only"',
+  'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
+  'BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback"',
   'original-fetch-img',
-  'canvas-from-img-',
-  'image-element-screenshot-'
+  'canvas-from-img-'
 )
 Validate-PowerShell $tmpTitleListener @(
   '$WorkerId = "ttittulares-dedicated-',
@@ -76,7 +76,7 @@ Validate-PowerShell $tmpTitleListener @(
   'Start-ImageBridge $commandId $targetId $uploadSecret'
 )
 Validate-Node $tmpTitleBridge @(
-  'BRIDGE_MODE="capture-only-v10-img-only"',
+  'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
   'original-fetch-img',
   'canvas-from-img-',
   'image-element-screenshot-'
@@ -115,5 +115,5 @@ if($titleProc.HasExited){throw "TTiTTulares listener no quedó activo"}
 Write-Host "HOTFIX IMAGEN ACTIVO" -ForegroundColor Green
 Write-Host "TTendencias PID: $($trendProc.Id)"
 Write-Host "TTiTTulares PID: $($titleProc.Id)"
-Write-Host "Bridge: capture-only-v10-img-only"
+Write-Host "Bridge: v29 visible-composer + DOM fallback"
 Write-Host "Falso negativo de Ejecutar.js: ya no aborta el job; lo verifica el bridge."
