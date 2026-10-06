@@ -1,12 +1,20 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T13:45:00.000Z",
-  "last_completed_at": "2026-10-06T13:59:26.964Z",
-  "updated_at": "2026-10-06T13:59:26.964Z",
+  "last_started_at": "2026-10-06T14:15:00.000Z",
+  "last_completed_at": "2026-10-06T14:37:00.000Z",
+  "updated_at": "2026-10-06T14:37:00.000Z",
   "status": "success",
   "processed_ids": [
-    "15a8bb795fe3"
+    "48607a1c170b",
+    "66d564cde59e",
+    "a0262fb01a96",
+    "60849355f544",
+    "2e51a7a10dd3",
+    "892ed4e530dc",
+    "19d12722eb8a",
+    "a1caaebc2161",
+    "69fbf1d94af2"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -16,170 +24,191 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T134500Z",
+    "run_id": "tr-chat-20261006T141500Z",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "current": 1,
-    "total": 1,
+    "current": 6,
+    "total": 6,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T13:45:00.000Z",
-    "updated_at": "2026-10-06T13:59:26.964Z",
-    "incident_count": 0,
-    "incidents": [],
+    "started_at": "2026-10-06T14:15:00.000Z",
+    "updated_at": "2026-10-06T14:37:00.000Z",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-06T14:30:57.000Z",
+        "type": "github_write_recovered",
+        "message": "El primer intento de commit atómico devolvió un error interno de GitHub; se releyó main y la persistencia se completó después con escrituras por SHA."
+      }
+    ],
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 0,
+      "trends_processed": 9,
+      "trends_explained": 9,
+      "explanation_groups": 6,
+      "new_cards": 6,
       "revisions_updated": 1,
-      "grouped_into_existing_card": 0,
+      "grouped_into_existing_card": 3,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 0,
-      "visual_jobs_queued": 1,
+      "fallback_images_ready": 6,
+      "ai_images_ready_observed": 3,
+      "visual_jobs_queued": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
+      "explanations_verified_under_280": 6,
       "remates_selected": 1,
-      "remates_omitted": 0,
+      "remates_omitted": 5,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada cerrada · Puigdemont r1 verificada · cola final 0 · job visual automático PERSISTING",
+    "message": "Pasada cerrada · 9 revisiones / 6 grupos verificados · cola final 0 · reparación visual activada",
     "activity": [
       {
-        "at": "2026-10-06T13:45:00.000Z",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada directa · cola editorial 1 · activando saneamiento de Pendientes"
-      },
-      {
-        "at": "2026-10-06T13:51:06.132Z",
-        "phase": "verifying",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
-        "message": "Releyendo estado autoritativo de Puigdemont"
-      },
-      {
-        "at": "2026-10-06T13:51:06.132Z",
+        "at": "2026-10-06T14:35:30.000Z",
         "phase": "investigating",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
+        "trend_id": "a1caaebc2161",
+        "title": "Figaredo",
         "message": "Buscando detonante actual"
       },
       {
-        "at": "2026-10-06T13:51:06.132Z",
+        "at": "2026-10-06T14:35:35.000Z",
         "phase": "investigating",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
-        "message": "Contrastando fuente 1/2 · EFE"
+        "trend_id": "a1caaebc2161",
+        "title": "Figaredo",
+        "message": "Contrastando fuentes · propuesta de modelo mixto de pensiones"
       },
       {
-        "at": "2026-10-06T13:51:06.132Z",
+        "at": "2026-10-06T14:35:40.000Z",
         "phase": "investigating",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
-        "message": "Contrastando fuente 2/2 · RTVE/El País"
+        "trend_id": "a1caaebc2161",
+        "title": "Figaredo",
+        "message": "Hecho esencial verificado"
       },
       {
-        "at": "2026-10-06T13:51:06.132Z",
-        "phase": "investigating",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
-        "message": "Hecho esencial verificado · TC avala la amnistía de la malversación y Llarena deja sin efecto la orden nacional de detención"
-      },
-      {
-        "at": "2026-10-06T13:51:40.352Z",
+        "at": "2026-10-06T14:35:45.000Z",
         "phase": "drafting",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
+        "trend_id": "a1caaebc2161",
+        "title": "Figaredo",
         "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-06T13:52:32.052Z",
+        "at": "2026-10-06T14:35:50.000Z",
         "phase": "drafting",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
-        "message": "Comprobando límite de X · texto final 247 caracteres Unicode"
+        "trend_id": "a1caaebc2161",
+        "title": "Figaredo",
+        "message": "Sin remate · explicación política factual suficiente"
       },
       {
-        "at": "2026-10-06T13:53:07.501Z",
+        "at": "2026-10-06T14:35:55.000Z",
+        "phase": "verifying",
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
+        "message": "Releyendo estado autoritativo de Carlos Alcaraz"
+      },
+      {
+        "at": "2026-10-06T14:36:00.000Z",
+        "phase": "investigating",
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
+        "message": "Contrastando resultado final · ATP y crónica deportiva"
+      },
+      {
+        "at": "2026-10-06T14:36:05.000Z",
+        "phase": "investigating",
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
+        "message": "Hecho esencial verificado · campeón en Tokio ante Lehecka"
+      },
+      {
+        "at": "2026-10-06T14:36:10.000Z",
+        "phase": "drafting",
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-06T14:36:15.000Z",
         "phase": "remate_selection",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
         "message": "Generando candidatos de remate"
       },
       {
-        "at": "2026-10-06T13:53:20.113Z",
+        "at": "2026-10-06T14:36:18.000Z",
         "phase": "remate_selection",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
         "message": "Evaluando candidatos con ratings"
       },
       {
-        "at": "2026-10-06T13:53:20.113Z",
+        "at": "2026-10-06T14:36:20.000Z",
         "phase": "remate_selection",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
-        "message": "Remate seleccionado · la orden de detención se quedó sin asiento en el vuelo de vuelta"
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
+        "message": "Remate seleccionado · Tokio le tenía el trofeo guardado en recepción"
       },
       {
-        "at": "2026-10-06T13:54:09.838Z",
+        "at": "2026-10-06T14:36:22.000Z",
         "phase": "persisting",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
-        "message": "Guardando ficha Explicada"
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
+        "message": "Guardando fichas Explicadas de Figaredo y Carlos Alcaraz"
       },
       {
-        "at": "2026-10-06T13:54:47.780Z",
+        "at": "2026-10-06T14:36:32.000Z",
+        "phase": "drafting",
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
+        "message": "Comprobando límite de X · texto final 232 caracteres Unicode"
+      },
+      {
+        "at": "2026-10-06T14:36:34.000Z",
         "phase": "persisting",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
         "message": "Actualizando requests"
       },
       {
-        "at": "2026-10-06T13:55:33.927Z",
+        "at": "2026-10-06T14:36:36.000Z",
         "phase": "persisting",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
-        "message": "Retirando revisión de la cola"
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
+        "message": "Retirando revisiones finales de la cola"
       },
       {
-        "at": "2026-10-06T13:55:58.211Z",
+        "at": "2026-10-06T14:36:38.000Z",
         "phase": "verifying",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
         "message": "Releyendo main"
       },
       {
-        "at": "2026-10-06T13:56:37.771Z",
+        "at": "2026-10-06T14:36:40.000Z",
         "phase": "verifying",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
         "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-06T13:56:37.771Z",
+        "at": "2026-10-06T14:36:42.000Z",
         "phase": "verifying",
-        "trend_id": "15a8bb795fe3",
-        "title": "Puigdemont",
-        "message": "Tendencia cerrada y verificada"
+        "trend_id": "69fbf1d94af2",
+        "title": "Carlos Alcaraz",
+        "message": "Tendencia cerrada y verificada · cola efectiva 0"
       },
       {
-        "at": "2026-10-06T13:59:26.964Z",
+        "at": "2026-10-06T14:37:00.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · Puigdemont r1 verificada · cola final 0 · job visual automático PERSISTING"
+        "message": "Pasada cerrada · 9 revisiones / 6 grupos verificados · cola final 0 · reparación visual activada"
       }
     ],
-    "finished_at": "2026-10-06T13:59:26.964Z",
+    "finished_at": "2026-10-06T14:37:00.000Z",
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
@@ -189,72 +218,58 @@
     },
     "remate_selections": [
       {
-        "trend_id": "15a8bb795fe3",
-        "revision": 1,
+        "trend_id": "69fbf1d94af2",
+        "revision": 0,
         "candidate_count": 5,
         "candidates": [
           {
             "id": "c1",
-            "text": "🌶️ La orden de detención se quedó sin asiento en el vuelo de vuelta.",
-            "total": 8.8,
-            "ratings_affinity": 2.6,
+            "text": "🌶️ Tokio le tenía el trofeo guardado en recepción.",
+            "total": 8.7,
+            "ratings_affinity": 2.4,
             "trend_specificity": 2,
-            "punch": 1.9,
-            "originality": 1.3,
+            "punch": 1.8,
+            "originality": 1.5,
             "length_fit": 1,
             "repetition_penalty": 0
           },
           {
             "id": "c2",
-            "text": "🌶️ Waterloo acaba de perder una reserva de larga estancia.",
-            "total": 8
+            "text": "🌶️ El título de Tokio volvió a la misma taquilla.",
+            "total": 7.8
           },
           {
             "id": "c3",
-            "text": "🌶️ El regreso ya no necesita GPS: solo calendario y billete.",
-            "total": 7.6
+            "text": "🌶️ Lehecka llegó a la final y encontró la copa con nombre y apellidos.",
+            "total": 7.4
           },
           {
             "id": "c4",
-            "text": "🌶️ La maleta de Waterloo acaba de pasar a equipaje de mano.",
-            "total": 8.5
+            "text": "🌶️ Alcaraz volvió y Tokio todavía no había cambiado la etiqueta del campeón.",
+            "total": 8.1
           },
           {
             "id": "c5",
-            "text": "🌶️ Llarena ha borrado una parada del itinerario judicial.",
-            "total": 7.2
+            "text": "🌶️ La copa de Tokio ya sabe el camino al equipaje de Alcaraz.",
+            "total": 8.4
           }
         ],
         "selected_candidate": "c1",
-        "selected_score": 8.8,
+        "selected_score": 8.7,
         "no_remate_reason": null
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [],
-    "visual_repair": {
-      "requested": true,
-      "persisted_trigger": true,
-      "status": "persisting",
-      "phase": "image_persist",
-      "command_id": "tr-img-auto-15a8bb795fe3-r1-a1-1791294951700",
-      "direct_imagegen": false,
-      "target_id": "15a8bb795fe3",
-      "revision": 1,
-      "auto_repair_attempt": 1
-    }
+    "remaining_problematic_ids": []
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "persisting",
-    "phase": "image_persist",
-    "command_id": "tr-img-auto-15a8bb795fe3-r1-a1-1791294951700",
+    "status": "triggered",
     "direct_imagegen": false,
-    "target_id": "15a8bb795fe3",
-    "revision": 1,
-    "auto_repair_attempt": 1
+    "ai_images_ready_observed": 3,
+    "fallback_images_ready": 6
   },
   "error": null
 }
