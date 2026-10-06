@@ -1,5 +1,5 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,classifyRainHour,bestDryWindow} from './core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
 
 const DET_MODELS=[
   {id:'ecmwf_ifs',label:'ECMWF IFS 9 km',family:'ECMWF',weight:1.32},
@@ -38,7 +38,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.8',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.16.0',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -368,18 +368,24 @@ async function computeNowcast(meta){
     const m=estimateTranslation(masks[i-1].mask,masks[i].mask,ANALYSIS_SIZE,ANALYSIS_SIZE,{maxShift:MAX_SHIFT});
     if(m)estimates.push(m);
   }
-  const motion=combineMotionEstimates(estimates),latest=masks.at(-1),step=frameStep(masks);
+  const motion=combineMotionEstimates(estimates),latest=masks.at(-1),previous=masks.at(-2),step=frameStep(masks);
   const center=(ANALYSIS_SIZE-1)/2,current=wetNear(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,center,center,0);
   const currentRadarRate=latest.rateGrid?.[Math.round(center)*ANALYSIS_SIZE+Math.round(center)]||0;
-  const base={status:'motion_uncertain',confidence:motion?.confidence||0,event:null,rainingNow:current>=.10,currentWetFraction:current,currentRadarRate,radarTime:new Date(latest.time*1000).toISOString(),decodedFrames:masks.length};
-  if(!motion||motion.samples<2||motion.confidence<.22)return base;
-  const series=projectPointSeries(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:0,intensityGrid:latest.rateGrid});
+  const localFlow=motion?estimateLocalFlow(previous.mask,latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,{maxShift:Math.min(9,MAX_SHIFT),grid:5,patchRadius:9}):null;
+  const evolution=motion?evolutionReliability(previous.mask,latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion):{score:0,overlap:0,densityStable:0};
+  const confidence=Math.max(0,Math.min(.98,(motion?.confidence||0)*(.72+.28*evolution.score)));
+  const reliableHorizonMinutes=Math.round(25+55*Math.max(0,Math.min(1,evolution.score*.7+confidence*.3)));
+  const base={status:'motion_uncertain',confidence,event:null,rainingNow:current>=.10,currentWetFraction:current,currentRadarRate,radarTime:new Date(latest.time*1000).toISOString(),decodedFrames:masks.length,evolution,reliableHorizonMinutes,localFlowCoverage:Number(localFlow?.coverage)||0};
+  if(!motion||motion.samples<2||confidence<.20)return base;
+  const series=localFlow
+    ? projectPointSeriesFlow(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,localFlow,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:1,intensityGrid:latest.rateGrid,reliability:evolution.score})
+    : projectPointSeries(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:1,intensityGrid:latest.rateGrid});
   let event=detectNowcastEvent(series,{enterWetFraction:.10,exitWetFraction:.035,minConsecutive:2,stepMinutes:5});
   if(event){
     const t=latest.time*1000;
-    event={...event,start:new Date(t+event.startMinute*60_000).toISOString(),end:new Date(t+event.endMinute*60_000).toISOString(),uncertaintyMinutes:nowcastUncertaintyMinutes(motion.confidence,event.startMinute)};
+    event={...event,start:new Date(t+event.startMinute*60_000).toISOString(),end:new Date(t+event.endMinute*60_000).toISOString(),uncertaintyMinutes:nowcastUncertaintyMinutes(confidence,event.startMinute)};
   }
-  return{...base,status:'ok',confidence:motion.confidence,event,motion:{...radarGeo(motion,state.loc.lat,step),samples:motion.samples,consistency:motion.consistency},series};
+  return{...base,status:'ok',confidence,event,motion:{...radarGeo(motion,state.loc.lat,step),samples:motion.samples,consistency:motion.consistency,localFlow:Boolean(localFlow)},series};
 }
 
 function automaticRainState(){
