@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-auto-04fcefcecacf-r1-a1-1791323172722",
   "requested_at": "2026-10-06T21:46:12.719426Z",
-  "updated_at": "2026-10-06T21:53:49.602Z",
-  "status": "RUNNING",
-  "phase": "pc_pickup",
+  "updated_at": "2026-10-06T21:54:41.078Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -47,8 +47,9 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "PC ha recogido la solicitud de imagen.",
+  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"turns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabl",
   "pc_upload_secret_hash": "2b8008ee846875889b9799d579e6d38791c6419e634068c3f6b7698e68eee632",
-  "pc_worker_id": "ttittulares-dedicated-v44",
-  "pc_picked_up_at": "2026-10-06T21:53:49.602Z"
+  "pc_worker_id": "ttittulares-image-bridge-v32-strict-submit",
+  "pc_picked_up_at": "2026-10-06T21:53:49.602Z",
+  "finished_at": "2026-10-06T21:54:41.078Z"
 }
