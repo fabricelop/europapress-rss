@@ -544,7 +544,7 @@ function shortPoints(){
       radarRate,operaRate,modelRate,
       wetFraction,operaWetFraction,
       inEvent,
-      wet:rainNow&&i===0 ? rate>.03 : inEvent&&(rate>=.03||radarWet||operaWet)
+      wet:i===0 ? (rainNow&&rate>.03) : inEvent&&(rate>=.03||radarWet||operaWet)
     });
   }
   return points;
@@ -564,15 +564,19 @@ function renderShortNowcast(){
   const labelRate=rain.raining?Math.max(Number(state.nowcast?.currentRadarRate)||0,Number(state.data?.opera?.sample?.rateMmH)||0,arrivalRate):arrivalRate;
   $('shortState').textContent=decision.mode==='episode_pause'||decision.mode==='episode_ended_early'
     ? 'Seco ahora'
-    : near||rain.raining?intensityLabel(labelRate):'Seco';
+    : decision.mode==='possible_now'
+      ? 'Lluvia no confirmada'
+      : near||rain.raining?intensityLabel(labelRate):'Seco';
   $('shortDetail').textContent=decision.mode==='episode_pause'
     ? decision.correction?.resumeAt
       ? 'Pausa observada · posible reanudación '+fmtTime(decision.correction.resumeAt)+' ('+decision.correction.resumeSource+') · fin previsto del tramo '+fmtTime(decision.correction.episode.end)
       : 'Pausa seca observada · reevaluando si el episodio ha terminado · fin previsto del tramo '+fmtTime(decision.correction?.episode?.end)
     : decision.mode==='episode_ended_early'
       ? 'Episodio recortado: sigue seco · terminó ~'+fmtTime(decision.correction?.observedEnd)+' en vez de '+fmtTime(decision.correction?.episode?.end)
+      : decision.mode==='possible_now'
+        ? 'El radar marca '+Math.max(Number(rain.radarRate)||0,Number(rain.operaRate)||0).toFixed(1).replace('.',',')+' mm/h sobre el punto, pero no hay corroboración suficiente para afirmar que llueve en superficie'
       : rain.raining
-        ? 'Radar / nowcast: '+labelRate.toFixed(1)+' mm/h ahora · RainViewer '+fmtTime(state.nowcast?.radarTime||Date.now())+(state.data?.opera?.observedAt?' · OPERA '+fmtTime(state.data.opera.observedAt):'')
+        ? 'Radar / nowcast: '+labelRate.toFixed(1)+' mm/h ahora · RainViewer '+fmtTime(state.nowcast?.radarTime||Date.now())+(state.data?.opera?.observedAt?' · radar europeo '+fmtTime(state.data.opera.observedAt):'')
         : delayedByRadar
           ? 'Radar sin precipitación proyectada hasta ~'+fmtTime(dry.end)+'. Los modelos mantienen riesgo después.'
           : near
@@ -584,11 +588,15 @@ function renderShortNowcast(){
     ? (decision.correction?.resumeAt?'Puede volver en':'Reevaluando')
     : decision.mode==='episode_ended_early'
       ? (ev?.start?'Siguiente riesgo':'Fin confirmado')
+      : decision.mode==='possible_now'
+        ? 'Señal radar hasta'
       : rain.raining?'Fin estimado':delayedByRadar||(!near&&dry)?'Seco hasta':near?'Empieza en':'Próximo cambio';
   $('shortCountdown').textContent=decision.mode==='episode_pause'
     ? (decision.correction?.resumeAt?formatCountdownMs(decision.correction.resumeAt-now):formatCountdownMs(now-Number(decision.correction?.observedEnd||now))+' seco')
     : decision.mode==='episode_ended_early'
       ? (ev?.start?formatCountdownMs(Date.parse(ev.start)-now):'—')
+      : decision.mode==='possible_now'
+        ? (ev?.end?formatCountdownMs(Date.parse(ev.end)-now):'—')
       : rain.raining
         ? (ev?.end?formatCountdownMs(Date.parse(ev.end)-now):'—')
         : delayedByRadar||(!near&&dry)
@@ -598,6 +606,8 @@ function renderShortNowcast(){
     ? 'Pausa dentro del episodio · fin previsto del tramo '+fmtTime(decision.correction?.episode?.end)
     : decision.mode==='episode_ended_early'
       ? 'Tramo anterior cerrado ~'+fmtTime(decision.correction?.observedEnd)+(ev?.start?' · siguiente '+fmtTime(ev.start):'')
+      : decision.mode==='possible_now'
+        ? 'Señal de radar actual · no confirmada en superficie'
       : near
         ? fmtTime(ev.start)+(ev.end?'–'+fmtTime(ev.end):'')+(['radar','opera','radarFusion'].includes(ev.kind)?' · '+uncertaintyText(ev):'')
         : dry
@@ -634,6 +644,10 @@ function updateLiveCountdown(){
   }
   if(decision.mode==='episode_ended_early'){
     $('shortCountdown').textContent=ev?.start?formatCountdownMs(Date.parse(ev.start)-now):'—';
+    return;
+  }
+  if(decision.mode==='possible_now'){
+    $('shortCountdown').textContent=ev?.end?formatCountdownMs(Date.parse(ev.end)-now):'—';
     return;
   }
   if(!ev){
@@ -1469,6 +1483,21 @@ function render(){
     $('dur').textContent=ev?.start?fmtDateTime(ev.start):'sin episodio inmediato';
     $('summary').hidden=false;
     $('summary').textContent='El tramo previsto se ha cerrado antes: la observación de “No llueve” y la evidencia local ya no sostienen lluvia continua.'+(minutesEarly?' RainETA registra un final ~'+minutesEarly+' min anterior a la previsión.':'')+' Esta corrección queda guardada para aprender la duración local de futuros episodios.';
+  }else if(decision.mode==='possible_now'){
+    const radarRate=Number(nowState.radarRate)||0,operaRate=Number(nowState.operaRate)||0;
+    const opera=state.data?.opera,operaFresh=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20);
+    $('heroLabel').textContent='Señal radar';
+    $('eta').innerHTML='Lluvia <span>no confirmada</span>';
+    $('metricStartLabel').textContent='Radar local';
+    $('metricEndLabel').textContent='Radar europeo';
+    $('metricConfLabel').textContent='Confianza señal';
+    $('metricDurLabel').textContent='Señal hasta';
+    $('start').textContent=radarRate>.02?radarRate.toFixed(1).replace('.',',')+' mm/h':'sin señal clara';
+    $('end').textContent=operaFresh?(operaRate>.02?operaRate.toFixed(1).replace('.',',')+' mm/h':'seco'):'dato no reciente';
+    $('conf').textContent=pct(decision.confidence)+'%';
+    $('dur').textContent=ev?.end?fmtDateTime(ev.end):'por determinar';
+    $('summary').hidden=false;
+    $('summary').textContent='El radar detecta precipitación sobre el punto, pero no hay suficiente corroboración para afirmar que esté llegando al suelo. Los modelos no cuentan como prueba de que llueva ahora.';
   }else if(decision.mode==='dry_now'){
     $('heroLabel').textContent='Ventana seca';
     $('eta').innerHTML='Seco hasta <span>'+fmtTime(decision.dryUntil)+'</span>';
@@ -1488,8 +1517,8 @@ function render(){
     $('summary').textContent='No hay episodio con consenso suficiente en las próximas 72 horas.';
     $('start').textContent='—';$('end').textContent='—';$('conf').textContent='—';$('dur').textContent='—';
   }else{
-    if(ev.active){$('heroLabel').textContent='Estado actual';$('eta').innerHTML='Lluvia <span>ahora</span>'}
-    else{$('heroLabel').textContent='Próxima lluvia';$('eta').innerHTML='<span>'+fmtTime(ev.start)+'</span>'}
+    if(ev.active&&decision.mode==='rain_now'){$('heroLabel').textContent='Estado actual';$('eta').innerHTML='Lluvia <span>ahora</span>'}
+    else{$('heroLabel').textContent='Próxima lluvia';$('eta').innerHTML=ev?.start?'<span>'+fmtTime(ev.start)+'</span>':'Sin hora confirmada'}
     $('start').textContent=fmtDateTime(ev.start);
     $('end').textContent=ev.end?fmtDateTime(ev.end):'por determinar';
     $('conf').textContent=pct(decision.confidence)+'%';
