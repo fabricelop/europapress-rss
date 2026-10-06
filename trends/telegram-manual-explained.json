@@ -32590,13 +32590,13 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 1,
       "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "rewrite_pending": false,
       "fallback_image": {
         "url": "https://www.elliberal.cat/wp-content/uploads/2026/05/16398917.jpeg",
@@ -32607,13 +32607,51 @@
         "generated": false
       },
       "image": {
-        "url": "https://www.elliberal.cat/wp-content/uploads/2026/05/16398917.jpeg",
-        "source": "El Liberal · 6/10/2026",
-        "source_url": "https://www.elliberal.cat/2026/10/06/montero-huelga-general-contra-oposicion/",
-        "alt": "Imagen de archivo relacionada con María Jesús Montero",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/8c662bc087c6-r0-ai1-791317356383.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "70343a81591e8de7d0a08933cd6b74e669977fdb5d18174a5f59f6a821c324f0",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2040191,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "8c662bc087c6",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-8c662bc087c6-r0-a1-1791317356383"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/8c662bc087c6-r0-ai1-791317356383.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/8c662bc087c6-r0-ai1-791317356383.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "70343a81591e8de7d0a08933cd6b74e669977fdb5d18174a5f59f6a821c324f0",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2040191,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "8c662bc087c6",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-8c662bc087c6-r0-a1-1791317356383"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/8c662bc087c6-r0-ai1-791317356383.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T20:13:33.192Z"
     },
     {
       "id": "2d7c95e389d0",
@@ -32715,6 +32753,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-06T20:11:20.970Z",
+  "updated_at": "2026-10-06T20:13:33.192Z",
   "count": 593
 }
