@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-48607a1c170b-r0-a1-1791297290578",
+  "requested_at": "2026-10-06T14:34:50.578095Z",
+  "updated_at": "2026-10-06T14:34:50.578095Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "48607a1c170b",
+  "trend_id": "48607a1c170b",
+  "target_name": "Constitucional",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Constitucional",
+    "revision": 0,
+    "explanation": "TT#3 Constitucional es tendencia porque el TC avaló amnistiar la malversación del procés y Llarena dejó sin efecto las órdenes nacionales de detención contra Puigdemont, Toni Comín y Lluís Puig.",
+    "closer_text": "",
+    "trend_names": [
+      "Constitucional",
+      "Llarena",
+      "Pumpido",
+      "Supremo"
+    ],
+    "group_title": "TC, Supremo y amnistía de la malversación",
+    "rank_at_explanation": 3,
+    "explained_at": "2026-10-06T14:31:30.000Z",
+    "verification_sources": [
+      {
+        "source": "Europa Press · 6/10/2026",
+        "url": "https://www.europapress.es/catalunya/noticia-supremo-levanta-orden-detencion-contra-puigdemont-aval-tc-amnistiar-malversacion-20261006124901.html"
+      },
+      {
+        "source": "RTVE · 6/10/2026",
+        "url": "https://www.rtve.es/catalunya/noticies/20261006/constitucional-avala-aplicar-amnistia-malversacio-acosta-retorn-puigdemont/17254966.shtml"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
