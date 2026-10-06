@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,wetNear,valueNear} from '../rain/radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear} from '../rain/radar-core.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
 
@@ -102,4 +102,45 @@ test('best dry window finds the longest practical gap',()=>{
   assert.equal(dry.start,now+6*3600e3);
   assert.equal(dry.end,end);
   assert.equal(dry.minutes,360);
+});
+
+
+test('local radar flow tracks translating echo',()=>{
+  const w=72,h=72,prev=mask(w,h,18,29,12,10),cur=mask(w,h,22,27,12,10);
+  const global=estimateTranslation(prev,cur,w,h,{maxShift:8});
+  const flow=estimateLocalFlow(prev,cur,w,h,{maxShift:8,grid:5,patchRadius:9});
+  assert.ok(global);
+  assert.ok(flow);
+  assert.ok(flow.coverage>0);
+  const series=projectPointSeriesFlow(cur,w,h,flow,global,{horizonMinutes:60,sourceStepMinutes:10,outputStepMinutes:5,radius:2,reliability:.9});
+  assert.equal(series.length,13);
+  assert.ok(series.every(row=>Number.isFinite(row.probability)));
+});
+
+test('evolution reliability penalizes changing echo shape',()=>{
+  const w=64,h=64,prev=mask(w,h,14,25,12,10);
+  const translated=mask(w,h,18,23,12,10);
+  const changed=new Uint8Array(w*h);
+  const a=mask(w,h,18,23,5,4),b=mask(w,h,43,8,14,15);
+  for(let i=0;i<changed.length;i++)changed[i]=a[i]||b[i]?1:0;
+  const motion=combineMotionEstimates([
+    estimateTranslation(prev,translated,w,h,{maxShift:8}),
+    {...estimateTranslation(prev,translated,w,h,{maxShift:8}),confidence:.8}
+  ]);
+  const stable=evolutionReliability(prev,translated,w,h,motion);
+  const unstable=evolutionReliability(prev,changed,w,h,motion);
+  assert.ok(stable.score>unstable.score);
+  assert.ok(stable.densityStable>=unstable.densityStable);
+});
+
+
+test('several local flows stabilize the motion field',()=>{
+  const w=72,h=72;
+  const m0=mask(w,h,14,29,12,10),m1=mask(w,h,18,27,12,10),m2=mask(w,h,22,25,12,10);
+  const f1=estimateLocalFlow(m0,m1,w,h,{maxShift:8,grid:5,patchRadius:9});
+  const f2=estimateLocalFlow(m1,m2,w,h,{maxShift:8,grid:5,patchRadius:9});
+  const combined=combineLocalFlows([f1,f2]);
+  assert.ok(combined);
+  assert.equal(combined.historySamples,2);
+  assert.ok(combined.confidence>0);
 });
