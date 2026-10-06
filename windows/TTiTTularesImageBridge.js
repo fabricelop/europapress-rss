@@ -158,6 +158,21 @@ async function fixedTarget(createIfMissing=true){
   if(!createIfMissing)return null;
   return createFixedTarget()
 }
+async function closeFixedTargetById(targetId){
+  const id=String(targetId||"").trim();
+  if(!id)return;
+  try{
+    const vr=await fetch(BASE_CDP+"/json/version",{cache:"no-store",signal:AbortSignal.timeout(5000)});
+    if(!vr.ok)return;
+    const vd=await vr.json();
+    const ws=String(vd&&vd.webSocketDebuggerUrl||"");
+    if(!ws)return;
+    const browser=new CDP(ws);
+    await browser.open();
+    try{await browser.call("Target.closeTarget",{targetId:id},5000)}finally{browser.close()}
+    console.log("BRIDGE FROZEN FIXED TAB CLOSED target="+id)
+  }catch(e){console.log("BRIDGE FIXED TAB CLOSE WARNING :: "+String(e&&e.message||e))}
+}
 async function waitComposer(cdp,timeoutMs=60000){
   const deadline=Date.now()+timeoutMs;
   let last=null;
@@ -202,7 +217,12 @@ async function openFreshDedicatedConversation(){
       await resetToFreshConversation(cdp);
       reused=true
     }catch(e){
-      console.log("BRIDGE EXISTING COMPOSER NOT READY :: "+String(e&&e.message||e))
+      const detail=String(e&&e.message||e);
+      console.log("BRIDGE EXISTING COMPOSER NOT READY :: "+detail);
+      // Un Runtime.evaluate que no responde indica renderer/target congelado.
+      // Navegar ese mismo target solo encadena más timeouts: se descarta y se
+      // recrea físicamente en el catch exterior.
+      if(/CDP timeout Runtime\.evaluate|Target closed|WebSocket|not open/i.test(detail))throw e
     }
     if(!reused){
       try{await cdp.call("Page.navigate",{url:CHAT_ROOT},8000)}catch(e){console.log("BRIDGE PAGE NAVIGATE WARNING :: "+String(e&&e.message||e))}
@@ -215,16 +235,18 @@ async function openFreshDedicatedConversation(){
     return cdp
   }catch(e){
     try{cdp.close()}catch{}
+    const staleId=String(t&&t.id||"");
+    await closeFixedTargetById(staleId);
+    // createFixedTarget YA abre CHAT_ROOT. No volver a llamar Page.navigate:
+    // una segunda navegación era la que dejaba el renderer bloqueado en CDP.
     t=await createFixedTarget();
     cdp=new CDP(t.webSocketDebuggerUrl);
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    try{await cdp.call("Page.navigate",{url:CHAT_ROOT},8000)}catch(e){console.log("BRIDGE PAGE NAVIGATE WARNING :: "+String(e&&e.message||e))}
-    await waitComposer(cdp,45000);
-    await resetToFreshConversation(cdp);
-    await progress("composer_ready","Pestaña fija recreada; compositor disponible.");
-    console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id));
+    await waitComposer(cdp,60000);
+    await progress("composer_ready","Pestaña fija recreada desde cero; compositor disponible.");
+    console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id)+" previous="+staleId);
     return cdp
   }
 }
