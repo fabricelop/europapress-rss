@@ -283,7 +283,7 @@ function renderEvents(){
   const events=(state.data.events||[]).filter(e=>Date.parse(e.end)>now).slice(0,6);
   $('events').innerHTML=events.map(e=>{
     const dur=Math.max(1,Math.round((Date.parse(e.end)-Date.parse(e.start))/3600_000));
-    return'<div class="event"><div><strong>'+fmtDateTime(e.start)+' → '+fmtTime(e.end)+'</strong><small>'+dur+' h · pico '+Number(e.maxExpectedPrecipitation||0).toFixed(1)+' mm/h · '+e.providerCount+' fuentes</small></div><div class="prob">'+pct(e.peakProbability)+'%</div></div>';
+    return'<div class="event"><div><strong>'+fmtDateTime(e.start)+' → '+fmtTime(e.end)+'</strong><small>'+dur+' h · pico '+Number(e.maxExpectedPrecipitation||0).toFixed(1)+' mm/h · '+(e.independentFamilyCount||e.providerCount)+' familias</small></div><div class="prob">'+pct(e.peakProbability)+'%</div></div>';
   }).join('')||'<div class="status">Sin episodios relevantes.</div>';
 }
 function renderSources(){
