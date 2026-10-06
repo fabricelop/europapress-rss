@@ -1,5 +1,6 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v44-no-kernel-mutex
+# official-pipeline-restart-token: 2026-10-06-v45-control-head-sha
+# compatibility validator: ttittulares-dedicated-v44
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -19,11 +20,10 @@ $StatusBase = "https://europapress-rss.vercel.app"
 $ListenerSnapshotUrl = "$StatusBase/api/ttittulares-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttittulares-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttittulares-run"
-$ControlRawBase = "https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttittulares-run-trigger-v2"
-$DirectTriggerRaw = "$ControlRawBase/ttittulares/run-now-trigger.json"
-$DirectAckRaw = "$ControlRawBase/ttittulares/run-ack.json"
-$DirectImageIndexRaw = "$ControlRawBase/ttittulares/image-runs/index.json"
-$DirectImageJobRawBase = "$ControlRawBase/ttittulares/image-runs/jobs/"
+$ControlBranch = "control/ttittulares-run-trigger-v2"
+$ControlRepoUrl = "https://github.com/fabricelop/europapress-rss.git"
+$script:ControlHeadSha = ""
+$script:ControlHeadAt = [DateTimeOffset]::MinValue
 $DirectImageRefreshSeconds = 60
 $script:DirectImageIndexCache = $null
 $script:DirectImageIndexAt = [DateTimeOffset]::MinValue
@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v44"
+$WorkerId = "ttittulares-dedicated-v45"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -88,6 +88,41 @@ function CacheBust([string]$Url) {
   return $Url + $sep + "t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
 }
 
+function Get-ControlHeadSha([switch]$Force) {
+  $now=[DateTimeOffset]::UtcNow
+  if(-not $Force -and $script:ControlHeadSha -and (($now-$script:ControlHeadAt).TotalSeconds -lt 15)){
+    return $script:ControlHeadSha
+  }
+  try{
+    $git=Get-Command git.exe -ErrorAction SilentlyContinue
+    if(-not $git){$git=Get-Command git -ErrorAction SilentlyContinue}
+    if($git){
+      $oldPrompt=$env:GIT_TERMINAL_PROMPT
+      try{
+        $env:GIT_TERMINAL_PROMPT="0"
+        $line=& $git.Source ls-remote $ControlRepoUrl ("refs/heads/"+$ControlBranch) 2>$null | Select-Object -First 1
+      }finally{
+        if($null -eq $oldPrompt){Remove-Item Env:GIT_TERMINAL_PROMPT -ErrorAction SilentlyContinue}else{$env:GIT_TERMINAL_PROMPT=$oldPrompt}
+      }
+      if([string]$line -match '^([0-9a-fA-F]{40})\s'){
+        $script:ControlHeadSha=$Matches[1].ToLowerInvariant()
+        $script:ControlHeadAt=$now
+        return $script:ControlHeadSha
+      }
+    }
+  }catch{
+    Write-Log "CONTROL HEAD WARNING :: $($_.Exception.Message)"
+  }
+  return ""
+}
+
+function Get-ControlRawUrl([string]$Path,[switch]$ForceHead) {
+  $sha=Get-ControlHeadSha -Force:$ForceHead
+  $ref=if($sha){$sha}else{$ControlBranch}
+  $clean=$Path.TrimStart("/")
+  return "https://raw.githubusercontent.com/fabricelop/europapress-rss/"+$ref+"/"+$clean
+}
+
 function Read-ListenerSnapshot {
   $now=[DateTimeOffset]::UtcNow
   if($script:ListenerSnapshotCache -and (($now-$script:ListenerSnapshotAt).TotalSeconds -lt $SnapshotCacheSeconds)){
@@ -118,7 +153,7 @@ function Read-TriggerDirect([switch]$Force) {
     return $script:DirectTriggerCache
   }
   try{
-    $parsed=Invoke-RestMethod -Uri (CacheBust $DirectTriggerRaw) -Headers @{
+    $parsed=Invoke-RestMethod -Uri (CacheBust (Get-ControlRawUrl "ttittulares/run-now-trigger.json" -ForceHead:$Force)) -Headers @{
       "User-Agent"="TTiTTulares-Dedicated-Listener-DirectTrigger-Raw"
       "Cache-Control"="no-cache, no-store"
       "Pragma"="no-cache"
@@ -161,7 +196,7 @@ function Confirm-DirectTriggerCurrent([string]$CommandId){
 
 function Read-AckDirect {
   try{
-    return Invoke-RestMethod -Uri (CacheBust $DirectAckRaw) -Headers @{
+    return Invoke-RestMethod -Uri (CacheBust (Get-ControlRawUrl "ttittulares/run-ack.json" -ForceHead)) -Headers @{
       "User-Agent"="TTiTTulares-Dedicated-Listener-DirectAck-Raw"
       "Cache-Control"="no-cache, no-store"
       "Pragma"="no-cache"
@@ -178,7 +213,7 @@ function Read-ImageIndexDirect([switch]$Force) {
     return $script:DirectImageIndexCache
   }
   try{
-    $parsed=Invoke-RestMethod -Uri (CacheBust $DirectImageIndexRaw) -Headers @{
+    $parsed=Invoke-RestMethod -Uri (CacheBust (Get-ControlRawUrl "ttittulares/image-runs/index.json" -ForceHead:$Force)) -Headers @{
       "User-Agent"="TTiTTulares-Dedicated-Listener-DirectImageIndex-Raw"
       "Cache-Control"="no-cache, no-store"
       "Pragma"="no-cache"
@@ -227,7 +262,7 @@ function Read-ImageIndex {
 function Read-ImageJobDirect([string]$TargetId) {
   if(-not $TargetId){return $null}
   try{
-    $url=$DirectImageJobRawBase+[uri]::EscapeDataString($TargetId)+".json"
+    $url=Get-ControlRawUrl ("ttittulares/image-runs/jobs/"+[uri]::EscapeDataString($TargetId)+".json")
     return Invoke-RestMethod -Uri (CacheBust $url) -Headers @{
       "User-Agent"="TTiTTulares-Dedicated-Listener-DirectImageJob-Raw"
       "Cache-Control"="no-cache, no-store"
