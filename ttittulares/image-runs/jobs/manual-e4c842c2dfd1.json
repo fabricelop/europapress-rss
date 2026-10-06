@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tt-img-auto-manual-e4c842c2dfd1-r1-a1-1791309759105",
-  "requested_at": "2026-10-06T18:02:39.105195Z",
-  "updated_at": "2026-10-06T18:09:38.762Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tt-img-auto-manual-e4c842c2dfd1-r1-a2-1791310953198",
+  "requested_at": "2026-10-06T18:22:33.197370Z",
+  "updated_at": "2026-10-06T18:22:33.197370Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -13,9 +13,9 @@
   "event_id": "manual-e4c842c2dfd1",
   "target_name": "El PNV confirma su apoyo al primer decreto de vivienda y mantiene su rechazo al segundo",
   "revision": 1,
-  "regenerate": false,
+  "regenerate": true,
   "auto_repair": true,
-  "auto_repair_attempt": 1,
+  "auto_repair_attempt": 2,
   "chat_command_version": 7,
   "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
   "context_snapshot": {
@@ -47,9 +47,5 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "Fallback no pudo escribir el prompt completo",
-  "pc_upload_secret_hash": "95ba8ea17dfb7fd97f64203e0a03d3cbe6ab8e781ca04df8dc0203347a360919",
-  "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-06T18:09:33.851Z",
-  "finished_at": "2026-10-06T18:09:38.762Z"
+  "message": "Reparación automática de imagen IA para noticia en Listas."
 }
