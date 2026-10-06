@@ -1,46 +1,50 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T02:15:00+02:00",
-  "last_completed_at": "2026-10-06T02:16:00+02:00",
-  "updated_at": "2026-10-06T02:16:00+02:00",
+  "last_started_at": "2026-10-06T02:45:00+02:00",
+  "last_completed_at": "2026-10-06T02:59:00+02:00",
+  "updated_at": "2026-10-06T02:59:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "23be980f29a1",
+    "d48c6c588f9a",
+    "1b4b1a7f2126",
+    "27c1c417bffd",
+    "d42da110d710"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "455e00b92028"
-  ],
+  "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T021500+0200",
+    "run_id": "tr-chat-20261006T024500+0200",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "current": 0,
-    "total": 0,
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T02:15:00+02:00",
-    "updated_at": "2026-10-06T02:16:00+02:00",
-    "finished_at": "2026-10-06T02:16:00+02:00",
+    "started_at": "2026-10-06T02:45:00+02:00",
+    "updated_at": "2026-10-06T02:59:00+02:00",
+    "finished_at": "2026-10-06T02:59:00+02:00",
     "incident_count": 1,
     "incidents": [
       {
-        "code": "RADAR_STALE",
-        "message": "trends/recent.json sigue en la captura 2026-10-05T23:18:31+02:00; se solicitó refresco pero no se materializó durante esta pasada."
+        "code": "STATE_SCHEMA_REPAIRED",
+        "message": "trends/requests.json y trends/telegram-manual-explained.json habían quedado como listas planas; se restauró el esquema canónico conservando 620 solicitudes y 576 fichas existentes antes de procesar la nueva cola."
       }
     ],
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "trends_processed": 5,
+      "trends_explained": 5,
+      "explanation_groups": 3,
+      "new_cards": 2,
+      "revisions_updated": 3,
+      "grouped_into_existing_card": 2,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 1,
@@ -48,87 +52,155 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 0,
+      "fallback_images_ready": 3,
+      "visual_jobs_queued": 3,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 5,
+      "remates_selected": 3,
       "remates_omitted": 0,
-      "pending_cards_reviewed": 5,
-      "pending_remates_repaired": 0,
-      "pending_repair_triggered": 1,
-      "problematic_top10_retried": 0
+      "pending_repair_triggered": 1
     },
-    "message": "Pasada completada sin trabajo editorial nuevo: cola 0. Revisadas 5 tarjetas Pendientes; 3 siguen con IA pendiente y el reparador visual quedó solicitado. El radar continúa en la captura de 23:18 pese al refresco solicitado. Sin ImageGen directo ni despliegues.",
+    "message": "Pasada completada 5/5. Rubén, Gema y Chari se agruparon por la hoguera con la madre de Gema; Mara y #LaIslaDeLasTentaciones9 quedaron como grupos propios. Cola final 0. Tres tarjetas visibles tienen fallback listo y job Gag IA automático encolado. Se reparó el esquema canónico de requests y Explicadas. Sin ImageGen directo ni despliegues Vercel.",
     "activity": [
       {
-        "at": "2026-10-06T02:15:00+02:00",
+        "at": "2026-10-06T02:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada directa · cola inicial 0"
       },
       {
-        "at": "2026-10-06T02:15:10+02:00",
+        "at": "2026-10-06T02:45:08+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual de Pendientes solicitado"
       },
       {
-        "at": "2026-10-06T02:15:20+02:00",
+        "at": "2026-10-06T02:45:12+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Radar desactualizado · solicitando refresco"
+        "message": "Solicitando refresco real del radar"
       },
       {
-        "at": "2026-10-06T02:15:25+02:00",
-        "phase": "preparing",
+        "at": "2026-10-06T02:48:00+02:00",
+        "phase": "persisting",
         "trend_id": null,
         "title": null,
-        "message": "Refresco de radar solicitado"
+        "message": "Restaurando esquema canónico de requests"
       },
       {
-        "at": "2026-10-06T02:15:30+02:00",
+        "at": "2026-10-06T02:50:00+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Restaurando esquema canónico de Explicadas"
+      },
+      {
+        "at": "2026-10-06T02:50:54+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando estado autoritativo de requests y Explicadas"
+        "message": "Radar actualizado · captura 02:50 con 5 revisiones en cola"
       },
       {
-        "at": "2026-10-06T02:15:35+02:00",
+        "at": "2026-10-06T02:51:30+02:00",
+        "phase": "investigating",
+        "trend_id": "23be980f29a1",
+        "title": "Gema",
+        "message": "Buscando detonante actual del bloque La isla de las tentaciones"
+      },
+      {
+        "at": "2026-10-06T02:52:00+02:00",
+        "phase": "investigating",
+        "trend_id": "23be980f29a1",
+        "title": "Gema",
+        "message": "Fuentes contrastadas · Mediaset y FormulaTV coinciden en la hoguera de Rubén con Chari"
+      },
+      {
+        "at": "2026-10-06T02:52:20+02:00",
+        "phase": "drafting",
+        "trend_id": "1b4b1a7f2126",
+        "title": "Rubén",
+        "message": "Redactando explicación factual del grupo Rubén · Gema · Chari"
+      },
+      {
+        "at": "2026-10-06T02:52:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "1b4b1a7f2126",
+        "title": "Rubén",
+        "message": "Remate seleccionado · grupo hoguera de la suegra"
+      },
+      {
+        "at": "2026-10-06T02:53:00+02:00",
+        "phase": "drafting",
+        "trend_id": "d48c6c588f9a",
+        "title": "Mara",
+        "message": "Redactando explicación factual de Mara y Juanpi"
+      },
+      {
+        "at": "2026-10-06T02:53:10+02:00",
+        "phase": "remate_selection",
+        "trend_id": "d48c6c588f9a",
+        "title": "Mara",
+        "message": "Remate seleccionado · Mara"
+      },
+      {
+        "at": "2026-10-06T02:53:20+02:00",
+        "phase": "drafting",
+        "trend_id": "27c1c417bffd",
+        "title": "#LaIslaDeLasTentaciones9",
+        "message": "Redactando explicación del episodio 9 de la temporada 11"
+      },
+      {
+        "at": "2026-10-06T02:53:30+02:00",
+        "phase": "remate_selection",
+        "trend_id": "27c1c417bffd",
+        "title": "#LaIslaDeLasTentaciones9",
+        "message": "Remate seleccionado · episodio 9"
+      },
+      {
+        "at": "2026-10-06T02:54:00+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Guardando fichas Explicadas y sincronizando requests"
+      },
+      {
+        "at": "2026-10-06T02:55:00+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Retirando las cinco revisiones de la cola"
+      },
+      {
+        "at": "2026-10-06T02:56:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 5 tarjetas"
+        "message": "Releyendo main · verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-06T02:15:40+02:00",
+        "at": "2026-10-06T02:57:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "3 Pendientes con IA pendiente · reparación visual ya solicitada"
+        "message": "Cinco revisiones verificadas · tres explicaciones únicas <280"
       },
       {
-        "at": "2026-10-06T02:15:45+02:00",
+        "at": "2026-10-06T02:58:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "1 problematic detectado · Después de 8; no está en la última captura Top 10"
+        "message": "Fallback listo en 3 tarjetas · 3 jobs Gag IA automáticos encolados"
       },
       {
-        "at": "2026-10-06T02:15:50+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · verificando cola, trigger visual y radar"
-      },
-      {
-        "at": "2026-10-06T02:16:00+02:00",
+        "at": "2026-10-06T02:59:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · cola 0; 5 Pendientes revisadas; radar sigue desactualizado"
+        "message": "Pasada cerrada · 5/5; cola 0"
       }
     ],
     "ratings_snapshot": {
@@ -138,42 +210,71 @@
       "total_ratings": 153,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "1b4b1a7f2126",
+        "name": "Rubén",
+        "closer_text": "🌶️ La hoguera venía con suegra y expediente completo."
+      },
+      {
+        "trend_id": "d48c6c588f9a",
+        "name": "Mara",
+        "closer_text": "🌶️ Juanpi reapareció y la isla activó el modo déjà vu."
+      },
+      {
+        "trend_id": "27c1c417bffd",
+        "name": "#LaIslaDeLasTentaciones9",
+        "closer_text": "🌶️ El episodio 9 llegó con la hoguera a máxima potencia."
+      }
+    ],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [
-      "455e00b92028"
-    ],
+    "remaining_problematic_ids": [],
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261006T021500+0200",
-      "status": "triggered",
+      "run_id": "tr-chat-20261006T024500+0200",
+      "status": "queued_and_verified",
       "direct_imagegen": false,
-      "pending_cards_reviewed": 5,
-      "pending_ai_waiting": [
-        "a4291a531100",
-        "d208a3da8e37",
-        "c9d48615f2ca"
+      "fallback_ready_ids": [
+        "1b4b1a7f2126",
+        "d48c6c588f9a",
+        "27c1c417bffd"
+      ],
+      "ai_job_ids": [
+        "1b4b1a7f2126",
+        "d48c6c588f9a",
+        "27c1c417bffd"
       ]
     },
     "radar": {
-      "captured_at": "2026-10-05T23:18:31+02:00",
+      "captured_at": "2026-10-06T02:50:54+02:00",
       "queue_count": 0,
-      "processed": [],
+      "processed": [
+        "Gema",
+        "Mara",
+        "Rubén",
+        "#LaIslaDeLasTentaciones9",
+        "Chari"
+      ],
       "refresh_requested": true,
-      "refresh_materialized": false
+      "refresh_materialized": true
     }
   },
   "visual_repair": {
     "requested": true,
-    "run_id": "tr-chat-20261006T021500+0200",
-    "status": "triggered",
+    "run_id": "tr-chat-20261006T024500+0200",
+    "status": "queued_and_verified",
     "direct_imagegen": false,
-    "pending_cards_reviewed": 5,
-    "pending_ai_waiting": [
-      "a4291a531100",
-      "d208a3da8e37",
-      "c9d48615f2ca"
+    "fallback_ready_ids": [
+      "1b4b1a7f2126",
+      "d48c6c588f9a",
+      "27c1c417bffd"
+    ],
+    "ai_job_ids": [
+      "1b4b1a7f2126",
+      "d48c6c588f9a",
+      "27c1c417bffd"
     ]
-  }
+  },
+  "error": null
 }
