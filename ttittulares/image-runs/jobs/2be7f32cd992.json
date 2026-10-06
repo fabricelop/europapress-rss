@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tt-img-fix2-2be7f32cd992-1791315058352",
-  "requested_at": "2026-10-06T19:30:58.352Z",
-  "updated_at": "2026-10-06T19:31:50.353Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tt-img-fix3-2be7f32cd992-1791315346872",
+  "requested_at": "2026-10-06T19:35:46.872Z",
+  "updated_at": "2026-10-06T19:35:46.872Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "manual_pc_chat_image",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -54,9 +54,5 @@
     "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
     "lifecycle": "El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
   },
-  "message": "Fallback no pudo escribir el prompt completo len=0 expected>=500",
-  "pc_upload_secret_hash": "ef9e15e5aca162156738872425159ba523a2b56786352db049e8c8b56e9bb279",
-  "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-06T19:31:44.497Z",
-  "finished_at": "2026-10-06T19:31:50.353Z"
+  "message": "Tercer reintento controlado tras auto-update listener v40/bridge v29."
 }
