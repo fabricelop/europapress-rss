@@ -584,6 +584,9 @@ function renderShortNowcast(){
     : 0;
   const peakRate=wetPoints.length?Math.max(...wetPoints.map(p=>p.rate)):0;
   const labelRate=rain.raining?Math.max(Number(state.nowcast?.currentRadarRate)||0,Number(state.data?.opera?.sample?.rateMmH)||0,arrivalRate):arrivalRate;
+  const compactCorrection=decision.mode==='episode_pause'||decision.mode==='episode_ended_early';
+  $('shortDetail').hidden=compactCorrection;
+  $('shortWindow').hidden=compactCorrection;
   $('shortState').textContent=decision.mode==='episode_pause'||decision.mode==='episode_ended_early'
     ? 'Seco ahora'
     : decision.mode==='possible_now'
@@ -1487,10 +1490,8 @@ function render(){
     $('end').textContent=episode?.end?fmtDateTime(episode.end):'—';
     $('conf').textContent=pct(decision.confidence)+'%';
     $('dur').textContent=durationText(correction?.observedEnd||decision.now,decision.now);
-    $('summary').hidden=false;
-    $('summary').textContent=correction?.resumeAt
-      ? 'Tu observación confirma una pausa seca. RainETA conserva el episodio, pero lo divide: posible nuevo pulso alrededor de '+fmtTime(correction.resumeAt)+' según '+correction.resumeSource+'.'
-      : 'Tu observación confirma que ahora está seco. RainETA ya no considera lluvia continua: está comprobando si el tramo ha terminado antes de lo previsto.';
+    $('summary').textContent='';
+    $('summary').hidden=true;
   }else if(decision.mode==='episode_ended_early'){
     const correction=decision.correction,episode=correction?.episode,minutesEarly=Math.max(0,Math.round((Number(episode?.end)-Number(correction?.observedEnd))/60_000));
     $('heroLabel').textContent='Episodio recalculado';
@@ -1503,8 +1504,8 @@ function render(){
     $('end').textContent=episode?.end?fmtDateTime(episode.end):'—';
     $('conf').textContent=minutesEarly?minutesEarly+' min antes':'ajustado';
     $('dur').textContent=ev?.start?fmtDateTime(ev.start):'sin episodio inmediato';
-    $('summary').hidden=false;
-    $('summary').textContent='El tramo previsto se ha cerrado antes: la observación de “No llueve” y la evidencia local ya no sostienen lluvia continua.'+(minutesEarly?' RainETA registra un final ~'+minutesEarly+' min anterior a la previsión.':'')+' Esta corrección queda guardada para aprender la duración local de futuros episodios.';
+    $('summary').textContent='';
+    $('summary').hidden=true;
   }else if(decision.mode==='possible_now'){
     const radarRate=Number(nowState.radarRate)||0,operaRate=Number(nowState.operaRate)||0;
     const opera=state.data?.opera,operaFresh=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20);
@@ -1920,11 +1921,7 @@ function renderTimeline(){
 function renderEvents(){
   const decision=buildRainDecision(),now=decision.now;
   const events=canonicalEvents().filter(e=>Date.parse(e.end)>now).slice(0,8),radarDry=decision.dry;
-  const correctionHtml=decision.mode==='episode_pause'
-    ? '<div class="dryWindow dryWindowPrimary"><strong>PAUSA SECA observada dentro del episodio</strong><span>'+(decision.correction?.resumeAt?'posible reanudación ~'+fmtTime(decision.correction.resumeAt):'reevaluando el final del tramo')+'</span></div>'
-    : decision.mode==='episode_ended_early'
-      ? '<div class="dryWindow dryWindowPrimary"><strong>Episodio anterior recortado</strong><span>fin observado ~'+fmtTime(decision.correction?.observedEnd)+' · antes se esperaba hasta '+fmtTime(decision.correction?.episode?.end)+'</span></div>'
-      : '';
+  const correctionHtml='';
   if(!events.length){
     $('events').innerHTML=correctionHtml+(radarDry?'<div class="dryWindow"><strong>Radar: ventana seca probable · '+durationText(radarDry.start,radarDry.end)+'</strong><span>hasta ~'+fmtTime(radarDry.end)+(radarDry.operaDry?' · OPERA seco ahora':'')+'</span></div>':'')+'<div class="status">Sin episodios relevantes.</div>';
     return;
