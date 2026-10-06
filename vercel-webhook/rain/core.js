@@ -281,3 +281,29 @@ export function compactTimeline(points=[],limit=72){
 export function chooseNextEvent(events=[],nowMs=Date.now()){
   return events.find(e=>Date.parse(e.end)>nowMs)||null;
 }
+
+export function bestDryWindow(events=[],nowMs=Date.now(),horizonEndMs=nowMs+24*3_600_000,{minMinutes=30}={}){
+  const start=Math.max(0,Number(nowMs)||0),end=Math.max(start,Number(horizonEndMs)||start);
+  const wet=(events||[])
+    .map(e=>({start:Date.parse(e.start),end:Date.parse(e.end)}))
+    .filter(e=>Number.isFinite(e.start)&&Number.isFinite(e.end)&&e.end>start&&e.start<end)
+    .map(e=>({start:Math.max(start,e.start),end:Math.min(end,e.end)}))
+    .sort((a,b)=>a.start-b.start);
+  const merged=[];
+  for(const e of wet){
+    const last=merged.at(-1);
+    if(last&&e.start<=last.end+5*60_000)last.end=Math.max(last.end,e.end);
+    else merged.push({...e});
+  }
+  const dry=[];let cursor=start;
+  for(const e of merged){
+    if(e.start>cursor)dry.push({start:cursor,end:e.start});
+    cursor=Math.max(cursor,e.end);
+  }
+  if(cursor<end)dry.push({start:cursor,end});
+  const eligible=dry
+    .map(w=>({...w,minutes:Math.max(0,Math.round((w.end-w.start)/60_000))}))
+    .filter(w=>w.minutes>=minMinutes);
+  if(!eligible.length)return null;
+  return eligible.reduce((best,w)=>!best||w.minutes>best.minutes||(w.minutes===best.minutes&&w.start<best.start)?w:best,null);
+}

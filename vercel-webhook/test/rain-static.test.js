@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour} from '../rain/core.js';
+import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,wetNear,valueNear} from '../rain/radar-core.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
@@ -89,4 +89,17 @@ test('rain events split across a weak dry window',()=>{
   assert.equal(events[0].durationHours,3);
   assert.equal(events[1].durationHours,2);
   assert.ok(events[0].totalExpectedPrecipitation>.5);
+});
+
+
+test('best dry window finds the longest practical gap',()=>{
+  const now=Date.parse('2026-10-06T10:00:00Z'),end=now+12*3600e3;
+  const events=[
+    {start:new Date(now+60*60e3).toISOString(),end:new Date(now+120*60e3).toISOString()},
+    {start:new Date(now+5*3600e3).toISOString(),end:new Date(now+6*3600e3).toISOString()}
+  ];
+  const dry=bestDryWindow(events,now,end);
+  assert.equal(dry.start,now+6*3600e3);
+  assert.equal(dry.end,end);
+  assert.equal(dry.minutes,360);
 });

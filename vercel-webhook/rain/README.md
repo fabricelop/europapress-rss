@@ -1,4 +1,4 @@
-# RainETA v0.14
+# RainETA v0.15
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,14 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## OPERA espacial, aprendizaje y huecos secos v0.15
+- OPERA NIMBUS RATE aporta un **segundo nowcast espacial independiente**: se comparan varios compuestos de 5 min, se estima movimiento del eco y se proyecta una ETA 0–120 min sin crear una función Serverless adicional.
+- RainViewer y OPERA se cruzan: si sus ETAs son próximas, RainETA calcula una ETA fusionada; si discrepan mucho, mantiene la discrepancia visible y prioriza la fuente más fiable.
+- Se inicia un **marcador local de acierto por fuente y horizonte** para RainViewer, OPERA y modelos en +15/+30/+60/+90/+120 min. Solo influye de forma suave cuando ya hay suficientes verificaciones independientes.
+- `Mis lugares` añade la **mejor ventana seca de las próximas 24 h**, además de próxima lluvia, duración y tiempo seco actual.
+- El radar incorpora **▶ HASTA LLUVIA**: anima desde la posición actual y se detiene automáticamente en la ETA canónica de llegada al punto; se desactiva si la ETA queda fuera de +120 min o la proyección radar no es fiable.
+- La tarjeta 0–120 min usa también la proyección espacial de OPERA para intensidad/probabilidad, conservando el RainDecision canónico como única decisión visible.
 
 ## Motor canónico y Mis lugares v0.14
 - Se crea un **RainDecision canónico** con estado actual, ventana seca, próxima lluvia, duración, confianza y riesgo de modelos. La cabecera, tarjeta 0–120 min, contador, gráfico largo y episodios se alinean sobre la misma decisión.
