@@ -1,4 +1,4 @@
-# RainETA v0.12
+# RainETA v0.13
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,12 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Decisión práctica v0.13
+- El radar muestra **siempre una hora absoluta** arriba a la derecha, también en la proyección; los `+15 min`, `+50 min`, etc. quedan solo como explicación secundaria.
+- La ubicación GPS actual puede guardarse como **lugar permanente**: se conserva como una instantánea fija aunque más adelante cambie la ubicación GPS actual.
+- La cabecera muestra una decisión transparente tipo: `RainViewer: seco · OPERA: 0,0 mm/h · modelos: riesgo 63 % → RainETA: seco hasta 15:20`.
+- El contador en vivo respeta la ventana seca radar y ya no vuelve a `>2 h` mientras haya una ventana seca fiable activa.
 
 ## Coherencia radar-modelos v0.12
 - Cuando el nowcast radar es suficientemente fiable y no proyecta precipitación sobre el punto, RainETA crea una **ventana seca radar** de hasta 120 min.
