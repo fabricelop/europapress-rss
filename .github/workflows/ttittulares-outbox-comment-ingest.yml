@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   # Every comment must be ingested; a shared pending slot loses comments.
-  group: ttittulares-outbox-${{ github.event.comment.id }}
+  group: ttittulares-outbox-main
   cancel-in-progress: false
 
 jobs:
