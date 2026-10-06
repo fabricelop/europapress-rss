@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-d48c6c588f9a-r2-a1-1791248242194",
+  "requested_at": "2026-10-06T00:57:22.179731Z",
+  "updated_at": "2026-10-06T00:57:22.179731Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "d48c6c588f9a",
+  "trend_id": "d48c6c588f9a",
+  "target_name": "Mara",
+  "revision": 2,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Mara",
+    "revision": 2,
+    "explanation": "TT#8 Mara es tendencia porque eligió a Juanpi para su primera cita en La isla de las tentaciones, admitió que al verlo volvieron sentimientos del pasado y comparó su intimidad con él y con Miguel.\n🌶️ Juanpi reapareció y la isla activó el modo déjà vu.",
+    "closer_text": "🌶️ Juanpi reapareció y la isla activó el modo déjà vu.",
+    "trend_names": [
+      "Mara"
+    ],
+    "group_title": "Mara y Juanpi · primera cita del 5 de octubre",
+    "rank_at_explanation": 8,
+    "explained_at": "2026-10-06T02:53:00+02:00",
+    "verification_sources": [
+      {
+        "source": "Mediaset Infinity · 5/10/2026",
+        "url": "https://www.mediasetinfinity.es/programas-tv/la-isla-de-las-tentaciones/temporada-11/top-videos/juanpi-mara-complicidad-primera-cita-despiertan-sentimientos-40_020328929/player/"
+      },
+      {
+        "source": "FormulaTV · 4/10/2026",
+        "url": "https://www.formulatv.com/noticias/nacho-borbon-conocera-sancion-isla-tentaciones-11-138404/"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+    "image_style_name": "tinta_acuarela",
+    "image_style_index": 0
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
