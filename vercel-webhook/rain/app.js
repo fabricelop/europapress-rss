@@ -550,6 +550,8 @@ function renderShortNowcast(){
   const shortConfidence=near?calibratedConfidence(ev.confidence,leadMinutes):dry?calibratedConfidence(dry.confidence,leadMinutes):null;
   $('shortConfidence').textContent=shortConfidence!=null?pct(shortConfidence)+'%':'—';
   renderRadarSkill();
+  updateSourceSkill();
+  renderSourceSkill();
 
   const maxRate=Math.max(.35,Math.min(12,Math.max(...points.map(p=>p.rate))));
   $('minuteStrip').innerHTML=points.map((p,i)=>{
@@ -650,6 +652,135 @@ function renderRadarSkill(){
     return;
   }
   $('skillText').textContent='Autoevaluación radar · '+ready.map(lead=>lead+' min '+Math.round(stats[lead].accuracy*100)+'% ('+stats[lead].n+')').join(' · ');
+}
+
+function sourceSkillKey(){return 'raineta.sourceSkill.'+locationKey(state.loc)}
+function readSourceSkill(){return readLocal(sourceSkillKey(),{snapshots:[],scores:[]})}
+function writeSourceSkill(data){
+  try{localStorage.setItem(sourceSkillKey(),JSON.stringify(data))}catch{}
+}
+function radarPredictionAt(timeMs){
+  const n=state.nowcast,base=Date.parse(n?.radarTime||''),series=Array.isArray(n?.series)?n.series:[];
+  if(!Number.isFinite(base)||!series.length)return null;
+  const best=series.reduce((acc,row)=>{
+    const t=base+(Number(row.minute)||0)*60_000,d=Math.abs(t-timeMs);
+    return !acc||d<acc.d?{row,d}:acc;
+  },null);
+  if(!best||best.d>9*60_000)return null;
+  const row=best.row,wet=(Number(row.wetFraction)||0)>=.10&&(Number(row.radarRate)||0)>=.03;
+  return{predicted:wet,probability:Math.max(0,Math.min(1,Number(row.probability)||0))};
+}
+function operaPredictionAt(timeMs){
+  const row=operaPointAt(timeMs);
+  if(!row)return null;
+  const wet=(Number(row.wetFraction)||0)>=.10&&(Number(row.rateMmH)||0)>=.03;
+  return{predicted:wet,probability:Math.max(0,Math.min(1,Number(row.probability)||0))};
+}
+function modelPredictionAt(timeMs){
+  const rows=state.data?.timeline||[];
+  const best=rows.reduce((acc,row)=>{
+    const d=Math.abs(Date.parse(row.time)-timeMs);
+    return !acc||d<acc.d?{row,d}:acc;
+  },null);
+  if(!best||best.d>75*60_000)return null;
+  const row=best.row,p=Math.max(0,Math.min(1,(Number(row.probability)||0)/100));
+  const signal=classifyRainHour({probability:p,expectedPrecipitation:Number(row.precipitation)||0});
+  const qhRate=quarterHourRateAt(timeMs);
+  const predicted=signal==='wet'||(qhRate>=.05&&p>=.36);
+  return{predicted,probability:Math.max(p,qhRate>=.05?.48:0)};
+}
+function observedSkillTruth(){
+  const feedback=currentTruth();
+  if(feedback!==null)return{actual:Boolean(feedback),exclude:[],source:'feedback'};
+  const n=state.nowcast,radarAge=Date.now()-Date.parse(n?.radarTime||''),radarWet=Number(n?.currentWetFraction);
+  const rvOk=(n?.status==='ok'||n?.status==='motion_uncertain')&&Number.isFinite(radarWet)&&Number.isFinite(radarAge)&&radarAge<=20*60_000;
+  const rv=rvOk?radarWet>=calibratedRadarThreshold():null;
+  const opera=state.data?.opera,sample=opera?.sample,quality=Number(sample?.quality),rate=Number(sample?.rateMmH);
+  const opOk=Boolean(sample?.ok&&Number(opera?.ageMinutes)<=20&&quality>=.5&&Number.isFinite(rate));
+  const op=opOk?rate>=.05:null;
+  if(rvOk&&opOk){
+    if(rv!==op)return null;
+    return{actual:rv,exclude:[],source:'rainviewer+opera'};
+  }
+  if(rvOk)return{actual:rv,exclude:['rainviewer'],source:'rainviewer'};
+  if(opOk)return{actual:op,exclude:['opera'],source:'opera'};
+  return null;
+}
+function sourceSkillStats(){
+  const data=readSourceSkill(),out={};
+  for(const source of ['rainviewer','opera','models']){
+    const rows=(data.scores||[]).filter(x=>x.source===source);
+    const byHorizon={};
+    for(const horizon of [15,30,60,90,120]){
+      const h=rows.filter(x=>Number(x.horizon)===horizon);
+      byHorizon[h]={n:h.length,accuracy:h.length?h.filter(x=>x.correct).length/h.length:null};
+    }
+    out[source]={n:rows.length,accuracy:rows.length?rows.filter(x=>x.correct).length/rows.length:null,byHorizon};
+  }
+  return out;
+}
+function sourceSkillFor(source,leadMinutes){
+  const stats=sourceSkillStats()?.[source];
+  if(!stats)return null;
+  const horizon=[15,30,60,90,120].reduce((a,b)=>Math.abs(b-leadMinutes)<Math.abs(a-leadMinutes)?b:a,15);
+  const h=stats.byHorizon?.[horizon];
+  if(h?.n>=5&&h.accuracy!=null)return{accuracy:h.accuracy,n:h.n,horizon};
+  if(stats.n>=8&&stats.accuracy!=null)return{accuracy:stats.accuracy,n:stats.n,horizon:null};
+  return null;
+}
+function updateSourceSkill(){
+  if(!state.data)return;
+  const now=Date.now(),truth=observedSkillTruth(),data=readSourceSkill();
+  data.snapshots=Array.isArray(data.snapshots)?data.snapshots:[];
+  data.scores=Array.isArray(data.scores)?data.scores:[];
+  for(const snap of data.snapshots){
+    snap.done=snap.done||{};
+    for(const forecast of snap.forecasts||[]){
+      const key=forecast.source+':'+forecast.horizon;
+      if(snap.done[key])continue;
+      const age=now-Number(forecast.targetMs);
+      if(age>15*60_000){snap.done[key]='missed';continue}
+      if(age<-2*60_000||!truth)continue;
+      if((truth.exclude||[]).includes(forecast.source)){snap.done[key]='self_truth';continue}
+      const actual=Boolean(truth.actual),predicted=Boolean(forecast.predicted);
+      data.scores.push({
+        time:now,issuedAt:Number(snap.issuedAt),targetMs:Number(forecast.targetMs),
+        source:forecast.source,horizon:Number(forecast.horizon),predicted,actual,
+        correct:predicted===actual,probability:Number(forecast.probability)||0,
+        truthSource:truth.source
+      });
+      snap.done[key]='scored';
+    }
+  }
+  const last=data.snapshots.at(-1);
+  if(!last||now-Number(last.issuedAt)>=9*60_000){
+    const forecasts=[];
+    for(const horizon of [15,30,60,90,120]){
+      const targetMs=now+horizon*60_000;
+      for(const [source,prediction] of [
+        ['rainviewer',radarPredictionAt(targetMs)],
+        ['opera',operaPredictionAt(targetMs)],
+        ['models',modelPredictionAt(targetMs)]
+      ]){
+        if(prediction)forecasts.push({source,horizon,targetMs,...prediction});
+      }
+    }
+    if(forecasts.length)data.snapshots.push({issuedAt:now,forecasts,done:{}});
+  }
+  data.snapshots=data.snapshots.filter(x=>now-Number(x.issuedAt)<7*24*3600_000).slice(-180);
+  data.scores=data.scores.filter(x=>now-Number(x.time)<30*24*3600_000).slice(-900);
+  writeSourceSkill(data);
+}
+function renderSourceSkill(){
+  const el=$('sourceSkillText');if(!el)return;
+  const stats=sourceSkillStats(),labels={rainviewer:'RainViewer',opera:'OPERA',models:'Modelos'};
+  const ready=Object.entries(stats).filter(([,s])=>s.n>=3&&s.accuracy!=null).sort((a,b)=>b[1].accuracy-a[1].accuracy);
+  const n=Object.values(stats).reduce((sum,s)=>sum+s.n,0);
+  if(!ready.length){
+    el.textContent='Comparador local de fuentes: '+(n?'aprendiendo ('+n+' verificaciones)':'iniciando historial…');
+    return;
+  }
+  el.textContent='Acierto local 0–2 h · '+ready.map(([id,s],i)=>(i===0?'★ ':'')+labels[id]+' '+Math.round(s.accuracy*100)+'% ('+s.n+')').join(' · ');
 }
 
 function feedbackStats(){
@@ -831,9 +962,12 @@ function fuseRadarEvents(rv,op,now=Date.now()){
   if(!op)return rv;
   const delta=Math.abs(Date.parse(rv.start)-Date.parse(op.start))/60_000;
   if(delta>30){
-    const winner=(Number(rv.confidence)||0)>=(Number(op.confidence)||0)?rv:op;
-    const alternate=winner===rv?op:rv;
-    return{...winner,disagreementMinutes:Math.round(delta),alternate};
+    const lead=Math.max(0,Math.min(120,(Math.min(Date.parse(rv.start),Date.parse(op.start))-now)/60_000));
+    const rvSkill=sourceSkillFor('rainviewer',lead),opSkill=sourceSkillFor('opera',lead);
+    const rvScore=(Number(rv.confidence)||0)*.84+(rvSkill?.accuracy??.5)*.16;
+    const opScore=(Number(op.confidence)||0)*.84+(opSkill?.accuracy??.5)*.16;
+    const winner=rvScore>=opScore?rv:op,alternate=winner===rv?op:rv;
+    return{...winner,disagreementMinutes:Math.round(delta),alternate,adaptiveChoice:Boolean(rvSkill||opSkill)};
   }
   const rw=Math.max(.1,Number(rv.confidence)||0),ow=Math.max(.1,Number(op.confidence)||0);
   const start=blendIso(rv.start,op.start,rw,ow),end=blendIso(rv.end,op.end,rw,ow);
