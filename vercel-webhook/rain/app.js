@@ -37,7 +37,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.5.0'
+  data:null,nowcast:null,map:null,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.6.0',renameTarget:null
 };
 
 function iso(v){
@@ -56,10 +56,13 @@ function locationKey(loc){return Number(loc.lat).toFixed(4)+','+Number(loc.lon).
 function persistLocations(){localStorage.setItem('raineta.locations',JSON.stringify(state.savedLocations))}
 function persistFeedback(){localStorage.setItem('raineta.feedback',JSON.stringify(state.feedback.slice(-120)))}
 function isSaved(loc=state.loc){return state.savedLocations.some(x=>samePlace(x,loc,.0015))}
-function recentTruthFor(loc,maxAgeMinutes=12){
+function recentFeedbackFor(loc,maxAgeMinutes=12){
   if(!loc)return null;
   const cutoff=Date.now()-maxAgeMinutes*60_000;
-  const item=[...state.feedback].reverse().find(x=>x.time>=cutoff&&samePlace(x,loc,.0015));
+  return [...state.feedback].reverse().find(x=>x.time>=cutoff&&samePlace(x,loc,.0015))||null;
+}
+function recentTruthFor(loc,maxAgeMinutes=12){
+  const item=recentFeedbackFor(loc,maxAgeMinutes);
   return item?Boolean(item.raining):null;
 }
 function currentTruth(maxAgeMinutes=12){
@@ -92,6 +95,10 @@ function durationText(start,end){
   const h=Math.floor(m/60),r=m%60;return h+' h'+(r?' '+r+' min':'');
 }
 function pct(v){return Math.round(Math.max(0,Math.min(1,Number(v)||0))*100)}
+function probabilityBand(value){
+  const p=Number(value)||0;
+  return p>=.85?'p85':p>=.70?'p70':p>=.50?'p50':'p35';
+}
 function cacheKey(){return 'raineta.forecast.'+state.loc.lat.toFixed(2)+','+state.loc.lon.toFixed(2)}
 function timeoutFetch(url,ms=9000,opts={}){
   const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);
@@ -362,12 +369,12 @@ function renderShortNowcast(){
   $('shortConfidence').textContent=shortConfidence!=null?pct(shortConfidence)+'%':'—';
   renderRadarSkill();
 
-  const maxRate=Math.max(.5,...points.map(p=>p.rate));
+  const maxRate=Math.max(.35,Math.min(8,Math.max(...points.map(p=>p.rate))));
   $('minuteStrip').innerHTML=points.map((p,i)=>{
     const wet=p.probability>=.25||p.rate>=.08;
-    const high=p.probability>=.7||p.rate>=5;
-    const height=wet?Math.max(6,Math.min(100,12+p.probability*58+(p.rate/maxRate)*30)):3;
-    return '<div class="minuteCol '+(wet?'wet ':'')+(high?'high ':'')+(i===0?'now':'')+'" title="'+fmtTime(p.time)+' · '+Math.round(p.probability*100)+'% · '+p.rate.toFixed(1)+' mm/h"><i class="minuteMark" style="height:'+height+'%"></i></div>';
+    const band=probabilityBand(p.probability);
+    const height=wet?Math.max(7,Math.min(100,10+Math.sqrt(Math.min(p.rate,maxRate)/maxRate)*90)):3;
+    return '<div class="minuteCol '+(wet?'wet '+band+' ':'')+(i===0?'now':'')+'" title="'+fmtTime(p.time)+' · prob. '+Math.round(p.probability*100)+'% · intensidad '+p.rate.toFixed(1)+' mm/h"><i class="minuteMark" style="height:'+height+'%"></i></div>';
   }).join('');
   const ticks=[];
   for(let i=0;i<=24;i+=6){
@@ -553,11 +560,19 @@ function render(){
   const isCurrent=Boolean(state.currentLocation&&samePlace(state.loc,state.currentLocation));
   $('feedbackCard').hidden=!isCurrent;
   if(isCurrent){
-    const stats=feedbackStats(),threshold=Math.round(calibratedRadarThreshold()*100);
+    const stats=feedbackStats(),threshold=Math.round(calibratedRadarThreshold()*100),recent=recentFeedbackFor(state.currentLocation);
     const countLabel=stats.count===1?'1 comprobación':stats.count+' comprobaciones';
-    $('feedbackStatus').textContent=stats.count
-      ? 'Registradas '+countLabel+(stats.accuracy!=null?' · acierto provisional '+Math.round(stats.accuracy*100)+'%':'')+' · umbral radar local '+threshold+'%.'
-      : 'Tu respuesta queda en este dispositivo y sirve para medir aciertos y calibrar la detección local.';
+    const yesSelected=recent?.raining===true,noSelected=recent?.raining===false;
+    $('feedbackYes').classList.toggle('selected',yesSelected);
+    $('feedbackNo').classList.toggle('selected',noSelected);
+    $('feedbackYes').textContent=(yesSelected?'✓ ':'')+'Sí, está lloviendo';
+    $('feedbackNo').textContent=(noSelected?'✓ ':'')+'No llueve';
+    $('feedbackStatus').classList.toggle('confirmed',Boolean(recent));
+    $('feedbackStatus').textContent=recent
+      ? '✓ Registrado a las '+fmtTimeSeconds(recent.time)+': '+(recent.raining?'SÍ LLUEVE':'NO LLUEVE')+'. Se usará para evaluar y calibrar RainETA.'
+      : stats.count
+        ? 'Registradas '+countLabel+(stats.accuracy!=null?' · acierto provisional '+Math.round(stats.accuracy*100)+'%':'')+' · umbral radar local '+threshold+'%.'
+        : 'Tu respuesta queda en este dispositivo y sirve para medir aciertos y calibrar la detección local.';
   }
   const h=d.sources.health;
   $('health').textContent=h.available+' de '+h.total+' capas disponibles · radar '+(n?.status==='ok'?'analizado':n?.status==='motion_uncertain'?'sin movimiento fiable':'degradado');
@@ -569,22 +584,24 @@ function render(){
   updateLiveCountdown();
 }
 function renderTimeline(){
-  const a=state.data.timeline||[],mx=Math.max(50,...a.map(x=>x.probability));
+  const a=state.data.timeline||[];
+  const maxIntensity=Math.max(.25,Math.min(6,Math.max(...a.map(x=>Number(x.precipitation)||0))));
   $('timeline').innerHTML=a.map(x=>{
-    const probable=(x.probability>=45&&x.precipitation>=.03)||x.probability>=65||x.precipitation>=.25;
-    const maybe=!probable&&x.probability>=35&&x.precipitation>=.02;
-    const band=x.probability>=85?'p85':x.probability>=70?'p70':x.probability>=50?'p50':'p35';
+    const probability=(Number(x.probability)||0)/100,precipitation=Number(x.precipitation)||0;
+    const probable=(x.probability>=45&&precipitation>=.03)||x.probability>=65||precipitation>=.25;
+    const maybe=!probable&&x.probability>=35&&precipitation>=.02;
+    const band=probabilityBand(probability);
     const cls=probable?band:maybe?band+' maybe':'dry';
-    const height=probable||maybe?Math.max(5,Math.round(x.probability/mx*100)):0;
-    return '<div class="bar '+cls+'" style="height:'+height+'%" title="'+fmtDateTime(x.time)+' · '+x.probability+'% · '+x.precipitation+' mm"></div>';
+    const height=probable||maybe?Math.max(6,Math.round(10+Math.sqrt(Math.min(precipitation,maxIntensity)/maxIntensity)*90)):0;
+    return '<div class="bar '+cls+'" style="height:'+height+'%" title="'+fmtDateTime(x.time)+' · prob. '+x.probability+'% · intensidad '+precipitation.toFixed(1)+' mm/h"></div>';
   }).join('');
   const ticks=[],lines=[];
   for(let i=0;i<a.length;i++){
     const dt=new Date(a[i].time),hour=dt.getHours();
     if(i===0||hour%6===0){
       const left=a.length>1?i/(a.length-1)*100:0;
-      const day=new Intl.DateTimeFormat('es-ES',{weekday:'short'}).format(dt).replace('.','');
-      ticks.push('<span class="tick" style="left:'+left+'%"><b>'+String(hour).padStart(2,'0')+':00</b>'+day+'</span>');
+      const day=(i===0||hour===0)?new Intl.DateTimeFormat('es-ES',{weekday:'short'}).format(dt).replace('.',''):'';
+      ticks.push('<span class="tick" style="left:'+left+'%"><b>'+String(hour).padStart(2,'0')+'</b>'+(day?'<span class="tickDay">'+day+'</span>':'')+'</span>');
     }
     if(i>0&&hour===0){
       const left=i/(a.length-1)*100;
@@ -614,7 +631,9 @@ function initMap(){
   if(state.map||!window.L)return;
   state.map=L.map('map',{zoomControl:false,minZoom:4,maxZoom:12}).setView([state.loc.lat,state.loc.lon],7);
   L.control.zoom({position:'bottomright'}).addTo(state.map);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:20,attribution:'© OpenStreetMap contributors © CARTO'}).addTo(state.map);
+  if(typeof L.maplibreGL==='function'){
+    L.maplibreGL({style:'https://tiles.openfreemap.org/styles/fiord',attribution:'© OpenFreeMap © OpenStreetMap contributors'}).addTo(state.map);
+  }
   state.marker=L.circleMarker([state.loc.lat,state.loc.lon],{radius:6,color:'#fff',weight:2,fillColor:'#4fc6ff',fillOpacity:1}).addTo(state.map);
 }
 function renderRadar(){
@@ -710,7 +729,9 @@ function recordFeedback(raining){
   const last=state.feedback.at(-1);
   if(last&&samePlace(last,row,.0015)&&now-last.time<90_000)state.feedback[state.feedback.length-1]=row;
   else state.feedback.push(row);
-  state.feedback=state.feedback.slice(-120);persistFeedback();render();
+  state.feedback=state.feedback.slice(-120);persistFeedback();
+  try{navigator.vibrate?.(25)}catch{}
+  render();
 }
 function toggleSavedLocation(){
   if(state.loc.isCurrent)return;
@@ -744,6 +765,26 @@ function allLocations(){
   for(const loc of state.savedLocations)if(!out.some(x=>samePlace(x,loc,.0015)))out.push({...loc,isCurrent:false});
   return out;
 }
+function openRenameLocation(loc){
+  state.renameTarget=loc;
+  $('renameInput').value=loc.name||'';
+  $('renameDlg').showModal();
+  setTimeout(()=>$('renameInput').select(),50);
+}
+function saveRenameLocation(){
+  const target=state.renameTarget,name=$('renameInput').value.trim();
+  if(!target||!name)return;
+  const item=state.savedLocations.find(x=>samePlace(x,target,.0015));
+  if(item)item.name=name;
+  if(samePlace(state.loc,target,.0015)){state.loc.name=name;localStorage.setItem('raineta.loc',JSON.stringify(state.loc))}
+  persistLocations();state.renameTarget=null;$('renameDlg').close();renderLocationsSummary(true);
+}
+function deleteSavedLocation(loc){
+  if(!confirm('¿Eliminar '+loc.name+' de Mis lugares?'))return;
+  state.savedLocations=state.savedLocations.filter(x=>!samePlace(x,loc,.0015));
+  persistLocations();renderLocationsSummary(true);
+}
+
 async function renderLocationsSummary(force=false){
   if(state.locationsLoading)return;
   state.locationsLoading=true;
@@ -769,9 +810,12 @@ async function renderLocationsSummary(force=false){
     }
     left.onclick=()=>setLocation(loc);
     if(!loc.isCurrent){
-      const remove=document.createElement('button');remove.className='removeLoc';remove.textContent='×';remove.title='Quitar';
-      remove.onclick=e=>{e.stopPropagation();state.savedLocations=state.savedLocations.filter(x=>!samePlace(x,loc,.0015));persistLocations();renderLocationsSummary(true)};
-      right.appendChild(remove);
+      const actions=document.createElement('div');actions.className='locActions';
+      const rename=document.createElement('button');rename.className='locAction';rename.textContent='✎ Renombrar';rename.title='Renombrar';
+      rename.onclick=e=>{e.stopPropagation();openRenameLocation(loc)};
+      const remove=document.createElement('button');remove.className='locAction danger';remove.textContent='🗑 Eliminar';remove.title='Eliminar';
+      remove.onclick=e=>{e.stopPropagation();deleteSavedLocation(loc)};
+      actions.append(rename,remove);right.appendChild(actions);
     }
     card.append(left,right);holder.appendChild(card);
   });
@@ -793,6 +837,9 @@ $('savePlace').onclick=toggleSavedLocation;
 $('feedbackYes').onclick=()=>recordFeedback(true);
 $('feedbackNo').onclick=()=>recordFeedback(false);
 $('addLocation').onclick=()=>$('dlg').showModal();
+$('renameCancel').onclick=()=>{state.renameTarget=null;$('renameDlg').close()};
+$('renameSave').onclick=saveRenameLocation;
+$('renameInput').onkeydown=e=>{if(e.key==='Enter')saveRenameLocation()};
 $('search').onclick=searchPlace;
 $('q').onkeydown=e=>{if(e.key==='Enter')searchPlace()};
 $('geo').onclick=()=>{
