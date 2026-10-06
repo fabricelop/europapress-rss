@@ -31708,11 +31708,11 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
       "image_status": "ready",
       "image_pending": false,
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "selected_tweet_image": null,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image": {
@@ -31724,15 +31724,54 @@
         "generated": false
       },
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261006130709_1200.jpg",
-        "source": "Notimérica · 6/10/2026",
-        "source_url": "https://www.notimerica.com/deportes/noticia-carlos-alcaraz-revalida-titulo-tokio-vencer-lehecka-20261006130709.html",
-        "alt": "Imagen de archivo relacionada con Carlos Alcaraz",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/69fbf1d94af2-r0-ai3-791306354489.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 3,
+        "sha256": "6a3ccae6cbb7fd312a180af0132582b8b694d107d111073f6e89f61814d619bf",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2434331,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "69fbf1d94af2",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-recover-69fbf1d94af2-r0-a3-1791306354489"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/69fbf1d94af2-r0-ai3-791306354489.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/69fbf1d94af2-r0-ai3-791306354489.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 3,
+        "sha256": "6a3ccae6cbb7fd312a180af0132582b8b694d107d111073f6e89f61814d619bf",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2434331,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "69fbf1d94af2",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-recover-69fbf1d94af2-r0-a3-1791306354489"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/69fbf1d94af2-r0-ai3-791306354489.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 3,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T18:01:29.758Z"
     }
   ],
-  "updated_at": "2026-10-06T16:51:09+02:00",
+  "updated_at": "2026-10-06T18:01:29.758Z",
   "count": 593
 }
