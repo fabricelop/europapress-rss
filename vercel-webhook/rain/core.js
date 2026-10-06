@@ -91,15 +91,31 @@ export function buildConsensus({ deterministic = [], ensembles = [], nowMs = Dat
       : detMedian == null ? ensAmount
       : 0.68*ensAmount + 0.32*detMedian;
 
-    const opinionVector=[...detAtTime.map(model=>model.value>=WET_THRESHOLD_MM?1:0),...ensAtTime.map(model=>model.probability)];
+    const familyOpinions=new Map();
+    for(const model of detAtTime){
+      const family=model.family||model.id||model.label||'det';
+      const arr=familyOpinions.get(family)||[];
+      arr.push(model.value>=WET_THRESHOLD_MM?1:0);familyOpinions.set(family,arr);
+    }
+    for(const model of ensAtTime){
+      const family=model.family||model.id||model.label||'ens';
+      const arr=familyOpinions.get(family)||[];
+      if(Number.isFinite(model.probability))arr.push(model.probability);
+      familyOpinions.set(family,arr);
+    }
+    const opinionVector=[...familyOpinions.values()].map(values=>values.reduce((s,v)=>s+v,0)/values.length);
     const spread=standardDeviation(opinionVector) ?? 0.5;
     const agreement=clamp(1-spread/0.5);
     const providerCount=detAtTime.length+ensAtTime.length;
-    const providerTarget=Math.max(1,deterministic.length+ensembles.length);
-    const coverage=clamp(providerCount/providerTarget);
+    const allFamilies=new Set([...deterministic,...ensembles].map(model=>model.family||model.id||model.label).filter(Boolean));
+    const independentFamilyCount=familyOpinions.size;
+    const familyTarget=Math.max(1,allFamilies.size);
+    const coverage=clamp(independentFamilyCount/familyTarget);
     const horizonFactor=clamp(1-horizonHours/96);
-    const evidenceFactor=clamp(providerCount/6);
-    const timingConfidence=clamp(0.18+0.34*agreement+0.20*coverage+0.16*horizonFactor+0.12*evidenceFactor);
+    const evidenceFactor=clamp(independentFamilyCount/5);
+    const rawTimingConfidence=clamp(0.15+0.36*agreement+0.20*coverage+0.14*horizonFactor+0.15*evidenceFactor);
+    const horizonCap=horizonHours<=2?.96:horizonHours<=6?.92:horizonHours<=24?.84:horizonHours<=48?.76:.68;
+    const timingConfidence=Math.min(rawTimingConfidence,horizonCap);
 
     return {
       time,
@@ -108,6 +124,7 @@ export function buildConsensus({ deterministic = [], ensembles = [], nowMs = Dat
       agreement,
       timingConfidence,
       providerCount,
+      independentFamilyCount,
       deterministicCount:detAtTime.length,
       ensembleCount:ensAtTime.length,
     };
@@ -167,6 +184,7 @@ export function detectRainEvents(points=[],{minimumProbability=0.45}={}){
       totalExpectedPrecipitation:totalExpected,
       timingConfidence:meanTimingConfidence,
       providerCount:Math.max(...segment.map(row=>row.providerCount||0)),
+      independentFamilyCount:Math.max(...segment.map(row=>row.independentFamilyCount||0)),
     });
     i++;
   }
@@ -195,6 +213,7 @@ export function compactTimeline(points=[],limit=72){
     precipitation:Number(row.expectedPrecipitation.toFixed(2)),
     confidence:Math.round(row.timingConfidence*100),
     agreement:Math.round(row.agreement*100),
+    independentFamilies:row.independentFamilyCount||0,
   }));
 }
 
