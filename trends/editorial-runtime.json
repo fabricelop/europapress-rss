@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T04:15:00+02:00",
-  "last_completed_at": "2026-10-06T04:19:00+02:00",
-  "updated_at": "2026-10-06T04:19:00+02:00",
+  "last_started_at": "2026-10-06T05:15:00+02:00",
+  "last_completed_at": "2026-10-06T05:19:00+02:00",
+  "updated_at": "2026-10-06T05:19:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -14,19 +14,27 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T041500+0200",
+    "run_id": "tr-chat-20261006T051500+0200",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T04:15:00+02:00",
-    "updated_at": "2026-10-06T04:19:00+02:00",
-    "finished_at": "2026-10-06T04:19:00+02:00",
-    "incident_count": 0,
-    "incidents": [],
+    "started_at": "2026-10-06T05:15:00+02:00",
+    "updated_at": "2026-10-06T05:19:00+02:00",
+    "finished_at": "2026-10-06T05:19:00+02:00",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-06T05:16:30+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "reason": "El conector rechazó dos escrituras consecutivas de trends/pending-repair-trigger.json; no se pudo registrar el trigger obligatorio de saneamiento visual."
+      }
+    ],
     "summary": {
       "trends_processed": 0,
       "trends_explained": 0,
@@ -36,7 +44,7 @@
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
@@ -47,44 +55,37 @@
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_omitted": 0,
-      "pending_repair_triggered": 1
+      "pending_repair_triggered": 0
     },
-    "message": "Pasada completada 0/0. Radar de 04:11:14 y cola de 04:11:25 sin revisiones activas; 0 requests activas, 0 problemáticas y 0 reexplicaciones pendientes. Reparación visual completada con éxito, archivo al día y 0 jobs IA nuevos. Sin ImageGen directo ni despliegues Vercel.",
+    "message": "Pasada completada 0/0 con una incidencia de infraestructura. Radar de 05:11:26 y cola de 05:11:36 sin revisiones activas; 0 requests activas y 40 explicadas de menos de 24 h sin incidencias visuales o de remate detectadas. El conector bloqueó el trigger obligatorio de saneamiento visual tras dos intentos. Sin ImageGen directo ni despliegues Vercel.",
     "activity": [
       {
-        "at": "2026-10-06T04:15:00+02:00",
+        "at": "2026-10-06T05:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada directa · cola inicial 0"
       },
       {
-        "at": "2026-10-06T04:16:40+02:00",
+        "at": "2026-10-06T05:16:30+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual de Pendientes solicitado"
+        "message": "Saneamiento visual: trigger rechazado por la capa de escritura del conector"
       },
       {
-        "at": "2026-10-06T04:17:00+02:00",
+        "at": "2026-10-06T05:18:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0, requests activos 0 y sin reexplicaciones pendientes"
+        "message": "Releyendo main · cola 0, requests activas 0 y 40 explicadas <24 h sin incidencias visuales o de remate detectadas"
       },
       {
-        "at": "2026-10-06T04:18:02+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación visual completada · archivo al día y sin nuevos jobs IA"
-      },
-      {
-        "at": "2026-10-06T04:19:00+02:00",
+        "at": "2026-10-06T05:19:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 0/0; cola 0"
+        "message": "Pasada cerrada · 0/0; cola 0; 1 incidencia de infraestructura"
       }
     ],
     "ratings_snapshot": {
@@ -100,16 +101,14 @@
     "remaining_problematic_ids": [],
     "visual_repair": {
       "requested": true,
-      "run_id": "tr-chat-20261006T041500+0200",
-      "status": "completed_success",
-      "workflow_run_id": 37403342309,
-      "archive_status": "up_to_date",
-      "ai_jobs_queued": 0,
+      "persisted_trigger": false,
+      "status": "connector_write_blocked",
+      "backlog_detected": 0,
       "direct_imagegen": false
     },
     "radar": {
-      "captured_at": "2026-10-06T04:11:14+02:00",
-      "queue_updated_at": "2026-10-06T04:11:25+02:00",
+      "captured_at": "2026-10-06T05:11:26+02:00",
+      "queue_updated_at": "2026-10-06T05:11:36+02:00",
       "queue_count": 0,
       "refresh_requested": false,
       "refresh_materialized": false
@@ -117,11 +116,9 @@
   },
   "visual_repair": {
     "requested": true,
-    "run_id": "tr-chat-20261006T041500+0200",
-    "status": "completed_success",
-    "workflow_run_id": 37403342309,
-    "archive_status": "up_to_date",
-    "ai_jobs_queued": 0,
+    "persisted_trigger": false,
+    "status": "connector_write_blocked",
+    "backlog_detected": 0,
     "direct_imagegen": false
   },
   "error": null
