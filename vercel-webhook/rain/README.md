@@ -1,4 +1,4 @@
-# RainETA v0.8
+# RainETA v0.9
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -80,6 +80,13 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - La lógica de 72 h y la de Episodios usan el mismo clasificador. Las señales marginales quedan como barras tenues y no se convierten automáticamente en episodios continuos.
 - Los episodios muestran duración, carácter (persistente/variable/por pulsos), lluvia total estimada, pico, probabilidad media/máxima, familias independientes, ventana probable de inicio y ventana seca posterior.
 - El control de radar recorre hasta ~2 h históricas reales y hasta +120 min de **proyección por movimiento**. La parte futura se etiqueta explícitamente como extrapolación, no observación.
+
+## Coherencia v0.9
+- Las primeras 2 horas del gráfico de 72 h se reconstruyen con el mismo nowcast canónico de 5 minutos que alimenta la tarjeta superior; no se muestran señales horarias crudas que contradigan la ETA.
+- “Episodios previstos” se recalcula sobre esa línea temporal canónica y añade detalle **hora por hora** con estado, probabilidad e intensidad.
+- El radar incorpora un botón **AHORA** para volver inmediatamente al último barrido observado.
+- Se añade backend `/api/rain-opera` con caché CDN para descubrir el último compuesto EUMETNET OPERA NIMBUS RATE (1 km / 5 min) sin consumir una consulta MeteoGate por dispositivo.
+- El backend ya muestrea el COG `RATE` en la coordenada solicitada, devuelve mm/h + calidad del píxel y puede actuar como evidencia independiente de lluvia actual cuando el barrido está fresco.
 
 ## Radar
 RainViewer aporta los últimos barridos. RainETA descarga una imagen centrada en la ubicación, genera una máscara de precipitación en el dispositivo, calcula traslación entre barridos y proyecta el píxel de la ubicación cada 5 minutos hasta 120 minutos.
