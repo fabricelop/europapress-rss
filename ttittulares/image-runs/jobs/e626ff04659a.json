@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-e626ff04659a-r1-a1-1791292415239",
+  "requested_at": "2026-10-06T13:13:35.238923Z",
+  "updated_at": "2026-10-06T13:13:35.238923Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "e626ff04659a",
+  "event_id": "e626ff04659a",
+  "target_name": "El jurado declara no culpable al novio de Ana Buza, juzgado por su muerte en carretera",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "El jurado declara no culpable al novio de Ana Buza, juzgado por su muerte en carretera",
+    "revision": 1,
+    "factual_summary": "El jurado popular ha declarado no culpable al acusado por la muerte de Ana Buza en 2019. El veredicto concluye que no quedó probado que la conducción causara el fallecimiento ni que hubiera atropello; la jueza dictó la absolución.",
+    "tweet_text": "Un jurado declara no culpable al novio de Ana Buza por su muerte en 2019. El veredicto descarta que la conducción causara el fallecimiento y no considera probado un atropello.\n\n🌶️ El jurado no consideró probado el atropello.",
+    "remate": "🌶️ El jurado no consideró probado el atropello.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.",
+    "image_style_name": "poster_grafico",
+    "image_style_index": 2,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nUn jurado declara no culpable al novio de Ana Buza por su muerte en 2019. El veredicto descarta que la conducción causara el fallecimiento y no considera probado un atropello.\n\n🌶️ El jurado no consideró probado el atropello.\n\nREMATE EXACTO:\n🌶️ El jurado no consideró probado el atropello.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl jurado popular ha declarado no culpable al acusado por la muerte de Ana Buza en 2019. El veredicto concluye que no quedó probado que la conducción causara el fallecimiento ni que hubiera atropello; la jueza dictó la absolución.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.elmundo.es/andalucia/2026/10/06/6ac4e5b3e85ecead1a8b4585.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/andalucia/sevilla-00357/noticia-absuelto-acusado-muerte-ana-buza-ser-declarado-no-culpable-jurado-popular-20261006144656.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/sociedad/2026-10-06/el-jurado-declara-inocente-al-novio-de-ana-buza-por-su-muerte.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
