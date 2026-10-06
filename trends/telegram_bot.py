@@ -277,6 +277,14 @@ def handle_package_callback(callback):
             pass
         return True
 
+    try:
+        call("answerCallbackQuery", {
+            "callback_query_id": callback["id"],
+            "text": "Guardando publicación…" if action == "p" else "Guardando descarte…",
+        })
+    except Exception:
+        pass
+
     deliveries = load_remote_json(
         "trends/telegram-image-deliveries.json",
         load(IMAGE_DELIVERIES, {"version": 1, "items": []}),
@@ -324,10 +332,9 @@ def handle_package_callback(callback):
 
     if not matched:
         try:
-            call("answerCallbackQuery", {
-                "callback_query_id": callback["id"],
-                "text": "No encuentro el paquete vigente.",
-                "show_alert": True,
+            call("sendMessage", {
+                "chat_id": chat_id,
+                "text": "⚠️ No encuentro el paquete vigente de TTendencias.",
             })
         except Exception:
             pass
@@ -362,10 +369,9 @@ def handle_package_callback(callback):
 
     if not persist_package_state("Cerrar paquete TTendencias desde Telegram"):
         try:
-            call("answerCallbackQuery", {
-                "callback_query_id": callback["id"],
-                "text": "No se pudo guardar el estado; el mensaje se conserva.",
-                "show_alert": True,
+            call("sendMessage", {
+                "chat_id": chat_id,
+                "text": "⚠️ No se pudo guardar el estado de TTendencias; el mensaje se conserva.",
             })
         except Exception:
             pass
@@ -382,13 +388,6 @@ def handle_package_callback(callback):
             else:
                 print(f"No se pudo borrar paquete TTendencias {mid}: {e}", flush=True)
 
-    try:
-        call("answerCallbackQuery", {
-            "callback_query_id": callback["id"],
-            "text": "Publicada." if status == "published" else "Desestimada.",
-        })
-    except Exception:
-        pass
     print("TTENDENCIAS_PACKAGE_CLOSED", trend_id, revision, status, "deleted", deleted, flush=True)
     return True
 
