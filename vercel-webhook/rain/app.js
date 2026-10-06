@@ -371,8 +371,8 @@ function render(){
 function renderTimeline(){
   const a=state.data.timeline||[],mx=Math.max(50,...a.map(x=>x.probability));
   $('timeline').innerHTML=a.map(x=>{
-    const probable=x.probability>=45||x.precipitation>=.10;
-    const maybe=!probable&&(x.probability>=35||x.precipitation>=.05);
+    const probable=(x.probability>=45&&x.precipitation>=.03)||x.probability>=65||x.precipitation>=.25;
+    const maybe=!probable&&x.probability>=35&&x.precipitation>=.02;
     const cls=probable?'':maybe?'maybe':'dry';
     const height=probable||maybe?Math.max(5,Math.round(x.probability/mx*100)):0;
     return '<div class="bar '+cls+'" style="height:'+height+'%" title="'+fmtDateTime(x.time)+' · '+x.probability+'% · '+x.precipitation+' mm"></div>';
