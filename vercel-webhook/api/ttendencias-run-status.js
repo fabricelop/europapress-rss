@@ -43,27 +43,32 @@ async function gh(url,options={}){
     ...(options.headers||{})
   }})
 }
+let commentsCache={at:0,items:[]};
 async function comments(){
-  // El proyecto ha usado tanto un comentario canónico como RUNTRACE nuevos por ejecución.
-  // Leer ambos y deduplicar: quedarse solo con el comentario fijo oculta ejecuciones recientes.
+  // La telemetría RUNTRACE es visual, no el canal de control. Se cachea 30 s
+  // para evitar dos lecturas REST por cada poll activo de la interfaz.
+  const now=Date.now();
+  if(now-commentsCache.at<30000)return commentsCache.items;
   const out=[];
-  const direct=await gh("https://api.github.com/repos/"+REPO+"/issues/comments/"+TRACE_COMMENT_ID);
-  if(direct.ok)out.push(await direct.json());
-  const since=new Date(Date.now()-24*60*60*1000).toISOString();
-  const r=await gh("https://api.github.com/repos/"+REPO+"/issues/"+PR+"/comments?per_page=100&since="+encodeURIComponent(since));
-  // RUNTRACE mejora el detalle, pero no debe tumbar el estado si GitHub REST
-  // está temporalmente limitado. Los fallbacks persistidos en main siguen siendo autoritativos.
-  if(r.ok){
-    out.push(...(await r.json()).filter(x=>String(x.body||"").startsWith(TRACE_PREFIX)));
+  try{
+    const direct=await gh("https://api.github.com/repos/"+REPO+"/issues/comments/"+TRACE_COMMENT_ID);
+    if(direct.ok)out.push(await direct.json());
+    const since=new Date(now-24*60*60*1000).toISOString();
+    const r=await gh("https://api.github.com/repos/"+REPO+"/issues/"+PR+"/comments?per_page=100&since="+encodeURIComponent(since));
+    if(r.ok)out.push(...(await r.json()).filter(x=>String(x.body||"").startsWith(TRACE_PREFIX)));
+  }catch(_){
+    return commentsCache.items
   }
   const seen=new Set();
-  return out.filter(x=>{
+  const items=out.filter(x=>{
     if(!String(x.body||"").startsWith(TRACE_PREFIX))return false;
     const id=String(x.id||"");
     if(id&&seen.has(id))return false;
     if(id)seen.add(id);
     return true;
-  })
+  });
+  commentsCache={at:now,items};
+  return items
 }
 async function triggerReady(){return true}
 async function readControlBranchJson(path,strong=false){
