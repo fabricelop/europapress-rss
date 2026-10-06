@@ -48,7 +48,7 @@ Get-GitHubFile "windows/TTiTTularesImageBridge.js" $ttBridge "js"
 Get-GitHubFile "windows/TTendenciasImageBridge.js" $trBridge "js"
 
 $listenerText=Get-Content -LiteralPath $listener -Raw -Encoding UTF8
-if($listenerText -notmatch 'ttittulares-dedicated-v43'){throw "Se descargó un listener anterior; se esperaba v43"}
+if($listenerText -notmatch 'ttittulares-dedicated-v44'){throw "Se descargó un listener anterior; se esperaba v44"}
 $bridgeText=Get-Content -LiteralPath $ttBridge -Raw -Encoding UTF8
 if($bridgeText -notmatch 'ttittulares-image-bridge-v32-strict-submit'){throw "Se descargó un bridge anterior; se esperaba v32"}
 
@@ -144,7 +144,7 @@ $tcount=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Ob
   ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like "*TTendenciasDedicatedListener.ps1*"
 }).Count
 
-Write-Host "TT automation reparada: listener v43 + bridges v32 + watchdog + updater" -ForegroundColor Green
+Write-Host "TT automation reparada: listener v44 + bridges v32 + watchdog + updater" -ForegroundColor Green
 Write-Host ("TTiTTulares listeners activos: "+$count)
 Write-Host ("TTendencias listeners activos: "+$tcount)
 Write-Host ("PID TTiTTulares: "+$l.Id)
