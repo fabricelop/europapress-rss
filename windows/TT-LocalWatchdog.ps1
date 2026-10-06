@@ -105,21 +105,25 @@ function RestartListenerForQueue([string]$Project,[string]$Pattern,[string]$Scri
 
 function CheckImageQueueHealth([string]$Project,[string]$Branch,[string]$Prefix,[string]$Pattern,[string]$Script,[string]$Tag){
   try{
-    $base="https://raw.githubusercontent.com/fabricelop/europapress-rss/"+$Branch+"/"+$Prefix
-    $idx=Read-RawJson ($base+"/image-runs/index.json")
+    $api=if($Project -eq "ttittulares"){
+      "https://europapress-rss.vercel.app/api/ttittulares-run-status"
+    }else{
+      "https://europapress-rss.vercel.app/api/ttendencias-run-status"
+    }
+    $idx=Read-RawJson ($api+"?view=image-index")
     if(-not $idx -or -not $idx.jobs){return}
     $jobRef=@($idx.jobs)|Select-Object -Last 1
     if(-not $jobRef){return}
-    $statusPath=[string]$jobRef.status_path
-    if(-not $statusPath){return}
-    $job=Read-RawJson ("https://raw.githubusercontent.com/fabricelop/europapress-rss/"+$Branch+"/"+$statusPath)
+    $targetId=[string]$jobRef.target_id
+    if(-not $targetId){return}
+    $job=Read-RawJson ($api+"?view=image-job&id="+[uri]::EscapeDataString($targetId))
     if(-not $job){return}
     $st=([string]$job.status).ToUpperInvariant()
     if($st -ne "REQUESTED"){return}
     if($job.pc_picked_up_at){return}
     $at=[DateTimeOffset]::Parse([string]$job.requested_at)
     $age=([DateTimeOffset]::UtcNow-$at).TotalSeconds
-    if($age -lt 180){return}
+    if($age -lt 120){return}
     RestartListenerForQueue $Project $Pattern $Script $Tag ("job="+[string]$job.command_id+" age_s="+[int]$age)
   }catch{
     Log "QUEUE HEALTH ERROR $Project :: $($_.Exception.Message)"
