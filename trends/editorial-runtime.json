@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T09:45:00.000Z",
-  "last_completed_at": "2026-10-06T09:46:30.000Z",
-  "updated_at": "2026-10-06T09:46:30.000Z",
+  "last_started_at": "2026-10-06T10:15:00.000Z",
+  "last_completed_at": "2026-10-06T10:20:00.000Z",
+  "updated_at": "2026-10-06T10:20:00.000Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -14,7 +14,7 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T094500Z",
+    "run_id": "tr-chat-20261006T101500Z",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
@@ -22,9 +22,9 @@
     "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T09:45:00.000Z",
-    "updated_at": "2026-10-06T09:46:30.000Z",
-    "finished_at": "2026-10-06T09:46:30.000Z",
+    "started_at": "2026-10-06T10:15:00.000Z",
+    "updated_at": "2026-10-06T10:20:00.000Z",
+    "finished_at": "2026-10-06T10:20:00.000Z",
     "incident_count": 0,
     "incidents": [],
     "summary": {
@@ -52,35 +52,35 @@
       "pending_missing_closer": 0,
       "pending_ai_invalid_or_missing": 0
     },
-    "message": "Pasada completada 0/0. Radar fresco; sin cola activa, problematic ni reexplicaciones. Revisados 5 Pendientes <24 h: todos con remate e IA válidos; saneamiento/entrega disparado.",
+    "message": "Pasada completada 0/0. Radar fresco; sin cola activa, problematic ni reexplicaciones. 5 Pendientes <24 h siguen completos; saneamiento visual ejecutado con éxito.",
     "activity": [
       {
-        "at": "2026-10-06T09:45:00.000Z",
+        "at": "2026-10-06T10:15:00.000Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada directa · cola inicial 0 · revisando Pendientes"
       },
       {
-        "at": "2026-10-06T09:45:40.000Z",
+        "at": "2026-10-06T10:16:00.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 5 tarjetas de menos de 24 h"
+        "message": "Revisando Pendientes · 5 tarjetas; estado editorial/paquetes sin cambios desde la última verificación"
       },
       {
-        "at": "2026-10-06T09:46:05.000Z",
+        "at": "2026-10-06T10:19:04.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Pendientes 5/5 · remate e IA válidos; reparación/entrega despertada"
+        "message": "Saneamiento visual completado correctamente · sin cambios editoriales necesarios"
       },
       {
-        "at": "2026-10-06T09:46:30.000Z",
+        "at": "2026-10-06T10:20:00.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 0/0 editorial; cola 0; saneamiento de Pendientes disparado"
+        "message": "Pasada cerrada · 0/0 editorial; cola 0; Pendientes saneados"
       }
     ],
     "ratings_snapshot": {
@@ -97,10 +97,11 @@
     "visual_repair": {
       "requested": true,
       "persisted_trigger": true,
-      "status": "triggered_for_recent_pending",
-      "phase": "queued",
-      "command_id": "tr-chat-20261006T094500Z",
-      "direct_imagegen": false
+      "status": "completed_success",
+      "phase": "verified",
+      "command_id": "tr-chat-20261006T101500Z",
+      "direct_imagegen": false,
+      "workflow_run_id": 37448874281
     },
     "pending_scan": {
       "under_24h": 5,
@@ -112,9 +113,10 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "triggered_for_recent_pending",
+    "status": "completed_success",
     "backlog_detected": 0,
-    "direct_imagegen": false
+    "direct_imagegen": false,
+    "workflow_run_id": 37448874281
   },
   "error": null
 }
