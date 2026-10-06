@@ -2141,7 +2141,7 @@ function showObservedRadar(offsetMinutes){
   const latest=state.frames.at(-1),delta=Math.round((f.time-latest.time)/60);
   $('radarTime').textContent=fmtTime(f.time*1000);
   $('radarPosition').textContent=delta<0?'Observado '+Math.abs(delta)+' min antes · '+fmtTime(f.time*1000):'Último radar observado · '+fmtTime(f.time*1000);
-  $('radarMotion').textContent='Imagen observada real de RainViewer. Desliza a la derecha de AHORA para ver la proyección.';
+  $('radarMotion').textContent='Imagen observada real de RainViewer. A la derecha de AHORA la proyección es orientativa y pierde peso conforme avanza el horizonte.';
 }
 function showProjectedRadar(minutes){
   const r=state.data?.radar,latest=state.frames.at(-1),motion=state.nowcast?.motion;
@@ -2179,10 +2179,10 @@ function showRadarOffset(offset=state.radarOffset){
   else showProjectedRadar(state.radarOffset);
 }
 function radarArrivalSource(ev){
-  if(ev?.kind==='radarFusion')return'RainViewer + OPERA';
-  if(ev?.kind==='opera')return'OPERA';
-  if(ev?.kind==='radar')return'RainViewer';
-  if(ev?.kind==='model15')return'modelos + guía 15 min';
+  if(ev?.kind==='radarFusion')return'radar + radar europeo';
+  if(ev?.kind==='opera')return'radar europeo';
+  if(ev?.kind==='radar')return'radar RainViewer';
+  if(ev?.kind==='model15')return'modelos';
   return'modelos';
 }
 function radarArrivalTarget(){
@@ -2287,6 +2287,11 @@ function renderRadar(){
   $('radarPastLabel').textContent='−'+availablePast+' min';
   state.radarOffset=Math.max(-availablePast,Math.min(120,state.radarOffset||0));
   $('frame').value=state.radarOffset;
+  if($('radarHandoff')){
+    const reliable=nowcastReliableHorizon(),evolution=Number(state.nowcast?.evolution?.score)||0;
+    const label=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
+    $('radarHandoff').innerHTML='<b>Radar útil ~'+reliable+' min</b><span>evolución '+label+' · después mandan modelos/consenso</span>';
+  }
   if(state.mapLoaded)showRadarOffset(state.radarOffset);
   updateRadarArrivalButton();
 }
