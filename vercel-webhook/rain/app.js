@@ -921,9 +921,12 @@ function consensusDecisionText(decision=buildRainDecision()){
   const opera=state.data?.opera,sample=opera?.sample;
   const operaFresh=Boolean(sample?.ok&&Number(opera?.ageMinutes)<=20);
   const operaRate=Number(sample?.rateMmH);
-  const operaEta=operaEventCandidate(decision.now),operaLabel=operaFresh&&Number.isFinite(operaRate)
+  const operaEta=operaEventCandidate(decision.now),operaAge=Number(opera?.ageMinutes);
+  const operaLabel=operaFresh&&Number.isFinite(operaRate)
     ? operaRate.toFixed(1).replace('.',',')+' mm/h'+(operaEta&&!operaEta.active?' · ETA '+fmtTime(operaEta.start):operaEta?.active?' · lluvia ahora':'')
-    : 'sin dato reciente';
+    : operaEta
+      ? 'nowcast '+Math.round(operaAge)+' min · ETA '+fmtTime(operaEta.start)
+      : 'sin dato reciente';
   const modelLabel=decision.modelRisk==null?'sin dato':('riesgo '+Math.round(decision.modelRisk)+' %');
   const practical=decision.mode==='rain_now'
     ? 'lluvia ahora'
@@ -942,21 +945,26 @@ function renderConsensusDecision(decision=buildRainDecision()){
 }
 
 function operaNowcastInfo(){
-  const opera=state.data?.opera,nowcast=opera?.nowcast;
-  if(!opera?.ok||Number(opera.ageMinutes)>20||nowcast?.status!=='ok'||!Array.isArray(nowcast.series))return null;
+  const opera=state.data?.opera,nowcast=opera?.nowcast,age=Number(opera?.ageMinutes);
+  if(!opera?.ok||!Number.isFinite(age)||age>30||nowcast?.status!=='ok'||!Array.isArray(nowcast.series))return null;
   return nowcast;
 }
 function operaEventCandidate(now=Date.now()){
-  const n=operaNowcastInfo(),e=n?.event;
-  if(!e?.start||Number(n.confidence)<.22)return null;
+  const n=operaNowcastInfo(),e=n?.event,age=Number(state.data?.opera?.ageMinutes);
+  const freshness=age<=20?1:Math.max(.65,1-(age-20)/30);
+  const confidence=(Number(n?.confidence)||0)*freshness;
+  if(!e?.start||confidence<.22)return null;
   const start=Date.parse(e.start),end=Date.parse(e.end||'');
   if(!Number.isFinite(start)||!Number.isFinite(end)||end<=now)return null;
   return{
     kind:'opera',
     active:start<=now&&end>now&&currentTruth()!==false,
     start:e.start,end:e.end,
-    confidence:Number(n.confidence)||0,
-    uncertainty:Number(e.uncertaintyMinutes)||10,
+    confidence,
+    rawConfidence:Number(n.confidence)||0,
+    freshness,
+    ageMinutes:age,
+    uncertainty:Math.round((Number(e.uncertaintyMinutes)||10)+(age>20?(age-20)*.5:0)),
     event:e,
     motion:n.motion||null
   };
