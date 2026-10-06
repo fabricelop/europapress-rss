@@ -22,10 +22,10 @@ jobs:
       - name: Aplicar parche
         run: |
           python3 .github/scripts/fix_ttendencias_telegram_callbacks.py
-          node --check api/telegram-webhook.js
+          node --check vercel-webhook/api/telegram-webhook.js
           git config user.name "ttendencias-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add api/telegram-webhook.js
+          git add vercel-webhook/api/telegram-webhook.js
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Corregir borrado Publicado/Desestimar en Telegram TTendencias"
           git pull --rebase origin main
