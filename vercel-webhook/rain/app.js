@@ -37,7 +37,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.0',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.15.0',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -1595,6 +1595,92 @@ function showRadarOffset(offset=state.radarOffset){
   if(state.radarOffset<=0)showObservedRadar(state.radarOffset);
   else showProjectedRadar(state.radarOffset);
 }
+function radarArrivalSource(ev){
+  if(ev?.kind==='radarFusion')return'RainViewer + OPERA';
+  if(ev?.kind==='opera')return'OPERA';
+  if(ev?.kind==='radar')return'RainViewer';
+  if(ev?.kind==='model15')return'modelos + guía 15 min';
+  return'modelos';
+}
+function radarArrivalTarget(){
+  const latest=state.frames.at(-1),ev=state.data?chooseDisplayEvent():null;
+  if(!latest||!ev?.start)return{status:'no_eta',event:ev||null};
+  const baseMs=Number(latest.time)*1000,startMs=Date.parse(ev.start);
+  if(!Number.isFinite(baseMs)||!Number.isFinite(startMs))return{status:'no_eta',event:ev};
+  const rawMinutes=(startMs-baseMs)/60_000;
+  if(ev.active||rawMinutes<=2.5)return{status:'now',target:0,event:ev,rawMinutes};
+  if(rawMinutes>120)return{status:'later',event:ev,rawMinutes};
+  const canProject=state.nowcast?.status==='ok'&&state.nowcast?.motion&&Number(state.nowcast?.confidence)>=.22;
+  if(!canProject)return{status:'no_projection',event:ev,rawMinutes};
+  return{status:'ready',target:Math.max(0,Math.min(120,Math.ceil(rawMinutes/5)*5)),event:ev,rawMinutes};
+}
+function stopRadarPlayback(){
+  if(state.playTimer){clearInterval(state.playTimer);state.playTimer=null}
+  state.playMode=null;
+  if($('play'))$('play').textContent='▶';
+  if($('radarArrival')){
+    $('radarArrival').classList.remove('running');
+    updateRadarArrivalButton();
+  }
+}
+function updateRadarArrivalButton(){
+  const button=$('radarArrival');if(!button||state.playMode==='arrival')return;
+  const target=radarArrivalTarget();
+  button.classList.remove('running');
+  if(target.status==='ready'){
+    button.disabled=false;button.textContent='▶ HASTA LLUVIA';
+  }else if(target.status==='now'){
+    button.disabled=true;button.textContent='● LLUVIA AHORA';
+  }else if(target.status==='later'){
+    button.disabled=true;button.textContent='ETA > 2 H';
+  }else if(target.status==='no_projection'){
+    button.disabled=true;button.textContent='SIN PROYECCIÓN';
+  }else{
+    button.disabled=true;button.textContent='SIN ETA';
+  }
+}
+function markRadarArrival(target){
+  const ev=target?.event;if(!ev)return;
+  const source=radarArrivalSource(ev);
+  $('radarPosition').textContent='Llegada estimada · '+fmtTime(ev.start)+' · +'+target.target+' min';
+  $('radarMotion').textContent='RainETA se detiene aquí: '+source+' sitúa el inicio de la lluvia sobre tu ubicación alrededor de '+fmtTime(ev.start)+(ev.uncertainty?' · '+uncertaintyText(ev):'')+'.';
+}
+function playRadarUntilRain(){
+  const target=radarArrivalTarget(),slider=$('frame'),button=$('radarArrival');
+  if(!slider||!button)return;
+  if(state.playMode==='arrival'){stopRadarPlayback();return}
+  if(target.status==='now'){
+    stopRadarPlayback();slider.value='0';showRadarOffset(0);
+    $('radarPosition').textContent='La lluvia ya está en tu ubicación';
+    return;
+  }
+  if(target.status!=='ready'){
+    updateRadarArrivalButton();
+    if(target.status==='later')$('radarPosition').textContent='La llegada prevista queda fuera de la proyección radar de +120 min';
+    else if(target.status==='no_projection')$('radarPosition').textContent='Hay ETA, pero el movimiento de RainViewer no es suficientemente fiable para animar la proyección';
+    else $('radarPosition').textContent='Todavía no hay una ETA de lluvia que pueda mostrarse en el radar';
+    return;
+  }
+  stopRadarPlayback();
+  let current=Number(slider.value);
+  if(!Number.isFinite(current)||current>=target.target)current=Math.min(0,target.target);
+  slider.value=String(current);showRadarOffset(current);
+  state.playMode='arrival';
+  button.disabled=false;button.classList.add('running');button.textContent='❚❚ HASTA LLUVIA';
+  state.playTimer=setInterval(()=>{
+    const currentOffset=Number(slider.value)||0;
+    const next=Math.min(target.target,currentOffset+5);
+    slider.value=String(next);showRadarOffset(next);
+    if(next>=target.target){
+      if(state.playTimer){clearInterval(state.playTimer);state.playTimer=null}
+      state.playMode=null;
+      button.classList.remove('running');
+      updateRadarArrivalButton();
+      markRadarArrival(target);
+      try{navigator.vibrate?.([20,40,20])}catch{}
+    }
+  },650);
+}
 function renderRadar(){
   initMap();if(!state.map)return;
   updateMapLocation();
@@ -1607,6 +1693,7 @@ function renderRadar(){
   state.radarOffset=Math.max(-availablePast,Math.min(120,state.radarOffset||0));
   $('frame').value=state.radarOffset;
   if(state.mapLoaded)showRadarOffset(state.radarOffset);
+  updateRadarArrivalButton();
 }
 
 async function refreshRadar(){
@@ -1619,6 +1706,7 @@ async function refreshRadar(){
     sources.health={available:all.filter(x=>x.ok).length+(sources.quarterHour?1:0)+1+(sources.opera?1:0),total:all.length+3};
     state.data={...state.data,radar,sources};
     state.nowcast=await computeNowcast(radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
+    if(state.playMode==='arrival')stopRadarPlayback();
     recordRadarEtaObservation();
     updateRadarValidation();
     state.lastRadarRefresh=Date.now();
@@ -1852,17 +1940,19 @@ $('geo').onclick=()=>{
     {enableHighAccuracy:true,timeout:15000,maximumAge:60000}
   );
 };
-$('frame').oninput=function(){showRadarOffset(Number(this.value))};
+$('frame').oninput=function(){stopRadarPlayback();showRadarOffset(Number(this.value))};
 $('radarNow').onclick=function(){
-  if(state.playTimer){clearInterval(state.playTimer);state.playTimer=null;$('play').textContent='▶'}
+  stopRadarPlayback();
   $('frame').value='0';showRadarOffset(0);
 };
+$('radarArrival').onclick=playRadarUntilRain;
 $('radarCenter').onclick=centerRadarMap;
 $('play').onclick=function(){
-  if(state.playTimer){clearInterval(state.playTimer);state.playTimer=null;this.textContent='▶';return}
+  if(state.playMode==='loop'){stopRadarPlayback();return}
+  stopRadarPlayback();
   if(!state.frames.length)return;
   const slider=$('frame');if(Number(slider.value)>=Number(slider.max))slider.value=slider.min;
-  this.textContent='❚❚';
+  this.textContent='❚❚';state.playMode='loop';
   state.playTimer=setInterval(()=>{
     let next=Number(slider.value)+5;
     if(next>Number(slider.max))next=Number(slider.min);
