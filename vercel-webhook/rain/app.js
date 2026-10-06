@@ -2206,6 +2206,8 @@ function updateRadarArrivalButton(){
     button.disabled=false;button.textContent='● SEÑAL RADAR AHORA';
   }else if(target.status==='now'){
     button.disabled=false;button.textContent='● LLUVIA AHORA';
+  }else if(target.status==='model_handoff'){
+    button.disabled=false;button.textContent='ETA POR MODELOS';
   }else if(target.status==='later'){
     button.disabled=true;button.textContent='ETA > 2 H';
   }else if(target.status==='no_projection'){
@@ -2233,8 +2235,11 @@ function playRadarUntilRain(){
   }
   if(target.status!=='ready'){
     updateRadarArrivalButton();
-    if(target.status==='later')$('radarPosition').textContent='La llegada prevista queda fuera de la proyección radar de +120 min';
-    else if(target.status==='no_projection')$('radarPosition').textContent='Hay ETA, pero el movimiento de RainViewer no es suficientemente fiable para animar la proyección';
+    if(target.status==='model_handoff'){
+      $('radarPosition').textContent='ETA '+fmtTime(target.event.start)+' · fuera del horizonte radar fiable (~'+target.reliable+' min)';
+      $('radarMotion').textContent='La hora procede del relevo radar → modelos/consenso. No se anima el mapa hasta esa ETA porque sería engañoso.';
+    }else if(target.status==='later')$('radarPosition').textContent='La llegada prevista queda fuera de las próximas 2 h';
+    else if(target.status==='no_projection')$('radarPosition').textContent='Hay ETA, pero el radar no es suficientemente fiable para animarla';
     else $('radarPosition').textContent='Todavía no hay una ETA de lluvia que pueda mostrarse en el radar';
     return;
   }
