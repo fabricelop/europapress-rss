@@ -36,11 +36,13 @@ jobs:
           test -n "$VERCEL_TOKEN"
           COUNT=$(find vercel-webhook/api -maxdepth 1 -type f -name '*.js' | wc -l | tr -d ' ')
           echo "Vercel Functions candidatas: $COUNT"
-          test "$COUNT" = "12"
-          node --check vercel-webhook/api/ttittulares-run.js
-          node --check vercel-webhook/api/ttendencias-run.js
+          test "$COUNT" = "6"
           node --check vercel-webhook/api/ttittulares-control.js
           node --check vercel-webhook/api/ttendencias-control.js
+          node --check vercel-webhook/api/telegram-webhook.js
+          node --check vercel-webhook/api/ai-image.js
+          node --check vercel-webhook/api/money-control-snapshot.js
+          node --check vercel-webhook/api/money-control-interpret.js
 
       - name: Validar listeners PowerShell
         shell: pwsh
