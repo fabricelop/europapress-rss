@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-60e022d5afd6-r1-a1-1791279480096",
+  "requested_at": "2026-10-06T09:38:00.096163Z",
+  "updated_at": "2026-10-06T09:38:00.096163Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "60e022d5afd6",
+  "event_id": "60e022d5afd6",
+  "target_name": "Argentina comienza a despedir a Messi con homenajes antes de su último partido con la selección - EFE - Agencia de noticias",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Argentina comienza a despedir a Messi con homenajes antes de su último partido con la selección - EFE - Agencia de noticias",
+    "revision": 1,
+    "factual_summary": "Lionel Messi afronta este martes ante Benín su último partido con la selección argentina, en el Monumental de Buenos Aires. La despedida llega después de más de dos décadas con la Albiceleste y está acompañada de homenajes al capitán.",
+    "tweet_text": "Messi afronta ante Benín su último partido con Argentina, en el Monumental de Buenos Aires. La despedida llega tras más de dos décadas con la Albiceleste.\n\n🌶️ Después de Messi, el dorsal 10 viene con entrevista de trabajo.",
+    "remate": "🌶️ Después de Messi, el dorsal 10 viene con entrevista de trabajo.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.",
+    "image_style_name": "comic_europeo",
+    "image_style_index": 1,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nMessi afronta ante Benín su último partido con Argentina, en el Monumental de Buenos Aires. La despedida llega tras más de dos décadas con la Albiceleste.\n\n🌶️ Después de Messi, el dorsal 10 viene con entrevista de trabajo.\n\nREMATE EXACTO:\n🌶️ Después de Messi, el dorsal 10 viene con entrevista de trabajo.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLionel Messi afronta este martes ante Benín su último partido con la selección argentina, en el Monumental de Buenos Aires. La despedida llega después de más de dos décadas con la Albiceleste y está acompañada de homenajes al capitán.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://efe.com/deportes/2026-10-06/argentina-despide-messi-ultimo-partido/",
+    "citations": [
+      {
+        "source": "EFE",
+        "url": "https://efe.com/deportes/2026-10-06/argentina-despide-messi-ultimo-partido/"
+      },
+      {
+        "source": "La Vanguardia",
+        "url": "https://www.lavanguardia.com/comprar/cultura-ocio/20261006/11651040/leo-messi-despide-seleccion-argentina-cuando-como-ver-mkt-movi.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
