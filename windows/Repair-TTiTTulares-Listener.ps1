@@ -46,9 +46,33 @@ if(Test-Path $statePath){
     if($s.PSObject.Properties.Name -contains "last_command_id"){$s.last_command_id=""}
     if($s.PSObject.Properties.Name -contains "conflict_command_id"){$s.conflict_command_id=""}
     if($s.PSObject.Properties.Name -contains "conflict_first_at"){$s.conflict_first_at=""}
+    if($s.PSObject.Properties.Name -contains "active_image_commands"){$s.active_image_commands=@()}
+    # image_commands se conserva: el listener v38 vuelve a intentar REQUESTED
+    # actuales aunque el command_id ya aparezca en el historial local.
     $s | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $statePath -Encoding UTF8
   }catch{}
 }
+
+# Limpiar bridges/locks huérfanos dejados por Chrome OOM.
+foreach($lockName in @("ttittulares-image-bridge.lock.json","ttendencias-image-bridge.lock.json")){
+  $lockPath=Join-Path $BaseDir $lockName
+  if(Test-Path -LiteralPath $lockPath){
+    try{
+      $lock=Get-Content -LiteralPath $lockPath -Raw -Encoding UTF8 | ConvertFrom-Json
+      $bridgePid=[int]$lock.pid
+      if($bridgePid -gt 0){
+        try{Stop-Process -Id $bridgePid -Force -ErrorAction SilentlyContinue}catch{}
+      }
+    }catch{}
+    Remove-Item -LiteralPath $lockPath -Force -ErrorAction SilentlyContinue
+  }
+}
+@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
+  $_.Name -ieq "node.exe" -and (
+    [string]$_.CommandLine -like "*TTiTTularesImageBridge.js*" -or
+    [string]$_.CommandLine -like "*TTendenciasImageBridge.js*"
+  )
+}) | ForEach-Object { try{Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue}catch{} }
 
 function Start-Hidden([string]$file,[string]$name){
   $out=Join-Path $BaseDir ($name+".repair.out.log")
@@ -73,7 +97,7 @@ $tcount=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Ob
   ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like "*TTendenciasDedicatedListener.ps1*"
 }).Count
 
-Write-Host "TT automation reparada: TTiTTulares + TTendencias + watchdog" -ForegroundColor Green
+Write-Host "TT automation reparada: listeners + watchdog + updater + locks de imagen" -ForegroundColor Green
 Write-Host ("TTiTTulares listeners activos: "+$count)
 Write-Host ("TTendencias listeners activos: "+$tcount)
 Write-Host ("PID TTiTTulares: "+$l.Id)
