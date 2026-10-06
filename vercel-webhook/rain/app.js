@@ -2081,18 +2081,16 @@ function renderTimeline(){
 function renderEvents(){
   const decision=buildRainDecision(),now=decision.now;
   const events=canonicalEvents().filter(e=>Date.parse(e.end)>now).slice(0,8),radarDry=decision.dry;
-  const correctionHtml='';
   if(!events.length){
-    $('events').innerHTML=correctionHtml+(radarDry?'<div class="dryWindow"><strong>Radar: ventana seca probable · '+durationText(radarDry.start,radarDry.end)+'</strong><span>hasta ~'+fmtTime(radarDry.end)+(radarDry.operaDry?' · OPERA seco ahora':'')+'</span></div>':'')+'<div class="status">Sin episodios relevantes.</div>';
+    $('events').innerHTML=(radarDry?'<div class="dryWindow"><strong>Ventana seca probable · '+durationText(radarDry.start,radarDry.end)+'</strong><span>hasta ~'+fmtTime(radarDry.end)+'</span></div>':'')+'<div class="status">Sin episodios relevantes.</div>';
     return;
   }
   const blocks=[];
-  if(correctionHtml)blocks.push(correctionHtml);
   if(radarDry){
-    blocks.push('<div class="dryWindow dryWindowPrimary"><strong>AHORA · Ventana seca probable · '+durationText(radarDry.start,radarDry.end)+'</strong><span>hasta ~'+fmtTime(radarDry.end)+(radarDry.operaDry?' · OPERA seco ahora':'')+'</span></div>');
+    blocks.push('<div class="dryWindow dryWindowPrimary"><strong>AHORA · Ventana seca probable · '+durationText(radarDry.start,radarDry.end)+'</strong><span>hasta ~'+fmtTime(radarDry.end)+'</span></div>');
   }
   events.forEach((e,index)=>{
-    const dur=Math.max(1,Math.round((Date.parse(e.end)-Date.parse(e.start))/3600_000));
+    const durMinutes=Math.max(1,Math.round((Date.parse(e.end)-Date.parse(e.start))/60_000));
     const total=Number(e.totalExpectedPrecipitation||0),peak=Number(e.maxExpectedPrecipitation||0);
     const avgProb=pct(e.averageProbability??e.peakProbability),maxProb=pct(e.peakProbability);
     const families=e.independentFamilyCount||e.providerCount||0;
@@ -2100,7 +2098,7 @@ function renderEvents(){
     const heavyAlert=heavyWindows.length
       ? '<div class="eventHeavyNotice"><strong>⚠ Tramos de lluvia fuerte</strong><span>'+heavyWindowsText(heavyWindows)+'</span></div>'
       : '';
-    const segmentsHtml='<div class="eventSegments"><div class="segmentTitle">Lectura rápida del episodio</div>'+
+    const segmentsHtml='<div class="eventSegments"><div class="segmentTitle">Evolución prevista</div>'+
       segments.map(segment=>'<div class="eventSegment wx-'+conditionVisual(segment.rows[0]||{}).key+'"><span class="segmentTime">'+fmtSegmentRange(segment.start,segment.end)+'</span><span class="segmentText"><strong>'+segment.label+'</strong><small>Prob. media '+segment.avgProb+'% · intensidad '+segment.rateText+'</small></span></div>').join('')+
       '</div>';
     const detailRows=rows.map(row=>{
@@ -2110,16 +2108,17 @@ function renderEvents(){
     }).join('');
     const header='<div class="eventHourHead"><span>Tramo</span><span>Tiempo</span><span>Prob.</span><span>Intens.</span></div>';
     const fineCount=rows.filter(r=>r.detailMinutes===15).length,coarseCount=rows.filter(r=>r.detailMinutes===30).length;
-    const detailLabel=fineCount&&coarseCount?'15 min mientras hay dato · después 30 min':fineCount?'detalle cada 15 min':'detalle cada 30 min';
+    const detailLabel=fineCount&&coarseCount?'15 min mientras hay radar fiable · después 30 min':fineCount?'detalle cada 15 min':'detalle cada 30 min';
     const details='<details class="hourDetails"><summary>Ver '+detailLabel+' ('+rows.length+')</summary><div class="eventHours">'+header+detailRows+'</div></details>';
-    blocks.push('<div class="event"><div>'+heavyAlert+'<strong>'+fmtDateTime(e.start)+' → '+fmtTime(e.end)+'</strong>'+
-      '<small>Ventana de '+dur+' h · '+total.toFixed(1).replace('.',',')+' mm estimados · no implica lluvia continua</small>'+
-      '<small>Pico '+peak.toFixed(1).replace('.',',')+' mm/h · prob. media '+avgProb+'% · máx. '+maxProb+'% · '+families+' familias</small></div>'+
-      '<div class="prob">'+maxProb+'%</div>'+segmentsHtml+details+'</div>');
+    const primary=segments[0]?.label||conditionLabel(rows[0]||{precipitation:peak,probability:maxProb});
+    const startsIn=(Date.parse(e.start)-now)/60_000,active=Date.parse(e.start)<=now&&Date.parse(e.end)>now;
+    const open=active||startsIn<=180;
+    const warning=heavyWindows.length?' · ⚠ fuerte':'';
+    const summary='<summary class="eventSummary"><span><b>'+fmtDateTime(e.start)+'–'+fmtTime(e.end)+'</b><small>'+primary+warning+'</small></span><strong>'+maxProb+'%</strong></summary>';
+    const meta='<div class="eventMeta"><span>'+durationText(e.start,e.end)+'</span><span>~'+total.toFixed(1).replace('.',',')+' mm</span><span>pico '+peak.toFixed(1).replace('.',',')+' mm/h</span><span>'+families+' familias</span></div>';
+    blocks.push('<details class="event eventDisclosure" '+(open?'open':'')+'>'+summary+'<div class="eventExpanded">'+heavyAlert+meta+segmentsHtml+details+'</div></details>');
     const dry=dryWindowBetween(e,events[index+1]);
-    if(dry){
-      blocks.push('<div class="dryWindow"><strong>Ventana seca probable · '+durationText(dry.start,dry.end)+'</strong><span>'+fmtDateTime(dry.start)+' → '+fmtTime(dry.end)+'</span></div>');
-    }
+    if(dry)blocks.push('<div class="dryWindow"><strong>Ventana seca probable · '+durationText(dry.start,dry.end)+'</strong><span>'+fmtDateTime(dry.start)+' → '+fmtTime(dry.end)+'</span></div>');
   });
   $('events').innerHTML=blocks.join('');
 }
