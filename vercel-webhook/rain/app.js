@@ -1331,7 +1331,7 @@ function radarDryWindow(){
   const event=stabilizedRadarEvent(),operaEvent=operaEventCandidate(now);
   const requiredConfidence=event?.start ? .30 : .48;
   if(radarConfidence<requiredConfidence)return null;
-  const horizonEnd=radarMs+120*60_000,starts=[];
+  const horizonEnd=radarMs+nowcastReliableHorizon()*60_000,starts=[];
   if(event?.start&&Date.parse(event.start)>now)starts.push(Date.parse(event.start));
   if(operaEvent?.start&&operaEvent.confidence>=.28&&Date.parse(operaEvent.start)>now)starts.push(Date.parse(operaEvent.start));
   let endMs=starts.length?Math.min(horizonEnd,...starts):horizonEnd;
@@ -1349,6 +1349,7 @@ function radarDryWindow(){
     operaDry,
     operaEta:operaEvent?.start||null,
     fullHorizon:starts.length===0||Math.min(...starts)>=horizonEnd-2*60_000,
+    reliableHorizonMinutes:nowcastReliableHorizon(),
     minutes:Math.max(0,Math.round((endMs-now)/60_000))
   };
 }
