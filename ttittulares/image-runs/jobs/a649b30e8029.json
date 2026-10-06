@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tt-img-auto-a649b30e8029-r1-a1-1791309759105",
-  "requested_at": "2026-10-06T18:02:39.105195Z",
-  "updated_at": "2026-10-06T18:05:38.871Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tt-img-auto-a649b30e8029-r1-a2-1791310278912",
+  "requested_at": "2026-10-06T18:11:18.912413Z",
+  "updated_at": "2026-10-06T18:11:18.912413Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -13,9 +13,9 @@
   "event_id": "a649b30e8029",
   "target_name": "El juez Pedraz pide al PSOE datos sobre los abogados contratados y consulta a Fiscalía sobre la posible responsabilidad penal del partido",
   "revision": 1,
-  "regenerate": false,
+  "regenerate": true,
   "auto_repair": true,
-  "auto_repair_attempt": 1,
+  "auto_repair_attempt": 2,
   "chat_command_version": 7,
   "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
   "context_snapshot": {
@@ -47,9 +47,5 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "Fallback no pudo escribir el prompt completo",
-  "pc_upload_secret_hash": "a9cb83bf7f1cc0f1396c09e581b1b9f3d77ef6b5c73cbab4f98f12dbe06b0cad",
-  "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-06T18:05:33.764Z",
-  "finished_at": "2026-10-06T18:05:38.871Z"
+  "message": "Reparación automática de imagen IA para noticia en Listas."
 }
