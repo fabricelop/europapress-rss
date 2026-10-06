@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T12:45:00.000Z",
-  "last_completed_at": "2026-10-06T12:49:00.000Z",
-  "updated_at": "2026-10-06T12:49:00.000Z",
+  "last_started_at": "2026-10-06T13:15:00.000Z",
+  "last_completed_at": "2026-10-06T13:25:10.000Z",
+  "updated_at": "2026-10-06T13:25:10.000Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -14,7 +14,7 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-chat-20261006T124500Z",
+    "run_id": "tr-chat-20261006T131500Z",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
@@ -22,9 +22,9 @@
     "total": 0,
     "trend_id": null,
     "title": null,
-    "started_at": "2026-10-06T12:45:00.000Z",
-    "updated_at": "2026-10-06T12:49:00.000Z",
-    "finished_at": "2026-10-06T12:49:00.000Z",
+    "started_at": "2026-10-06T13:15:00.000Z",
+    "updated_at": "2026-10-06T13:25:10.000Z",
+    "finished_at": "2026-10-06T13:25:10.000Z",
     "incident_count": 0,
     "incidents": [],
     "summary": {
@@ -50,45 +50,45 @@
       "pending_repair_triggered": 1,
       "pending_repair_examined": 0
     },
-    "message": "Pasada completada sin trabajo editorial nuevo · cola final 0 · saneamiento de Pendientes completado; 0 jobs IA nuevos.",
+    "message": "Pasada completada sin trabajo editorial nuevo · radar 15:21 · cola final 0 · saneamiento de Pendientes completado; 0 jobs IA nuevos.",
     "activity": [
       {
-        "at": "2026-10-06T12:45:00.000Z",
+        "at": "2026-10-06T13:15:00.000Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada directa · cola editorial 0 · revisando estado autoritativo"
+        "message": "Iniciando pasada directa · cola editorial 0 · activando saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-06T12:45:10.000Z",
+        "at": "2026-10-06T13:19:29.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial 0 · releyendo Pendientes y estado publicado/archivado"
+        "message": "Saneamiento de Pendientes arrancado · workflow 37469889545"
       },
       {
-        "at": "2026-10-06T12:46:00.000Z",
+        "at": "2026-10-06T13:19:40.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento de Pendientes solicitado · comprobando ejecución visual automática"
+        "message": "Releyendo cola editorial mientras avanza el saneamiento"
       },
       {
-        "at": "2026-10-06T12:48:11.000Z",
+        "at": "2026-10-06T13:25:04.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual completado correctamente · workflow 37465778449 · 0 jobs IA nuevos"
+        "message": "Saneamiento visual completado correctamente · workflow 37469889545 · 0 jobs IA nuevos"
       },
       {
-        "at": "2026-10-06T12:48:30.000Z",
+        "at": "2026-10-06T13:25:06.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola editorial sigue en 0"
+        "message": "Releyendo main · radar 15:21 y cola editorial siguen en 0"
       },
       {
-        "at": "2026-10-06T12:49:00.000Z",
+        "at": "2026-10-06T13:25:10.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -111,12 +111,12 @@
       "persisted_trigger": true,
       "status": "completed_success",
       "phase": "verified",
-      "command_id": "tr-chat-20261006T124500Z",
+      "command_id": "tr-chat-20261006T131500Z",
       "direct_imagegen": false,
-      "workflow_run_id": 37465778449,
+      "workflow_run_id": 37469889545,
       "workflow_status": "completed",
       "workflow_conclusion": "success",
-      "completed_at": "2026-10-06T12:48:11.000Z",
+      "completed_at": "2026-10-06T13:25:04.000Z",
       "ai_repair_jobs_queued": 0
     }
   },
@@ -125,12 +125,12 @@
     "persisted_trigger": true,
     "status": "completed_success",
     "phase": "verified",
-    "command_id": "tr-chat-20261006T124500Z",
+    "command_id": "tr-chat-20261006T131500Z",
     "direct_imagegen": false,
-    "workflow_run_id": 37465778449,
+    "workflow_run_id": 37469889545,
     "workflow_status": "completed",
     "workflow_conclusion": "success",
-    "completed_at": "2026-10-06T12:48:11.000Z",
+    "completed_at": "2026-10-06T13:25:04.000Z",
     "ai_repair_jobs_queued": 0
   },
   "error": null
