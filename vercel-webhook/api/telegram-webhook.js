@@ -383,7 +383,7 @@ export default async function handler(req, res) {
           await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "No se pudo guardar el estado. El mensaje se conserva.", show_alert: true });
           return res.status(200).json({ ok: false, status, event_id: id, revision });
         }
-      else if (data.startsWith("tt:")) {
+      } else if (data.startsWith("tt:")) {
         const parts = data.split(":");
         const action = parts[1] || "";
         const id = parts.slice(2).join(":");
