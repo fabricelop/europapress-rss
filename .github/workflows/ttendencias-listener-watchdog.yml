@@ -2,6 +2,8 @@ name: TTendencias listener watchdog
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
 
 permissions:
   actions: write
