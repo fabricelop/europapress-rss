@@ -331,13 +331,17 @@ function formatCountdownMs(ms){
 function quarterHourRateAt(timeMs){
   const qh=state.data?.quarterHour;
   if(!qh?.time?.length)return 0;
-  let best=-1,dist=Infinity;
-  for(let i=0;i<qh.time.length;i++){
-    const d=Math.abs(Date.parse(qh.time[i])-timeMs);
-    if(d<dist){dist=d;best=i}
+  const rows=qh.time.map((time,i)=>({time:Date.parse(time),rate:(Number(qh.precipitation?.[i])||0)*4})).filter(x=>Number.isFinite(x.time));
+  if(!rows.length)return 0;
+  if(timeMs<=rows[0].time)return rows[0].rate;
+  if(timeMs>=rows.at(-1).time)return rows.at(-1).rate;
+  for(let i=1;i<rows.length;i++){
+    if(timeMs<=rows[i].time){
+      const a=rows[i-1],b=rows[i],span=Math.max(1,b.time-a.time),f=(timeMs-a.time)/span;
+      return a.rate+(b.rate-a.rate)*f;
+    }
   }
-  const amount=best>=0?Number(qh.precipitation?.[best])||0:0;
-  return amount*4;
+  return 0;
 }
 function intensityLabel(rate){
   if(rate<=0.05)return'Seco';
@@ -347,9 +351,9 @@ function intensityLabel(rate){
   return'Lluvia fuerte';
 }
 function shortPoints(){
-  const now=Date.now(),n=state.nowcast,qh=state.data?.quarterHour;
-  const radarBase=Date.parse(n?.radarTime||'');
-  const series=Array.isArray(n?.series)?n.series:[];
+  const now=Date.now(),n=state.nowcast,qh=state.data?.quarterHour,ev=chooseDisplayEvent(),rainNow=currentRainState().raining;
+  const radarBase=Date.parse(n?.radarTime||''),series=Array.isArray(n?.series)?n.series:[];
+  const eventStart=ev?Date.parse(ev.start):Infinity,eventEnd=ev?.end?Date.parse(ev.end):eventStart+45*60_000;
   const points=[];
   for(let i=0;i<=24;i++){
     const time=now+i*5*60_000;
@@ -360,37 +364,55 @@ function shortPoints(){
         return !best||d<best.d?{row,d}:best;
       },null)?.row||null;
     }
-    let modelAmount=0;
-    if(qh?.time?.length){
-      let best=-1,dist=Infinity;
-      for(let j=0;j<qh.time.length;j++){
-        const d=Math.abs(Date.parse(qh.time[j])-time);
-        if(d<dist){dist=d;best=j}
-      }
-      modelAmount=best>=0?Number(qh.precipitation?.[best])||0:0;
-    }
-    const rate=modelAmount*4;
+    const modelRate=quarterHourRateAt(time);
+    const radarRate=Number(radar?.radarRate)||0;
     const radarProb=Number(radar?.probability);
-    const modelSignal=rate<=.05?0:Math.min(.72,.28+Math.log1p(rate)*.22);
-    let probability=Number.isFinite(radarProb)?Math.max(radarProb,modelSignal*.55):modelSignal;
+    const wetFraction=Number(radar?.wetFraction)||0;
+    const horizon=Math.max(0,(time-now)/60_000),radarWeight=Math.max(.42,.9-horizon*.004);
+    const inEvent=Boolean(ev)&&time>=eventStart&&time<=eventEnd;
+    const radarWet=wetFraction>=.10&&radarRate>=.03;
+    let rate=0;
+    if(rainNow&&i===0)rate=Math.max(radarRate,modelRate,Number(n?.currentRadarRate)||0);
+    else if(inEvent){
+      if(radarWet)rate=radarRate*radarWeight+modelRate*(1-radarWeight);
+      else rate=modelRate;
+    }
+    const modelSignal=modelRate<=.05?0:Math.min(.76,.25+Math.log1p(modelRate)*.24);
+    let probability=Number.isFinite(radarProb)?Math.max(radarProb,modelSignal*.5):modelSignal;
+    if(!inEvent&&!rainNow)probability=Math.min(probability,.18);
+    if(inEvent&&rate>0)probability=Math.max(probability,.35);
     if(i===0){
       const truth=currentTruth();
-      if(truth===true)probability=1;
-      if(truth===false)probability=0;
+      if(truth===true){probability=1;rate=Math.max(rate,.1)}
+      if(truth===false){probability=0;rate=0}
     }
-    points.push({time,probability:Math.max(0,Math.min(1,probability||0)),rate,wetFraction:Number(radar?.wetFraction)||0});
+    points.push({
+      time,
+      probability:Math.max(0,Math.min(1,probability||0)),
+      rate:Math.max(0,rate||0),
+      radarRate,
+      modelRate,
+      wetFraction,
+      inEvent,
+      wet:rainNow&&i===0 ? rate>.03 : inEvent&&(rate>=.03||radarWet)
+    });
   }
   return points;
 }
 function renderShortNowcast(){
   const points=shortPoints(),ev=chooseDisplayEvent(),now=Date.now(),rain=currentRainState();
   const near=ev&&Date.parse(ev.start)<=now+120*60_000;
-  let rate=quarterHourRateAt(rain.raining?now:(near?Date.parse(ev.start):now));
-  if(rain.raining&&rate<=.05)rate=Math.max(.2,Number(state.data?.quarterHour?.current?.precipitation||0)*4);
-  $('shortState').textContent=rain.raining?intensityLabel(rate):(near?intensityLabel(Math.max(rate,.08)):'Seco');
+  const wetPoints=points.filter(p=>p.wet);
+  const arrivalPoints=wetPoints.slice(0,Math.min(4,wetPoints.length));
+  const arrivalRate=arrivalPoints.length
+    ? arrivalPoints.reduce((sum,p)=>sum+p.rate,0)/arrivalPoints.length
+    : 0;
+  const peakRate=wetPoints.length?Math.max(...wetPoints.map(p=>p.rate)):0;
+  const labelRate=rain.raining?Math.max(Number(state.nowcast?.currentRadarRate)||0,arrivalRate):arrivalRate;
+  $('shortState').textContent=near||rain.raining?intensityLabel(labelRate):'Seco';
   $('shortDetail').textContent=rain.raining
-    ? 'Detectado ahora · radar + observación'
-    : near?'Llegada más probable '+fmtTime(ev.start)+' · radar + modelos':'Sin lluvia probable en las próximas 2 h';
+    ? 'Radar: '+labelRate.toFixed(1)+' mm/h ahora · actualización '+fmtTime(state.nowcast?.radarTime||Date.now())
+    : near?'Llegada '+fmtTime(ev.start)+' · '+labelRate.toFixed(1)+' mm/h al inicio · pico ~'+peakRate.toFixed(1)+' mm/h':'Sin lluvia probable en las próximas 2 h';
   $('shortEtaLabel').textContent=rain.raining?'Fin estimado':near?'Empieza en':'Próximo cambio';
   $('shortCountdown').textContent=rain.raining
     ? (ev?.end?formatCountdownMs(Date.parse(ev.end)-now):'—')
@@ -403,11 +425,11 @@ function renderShortNowcast(){
   $('shortConfidence').textContent=shortConfidence!=null?pct(shortConfidence)+'%':'—';
   renderRadarSkill();
 
-  const maxRate=Math.max(.35,Math.min(8,Math.max(...points.map(p=>p.rate))));
+  const maxRate=Math.max(.35,Math.min(12,Math.max(...points.map(p=>p.rate))));
   $('minuteStrip').innerHTML=points.map((p,i)=>{
-    const wet=p.probability>=.25||p.rate>=.08;
+    const wet=Boolean(p.wet);
     const band=probabilityBand(p.probability);
-    const height=wet?Math.max(7,Math.min(100,10+Math.sqrt(Math.min(p.rate,maxRate)/maxRate)*90)):3;
+    const height=wet?Math.max(8,Math.min(100,8+Math.sqrt(Math.min(p.rate,maxRate)/maxRate)*92)):3;
     return '<div class="minuteCol '+(wet?'wet '+band+' ':'')+(i===0?'now':'')+'" title="'+fmtTime(p.time)+' · prob. '+Math.round(p.probability*100)+'% · intensidad '+p.rate.toFixed(1)+' mm/h"><i class="minuteMark" style="height:'+height+'%"></i></div>';
   }).join('');
   const ticks=[];
