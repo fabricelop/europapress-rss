@@ -24,7 +24,26 @@ jobs:
           sparse-checkout: |
             /windows/TTiTTularesImageBridge.js
             /windows/TTendenciasImageBridge.js
+            /windows/TTiTTularesDedicatedListener.ps1
+            /windows/TTendenciasDedicatedListener.ps1
+            /windows/Install-ImageBridge-Hotfix.ps1
       - name: Validar sintaxis Node
         run: |
           node --check windows/TTiTTularesImageBridge.js
           node --check windows/TTendenciasImageBridge.js
+      - name: Validar sintaxis PowerShell
+        shell: pwsh
+        run: |
+          $files=@(
+            "windows/TTiTTularesDedicatedListener.ps1",
+            "windows/TTendenciasDedicatedListener.ps1",
+            "windows/Install-ImageBridge-Hotfix.ps1"
+          )
+          foreach($file in $files){
+            $tokens=$null; $errors=$null
+            [System.Management.Automation.Language.Parser]::ParseFile($file,[ref]$tokens,[ref]$errors) | Out-Null
+            if($errors.Count -gt 0){
+              $errors | ForEach-Object { Write-Error ($file+": "+$_.Message) }
+              exit 1
+            }
+          }
