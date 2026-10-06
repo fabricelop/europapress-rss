@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-06T18:55:14.302036Z",
+  "updated_at": "2026-10-06T19:10:49.070Z",
   "items": [
     {
       "event_id": "7503755f8b55",
@@ -521,11 +521,11 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "DIRECT_RECOVERY",
-      "image_status": "pending",
-      "image_pending": true,
+      "image_status": "ready",
+      "image_pending": false,
       "image_app_available": true,
       "image_delivery": "app",
       "archive_image_search_attempted_at": "2026-10-06T18:02:29.661803Z",
@@ -546,9 +546,54 @@
         "generated": false,
         "alt": "El Supremo da 48 horas a las partes antes de decidir sobre el voto ligado a la ley de nietos"
       },
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-06T18:28:19.802Z",
-      "ai_image_failure_reason": "Fallback no pudo escribir el prompt completo len=0 expected>=500"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-06T19:10:49.070Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/4199e45f5398-r1-ai1-791311781632.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "7696bca918e7ac1f448411e8361d6324c1fab72e3c643d3ca0d8375266f6823e",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 778187,
+        "context_guard": {
+          "version": 3,
+          "event_id": "4199e45f5398",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-4199e45f5398-r1-a3-1791311781632"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/4199e45f5398-r1-ai1-791311781632.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-06T19:10:49.070Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/4199e45f5398-r1-ai1-791311781632.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "7696bca918e7ac1f448411e8361d6324c1fab72e3c643d3ca0d8375266f6823e",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 778187,
+        "context_guard": {
+          "version": 3,
+          "event_id": "4199e45f5398",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-4199e45f5398-r1-a3-1791311781632"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/4199e45f5398-r1-ai1-791311781632.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     },
     {
       "event_id": "7c893c6a4a29",
