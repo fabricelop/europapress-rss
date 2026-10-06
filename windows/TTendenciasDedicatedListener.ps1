@@ -479,7 +479,30 @@ function Test-OtherImageBridgeBusy {
   try {
     $lock = Get-Content -LiteralPath $OtherImageBridgeLockPath -Raw -Encoding UTF8 | ConvertFrom-Json
     $pidValue = [int]$lock.pid
-    if($pidValue -gt 0 -and (Get-Process -Id $pidValue -ErrorAction SilentlyContinue)){ return $true }
+    $p = if($pidValue -gt 0){Get-Process -Id $pidValue -ErrorAction SilentlyContinue}else{$null}
+    if($p){
+      $tooOld=$false
+      try{
+        $started=[DateTimeOffset]::Parse([string]$lock.started_at)
+        $tooOld=(([DateTimeOffset]::UtcNow-$started).TotalMinutes -gt 12)
+      }catch{}
+      if(-not $tooOld){ return $true }
+
+      $isOtherBridge=$false
+      try{
+        $proc=Get-CimInstance Win32_Process -Filter ("ProcessId="+$pidValue) -ErrorAction SilentlyContinue
+        $isOtherBridge=($proc -and [string]$proc.CommandLine -like "*TTiTTularesImageBridge.js*")
+      }catch{}
+      if($isOtherBridge){
+        Write-Log "IMAGE OTHER LOCK STALE project=ttittulares pid=$pidValue command=$([string]$lock.command_id) target=$([string]$lock.target_id) age_gt_12m=1"
+        try{Stop-Process -Id $pidValue -Force -ErrorAction SilentlyContinue}catch{}
+        Remove-Item -LiteralPath $OtherImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+        return $false
+      }
+      # PID reutilizado por otro proceso: este lock ya no es válido.
+      Remove-Item -LiteralPath $OtherImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+      return $false
+    }
   } catch {}
   Remove-Item -LiteralPath $OtherImageBridgeLockPath -Force -ErrorAction SilentlyContinue
   return $false
