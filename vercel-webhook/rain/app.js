@@ -1,4 +1,4 @@
-import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median} from './core.js';
+import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,classifyRainHour} from './core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
 
 const DET_MODELS=[
@@ -37,7 +37,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.7.0',renameTarget:null
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.8.0',renameTarget:null,selectedHourIndex:null,radarOffset:0
 };
 
 function iso(v){
@@ -174,15 +174,34 @@ async function fetchEns(model){
 async function fetchQuarterHour(){
   const p=new URLSearchParams({
     latitude:String(state.loc.lat),longitude:String(state.loc.lon),
-    current:'temperature_2m,precipitation,rain,showers',
+    current:'temperature_2m,precipitation,rain,showers,weather_code,cloud_cover',
     minutely_15:'precipitation',forecast_minutely_15:'32',
+    hourly:'temperature_2m,cloud_cover,snowfall,weather_code,precipitation_probability',
+    forecast_hours:'73',
     timeformat:'unixtime',timezone:'GMT'
   });
   const d=await fetchJson('https://api.open-meteo.com/v1/forecast?'+p,8000);
   const h=d.minutely_15||{},times=(h.time||[]).map(iso),prec=(h.precipitation||[]).map(v=>Number(v)||0);
+  const hourly=d.hourly||{};
   return {
-    current:{time:d.current?.time?iso(d.current.time):null,temperature:Number(d.current?.temperature_2m),precipitation:Number(d.current?.precipitation)||0,rain:Number(d.current?.rain)||0,showers:Number(d.current?.showers)||0},
+    current:{
+      time:d.current?.time?iso(d.current.time):null,
+      temperature:Number(d.current?.temperature_2m),
+      precipitation:Number(d.current?.precipitation)||0,
+      rain:Number(d.current?.rain)||0,
+      showers:Number(d.current?.showers)||0,
+      weatherCode:Number(d.current?.weather_code),
+      cloudCover:Number(d.current?.cloud_cover)
+    },
     time:times,precipitation:prec,events:detectQuarterHourEvents(times,prec),
+    hourly:{
+      time:(hourly.time||[]).map(iso),
+      temperature:(hourly.temperature_2m||[]).map(Number),
+      cloudCover:(hourly.cloud_cover||[]).map(Number),
+      snowfall:(hourly.snowfall||[]).map(Number),
+      weatherCode:(hourly.weather_code||[]).map(Number),
+      precipitationProbability:(hourly.precipitation_probability||[]).map(Number)
+    },
     interpolated:true
   };
 }
@@ -222,7 +241,17 @@ async function loadForecast(force=false){
   const data={
     generatedAt:new Date().toISOString(),
     location:{...state.loc},
-    timeline:compactTimeline(consensus,73),
+    timeline:compactTimeline(consensus,73).map(row=>{
+      const h=quarterHour?.hourly||{},idx=(h.time||[]).indexOf(row.time);
+      return idx>=0?{
+        ...row,
+        temperature:Number(h.temperature?.[idx]),
+        cloudCover:Number(h.cloudCover?.[idx]),
+        snowfall:Number(h.snowfall?.[idx])||0,
+        weatherCode:Number(h.weatherCode?.[idx]),
+        providerProbability:Number(h.precipitationProbability?.[idx])
+      }:row;
+    }),
     events,
     nextEvent:chooseNextEvent(events,now),
     quarterHour,
