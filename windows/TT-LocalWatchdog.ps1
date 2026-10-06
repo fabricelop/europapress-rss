@@ -82,6 +82,50 @@ function EnsureChrome{
     }else{Log "CHROME TASK MISSING"}
   }catch{Log "CHROME AUTO ERROR :: $($_.Exception.Message)"}
 }
+$script:LastQueueRestart=@{ttittulares=[DateTimeOffset]::MinValue;ttendencias=[DateTimeOffset]::MinValue}
+
+function Read-RawJson([string]$Url){
+  try{
+    $u=$Url+$(if($Url.Contains("?")){"&"}else{"?"})+"t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+    return Invoke-RestMethod -Uri $u -Headers @{"Cache-Control"="no-cache";"User-Agent"="TT-LocalWatchdog-QueueHealth"} -TimeoutSec 12
+  }catch{return $null}
+}
+
+function RestartListenerForQueue([string]$Project,[string]$Pattern,[string]$Script,[string]$Tag,[string]$Reason){
+  $now=[DateTimeOffset]::UtcNow
+  try{
+    if(($now-$script:LastQueueRestart[$Project]).TotalMinutes -lt 5){return}
+  }catch{}
+  Log "QUEUE HEALTH RESTART $Project :: $Reason"
+  @(PsProcs $Pattern)|ForEach-Object{try{Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue}catch{}}
+  Start-Sleep -Milliseconds 700
+  [void](StartHiddenPs $Script $Tag)
+  $script:LastQueueRestart[$Project]=$now
+}
+
+function CheckImageQueueHealth([string]$Project,[string]$Branch,[string]$Prefix,[string]$Pattern,[string]$Script,[string]$Tag){
+  try{
+    $base="https://raw.githubusercontent.com/fabricelop/europapress-rss/"+$Branch+"/"+$Prefix
+    $idx=Read-RawJson ($base+"/image-runs/index.json")
+    if(-not $idx -or -not $idx.jobs){return}
+    $jobRef=@($idx.jobs)|Select-Object -Last 1
+    if(-not $jobRef){return}
+    $statusPath=[string]$jobRef.status_path
+    if(-not $statusPath){return}
+    $job=Read-RawJson ("https://raw.githubusercontent.com/fabricelop/europapress-rss/"+$Branch+"/"+$statusPath)
+    if(-not $job){return}
+    $st=([string]$job.status).ToUpperInvariant()
+    if($st -ne "REQUESTED"){return}
+    if($job.pc_picked_up_at){return}
+    $at=[DateTimeOffset]::Parse([string]$job.requested_at)
+    $age=([DateTimeOffset]::UtcNow-$at).TotalSeconds
+    if($age -lt 180){return}
+    RestartListenerForQueue $Project $Pattern $Script $Tag ("job="+[string]$job.command_id+" age_s="+[int]$age)
+  }catch{
+    Log "QUEUE HEALTH ERROR $Project :: $($_.Exception.Message)"
+  }
+}
+
 function EnsureScheduledTasks{
   foreach($name in @(
     "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
@@ -121,6 +165,8 @@ try{
     EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
     EnsureScheduledTasks
     EnsureChrome
+    CheckImageQueueHealth "ttittulares" "control/ttittulares-run-trigger-v2" "ttittulares" "*TTiTTularesDedicatedListener.ps1*" $tt "ttittulares-listener"
+    CheckImageQueueHealth "ttendencias" "control/ttendencias-run-trigger" "trends" "*TTendenciasDedicatedListener.ps1*" $tr "ttendencias-listener"
     Start-Sleep -Seconds $IntervalSeconds
   }
 }finally{
