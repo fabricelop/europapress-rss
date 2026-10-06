@@ -10,7 +10,7 @@
 <link rel="manifest" href="/rain/manifest.webmanifest">
 <link rel="icon" href="/rain/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/rain/icon.svg">
-<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css" crossorigin="">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.7.3/dist/maplibre-gl.css" crossorigin="">
 <style>
 :root{color-scheme:dark;--b:#071018;--c:#101c26;--m:#8fa7b8;--r:#5cc8ff;--l:#223444;--g:#50d890;--bad:#ff7b7b}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 60% -10%,#17304a,var(--b) 42%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f5f9fb}
@@ -73,7 +73,7 @@ dialog{border:1px solid #2b4353;background:#0b1720;color:#fff;border-radius:20px
 <dialog id="dlg"><div class="head"><h2>Cambiar o añadir lugar</h2><button class="place" id="close">Cerrar</button></div><button class="geo" id="geo">Usar mi ubicación actual (GPS)</button><div class="search"><input id="q" placeholder="Ciudad o localidad" autocomplete="off"><button id="search">Buscar</button></div><div class="results" id="results"></div></dialog>
 <dialog id="renameDlg"><div class="head"><h2>Renombrar lugar</h2></div><input class="renameInput" id="renameInput" maxlength="40" placeholder="Nombre"><div class="dialogActions"><button class="dialogBtn" id="renameCancel">Cancelar</button><button class="dialogBtn" id="renameSave">Guardar</button></div></dialog>
 
-<script src="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.7.3/dist/maplibre-gl.js" crossorigin=""></script>
 <script type="module" src="/rain/app.js?v=0.6.0"></script>
 </body>
 </html>
