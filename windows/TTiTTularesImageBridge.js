@@ -226,16 +226,25 @@ async function openFreshDedicatedConversation(){
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
 
     let reused=false;
-    try{
-      await resetToFreshConversation(cdp);
+    const initialUrl=String(t&&t.url||"");
+    if(!initialUrl.includes("chatgpt.com")){
+      // Tras un reinicio de Chrome, Target.createTarget puede aparecer primero
+      // como about:blank. Haz la primera navegación desde el propio renderer.
+      await ensureChatRootFromFreshTarget(cdp);
+      await waitComposer(cdp,60000);
       reused=true
-    }catch(e){
-      const detail=String(e&&e.message||e);
-      console.log("BRIDGE EXISTING COMPOSER NOT READY :: "+detail);
-      // Un Runtime.evaluate que no responde indica renderer/target congelado.
-      // Navegar ese mismo target solo encadena más timeouts: se descarta y se
-      // recrea físicamente en el catch exterior.
-      if(/CDP timeout Runtime\.evaluate|Target closed|WebSocket|not open/i.test(detail))throw e
+    }else{
+      try{
+        await resetToFreshConversation(cdp);
+        reused=true
+      }catch(e){
+        const detail=String(e&&e.message||e);
+        console.log("BRIDGE EXISTING COMPOSER NOT READY :: "+detail);
+        // Un Runtime.evaluate que no responde indica renderer/target congelado.
+        // Navegar ese mismo target solo encadena más timeouts: se descarta y se
+        // recrea físicamente en el catch exterior.
+        if(/CDP timeout Runtime\.evaluate|Target closed|WebSocket|not open/i.test(detail))throw e
+      }
     }
     if(!reused){
       try{await cdp.call("Page.navigate",{url:CHAT_ROOT},8000)}catch(e){console.log("BRIDGE PAGE NAVIGATE WARNING :: "+String(e&&e.message||e))}
