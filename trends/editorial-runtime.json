@@ -1,11 +1,19 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-06T23:15:00+02:00",
-  "last_completed_at": "2026-10-06T23:17:00+02:00",
-  "updated_at": "2026-10-06T23:17:00+02:00",
+  "last_started_at": "2026-10-06T23:45:00+02:00",
+  "last_completed_at": "2026-10-06T23:53:00+02:00",
+  "updated_at": "2026-10-06T23:53:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "939c0b5fe525",
+    "70915b4a47c4",
+    "e24a929a9107",
+    "6a2d476eed14",
+    "0e8de16d27f9",
+    "629594b46505",
+    "ad1a64057f9a"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -14,25 +22,25 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-20261006T231500-chat",
+    "run_id": "tr-20261006T234500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-06T23:15:00+02:00",
-    "updated_at": "2026-10-06T23:17:00+02:00",
-    "finished_at": "2026-10-06T23:17:00+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-06T23:45:00+02:00",
+    "updated_at": "2026-10-06T23:53:00+02:00",
+    "finished_at": "2026-10-06T23:53:00+02:00",
+    "current": 7,
+    "total": 7,
     "trend_id": null,
     "title": null,
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "trends_processed": 7,
+      "trends_explained": 7,
+      "explanation_groups": 7,
+      "new_cards": 5,
+      "revisions_updated": 2,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
       "trends_problematic": 0,
@@ -43,58 +51,114 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
-      "visual_jobs_queued": 0,
+      "visual_jobs_queued": 7,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 7,
+      "remates_selected": 7,
       "remates_reused": 0,
       "remates_omitted": 0,
       "pending_repair_triggered": 1,
-      "pending_cards_reviewed": 1
+      "pending_cards_reviewed": 0
     },
-    "message": "Pasada cerrada · cola editorial vacía · Croacia r2 revisada y reparación visual solicitada",
+    "message": "Pasada cerrada · 7/7 explicadas · cola editorial vacía",
     "activity": [
       {
-        "at": "2026-10-06T23:15:00+02:00",
+        "at": "2026-10-06T23:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada directa iniciada · comprobando estado autoritativo"
+        "message": "Pasada directa iniciada · 7 entradas activas"
       },
       {
-        "at": "2026-10-06T23:15:20+02:00",
+        "at": "2026-10-06T23:46:07+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola y solicitudes activas · 0 preparing/update · 0 problematic · 0 reexplicaciones"
+        "message": "Saneamiento visual de Pendientes solicitado"
       },
       {
-        "at": "2026-10-06T23:15:50+02:00",
+        "at": "2026-10-06T23:47:00+02:00",
+        "phase": "investigating",
+        "trend_id": "939c0b5fe525",
+        "title": "Unai Simón",
+        "message": "Contrastando el España-Croacia y el rendimiento del portero"
+      },
+      {
+        "at": "2026-10-06T23:48:00+02:00",
+        "phase": "investigating",
+        "trend_id": "70915b4a47c4",
+        "title": "Modric",
+        "message": "Contrastando el partido y su situación internacional"
+      },
+      {
+        "at": "2026-10-06T23:48:30+02:00",
+        "phase": "investigating",
+        "trend_id": "e24a929a9107",
+        "title": "Merino",
+        "message": "Verificando doblete y resultado final"
+      },
+      {
+        "at": "2026-10-06T23:49:00+02:00",
+        "phase": "investigating",
+        "trend_id": "6a2d476eed14",
+        "title": "Maradona",
+        "message": "Contrastando el detonante ligado a la despedida de Messi"
+      },
+      {
+        "at": "2026-10-06T23:49:30+02:00",
+        "phase": "investigating",
+        "trend_id": "0e8de16d27f9",
+        "title": "#FirstDates6O",
+        "message": "Verificando la emisión y el episodio de hoy"
+      },
+      {
+        "at": "2026-10-06T23:50:00+02:00",
+        "phase": "investigating",
+        "trend_id": "629594b46505",
+        "title": "Zubimendi",
+        "message": "Verificando su intervención en el gol decisivo"
+      },
+      {
+        "at": "2026-10-06T23:50:15+02:00",
+        "phase": "investigating",
+        "trend_id": "ad1a64057f9a",
+        "title": "split",
+        "message": "Verificando sede, resultado y clasificación"
+      },
+      {
+        "at": "2026-10-06T23:50:30+02:00",
+        "phase": "drafting",
+        "trend_id": null,
+        "title": null,
+        "message": "Redactadas 7 explicaciones factuales y comprobado límite de X"
+      },
+      {
+        "at": "2026-10-06T23:50:42+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Aplicando lote editorial atómico sobre las 7 revisiones vigentes"
+      },
+      {
+        "at": "2026-10-06T23:51:48+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 1 tarjeta vigente"
+        "message": "Commit editorial aplicado correctamente en main"
       },
       {
-        "at": "2026-10-06T23:16:10+02:00",
-        "phase": "verifying",
-        "trend_id": "2cf07ed453b6",
-        "title": "Croacia",
-        "message": "Pendiente 1/1 · Croacia r2 · remate presente; reparación visual solicitada"
-      },
-      {
-        "at": "2026-10-06T23:16:40+02:00",
+        "at": "2026-10-06T23:52:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0 · solicitudes activas 0 · reexplicaciones 0"
+        "message": "Verificados requests, fichas Explicadas y cola editorial vacía"
       },
       {
-        "at": "2026-10-06T23:17:00+02:00",
+        "at": "2026-10-06T23:53:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · cola editorial vacía"
+        "message": "Pasada cerrada · 7/7 explicadas · cola editorial vacía"
       }
     ],
     "queue_complete": true,
@@ -102,15 +166,15 @@
     "remaining_problematic_ids": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
-      "blob_sha": "cf236789836d8dfe6507942f7007fbe6c72d5c70",
-      "updated_at": "2026-10-04T17:29:26.880Z",
-      "total_ratings": 153,
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
       "recent_considered": 20,
-      "average": 3.0980392156862746,
+      "average": 3.0974025974025974,
       "distribution": {
         "1": 21,
         "2": 24,
-        "3": 40,
+        "3": 41,
         "4": 55,
         "5": 13
       }
