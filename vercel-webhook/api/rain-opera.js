@@ -24,10 +24,15 @@ export default async function handler(req,res){
   res.setHeader('Cache-Control','public, s-maxage=240, stale-while-revalidate=900');
   const now=Date.now();
   const base=floor5(now-5*60_000);
-  for(let i=0;i<18;i++){
+  const candidates=Array.from({length:18},(_,i)=>{
     const observedAt=new Date(base.getTime()-i*5*60_000);
-    const url=rateUrl(observedAt);
-    if(await exists(url)){
+    return{observedAt,url:rateUrl(observedAt)};
+  });
+  for(let offset=0;offset<candidates.length;offset+=6){
+    const batch=candidates.slice(offset,offset+6);
+    const checks=await Promise.all(batch.map(async item=>({...item,ok:await exists(item.url)})));
+    const found=checks.find(x=>x.ok);
+    if(found){
       return res.status(200).json({
         ok:true,
         provider:'EUMETNET OPERA NIMBUS',
@@ -35,9 +40,9 @@ export default async function handler(req,res){
         unit:'mm/h',
         resolutionKm:1,
         updateMinutes:5,
-        observedAt:observedAt.toISOString(),
-        url,
-        ageMinutes:Math.round((now-observedAt.getTime())/60_000),
+        observedAt:found.observedAt.toISOString(),
+        url:found.url,
+        ageMinutes:Math.round((now-found.observedAt.getTime())/60_000),
         license:'CC BY 4.0',
         sampling:'backend-ready'
       });
