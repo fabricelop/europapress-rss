@@ -1,4 +1,4 @@
-# RainETA v0.15.6
+# RainETA v0.15.7
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,15 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Vista compacta y previsión 7 días v0.15.7
+- Se eliminan de la vista principal las explicaciones repetidas de `pausa dentro del episodio`, el texto auxiliar de Episodios y las métricas largas de aprendizaje.
+- La autoevaluación y el comparador de fuentes siguen funcionando, pero se mueven al desplegable **Fuentes, modelos y diagnóstico**.
+- Nuevo desplegable **Previsión 7 días**. Cerrado muestra cuántos de los próximos 7 días tienen lluvia prevista.
+- Al abrirlo aparecen los siguientes siete días completos (desde mañana) con el nombre del día y un **SÍ / NO**.
+- Cuando es `SÍ`, se muestran los rangos horarios con señal de lluvia, probabilidad máxima del tramo y precipitación orientativa; también total diario y pico horario.
+- La previsión semanal usa una petición ligera de Open-Meteo a 8 días y no añade funciones Serverless ni carga los 15 modelos/ensembles más allá de las 72 h.
+- Criterio semanal: se marca un tramo cuando hay precipitación prevista y señal suficiente de probabilidad; el horizonte de 4–7 días es orientativo y menos preciso que el nowcast/72 h.
 
 ## Verdad en superficie y tramos fuertes exactos v0.15.6
 - `Llueve ahora` deja de afirmarse por un único eco moderado o por los modelos. Se confirma con **dos radares recientes concordantes**, una señal radar local claramente intensa o feedback del usuario.
