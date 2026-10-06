@@ -1,6 +1,6 @@
 const loc={lat:'40.4168',lon:'-3.7038'};
-const det=['ecmwf_ifs025','ecmwf_aifs025','icon_seamless','gfs_seamless','meteofrance_seamless','gem_seamless'];
-const ens=['ecmwf_ifs025_ensemble','ecmwf_aifs025_ensemble','dwd_icon_eu_eps','ncep_gefs025','ukmo_global_ensemble_20km','gem_global_ensemble','bom_access_global_ensemble','google_weathernext2_ensemble'];
+const det=['ecmwf_ifs','ecmwf_aifs025','icon_seamless','gfs_seamless','meteofrance_seamless','gem_seamless','ukmo_global_deterministic_10km'];
+const ens=['ecmwf_ifs_europe_ensemble','ecmwf_aifs025_ensemble','dwd_icon_eu_eps','ncep_gefs025','ukmo_global_ensemble_20km','gem_global_ensemble','bom_access_global_ensemble','google_weathernext2_ensemble'];
 async function check(url){const c=new AbortController(),t=setTimeout(()=>c.abort(),12000);try{const r=await fetch(url,{signal:c.signal});const text=await r.text();if(!r.ok)throw Error(r.status+' '+text.slice(0,180));return JSON.parse(text)}finally{clearTimeout(t)}}
 let ok=0;
 for(const model of det){
