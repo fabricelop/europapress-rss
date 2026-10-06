@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v42-control-raw-direct
+# official-pipeline-restart-token: 2026-10-06-v43-fresh-singleton
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v42"
+$WorkerId = "ttittulares-dedicated-v43"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -43,7 +43,7 @@ $SnapshotCacheSeconds = 12
 $script:ListenerSnapshotCache = $null
 $script:ListenerSnapshotAt = [DateTimeOffset]::MinValue
 $script:LastStrongSnapshotAt = [DateTimeOffset]::MinValue
-$script:ListenerMutex=New-Object System.Threading.Mutex($false,"Local\TTiTTularesDedicatedListenerSingleton")
+$script:ListenerMutex=New-Object System.Threading.Mutex($false,"Local\TTiTTularesDedicatedListenerSingletonV43")
 $script:ListenerMutexOwned=$false
 try{
   $script:ListenerMutexOwned=$script:ListenerMutex.WaitOne(0,$false)
