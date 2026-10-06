@@ -59,7 +59,9 @@ async function comments(){
 }
 async function triggerReady(){return true}
 function controlRawUrl(path){
-  const ref="refs/heads/"+String(TRIGGER_BRANCH||"").split("/").map(encodeURIComponent).join("/");
+  // En RAW se usa la rama directamente; "refs/heads/..." no es una ruta
+  // canónica aquí y puede dejar al listener viendo un trigger anterior.
+  const ref=String(TRIGGER_BRANCH||"").split("/").map(encodeURIComponent).join("/");
   const clean=String(path||"").split("/").map(encodeURIComponent).join("/");
   return "https://raw.githubusercontent.com/"+REPO+"/"+ref+"/"+clean+"?t="+Date.now()
 }
