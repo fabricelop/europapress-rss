@@ -1,4 +1,4 @@
-# RainETA v0.6
+# RainETA v0.7
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -57,6 +57,19 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Confirmación clara de feedback GPS: botón seleccionado, hora exacta y texto “registrado”.
 - Lugares guardados: renombrar y eliminar desde “Mis lugares”.
 - Mapa base OpenFreeMap/MapLibre, sin API key ni marca de agua “API key required”.
+
+## Motor de corto plazo v0.7
+- La banda 0–120 min ya no puede pintar lluvia antes de la ETA estimada: los bloques de precipitación quedan alineados con el episodio activo.
+- RainViewer se decodifica también por **reflectividad dBZ** usando su paleta Universal Blue; ya no se trata solo como máscara eco/no-eco.
+- La reflectividad se transforma en una estimación de intensidad (mm/h) y se proyecta junto con el movimiento de la banda.
+- La altura de cada bloque corto usa preferentemente intensidad radar a corto plazo y degrada progresivamente hacia la guía de modelos.
+- La etiqueta **Seco / Llovizna / Débil / Moderada / Fuerte** se recalcula con la intensidad prevista alrededor de la llegada y cambia con cada nuevo barrido.
+- La guía de 15 min de Open-Meteo se conserva como apoyo, pero se reconoce que en Madrid puede estar interpolada desde resolución horaria.
+
+## Radar objetivo
+- **EUMETNET OPERA** es el candidato a fuente europea primaria: compuesto de 1 km/5 min con DBZH y tasa de lluvia RATE.
+- **AEMET** será una capa oficial específica de España para contraste/regional cuando se gestione una API key renovable.
+- **RainViewer** queda como fuente ligera y respaldo visual/nowcasting local.
 
 ## Radar
 RainViewer aporta los últimos barridos. RainETA descarga una imagen centrada en la ubicación, genera una máscara de precipitación en el dispositivo, calcula traslación entre barridos y proyecta el píxel de la ubicación cada 5 minutos hasta 120 minutos.
