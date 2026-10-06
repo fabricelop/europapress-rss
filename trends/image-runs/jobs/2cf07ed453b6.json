@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "command_id": "tr-img-1791070324021-600fac",
-  "requested_at": "2026-10-03T23:32:04.021Z",
-  "updated_at": "2026-10-03T23:43:56.069Z",
-  "status": "DONE",
-  "phase": "done",
-  "mode": "manual_pc_chat_image",
+  "command_id": "tr-img-auto-2cf07ed453b6-r2-a1-1791319907514",
+  "requested_at": "2026-10-06T20:51:47.514462Z",
+  "updated_at": "2026-10-06T20:51:47.514462Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -13,47 +13,37 @@
   "target_id": "2cf07ed453b6",
   "trend_id": "2cf07ed453b6",
   "target_name": "Croacia",
-  "revision": 1,
-  "attempt": 1,
-  "chat_command_version": 3,
-  "instruction_profile": "ttendencias_gag_v1",
+  "revision": 2,
+  "attempt": 2,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "Croacia",
-    "revision": 1,
-    "explanation": "TT#10 Croacia es tendencia porque Inglaterra le endosó un 0-7 en Rijeka en la Nations League, la derrota más abultada de la historia de la selección croata.\n🌶️ El marcador de Rijeka acabó pidiendo una cifra extra de equipaje.",
-    "closer_text": "🌶️ El marcador de Rijeka acabó pidiendo una cifra extra de equipaje.",
+    "revision": 2,
+    "explanation": "TT#4 Croacia es tendencia porque España remontó en Split el 1-0 de Perisic y ganó 1-2 con dos goles de Mikel Merino, el segundo en el 89', para sellar su pase a cuartos de la Nations League.\n🌶️ Merino convirtió Split en una sucursal del dos por uno.",
+    "closer_text": "🌶️ Merino convirtió Split en una sucursal del dos por uno.",
     "trend_names": [
       "Croacia"
     ],
     "group_title": "",
-    "rank_at_explanation": 10,
-    "explained_at": "2026-10-03T23:21:00+02:00",
+    "rank_at_explanation": 4,
+    "explained_at": "2026-10-06T22:46:05+02:00",
     "verification_sources": [
-      {
-        "source": "La Jornada / AFP · 3/10/2026",
-        "url": "https://www.jornada.com.mx/noticia/2026/10/03/deportes/inglaterra-aplasta-70-a-croacia-en-liga-de-naciones-en-partido-donde-los-tres-leones-no-dejaron-de-rugir"
-      },
-      {
-        "source": "Claro Sports · 3/10/2026",
-        "url": "https://www.clarosports.com/futbol/uefa-nations-league/croacia-vs-inglaterra-en-vivo-goles-y-resultados-del-partido-de-la-uefa-nations-league-2026-hoy-3-de-octubre/"
-      }
-    ]
+      "https://cadenaser.com/nacional/2026/10/06/croacia-1-2-espana-resumen-resultado-y-goles-del-partido-de-la-uefa-nations-league-cadena-ser/",
+      "https://www.theguardian.com/football/live/2026/oct/06/scotland-slovenia-croatia-spain-nations-league-football-live-score-updates"
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3
   },
   "instructions": {
-    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
-    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
-    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
-    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
-    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
-    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "pc_upload_secret_hash": "9f47f06312466699f64ab38173ce8c00c8c39ab80fd117a2a91812b0961cbf41",
-  "pc_worker_id": "ttendencias-dedicated-v8",
-  "pc_picked_up_at": "2026-10-03T23:42:07.346Z",
-  "pc_launched_at": "2026-10-03T23:42:14.636Z",
-  "upload_received_at": "2026-10-03T23:43:51.977Z",
-  "upload_sha256": "c830ac933fc11a023f920dbb266e1a7cacb73b43f483d40c6f5e77083457aa98",
-  "upload_bytes": 609687,
-  "finished_at": "2026-10-03T23:43:56.069Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
