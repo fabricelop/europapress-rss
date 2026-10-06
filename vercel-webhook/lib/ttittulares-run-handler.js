@@ -160,7 +160,9 @@ function gitBlobSha(buf){
   return crypto.createHash("sha1").update(head).update(buf).digest("hex")
 }
 async function readRawJsonWithSha(path,branch){
-  const refPath="refs/heads/"+String(branch||"main").split("/").map(encodeURIComponent).join("/");
+  // raw.githubusercontent espera el nombre de rama directamente. Anteponer
+  // refs/heads/ hace que ramas con "/" puedan resolverse de forma obsoleta/ambigua.
+  const refPath=String(branch||"main").split("/").map(encodeURIComponent).join("/");
   const filePath=String(path||"").split("/").map(encodeURIComponent).join("/");
   const url="https://raw.githubusercontent.com/"+REPO+"/"+refPath+"/"+filePath+"?t="+Date.now();
   const r=await fetch(url,{cache:"no-store",headers:{"user-agent":"TTiTTulares-Control-Raw/1.0","cache-control":"no-cache"}});
