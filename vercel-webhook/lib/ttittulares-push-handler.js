@@ -93,7 +93,7 @@ async function buildOperaNowcast(frames,lat,lon){
   const selected=frames.slice(0,3).sort((a,b)=>a.observedAt-b.observedAt);
   const settled=await Promise.allSettled(selected.map(async frame=>({
     ...frame,
-    window:await readOperaWindow(frame.url,lat,lon,34)
+    window:await readOperaWindow(frame.url,lat,lon,70)
   })));
   const grids=settled.filter(x=>x.status==='fulfilled'&&x.value.window?.ok).map(x=>x.value);
   if(grids.length<2)return{status:'insufficient_data',confidence:0,event:null,decodedFrames:grids.length};
