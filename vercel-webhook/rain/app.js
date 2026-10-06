@@ -37,7 +37,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.6.1',renameTarget:null
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.7.0',renameTarget:null
 };
 
 function iso(v){
@@ -98,6 +98,37 @@ function pct(v){return Math.round(Math.max(0,Math.min(1,Number(v)||0))*100)}
 function probabilityBand(value){
   const p=Number(value)||0;
   return p>=.85?'p85':p>=.70?'p70':p>=.50?'p50':'p35';
+}
+const RADAR_PALETTE=[
+  {dbz:0,rgba:[130,123,105,73]},
+  {dbz:5,rgba:[146,136,113,100]},
+  {dbz:10,rgba:[206,192,135,150]},
+  {dbz:15,rgba:[136,221,238,255]},
+  {dbz:20,rgba:[0,163,224,255]},
+  {dbz:25,rgba:[0,119,170,255]},
+  {dbz:30,rgba:[0,85,136,255]},
+  {dbz:35,rgba:[255,238,0,255]},
+  {dbz:40,rgba:[255,170,0,255]},
+  {dbz:45,rgba:[255,68,0,255]},
+  {dbz:50,rgba:[193,0,0,255]},
+  {dbz:55,rgba:[255,170,255,255]},
+  {dbz:60,rgba:[255,119,255,255]},
+  {dbz:65,rgba:[255,255,255,255]}
+];
+function radarDbzFromRgba(r,g,b,a){
+  if(a<45)return null;
+  let best=null,bestDist=Infinity;
+  for(const entry of RADAR_PALETTE){
+    const [er,eg,eb,ea]=entry.rgba;
+    const dist=(r-er)**2+(g-eg)**2+(b-eb)**2+((a-ea)*.65)**2;
+    if(dist<bestDist){bestDist=dist;best=entry.dbz}
+  }
+  return bestDist<7000?best:null;
+}
+function dbzToRainRate(dbz){
+  if(!Number.isFinite(dbz)||dbz<10)return 0;
+  const z=10**(dbz/10);
+  return Math.min(80,(z/200)**(1/1.6));
 }
 function cacheKey(){return 'raineta.forecast.'+state.loc.lat.toFixed(2)+','+state.loc.lon.toFixed(2)}
 function timeoutFetch(url,ms=9000,opts={}){
@@ -228,15 +259,17 @@ async function imageMask(url){
   ctx.imageSmoothingEnabled=false;
   ctx.drawImage(bitmap,0,0,ANALYSIS_SIZE,ANALYSIS_SIZE);
   if(bitmap.close)bitmap.close();
-  const d=ctx.getImageData(0,0,ANALYSIS_SIZE,ANALYSIS_SIZE).data,mask=new Uint8Array(ANALYSIS_SIZE*ANALYSIS_SIZE);
+  const d=ctx.getImageData(0,0,ANALYSIS_SIZE,ANALYSIS_SIZE).data,mask=new Uint8Array(ANALYSIS_SIZE*ANALYSIS_SIZE),rateGrid=new Float32Array(ANALYSIS_SIZE*ANALYSIS_SIZE);
   let wet=0;
   for(let i=0,p=0;i<mask.length;i++,p+=4){
-    const a=d[p+3],rgb=d[p]+d[p+1]+d[p+2];
-    const v=a>14&&rgb>24?1:0;mask[i]=v;wet+=v;
+    const dbz=radarDbzFromRgba(d[p],d[p+1],d[p+2],d[p+3]);
+    const rate=dbzToRainRate(dbz);
+    const v=Number.isFinite(dbz)&&dbz>=10?1:0;
+    mask[i]=v;rateGrid[i]=rate;wet+=v;
   }
   const density=wet/mask.length;
   if(density>.90)throw new Error('radar mask opaca');
-  return{mask,width:ANALYSIS_SIZE,height:ANALYSIS_SIZE,density};
+  return{mask,rateGrid,width:ANALYSIS_SIZE,height:ANALYSIS_SIZE,density};
 }
 function frameStep(frames){
   const d=[];for(let i=1;i<frames.length;i++){const v=(frames[i].time-frames[i-1].time)/60;if(v>0&&v<=30)d.push(v)}
@@ -262,10 +295,11 @@ async function computeNowcast(meta){
     if(m)estimates.push(m);
   }
   const motion=combineMotionEstimates(estimates),latest=masks.at(-1),step=frameStep(masks);
-  const center=(ANALYSIS_SIZE-1)/2,current=wetNear(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,center,center,1.5);
-  const base={status:'motion_uncertain',confidence:motion?.confidence||0,event:null,rainingNow:current>=.10,currentWetFraction:current,radarTime:new Date(latest.time*1000).toISOString(),decodedFrames:masks.length};
+  const center=(ANALYSIS_SIZE-1)/2,current=wetNear(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,center,center,0);
+  const currentRadarRate=latest.rateGrid?.[Math.round(center)*ANALYSIS_SIZE+Math.round(center)]||0;
+  const base={status:'motion_uncertain',confidence:motion?.confidence||0,event:null,rainingNow:current>=.10,currentWetFraction:current,currentRadarRate,radarTime:new Date(latest.time*1000).toISOString(),decodedFrames:masks.length};
   if(!motion||motion.samples<2||motion.confidence<.22)return base;
-  const series=projectPointSeries(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:0});
+  const series=projectPointSeries(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion,{horizonMinutes:120,sourceStepMinutes:step,outputStepMinutes:5,radius:0,intensityGrid:latest.rateGrid});
   let event=detectNowcastEvent(series,{enterWetFraction:.10,exitWetFraction:.035,minConsecutive:2,stepMinutes:5});
   if(event){
     const t=latest.time*1000;
@@ -297,13 +331,17 @@ function formatCountdownMs(ms){
 function quarterHourRateAt(timeMs){
   const qh=state.data?.quarterHour;
   if(!qh?.time?.length)return 0;
-  let best=-1,dist=Infinity;
-  for(let i=0;i<qh.time.length;i++){
-    const d=Math.abs(Date.parse(qh.time[i])-timeMs);
-    if(d<dist){dist=d;best=i}
+  const rows=qh.time.map((time,i)=>({time:Date.parse(time),rate:(Number(qh.precipitation?.[i])||0)*4})).filter(x=>Number.isFinite(x.time));
+  if(!rows.length)return 0;
+  if(timeMs<=rows[0].time)return rows[0].rate;
+  if(timeMs>=rows.at(-1).time)return rows.at(-1).rate;
+  for(let i=1;i<rows.length;i++){
+    if(timeMs<=rows[i].time){
+      const a=rows[i-1],b=rows[i],span=Math.max(1,b.time-a.time),f=(timeMs-a.time)/span;
+      return a.rate+(b.rate-a.rate)*f;
+    }
   }
-  const amount=best>=0?Number(qh.precipitation?.[best])||0:0;
-  return amount*4;
+  return 0;
 }
 function intensityLabel(rate){
   if(rate<=0.05)return'Seco';
@@ -313,9 +351,9 @@ function intensityLabel(rate){
   return'Lluvia fuerte';
 }
 function shortPoints(){
-  const now=Date.now(),n=state.nowcast,qh=state.data?.quarterHour;
-  const radarBase=Date.parse(n?.radarTime||'');
-  const series=Array.isArray(n?.series)?n.series:[];
+  const now=Date.now(),n=state.nowcast,qh=state.data?.quarterHour,ev=chooseDisplayEvent(),rainNow=currentRainState().raining;
+  const radarBase=Date.parse(n?.radarTime||''),series=Array.isArray(n?.series)?n.series:[];
+  const eventStart=ev?Date.parse(ev.start):Infinity,eventEnd=ev?.end?Date.parse(ev.end):eventStart+45*60_000;
   const points=[];
   for(let i=0;i<=24;i++){
     const time=now+i*5*60_000;
@@ -326,37 +364,55 @@ function shortPoints(){
         return !best||d<best.d?{row,d}:best;
       },null)?.row||null;
     }
-    let modelAmount=0;
-    if(qh?.time?.length){
-      let best=-1,dist=Infinity;
-      for(let j=0;j<qh.time.length;j++){
-        const d=Math.abs(Date.parse(qh.time[j])-time);
-        if(d<dist){dist=d;best=j}
-      }
-      modelAmount=best>=0?Number(qh.precipitation?.[best])||0:0;
-    }
-    const rate=modelAmount*4;
+    const modelRate=quarterHourRateAt(time);
+    const radarRate=Number(radar?.radarRate)||0;
     const radarProb=Number(radar?.probability);
-    const modelSignal=rate<=.05?0:Math.min(.72,.28+Math.log1p(rate)*.22);
-    let probability=Number.isFinite(radarProb)?Math.max(radarProb,modelSignal*.55):modelSignal;
+    const wetFraction=Number(radar?.wetFraction)||0;
+    const horizon=Math.max(0,(time-now)/60_000),radarWeight=Math.max(.42,.9-horizon*.004);
+    const inEvent=Boolean(ev)&&time>=eventStart&&time<=eventEnd;
+    const radarWet=wetFraction>=.10&&radarRate>=.03;
+    let rate=0;
+    if(rainNow&&i===0)rate=Math.max(radarRate,modelRate,Number(n?.currentRadarRate)||0);
+    else if(inEvent){
+      if(radarWet)rate=radarRate*radarWeight+modelRate*(1-radarWeight);
+      else rate=modelRate;
+    }
+    const modelSignal=modelRate<=.05?0:Math.min(.76,.25+Math.log1p(modelRate)*.24);
+    let probability=Number.isFinite(radarProb)?Math.max(radarProb,modelSignal*.5):modelSignal;
+    if(!inEvent&&!rainNow)probability=Math.min(probability,.18);
+    if(inEvent&&rate>0)probability=Math.max(probability,.35);
     if(i===0){
       const truth=currentTruth();
-      if(truth===true)probability=1;
-      if(truth===false)probability=0;
+      if(truth===true){probability=1;rate=Math.max(rate,.1)}
+      if(truth===false){probability=0;rate=0}
     }
-    points.push({time,probability:Math.max(0,Math.min(1,probability||0)),rate,wetFraction:Number(radar?.wetFraction)||0});
+    points.push({
+      time,
+      probability:Math.max(0,Math.min(1,probability||0)),
+      rate:Math.max(0,rate||0),
+      radarRate,
+      modelRate,
+      wetFraction,
+      inEvent,
+      wet:rainNow&&i===0 ? rate>.03 : inEvent&&(rate>=.03||radarWet)
+    });
   }
   return points;
 }
 function renderShortNowcast(){
   const points=shortPoints(),ev=chooseDisplayEvent(),now=Date.now(),rain=currentRainState();
   const near=ev&&Date.parse(ev.start)<=now+120*60_000;
-  let rate=quarterHourRateAt(rain.raining?now:(near?Date.parse(ev.start):now));
-  if(rain.raining&&rate<=.05)rate=Math.max(.2,Number(state.data?.quarterHour?.current?.precipitation||0)*4);
-  $('shortState').textContent=rain.raining?intensityLabel(rate):(near?intensityLabel(Math.max(rate,.08)):'Seco');
+  const wetPoints=points.filter(p=>p.wet);
+  const arrivalPoints=wetPoints.slice(0,Math.min(4,wetPoints.length));
+  const arrivalRate=arrivalPoints.length
+    ? arrivalPoints.reduce((sum,p)=>sum+p.rate,0)/arrivalPoints.length
+    : 0;
+  const peakRate=wetPoints.length?Math.max(...wetPoints.map(p=>p.rate)):0;
+  const labelRate=rain.raining?Math.max(Number(state.nowcast?.currentRadarRate)||0,arrivalRate):arrivalRate;
+  $('shortState').textContent=near||rain.raining?intensityLabel(labelRate):'Seco';
   $('shortDetail').textContent=rain.raining
-    ? 'Detectado ahora · radar + observación'
-    : near?'Llegada más probable '+fmtTime(ev.start)+' · radar + modelos':'Sin lluvia probable en las próximas 2 h';
+    ? 'Radar: '+labelRate.toFixed(1)+' mm/h ahora · actualización '+fmtTime(state.nowcast?.radarTime||Date.now())
+    : near?'Llegada '+fmtTime(ev.start)+' · '+labelRate.toFixed(1)+' mm/h al inicio · pico ~'+peakRate.toFixed(1)+' mm/h':'Sin lluvia probable en las próximas 2 h';
   $('shortEtaLabel').textContent=rain.raining?'Fin estimado':near?'Empieza en':'Próximo cambio';
   $('shortCountdown').textContent=rain.raining
     ? (ev?.end?formatCountdownMs(Date.parse(ev.end)-now):'—')
@@ -369,11 +425,11 @@ function renderShortNowcast(){
   $('shortConfidence').textContent=shortConfidence!=null?pct(shortConfidence)+'%':'—';
   renderRadarSkill();
 
-  const maxRate=Math.max(.35,Math.min(8,Math.max(...points.map(p=>p.rate))));
+  const maxRate=Math.max(.35,Math.min(12,Math.max(...points.map(p=>p.rate))));
   $('minuteStrip').innerHTML=points.map((p,i)=>{
-    const wet=p.probability>=.25||p.rate>=.08;
+    const wet=Boolean(p.wet);
     const band=probabilityBand(p.probability);
-    const height=wet?Math.max(7,Math.min(100,10+Math.sqrt(Math.min(p.rate,maxRate)/maxRate)*90)):3;
+    const height=wet?Math.max(8,Math.min(100,8+Math.sqrt(Math.min(p.rate,maxRate)/maxRate)*92)):3;
     return '<div class="minuteCol '+(wet?'wet '+band+' ':'')+(i===0?'now':'')+'" title="'+fmtTime(p.time)+' · prob. '+Math.round(p.probability*100)+'% · intensidad '+p.rate.toFixed(1)+' mm/h"><i class="minuteMark" style="height:'+height+'%"></i></div>';
   }).join('');
   const ticks=[];
@@ -620,7 +676,7 @@ function renderEvents(){
 }
 function renderSources(){
   const list=[
-    {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'?'nowcast activo':state.nowcast?.status||'solo mapa'},
+    {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'?'movimiento + intensidad dBZ':state.nowcast?.status||'solo mapa'},
     {label:'Guía 15 min',ok:state.data.sources.quarterHour,detail:'modelo/interpolación'},
     ...state.data.sources.deterministic.map(x=>({label:x.label,ok:x.ok,detail:'determinista'})),
     ...state.data.sources.ensembles.map(x=>({label:x.label,ok:x.ok,detail:x.members?x.members+' miembros':'ensemble'}))
