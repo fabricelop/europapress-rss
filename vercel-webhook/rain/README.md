@@ -1,4 +1,4 @@
-# RainETA v0.15.5
+# RainETA v0.15.6
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,14 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Verdad en superficie y tramos fuertes exactos v0.15.6
+- `Llueve ahora` deja de afirmarse por un único eco moderado o por los modelos. Se confirma con **dos radares recientes concordantes**, una señal radar local claramente intensa o feedback del usuario.
+- Si solo un radar detecta precipitación moderada sobre el punto, RainETA muestra **Lluvia no confirmada**: el eco puede estar en altura o no estar llegando al suelo.
+- Los modelos siguen influyendo en riesgo y episodios futuros, pero **no deciden el estado actual**.
+- El primer bloque de 5 min no se pinta como lluvia si la precipitación superficial no está confirmada.
+- Un episodio largo ya no se colorea entero como fuerte por contener un único pico. La cabecera muestra `Tramos de lluvia fuerte` con las **horas exactas** y el pico de cada intervalo.
+- Solo los tramos que alcanzan **≥7,5 mm/h** reciben borde/fondo rojo completos; tormentas o chubascos fuertes conservan esa alerta roja.
 
 ## Alerta visual de lluvia fuerte v0.15.5
 - RainETA considera **lluvia fuerte** a partir de **7,5 mm/h**.
