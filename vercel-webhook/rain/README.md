@@ -1,4 +1,4 @@
-# RainETA v0.11
+# RainETA v0.12
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,14 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Coherencia radar-modelos v0.12
+- Cuando el nowcast radar es suficientemente fiable y no proyecta precipitación sobre el punto, RainETA crea una **ventana seca radar** de hasta 120 min.
+- Esa ventana tiene prioridad sobre señales horarias de modelos a corto plazo: un episodio multimodelo que empezaba “ya” se retrasa hasta el final de la ventana seca o se descarta si termina dentro de ella.
+- La tarjeta de corto plazo y el resumen superior explican el desacuerdo: `radar seco hasta HH:MM · modelos mantienen riesgo después`.
+- El resumen añade, cuando existe, la duración seca posterior al episodio y la hora del siguiente pulso.
+- Episodios previstos muestra también una ventana seca inicial respaldada por radar.
+- El radar incorpora **CENTRAR** para devolver el mapa al punto seleccionado sin cambiar el instante temporal; `AHORA` sigue devolviendo el radar al último barrido.
 
 ## Radar
 RainViewer aporta los últimos barridos. RainETA descarga una imagen centrada en la ubicación, genera una máscara de precipitación en el dispositivo, calcula traslación entre barridos y proyecta el píxel de la ubicación cada 5 minutos hasta 120 minutos.
