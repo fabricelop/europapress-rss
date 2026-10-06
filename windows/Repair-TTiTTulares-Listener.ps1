@@ -1,7 +1,7 @@
 # Repair-TTiTTulares-Listener.ps1
 $ErrorActionPreference="Stop"
 $BaseDir="C:\TTiTTulares"
-$SourceRef="64bee94d0c4ecb70896dd653ab97b5e3456575db"
+$SourceRef="85bd248ab5caeb39b2cf4c478d21dd50e20dc518"
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 
 function Get-GitHubFile([string]$remote,[string]$dest,[string]$kind="ps"){
@@ -49,7 +49,7 @@ Get-GitHubFile "windows/TTiTTularesImageBridge.js" $ttBridge "js"
 Get-GitHubFile "windows/TTendenciasImageBridge.js" $trBridge "js"
 
 $listenerText=Get-Content -LiteralPath $listener -Raw -Encoding UTF8
-if($listenerText -notmatch 'ttittulares-dedicated-v45'){throw "Se descargó un listener TTiTTulares anterior; se esperaba v45"}
+if($listenerText -notmatch 'ttittulares-dedicated-v46'){throw "Se descargó un listener TTiTTulares anterior; se esperaba v46"}
 $trendListenerText=Get-Content -LiteralPath $trendListener -Raw -Encoding UTF8
 if($trendListenerText -notmatch 'ttendencias-dedicated-v16'){throw "Se descargó un listener TTendencias anterior; se esperaba v16"}
 $bridgeText=Get-Content -LiteralPath $ttBridge -Raw -Encoding UTF8
@@ -149,7 +149,7 @@ $tcount=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Ob
   ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like "*TTendenciasDedicatedListener.ps1*"
 }).Count
 
-Write-Host "TT automation reparada: TTiTTulares v45 + TTendencias v16 + bridges v33 + watchdog + updater" -ForegroundColor Green
+Write-Host "TT automation reparada: TTiTTulares v46 + TTendencias v16 + bridges v33 + watchdog + updater" -ForegroundColor Green
 Write-Host ("TTiTTulares listeners activos: "+$count)
 Write-Host ("TTendencias listeners activos: "+$tcount)
 Write-Host ("PID TTiTTulares: "+$l.Id)
