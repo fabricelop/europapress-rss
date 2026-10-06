@@ -339,6 +339,7 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
 const BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback";
+// compatibility validator for installed listeners: ttittulares-image-bridge-v1
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
