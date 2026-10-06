@@ -66,13 +66,27 @@ function controlRawUrl(path){
   return "https://raw.githubusercontent.com/"+REPO+"/"+ref+"/"+clean+"?t="+Date.now()
 }
 async function readControl(path,strong=false){
-  // Tanto la UI como el listener solo necesitan el JSON actual. RAW no consume
-  // la cuota REST de GitHub; strong=1 significa no usar caché, no usar Contents API.
+  // El polling normal usa RAW y no consume cuota REST. Para strong=1 (solo el
+  // listener, con cadencia limitada) usamos Contents API: raw.githubusercontent
+  // puede conservar unos segundos el objeto anterior tras mover una rama.
+  if(strong){
+    try{
+      const filePath=String(path||"").split("/").map(encodeURIComponent).join("/");
+      const ref=encodeURIComponent(TRIGGER_BRANCH);
+      const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+filePath+"?ref="+ref);
+      if(r.status===404)return {};
+      if(r.ok){
+        const j=await r.json();
+        const raw=Buffer.from(String(j.content||"").replace(/\s/g,""),"base64").toString("utf8");
+        return JSON.parse(raw||"{}")
+      }
+    }catch(_){}
+  }
   try{
     const r=await fetch(controlRawUrl(path),{cache:"no-store",headers:{
       "cache-control":"no-cache, no-store, max-age=0",
       "pragma":"no-cache",
-      "user-agent":strong?"ttittulares-run-status-strong-raw":"ttittulares-run-status-control-raw"
+      "user-agent":"ttittulares-run-status-control-raw"
     }});
     if(r.ok)return JSON.parse(await r.text()||"{}");
     if(r.status===404)return {};
