@@ -20,11 +20,15 @@ function Get-GitHubFile([string]$remote,[string]$dest){
 }
 
 $listener=Join-Path $BaseDir "TTiTTularesDedicatedListener.ps1"
+$trendListener=Join-Path $BaseDir "TTendenciasDedicatedListener.ps1"
+$watchdog=Join-Path $BaseDir "TT-LocalWatchdog.ps1"
 $updater=Join-Path $BaseDir "TT-AutoUpdater.ps1"
 Get-GitHubFile "windows/TTiTTularesDedicatedListener.ps1" $listener
+Get-GitHubFile "windows/TTendenciasDedicatedListener.ps1" $trendListener
+Get-GitHubFile "windows/TT-LocalWatchdog.ps1" $watchdog
 Get-GitHubFile "windows/TT-AutoUpdater.ps1" $updater
 
-foreach($pat in @("*TTiTTularesDedicatedListener.ps1*","*TT-AutoUpdater.ps1*")){
+foreach($pat in @("*TTiTTularesDedicatedListener.ps1*","*TTendenciasDedicatedListener.ps1*","*TT-LocalWatchdog.ps1*","*TT-AutoUpdater.ps1*")){
   @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
     ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like $pat
   }) | ForEach-Object {
@@ -57,16 +61,24 @@ function Start-Hidden([string]$file,[string]$name){
 }
 
 $u=Start-Hidden $updater "tt-auto-updater"
+$w=Start-Hidden $watchdog "tt-local-watchdog"
 $l=Start-Hidden $listener "ttittulares-listener"
+$tl=Start-Hidden $trendListener "ttendencias-listener"
 Start-Sleep -Seconds 5
 
 $count=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
   ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like "*TTiTTularesDedicatedListener.ps1*"
 }).Count
+$tcount=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
+  ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like "*TTendenciasDedicatedListener.ps1*"
+}).Count
 
-Write-Host "TTiTTulares listener reparado · v30-ack-bypass" -ForegroundColor Green
-Write-Host ("Listener activos: "+$count)
-Write-Host ("PID listener: "+$l.Id)
+Write-Host "TT automation reparada: TTiTTulares + TTendencias + watchdog" -ForegroundColor Green
+Write-Host ("TTiTTulares listeners activos: "+$count)
+Write-Host ("TTendencias listeners activos: "+$tcount)
+Write-Host ("PID TTiTTulares: "+$l.Id)
+Write-Host ("PID TTendencias: "+$tl.Id)
+Write-Host ("PID watchdog: "+$w.Id)
 Write-Host ("PID updater: "+$u.Id)
 $log=Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 if(Test-Path $log){
