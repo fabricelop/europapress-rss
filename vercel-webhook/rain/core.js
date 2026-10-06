@@ -41,6 +41,24 @@ function standardDeviation(values) {
   return Math.sqrt(variance);
 }
 
+function aggregateFamilies(items, valueSelector) {
+  const groups = new Map();
+  for (const item of items) {
+    const value = valueSelector(item);
+    if (!Number.isFinite(value)) continue;
+    const family = item.family || item.id || item.label || 'unknown';
+    const group = groups.get(family) || { family, values: [], weight: 0 };
+    group.values.push(value);
+    group.weight = Math.max(group.weight, Number(item.weight) || 1);
+    groups.set(family, group);
+  }
+  return [...groups.values()].map(group => ({
+    family: group.family,
+    value: group.values.reduce((sum, value) => sum + value, 0) / group.values.length,
+    weight: group.weight,
+  }));
+}
+
 export function aggregateEnsembleModel(hourly = {}, wetThreshold = WET_THRESHOLD_MM) {
   const time = Array.isArray(hourly.time) ? hourly.time : [];
   const memberKeys = Object.keys(hourly).filter(
@@ -77,31 +95,30 @@ export function buildConsensus({ deterministic = [], ensembles = [], nowMs = Dat
       return row ? {...model, probability:row.probability, amount:row.median} : null;
     }).filter(Boolean);
 
-    const detWet = weightedAverage(detAtTime.map(model=>({value:model.value>=WET_THRESHOLD_MM?1:0,weight:model.weight})),'value');
-    const ensProbability = weightedAverage(ensAtTime,'probability');
+    const detWetFamilies=aggregateFamilies(detAtTime,model=>model.value>=WET_THRESHOLD_MM?1:0);
+    const ensProbFamilies=aggregateFamilies(ensAtTime,model=>model.probability);
+    const detAmountFamilies=aggregateFamilies(detAtTime,model=>model.value);
+    const ensAmountFamilies=aggregateFamilies(ensAtTime,model=>model.amount);
+    const detWet=weightedAverage(detWetFamilies,'value');
+    const ensProbability=weightedAverage(ensProbFamilies,'value');
     const horizonHours = Math.max(0,(Date.parse(time)-nowMs)/3_600_000);
     const ensembleShare = horizonHours <= 6 ? 0.58 : horizonHours <= 24 ? 0.68 : 0.78;
     const probability = ensProbability == null ? (detWet ?? 0)
       : detWet == null ? ensProbability
       : ensembleShare*ensProbability + (1-ensembleShare)*detWet;
 
-    const detMedian = median(detAtTime.map(model=>model.value));
-    const ensAmount = weightedAverage(ensAtTime,'amount');
+    const detMedian=median(detAmountFamilies.map(group=>group.value));
+    const ensAmount=weightedAverage(ensAmountFamilies,'value');
     const expectedPrecipitation = ensAmount == null ? (detMedian ?? 0)
       : detMedian == null ? ensAmount
       : 0.68*ensAmount + 0.32*detMedian;
 
     const familyOpinions=new Map();
-    for(const model of detAtTime){
-      const family=model.family||model.id||model.label||'det';
-      const arr=familyOpinions.get(family)||[];
-      arr.push(model.value>=WET_THRESHOLD_MM?1:0);familyOpinions.set(family,arr);
+    for(const group of detWetFamilies){
+      const arr=familyOpinions.get(group.family)||[];arr.push(group.value);familyOpinions.set(group.family,arr);
     }
-    for(const model of ensAtTime){
-      const family=model.family||model.id||model.label||'ens';
-      const arr=familyOpinions.get(family)||[];
-      if(Number.isFinite(model.probability))arr.push(model.probability);
-      familyOpinions.set(family,arr);
+    for(const group of ensProbFamilies){
+      const arr=familyOpinions.get(group.family)||[];arr.push(group.value);familyOpinions.set(group.family,arr);
     }
     const opinionVector=[...familyOpinions.values()].map(values=>values.reduce((s,v)=>s+v,0)/values.length);
     const spread=standardDeviation(opinionVector) ?? 0.5;
