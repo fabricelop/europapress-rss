@@ -550,8 +550,6 @@ function renderShortNowcast(){
   const shortConfidence=near?calibratedConfidence(ev.confidence,leadMinutes):dry?calibratedConfidence(dry.confidence,leadMinutes):null;
   $('shortConfidence').textContent=shortConfidence!=null?pct(shortConfidence)+'%':'—';
   renderRadarSkill();
-  updateSourceSkill();
-  renderSourceSkill();
 
   const maxRate=Math.max(.35,Math.min(12,Math.max(...points.map(p=>p.rate))));
   $('minuteStrip').innerHTML=points.map((p,i)=>{
@@ -856,7 +854,13 @@ function stabilizedRadarEvent(){
 function canonicalEtaHistoryKey(){return 'raineta.canonicalEta.'+locationKey(state.loc)}
 function etaTrendText(ev){
   if(!ev?.start)return'';
-  const marker=ev.kind==='radar'?(state.nowcast?.radarTime||'radar'):(state.data?.generatedAt||'model');
+  const marker=ev.kind==='radar'
+    ? (state.nowcast?.radarTime||'radar')
+    : ev.kind==='opera'
+      ? (state.data?.opera?.observedAt||'opera')
+      : ev.kind==='radarFusion'
+        ? (state.nowcast?.radarTime||'radar')+'|'+(state.data?.opera?.observedAt||'opera')
+        : (state.data?.generatedAt||'model');
   let rows=readLocal(canonicalEtaHistoryKey(),[]);
   let current=rows.find(x=>x.marker===marker);
   if(!current){
@@ -866,6 +870,13 @@ function etaTrendText(ev){
   }
   const idx=rows.findIndex(x=>x.marker===marker),prev=idx>0?rows[idx-1]:null;
   const parts=[];
+  if(ev.kind==='radarFusion'){
+    parts.push('ETA cruzada RainViewer + OPERA');
+  }
+  if(ev.disagreementMinutes){
+    const chosen=ev.kind==='opera'?'OPERA':'RainViewer';
+    parts.push('RainViewer y OPERA discrepan ~'+ev.disagreementMinutes+' min · se prioriza '+chosen+(ev.adaptiveChoice?' con historial local':''));
+  }
   if(ev.kind==='radar'&&ev.event?.stabilizationSamples>=2){
     const s=ev.event;
     if(s.stabilized&&Math.abs(Number(s.stabilizationDeltaMinutes)||0)>=4){
@@ -1189,14 +1200,32 @@ function render(){
       $('summary').textContent='Tu observación contradice la señal automática; queda registrada para calibrar la detección local.';
     }else if(ev.kind==='observed'){
       $('summary').textContent='Confirmado por ti en esta ubicación'+(ev.end?' · fin estimado '+fmtTime(ev.end):'')+'.';
+    }else if(ev.kind==='radarFusion'){
+      const speed=Number(ev.motion?.speedKmh),dir=compassDirection(ev.motion?.bearingDegrees);
+      const motion=Number.isFinite(speed)&&speed<220?' · eco '+Math.round(speed)+' km/h'+(dir?' hacia '+dir:''):'';
+      if(ev.active){
+        $('summary').textContent='RainViewer + OPERA coinciden en lluvia ahora'+(ev.end?' · fin probable '+fmtTime(ev.end):'')+motion+'.';
+      }else{
+        $('summary').textContent='ETA cruzada RainViewer + OPERA: llegada '+fmtTime(ev.start)+' · '+uncertaintyText(ev)+motion+'.';
+      }
+    }else if(ev.kind==='opera'){
+      const speed=Number(ev.motion?.speedKmh),dir=compassDirection(ev.motion?.bearingDegrees);
+      const motion=Number.isFinite(speed)&&speed<220?' · movimiento OPERA '+Math.round(speed)+' km/h'+(dir?' hacia '+dir:''):'';
+      if(ev.active){
+        $('summary').textContent='OPERA espacial detecta lluvia ahora'+(ev.end?' · fin probable '+fmtTime(ev.end):'')+motion+'.';
+      }else{
+        $('summary').textContent='Nowcast OPERA independiente: llegada '+fmtTime(ev.start)+' · '+uncertaintyText(ev)+motion+'.';
+      }
+      if(ev.disagreementMinutes)$('summary').textContent+=' RainViewer discrepa ~'+ev.disagreementMinutes+' min.';
     }else if(ev.kind==='radar'){
       const speed=Number(n?.motion?.speedKmh),dir=compassDirection(n?.motion?.bearingDegrees);
       const motion=Number.isFinite(speed)&&speed<220?' · desplazamiento del eco de lluvia '+Math.round(speed)+' km/h'+(dir?' hacia '+dir:''):'';
       if(ev.active){
-        $('summary').textContent='Radar: lluvia detectada ahora'+(ev.end?' · fin probable '+fmtTime(ev.end):'')+motion+'.';
+        $('summary').textContent='Radar RainViewer: lluvia detectada ahora'+(ev.end?' · fin probable '+fmtTime(ev.end):'')+motion+'.';
       }else{
-        $('summary').textContent='Nowcast radar: llegada '+fmtTime(ev.start)+' · '+uncertaintyText(ev)+motion+'.';
+        $('summary').textContent='Nowcast RainViewer: llegada '+fmtTime(ev.start)+' · '+uncertaintyText(ev)+motion+'.';
       }
+      if(ev.disagreementMinutes)$('summary').textContent+=' OPERA discrepa ~'+ev.disagreementMinutes+' min.';
     }else if(ev.kind==='model15'){
       if(ev.radarDelayed&&ev.dryWindow){
         $('summary').textContent='Radar sin precipitación proyectada sobre el punto hasta ~'+fmtTime(ev.dryWindow.end)+(ev.dryWindow.operaDry?' · OPERA también está seco ahora':'')+'. Después, los modelos mantienen riesgo de lluvia intermitente.';
@@ -1242,6 +1271,8 @@ function render(){
   }
   renderConsensusDecision(decision);
   recordRainDecisionSnapshot(decision);
+  updateSourceSkill();
+  renderSourceSkill();
   $('etaTrend').textContent=etaTrendText(ev);
   const h=d.sources.health;
   $('health').textContent=h.available+' de '+h.total+' capas disponibles · radar '+(n?.status==='ok'?'analizado':n?.status==='motion_uncertain'?'sin movimiento fiable':'degradado');
@@ -1423,9 +1454,14 @@ function renderEvents(){
 }
 
 function renderSources(){
+  const opera=state.data.opera,opNow=opera?.nowcast,opEvent=opNow?.event;
+  const opSpeed=Number(opNow?.motion?.speedKmh),opDir=compassDirection(opNow?.motion?.bearingDegrees);
+  const opMotion=opNow?.status==='ok'
+    ? ' · movimiento '+(Number.isFinite(opSpeed)?Math.round(opSpeed)+' km/h'+(opDir?' '+opDir:''):'calculado')+(opEvent?.start?' · ETA '+fmtTime(opEvent.start):' · sin llegada en 2 h')
+    : opNow?.status?' · nowcast '+opNow.status:'';
   const list=[
-    {label:'EUMETNET OPERA',ok:Boolean(state.data.sources.opera),detail:state.data.opera?.ok
-      ? 'RATE '+(state.data.opera.resolutionKm||2)+' km / 5 min · '+fmtTime(state.data.opera.observedAt)+(state.data.opera.sample?.ok?' · '+Number(state.data.opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')
+    {label:'EUMETNET OPERA',ok:Boolean(state.data.sources.opera),detail:opera?.ok
+      ? 'RATE '+(opera.resolutionKm||2)+' km / 5 min · '+fmtTime(opera.observedAt)+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+opMotion
       : 'backend sin compuesto reciente'},
     {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'?'movimiento + intensidad dBZ':state.nowcast?.status||'solo mapa'},
     {label:'Guía 15 min',ok:state.data.sources.quarterHour,detail:'modelo/interpolación'},
@@ -1673,13 +1709,14 @@ async function fetchQuickSummary(loc){
   const active=events.find(e=>Date.parse(e.start)<=now&&Date.parse(e.end)>now)||null;
   const next=active||events.find(e=>Date.parse(e.start)>now)||null;
   const following=next?events.find(e=>Date.parse(e.start)>=Date.parse(next.end)+5*60_000)||null:null;
-  const precipitation=Number(d.current?.precipitation)||0;
+  const precipitation=Number(d.current?.precipitation)||0,horizonEnd=now+24*3600_000;
+  const bestDry=events.length?bestDryWindow(events,now,horizonEnd,{minMinutes:45}):null;
   return{
     location:loc,
     temperature:Number(d.current?.temperature_2m),
     raining:precipitation>=.1,
     precipitation,
-    active,next,following,
+    active,next,following,bestDry,
     horizonHours:24
   };
 }
@@ -1745,7 +1782,10 @@ async function renderLocationsSummary(force=false){
       }else{
         forecast='Sin lluvia prevista en las próximas '+s.horizonHours+' h';
       }
-      left.innerHTML='<strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>'+source+'</small><span class="locForecast">'+forecast+'</span>';
+      const bestDry=s.bestDry
+        ? '<span class="locBestDry">Mejor hueco seco · '+quickWhen(s.bestDry.start)+'–'+quickWhen(s.bestDry.end)+' · '+durationText(s.bestDry.start,s.bestDry.end)+'</span>'
+        : '';
+      left.innerHTML='<strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>'+source+'</small><span class="locForecast">'+forecast+'</span>'+bestDry;
       right.innerHTML='<div class="locNow '+(raining?'wet':'')+'">'+(raining?'LLUEVE':'NO LLUEVE')+'</div><div class="locTemp">'+(Number.isFinite(s.temperature)?s.temperature.toFixed(1).replace('.',',')+' °C':'—')+'</div>';
     }else{
       left.innerHTML='<strong>'+loc.name+(loc.isCurrent?' · GPS':'')+'</strong><small>No se pudieron actualizar los datos</small>';
