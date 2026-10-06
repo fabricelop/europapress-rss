@@ -1,4 +1,4 @@
-# RainETA v0.15.1
+# RainETA v0.15.2
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,13 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Pausas y fin anticipado de episodios v0.15.2
+- `No llueve` corrige **el instante actual**, no elimina automáticamente todo el episodio.
+- Si el nowcast detecta otro pulso dentro del episodio, RainETA muestra **pausa seca** y una posible reanudación, conservando el fin previsto anterior como contexto.
+- Si el seco persiste y lo respaldan radar/OPERA o varias observaciones del usuario, el tramo se **cierra antes de lo previsto** y se recalculan cabecera, 0–120 min y barras canónicas.
+- Cada final anticipado guarda el fin previsto, el fin observado, la fuente y los minutos de exceso. Tras al menos 5 correcciones, se aplica un ajuste local suave y limitado (máx. 15 min) a finales basados en modelos; el nowcast reciente sigue teniendo prioridad.
+- El botón `HASTA LLUVIA` usa también esta decisión corregida para no seguir apuntando a un episodio ya cerrado.
 
 ## Episodios a 30 minutos v0.15.1
 - El detalle de `Episodios previstos` se muestra en bloques de **30 min** en vez de horas completas.
