@@ -144,7 +144,7 @@ const REQUESTED_VIEW=new URLSearchParams(location.search).get("view");
 const NORMALIZED_REQUESTED_VIEW=REQUESTED_VIEW==="problematic"?"review":REQUESTED_VIEW;
 const INITIAL_VIEW=["ready","processing","review","growing","tremending"].includes(NORMALIZED_REQUESTED_VIEW)?NORMALIZED_REQUESTED_VIEW:"ready";
 const cachedModel=loadLocalJson(DATA_CACHE_KEY);
-let model=cachedModel||{prepared:[],status:{},config:{},tremending:{items:[]}},hasGoodState=Boolean(cachedModel),reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),tremendingOpen=loadUiSet(TREMENDING_OPEN_KEY),tremendingDeleted=loadUiSet(TREMENDING_DELETED_KEY),tremendingPreview=new Map(),imageRuns=new Map(),loadSeq=0,runPoll=null,imageRunPoll=null,imageTerminalRefreshActive=false;
+let model=cachedModel||{prepared:[],status:{},config:{},tremending:{items:[]}},hasGoodState=Boolean(cachedModel),reworkItem=null,view=INITIAL_VIEW,openCards=loadUiSet(OPEN_KEY),pendingClosed=loadUiSet(PENDING_KEY),tremendingOpen=loadUiSet(TREMENDING_OPEN_KEY),tremendingDeleted=loadUiSet(TREMENDING_DELETED_KEY),tremendingPreview=new Map(),imageRuns=new Map(),imageProbeCursor=0,loadSeq=0,runPoll=null,imageRunPoll=null,imageTerminalRefreshActive=false;
 let uiInteractionVersion=0,uiHoldUntil=0,passiveRefreshTimer=null;
 function markUiInteraction(){uiInteractionVersion++;uiHoldUntil=Math.max(uiHoldUntil,Date.now()+1400)}
 function uiInteractionActive(){return Date.now()<uiHoldUntil||Boolean(document.querySelector(".sheet.show,dialog[open]"))}
@@ -554,10 +554,11 @@ async function requestPendingImages(){
  updateImageControl();
  toast(errors.length?(ok+" solicitadas · "+errors.length+" con error"):(ok+" imagen"+(ok===1?"":"es")+" solicitada"+(ok===1?"":"s")))
 }
-function scheduleImageRunPoll(fast){
+function scheduleImageRunPoll(mode){
  clearTimeout(imageRunPoll);
  if(document.hidden){imageRunPoll=null;return}
- imageRunPoll=setTimeout(refreshImageRuns,fast?5000:300000)
+ const delay=mode==="active"?20000:mode==="pending"?60000:600000;
+ imageRunPoll=setTimeout(refreshImageRuns,delay)
 }
 async function refreshImageRuns(){
  if(document.hidden){scheduleImageRunPoll(false);return}
@@ -589,7 +590,17 @@ async function refreshImageRuns(){
 
  let terminalChanged=false,changed=false;
  const terminalIds=[];
- await Promise.all(candidates.map(async item=>{
+ // Evita el N+1 anterior (todos los jobs cada 5 s): máximo cuatro sondeos por ciclo.
+ const activeCandidates=candidates.filter(item=>imageRunActive(imageRuns.get(String(item.event_id||""))));
+ const queuedCandidates=candidates.filter(item=>!imageRunActive(imageRuns.get(String(item.event_id||""))));
+ const probeBudget=4,probes=activeCandidates.slice(0,probeBudget);
+ const remaining=Math.max(0,probeBudget-probes.length);
+ if(remaining&&queuedCandidates.length){
+   const count=Math.min(remaining,queuedCandidates.length);
+   for(let i=0;i<count;i++)probes.push(queuedCandidates[(imageProbeCursor+i)%queuedCandidates.length]);
+   imageProbeCursor=(imageProbeCursor+count)%queuedCandidates.length
+ }
+ await Promise.all(probes.map(async item=>{
    const id=String(item.event_id||"");if(!id)return;
    const before=imageRuns.get(id);
    try{
@@ -624,7 +635,7 @@ async function refreshImageRuns(){
      imageTerminalRefreshActive=false
    }
  }
- scheduleImageRunPoll([...imageRuns.values()].some(imageRunActive))
+ const hasActive=[...imageRuns.values()].some(imageRunActive);\n scheduleImageRunPoll(hasActive?"active":(candidates.length?"pending":"idle"))
 }
 async function api(action,extra={}){
  const t=token(),headers={"content-type":"application/json"};if(t)headers.authorization="Bearer "+t;
@@ -1358,7 +1369,7 @@ document.addEventListener("visibilitychange",()=>{
 });
 window.addEventListener("pageshow",()=>{queuePassiveLoad(250);loadRunStatus();refreshImageRuns()});
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/ttittulares/sw.js",{updateViaCache:"none"}).then(reg=>{reg.update().catch(()=>{});retireLegacyNotifications()}).catch(()=>{});
-if(hasGoodState)render();else setView(view);if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshImageRuns();setInterval(()=>{if(!document.hidden)queuePassiveLoad(0)},300000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
+if(hasGoodState)render();else setView(view);if(lastRunTelemetry)runVisual(lastRunTelemetry);load();loadRunStatus();refreshImageRuns();setInterval(()=>{if(!document.hidden)queuePassiveLoad(0)},600000);setInterval(()=>{if(!document.hidden)renderTiming()},15000);
 </script>
 </body></html>
 <!-- quote-candidates: conversation-low-engagement-v1 -->
