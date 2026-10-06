@@ -1,7 +1,8 @@
 TT Apps production deploy trigger
-Reason: corregir TTiTTulares (Borrar salidas, Validar a elaboración e imágenes visibles en Listas)
+Reason: reducir consumo Vercel Fluid Active CPU sin romper flujos
 Includes:
-- Validar No comprobadas mueve inmediatamente a PROCESSING
-- Borrar/ Borrar todo mantiene ocultación local si GitHub está limitado
-- Listas muestra miniatura de IA o archivo en la tarjeta
-Source main before trigger: e594a88fc99f8b2677f240e96480e0b280d2538b
+- TTiTTulares: image polling máximo 4 jobs por ciclo
+- Poll activo 20 s, pendiente 60 s, reposo 10 min
+- Refresco pasivo general 10 min
+- Preflight de producción actualizado a 6 funciones consolidadas
+Source optimization commit: 6981345b11afe61c90ca279a4fa0408006745261
