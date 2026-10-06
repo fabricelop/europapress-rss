@@ -1,11 +1,13 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T00:45:00+02:00",
-  "last_completed_at": "2026-10-07T00:45:00+02:00",
-  "updated_at": "2026-10-07T00:45:00+02:00",
+  "last_started_at": "2026-10-07T01:45:00+02:00",
+  "last_completed_at": "2026-10-07T01:51:00+02:00",
+  "updated_at": "2026-10-07T01:51:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "9086ee48d4e5"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -14,24 +16,24 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-20261007T004500-chat",
+    "run_id": "tr-20261007T0145-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T00:45:00+02:00",
-    "updated_at": "2026-10-07T00:45:00+02:00",
-    "finished_at": "2026-10-07T00:45:00+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-07T01:45:00+02:00",
+    "updated_at": "2026-10-07T01:51:00+02:00",
+    "finished_at": "2026-10-07T01:51:00+02:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
@@ -42,60 +44,158 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 0,
+      "fallback_images_ready": 1,
       "visual_jobs_queued": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_reused": 0,
       "remates_omitted": 0,
       "pending_repair_triggered": 1,
-      "pending_cards_reviewed": 10,
+      "pending_cards_reviewed": 13,
       "visual_repair_triggered": 1
     },
-    "message": "Pasada cerrada · 0 nuevas · 10 Pendientes revisadas · cola editorial vacía",
+    "message": "Pasada cerrada · 1 explicada · 13 Pendientes revisadas · cola editorial vacía",
     "activity": [
       {
-        "at": "2026-10-07T00:45:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada directa iniciada · cola editorial 0"
+        "at": "2026-10-07T01:46:30+02:00",
+        "phase": "investigating",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Contrastando fuente 1/2"
       },
       {
-        "at": "2026-10-07T00:45:00+02:00",
+        "at": "2026-10-07T01:47:00+02:00",
+        "phase": "investigating",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Fuente 1/2 verificada · RTVE confirma emisión e invitados"
+      },
+      {
+        "at": "2026-10-07T01:47:10+02:00",
+        "phase": "investigating",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Contrastando fuente 2/2"
+      },
+      {
+        "at": "2026-10-07T01:47:30+02:00",
+        "phase": "investigating",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Fuente 2/2 verificada · AS confirma emisión e invitados"
+      },
+      {
+        "at": "2026-10-07T01:47:40+02:00",
+        "phase": "investigating",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-07T01:48:00+02:00",
+        "phase": "drafting",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-07T01:48:10+02:00",
+        "phase": "drafting",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Comprobando límite de X · 192 caracteres"
+      },
+      {
+        "at": "2026-10-07T01:48:20+02:00",
+        "phase": "remate_selection",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-07T01:48:30+02:00",
+        "phase": "remate_selection",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-07T01:48:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-07T01:49:00+02:00",
+        "phase": "persisting",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-07T01:49:20+02:00",
+        "phase": "persisting",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-07T01:49:40+02:00",
+        "phase": "persisting",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-07T01:50:00+02:00",
+        "phase": "verifying",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-07T01:50:10+02:00",
+        "phase": "verifying",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-07T01:50:20+02:00",
+        "phase": "verifying",
+        "trend_id": "9086ee48d4e5",
+        "title": "#AlCieloConElla",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-07T01:50:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual de Pendientes solicitado"
+        "message": "Revisando Pendientes · 13 tarjetas"
       },
       {
-        "at": "2026-10-07T00:45:00+02:00",
+        "at": "2026-10-07T01:50:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 10 tarjetas"
+        "message": "13/13 con remate; reparación visual solicitada"
       },
       {
-        "at": "2026-10-07T00:45:00+02:00",
+        "at": "2026-10-07T01:50:50+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "10/10 con remate; reparación visual solicitada"
+        "message": "Releyendo main · cola editorial vacía"
       },
       {
-        "at": "2026-10-07T00:45:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola editorial sigue vacía"
-      },
-      {
-        "at": "2026-10-07T00:45:00+02:00",
+        "at": "2026-10-07T01:51:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada · 0 nuevas · 10 Pendientes revisadas"
+        "message": "Pasada cerrada · 1 explicada · 13 Pendientes revisadas · cola vacía"
       }
     ],
     "queue_complete": true,
@@ -116,7 +216,68 @@
         "5": 13
       }
     },
-    "remate_selections": []
+    "remate_selections": [
+      {
+        "trend_id": "9086ee48d4e5",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.2,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c2",
+            "total": 7.9,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 7.6,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 7.2,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c5",
+            "total": 6.9,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.2,
+        "no_remate_reason": null
+      }
+    ]
   },
   "visual_repair": {
     "requested": true,
