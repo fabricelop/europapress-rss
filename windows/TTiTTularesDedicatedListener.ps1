@@ -1,5 +1,5 @@
 # TTiTTularesDedicatedListener.ps1
-# official-pipeline-restart-token: 2026-10-06-v39-abandoned-mutex-recovery
+# official-pipeline-restart-token: 2026-10-06-v40-image-bridge-v29
 # Listener dedicado a TTiTTulares: ejecución editorial oficial + jobs automáticos/manuales de Gag IA.
 # No procesa TTendencias. READY se materializa con texto+remate y el tramo visual continúa automáticamente.
 
@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v39"
+$WorkerId = "ttittulares-dedicated-v40"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -355,7 +355,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     $url = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TTiTTularesImageBridge.js?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
     $wc = New-Object System.Net.WebClient
     try {
-      $wc.Headers["User-Agent"]="TTiTTulares-image-bridge-refresh-v27"
+      $wc.Headers["User-Agent"]="TTiTTulares-image-bridge-refresh-v29"
       $wc.Headers["Cache-Control"]="no-cache"
       $raw = $wc.DownloadData($url)
     } finally {
@@ -366,8 +366,8 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
     foreach ($needle in @(
       'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
+      'BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback"',
       'ttittulares-run-status?view=image-job&strong=1&id=',
-      'ttittulares-image-bridge-v1',
       'imagesAfterMarker'
     )) {
       if (-not $txt.Contains($needle)) { throw "Bridge remoto sin garantía: $needle" }
@@ -375,7 +375,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     & $NodePath --check $tmp *> $null
     if ($LASTEXITCODE -ne 0) { throw "node --check falló en bridge remoto" }
     Move-Item -LiteralPath $tmp -Destination $ImageBridge -Force
-    Write-Log "IMAGE BRIDGE REFRESHED source=raw-v27"
+    Write-Log "IMAGE BRIDGE REFRESHED source=raw-v29"
     return $true
   } catch {
     Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
@@ -384,13 +384,13 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   if (Test-Path -LiteralPath $ImageBridge) {
     try {
       $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
-      if ($txt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and $txt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')) {
+      if ($txt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and $txt.Contains('BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback"') -and $txt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')) {
         & $NodePath --check $ImageBridge *> $null
         if ($LASTEXITCODE -eq 0) { Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK"; return $true }
       }
     } catch {}
   }
-  Write-Log "IMAGE BRIDGE ERROR no hay bridge v27 válido"
+  Write-Log "IMAGE BRIDGE ERROR no hay bridge v29 válido"
   return $false
 }
 
