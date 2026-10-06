@@ -15918,7 +15918,7 @@
       "percentage": 25,
       "first_seen": "2026-10-06T11:12:53.056822Z",
       "last_seen": "2026-10-06T12:42:30.247128Z",
-      "status": "DISMISSED",
+      "status": "PROCESSING",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -15937,8 +15937,8 @@
       "eligible_at": "2026-10-06T12:42:30.247128Z",
       "event_id": "c4cc96dbfe7f",
       "title": "Sánchez anuncia la nueva aprobación de los decretos de vivienda: \"Este Gobierno ni tira la toalla ni deja tirada a la gente\"",
-      "selection_mode": "AUTO_WEB",
-      "selected_at": "2026-10-06T12:42:49.542158Z",
+      "selection_mode": "MANUAL_REOPEN_OUTCOME",
+      "selected_at": "2026-10-06T13:27:15.181Z",
       "source_evidence": [
         {
           "source": "laSexta Noticias",
@@ -15979,9 +15979,21 @@
       ],
       "drafted_source_count": 4,
       "verified_source_count": 4,
-      "reconciled_from_event_id": "48bca90f6447",
-      "reconciliation_reason": "Mismo hecho esencial ya materializado: el Gobierno ha vuelto a aprobar los dos decretos de vivienda y Sánchez afirma que no deja tirada a la gente. Esta pieza no aporta una actualización material independiente.",
-      "reconciled_at": "2026-10-06T13:09:15.412528Z"
+      "force_user_elaborate": true,
+      "user_validated": true,
+      "user_validated_at": "2026-10-06T13:27:15.181Z",
+      "previous_outcome": {
+        "status": "DISMISSED",
+        "filter_reason": "",
+        "reconciliation_reason": "Mismo hecho esencial ya materializado: el Gobierno ha vuelto a aprobar los dos decretos de vivienda y Sánchez afirma que no deja tirada a la gente. Esta pieza no aporta una actualización material independiente.",
+        "problem_reason": "",
+        "duplicate_of_event_id": "48bca90f6447",
+        "finished_at": "2026-10-06T13:09:15.412528Z"
+      },
+      "reopened_at": "2026-10-06T13:27:15.181Z",
+      "reopened_source": "web_processing_outcome",
+      "with_image": true,
+      "image_mode": "ai_plus_fallback"
     },
     {
       "id": "cd552a18e8d8",
@@ -17675,5 +17687,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-06T13:27:08.029Z"
+  "updated_at": "2026-10-06T13:27:15.181Z"
 }
