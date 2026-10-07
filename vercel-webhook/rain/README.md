@@ -1,4 +1,4 @@
-# RainETA v0.17.20
+# RainETA v0.17.21
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,12 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Horizonte espacial honesto v0.17.21
+- La proyección cartográfica del radar se corta al superar el horizonte que el nowcast puede defender. A partir de ese punto RainETA deja el mapa sin ecos futuros en vez de congelar o desplazar artificialmente la última imagen.
+- Si el movimiento radar no supera los controles de confianza/estabilidad, no se dibuja ninguna trayectoria futura.
+- La ETA y la probabilidad siguen funcionando con el consenso de modelos; el corte afecta únicamente al campo espacial de radar.
+- Este comportamiento es transitorio hasta sustituir la extrapolación larga por un campo futuro híbrido radar + NWP de alta resolución.
 
 ## Navegación frame a frame e histórico ampliado v0.17.20
 - El radar incorpora botones ◀ / ▶ para inspeccionar manualmente cada paso. En el tramo observado saltan únicamente entre barridos reales; en el futuro avanzan o retroceden minuto a minuto.
