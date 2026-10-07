@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-auto-2be7f32cd992-r1-a9-1791349970215",
   "requested_at": "2026-10-07T05:12:50.214994Z",
-  "updated_at": "2026-10-07T05:24:04.904Z",
-  "status": "RUNNING",
-  "phase": "pc_pickup",
+  "updated_at": "2026-10-07T05:58:14.089Z",
+  "status": "SUPERSEDED",
+  "phase": "bridge_hotfix_superseded",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -55,8 +55,9 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "PC ha recogido la solicitud de imagen.",
+  "message": "Job anterior a bridge v35 cerrado para liberar el único slot tras hotfix; se reintentará con un command_id nuevo.",
   "pc_upload_secret_hash": "f11ee5467760beb8f0ed5fc2eb9c15502f8bd587643245f99e2979b0e8b7fc05",
   "pc_worker_id": "ttittulares-dedicated-v47",
-  "pc_picked_up_at": "2026-10-07T05:24:04.904Z"
+  "pc_picked_up_at": "2026-10-07T05:24:04.904Z",
+  "finished_at": "2026-10-07T05:58:14.089Z"
 }
