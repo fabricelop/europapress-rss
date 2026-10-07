@@ -46,7 +46,7 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
 const HARMONIE_STALE_GRACE_MINUTES=180;
-const LIGHTNING_WMS_URL='https://maps.dwd.de/geoserver/ows';
+const LIGHTNING_WMS_URL='https://maps.dwd.de/geoserver/dwd/wms';
 const LIGHTNING_WMS_LAYERS=[
   {id:'raineta-lightning-flash',layer:'dwd:Accumulated_Flash_Geometry',opacity:.95,label:'MTG LI 5 min'},
   {id:'raineta-lightning-ncew',layer:'dwd:NCEW_EU',opacity:.82,label:'NowCastELEC'}
@@ -3080,7 +3080,7 @@ async function verifyLightningSource(force=false){
   state.lightningVerificationError=null;
   state.lightningVerificationPromise=(async()=>{
     try{
-      const response=await timeoutFetch(lightningCapabilitiesUrl(),10_000,{mode:'cors',cache:'no-store',headers:{Accept:'application/xml,text/xml,*/*'}});
+      const response=await timeoutFetch(lightningCapabilitiesUrl(),35_000,{mode:'cors',cache:'no-store',headers:{Accept:'application/xml,text/xml,*/*'}});
       if(!response.ok)throw new Error('HTTP '+response.status);
       const text=await response.text();
       const required=LIGHTNING_WMS_LAYERS.map(spec=>spec.layer);
