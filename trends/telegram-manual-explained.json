@@ -34658,7 +34658,10 @@
       "image_status": "none",
       "image_choice": "none",
       "image_pending": false,
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "22c1b9fcb392",
@@ -34721,12 +34724,30 @@
       ],
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "image_status": "none",
-      "image_choice": "none",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/2X2BFMPE7F7T33ST2LHJK75ZIE.jpg?auth=4f68c9bdb8280eadfca6e51864348af64d15008a972f5e78529fa6952d8225a6&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER · 7/10/2026",
+        "source_url": "https://cadenaser.com/cmadrid/2026/10/07/de-presidenta-a-escritora-ayuso-publicara-su-primer-libro-en-diciembre-radio-madrid/",
+        "alt": "Imagen de archivo relacionada con Planeta",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://cadenaser.com/resizer/v2/2X2BFMPE7F7T33ST2LHJK75ZIE.jpg?auth=4f68c9bdb8280eadfca6e51864348af64d15008a972f5e78529fa6952d8225a6&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER · 7/10/2026",
+        "source_url": "https://cadenaser.com/cmadrid/2026/10/07/de-presidenta-a-escritora-ayuso-publicara-su-primer-libro-en-diciembre-radio-madrid/",
+        "alt": "Imagen de archivo relacionada con Planeta",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-07T13:26:07.765Z",
+  "updated_at": "2026-10-07T13:28:54.288195Z",
   "count": 627
 }
