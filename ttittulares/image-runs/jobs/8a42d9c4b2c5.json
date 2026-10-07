@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-8a42d9c4b2c5-r1-a1-1791398215046",
+  "requested_at": "2026-10-07T18:36:55.046612Z",
+  "updated_at": "2026-10-07T18:36:55.046612Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "8a42d9c4b2c5",
+  "event_id": "8a42d9c4b2c5",
+  "target_name": "Los Reyes invitan a representantes civiles de Ceuta y Melilla a la recepción del 12 de octubre",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Los Reyes invitan a representantes civiles de Ceuta y Melilla a la recepción del 12 de octubre",
+    "revision": 1,
+    "factual_summary": "Los Reyes han invitado a representantes de la sociedad civil de Ceuta y Melilla a la tradicional recepción del 12 de octubre en el Palacio Real. Felipe VI y Letizia visitarán después ambas ciudades autónomas los días 13 y 14 de octubre.",
+    "tweet_text": "Los Reyes invitan a representantes de la sociedad civil de Ceuta y Melilla a la recepción del 12 de octubre en el Palacio Real. Visitarán ambas ciudades el 13 y 14.\n\n🌶️ La recepción del 12-O ya lleva dos ciudades en la maleta.",
+    "remate": "🌶️ La recepción del 12-O ya lleva dos ciudades en la maleta.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLos Reyes invitan a representantes de la sociedad civil de Ceuta y Melilla a la recepción del 12 de octubre en el Palacio Real. Visitarán ambas ciudades el 13 y 14.\n\n🌶️ La recepción del 12-O ya lleva dos ciudades en la maleta.\n\nREMATE EXACTO:\n🌶️ La recepción del 12-O ya lleva dos ciudades en la maleta.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLos Reyes han invitado a representantes de la sociedad civil de Ceuta y Melilla a la tradicional recepción del 12 de octubre en el Palacio Real. Felipe VI y Letizia visitarán después ambas ciudades autónomas los días 13 y 14 de octubre.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.elmundo.es/espana/2026/10/07/6ac66dcafc6c83bd768b4598.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/2026-10-07/los-reyes-invitan-a-palacio-a-representantes-de-la-sociedad-civil-de-ceuta-y-melilla-en-la-recepcion-del-12-de-octubre.html"
+      },
+      {
+        "source": "El HuffPost",
+        "url": "https://www.huffingtonpost.es/politica/los-reyes-invitan-representantes-sociedad-civil-ceuta-melilla-recepcion-12-octubre-f202610.html"
+      },
+      {
+        "source": "RTVE",
+        "url": "https://www.rtve.es/noticias/20261001/reyes-visitaran-ceuta-melilla-proximos-13-14-octubre/17248561.shtml"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
