@@ -1,35 +1,33 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T11:15:00+02:00",
-  "last_completed_at": "2026-10-07T11:20:30+02:00",
-  "updated_at": "2026-10-07T11:20:30+02:00",
+  "last_started_at": "2026-10-07T11:45:00+02:00",
+  "last_completed_at": "2026-10-07T11:50:00+02:00",
+  "updated_at": "2026-10-07T11:50:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "571bfe869955"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
-    "run_id": "tr-20261007T111500+0200-chat",
+    "run_id": "tr-20261007T114500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T11:15:00+02:00",
-    "updated_at": "2026-10-07T11:20:30+02:00",
-    "finished_at": "2026-10-07T11:20:30+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-07T11:45:00+02:00",
+    "updated_at": "2026-10-07T11:50:00+02:00",
+    "finished_at": "2026-10-07T11:50:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
@@ -40,20 +38,22 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 1,
-      "pending_cards_reviewed": 3,
+      "fallback_images_ready": 0,
+      "pending_cards_reviewed": 1,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
+      "visual_repairs_ready": 1,
+      "telegram_delivery_started": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_reused": 0,
-      "remates_omitted": 1,
+      "remates_omitted": 0,
       "jit_skipped": 0,
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada cerrada 1/1 · PSOE r4 explicado y verificado; cola autoritativa final 0. Se revisaron 3 Pendientes vigentes: Merino r1 ya tiene IA lista, PSOE r4 tiene fallback listo e IA pendiente y Modric r1 sigue pendiente de IA. Sin ImageGen directo ni despliegue Vercel.",
+    "message": "Pasada cerrada 0/0 · no había trabajo editorial nuevo. Se saneó la única Pendiente vigente: Modric r1 ya tiene IA válida y su entrega a Telegram ha arrancado por el flujo independiente. Cola autoritativa final 0. Sin ImageGen directo ni despliegue Vercel.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -63,150 +63,63 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "571bfe869955",
-        "revision": 4,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-07T11:15:00+02:00",
+        "at": "2026-10-07T11:45:00+02:00",
         "phase": "preparing",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Preparando pasada · 1 entrada activa; releyendo PSOE r4 y saneamiento de Pendientes."
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada · cola editorial autoritativa 0; revisando reexplicaciones y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-07T11:15:25+02:00",
-        "phase": "verifying",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Releyendo estado autoritativo de PSOE r4"
-      },
-      {
-        "at": "2026-10-07T11:15:50+02:00",
-        "phase": "investigating",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-07T11:16:20+02:00",
-        "phase": "investigating",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Contrastando fuente 1/2 · RTVE confirma aceleración de preparativos electorales del 29-N"
-      },
-      {
-        "at": "2026-10-07T11:16:45+02:00",
-        "phase": "investigating",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Contrastando fuente 2/2 · Europa Press confirma comité electoral y despliegue territorial de campaña"
-      },
-      {
-        "at": "2026-10-07T11:16:55+02:00",
-        "phase": "investigating",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-07T11:17:00+02:00",
-        "phase": "drafting",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-07T11:17:05+02:00",
-        "phase": "remate_selection",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Sin remate · contenido político; explicación factual suficiente"
-      },
-      {
-        "at": "2026-10-07T11:17:10+02:00",
-        "phase": "drafting",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Comprobando límite de X · 187 caracteres"
-      },
-      {
-        "at": "2026-10-07T11:18:00+02:00",
-        "phase": "persisting",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-07T11:18:25+02:00",
-        "phase": "persisting",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-07T11:18:45+02:00",
-        "phase": "persisting",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-07T11:19:10+02:00",
-        "phase": "verifying",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-07T11:19:30+02:00",
-        "phase": "verifying",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-07T11:19:45+02:00",
-        "phase": "verifying",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-07T11:20:00+02:00",
+        "at": "2026-10-07T11:45:25+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 3 tarjetas vigentes tras excluir archivadas/publicadas"
+        "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-07T11:20:10+02:00",
+        "at": "2026-10-07T11:45:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Pendientes: Modric r1 sin IA válida; Merino r1 con IA lista; PSOE r4 con fallback listo e IA pendiente"
+        "message": "Revisando Pendientes · 1 tarjeta vigente tras excluir archivadas/publicadas."
       },
       {
-        "at": "2026-10-07T11:20:20+02:00",
+        "at": "2026-10-07T11:46:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final: cola 0, requests activas 0, rewrite_pending 0"
+        "trend_id": "70915b4a47c4",
+        "title": "Modric",
+        "message": "Pendiente 1/1 · falta IA válida; reparación visual solicitada."
       },
       {
-        "at": "2026-10-07T11:20:30+02:00",
+        "at": "2026-10-07T11:47:58+02:00",
+        "phase": "verifying",
+        "trend_id": "70915b4a47c4",
+        "title": "Modric",
+        "message": "Reparación visual automática completada correctamente."
+      },
+      {
+        "at": "2026-10-07T11:49:42+02:00",
+        "phase": "verifying",
+        "trend_id": "70915b4a47c4",
+        "title": "Modric",
+        "message": "Modric r1 · IA materializada y adjuntada; estado visual ready."
+      },
+      {
+        "at": "2026-10-07T11:49:50+02:00",
+        "phase": "verifying",
+        "trend_id": "70915b4a47c4",
+        "title": "Modric",
+        "message": "Entrega de Telegram iniciada por el flujo independiente."
+      },
+      {
+        "at": "2026-10-07T11:50:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 1/1 · PSOE r4 explicado y verificado; saneamiento visual activo por el flujo independiente."
+        "message": "Relectura final · cola 0, requests activas 0 y Modric r1 con IA válida."
       }
     ],
     "queue_complete": true,
@@ -215,31 +128,19 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "trigger_requested",
+    "status": "ai_ready_delivery_in_progress",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261007T111500+0200-chat",
-    "last_triggered_at": "2026-10-07T11:15:00+02:00",
-    "pending_cards_reviewed": 3,
-    "observed_at": "2026-10-07T11:20:10+02:00",
+    "last_trigger_run_id": "tr-20261007T114500+0200-chat",
+    "last_triggered_at": "2026-10-07T11:45:00+02:00",
+    "pending_cards_reviewed": 1,
+    "observed_at": "2026-10-07T11:49:50+02:00",
     "observed_pending": [
       {
         "id": "70915b4a47c4",
         "name": "Modric",
         "revision": 1,
-        "ai_status": "missing"
-      },
-      {
-        "id": "e24a929a9107",
-        "name": "Merino",
-        "revision": 1,
-        "ai_status": "ready"
-      },
-      {
-        "id": "571bfe869955",
-        "name": "PSOE",
-        "revision": 4,
-        "ai_status": "pending",
-        "fallback_status": "ready"
+        "ai_status": "ready",
+        "telegram_status": "delivery_in_progress"
       }
     ]
   }
