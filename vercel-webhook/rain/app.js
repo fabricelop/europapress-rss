@@ -44,9 +44,9 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.20';
+const APP_VERSION='0.17.21';
 const FORECAST_CACHE_SCHEMA='consensus-v13';
-const FORECAST_CACHE_COMPATIBLE_VERSIONS=['0.17.13','0.17.14','0.17.15','0.17.16','0.17.17','0.17.19'];
+const FORECAST_CACHE_COMPATIBLE_VERSIONS=['0.17.13','0.17.14','0.17.15','0.17.16','0.17.17','0.17.19','0.17.20'];
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -2717,6 +2717,18 @@ function showProjectedRadar(minutes){
   const control=radarProjectionControl(),canMove=control.ok;
   removeRadarLayer('raineta-radar');
   const reliable=nowcastReliableHorizon(),within=canMove&&minutes<=reliable;
+  const projectedAt=latest.time*1000+minutes*60_000;
+  if(!canMove||minutes>reliable){
+    removeRadarLayer('raineta-radar-projection');
+    state.radarProjectionImageKey=null;
+    $('radarTime').textContent=fmtTime(projectedAt);
+    if($('radarFrameStatus'))$('radarFrameStatus').textContent='SIN CAMPO RADAR FIABLE · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+    $('radarPosition').textContent='Sin proyección espacial fiable · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+    $('radarMotion').textContent=canMove
+      ? 'El radar observado ya ha superado su horizonte fiable (~'+reliable+' min). RainETA no desplaza ni congela ecos artificialmente; la ETA pasa a modelos y consenso.'
+      : 'No hay movimiento radar suficientemente fiable. RainETA no inventa una trayectoria; la ETA procede de modelos y consenso.';
+    return;
+  }
   const displayZoom=radarProjectionZoom();
   const url=radarDisplayImageUrl(r,latest,512,displayZoom),coordinates=projectionCoordinates(canMove?minutes:0,displayZoom);
   const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
@@ -2736,7 +2748,6 @@ function showProjectedRadar(minutes){
   }
   const opacity=projectedRadarOpacity(minutes,canMove,reliable);
   if(state.map.getLayer('raineta-radar-projection'))state.map.setPaintProperty('raineta-radar-projection','raster-opacity',opacity);
-  const projectedAt=latest.time*1000+minutes*60_000;
   $('radarTime').textContent=fmtTime(projectedAt);
   if($('radarFrameStatus'))$('radarFrameStatus').textContent='PROYECCIÓN · +'+Math.round(minutes)+' min · paso 1 min · '+fmtTime(projectedAt);
   if(canMove){
