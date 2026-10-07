@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tt-img-auto-4e48ad19374a-r1-a2-1791375790717",
-  "requested_at": "2026-10-07T12:23:10.716089Z",
-  "updated_at": "2026-10-07T13:04:09.668Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tt-img-auto-4e48ad19374a-r1-a3-1791378336478",
+  "requested_at": "2026-10-07T13:05:36.477587Z",
+  "updated_at": "2026-10-07T13:05:36.477587Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -15,7 +15,8 @@
   "revision": 1,
   "regenerate": true,
   "auto_repair": true,
-  "auto_repair_attempt": 2,
+  "auto_repair_attempt": 3,
+  "manual_retry_version": 0,
   "chat_command_version": 7,
   "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
   "context_snapshot": {
@@ -24,10 +25,10 @@
     "factual_summary": "CCOO, UGT y la Confederación de Sindicatos de Inquilinas han fijado el 11 de noviembre para la huelga general por la crisis de vivienda y salarios.",
     "tweet_text": "CCOO, UGT y organizaciones de inquilinos fijan el 11 de noviembre para la huelga general por vivienda y salarios.\n\n🌶️ El 11-N el alquiler entra oficialmente en el calendario laboral.",
     "remate": "🌶️ El 11-N el alquiler entra oficialmente en el calendario laboral.",
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.",
-    "image_style_name": "grabado_moderno",
-    "image_style_index": 6,
-    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nCCOO, UGT y organizaciones de inquilinos fijan el 11 de noviembre para la huelga general por vivienda y salarios.\n\n🌶️ El 11-N el alquiler entra oficialmente en el calendario laboral.\n\nREMATE EXACTO:\n🌶️ El 11-N el alquiler entra oficialmente en el calendario laboral.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nCCOO, UGT y la Confederación de Sindicatos de Inquilinas han fijado el 11 de noviembre para la huelga general por la crisis de vivienda y salarios.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+    "image_style_name": "tinta_acuarela",
+    "image_style_index": 0,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nCCOO, UGT y organizaciones de inquilinos fijan el 11 de noviembre para la huelga general por vivienda y salarios.\n\n🌶️ El 11-N el alquiler entra oficialmente en el calendario laboral.\n\nREMATE EXACTO:\n🌶️ El 11-N el alquiler entra oficialmente en el calendario laboral.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nCCOO, UGT y la Confederación de Sindicatos de Inquilinas han fijado el 11 de noviembre para la huelga general por la crisis de vivienda y salarios.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
     "url": "https://www.servimedia.es/noticias/huelga-general-vivienda-celebrara-11-noviembre/1413398166",
     "citations": [
       {
@@ -51,9 +52,5 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "CDP timeout Page.navigate",
-  "pc_upload_secret_hash": "f0f75ee1495506452f61792df2ee4a756e48f96db6529c0706c3619173960147",
-  "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-07T13:03:34.658Z",
-  "finished_at": "2026-10-07T13:04:09.668Z"
+  "message": "Reparación automática de imagen IA para noticia en Listas."
 }
