@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T15:15:00+02:00",
-  "last_completed_at": "2026-10-07T13:27:47.028Z",
-  "updated_at": "2026-10-07T13:27:47.028Z",
+  "last_started_at": "2026-10-07T15:45:00+02:00",
+  "last_completed_at": "2026-10-07T15:51:05+02:00",
+  "updated_at": "2026-10-07T15:51:05+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -12,23 +12,23 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
-    "run_id": "tr-20261007T131500-chat",
+    "canonical": true,
+    "run_id": "tr-20261007T154500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T15:15:00+02:00",
-    "updated_at": "2026-10-07T13:27:47.028Z",
-    "finished_at": "2026-10-07T13:27:47.028Z",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-07T15:45:00+02:00",
+    "updated_at": "2026-10-07T15:51:05+02:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 3,
-      "revisions_updated": 0,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 0,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
       "trends_problematic": 0,
@@ -42,18 +42,18 @@
       "pending_cards_reviewed": 0,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "visual_repairs_ready": 1,
+      "visual_repairs_ready": 0,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 3,
-      "remates_selected": 3,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_reused": 0,
       "remates_omitted": 0,
       "jit_skipped": 0,
       "concurrent_completed": 0,
-      "new_queue_entries_during_run": 3
+      "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada: 3/3 tendencias explicadas y verificadas; cola editorial vacía.",
+    "message": "Pasada completada: Correos r1 explicada y verificada; cola editorial vacía.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -65,288 +65,195 @@
     },
     "remate_selections": [
       {
-        "trend_id": "74a31fe68bb7",
-        "revision": 0,
+        "trend_id": "fb7d494952cf",
+        "revision": 1,
         "candidate_count": 5,
         "candidates": [
           {
             "id": "c1",
-            "total": 7.5,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c2",
-            "total": 7.9,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          },
-          {
-            "id": "c3",
-            "total": 8.6,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c4",
-            "total": 7.2,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          },
-          {
-            "id": "c5",
-            "total": 7.7,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.9
-          }
-        ],
-        "selected_candidate": "c3",
-        "selected_score": 8.6,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "d00ef2d5dc62",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.1,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c2",
             "total": 8.7,
             "ratings_affinity": 2.2,
             "trend_specificity": 2,
             "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c3",
-            "total": 7.9,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
             "originality": 1.2,
             "length_fit": 1,
-            "repetition_penalty": -0.7
+            "repetition_penalty": -0.5
           },
           {
-            "id": "c4",
-            "total": 8,
+            "id": "c2",
+            "total": 8.1,
             "ratings_affinity": 2,
             "trend_specificity": 1.9,
             "punch": 1.7,
             "originality": 1.1,
             "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c5",
-            "total": 7.5,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          }
-        ],
-        "selected_candidate": "c2",
-        "selected_score": 8.7,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "22c1b9fcb392",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.8,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c2",
-            "total": 8.2,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
+            "repetition_penalty": -0.6
           },
           {
             "id": "c3",
-            "total": 8.5,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c4",
-            "total": 7.6,
+            "total": 7.4,
             "ratings_affinity": 1.8,
             "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c5",
-            "total": 7.9,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.9,
             "punch": 1.6,
             "originality": 1.2,
             "length_fit": 1,
-            "repetition_penalty": -0.7
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c4",
+            "total": 7.9,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c5",
+            "total": 7.2,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -1
           }
         ],
-        "selected_candidate": "c3",
-        "selected_score": 8.5,
+        "selected_candidate": "c1",
+        "selected_score": 8.7,
         "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-07T15:15:00+02:00",
+        "at": "2026-10-07T15:45:00+02:00",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada editorial · releyendo cola autoritativa, requests, reexplicaciones y Pendientes."
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Preparando pasada editorial · 1 entrada activa"
       },
       {
-        "at": "2026-10-07T15:16:56+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación visual solicitada en main mediante pending-repair-trigger."
-      },
-      {
-        "at": "2026-10-07T15:18:15+02:00",
+        "at": "2026-10-07T15:46:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual terminado correctamente · 0 tarjetas candidatas y 0 jobs IA nuevos."
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Releyendo estado autoritativo de Correos"
       },
       {
-        "at": "2026-10-07T15:18:50+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Aparecen 3 entradas nuevas en cola durante la pasada: IRPF, Pedro Rodríguez y Planeta."
-      },
-      {
-        "at": "2026-10-07T15:19:00+02:00",
+        "at": "2026-10-07T15:46:20+02:00",
         "phase": "investigating",
-        "trend_id": "74a31fe68bb7",
-        "title": "IRPF",
-        "message": "Contrastando el detonante actual con el BOE y cobertura económica del decreto de vivienda."
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Buscando detonante actual"
       },
       {
-        "at": "2026-10-07T15:22:26+02:00",
-        "phase": "persisting",
-        "trend_id": "74a31fe68bb7",
-        "title": "IRPF",
-        "message": "Guardando ficha Explicada, sincronizando request y retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-07T15:22:40+02:00",
-        "phase": "verifying",
-        "trend_id": "74a31fe68bb7",
-        "title": "IRPF",
-        "message": "IRPF cerrada y verificada."
-      },
-      {
-        "at": "2026-10-07T15:23:00+02:00",
+        "at": "2026-10-07T15:47:10+02:00",
         "phase": "investigating",
-        "trend_id": "d00ef2d5dc62",
-        "title": "Pedro Rodríguez",
-        "message": "Contrastando el anuncio de retirada con fuentes deportivas actuales."
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Contrastando fuente 1/2"
       },
       {
-        "at": "2026-10-07T15:24:13+02:00",
-        "phase": "persisting",
-        "trend_id": "d00ef2d5dc62",
-        "title": "Pedro Rodríguez",
-        "message": "Guardando ficha Explicada, sincronizando request y retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-07T15:24:30+02:00",
-        "phase": "verifying",
-        "trend_id": "d00ef2d5dc62",
-        "title": "Pedro Rodríguez",
-        "message": "Pedro Rodríguez cerrada y verificada."
-      },
-      {
-        "at": "2026-10-07T15:25:00+02:00",
+        "at": "2026-10-07T15:47:30+02:00",
         "phase": "investigating",
-        "trend_id": "22c1b9fcb392",
-        "title": "Planeta",
-        "message": "Contrastando el anuncio editorial de Íntimo y su fecha de publicación."
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Contrastando fuente 2/2"
       },
       {
-        "at": "2026-10-07T15:25:43+02:00",
+        "at": "2026-10-07T15:47:45+02:00",
+        "phase": "investigating",
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-07T15:48:00+02:00",
+        "phase": "drafting",
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-07T15:48:15+02:00",
+        "phase": "drafting",
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-07T15:48:30+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-07T15:48:45+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-07T15:49:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-07T15:49:15+02:00",
         "phase": "persisting",
-        "trend_id": "22c1b9fcb392",
-        "title": "Planeta",
-        "message": "Guardando ficha Explicada, sincronizando request y retirando revisión de la cola."
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-07T15:26:10+02:00",
+        "at": "2026-10-07T15:49:45+02:00",
+        "phase": "persisting",
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-07T15:50:05+02:00",
+        "phase": "persisting",
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-07T15:50:25+02:00",
         "phase": "verifying",
-        "trend_id": "22c1b9fcb392",
-        "title": "Planeta",
-        "message": "Releyendo main y verificando id+revision y texto persistido."
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-07T13:27:47.028Z",
+        "at": "2026-10-07T15:50:40+02:00",
+        "phase": "verifying",
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-07T15:50:50+02:00",
+        "phase": "verifying",
+        "trend_id": "fb7d494952cf",
+        "title": "Correos",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-07T15:51:05+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada: 3/3 tendencias explicadas y verificadas; cola editorial vacía."
+        "message": "Pasada completada: Correos r1 explicada y verificada; cola editorial vacía."
       }
     ],
-    "queue_complete": true,
-    "remaining_active_ids": []
+    "finished_at": "2026-10-07T15:51:05+02:00"
   },
   "visual_repair": {
     "requested": true,
