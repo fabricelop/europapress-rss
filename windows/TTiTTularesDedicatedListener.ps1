@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v47"
+$WorkerId = "ttittulares-dedicated-v48"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -295,20 +295,25 @@ function Read-ImageJobDirect([string]$TargetId) {
 
 function Read-ImageJob([string]$TargetId) {
   if (-not $TargetId) { return $null }
-  # La rama de control resuelta por SHA inmutable es autoritativa. Consultarla
-  # antes que Vercel evita que un endpoint atrasado devuelva el command_id previo
-  # y haga que el listener descarte el job nuevo como si fuera obsoleto.
-  $direct=Read-ImageJobDirect $TargetId
-  if($direct){return $direct}
+
+  # v48: Vercel strong=1 es la lectura primaria de cada job, igual que en
+  # TTendencias. El índice puede avanzar varias veces durante 90 s; si primero
+  # fijamos un SHA de GitHub anterior, el mismo target devuelve un command_id
+  # viejo y el listener descarta el REQUESTED actual. RAW GitHub queda solo
+  # como fallback si el endpoint fuerte no responde.
   try {
     $doc=Invoke-RestMethod -Uri (CacheBust ($ImageJobUrlBase + [uri]::EscapeDataString($TargetId))) -Headers @{
-      "Cache-Control" = "no-cache"
-      "User-Agent" = "TTiTTulares-Dedicated-Listener"
+      "Cache-Control" = "no-cache, no-store"
+      "Pragma" = "no-cache"
+      "User-Agent" = "TTiTTulares-Dedicated-Listener-v48"
     } -TimeoutSec 12
     if($doc){return $doc}
   } catch {
     Write-Log "IMAGE JOB API WARNING target=$TargetId :: $($_.Exception.Message)"
   }
+
+  $direct=Read-ImageJobDirect $TargetId
+  if($direct){return $direct}
   return $null
 }
 
