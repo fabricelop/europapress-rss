@@ -1,7 +1,7 @@
 # Repair-TTiTTulares-Listener.ps1
 $ErrorActionPreference="Stop"
 $BaseDir="C:\TTiTTulares"
-$SourceRef="85bd248ab5caeb39b2cf4c478d21dd50e20dc518"
+$SourceRef="eba516a87dbef1372d78a2fe69ab423e8f9d81ef"
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 
 function Get-GitHubFile([string]$remote,[string]$dest,[string]$kind="ps"){
@@ -53,9 +53,13 @@ if($listenerText -notmatch 'ttittulares-dedicated-v46'){throw "Se descargó un l
 $trendListenerText=Get-Content -LiteralPath $trendListener -Raw -Encoding UTF8
 if($trendListenerText -notmatch 'ttendencias-dedicated-v16'){throw "Se descargó un listener TTendencias anterior; se esperaba v16"}
 $bridgeText=Get-Content -LiteralPath $ttBridge -Raw -Encoding UTF8
-if($bridgeText -notmatch 'ttittulares-image-bridge-v33-rehydrate-submit'){throw "Se descargó un bridge TTiTTulares anterior; se esperaba v32"}
+if($bridgeText -notmatch 'ttittulares-image-bridge-v34-handoff-capture'){throw "Se descargó un bridge TTiTTulares anterior; se esperaba v32"}
 $trendBridgeText=Get-Content -LiteralPath $trBridge -Raw -Encoding UTF8
-if($trendBridgeText -notmatch 'ttendencias-image-bridge-v33-rehydrate-submit'){throw "Se descargó un bridge TTendencias anterior; se esperaba v32"}
+if($trendBridgeText -notmatch 'ttendencias-image-bridge-v34-handoff-capture'){throw "Se descargó un bridge TTendencias anterior; se esperaba v34"}
+$watchdogText=Get-Content -LiteralPath $watchdog -Raw -Encoding UTF8
+if($watchdogText -notmatch 'watchdog-restart-refresh-v7-strong-queue-health'){throw "Se descargó un watchdog anterior; se esperaba v7"}
+$updaterText=Get-Content -LiteralPath $updater -Raw -Encoding UTF8
+if($updaterText -notmatch 'raw-v6'){throw "Se descargó un updater anterior; se esperaba v6"}
 
 foreach($pat in @("*TTiTTularesDedicatedListener.ps1*","*TTendenciasDedicatedListener.ps1*","*TT-LocalWatchdog.ps1*","*TT-AutoUpdater.ps1*")){
   @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
@@ -149,7 +153,7 @@ $tcount=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Ob
   ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like "*TTendenciasDedicatedListener.ps1*"
 }).Count
 
-Write-Host "TT automation reparada: TTiTTulares v46 + TTendencias v16 + bridges v33 + watchdog + updater" -ForegroundColor Green
+Write-Host "TT automation reparada: TTiTTulares v46 + TTendencias v16 + bridges v34 + watchdog + updater" -ForegroundColor Green
 Write-Host ("TTiTTulares listeners activos: "+$count)
 Write-Host ("TTendencias listeners activos: "+$tcount)
 Write-Host ("PID TTiTTulares: "+$l.Id)
