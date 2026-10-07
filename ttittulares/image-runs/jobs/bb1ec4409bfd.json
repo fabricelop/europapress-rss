@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-bb1ec4409bfd-r1-a1-1791369479910",
+  "requested_at": "2026-10-07T10:37:59.909269Z",
+  "updated_at": "2026-10-07T10:37:59.909269Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "bb1ec4409bfd",
+  "event_id": "bb1ec4409bfd",
+  "target_name": "Miguel Bernardeau denuncia insultos en redes por «La bola negra»",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Miguel Bernardeau denuncia insultos en redes por «La bola negra»",
+    "revision": 1,
+    "factual_summary": "Miguel Bernardeau ha denunciado los insultos que recibe en redes a raíz de su papel en «La bola negra», incluidos mensajes con consignas de «¡Arriba España!» y descalificaciones personales.",
+    "tweet_text": "Miguel Bernardeau denuncia insultos en redes por su papel en «La bola negra», entre ellos mensajes con «¡Arriba España!» y descalificaciones personales.\n\n🌶️ El casting no incluía trolls, pero las redes los mandan gratis.",
+    "remate": "🌶️ El casting no incluía trolls, pero las redes los mandan gratis.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nMiguel Bernardeau denuncia insultos en redes por su papel en «La bola negra», entre ellos mensajes con «¡Arriba España!» y descalificaciones personales.\n\n🌶️ El casting no incluía trolls, pero las redes los mandan gratis.\n\nREMATE EXACTO:\n🌶️ El casting no incluía trolls, pero las redes los mandan gratis.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nMiguel Bernardeau ha denunciado los insultos que recibe en redes a raíz de su papel en «La bola negra», incluidos mensajes con consignas de «¡Arriba España!» y descalificaciones personales.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.elmundo.es/loc/2026/10/07/6ac6130ce4d4d8fe5b8b4583.html",
+    "citations": [
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/television/los-aplausos-los-insultos-miguel-bernardeau-denuncia-los-arriba-espana-que-le-llegan-redes-por-bola-negra_7045764_0.html"
+      },
+      {
+        "source": "ABC",
+        "url": "https://www.abc.es/play/television/noticias/molesta-poco-miguel-bernardeau-queja-comentario-recurrente-20261006004658-nt.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
