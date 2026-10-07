@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v50"
+$WorkerId = "ttittulares-dedicated-v51"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -396,7 +396,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       $localTxt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
       $localOk =
         $localTxt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and
-        $localTxt.Contains('BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback"') -and
+        $localTxt.Contains('BRIDGE_FEATURES="v28-reject-nonconversation-image-targets"') -and
         $localTxt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')
       if($localOk){
         $old=$ErrorActionPreference
@@ -428,7 +428,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
     foreach ($needle in @(
       'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
-      'BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback"',
+      'BRIDGE_FEATURES="v28-reject-nonconversation-image-targets"',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'imagesAfterMarker'
     )) {
@@ -1220,7 +1220,9 @@ while ($true) {
       [void](Recover-ChromeCdpFromRecentImageFailure $state $idx)
       $localBridgeBusy=Test-ImageBridgeBusy
     }
-    $slots=if($localBridgeBusy){0}else{[Math]::Max(0,$MaxParallelImageChats-@($state.active_image_commands).Count)}
+    $otherBridgeBusy=Test-OtherImageBridgeBusy
+    $slots=if($localBridgeBusy -or $otherBridgeBusy){0}else{[Math]::Max(0,$MaxParallelImageChats-@($state.active_image_commands).Count)}
+    if($otherBridgeBusy){Write-Log "IMAGE GLOBAL SLOT WAIT project=ttendencias"}
     if($slots -gt 0){
       $jobs=@();if($idx -and $idx.jobs){$jobs=@($idx.jobs)}
       foreach($job in $jobs){
