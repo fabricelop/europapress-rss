@@ -39,7 +39,7 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.11';
+const APP_VERSION='0.17.12';
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -397,15 +397,22 @@ function modelPropagationState(detSettled,ensSettled,detFreshness,ensFreshness){
   };
   collect(DET_MODELS,detSettled,detFreshness);
   collect(ENS_MODELS,ensSettled,ensFreshness);
-  let propagatingFamilies=0;
+  let propagatingFamilies=0,unknownFamilies=0;
   for(const statuses of byFamily.values()){
     if(statuses.includes('fresh'))continue;
-    if(statuses.includes('propagating'))propagatingFamilies++;
+    if(statuses.includes('propagating')){propagatingFamilies++;continue}
+    if(statuses.every(status=>status==='unknown'))unknownFamilies++;
   }
   const totalFamilies=byFamily.size;
-  const share=totalFamilies?propagatingFamilies/totalFamilies:0;
-  const confidencePenalty=Math.min(.08,.08*share);
-  return{propagatingFamilies,totalFamilies,share,confidencePenalty};
+  const propagatingShare=totalFamilies?propagatingFamilies/totalFamilies:0;
+  const unknownShare=totalFamilies?unknownFamilies/totalFamilies:0;
+  const propagationPenalty=Math.min(.08,.08*propagatingShare);
+  const metadataPenalty=unknownShare<=.25?0:Math.min(.06,.08*(unknownShare-.25));
+  const confidencePenalty=Math.min(.12,propagationPenalty+metadataPenalty);
+  return{
+    propagatingFamilies,unknownFamilies,totalFamilies,
+    propagatingShare,unknownShare,propagationPenalty,metadataPenalty,confidencePenalty
+  };
 }
 async function loadForecast(force=false){
   const k=cacheKey(),cached=readForecastCache();
@@ -2417,9 +2424,11 @@ function renderSources(){
   const healthyFamilies=new Set(healthyModels.map(x=>x.family||x.id).filter(Boolean)).size;
   const fallbackAge=Number(state.data?.degradedCacheAgeMs)||0;
   const propagation=state.data?.sources?.propagation;
-  const propagationText=propagation?.propagatingFamilies
-    ? ' · '+propagation.propagatingFamilies+' familias con run propagándose · confianza -'+Math.round((Number(propagation.confidencePenalty)||0)*100)+' pt'
-    : '';
+  const trustParts=[];
+  if(propagation?.propagatingFamilies)trustParts.push(propagation.propagatingFamilies+' familias con run propagándose');
+  if(propagation?.unknownFamilies)trustParts.push(propagation.unknownFamilies+' familias con frescura no verificable');
+  if(Number(propagation?.confidencePenalty)>0)trustParts.push('confianza -'+Math.round(Number(propagation.confidencePenalty)*100)+' pt');
+  const propagationText=trustParts.length?' · '+trustParts.join(' · '):'';
   const consensusDetail=state.data?.degradedForecast
     ? 'MODO DEGRADADO · última previsión válida de hace '+Math.max(1,Math.round(fallbackAge/60_000))+' min · confianza máxima '+Math.round((Number(state.data?.degradedConfidenceCap)||0)*100)+'%'
     : healthyFamilies+' familias independientes activas · '+healthyModels.length+'/'+modelSources.length+' modelos/ensembles disponibles · quórum mínimo 2'+propagationText;
