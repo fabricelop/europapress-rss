@@ -39,7 +39,7 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.14';
+const APP_VERSION='0.17.15';
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -2594,6 +2594,25 @@ function showObservedRadar(offsetMinutes){
   $('radarPosition').textContent=delta<0?'Observado '+Math.abs(delta)+' min antes · '+fmtTime(f.time*1000):'Último radar observado · '+fmtTime(f.time*1000);
   $('radarMotion').textContent='Imagen observada real de RainViewer. A la derecha de AHORA la proyección es orientativa y pierde peso conforme avanza el horizonte.';
 }
+function projectedRadarOpacity(minutes,canMove,reliable){
+  const requested=Math.max(0,Math.min(RADAR_VISUAL_HORIZON_MINUTES,Number(minutes)||0));
+  if(!canMove){
+    const progress=requested/RADAR_VISUAL_HORIZON_MINUTES;
+    return Math.max(.04,.18*(1-.78*progress));
+  }
+  const confidence=Math.max(0,Math.min(1,Number(state.nowcast?.confidence)||0));
+  const evolution=Math.max(0,Math.min(1,Number(state.nowcast?.evolution?.score)||0));
+  const quality=.55*confidence+.45*evolution;
+  const safeReliable=Math.max(1,Number(reliable)||1);
+  const startOpacity=.68*(.78+.22*quality);
+  if(requested<=safeReliable){
+    const progress=Math.max(0,Math.min(1,requested/safeReliable));
+    return Math.max(.28,startOpacity*(1-.28*progress));
+  }
+  const horizonOpacity=startOpacity*.72;
+  const beyond=Math.max(0,Math.min(1,(requested-safeReliable)/Math.max(1,RADAR_VISUAL_HORIZON_MINUTES-safeReliable)));
+  return Math.max(.05,horizonOpacity*Math.exp(-2.2*beyond));
+}
 function showProjectedRadar(minutes){
   const r=state.data?.radar,latest=state.frames.at(-1),motion=state.nowcast?.motion;
   if(!r||!latest||!state.mapLoaded)return;
@@ -2616,7 +2635,7 @@ function showProjectedRadar(minutes){
   }else if(typeof source.setCoordinates==='function'){
     source.setCoordinates(coordinates);
   }
-  const opacity=within?.66:minutes<=120?.26:minutes<=180?.17:.10;
+  const opacity=projectedRadarOpacity(minutes,canMove,reliable);
   if(state.map.getLayer('raineta-radar-projection'))state.map.setPaintProperty('raineta-radar-projection','raster-opacity',opacity);
   const projectedAt=latest.time*1000+minutes*60_000;
   $('radarTime').textContent=fmtTime(projectedAt);
@@ -2629,11 +2648,11 @@ function showProjectedRadar(minutes){
       const curve=turn?' · rumbo reciente '+(turn.rateDegPerMinute>0?'girando a la derecha':'girando a la izquierda')+' (ajuste limitado)':'';
       $('radarMotion').textContent='Proyección continua del radar observado · evolución '+shape+curve+' · horizonte radar útil ~'+reliable+' min.';
     }else{
-      $('radarMotion').textContent='Fuera del horizonte fiable (~'+reliable+' min), el movimiento se frena y se difumina progresivamente: es solo referencia visual; la ETA y la decisión pasan a modelos/consenso.';
+      $('radarMotion').textContent='Fuera del horizonte fiable (~'+reliable+' min), el movimiento y la opacidad decaen de forma continua: es solo referencia visual; la ETA y la decisión pasan a modelos/consenso.';
     }
   }else{
     $('radarPosition').textContent='Referencia visual orientativa · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-    $('radarMotion').textContent='Sin movimiento radar suficientemente fiable: se conserva el último radar como referencia visual atenuada mientras la ETA y la decisión proceden de modelos/consenso.';
+    $('radarMotion').textContent='Sin movimiento radar suficientemente fiable: se conserva el último radar como referencia visual con desvanecimiento continuo mientras la ETA y la decisión proceden de modelos/consenso.';
   }
 }
 function showRadarOffset(offset=state.radarOffset){
