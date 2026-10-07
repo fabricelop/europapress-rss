@@ -34655,13 +34655,28 @@
       ],
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "image_status": "none",
-      "image_choice": "none",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "rewrite_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image_status": "ready",
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/STNBNTWBVRLUFNFV3UOEZF3BO4.jpg?auth=e7903646369d280a76e4c415c6136c75247da303b310b7857735b897799094b6&width=1200",
+        "source": "El País · 7/10/2026",
+        "source_url": "https://elpais.com/deportes/futbol/2026-10-07/pedro-rodriguez-anuncia-su-retirada-del-futbol.html",
+        "alt": "Imagen de archivo relacionada con Pedro Rodríguez",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/STNBNTWBVRLUFNFV3UOEZF3BO4.jpg?auth=e7903646369d280a76e4c415c6136c75247da303b310b7857735b897799094b6&width=1200",
+        "source": "El País · 7/10/2026",
+        "source_url": "https://elpais.com/deportes/futbol/2026-10-07/pedro-rodriguez-anuncia-su-retirada-del-futbol.html",
+        "alt": "Imagen de archivo relacionada con Pedro Rodríguez",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "22c1b9fcb392",
@@ -34748,6 +34763,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-07T13:28:54.288195Z",
+  "updated_at": "2026-10-07T13:30:12.621348Z",
   "count": 627
 }
