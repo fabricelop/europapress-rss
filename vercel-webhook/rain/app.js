@@ -1270,11 +1270,17 @@ function calibratedEventConfidence(event,raw,leadMinutes){
   if(!event)return raw;
   if(event.kind==='radar')return calibratedRadarConfidence(raw,leadMinutes);
   if(event.kind==='opera')return conservativeSkillCap(raw,'opera',leadMinutes);
+  if(event.kind==='aemet')return conservativeSkillCap(raw,'aemet',leadMinutes);
   if(event.kind==='model'||event.kind==='model15')return conservativeSkillCap(raw,'models',leadMinutes);
   if(event.kind==='radarFusion'){
-    const rv=sourceSkillFor('rainviewer',leadMinutes),op=sourceSkillFor('opera',leadMinutes);
-    if(!rv||!op||rv.n<5||op.n<5)return raw;
-    const accuracy=(Number(rv.accuracy)+Number(op.accuracy))/2;
+    const ids=new Set((event.sources||[]).map(x=>String(x).toLowerCase()));
+    const skills=[];
+    if(!ids.size||[...ids].some(x=>x.includes('radar')||x.includes('rainviewer')))skills.push(sourceSkillFor('rainviewer',leadMinutes));
+    if(!ids.size||[...ids].some(x=>x.includes('opera')))skills.push(sourceSkillFor('opera',leadMinutes));
+    if([...ids].some(x=>x.includes('aemet')))skills.push(sourceSkillFor('aemet',leadMinutes));
+    const ready=skills.filter(x=>x&&x.n>=5&&x.accuracy!=null);
+    if(ready.length<2)return raw;
+    const accuracy=ready.reduce((sum,x)=>sum+Number(x.accuracy),0)/ready.length;
     if(!Number.isFinite(accuracy)||accuracy>=.70)return raw;
     return Math.min(raw,Math.max(.40,Math.min(.78,accuracy+.10)));
   }
@@ -1319,6 +1325,12 @@ function operaPredictionAt(timeMs){
   const wet=(Number(row.wetFraction)||0)>=.10&&(Number(row.rateMmH)||0)>=.03;
   return{predicted:wet,probability:Math.max(0,Math.min(1,Number(row.probability)||0))};
 }
+function aemetPredictionAt(timeMs){
+  const row=aemetPointAt(timeMs);
+  if(!row)return null;
+  const wet=(Number(row.wetFraction)||0)>=.10&&(Number(row.radarRate)||0)>=.03;
+  return{predicted:wet,probability:Math.max(0,Math.min(1,Number(row.probability)||0))};
+}
 function modelPredictionAt(timeMs){
   const rows=state.data?.timeline||[];
   const best=rows.reduce((acc,row)=>{
@@ -1341,17 +1353,26 @@ function observedSkillTruth(){
   const opera=state.data?.opera,sample=opera?.sample,quality=Number(sample?.quality),rate=Number(sample?.rateMmH);
   const opOk=Boolean(sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok&&quality>=.5&&Number.isFinite(rate));
   const op=opOk?rate>=.05:null;
-  if(rvOk&&opOk){
-    if(rv!==op)return null;
-    return{actual:rv,exclude:[],source:'rainviewer+opera'};
+  const aemet=state.data?.aemetRadar,aemetRate=Number(aemet?.sample?.rateMmH),aemetWet=Number(aemet?.sample?.wetFraction);
+  const aeOk=Boolean(aemetRadarFreshness(aemet,20).ok&&Number.isFinite(aemetRate));
+  const ae=aeOk?aemetRate>=.05&&(!Number.isFinite(aemetWet)||aemetWet>=.15):null;
+  const votes=[];
+  if(rvOk)votes.push(['rainviewer',rv]);
+  if(opOk)votes.push(['opera',op]);
+  if(aeOk)votes.push(['aemet',ae]);
+  if(votes.length>=2){
+    const wet=votes.filter(([,value])=>value===true).length,dry=votes.filter(([,value])=>value===false).length;
+    if(wet===dry)return null;
+    return{actual:wet>dry,exclude:[],source:votes.map(([id])=>id).join('+')};
   }
   if(rvOk)return{actual:rv,exclude:['rainviewer'],source:'rainviewer'};
   if(opOk)return{actual:op,exclude:['opera'],source:'opera'};
+  if(aeOk)return{actual:ae,exclude:['aemet'],source:'aemet'};
   return null;
 }
 function sourceSkillStats(){
   const data=readSourceSkill(),out={};
-  for(const source of ['rainviewer','opera','models']){
+  for(const source of ['rainviewer','opera','aemet','models']){
     const rows=(data.scores||[]).filter(x=>x.source===source);
     const byHorizon={};
     for(const horizon of [15,30,60,90,120]){
@@ -1402,7 +1423,8 @@ function updateSourceSkill(){
       const targetMs=now+horizon*60_000;
       const predictions=[
         ['rainviewer',radarPredictionAt(targetMs)],
-        ['opera',operaPredictionAt(targetMs)]
+        ['opera',operaPredictionAt(targetMs)],
+        ['aemet',aemetPredictionAt(targetMs)]
       ];
       if(!state.data?.degradedForecast)predictions.push(['models',modelPredictionAt(targetMs)]);
       for(const [source,prediction] of predictions){
@@ -1417,7 +1439,7 @@ function updateSourceSkill(){
 }
 function renderSourceSkill(){
   const el=$('sourceSkillText');if(!el)return;
-  const stats=sourceSkillStats(),labels={rainviewer:'Radar',opera:'Radar europeo',models:'Modelos'};
+  const stats=sourceSkillStats(),labels={rainviewer:'RainViewer',opera:'OPERA',aemet:'AEMET radar',models:'Modelos'};
   const ready=Object.entries(stats).filter(([,s])=>s.n>=3&&s.accuracy!=null).sort((a,b)=>b[1].accuracy-a[1].accuracy);
   const n=Object.values(stats).reduce((sum,s)=>sum+s.n,0);
   if(!ready.length){
