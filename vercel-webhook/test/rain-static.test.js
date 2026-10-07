@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState} from '../rain/radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
@@ -227,4 +227,11 @@ test('RainETA CSP allows DWD lightning capabilities and WMS images',()=>{
   const csp=rain?.headers?.find(row=>row.key==='Content-Security-Policy')?.value||'';
   assert.match(csp,/connect-src[^;]*https:\/\/maps\.dwd\.de/);
   assert.match(csp,/img-src[^;]*https:\/\/maps\.dwd\.de/);
+});
+
+
+test('DWD workspace capabilities accept local or namespace-qualified layer names',()=>{
+  assert.equal(wmsCapabilitiesHasLayer('<Layer><Name>Accumulated_Flash_Geometry</Name></Layer>','dwd:Accumulated_Flash_Geometry'),true);
+  assert.equal(wmsCapabilitiesHasLayer('<Layer><Name>dwd:NCEW_EU</Name></Layer>','dwd:NCEW_EU'),true);
+  assert.equal(wmsCapabilitiesHasLayer('<Layer><Name>Other</Name></Layer>','dwd:NCEW_EU'),false);
 });

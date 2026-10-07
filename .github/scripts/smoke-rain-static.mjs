@@ -1,3 +1,4 @@
+import {wmsCapabilitiesHasLayer} from '../../vercel-webhook/rain/radar-core.js';
 const loc={lat:'40.4168',lon:'-3.7038'};
 const det=['ecmwf_ifs','ecmwf_aifs025','icon_seamless','gfs_seamless','meteofrance_seamless','gem_seamless','ukmo_global_deterministic_10km'];
 const ens=['ecmwf_ifs_europe_ensemble','ecmwf_aifs025_ensemble','dwd_icon_eu_eps','ncep_gefs025','ukmo_global_ensemble_20km','gem_global_ensemble','bom_access_global_ensemble','google_weathernext2_ensemble'];
@@ -45,7 +46,7 @@ async function checkDwdLightning(){
    const xml=await caps.text();
    if(!caps.ok)throw Error('GetCapabilities '+caps.status);
    const layers=['dwd:Accumulated_Flash_Area','dwd:Accumulated_Flash_Geometry','dwd:NCEW_EU','dwd:Blitzdichte'];
-   for(const layer of layers)if(!xml.includes(layer))throw Error('DWD layer ausente '+layer);
+   for(const layer of layers)if(!wmsCapabilitiesHasLayer(xml,layer))throw Error('DWD layer ausente '+layer);
    for(const layer of ['dwd:Accumulated_Flash_Geometry','dwd:NCEW_EU']){
      const q=new URLSearchParams({
        service:'WMS',version:'1.1.1',request:'GetMap',layers:layer,styles:'',format:'image/png',

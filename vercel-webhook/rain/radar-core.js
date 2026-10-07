@@ -1,3 +1,8 @@
+export function wmsCapabilitiesHasLayer(xml,layerName){
+  const text=String(xml||''),full=String(layerName||'').trim(),local=full.includes(':')?full.split(':').pop():full;
+  if(!local)return false;
+  return text.includes('<Name>'+full+'</Name>')||text.includes('<Name>'+local+'</Name>');
+}
 export function buildRadarProjectionRgba(mask,rateGrid,width,height,colorForRate){
   const w=Math.max(1,Math.floor(Number(width)||0)),h=Math.max(1,Math.floor(Number(height)||0)),size=w*h;
   if(!mask?.length||!rateGrid?.length||mask.length!==size||rateGrid.length!==size)throw new Error('invalid projection field');
