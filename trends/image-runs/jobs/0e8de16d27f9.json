@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-0e8de16d27f9-r0-a8-1791353283496",
-  "requested_at": "2026-10-07T06:08:03.495514Z",
-  "updated_at": "2026-10-07T07:16:53.994Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-auto-0e8de16d27f9-r0-a9-1791361079696",
+  "requested_at": "2026-10-07T08:17:59.695662Z",
+  "updated_at": "2026-10-07T08:17:59.695662Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,9 +14,9 @@
   "trend_id": "0e8de16d27f9",
   "target_name": "#FirstDates6O",
   "revision": 0,
-  "attempt": 8,
+  "attempt": 9,
   "auto_repair": true,
-  "auto_repair_attempt": 8,
+  "auto_repair_attempt": 9,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
@@ -31,9 +31,9 @@
     "rank_at_explanation": 6,
     "explained_at": "2026-10-06T21:50:42.629Z",
     "verification_sources": [],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
-    "image_style_name": "tinta_acuarela",
-    "image_style_index": 0
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
+    "image_style_name": "stop_motion",
+    "image_style_index": 4
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
@@ -42,13 +42,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":true,\"submitted\":false,\"userTurns\":0,\"turns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisable",
-  "pc_upload_secret_hash": "26b0dba08a785dfb59b2e634d8cbf801422c7ac354e6d1a417ac047ce94adeae",
-  "pc_worker_id": "ttendencias-image-bridge-v39-self-submit",
-  "pc_picked_up_at": "2026-10-07T07:15:54.694Z",
-  "bridge_version": null,
-  "target_handoff_id": "83E2DCAFB8A0E38C7559BCFA482B42C8",
-  "target_handoff_at": "2026-10-07T07:16:28.264Z",
-  "pc_launched_at": "2026-10-07T07:16:29.386Z",
-  "finished_at": "2026-10-07T07:16:53.994Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
