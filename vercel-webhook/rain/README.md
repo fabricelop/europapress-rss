@@ -1,4 +1,4 @@
-# RainETA v0.17.21
+# RainETA v0.17.22
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,15 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## AEMET HARMONIE-AROME oficial v0.17.22
+- RainETA incorpora como familia independiente el modelo oficial AEMET HARMONIE-AROME para Península y Baleares.
+- El backend descarga la última pasada pública de AEMET, un paquete tar.gz, y procesa únicamente los 48 GeoTIFF horarios de precipitación 61_1HH.
+- Cada GeoTIFF está en EPSG:4326 a 0,025° (~2,5 km). RainETA muestrea el punto seleccionado y una vecindad de 5×5 celdas (~12,5 km) para conservar información espacial útil sin confundirla con probabilidad.
+- La precipitación oficial se publica en clases RGBA; el backend traduce las clases visibles a un valor representativo. La clase transparente 0–0,5 mm se trata conservadoramente como inferior al umbral de onset, porque el producto no permite distinguir cero de llovizna sub-0,5 mm.
+- HARMONIE-AROME entra en el consenso con familia AEMET y peso determinista alto. Sigue contrastado con ECMWF, ICON, UKMO y ensembles; no sustituye el consenso a ciegas.
+- La descarga de ~28 MB se cachea en memoria y la respuesta de punto lleva caché CDN. No se expone ningún secreto y este producto público no necesita API key.
+- La caché meteorológica cambia a consensus-v14 para forzar un recálculo real al incorporar la nueva fuente.
 
 ## Horizonte espacial honesto v0.17.21
 - La proyección cartográfica del radar se corta al superar el horizonte que el nowcast puede defender. A partir de ese punto RainETA deja el mapa sin ecos futuros en vez de congelar o desplazar artificialmente la última imagen.
