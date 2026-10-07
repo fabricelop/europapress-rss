@@ -48,8 +48,8 @@ const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
 const HARMONIE_STALE_GRACE_MINUTES=180;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.27';
-const FORECAST_CACHE_SCHEMA='consensus-v16';
+const APP_VERSION='0.17.28';
+const FORECAST_CACHE_SCHEMA='consensus-v17';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
 const $=id=>document.getElementById(id);
@@ -1777,6 +1777,48 @@ function operaNowcastInfo(){
   if(!operaFreshness(opera).ok||nowcast?.status!=='ok'||!Array.isArray(nowcast.series))return null;
   return nowcast;
 }
+function radarArrivalEvidence(nowcast,event,{rateKeys=['radarRate','rateMmH'],minimumRate=.05,minimumWet=.10}={}){
+  if(!nowcast||!event?.start||!Array.isArray(nowcast.series)||!nowcast.series.length)return null;
+  const base=Date.parse(nowcast.observedAt||nowcast.radarTime||'');
+  const start=Date.parse(event.start||''),end=Date.parse(event.end||event.start||'');
+  if(!Number.isFinite(base)||!Number.isFinite(start))return null;
+  const windowEnd=Number.isFinite(end)?end:start+25*60_000;
+  const rows=nowcast.series
+    .map(row=>{
+      const time=base+(Number(row.minute)||0)*60_000;
+      let rate=0;
+      for(const key of rateKeys)rate=Math.max(rate,Number(row?.[key])||0);
+      const wet=Math.max(0,Number(row?.wetFraction)||0);
+      const probability=Math.max(0,Math.min(1,Number(row?.probability)||0));
+      return{time,rate,wet,probability};
+    })
+    .filter(row=>row.time>=start-6*60_000&&row.time<=windowEnd+6*60_000)
+    .sort((a,b)=>a.time-b.time);
+  if(!rows.length)return null;
+  const credible=rows.filter(row=>row.rate>=minimumRate&&row.wet>=minimumWet);
+  let consecutive=0,maxConsecutive=0;
+  for(const row of rows){
+    if(row.rate>=minimumRate&&row.wet>=minimumWet){consecutive++;maxConsecutive=Math.max(maxConsecutive,consecutive)}
+    else consecutive=0;
+  }
+  const peakRate=Math.max(...rows.map(row=>row.rate),0);
+  const peakWet=Math.max(...rows.map(row=>row.wet),0);
+  const peakProbability=Math.max(...rows.map(row=>row.probability),0);
+  const strong=peakRate>=.30&&peakWet>=minimumWet;
+  const sustained=maxConsecutive>=2;
+  const valid=strong||sustained;
+  return{valid,strong,sustained,peakRate,peakWet,peakProbability,credibleRows:credible.length,totalRows:rows.length};
+}
+function radarCandidateModelSupport(event){
+  const start=Date.parse(event?.start||'');
+  if(!Number.isFinite(start))return null;
+  const point=modelPointAt(start),probability=Number(point?.probability)||0,rate=Number(point?.rate)||0;
+  return{
+    probability,
+    rate,
+    supports:rate>=.03&&probability>=.36
+  };
+}
 function operaEventCandidate(now=Date.now()){
   const n=operaNowcastInfo(),e=n?.event,age=Number(state.data?.opera?.ageMinutes);
   const freshness=age<=OPERA_SURFACE_STALE_MINUTES?1:Math.max(.65,1-(age-OPERA_SURFACE_STALE_MINUTES)/30);
@@ -1784,6 +1826,11 @@ function operaEventCandidate(now=Date.now()){
   if(!e?.start||confidence<.22)return null;
   const start=Date.parse(e.start),end=Date.parse(e.end||'');
   if(!Number.isFinite(start)||!Number.isFinite(end)||end<=now)return null;
+  const evidence=radarArrivalEvidence(n,e,{rateKeys:['rateMmH','radarRate']});
+  if(!evidence?.valid)return null;
+  const modelSupport=radarCandidateModelSupport(e);
+  const marginal=!evidence.strong&&evidence.peakRate<.12;
+  if(marginal&&modelSupport&&!modelSupport.supports&&confidence<.58)return null;
   return{
     kind:'opera',
     active:start<=now&&end>now&&currentTruth()!==false,
@@ -1794,6 +1841,8 @@ function operaEventCandidate(now=Date.now()){
     ageMinutes:age,
     uncertainty:Math.round((Number(e.uncertaintyMinutes)||10)+(age>20?(age-20)*.5:0)),
     event:e,
+    arrivalEvidence:evidence,
+    modelSupport,
     motion:n.motion||null
   };
 }
@@ -1804,6 +1853,11 @@ function aemetEventCandidate(now=Date.now()){
   if(!e?.start||confidence<.24)return null;
   const start=Date.parse(e.start),end=Date.parse(e.end||'');
   if(!Number.isFinite(start)||!Number.isFinite(end)||end<=now)return null;
+  const evidence=radarArrivalEvidence(n,e,{rateKeys:['radarRate','rateMmH']});
+  if(!evidence?.valid)return null;
+  const modelSupport=radarCandidateModelSupport(e);
+  const marginal=!evidence.strong&&evidence.peakRate<.12;
+  if(marginal&&modelSupport&&!modelSupport.supports&&confidence<.58)return null;
   return{
     kind:'aemet',
     active:start<=now&&end>now&&currentTruth()!==false,
@@ -1814,6 +1868,8 @@ function aemetEventCandidate(now=Date.now()){
     ageMinutes:age,
     uncertainty:Math.round((Number(e.uncertaintyMinutes)||10)+(age>20?(age-20)*.6:0)),
     event:e,
+    arrivalEvidence:evidence,
+    modelSupport,
     motion:n.motion||null
   };
 }
@@ -2173,8 +2229,17 @@ function pulseSequenceText(ev){
 }
 function chooseDisplayEvent(){
   const now=Date.now(),n=state.nowcast,rainNow=currentRainState(),truth=currentTruth(),radarEvent=stabilizedRadarEvent();
-  const rv=n?.status==='ok'&&radarEvent&&Number(n.confidence)>=.30&&Date.parse(radarEvent.end||radarEvent.start)>now
-    ? {kind:'radar',active:Date.parse(radarEvent.start)<=now&&truth!==false,start:radarEvent.start,end:radarEvent.end,confidence:Number(n.confidence)||0,uncertainty:radarEvent.uncertaintyMinutes||8,event:radarEvent,motion:n.motion||null}
+  const rvEvidence=radarEvent?radarArrivalEvidence(
+    {...n,observedAt:n?.radarTime},
+    radarEvent,
+    {rateKeys:['radarRate','rateMmH']}
+  ):null;
+  const rvModelSupport=radarEvent?radarCandidateModelSupport(radarEvent):null;
+  const rvMarginal=Boolean(rvEvidence&&!rvEvidence.strong&&rvEvidence.peakRate<.12);
+  const rv=n?.status==='ok'&&radarEvent&&rvEvidence?.valid&&Number(n.confidence)>=.30&&
+    (!rvMarginal||rvModelSupport?.supports||Number(n.confidence)>=.58)&&
+    Date.parse(radarEvent.end||radarEvent.start)>now
+    ? {kind:'radar',active:Date.parse(radarEvent.start)<=now&&truth!==false,start:radarEvent.start,end:radarEvent.end,confidence:Number(n.confidence)||0,uncertainty:radarEvent.uncertaintyMinutes||8,event:radarEvent,arrivalEvidence:rvEvidence,modelSupport:rvModelSupport,motion:n.motion||null}
     : null;
   const op=operaEventCandidate(now),ae=aemetEventCandidate(now);
   if(rainNow.raining){
@@ -2210,6 +2275,16 @@ function buildRainDecision(){
   const now=Date.now(),rain=currentRainState(),truth=currentTruth(4);
   const correction=truth===false?feedbackEpisodeCorrection(now):null;
   let dry=radarDryWindow(),event=chooseDisplayEvent();
+  if(!rain.raining&&event&&['radar','opera','aemet','radarFusion'].includes(event.kind)){
+    const evidence=event.arrivalEvidence||event.rainViewer?.arrivalEvidence||event.opera?.arrivalEvidence||event.aemet?.arrivalEvidence||null;
+    const modelSupport=event.modelSupport||event.rainViewer?.modelSupport||event.opera?.modelSupport||event.aemet?.modelSupport||null;
+    const hasMeasurable=Boolean(evidence?.valid)||Boolean(
+      (event.rainViewer?.arrivalEvidence?.valid)||
+      (event.opera?.arrivalEvidence?.valid)||
+      (event.aemet?.arrivalEvidence?.valid)
+    );
+    if(!hasMeasurable&&!(modelSupport?.supports))event=null;
+  }
   const stable=!rain.raining&&!correction?forecastStableWindow(now):null;
   if(correction?.mode==='pause'){
     dry=null;
