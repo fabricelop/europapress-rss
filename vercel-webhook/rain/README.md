@@ -105,6 +105,7 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - El consenso deja de poder mostrar confianza alta cuando sobreviven muy pocas **familias meteorológicas independientes**, aunque las fuentes restantes coincidan entre sí.
 - La confianza temporal queda limitada progresivamente por el número de familias disponibles: con 1–2 familias el máximo es bajo/moderado; con 4–6 familias puede alcanzar niveles altos si además hay acuerdo y horizonte favorable.
 - Los miembros de un ensemble y las variantes determinista/ensemble de una misma familia no cuentan como fuentes independientes adicionales.
+- El panel de diagnóstico muestra cuántas familias independientes están realmente activas y cuántos modelos/ensembles respondieron, para distinguir diversidad meteorológica de simple volumen de proveedores.
 - La probabilidad y precipitación previstas no se alteran por este límite: se corrige únicamente cuánta confianza comunica RainETA sobre la hora prevista.
 
 ## Frescura y desacuerdo de radares v0.17.4
