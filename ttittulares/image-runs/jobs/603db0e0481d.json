@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-603db0e0481d-r1-a1-1791375134382",
+  "requested_at": "2026-10-07T12:12:14.379682Z",
+  "updated_at": "2026-10-07T12:12:14.379682Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "603db0e0481d",
+  "event_id": "603db0e0481d",
+  "target_name": "El juez del rescate de Air Europa cita como testigos a Aagesen, Saura y De la Rocha",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "El juez del rescate de Air Europa cita como testigos a Aagesen, Saura y De la Rocha",
+    "revision": 1,
+    "factual_summary": "El Juzgado de Instrucción 49 de Madrid ha citado como testigos a Sara Aagesen, Pedro Saura y Manuel de la Rocha, entre otros, para los días 23 y 24 de noviembre en la causa que investiga el rescate público de 475 millones de euros a Air Europa.",
+    "tweet_text": "El juez del rescate de Air Europa cita como testigos a Sara Aagesen, Pedro Saura y Manuel de la Rocha para el 23 y 24 de noviembre, en plena campaña del 29-N.\n\n🌶️ La campaña ya tiene también agenda judicial.",
+    "remate": "🌶️ La campaña ya tiene también agenda judicial.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl juez del rescate de Air Europa cita como testigos a Sara Aagesen, Pedro Saura y Manuel de la Rocha para el 23 y 24 de noviembre, en plena campaña del 29-N.\n\n🌶️ La campaña ya tiene también agenda judicial.\n\nREMATE EXACTO:\n🌶️ La campaña ya tiene también agenda judicial.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl Juzgado de Instrucción 49 de Madrid ha citado como testigos a Sara Aagesen, Pedro Saura y Manuel de la Rocha, entre otros, para los días 23 y 24 de noviembre en la causa que investiga el rescate público de 475 millones de euros a Air Europa.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.ondacero.es/noticias/espana/juez-rescate-air-europa-cita-como-testigos-vicepresidenta-aagesen-saura-rocha-semana-antes-elecciones_202610076ac631901032db22586fcce8.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/2026-10-07/el-juzgado-que-investiga-el-rescate-de-air-europa-cita-como-testigo-a-la-vicepresidenta-aagesen-en-la-semana-de-las-elecciones.html"
+      },
+      {
+        "source": "elDiario.es",
+        "url": "https://www.eldiario.es/politica/juez-investiga-rescate-publico-air-europa-cita-testigo-vicepresidenta-aagesen-plena-campana-electoral_1_13568822.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
