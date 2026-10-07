@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-auto-6a2d476eed14-r0-a8-1791353283496",
   "requested_at": "2026-10-07T06:08:03.495514Z",
-  "updated_at": "2026-10-07T07:09:37.443Z",
-  "status": "RUNNING",
-  "phase": "capture_wait",
+  "updated_at": "2026-10-07T07:15:40.858Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -42,9 +42,10 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Esperando raster ImageGen en la conversación controlada por el bridge.",
+  "message": "No apareció un raster ImageGen capturable en 3 minutos; {\"marker\":true,\"commandScoped\":true,\"turns\":0,\"generating\":true,\"imagesAfterMarker\":0,\"candidates\":0,\"canvases\":0,\"top\":[]}",
   "pc_upload_secret_hash": "6f38f48bb9894ef8437e54f2bf08f800438028f187d11a8d4a5aacafdb636a8d",
   "pc_worker_id": "ttendencias-image-bridge-v39-self-submit",
   "pc_picked_up_at": "2026-10-07T07:09:19.114Z",
-  "pc_launched_at": "2026-10-07T07:09:36.407Z"
+  "pc_launched_at": "2026-10-07T07:09:36.407Z",
+  "finished_at": "2026-10-07T07:15:40.858Z"
 }
