@@ -1,4 +1,4 @@
-# RainETA v0.17.19
+# RainETA v0.17.20
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,13 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Navegación frame a frame e histórico ampliado v0.17.20
+- El radar incorpora botones ◀ / ▶ para inspeccionar manualmente cada paso. En el tramo observado saltan únicamente entre barridos reales; en el futuro avanzan o retroceden minuto a minuto.
+- Cualquier pulsación manual detiene la reproducción automática para que el usuario pueda comparar dos frames consecutivos sin interferencias.
+- La interfaz identifica explícitamente OBSERVADO o PROYECCIÓN, el número de frame observado y la hora exacta.
+- El histórico observado admite hasta 240 min. Como la API pública de RainViewer solo entrega unas 2 h en cada consulta, RainETA conserva localmente los barridos ya vistos y los fusiona en una ventana móvil de hasta 4 h, sin fabricar imágenes ausentes.
+- El archivo local se limita a 4 h y se recorta automáticamente. La integración posterior de radar oficial podrá rellenar directamente ese horizonte cuando la fuente lo permita.
 
 ## Continuidad y control físico del radar v0.17.19
 - Se descarta la deformación afín experimental de v0.17.18: el radar futuro no crece, encoge ni se cizalla por una regla visual inventada.
