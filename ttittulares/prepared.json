@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-07T12:38:36.366Z",
+  "updated_at": "2026-10-07T12:39:09.118Z",
   "items": [
     {
       "event_id": "7503755f8b55",
@@ -2115,13 +2115,13 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "fallback_image_search_attempted_at": "2026-10-07T12:13:26.923340Z",
       "fallback_image_failure_reason": "No se encontró una imagen HTTPS verificable en las páginas de las fuentes del acontecimiento.",
       "archive_image_search_attempted_at": "2026-10-07T12:13:26.923340Z",
@@ -2140,6 +2140,54 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Pedro Rodríguez anuncia su retirada del fútbol"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/4c525ac512d0-r1-ai1-791374955589.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "5c84f6c3e4b72507eaebe58b3e1da5994eda1a726a1f997bf3954ab0070f8086",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 2483036,
+        "context_guard": {
+          "version": 3,
+          "event_id": "4c525ac512d0",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-4c525ac512d0-r1-a1-1791374955589"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/4c525ac512d0-r1-ai1-791374955589.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-07T12:39:09.118Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T12:39:09.118Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/4c525ac512d0-r1-ai1-791374955589.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "5c84f6c3e4b72507eaebe58b3e1da5994eda1a726a1f997bf3954ab0070f8086",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 2483036,
+        "context_guard": {
+          "version": 3,
+          "event_id": "4c525ac512d0",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-4c525ac512d0-r1-a1-1791374955589"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/4c525ac512d0-r1-ai1-791374955589.png",
+        "handoff": "pc-bridge-direct-materialized"
       }
     },
     {
