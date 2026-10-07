@@ -45,7 +45,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.17.4',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.17.5',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -271,7 +271,7 @@ async function fetchOperaMeta(){
   return r.json();
 }
 function sourceStatus(defs,settled){
-  return defs.map((m,i)=>({id:m.id,label:m.label,ok:settled[i]?.status==='fulfilled',members:settled[i]?.status==='fulfilled'?(settled[i].value.memberCount||null):null,error:settled[i]?.status==='rejected'?String(settled[i].reason?.message||settled[i].reason):null}));
+  return defs.map((m,i)=>({id:m.id,label:m.label,family:m.family||m.id,ok:settled[i]?.status==='fulfilled',members:settled[i]?.status==='fulfilled'?(settled[i].value.memberCount||null):null,error:settled[i]?.status==='rejected'?String(settled[i].reason?.message||settled[i].reason):null}));
 }
 async function loadForecast(force=false){
   const k=cacheKey();
@@ -2183,7 +2183,11 @@ function renderSources(){
   const rvDetail=rvFresh.ok
     ? (state.nowcast?.status==='ok'?'hace '+rvAge+' min · flujo local + evolución · útil ~'+Math.max(0,Number(state.nowcast?.reliableHorizonMinutes)||0)+' min':'hace '+rvAge+' min · '+(state.nowcast?.status||'solo mapa'))
     : state.data.radar?'desactualizado'+(rvAge!==null?' · hace '+rvAge+' min':'')+' · solo mapa histórico':'sin radar';
+  const modelSources=[...(state.data.sources.deterministic||[]),...(state.data.sources.ensembles||[])];
+  const healthyModels=modelSources.filter(x=>x.ok);
+  const healthyFamilies=new Set(healthyModels.map(x=>x.family||x.id).filter(Boolean)).size;
   const list=[
+    {label:'Consenso modelos',ok:healthyFamilies>=3,detail:healthyFamilies+' familias independientes activas · '+healthyModels.length+'/'+modelSources.length+' modelos/ensembles disponibles'},
     {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opDetail},
     {label:'Radar RainViewer',ok:Boolean(state.data.sources.radar),detail:rvDetail},
     {label:nativeQuarterHourLikely()?'Modelo 15 min nativo':'Guía temporal',ok:state.data.sources.quarterHour,detail:nativeQuarterHourLikely()
