@@ -34031,7 +34031,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -34105,12 +34104,30 @@
       ],
       "duplicate_of": null,
       "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true,
+      "image_status": "ready",
+      "image_pending": false,
       "rewrite_pending": false,
-      "fallback_image_status": "pending"
+      "fallback_image_status": "ready",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/elecciones-generales-actualidad-politica-directo/01791316160941.jpg",
+        "source": "RTVE · 7/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261007/elecciones-generales-actualidad-politica-directo/17256199.shtml",
+        "alt": "Imagen de archivo relacionada con PSOE",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.rtve.es/imagenes/elecciones-generales-actualidad-politica-directo/01791316160941.jpg",
+        "source": "RTVE · 7/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261007/elecciones-generales-actualidad-politica-directo/17256199.shtml",
+        "alt": "Imagen de archivo relacionada con PSOE",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-07T11:18:20+02:00",
+  "updated_at": "2026-10-07T09:19:39.606613Z",
   "count": 622
 }
