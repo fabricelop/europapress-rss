@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-auto-ad1a64057f9a-r0-a7-1791350264292",
   "requested_at": "2026-10-07T05:17:44.291358Z",
-  "updated_at": "2026-10-07T05:23:34.982Z",
-  "status": "RUNNING",
-  "phase": "pc_launch",
+  "updated_at": "2026-10-07T05:58:19.635Z",
+  "status": "SUPERSEDED",
+  "phase": "bridge_hotfix_superseded",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -42,12 +42,13 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "PC ha abierto el chat de imagen; esperando inicio de generación.",
+  "message": "Job anterior a bridge v35 cerrado para liberar el único slot tras hotfix; se reintentará con un command_id nuevo.",
   "pc_upload_secret_hash": "63741741bd0808f2dd033f16d34577c2b979a0011ceed54c4707410c69b4313a",
   "pc_worker_id": "ttendencias-dedicated-v16",
   "pc_picked_up_at": "2026-10-07T05:23:25.435Z",
   "bridge_version": null,
   "target_handoff_id": "91EDCB5670CAF11AA9264EA4E995CFC0",
   "target_handoff_at": "2026-10-07T05:23:33.723Z",
-  "pc_launched_at": "2026-10-07T05:23:34.982Z"
+  "pc_launched_at": "2026-10-07T05:23:34.982Z",
+  "finished_at": "2026-10-07T05:58:19.635Z"
 }
