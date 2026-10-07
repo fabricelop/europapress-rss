@@ -168,13 +168,18 @@ export function classifyRainHour(point={},{
 }={}){
   const probability=Math.max(0,Number(point.probability)||0);
   const expected=Math.max(0,Number(point.expectedPrecipitation)||0);
-  const wet=
+  const families=Number(point.independentFamilyCount);
+  const singleFamily=Number.isFinite(families)&&families===1;
+  const wetSignal=
     (probability>=minimumProbability&&expected>=minimumExpected)||
     (probability>=strongProbability&&expected>=strongExpected)||
     (probability>=veryStrongProbability&&expected>=veryStrongExpected)||
     expected>=heavyExpected;
+  const singleFamilyStrong=expected>=heavyExpected||(probability>=.90&&expected>=.15);
+  const wet=wetSignal&&(!singleFamily||singleFamilyStrong);
   if(wet)return'wet';
   const possible=
+    wetSignal||
     (probability>=possibleProbability&&expected>=possibleExpected)||
     (probability>=.58&&expected>=.012)||
     expected>=.15;
