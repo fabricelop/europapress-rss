@@ -296,7 +296,7 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttendencias-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
 const BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback";
-const BRIDGE_PATCH="v34-handoff-capture-authority";
+const BRIDGE_PATCH="v35-accept-generating-transition";
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
@@ -499,18 +499,28 @@ async function ensureSubmitted(cdp,job){
       (st.generating || st.commandOutsideComposer) &&
       (Date.now()-triggeredAt)>=500
     );
+    // v35: ChatGPT puede empezar ImageGen y navegar a /c/... antes de que
+    // React materialice el turno de usuario en el DOM. Esa combinación solo
+    // se acepta DESPUÉS de que este bridge haya disparado un envío real.
+    const generatingTransition=Boolean(
+      st && triggeredAt &&
+      st.inConversation &&
+      !st.composerMarker &&
+      st.generating &&
+      (Date.now()-triggeredAt)>=250
+    );
 
-    if(st&&(st.submitted||strongTransition)){
+    if(st&&(st.submitted||strongTransition||generatingTransition)){
       current.submissionVerified=true;
       current.acceptInitialRaster=true;
-      console.log("BRIDGE SUBMIT VERIFIED mode="+(st.submitted?"user-turn":"conversation-transition")+" generating="+Boolean(st.generating)+" url="+String(st.url||""));
+      const verifyMode=st.submitted?"user-turn":(generatingTransition?"generation-started":"conversation-transition");
+      console.log("BRIDGE SUBMIT VERIFIED mode="+verifyMode+" generating="+Boolean(st.generating)+" turns="+Number(st.turns||0)+" url="+String(st.url||""));
       return current
     }
 
-    // Si el texto desapareció del compositor pero no nació ningún turno real,
-    // el submit fue absorbido por la UI/navegación. Reinyectar y reintentar en
-    // lugar de esperar hasta timeout con turns=0.
-    if(st&&!st.composerMarker&&!st.submitted&&Number(st.turns||0)===0&&Date.now()-lastAttemptAt>=1600){
+    // Solo reinyectar cuando NO hay señales de generación. Si ImageGen ya
+    // arrancó, tocar de nuevo el compositor puede sabotear el envío correcto.
+    if(st&&!st.composerMarker&&!st.submitted&&!st.generating&&Number(st.turns||0)===0&&Date.now()-lastAttemptAt>=1600){
       lastAttemptAt=Date.now();
       console.log("BRIDGE SUBMIT LOST PROMPT; reinject command="+commandId+" generating="+Boolean(st.generating));
       try{
@@ -703,12 +713,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttendencias-image-bridge-v34-handoff-capture",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttendencias-image-bridge-v35-generating-proof",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v34-handoff-capture",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v35-generating-proof",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -756,7 +766,7 @@ async function uploadImage(image){
         console.log("BRIDGE FALLBACK PROMPT VERIFIED attempt="+generationAttempt);
         if(generationAttempt===1){
           await progress("prompt_sent","Fallback: prompt GAG IA enviado y verificado.");
-          const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v34-handoff-capture"});
+          const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v35-generating-proof"});
           if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
         }
         await progress("capture_wait","Fallback: esperando raster ImageGen. Intento "+generationAttempt+"/2.");
@@ -784,7 +794,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttendencias-image-bridge-v34-handoff-capture",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttendencias-image-bridge-v35-generating-proof",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
