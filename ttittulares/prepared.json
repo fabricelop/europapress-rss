@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-07T19:46:30.796Z",
+  "updated_at": "2026-10-07T19:48:09.320Z",
   "items": [
     {
       "event_id": "b1fb1b6aca8a",
@@ -600,8 +600,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -617,12 +617,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-07T19:40:00.000Z",
       "image": {
-        "url": "https://img2.huffingtonpost.es/files/image_1200_800/uploads/2026/10/06/el-streamer-illojuan.jpeg",
-        "source": "El HuffPost",
-        "source_url": "https://www.huffingtonpost.es/virales/illojuan-lanza-propia-teoria-sobre-adelanto-electoral-pedro-sanchez-ha-puesto-elecciones-nueve-dias-gta-son-nueve-dias-jugar-f202610.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "IlloJuan durante uno de sus directos"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/16f0625e3baa-r1-ai1-791402047786.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "c71c1e630a93b1a41ff1228b3fed9c2d68dc77135c30fd95a061abd0bc15f8c1",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1986887,
+        "context_guard": {
+          "version": 3,
+          "event_id": "16f0625e3baa",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-16f0625e3baa-r1-a1-1791402047786"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/16f0625e3baa-r1-ai1-791402047786.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img2.huffingtonpost.es/files/image_1200_800/uploads/2026/10/06/el-streamer-illojuan.jpeg",
@@ -632,7 +646,33 @@
         "generated": false,
         "alt": "IlloJuan durante uno de sus directos"
       },
-      "archive_image_search_attempted_at": "2026-10-07T19:40:00.000Z"
+      "archive_image_search_attempted_at": "2026-10-07T19:40:00.000Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/16f0625e3baa-r1-ai1-791402047786.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "c71c1e630a93b1a41ff1228b3fed9c2d68dc77135c30fd95a061abd0bc15f8c1",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1986887,
+        "context_guard": {
+          "version": 3,
+          "event_id": "16f0625e3baa",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-16f0625e3baa-r1-a1-1791402047786"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/16f0625e3baa-r1-ai1-791402047786.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-07T19:48:09.320Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T19:48:09.320Z"
     }
   ],
   "count": 12
