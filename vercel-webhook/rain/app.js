@@ -1083,8 +1083,9 @@ function radarSkillStats(){
 function calibratedRadarConfidence(raw,leadMinutes){
   const stats=radarSkillStats(),lead=[15,30,60,90].reduce((a,b)=>Math.abs(b-leadMinutes)<Math.abs(a-leadMinutes)?b:a,15);
   const sample=stats[lead];
-  if(!sample||sample.n<6||sample.accuracy==null)return raw;
-  return Math.max(.05,Math.min(.98,.76*raw+.24*sample.accuracy));
+  if(!sample||sample.n<6||sample.accuracy==null||sample.accuracy>=.70)return raw;
+  const cap=Math.max(.40,Math.min(.78,Number(sample.accuracy)+.10));
+  return Math.min(raw,cap);
 }
 function conservativeSkillCap(raw,source,leadMinutes){
   const skill=sourceSkillFor(source,leadMinutes);
