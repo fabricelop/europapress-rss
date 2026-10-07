@@ -1,4 +1,4 @@
-# RainETA v0.17.7
+# RainETA v0.17.8
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,13 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Elección adaptativa entre radares v0.17.8
+- Cuando RainViewer y OPERA discrepan más de 30 min en la ETA, RainETA ya no depende solo de la confianza instantánea si existe suficiente historial local de verificación.
+- La autoevaluación local 0–2 h se usa únicamente cuando **ambas** fuentes tienen muestra suficiente y su diferencia de acierto es de al menos 8 puntos porcentuales; así se evita sobreajustar con pocas observaciones.
+- En ese caso la elección combina 72 % de confianza instantánea y 28 % de acierto local; el desacuerdo sigue penalizando la confianza final y ensanchando la incertidumbre.
+- Si no hay historial suficiente, el comportamiento permanece conservador: se prioriza la fuente con mayor confianza instantánea.
+- La explicación de ETA indica explícitamente si la prioridad vino del histórico local o de la confianza instantánea.
 
 ## Frescura de runs meteorológicos v0.17.7
 - RainETA consulta la metadata pública de actualización de Open-Meteo para los modelos donde existe una correspondencia de dominio fiable.
