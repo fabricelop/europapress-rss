@@ -1,4 +1,4 @@
-# RainETA v0.17.17
+# RainETA v0.17.19
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,15 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Continuidad y control físico del radar v0.17.19
+- Se descarta la deformación afín experimental de v0.17.18: el radar futuro no crece, encoge ni se cizalla por una regla visual inventada.
+- El primer fotograma futuro conserva exactamente la huella geográfica del último radar observado. RainViewer entrega las imágenes de 512 px como una representación de alta resolución de una tesela lógica de 256 px; RainETA usa ahora esa huella lógica para evitar el salto de escala AHORA → +1 min.
+- Las coordenadas de la imagen futura se calculan en Web Mercator, igual que las teselas observadas, evitando aproximaciones de latitud/longitud que podían introducir desplazamientos.
+- Una traslación radar superior a 180 km/h se rechaza como físicamente no fiable en vez de convertirse en trayectoria futura.
+- La proyección visual exige además confianza y estabilidad mínimas. El flujo local solo corrige el global cuando ambos tienen rumbo y velocidad razonablemente coherentes; nunca puede dominarlo.
+- Fuera del horizonte fiable la distancia adicional queda amortiguada y termina estabilizándose; no se inventa crecimiento de la mancha.
+- Esta base prepara la incorporación de fuentes espaciales de mayor calidad (AEMET/OPERA/modelos de alta resolución) sin mezclar todavía campos incompatibles.
 
 ## Radar futuro más visible v0.17.17
 - La pérdida de opacidad fuera del horizonte fiable se reduce de forma importante: la proyección sigue claramente visible aunque ya sea orientativa.
