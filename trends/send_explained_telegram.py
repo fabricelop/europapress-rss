@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import pathlib
+import sys
 import urllib.parse
 from datetime import datetime, timezone, timedelta
 
@@ -11,13 +12,15 @@ import requests
 from PIL import Image
 from io import BytesIO
 
+ROOT=pathlib.Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0,str(ROOT))
+
 from shared.cross_account_story import (
     build_ttendencias_quote_copy,
     find_published_news_match,
     x_account_search_url,
 )
-
-ROOT=pathlib.Path(__file__).resolve().parents[1]
 EXPLAINED=ROOT/"trends/telegram-manual-explained.json"
 DELIVERIES=ROOT/"trends/telegram-image-deliveries.json"
 BOT_STATE=ROOT/"trends/telegram-bot-state.json"
