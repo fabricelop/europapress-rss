@@ -1,4 +1,18 @@
 export function clamp01(v){return Math.max(0,Math.min(1,Number.isFinite(v)?v:0))}
+export function projectionWarp({progress=0,uncertainty=0,quality=.5,localQuality=0,speedDeltaRatio=0,bearingDeltaDegrees=0,turnAdjustmentDegrees=0}={}){
+  const p=clamp01(Number(progress)||0),u=clamp01(Number(uncertainty)||0),q=clamp01(Number(quality)||0),lq=clamp01(Number(localQuality)||0);
+  const speedDelta=clamp01(Math.abs(Number(speedDeltaRatio)||0));
+  const headingDelta=Math.max(-1,Math.min(1,(Number(bearingDeltaDegrees)||0)/45));
+  const turn=Math.max(-1,Math.min(1,(Number(turnAdjustmentDegrees)||0)/8));
+  const alongScale=1+p*(.025+.025*(1-q))+u*(.08+.10*(1-q))+p*lq*speedDelta*.08;
+  const crossScale=1+u*(.04+.07*(1-q))+p*lq*Math.abs(headingDelta)*.04;
+  const shear=p*(lq*headingDelta*.08+(.35+.65*q)*turn*.05);
+  return{
+    alongScale:Math.max(1,Math.min(1.32,alongScale)),
+    crossScale:Math.max(1,Math.min(1.20,crossScale)),
+    shear:Math.max(-.14,Math.min(.14,shear))
+  };
+}
 export function maskDensity(mask){if(!mask?.length)return 0;let n=0;for(const v of mask)n+=v?1:0;return n/mask.length}
 function overlap(prev,cur,w,h,dx,dy,pwet,cwet){
   let inter=0,union=0;
