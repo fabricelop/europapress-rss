@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-auto-12481f012850-r1-a1-1791363358236",
   "requested_at": "2026-10-07T08:55:58.235775Z",
-  "updated_at": "2026-10-07T09:40:51.839Z",
-  "status": "RUNNING",
-  "phase": "pc_pickup",
+  "updated_at": "2026-10-07T09:47:09.847Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -47,8 +47,9 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "PC ha recogido la solicitud de imagen.",
+  "message": "No apareció un raster ImageGen capturable en 3 minutos; {\"marker\":true,\"commandScoped\":false,\"turns\":0,\"generating\":false,\"imagesAfterMarker\":0,\"candidates\":0,\"canvases\":0,\"top\":[]}",
   "pc_upload_secret_hash": "76502ca514e894e3434b31a669edf364cbe652a6dcf2e06edfe578b6c6c690aa",
-  "pc_worker_id": "ttittulares-dedicated-v50",
-  "pc_picked_up_at": "2026-10-07T09:40:51.839Z"
+  "pc_worker_id": "ttittulares-image-bridge-v29-visible-composer",
+  "pc_picked_up_at": "2026-10-07T09:40:51.839Z",
+  "finished_at": "2026-10-07T09:47:09.847Z"
 }
