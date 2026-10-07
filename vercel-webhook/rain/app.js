@@ -271,7 +271,7 @@ async function fetchOperaMeta(){
   return r.json();
 }
 function sourceStatus(defs,settled){
-  return defs.map((m,i)=>({id:m.id,label:m.label,ok:settled[i]?.status==='fulfilled',members:settled[i]?.status==='fulfilled'?(settled[i].value.memberCount||null):null,error:settled[i]?.status==='rejected'?String(settled[i].reason?.message||settled[i].reason):null}));
+  return defs.map((m,i)=>({id:m.id,label:m.label,family:m.family||m.id,ok:settled[i]?.status==='fulfilled',members:settled[i]?.status==='fulfilled'?(settled[i].value.memberCount||null):null,error:settled[i]?.status==='rejected'?String(settled[i].reason?.message||settled[i].reason):null}));
 }
 async function loadForecast(force=false){
   const k=cacheKey();
@@ -2183,7 +2183,11 @@ function renderSources(){
   const rvDetail=rvFresh.ok
     ? (state.nowcast?.status==='ok'?'hace '+rvAge+' min · flujo local + evolución · útil ~'+Math.max(0,Number(state.nowcast?.reliableHorizonMinutes)||0)+' min':'hace '+rvAge+' min · '+(state.nowcast?.status||'solo mapa'))
     : state.data.radar?'desactualizado'+(rvAge!==null?' · hace '+rvAge+' min':'')+' · solo mapa histórico':'sin radar';
+  const modelSources=[...(state.data.sources.deterministic||[]),...(state.data.sources.ensembles||[])];
+  const healthyModels=modelSources.filter(x=>x.ok);
+  const healthyFamilies=new Set(healthyModels.map(x=>x.family||x.id).filter(Boolean)).size;
   const list=[
+    {label:'Consenso modelos',ok:healthyFamilies>=3,detail:healthyFamilies+' familias independientes activas · '+healthyModels.length+'/'+modelSources.length+' modelos/ensembles disponibles'},
     {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opDetail},
     {label:'Radar RainViewer',ok:Boolean(state.data.sources.radar),detail:rvDetail},
     {label:nativeQuarterHourLikely()?'Modelo 15 min nativo':'Guía temporal',ok:state.data.sources.quarterHour,detail:nativeQuarterHourLikely()
