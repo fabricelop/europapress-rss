@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-b1fb1b6aca8a-r1-a1-1791400088198",
+  "requested_at": "2026-10-07T19:08:08.198877Z",
+  "updated_at": "2026-10-07T19:08:08.198877Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "b1fb1b6aca8a",
+  "event_id": "b1fb1b6aca8a",
+  "target_name": "Messi se despide de la selección argentina tras su último partido",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Messi se despide de la selección argentina tras su último partido",
+    "revision": 1,
+    "factual_summary": "Leo Messi se despidió de la selección argentina después de disputar ante Benín su último partido con la Albiceleste. En un mensaje en Instagram publicado al día siguiente afirmó que ya extraña vestir la celeste y blanca y que considera correcta su decisión de dejar la selección.",
+    "tweet_text": "Leo Messi se despidió de Argentina tras su último partido ante Benín. En Instagram dijo que ya extraña la celeste y blanca y que cree haber tomado la decisión correcta.\n\n🌶️ La camiseta 10 se ha retirado antes que la nostalgia.",
+    "remate": "🌶️ La camiseta 10 se ha retirado antes que la nostalgia.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.",
+    "image_style_name": "grabado_moderno",
+    "image_style_index": 6,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLeo Messi se despidió de Argentina tras su último partido ante Benín. En Instagram dijo que ya extraña la celeste y blanca y que cree haber tomado la decisión correcta.\n\n🌶️ La camiseta 10 se ha retirado antes que la nostalgia.\n\nREMATE EXACTO:\n🌶️ La camiseta 10 se ha retirado antes que la nostalgia.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLeo Messi se despidió de la selección argentina después de disputar ante Benín su último partido con la Albiceleste. En un mensaje en Instagram publicado al día siguiente afirmó que ya extraña vestir la celeste y blanca y que considera correcta su decisión de dejar la selección.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.lasexta.com/noticias/deportes/futbol/ultimo-mensaje-leo-messi-seleccion-argentina-extrano-vestir-celeste-blanca_202610076ac68bd11032db2258700f13.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/deportes/futbol-00162/noticia-messi-ya-extrano-vestir-celeste-blanca-20261007204340.html"
+      },
+      {
+        "source": "laSexta",
+        "url": "https://www.lasexta.com/noticias/deportes/futbol/ultimo-mensaje-leo-messi-seleccion-argentina-extrano-vestir-celeste-blanca_202610076ac68bd11032db2258700f13.html"
+      },
+      {
+        "source": "FIFA",
+        "url": "https://www.fifa.com/es/tournaments/mens/worldcup/articles/messi-juro-que-daria-todo-para-jugar-toda-la-vida-en-la-seleccion-argentina"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
