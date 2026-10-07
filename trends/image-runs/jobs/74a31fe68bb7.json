@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-74a31fe68bb7-r0-a1-1791379441221",
+  "requested_at": "2026-10-07T13:24:01.220741Z",
+  "updated_at": "2026-10-07T13:24:01.220741Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "74a31fe68bb7",
+  "trend_id": "74a31fe68bb7",
+  "target_name": "IRPF",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "IRPF",
+    "revision": 0,
+    "explanation": "TT#11 IRPF es tendencia porque el decreto de vivienda publicado hoy crea una deducción del 10% del alquiler para ciertos inquilinos y eleva las reducciones del IRPF para caseros que bajen rentas.\n🌶️ El alquiler ya viene con casilla propia en la renta.",
+    "closer_text": "🌶️ El alquiler ya viene con casilla propia en la renta.",
+    "trend_names": [
+      "IRPF"
+    ],
+    "group_title": "IRPF",
+    "rank_at_explanation": 11,
+    "explained_at": "2026-10-07T13:22:26.899Z",
+    "verification_sources": [
+      {
+        "source": "Europa Press · decreto de vivienda · 7/10/2026 08:43",
+        "url": "https://www.europapress.es/economia/construccion-y-vivienda-00342/noticia-administraciones-tendran-asumir-impagos-inquilinos-vulnerables-evitar-desahucio-20261007084357.html"
+      },
+      {
+        "source": "Europa Press · Cuenta Financia Europa · 7/10/2026 14:35",
+        "url": "https://www.europapress.es/economia/finanzas-00340/noticia-decreto-vivienda-incluye-cuenta-inversion-funciona-ventajas-fiscales-puede-invertir-20261007143506.html"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
