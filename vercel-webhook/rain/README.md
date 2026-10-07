@@ -104,7 +104,7 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 ## Coherencia de horizonte, cobertura radar y carga v0.17.16
 - Si el radar solo puede garantizar tiempo seco hasta el final de su horizonte fiable, la interfaz ya no dice **“Seco hasta”** como si esa hora fuera una ETA de lluvia. Muestra **“Seco al menos hasta”**, indica “sin ETA de lluvia” y explica que la hora es un límite de confirmación.
 - La banda 0–180 min aplica la misma semántica: la cuenta atrás representa el mínimo tiempo seco confirmado, no una llegada prevista.
-- La proyección futura del mapa deja de usar siempre una imagen estática a zoom 7 (demasiado recortada para la vista de España). El zoom de la imagen se adapta al zoom visible del mapa, con un mínimo de zoom 5, para conservar la precipitación que ya se veía al pasar de AHORA a +5 min.
+- La proyección futura del mapa deja de usar siempre una imagen estática a zoom 7 (demasiado recortada para la vista de España). El zoom de la imagen se adapta al zoom **y al tamaño real del viewport**, abriendo uno o más niveles cuando hace falta, con un mínimo de zoom 5, para conservar la precipitación que ya se veía al pasar de AHORA a +5 min.
 - Al cambiar el zoom del mapa durante una proyección futura, la imagen se recalcula con la cobertura adecuada.
 - La caché meteorológica queda separada de la versión puramente visual de la app mediante un **schema de consenso**. Las versiones 0.17.13–0.17.16 son compatibles entre sí y no fuerzan una descarga completa solo por un cambio de interfaz.
 - Un refresco manual conserva la última previsión visible mientras consulta las fuentes nuevas; deja de vaciar la cabecera con “Calculando…” durante toda la espera.
