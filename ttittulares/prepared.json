@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-07T13:50:07.531Z",
+  "updated_at": "2026-10-07T13:51:41.918Z",
   "items": [
     {
       "event_id": "4af9f0f63587",
@@ -260,8 +260,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -277,13 +277,53 @@
       },
       "fallback_image_search_attempted_at": "2026-10-07T13:47:40.674538Z",
       "image": {
-        "url": "https://img.rtve.es/imagenes/elecciones-generales-actualidad-politica-directo/01791316160941.jpg",
-        "source": "www.rtve.es",
-        "source_url": "https://www.rtve.es/noticias/20261007/elecciones-generales-actualidad-politica-directo/17256199.shtml",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "El TSJ de Madrid mantiene por ahora la acampada de Sol"
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/ba28c219ce44-r1-ai1-791380933085.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f14fa38e8184a81c4a4895b5b7a2f81542daf12fa6f2240c1d3f9a5c97f35c96",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2390223,
+        "context_guard": {
+          "version": 3,
+          "event_id": "ba28c219ce44",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-ba28c219ce44-r1-a1-1791380933085"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/ba28c219ce44-r1-ai1-791380933085.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/ba28c219ce44-r1-ai1-791380933085.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f14fa38e8184a81c4a4895b5b7a2f81542daf12fa6f2240c1d3f9a5c97f35c96",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2390223,
+        "context_guard": {
+          "version": 3,
+          "event_id": "ba28c219ce44",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-ba28c219ce44-r1-a1-1791380933085"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/ba28c219ce44-r1-ai1-791380933085.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-07T13:51:41.918Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T13:51:41.918Z"
     }
   ],
   "count": 12
