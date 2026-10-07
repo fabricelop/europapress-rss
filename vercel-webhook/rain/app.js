@@ -48,6 +48,7 @@ const MODEL_META_PROPAGATION_SECONDS=10*60;
 const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
 const HARMONIE_STALE_GRACE_MINUTES=180;
 const LIGHTNING_PROXY_URL='/api/rain-lightning';
+const SYNTHETIC_RADAR_TILE_URL='/api/rain-radar-tile';
 const LIGHTNING_WMS_LAYERS=[
   {id:'raineta-lightning-flash',layer:'dwd:Accumulated_Flash_Geometry',opacity:.95,label:'MTG LI 5 min'},
   {id:'raineta-lightning-ncew',layer:'dwd:NCEW_EU',opacity:.82,label:'NowCastELEC'}
@@ -55,7 +56,7 @@ const LIGHTNING_WMS_LAYERS=[
 const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.40';
+const APP_VERSION='0.17.41';
 const FORECAST_CACHE_SCHEMA='consensus-v23';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
@@ -3615,9 +3616,70 @@ function projectedRadarOpacity(minutes,canMove,reliable){
   const beyond=Math.max(0,Math.min(1,(requested-safeReliable)/Math.max(1,RADAR_VISUAL_HORIZON_MINUTES-safeReliable)));
   return Math.max(.30,horizonOpacity-(horizonOpacity-.30)*beyond);
 }
+function syntheticRadarTileTemplate(frame){
+  return SYNTHETIC_RADAR_TILE_URL+
+    '?frame='+encodeURIComponent(String(frame?.path||''))+
+    '&z={z}&x={x}&y={y}';
+}
+function showSyntheticRadarPersistence(minutes,r,latest){
+  if(!state.map||!state.mapLoaded||!latest?.path)return false;
+  const token=++state.radarProjectionToken,sourceId='raineta-radar-projection';
+  removeRadarLayer(sourceId);
+  state.map.addSource(sourceId,{
+    type:'raster',
+    tiles:[syntheticRadarTileTemplate(latest)],
+    tileSize:256,
+    minzoom:0,
+    maxzoom:7,
+    attribution:'Weather data by RainViewer · synthetic RainETA reconstruction'
+  });
+  const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
+  state.map.addLayer({
+    id:sourceId,type:'raster',source:sourceId,
+    paint:{
+      'raster-opacity':Math.max(.64,.76-.03*Math.max(0,Number(minutes)||0)),
+      'raster-fade-duration':0,
+      'raster-saturation':0,
+      'raster-contrast':0
+    }
+  },before);
+  state.radarProjectionImageKey='synthetic-tiles@'+latest.time;
+  const projectedAt=latest.time*1000+Number(minutes)*60_000;
+  $('radarTime').textContent=fmtTime(projectedAt);
+  if($('radarFrameStatus'))$('radarFrameStatus').textContent='CONTINUIDAD SINTÉTICA · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+  $('radarPosition').textContent='Continuidad radar reconstruida · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+  $('radarMotion').textContent='RainETA decodifica cada tesela observada a máscara/intensidad y vuelve a generar una capa global alineada con el mapa. No usa el PNG observado como textura futura.';
+  let finished=false;
+  const detach=()=>{
+    if(finished)return;
+    finished=true;
+    try{state.map.off('sourcedata',onSourceData)}catch{}
+  };
+  const onSourceData=event=>{
+    if(token!==state.radarProjectionToken){detach();return}
+    if(event?.sourceId!==sourceId)return;
+    if(event?.isSourceLoaded||state.map.isSourceLoaded?.(sourceId)){
+      removeRadarLayer('raineta-radar');
+      detach();
+    }
+  };
+  state.map.on('sourcedata',onSourceData);
+  setTimeout(()=>{
+    if(token!==state.radarProjectionToken){detach();return}
+    if(state.map.getSource(sourceId)&&state.map.isSourceLoaded?.(sourceId)){
+      removeRadarLayer('raineta-radar');
+      detach();
+    }
+  },1800);
+  return true;
+}
 async function showProjectedRadar(minutes){
   const r=state.data?.radar,latest=state.frames.at(-1);
   if(!r||!latest||!state.mapLoaded)return;
+  if(Number(minutes)>0&&Number(minutes)<=RADAR_CONTINUITY_MINUTES){
+    showSyntheticRadarPersistence(minutes,r,latest);
+    return;
+  }
   const token=++state.radarProjectionToken;
   const projectedAt=latest.time*1000+minutes*60_000;
   try{

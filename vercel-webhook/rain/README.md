@@ -1,8 +1,13 @@
-# RainETA v0.17.40
+# RainETA v0.17.41
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
-## Proyección radar sintética y rayos DWD v0.17.40
+## Proyección radar sintética y rayos DWD v0.17.41
+- AHORA → +1/+2/+3 deja de depender de una única imagen local. RainETA usa ahora teselas sintéticas globales: cada tesela observada se descarga en el backend, se decodifica a reflectividad/máscara, se descartan los píxeles secos y se vuelve a generar un PNG transparente propio.
+- MapLibre recibe únicamente /api/rain-radar-tile, nunca una tesela RainViewer directa como capa futura. Esto conserva exactamente la georreferenciación XYZ de AHORA y elimina la posibilidad de que la imagen sintética quede fuera del viewport.
+- El radar observado permanece solo mientras carga la nueva fuente sintética; se retira en cuanto MapLibre confirma que la fuente futura está cargada, evitando el salto visual a vacío.
+- El endpoint expone action=stats de diagnóstico en preview para comprobar cuántos píxeles con eco entran y cuántos sobreviven a la decodificación.
+
 - El futuro visual ya no queda anclado a `state.loc`: RainETA decodifica los últimos frames RainViewer centrados en **el centro y zoom actuales del mapa**, reconstruye `mask/rateGrid` y renderiza desde ese campo.
 - El zoom de muestreo se adapta al tamaño real del viewport para que una única imagen sintética cubra la zona visible incluso al alejar el mapa.
 - +1/+2/+3 usan persistencia del campo **de la vista actual** cuando todavía no hay flujo fiable; a partir de ahí solo se muestra futuro si el flujo óptico local de esa misma vista supera los umbrales.

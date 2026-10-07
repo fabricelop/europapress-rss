@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
+import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba,validateRainViewerFramePath} from '../lib/rain-radar-synthetic.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
@@ -316,4 +317,44 @@ test('viewport projection bitmap cache is keyed by center and zoom',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/Number\(field\.centerLat\?\?state\.loc\.lat\)\.toFixed\(3\)/);
   assert.match(app,/Number\(field\.displayZoom\?\?RADAR_ZOOM\)/);
+});
+
+
+test('synthetic radar tile URL is fixed to RainViewer Universal Blue unsmoothed source',()=>{
+  const url=buildRainViewerSourceTileUrl({frame:'/v2/radar/abcdef123456',z:5,x:16,y:11});
+  assert.equal(url,'https://tilecache.rainviewer.com/v2/radar/abcdef123456/256/5/16/11/2/0_0.png');
+  assert.equal(validateRainViewerFramePath('/v2/radar/abcdef123456'),'/v2/radar/abcdef123456');
+  assert.throws(()=>validateRainViewerFramePath('https://evil.example/x'),/invalid_frame/);
+});
+
+test('synthetic radar decoder keeps only measurable radar pixels transparent elsewhere',()=>{
+  const raw=Uint8Array.from([
+    0,0,0,0,
+    206,192,135,150,
+    0,163,224,255,
+    130,123,105,73
+  ]);
+  const out=reconstructRadarTileRgba(raw,2,2,4);
+  assert.equal(out.sourceAlphaPixels,3);
+  assert.equal(out.wetPixels,2);
+  assert.deepEqual(Array.from(out.rgba.filter((_,i)=>i%4===3)),[0,150,255,0]);
+});
+
+test('AHORA +1/+2/+3 uses georeferenced synthetic tile source before local image projection',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/const SYNTHETIC_RADAR_TILE_URL='\/api\/rain-radar-tile'/);
+  assert.match(app,/type:'raster',\s*tiles:\[syntheticRadarTileTemplate\(latest\)\]/);
+  assert.match(app,/Number\(minutes\)<=RADAR_CONTINUITY_MINUTES/);
+  const shortRoute=app.indexOf('showSyntheticRadarPersistence(minutes,r,latest)');
+  const viewport=app.indexOf('const view=await radarViewportNowcast(r)');
+  assert.ok(shortRoute>=0&&viewport>shortRoute);
+});
+
+test('future synthetic tile source never points MapLibre directly at RainViewer',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  const start=app.indexOf('function showSyntheticRadarPersistence');
+  const end=app.indexOf('async function showProjectedRadar',start);
+  const fn=app.slice(start,end);
+  assert.match(fn,/syntheticRadarTileTemplate\(latest\)/);
+  assert.doesNotMatch(fn,/tilecache\.rainviewer\.com/);
 });
