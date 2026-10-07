@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-08T00:15:00+02:00",
-  "last_completed_at": "2026-10-08T00:18:30+02:00",
-  "updated_at": "2026-10-08T00:18:30+02:00",
+  "last_started_at": "2026-10-08T00:45:00+02:00",
+  "last_completed_at": "2026-10-08T00:52:00+02:00",
+  "updated_at": "2026-10-08T00:52:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,22 +15,22 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261008T001500-chat",
+    "run_id": "tr-20261008T004500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-08T00:15:00+02:00",
-    "updated_at": "2026-10-08T00:18:30+02:00",
-    "finished_at": "2026-10-08T00:18:30+02:00",
+    "started_at": "2026-10-08T00:45:00+02:00",
+    "updated_at": "2026-10-08T00:52:00+02:00",
+    "finished_at": "2026-10-08T00:52:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 0,
-    "total": 0,
+    "current": 2,
+    "total": 2,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 2,
+      "trends_explained": 2,
+      "explanation_groups": 2,
+      "new_cards": 2,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
@@ -41,22 +41,22 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 4,
-      "pending_repair_triggered": 1,
-      "visual_repair_triggered": 1,
-      "pending_cards_with_ai_ready": 4,
-      "pending_cards_needing_ai_repair": 0,
+      "pending_cards_reviewed": 6,
+      "pending_repair_triggered": 2,
+      "visual_repair_triggered": 2,
+      "pending_cards_with_ai_ready": 5,
+      "pending_cards_needing_ai_repair": 1,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 1,
       "remates_reused": 0,
-      "remates_omitted": 0,
+      "remates_omitted": 1,
       "jit_skipped": 0,
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · cola autoritativa 0 · requests activos 0 · reexplicaciones pendientes 0 · 4 Pendientes revisados con IA ready · sin ImageGen directo.",
+    "message": "Pasada completada · 2 tendencias explicadas y verificadas · cola autoritativa 0 · 6 Pendientes revisados; 5 con IA ready y 1 con reparación visual solicitada.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -66,42 +66,163 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "id": "9423be5a47e7",
+        "revision": 0,
+        "name": "#LaIslaDeLasTentaciones10",
+        "selected": "🌶️ La fidelidad volvió a pasar lista desde la hoguera.",
+        "omitted": false
+      },
+      {
+        "id": "98f756791609",
+        "revision": 0,
+        "name": "Asesinos",
+        "selected": "",
+        "omitted": true,
+        "reason": "sensitive_recent_death"
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-08T00:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Arranque · cola editorial 0; comprobando estado autoritativo, reexplicaciones y Pendientes."
+        "at": "2026-10-08T00:46:00+02:00",
+        "phase": "verifying",
+        "trend_id": "9423be5a47e7",
+        "title": "#LaIslaDeLasTentaciones10",
+        "message": "Releyendo estado autoritativo de #LaIslaDeLasTentaciones10"
       },
       {
-        "at": "2026-10-08T00:17:00+02:00",
+        "at": "2026-10-08T00:46:20+02:00",
+        "phase": "investigating",
+        "trend_id": "9423be5a47e7",
+        "title": "#LaIslaDeLasTentaciones10",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-08T00:47:00+02:00",
+        "phase": "investigating",
+        "trend_id": "9423be5a47e7",
+        "title": "#LaIslaDeLasTentaciones10",
+        "message": "Hecho esencial verificado con Mediaset y Movistar+"
+      },
+      {
+        "at": "2026-10-08T00:47:20+02:00",
+        "phase": "drafting",
+        "trend_id": "9423be5a47e7",
+        "title": "#LaIslaDeLasTentaciones10",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-08T00:47:50+02:00",
+        "phase": "remate_selection",
+        "trend_id": "9423be5a47e7",
+        "title": "#LaIslaDeLasTentaciones10",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-08T00:48:00+02:00",
+        "phase": "persisting",
+        "trend_id": "9423be5a47e7",
+        "title": "#LaIslaDeLasTentaciones10",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-08T00:48:10+02:00",
+        "phase": "persisting",
+        "trend_id": "9423be5a47e7",
+        "title": "#LaIslaDeLasTentaciones10",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-08T00:48:35+02:00",
+        "phase": "verifying",
+        "trend_id": "9423be5a47e7",
+        "title": "#LaIslaDeLasTentaciones10",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-08T00:48:40+02:00",
+        "phase": "verifying",
+        "trend_id": "98f756791609",
+        "title": "Asesinos",
+        "message": "Releyendo estado autoritativo de Asesinos"
+      },
+      {
+        "at": "2026-10-08T00:48:50+02:00",
+        "phase": "investigating",
+        "trend_id": "98f756791609",
+        "title": "Asesinos",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-08T00:49:35+02:00",
+        "phase": "investigating",
+        "trend_id": "98f756791609",
+        "title": "Asesinos",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-08T00:49:50+02:00",
+        "phase": "drafting",
+        "trend_id": "98f756791609",
+        "title": "Asesinos",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-08T00:49:55+02:00",
+        "phase": "remate_selection",
+        "trend_id": "98f756791609",
+        "title": "Asesinos",
+        "message": "Sin remate · explicación factual suficiente"
+      },
+      {
+        "at": "2026-10-08T00:50:00+02:00",
+        "phase": "persisting",
+        "trend_id": "98f756791609",
+        "title": "Asesinos",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-08T00:50:10+02:00",
+        "phase": "persisting",
+        "trend_id": "98f756791609",
+        "title": "Asesinos",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-08T00:50:35+02:00",
+        "phase": "verifying",
+        "trend_id": "98f756791609",
+        "title": "Asesinos",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-08T00:50:50+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 4 tarjetas recientes; las 4 tienen IA válida y ninguna requiere regeneración."
+        "message": "Revisando Pendientes · 6 tarjetas"
       },
       {
-        "at": "2026-10-08T00:18:00+02:00",
+        "at": "2026-10-08T00:51:10+02:00",
+        "phase": "verifying",
+        "trend_id": "98f756791609",
+        "title": "Asesinos",
+        "message": "Pendiente 6/6 · reparación visual solicitada"
+      },
+      {
+        "at": "2026-10-08T00:51:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola, requests, Explicadas y radar."
+        "message": "Verificación final · cola 0, requests activos 0, reexplicaciones 0"
       },
       {
-        "at": "2026-10-08T00:18:20+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificación final · cola 0, requests activos 0, reexplicaciones 0, problematic Top 10 0."
-      },
-      {
-        "at": "2026-10-08T00:18:30+02:00",
+        "at": "2026-10-08T00:52:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · sin trabajo editorial nuevo; saneamiento de 4 Pendientes verificado."
+        "message": "Pasada completada · 2 tendencias explicadas y verificadas · saneamiento de 6 Pendientes realizado"
       }
     ],
     "queue_complete": true,
