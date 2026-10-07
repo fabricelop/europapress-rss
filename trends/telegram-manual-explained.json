@@ -34531,9 +34531,9 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_pending": false,
       "rewrite_pending": false,
       "fallback_image_strategy": "existing_web_image",
@@ -34547,13 +34547,52 @@
       },
       "fallback_image_status": "ready",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261007084357_1200.jpg",
-        "source": "Europa Press · decreto de vivienda · 7/10/2026 08:43",
-        "source_url": "https://www.europapress.es/economia/construccion-y-vivienda-00342/noticia-administraciones-tendran-asumir-impagos-inquilinos-vulnerables-evitar-desahucio-20261007084357.html",
-        "alt": "Imagen de archivo relacionada con IRPF",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/74a31fe68bb7-r0-ai1-791379441221.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d3b53f71c0e9ef17eb96b631257164ace5d4ca9e2456d4873f0210f395f2fc4e",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2370458,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "74a31fe68bb7",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-74a31fe68bb7-r0-a1-1791379441221"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/74a31fe68bb7-r0-ai1-791379441221.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/74a31fe68bb7-r0-ai1-791379441221.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d3b53f71c0e9ef17eb96b631257164ace5d4ca9e2456d4873f0210f395f2fc4e",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2370458,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "74a31fe68bb7",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-74a31fe68bb7-r0-a1-1791379441221"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/74a31fe68bb7-r0-ai1-791379441221.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T13:26:07.765Z"
     },
     {
       "id": "d00ef2d5dc62",
@@ -34688,6 +34727,6 @@
       "rewrite_pending": false
     }
   ],
-  "updated_at": "2026-10-07T13:25:43.501Z",
+  "updated_at": "2026-10-07T13:26:07.765Z",
   "count": 627
 }
