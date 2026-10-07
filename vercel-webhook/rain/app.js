@@ -34,7 +34,7 @@ const OPERA_STALE_MINUTES=30;
 const OPERA_SURFACE_STALE_MINUTES=20;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.5';
+const APP_VERSION='0.17.6';
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
