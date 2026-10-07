@@ -39,7 +39,7 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.13';
+const APP_VERSION='0.17.14';
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -958,7 +958,7 @@ function renderShortNowcast(){
           ? 'Ventana seca radar · '+fmtTime(dry.start)+'–'+fmtTime(dry.end)
           : 'Ventana corta estable';
   const leadMinutes=near?Math.max(0,(Date.parse(ev.start)-now)/60_000):dry?Math.max(0,(Date.parse(dry.end)-now)/60_000):SHORT_HORIZON_MINUTES;
-  const shortConfidence=near?calibratedConfidence(ev.confidence,leadMinutes):dry?calibratedConfidence(dry.confidence,leadMinutes):null;
+  const shortConfidence=near?calibratedEventConfidence(ev,ev.confidence,leadMinutes):dry?calibratedRadarConfidence(dry.confidence,leadMinutes):null;
   if(shortConfidence!=null){
     const grade=confidenceGrade(shortConfidence);
     $('shortConfidence').textContent=grade.label+' · '+grade.percent+'%';
@@ -1080,11 +1080,32 @@ function radarSkillStats(){
   }
   return out;
 }
-function calibratedConfidence(raw,leadMinutes){
+function calibratedRadarConfidence(raw,leadMinutes){
   const stats=radarSkillStats(),lead=[15,30,60,90].reduce((a,b)=>Math.abs(b-leadMinutes)<Math.abs(a-leadMinutes)?b:a,15);
-  const s=stats[lead];
-  if(!s||s.n<6||s.accuracy==null)return raw;
-  return Math.max(.05,Math.min(.98,.76*raw+.24*s.accuracy));
+  const sample=stats[lead];
+  if(!sample||sample.n<6||sample.accuracy==null||sample.accuracy>=.70)return raw;
+  const cap=Math.max(.40,Math.min(.78,Number(sample.accuracy)+.10));
+  return Math.min(raw,cap);
+}
+function conservativeSkillCap(raw,source,leadMinutes){
+  const skill=sourceSkillFor(source,leadMinutes);
+  if(!skill||skill.n<5||skill.accuracy==null||skill.accuracy>=.70)return raw;
+  const cap=Math.max(.40,Math.min(.78,Number(skill.accuracy)+.10));
+  return Math.min(raw,cap);
+}
+function calibratedEventConfidence(event,raw,leadMinutes){
+  if(!event)return raw;
+  if(event.kind==='radar')return calibratedRadarConfidence(raw,leadMinutes);
+  if(event.kind==='opera')return conservativeSkillCap(raw,'opera',leadMinutes);
+  if(event.kind==='model'||event.kind==='model15')return conservativeSkillCap(raw,'models',leadMinutes);
+  if(event.kind==='radarFusion'){
+    const rv=sourceSkillFor('rainviewer',leadMinutes),op=sourceSkillFor('opera',leadMinutes);
+    if(!rv||!op||rv.n<5||op.n<5)return raw;
+    const accuracy=(Number(rv.accuracy)+Number(op.accuracy))/2;
+    if(!Number.isFinite(accuracy)||accuracy>=.70)return raw;
+    return Math.min(raw,Math.max(.40,Math.min(.78,accuracy+.10)));
+  }
+  return raw;
 }
 function renderRadarSkill(){
   const stats=radarSkillStats(),episodeStats=episodeLearningStats();
