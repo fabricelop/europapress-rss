@@ -1,13 +1,12 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T17:15:00+02:00",
-  "last_completed_at": "2026-10-07T17:30:20+02:00",
-  "updated_at": "2026-10-07T17:30:20+02:00",
+  "last_started_at": "2026-10-07T17:45:00+02:00",
+  "last_completed_at": "2026-10-07T17:58:32+02:00",
+  "updated_at": "2026-10-07T17:58:32+02:00",
   "status": "success",
   "processed_ids": [
-    "77173ace11f1",
-    "84289b1cc692",
+    "658de3359f22",
     "4d1156d20f42"
   ],
   "remaining_ids": [
@@ -22,25 +21,25 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-20261007T171500-chat",
+    "run_id": "tr-20261007T174500-chat",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-07T17:15:00+02:00",
-    "updated_at": "2026-10-07T17:30:20+02:00",
-    "finished_at": "2026-10-07T17:30:20+02:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-07T17:45:00+02:00",
+    "updated_at": "2026-10-07T17:58:32+02:00",
+    "finished_at": "2026-10-07T17:58:32+02:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 2,
+      "trends_processed": 2,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 0,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
-      "grouped_members_total": 0,
+      "grouped_into_existing_card": 1,
+      "grouped_members_total": 1,
       "trends_problematic": 1,
       "trends_dismissed": 0,
       "incidents": 1,
@@ -48,28 +47,28 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 2,
-      "pending_cards_reviewed": 2,
+      "fallback_images_ready": 6,
+      "pending_cards_reviewed": 6,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "visual_repairs_ready": 2,
+      "visual_repairs_ready": 6,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
+      "explanations_verified_under_280": 1,
       "remates_selected": 0,
       "remates_reused": 0,
-      "remates_omitted": 2,
+      "remates_omitted": 1,
       "jit_skipped": 0,
       "concurrent_completed": 0,
-      "new_queue_entries_during_run": 1
+      "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · 2 explicadas, 1 problematic, sin revisiones activas",
+    "message": "Pasada completada · Hamas agrupado; #TEM7O sigue problematic; sin revisiones activas",
     "incident_count": 1,
     "incidents": [
       {
         "trend_id": "4d1156d20f42",
         "title": "#TEM7O",
-        "reason": "#TEM7O coincide temporalmente con la emisión de Todo es mentira en Cuatro y el acrónimo es compatible con el programa y la fecha 7-O, pero tras búsquedas distintas no aparece una fuente abierta que vincule de forma verificable ese hashtag con un detonante concreto de la emisión de hoy; no se inventa la causa."
+        "reason": "#TEM7O sigue siendo compatible con el hashtag diario de Todo es mentira (TEM + 7O) y el programa está en emisión hoy en Cuatro, pero las búsquedas actuales no ofrecen una fuente abierta que vincule el hashtag a un hecho concreto de la entrega del 7 de octubre; no se atribuye una causa sin verificar."
       }
     ],
     "ratings_snapshot": {
@@ -81,7 +80,7 @@
     },
     "remate_selections": [
       {
-        "trend_id": "77173ace11f1",
+        "trend_id": "658de3359f22",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
@@ -90,173 +89,177 @@
         "no_remate_reason": "sensitive_event"
       },
       {
-        "trend_id": "84289b1cc692",
+        "trend_id": "4d1156d20f42",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": "political_content"
+        "no_remate_reason": "unverified_trigger"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-07T17:20:35+02:00",
+        "at": "2026-10-07T17:46:20+02:00",
         "phase": "investigating",
-        "trend_id": "84289b1cc692",
-        "title": "Air Europa",
+        "trend_id": "658de3359f22",
+        "title": "Hamas",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-07T17:46:40+02:00",
+        "phase": "investigating",
+        "trend_id": "658de3359f22",
+        "title": "Hamas",
         "message": "Contrastando fuente 1/2"
       },
       {
-        "at": "2026-10-07T17:20:50+02:00",
+        "at": "2026-10-07T17:46:55+02:00",
         "phase": "investigating",
-        "trend_id": "84289b1cc692",
-        "title": "Air Europa",
+        "trend_id": "658de3359f22",
+        "title": "Hamas",
         "message": "Contrastando fuente 2/2"
       },
       {
-        "at": "2026-10-07T17:21:05+02:00",
+        "at": "2026-10-07T17:47:05+02:00",
         "phase": "investigating",
-        "trend_id": "84289b1cc692",
-        "title": "Air Europa",
-        "message": "Hecho esencial verificado"
+        "trend_id": "658de3359f22",
+        "title": "Hamas",
+        "message": "Hecho esencial verificado · mismo episodio que israel"
       },
       {
-        "at": "2026-10-07T17:21:20+02:00",
+        "at": "2026-10-07T17:47:15+02:00",
         "phase": "drafting",
-        "trend_id": "84289b1cc692",
-        "title": "Air Europa",
-        "message": "Redactando explicación factual"
+        "trend_id": "658de3359f22",
+        "title": "Hamas",
+        "message": "Reutilizando explicación factual del grupo existente"
       },
       {
-        "at": "2026-10-07T17:21:35+02:00",
+        "at": "2026-10-07T17:47:25+02:00",
         "phase": "drafting",
-        "trend_id": "84289b1cc692",
-        "title": "Air Europa",
+        "trend_id": "658de3359f22",
+        "title": "Hamas",
         "message": "Comprobando límite de X"
       },
       {
-        "at": "2026-10-07T17:21:50+02:00",
+        "at": "2026-10-07T17:47:35+02:00",
         "phase": "remate_selection",
-        "trend_id": "84289b1cc692",
-        "title": "Air Europa",
-        "message": "Sin remate · contexto judicial y político"
+        "trend_id": "658de3359f22",
+        "title": "Hamas",
+        "message": "Sin remate · acontecimiento sensible"
       },
       {
-        "at": "2026-10-07T17:22:05+02:00",
+        "at": "2026-10-07T17:47:45+02:00",
         "phase": "persisting",
-        "trend_id": "84289b1cc692",
-        "title": "Air Europa",
-        "message": "Guardando ficha Explicada"
+        "trend_id": "658de3359f22",
+        "title": "Hamas",
+        "message": "Guardando vínculo con ficha Explicada existente"
       },
       {
-        "at": "2026-10-07T17:22:20+02:00",
-        "phase": "persisting",
-        "trend_id": "84289b1cc692",
-        "title": "Air Europa",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-07T17:22:40+02:00",
-        "phase": "persisting",
-        "trend_id": "84289b1cc692",
-        "title": "Air Europa",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-07T17:22:55+02:00",
+        "at": "2026-10-07T17:51:30+02:00",
         "phase": "verifying",
-        "trend_id": "84289b1cc692",
-        "title": "Air Europa",
+        "trend_id": "658de3359f22",
+        "title": "Hamas",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-07T17:23:05+02:00",
+        "at": "2026-10-07T17:52:00+02:00",
         "phase": "verifying",
         "trend_id": "4d1156d20f42",
         "title": "#TEM7O",
         "message": "Releyendo estado autoritativo de #TEM7O"
       },
       {
-        "at": "2026-10-07T17:23:20+02:00",
+        "at": "2026-10-07T17:54:20+02:00",
         "phase": "investigating",
         "trend_id": "4d1156d20f42",
         "title": "#TEM7O",
-        "message": "Buscando detonante actual"
+        "message": "Buscando detonante actual con consultas alternativas"
       },
       {
-        "at": "2026-10-07T17:23:35+02:00",
+        "at": "2026-10-07T17:54:50+02:00",
         "phase": "investigating",
         "trend_id": "4d1156d20f42",
         "title": "#TEM7O",
         "message": "Contrastando fuente 1/2"
       },
       {
-        "at": "2026-10-07T17:23:50+02:00",
+        "at": "2026-10-07T17:55:20+02:00",
         "phase": "investigating",
         "trend_id": "4d1156d20f42",
         "title": "#TEM7O",
         "message": "Contrastando fuente 2/2"
       },
       {
-        "at": "2026-10-07T17:24:05+02:00",
+        "at": "2026-10-07T17:55:50+02:00",
         "phase": "investigating",
         "trend_id": "4d1156d20f42",
         "title": "#TEM7O",
         "message": "No se verifica detonante exacto tras búsquedas distintas"
       },
       {
-        "at": "2026-10-07T17:24:20+02:00",
+        "at": "2026-10-07T17:56:20+02:00",
         "phase": "persisting",
         "trend_id": "4d1156d20f42",
         "title": "#TEM7O",
-        "message": "Guardando estado problematic de #TEM7O"
+        "message": "Guardando nuevo intento problematic de #TEM7O"
       },
       {
-        "at": "2026-10-07T17:29:40+02:00",
+        "at": "2026-10-07T17:56:40+02:00",
+        "phase": "verifying",
+        "trend_id": "4d1156d20f42",
+        "title": "#TEM7O",
+        "message": "Estado problematic persistido y verificado"
+      },
+      {
+        "at": "2026-10-07T17:57:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 2 tarjetas actuales"
+        "message": "Revisando Pendientes · 6 tarjetas vigentes"
       },
       {
-        "at": "2026-10-07T17:29:55+02:00",
+        "at": "2026-10-07T17:57:45+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reparación visual activa · 2 fallback listos, IA pendiente"
+        "message": "Pendientes completos · 6 con IA válida; 0 reparaciones visuales pendientes"
       },
       {
-        "at": "2026-10-07T17:30:10+02:00",
+        "at": "2026-10-07T17:58:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo cola final y reexplicaciones"
       },
       {
-        "at": "2026-10-07T17:30:20+02:00",
+        "at": "2026-10-07T17:58:32+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 2 explicadas, 1 problematic, sin revisiones activas"
+        "message": "Pasada completada · Hamas agrupado; #TEM7O sigue problematic; sin revisiones activas"
       }
     ]
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "workflow_in_progress",
+    "status": "no_repairs_pending_after_review",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261007T171500-chat",
-    "last_triggered_at": "2026-10-07T17:15:00+02:00",
-    "pending_cards_reviewed": 2,
-    "observed_at": "2026-10-07T17:30:20+02:00",
+    "last_trigger_run_id": "tr-20261007T174500-chat",
+    "last_triggered_at": "2026-10-07T17:45:00+02:00",
+    "pending_cards_reviewed": 6,
+    "observed_at": "2026-10-07T17:58:32+02:00",
     "observed_pending": [
       "77173ace11f1",
-      "84289b1cc692"
+      "84289b1cc692",
+      "36a6f15af1f8",
+      "fb7c22073523",
+      "0ecf2a36f589",
+      "701847d26c32"
     ],
-    "fallback_ready": 2,
-    "ai_pending": 2
+    "fallback_ready": 6,
+    "ai_pending": 0
   },
   "error": null
 }
