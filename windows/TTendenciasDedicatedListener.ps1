@@ -930,7 +930,9 @@ while ($true) {
     Save-State $state
 
     $localBridgeBusy=Test-ImageBridgeBusy
-    $slots = if($localBridgeBusy){0}else{[Math]::Max(0, $MaxParallelImageChats - @($state.active_image_commands).Count)}
+    $otherBridgeBusy=Test-OtherImageBridgeBusy
+    $slots = if($localBridgeBusy -or $otherBridgeBusy){0}else{[Math]::Max(0, $MaxParallelImageChats - @($state.active_image_commands).Count)}
+    if($otherBridgeBusy){Write-Log "IMAGE GLOBAL SLOT WAIT project=ttittulares"}
 
     if ($slots -gt 0 -and $CustomMessageSupport) {
       $jobs = @()
