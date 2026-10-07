@@ -2547,8 +2547,13 @@ function clearRadarVisual(){
 }
 function radarProjectionZoom(){
   const mapZoom=Number(state.map?.getZoom?.());
-  if(Number.isFinite(mapZoom))return Math.max(5,Math.min(RADAR_ZOOM,Math.floor(mapZoom)));
-  return Math.max(5,RADAR_ZOOM-1);
+  if(!Number.isFinite(mapZoom))return Math.max(5,RADAR_ZOOM-1);
+  const canvas=state.map?.getCanvas?.();
+  const width=Math.max(512,Number(canvas?.clientWidth)||512);
+  const height=Math.max(512,Number(canvas?.clientHeight)||512);
+  const viewportFactor=Math.max(width,height)/512;
+  const extraCoverage=Math.max(0,Math.ceil(Math.log2(viewportFactor)));
+  return Math.max(5,Math.min(RADAR_ZOOM,Math.floor(mapZoom)-extraCoverage));
 }
 function projectionCoordinates(minutes,displayZoom=RADAR_ZOOM){
   const motion=state.nowcast?.motion;
