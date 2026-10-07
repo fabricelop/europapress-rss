@@ -239,53 +239,34 @@ async function openFreshDedicatedConversation(){
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-
-    let reused=false;
-    const initialUrl=String(t&&t.url||"");
-    if(!initialUrl.includes("chatgpt.com")){
-      // Tras un reinicio de Chrome, Target.createTarget puede aparecer primero
-      // como about:blank. Haz la primera navegación desde el propio renderer.
-      await ensureChatRootFromFreshTarget(cdp);
-      await waitComposer(cdp,60000);
-      reused=true
-    }else{
-      try{
-        await resetToFreshConversation(cdp);
-        reused=true
-      }catch(e){
-        const detail=String(e&&e.message||e);
-        console.log("BRIDGE EXISTING COMPOSER NOT READY :: "+detail);
-        // Un Runtime.evaluate que no responde indica renderer/target congelado.
-        // Navegar ese mismo target solo encadena más timeouts: se descarta y se
-        // recrea físicamente en el catch exterior.
-        if(/CDP timeout Runtime\.evaluate|Target closed|WebSocket|not open/i.test(detail))throw e
+    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+    await waitComposer(cdp,60000);
+    await progress("composer_ready","ChatGPT cargado en la pestaña fija; compositor disponible.");
+    // Si ChatGPT restaurase una conversación previa al navegar a raíz, pulsa "Nuevo chat"
+    // dentro de LA MISMA pestaña. El target CDP no cambia.
+    try{
+      const st=await cdp.eval("(()=>({url:location.href}))()");
+      if(st&&/\/c\//.test(String(st.url||""))){
+        await cdp.eval("(()=>{const els=[...document.querySelectorAll('a,button')];const b=els.find(x=>/new chat|nuevo chat/i.test(String(x.getAttribute('aria-label')||x.getAttribute('title')||x.innerText||'')));if(!b)return false;b.click();return true})()");
+        await sleep(700);
+        await waitComposer(cdp,30000)
       }
-    }
-    if(!reused){
-      try{await cdp.call("Page.navigate",{url:CHAT_ROOT},8000)}catch(e){console.log("BRIDGE PAGE NAVIGATE WARNING :: "+String(e&&e.message||e))}
-      await waitComposer(cdp,45000);
-      await resetToFreshConversation(cdp)
-    }
-    await progress("composer_ready",reused?"Compositor reutilizado en la pestaña fija; conversación nueva disponible.":"ChatGPT cargado en la pestaña fija; compositor disponible.");
+    }catch{}
     const meta=await cdp.eval("(()=>({url:location.href,title:document.title||''}))()");
-    console.log("BRIDGE FIXED TAB FRESH CONVERSATION target="+String(t.id)+" url="+String(meta&&meta.url||"")+" reused="+reused);
+    console.log("BRIDGE FIXED TAB FRESH CONVERSATION target="+String(t.id)+" url="+String(meta&&meta.url||""));
     return cdp
   }catch(e){
     try{cdp.close()}catch{}
-    const staleId=String(t&&t.id||"");
-    await closeFixedTargetById(staleId);
-    // Target.createTarget puede devolver inicialmente about:blank. En vez de
-    // depender de Page.navigate (el punto que se bloqueaba), programamos la
-    // navegación desde el propio renderer y esperamos después el compositor.
+    // El target persistido pudo morir entre /json/list y la conexión. Crear uno nuevo una sola vez.
     t=await createFixedTarget();
     cdp=new CDP(t.webSocketDebuggerUrl);
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    await ensureChatRootFromFreshTarget(cdp);
+    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
     await waitComposer(cdp,60000);
-    await progress("composer_ready","Pestaña fija recreada desde cero; compositor disponible.");
-    console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id)+" previous="+staleId);
+    await progress("composer_ready","Pestaña fija recreada; compositor disponible.");
+    console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id));
     return cdp
   }
 }
@@ -338,7 +319,7 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 // compatibility during hot rollout: BRIDGE_MODE="capture-only-v23-target-handoff"
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
-const BRIDGE_FEATURES="v28-reject-nonconversation-image-targets";
+const BRIDGE_FEATURES="v53-ttendencias-fresh-navigation";
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
