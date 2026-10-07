@@ -4776,7 +4776,7 @@
       "percentage": 25,
       "first_seen": "2026-10-06T13:36:08.351385Z",
       "last_seen": "2026-10-06T19:42:53.609724Z",
-      "status": "READY",
+      "status": "DISMISSED",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -4836,7 +4836,12 @@
       "drafted_source_count": 4,
       "verified_source_count": 4,
       "delivered_at": "2026-10-06T19:40:00Z",
-      "delivery_confirmation": "prepared_web"
+      "delivery_confirmation": "prepared_web",
+      "dismissed_at": "2026-10-07T07:46:11.731Z",
+      "manual_user_dismissed": true,
+      "dismissal_source": "web_user",
+      "history_hidden_at": "2026-10-07T07:46:11.731Z",
+      "history_hidden_source": "web_user_dismissal"
     },
     {
       "id": "473b8d0f5dd9",
@@ -8046,7 +8051,7 @@
         "Europa Press"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-07T02:03:43.679847Z",
       "last_seen": "2026-10-07T07:42:56.537900Z",
       "status": "PROCESSING",
@@ -8154,7 +8159,7 @@
         "Antena 3 Noticias"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-07T03:04:34.255146Z",
       "last_seen": "2026-10-07T07:42:56.537900Z",
       "status": "PROCESSING",
@@ -8218,5 +8223,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-07T07:43:17.138429Z"
+  "updated_at": "2026-10-07T07:46:11.731Z"
 }
