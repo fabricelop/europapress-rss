@@ -44,6 +44,8 @@ const AEMET_RADAR_STALE_MINUTES=30;
 const OPERA_SURFACE_STALE_MINUTES=20;
 const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
+const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
+const HARMONIE_STALE_GRACE_MINUTES=180;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
 const APP_VERSION='0.17.25';
@@ -252,11 +254,10 @@ function evaluateModelMeta(domain,meta,nowSeconds=Date.now()/1000){
 async function fetchModelFreshness(model){
   if(model.provider==='rain-harmonie'){
     return{
-      status:'fresh',
+      status:'unknown',
       domain:'aemet_harmonie_pb',
-      availableAt:new Date().toISOString(),
-      updateIntervalMinutes:360,
-      reason:'última pasada oficial AEMET obtenida en vivo'
+      updateIntervalMinutes:HARMONIE_EXPECTED_UPDATE_MINUTES,
+      reason:'frescura pendiente de validar con sourceGeneratedAt de la descarga oficial'
     };
   }
   const domains=Array.isArray(model.metaDomains)?model.metaDomains.filter(Boolean):[];
@@ -442,10 +443,42 @@ async function fetchOperaMeta(){
   if(!r.ok)throw new Error('OPERA HTTP '+r.status);
   return r.json();
 }
+function harmonieFetchedFreshness(model,fetchedValue,baseFreshness={}){
+  if(model?.provider!=='rain-harmonie')return baseFreshness||{status:'unknown'};
+  const generatedAt=fetchedValue?.sourceMeta?.sourceGeneratedAt;
+  const generatedMs=Date.parse(generatedAt||'');
+  if(!Number.isFinite(generatedMs)){
+    return{
+      ...baseFreshness,status:'unknown',domain:'aemet_harmonie_pb',
+      reason:'sourceGeneratedAt no disponible en la descarga oficial',
+      updateIntervalMinutes:HARMONIE_EXPECTED_UPDATE_MINUTES
+    };
+  }
+  const ageMinutes=Math.max(0,(Date.now()-generatedMs)/60_000);
+  const stale=ageMinutes>HARMONIE_EXPECTED_UPDATE_MINUTES+HARMONIE_STALE_GRACE_MINUTES;
+  return{
+    ...baseFreshness,
+    status:stale?'stale':'fresh',
+    stale,
+    domain:'aemet_harmonie_pb',
+    availableAt:new Date(generatedMs).toISOString(),
+    availabilityAgeMinutes:Math.round(ageMinutes),
+    delayMinutes:Math.max(0,Math.round(ageMinutes-HARMONIE_EXPECTED_UPDATE_MINUTES)),
+    updateIntervalMinutes:HARMONIE_EXPECTED_UPDATE_MINUTES,
+    reason:stale?'pasada AEMET HARMONIE demasiado antigua':'frescura validada con sourceGeneratedAt oficial'
+  };
+}
+function effectiveFreshness(defs,settled,freshness,index){
+  const base=freshness[index]?.status==='fulfilled'
+    ? freshness[index].value
+    : {status:'unknown',reason:'metadata no consultada'};
+  const model=defs?.[index],value=settled[index]?.status==='fulfilled'?settled[index].value:null;
+  return harmonieFetchedFreshness(model,value,base);
+}
 function sourceStatus(defs,settled,freshnessSettled=[]){
   return defs.map((m,i)=>{
     const fetched=settled[i]?.status==='fulfilled';
-    const freshness=freshnessSettled[i]?.status==='fulfilled'?freshnessSettled[i].value:{status:'unknown',reason:'metadata no consultada'};
+    const freshness=effectiveFreshness(defs,settled,freshnessSettled,i);
     const stale=freshness?.status==='stale';
     return{
       id:m.id,label:m.label,family:m.family||m.id,
@@ -464,18 +497,15 @@ function sourceStatus(defs,settled,freshnessSettled=[]){
     };
   });
 }
-function freshnessValue(settled,index){
-  return settled[index]?.status==='fulfilled'?settled[index].value:{status:'unknown'};
-}
-function usableForecast(settled,freshness,index){
-  return settled[index]?.status==='fulfilled'&&freshnessValue(freshness,index)?.status!=='stale';
+function usableForecast(defs,settled,freshness,index){
+  return settled[index]?.status==='fulfilled'&&effectiveFreshness(defs,settled,freshness,index)?.status!=='stale';
 }
 function modelPropagationState(detSettled,ensSettled,detFreshness,ensFreshness){
   const byFamily=new Map();
   const collect=(defs,settled,freshness)=>{
     defs.forEach((model,i)=>{
-      if(!usableForecast(settled,freshness,i))return;
-      const status=freshnessValue(freshness,i)?.status||'unknown';
+      if(!usableForecast(defs,settled,freshness,i))return;
+      const status=effectiveFreshness(defs,settled,freshness,i)?.status||'unknown';
       const family=model.family||model.id;
       const arr=byFamily.get(family)||[];
       arr.push(status);byFamily.set(family,arr);
@@ -561,8 +591,8 @@ async function loadForecast(force=false){
     Promise.allSettled(DET_MODELS.map(fetchModelFreshness)),
     Promise.allSettled(ENS_MODELS.map(fetchModelFreshness))
   ]);
-  const deterministic=det.map((x,i)=>usableForecast(det,detFreshness,i)?x.value:null).filter(Boolean);
-  const ensembles=ens.map((x,i)=>usableForecast(ens,ensFreshness,i)?x.value:null).filter(Boolean);
+  const deterministic=det.map((x,i)=>usableForecast(DET_MODELS,det,detFreshness,i)?x.value:null).filter(Boolean);
+  const ensembles=ens.map((x,i)=>usableForecast(ENS_MODELS,ens,ensFreshness,i)?x.value:null).filter(Boolean);
   const quarterHour=qh[0]?.status==='fulfilled'?qh[0].value:null;
   const radarMeta=radar[0]?.status==='fulfilled'?radar[0].value:null;
   const operaMeta=opera[0]?.status==='fulfilled'?opera[0].value:null;
