@@ -1,6 +1,13 @@
-# RainETA v0.17.30
+# RainETA v0.17.31
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
+
+## Rayos EUMETSAT v0.17.31
+- El mapa incorpora un botón opcional `⚡ RAYOS` basado en Meteosat Third Generation Lightning Imager (EUMETSAT), capa de actividad eléctrica acumulada en 5 min.
+- La capa solo se muestra cerca de AHORA (últimos 5 min). Al navegar a radar histórico más antiguo o a proyección futura se oculta automáticamente para no mezclar tiempos distintos.
+- EUMETSAT es la fuente observada principal para actividad eléctrica. La red terrestre de AEMET queda preparada como contraste adicional cuando exista una API key de AEMET en el backend.
+- Blitzortung no se usa como fuente cruda porque sus datos no constituyen una API pública general para redistribución en aplicaciones de terceros.
+
 
 ## Nowcast espacial por células v0.17.30
 - El radar futuro deja de trasladar toda la imagen con un único vector global.
