@@ -1,6 +1,15 @@
-# RainETA v0.17.29
+# RainETA v0.17.30
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
+
+## Nowcast espacial por células v0.17.30
+- El radar futuro deja de trasladar toda la imagen con un único vector global.
+- RainETA conserva el campo de flujo óptico local ya calculado sobre los últimos barridos y proyecta una malla 16×16: cada zona/célula se desplaza según los vectores locales interpolados.
+- El flujo local se estabiliza progresivamente con viento atmosférico a 850/700 hPa cuando radar y viento son coherentes, siguiendo el mismo principio general usado por nowcasts modernos como Ventusky.
+- El horizonte espacial es dinámico y nunca supera 60 min: depende de cobertura/calidad del flujo local, acuerdo radar-viento y señal convectiva (CAPE, probabilidad de tormenta/actividad eléctrica).
+- Si no hay flujo local defendible, RainETA corta el campo futuro; no vuelve al antiguo desplazamiento rígido global.
+- La intensidad/forma no se hace crecer artificialmente. Más allá del horizonte espacial manda HARMONIE y el consenso de modelos para ETA/probabilidad.
+
 
 ## UI estable simplificada v0.17.29
 - «Tiempo estable» queda como único titular principal del estado estable; la etiqueta superior pasa a «Previsión actual».
