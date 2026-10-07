@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-26fe26c37f74-r1-a1-1791365944926",
+  "requested_at": "2026-10-07T09:39:04.924974Z",
+  "updated_at": "2026-10-07T09:39:04.924974Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "26fe26c37f74",
+  "event_id": "26fe26c37f74",
+  "target_name": "Una explosión en una vivienda de Valdemoro deja graves daños materiales",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Una explosión en una vivienda de Valdemoro deja graves daños materiales",
+    "revision": 1,
+    "factual_summary": "Una explosión seguida de incendio en una vivienda de Valdemoro provocó importantes daños materiales. No hubo heridos entre las personas. Tres perros murieron por inhalación de humo y un cuarto fue reanimado.",
+    "tweet_text": "Una explosión seguida de incendio en una vivienda de Valdemoro causó importantes daños. No hubo heridos entre las personas; tres perros murieron por inhalación de humo y un cuarto fue reanimado.\n\n🌶️ No hubo heridos humanos, pero murieron tres perros.",
+    "remate": "🌶️ No hubo heridos humanos, pero murieron tres perros.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.",
+    "image_style_name": "poster_grafico",
+    "image_style_index": 2,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nUna explosión seguida de incendio en una vivienda de Valdemoro causó importantes daños. No hubo heridos entre las personas; tres perros murieron por inhalación de humo y un cuarto fue reanimado.\n\n🌶️ No hubo heridos humanos, pero murieron tres perros.\n\nREMATE EXACTO:\n🌶️ No hubo heridos humanos, pero murieron tres perros.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nUna explosión seguida de incendio en una vivienda de Valdemoro provocó importantes daños materiales. No hubo heridos entre las personas. Tres perros murieron por inhalación de humo y un cuarto fue reanimado.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.europapress.es/madrid/noticia-explosion-vivienda-valdemoro-heridos-provoca-importantes-danos-materiales-20261007094359.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/madrid/noticia-explosion-vivienda-valdemoro-heridos-provoca-importantes-danos-materiales-20261007094359.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/madrid/2026-10-07/incendio-en-un-bloque-de-viviendas-de-valdemoro.html"
+      },
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/cmadrid/2026/10/07/una-explosion-provoca-un-gran-incendio-sin-heridos-en-un-edificio-de-valdemoro-ser-madrid-sur/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
