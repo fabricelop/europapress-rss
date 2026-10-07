@@ -1,13 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T19:15:00+02:00",
-  "last_completed_at": "2026-10-07T19:20:30+02:00",
-  "updated_at": "2026-10-07T19:20:30+02:00",
+  "last_started_at": "2026-10-07T19:45:00+02:00",
+  "last_completed_at": "2026-10-07T19:49:00+02:00",
+  "updated_at": "2026-10-07T19:49:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "4d1156d20f42"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -16,25 +14,25 @@
   "last_run": {
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261007T191500-chat",
+    "run_id": "tr-20261007T194500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T19:15:00+02:00",
-    "updated_at": "2026-10-07T19:20:30+02:00",
-    "finished_at": "2026-10-07T19:20:30+02:00",
+    "started_at": "2026-10-07T19:45:00+02:00",
+    "updated_at": "2026-10-07T19:49:00+02:00",
+    "finished_at": "2026-10-07T19:49:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 2,
-    "total": 2,
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
       "new_cards": 0,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 2,
-      "grouped_members_total": 2,
+      "grouped_into_existing_card": 0,
+      "grouped_members_total": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -42,12 +40,14 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 1,
+      "pending_cards_reviewed": 19,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
+      "pending_cards_with_ai_ready": 6,
+      "pending_cards_needing_ai_repair": 13,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_reused": 0,
       "remates_omitted": 0,
@@ -55,7 +55,7 @@
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · Biedma y Rocho agrupadas con La UCO; cola 0; Pendientes revisados 1/1 completo",
+    "message": "Pasada completada · cola editorial 0; Pendientes revisados 19; saneamiento visual disparado correctamente",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -68,123 +68,46 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-07T19:15:00+02:00",
+        "at": "2026-10-07T19:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial directa · cola 2"
+        "message": "Iniciando pasada editorial directa · cola 0 · revisando Pendientes y reexplicaciones"
       },
       {
-        "at": "2026-10-07T19:16:00+02:00",
+        "at": "2026-10-07T19:46:00+02:00",
         "phase": "verifying",
-        "trend_id": "2001ce1304ef",
-        "title": "Biedma",
-        "message": "Releyendo estado autoritativo de Biedma"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo cola y requests · 0 preparing/update · 0 reexplicaciones"
       },
       {
-        "at": "2026-10-07T19:16:10+02:00",
-        "phase": "investigating",
-        "trend_id": "2001ce1304ef",
-        "title": "Biedma",
-        "message": "Buscando detonante actual y relación con Rocho"
-      },
-      {
-        "at": "2026-10-07T19:16:40+02:00",
-        "phase": "investigating",
-        "trend_id": "2001ce1304ef",
-        "title": "Biedma",
-        "message": "Contrastando fuente 1/2 · Europa Press"
-      },
-      {
-        "at": "2026-10-07T19:16:55+02:00",
-        "phase": "investigating",
-        "trend_id": "2001ce1304ef",
-        "title": "Biedma",
-        "message": "Contrastando fuente 2/2 · elDiario.es"
-      },
-      {
-        "at": "2026-10-07T19:17:10+02:00",
-        "phase": "investigating",
-        "trend_id": "2001ce1304ef",
-        "title": "Biedma",
-        "message": "Hecho esencial verificado · Biedma y Rocho son el mismo acontecimiento ya explicado como La UCO"
-      },
-      {
-        "at": "2026-10-07T19:17:20+02:00",
-        "phase": "drafting",
-        "trend_id": "2001ce1304ef",
-        "title": "Biedma",
-        "message": "Reutilizando explicación factual ya verificada del grupo La UCO"
-      },
-      {
-        "at": "2026-10-07T19:17:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "2001ce1304ef",
-        "title": "Biedma",
-        "message": "Sin remate · explicación factual existente del grupo"
-      },
-      {
-        "at": "2026-10-07T19:17:40+02:00",
-        "phase": "persisting",
-        "trend_id": "2001ce1304ef",
-        "title": "Biedma",
-        "message": "Guardando ficha Explicada · ampliando grupo La UCO"
-      },
-      {
-        "at": "2026-10-07T19:18:20+02:00",
-        "phase": "persisting",
-        "trend_id": "2001ce1304ef",
-        "title": "Biedma",
-        "message": "Actualizando requests · Biedma y Rocho quedan cubiertas por La UCO"
-      },
-      {
-        "at": "2026-10-07T19:18:50+02:00",
-        "phase": "persisting",
-        "trend_id": "521b2df43b33",
-        "title": "Rocho",
-        "message": "Retirando revisiones Biedma y Rocho de la cola"
-      },
-      {
-        "at": "2026-10-07T19:19:40+02:00",
+        "at": "2026-10-07T19:46:30+02:00",
         "phase": "verifying",
-        "trend_id": "521b2df43b33",
-        "title": "Rocho",
-        "message": "Releyendo main"
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 19 tarjetas"
       },
       {
-        "at": "2026-10-07T19:19:50+02:00",
+        "at": "2026-10-07T19:47:00+02:00",
         "phase": "verifying",
-        "trend_id": "521b2df43b33",
-        "title": "Rocho",
-        "message": "Revisando Pendientes · 1 tarjeta"
+        "trend_id": null,
+        "title": null,
+        "message": "6 paquetes con IA válida · 13 reparaciones visuales solicitadas"
       },
       {
-        "at": "2026-10-07T19:20:00+02:00",
+        "at": "2026-10-07T19:48:00+02:00",
         "phase": "verifying",
-        "trend_id": "4d1156d20f42",
-        "title": "#TEM7O",
-        "message": "Pendiente 1/1 · paquete ya completo"
+        "trend_id": null,
+        "title": null,
+        "message": "Reparador de imágenes TTendencias Explicadas completado correctamente"
       },
       {
-        "at": "2026-10-07T19:20:10+02:00",
-        "phase": "verifying",
-        "trend_id": "521b2df43b33",
-        "title": "Rocho",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-07T19:20:20+02:00",
-        "phase": "verifying",
-        "trend_id": "521b2df43b33",
-        "title": "Rocho",
-        "message": "Tendencias cerradas y verificadas · cola 0"
-      },
-      {
-        "at": "2026-10-07T19:20:30+02:00",
+        "at": "2026-10-07T19:49:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · Biedma y Rocho agrupadas con La UCO; cola 0; Pendientes revisados 1/1 completo"
+        "message": "Pasada completada · cola editorial 0; Pendientes revisados 19; saneamiento visual disparado correctamente"
       }
     ]
   },
@@ -193,19 +116,34 @@
     "persisted_trigger": true,
     "status": "triggered_async",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261007T181500-chat",
-    "last_triggered_at": "2026-10-07T18:15:00+02:00",
-    "pending_cards_reviewed": 6,
-    "observed_at": "2026-10-07T18:22:20+02:00",
+    "last_trigger_run_id": "tr-20261007T194500-chat",
+    "last_triggered_at": "2026-10-07T19:45:00+02:00",
+    "pending_cards_reviewed": 19,
+    "observed_at": "2026-10-07T19:47:00+02:00",
     "observed_pending": [
+      "7375308f71a9",
+      "2cf07ed453b6",
+      "6a2d476eed14",
+      "629594b46505",
+      "ad1a64057f9a",
+      "ddeddd19a005",
+      "8e250d6dfae4",
+      "9086ee48d4e5",
+      "aa0c8d12686d",
+      "3028fe69be06",
+      "f1d20e59d1e1",
+      "59e7d31e6d57",
+      "260feac7575a",
       "77173ace11f1",
       "84289b1cc692",
       "36a6f15af1f8",
       "fb7c22073523",
       "0ecf2a36f589",
-      "701847d26c32"
+      "4d1156d20f42"
     ],
-    "fallback_ready": 6,
-    "ai_pending": 0
+    "ai_ready": 6,
+    "ai_repair_needed": 13,
+    "workflow_run_id": 37661706319,
+    "workflow_conclusion": "success"
   }
 }
