@@ -1,4 +1,6 @@
 import {wmsCapabilitiesHasLayer} from '../../vercel-webhook/rain/radar-core.js';
+import {inflateSync} from 'node:zlib';
+import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba} from '../../vercel-webhook/lib/rain-radar-synthetic.js';
 const loc={lat:'40.4168',lon:'-3.7038'};
 const det=['ecmwf_ifs','ecmwf_aifs025','icon_seamless','gfs_seamless','meteofrance_seamless','gem_seamless','ukmo_global_deterministic_10km'];
 const ens=['ecmwf_ifs_europe_ensemble','ecmwf_aifs025_ensemble','dwd_icon_eu_eps','ncep_gefs025','ukmo_global_ensemble_20km','gem_global_ensemble','bom_access_global_ensemble','google_weathernext2_ensemble'];
@@ -16,6 +18,85 @@ for(const model of ens){
 const q=new URLSearchParams({latitude:loc.lat,longitude:loc.lon,minutely_15:'precipitation',forecast_minutely_15:'8',timeformat:'unixtime',timezone:'GMT'});
 const qh=await check('https://api.open-meteo.com/v1/forecast?'+q);console.log('QH_OK',qh.minutely_15?.time?.length||0);
 const radar=await check('https://api.rainviewer.com/public/weather-maps.json');if(!(radar.radar?.past||[]).length)throw Error('RainViewer sin frames');console.log('RADAR_OK',radar.radar.past.length,radar.host);
+
+
+function paeth(a,b,c){
+  const p=a+b-c,pa=Math.abs(p-a),pb=Math.abs(p-b),pc=Math.abs(p-c);
+  return pa<=pb&&pa<=pc?a:pb<=pc?b:c;
+}
+function decodePngRgba(bytes){
+  const data=Buffer.from(bytes);
+  if(data.length<24||data.readUInt32BE(0)!==0x89504e47)throw Error('PNG signature');
+  let pos=8,width=0,height=0,bitDepth=0,colorType=0,palette=null,alphaTable=null;
+  const idat=[];
+  while(pos+12<=data.length){
+    const len=data.readUInt32BE(pos),type=data.toString('ascii',pos+4,pos+8),chunk=data.subarray(pos+8,pos+8+len);
+    if(type==='IHDR'){width=chunk.readUInt32BE(0);height=chunk.readUInt32BE(4);bitDepth=chunk[8];colorType=chunk[9]}
+    else if(type==='PLTE')palette=chunk;
+    else if(type==='tRNS')alphaTable=chunk;
+    else if(type==='IDAT')idat.push(chunk);
+    else if(type==='IEND')break;
+    pos+=12+len;
+  }
+  if(bitDepth!==8)throw Error('PNG bitDepth '+bitDepth);
+  const bpp=colorType===6?4:colorType===2?3:colorType===4?2:1;
+  const stride=width*bpp,raw=inflateSync(Buffer.concat(idat)),scan=Buffer.alloc(stride*height);
+  let src=0;
+  for(let y=0;y<height;y++){
+    const filter=raw[src++],row=y*stride,prev=(y-1)*stride;
+    for(let x=0;x<stride;x++){
+      const val=raw[src++],a=x>=bpp?scan[row+x-bpp]:0,b=y?scan[prev+x]:0,c=y&&x>=bpp?scan[prev+x-bpp]:0;
+      scan[row+x]=filter===0?val:
+        filter===1?(val+a)&255:
+        filter===2?(val+b)&255:
+        filter===3?(val+Math.floor((a+b)/2))&255:
+        filter===4?(val+paeth(a,b,c))&255:
+        (()=>{throw Error('PNG filter '+filter)})();
+    }
+  }
+  const rgba=Buffer.alloc(width*height*4);
+  for(let i=0,o=0;i<width*height;i++,o+=4){
+    if(colorType===6){rgba[o]=scan[i*4];rgba[o+1]=scan[i*4+1];rgba[o+2]=scan[i*4+2];rgba[o+3]=scan[i*4+3]}
+    else if(colorType===2){rgba[o]=scan[i*3];rgba[o+1]=scan[i*3+1];rgba[o+2]=scan[i*3+2];rgba[o+3]=255}
+    else if(colorType===4){rgba[o]=rgba[o+1]=rgba[o+2]=scan[i*2];rgba[o+3]=scan[i*2+1]}
+    else if(colorType===0){rgba[o]=rgba[o+1]=rgba[o+2]=scan[i];rgba[o+3]=255}
+    else if(colorType===3){
+      const idx=scan[i],p=idx*3;
+      rgba[o]=palette?.[p]??0;rgba[o+1]=palette?.[p+1]??0;rgba[o+2]=palette?.[p+2]??0;rgba[o+3]=alphaTable&&idx<alphaTable.length?alphaTable[idx]:255;
+    }else throw Error('PNG colorType '+colorType);
+  }
+  return{rgba,width,height,colorType};
+}
+async function fetchPng(url){
+  const c=new AbortController(),t=setTimeout(()=>c.abort(),12000);
+  try{
+    const r=await fetch(url,{signal:c.signal,headers:{Accept:'image/png'}});
+    const bytes=new Uint8Array(await r.arrayBuffer());
+    if(!r.ok)throw Error('PNG HTTP '+r.status);
+    return decodePngRgba(bytes);
+  }finally{clearTimeout(t)}
+}
+async function checkRainViewerSyntheticDecode(radar){
+  const latest=radar.radar?.past?.at(-1);
+  if(!latest?.path)throw Error('RainViewer latest frame missing');
+  console.log('RADAR_FRAME',latest.time,latest.path);
+  let totalRaw=0,totalWet=0,totalSmoothRaw=0,totalSmoothWet=0;
+  for(const [x,y] of [[3,2],[4,2],[3,3],[4,3]]){
+    const rawUrl=buildRainViewerSourceTileUrl({frame:latest.path,z:3,x,y,size:256});
+    const smoothUrl=rawUrl.replace('/0_0.png','/1_1.png');
+    const [rawPng,smoothPng]=await Promise.all([fetchPng(rawUrl),fetchPng(smoothUrl)]);
+    const rawStats=reconstructRadarTileRgba(rawPng.rgba,rawPng.width,rawPng.height,4);
+    const smoothStats=reconstructRadarTileRgba(smoothPng.rgba,smoothPng.width,smoothPng.height,4);
+    totalRaw+=rawStats.sourceAlphaPixels;totalWet+=rawStats.wetPixels;
+    totalSmoothRaw+=smoothStats.sourceAlphaPixels;totalSmoothWet+=smoothStats.wetPixels;
+    console.log('RADAR_TILE_DECODE',3,x,y,'rawAlpha',rawStats.sourceAlphaPixels,'rawWet',rawStats.wetPixels,'smoothAlpha',smoothStats.sourceAlphaPixels,'smoothWet',smoothStats.wetPixels,'types',rawPng.colorType,smoothPng.colorType);
+  }
+  if(totalSmoothRaw>0&&totalRaw===0)throw Error('RainViewer 0_0 vacío mientras 1_1 contiene radar');
+  if(totalRaw>0&&totalWet===0)throw Error('RainViewer decoder descarta todos los píxeles 0_0');
+  console.log('RADAR_SYNTHETIC_DECODE_OK','rawAlpha',totalRaw,'rawWet',totalWet,'smoothAlpha',totalSmoothRaw,'smoothWet',totalSmoothWet);
+}
+await checkRainViewerSyntheticDecode(radar);
+
 const geo=await check('https://geocoding-api.open-meteo.com/v1/search?name=Madrid&count=2&language=es&format=json');if(!geo.results?.length)throw Error('geocode vacío');console.log('GEO_OK',geo.results[0].name);
 
 async function checkBinarySource(label,url){
