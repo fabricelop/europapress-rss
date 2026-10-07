@@ -22,6 +22,8 @@ const ENS_MODELS=[
   {id:'google_weathernext2_ensemble',label:'Google WeatherNext 2',family:'GOOGLE',weight:.92,metaDomains:['google_weathernext2_ensemble']},
 ];
 const FORECAST_TTL=20*60_000;
+const FORECAST_RETRY_MEDIUM=10*60_000;
+const FORECAST_RETRY_LOW=5*60_000;
 const FORECAST_FALLBACK_MAX_AGE=90*60_000;
 const RADAR_REFRESH_MS=5*60_000;
 const CANONICAL_RADAR_THRESHOLD=.22;
@@ -37,7 +39,7 @@ const OPERA_SURFACE_STALE_MINUTES=20;
 const MODEL_META_GRACE_SECONDS=20*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.10';
+const APP_VERSION='0.17.11';
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -371,9 +373,13 @@ function freshnessValue(settled,index){
 function usableForecast(settled,freshness,index){
   return settled[index]?.status==='fulfilled'&&freshnessValue(freshness,index)?.status!=='stale';
 }
+function forecastCacheTtl(data){
+  const ttl=Number(data?.cacheTtlMs);
+  return Number.isFinite(ttl)&&ttl>=FORECAST_RETRY_LOW?Math.min(FORECAST_TTL,ttl):FORECAST_TTL;
+}
 async function loadForecast(force=false){
   const k=cacheKey(),cached=readForecastCache();
-  if(!force&&cached&&cached.ageMs<FORECAST_TTL)return {...cached.data,cacheAgeMs:cached.ageMs};
+  if(!force&&cached&&cached.ageMs<forecastCacheTtl(cached.data))return {...cached.data,cacheAgeMs:cached.ageMs};
   const [det,ens,qh,radar,opera,week,detFreshness,ensFreshness]=await Promise.all([
     pool(DET_MODELS,fetchDet,3),pool(ENS_MODELS,fetchEns,2),
     Promise.allSettled([fetchQuarterHour()]),Promise.allSettled([fetchRadarMeta()]),Promise.allSettled([fetchOperaMeta()]),
@@ -424,7 +430,11 @@ async function loadForecast(force=false){
     }
   };
   const all=[...data.sources.deterministic,...data.sources.ensembles];
-  data.sources.health={available:all.filter(x=>x.ok).length+(data.sources.quarterHour?1:0)+(data.sources.radar?1:0)+(data.sources.opera?1:0),total:all.length+3};
+  const healthyModels=all.filter(x=>x.ok);
+  const healthyFamilies=new Set(healthyModels.map(x=>x.family||x.id).filter(Boolean)).size;
+  data.sources.modelFamilyHealth={active:healthyFamilies,models:healthyModels.length,totalModels:all.length};
+  data.cacheTtlMs=healthyFamilies>=5?FORECAST_TTL:healthyFamilies>=3?FORECAST_RETRY_MEDIUM:FORECAST_RETRY_LOW;
+  data.sources.health={available:healthyModels.length+(data.sources.quarterHour?1:0)+(data.sources.radar?1:0)+(data.sources.opera?1:0),total:all.length+3};
   try{localStorage.setItem(k,JSON.stringify({version:APP_VERSION,savedAt:Date.now(),data}))}catch{}
   return data;
 }
@@ -2370,9 +2380,10 @@ function renderSources(){
   const healthyModels=modelSources.filter(x=>x.ok);
   const healthyFamilies=new Set(healthyModels.map(x=>x.family||x.id).filter(Boolean)).size;
   const fallbackAge=Number(state.data?.degradedCacheAgeMs)||0;
+  const retryMinutes=Math.round(forecastCacheTtl(state.data)/60_000);
   const consensusDetail=state.data?.degradedForecast
     ? 'MODO DEGRADADO · última previsión válida de hace '+Math.max(1,Math.round(fallbackAge/60_000))+' min · confianza máxima '+Math.round((Number(state.data?.degradedConfidenceCap)||0)*100)+'%'
-    : healthyFamilies+' familias independientes activas · '+healthyModels.length+'/'+modelSources.length+' modelos/ensembles disponibles · quórum mínimo 2';
+    : healthyFamilies+' familias independientes activas · '+healthyModels.length+'/'+modelSources.length+' modelos/ensembles disponibles · quórum mínimo 2 · refresco '+retryMinutes+' min';
   const list=[
     {label:'Consenso modelos',ok:!state.data?.degradedForecast&&healthyFamilies>=2,detail:consensusDetail},
     {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opDetail},
