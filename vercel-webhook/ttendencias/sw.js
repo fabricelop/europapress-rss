@@ -1,4 +1,4 @@
-const CACHE="ttendencias-shell-top10-no-push-v3";
+const CACHE="ttendencias-shell-v4-pending-close-guard";
 const SHELL=["/ttendencias/manifest.webmanifest","/ttendencias/icon.svg"];
 
 self.addEventListener("install",event=>{
