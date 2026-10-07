@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import pathlib
+import sys
 import urllib.parse
 from datetime import datetime, timezone, timedelta
 
@@ -12,9 +13,18 @@ from PIL import Image
 from io import BytesIO
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0,str(ROOT))
+
+from shared.cross_account_story import (
+    build_ttendencias_quote_copy,
+    find_published_news_match,
+    x_account_search_url,
+)
 EXPLAINED=ROOT/"trends/telegram-manual-explained.json"
 DELIVERIES=ROOT/"trends/telegram-image-deliveries.json"
 BOT_STATE=ROOT/"trends/telegram-bot-state.json"
+TTI_DELIVERIES=ROOT/"telegram/ttittulares-deliveries.json"
 ARCHIVE_DIR=ROOT/"trends/archive-images"
 WORKER="https://tt-control.fabricelop.workers.dev"
 APP_URL=str(os.environ.get("TTENDENCIAS_APP_URL") or "https://europapress-rss-fabricelopezillac-9660.vercel.app").rstrip("/")
@@ -172,6 +182,19 @@ def send_text(token,chat,text,keyboard=None):
     return telegram_api(token,"sendMessage",payload)
 
 
+def delete_message(token,chat,message_id):
+    if not message_id:
+        return
+    try:
+        telegram_api(token,"deleteMessage",{
+            "chat_id":str(chat),
+            "message_id":int(message_id),
+        })
+    except Exception as e:
+        if "message to delete not found" not in str(e).lower():
+            raise
+
+
 def edit_photo_media(token,chat,message_id,raw,caption,keyboard=None):
     ext,mime=ext_and_mime(raw)
     media={"type":"photo","media":"attach://photo","caption":caption}
@@ -253,6 +276,59 @@ def keyboard(tid,rev,text,ai_url="",archive_url="",search_term="",timeout_fallba
     return {"inline_keyboard":rows}
 
 
+
+def cross_quote_keyboard(tid,rev,text,search_url,timeout_fallback=False):
+    if len(text)<=256:
+        copy_button={"text":"📋 Copiar texto","copy_text":{"text":text}}
+    else:
+        copy_button={"text":"📋 Copiar texto","url":q(WORKER+"/copy-text",{"text":text})}
+    return {"inline_keyboard":[
+        [
+            copy_button,
+            {"text":"✍️ Abrir en X","url":q(WORKER+"/x-compose",{"text":text})},
+        ],
+        [
+            {"text":"🔎 Buscar en @ttittulares","url":search_url},
+            {"text":"🔄 Reexplicar","url":reexplain_url(tid,rev)},
+        ],
+        *([[{"text":"🔄 Reenviar a Listas","callback_data":f"tx:r:{tid}:{rev}"}]] if timeout_fallback else []),
+        [
+            {"text":"🗑️ Desestimar","callback_data":f"tx:d:{tid}:{rev}"},
+            {"text":"✅ Publicado","callback_data":f"tx:p:{tid}:{rev}"},
+        ],
+    ]}
+
+
+def cross_quote_for_trend(row,text,tti_deliveries):
+    subject=trend_search_term(row)
+    match=find_published_news_match(
+        text,
+        subject,
+        tti_deliveries,
+        hours=48,
+        threshold=0.55,
+    )
+    if not match:
+        return None
+    quote_text=build_ttendencias_quote_copy(text)
+    if not quote_text:
+        print("TTENDENCIAS_CROSS_QUOTE_SKIP_LONG",str(row.get("id") or ""),flush=True)
+        return None
+    search_url=x_account_search_url(
+        "ttittulares",
+        match.get("text") or "",
+        text,
+        subject,
+    )
+    return {
+        "text":quote_text,
+        "search_url":search_url,
+        "score":float(match.get("score") or 0),
+        "source_event_id":str(match.get("id") or ""),
+        "source_published_at":str(match.get("published_at") or ""),
+    }
+
+
 def build_patch(base_doc,current_doc,changed_keys):
     rows=[]
     for row in current_doc.get("items",[]):
@@ -279,6 +355,7 @@ def run_send(patch_path):
             archived.add((str(name or "").strip().casefold(),rev))
     deliveries=load(DELIVERIES,{"version":1,"items":[]})
     deliveries.setdefault("items",[])
+    tti_deliveries=load(TTI_DELIVERIES,{"items":[]})
     changed=set()
     touched=0
 
@@ -342,11 +419,28 @@ def run_send(patch_path):
                     archive_raw=None
 
             kb=keyboard(tid,rev,text,"",archive_copy_url,trend_search_term(row),timeout_fallback=True)
+            cross=cross_quote_for_trend(row,text,tti_deliveries)
+            cross_mid=0
+            if cross:
+                ckb=cross_quote_keyboard(tid,rev,cross["text"],cross["search_url"],timeout_fallback=True)
+                cmsg=send_text(
+                    token,chat,
+                    "🔁 CITA CRUZADA · citar @ttittulares\n\n"
+                    +cross["text"]+f"\n\n{len(cross['text'])}/280",
+                    ckb,
+                )
+                cross_mid=int(cmsg.get("message_id") or 0)
+                print("TTENDENCIAS_CROSS_QUOTE_SENT",tid,cross_mid,"score",cross["score"],flush=True)
             note="\n\n⏳ Más de 90 min sin imagen IA."
-            if archive_raw:
-                msg=send_photo(token,chat,archive_raw,text+note,kb)
-            else:
-                msg=send_text(token,chat,text+note,kb)
+            try:
+                if archive_raw:
+                    msg=send_photo(token,chat,archive_raw,text+note,kb)
+                else:
+                    msg=send_text(token,chat,text+note,kb)
+            except Exception:
+                if cross_mid:
+                    delete_message(token,chat,cross_mid)
+                raise
             mid=int(msg.get("message_id") or 0)
             delivery={
                 "delivery_key":key,
@@ -361,6 +455,16 @@ def run_send(patch_path):
                 "timeout_retry_version":retry_version,
                 "timeout_wait_from":wait_from.isoformat().replace("+00:00","Z"),
             }
+            if cross_mid:
+                delivery.update({
+                    "cross_quote_message_id":cross_mid,
+                    "cross_quote_source":"@ttittulares",
+                    "cross_quote_text":cross["text"],
+                    "cross_quote_search_url":cross["search_url"],
+                    "cross_quote_score":cross["score"],
+                    "cross_quote_source_event_id":cross["source_event_id"],
+                    "cross_quote_source_published_at":cross["source_published_at"],
+                })
             if archive_src:
                 delivery.update({
                     "archive_image_url":archive_src,
@@ -467,8 +571,28 @@ def run_send(patch_path):
         if got.lower()!=ai_sha:
             raise RuntimeError(f"{tid}: SHA256 IA no coincide")
 
+        cross=None
+        cross_mid=0
+        if not int((timeout_archive or {}).get("cross_quote_message_id") or 0):
+            cross=cross_quote_for_trend(row,text,tti_deliveries)
+        if cross:
+            ckb=cross_quote_keyboard(tid,rev,cross["text"],cross["search_url"])
+            cmsg=send_text(
+                token,chat,
+                "🔁 CITA CRUZADA · citar @ttittulares\n\n"
+                +cross["text"]+f"\n\n{len(cross['text'])}/280",
+                ckb,
+            )
+            cross_mid=int(cmsg.get("message_id") or 0)
+            print("TTENDENCIAS_CROSS_QUOTE_SENT",tid,cross_mid,"score",cross["score"],flush=True)
+
         caption=text+f"\n\n{len(text)}/280"
-        msg=send_photo(token,chat,raw,caption,kb)
+        try:
+            msg=send_photo(token,chat,raw,caption,kb)
+        except Exception:
+            if cross_mid:
+                delete_message(token,chat,cross_mid)
+            raise
         mid=int(msg.get("message_id") or 0)
         delivery={
             "delivery_key":key,
@@ -482,6 +606,16 @@ def run_send(patch_path):
             "status":"sent",
             "buttons_version":BUTTONS_VERSION,
         }
+        if cross_mid:
+            delivery.update({
+                "cross_quote_message_id":cross_mid,
+                "cross_quote_source":"@ttittulares",
+                "cross_quote_text":cross["text"],
+                "cross_quote_search_url":cross["search_url"],
+                "cross_quote_score":cross["score"],
+                "cross_quote_source_event_id":cross["source_event_id"],
+                "cross_quote_source_published_at":cross["source_published_at"],
+            })
         if archive_mid:
             delivery.update({
                 "archive_telegram_message_id":archive_mid,
@@ -557,6 +691,10 @@ def selftest():
         raise SystemExit("SELFTEST botón archivo no debe aparecer sin archivo")
     if "🔎 Buscar en X" in labels2:
         raise SystemExit("SELFTEST búsqueda X no debe aparecer sin término")
+    ck=cross_quote_keyboard("abc123",2,"Lo contamos en @ttittulares: Demo completa.","https://x.com/search?q=from%3Attittulares+Demo",timeout_fallback=True)
+    clabels=[b.get("text") for row in ck.get("inline_keyboard",[]) for b in row]
+    if "🖼️ Copiar imagen IA" in clabels or "🔎 Buscar en @ttittulares" not in clabels or "🔄 Reenviar a Listas" not in clabels:
+        raise SystemExit("SELFTEST cita cruzada incorrecta")
     print("TTENDENCIAS_TELEGRAM_SELFTEST_OK",flush=True)
 
 def main():
