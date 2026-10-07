@@ -1,4 +1,4 @@
-# RainETA v0.17.10
+# RainETA v0.17.11
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,14 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Propagación segura de runs v0.17.11
+- La metadata de Open-Meteo distingue ahora un run recién publicado de un run ya estabilizado entre servidores.
+- Durante los primeros **10 min** desde `last_run_availability_time`, el modelo sigue siendo utilizable pero aparece como **EN PROPAGACIÓN**; no se confunde con un run obsoleto ni con frescura plenamente verificada.
+- Si una familia dispone simultáneamente de otro producto con run estable, la familia se considera estable y no recibe penalización por el producto que aún se está propagando.
+- Si varias familias activas están todavía propagándose, RainETA reduce de forma suave la **confianza temporal** (máximo 8 puntos según proporción), sin alterar probabilidad ni cantidad de precipitación.
+- El panel Fuentes muestra cuántas familias están propagándose y la penalización aplicada. Mientras exista propagación, la caché de previsión baja temporalmente de 20 a **5 min** para reevaluar pronto; una vez estabilizados los runs vuelve al TTL normal.
+- La regla sigue la recomendación pública de Open-Meteo de esperar unos 10 min tras la disponibilidad para asegurar consistencia entre sus servidores redundantes.
 
 ## Curvatura radar limitada por tendencia v0.17.10
 - RainETA guarda localmente una serie corta del **rumbo y velocidad** derivados de los barridos radar recientes para detectar si la advección está girando de forma persistente.
