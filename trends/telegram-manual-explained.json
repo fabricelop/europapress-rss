@@ -34781,9 +34781,9 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_pending": false,
       "rewrite_pending": false,
       "fallback_image_strategy": "existing_web_image",
@@ -34797,15 +34797,54 @@
       },
       "fallback_image_status": "ready",
       "image": {
-        "url": "https://cadenaser.com/resizer/v2/2X2BFMPE7F7T33ST2LHJK75ZIE.jpg?auth=4f68c9bdb8280eadfca6e51864348af64d15008a972f5e78529fa6952d8225a6&quality=70&width=1200&height=675&smart=true",
-        "source": "Cadena SER · 7/10/2026",
-        "source_url": "https://cadenaser.com/cmadrid/2026/10/07/de-presidenta-a-escritora-ayuso-publicara-su-primer-libro-en-diciembre-radio-madrid/",
-        "alt": "Imagen de archivo relacionada con Planeta",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/22c1b9fcb392-r0-ai1-791379737404.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b7e15aedb3482eb1d6d1813e840bf96e2545a474e778239d854058523843ebe2",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2498646,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "22c1b9fcb392",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-22c1b9fcb392-r0-a1-1791379737404"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/22c1b9fcb392-r0-ai1-791379737404.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/22c1b9fcb392-r0-ai1-791379737404.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b7e15aedb3482eb1d6d1813e840bf96e2545a474e778239d854058523843ebe2",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2498646,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "22c1b9fcb392",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-22c1b9fcb392-r0-a1-1791379737404"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/22c1b9fcb392-r0-ai1-791379737404.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T13:33:35.545Z"
     }
   ],
-  "updated_at": "2026-10-07T13:31:56.640Z",
+  "updated_at": "2026-10-07T13:33:35.545Z",
   "count": 627
 }
