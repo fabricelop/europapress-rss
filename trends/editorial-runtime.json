@@ -3,7 +3,7 @@
   "engine": "chat-direct",
   "last_started_at": "2026-10-07T03:45:00+02:00",
   "last_completed_at": "2026-10-07T03:48:30+02:00",
-  "updated_at": "2026-10-07T03:48:30+02:00",
+  "updated_at": "2026-10-07T03:49:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -19,7 +19,7 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-07T03:45:00+02:00",
-    "updated_at": "2026-10-07T03:48:30+02:00",
+    "updated_at": "2026-10-07T03:49:00+02:00",
     "finished_at": "2026-10-07T03:48:30+02:00",
     "current": 0,
     "total": 0,
@@ -45,16 +45,17 @@
       "fallback_images_ready": 0,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "visual_repair_workflow_in_progress": 1,
+      "visual_repair_workflow_in_progress": 0,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_reused": 0,
       "remates_omitted": 0,
       "jit_skipped": 0,
-      "concurrent_completed": 0
+      "concurrent_completed": 0,
+      "visual_repair_workflow_success": 1
     },
-    "message": "Pasada cerrada 0/0 editorial · no quedan preparing/update ni rewrite_pending; saneamiento visual disparado y workflow confirmado en ejecución.",
+    "message": "Pasada cerrada 0/0 editorial · no quedan preparing/update ni rewrite_pending; saneamiento visual completado correctamente.",
     "activity": [
       {
         "at": "2026-10-07T03:45:00+02:00",
@@ -90,6 +91,13 @@
         "trend_id": null,
         "title": null,
         "message": "Persistiendo runtime durable y cierre de ejecución"
+      },
+      {
+        "at": "2026-10-07T03:49:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual completado correctamente"
       }
     ],
     "queue_complete": true,
@@ -107,10 +115,11 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "workflow_in_progress",
+    "status": "success",
     "direct_imagegen": false,
     "workflow_run_id": 37558799525,
-    "trigger_commit": "a11443ebbeef994d8bb34ffe09a4cf89f0f2a331"
+    "trigger_commit": "a11443ebbeef994d8bb34ffe09a4cf89f0f2a331",
+    "workflow_conclusion": "success"
   },
   "error": null
 }
