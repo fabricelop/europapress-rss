@@ -30,6 +30,9 @@ const RADAR_FRAMES=6;
 const RADAR_ZOOM=7;
 const ANALYSIS_SIZE=97;
 const MAX_SHIFT=12;
+const MAX_RADAR_ADVECTION_KMH=180;
+const RADAR_PROJECTION_MIN_CONFIDENCE=.30;
+const RADAR_PROJECTION_MIN_EVOLUTION=.30;
 const SHORT_HORIZON_MINUTES=180;
 const RADAR_VISUAL_HORIZON_MINUTES=240;
 const RADAR_STALE_MINUTES=20;
@@ -39,9 +42,9 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.17';
+const APP_VERSION='0.17.19';
 const FORECAST_CACHE_SCHEMA='consensus-v13';
-const FORECAST_CACHE_COMPATIBLE_VERSIONS=['0.17.13','0.17.14','0.17.15','0.17.16'];
+const FORECAST_CACHE_COMPATIBLE_VERSIONS=['0.17.13','0.17.14','0.17.15','0.17.16','0.17.17'];
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -553,7 +556,10 @@ async function computeNowcast(meta){
     const m=estimateTranslation(masks[i-1].mask,masks[i].mask,ANALYSIS_SIZE,ANALYSIS_SIZE,{maxShift:MAX_SHIFT});
     if(m)estimates.push(m);
   }
-  const motion=combineMotionEstimates(estimates),latest=masks.at(-1),previous=masks.at(-2),step=frameStep(masks);
+  const rawMotion=combineMotionEstimates(estimates),latest=masks.at(-1),previous=masks.at(-2),step=frameStep(masks);
+  const motionGeo=rawMotion?radarGeo(rawMotion,state.loc.lat,step):null;
+  const motionPlausible=Boolean(rawMotion&&Number.isFinite(Number(motionGeo?.speedKmh))&&Number(motionGeo.speedKmh)<=MAX_RADAR_ADVECTION_KMH);
+  const motion=motionPlausible?rawMotion:null;
   const center=(ANALYSIS_SIZE-1)/2,current=wetNear(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,center,center,0);
   const currentRadarRate=latest.rateGrid?.[Math.round(center)*ANALYSIS_SIZE+Math.round(center)]||0;
   const localFlows=[];
@@ -567,7 +573,7 @@ async function computeNowcast(meta){
   const evolution=motion?evolutionReliability(previous.mask,latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion):{score:0,overlap:0,densityStable:0};
   const confidence=Math.max(0,Math.min(.98,(motion?.confidence||0)*(.72+.28*evolution.score)));
   const reliableHorizonMinutes=Math.round(25+55*Math.max(0,Math.min(1,evolution.score*.7+confidence*.3)));
-  const base={status:'motion_uncertain',confidence,event:null,rainingNow:current>=.10,currentWetFraction:current,currentRadarRate,radarTime:new Date(latest.time*1000).toISOString(),decodedFrames:masks.length,evolution,reliableHorizonMinutes,localFlowCoverage:Number(localFlow?.coverage)||0};
+  const base={status:'motion_uncertain',confidence,event:null,rainingNow:current>=.10,currentWetFraction:current,currentRadarRate,radarTime:new Date(latest.time*1000).toISOString(),decodedFrames:masks.length,evolution,reliableHorizonMinutes,localFlowCoverage:Number(localFlow?.coverage)||0,rejectedMotionSpeedKmh:!motionPlausible&&motionGeo?Number(motionGeo.speedKmh):null};
   if(!motion||motion.samples<2||confidence<.20)return base;
   const series=localFlow
     ? projectPointSeriesFlow(latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,localFlow,motion,{horizonMinutes:RADAR_VISUAL_HORIZON_MINUTES,sourceStepMinutes:step,outputStepMinutes:5,radius:1,intensityGrid:latest.rateGrid,reliability:evolution.score})
@@ -579,7 +585,7 @@ async function computeNowcast(meta){
   }
   const localMotion=centralLocalMotion(localFlow,state.loc.lat,step);
   return{...base,status:'ok',confidence,event,motion:{
-    ...radarGeo(motion,state.loc.lat,step),
+    ...motionGeo,
     samples:motion.samples,consistency:motion.consistency,localFlow:Boolean(localFlow),
     localSpeedKmh:Number(localMotion?.speedKmh)||null,
     localBearingDegrees:Number(localMotion?.bearingDegrees)||null,
@@ -2555,54 +2561,84 @@ function radarProjectionZoom(){
   const extraCoverage=Math.max(0,Math.ceil(Math.log2(viewportFactor)));
   return Math.max(5,Math.min(RADAR_ZOOM,Math.floor(mapZoom)-extraCoverage));
 }
+function radarProjectionControl(){
+  const motion=state.nowcast?.motion;
+  const globalSpeed=Number(motion?.speedKmh);
+  const globalBearing=Number(motion?.bearingDegrees);
+  const confidence=Math.max(0,Math.min(1,Number(state.nowcast?.confidence)||0));
+  const evolution=Math.max(0,Math.min(1,Number(state.nowcast?.evolution?.score)||0));
+  const samples=Math.max(0,Number(motion?.samples)||0);
+  const ok=Boolean(
+    state.nowcast?.status==='ok'&&motion&&samples>=2&&
+    Number.isFinite(globalSpeed)&&globalSpeed>=0&&globalSpeed<=MAX_RADAR_ADVECTION_KMH&&
+    Number.isFinite(globalBearing)&&confidence>=RADAR_PROJECTION_MIN_CONFIDENCE&&evolution>=RADAR_PROJECTION_MIN_EVOLUTION
+  );
+  const localSpeed=Number(motion?.localSpeedKmh),localBearing=Number(motion?.localBearingDegrees);
+  const localQuality=Math.max(0,Math.min(1,(Number(motion?.localFlowConfidence)||0)*.7+(Number(motion?.localFlowCoverage)||0)*.3));
+  const headingDifference=Number.isFinite(globalBearing)&&Number.isFinite(localBearing)
+    ? Math.abs((((localBearing-globalBearing)+540)%360)-180)
+    : Infinity;
+  const speedDifference=Number.isFinite(localSpeed)&&Number.isFinite(globalSpeed)
+    ? Math.abs(localSpeed-globalSpeed)/Math.max(20,globalSpeed)
+    : Infinity;
+  const localUsable=ok&&Number.isFinite(localSpeed)&&localSpeed>=0&&localSpeed<=MAX_RADAR_ADVECTION_KMH&&
+    Number.isFinite(localBearing)&&localQuality>=.35&&headingDifference<=50&&speedDifference<=.65;
+  return{
+    ok,globalSpeed,globalBearing,localSpeed,localBearing,localQuality,
+    localBlend:localUsable?Math.min(.28,localQuality*.28):0,
+    confidence,evolution
+  };
+}
+function radarImageCoordinates(centerLat,centerLon,displayZoom=RADAR_ZOOM){
+  const zoom=Math.max(0,Number(displayZoom)||0);
+  const world=256*(2**zoom);
+  const lat=Math.max(-85.05112878,Math.min(85.05112878,Number(centerLat)||0));
+  const lon=Number(centerLon)||0;
+  const latRad=lat*Math.PI/180;
+  const centerX=(lon+180)/360*world;
+  const centerY=(1-Math.log(Math.tan(latRad)+1/Math.cos(latRad))/Math.PI)/2*world;
+  // RainViewer size=512 is a high-resolution rendition of one logical XYZ tile.
+  // Its geographic footprint is therefore 256 logical map pixels, not 512.
+  const halfLogicalTile=128;
+  const lonAt=x=>x/world*360-180;
+  const latAt=y=>Math.atan(Math.sinh(Math.PI*(1-2*y/world)))*180/Math.PI;
+  const west=lonAt(centerX-halfLogicalTile),east=lonAt(centerX+halfLogicalTile);
+  const north=latAt(centerY-halfLogicalTile),south=latAt(centerY+halfLogicalTile);
+  return[[west,north],[east,north],[east,south],[west,south]];
+}
 function projectionCoordinates(minutes,displayZoom=RADAR_ZOOM){
   const motion=state.nowcast?.motion;
   const lat=Number(state.loc.lat),lon=Number(state.loc.lon);
-  const globalSpeed=Math.max(0,Number(motion?.speedKmh)||0);
-  const localSpeed=Number(motion?.localSpeedKmh);
-  const baseGlobalBearing=Number(motion?.bearingDegrees)||0,baseLocalBearing=Number(motion?.localBearingDegrees);
-  const reliable=Math.max(0,Number(state.nowcast?.reliableHorizonMinutes)||0);
   const requested=Math.max(0,Number(minutes)||0);
+  const control=radarProjectionControl();
+  if(!control.ok||requested<=0)return radarImageCoordinates(lat,lon,displayZoom);
+  const reliable=Math.max(0,Number(state.nowcast?.reliableHorizonMinutes)||0);
   const turn=radarTurnTrend();
-  const turnMinutes=Math.min(requested,reliable,60);
-  const turnAdjustment=turn
-    ? Math.max(-8,Math.min(8,.5*Number(turn.rateDegPerMinute)*turnMinutes*Number(turn.confidence)))
+  const turnMinutes=Math.min(requested,reliable,45);
+  const turnAdjustment=turn&&requested>=5
+    ? Math.max(-4,Math.min(4,.35*Number(turn.rateDegPerMinute)*turnMinutes*Number(turn.confidence)))
     : 0;
-  const globalBearing=(baseGlobalBearing+turnAdjustment)*Math.PI/180;
-  const localBearing=Number.isFinite(baseLocalBearing)?(baseLocalBearing+turnAdjustment)*Math.PI/180:NaN;
-  const localQuality=Math.max(0,Math.min(1,(Number(motion?.localFlowConfidence)||0)*.7+(Number(motion?.localFlowCoverage)||0)*.3));
-  const evolution=Math.max(0,Math.min(1,Number(state.nowcast?.evolution?.score)||0));
-  const confidence=Math.max(0,Math.min(1,Number(state.nowcast?.confidence)||0));
-  const quality=.55*confidence+.45*evolution;
+  const globalBearing=(control.globalBearing+turnAdjustment)*Math.PI/180;
+  const localBearing=Number.isFinite(control.localBearing)?(control.localBearing+turnAdjustment)*Math.PI/180:NaN;
+  const quality=.55*control.confidence+.45*control.evolution;
   const extra=Math.max(0,requested-reliable);
-  const maxExtra=18+22*quality;
+  const maxExtra=12+18*quality;
   const effectiveMinutes=requested<=reliable
     ? requested
-    : reliable+maxExtra*(1-Math.exp(-extra/50));
+    : reliable+maxExtra*(1-Math.exp(-extra/45));
   const progress=reliable>0?Math.min(1,effectiveMinutes/reliable):0;
-  const blend=Number.isFinite(localSpeed)&&Number.isFinite(localBearing)
-    ? Math.min(.55,localQuality*.55)*progress
+  const blend=Number.isFinite(control.localSpeed)&&Number.isFinite(localBearing)
+    ? control.localBlend*progress
     : 0;
-  const globalEast=globalSpeed*Math.sin(globalBearing),globalNorth=globalSpeed*Math.cos(globalBearing);
-  const localEast=Number.isFinite(localSpeed)?localSpeed*Math.sin(localBearing):globalEast;
-  const localNorth=Number.isFinite(localSpeed)?localSpeed*Math.cos(localBearing):globalNorth;
+  const globalEast=control.globalSpeed*Math.sin(globalBearing),globalNorth=control.globalSpeed*Math.cos(globalBearing);
+  const localEast=Number.isFinite(control.localSpeed)?control.localSpeed*Math.sin(localBearing):globalEast;
+  const localNorth=Number.isFinite(control.localSpeed)?control.localSpeed*Math.cos(localBearing):globalNorth;
   const eastKmh=globalEast*(1-blend)+localEast*blend;
   const northKmh=globalNorth*(1-blend)+localNorth*blend;
   const east=eastKmh*effectiveMinutes/60,north=northKmh*effectiveMinutes/60;
   const shiftedLat=lat+north/111.32;
   const shiftedLon=lon+east/(111.32*Math.max(.25,Math.cos(lat*Math.PI/180)));
-  const metresPerPx=156543.03392*Math.cos(lat*Math.PI/180)/(2**displayZoom);
-  const uncertainty=reliable>0?Math.max(0,Math.min(1,(requested-reliable)/Math.max(60,RADAR_VISUAL_HORIZON_MINUTES-reliable))):1;
-  const spread=1+uncertainty*(.10+.10*(1-quality));
-  const spanKm=metresPerPx*512/1000*spread;
-  const halfLat=spanKm/111.32/2;
-  const halfLon=spanKm/(111.32*Math.max(.25,Math.cos(lat*Math.PI/180)))/2;
-  return[
-    [shiftedLon-halfLon,shiftedLat+halfLat],
-    [shiftedLon+halfLon,shiftedLat+halfLat],
-    [shiftedLon+halfLon,shiftedLat-halfLat],
-    [shiftedLon-halfLon,shiftedLat-halfLat]
-  ];
+  return radarImageCoordinates(shiftedLat,shiftedLon,displayZoom);
 }
 function nearestObservedFrame(offsetMinutes){
   const latest=state.frames.at(-1);if(!latest)return null;
@@ -2647,7 +2683,7 @@ function projectedRadarOpacity(minutes,canMove,reliable){
 function showProjectedRadar(minutes){
   const r=state.data?.radar,latest=state.frames.at(-1),motion=state.nowcast?.motion;
   if(!r||!latest||!state.mapLoaded)return;
-  const canMove=state.nowcast?.status==='ok'&&motion&&Number(state.nowcast?.confidence)>=.20;
+  const control=radarProjectionControl(),canMove=control.ok;
   removeRadarLayer('raineta-radar');
   const reliable=nowcastReliableHorizon(),within=canMove&&minutes<=reliable;
   const displayZoom=radarProjectionZoom();
