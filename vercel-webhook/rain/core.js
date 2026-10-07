@@ -132,7 +132,14 @@ export function buildConsensus({ deterministic = [], ensembles = [], nowMs = Dat
     const evidenceFactor=clamp(independentFamilyCount/5);
     const rawTimingConfidence=clamp(0.15+0.36*agreement+0.20*coverage+0.14*horizonFactor+0.15*evidenceFactor);
     const horizonCap=horizonHours<=2?.96:horizonHours<=6?.92:horizonHours<=24?.84:horizonHours<=48?.76:.68;
-    const timingConfidence=Math.min(rawTimingConfidence,horizonCap);
+    const familyEvidenceCap=independentFamilyCount>=6?.94
+      : independentFamilyCount===5?.90
+        : independentFamilyCount===4?.84
+          : independentFamilyCount===3?.74
+            : independentFamilyCount===2?.60
+              : independentFamilyCount===1?.44
+                :.25;
+    const timingConfidence=Math.min(rawTimingConfidence,horizonCap,familyEvidenceCap);
 
     return {
       time,
