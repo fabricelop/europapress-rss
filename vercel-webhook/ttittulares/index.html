@@ -1279,14 +1279,14 @@ async function load(silent=false,passive=false){
   if(passive&&(uiInteractionActive()||interactionAtStart!==uiInteractionVersion)){queuePassiveLoad(450);return}
   const preparedRaw=d.prepared?.items||[],processingRaw=d.status?.processing_items||[],processingOutcomesRaw=d.status?.processing_outcomes||[],problematicRaw=d.status?.problematic_items||[],growingRaw=d.status?.three_source_items||[];
   const present=new Set([...preparedRaw,...processingRaw,...processingOutcomesRaw,...problematicRaw,...growingRaw].map(x=>String(x.event_id||"")).filter(Boolean));
-  // Si el backend autoritativo devuelve una noticia en prepared, debe volver a
-  // Listas aunque su event_id hubiera quedado en pendingClosed por una acción
-  // anterior/revisión. pendingClosed solo protege el intervalo optimista.
-  const preparedNow=new Set(preparedRaw.map(x=>String(x.event_id||"")).filter(Boolean));
-  let pendingChanged=false;
-  for(const id of [...pendingClosed]){
-    if(preparedNow.has(id)||!present.has(id)){pendingClosed.delete(id);pendingChanged=true}
-  }
+   // Mantener oculto cualquier elemento que el usuario acaba de cerrar hasta
+   // que desaparezca del estado autoritativo. Un refresco atrasado no debe
+   // resucitar una noticia publicada/desestimada. Si la acción falla, el catch
+   // de la propia acción retira pendingClosed y restaura la tarjeta.
+   let pendingChanged=false;
+   for(const id of [...pendingClosed]){
+     if(!present.has(id)){pendingClosed.delete(id);pendingChanged=true}
+   }
   if(pendingChanged)persistUiState();
   const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),processing_outcomes:processingOutcomesRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),problematic_items:problematicRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),trend_candidates:[],trend_candidates_count:0,three_source_items:growingRaw.filter(x=>!pendingClosed.has(String(x.event_id||"")))};
   status.processing_count=status.processing_items.length;status.processing_outcomes_count=status.processing_outcomes.length;status.problematic_count=status.problematic_items.length;status.three_source_count=status.three_source_items.length;
