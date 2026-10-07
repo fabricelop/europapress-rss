@@ -27219,12 +27219,28 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "pending",
-      "image_pending": true,
+      "image_status": "ready",
+      "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "pending",
-      "image_choice": null,
-      "rewrite_pending": false
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "rewrite_pending": false,
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/consejero-delegado-iryo-fabrizio-favara-comparece-senado-por-accidente-adamuz/01791199328424.jpg",
+        "source": "RTVE · 5/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261005/consejero-delegado-iryo-fabrizio-favara-comparece-senado-por-accidente-adamuz/17253299.shtml",
+        "alt": "Imagen de archivo relacionada con Adamuz",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.rtve.es/imagenes/consejero-delegado-iryo-fabrizio-favara-comparece-senado-por-accidente-adamuz/01791199328424.jpg",
+        "source": "RTVE · 5/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261005/consejero-delegado-iryo-fabrizio-favara-comparece-senado-por-accidente-adamuz/17253299.shtml",
+        "alt": "Imagen de archivo relacionada con Adamuz",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "e70952da286d",
@@ -34365,6 +34381,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-07T13:16:15+02:00",
+  "updated_at": "2026-10-07T11:20:10.525473Z",
   "count": 624
 }
