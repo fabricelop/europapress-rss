@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-07T14:12:49.157129Z",
+  "updated_at": "2026-10-07T14:13:32.552Z",
   "items": [
     {
       "event_id": "608829fc098e",
@@ -162,13 +162,13 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "fallback_image_search_attempted_at": "2026-10-07T14:12:49.157129Z",
       "fallback_image_failure_reason": "No se encontró una imagen HTTPS verificable en las páginas de las fuentes del acontecimiento.",
       "archive_image_search_attempted_at": "2026-10-07T14:12:49.157129Z",
@@ -187,6 +187,54 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "El Supremo da cinco días para alegar sobre la amnistía de la malversación del procés"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/4d6575b2c6b0-r1-ai1-791382197976.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f7ba8491b98c7f3b03a227bd30ae084f72721dce610d20f918a8dd1b44c4f1a3",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2831789,
+        "context_guard": {
+          "version": 3,
+          "event_id": "4d6575b2c6b0",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-4d6575b2c6b0-r1-a1-1791382197976"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/4d6575b2c6b0-r1-ai1-791382197976.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-07T14:13:32.552Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T14:13:32.552Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/4d6575b2c6b0-r1-ai1-791382197976.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f7ba8491b98c7f3b03a227bd30ae084f72721dce610d20f918a8dd1b44c4f1a3",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2831789,
+        "context_guard": {
+          "version": 3,
+          "event_id": "4d6575b2c6b0",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-4d6575b2c6b0-r1-a1-1791382197976"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/4d6575b2c6b0-r1-ai1-791382197976.png",
+        "handoff": "pc-bridge-direct-materialized"
       }
     }
   ],
