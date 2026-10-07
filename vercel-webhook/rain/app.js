@@ -36,7 +36,7 @@ const OPERA_SURFACE_STALE_MINUTES=20;
 const MODEL_META_GRACE_SECONDS=20*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.7';
+const APP_VERSION='0.17.8';
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -1232,7 +1232,11 @@ function etaTrendText(ev){
   }
   if(ev.disagreementMinutes){
     const chosen=ev.kind==='opera'?'radar europeo':'radar RainViewer';
-    parts.push('Radar y radar europeo discrepan ~'+ev.disagreementMinutes+' min · se prioriza '+chosen);
+    if(ev.adaptiveChoice&&ev.localSkill?.chosen){
+      parts.push('Radar y radar europeo discrepan ~'+ev.disagreementMinutes+' min · se prioriza '+chosen+' por mejor acierto local ('+Math.round(ev.localSkill.chosen.accuracy*100)+'%, '+ev.localSkill.chosen.n+' verificaciones)');
+    }else{
+      parts.push('Radar y radar europeo discrepan ~'+ev.disagreementMinutes+' min · se prioriza '+chosen+' por confianza instantánea');
+    }
   }
   if(ev.kind==='radar'&&ev.event?.stabilizationSamples>=2){
     const s=ev.event,spread=Number(s.historicalSpreadMinutes)||0;
@@ -1344,12 +1348,28 @@ function fuseRadarEvents(rv,op,now=Date.now()){
   if(!op)return rv;
   const delta=Math.abs(Date.parse(rv.start)-Date.parse(op.start))/60_000;
   if(delta>30){
-    const rvScore=Number(rv.confidence)||0,opScore=Number(op.confidence)||0;
+    const rvConfidence=Number(rv.confidence)||0,opConfidence=Number(op.confidence)||0;
+    const rvLead=Math.max(0,(Date.parse(rv.start)-now)/60_000),opLead=Math.max(0,(Date.parse(op.start)-now)/60_000);
+    const rvSkill=sourceSkillFor('rainviewer',rvLead),opSkill=sourceSkillFor('opera',opLead);
+    const enoughLocalSkill=Boolean(rvSkill&&opSkill);
+    const skillGap=enoughLocalSkill?Math.abs(Number(rvSkill.accuracy)-Number(opSkill.accuracy)):0;
+    const adaptiveChoice=enoughLocalSkill&&skillGap>=.08;
+    const rvScore=adaptiveChoice?.72*rvConfidence+.28*Number(rvSkill.accuracy):rvConfidence;
+    const opScore=adaptiveChoice?.72*opConfidence+.28*Number(opSkill.accuracy):opConfidence;
     const winner=rvScore>=opScore?rv:op,alternate=winner===rv?op:rv;
+    const chosenSkill=winner===rv?rvSkill:opSkill;
     const penalty=Math.min(.22,.06+Math.max(0,delta-30)/600);
     const confidence=Math.max(.15,(Number(winner.confidence)||0)-penalty);
     const uncertainty=Math.max(Number(winner.uncertainty)||10,Math.round(10+delta*.35));
-    return{...winner,confidence,uncertainty,disagreementMinutes:Math.round(delta),alternate,adaptiveChoice:false};
+    return{
+      ...winner,confidence,uncertainty,disagreementMinutes:Math.round(delta),alternate,adaptiveChoice,
+      choiceReason:adaptiveChoice?'local_skill':'instant_confidence',
+      localSkill:adaptiveChoice?{
+        rainviewer:{accuracy:Number(rvSkill.accuracy),n:Number(rvSkill.n),horizon:rvSkill.horizon},
+        opera:{accuracy:Number(opSkill.accuracy),n:Number(opSkill.n),horizon:opSkill.horizon},
+        chosen:{accuracy:Number(chosenSkill?.accuracy),n:Number(chosenSkill?.n)}
+      }:null
+    };
   }
   const rw=Math.max(.1,Number(rv.confidence)||0),ow=Math.max(.1,Number(op.confidence)||0);
   const start=blendIso(rv.start,op.start,rw,ow),end=blendIso(rv.end,op.end,rw,ow);
