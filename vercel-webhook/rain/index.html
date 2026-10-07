@@ -29,7 +29,7 @@ dialog{border:1px solid #2b4353;background:#0b1720;color:#fff;border-radius:20px
 </head>
 <body>
 <main class="app">
-<header><div class="brand">🌧 RainETA <span class="version">v0.17.10</span></div><div class="actions"><button class="iconbtn" id="viewToggle" aria-label="Mis lugares">☷</button><button class="iconbtn" id="refresh" aria-label="Actualizar">↻</button><button class="place" id="place">Madrid</button></div></header>
+<header><div class="brand">🌧 RainETA <span class="version">v0.17.11</span></div><div class="actions"><button class="iconbtn" id="viewToggle" aria-label="Mis lugares">☷</button><button class="iconbtn" id="refresh" aria-label="Actualizar">↻</button><button class="place" id="place">Madrid</button></div></header>
 
 <section id="detailView">
 <section class="card hero">
@@ -80,13 +80,13 @@ dialog{border:1px solid #2b4353;background:#0b1720;color:#fff;border-radius:20px
 <section id="locationsView" hidden>
 <section class="card"><div class="viewHead"><div><h2>Mis lugares</h2><small>Ahora · próxima lluvia · hasta cuándo</small></div><span class="nowpill" id="locationsUpdated">—</span></div><div class="locationsGrid" id="locationCards"></div><button class="addBtn" id="addLocation">＋ Añadir lugar</button></section>
 </section>
-<div class="foot">Open-Meteo · RainViewer · OpenFreeMap/OpenStreetMap. RainETA v0.17.10 · la precisión disminuye con el horizonte.</div>
+<div class="foot">Open-Meteo · RainViewer · OpenFreeMap/OpenStreetMap. RainETA v0.17.11 · la precisión disminuye con el horizonte.</div>
 </main>
 
 <dialog id="dlg"><div class="head"><h2>Cambiar o añadir lugar</h2><button class="place" id="close">Cerrar</button></div><button class="geo" id="geo">Usar mi ubicación actual (GPS)</button><div class="search"><input id="q" placeholder="Ciudad o localidad" autocomplete="off"><button id="search">Buscar</button></div><div class="results" id="results"></div></dialog>
 <dialog id="renameDlg"><div class="head"><h2>Renombrar lugar</h2></div><input class="renameInput" id="renameInput" maxlength="40" placeholder="Nombre"><div class="dialogActions"><button class="dialogBtn" id="renameCancel">Cancelar</button><button class="dialogBtn" id="renameSave">Guardar</button></div></dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.7.3/dist/maplibre-gl.js" crossorigin=""></script>
-<script type="module" src="/rain/app.js?v=0.17.10"></script>
+<script type="module" src="/rain/app.js?v=0.17.11"></script>
 </body>
 </html>
