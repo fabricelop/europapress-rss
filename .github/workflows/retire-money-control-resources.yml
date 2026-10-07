@@ -36,28 +36,39 @@ jobs:
             fi
           done
 
-      - name: Install Vercel CLI and link project
-        shell: bash
-        run: |
-          set -euo pipefail
-          npm install -g vercel@latest
-          cd vercel-webhook
-          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
-
       - name: Remove MoneyWiz-only environment variables
         shell: bash
         run: |
           set -euo pipefail
-          cd vercel-webhook
-          for key in MONEYWIZ_SYNC_TOKEN MONEYWIZ_UPLOAD_TOKEN; do
-            vercel env rm "$key" production --yes --token="$VERCEL_TOKEN" || true
-            vercel env rm "$key" preview --yes --token="$VERCEL_TOKEN" || true
-          done
+          delete_env () {
+            local id="$1"
+            local out code
+            out="$(mktemp)"
+            code="$(curl -sS -o "$out" -w '%{http_code}' -X DELETE \
+              -H "Authorization: Bearer $VERCEL_TOKEN" \
+              "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID/env/$id?teamId=$VERCEL_ORG_ID")"
+            if [ "$code" = "200" ] || [ "$code" = "204" ] || [ "$code" = "404" ]; then
+              echo "Environment variable $id removed/already absent (HTTP $code)"
+            else
+              echo "Failed to delete env $id (HTTP $code)" >&2
+              cat "$out" >&2
+              exit 1
+            fi
+            rm -f "$out"
+          }
+          delete_env 6yufApLbsC2xqerB
+          delete_env vIynN8hNhna6nZ7K
+
+      - name: Install Vercel CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install -g vercel@latest
 
       - name: Delete dedicated MoneyWiz Blob store
         shell: bash
         run: |
           set -euo pipefail
-          cd vercel-webhook
-          # This store is dedicated to Money Control/MoneyWiz and is connected only to this Vercel project.
-          printf 'y\ny\n' | vercel blob delete-store store_lUkOIpD97OzOjLef --token="$VERCEL_TOKEN"
+          # The store is dedicated to Money Control/MoneyWiz (1 object, ~59 MB)
+          # and is connected only to europapress-rss.
+          printf 'y\n' | script -qefc "vercel blob delete-store store_lUkOIpD97OzOjLef --token='$VERCEL_TOKEN'" /dev/null
