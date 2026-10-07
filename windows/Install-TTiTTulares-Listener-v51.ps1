@@ -14,7 +14,7 @@ $Lock=Join-Path $BaseDir "ttittulares-image-bridge.lock.json"
 $Log=Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 
 $TmpListener=$Listener+".v51.new"
-$TmpBridge=$Bridge+".v28-proven.new"
+$TmpBridge=Join-Path $BaseDir "TTiTTularesImageBridge.v28-proven.new.js"
 $TmpWatchdog=$Watchdog+".v8.new"
 
 function Get-PsProc([string]$Pattern){
