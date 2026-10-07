@@ -1,18 +1,20 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-10-07T03:31:48+02:00",
-  "primary_source": "xtrendsiamrohit",
+  "captured_at": "2026-10-07T03:41:41+02:00",
+  "primary_source": "snaplytics",
   "selection_method": "fresh-anchor",
   "sources_used": [
     "getdaytrends",
+    "snaplytics",
     "cyberkendra",
     "xtrendsiamrohit",
     "trendswe"
   ],
   "source_count": 7,
-  "non_stale_source_count": 6,
+  "non_stale_source_count": 7,
   "fresh_sources": [
+    "snaplytics",
     "whatstrends",
     "xtrendsiamrohit"
   ],
@@ -20,14 +22,14 @@
   "top10": [
     "#TierraDeNadie4",
     "Messi",
-    "PSOE",
     "Merino",
-    "#codigo10",
-    "Sanchez",
+    "PSOE",
+    "#Codigo10",
+    "Sánchez",
     "Correos",
     "Nico Paz",
     "Chiqui",
-    "#EleccionesEspaña"
+    "#eleccionesespaña"
   ],
   "items": [
     {
@@ -48,23 +50,23 @@
     },
     {
       "rank": 3,
-      "name": "PSOE",
-      "entered_top10_at": "2026-10-07T02:01:43+02:00",
-      "movement": "flat",
-      "previous_rank": 3,
-      "rank_delta": 0
+      "name": "Merino",
+      "entered_top10_at": "2026-10-07T03:06:04+02:00",
+      "movement": "up",
+      "previous_rank": 4,
+      "rank_delta": 1
     },
     {
       "rank": 4,
-      "name": "Merino",
-      "entered_top10_at": "2026-10-07T03:06:04+02:00",
-      "movement": "flat",
-      "previous_rank": 4,
-      "rank_delta": 0
+      "name": "PSOE",
+      "entered_top10_at": "2026-10-07T02:01:43+02:00",
+      "movement": "down",
+      "previous_rank": 3,
+      "rank_delta": -1
     },
     {
       "rank": 5,
-      "name": "#codigo10",
+      "name": "#Codigo10",
       "entered_top10_at": "2026-10-07T01:01:45+02:00",
       "movement": "flat",
       "previous_rank": 5,
@@ -72,11 +74,11 @@
     },
     {
       "rank": 6,
-      "name": "Sanchez",
-      "entered_top10_at": "2026-10-07T02:01:43+02:00",
-      "movement": "flat",
-      "previous_rank": 6,
-      "rank_delta": 0
+      "name": "Sánchez",
+      "entered_top10_at": "2026-10-07T03:41:41+02:00",
+      "movement": "new",
+      "previous_rank": null,
+      "rank_delta": null
     },
     {
       "rank": 7,
@@ -104,34 +106,95 @@
     },
     {
       "rank": 10,
-      "name": "#EleccionesEspaña",
+      "name": "#eleccionesespaña",
       "entered_top10_at": "2026-10-07T02:01:43+02:00",
       "movement": "flat",
       "previous_rank": 10,
       "rank_delta": 0
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Sánchez"
+  ],
   "upcoming": [
     {
-      "name": "Puigdemont",
-      "social_source_count": 4,
+      "name": "Frente Amplio",
+      "social_source_count": 5,
       "social_sources": [
         "cyberkendra",
+        "getdaytrends",
+        "snaplytics",
+        "trendswe",
+        "xtrendsiamrohit"
+      ],
+      "best_observed_rank": 14,
+      "mean_observed_rank": 14.0,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-10-07T02:41:21+02:00",
+          "best_rank": 14,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T02:51:11+02:00",
+          "best_rank": 14,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T03:01:57+02:00",
+          "best_rank": 14,
+          "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:06:04+02:00",
+          "best_rank": 14,
+          "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:11:29+02:00",
+          "best_rank": 14,
+          "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:21:35+02:00",
+          "best_rank": 14,
+          "source_count": 5
+        },
+        {
+          "captured_at": "2026-10-07T03:31:48+02:00",
+          "best_rank": 14,
+          "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 14,
+          "source_count": 5
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-10-07T02:01:43+02:00",
+      "news_source_count": 6,
+      "news_event_id": "3d1c60bdd64e",
+      "news_title": "Comuns apoya que Colau lidere Frente Amplio y Urtasun se perfila candidato por Barcelona - EFE - Agencia de noticias",
+      "news_status": "WAITING",
+      "news_first_seen": "2026-10-06T15:52:26.116485Z"
+    },
+    {
+      "name": "Puigdemont",
+      "social_source_count": 5,
+      "social_sources": [
+        "cyberkendra",
+        "snaplytics",
         "trendswe",
         "whatstrends",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 21,
-      "mean_observed_rank": 22.8,
-      "movement": "down",
+      "mean_observed_rank": 22.6,
+      "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-07T02:32:23+02:00",
-          "best_rank": 20,
-          "source_count": 3
-        },
         {
           "captured_at": "2026-10-07T02:41:21+02:00",
           "best_rank": 20,
@@ -166,6 +229,11 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 21,
           "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 21,
+          "source_count": 5
         }
       ],
       "observations": 8,
@@ -178,22 +246,18 @@
     },
     {
       "name": "PP y VOX",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "superx",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 30.0,
-      "movement": "down",
+      "mean_observed_rank": 31.6,
+      "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-07T02:32:23+02:00",
-          "best_rank": 15,
-          "source_count": 3
-        },
         {
           "captured_at": "2026-10-07T02:41:21+02:00",
           "best_rank": 15,
@@ -228,6 +292,11 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 15,
           "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 15,
+          "source_count": 5
         }
       ],
       "observations": 8,
@@ -240,16 +309,17 @@
     },
     {
       "name": "Adamuz",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "cyberkendra",
         "getdaytrends",
+        "snaplytics",
         "superx",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 14.5,
-      "movement": "down",
+      "mean_observed_rank": 13.8,
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-07T03:06:04+02:00",
@@ -270,9 +340,14 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 11,
           "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 11,
+          "source_count": 5
         }
       ],
-      "observations": 4,
+      "observations": 5,
       "first_detected_at": "2026-10-07T03:06:04+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -282,22 +357,18 @@
     },
     {
       "name": "Maradona",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "cyberkendra",
         "getdaytrends",
+        "snaplytics",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 11,
-      "mean_observed_rank": 12.5,
-      "movement": "down",
+      "mean_observed_rank": 12.6,
+      "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-07T02:32:23+02:00",
-          "best_rank": 11,
-          "source_count": 3
-        },
         {
           "captured_at": "2026-10-07T02:41:21+02:00",
           "best_rank": 11,
@@ -332,6 +403,11 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 11,
           "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 11,
+          "source_count": 5
         }
       ],
       "observations": 8,
@@ -343,85 +419,19 @@
       "news_first_seen": "2026-10-06T18:11:39.692241Z"
     },
     {
-      "name": "Frente Amplio",
-      "social_source_count": 4,
-      "social_sources": [
-        "cyberkendra",
-        "getdaytrends",
-        "trendswe",
-        "xtrendsiamrohit"
-      ],
-      "best_observed_rank": 14,
-      "mean_observed_rank": 14.0,
-      "movement": "down",
-      "rank_history": [
-        {
-          "captured_at": "2026-10-07T02:32:23+02:00",
-          "best_rank": 14,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-10-07T02:41:21+02:00",
-          "best_rank": 14,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-10-07T02:51:11+02:00",
-          "best_rank": 14,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-10-07T03:01:57+02:00",
-          "best_rank": 14,
-          "source_count": 4
-        },
-        {
-          "captured_at": "2026-10-07T03:06:04+02:00",
-          "best_rank": 14,
-          "source_count": 4
-        },
-        {
-          "captured_at": "2026-10-07T03:11:29+02:00",
-          "best_rank": 14,
-          "source_count": 4
-        },
-        {
-          "captured_at": "2026-10-07T03:21:35+02:00",
-          "best_rank": 14,
-          "source_count": 5
-        },
-        {
-          "captured_at": "2026-10-07T03:31:48+02:00",
-          "best_rank": 14,
-          "source_count": 4
-        }
-      ],
-      "observations": 8,
-      "first_detected_at": "2026-10-07T02:01:43+02:00",
-      "news_source_count": 0,
-      "news_event_id": null,
-      "news_title": null,
-      "news_status": null,
-      "news_first_seen": null
-    },
-    {
       "name": "Rajoy",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "superx",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 14,
-      "mean_observed_rank": 20.2,
-      "movement": "down",
+      "mean_observed_rank": 21.0,
+      "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-07T02:32:23+02:00",
-          "best_rank": 14,
-          "source_count": 3
-        },
         {
           "captured_at": "2026-10-07T02:41:21+02:00",
           "best_rank": 14,
@@ -456,6 +466,11 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 14,
           "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 14,
+          "source_count": 5
         }
       ],
       "observations": 8,
@@ -468,16 +483,17 @@
     },
     {
       "name": "Andalucía",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "superx",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 18,
-      "mean_observed_rank": 31.2,
-      "movement": "down",
+      "mean_observed_rank": 32.2,
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-07T03:01:57+02:00",
@@ -503,9 +519,14 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 18,
           "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 18,
+          "source_count": 5
         }
       ],
-      "observations": 5,
+      "observations": 6,
       "first_detected_at": "2026-10-07T03:01:57+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -515,16 +536,17 @@
     },
     {
       "name": "Parlamento",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "superx",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 23,
       "mean_observed_rank": 23.2,
-      "movement": "down",
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-07T03:01:57+02:00",
@@ -550,9 +572,14 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 23,
           "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 23,
+          "source_count": 5
         }
       ],
-      "observations": 5,
+      "observations": 6,
       "first_detected_at": "2026-10-07T03:01:57+02:00",
       "news_source_count": 2,
       "news_event_id": "270fe8f193f8",
@@ -562,15 +589,16 @@
     },
     {
       "name": "Constitucional",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 25,
-      "mean_observed_rank": 26.0,
-      "movement": "down",
+      "mean_observed_rank": 26.2,
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-07T03:01:57+02:00",
@@ -596,9 +624,14 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 25,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 25,
+          "source_count": 4
         }
       ],
-      "observations": 5,
+      "observations": 6,
       "first_detected_at": "2026-10-07T03:01:57+02:00",
       "news_source_count": 10,
       "news_event_id": "56755ecdd093",
@@ -608,21 +641,17 @@
     },
     {
       "name": "Votar",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "superx",
         "trendswe"
       ],
       "best_observed_rank": 13,
-      "mean_observed_rank": 37.7,
-      "movement": "down",
+      "mean_observed_rank": 40.8,
+      "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-07T02:32:23+02:00",
-          "best_rank": 13,
-          "source_count": 3
-        },
         {
           "captured_at": "2026-10-07T02:41:21+02:00",
           "best_rank": 13,
@@ -657,6 +686,11 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 13,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 13,
+          "source_count": 4
         }
       ],
       "observations": 8,
@@ -669,22 +703,18 @@
     },
     {
       "name": "Mopongo",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "trendswe",
         "whatstrends",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 25,
-      "mean_observed_rank": 41.0,
-      "movement": "down",
+      "mean_observed_rank": 41.8,
+      "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-07T02:32:23+02:00",
-          "best_rank": 25,
-          "source_count": 5
-        },
         {
           "captured_at": "2026-10-07T02:41:21+02:00",
           "best_rank": 25,
@@ -719,6 +749,11 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 25,
           "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 25,
+          "source_count": 5
         }
       ],
       "observations": 8,
@@ -731,21 +766,17 @@
     },
     {
       "name": "29-N",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 15,
-      "mean_observed_rank": 15.3,
-      "movement": "down",
+      "mean_observed_rank": 15.5,
+      "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-07T02:32:23+02:00",
-          "best_rank": 15,
-          "source_count": 3
-        },
         {
           "captured_at": "2026-10-07T02:41:21+02:00",
           "best_rank": 15,
@@ -780,6 +811,11 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 15,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 15,
+          "source_count": 4
         }
       ],
       "observations": 8,
@@ -792,16 +828,17 @@
     },
     {
       "name": "Aznar",
-      "social_source_count": 4,
+      "social_source_count": 5,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "superx",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 26,
-      "mean_observed_rank": 29.2,
-      "movement": "down",
+      "mean_observed_rank": 30.0,
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-07T03:21:35+02:00",
@@ -812,9 +849,14 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 26,
           "source_count": 4
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 26,
+          "source_count": 5
         }
       ],
-      "observations": 2,
+      "observations": 3,
       "first_detected_at": "2026-10-07T03:21:35+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -824,15 +866,16 @@
     },
     {
       "name": "#LaIslaDeLasTentaciones9",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 16.7,
-      "movement": "down",
+      "mean_observed_rank": 16.8,
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-07T03:21:35+02:00",
@@ -843,9 +886,14 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 16,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 16,
+          "source_count": 4
         }
       ],
-      "observations": 2,
+      "observations": 3,
       "first_detected_at": "2026-10-07T03:21:35+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -855,21 +903,17 @@
     },
     {
       "name": "Perisic",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 16,
-      "mean_observed_rank": 26.7,
-      "movement": "down",
+      "mean_observed_rank": 27.8,
+      "movement": "up",
       "rank_history": [
-        {
-          "captured_at": "2026-10-07T02:32:23+02:00",
-          "best_rank": 12,
-          "source_count": 3
-        },
         {
           "captured_at": "2026-10-07T02:41:21+02:00",
           "best_rank": 12,
@@ -904,6 +948,11 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 16,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 16,
+          "source_count": 4
         }
       ],
       "observations": 8,
@@ -916,15 +965,16 @@
     },
     {
       "name": "Óscar Puente",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 24,
-      "mean_observed_rank": 25.0,
-      "movement": "down",
+      "mean_observed_rank": 25.2,
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-07T03:21:35+02:00",
@@ -935,9 +985,14 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 24,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 24,
+          "source_count": 4
         }
       ],
-      "observations": 2,
+      "observations": 3,
       "first_detected_at": "2026-10-07T03:21:35+02:00",
       "news_source_count": 5,
       "news_event_id": "a8ee599de879",
@@ -947,15 +1002,16 @@
     },
     {
       "name": "#ChiringuitoCristiano",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 17,
       "mean_observed_rank": 18.0,
-      "movement": "down",
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-07T03:21:35+02:00",
@@ -966,9 +1022,14 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 17,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 17,
+          "source_count": 4
         }
       ],
-      "observations": 2,
+      "observations": 3,
       "first_detected_at": "2026-10-07T03:21:35+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -978,15 +1039,16 @@
     },
     {
       "name": "CCOO",
-      "social_source_count": 3,
+      "social_source_count": 4,
       "social_sources": [
         "cyberkendra",
+        "snaplytics",
         "trendswe",
         "xtrendsiamrohit"
       ],
       "best_observed_rank": 18,
-      "mean_observed_rank": 18.7,
-      "movement": "down",
+      "mean_observed_rank": 18.8,
+      "movement": "up",
       "rank_history": [
         {
           "captured_at": "2026-10-07T03:21:35+02:00",
@@ -997,9 +1059,14 @@
           "captured_at": "2026-10-07T03:31:48+02:00",
           "best_rank": 18,
           "source_count": 3
+        },
+        {
+          "captured_at": "2026-10-07T03:41:41+02:00",
+          "best_rank": 18,
+          "source_count": 4
         }
       ],
-      "observations": 2,
+      "observations": 3,
       "first_detected_at": "2026-10-07T03:21:35+02:00",
       "news_source_count": 0,
       "news_event_id": null,
@@ -1018,7 +1085,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-07T03:31:48+02:00"
+      "fetched_at": "2026-10-07T03:41:41+02:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -1043,7 +1110,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-07T03:31:48+02:00"
+      "fetched_at": "2026-10-07T03:41:41+02:00"
     },
     "tweets24": {
       "ok": false,
@@ -1052,7 +1119,7 @@
       "update_hint": "Updated 6 days ago Live Twitter Trending Topics in Spain About Twitter (X) Trends in Spa",
       "age_minutes": null,
       "freshness": "invalid",
-      "fetched_at": "2026-10-07T03:31:48+02:00"
+      "fetched_at": "2026-10-07T03:41:42+02:00"
     },
     "superx": {
       "ok": true,
@@ -1112,7 +1179,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-07T03:31:49+02:00"
+      "fetched_at": "2026-10-07T03:41:43+02:00"
     },
     "twtdata": {
       "ok": false,
@@ -1121,67 +1188,67 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-07T03:31:49+02:00"
+      "fetched_at": "2026-10-07T03:41:44+02:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
         "#TierraDeNadie4",
-        "Mikel Merino",
         "Messi",
-        "#Codigo10",
+        "Merino",
         "PSOE",
+        "#Codigo10",
         "Sánchez",
         "Correos",
-        "#eleccionesespaña",
+        "Nico Paz",
         "Chiqui",
-        "Yola",
+        "#eleccionesespaña",
         "Adamuz",
         "Torres",
         "Maradona",
         "Frente Amplio",
+        "Yola",
         "29-N",
         "#LaIslaDeLasTentaciones9",
         "#ChiringuitoCristiano",
-        "Ivana",
         "CCOO",
+        "Ivana",
+        "Benín",
         "Puigdemont",
-        "Benin",
-        "Rajoy",
         "Parlamento",
-        "Arkano",
+        "Rajoy",
+        "Otamendi",
         "Óscar Puente",
-        "María Jesús",
         "Constitucional",
         "Feijóo",
         "Alvise",
-        "Aznar",
+        "María Jesús",
         "Perisic",
+        "Arkano",
+        "Aznar",
         "Abascal",
         "Supremo",
-        "PP y VOX",
         "Andalucía",
-        "El PP",
         "Unai Simón",
-        "Eva Marie Saint",
+        "PP y Vox",
+        "El PP",
         "Leire",
-        "Cucurella",
+        "Scaloni",
         "Cortes",
-        "Figaredo",
         "Borja Semper",
         "Senado",
-        "Zubimendi",
         "Mopongo",
-        "Scaloni",
-        "Pumpido",
+        "Figaredo",
         "Pedri",
+        "Pumpido",
+        "SALF",
         "Votar"
       ],
       "error": null,
-      "update_hint": "Trending now Oct 7, 2026 00:00 UTC",
-      "age_minutes": 91.8,
-      "freshness": "stale",
-      "fetched_at": "2026-10-07T03:31:49+02:00"
+      "update_hint": "Trending now Oct 7, 2026 01:00 UTC",
+      "age_minutes": 41.7,
+      "freshness": "fresh",
+      "fetched_at": "2026-10-07T03:41:44+02:00"
     },
     "whatstrends": {
       "ok": true,
@@ -1230,7 +1297,7 @@
       "update_hint": "Last updated: 2 minutes ago # Tweets 1 #TierraDeNadie4 <10K posts 2 Merino <10K posts 3 #Codig",
       "age_minutes": 2.0,
       "freshness": "fresh",
-      "fetched_at": "2026-10-07T03:31:49+02:00"
+      "fetched_at": "2026-10-07T03:41:44+02:00"
     },
     "cyberkendra": {
       "ok": true,
@@ -1287,10 +1354,10 @@
         "Votar"
       ],
       "error": null,
-      "update_hint": "Last updated 7 October 2026, 7:01 AM IST · refreshes every 30 minutes · verified by Cyber Ken",
+      "update_hint": "Last updated 7 October 2026, 7:11 AM IST · refreshes every 30 minutes · verified by Cyber Ken",
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-07T03:31:50+02:00"
+      "fetched_at": "2026-10-07T03:41:45+02:00"
     },
     "xtrendsiamrohit": {
       "ok": true,
@@ -1347,10 +1414,10 @@
         "SALF"
       ],
       "error": null,
-      "update_hint": "updated 26 minutes ago",
-      "age_minutes": 26.0,
+      "update_hint": "updated 1 minute ago",
+      "age_minutes": 1.0,
       "freshness": "fresh",
-      "fetched_at": "2026-10-07T03:31:52+02:00"
+      "fetched_at": "2026-10-07T03:41:48+02:00"
     },
     "trendswe": {
       "ok": true,
@@ -1410,7 +1477,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-10-07T03:31:53+02:00"
+      "fetched_at": "2026-10-07T03:41:50+02:00"
     },
     "xtrendssaroj": {
       "ok": false,
@@ -1419,7 +1486,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-10-07T03:31:55+02:00"
+      "fetched_at": "2026-10-07T03:41:52+02:00"
     }
   }
 }
