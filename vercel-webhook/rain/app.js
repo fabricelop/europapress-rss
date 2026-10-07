@@ -47,7 +47,10 @@ const MODEL_META_PROPAGATION_SECONDS=10*60;
 const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
 const HARMONIE_STALE_GRACE_MINUTES=180;
 const LIGHTNING_WMS_URL='https://maps.dwd.de/geoserver/ows';
-const LIGHTNING_WMS_LAYER='dwd:Accumulated_Flash_Area';
+const LIGHTNING_WMS_LAYERS=[
+  {id:'raineta-lightning-flash',layer:'dwd:Accumulated_Flash_Geometry',opacity:.95,label:'MTG LI 5 min'},
+  {id:'raineta-lightning-ncew',layer:'dwd:NCEW_EU',opacity:.82,label:'NowCastELEC'}
+];
 const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
@@ -65,7 +68,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -3031,6 +3034,19 @@ function initMap(){
         'circle-stroke-width':2
       }
     });
+    state.map.on('sourcedata',event=>{
+      const id=String(event.sourceId||'');
+      if(!id.startsWith('raineta-lightning-')||!event.isSourceLoaded)return;
+      state.lightningLoaded.add(id);
+      state.lightningErrors.delete(id);
+      updateLightningVisibility();
+    });
+    state.map.on('error',event=>{
+      const id=String(event.sourceId||event.source?.id||'');
+      if(!id.startsWith('raineta-lightning-'))return;
+      state.lightningErrors.add(id);
+      updateLightningVisibility();
+    });
     showRadarOffset(state.radarOffset);
     updateLightningVisibility();
   });
@@ -3048,30 +3064,38 @@ function centerRadarMap(){
   if(!state.map||!state.mapLoaded)return;
   state.map.easeTo({center:[state.loc.lon,state.loc.lat],duration:450});
 }
+function lightningWmsTile(layer){
+  return LIGHTNING_WMS_URL+
+    '?service=WMS&version=1.1.1&request=GetMap&layers='+encodeURIComponent(layer)+
+    '&styles=&format=image%2Fpng&transparent=true&srs=EPSG%3A3857&bbox={bbox-epsg-3857}&width=256&height=256';
+}
+function lightningLayerIds(){return LIGHTNING_WMS_LAYERS.map(spec=>spec.id)}
 function ensureLightningLayer(){
   if(!state.map||!state.mapLoaded)return false;
-  if(!state.map.getSource('raineta-lightning')){
-    const tile=LIGHTNING_WMS_URL+
-      '?service=WMS&version=1.1.1&request=GetMap&layers='+encodeURIComponent(LIGHTNING_WMS_LAYER)+
-      '&styles=&format=image%2Fpng&transparent=true&srs=EPSG%3A3857&bbox={bbox-epsg-3857}&width=256&height=256';
-    state.map.addSource('raineta-lightning',{
-      type:'raster',
-      tiles:[tile],
-      tileSize:256,
-      attribution:'DWD · EUMETSAT Meteosat-12 Lightning Imager'
-    });
-    const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
-    state.map.addLayer({
-      id:'raineta-lightning',
-      type:'raster',
-      source:'raineta-lightning',
-      paint:{
-        'raster-opacity':.82,
-        'raster-fade-duration':0,
-        'raster-saturation':.18,
-        'raster-contrast':.12
-      }
-    },before);
+  const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
+  for(const spec of LIGHTNING_WMS_LAYERS){
+    const sourceId=spec.id+'-source';
+    if(!state.map.getSource(sourceId)){
+      state.map.addSource(sourceId,{
+        type:'raster',
+        tiles:[lightningWmsTile(spec.layer)],
+        tileSize:256,
+        attribution:'DWD · EUMETSAT MTG Lightning Imager / NowCastELEC'
+      });
+    }
+    if(!state.map.getLayer(spec.id)){
+      state.map.addLayer({
+        id:spec.id,
+        type:'raster',
+        source:sourceId,
+        paint:{
+          'raster-opacity':spec.opacity,
+          'raster-fade-duration':0,
+          'raster-saturation':.30,
+          'raster-contrast':.30
+        }
+      },before);
+    }
   }
   return true;
 }
@@ -3086,41 +3110,44 @@ function updateLightningVisibility(){
     button.classList.toggle('contextOff',Boolean(state.lightningEnabled&&!context));
     button.textContent=state.lightningEnabled?'⚡ RAYOS ON':'⚡ RAYOS';
     button.title=state.lightningEnabled
-      ? (context?'Actividad eléctrica MTG LI vía DWD · acumulación 5 min. Si no aparecen trazas, no hay actividad visible en la zona mostrada.':'Los rayos observados solo se muestran cerca de AHORA (últimos 5 min)')
-      : 'Mostrar actividad eléctrica MTG Lightning Imager · acumulación 5 min';
+      ? (context?'MTG LI 5 min + NowCastELEC DWD':'Los rayos solo se muestran cerca de AHORA')
+      : 'Mostrar actividad eléctrica observada/nowcast DWD';
   }
-  if(status){
-    status.classList.toggle('active',Boolean(state.lightningEnabled&&context));
-    status.classList.toggle('muted',Boolean(!state.lightningEnabled||!context));
-    status.textContent=!state.lightningEnabled
-      ? 'Rayos desactivados'
-      : !context
-        ? 'Rayos MTG ocultos fuera de AHORA'
-        : 'Rayos MTG activos · acumulación 5 min · si no ves trazas, no hay actividad visible en esta zona';
+  if(!state.map||!state.mapLoaded){
+    if(status)status.textContent=state.lightningEnabled?'Rayos: preparando capa…':'Rayos desactivados';
+    return;
   }
-  if(!state.map||!state.mapLoaded)return;
   const shouldShow=Boolean(state.lightningEnabled&&context);
   if(shouldShow){
     try{
       ensureLightningLayer();
-      if(state.map.getLayer('raineta-lightning')){
-        state.map.setLayoutProperty('raineta-lightning','visibility','visible');
-        if(state.map.getLayer('raineta-location'))state.map.moveLayer('raineta-lightning','raineta-location');
+      for(const id of lightningLayerIds()){
+        if(state.map.getLayer(id)){
+          state.map.setLayoutProperty(id,'visibility','visible');
+          if(state.map.getLayer('raineta-location'))state.map.moveLayer(id,'raineta-location');
+        }
       }
     }catch(error){
-      if(button){
-        button.classList.remove('active');
-        button.classList.add('contextOff');
-        button.title='Capa de rayos no disponible temporalmente';
-      }
-      if(status){
-        status.classList.remove('active');
-        status.classList.add('muted');
-        status.textContent='Rayos MTG: capa no disponible temporalmente';
-      }
+      state.lightningErrors.add('setup');
     }
-  }else if(state.map.getLayer('raineta-lightning')){
-    state.map.setLayoutProperty('raineta-lightning','visibility','none');
+  }else{
+    for(const id of lightningLayerIds()){
+      if(state.map.getLayer(id))state.map.setLayoutProperty(id,'visibility','none');
+    }
+  }
+  if(status){
+    status.classList.toggle('active',shouldShow);
+    status.classList.toggle('muted',!shouldShow);
+    const loaded=state.lightningLoaded.size,errors=state.lightningErrors.size;
+    status.textContent=!state.lightningEnabled
+      ? 'Rayos desactivados'
+      : !context
+        ? 'Rayos ocultos fuera de AHORA'
+        : errors&&loaded===0
+          ? 'Rayos: error cargando DWD'
+          : loaded>0
+            ? 'Rayos activos · MTG LI 5 min + NowCastELEC'
+            : 'Rayos: cargando datos DWD…';
   }
 }
 function toggleLightning(){
