@@ -267,6 +267,9 @@ jobs:
 
               job_path=CTRL/f"ttittulares/image-runs/jobs/{eid}.json"
               old=load_old(job_path)
+              manual_retry_version=int(item.get("ai_image_regenerate_request_version") or 0)
+              consumed_retry_version=int(old.get("manual_retry_version") or 0)
+              force_retry=manual_retry_version>consumed_retry_version
               attempt=int(old.get("auto_repair_attempt") or 0)
               old_status=str(old.get("status") or "").upper()
               finished=str(old.get("finished_at") or old.get("updated_at") or old.get("requested_at") or "")
@@ -279,7 +282,7 @@ jobs:
 
               # Un job REQUESTED/RUNNING puede quedar muerto si el bridge o Chat
               # no devuelve raster. No debe bloquear la reparación para siempre.
-              if int(old.get("revision") or rev)==rev and old_status in active:
+              if (not force_retry) and int(old.get("revision") or rev)==rev and old_status in active:
                   active_ttl=45*60 if old_status=="REQUESTED" else 12*60
                   if age<active_ttl:
                       continue
@@ -309,7 +312,7 @@ jobs:
                   "imagegen no produjo raster",
               ))
               cooldown=60 if transient_bridge_failure else (300 if attempt<3 else 3600)
-              if old and old_status not in active and age<cooldown:
+              if (not force_retry) and old and old_status not in active and age<cooldown:
                   continue
 
               attempt+=1
@@ -341,6 +344,7 @@ jobs:
                   "regenerate":bool(old),
                   "auto_repair":True,
                   "auto_repair_attempt":attempt,
+                  "manual_retry_version":manual_retry_version,
                   "chat_command_version":7,
                   "instruction_profile":"ttittulares_gag_v9_varied_style_single_gag",
                   "context_snapshot":{
@@ -363,7 +367,7 @@ jobs:
                       "prohibitions":"No infografía, no interfaz, no diagrama, no collage, no screenshot.",
                       "lifecycle":"Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
                   },
-                  "message":"Reparación automática de imagen IA para noticia en Listas."
+                  "message":"Reintento manual de imagen IA desde Telegram." if force_retry else "Reparación automática de imagen IA para noticia en Listas."
               }
               job_path.parent.mkdir(parents=True,exist_ok=True)
               job_path.write_text(json.dumps(job,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
