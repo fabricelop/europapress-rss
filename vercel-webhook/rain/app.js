@@ -1,5 +1,5 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,evaluateOverlaySourceState,radarProjectionRenderMode} from './radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,evaluateOverlaySourceState,radarProjectionRenderMode,radarViewportProjectionZoom} from './radar-core.js';
 
 const DET_MODELS=[
   {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
@@ -55,7 +55,7 @@ const LIGHTNING_WMS_LAYERS=[
 const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.39';
+const APP_VERSION='0.17.40';
 const FORECAST_CACHE_SCHEMA='consensus-v23';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
@@ -69,7 +69,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,radarViewNowcast:null,radarViewNowcastKey:null,radarViewNowcastPromise:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -670,6 +670,94 @@ function radarTileUrl(meta,frame,size=512,zoom=RADAR_ZOOM){
 function radarDisplayImageUrl(meta,frame,size=512,zoom=RADAR_ZOOM){
   const point=forecastCoords();return radarFrameHost(meta,frame)+frame.path+'/'+size+'/'+zoom+'/'+point.lat+'/'+point.lon+'/2/1_1.png';
 }
+function radarViewTileUrl(meta,frame,center,zoom,size=512){
+  const lat=Math.round(Number(center?.lat)*1000)/1000,lon=Math.round(Number(center?.lng??center?.lon)*1000)/1000;
+  return radarFrameHost(meta,frame)+frame.path+'/'+size+'/'+zoom+'/'+lat+'/'+lon+'/2/0_0.png';
+}
+function radarGeoAtZoom(motion,lat,step,zoom=RADAR_ZOOM){
+  const tilePxPerMaskPx=512/ANALYSIS_SIZE;
+  const kmPerTilePx=156543.03392*Math.cos(Number(lat)*Math.PI/180)/(2**Number(zoom))/1000;
+  const kmPerMaskPx=kmPerTilePx*tilePxPerMaskPx,h=Math.max(1/60,Number(step)/60);
+  const east=Number(motion?.dx)*kmPerMaskPx,north=-Number(motion?.dy)*kmPerMaskPx;
+  return{speedKmh:Math.hypot(east,north)/h,bearingDegrees:(Math.atan2(east,north)*180/Math.PI+360)%360};
+}
+function radarViewKey(meta,center,zoom){
+  const latest=meta?.frames?.at?.(-1);
+  return [
+    latest?.time||'none',
+    Number(zoom)||0,
+    Number(center?.lat||0).toFixed(2),
+    Number(center?.lng??center?.lon??0).toFixed(2)
+  ].join('|');
+}
+async function radarViewportNowcast(meta){
+  if(!state.map||!state.mapLoaded||!meta?.frames?.length)throw new Error('radar view unavailable');
+  const center=state.map.getCenter(),zoom=radarProjectionZoom(),key=radarViewKey(meta,center,zoom);
+  if(state.radarViewNowcast&&state.radarViewNowcastKey===key)return state.radarViewNowcast;
+  if(state.radarViewNowcastPromise&&state.radarViewNowcastKey===key)return state.radarViewNowcastPromise;
+  state.radarViewNowcastKey=key;
+  const promise=(async()=>{
+    const frames=meta.frames.slice(-4);
+    const settled=await Promise.allSettled(frames.map(async frame=>({
+      ...await imageMask(radarViewTileUrl(meta,frame,center,zoom)),
+      time:frame.time,path:frame.path
+    })));
+    const fields=settled.filter(row=>row.status==='fulfilled').map(row=>row.value).sort((a,b)=>a.time-b.time);
+    if(!fields.length)throw new Error('radar view decode unavailable');
+    const latest=fields.at(-1),step=frameStep(fields);
+    const field={
+      mask:latest.mask,rateGrid:latest.rateGrid,width:ANALYSIS_SIZE,height:ANALYSIS_SIZE,
+      radarTime:new Date(latest.time*1000).toISOString(),
+      centerLat:Number(center.lat),centerLon:Number(center.lng),displayZoom:zoom
+    };
+    let rawMotion=null,motion=null,evolution={score:0,overlap:0,densityStable:0},localFlow=null,confidence=0;
+    if(fields.length>=3){
+      const estimates=[];
+      for(let i=1;i<fields.length;i++){
+        const estimate=estimateTranslation(fields[i-1].mask,fields[i].mask,ANALYSIS_SIZE,ANALYSIS_SIZE,{maxShift:MAX_SHIFT});
+        if(estimate)estimates.push(estimate);
+      }
+      rawMotion=combineMotionEstimates(estimates);
+      const motionGeo=rawMotion?radarGeoAtZoom(rawMotion,center.lat,step,zoom):null;
+      const plausible=Boolean(rawMotion&&Number.isFinite(Number(motionGeo?.speedKmh))&&Number(motionGeo.speedKmh)<=MAX_RADAR_ADVECTION_KMH);
+      motion=plausible?{...rawMotion,...motionGeo,sourceStepMinutes:step}:null;
+      if(motion){
+        const localFlows=[];
+        for(let i=Math.max(1,fields.length-3);i<fields.length;i++){
+          const flow=estimateLocalFlow(fields[i-1].mask,fields[i].mask,ANALYSIS_SIZE,ANALYSIS_SIZE,{maxShift:Math.min(9,MAX_SHIFT),grid:5,patchRadius:9});
+          if(flow)localFlows.push(flow);
+        }
+        localFlow=combineLocalFlows(localFlows);
+        evolution=evolutionReliability(fields.at(-2).mask,latest.mask,ANALYSIS_SIZE,ANALYSIS_SIZE,motion);
+        confidence=Math.max(0,Math.min(.98,(Number(motion.confidence)||0)*(.72+.28*Number(evolution.score||0))));
+      }
+    }
+    const localQuality=Math.max(0,Math.min(1,(Number(localFlow?.confidence)||0)*.65+(Number(localFlow?.coverage)||0)*.35));
+    let horizon=localQuality>=.68?60:localQuality>=.55?52:localQuality>=.44?44:localQuality>=.34?34:localQuality>=.24?24:0;
+    if(confidence<.30)horizon=Math.min(horizon,20);
+    const guidance={
+      ok:Boolean(motion&&Number(motion.samples)>=2&&confidence>=.20&&(localFlow?.vectors?.length||0)>=8&&localQuality>=.24&&horizon>=10),
+      horizon,localQuality,agreement:null,upper:null,windBlend:0,convective:0,
+      flow:localFlow?{
+        vectors:localFlow.vectors.map(v=>({x:v.x,y:v.y,dx:v.dx,dy:v.dy,confidence:v.confidence,consistency:v.consistency})),
+        confidence:Number(localFlow.confidence)||0,coverage:Number(localFlow.coverage)||0,sourceStepMinutes:step,
+        width:ANALYSIS_SIZE,height:ANALYSIS_SIZE
+      }:null,
+      motion,
+      confidence,
+      evolution
+    };
+    return{key,field,guidance,decodedFrames:fields.length};
+  })();
+  state.radarViewNowcastPromise=promise;
+  try{
+    const result=await promise;
+    if(state.radarViewNowcastKey===key)state.radarViewNowcast=result;
+    return result;
+  }finally{
+    if(state.radarViewNowcastPromise===promise)state.radarViewNowcastPromise=null;
+  }
+}
 async function imageMask(url){
   const r=await timeoutFetch(url,8500,{mode:'cors',cache:'no-store'});
   if(!r.ok)throw new Error('radar tile '+r.status);
@@ -703,13 +791,7 @@ function frameStep(frames){
   const d=[];for(let i=1;i<frames.length;i++){const v=(frames[i].time-frames[i-1].time)/60;if(v>0&&v<=30)d.push(v)}
   return median(d)||10;
 }
-function radarGeo(motion,lat,step){
-  const tilePxPerMaskPx=512/ANALYSIS_SIZE;
-  const kmPerTilePx=156543.03392*Math.cos(lat*Math.PI/180)/(2**RADAR_ZOOM)/1000;
-  const kmPerMaskPx=kmPerTilePx*tilePxPerMaskPx,h=Math.max(1/60,step/60);
-  const east=motion.dx*kmPerMaskPx,north=-motion.dy*kmPerMaskPx;
-  return{speedKmh:Math.hypot(east,north)/h,bearingDegrees:(Math.atan2(east,north)*180/Math.PI+360)%360};
-}
+function radarGeo(motion,lat,step){return radarGeoAtZoom(motion,lat,step,RADAR_ZOOM)}
 function centralLocalMotion(localFlow,lat,step){
   if(!localFlow?.vectors?.length)return null;
   const center=(ANALYSIS_SIZE-1)/2;
@@ -3053,7 +3135,7 @@ function initMap(){
     updateLightningVisibility();
     if(state.lightningEnabled)verifyLightningSource();
   });
-  state.map.on('zoomend',()=>{
+  state.map.on('moveend',()=>{
     if(state.mapLoaded&&Number(state.radarOffset)>0)showProjectedRadar(state.radarOffset);
   });
 }
@@ -3234,13 +3316,8 @@ function clearRadarVisual(){
 }
 function radarProjectionZoom(){
   const mapZoom=Number(state.map?.getZoom?.());
-  if(!Number.isFinite(mapZoom))return Math.max(5,RADAR_ZOOM-1);
   const canvas=state.map?.getCanvas?.();
-  const width=Math.max(512,Number(canvas?.clientWidth)||512);
-  const height=Math.max(512,Number(canvas?.clientHeight)||512);
-  const viewportFactor=Math.max(width,height)/512;
-  const extraCoverage=Math.max(0,Math.ceil(Math.log2(viewportFactor)));
-  return Math.max(5,Math.min(RADAR_ZOOM,Math.floor(mapZoom)-extraCoverage));
+  return radarViewportProjectionZoom(mapZoom,Number(canvas?.clientWidth)||512,Number(canvas?.clientHeight)||512,{minZoom:3,maxZoom:RADAR_ZOOM,tileDisplaySize:512});
 }
 function radarProjectionControl(){
   const motion=state.nowcast?.motion;
@@ -3370,10 +3447,14 @@ function radarColorForRate(rate){
   const [red,green,blue,alpha]=best.rgba;
   return[red,green,blue,Math.max(120,Math.min(255,alpha||220))];
 }
-async function radarProjectionBitmap(){
-  const field=state.nowcast?.projectionField;
+async function radarProjectionBitmap(field=state.nowcast?.projectionField){
   if(!field?.mask?.length||!field?.rateGrid?.length)throw new Error('projection field unavailable');
-  const key=String(field.radarTime||state.nowcast?.radarTime||'field');
+  const key=[
+    String(field.radarTime||state.nowcast?.radarTime||'field'),
+    Number(field.centerLat??state.loc.lat).toFixed(3),
+    Number(field.centerLon??state.loc.lon).toFixed(3),
+    Number(field.displayZoom??RADAR_ZOOM)
+  ].join('|');
   if(state.radarProjectionBitmap&&state.radarProjectionBitmapKey===key)return state.radarProjectionBitmap;
   state.radarProjectionBitmapKey=key;
 
@@ -3401,7 +3482,7 @@ async function radarProjectionBitmap(){
   return bitmap;
 }
 function guidedRadarFlowAt(x,y,minutes,guidance){
-  const motion=state.nowcast?.motion||{},flow=guidance?.flow;
+  const motion=guidance?.motion||state.nowcast?.motion||{},flow=guidance?.flow;
   if(!flow?.vectors?.length)return null;
   const local=flowVectorAt(flow,x,y,{dx:NaN,dy:NaN,confidence:0});
   if(!Number.isFinite(Number(local?.dx))||!Number.isFinite(Number(local?.dy)))return null;
@@ -3414,8 +3495,8 @@ function guidedRadarFlowAt(x,y,minutes,guidance){
     confidence:localConfidence
   };
 }
-async function drawLocalRadarProjection(meta,frame,minutes,guidance,token,mode='flow'){
-  const canvas=ensureRadarProjectionCanvas(),size=canvas.width,bitmap=await radarProjectionBitmap();
+async function drawLocalRadarProjection(meta,frame,minutes,guidance,token,mode='flow',field=state.nowcast?.projectionField){
+  const canvas=ensureRadarProjectionCanvas(),size=canvas.width,bitmap=await radarProjectionBitmap(field);
   if(token!==state.radarProjectionToken)return false;
   const ctx=canvas.getContext('2d',{alpha:true});
   ctx.clearRect(0,0,size,size);
@@ -3426,7 +3507,7 @@ async function drawLocalRadarProjection(meta,frame,minutes,guidance,token,mode='
     return true;
   }
   const grid=16,patch=size/grid,analysisScale=ANALYSIS_SIZE/size;
-  const step=Math.max(1,Number(guidance?.flow?.sourceStepMinutes)||Number(state.nowcast?.motion?.sourceStepMinutes)||10);
+  const step=Math.max(1,Number(guidance?.flow?.sourceStepMinutes)||Number(guidance?.motion?.sourceStepMinutes)||Number(state.nowcast?.motion?.sourceStepMinutes)||10);
   const factor=Math.max(0,Number(minutes)||0)/step;
   const pixelScale=size/ANALYSIS_SIZE;
   for(let gy=0;gy<grid;gy++)for(let gx=0;gx<grid;gx++){
@@ -3537,34 +3618,35 @@ function projectedRadarOpacity(minutes,canMove,reliable){
 async function showProjectedRadar(minutes){
   const r=state.data?.radar,latest=state.frames.at(-1);
   if(!r||!latest||!state.mapLoaded)return;
-  const projectedAt=latest.time*1000+minutes*60_000,guidance=radarSpatialGuidance(minutes);
-  const field=state.nowcast?.projectionField;
-  const fieldAvailable=Boolean(field?.mask?.length&&field?.rateGrid?.length);
-  const mode=radarProjectionRenderMode({
-    minutes,
-    fieldAvailable,
-    guidanceOk:Boolean(guidance.ok),
-    horizon:Number(guidance.horizon)||0,
-    continuityMinutes:RADAR_CONTINUITY_MINUTES
-  });
-  const horizon=Number(guidance.horizon)||0;
-  if(mode==='none'){
-    state.radarProjectionToken++;
-    clearRadarVisual();
-    state.radarProjectionImageKey=null;
-    $('radarTime').textContent=fmtTime(projectedAt);
-    if($('radarFrameStatus'))$('radarFrameStatus').textContent='SIN CAMPO RADAR FIABLE · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-    $('radarPosition').textContent='Sin proyección espacial fiable · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-    $('radarMotion').textContent=fieldAvailable
-      ? 'El campo observado existe, pero después de '+RADAR_CONTINUITY_MINUTES+' min RainETA exige movimiento local fiable y no fuerza un desplazamiento rígido.'
-      : 'No hay un campo radar decodificado disponible para proyectar.';
-    return;
-  }
   const token=++state.radarProjectionToken;
+  const projectedAt=latest.time*1000+minutes*60_000;
   try{
-    const drawn=await drawLocalRadarProjection(r,latest,minutes,guidance,token,mode);
+    const view=await radarViewportNowcast(r);
+    if(token!==state.radarProjectionToken)return;
+    const field=view.field,guidance=view.guidance||{},horizon=Number(guidance.horizon)||0;
+    const fieldAvailable=Boolean(field?.mask?.length&&field?.rateGrid?.length);
+    const mode=radarProjectionRenderMode({
+      minutes,
+      fieldAvailable,
+      guidanceOk:Boolean(guidance.ok),
+      horizon,
+      continuityMinutes:RADAR_CONTINUITY_MINUTES
+    });
+    if(mode==='none'){
+      clearRadarVisual();
+      state.radarProjectionImageKey=null;
+      $('radarTime').textContent=fmtTime(projectedAt);
+      if($('radarFrameStatus'))$('radarFrameStatus').textContent='SIN CAMPO RADAR FIABLE · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+      $('radarPosition').textContent='Sin proyección espacial fiable · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+      $('radarMotion').textContent=fieldAvailable
+        ? 'La vista radar está decodificada, pero después de '+RADAR_CONTINUITY_MINUTES+' min RainETA exige flujo local fiable y no fuerza un desplazamiento rígido.'
+        : 'No hay un campo radar decodificado disponible para esta vista.';
+      return;
+    }
+    const drawn=await drawLocalRadarProjection(r,latest,minutes,guidance,token,mode,field);
     if(!drawn||token!==state.radarProjectionToken)return;
-    const canvas=ensureRadarProjectionCanvas(),coordinates=radarImageCoordinates(state.loc.lat,state.loc.lon,RADAR_ZOOM);
+    const canvas=ensureRadarProjectionCanvas();
+    const coordinates=radarImageCoordinates(field.centerLat,field.centerLon,field.displayZoom);
     const ctx=canvas.getContext('2d',{alpha:true});
     const pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;
     let alphaPixels=0;
@@ -3586,31 +3668,28 @@ async function showProjectedRadar(minutes){
       }
     },before);
     removeRadarLayer('raineta-radar');
-    state.radarProjectionImageKey=mode+'@'+Math.round(minutes)+'@'+String(field?.radarTime||'field');
+    state.radarProjectionImageKey=mode+'@'+Math.round(minutes)+'@'+view.key;
     if(mode==='flow'){
       const opacity=projectedRadarOpacity(minutes,true,horizon);
       if(state.map.getLayer('raineta-radar-projection'))state.map.setPaintProperty('raineta-radar-projection','raster-opacity',opacity);
     }
+    applyRadarLightningContrast();
     $('radarTime').textContent=fmtTime(projectedAt);
     if(mode==='persistence'){
-      if($('radarFrameStatus'))$('radarFrameStatus').textContent='CONTINUIDAD RADAR · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-      $('radarPosition').textContent='Persistencia del último campo observado · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-      $('radarMotion').textContent='Continuidad de muy corto plazo: RainETA conserva la estructura radar decodificada durante '+RADAR_CONTINUITY_MINUTES+' min sin inventar un vector de movimiento.';
+      if($('radarFrameStatus'))$('radarFrameStatus').textContent='CONTINUIDAD DE VISTA · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+      $('radarPosition').textContent='Persistencia radar de la zona visible · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+      $('radarMotion').textContent='RainETA decodifica y reconstruye la precipitación alrededor del centro actual del mapa (zoom '+field.displayZoom+') durante '+RADAR_CONTINUITY_MINUTES+' min.';
     }else{
-      if($('radarFrameStatus'))$('radarFrameStatus').textContent='NOWCAST LOCAL · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-      $('radarPosition').textContent='Nowcast por células · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-      const windText=guidance.upper
-        ? ' · viento 850/700 hPa '+Math.round(guidance.upper.speedKmh)+' km/h · acuerdo '+Math.round(guidance.agreement*100)+'%'
-        : '';
-      const convective=guidance.convective>=.48?' · evolución convectiva: horizonte recortado':'';
-      $('radarMotion').textContent='Flujo óptico local: cada zona del eco se desplaza con su propio vector'+windText+convective+' · horizonte espacial ~'+horizon+' min.';
+      if($('radarFrameStatus'))$('radarFrameStatus').textContent='NOWCAST DE VISTA · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+      $('radarPosition').textContent='Nowcast por células de la zona visible · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+      $('radarMotion').textContent='Flujo óptico local calculado sobre los últimos '+view.decodedFrames+' frames de la vista · horizonte espacial ~'+horizon+' min.';
     }
   }catch(error){
     if(token!==state.radarProjectionToken)return;
     clearRadarVisual();
     state.radarProjectionImageKey=null;
     $('radarPosition').textContent='Nowcast espacial no disponible · +'+Math.round(minutes)+' min';
-    $('radarMotion').textContent='No se pudo construir el campo futuro ('+(error?.message||'error')+'). RainETA no usa el antiguo desplazamiento rígido como respaldo.';
+    $('radarMotion').textContent='No se pudo construir el campo futuro de la vista ('+(error?.message||'error')+').';
   }
 }
 function showRadarOffset(offset=state.radarOffset){

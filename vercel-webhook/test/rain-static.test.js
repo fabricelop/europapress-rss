@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode} from '../rain/radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
@@ -289,4 +289,31 @@ test('lightning mode desaturates radar precipitation to grayscale',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/setPaintProperty\(id,'raster-saturation',gray\?-1:0\)/);
   assert.match(app,/state\.lightningEnabled&&lightningContextVisible\(\)\?-1:0/);
+});
+
+
+test('radar viewport zoom expands enough to cover a wide map',()=>{
+  assert.equal(radarViewportProjectionZoom(7,800,330,{minZoom:3,maxZoom:7,tileDisplaySize:512}),6);
+  assert.equal(radarViewportProjectionZoom(5,800,330,{minZoom:3,maxZoom:7,tileDisplaySize:512}),4);
+  assert.equal(radarViewportProjectionZoom(4,1200,700,{minZoom:3,maxZoom:7,tileDisplaySize:512}),3);
+});
+
+test('future radar samples the current map view instead of state.loc',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/async function radarViewportNowcast\(meta\)/);
+  assert.match(app,/const center=state\.map\.getCenter\(\),zoom=radarProjectionZoom\(\)/);
+  assert.match(app,/radarViewTileUrl\(meta,frame,center,zoom\)/);
+  assert.match(app,/radarImageCoordinates\(field\.centerLat,field\.centerLon,field\.displayZoom\)/);
+});
+
+test('future radar recalculates after map pan or zoom',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/state\.map\.on\('moveend'/);
+  assert.match(app,/Number\(state\.radarOffset\)>0\)showProjectedRadar\(state\.radarOffset\)/);
+});
+
+test('viewport projection bitmap cache is keyed by center and zoom',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/Number\(field\.centerLat\?\?state\.loc\.lat\)\.toFixed\(3\)/);
+  assert.match(app,/Number\(field\.displayZoom\?\?RADAR_ZOOM\)/);
 });

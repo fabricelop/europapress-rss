@@ -1,8 +1,13 @@
-# RainETA v0.17.39
+# RainETA v0.17.40
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
-## Proyección radar sintética y rayos DWD v0.17.39
+## Proyección radar sintética y rayos DWD v0.17.40
+- El futuro visual ya no queda anclado a `state.loc`: RainETA decodifica los últimos frames RainViewer centrados en **el centro y zoom actuales del mapa**, reconstruye `mask/rateGrid` y renderiza desde ese campo.
+- El zoom de muestreo se adapta al tamaño real del viewport para que una única imagen sintética cubra la zona visible incluso al alejar el mapa.
+- +1/+2/+3 usan persistencia del campo **de la vista actual** cuando todavía no hay flujo fiable; a partir de ahí solo se muestra futuro si el flujo óptico local de esa misma vista supera los umbrales.
+- Al mover o hacer zoom mientras se está en futuro, la proyección se recalcula para la nueva vista.
+
 - La transición **AHORA → +1/+2/+3 min** conserva siempre el último campo radar internamente decodificado aunque el vector de movimiento todavía sea incierto. Es persistencia de muy corto plazo, no reutilización del PNG observado ni desplazamiento rígido.
 - `projectionField` se conserva también cuando el estado del movimiento es `motion_uncertain`; antes se perdía precisamente en esos casos y el futuro podía quedar vacío.
 - El frame observado se mantiene hasta que el PNG futuro generado por RainETA está listo, evitando un flash vacío durante el cambio.

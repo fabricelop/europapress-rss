@@ -23,6 +23,15 @@ export function buildRadarProjectionRgba(mask,rateGrid,width,height,colorForRate
   }
   return{rgba,wetPixels,alphaPixels,opaqueFraction:alphaPixels/size,width:w,height:h};
 }
+export function radarViewportProjectionZoom(mapZoom,width=512,height=512,{minZoom=3,maxZoom=7,tileDisplaySize=512}={}){
+  const z=Number(mapZoom);
+  if(!Number.isFinite(z))return Math.max(minZoom,Math.min(maxZoom,maxZoom-1));
+  const w=Math.max(tileDisplaySize,Number(width)||tileDisplaySize);
+  const h=Math.max(tileDisplaySize,Number(height)||tileDisplaySize);
+  const viewportFactor=Math.max(w,h)/tileDisplaySize;
+  const extraCoverage=Math.max(0,Math.ceil(Math.log2(viewportFactor)));
+  return Math.max(minZoom,Math.min(maxZoom,Math.floor(z)-extraCoverage));
+}
 export function radarProjectionRenderMode({minutes=0,fieldAvailable=false,guidanceOk=false,horizon=0,continuityMinutes=3}={}){
   const m=Math.max(0,Number(minutes)||0),limit=Math.max(0,Number(continuityMinutes)||0),h=Math.max(0,Number(horizon)||0);
   if(!fieldAvailable||m<=0)return'none';
