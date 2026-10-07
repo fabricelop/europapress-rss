@@ -328,7 +328,7 @@ async function fetchQuarterHour(){
     latitude:String(forecastCoords().lat),longitude:String(forecastCoords().lon),
     current:'temperature_2m,precipitation,rain,showers,weather_code,cloud_cover',
     minutely_15:'precipitation',forecast_minutely_15:'32',
-    hourly:'temperature_2m,cloud_cover,snowfall,weather_code,precipitation_probability,wind_speed_850hPa,wind_direction_850hPa,wind_speed_700hPa,wind_direction_700hPa,cape,convective_inhibition,thunderstorm_probability,lightning_potential,lightning_density',
+    hourly:'temperature_2m,cloud_cover,snowfall,weather_code,precipitation_probability,wind_speed_850hPa,wind_direction_850hPa,wind_speed_700hPa,wind_direction_700hPa,cape,convective_inhibition',
     forecast_hours:'73',
     timeformat:'unixtime',timezone:'GMT'
   });
