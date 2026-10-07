@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-59e7d31e6d57-r0-a1-1791345009924",
+  "requested_at": "2026-10-07T03:50:09.923029Z",
+  "updated_at": "2026-10-07T03:50:09.923029Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "59e7d31e6d57",
+  "trend_id": "59e7d31e6d57",
+  "target_name": "Enzo",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Enzo",
+    "revision": 0,
+    "explanation": "TT#10 Enzo es tendencia porque Enzo Fernández se quebró durante el discurso de despedida de Messi tras el 3-0 a Benín en el Monumental.\n🌶️ La carta de hace diez años acabó necesitando pañuelo.",
+    "closer_text": "🌶️ La carta de hace diez años acabó necesitando pañuelo.",
+    "trend_names": [
+      "Enzo"
+    ],
+    "group_title": "Enzo",
+    "rank_at_explanation": 10,
+    "explained_at": "2026-10-07T05:47:10+02:00",
+    "verification_sources": [
+      "https://www.infobae.com/deportes/2026/10/07/el-discurso-completo-de-messi-en-su-despedida-de-la-seleccion-y-el-llanto-de-enzo-fernandez-es-el-dia-mas-triste-de-mi-carrera/",
+      "https://tn.com.ar/deportes/futbol/2026/10/06/video-el-llanto-desconsolado-de-enzo-fernandez-mientras-messi-daba-su-discurso-de-despedida-de-la-seleccion-argentina/",
+      "https://diarioelnorte.com.ar/es-momento-de-soltar-y-decir-gracias-el-emotivo-mensaje-de-enzo-fernandez-para-despedir-a-messi/"
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
