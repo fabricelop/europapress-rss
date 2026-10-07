@@ -48,8 +48,8 @@ const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
 const HARMONIE_STALE_GRACE_MINUTES=180;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.26';
-const FORECAST_CACHE_SCHEMA='consensus-v15';
+const APP_VERSION='0.17.27';
+const FORECAST_CACHE_SCHEMA='consensus-v16';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
 const $=id=>document.getElementById(id);
@@ -782,7 +782,7 @@ function automaticRainState(){
         : aemetStrong?'AEMET fuerte'
           : possible?'señal radar no confirmada'
             :'sin señal superficial';
-  const label=raining?'Llueve ahora':possible?'Lluvia no confirmada':'No llueve ahora';
+  const label=raining?'Lluvia ahora':possible?'Señal de lluvia no confirmada':'Tiempo estable';
   return{raining,possible,source,label,radarRain,operaRain,aemetRain,radarStrong,operaStrong,aemetStrong,radarRate,operaRate,aemetRate,wetSignals};
 }
 function currentRainState(){
@@ -1106,10 +1106,10 @@ function renderShortNowcast(){
   $('shortDetail').hidden=compactCorrection;
   $('shortWindow').hidden=compactCorrection;
   $('shortState').textContent=decision.mode==='episode_pause'||decision.mode==='episode_ended_early'
-    ? 'Seco ahora'
+    ? 'Tiempo estable'
     : decision.mode==='possible_now'
       ? 'Lluvia no confirmada'
-      : near||rain.raining?intensityLabel(labelRate):'Seco';
+      : near||rain.raining?intensityLabel(labelRate):'Tiempo estable';
   $('shortDetail').textContent=decision.mode==='episode_pause'
     ? decision.correction?.resumeAt
       ? 'Pausa observada · posible reanudación '+fmtTime(decision.correction.resumeAt)+' ('+decision.correction.resumeSource+') · fin previsto del tramo '+fmtTime(decision.correction.episode.end)
@@ -1120,6 +1120,8 @@ function renderShortNowcast(){
         ? 'El radar marca '+Math.max(Number(rain.radarRate)||0,Number(rain.operaRate)||0).toFixed(1).replace('.',',')+' mm/h sobre el punto, pero no hay corroboración suficiente para afirmar que llueve en superficie'
       : rain.raining
         ? 'Radar / nowcast: '+labelRate.toFixed(1)+' mm/h ahora · RainViewer '+fmtTime(state.nowcast?.radarTime||Date.now())+(state.data?.opera?.observedAt?' · radar europeo '+fmtTime(state.data.opera.observedAt):'')
+        : decision.mode==='stable_now'&&decision.stable
+          ? 'Sin lluvia prevista en las próximas '+decision.stable.label+'. Radar útil ~'+nowcastReliableHorizon()+' min; después mandan los modelos y el consenso.'
         : delayedByRadar
           ? 'Radar sin precipitación proyectada hasta ~'+fmtTime(dry.end)+'. Los modelos mantienen riesgo después.'
           : near
@@ -1135,7 +1137,7 @@ function renderShortNowcast(){
       ? (ev?.start?'Siguiente riesgo':'Fin confirmado')
       : decision.mode==='possible_now'
         ? 'Señal radar hasta'
-      : rain.raining?'Fin estimado':delayedByRadar||(!near&&dry)?(dry?.horizonLimited?'Seco al menos':'Seco hasta'):near?'Empieza en':'Próximo cambio';
+      : rain.raining?'Fin estimado':decision.mode==='stable_now'?'Horizonte':delayedByRadar||(!near&&dry)?'Estable hasta':near?'Empieza en':'Próximo cambio';
   $('shortCountdown').textContent=decision.mode==='episode_pause'
     ? (decision.correction?.resumeAt?formatCountdownMs(decision.correction.resumeAt-now):formatCountdownMs(now-Number(decision.correction?.observedEnd||now))+' seco')
     : decision.mode==='episode_ended_early'
@@ -1144,6 +1146,8 @@ function renderShortNowcast(){
         ? (ev?.end?formatCountdownMs(Date.parse(ev.end)-now):'—')
       : rain.raining
         ? (ev?.end?formatCountdownMs(Date.parse(ev.end)-now):'—')
+        : decision.mode==='stable_now'&&decision.stable
+          ? decision.stable.label
         : delayedByRadar||(!near&&dry)
           ? formatCountdownMs(Date.parse(dry.end)-now)
           : near?formatCountdownMs(Date.parse(ev.start)-now):'>3 h';
@@ -1153,15 +1157,23 @@ function renderShortNowcast(){
       ? 'Tramo anterior cerrado ~'+fmtTime(decision.correction?.observedEnd)+(ev?.start?' · siguiente '+fmtTime(ev.start):'')
       : decision.mode==='possible_now'
         ? 'Señal de radar actual · no confirmada en superficie'
+      : decision.mode==='stable_now'&&decision.stable
+        ? 'Sin señal de llegada · previsión estable '+decision.stable.label+' · radar útil ~'+nowcastReliableHorizon()+' min'
       : near
-        ? fmtTime(ev.start)+(ev.end?'–'+fmtTime(ev.end):'')+(['radar','opera','radarFusion'].includes(ev.kind)?' · '+uncertaintyText(ev):'')
+        ? fmtTime(ev.start)+(ev.end?'–'+fmtTime(ev.end):'')+(['radar','opera','aemet','radarFusion'].includes(ev.kind)?' · '+uncertaintyText(ev):'')
         : dry
           ? (dry.horizonLimited
             ? 'Seco confirmado por radar · '+fmtTime(dry.start)+'–'+fmtTime(dry.end)+' · después sin ETA de lluvia'
             : 'Ventana seca radar · '+fmtTime(dry.start)+'–'+fmtTime(dry.end))
           : 'Ventana corta estable';
   const leadMinutes=near?Math.max(0,(Date.parse(ev.start)-now)/60_000):dry?Math.max(0,(Date.parse(dry.end)-now)/60_000):SHORT_HORIZON_MINUTES;
-  const shortConfidence=near?calibratedEventConfidence(ev,ev.confidence,leadMinutes):dry?calibratedRadarConfidence(dry.confidence,leadMinutes):null;
+  const shortConfidence=near
+    ? calibratedEventConfidence(ev,ev.confidence,leadMinutes)
+    : decision.mode==='stable_now'&&decision.stable
+      ? Number(decision.stable.confidence)
+      : dry&&!dry.horizonLimited
+        ? calibratedRadarConfidence(dry.confidence,leadMinutes)
+        : null;
   if(shortConfidence!=null){
     const grade=confidenceGrade(shortConfidence);
     $('shortConfidence').textContent=grade.label+' · '+grade.percent+'%';
@@ -1217,6 +1229,10 @@ function updateLiveCountdown(){
   }
   if(decision.mode==='possible_now'){
     $('shortCountdown').textContent=ev?.end?formatCountdownMs(Date.parse(ev.end)-now):'—';
+    return;
+  }
+  if(decision.mode==='stable_now'&&decision.stable){
+    $('shortCountdown').textContent=decision.stable.label;
     return;
   }
   if(!ev){
@@ -1647,6 +1663,68 @@ function modelRiskWithin(minutes=120){
     .filter(Number.isFinite);
   return probs.length?Math.max(...probs):null;
 }
+function forecastStableWindow(now=Date.now()){
+  if(!state.data||state.data.degradedForecast)return null;
+  const rows=(state.data.timeline||[])
+    .map(row=>{
+      const time=Date.parse(row.time);
+      const probability=Math.max(0,Math.min(1,(Number(row.probability)||0)/100));
+      const expected=Math.max(0,Number(row.precipitation)||0);
+      const families=Number(row.independentFamilies??row.independentFamilyCount);
+      const signal=classifyRainHour({
+        probability,
+        expectedPrecipitation:expected,
+        independentFamilyCount:Number.isFinite(families)?families:undefined
+      });
+      return{time,probability,expected,signal,confidence:Number(row.confidence)||0};
+    })
+    .filter(row=>Number.isFinite(row.time)&&row.time>=now-30*60_000&&row.time<=now+25*3600_000)
+    .sort((a,b)=>a.time-b.time);
+  if(!rows.length)return null;
+
+  const health=state.data?.sources?.health;
+  const healthRatio=Number(health?.total)>0?Math.max(0,Math.min(1,Number(health.available)/Number(health.total))):.5;
+  const radarDry=localDryEvidence();
+  const radarSupport=radarDry.dryCount>=2?.10:radarDry.dryCount===1?.05:0;
+
+  const candidates=[
+    {hours:24,maxRisk:.35},
+    {hours:12,maxRisk:.40},
+    {hours:6,maxRisk:.45},
+    {hours:3,maxRisk:.50}
+  ];
+  for(const candidate of candidates){
+    const end=now+candidate.hours*3600_000;
+    const covered=rows.filter(row=>row.time<=end+45*60_000);
+    const last=covered.at(-1);
+    if(!last||last.time<end-75*60_000)continue;
+    const within=covered.filter(row=>row.time>=now-30*60_000&&row.time<=end+15*60_000);
+    if(!within.length)continue;
+    if(within.some(row=>row.signal==='wet'))continue;
+    const maxRisk=Math.max(...within.map(row=>row.probability),0);
+    const maxExpected=Math.max(...within.map(row=>row.expected),0);
+    if(maxRisk>candidate.maxRisk&&maxExpected>=.03)continue;
+    const meanConfidence=within.map(row=>row.confidence).filter(Number.isFinite);
+    const confidenceSignal=meanConfidence.length
+      ? Math.max(0,Math.min(1,meanConfidence.reduce((a,b)=>a+b,0)/meanConfidence.length/100))
+      : .55;
+    const confidence=Math.max(.42,Math.min(.90,
+      .30+.27*(1-maxRisk)+.18*healthRatio+.15*confidenceSignal+radarSupport
+    ));
+    return{
+      start:new Date(now).toISOString(),
+      end:new Date(end).toISOString(),
+      hours:candidate.hours,
+      maxRisk,
+      maxExpected,
+      confidence,
+      healthRatio,
+      radarSupport:radarDry.dryCount,
+      label:candidate.hours>=24?'24 h':candidate.hours+' h'
+    };
+  }
+  return null;
+}
 function consensusDecisionText(decision=buildRainDecision()){
   if(!state.data)return'';
   const n=state.nowcast,radarUsable=n?.status==='ok'||n?.status==='motion_uncertain';
@@ -1676,8 +1754,10 @@ function consensusDecisionText(decision=buildRainDecision()){
         ? decision.event?.start
           ? 'episodio terminado antes · siguiente riesgo '+fmtTime(decision.event.start)
           : 'episodio terminado antes'
-        : decision.mode==='dry_now'&&decision.dryUntil
-          ? (decision.dry?.horizonLimited?'seco al menos hasta ':'seco hasta ')+fmtTime(decision.dryUntil)
+        : decision.mode==='stable_now'&&decision.stable
+          ? 'tiempo estable · sin lluvia prevista en las próximas '+decision.stable.label
+          : decision.mode==='dry_now'&&decision.dryUntil
+            ? 'ventana estable hasta '+fmtTime(decision.dryUntil)
           : decision.near&&decision.event
             ? 'posible lluvia '+fmtTime(decision.event.start)
             : decision.event
@@ -2129,6 +2209,7 @@ function buildRainDecision(){
   const now=Date.now(),rain=currentRainState(),truth=currentTruth(4);
   const correction=truth===false?feedbackEpisodeCorrection(now):null;
   let dry=radarDryWindow(),event=chooseDisplayEvent();
+  const stable=!rain.raining&&!correction?forecastStableWindow(now):null;
   if(correction?.mode==='pause'){
     dry=null;
     event={
@@ -2153,8 +2234,9 @@ function buildRainDecision(){
   }
   const delayedByRadar=Boolean(event?.radarDelayed&&dry&&event?.start&&Date.parse(event.start)>=Date.parse(dry.end)-2*60_000);
   const near=Boolean(event?.start&&Date.parse(event.start)<=now+SHORT_HORIZON_MINUTES*60_000&&!delayedByRadar);
+  const radarDryIsArrival=Boolean(dry&&!dry.horizonLimited);
   const dryUntil=!rain.raining&&!correction
-    ? (dry?.end||(event?.start&&Date.parse(event.start)>now?event.start:null))
+    ? (radarDryIsArrival?dry.end:(event?.start&&Date.parse(event.start)>now?event.start:stable?.end||null))
     : correction?.mode==='pause'&&correction.resumeAt
       ? new Date(correction.resumeAt).toISOString()
       : correction?.mode==='ended_early'&&event?.start
@@ -2166,20 +2248,25 @@ function buildRainDecision(){
   else if(correction?.mode==='pause')mode='episode_pause';
   else if(correction?.mode==='pause_unresolved')mode='episode_pause';
   else if(correction?.mode==='ended_early')mode='episode_ended_early';
-  else if(dry)mode='dry_now';
+  else if(stable&&!event)mode='stable_now';
+  else if(dry&&!dry.horizonLimited)mode='dry_now';
   else if(near)mode='rain_soon';
   else if(event)mode='rain_later';
   const confidence=rain.raining
     ? Number(event?.confidence)||Number(state.nowcast?.confidence)||0
     : correction
       ? Number(event?.confidence)||Number(correction.episode?.confidence)||0
-      : dry
-        ? Number(dry.confidence)||0
-        : event
-          ? Number(event.confidence)||0
-          : null;
+      : mode==='stable_now'&&stable
+        ? Number(stable.confidence)||0
+        : dry&&!dry.horizonLimited
+          ? Number(dry.confidence)||0
+          : event
+            ? Number(event.confidence)||0
+            : stable
+              ? Number(stable.confidence)||0
+              : null;
   return{
-    now,rain,dry,event,near,delayedByRadar,mode,dryUntil,confidence,correction,
+    now,rain,dry,stable,event,near,delayedByRadar,mode,dryUntil,confidence,correction,
     dryMinutes:dryUntil?Math.max(0,Math.round((Date.parse(dryUntil)-now)/60_000)):null,
     nextRainStart:event?.start||null,
     nextRainEnd:event?.end||null,
@@ -2270,14 +2357,28 @@ function render(){
     $('dur').textContent=ev?.end?fmtDateTime(ev.end):'por determinar';
     $('summary').hidden=false;
     $('summary').textContent='El radar detecta precipitación sobre el punto, pero no hay suficiente corroboración para afirmar que esté llegando al suelo. Los modelos no cuentan como prueba de que llueva ahora.';
+  }else if(decision.mode==='stable_now'){
+    const stable=decision.stable,reliable=nowcastReliableHorizon();
+    $('heroLabel').textContent='Tiempo estable';
+    $('eta').textContent='Tiempo estable';
+    $('metricStartLabel').textContent='Próxima lluvia';
+    $('metricEndLabel').textContent='Previsión';
+    $('metricConfLabel').textContent='Confianza';
+    $('metricDurLabel').textContent='Horizonte';
+    $('start').textContent='sin ETA';
+    $('end').textContent='sin señal de llegada';
+    $('conf').textContent=pct(decision.confidence)+'%';
+    $('dur').textContent=stable?.label||'—';
+    $('summary').hidden=false;
+    $('summary').textContent='Sin lluvia prevista en las próximas '+(stable?.label||'horas')+'. El radar es fiable aproximadamente '+reliable+' min; ese límite es técnico y no implica que vaya a cambiar el tiempo.';
   }else if(decision.mode==='dry_now'){
     const horizonLimited=Boolean(decision.dry?.horizonLimited);
-    $('heroLabel').textContent=horizonLimited?'Seco confirmado':'Ventana seca';
-    $('eta').innerHTML=(horizonLimited?'Seco al menos hasta ':'Seco hasta ')+'<span>'+fmtTime(decision.dryUntil)+'</span>';
+    $('heroLabel').textContent='Tiempo estable';
+    $('eta').innerHTML='Estable hasta <span>'+fmtTime(decision.dryUntil)+'</span>';
     $('metricStartLabel').textContent='Próxima lluvia';
     $('metricEndLabel').textContent='Duración lluvia';
     $('metricConfLabel').textContent='Confianza seco';
-    $('metricDurLabel').textContent=horizonLimited?'Seco mínimo':'Tiempo seco';
+    $('metricDurLabel').textContent='Ventana estable';
     $('start').textContent=ev?.start?fmtDateTime(ev.start):(horizonLimited?'sin ETA de lluvia':'después de '+fmtTime(decision.dryUntil));
     $('end').textContent=ev?.start&&ev?.end?durationText(ev.start,ev.end):'—';
     $('conf').textContent=pct(decision.confidence)+'%';
