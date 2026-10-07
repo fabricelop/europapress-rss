@@ -1,6 +1,14 @@
-# RainETA v0.17.25
+# RainETA v0.17.26
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
+
+## Frescura real y aprendizaje AEMET v0.17.26
+- HARMONIE-AROME deja de marcarse fresco por el mero hecho de responder: RainETA valida la hora real de generación (sourceGeneratedAt) de la pasada oficial.
+- Una pasada HARMONIE que supere su cadencia de 6 h más 3 h de gracia queda fuera del consenso hasta que AEMET publique una salida nueva.
+- El radar AEMET entra en la autoevaluación local 15/30/60/90/120 min junto a RainViewer, OPERA y modelos.
+- La verdad automática para evaluar fuentes usa mayoría entre los radares disponibles; la observación manual del usuario sigue teniendo prioridad.
+- El acierto local de AEMET puede limitar la confianza de sus ETA cuando exista muestra suficiente, evitando mantener pesos fijos si una fuente rinde peor en una ubicación concreta.
+
 
 ## Radar AEMET con autoridad operativa v0.17.25
 - El radar oficial AEMET deja de ser solo diagnóstico: participa en lluvia actual, ETA de corto plazo, horizonte fiable y ventanas secas.
