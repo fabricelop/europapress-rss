@@ -1,4 +1,5 @@
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes} from "../rain/radar-core.js";
+import {sampleAemetHarmonie} from "./rain-harmonie.js";
 const S3='https://s3.waw3-1.cloudferro.com/openradar-24h';
 
 function floor5(date){
@@ -182,6 +183,22 @@ async function buildOperaNowcast(frames,lat,lon){
   };
 }
 
+async function rainHarmonie(req,res){
+  if(req.method!=='GET')return res.status(405).json({error:'method_not_allowed'});
+  res.setHeader('Cache-Control','public, s-maxage=1800, stale-while-revalidate=7200');
+  const lat=Number(req.query?.lat),lon=Number(req.query?.lon);
+  const hours=Math.max(1,Math.min(48,Number(req.query?.hours)||48));
+  if(!Number.isFinite(lat)||!Number.isFinite(lon))return res.status(400).json({ok:false,error:'invalid_coordinates'});
+  try{
+    const data=await sampleAemetHarmonie(lat,lon,{hours,radius:2});
+    return res.status(200).json(data);
+  }catch(e){
+    const error=String(e?.message||e);
+    const status=error==='outside_harmonie_pb'?422:503;
+    return res.status(status).json({ok:false,provider:'AEMET',model:'HARMONIE-AROME',error});
+  }
+}
+
 async function rainOpera(req,res){
   if(req.method!=='GET')return res.status(405).json({error:'method_not_allowed'});
   res.setHeader('Cache-Control','public, s-maxage=240, stale-while-revalidate=900');
@@ -227,6 +244,7 @@ async function rainOpera(req,res){
 }
 
 export default async function handler(req,res){
+  if(String(req.query?.mode||'')==='rain-harmonie')return rainHarmonie(req,res);
   if(String(req.query?.mode||'')==='rain-opera')return rainOpera(req,res);
   res.setHeader("cache-control","no-store");
   return res.status(410).json({
