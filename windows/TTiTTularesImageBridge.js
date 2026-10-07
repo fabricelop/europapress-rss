@@ -183,7 +183,7 @@ async function waitComposer(cdp,timeoutMs=60000){
   let last=null;
   while(Date.now()<deadline){
     try{
-      last=await cdp.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");return {composer:!!c,url:location.href,title:document.title||'',ready:document.readyState}})()");
+      last=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");return {composer:!!c,url:location.href,title:document.title||'',ready:document.readyState}})()");
       if(last&&last.composer)return last
     }catch(e){last={error:String(e&&e.message||e)}}
     await sleep(750)
@@ -338,82 +338,42 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 // compatibility during hot rollout: BRIDGE_MODE="capture-only-v23-target-handoff"
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
-const BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback";
+const BRIDGE_FEATURES="v28-reject-nonconversation-image-targets";
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
 // compatibility: BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover"
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
-const VISIBLE_COMPOSER_EXPR="(()=>{const all=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];const visible=all.filter(c=>{try{const r=c.getBoundingClientRect(),s=getComputedStyle(c);return !c.disabled&&c.getAttribute('aria-hidden')!=='true'&&s.display!=='none'&&s.visibility!=='hidden'&&Number(s.opacity||1)>0&&r.width>=80&&r.height>=20&&r.bottom>0&&r.right>0&&r.top<innerHeight&&r.left<innerWidth}catch(_){return false}});const score=c=>{const r=c.getBoundingClientRect();return (c.id==='prompt-textarea'?10000:0)+(c.getAttribute('data-testid')==='prompt-textarea'?9000:0)+(c.getAttribute('role')==='textbox'?1200:0)+(c.isContentEditable?800:0)+(c.tagName==='TEXTAREA'?600:0)+Math.max(0,Math.min(innerHeight,r.bottom))};visible.sort((a,b)=>score(b)-score(a));return visible[0]||null})()";
 
 async function inspectChat(cdp,job){
   const targetName=String(job&&job.target_name||"").trim();
-  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=("+VISIBLE_COMPOSER_EXPR+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=nodes.length>0;const markerOutsideComposer=bodyMarker;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const largeImages=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360);const images=largeImages.length;const imageSrc=largeImages.length?String(largeImages[0].currentSrc||largeImages[0].src||''):'';const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,imageSrc,title,url:location.href}})()")
+  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=nodes.length>0;const markerOutsideComposer=bodyMarker;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const largeImages=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360);const images=largeImages.length;const imageSrc=largeImages.length?String(largeImages[0].currentSrc||largeImages[0].src||''):'';const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,imageSrc,title,url:location.href}})()")
 }
 
 
 async function injectPromptIntoChat(cdp,job){
   const message=buildMessage(job);
-  const minLen=Math.min(500,Math.floor(message.length*0.5));
   try{
     const before=await domImageCandidates(cdp);
     cdp.preSubmitImageSrcs=new Set(before.map(x=>x.src));
     console.log("BRIDGE SELF-SUBMIT BASELINE images="+before.length);
   }catch{}
+  const prep=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return {ok:false};c.focus();try{if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){c.value='';c.dispatchEvent(new Event('input',{bubbles:true}))}else{const s=getSelection();const r=document.createRange();r.selectNodeContents(c);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null)}}catch(_){}return {ok:true,url:location.href,title:document.title||''}})()");
+  if(!prep||!prep.ok)throw Error("No hay compositor utilizable para fallback");
 
-  const prep=await cdp.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const all=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];if(!c)return {ok:false,candidates:all.length,url:location.href,title:document.title||''};try{c.scrollIntoView({block:'center',inline:'nearest'});c.focus({preventScroll:true})}catch(_){try{c.focus()}catch(__){}}try{if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){const proto=c.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;const set=Object.getOwnPropertyDescriptor(proto,'value')&&Object.getOwnPropertyDescriptor(proto,'value').set;if(set)set.call(c,'');else c.value='';c.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'deleteContentBackward',data:null}))}else{const s=getSelection();const r=document.createRange();r.selectNodeContents(c);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null)}}catch(_){}const r=c.getBoundingClientRect();return {ok:true,candidates:all.length,x:r.left+r.width/2,y:r.top+r.height/2,w:r.width,h:r.height,tag:c.tagName,editable:!!c.isContentEditable,url:location.href,title:document.title||''}})()");
-  if(!prep||!prep.ok)throw Error("No hay compositor visible utilizable para fallback candidates="+Number(prep&&prep.candidates||0));
-
-  // Un click CDP real evita que Input.insertText termine en BODY o en un editor oculto
-  // cuando ChatGPT ha recreado el compositor tras una navegación/nuevo chat.
-  try{
-    if(Number.isFinite(prep.x)&&Number.isFinite(prep.y)){
-      await cdp.call("Input.dispatchMouseEvent",{type:"mousePressed",x:prep.x,y:prep.y,button:"left",clickCount:1},5000);
-      await cdp.call("Input.dispatchMouseEvent",{type:"mouseReleased",x:prep.x,y:prep.y,button:"left",clickCount:1},5000);
-      await sleep(120);
-    }
-  }catch(e){console.log("BRIDGE COMPOSER TRUSTED CLICK WARNING :: "+String(e&&e.message||e))}
-
-  const verifyText=async()=>cdp.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const t=String(c&&(c.innerText||c.textContent||c.value)||'');const a=document.activeElement;return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,active:a?String(a.id||a.getAttribute&&a.getAttribute('data-testid')||a.tagName||''):'',url:location.href,title:document.title||''}})()");
-
-  // Método 1: eventos de entrada confiables de Chrome.
-  try{
-    const chunkSize=700;
-    for(let off=0;off<message.length;off+=chunkSize){
-      await cdp.call("Input.insertText",{text:message.slice(off,off+chunkSize)},8000);
-      await sleep(80);
-    }
-  }catch(e){console.log("BRIDGE INPUT INSERT WARNING :: "+String(e&&e.message||e))}
-  await sleep(220);
-  let verify=await verifyText();
-
-  // Método 2: fallback DOM compatible con textarea/React y contenteditable/Lexical.
-  if(!verify||!verify.ok||Number(verify.len||0)<minLen){
-    console.log("BRIDGE INPUT INSERT INCOMPLETE len="+Number(verify&&verify.len||0)+" active="+String(verify&&verify.active||"")+"; DOM fallback");
-    const dom=await cdp.eval("(()=>{const msg="+JSON.stringify(message)+";const c=("+VISIBLE_COMPOSER_EXPR+");if(!c)return {ok:false,method:'no-visible-composer'};try{c.focus({preventScroll:true})}catch(_){try{c.focus()}catch(__){}}let method='';try{if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){const proto=c.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;const d=Object.getOwnPropertyDescriptor(proto,'value');if(d&&d.set)d.set.call(c,msg);else c.value=msg;method='native-value-setter';try{c.dispatchEvent(new InputEvent('beforeinput',{bubbles:true,cancelable:true,inputType:'insertText',data:msg}))}catch(_){}c.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText',data:msg}));c.dispatchEvent(new Event('change',{bubbles:true}))}else{const s=getSelection();const r=document.createRange();r.selectNodeContents(c);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null);let inserted=false;try{inserted=document.execCommand('insertText',false,msg)}catch(_){}method=inserted?'execCommand-insertText':'direct-contenteditable';let t=String(c.innerText||c.textContent||'');if(!inserted||t.length<Math.min(100,msg.length)){c.textContent=msg;try{c.dispatchEvent(new InputEvent('beforeinput',{bubbles:true,cancelable:true,inputType:'insertText',data:msg}))}catch(_){}c.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText',data:msg}))}}}catch(e){return {ok:false,method,error:String(e&&e.message||e)}}const t=String(c.innerText||c.textContent||c.value||'');return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,method}})()");
-    console.log("BRIDGE DOM FALLBACK method="+String(dom&&dom.method||"")+" len="+Number(dom&&dom.len||0)+" ok="+Boolean(dom&&dom.ok));
-    await sleep(350);
-    verify=await verifyText();
+  const chunkSize=900;
+  for(let off=0;off<message.length;off+=chunkSize){
+    const chunk=message.slice(off,off+chunkSize);
+    await cdp.call("Input.insertText",{text:chunk},8000);
+    await sleep(90);
   }
 
-  // Método 3: selección/limpieza por teclado confiable y un último insertText.
+  const verify=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const t=String(c&&(c.innerText||c.textContent||c.value)||'');return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,url:location.href,title:document.title||''}})()");
+  const minLen=Math.min(500,Math.floor(message.length*0.5));
   if(!verify||!verify.ok||Number(verify.len||0)<minLen){
-    console.log("BRIDGE DOM FALLBACK INCOMPLETE len="+Number(verify&&verify.len||0)+"; trusted keyboard retry");
-    try{
-      await cdp.call("Input.dispatchKeyEvent",{type:"keyDown",key:"a",code:"KeyA",modifiers:2},5000);
-      await cdp.call("Input.dispatchKeyEvent",{type:"keyUp",key:"a",code:"KeyA",modifiers:2},5000);
-      await cdp.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Backspace",code:"Backspace",windowsVirtualKeyCode:8,nativeVirtualKeyCode:8},5000);
-      await cdp.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Backspace",code:"Backspace",windowsVirtualKeyCode:8,nativeVirtualKeyCode:8},5000);
-      await cdp.call("Input.insertText",{text:message},12000);
-      await sleep(350);
-      verify=await verifyText();
-    }catch(e){console.log("BRIDGE TRUSTED KEYBOARD RETRY WARNING :: "+String(e&&e.message||e))}
+    throw Error("Fallback no pudo escribir el prompt completo len="+Number(verify&&verify.len||0)+" expected>="+minLen);
   }
-
-  if(!verify||!verify.ok||Number(verify.len||0)<minLen){
-    throw Error("Fallback no pudo escribir el prompt completo len="+Number(verify&&verify.len||0)+" expected>="+minLen+" active="+String(verify&&verify.active||""));
-  }
-  console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED len="+Number(verify.len||0)+" active="+String(verify.active||"")+" "+String(verify.url||""));
+  console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED len="+Number(verify.len||0)+" "+String(verify.url||""));
   return cdp
 }
 
@@ -432,7 +392,7 @@ async function findFallbackComposerChat(job){
     const c=new CDP(item.t.webSocketDebuggerUrl);
     try{
       await c.open();
-      const st=await c.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");return {composer:!!c,title:document.title||'',url:location.href}})()");
+      const st=await c.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");return {composer:!!c,title:document.title||'',url:location.href}})()");
       if(st&&st.composer)return {c,st,score:item.score}
     }catch{}
     c.close()
@@ -448,7 +408,7 @@ async function findChat(job){
       const hc=new CDP(hinted.webSocketDebuggerUrl);
       try{
         await hc.open();
-        const st=await hc.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;return {composer:!!c,turns,title:document.title||'',url:location.href}})()");
+        const st=await hc.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;return {composer:!!c,turns,title:document.title||'',url:location.href}})()");
         if(st&&(st.composer||st.turns>0)){
           console.log("BRIDGE TARGET HINT CONVERSATION "+String(st.url||hinted.url||"")+" turns="+Number(st.turns||0));
           return hc
@@ -468,7 +428,7 @@ async function findChat(job){
       const fc=new CDP(t.webSocketDebuggerUrl);
       try{
         await fc.open();
-        const st=await fc.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;return {composer:!!c,turns,title:document.title||'',url:location.href}})()");
+        const st=await fc.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;return {composer:!!c,turns,title:document.title||'',url:location.href}})()");
         if(st&&(st.composer||st.turns>0)){
           console.log("BRIDGE TARGET POST-LAUNCH CONVERSATION "+String(st.url||t.url||"")+" turns="+Number(st.turns||0));
           return fc
@@ -520,7 +480,7 @@ async function ensureSubmitted(cdp,job){
   while(Date.now()<deadline){
     let st=null;
     try{
-      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=("+VISIBLE_COMPOSER_EXPR+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const bodyText=String((root&&root.innerText)||'');const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"],[data-testid*=\"user\" i],[class*=\"user-message\" i]')].filter(el=>String(el.innerText||el.textContent||'').includes(command));const submitted=userTurns.length>0;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const send=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');const inConversation=/\\/c\\//.test(location.pathname);const commandOutsideComposer=bodyText.includes(command)&&!composerMarker;return {composerMarker,submitted,userTurns:userTurns.length,generating,inConversation,commandOutsideComposer,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
+      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const bodyText=String((root&&root.innerText)||'');const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"],[data-testid*=\"user\" i],[class*=\"user-message\" i]')].filter(el=>String(el.innerText||el.textContent||'').includes(command));const submitted=userTurns.length>0;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const send=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');const inConversation=/\\/c\\//.test(location.pathname);const commandOutsideComposer=bodyText.includes(command)&&!composerMarker;return {composerMarker,submitted,userTurns:userTurns.length,generating,inConversation,commandOutsideComposer,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
     }catch{}
 
     if(!st){
@@ -552,11 +512,11 @@ async function ensureSubmitted(cdp,job){
       lastAttemptAt=Date.now();
       let triggered=false;
       try{
-        triggered=Boolean(await current.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const b=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');if(b&&!b.disabled){b.click();return true}const form=c&&c.closest&&c.closest('form');if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return true}return false})()"));
+        triggered=Boolean(await current.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const b=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');if(b&&!b.disabled){b.click();return true}const form=c&&c.closest&&c.closest('form');if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return true}return false})()"));
       }catch{}
       if(!triggered){
         try{
-          const focused=Boolean(await current.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");if(!c)return false;c.focus();return true})()"));
+          const focused=Boolean(await current.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return false;c.focus();return true})()"));
           if(focused){
             await current.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
             await current.call("Input.dispatchKeyEvent",{type:"char",text:"\r",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
@@ -579,7 +539,7 @@ function probeExpression(){
     "(async()=>{",
     "const command="+JSON.stringify(commandId)+";",
     "const root=document.querySelector('main')||document.body;",
-    "const composer=("+VISIBLE_COMPOSER_EXPR+");",
+    "const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");",
     "const markerNodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<7000});",
     "const bodyText=String((document.body&&document.body.innerText)||'');",
     "const marker=markerNodes.length>0||bodyText.includes(command);",
@@ -713,12 +673,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v29-visible-composer",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v29-visible-composer",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -754,7 +714,7 @@ async function uploadImage(image){
       console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
       if(generationAttempt===1){
         await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v29-visible-composer"});
+        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry"});
         if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
@@ -781,7 +741,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v29-visible-composer",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
