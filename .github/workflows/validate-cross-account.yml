@@ -1,0 +1,53 @@
+name: Validar cita cruzada TT
+
+on:
+  pull_request:
+    paths:
+      - "shared/cross_account_story.py"
+      - "trends/send_explained_telegram.py"
+      - ".github/workflows/send-ttendencias-explained-telegram.yml"
+      - ".github/workflows/send-ttittulares-ready-telegram.yml"
+      - ".github/workflows/validate-cross-account.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /shared/cross_account_story.py
+            /trends/send_explained_telegram.py
+            /.github/workflows/send-ttendencias-explained-telegram.yml
+            /.github/workflows/send-ttittulares-ready-telegram.yml
+            /.github/workflows/validate-cross-account.yml
+      - name: Dependencias
+        run: python3 -m pip install --quiet Pillow requests pyyaml
+      - name: Self-test detector y copy
+        run: python3 shared/cross_account_story.py selftest
+      - name: Compilar emisor TTendencias
+        run: |
+          python3 -m py_compile trends/send_explained_telegram.py
+          python3 trends/send_explained_telegram.py selftest
+      - name: Validar YAML y Python embebido TTiTTulares
+        run: |
+          python3 - <<'PY'
+          import ast, pathlib, yaml
+          paths=[
+              pathlib.Path(".github/workflows/send-ttendencias-explained-telegram.yml"),
+              pathlib.Path(".github/workflows/send-ttittulares-ready-telegram.yml"),
+          ]
+          for path in paths:
+              yaml.safe_load(path.read_text(encoding="utf-8"))
+          text=paths[1].read_text(encoding="utf-8")
+          start=text.index("          python3 - <<'PY'\n")+len("          python3 - <<'PY'\n")
+          end=text.index("\n          PY",start)
+          block=text[start:end]
+          lines=block.splitlines()
+          indent=min(len(x)-len(x.lstrip()) for x in lines if x.strip())
+          source="\n".join(x[indent:] for x in lines)+"\n"
+          ast.parse(source)
+          print("TTITTULARES_INLINE_PYTHON_OK")
+          PY
