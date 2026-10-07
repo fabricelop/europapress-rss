@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "enabled": false,
+  "mode": "observe_only",
+  "lookback_hours": 48,
+  "thresholds": {
+    "same_story": 0.55,
+    "same_topic": 0.34
+  },
+  "publication_policy": {
+    "when_same_story": "second_account_quotes_first",
+    "first_publication_wins": true,
+    "allow_manual_independent_publish": true,
+    "generate_second_ai_image_by_default": false
+  },
+  "integration": {
+    "telegram_buttons_enabled": false,
+    "modify_existing_publish_callbacks": false,
+    "modify_existing_queues": false
+  }
+}
