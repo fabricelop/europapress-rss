@@ -63,7 +63,7 @@ class CDP{
  const vr=await fetch(base+"/json/version",{cache:"no-store"});const vd=await vr.json();
  const browser=new CDP(vd.webSocketDebuggerUrl);await browser.open();
  try{await browser.call("Target.createTarget",{url:chat,newWindow:false,background:false},10000)}finally{browser.close()}
- for(let i=0;i<30;i++){await sleep(500);const rows=await (await fetch(base+"/json/list",{cache:"no-store"})).json();const hit=rows.find(x=>x.type==="page"&&String(x.url||"").startsWith("https://chatgpt.com/"));if(hit){console.log("OK "+hit.id+" "+hit.url);process.exit(0)}}
+ for(let i=0;i<30;i++){await sleep(500);const rows=await (await fetch(base+"/json/list",{cache:"no-store"})).json();const hit=rows.find(x=>x.type==="page"&&String(x.url||"").startsWith("https://chatgpt.com/"));if(hit){const page=new CDP(hit.webSocketDebuggerUrl);await page.open();try{for(let j=0;j<50;j++){let r;try{r=await page.call("Runtime.evaluate",{expression:"(()=>({composer:!!document.querySelector(\\\"#prompt-textarea,textarea[data-testid=\\\\\\\"prompt-textarea\\\\\\\"],div[contenteditable=\\\\\\\"true\\\\\\\"]\\\"),url:location.href,title:document.title||\\\"\\\"}))()",returnByValue:true},5000)}catch{}const st=r&&r.result&&r.result.value;if(st&&st.composer){console.log("OK "+hit.id+" "+st.url+" | "+st.title);process.exit(0)}await sleep(500)}}finally{page.close()}}}
  process.exit(2)
 })().catch(e=>{console.error(e&&e.stack||e);process.exit(3)})
 '@ | Set-Content -LiteralPath $js -Encoding UTF8
@@ -136,7 +136,7 @@ $targets=Get-CdpTargets
 $chat=@($targets | Where-Object {[string]$_.type -eq "page" -and [string]$_.url -like "https://chatgpt.com/*"})
 Write-Host "SUBSISTEMA DE IMAGENES TT REPARADO V2" -ForegroundColor Green
 Write-Host "Chrome CDP 9223: OK"
-Write-Host "ChatGPT abierto en 9223: $($chat.Count)"
+Write-Host "ChatGPT abierto y compositor validado en 9223: $($chat.Count)"
 Write-Host "URL: $([string]$chat[0].url)"
 Write-Host "TTiTTulares bridge: v28/v29 estable"
 Write-Host "TTendencias bridge: v28 estable"
