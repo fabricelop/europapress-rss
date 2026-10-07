@@ -2188,7 +2188,7 @@ function renderSources(){
   const healthyModels=modelSources.filter(x=>x.ok);
   const healthyFamilies=new Set(healthyModels.map(x=>x.family||x.id).filter(Boolean)).size;
   const list=[
-    {label:'Consenso modelos',ok:healthyFamilies>=3,detail:healthyFamilies+' familias independientes activas · '+healthyModels.length+'/'+modelSources.length+' modelos/ensembles disponibles'},
+    {label:'Consenso modelos',ok:healthyFamilies>=2,detail:healthyFamilies+' familias independientes activas · '+healthyModels.length+'/'+modelSources.length+' modelos/ensembles disponibles · quórum mínimo 2'},
     {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opDetail},
     {label:'Radar RainViewer',ok:Boolean(state.data.sources.radar),detail:rvDetail},
     {label:nativeQuarterHourLikely()?'Modelo 15 min nativo':'Guía temporal',ok:state.data.sources.quarterHour,detail:nativeQuarterHourLikely()
