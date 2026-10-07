@@ -7340,7 +7340,7 @@
       "percentage": 25,
       "first_seen": "2026-10-07T05:24:21.086975Z",
       "last_seen": "2026-10-07T05:24:21.086975Z",
-      "status": "PROBLEMATIC",
+      "status": "PROCESSING",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -7357,8 +7357,8 @@
       "eligible_at": "2026-10-07T05:24:21.086975Z",
       "event_id": "975ea8e9fb5f",
       "title": "La OMS resta importancia a la peste neumónica en Rusia asegurando que el riesgo para Europa es \"muy bajo\"",
-      "selection_mode": "AUTO_WEB",
-      "selected_at": "2026-10-07T05:24:50.823523Z",
+      "selection_mode": "MANUAL_VALIDATED_PROBLEMATIC",
+      "selected_at": "2026-10-07T09:50:22.990Z",
       "source_evidence": [
         {
           "source": "Europa Press",
@@ -7400,9 +7400,13 @@
       "drafted_source_count": 4,
       "verified_source_count": 4,
       "automatic_redaction_requested_at": "2026-10-07T06:03:56.478186+00:00",
-      "problematic_at": "2026-10-07T08:37:25.815079Z",
-      "problem_reason": "transport_write_blocked",
-      "problematic_attempts": 1
+      "problematic_attempts": 1,
+      "user_validated": true,
+      "user_validated_at": "2026-10-07T09:50:22.990Z",
+      "user_validation_source": "web_check",
+      "user_validation_version": 1,
+      "with_image": true,
+      "image_mode": "ai_plus_fallback"
     },
     {
       "id": "ee0ee425eb50",
@@ -10428,5 +10432,5 @@
       "verified_source_count": 6
     }
   ],
-  "updated_at": "2026-10-07T09:50:13.475Z"
+  "updated_at": "2026-10-07T09:50:22.990Z"
 }
