@@ -319,7 +319,7 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 // compatibility during hot rollout: BRIDGE_MODE="capture-only-v23-target-handoff"
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
-const BRIDGE_FEATURES="v53-ttendencias-fresh-navigation";
+const BRIDGE_FEATURES="v54-submit-generating-transition";
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
@@ -449,7 +449,7 @@ async function reacquireCommandChat(job){
 
 async function ensureSubmitted(cdp,job){
   const deadline=Date.now()+45000;
-  let current=cdp,last=null,lastAttemptAt=0,reacquires=0,triggeredAt=0;
+  let current=cdp,last=null,lastAttemptAt=0,reacquires=0,triggeredAt=0,startedAt=Date.now();
   while(Date.now()<deadline){
     let st=null;
     try{
@@ -473,11 +473,19 @@ async function ensureSubmitted(cdp,job){
       (st.generating || st.commandOutsideComposer) &&
       (Date.now()-triggeredAt)>=500
     );
+    // En una conversación recién creada, "generating" con el compositor ya vacío
+    // es evidencia suficiente de que el prompt arrancó aunque ChatGPT aún no haya
+    // materializado el turno de usuario en el DOM.
+    const generatingTransition=Boolean(
+      st && st.inConversation && !st.composerMarker && st.generating &&
+      (Date.now()-startedAt)>=700
+    );
 
-    if(st&&(st.submitted||strongTransition)){
+    if(st&&(st.submitted||strongTransition||generatingTransition)){
       current.submissionVerified=true;
       current.acceptInitialRaster=true;
-      console.log("BRIDGE SUBMIT VERIFIED mode="+(st.submitted?"user-turn":"conversation-transition")+" generating="+Boolean(st.generating)+" url="+String(st.url||""));
+      const mode=st.submitted?"user-turn":strongTransition?"conversation-transition":"generating-transition";
+      console.log("BRIDGE SUBMIT VERIFIED mode="+mode+" generating="+Boolean(st.generating)+" url="+String(st.url||""));
       return current
     }
 
