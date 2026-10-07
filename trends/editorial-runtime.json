@@ -1,229 +1,84 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T13:10:00+02:00",
-  "last_completed_at": "2026-10-07T13:20:20+02:00",
-  "updated_at": "2026-10-07T13:20:20+02:00",
+  "last_started_at": "2026-10-07T13:45:00+02:00",
+  "last_completed_at": "2026-10-07T13:46:00+02:00",
+  "updated_at": "2026-10-07T13:46:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "10aaa9a5458f",
-    "0f5bf1e8b366",
-    "70a2c821f478"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
-    "run_id": "tr-20261007T131000+0200-chat",
+    "run_id": "tr-20261007T134500+0200-chat",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T13:10:00+02:00",
-    "updated_at": "2026-10-07T13:20:20+02:00",
-    "finished_at": "2026-10-07T13:20:20+02:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-07T13:45:00+02:00",
+    "updated_at": "2026-10-07T13:46:00+02:00",
+    "finished_at": "2026-10-07T13:46:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 1,
-      "revisions_updated": 2,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
-      "pending_cards_reviewed": 3,
+      "pending_cards_reviewed": 0,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "visual_repairs_ready": 1,
+      "visual_repairs_ready": 0,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 3,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_reused": 1,
-      "remates_omitted": 2,
+      "remates_reused": 0,
+      "remates_omitted": 0,
       "jit_skipped": 0,
-      "concurrent_completed": 1,
-      "new_queue_entries_during_run": 1
+      "concurrent_completed": 0,
+      "new_queue_entries_during_run": 0
     },
-    "message": "Pasada editorial cerrada 3/3. #EnBocaDeTodos r3, Adamuz r1 y #Mañaneros7O r0 quedaron explained y verificados; cola autoritativa final 0. Hubo una carrera concurrente al persistir #Mañaneros7O, resuelta por reconciliación idempotente. Reparación visual disparada; sin ImageGen directo ni despliegues Vercel.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-07T13:18:45+02:00",
-        "phase": "persisting",
-        "trend_id": "70a2c821f478",
-        "title": "#Mañaneros7O",
-        "reason": "Conflicto 409 por escritura editorial concurrente. Se releyó main y se reconcilió la request r0 con la ficha explained ya persistida; no se duplicó ni se re-redactó el item."
-      }
-    ],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 100
-    },
-    "remate_selections": [
-      {
-        "trend_id": "70a2c821f478",
-        "title": "#Mañaneros7O",
-        "revision": 0,
-        "source": "concurrent_persist_reused",
-        "closer_text": "🌶️ El programa ha fichado al calendario de community manager."
-      }
-    ],
+    "message": "Pasada editorial cerrada 0/0. La cola autoritativa seguía vacía al releer main; se disparó el saneamiento de Pendientes. Sin ImageGen directo ni despliegues Vercel.",
+    "incident_count": 0,
+    "incidents": [],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-07T13:13:40+02:00",
-        "phase": "drafting",
-        "trend_id": "10aaa9a5458f",
-        "title": "#EnBocaDeTodos",
-        "message": "Redactando explicación factual y comprobando límite de X."
+        "at": "2026-10-07T13:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Iniciando pasada editorial · releyendo cola autoritativa y disparando saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-07T13:13:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "10aaa9a5458f",
-        "title": "#EnBocaDeTodos",
-        "message": "Sin remate · contenido político; explicación factual suficiente."
-      },
-      {
-        "at": "2026-10-07T13:14:00+02:00",
-        "phase": "persisting",
-        "trend_id": "10aaa9a5458f",
-        "title": "#EnBocaDeTodos",
-        "message": "Guardando ficha Explicada y actualizando requests para la revisión r3."
-      },
-      {
-        "at": "2026-10-07T13:14:35+02:00",
-        "phase": "verifying",
-        "trend_id": "10aaa9a5458f",
-        "title": "#EnBocaDeTodos",
-        "message": "Tendencia cerrada y verificada · ficha/request coinciden y r3 fue retirada de la cola."
-      },
-      {
-        "at": "2026-10-07T13:14:45+02:00",
-        "phase": "verifying",
-        "trend_id": "0f5bf1e8b366",
-        "title": "Adamuz",
-        "message": "Releyendo estado autoritativo de Adamuz antes de investigar."
-      },
-      {
-        "at": "2026-10-07T13:14:55+02:00",
-        "phase": "investigating",
-        "trend_id": "0f5bf1e8b366",
-        "title": "Adamuz",
-        "message": "Buscando detonante actual de Adamuz y contrastando fuentes independientes."
-      },
-      {
-        "at": "2026-10-07T13:16:00+02:00",
-        "phase": "investigating",
-        "trend_id": "0f5bf1e8b366",
-        "title": "Adamuz",
-        "message": "Hecho esencial verificado · reactivación política del accidente en la precampaña del 29-N."
-      },
-      {
-        "at": "2026-10-07T13:16:10+02:00",
-        "phase": "drafting",
-        "trend_id": "0f5bf1e8b366",
-        "title": "Adamuz",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-07T13:16:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": "0f5bf1e8b366",
-        "title": "Adamuz",
-        "message": "Sin remate · suceso con víctimas; explicación factual suficiente."
-      },
-      {
-        "at": "2026-10-07T13:16:30+02:00",
-        "phase": "persisting",
-        "trend_id": "0f5bf1e8b366",
-        "title": "Adamuz",
-        "message": "Guardando ficha Explicada y actualizando requests para Adamuz r1."
-      },
-      {
-        "at": "2026-10-07T13:17:05+02:00",
-        "phase": "verifying",
-        "trend_id": "0f5bf1e8b366",
-        "title": "Adamuz",
-        "message": "Tendencia cerrada y verificada · r1 queda consistente; el rango JIT final se corrige a TT#11."
-      },
-      {
-        "at": "2026-10-07T13:17:15+02:00",
-        "phase": "verifying",
-        "trend_id": "70a2c821f478",
-        "title": "#Mañaneros7O",
-        "message": "Releyendo estado autoritativo de #Mañaneros7O · r0 sigue preparing y ocupa TT#8."
-      },
-      {
-        "at": "2026-10-07T13:17:25+02:00",
-        "phase": "investigating",
-        "trend_id": "70a2c821f478",
-        "title": "#Mañaneros7O",
-        "message": "Buscando detonante actual y contrastando la emisión de hoy con RTVE."
-      },
-      {
-        "at": "2026-10-07T13:18:00+02:00",
-        "phase": "investigating",
-        "trend_id": "70a2c821f478",
-        "title": "#Mañaneros7O",
-        "message": "Hecho esencial verificado · emisión de hoy de Mañaneros 360 en La 1."
-      },
-      {
-        "at": "2026-10-07T13:18:10+02:00",
-        "phase": "drafting",
-        "trend_id": "70a2c821f478",
-        "title": "#Mañaneros7O",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-07T13:18:30+02:00",
-        "phase": "persisting",
-        "trend_id": "70a2c821f478",
-        "title": "#Mañaneros7O",
-        "message": "Guardando ficha Explicada y actualizando requests para #Mañaneros7O r0."
-      },
-      {
-        "at": "2026-10-07T13:18:45+02:00",
-        "phase": "persisting",
-        "trend_id": "70a2c821f478",
-        "title": "#Mañaneros7O",
-        "message": "Conflicto concurrente detectado · releyendo SHA y reconciliando sin duplicar la revisión."
-      },
-      {
-        "at": "2026-10-07T13:19:20+02:00",
-        "phase": "verifying",
-        "trend_id": "70a2c821f478",
-        "title": "#Mañaneros7O",
-        "message": "Tendencia cerrada y verificada · ficha/request coinciden y r0 ya no está en la cola."
-      },
-      {
-        "at": "2026-10-07T13:20:00+02:00",
+        "at": "2026-10-07T13:45:35+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0, requests activas 0, rewrite_pending 0 y las tres revisiones tratadas coinciden exactamente."
+        "message": "Releyendo main · editorial-queue.json confirma 0 entradas activas y 0 rewrite_pending."
       },
       {
-        "at": "2026-10-07T13:20:20+02:00",
+        "at": "2026-10-07T13:46:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cerrando pasada 3/3 · cola final 0; una carrera concurrente quedó reconciliada sin pérdida ni duplicación."
+        "message": "Cerrando pasada 0/0 · cola autoritativa vacía; saneamiento de Pendientes solicitado; sin ImageGen directo ni despliegues Vercel."
       }
     ],
     "queue_complete": true,
@@ -261,5 +116,6 @@
         "image_status": "none"
       }
     ]
-  }
+  },
+  "error": null
 }
