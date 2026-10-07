@@ -40,13 +40,14 @@ const RADAR_PAST_HORIZON_MINUTES=240;
 const RADAR_FRAME_ARCHIVE_KEY='raineta.radar.frames.v1';
 const RADAR_STALE_MINUTES=20;
 const OPERA_STALE_MINUTES=30;
+const AEMET_RADAR_STALE_MINUTES=30;
 const OPERA_SURFACE_STALE_MINUTES=20;
 const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.22';
-const FORECAST_CACHE_SCHEMA='consensus-v14';
+const APP_VERSION='0.17.23';
+const FORECAST_CACHE_SCHEMA='consensus-v15';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
 const $=id=>document.getElementById(id);
@@ -194,10 +195,11 @@ function degradedForecastFromCache(cached,reason='fuentes de previsión no dispo
   data.sources.quarterHour=false;
   data.sources.radar=radarFreshness(data.radar).ok;
   data.sources.opera=operaFreshness(data.opera).ok;
+  data.sources.aemetRadar=aemetRadarFreshness(data.aemetRadar).ok;
   const all=[...(data.sources.deterministic||[]),...(data.sources.ensembles||[])];
   data.sources.health={
-    available:(data.sources.radar?1:0)+(data.sources.opera?1:0),
-    total:all.length+3
+    available:(data.sources.radar?1:0)+(data.sources.opera?1:0)+(data.sources.aemetRadar?1:0),
+    total:all.length+4
   };
   return{
     ...data,
@@ -415,6 +417,25 @@ function operaFreshness(meta,maxAgeMinutes=OPERA_STALE_MINUTES){
   const ageMinutes=Number(meta?.ageMinutes);
   return{ok:Boolean(meta?.ok&&Number.isFinite(ageMinutes)&&ageMinutes<=maxAgeMinutes),ageMinutes};
 }
+async function fetchAemetRadarMeta(){
+  const point=forecastCoords(),p=new URLSearchParams({lat:String(point.lat),lon:String(point.lon),motion:'1'});
+  const r=await fetch('/api/rain-aemet-radar?'+p);
+  if(!r.ok)throw new Error('AEMET radar HTTP '+r.status);
+  const d=await r.json();
+  if(!d?.ok)throw new Error(d?.error||'AEMET radar sin datos');
+  return{
+    ...d,
+    frames:(d.frames||[]).map(frame=>({
+      ...frame,
+      time:Math.round(Date.parse(frame.time)/1000)
+    })).filter(frame=>Number.isFinite(frame.time))
+  };
+}
+function aemetRadarFreshness(meta,maxAgeMinutes=AEMET_RADAR_STALE_MINUTES){
+  const ageMinutes=Number(meta?.ageMinutes);
+  return{ok:Boolean(meta?.ok&&meta?.frames?.length&&Number.isFinite(ageMinutes)&&ageMinutes<=maxAgeMinutes),ageMinutes};
+}
+
 async function fetchOperaMeta(){
   const point=forecastCoords(),p=new URLSearchParams({lat:String(point.lat),lon:String(point.lon),motion:'1'});
   const r=await fetch('/api/rain-opera?'+p);
@@ -483,9 +504,10 @@ async function loadForecast(force=false){
   const k=cacheKey(),cached=readForecastCache();
   const cacheTtl=cached?.data?.sources?.propagation?.propagatingFamilies?FORECAST_PROPAGATION_TTL:FORECAST_TTL;
   if(!force&&cached&&cached.ageMs<cacheTtl)return {...cached.data,cacheAgeMs:cached.ageMs};
-  const [det,ens,qh,radar,opera,week,detFreshness,ensFreshness]=await Promise.all([
+  const [det,ens,qh,radar,opera,aemetRadar,week,detFreshness,ensFreshness]=await Promise.all([
     pool(DET_MODELS,fetchDet,3),pool(ENS_MODELS,fetchEns,2),
     Promise.allSettled([fetchQuarterHour()]),Promise.allSettled([fetchRadarMeta()]),Promise.allSettled([fetchOperaMeta()]),
+    Promise.allSettled([fetchAemetRadarMeta()]),
     Promise.allSettled([fetchWeekForecast()]),
     Promise.allSettled(DET_MODELS.map(fetchModelFreshness)),
     Promise.allSettled(ENS_MODELS.map(fetchModelFreshness))
@@ -495,6 +517,7 @@ async function loadForecast(force=false){
   const quarterHour=qh[0]?.status==='fulfilled'?qh[0].value:null;
   const radarMeta=radar[0]?.status==='fulfilled'?radar[0].value:null;
   const operaMeta=opera[0]?.status==='fulfilled'?opera[0].value:null;
+  const aemetRadarMeta=aemetRadar[0]?.status==='fulfilled'?aemetRadar[0].value:null;
   const weekForecast=week[0]?.status==='fulfilled'?week[0].value:null;
   if(!deterministic.length&&!ensembles.length&&!quarterHour){
     const fallback=degradedForecastFromCache(cached,'ninguna fuente de previsión respondió');
@@ -528,16 +551,18 @@ async function loadForecast(force=false){
     quarterHour,
     radar:radarMeta,
     opera:operaMeta,
+    aemetRadar:aemetRadarMeta,
     week:weekForecast,
     sources:{
       deterministic:sourceStatus(DET_MODELS,det,detFreshness),
       ensembles:sourceStatus(ENS_MODELS,ens,ensFreshness),
       quarterHour:Boolean(quarterHour),radar:radarFreshness(radarMeta).ok,opera:operaFreshness(operaMeta).ok,
+      aemetRadar:aemetRadarFreshness(aemetRadarMeta).ok,
       propagation
     }
   };
   const all=[...data.sources.deterministic,...data.sources.ensembles];
-  data.sources.health={available:all.filter(x=>x.ok).length+(data.sources.quarterHour?1:0)+(data.sources.radar?1:0)+(data.sources.opera?1:0),total:all.length+3};
+  data.sources.health={available:all.filter(x=>x.ok).length+(data.sources.quarterHour?1:0)+(data.sources.radar?1:0)+(data.sources.opera?1:0)+(data.sources.aemetRadar?1:0),total:all.length+4};
   try{localStorage.setItem(k,JSON.stringify({version:APP_VERSION,cacheSchema:FORECAST_CACHE_SCHEMA,savedAt:Date.now(),data}))}catch{}
   return data;
 }
