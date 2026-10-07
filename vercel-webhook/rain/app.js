@@ -1116,7 +1116,7 @@ function renderShortNowcast(){
       ? 'Pausa observada · posible reanudación '+fmtTime(decision.correction.resumeAt)+' ('+decision.correction.resumeSource+') · fin previsto del tramo '+fmtTime(decision.correction.episode.end)
       : 'Pausa seca observada · reevaluando si el episodio ha terminado · fin previsto del tramo '+fmtTime(decision.correction?.episode?.end)
     : decision.mode==='episode_ended_early'
-      ? 'Episodio recortado: sigue seco · terminó ~'+fmtTime(decision.correction?.observedEnd)+' en vez de '+fmtTime(decision.correction?.episode?.end)
+      ? 'Episodio recortado: tiempo estable desde ~'+fmtTime(decision.correction?.observedEnd)+' en vez de '+fmtTime(decision.correction?.episode?.end)
       : decision.mode==='possible_now'
         ? 'El radar marca '+Math.max(Number(rain.radarRate)||0,Number(rain.operaRate)||0).toFixed(1).replace('.',',')+' mm/h sobre el punto, pero no hay corroboración suficiente para afirmar que llueve en superficie'
       : rain.raining
@@ -1130,7 +1130,7 @@ function renderShortNowcast(){
             : dry
               ? (dry.horizonLimited
                 ? 'Radar sin precipitación proyectada sobre el punto al menos hasta ~'+fmtTime(dry.end)+'. Ese límite es el horizonte fiable, no una ETA de lluvia'
-                : 'Radar sin precipitación proyectada sobre el punto hasta ~'+fmtTime(dry.end))+(dry.operaDry?' · OPERA seco ahora':'')
+                : 'Radar sin precipitación proyectada sobre el punto hasta ~'+fmtTime(dry.end))+(dry.operaDry?' · OPERA sin precipitación ahora':'')
               : 'Sin lluvia probable en las próximas 3 h';
   $('shortEtaLabel').textContent=decision.mode==='episode_pause'
     ? (decision.correction?.resumeAt?'Puede volver en':'Reevaluando')
@@ -1165,7 +1165,7 @@ function renderShortNowcast(){
         : dry
           ? (dry.horizonLimited
             ? 'Radar sin señal de llegada · '+fmtTime(dry.start)+'–'+fmtTime(dry.end)+' · después mandan modelos/consenso'
-            : 'Ventana seca radar · '+fmtTime(dry.start)+'–'+fmtTime(dry.end))
+            : 'Ventana estable según radar · '+fmtTime(dry.start)+'–'+fmtTime(dry.end))
           : 'Ventana corta estable';
   const leadMinutes=near?Math.max(0,(Date.parse(ev.start)-now)/60_000):dry?Math.max(0,(Date.parse(dry.end)-now)/60_000):SHORT_HORIZON_MINUTES;
   const shortConfidence=near
@@ -1221,7 +1221,7 @@ function updateLiveCountdown(){
   if(decision.mode==='episode_pause'){
     $('shortCountdown').textContent=decision.correction?.resumeAt
       ? formatCountdownMs(decision.correction.resumeAt-now)
-      : formatCountdownMs(now-Number(decision.correction?.observedEnd||now))+' seco';
+      : formatCountdownMs(now-Number(decision.correction?.observedEnd||now))+' estable';
     return;
   }
   if(decision.mode==='episode_ended_early'){
@@ -1732,13 +1732,13 @@ function consensusDecisionText(decision=buildRainDecision()){
   const radarWet=radarUsable&&Number.isFinite(Number(n?.currentWetFraction))
     ? Number(n.currentWetFraction)>=CANONICAL_RADAR_THRESHOLD
     : null;
-  const radarLabel=radarWet===null?'sin nowcast fiable':radarWet?'lluvia':'seco';
+  const radarLabel=radarWet===null?'sin nowcast fiable':radarWet?'lluvia':'sin precipitación';
   const opera=state.data?.opera,sample=opera?.sample;
   const operaFresh=Boolean(sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok);
   const operaRate=Number(sample?.rateMmH);
   const operaEta=operaEventCandidate(decision.now),operaAge=Number(opera?.ageMinutes);
   const operaLabel=operaFresh&&Number.isFinite(operaRate)
-    ? (operaRate<.02?'seco':'lluvia '+operaRate.toFixed(1).replace('.',',')+' mm/h')+(operaEta&&!operaEta.active?' · posible lluvia '+fmtTime(operaEta.start):operaEta?.active?' · lluvia ahora':'')
+    ? (operaRate<.02?'sin precipitación':'lluvia '+operaRate.toFixed(1).replace('.',',')+' mm/h')+(operaEta&&!operaEta.active?' · posible lluvia '+fmtTime(operaEta.start):operaEta?.active?' · lluvia ahora':'')
     : operaEta
       ? 'posible lluvia '+fmtTime(operaEta.start)
       : 'sin dato reciente';
@@ -1763,7 +1763,7 @@ function consensusDecisionText(decision=buildRainDecision()){
             ? 'posible lluvia '+fmtTime(decision.event.start)
             : decision.event
               ? 'sin lluvia inmediata · siguiente riesgo '+fmtTime(decision.event.start)
-              : 'seco en 0–2 h';
+              : 'sin señal de lluvia en 0–2 h';
   return'Radar: '+radarLabel+' · Radar europeo: '+operaLabel+' · Modelos: '+modelLabel+' → '+practical.charAt(0).toUpperCase()+practical.slice(1);
 }
 function renderConsensusDecision(decision=buildRainDecision()){
@@ -2169,7 +2169,7 @@ function pulseSequenceText(ev){
   const current=events[index],next=events[index+1];
   const gapMs=Date.parse(next.start)-Date.parse(current.end);
   if(gapMs<30*60_000)return'';
-  return'Después: seco ~'+durationText(current.end,next.start)+' · siguiente pulso '+fmtTime(next.start)+'.';
+  return'Después: estable ~'+durationText(current.end,next.start)+' · siguiente pulso '+fmtTime(next.start)+'.';
 }
 function chooseDisplayEvent(){
   const now=Date.now(),n=state.nowcast,rainNow=currentRainState(),truth=currentTruth(),radarEvent=stabilizedRadarEvent();
@@ -2378,7 +2378,7 @@ function render(){
     $('eta').innerHTML='Estable hasta <span>'+fmtTime(decision.dryUntil)+'</span>';
     $('metricStartLabel').textContent='Próxima lluvia';
     $('metricEndLabel').textContent='Duración lluvia';
-    $('metricConfLabel').textContent='Confianza seco';
+    $('metricConfLabel').textContent='Confianza estabilidad';
     $('metricDurLabel').textContent='Ventana estable';
     $('start').textContent=ev?.start?fmtDateTime(ev.start):(horizonLimited?'sin ETA de lluvia':'después de '+fmtTime(decision.dryUntil));
     $('end').textContent=ev?.start&&ev?.end?durationText(ev.start,ev.end):'—';
@@ -2386,7 +2386,7 @@ function render(){
     $('dur').textContent=(horizonLimited?'≥ ':'')+durationText(decision.now,decision.dryUntil);
     if(horizonLimited){
       $('summary').hidden=false;
-      $('summary').textContent='El radar mantiene el punto seco hasta su horizonte fiable. '+fmtTime(decision.dryUntil)+' es el límite de esa confirmación, no una hora prevista de llegada de lluvia.';
+      $('summary').textContent='El radar no proyecta precipitación sobre el punto hasta su horizonte fiable. '+fmtTime(decision.dryUntil)+' es el límite de esa confirmación, no una hora prevista de llegada de lluvia.';
     }else{
       $('summary').textContent='';
       $('summary').hidden=true;
@@ -2437,14 +2437,14 @@ function render(){
       if(ev.disagreementMinutes)$('summary').textContent+=' OPERA discrepa ~'+ev.disagreementMinutes+' min.';
     }else if(ev.kind==='model15'){
       if(ev.radarDelayed&&ev.dryWindow){
-        $('summary').textContent='Radar sin precipitación proyectada sobre el punto hasta ~'+fmtTime(ev.dryWindow.end)+(ev.dryWindow.operaDry?' · OPERA también está seco ahora':'')+'. Después, los modelos mantienen riesgo de lluvia intermitente.';
+        $('summary').textContent='Radar sin precipitación proyectada sobre el punto hasta ~'+fmtTime(ev.dryWindow.end)+(ev.dryWindow.operaDry?' · OPERA tampoco detecta precipitación ahora':'')+'. Después, los modelos mantienen riesgo de lluvia intermitente.';
       }else{
         $('summary').textContent='Consenso de modelos afinado con guía de 15 min. Esa guía puede ser interpolada en España.';
       }
     }else{
       const w=ev.event?.startWindow;
       if(ev.radarDelayed&&ev.dryWindow){
-        $('summary').textContent='Radar sin precipitación proyectada sobre el punto hasta ~'+fmtTime(ev.dryWindow.end)+(ev.dryWindow.operaDry?' · OPERA también está seco ahora':'')+'. Después, el consenso multimodelo mantiene riesgo de lluvia.';
+        $('summary').textContent='Radar sin precipitación proyectada sobre el punto hasta ~'+fmtTime(ev.dryWindow.end)+(ev.dryWindow.operaDry?' · OPERA tampoco detecta precipitación ahora':'')+'. Después, el consenso multimodelo mantiene riesgo de lluvia.';
       }else{
         const g=ev.ensembleArrival;
         $('summary').textContent='Consenso multimodelo'+(g?' · ensembles: inicio central '+fmtTime(g.median)+' · ventana ~'+fmtTime(g.earliest)+'–'+fmtTime(g.latest)+' ('+g.families+' familias)':w?.earliest?' · ventana de inicio '+fmtTime(w.earliest)+'–'+fmtTime(w.latest):'')+'.';
