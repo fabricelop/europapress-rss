@@ -409,7 +409,7 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
 const BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback";
-const BRIDGE_PATCH="v39-authoritative-self-submit";
+const BRIDGE_PATCH="v40-proof-by-user-turn";
 // compatibility validator for installed listeners: ttittulares-image-bridge-v1
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
@@ -618,33 +618,36 @@ async function ensureSubmitted(cdp,job){
       st.inConversation &&
       !st.composerMarker &&
       Number(st.turns||0)>0 &&
-      (st.generating || st.commandOutsideComposer) &&
+      st.commandOutsideComposer &&
       (Date.now()-triggeredAt)>=500
     );
-    // v35: ChatGPT puede empezar ImageGen y navegar a /c/... antes de que
-    // React materialice el turno de usuario en el DOM. Esa combinación solo
-    // se acepta DESPUÉS de que este bridge haya disparado un envío real.
-    const generatingTransition=Boolean(
-      st && triggeredAt &&
-      st.inConversation &&
-      !st.composerMarker &&
-      st.generating &&
-      (Date.now()-triggeredAt)>=250
-    );
 
-    if(st&&(st.submitted||strongTransition||generatingTransition)){
+    // v40: generating=true es solo una señal auxiliar. La UI puede exponer un
+    // botón Stop global aunque ESTE prompt no haya creado ningún turno. El
+    // envío queda verificado únicamente cuando el command_id existe fuera del
+    // compositor (idealmente en un turno de usuario).
+    if(st&&(st.submitted||strongTransition)){
       current.submissionVerified=true;
       current.acceptInitialRaster=true;
-      const verifyMode=st.submitted?"user-turn":(generatingTransition?"generation-started":"conversation-transition");
+      const verifyMode=st.submitted?"user-turn":"command-outside-composer";
       console.log("BRIDGE SUBMIT VERIFIED mode="+verifyMode+" generating="+Boolean(st.generating)+" turns="+Number(st.turns||0)+" url="+String(st.url||""));
       return current
     }
 
-    // Solo reinyectar cuando NO hay señales de generación. Si ImageGen ya
-    // arrancó, tocar de nuevo el compositor puede sabotear el envío correcto.
-    if(st&&!st.composerMarker&&!st.submitted&&!st.generating&&Number(st.turns||0)===0&&Date.now()-lastAttemptAt>=1600){
+    // Si el compositor se vació pero en 4 s no apareció ningún turno/comando
+    // fuera del editor, el intento no se considera enviado aunque generating
+    // siga a true. Reinyectar y volver a intentar evita esperas falsas de 6 min.
+    const lostAfterTrigger=Boolean(
+      st && triggeredAt &&
+      !st.composerMarker &&
+      !st.submitted &&
+      !st.commandOutsideComposer &&
+      Number(st.userTurns||0)===0 &&
+      (Date.now()-triggeredAt)>=4000
+    );
+    if(lostAfterTrigger&&Date.now()-lastAttemptAt>=1600){
       lastAttemptAt=Date.now();
-      console.log("BRIDGE SUBMIT LOST PROMPT; reinject command="+commandId+" generating="+Boolean(st.generating));
+      console.log("BRIDGE SUBMIT NO USER TURN; reinject command="+commandId+" generating="+Boolean(st.generating)+" elapsed="+(Date.now()-triggeredAt));
       try{
         current=await injectPromptIntoChat(current,job);
         triggeredAt=0;
@@ -835,12 +838,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v39-self-submit",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v40-user-turn-proof",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v39-self-submit",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v40-user-turn-proof",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -886,7 +889,7 @@ async function uploadImage(image){
     cdp.acceptInitialRaster=true;
     await progress("prompt_sent","Prompt GAG IA enviado/verificado por el bridge autoritativo.");
     {
-      const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v39-self-submit"});
+      const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v40-user-turn-proof"});
       if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
     }
     await progress("capture_wait","Esperando raster ImageGen en la conversación controlada por el bridge.");
@@ -916,7 +919,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v39-self-submit",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v40-user-turn-proof",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
