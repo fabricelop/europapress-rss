@@ -1,4 +1,4 @@
-# RainETA v0.17.14
+# RainETA v0.17.15
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,13 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Desvanecimiento continuo del radar v0.17.15
+- La proyección futura deja de cambiar de opacidad por escalones fijos; el radar se desvanece con una **curva continua** dependiente de minutos, confianza y estabilidad de la evolución.
+- Dentro del horizonte fiable la capa conserva suficiente contraste, pero pierde presencia gradualmente conforme aumenta la incertidumbre.
+- Fuera del horizonte fiable la opacidad cae exponencialmente hasta un mínimo visual muy tenue al acercarse a +4 h; la ETA sigue dependiendo de modelos/consenso.
+- Si no hay movimiento radar fiable, el último barrido se mantiene fijo como referencia pero parte de una opacidad mucho menor y se desvanece todavía más con el horizonte.
+- El cambio es exclusivamente visual: no modifica nowcast, ETA, eventos ni pesos meteorológicos.
 
 ## Calibración local por origen v0.17.14
 - La confianza de corto plazo deja de usar indiscriminadamente el historial de RainViewer: cada tipo de evento se calibra con su **propia fuente**.
