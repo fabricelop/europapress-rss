@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-07T19:31:49.236Z",
+  "updated_at": "2026-10-07T19:33:19.674Z",
   "items": [
     {
       "event_id": "b1fb1b6aca8a",
@@ -160,8 +160,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -177,12 +177,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-07T19:14:50.964033Z",
       "image": {
-        "url": "https://www.lavanguardia.com/files/og_thumbnail/files/fp/uploads/2026/10/06/6ac542840121e.r_d.2750-1833.jpeg",
-        "source": "www.lavanguardia.com",
-        "source_url": "https://www.lavanguardia.com/politica/20261007/11653666/puigdemont-traslada-oficina-expresidente-zona-alta-barcelona.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Puigdemont traslada su oficina de expresidente a la zona alta de Barcelona"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/358995db5b70-r1-ai1-791401067473.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ac3f1e98cf1de132822478efa91baf5198fb38c9ee55b425f9c977d51a6fc783",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 636714,
+        "context_guard": {
+          "version": 3,
+          "event_id": "358995db5b70",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-358995db5b70-r1-a2-1791401067473"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/358995db5b70-r1-ai1-791401067473.jpg",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://www.lavanguardia.com/files/og_thumbnail/files/fp/uploads/2026/10/06/6ac542840121e.r_d.2750-1833.jpeg",
@@ -192,9 +206,32 @@
         "generated": false,
         "alt": "Puigdemont traslada su oficina de expresidente a la zona alta de Barcelona"
       },
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-07T19:18:54.978Z",
-      "ai_image_failure_reason": "CDP timeout Runtime.evaluate"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T19:33:19.674Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/358995db5b70-r1-ai1-791401067473.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ac3f1e98cf1de132822478efa91baf5198fb38c9ee55b425f9c977d51a6fc783",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 636714,
+        "context_guard": {
+          "version": 3,
+          "event_id": "358995db5b70",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-358995db5b70-r1-a2-1791401067473"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/358995db5b70-r1-ai1-791401067473.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-07T19:33:19.674Z"
     }
   ],
   "count": 12
