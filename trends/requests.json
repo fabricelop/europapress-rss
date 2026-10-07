@@ -35091,7 +35091,7 @@
       "id": "c6001a65c2ab",
       "name": "George Floyd",
       "rank": 9,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-07T21:41:55+02:00",
       "revision": 0,
       "reexplain": false,
@@ -35104,7 +35104,32 @@
       "captured_with": [
         "George Floyd"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "last_attempt_at": "2026-10-07T21:52:20+02:00",
+      "problematic_at": "2026-10-07T21:52:20+02:00",
+      "problematic_attempts": 1,
+      "problem_reason": "«George Floyd» es tendencia en España, pero tras búsquedas distintas no se ha podido verificar un detonante actual único. Existe una asociación social reciente con la muerte de Babacar Welle tras un disparo policial en Hondarribia, pero no hay evidencia suficiente para afirmar que ese sea el motivo concreto de la tendencia.",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Europa Press",
+          "url": "https://www.europapress.es/euskadi/noticia-fallece-hombre-gipuzkoa-disparo-agente-intentar-agredir-ertzaina-arma-20260928205630.html"
+        },
+        {
+          "source": "Ertzaintza / Gobierno Vasco",
+          "url": "https://www.ertzaintza.euskadi.eus/lfr/es/web/ertzaintza/ultimas-noticias/-/asset_publisher/HqAtdHx7jB7q/content/26_0710-fallece-un-hombre-en-hondarribia-tras-recibir-un-disparo-por-un-agente-de-la-polic%25C3%25ADa-local-tras-intentar-agredir-con-un-arma-blanca-a-una-agente-de-la-ertzaintza"
+        },
+        {
+          "source": "Finofilipino",
+          "url": "https://finofilipino.org/en-hondarribia-ya-tienen-su-propio-george-floyd/"
+        }
+      ],
+      "disable_ai_image": true,
+      "image_strategy": "none",
+      "ai_image_status": "disabled",
+      "image_status": "none",
+      "image_pending": false,
+      "fallback_image_status": "none"
     }
   ],
   "updated_at": "2026-10-07T21:41:55+02:00",
