@@ -14,7 +14,7 @@ $TTLog=Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $TRLog=Join-Path $BaseDir "ttendencias-mobile-trigger.log"
 
 function Validate-File([string]$Path,[string]$Needle,[string]$Label){
-  if(-not (Test-Path -LiteralPath $Path)){throw "No existe $Label: $Path"}
+  if(-not (Test-Path -LiteralPath $Path)){throw "No existe ${Label}: $Path"}
   $txt=Get-Content -LiteralPath $Path -Raw -Encoding UTF8
   if(-not $txt.Contains($Needle)){throw "$Label no tiene la version esperada"}
 }
