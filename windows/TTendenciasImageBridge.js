@@ -69,83 +69,13 @@ async function readTargetHint(){
     return {id,url:String(d&&d.url||""),title:String(d&&d.title||"")}
   }catch{return null}
 }
-async function targetById(id){
-  id=String(id||"").trim();
-  if(!id)return null;
-  let list=[];try{list=await targets()}catch{return null}
-  return list.find(x=>String(x&&x.id||"")===id && x.webSocketDebuggerUrl)||null
-}
 async function hintedTarget(){
   const hint=await readTargetHint();
-  return hint?targetById(hint.id):null
-}
-async function authoritativeHandoffId(){
-  try{
-    const r=await fetch(JOB_URL+encodeURIComponent(targetId)+"&t="+Date.now(),{cache:"no-store"});
-    if(!r.ok)return "";
-    const d=await r.json();
-    if(!d||!d.ok||String(d.command_id||"")!==commandId)return "";
-    return String(d.target_handoff_id||d.diagnostic_target_id||"").trim()
-  }catch{return ""}
-}
-
-async function waitForHandoffConversation(job,timeoutMs=65000){
-  const deadline=Date.now()+Math.max(5000,Number(timeoutMs)||65000);
-  let lastId="",lastRemotePoll=0;
-  while(Date.now()<deadline){
-    // v38: manda el contenido real, no la heurística de pestañas. Buscar primero
-    // el command_id en todas las conversaciones evita quedar secuestrado por un
-    // target_handoff_id válido pero incorrecto.
-    const found=await reacquireCommandChat(job);
-    if(found&&found.cdp){
-      const st=found.state||{};
-      const launched=Boolean(st.bodyMarker||(!st.composerMarker&&st.generating));
-      if(launched){
-        found.cdp.acceptInitialRaster=true;
-        found.cdp.authoritativeHandoff=false;
-        console.log("BRIDGE COMMAND SCAN FIRST ATTACHED url="+String(st.url||"")+" turns="+Number(st.turns||0)+" generating="+Boolean(st.generating));
-        return found.cdp
-      }
-      try{found.cdp.close()}catch{}
-    }
-
-    let t=await hintedTarget();
-    if(!t && Date.now()-lastRemotePoll>=1800){
-      lastRemotePoll=Date.now();
-      const remoteId=await authoritativeHandoffId();
-      if(remoteId){
-        lastId=remoteId;
-        t=await targetById(remoteId);
-        if(t)console.log("BRIDGE HANDOFF RESOLVED authoritative target="+remoteId)
-      }
-    }
-    if(t){
-      lastId=String(t.id||lastId);
-      const c=new CDP(t.webSocketDebuggerUrl);
-      try{
-        await c.open();
-        try{await c.call("Page.enable",{},5000)}catch{}
-        try{await c.call("Page.bringToFront",{},5000)}catch{}
-        const verifyDeadline=Date.now()+3500;
-        while(Date.now()<verifyDeadline){
-          let st=null;try{st=await inspectChat(c,job)}catch{}
-          if(st&&(st.bodyMarker||st.hasMarker||(!st.composerMarker&&st.targetMarker&&Number(st.turns||0)>0))){
-            c.acceptInitialRaster=true;
-            c.authoritativeHandoff=true;
-            console.log("BRIDGE HANDOFF ATTACHED target="+String(t.id)+" url="+String(st.url||t.url||"")+" turns="+Number(st.turns||0)+" generating="+Boolean(st.generating));
-            return c
-          }
-          await sleep(500)
-        }
-      }catch(e){
-        console.log("BRIDGE HANDOFF ATTACH WARNING target="+String(t.id||"")+" :: "+String(e&&e.message||e))
-      }
-      try{c.close()}catch{}
-    }
-    await sleep(500)
-  }
-  console.log("BRIDGE HANDOFF TIMEOUT last_target="+lastId);
-  return null
+  if(!hint)return null;
+  let list=[];try{list=await targets()}catch{return null}
+  const t=list.find(x=>String(x&&x.id||"")===hint.id && x.webSocketDebuggerUrl);
+  if(!t)return null;
+  return t
 }
 
 async function targets(){
@@ -233,7 +163,7 @@ async function waitComposer(cdp,timeoutMs=60000){
   let last=null;
   while(Date.now()<deadline){
     try{
-      last=await cdp.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");return {composer:!!c,url:location.href,title:document.title||'',ready:document.readyState}})()");
+      last=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");return {composer:!!c,url:location.href,title:document.title||'',ready:document.readyState}})()");
       if(last&&last.composer)return last
     }catch(e){last={error:String(e&&e.message||e)}}
     await sleep(750)
@@ -332,83 +262,33 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 // compatibility during hot rollout: BRIDGE_MODE="capture-only-v23-target-handoff"
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttendencias-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
-const BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback";
-const BRIDGE_PATCH="v40-proof-by-user-turn";
+const BRIDGE_FEATURES="v28-reject-nonconversation-image-targets";
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
 // compatibility: BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover"
 const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
-const VISIBLE_COMPOSER_EXPR="(()=>{const all=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];const visible=all.filter(c=>{try{const r=c.getBoundingClientRect(),s=getComputedStyle(c);return !c.disabled&&c.getAttribute('aria-hidden')!=='true'&&s.display!=='none'&&s.visibility!=='hidden'&&Number(s.opacity||1)>0&&r.width>=80&&r.height>=20&&r.bottom>0&&r.right>0&&r.top<innerHeight&&r.left<innerWidth}catch(_){return false}});const score=c=>{const r=c.getBoundingClientRect();return (c.id==='prompt-textarea'?10000:0)+(c.getAttribute('data-testid')==='prompt-textarea'?9000:0)+(c.getAttribute('role')==='textbox'?1200:0)+(c.isContentEditable?800:0)+(c.tagName==='TEXTAREA'?600:0)+Math.max(0,Math.min(innerHeight,r.bottom))};visible.sort((a,b)=>score(b)-score(a));return visible[0]||null})()";
 
 async function inspectChat(cdp,job){
   const targetName=String(job&&job.target_name||"").trim();
-  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=("+VISIBLE_COMPOSER_EXPR+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=nodes.length>0;const markerOutsideComposer=bodyMarker;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const largeImages=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360);const images=largeImages.length;const imageSrc=largeImages.length?String(largeImages[0].currentSrc||largeImages[0].src||''):'';const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,imageSrc,title,url:location.href}})()")
+  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=nodes.length>0;const markerOutsideComposer=bodyMarker;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const largeImages=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360);const images=largeImages.length;const imageSrc=largeImages.length?String(largeImages[0].currentSrc||largeImages[0].src||''):'';const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,imageSrc,title,url:location.href}})()")
 }
 
 
 async function injectPromptIntoChat(cdp,job){
   const message=buildMessage(job);
-  const minLen=Math.min(500,Math.floor(message.length*0.5));
   try{
     const before=await domImageCandidates(cdp);
     cdp.preSubmitImageSrcs=new Set(before.map(x=>x.src));
     console.log("BRIDGE SELF-SUBMIT BASELINE images="+before.length);
   }catch{}
-
-  const prep=await cdp.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const all=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];if(!c)return {ok:false,candidates:all.length,url:location.href,title:document.title||''};try{c.scrollIntoView({block:'center',inline:'nearest'});c.focus({preventScroll:true})}catch(_){try{c.focus()}catch(__){}}try{if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){const proto=c.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;const set=Object.getOwnPropertyDescriptor(proto,'value')&&Object.getOwnPropertyDescriptor(proto,'value').set;if(set)set.call(c,'');else c.value='';c.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'deleteContentBackward',data:null}))}else{const s=getSelection();const r=document.createRange();r.selectNodeContents(c);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null)}}catch(_){}const r=c.getBoundingClientRect();return {ok:true,candidates:all.length,x:r.left+r.width/2,y:r.top+r.height/2,w:r.width,h:r.height,tag:c.tagName,editable:!!c.isContentEditable,url:location.href,title:document.title||''}})()");
-  if(!prep||!prep.ok)throw Error("No hay compositor visible utilizable para fallback candidates="+Number(prep&&prep.candidates||0));
-
-  // Un click CDP real evita que Input.insertText termine en BODY o en un editor oculto
-  // cuando ChatGPT ha recreado el compositor tras una navegación/nuevo chat.
-  try{
-    if(Number.isFinite(prep.x)&&Number.isFinite(prep.y)){
-      await cdp.call("Input.dispatchMouseEvent",{type:"mousePressed",x:prep.x,y:prep.y,button:"left",clickCount:1},5000);
-      await cdp.call("Input.dispatchMouseEvent",{type:"mouseReleased",x:prep.x,y:prep.y,button:"left",clickCount:1},5000);
-      await sleep(120);
-    }
-  }catch(e){console.log("BRIDGE COMPOSER TRUSTED CLICK WARNING :: "+String(e&&e.message||e))}
-
-  const verifyText=async()=>cdp.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const t=String(c&&(c.innerText||c.textContent||c.value)||'');const a=document.activeElement;return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,active:a?String(a.id||a.getAttribute&&a.getAttribute('data-testid')||a.tagName||''):'',url:location.href,title:document.title||''}})()");
-
-  // Método 1: eventos de entrada confiables de Chrome.
-  try{
-    const chunkSize=700;
-    for(let off=0;off<message.length;off+=chunkSize){
-      await cdp.call("Input.insertText",{text:message.slice(off,off+chunkSize)},8000);
-      await sleep(80);
-    }
-  }catch(e){console.log("BRIDGE INPUT INSERT WARNING :: "+String(e&&e.message||e))}
-  await sleep(220);
-  let verify=await verifyText();
-
-  // Método 2: fallback DOM compatible con textarea/React y contenteditable/Lexical.
-  if(!verify||!verify.ok||Number(verify.len||0)<minLen){
-    console.log("BRIDGE INPUT INSERT INCOMPLETE len="+Number(verify&&verify.len||0)+" active="+String(verify&&verify.active||"")+"; DOM fallback");
-    const dom=await cdp.eval("(()=>{const msg="+JSON.stringify(message)+";const c=("+VISIBLE_COMPOSER_EXPR+");if(!c)return {ok:false,method:'no-visible-composer'};try{c.focus({preventScroll:true})}catch(_){try{c.focus()}catch(__){}}let method='';try{if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){const proto=c.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;const d=Object.getOwnPropertyDescriptor(proto,'value');if(d&&d.set)d.set.call(c,msg);else c.value=msg;method='native-value-setter';try{c.dispatchEvent(new InputEvent('beforeinput',{bubbles:true,cancelable:true,inputType:'insertText',data:msg}))}catch(_){}c.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText',data:msg}));c.dispatchEvent(new Event('change',{bubbles:true}))}else{const s=getSelection();const r=document.createRange();r.selectNodeContents(c);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null);let inserted=false;try{inserted=document.execCommand('insertText',false,msg)}catch(_){}method=inserted?'execCommand-insertText':'direct-contenteditable';let t=String(c.innerText||c.textContent||'');if(!inserted||t.length<Math.min(100,msg.length)){c.textContent=msg;try{c.dispatchEvent(new InputEvent('beforeinput',{bubbles:true,cancelable:true,inputType:'insertText',data:msg}))}catch(_){}c.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText',data:msg}))}}}catch(e){return {ok:false,method,error:String(e&&e.message||e)}}const t=String(c.innerText||c.textContent||c.value||'');return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,method}})()");
-    console.log("BRIDGE DOM FALLBACK method="+String(dom&&dom.method||"")+" len="+Number(dom&&dom.len||0)+" ok="+Boolean(dom&&dom.ok));
-    await sleep(350);
-    verify=await verifyText();
-  }
-
-  // Método 3: selección/limpieza por teclado confiable y un último insertText.
-  if(!verify||!verify.ok||Number(verify.len||0)<minLen){
-    console.log("BRIDGE DOM FALLBACK INCOMPLETE len="+Number(verify&&verify.len||0)+"; trusted keyboard retry");
-    try{
-      await cdp.call("Input.dispatchKeyEvent",{type:"keyDown",key:"a",code:"KeyA",modifiers:2},5000);
-      await cdp.call("Input.dispatchKeyEvent",{type:"keyUp",key:"a",code:"KeyA",modifiers:2},5000);
-      await cdp.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Backspace",code:"Backspace",windowsVirtualKeyCode:8,nativeVirtualKeyCode:8},5000);
-      await cdp.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Backspace",code:"Backspace",windowsVirtualKeyCode:8,nativeVirtualKeyCode:8},5000);
-      await cdp.call("Input.insertText",{text:message},12000);
-      await sleep(350);
-      verify=await verifyText();
-    }catch(e){console.log("BRIDGE TRUSTED KEYBOARD RETRY WARNING :: "+String(e&&e.message||e))}
-  }
-
-  if(!verify||!verify.ok||Number(verify.len||0)<minLen){
-    throw Error("Fallback no pudo escribir el prompt completo len="+Number(verify&&verify.len||0)+" expected>="+minLen+" active="+String(verify&&verify.active||""));
-  }
-  console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED len="+Number(verify.len||0)+" active="+String(verify.active||"")+" "+String(verify.url||""));
+  const prep=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return {ok:false};c.focus();try{if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){c.value='';c.dispatchEvent(new Event('input',{bubbles:true}))}else{const s=getSelection();const r=document.createRange();r.selectNodeContents(c);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null)}}catch(_){}return {ok:true,url:location.href,title:document.title||''}})()");
+  if(!prep||!prep.ok)throw Error("No hay compositor utilizable para fallback");
+  await cdp.call("Input.insertText",{text:message});
+  await sleep(250);
+  const verify=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const t=String(c&&(c.innerText||c.textContent||c.value)||'');return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,url:location.href,title:document.title||''}})()");
+  if(!verify||!verify.ok)throw Error("Fallback no pudo escribir el prompt completo");
+  console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED "+String(verify.url||""));
   return cdp
 }
 
@@ -427,7 +307,7 @@ async function findFallbackComposerChat(job){
     const c=new CDP(item.t.webSocketDebuggerUrl);
     try{
       await c.open();
-      const st=await c.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");return {composer:!!c,title:document.title||'',url:location.href}})()");
+      const st=await c.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");return {composer:!!c,title:document.title||'',url:location.href}})()");
       if(st&&st.composer)return {c,st,score:item.score}
     }catch{}
     c.close()
@@ -443,7 +323,7 @@ async function findChat(job){
       const hc=new CDP(hinted.webSocketDebuggerUrl);
       try{
         await hc.open();
-        const st=await hc.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;return {composer:!!c,turns,title:document.title||'',url:location.href}})()");
+        const st=await hc.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;return {composer:!!c,turns,title:document.title||'',url:location.href}})()");
         if(st&&(st.composer||st.turns>0)){
           console.log("BRIDGE TARGET HINT CONVERSATION "+String(st.url||hinted.url||"")+" turns="+Number(st.turns||0));
           return hc
@@ -463,7 +343,7 @@ async function findChat(job){
       const fc=new CDP(t.webSocketDebuggerUrl);
       try{
         await fc.open();
-        const st=await fc.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;return {composer:!!c,turns,title:document.title||'',url:location.href}})()");
+        const st=await fc.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;return {composer:!!c,turns,title:document.title||'',url:location.href}})()");
         if(st&&(st.composer||st.turns>0)){
           console.log("BRIDGE TARGET POST-LAUNCH CONVERSATION "+String(st.url||t.url||"")+" turns="+Number(st.turns||0));
           return fc
@@ -484,15 +364,7 @@ async function findChat(job){
 
 async function reacquireCommandChat(job){
   const fixed=await reconnectFixedConversation(job);
-  if(fixed&&fixed.cdp){
-    const fs=fixed.state||{};
-    if(fs.bodyMarker||fs.composerMarker){
-      console.log("BRIDGE REACQUIRE FIXED TAB "+String(fs.url||""));
-      return fixed
-    }
-    console.log("BRIDGE REACQUIRE FIXED TAB REJECTED url="+String(fs.url||"")+" marker=false");
-    try{fixed.cdp.close()}catch{}
-  }
+  if(fixed&&fixed.cdp){console.log("BRIDGE REACQUIRE FIXED TAB "+String(fixed.state&&fixed.state.url||""));return fixed}
 
   const hinted=await hintedTarget();
   if(hinted){
@@ -519,11 +391,11 @@ async function reacquireCommandChat(job){
 
 async function ensureSubmitted(cdp,job){
   const deadline=Date.now()+45000;
-  let current=cdp,last=null,lastAttemptAt=0,reacquires=0,triggeredAt=0,submitAttempts=0;
+  let current=cdp,last=null,lastAttemptAt=0,reacquires=0,triggeredAt=0;
   while(Date.now()<deadline){
     let st=null;
     try{
-      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=("+VISIBLE_COMPOSER_EXPR+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const bodyText=String((root&&root.innerText)||'');const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"],[data-testid^=\"conversation-turn-\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const role=String(el.getAttribute&&el.getAttribute('data-message-author-role')||'').toLowerCase();const isUser=role==='user'||Boolean(el.querySelector&&el.querySelector('[data-message-author-role=\"user\"]'));return isUser&&String(el.innerText||el.textContent||'').includes(command)});const submitted=!composerMarker&&userTurns.length>0;const turns=root.querySelectorAll('[data-message-author-role],[data-testid^=\"conversation-turn-\"],article').length;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const send=[...document.querySelectorAll('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]')].find(b=>{try{const r=b.getBoundingClientRect(),s=getComputedStyle(b);return !b.disabled&&s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0}catch(_){return false}})||null;const inConversation=/\\/c\\//.test(location.pathname);const commandOutsideComposer=bodyText.includes(command)&&!composerMarker;return {composerMarker,submitted,userTurns:userTurns.length,turns,generating,inConversation,commandOutsideComposer,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
+      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const bodyText=String((root&&root.innerText)||'');const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"],[data-testid*=\"user\" i],[class*=\"user-message\" i]')].filter(el=>String(el.innerText||el.textContent||'').includes(command));const submitted=userTurns.length>0;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const send=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');const inConversation=/\\/c\\//.test(location.pathname);const commandOutsideComposer=bodyText.includes(command)&&!composerMarker;return {composerMarker,submitted,userTurns:userTurns.length,generating,inConversation,commandOutsideComposer,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
     }catch{}
 
     if(!st){
@@ -540,83 +412,38 @@ async function ensureSubmitted(cdp,job){
       st && triggeredAt &&
       st.inConversation &&
       !st.composerMarker &&
-      Number(st.turns||0)>0 &&
-      st.commandOutsideComposer &&
+      (st.generating || st.commandOutsideComposer) &&
       (Date.now()-triggeredAt)>=500
     );
 
-    // v40: generating=true es solo una señal auxiliar. La UI puede exponer un
-    // botón Stop global aunque ESTE prompt no haya creado ningún turno. El
-    // envío queda verificado únicamente cuando el command_id existe fuera del
-    // compositor (idealmente en un turno de usuario).
     if(st&&(st.submitted||strongTransition)){
       current.submissionVerified=true;
       current.acceptInitialRaster=true;
-      const verifyMode=st.submitted?"user-turn":"command-outside-composer";
-      console.log("BRIDGE SUBMIT VERIFIED mode="+verifyMode+" generating="+Boolean(st.generating)+" turns="+Number(st.turns||0)+" url="+String(st.url||""));
+      console.log("BRIDGE SUBMIT VERIFIED mode="+(st.submitted?"user-turn":"conversation-transition")+" generating="+Boolean(st.generating)+" url="+String(st.url||""));
       return current
-    }
-
-    // Si el compositor se vació pero en 4 s no apareció ningún turno/comando
-    // fuera del editor, el intento no se considera enviado aunque generating
-    // siga a true. Reinyectar y volver a intentar evita esperas falsas de 6 min.
-    const lostAfterTrigger=Boolean(
-      st && triggeredAt &&
-      !st.composerMarker &&
-      !st.submitted &&
-      !st.commandOutsideComposer &&
-      Number(st.userTurns||0)===0 &&
-      (Date.now()-triggeredAt)>=4000
-    );
-    if(lostAfterTrigger&&Date.now()-lastAttemptAt>=1600){
-      lastAttemptAt=Date.now();
-      console.log("BRIDGE SUBMIT NO USER TURN; reinject command="+commandId+" generating="+Boolean(st.generating)+" elapsed="+(Date.now()-triggeredAt));
-      try{
-        current=await injectPromptIntoChat(current,job);
-        triggeredAt=0;
-        submitAttempts=0;
-        await sleep(350);
-        continue
-      }catch(e){
-        console.log("BRIDGE SUBMIT REINJECT WARNING :: "+String(e&&e.message||e))
-      }
     }
 
     if(st&&st.composerMarker&&Date.now()-lastAttemptAt>=1200){
       lastAttemptAt=Date.now();
-      submitAttempts++;
-      let triggered=false,method="none";
-      const mode=(submitAttempts-1)%3;
-
-      if(mode===0){
+      let triggered=false;
+      try{
+        triggered=Boolean(await current.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const b=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');if(b&&!b.disabled){b.click();return true}const form=c&&c.closest&&c.closest('form');if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return true}return false})()"));
+      }catch{}
+      if(!triggered){
         try{
-          triggered=Boolean(await current.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");const b=[...document.querySelectorAll('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]')].find(x=>{try{const r=x.getBoundingClientRect(),s=getComputedStyle(x);return !x.disabled&&s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0}catch(_){return false}})||null;if(b){b.click();return true}const form=c&&c.closest&&c.closest('form');if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return true}return false})()"));
-          method="dom-click";
-        }catch{}
-      }else if(mode===1){
-        try{
-          const point=await current.eval("(()=>{const b=[...document.querySelectorAll('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]')].find(x=>{try{const r=x.getBoundingClientRect(),s=getComputedStyle(x);return !x.disabled&&s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0}catch(_){return false}})||null;if(!b)return null;const r=b.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}})()");
-          if(point&&Number.isFinite(point.x)&&Number.isFinite(point.y)){
-            await current.call("Input.dispatchMouseEvent",{type:"mousePressed",x:point.x,y:point.y,button:"left",clickCount:1},5000);
-            await current.call("Input.dispatchMouseEvent",{type:"mouseReleased",x:point.x,y:point.y,button:"left",clickCount:1},5000);
-            triggered=true;method="trusted-mouse";
-          }
-        }catch{}
-      }else{
-        try{
-          const focused=Boolean(await current.eval("(()=>{const c=("+VISIBLE_COMPOSER_EXPR+");if(!c)return false;c.focus();return true})()"));
+          const focused=Boolean(await current.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return false;c.focus();return true})()"));
           if(focused){
-            await current.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13},5000);
-            await current.call("Input.dispatchKeyEvent",{type:"char",text:"\r",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13},5000);
-            await current.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13},5000);
-            triggered=true;method="trusted-enter";
+            await current.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+            await current.call("Input.dispatchKeyEvent",{type:"char",text:"\r",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+            await current.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
+            triggered=true;
           }
         }catch{}
       }
-
       if(triggered&&!triggeredAt)triggeredAt=Date.now();
-      console.log("BRIDGE SUBMIT RECOVERY "+(triggered?"TRIGGERED":"WAIT")+" method="+method+" attempt="+submitAttempts+" sendDisabled="+Boolean(st.sendDisabled)+" generating="+Boolean(st.generating));
+      console.log("BRIDGE SUBMIT RECOVERY "+(triggered?"TRIGGERED":"WAIT")+" sendDisabled="+Boolean(st.sendDisabled)+" generating="+Boolean(st.generating));
     }
+
     await sleep(650);
   }
   throw Error("No hubo evidencia suficiente de envío del prompt ImageGen; "+JSON.stringify(last||{}).slice(0,700))
@@ -627,7 +454,7 @@ function probeExpression(){
     "(async()=>{",
     "const command="+JSON.stringify(commandId)+";",
     "const root=document.querySelector('main')||document.body;",
-    "const composer=("+VISIBLE_COMPOSER_EXPR+");",
+    "const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");",
     "const markerNodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<7000});",
     "const bodyText=String((document.body&&document.body.innerText)||'');",
     "const marker=markerNodes.length>0||bodyText.includes(command);",
@@ -761,12 +588,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttendencias-image-bridge-v40-user-turn-proof",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttendencias-image-bridge-v28-dead-submit-retry",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v40-user-turn-proof",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v28-dead-submit-retry",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -786,48 +613,35 @@ async function uploadImage(image){
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
+    cdp=await openFreshDedicatedConversation();
+    console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     let image=null;
-
-    // v39: el bridge es la autoridad de la generación. Evita depender de que
-    // Ejecutar.js y el bridge vean exactamente el mismo target CDP.
-    // 1) Si ya existe una conversación con este command_id, continuar allí.
-    // 2) Si no, usar una conversación ChatGPT válida del perfil automatizado,
-    //    inyectar el prompt y enviar desde el propio bridge.
-    let found=await reacquireCommandChat(job);
-    if(found&&found.cdp){
-      cdp=found.cdp;
-      const st=found.state||{};
-      if(st.composerMarker){
-        cdp=await ensureSubmitted(cdp,job);
-      }else{
-        cdp.acceptInitialRaster=true;
-        console.log("BRIDGE SELF-SUBMIT EXISTING COMMAND url="+String(st.url||"")+" generating="+Boolean(st.generating));
+    for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
+      if(generationAttempt>1){
+        try{cdp&&cdp.close()}catch{}
+        await progress("image_retry","Primer envío no produjo generación real; reintentando en conversación nueva de la misma pestaña.");
+        cdp=await openFreshDedicatedConversation();
+        console.log("BRIDGE INTERNAL RETRY conversation="+generationAttempt);
       }
-    }else{
-      cdp=await findChat(job);
-      await progress("composer_ready","ChatGPT disponible para generación autoritativa del bridge.");
       cdp=await injectPromptIntoChat(cdp,job);
       cdp=await ensureSubmitted(cdp,job);
-    }
-    cdp.acceptInitialRaster=true;
-    await progress("prompt_sent","Prompt GAG IA enviado/verificado por el bridge autoritativo.");
-    {
-      const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v40-user-turn-proof"});
-      if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
-    }
-    await progress("capture_wait","Esperando raster ImageGen en la conversación controlada por el bridge.");
-    try{
-      image=await capture(cdp,job);
-    }catch(firstError){
-      console.log("BRIDGE SELF-SUBMIT CAPTURE RETRY :: "+String(firstError&&firstError.message||firstError));
-      try{cdp&&cdp.close()}catch{}
-      const again=await reacquireCommandChat(job);
-      if(!again||!again.cdp)throw firstError;
-      cdp=again.cdp;
       cdp.acceptInitialRaster=true;
-      image=await capture(cdp,job);
+      console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
+      if(generationAttempt===1){
+        await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
+        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v28-dead-submit-retry"});
+        if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
+      }
+      await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
+      try{
+        image=await capture(cdp,job);
+        break
+      }catch(e){
+        if(generationAttempt>=2)throw e;
+        console.log("BRIDGE GENERATION RETRY :: "+String(e&&e.message||e));
+      }
     }
-    if(!image)throw Error("ImageGen no produjo raster ni por handoff ni por fallback");
+    if(!image)throw Error("ImageGen no produjo raster tras reintento interno");
     await progress("raster_captured","Raster ImageGen capturado; validando y materializando.");
     if(image.width<1024||image.height<576)throw Error("Raster capturado inferior a 1024x576");
     if(!/^(original-fetch-img|canvas-from-img-)/.test(String(image.capture||"")))throw Error("Método de captura no permitido: "+String(image.capture||""));
@@ -842,7 +656,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttendencias-image-bridge-v40-user-turn-proof",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttendencias-image-bridge-v28-dead-submit-retry",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
