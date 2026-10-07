@@ -445,7 +445,7 @@ function automaticRainState(){
   const radarRain=radarFresh&&Number.isFinite(radarWet)&&radarWet>=CANONICAL_RADAR_THRESHOLD&&radarRate>=.08;
   const radarStrong=radarRain&&radarRate>=2.5&&radarWet>=CANONICAL_RADAR_THRESHOLD;
   const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH)||0,operaQuality=Number(opera?.sample?.quality);
-  const operaFresh=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5);
+  const operaFresh=Boolean(opera?.sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok&&operaQuality>=.5);
   const operaRain=operaFresh&&operaRate>=.05,operaStrong=operaRain&&operaRate>=2.5;
   const corroborated=radarRain&&operaRain;
   const raining=corroborated||radarStrong||operaStrong;
@@ -998,7 +998,7 @@ function observedSkillTruth(){
   const rvOk=(n?.status==='ok'||n?.status==='motion_uncertain')&&Number.isFinite(radarWet)&&Number.isFinite(radarAge)&&radarAge<=20*60_000;
   const rv=rvOk?radarWet>=calibratedRadarThreshold():null;
   const opera=state.data?.opera,sample=opera?.sample,quality=Number(sample?.quality),rate=Number(sample?.rateMmH);
-  const opOk=Boolean(sample?.ok&&Number(opera?.ageMinutes)<=20&&quality>=.5&&Number.isFinite(rate));
+  const opOk=Boolean(sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok&&quality>=.5&&Number.isFinite(rate));
   const op=opOk?rate>=.05:null;
   if(rvOk&&opOk){
     if(rv!==op)return null;
@@ -1212,7 +1212,7 @@ function consensusDecisionText(decision=buildRainDecision()){
     : null;
   const radarLabel=radarWet===null?'sin nowcast fiable':radarWet?'lluvia':'seco';
   const opera=state.data?.opera,sample=opera?.sample;
-  const operaFresh=Boolean(sample?.ok&&Number(opera?.ageMinutes)<=20);
+  const operaFresh=Boolean(sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok);
   const operaRate=Number(sample?.rateMmH);
   const operaEta=operaEventCandidate(decision.now),operaAge=Number(opera?.ageMinutes);
   const operaLabel=operaFresh&&Number.isFinite(operaRate)
@@ -1255,7 +1255,7 @@ function operaNowcastInfo(){
 }
 function operaEventCandidate(now=Date.now()){
   const n=operaNowcastInfo(),e=n?.event,age=Number(state.data?.opera?.ageMinutes);
-  const freshness=age<=20?1:Math.max(.65,1-(age-20)/30);
+  const freshness=age<=OPERA_SURFACE_STALE_MINUTES?1:Math.max(.65,1-(age-OPERA_SURFACE_STALE_MINUTES)/30);
   const confidence=(Number(n?.confidence)||0)*freshness;
   if(!e?.start||confidence<.22)return null;
   const start=Date.parse(e.start),end=Date.parse(e.end||'');
@@ -1330,7 +1330,7 @@ function localDryEvidence(){
   const radarFresh=Boolean((n?.status==='ok'||n?.status==='motion_uncertain')&&n?.radarTime&&(Date.now()-Date.parse(n.radarTime))<=20*60_000);
   const radarDry=radarFresh&&Number.isFinite(radarWet)&&radarWet<CANONICAL_RADAR_THRESHOLD&&(Number.isFinite(radarRate)?radarRate<.05:true);
   const opera=state.data?.opera,sample=opera?.sample,operaRate=Number(sample?.rateMmH),operaQuality=Number(sample?.quality);
-  const operaFresh=Boolean(sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5&&Number.isFinite(operaRate));
+  const operaFresh=Boolean(sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok&&operaQuality>=.5&&Number.isFinite(operaRate));
   const operaDry=operaFresh&&operaRate<.02;
   return{radarFresh,radarDry,operaFresh,operaDry,bothDry:radarDry&&operaDry,anyDry:radarDry||operaDry};
 }
@@ -1482,7 +1482,7 @@ function radarDryWindow(){
   let endMs=starts.length?Math.min(horizonEnd,...starts):horizonEnd;
   if(!Number.isFinite(endMs)||endMs<=now+15*60_000)return null;
   const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH),operaQuality=Number(opera?.sample?.quality);
-  const operaDry=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5&&operaRate<.02);
+  const operaDry=Boolean(opera?.sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok&&operaQuality>=.5&&operaRate<.02);
   const confidence=operaDry&&operaNowcastInfo()
     ? Math.min(.96,.68*radarConfidence+.32*(Number(opera.nowcast.confidence)||0)+.04)
     : radarConfidence;
@@ -1561,7 +1561,7 @@ function chooseDisplayEvent(){
     }
     if(radarChoice)return radarChoice;
     const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH);
-    if(opera?.sample?.ok&&Number(opera.ageMinutes)<=20&&operaRate>=.05){
+    if(opera?.sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok&&operaRate>=.05){
       return{kind:'opera',active:true,start:opera.observedAt||new Date(now).toISOString(),end:op?.end||null,confidence:Number(opera.nowcast?.confidence)||.55,uncertainty:op?.uncertainty||12,event:op?.event||null,motion:opera.nowcast?.motion||null};
     }
     if(n?.status==='ok'){
@@ -1708,7 +1708,7 @@ function render(){
     $('summary').hidden=true;
   }else if(decision.mode==='possible_now'){
     const radarRate=Number(nowState.radarRate)||0,operaRate=Number(nowState.operaRate)||0;
-    const opera=state.data?.opera,operaFresh=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20);
+    const opera=state.data?.opera,operaFresh=Boolean(opera?.sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok);
     $('heroLabel').textContent='Señal radar';
     $('eta').innerHTML='Lluvia <span>no confirmada</span>';
     $('metricStartLabel').textContent='Radar local';
