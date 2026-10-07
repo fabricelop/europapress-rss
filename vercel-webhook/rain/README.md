@@ -1,8 +1,13 @@
-# RainETA v0.17.38
+# RainETA v0.17.39
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
-## Proyección radar sintética y rayos DWD v0.17.38
+## Proyección radar sintética y rayos DWD v0.17.39
+- La transición **AHORA → +1/+2/+3 min** conserva siempre el último campo radar internamente decodificado aunque el vector de movimiento todavía sea incierto. Es persistencia de muy corto plazo, no reutilización del PNG observado ni desplazamiento rígido.
+- `projectionField` se conserva también cuando el estado del movimiento es `motion_uncertain`; antes se perdía precisamente en esos casos y el futuro podía quedar vacío.
+- El frame observado se mantiene hasta que el PNG futuro generado por RainETA está listo, evitando un flash vacío durante el cambio.
+- Con **⚡ RAYOS** habilitado y visible, la precipitación se desatura a escala de grises para separar visualmente lluvia y actividad eléctrica.
+
 - El mapa futuro ya no usa `CanvasSource` de MapLibre. RainETA dibuja su canvas transparente desde `mask/rateGrid`, valida la cobertura alfa y lo entrega a MapLibre como `ImageSource` mediante un PNG generado localmente por RainETA. No interviene ningún PNG de RainViewer en el futuro.
 - Los rayos ya no consultan DWD directamente desde el navegador. `/api/rain-lightning` actúa como proxy RainETA de GetCapabilities/GetMap, valida capa, bbox, Content-Type y firma PNG y evita CORS/CSP del WMS externo.
 

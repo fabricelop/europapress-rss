@@ -23,6 +23,13 @@ export function buildRadarProjectionRgba(mask,rateGrid,width,height,colorForRate
   }
   return{rgba,wetPixels,alphaPixels,opaqueFraction:alphaPixels/size,width:w,height:h};
 }
+export function radarProjectionRenderMode({minutes=0,fieldAvailable=false,guidanceOk=false,horizon=0,continuityMinutes=3}={}){
+  const m=Math.max(0,Number(minutes)||0),limit=Math.max(0,Number(continuityMinutes)||0),h=Math.max(0,Number(horizon)||0);
+  if(!fieldAvailable||m<=0)return'none';
+  if(guidanceOk&&m<=h)return'flow';
+  if(m<=limit)return'persistence';
+  return'none';
+}
 export function evaluateOverlaySourceState({enabled=false,context=true,verified=false,loaded=0,errors=0}={}){
   if(!enabled)return'disabled';
   if(!context)return'hidden';

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer} from '../rain/radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
@@ -260,4 +260,33 @@ test('RainETA lightning browser path is same-origin proxy only',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/const LIGHTNING_PROXY_URL='\/api\/rain-lightning'/);
   assert.doesNotMatch(app,/const LIGHTNING_WMS_URL='https:\/\/maps\.dwd\.de/);
+});
+
+
+test('radar +1 keeps decoded field by persistence when motion guidance is uncertain',()=>{
+  assert.equal(radarProjectionRenderMode({minutes:1,fieldAvailable:true,guidanceOk:false,horizon:0,continuityMinutes:3}),'persistence');
+  assert.equal(radarProjectionRenderMode({minutes:3,fieldAvailable:true,guidanceOk:false,horizon:0,continuityMinutes:3}),'persistence');
+  assert.equal(radarProjectionRenderMode({minutes:4,fieldAvailable:true,guidanceOk:false,horizon:0,continuityMinutes:3}),'none');
+});
+
+test('radar uses local flow when guidance is reliable and never needs persistence',()=>{
+  assert.equal(radarProjectionRenderMode({minutes:1,fieldAvailable:true,guidanceOk:true,horizon:30,continuityMinutes:3}),'flow');
+  assert.equal(radarProjectionRenderMode({minutes:20,fieldAvailable:true,guidanceOk:true,horizon:30,continuityMinutes:3}),'flow');
+  assert.equal(radarProjectionRenderMode({minutes:31,fieldAvailable:true,guidanceOk:true,horizon:30,continuityMinutes:3}),'none');
+});
+
+test('uncertain nowcast retains projectionField and future swap is nonblank-first',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/const base=\{[^\n]*projectionField\};/);
+  assert.match(app,/mode==='persistence'/);
+  const add=app.indexOf("state.map.addLayer({\n      id:'raineta-radar-projection'");
+  const remove=app.indexOf("removeRadarLayer('raineta-radar');",add);
+  assert.ok(add>=0&&remove>add);
+  assert.match(app,/projected canvas unexpectedly empty/);
+});
+
+test('lightning mode desaturates radar precipitation to grayscale',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/setPaintProperty\(id,'raster-saturation',gray\?-1:0\)/);
+  assert.match(app,/state\.lightningEnabled&&lightningContextVisible\(\)\?-1:0/);
 });
