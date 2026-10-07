@@ -1,4 +1,4 @@
-# RainETA v0.17.6
+# RainETA v0.17.7
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,13 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Frescura de runs meteorológicos v0.17.7
+- RainETA consulta la metadata pública de actualización de Open-Meteo para los modelos donde existe una correspondencia de dominio fiable.
+- Un modelo cuya metadata confirme que ha superado su cadencia normal de actualización más **20 min de gracia** queda marcado como **DESACTUALIZADO** y se excluye del consenso y del recuento de fuentes sanas.
+- Si la metadata falla, es parcial o Open-Meteo no publica una correspondencia exacta (por ejemplo el producto ECMWF ENS Europe nativo), RainETA usa estado **frescura no verificable** y no elimina el modelo a ciegas.
+- En modelos *seamless* con varios dominios de respaldo, basta con que uno de los dominios monitorizados esté actualizado para mantener el producto operativo; solo se declara stale cuando todos los dominios comprobables están retrasados.
+- El panel Fuentes muestra el run verificado o el retraso detectado. Las consultas de metadata son ligeras y no añaden funciones Vercel.
 
 ## Quórum mínimo de modelos v0.17.6
 - Una señal ordinaria respaldada por **una sola familia meteorológica** ya no crea por sí sola un episodio de lluvia con ETA: se degrada a riesgo posible.
