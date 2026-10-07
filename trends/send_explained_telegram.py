@@ -277,7 +277,7 @@ def keyboard(tid,rev,text,ai_url="",archive_url="",search_term="",timeout_fallba
 
 
 
-def cross_quote_keyboard(tid,rev,text,search_url):
+def cross_quote_keyboard(tid,rev,text,search_url,timeout_fallback=False):
     if len(text)<=256:
         copy_button={"text":"📋 Copiar texto","copy_text":{"text":text}}
     else:
@@ -291,6 +291,7 @@ def cross_quote_keyboard(tid,rev,text,search_url):
             {"text":"🔎 Buscar en @ttittulares","url":search_url},
             {"text":"🔄 Reexplicar","url":reexplain_url(tid,rev)},
         ],
+        *([[{"text":"🔄 Reenviar a Listas","callback_data":f"tx:r:{tid}:{rev}"}]] if timeout_fallback else []),
         [
             {"text":"🗑️ Desestimar","callback_data":f"tx:d:{tid}:{rev}"},
             {"text":"✅ Publicado","callback_data":f"tx:p:{tid}:{rev}"},
@@ -421,7 +422,7 @@ def run_send(patch_path):
             cross=cross_quote_for_trend(row,text,tti_deliveries)
             cross_mid=0
             if cross:
-                ckb=cross_quote_keyboard(tid,rev,cross["text"],cross["search_url"])
+                ckb=cross_quote_keyboard(tid,rev,cross["text"],cross["search_url"],timeout_fallback=True)
                 cmsg=send_text(
                     token,chat,
                     "🔁 CITA CRUZADA · citar @ttittulares\n\n"
@@ -570,8 +571,10 @@ def run_send(patch_path):
         if got.lower()!=ai_sha:
             raise RuntimeError(f"{tid}: SHA256 IA no coincide")
 
-        cross=cross_quote_for_trend(row,text,tti_deliveries)
+        cross=None
         cross_mid=0
+        if not int((timeout_archive or {}).get("cross_quote_message_id") or 0):
+            cross=cross_quote_for_trend(row,text,tti_deliveries)
         if cross:
             ckb=cross_quote_keyboard(tid,rev,cross["text"],cross["search_url"])
             cmsg=send_text(
@@ -688,9 +691,9 @@ def selftest():
         raise SystemExit("SELFTEST botón archivo no debe aparecer sin archivo")
     if "🔎 Buscar en X" in labels2:
         raise SystemExit("SELFTEST búsqueda X no debe aparecer sin término")
-    ck=cross_quote_keyboard("abc123",2,"Lo contamos en @ttittulares: Demo completa.","https://x.com/search?q=from%3Attittulares+Demo")
+    ck=cross_quote_keyboard("abc123",2,"Lo contamos en @ttittulares: Demo completa.","https://x.com/search?q=from%3Attittulares+Demo",timeout_fallback=True)
     clabels=[b.get("text") for row in ck.get("inline_keyboard",[]) for b in row]
-    if "🖼️ Copiar imagen IA" in clabels or "🔎 Buscar en @ttittulares" not in clabels:
+    if "🖼️ Copiar imagen IA" in clabels or "🔎 Buscar en @ttittulares" not in clabels or "🔄 Reenviar a Listas" not in clabels:
         raise SystemExit("SELFTEST cita cruzada incorrecta")
     print("TTENDENCIAS_TELEGRAM_SELFTEST_OK",flush=True)
 
