@@ -192,9 +192,37 @@ async function requestTtiImageRetry(eventId,currentMessageId,chatId){
     return doc;
   });
   const current=Number(currentMessageId||0); if(current&&!mids.includes(current))mids.push(current);
+
+  // El borrado directo puede fallar de forma transitoria. Registramos SIEMPRE
+  // los mensajes en la cola fiable de limpieza; el workflow los borra con el
+  // mismo bot y deja trazabilidad de éxito/error.
+  if(mids.length){
+    await mutateJsonFile("telegram/delete-message-queue.json","Encolar limpieza tras reenviar a Listas",(doc)=>{
+      doc.items=Array.isArray(doc.items)?doc.items:[];
+      const known=new Set(doc.items.filter(x=>String(x.status||"")==="pending").map(x=>Number(x.message_id||0)));
+      for(const mid of mids){
+        if(known.has(mid))continue;
+        doc.items.push({
+          message_id:mid,
+          event_id:id,
+          reason:"retry_to_listas",
+          status:"pending",
+          queued_at:now
+        });
+        known.add(mid);
+      }
+      doc.updated_at=now;
+      return doc;
+    });
+  }
+
   await dispatchWorkflow("repair-ttittulares-listas.yml");
-  for(const mid of mids)await safeTelegram("deleteMessage",{chat_id:chatId,message_id:mid});
-  return {ok:true,event_id:id,retry:true,deleted:mids.length};
+  let directDeleted=0;
+  for(const mid of mids){
+    const out=await safeTelegram("deleteMessage",{chat_id:chatId,message_id:mid});
+    if(out!==null)directDeleted++;
+  }
+  return {ok:true,event_id:id,retry:true,delete_requested:mids.length,direct_deleted:directDeleted};
 }
 
 async function requestTrendImageRetry(trendId,revision,currentMessageId,chatId){
