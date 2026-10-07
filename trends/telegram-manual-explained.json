@@ -35177,9 +35177,9 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_pending": false,
       "rewrite_pending": false,
       "fallback_image_status": "ready",
@@ -35193,13 +35193,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://static.eldiario.es/clip/8d756c4a-03d0-4736-a63b-f7afb2be6a81_facebook-aspect-ratio-1200-675_default_0_x1115y343.jpg",
-        "source": "elDiario.es · 7/10/2026",
-        "source_url": "https://www.eldiario.es/politica/monica-garcia-renuncia-candidata-frente-amplio-favor-ada-colau-pide-liderar-lista-madrid_1_13569737.html",
-        "alt": "Imagen de archivo relacionada con Ada Colau",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/36a6f15af1f8-r0-ai1-791387432436.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "62164b89b94e245986911d137fed5db0d1f9f60deb3b21b8951f1a82351de690",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2903047,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "36a6f15af1f8",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-36a6f15af1f8-r0-a1-1791387432436"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/36a6f15af1f8-r0-ai1-791387432436.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/36a6f15af1f8-r0-ai1-791387432436.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "62164b89b94e245986911d137fed5db0d1f9f60deb3b21b8951f1a82351de690",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2903047,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "36a6f15af1f8",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-36a6f15af1f8-r0-a1-1791387432436"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/36a6f15af1f8-r0-ai1-791387432436.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T15:39:27.254Z"
     },
     {
       "id": "fb7c22073523",
@@ -35438,6 +35477,6 @@
       "fallback_image_status": "pending"
     }
   ],
-  "updated_at": "2026-10-07T17:37:00+02:00",
+  "updated_at": "2026-10-07T15:39:27.254Z",
   "count": 633
 }
