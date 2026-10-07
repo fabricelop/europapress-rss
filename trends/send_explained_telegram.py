@@ -18,7 +18,7 @@ BOT_STATE=ROOT/"trends/telegram-bot-state.json"
 ARCHIVE_DIR=ROOT/"trends/archive-images"
 WORKER="https://tt-control.fabricelop.workers.dev"
 APP_URL=str(os.environ.get("TTENDENCIAS_APP_URL") or "https://europapress-rss-fabricelopezillac-9660.vercel.app").rstrip("/")
-BUTTONS_VERSION=4
+BUTTONS_VERSION=5
 TERMINAL={"published","dismissed"}
 
 
@@ -165,6 +165,13 @@ def send_photo(token,chat,raw,caption,keyboard=None):
     return telegram_api(token,"sendPhoto",data,{"photo":("ttendencias"+ext,raw,mime)})
 
 
+def send_text(token,chat,text,keyboard=None):
+    payload={"chat_id":str(chat),"text":text,"disable_web_page_preview":True}
+    if keyboard:
+        payload["reply_markup"]=keyboard
+    return telegram_api(token,"sendMessage",payload)
+
+
 def edit_keyboard(token,chat,message_id,keyboard):
     try:
         return telegram_api(token,"editMessageReplyMarkup",{
@@ -202,10 +209,15 @@ def reexplain_url(tid,rev):
     })
 
 
-def keyboard(tid,rev,text,ai_url,archive_url="",search_term=""):
-    rows=[[{"text":"🖼️ Copiar imagen IA","url":q(WORKER+"/copy-image",{"src":ai_url})}]]
-    if archive_url:
-        rows.append([{"text":"🗂️ Copiar imagen archivo","url":q(WORKER+"/copy-image",{"src":archive_url})}])
+def keyboard(tid,rev,text,ai_url="",archive_url="",search_term="",timeout_fallback=False):
+    rows=[]
+    if timeout_fallback:
+        if archive_url:
+            rows.append([{"text":"🗂️ Copiar imagen archivo","url":q(WORKER+"/copy-image",{"src":archive_url})}])
+    else:
+        rows.append([{"text":"🖼️ Copiar imagen IA","url":q(WORKER+"/copy-image",{"src":ai_url})}])
+        if archive_url:
+            rows.append([{"text":"🗂️ Copiar imagen archivo","url":q(WORKER+"/copy-image",{"src":archive_url})}])
     if len(text)<=256:
         copy_button={"text":"📋 Copiar texto","copy_text":{"text":text}}
     else:
@@ -219,6 +231,8 @@ def keyboard(tid,rev,text,ai_url,archive_url="",search_term=""):
         action_row.append({"text":"🔎 Buscar en X","url":x_search_url(search_term)})
     action_row.append({"text":"🔄 Reexplicar","url":reexplain_url(tid,rev)})
     rows.append(action_row)
+    if timeout_fallback:
+        rows.append([{"text":"🔄 Reenviar a Listas","callback_data":f"tx:r:{tid}:{rev}"}])
     rows.append([
         {"text":"🗑️ Desestimar","callback_data":f"tx:d:{tid}:{rev}"},
         {"text":"✅ Publicado","callback_data":f"tx:p:{tid}:{rev}"}
@@ -271,8 +285,6 @@ def run_send(patch_path):
                 continue
         except Exception:
             continue
-        if not valid_ai(row):
-            continue
         tid=str(row.get("id") or "").strip()
         rev=int(row.get("revision") or 0)
         if not tid:
@@ -282,6 +294,70 @@ def run_send(patch_path):
             continue
         if len(text)>280:
             print("TTENDENCIAS_TELEGRAM_SKIP_LONG",tid,len(text),flush=True)
+            continue
+
+        ai_ok=valid_ai(row)
+        retry_version=int(row.get("ai_image_regenerate_request_version") or 0)
+        retry_at=None
+        try:
+            if row.get("ai_image_regenerate_requested_at"):
+                retry_at=datetime.fromisoformat(str(row.get("ai_image_regenerate_requested_at")).replace("Z","+00:00")).astimezone(timezone.utc)
+        except Exception:
+            retry_at=None
+        wait_from=max([x for x in (at,retry_at) if x is not None])
+        timeout_ready=(datetime.now(timezone.utc)-wait_from)>=timedelta(minutes=90)
+
+        if not ai_ok:
+            if not timeout_ready:
+                continue
+            key=f"{tid}:r{rev}:timeout:v{retry_version}"
+            existing=next((d for d in reversed(deliveries.get("items",[])) if str(d.get("delivery_key") or "")==key),None)
+            if existing and str(existing.get("status") or "").lower() in {"sent","published","dismissed","retry_requested","superseded"}:
+                continue
+
+            archive=image_source(row)
+            archive_src=str(archive.get("url") or "").strip()
+            archive_copy_url=""
+            archive_sha=""
+            archive_raw=None
+            if archive_src:
+                try:
+                    archive_raw=fetch_image(archive_src)
+                    archive_sha,_,archive_copy_url=materialize_archive(tid,rev,archive_raw)
+                except Exception as e:
+                    print("TTENDENCIAS_TIMEOUT_ARCHIVE_WARNING",tid,str(e),flush=True)
+                    archive_raw=None
+
+            kb=keyboard(tid,rev,text,"",archive_copy_url,trend_search_term(row),timeout_fallback=True)
+            note="\n\n⏳ Más de 90 min sin imagen IA."
+            if archive_raw:
+                msg=send_photo(token,chat,archive_raw,text+note,kb)
+            else:
+                msg=send_text(token,chat,text+note,kb)
+            mid=int(msg.get("message_id") or 0)
+            delivery={
+                "delivery_key":key,
+                "event_id":tid,
+                "revision":rev,
+                "name":str(row.get("name") or ""),
+                "telegram_message_id":mid,
+                "delivered_at":nowz(),
+                "status":"sent",
+                "buttons_version":BUTTONS_VERSION,
+                "timeout_fallback":True,
+                "timeout_retry_version":retry_version,
+                "timeout_wait_from":wait_from.isoformat().replace("+00:00","Z"),
+            }
+            if archive_src:
+                delivery.update({
+                    "archive_image_url":archive_src,
+                    "archive_materialized_url":archive_copy_url,
+                    "archive_sha256":archive_sha,
+                })
+            deliveries["items"].append(delivery)
+            changed.add(key)
+            touched+=1
+            print("TTENDENCIAS_TELEGRAM_TIMEOUT_SENT",tid,mid,"archive",bool(archive_raw),flush=True)
             continue
 
         ai=row.get("ai_image") or {}
@@ -301,11 +377,21 @@ def run_send(patch_path):
         if exact and str(exact.get("status") or "").lower() in TERMINAL:
             continue
 
+        # Si el aviso provisional de 90 min seguía visible, la IA real lo sustituye.
+        if event_sent and event_sent.get("timeout_fallback"):
+            try:
+                telegram_api(token,"deleteMessage",{"chat_id":str(chat),"message_id":int(event_sent.get("telegram_message_id") or 0)})
+            except Exception as e:
+                print("TTENDENCIAS_TIMEOUT_DELETE_WARNING",tid,str(e),flush=True)
+            event_sent["status"]="superseded"
+            event_sent["superseded_at"]=nowz()
+            changed.add(str(event_sent.get("delivery_key") or ""))
+
         archive=image_source(row)
         archive_src=str(archive.get("url") or "").strip()
-        archive_mid=int((exact or event_sent or {}).get("archive_telegram_message_id") or 0)
-        archive_copy_url=str((exact or event_sent or {}).get("archive_materialized_url") or "")
-        archive_sha=str((exact or event_sent or {}).get("archive_sha256") or "")
+        archive_mid=int((exact or {}).get("archive_telegram_message_id") or 0)
+        archive_copy_url=str((exact or {}).get("archive_materialized_url") or "")
+        archive_sha=str((exact or {}).get("archive_sha256") or "")
 
         if archive_src and not archive_copy_url:
             try:
