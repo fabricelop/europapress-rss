@@ -196,7 +196,28 @@ async function writeControlJson(path,doc,sha,message){
 }
 
 async function readMainJsonWithSha(path){
-  return readRawJsonWithSha(path,MAIN_BRANCH)
+  // Las escrituras de imagen necesitan el SHA autoritativo. RAW/CDN puede
+  // quedar unos segundos atrás y convertir reintentos válidos en una cadena
+  // de 409 "does not match". Igual que TTendencias, usamos Contents API aquí.
+  const u="https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+encodeURIComponent(MAIN_BRANCH)+"&t="+Date.now();
+  const r=await gh(u,{cache:"no-store",headers:{"cache-control":"no-cache"}});
+  if(r.status===404)return {sha:null,doc:null};
+  if(!r.ok)throw new Error("GitHub main GET "+path+": "+r.status+" "+await r.text());
+  const file=await r.json();
+  let encoded=String(file.content||"").replace(/\n/g,"");
+  // Contents API puede dejar content vacío en ficheros grandes; el blob por SHA
+  // sigue siendo autoritativo y evita volver a RAW.
+  if(!encoded&&file.sha){
+    const br=await gh("https://api.github.com/repos/"+REPO+"/git/blobs/"+encodeURIComponent(file.sha),{
+      cache:"no-store",headers:{"cache-control":"no-cache"}
+    });
+    if(!br.ok)throw new Error("GitHub blob GET "+path+": "+br.status+" "+await br.text());
+    const blob=await br.json();
+    encoded=String(blob.content||"").replace(/\n/g,"");
+  }
+  const raw=Buffer.from(encoded,"base64").toString("utf8");
+  if(!raw.trim())throw new Error("GitHub main GET "+path+": contenido vacío");
+  return {sha:String(file.sha||"")||null,doc:JSON.parse(raw)}
 }
 async function readMainJson(path){
   const x=await readMainJsonWithSha(path);
