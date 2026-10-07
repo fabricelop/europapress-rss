@@ -662,7 +662,7 @@ function Publish-ImageTargetHint([string]$BeforeSnapshot,[string]$HintPath,[stri
         captured_at=[DateTimeOffset]::UtcNow.ToString("o")
       } | ConvertTo-Json -Compress | Set-Content -LiteralPath $HintPath -Encoding UTF8
       Write-Log "IMAGE TARGET HANDOFF command=$CommandId target_id=$([string]$candidate.id) url=$([string]$candidate.url)"
-      return $true
+      return [string]$candidate.id
     }
 
     Write-Log "IMAGE TARGET HANDOFF MISS command=$CommandId new=$($new.Count)"
