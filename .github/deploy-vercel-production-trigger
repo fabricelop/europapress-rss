@@ -1,8 +1,0 @@
-TT Apps production deploy trigger
-Reason: reducir consumo Vercel Fluid Active CPU sin romper flujos
-Includes:
-- TTiTTulares: image polling máximo 4 jobs por ciclo
-- Poll activo 20 s, pendiente 60 s, reposo 10 min
-- Refresco pasivo general 10 min
-- Preflight de producción actualizado a 6 funciones consolidadas
-Source optimization commit: 6981345b11afe61c90ca279a4fa0408006745261
