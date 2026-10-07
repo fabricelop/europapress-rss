@@ -1,6 +1,12 @@
-# RainETA v0.17.31
+# RainETA v0.17.32
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
+
+## Estabilización espacial del flujo local v0.17.32
+- Al combinar varios barridos, los vectores locales se agrupan por su coordenada real de rejilla. Si una zona desaparece por baja confianza en un barrido, ya no se empareja accidentalmente con la siguiente zona de la lista.
+- Cada vector conserva persistencia y número de muestras; los vectores vistos en varios barridos ganan estabilidad y los aislados pierden peso.
+- Se añade una prueba de regresión específica para impedir que reaparezca este cruce de celdas.
+
 
 ## Rayos EUMETSAT v0.17.31
 - El mapa incorpora un botón opcional `⚡ RAYOS` basado en Meteosat Third Generation Lightning Imager (EUMETSAT), capa de actividad eléctrica acumulada en 5 min.
