@@ -248,7 +248,7 @@ jobs:
               ])
               return {"inline_keyboard":rows}
 
-          def cross_quote_keyboard(eid,text,search_url):
+          def cross_quote_keyboard(eid,text,search_url,timeout_fallback=False):
               if len(text)<=256:
                   copy_button={"text":"📋 Copiar tuit","copy_text":{"text":text}}
               else:
@@ -259,6 +259,7 @@ jobs:
                       {"text":"✍️ Abrir en X","url":"https://tt-control.fabricelop.workers.dev/x-compose?"+urllib.parse.urlencode({"text":text})}
                   ],
                   [{"text":"🔎 Buscar en @ttendenciasesp","url":search_url}],
+                  *([[{"text":"🔄 Reenviar a Listas","callback_data":"tt:r:"+eid}]] if timeout_fallback else []),
                   [
                       {"text":"🗑 Desestimar","callback_data":"tt:d:"+eid},
                       {"text":"✅ Publicado","callback_data":"tt:p:"+eid}
@@ -356,7 +357,7 @@ jobs:
                   cross=cross_quote_for_item(item,tweet)
                   cross_mid=0
                   if cross:
-                      ckb=cross_quote_keyboard(eid,cross["text"],cross["search_url"])
+                      ckb=cross_quote_keyboard(eid,cross["text"],cross["search_url"],timeout_fallback=True)
                       cmsg=send_text(
                           "🔁 CITA CRUZADA · citar @ttendenciasesp\n\n"
                           +cross["text"]+f"\n\n{len(cross['text'])}/280",
@@ -501,8 +502,10 @@ jobs:
               got=hashlib.sha256(raw).hexdigest()
               if got.lower()!=image_sha:
                   raise SystemExit(f"{eid}: SHA256 IA no coincide")
-              cross=cross_quote_for_item(item,tweet)
+              cross=None
               cross_mid=0
+              if not int((timeout_archive or {}).get("cross_quote_message_id") or 0):
+                  cross=cross_quote_for_item(item,tweet)
               if cross:
                   ckb=cross_quote_keyboard(eid,cross["text"],cross["search_url"])
                   cmsg=send_text(
