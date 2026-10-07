@@ -39,7 +39,7 @@ function Navigate-CdpToChat {
 
   $deadline=(Get-Date).AddSeconds(20)
   while((Get-Date) -lt $deadline){
-    if(Test-ChatTarget){return $true}
+    if(Test-ChatTarget){break}
     Start-Sleep -Milliseconds 700
   }
 
