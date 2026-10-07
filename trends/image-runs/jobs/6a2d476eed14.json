@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-6a2d476eed14-r0-a6-1791341254753",
-  "requested_at": "2026-10-07T02:47:34.751910Z",
-  "updated_at": "2026-10-07T02:54:49.284Z",
-  "status": "RUNNING",
-  "phase": "pc_pickup",
+  "command_id": "tr-img-auto-6a2d476eed14-r0-a7-1791346617845",
+  "requested_at": "2026-10-07T04:16:57.844225Z",
+  "updated_at": "2026-10-07T04:16:57.844225Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,9 +14,9 @@
   "trend_id": "6a2d476eed14",
   "target_name": "Maradona",
   "revision": 0,
-  "attempt": 6,
+  "attempt": 7,
   "auto_repair": true,
-  "auto_repair_attempt": 6,
+  "auto_repair_attempt": 7,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
@@ -31,9 +31,9 @@
     "rank_at_explanation": 5,
     "explained_at": "2026-10-06T21:50:42.629Z",
     "verification_sources": [],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
-    "image_style_name": "stop_motion",
-    "image_style_index": 4
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
@@ -42,8 +42,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "PC ha recogido la solicitud de imagen.",
-  "pc_upload_secret_hash": "b342af3ad8a25261a180d7b4a6d4dd223bac1bf66fde7617acafcaefb575ef43",
-  "pc_worker_id": "ttendencias-dedicated-v16",
-  "pc_picked_up_at": "2026-10-07T02:54:49.284Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
