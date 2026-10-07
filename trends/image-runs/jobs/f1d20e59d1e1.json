@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-f1d20e59d1e1-r0-a1-1791336385421",
+  "requested_at": "2026-10-07T01:26:25.420366Z",
+  "updated_at": "2026-10-07T01:26:25.420366Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "f1d20e59d1e1",
+  "trend_id": "f1d20e59d1e1",
+  "target_name": "Nico Paz",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Nico Paz",
+    "revision": 0,
+    "explanation": "TT#8 Nico Paz es tendencia porque marcó el 2-0 de Argentina ante Benín, asistido por Messi, en la despedida del 10; la Albiceleste ganó 3-0 y Paz vuelve al centro del debate sobre quién heredará ese dorsal.\n🌶️ Messi le dejó una asistencia y medio testamento.",
+    "closer_text": "🌶️ Messi le dejó una asistencia y medio testamento.",
+    "trend_names": [
+      "Nico Paz"
+    ],
+    "group_title": "Nico Paz",
+    "rank_at_explanation": 8,
+    "explained_at": "2026-10-07T03:26:15+02:00",
+    "verification_sources": [
+      "https://www.tycsports.com/seleccion-argentina/seleccion-argentina-amistoso-benin-gol-nico-paz-asistencia-leo-messi-id764656.html",
+      "https://www.theguardian.com/football/live/2026/oct/06/lionel-messi-farewell-match-live-updates-analysis-argentina-benin",
+      "https://www.infobae.com/deportes/2026/10/04/dibu-martinez-sorprendio-al-revelar-donde-le-gustaria-jugar-su-candidato-a-quedarse-con-el-n-10-de-messi-en-la-seleccion/"
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
+    "image_style_name": "stop_motion",
+    "image_style_index": 4
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
