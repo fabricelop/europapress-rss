@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T06:45:00+02:00",
-  "last_completed_at": "2026-10-07T06:48:05+02:00",
-  "updated_at": "2026-10-07T06:48:05+02:00",
+  "last_started_at": "2026-10-07T07:15:00+02:00",
+  "last_completed_at": "2026-10-07T07:18:00+02:00",
+  "updated_at": "2026-10-07T07:18:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -14,13 +14,13 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-20261007T0645-chat",
+    "run_id": "tr-20261007T0715-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T06:45:00+02:00",
-    "updated_at": "2026-10-07T06:48:05+02:00",
-    "finished_at": "2026-10-07T06:48:05+02:00",
+    "started_at": "2026-10-07T07:15:00+02:00",
+    "updated_at": "2026-10-07T07:18:00+02:00",
+    "finished_at": "2026-10-07T07:18:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -42,7 +42,7 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "fallback_images_ready": 0,
+      "fallback_images_ready": 1,
       "pending_cards_reviewed": 16,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
@@ -64,35 +64,42 @@
       "recent_considered": 100
     },
     "remate_selections": [],
-    "message": "Pasada cerrada 0/0 · no había preparing/update ni rewrite_pending. Se revisaron 16 Pendientes recientes y se disparó su reparación visual independiente; cola autoritativa final 0.",
+    "message": "Pasada cerrada 0/0 · no había preparing/update ni rewrite_pending. Se revisaron 16 Pendientes recientes; el reparador visual terminó con éxito y encoló 5 jobs IA. Cola autoritativa final 0.",
     "activity": [
       {
-        "at": "2026-10-07T06:45:00+02:00",
+        "at": "2026-10-07T07:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada directa · cola editorial inicial 0; comprobando reexplicaciones y Pendientes."
       },
       {
-        "at": "2026-10-07T06:46:00+02:00",
+        "at": "2026-10-07T07:16:39+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 16 tarjetas vigentes de menos de 24 h; reparación visual solicitada."
+        "message": "Reparación visual solicitada · workflow 37575509813 iniciado desde el trigger oficial."
       },
       {
-        "at": "2026-10-07T06:47:23+02:00",
+        "at": "2026-10-07T07:17:43+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0."
+        "message": "Revisando Pendientes · 16 tarjetas examinadas; 1 archivo listo y 15 sin archivo nuevo."
       },
       {
-        "at": "2026-10-07T06:48:05+02:00",
+        "at": "2026-10-07T07:17:44+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación visual completada · 5 jobs IA encolados para revisiones sin IA válida."
+      },
+      {
+        "at": "2026-10-07T07:18:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 0/0 · estado textual verificado y saneamiento visual solicitado para 16 Pendientes."
+        "message": "Pasada cerrada 0/0 · cola final 0 y saneamiento visual completado correctamente."
       }
     ]
   },
@@ -101,12 +108,15 @@
     "persisted_trigger": true,
     "status": "triggered_successfully",
     "direct_imagegen": false,
-    "trigger_commit": "3b2a686e06513d8049d852ec756cfbca04e05cb4",
-    "workflow_run_id": 37570948180,
+    "trigger_commit": "16e7561e79d032084c0a4b9d44733df976acc067",
+    "workflow_run_id": 37575509813,
     "workflow_conclusion": "success",
-    "last_trigger_run_id": "tr-20261007T0645-chat",
-    "last_triggered_at": "2026-10-07T06:45:00+02:00",
-    "pending_cards_reviewed": 16
+    "last_trigger_run_id": "tr-20261007T0715-chat",
+    "last_triggered_at": "2026-10-07T07:15:00+02:00",
+    "pending_cards_reviewed": 16,
+    "ai_jobs_queued": 5,
+    "archive_ready": 1,
+    "control_commit": "036fb4d39"
   },
   "error": null
 }
