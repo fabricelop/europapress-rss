@@ -1,4 +1,4 @@
-# RainETA v0.17.17
+# RainETA v0.17.18
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,13 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Deformación adaptativa del radar futuro v0.17.18
+- La proyección visual ya no se limita a trasladar y escalar un rectángulo rígido: aplica una deformación afín limitada al campo mostrado.
+- La expansión longitudinal y transversal depende de horizonte, incertidumbre, calidad de evolución y discrepancia entre flujo local y global.
+- El giro reciente y la diferencia de rumbo local/global pueden introducir una cizalla pequeña y acotada, manteniendo siempre un cuadrilátero estable.
+- Los límites duros evitan deformaciones extremas: escala longitudinal ≤1,32, transversal ≤1,20 y cizalla absoluta ≤0,14.
+- El cambio es solo visual: no modifica ETA, nowcast, probabilidades ni confianza meteorológica.
 
 ## Radar futuro más visible v0.17.17
 - La pérdida de opacidad fuera del horizonte fiable se reduce de forma importante: la proyección sigue claramente visible aunque ya sea orientativa.
