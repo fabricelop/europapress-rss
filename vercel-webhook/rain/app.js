@@ -3074,7 +3074,7 @@ function lightningContextVisible(){
   return offset<=0&&offset>=-LIGHTNING_CONTEXT_MINUTES;
 }
 function updateLightningVisibility(){
-  const button=$('radarLightning'),context=lightningContextVisible();
+  const button=$('radarLightning'),status=$('lightningStatus'),context=lightningContextVisible();
   if(button){
     button.classList.toggle('active',Boolean(state.lightningEnabled));
     button.classList.toggle('contextOff',Boolean(state.lightningEnabled&&!context));
@@ -3082,6 +3082,15 @@ function updateLightningVisibility(){
     button.title=state.lightningEnabled
       ? (context?'Actividad eléctrica MTG LI vía DWD · acumulación 5 min. Si no aparecen trazas, no hay actividad visible en la zona mostrada.':'Los rayos observados solo se muestran cerca de AHORA (últimos 5 min)')
       : 'Mostrar actividad eléctrica MTG Lightning Imager · acumulación 5 min';
+  }
+  if(status){
+    status.classList.toggle('active',Boolean(state.lightningEnabled&&context));
+    status.classList.toggle('muted',Boolean(!state.lightningEnabled||!context));
+    status.textContent=!state.lightningEnabled
+      ? 'Rayos desactivados'
+      : !context
+        ? 'Rayos MTG ocultos fuera de AHORA'
+        : 'Rayos MTG activos · acumulación 5 min · si no ves trazas, no hay actividad visible en esta zona';
   }
   if(!state.map||!state.mapLoaded)return;
   const shouldShow=Boolean(state.lightningEnabled&&context);
@@ -3096,7 +3105,12 @@ function updateLightningVisibility(){
       if(button){
         button.classList.remove('active');
         button.classList.add('contextOff');
-        button.title='Capa EUMETSAT no disponible temporalmente';
+        button.title='Capa de rayos no disponible temporalmente';
+      }
+      if(status){
+        status.classList.remove('active');
+        status.classList.add('muted');
+        status.textContent='Rayos MTG: capa no disponible temporalmente';
       }
     }
   }else if(state.map.getLayer('raineta-lightning')){
