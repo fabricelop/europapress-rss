@@ -29,7 +29,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /trends/telegram-manual-explained.json
+            /trends/telegram-image-deliveries.json
+            /trends/telegram-bot-state.json
+            /trends/explained-copy-state.json
+            /trends/send_explained_telegram.py
+            /trends/archive-images/
+            /telegram/ttittulares-deliveries.json
+            /shared/cross_account_story.py
 
       - name: Sincronizar main
         run: |
