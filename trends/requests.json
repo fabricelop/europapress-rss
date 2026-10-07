@@ -35091,10 +35091,10 @@
       "id": "c6001a65c2ab",
       "name": "George Floyd",
       "rank": 2,
-      "status": "problematic",
-      "requested_at": "2026-10-07T21:41:55+02:00",
-      "revision": 0,
-      "reexplain": false,
+      "status": "update",
+      "requested_at": "2026-10-07T20:40:46.306Z",
+      "revision": 1,
+      "reexplain": true,
       "with_image": true,
       "alternatives_target": 0,
       "batch_id": "07eb9bcbb58f",
@@ -35106,9 +35106,7 @@
       ],
       "auto_queued": true,
       "last_attempt_at": "2026-10-07T21:52:20+02:00",
-      "problematic_at": "2026-10-07T22:33:48+02:00",
       "problematic_attempts": 2,
-      "problem_reason": "Segundo intento: las búsquedas frescas solo permiten localizar un vídeo viral de Hondarribia comparado con George Floyd, pero no una fuente fiable que identifique y verifique el hecho subyacente. No hay base suficiente para explicar el detonante actual sin inferir o inventar hechos.",
       "source": "editorial_chat_direct",
       "verification_sources": [
         {
@@ -35124,13 +35122,15 @@
           "url": "https://finofilipino.org/en-hondarribia-ya-tienen-su-propio-george-floyd/"
         }
       ],
-      "disable_ai_image": true,
-      "image_strategy": "none",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
       "ai_image_status": "disabled",
       "image_status": "none",
       "image_pending": false,
       "fallback_image_status": "none",
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "rewrite_instruction": "Mari carmen, la George  Floyd de la izquierda",
+      "rewrite_with_image": true
     },
     {
       "id": "a65f3cc3c77c",
@@ -36148,6 +36148,6 @@
       "disable_ai_image": false
     }
   ],
-  "updated_at": "2026-10-07T22:33:48+02:00",
+  "updated_at": "2026-10-07T20:40:46.306Z",
   "count": 683
 }
