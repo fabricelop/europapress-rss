@@ -168,13 +168,18 @@ export function classifyRainHour(point={},{
 }={}){
   const probability=Math.max(0,Number(point.probability)||0);
   const expected=Math.max(0,Number(point.expectedPrecipitation)||0);
-  const wet=
+  const families=Number(point.independentFamilyCount);
+  const singleFamily=Number.isFinite(families)&&families===1;
+  const wetSignal=
     (probability>=minimumProbability&&expected>=minimumExpected)||
     (probability>=strongProbability&&expected>=strongExpected)||
     (probability>=veryStrongProbability&&expected>=veryStrongExpected)||
     expected>=heavyExpected;
+  const singleFamilyStrong=expected>=heavyExpected||(probability>=.90&&expected>=.15);
+  const wet=wetSignal&&(!singleFamily||singleFamilyStrong);
   if(wet)return'wet';
   const possible=
+    wetSignal||
     (probability>=possibleProbability&&expected>=possibleExpected)||
     (probability>=.58&&expected>=.012)||
     expected>=.15;
@@ -230,11 +235,17 @@ export function detectRainEvents(points=[],options={}){
     const character=durationHours>=5&&variation<.45?'persistente':variation>.8?'por pulsos':'variable';
     const horizonHours=Math.max(0,(Date.parse(points[startIndex].time)-Date.now())/3_600_000);
     const horizonPadding=horizonHours<6?1:horizonHours<24?2:3;
+    const confidencePadding=meanTimingConfidence<.45?2:meanTimingConfidence<.65?1:0;
+    const windowPadding=Math.max(0,horizonPadding-1)+confidencePadding;
     const startWindow=findBoundaryWindow(points,startIndex,'start',.28,.70);
     const endWindow=findBoundaryWindow(points,endIndex,'end',.28,.70);
     if(startWindow.earliest&&startWindow.latest){
-      startWindow.earliest=new Date(Date.parse(startWindow.earliest)-Math.max(0,horizonPadding-1)*3_600_000).toISOString();
-      startWindow.latest=new Date(Date.parse(startWindow.latest)+Math.max(0,horizonPadding-1)*3_600_000).toISOString();
+      startWindow.earliest=new Date(Date.parse(startWindow.earliest)-windowPadding*3_600_000).toISOString();
+      startWindow.latest=new Date(Date.parse(startWindow.latest)+windowPadding*3_600_000).toISOString();
+    }
+    if(endWindow.earliest&&endWindow.latest&&windowPadding>0){
+      endWindow.earliest=new Date(Date.parse(endWindow.earliest)-windowPadding*3_600_000).toISOString();
+      endWindow.latest=new Date(Date.parse(endWindow.latest)+windowPadding*3_600_000).toISOString();
     }
     const likelyEndMs=Date.parse(points[endIndex].time)+3_600_000;
     events.push({

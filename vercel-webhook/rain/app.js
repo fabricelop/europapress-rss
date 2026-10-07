@@ -2,23 +2,24 @@ import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourE
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
 
 const DET_MODELS=[
-  {id:'ecmwf_ifs',label:'ECMWF IFS 9 km',family:'ECMWF',weight:1.32},
-  {id:'ecmwf_aifs025',label:'ECMWF AIFS',family:'ECMWF',weight:1.05},
-  {id:'icon_seamless',label:'DWD ICON',family:'DWD',weight:1.10},
-  {id:'gfs_seamless',label:'NOAA GFS',family:'NOAA',weight:.90},
-  {id:'meteofrance_seamless',label:'Météo-France',family:'METEOFRANCE',weight:1.00},
-  {id:'gem_seamless',label:'CMC GEM',family:'CMC',weight:.75},
-  {id:'ukmo_global_deterministic_10km',label:'UKMO Global 10 km',family:'UKMO',weight:1.02},
+  {id:'ecmwf_ifs',label:'ECMWF IFS 9 km',family:'ECMWF',weight:1.32,metaDomains:['ecmwf_ifs025']},
+  {id:'ecmwf_aifs025',label:'ECMWF AIFS',family:'ECMWF',weight:1.05,metaDomains:['ecmwf_aifs025']},
+  {id:'icon_seamless',label:'DWD ICON',family:'DWD',weight:1.10,metaDomains:['dwd_icon_eu','dwd_icon']},
+  {id:'gfs_seamless',label:'NOAA GFS',family:'NOAA',weight:.90,metaDomains:['ncep_gfs013','ncep_gfs025']},
+  {id:'meteofrance_seamless',label:'Météo-France',family:'METEOFRANCE',weight:1.00,metaDomains:['meteofrance_arpege_europe','meteofrance_arpege_world025']},
+  {id:'gem_seamless',label:'CMC GEM',family:'CMC',weight:.75,metaDomains:['cmc_gem_gdps']},
+  {id:'ukmo_global_deterministic_10km',label:'UKMO Global 10 km',family:'UKMO',weight:1.02,metaDomains:['ukmo_global_deterministic_10km']},
 ];
 const ENS_MODELS=[
-  {id:'ecmwf_ifs_europe_ensemble',label:'ECMWF ENS Europe 9 km',family:'ECMWF',weight:1.30},
-  {id:'ecmwf_aifs025_ensemble',label:'ECMWF AIFS ENS',family:'ECMWF',weight:1.00},
-  {id:'dwd_icon_eu_eps',label:'ICON-EU EPS',family:'DWD',weight:1.10},
-  {id:'ncep_gefs025',label:'NOAA GEFS',family:'NOAA',weight:.90},
-  {id:'ukmo_global_ensemble_20km',label:'UKMO MOGREPS-G',family:'UKMO',weight:.95},
-  {id:'gem_global_ensemble',label:'CMC GEPS',family:'CMC',weight:.82},
-  {id:'bom_access_global_ensemble',label:'BOM ACCESS-GE',family:'BOM',weight:.72},
-  {id:'google_weathernext2_ensemble',label:'Google WeatherNext 2',family:'GOOGLE',weight:.92},
+  // Open-Meteo currently omits exact update metadata for the native Europe IFS ensemble; keep it usable with freshness=unknown instead of guessing.
+  {id:'ecmwf_ifs_europe_ensemble',label:'ECMWF ENS Europe 9 km',family:'ECMWF',weight:1.30,metaDomains:[]},
+  {id:'ecmwf_aifs025_ensemble',label:'ECMWF AIFS ENS',family:'ECMWF',weight:1.00,metaDomains:['ecmwf_aifs025_ensemble']},
+  {id:'dwd_icon_eu_eps',label:'ICON-EU EPS',family:'DWD',weight:1.10,metaDomains:['dwd_icon_eu_eps']},
+  {id:'ncep_gefs025',label:'NOAA GEFS',family:'NOAA',weight:.90,metaDomains:['ncep_gefs025']},
+  {id:'ukmo_global_ensemble_20km',label:'UKMO MOGREPS-G',family:'UKMO',weight:.95,metaDomains:['ukmo_global_ensemble_20km']},
+  {id:'gem_global_ensemble',label:'CMC GEPS',family:'CMC',weight:.82,metaDomains:['cmc_gem_geps']},
+  {id:'bom_access_global_ensemble',label:'BOM ACCESS-GE',family:'BOM',weight:.72,metaDomains:['bom_access_global_ensemble']},
+  {id:'google_weathernext2_ensemble',label:'Google WeatherNext 2',family:'GOOGLE',weight:.92,metaDomains:['google_weathernext2_ensemble']},
 ];
 const FORECAST_TTL=20*60_000;
 const RADAR_REFRESH_MS=5*60_000;
@@ -32,9 +33,10 @@ const RADAR_VISUAL_HORIZON_MINUTES=240;
 const RADAR_STALE_MINUTES=20;
 const OPERA_STALE_MINUTES=30;
 const OPERA_SURFACE_STALE_MINUTES=20;
+const MODEL_META_GRACE_SECONDS=20*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.5';
+const APP_VERSION='0.17.7';
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -174,6 +176,37 @@ async function pool(items,worker,size=3){
 function normalizeHourly(hourly={}){
   return {...hourly,time:Array.isArray(hourly.time)?hourly.time.map(iso):[]};
 }
+function evaluateModelMeta(domain,meta,nowSeconds=Date.now()/1000){
+  const initialisation=Number(meta?.last_run_initialisation_time);
+  const availability=Number(meta?.last_run_availability_time);
+  const interval=Number(meta?.update_interval_seconds);
+  if(!Number.isFinite(availability)||!Number.isFinite(interval)||interval<=0)return null;
+  const delaySeconds=nowSeconds-(availability+interval);
+  return{
+    domain,
+    stale:delaySeconds>MODEL_META_GRACE_SECONDS,
+    delayMinutes:Math.max(0,Math.round(delaySeconds/60)),
+    initialisedAt:Number.isFinite(initialisation)?new Date(initialisation*1000).toISOString():null,
+    availableAt:new Date(availability*1000).toISOString(),
+    updateIntervalMinutes:Math.round(interval/60)
+  };
+}
+async function fetchModelFreshness(model){
+  const domains=Array.isArray(model.metaDomains)?model.metaDomains.filter(Boolean):[];
+  if(!domains.length)return{status:'unknown',reason:'sin metadata exacta para este producto'};
+  const results=await Promise.allSettled(domains.map(async domain=>{
+    const meta=await fetchJson('https://api.open-meteo.com/data/'+domain+'/static/meta.json',3200);
+    return evaluateModelMeta(domain,meta);
+  }));
+  const evaluated=results.filter(x=>x.status==='fulfilled'&&x.value).map(x=>x.value);
+  const fresh=evaluated.filter(x=>!x.stale).sort((a,b)=>Date.parse(b.availableAt)-Date.parse(a.availableAt));
+  if(fresh.length)return{status:'fresh',...fresh[0],checkedDomains:domains.length};
+  if(evaluated.length===domains.length&&evaluated.length){
+    const leastLate=[...evaluated].sort((a,b)=>a.delayMinutes-b.delayMinutes)[0];
+    return{status:'stale',...leastLate,checkedDomains:domains.length};
+  }
+  return{status:'unknown',reason:'metadata parcial/no disponible',checkedDomains:domains.length};
+}
 async function fetchDet(model){
   const p=new URLSearchParams({
     latitude:String(forecastCoords().lat),longitude:String(forecastCoords().lon),hourly:'precipitation',
@@ -271,8 +304,31 @@ async function fetchOperaMeta(){
   if(!r.ok)throw new Error('OPERA HTTP '+r.status);
   return r.json();
 }
-function sourceStatus(defs,settled){
-  return defs.map((m,i)=>({id:m.id,label:m.label,family:m.family||m.id,ok:settled[i]?.status==='fulfilled',members:settled[i]?.status==='fulfilled'?(settled[i].value.memberCount||null):null,error:settled[i]?.status==='rejected'?String(settled[i].reason?.message||settled[i].reason):null}));
+function sourceStatus(defs,settled,freshnessSettled=[]){
+  return defs.map((m,i)=>{
+    const fetched=settled[i]?.status==='fulfilled';
+    const freshness=freshnessSettled[i]?.status==='fulfilled'?freshnessSettled[i].value:{status:'unknown',reason:'metadata no consultada'};
+    const stale=freshness?.status==='stale';
+    return{
+      id:m.id,label:m.label,family:m.family||m.id,
+      ok:Boolean(fetched&&!stale),fetched,stale,
+      freshnessStatus:freshness?.status||'unknown',
+      freshnessReason:freshness?.reason||null,
+      initialisedAt:freshness?.initialisedAt||null,
+      availableAt:freshness?.availableAt||null,
+      delayMinutes:Number.isFinite(Number(freshness?.delayMinutes))?Number(freshness.delayMinutes):null,
+      updateIntervalMinutes:Number.isFinite(Number(freshness?.updateIntervalMinutes))?Number(freshness.updateIntervalMinutes):null,
+      metaDomain:freshness?.domain||null,
+      members:fetched?(settled[i].value.memberCount||null):null,
+      error:settled[i]?.status==='rejected'?String(settled[i].reason?.message||settled[i].reason):stale?'modelo desactualizado':null
+    };
+  });
+}
+function freshnessValue(settled,index){
+  return settled[index]?.status==='fulfilled'?settled[index].value:{status:'unknown'};
+}
+function usableForecast(settled,freshness,index){
+  return settled[index]?.status==='fulfilled'&&freshnessValue(freshness,index)?.status!=='stale';
 }
 async function loadForecast(force=false){
   const k=cacheKey();
@@ -282,13 +338,15 @@ async function loadForecast(force=false){
       if(c&&c.version===APP_VERSION&&Date.now()-c.savedAt<FORECAST_TTL&&c.data&&c.data.week){return {...c.data,cacheAgeMs:Date.now()-c.savedAt}}
     }catch{}
   }
-  const [det,ens,qh,radar,opera,week]=await Promise.all([
+  const [det,ens,qh,radar,opera,week,detFreshness,ensFreshness]=await Promise.all([
     pool(DET_MODELS,fetchDet,3),pool(ENS_MODELS,fetchEns,2),
     Promise.allSettled([fetchQuarterHour()]),Promise.allSettled([fetchRadarMeta()]),Promise.allSettled([fetchOperaMeta()]),
-    Promise.allSettled([fetchWeekForecast()])
+    Promise.allSettled([fetchWeekForecast()]),
+    Promise.allSettled(DET_MODELS.map(fetchModelFreshness)),
+    Promise.allSettled(ENS_MODELS.map(fetchModelFreshness))
   ]);
-  const deterministic=det.filter(x=>x.status==='fulfilled').map(x=>x.value);
-  const ensembles=ens.filter(x=>x.status==='fulfilled').map(x=>x.value);
+  const deterministic=det.map((x,i)=>usableForecast(det,detFreshness,i)?x.value:null).filter(Boolean);
+  const ensembles=ens.map((x,i)=>usableForecast(ens,ensFreshness,i)?x.value:null).filter(Boolean);
   const quarterHour=qh[0]?.status==='fulfilled'?qh[0].value:null;
   const radarMeta=radar[0]?.status==='fulfilled'?radar[0].value:null;
   const operaMeta=opera[0]?.status==='fulfilled'?opera[0].value:null;
@@ -320,8 +378,8 @@ async function loadForecast(force=false){
     opera:operaMeta,
     week:weekForecast,
     sources:{
-      deterministic:sourceStatus(DET_MODELS,det),
-      ensembles:sourceStatus(ENS_MODELS,ens),
+      deterministic:sourceStatus(DET_MODELS,det,detFreshness),
+      ensembles:sourceStatus(ENS_MODELS,ens,ensFreshness),
       quarterHour:Boolean(quarterHour),radar:radarFreshness(radarMeta).ok,opera:operaFreshness(operaMeta).ok
     }
   };
@@ -2161,7 +2219,10 @@ function renderEvents(){
     const open=active||startsIn<=180;
     const warning=heavyWindows.length?' · ⚠ fuerte':'';
     const summary='<summary class="eventSummary"><span><b>'+fmtDateTime(e.start)+'–'+fmtTime(e.end)+'</b><small>'+primary+warning+'</small></span><strong>'+maxProb+'%</strong></summary>';
-    const meta='<div class="eventMeta"><span>'+durationText(e.start,e.end)+'</span><span>~'+total.toFixed(1).replace('.',',')+' mm</span><span>pico '+peak.toFixed(1).replace('.',',')+' mm/h</span><span>'+families+' familias</span></div>';
+    const startWindow=e.startWindow?.earliest&&e.startWindow?.latest?'inicio '+fmtTime(e.startWindow.earliest)+'–'+fmtTime(e.startWindow.latest):'';
+    const endWindow=e.endWindow?.earliest&&e.endWindow?.latest?'fin '+fmtTime(e.endWindow.earliest)+'–'+fmtTime(e.endWindow.latest):'';
+    const timingWindow=[startWindow,endWindow].filter(Boolean).join(' · ');
+    const meta='<div class="eventMeta"><span>'+durationText(e.start,e.end)+'</span><span>~'+total.toFixed(1).replace('.',',')+' mm</span><span>pico '+peak.toFixed(1).replace('.',',')+' mm/h</span><span>'+families+' familias</span>'+(timingWindow?'<span>'+timingWindow+'</span>':'')+'</div>';
     blocks.push('<details class="event eventDisclosure" '+(open?'open':'')+'>'+summary+'<div class="eventExpanded">'+heavyAlert+meta+segmentsHtml+details+'</div></details>');
     const dry=dryWindowBetween(e,events[index+1]);
     if(dry)blocks.push('<div class="dryWindow"><strong>Ventana seca probable · '+durationText(dry.start,dry.end)+'</strong><span>'+fmtDateTime(dry.start)+' → '+fmtTime(dry.end)+'</span></div>');
@@ -2169,6 +2230,15 @@ function renderEvents(){
   $('events').innerHTML=blocks.join('');
 }
 
+function modelSourceDetail(source,base){
+  if(source?.stale)return base+' · DESACTUALIZADO · retraso ~'+Math.max(0,Math.round(Number(source.delayMinutes)||0))+' min · excluido del consenso';
+  if(source?.freshnessStatus==='fresh'){
+    const run=source.initialisedAt?' · run '+fmtTime(source.initialisedAt):'';
+    return base+run+' · frescura verificada';
+  }
+  if(source?.freshnessStatus==='unknown')return base+' · frescura no verificable';
+  return base;
+}
 function renderSources(){
   const opera=state.data.opera,opNow=opera?.nowcast,opEvent=opNow?.event;
   const opFresh=operaFreshness(opera),rvFresh=radarFreshness(state.data.radar);
@@ -2188,14 +2258,14 @@ function renderSources(){
   const healthyModels=modelSources.filter(x=>x.ok);
   const healthyFamilies=new Set(healthyModels.map(x=>x.family||x.id).filter(Boolean)).size;
   const list=[
-    {label:'Consenso modelos',ok:healthyFamilies>=3,detail:healthyFamilies+' familias independientes activas · '+healthyModels.length+'/'+modelSources.length+' modelos/ensembles disponibles'},
+    {label:'Consenso modelos',ok:healthyFamilies>=2,detail:healthyFamilies+' familias independientes activas · '+healthyModels.length+'/'+modelSources.length+' modelos/ensembles disponibles · quórum mínimo 2'},
     {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opDetail},
     {label:'Radar RainViewer',ok:Boolean(state.data.sources.radar),detail:rvDetail},
     {label:nativeQuarterHourLikely()?'Modelo 15 min nativo':'Guía temporal',ok:state.data.sources.quarterHour,detail:nativeQuarterHourLikely()
       ? 'resolución de 15 min disponible para esta zona'
       : 'en esta ubicación el dato de 15 min se trata como interpolado; no amplía la resolución real'},
-    ...state.data.sources.deterministic.map(x=>({label:x.label,ok:x.ok,detail:'determinista'})),
-    ...state.data.sources.ensembles.map(x=>({label:x.label,ok:x.ok,detail:x.members?x.members+' miembros':'ensemble'}))
+    ...state.data.sources.deterministic.map(x=>({label:x.label,ok:x.ok,detail:modelSourceDetail(x,'determinista')})),
+    ...state.data.sources.ensembles.map(x=>({label:x.label,ok:x.ok,detail:modelSourceDetail(x,x.members?x.members+' miembros':'ensemble')}))
   ];
   $('sources').innerHTML=list.map(x=>'<div class="source"><span>'+x.label+'<small>'+x.detail+'</small></span><i class="'+(x.ok?'ok':'bad')+'">'+(x.ok?'OK':'—')+'</i></div>').join('');
 }
