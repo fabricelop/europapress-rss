@@ -34355,9 +34355,9 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -34372,15 +34372,54 @@
         "generated": false
       },
       "image": {
-        "url": "https://static.grupojoly.com/clip/33bf046e-bfab-4b25-97d7-18a31d449442_facebook-aspect-ratio_default_0.jpg",
-        "source": "Diario de Almería · 6/10/2026",
-        "source_url": "https://www.diariodealmeria.es/andalucia/pp-confia-andalucia-no-olvide_0_2008164507.html",
-        "alt": "Imagen de archivo relacionada con Adamuz",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/0f5bf1e8b366-r1-ai2-791371924766.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "sha256": "1db72d30d791c76c115bd10ece736ca3e49a7bb9d580170814d2e111441b128a",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2492157,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "0f5bf1e8b366",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-0f5bf1e8b366-r1-a2-1791371924766"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/0f5bf1e8b366-r1-ai2-791371924766.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/0f5bf1e8b366-r1-ai2-791371924766.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "sha256": "1db72d30d791c76c115bd10ece736ca3e49a7bb9d580170814d2e111441b128a",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2492157,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "0f5bf1e8b366",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-0f5bf1e8b366-r1-a2-1791371924766"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/0f5bf1e8b366-r1-ai2-791371924766.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 2,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T11:21:01.116Z"
     }
   ],
-  "updated_at": "2026-10-07T11:20:10.525473Z",
+  "updated_at": "2026-10-07T11:21:01.116Z",
   "count": 624
 }
