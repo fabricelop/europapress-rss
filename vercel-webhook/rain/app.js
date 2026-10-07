@@ -1,5 +1,5 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt} from './radar-core.js';
 
 const DET_MODELS=[
   {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
@@ -48,8 +48,8 @@ const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
 const HARMONIE_STALE_GRACE_MINUTES=180;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.29';
-const FORECAST_CACHE_SCHEMA='consensus-v18';
+const APP_VERSION='0.17.30';
+const FORECAST_CACHE_SCHEMA='consensus-v19';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
 const $=id=>document.getElementById(id);
@@ -62,7 +62,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionToken:0,radarProjectionCanvas:null,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -325,7 +325,7 @@ async function fetchQuarterHour(){
     latitude:String(forecastCoords().lat),longitude:String(forecastCoords().lon),
     current:'temperature_2m,precipitation,rain,showers,weather_code,cloud_cover',
     minutely_15:'precipitation',forecast_minutely_15:'32',
-    hourly:'temperature_2m,cloud_cover,snowfall,weather_code,precipitation_probability',
+    hourly:'temperature_2m,cloud_cover,snowfall,weather_code,precipitation_probability,wind_speed_850hPa,wind_direction_850hPa,wind_speed_700hPa,wind_direction_700hPa,cape,convective_inhibition,thunderstorm_probability,lightning_potential,lightning_density',
     forecast_hours:'73',
     timeformat:'unixtime',timezone:'GMT'
   });
@@ -349,7 +349,16 @@ async function fetchQuarterHour(){
       cloudCover:(hourly.cloud_cover||[]).map(Number),
       snowfall:(hourly.snowfall||[]).map(Number),
       weatherCode:(hourly.weather_code||[]).map(Number),
-      precipitationProbability:(hourly.precipitation_probability||[]).map(Number)
+      precipitationProbability:(hourly.precipitation_probability||[]).map(Number),
+      windSpeed850:(hourly.wind_speed_850hPa||[]).map(Number),
+      windDirection850:(hourly.wind_direction_850hPa||[]).map(Number),
+      windSpeed700:(hourly.wind_speed_700hPa||[]).map(Number),
+      windDirection700:(hourly.wind_direction_700hPa||[]).map(Number),
+      cape:(hourly.cape||[]).map(Number),
+      convectiveInhibition:(hourly.convective_inhibition||[]).map(Number),
+      thunderstormProbability:(hourly.thunderstorm_probability||[]).map(Number),
+      lightningPotential:(hourly.lightning_potential||[]).map(Number),
+      lightningDensity:(hourly.lightning_density||[]).map(Number)
     },
     interpolated:true
   };
@@ -751,11 +760,20 @@ async function computeNowcast(meta){
   return{...base,status:'ok',confidence,event,motion:{
     ...motionGeo,
     samples:motion.samples,consistency:motion.consistency,localFlow:Boolean(localFlow),
+    analysisDx:Number(motion.dx)||0,
+    analysisDy:Number(motion.dy)||0,
+    sourceStepMinutes:step,
     localSpeedKmh:Number(localMotion?.speedKmh)||null,
     localBearingDegrees:Number(localMotion?.bearingDegrees)||null,
     localFlowConfidence:Number(localMotion?.confidence)||0,
     localFlowCoverage:Number(localMotion?.coverage)||0
-  },series};
+  },flowField:localFlow?{
+    vectors:localFlow.vectors.map(v=>({x:v.x,y:v.y,dx:v.dx,dy:v.dy,confidence:v.confidence,consistency:v.consistency})),
+    confidence:Number(localFlow.confidence)||0,
+    coverage:Number(localFlow.coverage)||0,
+    sourceStepMinutes:step,
+    width:ANALYSIS_SIZE,height:ANALYSIS_SIZE
+  }:null,series};
 }
 
 function automaticRainState(){
