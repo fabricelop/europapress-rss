@@ -1354,8 +1354,8 @@ function fuseRadarEvents(rv,op,now=Date.now()){
     const enoughLocalSkill=Boolean(rvSkill&&opSkill);
     const skillGap=enoughLocalSkill?Math.abs(Number(rvSkill.accuracy)-Number(opSkill.accuracy)):0;
     const adaptiveChoice=enoughLocalSkill&&skillGap>=.08;
-    const rvScore=adaptiveChoice?.72*rvConfidence+.28*Number(rvSkill.accuracy):rvConfidence;
-    const opScore=adaptiveChoice?.72*opConfidence+.28*Number(opSkill.accuracy):opConfidence;
+    const rvScore=adaptiveChoice ? .72*rvConfidence+.28*Number(rvSkill.accuracy) : rvConfidence;
+    const opScore=adaptiveChoice ? .72*opConfidence+.28*Number(opSkill.accuracy) : opConfidence;
     const winner=rvScore>=opScore?rv:op,alternate=winner===rv?op:rv;
     const chosenSkill=winner===rv?rvSkill:opSkill;
     const penalty=Math.min(.22,.06+Math.max(0,delta-30)/600);
