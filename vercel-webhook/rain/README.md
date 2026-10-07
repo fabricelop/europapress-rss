@@ -1,4 +1,4 @@
-# RainETA v0.17.16
+# RainETA v0.17.17
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,13 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Radar futuro más visible v0.17.17
+- La pérdida de opacidad fuera del horizonte fiable se reduce de forma importante: la proyección sigue claramente visible aunque ya sea orientativa.
+- Dentro del horizonte fiable la capa mantiene un contraste alto; al salir de él baja de forma gradual, pero conserva aproximadamente un 30 % de opacidad incluso cerca de +4 h.
+- Cuando no existe movimiento suficientemente fiable, el último radar también permanece más visible como referencia espacial en vez de desvanecerse casi por completo.
+- La indicación textual de que la proyección es orientativa se mantiene, pero la visualización deja de ocultar información que el usuario ya sabe interpretar con cautela.
+- Este ajuste es exclusivamente visual y no modifica ETA, nowcast ni confianza meteorológica.
 
 ## Coherencia de horizonte, cobertura radar y carga v0.17.16
 - Si el radar solo puede garantizar tiempo seco hasta el final de su horizonte fiable, la interfaz ya no dice **“Seco hasta”** como si esa hora fuera una ETA de lluvia. Muestra **“Seco al menos hasta”**, indica “sin ETA de lluvia” y explica que la hora es un límite de confirmación.
