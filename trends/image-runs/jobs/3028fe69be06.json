@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-3028fe69be06-r0-a5-1791346617847",
-  "requested_at": "2026-10-07T04:16:57.844225Z",
-  "updated_at": "2026-10-07T04:35:28.209Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-auto-3028fe69be06-r0-a6-1791353283498",
+  "requested_at": "2026-10-07T06:08:03.495514Z",
+  "updated_at": "2026-10-07T06:08:03.495514Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,9 +14,9 @@
   "trend_id": "3028fe69be06",
   "target_name": "Torres",
   "revision": 0,
-  "attempt": 5,
+  "attempt": 6,
   "auto_repair": true,
-  "auto_repair_attempt": 5,
+  "auto_repair_attempt": 6,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
@@ -34,9 +34,9 @@
       "https://www.infobae.com/espana/agencias/2026/10/06/angel-torres-confirma-que-carvajal-ha-pasado-el-reconocimiento-y-esta-pendiente-de-laliga/",
       "https://www.infobae.com/espana/agencias/2026/10/06/torres-atribuye-a-una-broma-la-llegada-anunciada-de-carvajal-de-momento-es-humo/"
     ],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.",
-    "image_style_name": "poster_grafico",
-    "image_style_index": 2
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.",
+    "image_style_name": "comic_europeo",
+    "image_style_index": 1
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
@@ -45,9 +45,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Fallback no pudo escribir el prompt completo len=1824 expected>=500 active=DIV",
-  "pc_upload_secret_hash": "2c4948208302586ad1f64cd0ae23a1e7e44ae405f7172cde9b88eac8f7ecf7dc",
-  "pc_worker_id": "ttendencias-image-bridge-v34-handoff-capture",
-  "pc_picked_up_at": "2026-10-07T04:34:08.368Z",
-  "finished_at": "2026-10-07T04:35:28.209Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
