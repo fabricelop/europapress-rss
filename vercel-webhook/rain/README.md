@@ -1,6 +1,15 @@
-# RainETA v0.17.26
+# RainETA v0.17.27
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
+
+## Estado estable separado del horizonte radar v0.17.27
+- El final del horizonte fiable del radar deja de convertirse en un falso «hasta HH:MM». Ese límite queda únicamente como dato técnico de nowcast.
+- Si no existe una ETA real de lluvia, el estado principal pasa a «Tiempo estable» y usa una ventana meteorológica de 3/6/12/24 h derivada del consenso de modelos.
+- La ventana estable exige cobertura temporal suficiente, ausencia de episodios clasificados como lluvia y riesgo máximo compatible con cada horizonte; no se extiende a 24 h si las señales son demasiado inciertas.
+- El contador corto deja de contar hacia el fin del radar cuando no hay cambio meteorológico previsto. En estado estable muestra directamente el horizonte validado (por ejemplo, 24 h).
+- El titular, la banda de 0–180 min y el gráfico de 24 h comparten ahora la misma conclusión meteorológica para evitar contradicciones visuales.
+- La redacción principal evita «Seco»: usa «Tiempo estable», «Sin lluvia prevista…» y mantiene «radar útil ~N min» como información secundaria.
+
 
 ## Frescura real y aprendizaje AEMET v0.17.26
 - HARMONIE-AROME deja de marcarse fresco por el mero hecho de responder: RainETA valida la hora real de generación (sourceGeneratedAt) de la pasada oficial.
