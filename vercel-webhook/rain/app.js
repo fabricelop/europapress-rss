@@ -30,6 +30,8 @@ const MAX_SHIFT=12;
 const SHORT_HORIZON_MINUTES=180;
 const RADAR_VISUAL_HORIZON_MINUTES=240;
 const RADAR_STALE_MINUTES=20;
+const OPERA_STALE_MINUTES=30;
+const OPERA_SURFACE_STALE_MINUTES=20;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
 
@@ -43,7 +45,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.17.3',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.17.4',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -258,6 +260,10 @@ function radarFreshness(meta,maxAgeMinutes=RADAR_STALE_MINUTES){
   const ageMinutes=Number.isFinite(latestMs)?Math.max(0,(Date.now()-latestMs)/60_000):Infinity;
   return{ok:Boolean(meta?.host&&latest&&ageMinutes<=maxAgeMinutes),ageMinutes,latestTime:Number(latest?.time)||null};
 }
+function operaFreshness(meta,maxAgeMinutes=OPERA_STALE_MINUTES){
+  const ageMinutes=Number(meta?.ageMinutes);
+  return{ok:Boolean(meta?.ok&&Number.isFinite(ageMinutes)&&ageMinutes<=maxAgeMinutes),ageMinutes};
+}
 async function fetchOperaMeta(){
   const point=forecastCoords(),p=new URLSearchParams({lat:String(point.lat),lon:String(point.lon),motion:'1'});
   const r=await fetch('/api/rain-opera?'+p);
@@ -315,7 +321,7 @@ async function loadForecast(force=false){
     sources:{
       deterministic:sourceStatus(DET_MODELS,det),
       ensembles:sourceStatus(ENS_MODELS,ens),
-      quarterHour:Boolean(quarterHour),radar:radarFreshness(radarMeta).ok,opera:Boolean(operaMeta?.ok)
+      quarterHour:Boolean(quarterHour),radar:radarFreshness(radarMeta).ok,opera:operaFreshness(operaMeta).ok
     }
   };
   const all=[...data.sources.deterministic,...data.sources.ensembles];
@@ -1243,8 +1249,8 @@ function renderConsensusDecision(decision=buildRainDecision()){
 }
 
 function operaNowcastInfo(){
-  const opera=state.data?.opera,nowcast=opera?.nowcast,age=Number(opera?.ageMinutes);
-  if(!opera?.ok||!Number.isFinite(age)||age>30||nowcast?.status!=='ok'||!Array.isArray(nowcast.series))return null;
+  const opera=state.data?.opera,nowcast=opera?.nowcast;
+  if(!operaFreshness(opera).ok||nowcast?.status!=='ok'||!Array.isArray(nowcast.series))return null;
   return nowcast;
 }
 function operaEventCandidate(now=Date.now()){
@@ -1281,7 +1287,10 @@ function fuseRadarEvents(rv,op,now=Date.now()){
   if(delta>30){
     const rvScore=Number(rv.confidence)||0,opScore=Number(op.confidence)||0;
     const winner=rvScore>=opScore?rv:op,alternate=winner===rv?op:rv;
-    return{...winner,disagreementMinutes:Math.round(delta),alternate,adaptiveChoice:false};
+    const penalty=Math.min(.22,.06+Math.max(0,delta-30)/600);
+    const confidence=Math.max(.15,(Number(winner.confidence)||0)-penalty);
+    const uncertainty=Math.max(Number(winner.uncertainty)||10,Math.round(10+delta*.35));
+    return{...winner,confidence,uncertainty,disagreementMinutes:Math.round(delta),alternate,adaptiveChoice:false};
   }
   const rw=Math.max(.1,Number(rv.confidence)||0),ow=Math.max(.1,Number(op.confidence)||0);
   const start=blendIso(rv.start,op.start,rw,ow),end=blendIso(rv.end,op.end,rw,ow);
@@ -2161,17 +2170,22 @@ function renderEvents(){
 
 function renderSources(){
   const opera=state.data.opera,opNow=opera?.nowcast,opEvent=opNow?.event;
+  const opFresh=operaFreshness(opera),rvFresh=radarFreshness(state.data.radar);
+  const opAge=Number.isFinite(opFresh.ageMinutes)?Math.round(opFresh.ageMinutes):null;
+  const rvAge=Number.isFinite(rvFresh.ageMinutes)?Math.round(rvFresh.ageMinutes):null;
   const opSpeed=Number(opNow?.motion?.speedKmh),opDir=compassDirection(opNow?.motion?.bearingDegrees);
   const opMotion=opNow?.status==='ok'
     ? ' · movimiento '+(Number.isFinite(opSpeed)?Math.round(opSpeed)+' km/h'+(opDir?' '+opDir:''):'calculado')+(opEvent?.start?' · ETA '+fmtTime(opEvent.start):' · sin llegada en 2 h')
     : opNow?.status?' · nowcast '+opNow.status:'';
+  const opDetail=opFresh.ok
+    ? 'EUMETNET OPERA · RATE '+(opera.resolutionKm||2)+' km / 5 min · hace '+opAge+' min'+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+(opNow?.status==='ok'?' · flujo local · útil ~'+Math.round(Number(opNow.reliableHorizonMinutes)||45)+' min':'')+opMotion
+    : opera?.ok?'EUMETNET OPERA desactualizado'+(opAge!==null?' · hace '+opAge+' min':'')+' · excluido de ETA/consenso':'EUMETNET OPERA sin compuesto reciente';
+  const rvDetail=rvFresh.ok
+    ? (state.nowcast?.status==='ok'?'hace '+rvAge+' min · flujo local + evolución · útil ~'+Math.max(0,Number(state.nowcast?.reliableHorizonMinutes)||0)+' min':'hace '+rvAge+' min · '+(state.nowcast?.status||'solo mapa'))
+    : state.data.radar?'desactualizado'+(rvAge!==null?' · hace '+rvAge+' min':'')+' · solo mapa histórico':'sin radar';
   const list=[
-    {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opera?.ok
-      ? 'EUMETNET OPERA · RATE '+(opera.resolutionKm||2)+' km / 5 min · '+fmtTime(opera.observedAt)+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+(opNow?.status==='ok'?' · flujo local · útil ~'+Math.round(Number(opNow.reliableHorizonMinutes)||45)+' min':'')+opMotion
-      : 'EUMETNET OPERA sin compuesto reciente'},
-    {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'
-      ? 'flujo local + evolución · útil ~'+nowcastReliableHorizon()+' min'
-      : state.nowcast?.status||'solo mapa'},
+    {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opDetail},
+    {label:'Radar RainViewer',ok:Boolean(state.data.sources.radar),detail:rvDetail},
     {label:nativeQuarterHourLikely()?'Modelo 15 min nativo':'Guía temporal',ok:state.data.sources.quarterHour,detail:nativeQuarterHourLikely()
       ? 'resolución de 15 min disponible para esta zona'
       : 'en esta ubicación el dato de 15 min se trata como interpolado; no amplía la resolución real'},
@@ -2488,7 +2502,7 @@ async function refreshRadar(renderAfter=true){
       ...state.data.sources,
       quarterHour:Boolean(quarterHour),
       radar:radarFreshness(radar).ok,
-      opera:Boolean(opera?.ok)
+      opera:operaFreshness(opera).ok
     };
     const all=[...(sources.deterministic||[]),...(sources.ensembles||[])];
     sources.health={
