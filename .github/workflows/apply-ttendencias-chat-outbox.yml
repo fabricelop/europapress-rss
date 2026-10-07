@@ -47,25 +47,54 @@ jobs:
           rp=Path('trends/requests.json')
           req=json.loads(rp.read_text(encoding='utf-8'))
           applied=set()
+          applied_items={}
+
           for r in req.get('requests',[]):
               k=(str(r.get('id')),int(r.get('revision',0)))
               if k not in bykey:
                   continue
               x=bykey[k]
-              # Barrera idempotente: nunca rebajar una revisión posterior.
               if int(r.get('revision',0)) != int(x.get('revision',0)):
                   continue
-              r.update(status='explained',explained_at=explained_at,last_attempt_at=explained_at,
-                       explanation=x['explanation'],closer_text=x.get('closer_text',''),rank_at_explanation=x['rank'],
-                       category=x.get('category','Otros'),
-                       source='editorial_chat_direct',verification_sources=x.get('verification_sources',[]),
-                       news_disposition='ignored',news_note=x.get('news_note',''),
-                       group_id='grp-'+str(x['id']),explanation_group_id='grp-'+str(x['id']),group_title=x['name'],
-                       group_leader_id=x['id'],trend_names=[x['name']],
-                       grouped_member_revisions=[{'id':x['id'],'name':x['name'],'revision':x['revision']}],
-                       disable_ai_image=False,image_strategy='ai_plus_fallback',ai_image_status='not_requested',
-                       fallback_image_status='none',image_choice=None,image_status='none',image_pending=False)
+
+              link=x.get('link_existing') or {}
+              if link:
+                  group_id=str(link['group_id'])
+                  leader_id=str(link['leader_id'])
+                  group_title=str(link.get('group_title') or x['name'])
+                  trend_names=list(link.get('trend_names') or [x['name']])
+                  member_revs=list(link.get('grouped_member_revisions') or [])
+                  r.update(
+                      status='explained', explained_at=explained_at, last_attempt_at=explained_at,
+                      explanation=x['explanation'], closer_text=x.get('closer_text',''),
+                      rank_at_explanation=x['rank'], category=x.get('category','Otros'),
+                      source='editorial_chat_direct', verification_sources=x.get('verification_sources',[]),
+                      news_disposition='ignored_duplicate', news_note=x.get('news_note',''),
+                      group_id=group_id, explanation_group_id=group_id, group_title=group_title,
+                      group_leader_id=leader_id, trend_names=trend_names,
+                      grouped_member_revisions=member_revs,
+                      disable_ai_image=False, image_strategy='group_existing',
+                      ai_image_status='not_requested', fallback_image_status='none',
+                      image_choice=None, image_status='none', image_pending=False,
+                  )
+              else:
+                  group_id='grp-'+str(x['id'])
+                  member_revs=[{'id':x['id'],'name':x['name'],'revision':x['revision']}]
+                  r.update(
+                      status='explained',explained_at=explained_at,last_attempt_at=explained_at,
+                      explanation=x['explanation'],closer_text=x.get('closer_text',''),rank_at_explanation=x['rank'],
+                      category=x.get('category','Otros'),
+                      source='editorial_chat_direct',verification_sources=x.get('verification_sources',[]),
+                      news_disposition='ignored',news_note=x.get('news_note',''),
+                      group_id=group_id,explanation_group_id=group_id,group_title=x['name'],
+                      group_leader_id=x['id'],trend_names=[x['name']],
+                      grouped_member_revisions=member_revs,
+                      disable_ai_image=False,image_strategy='ai_plus_fallback',ai_image_status='not_requested',
+                      fallback_image_status='none',image_choice=None,image_status='none',image_pending=False,
+                  )
               applied.add(k)
+              applied_items[k]=x
+
           req['updated_at']=explained_at
           req['count']=len(req.get('requests',[]))
           rp.write_text(json.dumps(req,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
@@ -73,16 +102,35 @@ jobs:
           ep=Path('trends/telegram-manual-explained.json')
           exp=json.loads(ep.read_text(encoding='utf-8'))
           arr=exp.setdefault('items',[])
+
           for k in applied:
-              x=bykey[k]
+              x=applied_items[k]
+              link=x.get('link_existing') or {}
+              if link:
+                  leader_id=str(link['leader_id'])
+                  leader_revision=int(link.get('leader_revision',0))
+                  leader=next((e for e in arr if str(e.get('id'))==leader_id and int(e.get('revision',0))==leader_revision),None)
+                  if leader is None:
+                      raise RuntimeError(f"grupo existente no encontrado: {leader_id} r{leader_revision}")
+                  leader['group_id']=str(link['group_id'])
+                  leader['explanation_group_id']=str(link['group_id'])
+                  leader['group_title']=str(link.get('group_title') or leader.get('group_title') or leader.get('name') or '')
+                  leader['group_leader_id']=leader_id
+                  leader['trend_names']=list(link.get('trend_names') or leader.get('trend_names') or [leader.get('name')])
+                  leader['grouped_member_revisions']=list(link.get('grouped_member_revisions') or leader.get('grouped_member_revisions') or [])
+                  continue
+
               arr[:]=[e for e in arr if not (str(e.get('id'))==str(x['id']) and int(e.get('revision',0))==int(x['revision']))]
-              arr.append({'id':x['id'],'name':x['name'],'revision':x['revision'],'status':'explained',
-                          'explained_at':explained_at,'explanation':x['explanation'],'closer_text':x.get('closer_text',''),
-                          'rank':x['rank'],'rank_at_explanation':x['rank'],'category':x.get('category','Otros'),
-                          'source':'editorial_chat_direct','verification_sources':x.get('verification_sources',[]),
-                          'group_id':'grp-'+str(x['id']),'explanation_group_id':'grp-'+str(x['id']),
-                          'group_title':x['name'],'group_leader_id':x['id'],'trend_names':[x['name']],
-                          'grouped_member_revisions':[{'id':x['id'],'name':x['name'],'revision':x['revision']}]})
+              arr.append({
+                  'id':x['id'],'name':x['name'],'revision':x['revision'],'status':'explained',
+                  'explained_at':explained_at,'explanation':x['explanation'],'closer_text':x.get('closer_text',''),
+                  'rank':x['rank'],'rank_at_explanation':x['rank'],'category':x.get('category','Otros'),
+                  'source':'editorial_chat_direct','verification_sources':x.get('verification_sources',[]),
+                  'group_id':'grp-'+str(x['id']),'explanation_group_id':'grp-'+str(x['id']),
+                  'group_title':x['name'],'group_leader_id':x['id'],'trend_names':[x['name']],
+                  'grouped_member_revisions':[{'id':x['id'],'name':x['name'],'revision':x['revision']}],
+              })
+
           exp['updated_at']=explained_at
           exp['count']=len(arr)
           ep.write_text(json.dumps(exp,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
