@@ -14,6 +14,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /shared/cross_account_story.py
+            /trends/send_explained_telegram.py
+            /.github/workflows/send-ttendencias-explained-telegram.yml
+            /.github/workflows/send-ttittulares-ready-telegram.yml
+            /.github/workflows/validate-cross-account.yml
       - name: Dependencias
         run: python3 -m pip install --quiet Pillow requests pyyaml
       - name: Self-test detector y copy
