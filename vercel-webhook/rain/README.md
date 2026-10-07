@@ -1,4 +1,4 @@
-# RainETA v0.17.11
+# RainETA v0.17.12
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,14 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Frescura no verificable v0.17.12
+- Una caída de la metadata de actualización ya no se interpreta como modelo obsoleto: la previsión sigue utilizándose si el dato meteorológico responde.
+- Sin embargo, si la frescura queda **no verificable** en una parte importante de las familias activas, RainETA reduce suavemente la confianza temporal en vez de comportarse como si todos los runs estuvieran confirmados.
+- Hasta un 25 % de familias con metadata no verificable no penaliza el consenso; por encima de ese umbral la penalización crece progresivamente hasta un máximo de **6 puntos**.
+- La penalización por metadata no verificable se suma a la de runs todavía propagándose, con un límite conjunto de **12 puntos**. Probabilidad e intensidad previstas no se modifican.
+- Si dentro de una familia existe al menos un producto con frescura verificada, esa familia no se considera desconocida.
+- El panel Fuentes indica cuántas familias tienen frescura no verificable y la reducción total de confianza aplicada.
 
 ## Propagación segura de runs v0.17.11
 - La metadata de Open-Meteo distingue ahora un run recién publicado de un run ya estabilizado entre servidores.
