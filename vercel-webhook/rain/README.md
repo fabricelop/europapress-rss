@@ -1,4 +1,4 @@
-# RainETA v0.17.4
+# RainETA v0.17.5
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,12 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Confianza por familias independientes v0.17.5
+- El consenso deja de poder mostrar confianza alta cuando sobreviven muy pocas **familias meteorológicas independientes**, aunque las fuentes restantes coincidan entre sí.
+- La confianza temporal queda limitada progresivamente por el número de familias disponibles: con 1–2 familias el máximo es bajo/moderado; con 4–6 familias puede alcanzar niveles altos si además hay acuerdo y horizonte favorable.
+- Los miembros de un ensemble y las variantes determinista/ensemble de una misma familia no cuentan como fuentes independientes adicionales.
+- La probabilidad y precipitación previstas no se alteran por este límite: se corrige únicamente cuánta confianza comunica RainETA sobre la hora prevista.
 
 ## Frescura y desacuerdo de radares v0.17.4
 - El radar europeo OPERA deja de contar como fuente sana si el composite supera **30 min**; para confirmar lluvia superficial se mantiene un límite más estricto de **20 min**.
