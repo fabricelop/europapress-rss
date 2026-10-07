@@ -1,4 +1,4 @@
-# RainETA v0.17.12
+# RainETA v0.17.13
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,13 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Coherencia interna de familias v0.17.13
+- El acuerdo ya no se mide solo entre las medias de familias meteorológicas: RainETA compara también, cuando existen ambos, el **determinista y el ensemble de una misma familia**.
+- Si una familia muestra contradicción fuerte (por ejemplo, determinista húmedo y ensemble mayoritariamente seco), esa tensión reduce el acuerdo efectivo y por tanto la confianza temporal.
+- La corrección es deliberadamente moderada: el desacuerdo interno puede reducir la componente de acuerdo hasta un 35 %, pero no modifica directamente la probabilidad ni la cantidad de precipitación.
+- El gráfico conserva el porcentaje de desacuerdo interno por hora y los episodios guardan su media; si supera ~20 %, el panel de Fuentes y el episodio lo muestran como **conflicto det↔ens**.
+- Esta señal evita falsos “consensos” producidos por promediar primero dos productos contradictorios de la misma familia.
 
 ## Frescura no verificable v0.17.12
 - Una caída de la metadata de actualización ya no se interpreta como modelo obsoleto: la previsión sigue utilizándose si el dato meteorológico responde.
