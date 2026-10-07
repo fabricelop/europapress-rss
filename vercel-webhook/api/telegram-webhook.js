@@ -48,7 +48,14 @@ async function mutateJsonFile(path, message, mutator) {
     const get = await gh(`contents/${path}?ref=${encodeURIComponent(BRANCH)}`);
     if (!get.ok) throw new Error(`GitHub GET ${path}: ${get.status} ${await get.text()}`);
     const file = await get.json();
-    const doc = JSON.parse(b64decode(file.content) || "{}");
+    let encoded=String(file.content||"").replace(/\n/g,"");
+    if(!encoded&&file.sha){
+      const blob=await gh(`git/blobs/${encodeURIComponent(file.sha)}`);
+      if(!blob.ok) throw new Error(`GitHub blob GET ${path}: ${blob.status} ${await blob.text()}`);
+      const bj=await blob.json();
+      encoded=String(bj.content||"").replace(/\n/g,"");
+    }
+    const doc = JSON.parse(b64decode(encoded) || "{}");
     const out = (await mutator(doc)) || doc;
     const put = await gh(`contents/${path}`, {
       method: "PUT",
@@ -145,6 +152,93 @@ async function closeTtiFromTelegram(eventId, status, messageId) {
   return {ok:true,event_id:id,status};
 }
 
+
+
+async function requestTtiImageRetry(eventId,currentMessageId,chatId){
+  const id=String(eventId||"").trim();
+  if(!id)throw new Error("event_id ausente");
+  const now=new Date().toISOString();
+  let found=false;
+  await mutateJsonFile("ttittulares/prepared.json","Reenviar TTiTTulares a Listas para nueva IA",(doc)=>{
+    doc.items=Array.isArray(doc.items)?doc.items:[];
+    for(const item of doc.items){
+      if(String(item.event_id||"")!==id)continue;
+      found=true;
+      item.ai_image_regenerate_requested=true;
+      item.ai_image_regenerate_requested_at=now;
+      item.ai_image_regenerate_request_version=Number(item.ai_image_regenerate_request_version||0)+1;
+      item.telegram_timeout_retry_at=now;
+      item.image_pending=true;
+    }
+    doc.updated_at=now;
+    return doc;
+  });
+  if(!found)throw new Error("La noticia ya no está en Listas");
+
+  const mids=[];
+  await mutateJsonFile("telegram/ttittulares-deliveries.json","Reintentar IA TTiTTulares desde Telegram",(doc)=>{
+    let changed=false;
+    for(const row of doc.items||[]){
+      if(String(row.event_id||"")!==id||!row.timeout_fallback||String(row.status||"").toLowerCase()!=="sent")continue;
+      row.status="retry_requested";
+      row.retry_requested_at=now;
+      row.decision_source="telegram_retry";
+      changed=true;
+      for(const k of ["telegram_message_id","archive_telegram_message_id"]){
+        const mid=Number(row[k]||0); if(mid&&!mids.includes(mid))mids.push(mid);
+      }
+    }
+    if(changed)doc.updated_at=now;
+    return doc;
+  });
+  const current=Number(currentMessageId||0); if(current&&!mids.includes(current))mids.push(current);
+  await dispatchWorkflow("repair-ttittulares-listas.yml");
+  for(const mid of mids)await safeTelegram("deleteMessage",{chat_id:chatId,message_id:mid});
+  return {ok:true,event_id:id,retry:true,deleted:mids.length};
+}
+
+async function requestTrendImageRetry(trendId,revision,currentMessageId,chatId){
+  const id=String(trendId||"").trim(),rev=Number(revision||0);
+  if(!id)throw new Error("trend_id ausente");
+  const now=new Date().toISOString();
+  let found=false;
+  await mutateJsonFile("trends/telegram-manual-explained.json","Reenviar TTendencias a Listas para nueva IA",(doc)=>{
+    doc.items=Array.isArray(doc.items)?doc.items:[];
+    for(const row of doc.items){
+      if(String(row.id||"")!==id||Number(row.revision||0)!==rev)continue;
+      found=true;
+      row.ai_image_regenerate_requested=true;
+      row.ai_image_regenerate_requested_at=now;
+      row.ai_image_regenerate_request_version=Number(row.ai_image_regenerate_request_version||0)+1;
+      row.telegram_timeout_retry_at=now;
+      row.image_pending=true;
+    }
+    doc.updated_at=now;
+    return doc;
+  });
+  if(!found)throw new Error("La tendencia ya no está en Listas");
+
+  const mids=[];
+  await mutateJsonFile("trends/telegram-image-deliveries.json","Reintentar IA TTendencias desde Telegram",(doc)=>{
+    let changed=false;
+    for(const row of doc.items||[]){
+      if(String(row.event_id||"")!==id||Number(row.revision||0)!==rev||!row.timeout_fallback||String(row.status||"").toLowerCase()!=="sent")continue;
+      row.status="retry_requested";
+      row.retry_requested_at=now;
+      row.decision_source="telegram_retry";
+      changed=true;
+      for(const k of ["telegram_message_id","archive_telegram_message_id"]){
+        const mid=Number(row[k]||0); if(mid&&!mids.includes(mid))mids.push(mid);
+      }
+    }
+    if(changed)doc.updated_at=now;
+    return doc;
+  });
+  const current=Number(currentMessageId||0); if(current&&!mids.includes(current))mids.push(current);
+  await dispatchWorkflow("repair-ttendencias-explicadas.yml");
+  for(const mid of mids)await safeTelegram("deleteMessage",{chat_id:chatId,message_id:mid});
+  return {ok:true,event_id:id,revision:rev,retry:true,deleted:mids.length};
+}
 
 async function upsertEditorialProcessing(eventId, title, url) {
   const path = "telegram/editorial-processing.json";
@@ -322,6 +416,17 @@ export default async function handler(req, res) {
         const action = parts[1] || "";
         const id = parts[2] || "";
         const revision = Number(parts[3] || 0);
+        if (action==="r" && id) {
+          try{
+            await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"🔄 Reenviada a Listas. Nuevo intento de IA."});
+            const out=await requestTrendImageRetry(id,revision,msg.message_id,allowedChat);
+            return res.status(200).json(out);
+          }catch(e){
+            console.error("TTendencias retry callback failed",{id,revision,error:String(e?.message||e)});
+            await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"No se pudo reenviar a Listas.",show_alert:true});
+            return res.status(200).json({ok:false,retry:false,event_id:id,revision});
+          }
+        }
         if (!["p", "d"].includes(action) || !id) {
           await safeTelegram("answerCallbackQuery", { callback_query_id: cq.id, text: "Acción no válida." });
           return res.status(200).json({ ok: true, ignored: true });
@@ -428,6 +533,17 @@ export default async function handler(req, res) {
         const parts = data.split(":");
         const action = parts[1] || "";
         const id = parts.slice(2).join(":");
+        if(action==="r" && id){
+          try{
+            await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"🔄 Reenviada a Listas. Nuevo intento de IA."});
+            const out=await requestTtiImageRetry(id,msg.message_id,allowedChat);
+            return res.status(200).json(out);
+          }catch(e){
+            console.error("TTiTTulares retry callback failed",{event_id:id,error:String(e?.message||e)});
+            await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"No se pudo reenviar a Listas.",show_alert:true});
+            return res.status(200).json({ok:false,retry:false,event_id:id});
+          }
+        }
         if (!["p","d"].includes(action) || !id) {
           await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"Acción no válida.",show_alert:true});
           return res.status(200).json({ok:true,stored:false});
