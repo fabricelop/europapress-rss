@@ -10,9 +10,6 @@
     "api/ai-image.js": {
       "maxDuration": 60
     },
-    "api/money-control-snapshot.js": {
-      "maxDuration": 30
-    },
     "api/ttittulares-control.js": {
       "maxDuration": 300
     }
@@ -37,10 +34,6 @@
     {
       "source": "/api/ttittulares-push",
       "destination": "/api/ttittulares-control?__handler=push"
-    },
-    {
-      "source": "/api/money-control-state",
-      "destination": "/api/money-control-snapshot?__handler=state"
     },
     {
       "source": "/api/rain-opera",
@@ -89,14 +82,6 @@
     {
       "source": "/ttendencias/",
       "destination": "/ttendencias/index.html"
-    },
-    {
-      "source": "/money-control",
-      "destination": "/money-control/index.html"
-    },
-    {
-      "source": "/money-control/",
-      "destination": "/money-control/index.html"
     }
   ],
   "headers": [
@@ -293,64 +278,6 @@
       ]
     },
     {
-      "source": "/money-control/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "no-referrer"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
-        }
-      ]
-    },
-    {
-      "source": "/money-control",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "no-referrer"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
-        }
-      ]
-    },
-    {
       "source": "/rain/(.*)",
       "headers": [
         {
@@ -396,7 +323,7 @@
   "github": {
     "autoJobCancelation": false
   },
-  "ignoreCommand": "! (git log -1 --pretty=%B | grep -Eq '^(deploy-money-control-|rain:)' || grep -Eq '^deploy-image-flicker-cache-20261004' .deploy-trigger)",
+  "ignoreCommand": "! (git log -1 --pretty=%B | grep -Eq '^rain:' || grep -Eq '^deploy-image-flicker-cache-20261004' .deploy-trigger)",
   "git": {
     "deploymentEnabled": false
   }
