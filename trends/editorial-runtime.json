@@ -1,13 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T06:15:00+02:00",
-  "last_completed_at": "2026-10-07T06:22:00+02:00",
-  "updated_at": "2026-10-07T06:22:00+02:00",
+  "last_started_at": "2026-10-07T06:45:00+02:00",
+  "last_completed_at": "2026-10-07T06:48:05+02:00",
+  "updated_at": "2026-10-07T06:48:05+02:00",
   "status": "success",
-  "processed_ids": [
-    "260feac7575a"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -16,27 +14,27 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-20261007T0615-chat",
+    "run_id": "tr-20261007T0645-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T06:15:00+02:00",
-    "updated_at": "2026-10-07T06:22:00+02:00",
-    "finished_at": "2026-10-07T06:22:00+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-07T06:45:00+02:00",
+    "updated_at": "2026-10-07T06:48:05+02:00",
+    "finished_at": "2026-10-07T06:48:05+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "grouped_members_total": 1,
+      "grouped_members_total": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -45,229 +43,56 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
+      "pending_cards_reviewed": 16,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_reused": 0,
       "remates_omitted": 0,
       "jit_skipped": 0,
       "concurrent_completed": 0
     },
-    "message": "Pasada cerrada 1/1 · Chiqui Tapia explicado y verificado; cola autoritativa final 0. Reparación visual completó su lanzamiento sin ImageGen directo.",
-    "activity": [
-      {
-        "at": "2026-10-07T06:15:20+02:00",
-        "phase": "verifying",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Releyendo estado autoritativo de Chiqui Tapia"
-      },
-      {
-        "at": "2026-10-07T06:15:35+02:00",
-        "phase": "investigating",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-07T06:16:05+02:00",
-        "phase": "investigating",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Contrastando fuente 1/2"
-      },
-      {
-        "at": "2026-10-07T06:16:20+02:00",
-        "phase": "investigating",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Contrastando fuente 2/2"
-      },
-      {
-        "at": "2026-10-07T06:16:35+02:00",
-        "phase": "investigating",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-07T06:16:45+02:00",
-        "phase": "verifying",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Releyendo estado JIT antes de redactar"
-      },
-      {
-        "at": "2026-10-07T06:17:00+02:00",
-        "phase": "drafting",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-07T06:17:10+02:00",
-        "phase": "drafting",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Comprobando límite de X · 206 caracteres"
-      },
-      {
-        "at": "2026-10-07T06:17:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-07T06:17:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Evaluando candidatos con ratings"
-      },
-      {
-        "at": "2026-10-07T06:17:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-07T06:17:50+02:00",
-        "phase": "persisting",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-07T06:19:57+02:00",
-        "phase": "persisting",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-07T06:19:58+02:00",
-        "phase": "persisting",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-07T06:20:03+02:00",
-        "phase": "verifying",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-07T06:20:10+02:00",
-        "phase": "verifying",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-07T06:20:20+02:00",
-        "phase": "verifying",
-        "trend_id": "260feac7575a",
-        "title": "Chiqui Tapia",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-07T06:21:30+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · 0 preparing, 0 update y 0 rewrite_pending"
-      },
-      {
-        "at": "2026-10-07T06:21:45+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación visual automática verificada como lanzada"
-      },
-      {
-        "at": "2026-10-07T06:22:00+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Persistiendo runtime durable y cierre de ejecución"
-      }
-    ],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 20
+      "recent_considered": 100
     },
-    "remate_selections": [
+    "remate_selections": [],
+    "message": "Pasada cerrada 0/0 · no había preparing/update ni rewrite_pending. Se revisaron 16 Pendientes recientes y se disparó su reparación visual independiente; cola autoritativa final 0.",
+    "activity": [
       {
-        "trend_id": "260feac7575a",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.8,
-            "ratings_affinity": 2.4,
-            "trend_specificity": 2,
-            "punch": 1.9,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 8.3,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c3",
-            "total": 7.9,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c4",
-            "total": 7.5,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c5",
-            "total": 7.1,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.8,
-        "no_remate_reason": null
+        "at": "2026-10-07T06:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada directa · cola editorial inicial 0; comprobando reexplicaciones y Pendientes."
+      },
+      {
+        "at": "2026-10-07T06:46:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 16 tarjetas vigentes de menos de 24 h; reparación visual solicitada."
+      },
+      {
+        "at": "2026-10-07T06:47:23+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0."
+      },
+      {
+        "at": "2026-10-07T06:48:05+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada cerrada 0/0 · estado textual verificado y saneamiento visual solicitado para 16 Pendientes."
       }
     ]
   },
@@ -278,7 +103,10 @@
     "direct_imagegen": false,
     "trigger_commit": "3b2a686e06513d8049d852ec756cfbca04e05cb4",
     "workflow_run_id": 37570948180,
-    "workflow_conclusion": "success"
+    "workflow_conclusion": "success",
+    "last_trigger_run_id": "tr-20261007T0645-chat",
+    "last_triggered_at": "2026-10-07T06:45:00+02:00",
+    "pending_cards_reviewed": 16
   },
   "error": null
 }
