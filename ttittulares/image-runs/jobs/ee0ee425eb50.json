@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-auto-ee0ee425eb50-r1-a6-1791374245144",
   "requested_at": "2026-10-07T11:57:25.143694Z",
-  "updated_at": "2026-10-07T12:29:11.926Z",
-  "status": "PERSISTING",
-  "phase": "image_persist",
+  "updated_at": "2026-10-07T12:29:21.852Z",
+  "status": "ERROR",
+  "phase": "image_bridge_failed",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -47,12 +47,13 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "Raster recibido; guardando Gag IA en main.",
+  "message": "Upload 500: GitHub main PUT ttittulares/prepared.json: 409 {\"message\":\"ttittulares/prepared.json does not match 5cd26350efb4381b28815f45507b3fe47969a6b4\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#c",
   "pc_upload_secret_hash": "9cad1f0b0275abe367a6b287b214a48fad38983d721cfba7376011ac376d3d04",
   "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
   "pc_picked_up_at": "2026-10-07T12:27:40.019Z",
   "pc_launched_at": "2026-10-07T12:27:52.518Z",
   "upload_received_at": "2026-10-07T12:29:11.926Z",
   "upload_sha256": "e6f7d2724be551cad4f5eb56982036d3c7e016799b227d579f6a1d4f2611873c",
-  "upload_bytes": 2248529
+  "upload_bytes": 2248529,
+  "finished_at": "2026-10-07T12:29:21.852Z"
 }
