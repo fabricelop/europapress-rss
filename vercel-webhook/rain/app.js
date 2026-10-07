@@ -2161,7 +2161,10 @@ function renderEvents(){
     const open=active||startsIn<=180;
     const warning=heavyWindows.length?' · ⚠ fuerte':'';
     const summary='<summary class="eventSummary"><span><b>'+fmtDateTime(e.start)+'–'+fmtTime(e.end)+'</b><small>'+primary+warning+'</small></span><strong>'+maxProb+'%</strong></summary>';
-    const meta='<div class="eventMeta"><span>'+durationText(e.start,e.end)+'</span><span>~'+total.toFixed(1).replace('.',',')+' mm</span><span>pico '+peak.toFixed(1).replace('.',',')+' mm/h</span><span>'+families+' familias</span></div>';
+    const startWindow=e.startWindow?.earliest&&e.startWindow?.latest?'inicio '+fmtTime(e.startWindow.earliest)+'–'+fmtTime(e.startWindow.latest):'';
+    const endWindow=e.endWindow?.earliest&&e.endWindow?.latest?'fin '+fmtTime(e.endWindow.earliest)+'–'+fmtTime(e.endWindow.latest):'';
+    const timingWindow=[startWindow,endWindow].filter(Boolean).join(' · ');
+    const meta='<div class="eventMeta"><span>'+durationText(e.start,e.end)+'</span><span>~'+total.toFixed(1).replace('.',',')+' mm</span><span>pico '+peak.toFixed(1).replace('.',',')+' mm/h</span><span>'+families+' familias</span>'+(timingWindow?'<span>'+timingWindow+'</span>':'')+'</div>';
     blocks.push('<details class="event eventDisclosure" '+(open?'open':'')+'>'+summary+'<div class="eventExpanded">'+heavyAlert+meta+segmentsHtml+details+'</div></details>');
     const dry=dryWindowBetween(e,events[index+1]);
     if(dry)blocks.push('<div class="dryWindow"><strong>Ventana seca probable · '+durationText(dry.start,dry.end)+'</strong><span>'+fmtDateTime(dry.start)+' → '+fmtTime(dry.end)+'</span></div>');
