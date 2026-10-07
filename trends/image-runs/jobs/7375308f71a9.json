@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-7375308f71a9-r1-a1-1791336265806",
+  "requested_at": "2026-10-07T01:24:25.806383Z",
+  "updated_at": "2026-10-07T01:24:25.806383Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "7375308f71a9",
+  "trend_id": "7375308f71a9",
+  "target_name": "Chiqui",
+  "revision": 1,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Chiqui",
+    "revision": 1,
+    "explanation": "TT#9 Chiqui es tendencia porque en Tierra de Nadie siguió nominada junto a Arkano, María Jesús Ruiz e Ivana Icardi tras salvarse Yola Berrocal y Omar Sánchez; su expulsión se decide el jueves.\n🌶️ La isla le ha dejado el salvavidas en visto.",
+    "closer_text": "🌶️ La isla le ha dejado el salvavidas en visto.",
+    "trend_names": [
+      "Chiqui"
+    ],
+    "group_title": "Chiqui",
+    "rank_at_explanation": 9,
+    "explained_at": "2026-10-07T03:22:57+02:00",
+    "verification_sources": [
+      "https://eltelevisero.huffingtonpost.es/2026/10/encuesta-quien-quieres-que-sea-salvado-en-supervivientes-all-stars-2026-chiqui-maria-jesus-ruiz-ivana-o-arkano/",
+      "https://www.eldiario.es/vertele/noticias/supervivientes-all-stars-3-salva-nominados-vive-peor-crisis-marta-penate-aplaude-boda-sandra-barneda_1_13567690.html"
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.",
+    "image_style_name": "grabado_moderno",
+    "image_style_index": 6
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
