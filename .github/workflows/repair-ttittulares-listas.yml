@@ -300,6 +300,9 @@ jobs:
                   "does not match",
                   "shared/image-raster-registry.json",
                   "ttittulares/prepared.json",
+                  "github control put",
+                  "no hubo evidencia suficiente de envío del prompt imagegen",
+                  "no hubo evidencia suficiente de envio del prompt imagegen",
               ))
               cooldown=60 if transient_bridge_failure else (300 if attempt<3 else 3600)
               if old and old_status not in active and age<cooldown:
