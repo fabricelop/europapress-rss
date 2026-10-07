@@ -8,6 +8,7 @@ PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuánd
 - El nowcast AEMET entra en la mezcla 0–180 min, junto con RainViewer/OPERA, sin convertir tres radares correlacionados en tres familias de modelos independientes.
 - AEMET se refresca junto a las demás fuentes radar y puede corregir tanto llegadas como pausas/reanudaciones.
 - Fuera del horizonte espacial defendible el mapa sigue sin inventar ecos futuros; la ETA pasa a HARMONIE-AROME y consenso multimodelo.
+- El smoke de CI verifica además la disponibilidad viva de las descargas oficiales AEMET de radar y HARMONIE antes de aceptar la rama.
 
 ## Motor por horizonte
 - **0–4 h:** la banda corta mantiene su detalle 0–180 min, mientras el mapa radar puede avanzar visualmente hasta 4 h. El radar solo tiene autoridad dentro de su horizonte fiable dinámico; después el peso cae a cero y mandan modelos/consenso.
