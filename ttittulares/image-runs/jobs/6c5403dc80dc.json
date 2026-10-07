@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tt-img-auto-6c5403dc80dc-r1-a4-1791376087370",
-  "requested_at": "2026-10-07T12:28:07.367827Z",
-  "updated_at": "2026-10-07T13:11:03.035Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tt-img-auto-6c5403dc80dc-r1-a5-1791378703833",
+  "requested_at": "2026-10-07T13:11:43.832648Z",
+  "updated_at": "2026-10-07T13:11:43.832648Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -15,7 +15,8 @@
   "revision": 1,
   "regenerate": true,
   "auto_repair": true,
-  "auto_repair_attempt": 4,
+  "auto_repair_attempt": 5,
+  "manual_retry_version": 1,
   "chat_command_version": 7,
   "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
   "context_snapshot": {
@@ -47,13 +48,5 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "Gag IA materializado y visible en Listas.",
-  "pc_upload_secret_hash": "6f394c0cf53fc1d98bb149f3fa54f69d04e4753078ce68a662d3cf80df0d3792",
-  "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-07T13:09:42.499Z",
-  "pc_launched_at": "2026-10-07T13:09:51.210Z",
-  "upload_received_at": "2026-10-07T13:10:57.510Z",
-  "upload_sha256": "5c46c2e9cf792c21c281fbe41b6388a659277d42c6f4f777abf502af04710f3f",
-  "upload_bytes": 2086740,
-  "finished_at": "2026-10-07T13:11:03.035Z"
+  "message": "Reintento manual de imagen IA desde Telegram."
 }
