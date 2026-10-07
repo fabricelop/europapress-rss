@@ -2640,12 +2640,13 @@ async function refreshRadar(renderAfter=true){
     const [qhResult,radarResult,operaResult]=await Promise.allSettled([
       fetchQuarterHour(),fetchRadarMeta(),fetchOperaMeta()
     ]);
-    const quarterHour=qhResult.status==='fulfilled'?qhResult.value:state.data.quarterHour;
+    const quarterHourFresh=qhResult.status==='fulfilled';
+    const quarterHour=quarterHourFresh?qhResult.value:state.data.quarterHour;
     const radar=radarResult.status==='fulfilled'?radarResult.value:state.data.radar;
     const opera=operaResult.status==='fulfilled'?operaResult.value:state.data.opera;
     const sources={
       ...state.data.sources,
-      quarterHour:Boolean(quarterHour),
+      quarterHour:Boolean(quarterHour)&&(!state.data.degradedForecast||quarterHourFresh),
       radar:radarFreshness(radar).ok,
       opera:operaFreshness(opera).ok
     };
