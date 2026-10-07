@@ -10147,7 +10147,7 @@
       "percentage": 31.2,
       "first_seen": "2026-10-07T06:13:02.517220Z",
       "last_seen": "2026-10-07T09:44:15.506085Z",
-      "status": "PROBLEMATIC",
+      "status": "DISMISSED",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -10218,7 +10218,12 @@
       "verified_source_count": 5,
       "problematic_at": "2026-10-07T10:10:52.211468Z",
       "problem_reason": "superseded_by_existing_ready_versions: el mismo episodio de Rodalies ya está materializado en READY como ee0ee425eb50 (suspensión) y ab57f3b288a2 (recuperación); el aplicador no permite cerrar duplicados contra READY sin decisión terminal y crear un tercer READY duplicaría el episodio.",
-      "problematic_attempts": 1
+      "problematic_attempts": 1,
+      "dismissed_at": "2026-10-07T13:23:21.173Z",
+      "manual_user_dismissed": true,
+      "dismissal_source": "web_user",
+      "history_hidden_at": "2026-10-07T13:23:21.173Z",
+      "history_hidden_source": "web_user_dismissal"
     },
     {
       "id": "182272fc2627",
@@ -15098,5 +15103,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-07T13:23:16.835Z"
+  "updated_at": "2026-10-07T13:23:21.173Z"
 }
