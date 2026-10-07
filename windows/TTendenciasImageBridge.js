@@ -93,6 +93,22 @@ async function waitForHandoffConversation(job,timeoutMs=65000){
   const deadline=Date.now()+Math.max(5000,Number(timeoutMs)||65000);
   let lastId="",lastRemotePoll=0;
   while(Date.now()<deadline){
+    // v38: manda el contenido real, no la heurística de pestañas. Buscar primero
+    // el command_id en todas las conversaciones evita quedar secuestrado por un
+    // target_handoff_id válido pero incorrecto.
+    const found=await reacquireCommandChat(job);
+    if(found&&found.cdp){
+      const st=found.state||{};
+      const launched=Boolean(st.bodyMarker||(!st.composerMarker&&st.generating));
+      if(launched){
+        found.cdp.acceptInitialRaster=true;
+        found.cdp.authoritativeHandoff=false;
+        console.log("BRIDGE COMMAND SCAN FIRST ATTACHED url="+String(st.url||"")+" turns="+Number(st.turns||0)+" generating="+Boolean(st.generating));
+        return found.cdp
+      }
+      try{found.cdp.close()}catch{}
+    }
+
     let t=await hintedTarget();
     if(!t && Date.now()-lastRemotePoll>=1800){
       lastRemotePoll=Date.now();
@@ -103,20 +119,6 @@ async function waitForHandoffConversation(job,timeoutMs=65000){
         if(t)console.log("BRIDGE HANDOFF RESOLVED authoritative target="+remoteId)
       }
     }
-    if(!t){
-      const found=await reacquireCommandChat(job);
-      if(found&&found.cdp){
-        const st=found.state||{};
-        const launched=Boolean(st.bodyMarker||(!st.composerMarker&&st.generating));
-        if(launched){
-          found.cdp.acceptInitialRaster=true;
-          found.cdp.authoritativeHandoff=false;
-          console.log("BRIDGE COMMAND SCAN ATTACHED url="+String(st.url||"")+" turns="+Number(st.turns||0)+" generating="+Boolean(st.generating));
-          return found.cdp
-        }
-        try{found.cdp.close()}catch{}
-      }
-    }
     if(t){
       lastId=String(t.id||lastId);
       const c=new CDP(t.webSocketDebuggerUrl);
@@ -124,7 +126,7 @@ async function waitForHandoffConversation(job,timeoutMs=65000){
         await c.open();
         try{await c.call("Page.enable",{},5000)}catch{}
         try{await c.call("Page.bringToFront",{},5000)}catch{}
-        const verifyDeadline=Date.now()+18000;
+        const verifyDeadline=Date.now()+3500;
         while(Date.now()<verifyDeadline){
           let st=null;try{st=await inspectChat(c,job)}catch{}
           if(st&&(st.bodyMarker||st.hasMarker||(!st.composerMarker&&st.targetMarker&&Number(st.turns||0)>0))){
@@ -331,7 +333,7 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttendencias-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
 const BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback";
-const BRIDGE_PATCH="v37-scan-command-target";
+const BRIDGE_PATCH="v38-command-scan-first";
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
@@ -756,12 +758,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttendencias-image-bridge-v37-command-scan",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttendencias-image-bridge-v38-command-first",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v37-command-scan",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v38-command-first",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -809,7 +811,7 @@ async function uploadImage(image){
         console.log("BRIDGE FALLBACK PROMPT VERIFIED attempt="+generationAttempt);
         if(generationAttempt===1){
           await progress("prompt_sent","Fallback: prompt GAG IA enviado y verificado.");
-          const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v37-command-scan"});
+          const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v38-command-first"});
           if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
         }
         await progress("capture_wait","Fallback: esperando raster ImageGen. Intento "+generationAttempt+"/2.");
@@ -837,7 +839,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttendencias-image-bridge-v37-command-scan",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttendencias-image-bridge-v38-command-first",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
