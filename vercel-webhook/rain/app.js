@@ -39,7 +39,7 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.12';
+const APP_VERSION='0.17.13';
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -2381,7 +2381,9 @@ function renderEvents(){
     const startWindow=e.startWindow?.earliest&&e.startWindow?.latest?'inicio '+fmtTime(e.startWindow.earliest)+'–'+fmtTime(e.startWindow.latest):'';
     const endWindow=e.endWindow?.earliest&&e.endWindow?.latest?'fin '+fmtTime(e.endWindow.earliest)+'–'+fmtTime(e.endWindow.latest):'';
     const timingWindow=[startWindow,endWindow].filter(Boolean).join(' · ');
-    const meta='<div class="eventMeta"><span>'+durationText(e.start,e.end)+'</span><span>~'+total.toFixed(1).replace('.',',')+' mm</span><span>pico '+peak.toFixed(1).replace('.',',')+' mm/h</span><span>'+families+' familias</span>'+(timingWindow?'<span>'+timingWindow+'</span>':'')+'</div>';
+    const internalConflict=Math.round((Number(e.internalFamilyDisagreement)||0)*100);
+    const conflictMeta=internalConflict>=20?'<span>conflicto det↔ens ~'+internalConflict+'%</span>':'';
+    const meta='<div class="eventMeta"><span>'+durationText(e.start,e.end)+'</span><span>~'+total.toFixed(1).replace('.',',')+' mm</span><span>pico '+peak.toFixed(1).replace('.',',')+' mm/h</span><span>'+families+' familias</span>'+conflictMeta+(timingWindow?'<span>'+timingWindow+'</span>':'')+'</div>';
     blocks.push('<details class="event eventDisclosure" '+(open?'open':'')+'>'+summary+'<div class="eventExpanded">'+heavyAlert+meta+segmentsHtml+details+'</div></details>');
     const dry=dryWindowBetween(e,events[index+1]);
     if(dry)blocks.push('<div class="dryWindow"><strong>Ventana seca probable · '+durationText(dry.start,dry.end)+'</strong><span>'+fmtDateTime(dry.start)+' → '+fmtTime(dry.end)+'</span></div>');
@@ -2424,10 +2426,15 @@ function renderSources(){
   const healthyFamilies=new Set(healthyModels.map(x=>x.family||x.id).filter(Boolean)).size;
   const fallbackAge=Number(state.data?.degradedCacheAgeMs)||0;
   const propagation=state.data?.sources?.propagation;
+  const nearInternal=(state.data?.timeline||[]).slice(0,8)
+    .map(row=>Number(row.internalDisagreement))
+    .filter(Number.isFinite);
+  const internalDisagreement=nearInternal.length?Math.round(nearInternal.reduce((sum,value)=>sum+value,0)/nearInternal.length):0;
   const trustParts=[];
   if(propagation?.propagatingFamilies)trustParts.push(propagation.propagatingFamilies+' familias con run propagándose');
   if(propagation?.unknownFamilies)trustParts.push(propagation.unknownFamilies+' familias con frescura no verificable');
   if(Number(propagation?.confidencePenalty)>0)trustParts.push('confianza -'+Math.round(Number(propagation.confidencePenalty)*100)+' pt');
+  if(internalDisagreement>=20)trustParts.push('conflicto det↔ens ~'+internalDisagreement+'%');
   const propagationText=trustParts.length?' · '+trustParts.join(' · '):'';
   const consensusDetail=state.data?.degradedForecast
     ? 'MODO DEGRADADO · última previsión válida de hace '+Math.max(1,Math.round(fallbackAge/60_000))+' min · confianza máxima '+Math.round((Number(state.data?.degradedConfidenceCap)||0)*100)+'%'

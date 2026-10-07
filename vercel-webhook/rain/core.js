@@ -120,9 +120,19 @@ export function buildConsensus({ deterministic = [], ensembles = [], nowMs = Dat
     for(const group of ensProbFamilies){
       const arr=familyOpinions.get(group.family)||[];arr.push(group.value);familyOpinions.set(group.family,arr);
     }
+    const detByFamily=new Map(detWetFamilies.map(group=>[group.family,group.value]));
+    const ensByFamily=new Map(ensProbFamilies.map(group=>[group.family,group.value]));
+    const internalConflicts=[...detByFamily.entries()]
+      .filter(([family])=>ensByFamily.has(family))
+      .map(([family,detValue])=>Math.abs(Number(detValue)-Number(ensByFamily.get(family))))
+      .filter(Number.isFinite);
+    const internalFamilyDisagreement=internalConflicts.length
+      ? internalConflicts.reduce((sum,value)=>sum+value,0)/internalConflicts.length
+      : 0;
     const opinionVector=[...familyOpinions.values()].map(values=>values.reduce((s,v)=>s+v,0)/values.length);
     const spread=standardDeviation(opinionVector) ?? 0.5;
-    const agreement=clamp(1-spread/0.5);
+    const externalAgreement=clamp(1-spread/0.5);
+    const agreement=clamp(externalAgreement*(1-.35*internalFamilyDisagreement));
     const providerCount=detAtTime.length+ensAtTime.length;
     const allFamilies=new Set([...deterministic,...ensembles].map(model=>model.family||model.id||model.label).filter(Boolean));
     const independentFamilyCount=familyOpinions.size;
@@ -146,6 +156,8 @@ export function buildConsensus({ deterministic = [], ensembles = [], nowMs = Dat
       probability:clamp(probability),
       expectedPrecipitation:Math.max(0,expectedPrecipitation||0),
       agreement,
+      externalAgreement,
+      internalFamilyDisagreement,
       timingConfidence,
       providerCount,
       independentFamilyCount,
@@ -229,6 +241,7 @@ export function detectRainEvents(points=[],options={}){
     const meanExpected=totalExpected/Math.max(1,segment.length);
     const meanProbability=segment.reduce((sum,row)=>sum+(Number(row.probability)||0),0)/Math.max(1,segment.length);
     const meanTimingConfidence=segment.reduce((sum,row)=>sum+(Number(row.timingConfidence)||0),0)/Math.max(1,segment.length);
+    const meanInternalDisagreement=segment.reduce((sum,row)=>sum+(Number(row.internalFamilyDisagreement)||0),0)/Math.max(1,segment.length);
     const variance=segment.reduce((sum,row)=>sum+((Number(row.expectedPrecipitation)||0)-meanExpected)**2,0)/Math.max(1,segment.length);
     const variation=meanExpected>0?Math.sqrt(variance)/meanExpected:0;
     const durationHours=endIndex-startIndex+1;
@@ -260,6 +273,7 @@ export function detectRainEvents(points=[],options={}){
       averageProbability:meanProbability,
       totalExpectedPrecipitation:totalExpected,
       timingConfidence:meanTimingConfidence,
+      internalFamilyDisagreement:meanInternalDisagreement,
       durationHours,
       character,
       providerCount:Math.max(...segment.map(row=>row.providerCount||0)),
@@ -292,6 +306,7 @@ export function compactTimeline(points=[],limit=72){
     precipitation:Number(row.expectedPrecipitation.toFixed(2)),
     confidence:Math.round(row.timingConfidence*100),
     agreement:Math.round(row.agreement*100),
+    internalDisagreement:Math.round((Number(row.internalFamilyDisagreement)||0)*100),
     independentFamilies:row.independentFamilyCount||0,
   }));
 }
