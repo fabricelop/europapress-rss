@@ -33701,13 +33701,60 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "image_status": "ready",
+      "image_choice": "ai",
       "image_pending": false,
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/967200e462d9-r0-ai1-791361537596.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "548574f8c08ae7f47caa53a41140c182fca24d8fd3575ad28e1c1796c9893bf8",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2174881,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "967200e462d9",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-967200e462d9-r0-a1-1791361537596"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/967200e462d9-r0-ai1-791361537596.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T08:29:06.849Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/967200e462d9-r0-ai1-791361537596.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "548574f8c08ae7f47caa53a41140c182fca24d8fd3575ad28e1c1796c9893bf8",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2174881,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "967200e462d9",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-967200e462d9-r0-a1-1791361537596"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/967200e462d9-r0-ai1-791361537596.png",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     },
     {
       "id": "68e586b8b52d",
@@ -33761,6 +33808,6 @@
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-07T08:28:22.976190Z",
+  "updated_at": "2026-10-07T08:29:06.849Z",
   "count": 620
 }
