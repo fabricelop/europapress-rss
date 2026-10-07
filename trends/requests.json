@@ -33935,7 +33935,7 @@
       "id": "4cd0817bfe0a",
       "name": "#7OctubrESP",
       "revision": 0,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-07T09:50:32.955Z",
       "rank": 12,
       "with_image": true,
@@ -33949,9 +33949,13 @@
       "requested_together": [
         "#7OctubrESP"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "problematic_at": "2026-10-07T11:53:28+02:00",
+      "problem_reason": "No se ha podido identificar con fiabilidad el detonante concreto de #7OctubrESP: las búsquedas exactas y por variantes no devuelven resultados públicos/indexados del hashtag; la cobertura actual solo permite verificar el contexto general del tercer aniversario del 7-O, no que ese sea el motivo específico de la tendencia.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ],
-  "updated_at": "2026-10-07T09:50:32.955Z",
+  "updated_at": "2026-10-07T11:53:28+02:00",
   "count": 659
 }
