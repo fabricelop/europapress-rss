@@ -1,8 +1,14 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
-# watchdog-restart-refresh-v8-ttittulares-no-queue-restart
+# watchdog-restart-refresh-v9-singleton-no-ttittulares-queue-restart
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
+$script:WatchdogMutex=$null
+try{
+  $created=$false
+  $script:WatchdogMutex=New-Object System.Threading.Mutex($true,"Global\\TT_LocalWatchdog_v9_singleton",[ref]$created)
+  if(-not $created){ exit 0 }
+}catch{}
 $BaseDir="C:\TTiTTulares"
 $LogPath=Join-Path $BaseDir "tt-local-watchdog.log"
 $StartupDir=[Environment]::GetFolderPath("Startup")
@@ -130,6 +136,7 @@ function RestartListenerForQueue([string]$Project,[string]$Pattern,[string]$Scri
 }
 
 function CheckImageQueueHealth([string]$Project,[string]$Branch,[string]$Prefix,[string]$Pattern,[string]$Script,[string]$Tag){
+  if($Project -eq "ttittulares"){ return }
   try{
     $api=if($Project -eq "ttittulares"){
       "https://europapress-rss.vercel.app/api/ttittulares-run-status"
@@ -205,4 +212,5 @@ try{
   }
 }finally{
   try{[void][TTKeepAwake]::SetThreadExecutionState(0x80000000)}catch{}
+  try{if($script:WatchdogMutex){$script:WatchdogMutex.ReleaseMutex();$script:WatchdogMutex.Dispose()}}catch{}
 }
