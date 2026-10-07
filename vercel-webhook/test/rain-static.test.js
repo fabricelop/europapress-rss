@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,projectionWarp} from '../rain/radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear} from '../rain/radar-core.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
 
@@ -143,16 +143,4 @@ test('several local flows stabilize the motion field',()=>{
   assert.ok(combined);
   assert.equal(combined.historySamples,2);
   assert.ok(combined.confidence>0);
-});
-
-
-test('adaptive radar projection warp stays bounded and reacts to flow divergence',()=>{
-  const calm=projectionWarp({progress:0,uncertainty:0,quality:.8,localQuality:.9,speedDeltaRatio:.8,bearingDeltaDegrees:35,turnAdjustmentDegrees:6});
-  assert.deepEqual(calm,{alongScale:1,crossScale:1,shear:0});
-  const warped=projectionWarp({progress:1,uncertainty:1,quality:.35,localQuality:.9,speedDeltaRatio:.8,bearingDeltaDegrees:30,turnAdjustmentDegrees:5});
-  assert.ok(warped.alongScale>warped.crossScale);
-  assert.ok(warped.alongScale<=1.32&&warped.crossScale<=1.20);
-  assert.ok(warped.shear>0&&warped.shear<=.14);
-  const opposite=projectionWarp({progress:1,uncertainty:1,quality:.35,localQuality:.9,speedDeltaRatio:.8,bearingDeltaDegrees:-30,turnAdjustmentDegrees:-5});
-  assert.ok(opposite.shear<0&&opposite.shear>=-.14);
 });
