@@ -10,6 +10,7 @@ on:
       # entregar y que compite con la ejecución útil del JSON ya actualizado.
       - "trends/telegram-manual-explained.json"
       - "trends/send_explained_telegram.py"
+      - "shared/cross_account_story.py"
       - ".github/workflows/send-ttendencias-explained-telegram.yml"
   schedule:
     - cron: "*/30 * * * *"
@@ -37,6 +38,9 @@ jobs:
 
       - name: Preparar dependencias
         run: python3 -m pip install --disable-pip-version-check --quiet Pillow requests
+
+      - name: Validar cita cruzada
+        run: python3 shared/cross_account_story.py selftest
 
       - name: Validar paquete Telegram
         run: python3 trends/send_explained_telegram.py selftest
