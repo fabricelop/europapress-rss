@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-07T13:09:33.490Z",
+  "updated_at": "2026-10-07T13:11:02.153Z",
   "items": [
     {
       "event_id": "4bb14da255c1",
@@ -366,11 +366,11 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
-      "image_pending": true,
+      "image_pending": false,
       "image_app_available": true,
       "image_delivery": "app",
       "fallback_image": {
@@ -383,12 +383,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-07T10:18:55.585470Z",
       "image": {
-        "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/10/07/6ac61003742c92-64299165.jpeg",
-        "source": "www.20minutos.es",
-        "source_url": "https://www.20minutos.es/libros/isabel-diaz-ayuso-da-salto-literatura-con-intimo-su-primer-libro_7045869_0.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Isabel Díaz Ayuso publicará «Íntimo», su primer libro"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/6c5403dc80dc-r1-ai1-791376087370.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "5c46c2e9cf792c21c281fbe41b6388a659277d42c6f4f777abf502af04710f3f",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2086740,
+        "context_guard": {
+          "version": 3,
+          "event_id": "6c5403dc80dc",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-6c5403dc80dc-r1-a4-1791376087370"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/6c5403dc80dc-r1-ai1-791376087370.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/10/07/6ac61003742c92-64299165.jpeg",
@@ -398,10 +412,33 @@
         "generated": false,
         "alt": "Isabel Díaz Ayuso publicará «Íntimo», su primer libro"
       },
-      "ai_image_regenerate_requested": true,
-      "ai_image_regenerate_requested_at": "2026-10-07T13:09:14.235Z",
-      "ai_image_regenerate_request_version": 1,
-      "telegram_timeout_retry_at": "2026-10-07T13:09:14.235Z"
+      "telegram_timeout_retry_at": "2026-10-07T13:09:14.235Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/6c5403dc80dc-r1-ai1-791376087370.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "5c46c2e9cf792c21c281fbe41b6388a659277d42c6f4f777abf502af04710f3f",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2086740,
+        "context_guard": {
+          "version": 3,
+          "event_id": "6c5403dc80dc",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-6c5403dc80dc-r1-a4-1791376087370"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/6c5403dc80dc-r1-ai1-791376087370.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-07T13:11:02.153Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T13:11:02.153Z"
     },
     {
       "event_id": "60701d6b1b44",
