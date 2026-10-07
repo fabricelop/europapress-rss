@@ -1,4 +1,4 @@
-# RainETA v0.17.8
+# RainETA v0.17.9
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,16 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Fallback explícito de previsión v0.17.9
+- Si caduca la caché normal y **ninguna fuente nueva de previsión responde**, RainETA puede reutilizar durante un máximo de **90 min** la última previsión válida de la misma versión y ubicación.
+- El fallback nunca es silencioso: la cabecera muestra **MODO DEGRADADO**, la edad de la previsión y cuántas capas siguen realmente vivas.
+- Los modelos reutilizados dejan de contar como fuentes sanas y el panel Fuentes los identifica como “última previsión válida · sin actualización en vivo”.
+- La confianza temporal de la previsión guardada queda limitada por edad: máximo 55 % hasta 45 min, 45 % hasta 70 min y 35 % después.
+- Radar RainViewer y OPERA se refrescan independientemente; si siguen vivos pueden mantener autoridad en el corto plazo aunque los modelos estén en fallback.
+- Una guía de 15 min guardada no vuelve a contarse como viva si su refresco falla. Solo se recupera su estado saludable cuando responde de nuevo.
+- El fallback no cruza versiones de RainETA: después de cambiar el motor se exige al menos una previsión fresca de esa versión antes de poder reutilizarla.
+- Durante MODO DEGRADADO no se crean nuevas muestras de acierto para **Modelos** a partir del forecast reciclado; RainViewer/OPERA sí pueden seguir aprendiendo si sus datos en vivo están disponibles.
 
 ## Elección adaptativa entre radares v0.17.8
 - Cuando RainViewer y OPERA discrepan más de 30 min en la ETA, RainETA ya no depende solo de la confianza instantánea si existe suficiente historial local de verificación.
