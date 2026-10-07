@@ -34,6 +34,7 @@ const OPERA_STALE_MINUTES=30;
 const OPERA_SURFACE_STALE_MINUTES=20;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
+const APP_VERSION='0.17.5';
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -45,7 +46,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.17.5',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -278,7 +279,7 @@ async function loadForecast(force=false){
   if(!force){
     try{
       const c=JSON.parse(localStorage.getItem(k)||'null');
-      if(c&&Date.now()-c.savedAt<FORECAST_TTL&&c.data&&c.data.week){return {...c.data,cacheAgeMs:Date.now()-c.savedAt}}
+      if(c&&c.version===APP_VERSION&&Date.now()-c.savedAt<FORECAST_TTL&&c.data&&c.data.week){return {...c.data,cacheAgeMs:Date.now()-c.savedAt}}
     }catch{}
   }
   const [det,ens,qh,radar,opera,week]=await Promise.all([
@@ -326,7 +327,7 @@ async function loadForecast(force=false){
   };
   const all=[...data.sources.deterministic,...data.sources.ensembles];
   data.sources.health={available:all.filter(x=>x.ok).length+(data.sources.quarterHour?1:0)+(data.sources.radar?1:0)+(data.sources.opera?1:0),total:all.length+3};
-  try{localStorage.setItem(k,JSON.stringify({savedAt:Date.now(),data}))}catch{}
+  try{localStorage.setItem(k,JSON.stringify({version:APP_VERSION,savedAt:Date.now(),data}))}catch{}
   return data;
 }
 
