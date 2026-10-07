@@ -28781,9 +28781,9 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -28799,13 +28799,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://img2.rtve.es/a/17256452/?imgProgApi=imgBackground&w=800",
-        "source": "RTVE · 7/10/2026",
-        "source_url": "https://www.rtve.es/play/audios/las-mananas-de-rne/correos-voto-correo-absolutamente-seguro/17256452/",
-        "alt": "Imagen de archivo relacionada con #EleccionesEspaña",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ad443d46cc7d-r1-ai4-791397844488.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 4,
+        "sha256": "ea2c3ed581154ef20e1ad4b59e93cb08a22d6a252267bc2c36b5cd99cfced380",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2287607,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ad443d46cc7d",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-ad443d46cc7d-r1-a4-1791397844488"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ad443d46cc7d-r1-ai4-791397844488.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ad443d46cc7d-r1-ai4-791397844488.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 4,
+        "sha256": "ea2c3ed581154ef20e1ad4b59e93cb08a22d6a252267bc2c36b5cd99cfced380",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2287607,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ad443d46cc7d",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-ad443d46cc7d-r1-a4-1791397844488"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ad443d46cc7d-r1-ai4-791397844488.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 4,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T18:32:34.329Z"
     },
     {
       "id": "c4d952aa817b",
@@ -35720,6 +35759,6 @@
       "telegram_decision_source": "telegram_package"
     }
   ],
-  "updated_at": "2026-10-07T18:30:41.428470Z",
+  "updated_at": "2026-10-07T18:32:34.329Z",
   "count": 634
 }
