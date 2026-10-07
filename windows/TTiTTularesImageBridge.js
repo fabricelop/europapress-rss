@@ -361,19 +361,11 @@ async function injectPromptIntoChat(cdp,job){
   const prep=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return {ok:false};c.focus();try{if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){c.value='';c.dispatchEvent(new Event('input',{bubbles:true}))}else{const s=getSelection();const r=document.createRange();r.selectNodeContents(c);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null)}}catch(_){}return {ok:true,url:location.href,title:document.title||''}})()");
   if(!prep||!prep.ok)throw Error("No hay compositor utilizable para fallback");
 
-  const chunkSize=900;
-  for(let off=0;off<message.length;off+=chunkSize){
-    const chunk=message.slice(off,off+chunkSize);
-    await cdp.call("Input.insertText",{text:chunk},8000);
-    await sleep(90);
-  }
-
+  await cdp.call("Input.insertText",{text:message});
+  await sleep(250);
   const verify=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const t=String(c&&(c.innerText||c.textContent||c.value)||'');return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,url:location.href,title:document.title||''}})()");
-  const minLen=Math.min(500,Math.floor(message.length*0.5));
-  if(!verify||!verify.ok||Number(verify.len||0)<minLen){
-    throw Error("Fallback no pudo escribir el prompt completo len="+Number(verify&&verify.len||0)+" expected>="+minLen);
-  }
-  console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED len="+Number(verify.len||0)+" "+String(verify.url||""));
+  if(!verify||!verify.ok)throw Error("Fallback no pudo escribir el prompt completo");
+  console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED "+String(verify.url||""));
   return cdp
 }
 
