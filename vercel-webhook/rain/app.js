@@ -22,6 +22,7 @@ const ENS_MODELS=[
   {id:'google_weathernext2_ensemble',label:'Google WeatherNext 2',family:'GOOGLE',weight:.92,metaDomains:['google_weathernext2_ensemble']},
 ];
 const FORECAST_TTL=20*60_000;
+const FORECAST_PROPAGATION_TTL=5*60_000;
 const FORECAST_FALLBACK_MAX_AGE=90*60_000;
 const RADAR_REFRESH_MS=5*60_000;
 const CANONICAL_RADAR_THRESHOLD=.22;
@@ -408,7 +409,8 @@ function modelPropagationState(detSettled,ensSettled,detFreshness,ensFreshness){
 }
 async function loadForecast(force=false){
   const k=cacheKey(),cached=readForecastCache();
-  if(!force&&cached&&cached.ageMs<FORECAST_TTL)return {...cached.data,cacheAgeMs:cached.ageMs};
+  const cacheTtl=cached?.data?.sources?.propagation?.propagatingFamilies?FORECAST_PROPAGATION_TTL:FORECAST_TTL;
+  if(!force&&cached&&cached.ageMs<cacheTtl)return {...cached.data,cacheAgeMs:cached.ageMs};
   const [det,ens,qh,radar,opera,week,detFreshness,ensFreshness]=await Promise.all([
     pool(DET_MODELS,fetchDet,3),pool(ENS_MODELS,fetchEns,2),
     Promise.allSettled([fetchQuarterHour()]),Promise.allSettled([fetchRadarMeta()]),Promise.allSettled([fetchOperaMeta()]),
