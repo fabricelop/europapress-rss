@@ -103,10 +103,10 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 
 ## Calibración local por origen v0.17.14
 - La confianza de corto plazo deja de usar indiscriminadamente el historial de RainViewer: cada tipo de evento se calibra con su **propia fuente**.
-- Los eventos RainViewer conservan la autoevaluación radar histórica existente.
+- Los eventos RainViewer usan su autoevaluación radar histórica, pero de forma conservadora: el historial solo puede **limitar** una confianza actualmente alta, nunca elevar una señal meteorológica débil.
 - Los eventos OPERA usan únicamente el historial local de OPERA; los eventos de modelos usan únicamente el historial local de Modelos.
 - La fusión RainViewer+OPERA solo usa aprendizaje local cuando ambas fuentes tienen muestra suficiente.
-- OPERA y Modelos aplican una regla deliberadamente conservadora: un historial local pobre puede **limitar** la confianza, pero un historial bueno no la eleva artificialmente por encima de la confianza meteorológica calculada.
+- Todas las fuentes aplican una regla deliberadamente conservadora: un historial local pobre puede **limitar** la confianza, pero un historial bueno no la eleva artificialmente por encima de la confianza meteorológica calculada.
 - Esta corrección evita que un radar con buen/mal rendimiento local contamine la confianza mostrada para una ETA que en realidad procede de modelos.
 
 ## Coherencia interna de familias v0.17.13
