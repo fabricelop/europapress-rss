@@ -211,10 +211,10 @@ jobs:
                           break
               return " ".join(good[:3]) or "noticias"
 
-          def keyboard_for(eid,tweet,image_url,item,archive_copy_url="",timeout_fallback=False):
+          def keyboard_for(eid,tweet,image_url,item,archive_copy_url="",timeout_fallback=False,archive_only=False):
               x_search="https://x.com/search?"+urllib.parse.urlencode({"q":x_search_keywords(item),"src":"typed_query","f":"live"})
               rows=[]
-              if timeout_fallback:
+              if timeout_fallback or archive_only:
                   if archive_copy_url:
                       rows.append([{"text":"🗂️ Copiar imagen archivo","url":"https://tt-control.fabricelop.workers.dev/copy-image?"+urllib.parse.urlencode({"src":archive_copy_url})}])
               else:
@@ -333,16 +333,21 @@ jobs:
                       current=row
                       break
 
-              timeout_reuse=None
+              timeout_archive=None
               if event_delivery and event_delivery.get("timeout_fallback"):
-                  timeout_reuse=event_delivery
+                  timeout_archive=event_delivery
 
               archive=archive_obj(item)
               archive_url=str(archive.get("url") or "").strip()
               archive_source=current or {}
-              archive_mid=int(archive_source.get("archive_telegram_message_id") or 0)
-              archive_sha=str(archive_source.get("archive_sha256") or "")
-              archive_copy_url=str(archive_source.get("archive_materialized_url") or "")
+              if timeout_archive:
+                  archive_mid=int(timeout_archive.get("telegram_message_id") or 0)
+                  archive_sha=str(timeout_archive.get("archive_sha256") or "")
+                  archive_copy_url=str(timeout_archive.get("archive_materialized_url") or "")
+              else:
+                  archive_mid=int(archive_source.get("archive_telegram_message_id") or 0)
+                  archive_sha=str(archive_source.get("archive_sha256") or "")
+                  archive_copy_url=str(archive_source.get("archive_materialized_url") or "")
 
               if archive_url and not archive_copy_url:
                   try:
@@ -367,6 +372,17 @@ jobs:
                       print(f"TTITTULARES_ARCHIVE_WARNING event={eid} error={e}")
 
               keyboard=keyboard_for(eid,tweet,image_url,item,archive_copy_url)
+
+              if timeout_archive:
+                  try:
+                      archive_keyboard=keyboard_for(eid,tweet,"",item,archive_copy_url,archive_only=True)
+                      edit_keyboard(int(timeout_archive.get("telegram_message_id") or 0),archive_keyboard)
+                      timeout_archive["buttons_version"]=5
+                      timeout_archive["buttons_updated_at"]=nowz()
+                      timeout_archive["ai_companion_pending"]=False
+                      changed=True
+                  except Exception as e:
+                      print(f"TTITTULARES_TIMEOUT_ARCHIVE_KEYBOARD_WARNING event={eid} error={e}")
 
               if current:
                   try:
@@ -396,40 +412,6 @@ jobs:
                   raise SystemExit(f"{eid}: SHA256 IA no coincide")
               caption=tweet+f"\n\n{len(tweet)}/256"
 
-              if timeout_reuse:
-                  old_mid=int(timeout_reuse.get("telegram_message_id") or 0)
-                  can_edit=bool(old_mid and str(timeout_reuse.get("archive_image_url") or "").strip())
-                  if can_edit:
-                      try:
-                          edit_photo_media(old_mid,raw,caption,keyboard)
-                          old_key=str(timeout_reuse.get("delivery_key") or "")
-                          timeout_reuse.update({
-                              "delivery_key":delivery_key,
-                              "image_sha256":got,
-                              "image_url":image_url,
-                              "status":"sent",
-                              "buttons_version":5,
-                              "timeout_fallback":False,
-                              "upgraded_from_timeout":True,
-                              "upgraded_at":nowz()
-                          })
-                          timeout_reuse.pop("timeout_retry_version",None)
-                          timeout_reuse.pop("timeout_wait_from",None)
-                          changed=True
-                          touched+=1
-                          print(f"TTITTULARES_TIMEOUT_UPGRADED_IN_PLACE event={eid} message_id={old_mid}")
-                          continue
-                      except Exception as e:
-                          print(f"TTITTULARES_TIMEOUT_EDIT_WARNING event={eid} error={e}")
-                  try:
-                      if old_mid:
-                          delete_message(old_mid)
-                  except Exception as e:
-                      print(f"TTITTULARES_TIMEOUT_DELETE_WARNING event={eid} error={e}")
-                  timeout_reuse["status"]="superseded"
-                  timeout_reuse["superseded_at"]=nowz()
-                  changed=True
-
               msg=send_photo(raw,caption,keyboard)
               message_id=int(msg.get("message_id") or 0)
               row={
@@ -450,7 +432,7 @@ jobs:
                       "archive_image_url":archive_url,
                       "archive_materialized_url":archive_copy_url,
                       "archive_sha256":archive_sha,
-                      "archive_delivered_at":nowz()
+                      "archive_delivered_at":(timeout_archive or {}).get("delivered_at") or nowz()
                   })
               deliveries.setdefault("items",[]).append(row)
               changed=True
