@@ -22,6 +22,7 @@ const ENS_MODELS=[
   {id:'google_weathernext2_ensemble',label:'Google WeatherNext 2',family:'GOOGLE',weight:.92,metaDomains:['google_weathernext2_ensemble']},
 ];
 const FORECAST_TTL=20*60_000;
+const FORECAST_PROPAGATION_TTL=5*60_000;
 const FORECAST_FALLBACK_MAX_AGE=90*60_000;
 const RADAR_REFRESH_MS=5*60_000;
 const CANONICAL_RADAR_THRESHOLD=.22;
@@ -35,9 +36,10 @@ const RADAR_STALE_MINUTES=20;
 const OPERA_STALE_MINUTES=30;
 const OPERA_SURFACE_STALE_MINUTES=20;
 const MODEL_META_GRACE_SECONDS=20*60;
+const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.10';
+const APP_VERSION='0.17.11';
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -223,9 +225,12 @@ function evaluateModelMeta(domain,meta,nowSeconds=Date.now()/1000){
   const interval=Number(meta?.update_interval_seconds);
   if(!Number.isFinite(availability)||!Number.isFinite(interval)||interval<=0)return null;
   const delaySeconds=nowSeconds-(availability+interval);
+  const availabilityAgeSeconds=nowSeconds-availability;
   return{
     domain,
     stale:delaySeconds>MODEL_META_GRACE_SECONDS,
+    propagating:availabilityAgeSeconds>=0&&availabilityAgeSeconds<MODEL_META_PROPAGATION_SECONDS,
+    availabilityAgeMinutes:Number.isFinite(availabilityAgeSeconds)?Math.max(0,Math.round(availabilityAgeSeconds/60)):null,
     delayMinutes:Math.max(0,Math.round(delaySeconds/60)),
     initialisedAt:Number.isFinite(initialisation)?new Date(initialisation*1000).toISOString():null,
     availableAt:new Date(availability*1000).toISOString(),
@@ -240,8 +245,14 @@ async function fetchModelFreshness(model){
     return evaluateModelMeta(domain,meta);
   }));
   const evaluated=results.filter(x=>x.status==='fulfilled'&&x.value).map(x=>x.value);
-  const fresh=evaluated.filter(x=>!x.stale).sort((a,b)=>Date.parse(b.availableAt)-Date.parse(a.availableAt));
-  if(fresh.length)return{status:'fresh',...fresh[0],checkedDomains:domains.length};
+  const fresh=evaluated.filter(x=>!x.stale).sort((a,b)=>{
+    if(Boolean(a.propagating)!==Boolean(b.propagating))return a.propagating?1:-1;
+    return Date.parse(b.availableAt)-Date.parse(a.availableAt);
+  });
+  if(fresh.length){
+    const best=fresh[0];
+    return{status:best.propagating?'propagating':'fresh',...best,checkedDomains:domains.length};
+  }
   if(evaluated.length===domains.length&&evaluated.length){
     const leastLate=[...evaluated].sort((a,b)=>a.delayMinutes-b.delayMinutes)[0];
     return{status:'stale',...leastLate,checkedDomains:domains.length};
@@ -355,6 +366,8 @@ function sourceStatus(defs,settled,freshnessSettled=[]){
       ok:Boolean(fetched&&!stale),fetched,stale,
       freshnessStatus:freshness?.status||'unknown',
       freshnessReason:freshness?.reason||null,
+      propagating:freshness?.status==='propagating',
+      availabilityAgeMinutes:Number.isFinite(Number(freshness?.availabilityAgeMinutes))?Number(freshness.availabilityAgeMinutes):null,
       initialisedAt:freshness?.initialisedAt||null,
       availableAt:freshness?.availableAt||null,
       delayMinutes:Number.isFinite(Number(freshness?.delayMinutes))?Number(freshness.delayMinutes):null,
@@ -371,9 +384,33 @@ function freshnessValue(settled,index){
 function usableForecast(settled,freshness,index){
   return settled[index]?.status==='fulfilled'&&freshnessValue(freshness,index)?.status!=='stale';
 }
+function modelPropagationState(detSettled,ensSettled,detFreshness,ensFreshness){
+  const byFamily=new Map();
+  const collect=(defs,settled,freshness)=>{
+    defs.forEach((model,i)=>{
+      if(!usableForecast(settled,freshness,i))return;
+      const status=freshnessValue(freshness,i)?.status||'unknown';
+      const family=model.family||model.id;
+      const arr=byFamily.get(family)||[];
+      arr.push(status);byFamily.set(family,arr);
+    });
+  };
+  collect(DET_MODELS,detSettled,detFreshness);
+  collect(ENS_MODELS,ensSettled,ensFreshness);
+  let propagatingFamilies=0;
+  for(const statuses of byFamily.values()){
+    if(statuses.includes('fresh'))continue;
+    if(statuses.includes('propagating'))propagatingFamilies++;
+  }
+  const totalFamilies=byFamily.size;
+  const share=totalFamilies?propagatingFamilies/totalFamilies:0;
+  const confidencePenalty=Math.min(.08,.08*share);
+  return{propagatingFamilies,totalFamilies,share,confidencePenalty};
+}
 async function loadForecast(force=false){
   const k=cacheKey(),cached=readForecastCache();
-  if(!force&&cached&&cached.ageMs<FORECAST_TTL)return {...cached.data,cacheAgeMs:cached.ageMs};
+  const cacheTtl=cached?.data?.sources?.propagation?.propagatingFamilies?FORECAST_PROPAGATION_TTL:FORECAST_TTL;
+  if(!force&&cached&&cached.ageMs<cacheTtl)return {...cached.data,cacheAgeMs:cached.ageMs};
   const [det,ens,qh,radar,opera,week,detFreshness,ensFreshness]=await Promise.all([
     pool(DET_MODELS,fetchDet,3),pool(ENS_MODELS,fetchEns,2),
     Promise.allSettled([fetchQuarterHour()]),Promise.allSettled([fetchRadarMeta()]),Promise.allSettled([fetchOperaMeta()]),
@@ -393,9 +430,12 @@ async function loadForecast(force=false){
     throw new Error('No responde ninguna fuente de previsión');
   }
   const now=Date.now(),end=now+72*3600_000;
+  const propagation=modelPropagationState(det,ens,detFreshness,ensFreshness);
   const consensus=buildConsensus({deterministic,ensembles,nowMs:now}).filter(r=>{
     const t=Date.parse(r.time);return t>=now-3600_000&&t<=end;
-  });
+  }).map(row=>propagation.confidencePenalty>0
+    ? {...row,timingConfidence:Math.max(0,(Number(row.timingConfidence)||0)-propagation.confidencePenalty)}
+    : row);
   const events=detectRainEvents(consensus);
   const data={
     generatedAt:new Date().toISOString(),
@@ -420,7 +460,8 @@ async function loadForecast(force=false){
     sources:{
       deterministic:sourceStatus(DET_MODELS,det,detFreshness),
       ensembles:sourceStatus(ENS_MODELS,ens,ensFreshness),
-      quarterHour:Boolean(quarterHour),radar:radarFreshness(radarMeta).ok,opera:operaFreshness(operaMeta).ok
+      quarterHour:Boolean(quarterHour),radar:radarFreshness(radarMeta).ok,opera:operaFreshness(operaMeta).ok,
+      propagation
     }
   };
   const all=[...data.sources.deterministic,...data.sources.ensembles];
@@ -2348,6 +2389,11 @@ function modelSourceDetail(source,base){
     const run=source.initialisedAt?' · run '+fmtTime(source.initialisedAt):'';
     return base+run+' · frescura verificada';
   }
+  if(source?.freshnessStatus==='propagating'){
+    const run=source.initialisedAt?' · run '+fmtTime(source.initialisedAt):'';
+    const age=Number.isFinite(Number(source.availabilityAgeMinutes))?' · disponible hace ~'+Math.max(0,Math.round(Number(source.availabilityAgeMinutes)))+' min':'';
+    return base+run+' · EN PROPAGACIÓN'+age+' · confianza temporal suavizada';
+  }
   if(source?.freshnessStatus==='unknown')return base+' · frescura no verificable';
   return base;
 }
@@ -2370,9 +2416,13 @@ function renderSources(){
   const healthyModels=modelSources.filter(x=>x.ok);
   const healthyFamilies=new Set(healthyModels.map(x=>x.family||x.id).filter(Boolean)).size;
   const fallbackAge=Number(state.data?.degradedCacheAgeMs)||0;
+  const propagation=state.data?.sources?.propagation;
+  const propagationText=propagation?.propagatingFamilies
+    ? ' · '+propagation.propagatingFamilies+' familias con run propagándose · confianza -'+Math.round((Number(propagation.confidencePenalty)||0)*100)+' pt'
+    : '';
   const consensusDetail=state.data?.degradedForecast
     ? 'MODO DEGRADADO · última previsión válida de hace '+Math.max(1,Math.round(fallbackAge/60_000))+' min · confianza máxima '+Math.round((Number(state.data?.degradedConfidenceCap)||0)*100)+'%'
-    : healthyFamilies+' familias independientes activas · '+healthyModels.length+'/'+modelSources.length+' modelos/ensembles disponibles · quórum mínimo 2';
+    : healthyFamilies+' familias independientes activas · '+healthyModels.length+'/'+modelSources.length+' modelos/ensembles disponibles · quórum mínimo 2'+propagationText;
   const list=[
     {label:'Consenso modelos',ok:!state.data?.degradedForecast&&healthyFamilies>=2,detail:consensusDetail},
     {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opDetail},
