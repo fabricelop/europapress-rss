@@ -3632,11 +3632,11 @@
     {
       "id": "9c2d29850e7f",
       "name": "Olga",
-      "revision": 0,
-      "status": "explained",
-      "requested_at": "2026-09-25T11:53:02.088Z",
-      "rank": 13,
-      "with_image": false,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-07T23:22:11+02:00",
+      "rank": 2,
+      "with_image": true,
       "alternatives_target": 0,
       "anticipated": true,
       "anticipated_at": "2026-09-25T13:21:11+02:00",
@@ -3651,7 +3651,19 @@
       "ready_at": "2026-09-25T14:00:00+02:00",
       "delivery_confirmation": "prepared_web",
       "editorial_engine": "chatgpt-automation-outbox",
-      "explained_at": "2026-09-25T12:22:53.501Z"
+      "reexplain": true,
+      "captured_with": [
+        "Mari Carmen",
+        "Olga",
+        "Urbagestión",
+        "Miserable",
+        "#FirstDates7O",
+        "George Floyd",
+        "Descanse",
+        "Carmen Porter",
+        "Biedma",
+        "Asesino"
+      ]
     },
     {
       "id": "31fa73ae74f1",
@@ -36224,8 +36236,71 @@
       "image_choice": null,
       "image_status": "none",
       "image_pending": false
+    },
+    {
+      "id": "9c210bfc08eb",
+      "name": "Miserable",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-10-07T23:22:11+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "24429adea571",
+      "requested_together": [
+        "Miserable"
+      ],
+      "captured_with": [
+        "Miserable",
+        "#FirstDates7O",
+        "Asesino"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "612da719816b",
+      "name": "#FirstDates7O",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-10-07T23:22:11+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "24429adea571",
+      "requested_together": [
+        "#FirstDates7O"
+      ],
+      "captured_with": [
+        "Miserable",
+        "#FirstDates7O",
+        "Asesino"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "baaf482cc918",
+      "name": "Asesino",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-10-07T23:22:11+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "24429adea571",
+      "requested_together": [
+        "Asesino"
+      ],
+      "captured_with": [
+        "Miserable",
+        "#FirstDates7O",
+        "Asesino"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-07T22:49:30+02:00",
+  "updated_at": "2026-10-07T23:22:11+02:00",
   "count": 684
 }
