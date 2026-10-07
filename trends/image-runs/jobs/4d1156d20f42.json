@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-4d1156d20f42-r0-a1-1791391349422",
+  "requested_at": "2026-10-07T16:42:29.421779Z",
+  "updated_at": "2026-10-07T16:42:29.421779Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "4d1156d20f42",
+  "trend_id": "4d1156d20f42",
+  "target_name": "#TEM7O",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "#TEM7O",
+    "revision": 0,
+    "explanation": "TT#2 #TEM7O es tendencia porque Todo es mentira está en directo en Cuatro: Risto Mejide y su equipo repasan la actualidad y el programa usa ese hashtag para seguir la emisión.\n🌶️ El fact-checking también ficha al algoritmo.",
+    "closer_text": "🌶️ El fact-checking también ficha al algoritmo.",
+    "trend_names": [
+      "#TEM7O"
+    ],
+    "group_title": "#TEM7O",
+    "rank_at_explanation": 2,
+    "explained_at": "2026-10-07T18:17:20+02:00",
+    "verification_sources": [
+      "https://www.cuatro.com/autores/todo-es-mentira/",
+      "https://www.programacion-tv-hoy.es/canal/cuatro",
+      "https://x.com/hashtag/tem7o"
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
