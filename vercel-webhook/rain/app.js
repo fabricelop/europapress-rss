@@ -30,6 +30,8 @@ const MAX_SHIFT=12;
 const SHORT_HORIZON_MINUTES=180;
 const RADAR_VISUAL_HORIZON_MINUTES=240;
 const RADAR_STALE_MINUTES=20;
+const OPERA_STALE_MINUTES=30;
+const OPERA_SURFACE_STALE_MINUTES=20;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
 
@@ -43,7 +45,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.17.3',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:'0.17.4',renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -258,6 +260,10 @@ function radarFreshness(meta,maxAgeMinutes=RADAR_STALE_MINUTES){
   const ageMinutes=Number.isFinite(latestMs)?Math.max(0,(Date.now()-latestMs)/60_000):Infinity;
   return{ok:Boolean(meta?.host&&latest&&ageMinutes<=maxAgeMinutes),ageMinutes,latestTime:Number(latest?.time)||null};
 }
+function operaFreshness(meta,maxAgeMinutes=OPERA_STALE_MINUTES){
+  const ageMinutes=Number(meta?.ageMinutes);
+  return{ok:Boolean(meta?.ok&&Number.isFinite(ageMinutes)&&ageMinutes<=maxAgeMinutes),ageMinutes};
+}
 async function fetchOperaMeta(){
   const point=forecastCoords(),p=new URLSearchParams({lat:String(point.lat),lon:String(point.lon),motion:'1'});
   const r=await fetch('/api/rain-opera?'+p);
@@ -315,7 +321,7 @@ async function loadForecast(force=false){
     sources:{
       deterministic:sourceStatus(DET_MODELS,det),
       ensembles:sourceStatus(ENS_MODELS,ens),
-      quarterHour:Boolean(quarterHour),radar:radarFreshness(radarMeta).ok,opera:Boolean(operaMeta?.ok)
+      quarterHour:Boolean(quarterHour),radar:radarFreshness(radarMeta).ok,opera:operaFreshness(operaMeta).ok
     }
   };
   const all=[...data.sources.deterministic,...data.sources.ensembles];
@@ -439,7 +445,7 @@ function automaticRainState(){
   const radarRain=radarFresh&&Number.isFinite(radarWet)&&radarWet>=CANONICAL_RADAR_THRESHOLD&&radarRate>=.08;
   const radarStrong=radarRain&&radarRate>=2.5&&radarWet>=CANONICAL_RADAR_THRESHOLD;
   const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH)||0,operaQuality=Number(opera?.sample?.quality);
-  const operaFresh=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5);
+  const operaFresh=Boolean(opera?.sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok&&operaQuality>=.5);
   const operaRain=operaFresh&&operaRate>=.05,operaStrong=operaRain&&operaRate>=2.5;
   const corroborated=radarRain&&operaRain;
   const raining=corroborated||radarStrong||operaStrong;
@@ -992,7 +998,7 @@ function observedSkillTruth(){
   const rvOk=(n?.status==='ok'||n?.status==='motion_uncertain')&&Number.isFinite(radarWet)&&Number.isFinite(radarAge)&&radarAge<=20*60_000;
   const rv=rvOk?radarWet>=calibratedRadarThreshold():null;
   const opera=state.data?.opera,sample=opera?.sample,quality=Number(sample?.quality),rate=Number(sample?.rateMmH);
-  const opOk=Boolean(sample?.ok&&Number(opera?.ageMinutes)<=20&&quality>=.5&&Number.isFinite(rate));
+  const opOk=Boolean(sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok&&quality>=.5&&Number.isFinite(rate));
   const op=opOk?rate>=.05:null;
   if(rvOk&&opOk){
     if(rv!==op)return null;
@@ -1206,7 +1212,7 @@ function consensusDecisionText(decision=buildRainDecision()){
     : null;
   const radarLabel=radarWet===null?'sin nowcast fiable':radarWet?'lluvia':'seco';
   const opera=state.data?.opera,sample=opera?.sample;
-  const operaFresh=Boolean(sample?.ok&&Number(opera?.ageMinutes)<=20);
+  const operaFresh=Boolean(sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok);
   const operaRate=Number(sample?.rateMmH);
   const operaEta=operaEventCandidate(decision.now),operaAge=Number(opera?.ageMinutes);
   const operaLabel=operaFresh&&Number.isFinite(operaRate)
@@ -1243,13 +1249,13 @@ function renderConsensusDecision(decision=buildRainDecision()){
 }
 
 function operaNowcastInfo(){
-  const opera=state.data?.opera,nowcast=opera?.nowcast,age=Number(opera?.ageMinutes);
-  if(!opera?.ok||!Number.isFinite(age)||age>30||nowcast?.status!=='ok'||!Array.isArray(nowcast.series))return null;
+  const opera=state.data?.opera,nowcast=opera?.nowcast;
+  if(!operaFreshness(opera).ok||nowcast?.status!=='ok'||!Array.isArray(nowcast.series))return null;
   return nowcast;
 }
 function operaEventCandidate(now=Date.now()){
   const n=operaNowcastInfo(),e=n?.event,age=Number(state.data?.opera?.ageMinutes);
-  const freshness=age<=20?1:Math.max(.65,1-(age-20)/30);
+  const freshness=age<=OPERA_SURFACE_STALE_MINUTES?1:Math.max(.65,1-(age-OPERA_SURFACE_STALE_MINUTES)/30);
   const confidence=(Number(n?.confidence)||0)*freshness;
   if(!e?.start||confidence<.22)return null;
   const start=Date.parse(e.start),end=Date.parse(e.end||'');
@@ -1281,7 +1287,10 @@ function fuseRadarEvents(rv,op,now=Date.now()){
   if(delta>30){
     const rvScore=Number(rv.confidence)||0,opScore=Number(op.confidence)||0;
     const winner=rvScore>=opScore?rv:op,alternate=winner===rv?op:rv;
-    return{...winner,disagreementMinutes:Math.round(delta),alternate,adaptiveChoice:false};
+    const penalty=Math.min(.22,.06+Math.max(0,delta-30)/600);
+    const confidence=Math.max(.15,(Number(winner.confidence)||0)-penalty);
+    const uncertainty=Math.max(Number(winner.uncertainty)||10,Math.round(10+delta*.35));
+    return{...winner,confidence,uncertainty,disagreementMinutes:Math.round(delta),alternate,adaptiveChoice:false};
   }
   const rw=Math.max(.1,Number(rv.confidence)||0),ow=Math.max(.1,Number(op.confidence)||0);
   const start=blendIso(rv.start,op.start,rw,ow),end=blendIso(rv.end,op.end,rw,ow);
@@ -1321,7 +1330,7 @@ function localDryEvidence(){
   const radarFresh=Boolean((n?.status==='ok'||n?.status==='motion_uncertain')&&n?.radarTime&&(Date.now()-Date.parse(n.radarTime))<=20*60_000);
   const radarDry=radarFresh&&Number.isFinite(radarWet)&&radarWet<CANONICAL_RADAR_THRESHOLD&&(Number.isFinite(radarRate)?radarRate<.05:true);
   const opera=state.data?.opera,sample=opera?.sample,operaRate=Number(sample?.rateMmH),operaQuality=Number(sample?.quality);
-  const operaFresh=Boolean(sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5&&Number.isFinite(operaRate));
+  const operaFresh=Boolean(sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok&&operaQuality>=.5&&Number.isFinite(operaRate));
   const operaDry=operaFresh&&operaRate<.02;
   return{radarFresh,radarDry,operaFresh,operaDry,bothDry:radarDry&&operaDry,anyDry:radarDry||operaDry};
 }
@@ -1473,7 +1482,7 @@ function radarDryWindow(){
   let endMs=starts.length?Math.min(horizonEnd,...starts):horizonEnd;
   if(!Number.isFinite(endMs)||endMs<=now+15*60_000)return null;
   const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH),operaQuality=Number(opera?.sample?.quality);
-  const operaDry=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20&&operaQuality>=.5&&operaRate<.02);
+  const operaDry=Boolean(opera?.sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok&&operaQuality>=.5&&operaRate<.02);
   const confidence=operaDry&&operaNowcastInfo()
     ? Math.min(.96,.68*radarConfidence+.32*(Number(opera.nowcast.confidence)||0)+.04)
     : radarConfidence;
@@ -1552,7 +1561,7 @@ function chooseDisplayEvent(){
     }
     if(radarChoice)return radarChoice;
     const opera=state.data?.opera,operaRate=Number(opera?.sample?.rateMmH);
-    if(opera?.sample?.ok&&Number(opera.ageMinutes)<=20&&operaRate>=.05){
+    if(opera?.sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok&&operaRate>=.05){
       return{kind:'opera',active:true,start:opera.observedAt||new Date(now).toISOString(),end:op?.end||null,confidence:Number(opera.nowcast?.confidence)||.55,uncertainty:op?.uncertainty||12,event:op?.event||null,motion:opera.nowcast?.motion||null};
     }
     if(n?.status==='ok'){
@@ -1699,7 +1708,7 @@ function render(){
     $('summary').hidden=true;
   }else if(decision.mode==='possible_now'){
     const radarRate=Number(nowState.radarRate)||0,operaRate=Number(nowState.operaRate)||0;
-    const opera=state.data?.opera,operaFresh=Boolean(opera?.sample?.ok&&Number(opera?.ageMinutes)<=20);
+    const opera=state.data?.opera,operaFresh=Boolean(opera?.sample?.ok&&operaFreshness(opera,OPERA_SURFACE_STALE_MINUTES).ok);
     $('heroLabel').textContent='Señal radar';
     $('eta').innerHTML='Lluvia <span>no confirmada</span>';
     $('metricStartLabel').textContent='Radar local';
@@ -2161,17 +2170,22 @@ function renderEvents(){
 
 function renderSources(){
   const opera=state.data.opera,opNow=opera?.nowcast,opEvent=opNow?.event;
+  const opFresh=operaFreshness(opera),rvFresh=radarFreshness(state.data.radar);
+  const opAge=Number.isFinite(opFresh.ageMinutes)?Math.round(opFresh.ageMinutes):null;
+  const rvAge=Number.isFinite(rvFresh.ageMinutes)?Math.round(rvFresh.ageMinutes):null;
   const opSpeed=Number(opNow?.motion?.speedKmh),opDir=compassDirection(opNow?.motion?.bearingDegrees);
   const opMotion=opNow?.status==='ok'
     ? ' · movimiento '+(Number.isFinite(opSpeed)?Math.round(opSpeed)+' km/h'+(opDir?' '+opDir:''):'calculado')+(opEvent?.start?' · ETA '+fmtTime(opEvent.start):' · sin llegada en 2 h')
     : opNow?.status?' · nowcast '+opNow.status:'';
+  const opDetail=opFresh.ok
+    ? 'EUMETNET OPERA · RATE '+(opera.resolutionKm||2)+' km / 5 min · hace '+opAge+' min'+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+(opNow?.status==='ok'?' · flujo local · útil ~'+Math.round(Number(opNow.reliableHorizonMinutes)||45)+' min':'')+opMotion
+    : opera?.ok?'EUMETNET OPERA desactualizado'+(opAge!==null?' · hace '+opAge+' min':'')+' · excluido de ETA/consenso':'EUMETNET OPERA sin compuesto reciente';
+  const rvDetail=rvFresh.ok
+    ? (state.nowcast?.status==='ok'?'hace '+rvAge+' min · flujo local + evolución · útil ~'+Math.max(0,Number(state.nowcast?.reliableHorizonMinutes)||0)+' min':'hace '+rvAge+' min · '+(state.nowcast?.status||'solo mapa'))
+    : state.data.radar?'desactualizado'+(rvAge!==null?' · hace '+rvAge+' min':'')+' · solo mapa histórico':'sin radar';
   const list=[
-    {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opera?.ok
-      ? 'EUMETNET OPERA · RATE '+(opera.resolutionKm||2)+' km / 5 min · '+fmtTime(opera.observedAt)+(opera.sample?.ok?' · '+Number(opera.sample.rateMmH||0).toFixed(1)+' mm/h':'')+(opNow?.status==='ok'?' · flujo local · útil ~'+Math.round(Number(opNow.reliableHorizonMinutes)||45)+' min':'')+opMotion
-      : 'EUMETNET OPERA sin compuesto reciente'},
-    {label:'Radar RainViewer',ok:Boolean(state.data.radar),detail:state.nowcast?.status==='ok'
-      ? 'flujo local + evolución · útil ~'+nowcastReliableHorizon()+' min'
-      : state.nowcast?.status||'solo mapa'},
+    {label:'Radar europeo',ok:Boolean(state.data.sources.opera),detail:opDetail},
+    {label:'Radar RainViewer',ok:Boolean(state.data.sources.radar),detail:rvDetail},
     {label:nativeQuarterHourLikely()?'Modelo 15 min nativo':'Guía temporal',ok:state.data.sources.quarterHour,detail:nativeQuarterHourLikely()
       ? 'resolución de 15 min disponible para esta zona'
       : 'en esta ubicación el dato de 15 min se trata como interpolado; no amplía la resolución real'},
@@ -2488,7 +2502,7 @@ async function refreshRadar(renderAfter=true){
       ...state.data.sources,
       quarterHour:Boolean(quarterHour),
       radar:radarFreshness(radar).ok,
-      opera:Boolean(opera?.ok)
+      opera:operaFreshness(opera).ok
     };
     const all=[...(sources.deterministic||[]),...(sources.ensembles||[])];
     sources.health={
