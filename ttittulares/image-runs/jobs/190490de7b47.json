@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-190490de7b47-r1-a1-1791402047786",
+  "requested_at": "2026-10-07T19:40:47.786046Z",
+  "updated_at": "2026-10-07T19:40:47.786046Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "190490de7b47",
+  "event_id": "190490de7b47",
+  "target_name": "Los Mossos investigan el hallazgo de un cadáver en un vehículo en una riera de El Vendrell (Tarragona)",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Los Mossos investigan el hallazgo de un cadáver en un vehículo en una riera de El Vendrell (Tarragona)",
+    "revision": 1,
+    "factual_summary": "Los Mossos d'Esquadra investigan el hallazgo de un cadáver en avanzado estado de descomposición dentro de un vehículo volcado y semienterrado en la riera de la Bisbal, en El Vendrell. El cuerpo no ha sido identificado y la autopsia deberá determinar la causa de la muerte.",
+    "tweet_text": "Los Mossos investigan el hallazgo de un cadáver en avanzado estado de descomposición dentro de un coche volcado en la riera de la Bisbal, en El Vendrell. El cuerpo no ha sido identificado.\n\n🌶️ La autopsia deberá aclarar la causa de la muerte.",
+    "remate": "🌶️ La autopsia deberá aclarar la causa de la muerte.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLos Mossos investigan el hallazgo de un cadáver en avanzado estado de descomposición dentro de un coche volcado en la riera de la Bisbal, en El Vendrell. El cuerpo no ha sido identificado.\n\n🌶️ La autopsia deberá aclarar la causa de la muerte.\n\nREMATE EXACTO:\n🌶️ La autopsia deberá aclarar la causa de la muerte.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLos Mossos d'Esquadra investigan el hallazgo de un cadáver en avanzado estado de descomposición dentro de un vehículo volcado y semienterrado en la riera de la Bisbal, en El Vendrell. El cuerpo no ha sido identificado y la autopsia deberá determinar la causa de la muerte.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://elpais.com/espana/catalunya/2026-10-07/los-mossos-investigan-el-hallazgo-de-un-cadaver-en-un-vehiculo-en-una-riera-de-el-vendrell-tarragona.html",
+    "citations": []
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
