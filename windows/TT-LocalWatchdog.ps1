@@ -1,6 +1,6 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
-# watchdog-restart-refresh-v7-strong-queue-health
+# watchdog-restart-refresh-v8-ttittulares-no-queue-restart
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
 $BaseDir="C:\TTiTTulares"
@@ -196,7 +196,10 @@ try{
     EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
     EnsureScheduledTasks
     EnsureChrome
-    CheckImageQueueHealth "ttittulares" "control/ttittulares-run-trigger-v2" "ttittulares" "*TTiTTularesDedicatedListener.ps1*" $tt "ttittulares-listener"
+    # TTiTTulares v50: no reiniciar un listener vivo solo porque el último job
+    # siga REQUESTED. Con una cola larga eso reiniciaba el listener cada ~5 min
+    # aunque estuviera procesando un job anterior. EnsureSingle sigue garantizando
+    # una única instancia y la vuelve a levantar si realmente cae.
     CheckImageQueueHealth "ttendencias" "control/ttendencias-run-trigger" "trends" "*TTendenciasDedicatedListener.ps1*" $tr "ttendencias-listener"
     Start-Sleep -Seconds $IntervalSeconds
   }
