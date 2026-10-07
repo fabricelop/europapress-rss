@@ -1,6 +1,13 @@
-# RainETA v0.17.28
+# RainETA v0.17.29
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
+
+## UI estable simplificada v0.17.29
+- «Tiempo estable» queda como único titular principal del estado estable; la etiqueta superior pasa a «Previsión actual».
+- El chip de estado actual usa «Ahora: sin precipitación» para evitar repetir el mismo texto en varias zonas.
+- La línea técnica deja de repetir la conclusión meteorológica y muestra solo Radar / OPERA / Modelos.
+- Las posibles llegadas OPERA solo se enseñan en esa línea si caen dentro del horizonte fiable del propio nowcast; señales más lejanas se ocultan como información no accionable.
+
 
 ## ETA radar exige precipitación medible v0.17.28
 - RainViewer, OPERA y AEMET ya no pueden generar una «próxima lluvia» solo por movimiento/ocupación del eco: el episodio debe contener precipitación medible alrededor de la llegada.
