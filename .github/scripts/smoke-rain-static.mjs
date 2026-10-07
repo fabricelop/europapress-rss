@@ -16,5 +16,23 @@ const q=new URLSearchParams({latitude:loc.lat,longitude:loc.lon,minutely_15:'pre
 const qh=await check('https://api.open-meteo.com/v1/forecast?'+q);console.log('QH_OK',qh.minutely_15?.time?.length||0);
 const radar=await check('https://api.rainviewer.com/public/weather-maps.json');if(!(radar.radar?.past||[]).length)throw Error('RainViewer sin frames');console.log('RADAR_OK',radar.radar.past.length,radar.host);
 const geo=await check('https://geocoding-api.open-meteo.com/v1/search?name=Madrid&count=2&language=es&format=json');if(!geo.results?.length)throw Error('geocode vacío');console.log('GEO_OK',geo.results[0].name);
+
+async function checkBinarySource(label,url){
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+ try{
+   let r=await fetch(url,{method:'HEAD',signal:controller.signal,redirect:'follow'});
+   if(!r.ok||r.status===405){
+     r=await fetch(url,{headers:{Range:'bytes=0-1023'},signal:controller.signal,redirect:'follow'});
+   }
+   const type=String(r.headers.get('content-type')||'');
+   if(!r.ok)throw Error(r.status+' '+r.statusText);
+   if(!/(gzip|tar|octet-stream)/i.test(type))throw Error('content-type inesperado '+type);
+   try{await r.body?.cancel()}catch{}
+   console.log(label+'_OK',r.status,type,r.headers.get('content-length')||'sin-tamaño');
+ }finally{clearTimeout(timer)}
+}
+await checkBinarySource('AEMET_RADAR','https://www.aemet.es/es/api-eltiempo/radar/download/compo');
+await checkBinarySource('AEMET_HARMONIE','https://www.aemet.es/es/api-eltiempo/modelos/download/harmonie/PB');
+
 if(ok<3)throw Error('Solo '+ok+' modelos deterministas disponibles');
 if(ensOk<5)throw Error('Solo '+ensOk+' ensembles disponibles');
