@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-07T14:26:44.002Z",
+  "updated_at": "2026-10-07T14:28:28.105Z",
   "items": [
     {
       "event_id": "608829fc098e",
@@ -398,8 +398,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "MANUAL_WEB_USER",
       "image_status": "ready",
       "image_pending": false,
@@ -415,13 +415,53 @@
       },
       "fallback_image_search_attempted_at": "2026-10-07T14:22:49.864579Z",
       "image": {
-        "url": "https://static.eldiario.es/clip/436bacf7-2430-44ff-89a8-88ab8e3c7133_facebook-aspect-ratio-1200-675_default_0_x1112y230.jpg",
-        "source": "www.eldiario.es",
-        "source_url": "https://www.eldiario.es/rastreador/lapsus-feijoo-congreso-empresa-familiar-confunde-hidrogeno-verde-nitrogeno_132_13567292.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Feijóo confunde el hidrógeno verde con «nitrógeno verde»"
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/manual-334d8fe9fb79-r1-ai1-791383112235.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "cc640939e738a2ccc9d6787e4602b025c1fccc7947513a7949e666798a990ad7",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2265704,
+        "context_guard": {
+          "version": 3,
+          "event_id": "manual-334d8fe9fb79",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-manual-334d8fe9fb79-r1-a1-1791383112235"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/manual-334d8fe9fb79-r1-ai1-791383112235.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/manual-334d8fe9fb79-r1-ai1-791383112235.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "cc640939e738a2ccc9d6787e4602b025c1fccc7947513a7949e666798a990ad7",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2265704,
+        "context_guard": {
+          "version": 3,
+          "event_id": "manual-334d8fe9fb79",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-manual-334d8fe9fb79-r1-a1-1791383112235"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/manual-334d8fe9fb79-r1-ai1-791383112235.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-07T14:28:28.105Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T14:28:28.105Z"
     },
     {
       "event_id": "b5d975d65dd6",
