@@ -760,7 +760,13 @@ async function computeNowcast(meta){
     event={...event,start:new Date(t+event.startMinute*60_000).toISOString(),end:new Date(t+event.endMinute*60_000).toISOString(),uncertaintyMinutes:nowcastUncertaintyMinutes(confidence,event.startMinute)};
   }
   const localMotion=centralLocalMotion(localFlow,state.loc.lat,step);
-  return{...base,status:'ok',confidence,event,motion:{
+  return{...base,status:'ok',confidence,event,projectionField:{
+    mask:latest.mask,
+    rateGrid:latest.rateGrid,
+    width:ANALYSIS_SIZE,
+    height:ANALYSIS_SIZE,
+    radarTime:new Date(latest.time*1000).toISOString()
+  },motion:{
     ...motionGeo,
     samples:motion.samples,consistency:motion.consistency,localFlow:Boolean(localFlow),
     analysisDx:Number(motion.dx)||0,
@@ -3256,51 +3262,61 @@ function ensureRadarProjectionCanvas(){
   state.radarProjectionCanvas=canvas;
   return canvas;
 }
-async function radarProjectionBitmap(meta,frame,zoom=RADAR_ZOOM){
-  const key=String(frame?.path||'')+'@'+zoom;
+function radarColorForRate(rate){
+  const r=Math.max(0,Number(rate)||0);
+  if(r<=0)return[0,0,0,0];
+  const z=200*(r**1.6),dbz=10*Math.log10(Math.max(1,z));
+  const palette=RADAR_PALETTE.filter(entry=>entry.dbz>=10);
+  let best=palette[0],dist=Infinity;
+  for(const entry of palette){
+    const d=Math.abs(entry.dbz-dbz);
+    if(d<dist){dist=d;best=entry}
+  }
+  const [red,green,blue,alpha]=best.rgba;
+  return[red,green,blue,Math.max(120,Math.min(255,alpha||220))];
+}
+async function radarProjectionBitmap(){
+  const field=state.nowcast?.projectionField;
+  if(!field?.mask?.length||!field?.rateGrid?.length)throw new Error('projection field unavailable');
+  const key=String(field.radarTime||state.nowcast?.radarTime||'field');
   if(state.radarProjectionBitmap&&state.radarProjectionBitmapKey===key)return state.radarProjectionBitmap;
-  if(state.radarProjectionBitmapPromise&&state.radarProjectionBitmapKey===key)return state.radarProjectionBitmapPromise;
   state.radarProjectionBitmapKey=key;
-  const promise=(async()=>{
-    const response=await timeoutFetch(radarDisplayImageUrl(meta,frame,512,zoom),8500,{mode:'cors',cache:'no-store'});
-    if(!response.ok)throw new Error('radar projection '+response.status);
-    const blob=await response.blob();
-    let raw;
-    if('createImageBitmap'in window)raw=await createImageBitmap(blob);
-    else raw=await new Promise((resolve,reject)=>{
-      const image=new Image(),url=URL.createObjectURL(blob);
-      image.onload=()=>{URL.revokeObjectURL(url);resolve(image)};
-      image.onerror=error=>{URL.revokeObjectURL(url);reject(error)};
-      image.src=url;
-    });
-    const clean=document.createElement('canvas');
-    clean.width=512;clean.height=512;
-    const ctx=clean.getContext('2d',{alpha:true,willReadFrequently:true});
-    ctx.clearRect(0,0,512,512);
-    ctx.drawImage(raw,0,0,512,512);
-    if(raw?.close)try{raw.close()}catch{}
-    const image=ctx.getImageData(0,0,512,512),d=image.data;
-    let kept=0;
-    for(let p=0;p<d.length;p+=4){
-      const dbz=radarDbzFromRgba(d[p],d[p+1],d[p+2],d[p+3]);
-      if(!Number.isFinite(dbz)||dbz<10){
-        d[p]=0;d[p+1]=0;d[p+2]=0;d[p+3]=0;
-      }else{
-        kept++;
-        d[p+3]=Math.max(80,d[p+3]);
-      }
+
+  const raw=document.createElement('canvas');
+  raw.width=Number(field.width)||ANALYSIS_SIZE;
+  raw.height=Number(field.height)||ANALYSIS_SIZE;
+  const rawCtx=raw.getContext('2d',{alpha:true});
+  const image=rawCtx.createImageData(raw.width,raw.height),data=image.data;
+  let wet=0;
+  for(let i=0,p=0;i<field.mask.length;i++,p+=4){
+    if(!field.mask[i]){
+      data[p]=0;data[p+1]=0;data[p+2]=0;data[p+3]=0;
+      continue;
     }
-    ctx.clearRect(0,0,512,512);
-    ctx.putImageData(image,0,0);
-    if(kept>512*512*.75)throw new Error('radar projection background not transparent');
-    const bitmap='createImageBitmap'in window?await createImageBitmap(clean):clean;
-    if(state.radarProjectionBitmap?.close)try{state.radarProjectionBitmap.close()}catch{}
-    state.radarProjectionBitmap=bitmap;
-    return bitmap;
-  })();
-  state.radarProjectionBitmapPromise=promise;
-  try{return await promise}
-  finally{if(state.radarProjectionBitmapPromise===promise)state.radarProjectionBitmapPromise=null}
+    const [red,green,blue,alpha]=radarColorForRate(field.rateGrid[i]);
+    if(alpha<=0){
+      data[p]=0;data[p+1]=0;data[p+2]=0;data[p+3]=0;
+      continue;
+    }
+    data[p]=red;data[p+1]=green;data[p+2]=blue;data[p+3]=alpha;
+    wet++;
+  }
+  rawCtx.putImageData(image,0,0);
+  const density=wet/Math.max(1,field.mask.length);
+  if(density>.75)throw new Error('projection field implausibly opaque');
+
+  const clean=document.createElement('canvas');
+  clean.width=512;clean.height=512;
+  const ctx=clean.getContext('2d',{alpha:true});
+  ctx.clearRect(0,0,512,512);
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
+  ctx.drawImage(raw,0,0,512,512);
+
+  const bitmap='createImageBitmap'in window?await createImageBitmap(clean):clean;
+  if(state.radarProjectionBitmap?.close)try{state.radarProjectionBitmap.close()}catch{}
+  state.radarProjectionBitmap=bitmap;
+  return bitmap;
 }
 function guidedRadarFlowAt(x,y,minutes,guidance){
   const motion=state.nowcast?.motion||{},flow=guidance?.flow;
@@ -3317,7 +3333,7 @@ function guidedRadarFlowAt(x,y,minutes,guidance){
   };
 }
 async function drawLocalRadarProjection(meta,frame,minutes,guidance,token){
-  const canvas=ensureRadarProjectionCanvas(),size=canvas.width,bitmap=await radarProjectionBitmap(meta,frame,RADAR_ZOOM);
+  const canvas=ensureRadarProjectionCanvas(),size=canvas.width,bitmap=await radarProjectionBitmap();
   if(token!==state.radarProjectionToken)return false;
   const ctx=canvas.getContext('2d',{alpha:true});
   ctx.clearRect(0,0,size,size);
