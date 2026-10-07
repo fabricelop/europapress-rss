@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v53"
+$WorkerId = "ttittulares-dedicated-v54"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -384,7 +384,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       $localTxt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
       $localOk =
         $localTxt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and
-        $localTxt.Contains('BRIDGE_FEATURES="v53-ttendencias-fresh-navigation"') -and
+        $localTxt.Contains('BRIDGE_FEATURES="v54-submit-generating-transition"') -and
         $localTxt.Contains('await cdp.call("Input.insertText",{text:message});') -and
         $localTxt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')
       if($localOk){
@@ -395,7 +395,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
           $code=$LASTEXITCODE
         }finally{$ErrorActionPreference=$old}
         if($code -eq 0){
-          Write-Log "IMAGE BRIDGE LOCAL VALID v53 fresh-navigation"
+          Write-Log "IMAGE BRIDGE LOCAL VALID v54 submit-generating-transition"
           return $true
         }
       }
@@ -409,7 +409,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   try {
     $url = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TTiTTularesImageBridge.js?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
     Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing -Headers @{
-      "User-Agent"="TTiTTulares-image-bridge-refresh-v53"
+      "User-Agent"="TTiTTulares-image-bridge-refresh-v54"
       "Cache-Control"="no-cache, no-store"
       "Pragma"="no-cache"
     } -TimeoutSec 15
@@ -417,7 +417,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
     foreach ($needle in @(
       'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
-      'BRIDGE_FEATURES="v53-ttendencias-fresh-navigation"',
+      'BRIDGE_FEATURES="v54-submit-generating-transition"',
       'await cdp.call("Input.insertText",{text:message});',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'imagesAfterMarker'
@@ -432,7 +432,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     }finally{$ErrorActionPreference=$old}
     if ($code -ne 0) { throw "node --check falló en bridge remoto" }
     Move-Item -LiteralPath $tmp -Destination $ImageBridge -Force
-    Write-Log "IMAGE BRIDGE REFRESHED source=raw-v53"
+    Write-Log "IMAGE BRIDGE REFRESHED source=raw-v54"
     return $true
   } catch {
     Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
