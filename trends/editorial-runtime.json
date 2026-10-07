@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T13:45:00+02:00",
-  "last_completed_at": "2026-10-07T13:46:00+02:00",
-  "updated_at": "2026-10-07T13:46:00+02:00",
+  "last_started_at": "2026-10-07T14:16:00+02:00",
+  "last_completed_at": "2026-10-07T14:23:20+02:00",
+  "updated_at": "2026-10-07T14:23:20+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -12,13 +12,13 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
-    "run_id": "tr-20261007T134500+0200-chat",
+    "run_id": "tr-20261007T121500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T13:45:00+02:00",
-    "updated_at": "2026-10-07T13:46:00+02:00",
-    "finished_at": "2026-10-07T13:46:00+02:00",
+    "started_at": "2026-10-07T14:16:00+02:00",
+    "updated_at": "2026-10-07T14:23:20+02:00",
+    "finished_at": "2026-10-07T14:23:20+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -53,32 +53,45 @@
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada editorial cerrada 0/0. La cola autoritativa seguía vacía al releer main; se disparó el saneamiento de Pendientes. Sin ImageGen directo ni despliegues Vercel.",
+    "message": "Pasada editorial cerrada 0/0. Tras releer main no queda ningún preparing/update ni rewrite_pending; tampoco hay Pendientes recientes que reparar. Sin ImageGen directo ni despliegues Vercel.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": null,
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 100
+    },
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-07T13:45:00+02:00",
+        "at": "2026-10-07T14:16:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial · releyendo cola autoritativa y disparando saneamiento de Pendientes."
+        "message": "Iniciando pasada editorial · releyendo cola autoritativa, requests y reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-07T13:45:35+02:00",
+        "at": "2026-10-07T14:22:38+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · editorial-queue.json confirma 0 entradas activas y 0 rewrite_pending."
+        "message": "Estado vivo verificado · 0 preparing/update, 0 rewrite_pending y 0 Pendientes recientes."
       },
       {
-        "at": "2026-10-07T13:46:00+02:00",
+        "at": "2026-10-07T14:23:09+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main · cola 0, requests activas 0 y reexplicaciones pendientes 0."
+      },
+      {
+        "at": "2026-10-07T14:23:20+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cerrando pasada 0/0 · cola autoritativa vacía; saneamiento de Pendientes solicitado; sin ImageGen directo ni despliegues Vercel."
+        "message": "Pasada editorial cerrada 0/0 · estado autoritativo final verificado; sin ImageGen directo."
       }
     ],
     "queue_complete": true,
@@ -87,35 +100,13 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "in_progress",
+    "status": "no_pending",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261007T131000+0200-chat",
-    "last_triggered_at": "2026-10-07T13:10:00+02:00",
-    "pending_cards_reviewed": 3,
-    "observed_at": "2026-10-07T13:20:00+02:00",
-    "observed_pending": [
-      {
-        "id": "10aaa9a5458f",
-        "name": "#EnBocaDeTodos",
-        "revision": 3,
-        "ai_status": "pending",
-        "image_status": "ready"
-      },
-      {
-        "id": "0f5bf1e8b366",
-        "name": "Adamuz",
-        "revision": 1,
-        "ai_status": "ready",
-        "image_status": "ready"
-      },
-      {
-        "id": "70a2c821f478",
-        "name": "#Mañaneros7O",
-        "revision": 0,
-        "ai_status": "pending",
-        "image_status": "none"
-      }
-    ]
+    "last_trigger_run_id": "tr-20261007T121500-chat",
+    "last_triggered_at": "2026-10-07T14:16:00+02:00",
+    "pending_cards_reviewed": 0,
+    "observed_at": "2026-10-07T14:23:09+02:00",
+    "observed_pending": []
   },
   "error": null
 }
