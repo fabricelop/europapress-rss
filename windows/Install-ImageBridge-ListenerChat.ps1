@@ -29,8 +29,8 @@ function Validate([string]$File,[string]$Label){
 New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
 $tt=Join-Path $BaseDir "TTiTTularesImageBridge.js"
 $tr=Join-Path $BaseDir "TTendenciasImageBridge.js"
-$ttTmp=$tt+".listenerchat.new"
-$trTmp=$tr+".listenerchat.new"
+$ttTmp=Join-Path $BaseDir "TTiTTularesImageBridge.listenerchat.new.js"
+$trTmp=Join-Path $BaseDir "TTendenciasImageBridge.listenerchat.new.js"
 Get-Pinned "windows/TTiTTularesImageBridge.js" $ttTmp
 Get-Pinned "windows/TTendenciasImageBridge.js" $trTmp
 Validate $ttTmp "TTiTTulares"
