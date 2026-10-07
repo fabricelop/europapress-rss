@@ -1,5 +1,5 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,classifyRainHour,bestDryWindow} from './core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,projectionWarp} from './radar-core.js';
 
 const DET_MODELS=[
   {id:'ecmwf_ifs',label:'ECMWF IFS 9 km',family:'ECMWF',weight:1.32,metaDomains:['ecmwf_ifs025']},
@@ -39,9 +39,9 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.17';
+const APP_VERSION='0.17.18';
 const FORECAST_CACHE_SCHEMA='consensus-v13';
-const FORECAST_CACHE_COMPATIBLE_VERSIONS=['0.17.13','0.17.14','0.17.15','0.17.16'];
+const FORECAST_CACHE_COMPATIBLE_VERSIONS=['0.17.13','0.17.14','0.17.15','0.17.16','0.17.17'];
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -2595,14 +2595,34 @@ function projectionCoordinates(minutes,displayZoom=RADAR_ZOOM){
   const uncertainty=reliable>0?Math.max(0,Math.min(1,(requested-reliable)/Math.max(60,RADAR_VISUAL_HORIZON_MINUTES-reliable))):1;
   const spread=1+uncertainty*(.10+.10*(1-quality));
   const spanKm=metresPerPx*512/1000*spread;
-  const halfLat=spanKm/111.32/2;
-  const halfLon=spanKm/(111.32*Math.max(.25,Math.cos(lat*Math.PI/180)))/2;
-  return[
-    [shiftedLon-halfLon,shiftedLat+halfLat],
-    [shiftedLon+halfLon,shiftedLat+halfLat],
-    [shiftedLon+halfLon,shiftedLat-halfLat],
-    [shiftedLon-halfLon,shiftedLat-halfLat]
-  ];
+  const halfKm=spanKm/2;
+  const localHeadingDelta=Number.isFinite(baseLocalBearing)?signedBearingDelta(baseGlobalBearing,baseLocalBearing):0;
+  const speedDeltaRatio=Number.isFinite(localSpeed)
+    ? Math.min(1,Math.abs(localSpeed-globalSpeed)/Math.max(12,globalSpeed))
+    : 0;
+  const warp=projectionWarp({
+    progress:reliable>0?Math.min(1,requested/reliable):Math.min(1,requested/60),
+    uncertainty:requested>0?uncertainty:0,
+    quality,localQuality,speedDeltaRatio,
+    bearingDeltaDegrees:localHeadingDelta,
+    turnAdjustmentDegrees:turnAdjustment
+  });
+  const alongEast=Math.sin(globalBearing),alongNorth=Math.cos(globalBearing);
+  const crossEast=Math.cos(globalBearing),crossNorth=-Math.sin(globalBearing);
+  const cosLat=Math.max(.25,Math.cos(lat*Math.PI/180));
+  const corners=[[-halfKm,halfKm],[halfKm,halfKm],[halfKm,-halfKm],[-halfKm,-halfKm]];
+  return corners.map(([baseEast,baseNorth])=>{
+    const along=baseEast*alongEast+baseNorth*alongNorth;
+    const cross=baseEast*crossEast+baseNorth*crossNorth;
+    const warpedAlong=along*warp.alongScale+cross*warp.shear;
+    const warpedCross=cross*warp.crossScale;
+    const warpedEast=warpedAlong*alongEast+warpedCross*crossEast;
+    const warpedNorth=warpedAlong*alongNorth+warpedCross*crossNorth;
+    return[
+      shiftedLon+warpedEast/(111.32*cosLat),
+      shiftedLat+warpedNorth/111.32
+    ];
+  });
 }
 function nearestObservedFrame(offsetMinutes){
   const latest=state.frames.at(-1);if(!latest)return null;
