@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-a76479643ec7-r1-a1-1791374870188",
+  "requested_at": "2026-10-07T12:07:50.186712Z",
+  "updated_at": "2026-10-07T12:07:50.186712Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "a76479643ec7",
+  "event_id": "a76479643ec7",
+  "target_name": "Los herederos de Franco subastarán cerca de 700 objetos de Meirás",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Los herederos de Franco subastarán cerca de 700 objetos de Meirás",
+    "revision": 1,
+    "factual_summary": "Los herederos de Francisco Franco subastarán en Madrid el 27 y 28 de octubre cerca de 700 objetos retirados del pazo de Meirás. Colectivos memorialistas piden revisar el catálogo y la situación patrimonial de algunas piezas.",
+    "tweet_text": "Los herederos de Franco subastarán el 27 y 28 de octubre cerca de 700 objetos retirados del pazo de Meirás. Colectivos memorialistas reclaman revisar el catálogo.\n\n🌶️ Meirás ha pasado de patrimonio en disputa a catálogo con número de lote.",
+    "remate": "🌶️ Meirás ha pasado de patrimonio en disputa a catálogo con número de lote.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLos herederos de Franco subastarán el 27 y 28 de octubre cerca de 700 objetos retirados del pazo de Meirás. Colectivos memorialistas reclaman revisar el catálogo.\n\n🌶️ Meirás ha pasado de patrimonio en disputa a catálogo con número de lote.\n\nREMATE EXACTO:\n🌶️ Meirás ha pasado de patrimonio en disputa a catálogo con número de lote.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLos herederos de Francisco Franco subastarán en Madrid el 27 y 28 de octubre cerca de 700 objetos retirados del pazo de Meirás. Colectivos memorialistas piden revisar el catálogo y la situación patrimonial de algunas piezas.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://elpais.com/espana/galicia/2026-10-07/el-ultimo-escandalo-del-pazo-de-meiras-los-franco-subastan-700-lotes-en-madrid-con-la-bendicion-de-estado-y-xunta.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/galicia/noticia-cerca-700-bienes-retirados-franco-pazo-meiras-saldran-subasta-27-octubre-20261007115229.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/galicia/2026-10-07/el-ultimo-escandalo-del-pazo-de-meiras-los-franco-subastan-700-lotes-en-madrid-con-la-bendicion-de-estado-y-xunta.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
