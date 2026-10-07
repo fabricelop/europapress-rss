@@ -146,6 +146,25 @@ test('several local flows stabilize the motion field',()=>{
   assert.ok(combined.confidence>0);
 });
 
+test('local flow history never mixes different grid coordinates when samples are missing',()=>{
+  const f1={coverage:.5,vectors:[
+    {x:10,y:10,dx:1,dy:0,confidence:.9},
+    {x:20,y:10,dx:5,dy:0,confidence:.9}
+  ]};
+  const f2={coverage:.25,vectors:[
+    {x:20,y:10,dx:5,dy:0,confidence:.8}
+  ]};
+  const combined=combineLocalFlows([f1,f2]);
+  assert.ok(combined);
+  const left=combined.vectors.find(v=>v.x===10&&v.y===10);
+  const right=combined.vectors.find(v=>v.x===20&&v.y===10);
+  assert.ok(left);assert.ok(right);
+  assert.equal(left.dx,1);
+  assert.equal(right.dx,5);
+  assert.equal(right.samples,2);
+  assert.equal(left.samples,1);
+});
+
 
 test('AEMET HARMONIE precipitation palette decodes official bins',()=>{
   const dry=decodeHarmoniePrecipRgba(19,49,52,0);
