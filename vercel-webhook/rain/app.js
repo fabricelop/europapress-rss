@@ -1,5 +1,5 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt} from './radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,evaluateOverlaySourceState} from './radar-core.js';
 
 const DET_MODELS=[
   {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
@@ -54,7 +54,7 @@ const LIGHTNING_WMS_LAYERS=[
 const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.34';
+const APP_VERSION='0.17.35';
 const FORECAST_CACHE_SCHEMA='consensus-v23';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
@@ -68,7 +68,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -3049,6 +3049,7 @@ function initMap(){
     });
     showRadarOffset(state.radarOffset);
     updateLightningVisibility();
+    if(state.lightningEnabled)verifyLightningSource();
   });
   state.map.on('zoomend',()=>{
     if(state.mapLoaded&&Number(state.radarOffset)>0)showProjectedRadar(state.radarOffset);
@@ -3070,8 +3071,38 @@ function lightningWmsTile(layer){
     '&styles=&format=image%2Fpng&transparent=true&srs=EPSG%3A3857&bbox={bbox-epsg-3857}&width=256&height=256';
 }
 function lightningLayerIds(){return LIGHTNING_WMS_LAYERS.map(spec=>spec.id)}
+function lightningCapabilitiesUrl(){
+  return LIGHTNING_WMS_URL+'?service=WMS&version=1.3.0&request=GetCapabilities';
+}
+async function verifyLightningSource(force=false){
+  if(state.lightningVerified&&!force)return true;
+  if(state.lightningVerificationPromise&&!force)return state.lightningVerificationPromise;
+  state.lightningVerificationError=null;
+  state.lightningVerificationPromise=(async()=>{
+    try{
+      const response=await timeoutFetch(lightningCapabilitiesUrl(),10_000,{mode:'cors',cache:'no-store',headers:{Accept:'application/xml,text/xml,*/*'}});
+      if(!response.ok)throw new Error('HTTP '+response.status);
+      const text=await response.text();
+      const required=LIGHTNING_WMS_LAYERS.map(spec=>spec.layer);
+      const missing=required.filter(layer=>!text.includes(layer));
+      if(missing.length)throw new Error('capas ausentes: '+missing.join(', '));
+      state.lightningVerified=true;
+      state.lightningVerificationError=null;
+      return true;
+    }catch(error){
+      state.lightningVerified=false;
+      state.lightningVerificationError=String(error?.message||error||'error DWD');
+      return false;
+    }finally{
+      state.lightningVerificationPromise=null;
+      updateLightningVisibility();
+    }
+  })();
+  updateLightningVisibility();
+  return state.lightningVerificationPromise;
+}
 function ensureLightningLayer(){
-  if(!state.map||!state.mapLoaded)return false;
+  if(!state.map||!state.mapLoaded||!state.lightningVerified)return false;
   const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
   for(const spec of LIGHTNING_WMS_LAYERS){
     const sourceId=spec.id+'-source';
@@ -3105,20 +3136,34 @@ function lightningContextVisible(){
 }
 function updateLightningVisibility(){
   const button=$('radarLightning'),status=$('lightningStatus'),context=lightningContextVisible();
+  const errors=state.lightningErrors.size+(state.lightningVerificationError?1:0);
+  const sourceState=evaluateOverlaySourceState({
+    enabled:state.lightningEnabled,
+    context,
+    verified:state.lightningVerified,
+    loaded:state.lightningLoaded.size,
+    errors
+  });
   if(button){
-    button.classList.toggle('active',Boolean(state.lightningEnabled));
-    button.classList.toggle('contextOff',Boolean(state.lightningEnabled&&!context));
-    button.textContent=state.lightningEnabled?'⚡ RAYOS ON':'⚡ RAYOS';
-    button.title=state.lightningEnabled
-      ? (context?'MTG LI 5 min + NowCastELEC DWD':'Los rayos solo se muestran cerca de AHORA')
-      : 'Mostrar actividad eléctrica observada/nowcast DWD';
+    button.classList.toggle('active',sourceState==='active');
+    button.classList.toggle('contextOff',sourceState==='hidden');
+    button.textContent=sourceState==='active'?'⚡ RAYOS ON'
+      : sourceState==='error'?'⚡ RAYOS ERROR'
+        : (sourceState==='unverified'||sourceState==='loading')?'⚡ RAYOS…':'⚡ RAYOS';
+    button.title=sourceState==='active'
+      ? 'Fuente DWD verificada: MTG LI 5 min + NowCastELEC'
+      : sourceState==='hidden'
+        ? 'Los rayos solo se muestran cerca de AHORA'
+        : sourceState==='error'
+          ? 'La fuente DWD no está operativa'
+          : 'Mostrar actividad eléctrica observada/nowcast DWD';
   }
   if(!state.map||!state.mapLoaded){
-    if(status)status.textContent=state.lightningEnabled?'Rayos: preparando capa…':'Rayos desactivados';
+    if(status)status.textContent=sourceState==='disabled'?'Rayos desactivados':'Rayos: preparando mapa…';
     return;
   }
-  const shouldShow=Boolean(state.lightningEnabled&&context);
-  if(shouldShow){
+  const shouldShow=Boolean(sourceState==='active'||sourceState==='loading');
+  if(shouldShow&&state.lightningVerified){
     try{
       ensureLightningLayer();
       for(const id of lightningLayerIds()){
@@ -3136,24 +3181,35 @@ function updateLightningVisibility(){
     }
   }
   if(status){
-    status.classList.toggle('active',shouldShow);
-    status.classList.toggle('muted',!shouldShow);
-    const loaded=state.lightningLoaded.size,errors=state.lightningErrors.size;
-    status.textContent=!state.lightningEnabled
+    status.classList.toggle('active',sourceState==='active');
+    status.classList.toggle('muted',sourceState!=='active');
+    status.textContent=sourceState==='disabled'
       ? 'Rayos desactivados'
-      : !context
-        ? 'Rayos ocultos fuera de AHORA'
-        : errors&&loaded===0
-          ? 'Rayos: error cargando DWD'
-          : loaded>0
-            ? 'Rayos activos · MTG LI 5 min + NowCastELEC'
-            : 'Rayos: cargando datos DWD…';
+      : sourceState==='hidden'
+        ? 'Rayos DWD verificados · ocultos fuera de AHORA'
+        : sourceState==='unverified'
+          ? 'Rayos: verificando GetCapabilities de DWD…'
+          : sourceState==='error'
+            ? 'Rayos: fuente DWD no disponible'+(state.lightningVerificationError?' · '+state.lightningVerificationError:'')
+            : sourceState==='active'
+              ? 'Fuente DWD cargada · MTG LI 5 min + NowCastELEC'
+              : 'Capas DWD verificadas · cargando mapa…';
   }
 }
-function toggleLightning(){
-  state.lightningEnabled=!state.lightningEnabled;
-  try{localStorage.setItem('raineta.lightning',JSON.stringify(state.lightningEnabled))}catch{}
+async function toggleLightning(){
+  if(state.lightningEnabled){
+    state.lightningEnabled=false;
+    try{localStorage.setItem('raineta.lightning',JSON.stringify(false))}catch{}
+    updateLightningVisibility();
+    return;
+  }
+  state.lightningEnabled=true;
+  state.lightningLoaded.clear();
+  state.lightningErrors.clear();
+  state.lightningVerificationError=null;
+  try{localStorage.setItem('raineta.lightning',JSON.stringify(true))}catch{}
   updateLightningVisibility();
+  await verifyLightningSource(true);
 }
 function removeRadarLayer(id){
   if(!state.map||!state.mapLoaded)return;
@@ -3313,24 +3369,11 @@ async function radarProjectionBitmap(){
   raw.width=Number(field.width)||ANALYSIS_SIZE;
   raw.height=Number(field.height)||ANALYSIS_SIZE;
   const rawCtx=raw.getContext('2d',{alpha:true});
-  const image=rawCtx.createImageData(raw.width,raw.height),data=image.data;
-  let wet=0;
-  for(let i=0,p=0;i<field.mask.length;i++,p+=4){
-    if(!field.mask[i]){
-      data[p]=0;data[p+1]=0;data[p+2]=0;data[p+3]=0;
-      continue;
-    }
-    const [red,green,blue,alpha]=radarColorForRate(field.rateGrid[i]);
-    if(alpha<=0){
-      data[p]=0;data[p+1]=0;data[p+2]=0;data[p+3]=0;
-      continue;
-    }
-    data[p]=red;data[p+1]=green;data[p+2]=blue;data[p+3]=alpha;
-    wet++;
-  }
+  const projection=buildRadarProjectionRgba(field.mask,field.rateGrid,raw.width,raw.height,radarColorForRate);
+  const image=rawCtx.createImageData(raw.width,raw.height);
+  image.data.set(projection.rgba);
   rawCtx.putImageData(image,0,0);
-  const density=wet/Math.max(1,field.mask.length);
-  if(density>.75)throw new Error('projection field implausibly opaque');
+  if(projection.opaqueFraction>.75)throw new Error('projection field implausibly opaque');
 
   const clean=document.createElement('canvas');
   clean.width=512;clean.height=512;
@@ -3474,7 +3517,7 @@ function projectedRadarOpacity(minutes,canMove,reliable){
   const beyond=Math.max(0,Math.min(1,(requested-safeReliable)/Math.max(1,RADAR_VISUAL_HORIZON_MINUTES-safeReliable)));
   return Math.max(.30,horizonOpacity-(horizonOpacity-.30)*beyond);
 }
-async function showProjectedRadar(minutes){
+async async function showProjectedRadar(minutes){
   const r=state.data?.radar,latest=state.frames.at(-1);
   if(!r||!latest||!state.mapLoaded)return;
   removeRadarLayer('raineta-radar');

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear} from '../rain/radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
@@ -188,4 +188,33 @@ test('AEMET HARMONIE TAR parser locates file payloads safely',()=>{
   assert.equal(entries[0].name,name);
   assert.equal(entries[0].size,5);
   assert.equal(tar.subarray(entries[0].start,entries[0].end).toString(),'abcde');
+});
+
+
+test('future radar projection keeps dry background fully transparent',()=>{
+  const mask=new Uint8Array([0,1,1,0]);
+  const rates=new Float32Array([9,1.2,0,7]);
+  const out=buildRadarProjectionRgba(mask,rates,2,2,()=>[10,20,30,210]);
+  assert.deepEqual(Array.from(out.rgba.filter((_,i)=>i%4===3)),[0,210,0,0]);
+  assert.equal(out.alphaPixels,1);
+  assert.equal(out.wetPixels,1);
+  assert.equal(out.opaqueFraction,.25);
+});
+
+test('sparse future radar cannot become an opaque rectangle',()=>{
+  const w=20,h=20,mask=new Uint8Array(w*h),rates=new Float32Array(w*h);
+  mask[199]=1;rates[199]=4.5;
+  const out=buildRadarProjectionRgba(mask,rates,w,h,()=>[100,150,220,255]);
+  assert.equal(out.alphaPixels,1);
+  assert.ok(out.opaqueFraction<.01);
+  for(let i=0;i<out.rgba.length;i+=4){
+    if(i===199*4)continue;
+    assert.equal(out.rgba[i+3],0);
+  }
+});
+
+test('lightning overlay never reports active before source verification',()=>{
+  assert.equal(evaluateOverlaySourceState({enabled:true,context:true,verified:false,loaded:2,errors:0}),'unverified');
+  assert.equal(evaluateOverlaySourceState({enabled:true,context:true,verified:false,loaded:0,errors:1}),'error');
+  assert.equal(evaluateOverlaySourceState({enabled:true,context:true,verified:true,loaded:1,errors:0}),'active');
 });

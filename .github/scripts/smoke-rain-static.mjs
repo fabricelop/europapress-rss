@@ -34,5 +34,29 @@ async function checkBinarySource(label,url){
 await checkBinarySource('AEMET_RADAR','https://www.aemet.es/es/api-eltiempo/radar/download/compo');
 await checkBinarySource('AEMET_HARMONIE','https://www.aemet.es/es/api-eltiempo/modelos/download/harmonie/PB');
 
+async function checkDwdLightning(){
+ const base='https://maps.dwd.de/geoserver/ows';
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
+ try{
+   const caps=await fetch(base+'?service=WMS&version=1.3.0&request=GetCapabilities',{signal:controller.signal,headers:{Accept:'application/xml,text/xml,*/*'}});
+   const xml=await caps.text();
+   if(!caps.ok)throw Error('GetCapabilities '+caps.status);
+   const layers=['dwd:Accumulated_Flash_Area','dwd:Accumulated_Flash_Geometry','dwd:NCEW_EU','dwd:Blitzdichte'];
+   for(const layer of layers)if(!xml.includes(layer))throw Error('DWD layer ausente '+layer);
+   for(const layer of ['dwd:Accumulated_Flash_Geometry','dwd:NCEW_EU']){
+     const q=new URLSearchParams({
+       service:'WMS',version:'1.1.1',request:'GetMap',layers:layer,styles:'',format:'image/png',
+       transparent:'true',srs:'EPSG:3857',bbox:'-1500000,3500000,3500000,8000000',width:'128',height:'128'
+     });
+     const r=await fetch(base+'?'+q,{signal:controller.signal});
+     const bytes=new Uint8Array(await r.arrayBuffer()),type=String(r.headers.get('content-type')||'');
+     const png=bytes.length>=8&&bytes[0]===0x89&&bytes[1]===0x50&&bytes[2]===0x4e&&bytes[3]===0x47;
+     if(!r.ok||!png||!type.includes('image/png'))throw Error(layer+' GetMap inválido '+r.status+' '+type);
+   }
+   console.log('DWD_LIGHTNING_OK',layers.join(','));
+ }finally{clearTimeout(timer)}
+}
+await checkDwdLightning();
+
 if(ok<3)throw Error('Solo '+ok+' modelos deterministas disponibles');
 if(ensOk<5)throw Error('Solo '+ensOk+' ensembles disponibles');

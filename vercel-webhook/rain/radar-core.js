@@ -1,3 +1,32 @@
+export function buildRadarProjectionRgba(mask,rateGrid,width,height,colorForRate){
+  const w=Math.max(1,Math.floor(Number(width)||0)),h=Math.max(1,Math.floor(Number(height)||0)),size=w*h;
+  if(!mask?.length||!rateGrid?.length||mask.length!==size||rateGrid.length!==size)throw new Error('invalid projection field');
+  const rgba=new Uint8ClampedArray(size*4);
+  let wetPixels=0,alphaPixels=0;
+  const color=typeof colorForRate==='function'?colorForRate:(()=>[0,163,224,220]);
+  for(let i=0,p=0;i<size;i++,p+=4){
+    if(!mask[i])continue;
+    const rate=Number(rateGrid[i]);
+    if(!(rate>0))continue;
+    const c=color(rate)||[0,0,0,0],alpha=Math.max(0,Math.min(255,Number(c[3])||0));
+    if(alpha<=0)continue;
+    rgba[p]=Math.max(0,Math.min(255,Number(c[0])||0));
+    rgba[p+1]=Math.max(0,Math.min(255,Number(c[1])||0));
+    rgba[p+2]=Math.max(0,Math.min(255,Number(c[2])||0));
+    rgba[p+3]=alpha;
+    wetPixels++;alphaPixels++;
+  }
+  return{rgba,wetPixels,alphaPixels,opaqueFraction:alphaPixels/size,width:w,height:h};
+}
+export function evaluateOverlaySourceState({enabled=false,context=true,verified=false,loaded=0,errors=0}={}){
+  if(!enabled)return'disabled';
+  if(!context)return'hidden';
+  if(!verified)return errors>0?'error':'unverified';
+  if(errors>0&&loaded<=0)return'error';
+  if(loaded>0)return'active';
+  return'loading';
+}
+
 export function clamp01(v){return Math.max(0,Math.min(1,Number.isFinite(v)?v:0))}
 export function maskDensity(mask){if(!mask?.length)return 0;let n=0;for(const v of mask)n+=v?1:0;return n/mask.length}
 function overlap(prev,cur,w,h,dx,dy,pwet,cwet){
