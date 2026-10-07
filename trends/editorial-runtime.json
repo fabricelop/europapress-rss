@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T16:15:00+02:00",
-  "last_completed_at": "2026-10-07T16:16:30+02:00",
-  "updated_at": "2026-10-07T16:16:30+02:00",
+  "last_started_at": "2026-10-07T16:45:00+02:00",
+  "last_completed_at": "2026-10-07T16:48:30+02:00",
+  "updated_at": "2026-10-07T16:48:30+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -12,14 +12,15 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
+    "version": 1,
     "canonical": true,
-    "run_id": "tr-20261007T161500-chat",
+    "run_id": "tr-20261007T164500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T16:15:00+02:00",
-    "updated_at": "2026-10-07T16:16:30+02:00",
-    "finished_at": "2026-10-07T16:16:30+02:00",
+    "started_at": "2026-10-07T16:45:00+02:00",
+    "updated_at": "2026-10-07T16:48:30+02:00",
+    "finished_at": "2026-10-07T16:48:30+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -40,10 +41,10 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
-      "pending_cards_reviewed": 0,
+      "pending_cards_reviewed": 13,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "visual_repairs_ready": 0,
+      "visual_repairs_ready": 1,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 0,
@@ -54,7 +55,7 @@
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada: 0 revisiones editoriales activas; cola verificada vacía y saneamiento visual solicitado.",
+    "message": "Pasada completada: cola editorial y reexplicaciones vacías; 13 Pendientes revisadas y reparación visual en curso",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -67,37 +68,59 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-07T16:15:00+02:00",
+        "at": "2026-10-07T16:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · cola autoritativa sin entradas activas; verificando reexplicaciones y Pendientes"
+        "message": "Iniciando pasada directa y releyendo estado autoritativo"
       },
       {
-        "at": "2026-10-07T16:16:00+02:00",
+        "at": "2026-10-07T16:46:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento de Pendientes solicitado; comprobando que el trigger visual ha arrancado"
+        "message": "Revisando Pendientes · 13 tarjetas recientes"
       },
       {
-        "at": "2026-10-07T16:16:30+02:00",
+        "at": "2026-10-07T16:47:20+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación visual automática lanzada · verificando workflow y cola final"
+      },
+      {
+        "at": "2026-10-07T16:48:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada: 0 revisiones editoriales activas; cola verificada vacía y saneamiento visual solicitado."
+        "message": "Pasada completada: cola editorial y reexplicaciones vacías; 13 Pendientes revisadas y reparación visual en curso"
       }
     ]
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "trigger_persisted",
+    "status": "workflow_in_progress",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261007T161500-chat",
-    "last_triggered_at": "2026-10-07T16:15:00+02:00",
-    "pending_cards_reviewed": 0,
-    "observed_at": "2026-10-07T16:16:30+02:00",
-    "observed_pending": []
+    "last_trigger_run_id": "tr-20261007T164500-chat",
+    "last_triggered_at": "2026-10-07T16:45:00+02:00",
+    "pending_cards_reviewed": 13,
+    "observed_at": "2026-10-07T16:48:30+02:00",
+    "observed_pending": [
+      "260feac7575a",
+      "59e7d31e6d57",
+      "f1d20e59d1e1",
+      "7375308f71a9",
+      "3028fe69be06",
+      "aa0c8d12686d",
+      "9086ee48d4e5",
+      "ddeddd19a005",
+      "8e250d6dfae4",
+      "6a2d476eed14",
+      "629594b46505",
+      "ad1a64057f9a",
+      "2cf07ed453b6"
+    ],
+    "workflow_run_id": 37639583763
   }
 }
