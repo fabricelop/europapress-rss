@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "name": "TTiTTulares + TTendencias mechanism-only restore policy",
+  "backup_ref": "BackupMecanismosTT20261007-1827",
+  "backup_commit": "a3d1d3c619cc44c50fb65fb1ad9ec429703360ff",
+  "rules": {
+    "include": [
+      "ttittulares/*.py",
+      "ttittulares/app.js",
+      "ttittulares/index.html",
+      "ttittulares/style.css",
+      "ttittulares/manifest.webmanifest",
+      "ttittulares/README.md",
+      "ttittulares/*prompt*.md",
+      "ttittulares/work-*.md",
+      "ttittulares/config.json",
+
+      "trends/*.py",
+      "trends/*.md",
+      "trends/editorial-config.json",
+
+      "telegram/*.py",
+      "telegram/editorial-policy.md",
+
+      "windows/*TTiTTulares*.*",
+      "windows/*TTendencias*.*",
+      "windows/Install-ImageBridge*.ps1",
+      "windows/Restart-TT-Image-Listeners-Stable.ps1",
+      "windows/Restore-ImageBridge-Stable-v28.ps1",
+      "windows/TT-LocalWatchdog.ps1",
+
+      ".github/workflows/*ttittulares*.yml",
+      ".github/workflows/*ttendencias*.yml",
+      ".github/workflows/validate-image-bridges.yml",
+
+      "api/*ttittulares*.js",
+      "api/*ttendencias*.js",
+
+      "vercel-webhook/ttittulares/**",
+      "vercel-webhook/ttendencias/**",
+      "vercel-webhook/api/*ttittulares*",
+      "vercel-webhook/api/*ttendencias*",
+
+      "tt-control/src/**",
+      "tt-control/schema.sql",
+      "tt-control/wrangler.jsonc",
+      "tt-control/README.md",
+
+      "shared/*.py",
+      "shared/*.js",
+      "shared/*.ts"
+    ],
+    "exclude": [
+      "ttittulares/generated-images/**",
+      "ttittulares/archive-images/**",
+      "ttittulares/tremending-images/**",
+      "ttittulares/tremending/**",
+      "ttittulares/image-outbox/**",
+      "ttittulares/editorial-outbox/**",
+      "ttittulares/automation-heartbeat.json",
+      "ttittulares/control-mode.json",
+      "ttittulares/decisions.json",
+      "ttittulares/editorial-queue.json",
+      "ttittulares/execution-errors.json",
+      "ttittulares/manual-submissions.json",
+      "ttittulares/prepared.json",
+      "ttittulares/push-subscriptions.json",
+      "ttittulares/remate-ratings.json",
+      "ttittulares/status.json",
+      "ttittulares/trend-candidates.json",
+      "ttittulares/*trigger*.txt",
+
+      "trends/generated-images/**",
+      "trends/archive-images/**",
+      "trends/image-cache/**",
+      "trends/image-outbox/**",
+      "trends/checkpoint.json",
+      "trends/cleanup-editorial.json",
+      "trends/control-mode.json",
+      "trends/editorial-queue.json",
+      "trends/editorial-runtime.json",
+      "trends/explained-copy-state.json",
+      "trends/explained.json",
+      "trends/health-status.json",
+      "trends/latest.json",
+      "trends/notified.json",
+      "trends/pending-repair-trigger.json",
+      "trends/prepared.json",
+      "trends/push-state.json",
+      "trends/recent.json",
+      "trends/remate-ratings.json",
+      "trends/requests.json",
+      "trends/telegram-*.json",
+      "trends/*heartbeat*",
+      "trends/*trigger*",
+      "trends/deploy-marker.txt",
+
+      "telegram/archive/**",
+      "telegram/*.json",
+      "telegram/*trigger*.txt",
+
+      "shared/*.json",
+      "vercel-webhook/.deploy-*",
+      "vercel-webhook/deploy-*.txt"
+    ]
+  },
+  "safety": {
+    "restore_is_dry_run_by_default": true,
+    "never_reset_branch": true,
+    "never_delete_files": true,
+    "state_files_take_precedence_over_include_rules": true
+  }
+}
