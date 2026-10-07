@@ -395,7 +395,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
           $code=$LASTEXITCODE
         }finally{$ErrorActionPreference=$old}
         if($code -eq 0){
-          Write-Log "IMAGE BRIDGE LOCAL VALID v49 no-refresh"
+          Write-Log "IMAGE BRIDGE LOCAL VALID v53 fresh-navigation"
           return $true
         }
       }
@@ -409,7 +409,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   try {
     $url = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TTiTTularesImageBridge.js?t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
     Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing -Headers @{
-      "User-Agent"="TTiTTulares-image-bridge-refresh-v49"
+      "User-Agent"="TTiTTulares-image-bridge-refresh-v53"
       "Cache-Control"="no-cache, no-store"
       "Pragma"="no-cache"
     } -TimeoutSec 15
@@ -432,7 +432,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     }finally{$ErrorActionPreference=$old}
     if ($code -ne 0) { throw "node --check falló en bridge remoto" }
     Move-Item -LiteralPath $tmp -Destination $ImageBridge -Force
-    Write-Log "IMAGE BRIDGE REFRESHED source=raw-v49"
+    Write-Log "IMAGE BRIDGE REFRESHED source=raw-v53"
     return $true
   } catch {
     Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
