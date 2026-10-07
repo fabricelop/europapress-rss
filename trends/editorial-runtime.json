@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T10:15:51+02:00",
-  "last_completed_at": "2026-10-07T10:31:20+02:00",
-  "updated_at": "2026-10-07T10:31:20+02:00",
+  "last_started_at": "2026-10-07T10:46:42+02:00",
+  "last_completed_at": "2026-10-07T10:49:20+02:00",
+  "updated_at": "2026-10-07T10:49:20+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -12,54 +12,48 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
-    "run_id": "tr-20261007T101551+0200-chat",
+    "run_id": "tr-20261007T104642+0200-chat",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T10:15:51+02:00",
-    "updated_at": "2026-10-07T10:31:20+02:00",
-    "finished_at": "2026-10-07T10:31:20+02:00",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-10-07T10:46:42+02:00",
+    "updated_at": "2026-10-07T10:49:20+02:00",
+    "finished_at": "2026-10-07T10:49:20+02:00",
+    "current": 0,
+    "total": 0,
+    "trend_id": null,
+    "title": null,
     "summary": {
-      "trends_processed": 5,
-      "trends_explained": 5,
-      "explanation_groups": 5,
-      "new_cards": 4,
-      "revisions_updated": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
-      "pending_cards_reviewed": 20,
-      "pending_repair_triggered": 2,
-      "visual_repair_triggered": 2,
+      "pending_cards_reviewed": 2,
+      "pending_repair_triggered": 1,
+      "visual_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 5,
-      "remates_selected": 5,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_reused": 0,
       "remates_omitted": 0,
       "jit_skipped": 0,
       "concurrent_completed": 0,
-      "new_queue_entries_during_run": 1
+      "new_queue_entries_during_run": 0
     },
-    "message": "Pasada cerrada 5/5 · cola autoritativa final 0; 20 Pendientes recientes revisados y reparación visual reactivada. Un conflicto 409 concurrente quedó resuelto mediante relectura de SHA y reintento.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-07T10:22:09+02:00",
-        "trend_id": "16c16970ff28",
-        "title": "Rodalies",
-        "type": "github_conflict_retry",
-        "message": "Conflicto 409 por escritura concurrente del reparador visual; relectura de SHA y reintento completados."
-      }
-    ],
+    "message": "Pasada cerrada 0/0 · cola autoritativa final 0; no hay preparing/update ni rewrite_pending. Se reactivó el saneamiento visual para Modric r1 y Merino r1.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -67,192 +61,63 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "6cc256e84877",
-        "title": "#FelizMiércoles",
-        "revision": 2,
-        "selected": "🌶️ El calendario ha vuelto a desbloquear su saludo semanal."
-      },
-      {
-        "trend_id": "16c16970ff28",
-        "title": "Rodalies",
-        "revision": 0,
-        "selected": "🌶️ El horario ha terminado viajando en servicio alternativo."
-      },
-      {
-        "trend_id": "967200e462d9",
-        "title": "Virgen del Rosario",
-        "revision": 0,
-        "selected": "🌶️ El santoral ha tomado hoy la delantera al algoritmo."
-      },
-      {
-        "trend_id": "68e586b8b52d",
-        "title": "Lepanto",
-        "revision": 0,
-        "selected": "🌶️ La efeméride ha vuelto a sacar las galeras al timeline."
-      },
-      {
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "revision": 0,
-        "selected": "🌶️ La mañana ha fichado un hashtag antes del segundo café."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-07T10:27:43+02:00",
-        "phase": "verifying",
-        "trend_id": "68e586b8b52d",
-        "title": "Lepanto",
-        "message": "Tendencia cerrada y verificada"
+        "at": "2026-10-07T10:46:42+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada · cola editorial 0; comprobando Pendientes recientes y saneamiento visual."
       },
       {
-        "at": "2026-10-07T10:27:46+02:00",
-        "phase": "verifying",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Releyendo estado autoritativo de #LaHora7O"
-      },
-      {
-        "at": "2026-10-07T10:28:00+02:00",
-        "phase": "investigating",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Buscando detonante actual de #LaHora7O"
-      },
-      {
-        "at": "2026-10-07T10:28:25+02:00",
-        "phase": "investigating",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Contrastando fuente 1/2 · RTVE confirma La Hora de La 1 en emisión esta mañana"
-      },
-      {
-        "at": "2026-10-07T10:28:26+02:00",
-        "phase": "investigating",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Contrastando fuente 2/2 · la guía de programación sitúa la edición de hoy entre las 07:50 y las 10:35"
-      },
-      {
-        "at": "2026-10-07T10:28:27+02:00",
-        "phase": "investigating",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Hecho esencial verificado · el hashtag acompaña la edición de hoy y sus comentarios de actualidad"
-      },
-      {
-        "at": "2026-10-07T10:28:28+02:00",
-        "phase": "drafting",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-07T10:28:29+02:00",
-        "phase": "drafting",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Comprobando límite de X · 227 caracteres"
-      },
-      {
-        "at": "2026-10-07T10:28:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-07T10:28:31+02:00",
-        "phase": "remate_selection",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Evaluando candidatos con ratings"
-      },
-      {
-        "at": "2026-10-07T10:28:32+02:00",
-        "phase": "remate_selection",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-07T10:28:33+02:00",
-        "phase": "persisting",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-07T10:30:05+02:00",
-        "phase": "persisting",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-07T10:30:06+02:00",
-        "phase": "persisting",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-07T10:30:07+02:00",
-        "phase": "verifying",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-07T10:30:08+02:00",
-        "phase": "verifying",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-07T10:30:09+02:00",
-        "phase": "verifying",
-        "trend_id": "e1109b204118",
-        "title": "#LaHora7O",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-07T10:30:16+02:00",
+        "at": "2026-10-07T10:47:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 20 tarjetas recientes"
+        "message": "Revisando Pendientes · 2 tarjetas recientes"
       },
       {
-        "at": "2026-10-07T10:31:18+02:00",
+        "at": "2026-10-07T10:47:45+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reparación visual solicitada de nuevo al cierre para cubrir las últimas revisiones"
+        "message": "Pendientes detectadas: Modric r1 y Merino r1 · falta IA válida en ambas revisiones"
       },
       {
-        "at": "2026-10-07T10:31:20+02:00",
+        "at": "2026-10-07T10:48:12+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación visual solicitada para Pendientes recientes; releyendo main antes del cierre."
+      },
+      {
+        "at": "2026-10-07T10:49:12+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final: cola 0, requests activas 0, rewrite_pending 0"
+      },
+      {
+        "at": "2026-10-07T10:49:20+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 5/5 · cola autoritativa final 0; saneamiento visual reactivado para 20 Pendientes recientes."
+        "message": "Pasada cerrada 0/0 · cola editorial final 0; saneamiento visual reactivado para Modric r1 y Merino r1."
       }
     ]
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "triggered_successfully",
+    "status": "trigger_requested",
     "direct_imagegen": false,
-    "trigger_commit": "16e7561e79d032084c0a4b9d44733df976acc067",
+    "trigger_commit": "b97740241550728021f84db3f66b486c1135fa96",
     "workflow_run_id": 37575509813,
     "workflow_conclusion": "success",
-    "last_trigger_run_id": "tr-20261007T0715-chat",
-    "last_triggered_at": "2026-10-07T07:15:00+02:00",
-    "pending_cards_reviewed": 16,
+    "last_trigger_run_id": "tr-20261007T104642+0200-chat",
+    "last_triggered_at": "2026-10-07T10:46:42+02:00",
+    "pending_cards_reviewed": 2,
     "ai_jobs_queued": 5,
     "archive_ready": 1,
     "control_commit": "036fb4d39"
