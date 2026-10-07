@@ -1,26 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T23:47:00+02:00",
-  "last_completed_at": "2026-10-07T23:59:40+02:00",
-  "updated_at": "2026-10-07T23:59:40+02:00",
+  "last_started_at": "2026-10-08T00:15:00+02:00",
+  "last_completed_at": "2026-10-08T00:18:30+02:00",
+  "updated_at": "2026-10-08T00:18:30+02:00",
   "status": "success",
-  "processed_ids": [
-    "a65f3cc3c77c",
-    "0da6b822b7e0",
-    "f1b0d0bc8db1",
-    "ec57d7bcc69d",
-    "2f211fc31607",
-    "5c30ece2e4fb",
-    "3c106352763e",
-    "c6001a65c2ab",
-    "bbfb440628e3",
-    "553260b1a6d4",
-    "9c2d29850e7f",
-    "9c210bfc08eb",
-    "612da719816b",
-    "baaf482cc918"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -30,23 +15,23 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261007T234500-chat",
+    "run_id": "tr-20261008T001500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T23:47:00+02:00",
-    "updated_at": "2026-10-07T23:59:40+02:00",
-    "finished_at": "2026-10-07T23:59:40+02:00",
+    "started_at": "2026-10-08T00:15:00+02:00",
+    "updated_at": "2026-10-08T00:18:30+02:00",
+    "finished_at": "2026-10-08T00:18:30+02:00",
     "trend_id": null,
     "title": null,
-    "current": 5,
-    "total": 5,
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
       "trends_problematic": 0,
@@ -59,19 +44,19 @@
       "pending_cards_reviewed": 4,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "pending_cards_with_ai_ready": 3,
-      "pending_cards_needing_ai_repair": 1,
+      "pending_cards_with_ai_ready": 4,
+      "pending_cards_needing_ai_repair": 0,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_reused": 0,
-      "remates_omitted": 1,
-      "jit_skipped": 3,
-      "concurrent_completed": 3,
+      "remates_omitted": 0,
+      "jit_skipped": 0,
+      "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · 2 revisiones cerradas aquí y 3 completadas concurrentemente, omitidas por barrera JIT · cola autoritativa 0 · reexplicaciones pendientes 0 · sin ImageGen directo.",
+    "message": "Pasada completada · cola autoritativa 0 · requests activos 0 · reexplicaciones pendientes 0 · 4 Pendientes revisados con IA ready · sin ImageGen directo.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -81,217 +66,42 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "553260b1a6d4",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.4,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7.8,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 7.1,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c4",
-            "total": 6.6,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c5",
-            "total": 6,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.5,
-            "punch": 1.3,
-            "originality": 0.9,
-            "length_fit": 1,
-            "repetition_penalty": -0.4
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.4,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "9c2d29850e7f",
-        "revision": 1,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitive_subject"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-07T23:51:50+02:00",
-        "phase": "verifying",
-        "trend_id": "553260b1a6d4",
-        "title": "Carroñero",
-        "message": "Verificando id+revision y texto persistido"
+        "at": "2026-10-08T00:15:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Arranque · cola editorial 0; comprobando estado autoritativo, reexplicaciones y Pendientes."
       },
       {
-        "at": "2026-10-07T23:52:00+02:00",
-        "phase": "verifying",
-        "trend_id": "553260b1a6d4",
-        "title": "Carroñero",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-07T23:52:05+02:00",
-        "phase": "verifying",
-        "trend_id": "9c2d29850e7f",
-        "title": "Olga",
-        "message": "Releyendo estado autoritativo de Olga"
-      },
-      {
-        "at": "2026-10-07T23:52:15+02:00",
-        "phase": "investigating",
-        "trend_id": "9c2d29850e7f",
-        "title": "Olga",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-07T23:52:40+02:00",
-        "phase": "investigating",
-        "trend_id": "9c2d29850e7f",
-        "title": "Olga",
-        "message": "Contrastando fuente 1/2 · caso de Olga Matute en L’Hospitalet"
-      },
-      {
-        "at": "2026-10-07T23:52:50+02:00",
-        "phase": "investigating",
-        "trend_id": "9c2d29850e7f",
-        "title": "Olga",
-        "message": "Contrastando fuente 2/2 · conversación actual tras la muerte de Maricarmen"
-      },
-      {
-        "at": "2026-10-07T23:53:00+02:00",
-        "phase": "investigating",
-        "trend_id": "9c2d29850e7f",
-        "title": "Olga",
-        "message": "Hecho esencial verificado · el nombre Olga reaparece ligado al caso de Olga Matute"
-      },
-      {
-        "at": "2026-10-07T23:53:02+02:00",
-        "phase": "drafting",
-        "trend_id": "9c2d29850e7f",
-        "title": "Olga",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-07T23:53:04+02:00",
-        "phase": "drafting",
-        "trend_id": "9c2d29850e7f",
-        "title": "Olga",
-        "message": "Comprobando límite de X · 185 caracteres"
-      },
-      {
-        "at": "2026-10-07T23:53:06+02:00",
-        "phase": "remate_selection",
-        "trend_id": "9c2d29850e7f",
-        "title": "Olga",
-        "message": "Sin remate · asunto sensible"
-      },
-      {
-        "at": "2026-10-07T23:53:08+02:00",
-        "phase": "persisting",
-        "trend_id": "9c2d29850e7f",
-        "title": "Olga",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-07T23:54:10+02:00",
-        "phase": "verifying",
-        "trend_id": "9c2d29850e7f",
-        "title": "Olga",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-07T23:54:15+02:00",
-        "phase": "verifying",
-        "trend_id": "9c210bfc08eb",
-        "title": "Miserable",
-        "message": "Releyendo estado autoritativo de Miserable"
-      },
-      {
-        "at": "2026-10-07T23:55:30+02:00",
-        "phase": "verifying",
-        "trend_id": "baaf482cc918",
-        "title": "Asesino",
-        "message": "Barrera JIT · el grupo Miserable/Asesino cambió de estado antes de persistir"
-      },
-      {
-        "at": "2026-10-07T23:57:25+02:00",
-        "phase": "verifying",
-        "trend_id": "9c210bfc08eb",
-        "title": "Miserable",
-        "message": "Cierre concurrente detectado · revisión ya explained"
-      },
-      {
-        "at": "2026-10-07T23:57:30+02:00",
-        "phase": "verifying",
-        "trend_id": "baaf482cc918",
-        "title": "Asesino",
-        "message": "Cierre concurrente detectado · revisión agrupada ya explained"
-      },
-      {
-        "at": "2026-10-07T23:57:35+02:00",
-        "phase": "verifying",
-        "trend_id": "612da719816b",
-        "title": "#FirstDates7O",
-        "message": "Cierre concurrente detectado · revisión ya explained"
-      },
-      {
-        "at": "2026-10-07T23:58:50+02:00",
+        "at": "2026-10-08T00:17:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 4 tarjetas recientes"
+        "message": "Revisando Pendientes · 4 tarjetas recientes; las 4 tienen IA válida y ninguna requiere regeneración."
       },
       {
-        "at": "2026-10-07T23:59:15+02:00",
+        "at": "2026-10-08T00:18:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Pendientes · 3 con IA válida y 1 con IA pending; sin ImageGen directo"
+        "message": "Releyendo main · cola, requests, Explicadas y radar."
       },
       {
-        "at": "2026-10-07T23:59:40+02:00",
+        "at": "2026-10-08T00:18:20+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificación final · cola 0, requests activos 0, reexplicaciones 0, problematic Top 10 0."
+      },
+      {
+        "at": "2026-10-08T00:18:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final · cola 0 · reexplicaciones pendientes 0 · cierre verificado"
+        "message": "Pasada completada · sin trabajo editorial nuevo; saneamiento de 4 Pendientes verificado."
       }
     ],
     "queue_complete": true,
