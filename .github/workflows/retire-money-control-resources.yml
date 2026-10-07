@@ -1,0 +1,63 @@
+name: Retire Money Control resources
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".retire-money-control-trigger"
+
+permissions:
+  contents: write
+
+jobs:
+  retire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VERCEL_ORG_ID: team_H8xHbBIbIKnsaLeITszidyOK
+      VERCEL_PROJECT_ID: prj_X1UxNqQasd8Ouf7jUpxNccbQdASf
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Delete old TT backup branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          for b in BackupTtendencias20261005 BackupTtittulares20261005 TTendenciasBACKUP01; do
+            if git ls-remote --exit-code --heads origin "$b" >/dev/null 2>&1; then
+              git push origin --delete "$b"
+            fi
+          done
+
+      - name: Install Vercel CLI and link project
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install -g vercel@latest
+          cd vercel-webhook
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Remove MoneyWiz-only environment variables
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd vercel-webhook
+          for key in MONEYWIZ_SYNC_TOKEN MONEYWIZ_UPLOAD_TOKEN; do
+            vercel env rm "$key" production --yes --token="$VERCEL_TOKEN" || true
+            vercel env rm "$key" preview --yes --token="$VERCEL_TOKEN" || true
+          done
+
+      - name: Delete dedicated MoneyWiz Blob store
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd vercel-webhook
+          # This store is dedicated to Money Control/MoneyWiz and is connected only to this Vercel project.
+          printf 'y\ny\n' | vercel blob delete-store store_lUkOIpD97OzOjLef --token="$VERCEL_TOKEN"
