@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-recover-ad443d46cc7d-r0-a3-1791232399680",
-  "requested_at": "2026-10-05T20:33:19.678Z",
-  "updated_at": "2026-10-05T20:39:49.838Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tr-img-auto-ad443d46cc7d-r1-a4-1791397844488",
+  "requested_at": "2026-10-07T18:30:44.488081Z",
+  "updated_at": "2026-10-07T18:30:44.488081Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -13,52 +13,48 @@
   "target_id": "ad443d46cc7d",
   "trend_id": "ad443d46cc7d",
   "target_name": "#EleccionesEspaña",
-  "revision": 0,
-  "attempt": 3,
+  "revision": 1,
+  "attempt": 4,
   "auto_repair": true,
-  "auto_repair_attempt": 3,
+  "auto_repair_attempt": 4,
+  "manual_retry_version": 0,
   "chat_command_version": 4,
-  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "#EleccionesEspaña",
-    "revision": 0,
-    "explanation": "TT#1 #EleccionesEspaña es tendencia porque Pedro Sánchez ha convocado elecciones generales anticipadas para el 29 de noviembre, después de que el Congreso rechazara dos decretos de vivienda.",
+    "revision": 1,
+    "explanation": "TT#8 #EleccionesEspaña es tendencia porque las generales del 29-N centran la conversación política tras el adelanto electoral, con el voto por correo en primer plano después de que dirigentes de PP y Vox cuestionaran sus garantías y Correos defendiera su seguridad.",
     "closer_text": "",
     "trend_names": [
       "#EleccionesEspaña"
     ],
-    "group_title": "Elecciones generales anticipadas del 29-N",
-    "rank_at_explanation": 1,
-    "explained_at": "2026-10-05T18:48:10+02:00",
+    "group_title": "Elecciones generales del 29-N y debate sobre voto por correo",
+    "rank_at_explanation": 8,
+    "explained_at": "2026-10-07T20:18:00+02:00",
     "verification_sources": [
       {
-        "source": "RTVE · 5/10/2026",
-        "url": "https://www.rtve.es/noticias/20261005/sanchez-convoca-elecciones-anticipadas-29-noviembre-llegado-momento-decidir-futuro-quereis/17253132.shtml"
+        "source": "RTVE · 7/10/2026",
+        "url": "https://www.rtve.es/play/audios/las-mananas-de-rne/correos-voto-correo-absolutamente-seguro/17256452/"
       },
       {
-        "source": "Europa Press · 5/10/2026",
-        "url": "https://www.europapress.es/nacional/noticia-adelanto-elecciones-cuando-seran-elecciones-generales-2026-espana-cuales-son-fechas-clave-20261005091918.html"
+        "source": "El País · 7/10/2026",
+        "url": "https://elpais.com/espana/elecciones-generales/2026-10-07/feijoo-abona-a-las-dudas-del-pp-sobre-el-voto-por-correo-y-pedira-mas-controles-a-la-junta-electoral.html"
+      },
+      {
+        "source": "Cadena SER · 5/10/2026",
+        "url": "https://cadenaser.com/nacional/2026/10/05/del-voto-por-correo-a-la-campana-asi-queda-el-calendario-electoral-despues-de-que-sanchez-haya-adelantado-las-elecciones-al-29-de-noviembre-cadena-ser/"
       }
     ],
-    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
+    "image_style_name": "pop_art",
+    "image_style_index": 7
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "bridge_version": null,
-  "pc_upload_secret_hash": "20d35fbfc0ad96df571f63a97c31183d453e50c40e50adfa4fe6f0ad771919b5",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-05T20:38:07.436Z",
-  "target_handoff_id": "CC9AF6FFA537F30F5BE48F8F1E7A6C64",
-  "target_handoff_at": "2026-10-05T20:38:25.362Z",
-  "pc_launched_at": "2026-10-05T20:38:26.483Z",
-  "upload_received_at": "2026-10-05T20:39:44.242Z",
-  "upload_sha256": "ec0d014796d810d7686ac142d8d82d455529c7c6543b6a7b9f28848460dc53b3",
-  "upload_bytes": 2706528,
-  "finished_at": "2026-10-05T20:39:49.838Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
