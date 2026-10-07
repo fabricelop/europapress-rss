@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v52"
+$WorkerId = "ttittulares-dedicated-v53"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -396,7 +396,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       $localTxt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
       $localOk =
         $localTxt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and
-        $localTxt.Contains('BRIDGE_FEATURES="v28-reject-nonconversation-image-targets"') -and
+        $localTxt.Contains('BRIDGE_FEATURES="v53-ttendencias-fresh-navigation"') -and
         $localTxt.Contains('await cdp.call("Input.insertText",{text:message});') -and
         $localTxt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')
       if($localOk){
@@ -429,7 +429,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
     foreach ($needle in @(
       'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
-      'BRIDGE_FEATURES="v28-reject-nonconversation-image-targets"',
+      'BRIDGE_FEATURES="v53-ttendencias-fresh-navigation"',
       'await cdp.call("Input.insertText",{text:message});',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'imagesAfterMarker'
