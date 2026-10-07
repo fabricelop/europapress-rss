@@ -244,6 +244,7 @@ jobs:
 
           active={"REQUESTED","RUNNING","PERSISTING"}
           queued=[]
+          wanted_ids=set()
 
           for item in prepared.get("items",[]):
               eid=str(item.get("event_id") or "").strip()
@@ -259,6 +260,10 @@ jobs:
                   continue
               if ai_valid(item):
                   continue
+              # El índice operativo solo debe contener noticias ACTUALES de Listas
+              # que todavía necesitan IA. El historial antiguo multiplica lecturas
+              # de estado y puede retrasar el siguiente Gag IA.
+              wanted_ids.add(eid)
 
               job_path=CTRL/f"ttittulares/image-runs/jobs/{eid}.json"
               old=load_old(job_path)
@@ -360,6 +365,23 @@ jobs:
               })
               queued.append((eid,attempt,command))
               changed=True
+
+          # Purgar del índice jobs históricos o de noticias que ya no están
+          # en Listas. Los JSON de job se conservan como historial; solo reducimos
+          # el índice que escanea el listener.
+          before_jobs=list(index.get("jobs",[]))
+          filtered=[]
+          seen=set()
+          for x in reversed(before_jobs):
+              tid=str(x.get("target_id") or "")
+              if tid not in wanted_ids or tid in seen:
+                  continue
+              seen.add(tid); filtered.append(x)
+          filtered.reverse()
+          if filtered != before_jobs:
+              index["jobs"]=filtered
+              changed=True
+              print("TTITTULARES_AI_INDEX_PRUNED",len(before_jobs),"->",len(filtered))
 
           if changed:
               index["updated_at"]=nowz
