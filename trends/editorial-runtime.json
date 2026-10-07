@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T04:15:00+02:00",
-  "last_completed_at": "2026-10-07T04:18:00+02:00",
-  "updated_at": "2026-10-07T04:18:00+02:00",
+  "last_started_at": "2026-10-07T04:45:00+02:00",
+  "last_completed_at": "2026-10-07T04:48:00+02:00",
+  "updated_at": "2026-10-07T04:48:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -14,24 +14,19 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-20261007T0415-chat",
+    "run_id": "tr-20261007T0445-chat",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T04:15:00+02:00",
-    "updated_at": "2026-10-07T04:18:00+02:00",
-    "finished_at": "2026-10-07T04:18:00+02:00",
+    "started_at": "2026-10-07T04:45:00+02:00",
+    "updated_at": "2026-10-07T04:48:00+02:00",
+    "finished_at": "2026-10-07T04:48:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "runtrace_comment_update_blocked",
-        "message": "La actualización del comentario canónico TTENDENCIAS_RUNTRACE_V1 fue bloqueada por la capa de seguridad del conector; runtime durable persistido en main."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "summary": {
       "trends_processed": 0,
       "trends_explained": 0,
@@ -42,7 +37,7 @@
       "grouped_members_total": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
@@ -50,8 +45,7 @@
       "fallback_images_ready": 0,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "pending_cards_reviewed": 14,
-      "image_jobs_queued": 3,
+      "image_jobs_queued": 10,
       "visual_repair_workflow_success": 1,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 0,
@@ -61,52 +55,45 @@
       "jit_skipped": 0,
       "concurrent_completed": 0
     },
-    "message": "Pasada cerrada 0/0 editorial · cola autoritativa vacía; saneamiento visual revisó 14 Pendientes y reencoló 3 Gag IA (Chiqui, split y Nico Paz).",
+    "message": "Pasada cerrada 0/0 editorial · cola autoritativa vacía; saneamiento visual completado y 10 Gag IA reencolados.",
     "activity": [
       {
-        "at": "2026-10-07T04:15:00+02:00",
+        "at": "2026-10-07T04:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada editorial · cola inicial 0; verificando reexplicaciones y Pendientes"
       },
       {
-        "at": "2026-10-07T04:16:47+02:00",
+        "at": "2026-10-07T04:46:29+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual solicitado en main"
       },
       {
-        "at": "2026-10-07T04:17:00+02:00",
+        "at": "2026-10-07T04:46:35+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 14 tarjetas recientes efectivas"
+        "message": "Reparador de Explicadas en ejecución"
       },
       {
-        "at": "2026-10-07T04:17:57+02:00",
+        "at": "2026-10-07T04:47:38+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reparador visual encolando Gag IA ausente o inválido"
+        "message": "Saneamiento visual completado · 10 Gag IA reencolados"
       },
       {
-        "at": "2026-10-07T04:17:59+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual completado · 3 Gag IA reencolados"
-      },
-      {
-        "at": "2026-10-07T04:18:00+02:00",
+        "at": "2026-10-07T04:47:50+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main · 0 preparing, 0 update y 0 rewrite_pending"
       },
       {
-        "at": "2026-10-07T04:18:00+02:00",
+        "at": "2026-10-07T04:48:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -130,11 +117,11 @@
     "persisted_trigger": true,
     "status": "success",
     "direct_imagegen": false,
-    "workflow_run_id": 37561220472,
-    "trigger_commit": "7b17f3ad7082eb8837c2253db5ec4c65a10e2552",
+    "workflow_run_id": 37563586014,
+    "trigger_commit": "d32fc8a7e5306b27c76f6b998224fd046be9d09d",
     "workflow_conclusion": "success",
-    "control_commit": "7c8038ae5",
-    "jobs_queued": 3
+    "control_commit": "79a4db1be",
+    "jobs_queued": 10
   },
   "error": null
 }
