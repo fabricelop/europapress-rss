@@ -5997,7 +5997,7 @@
       "percentage": 25,
       "first_seen": "2026-10-06T18:11:39.692241Z",
       "last_seen": "2026-10-06T22:03:17.452531Z",
-      "status": "READY",
+      "status": "DISMISSED",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -6057,7 +6057,12 @@
       "drafted_source_count": 4,
       "verified_source_count": 4,
       "delivered_at": "2026-10-06T22:05:00Z",
-      "delivery_confirmation": "prepared_web"
+      "delivery_confirmation": "prepared_web",
+      "dismissed_at": "2026-10-07T05:21:18.768Z",
+      "manual_user_dismissed": true,
+      "dismissal_source": "web_user",
+      "history_hidden_at": "2026-10-07T05:21:18.768Z",
+      "history_hidden_source": "web_user_dismissal"
     },
     {
       "id": "dfab71b4a257",
@@ -7248,5 +7253,5 @@
       "delivery_confirmation": "prepared_web"
     }
   ],
-  "updated_at": "2026-10-07T05:21:09.674Z"
+  "updated_at": "2026-10-07T05:21:18.768Z"
 }
