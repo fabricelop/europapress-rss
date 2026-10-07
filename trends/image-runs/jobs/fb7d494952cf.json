@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-fb7d494952cf-r0-a1-1791206551141",
-  "requested_at": "2026-10-05T13:22:31.140650Z",
-  "updated_at": "2026-10-05T13:28:11.639Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tr-img-auto-fb7d494952cf-r1-a2-1791381193015",
+  "requested_at": "2026-10-07T13:53:13.015329Z",
+  "updated_at": "2026-10-07T13:53:13.015329Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -13,52 +13,44 @@
   "target_id": "fb7d494952cf",
   "trend_id": "fb7d494952cf",
   "target_name": "Correos",
-  "revision": 0,
-  "attempt": 1,
+  "revision": 1,
+  "attempt": 2,
   "auto_repair": true,
-  "auto_repair_attempt": 1,
+  "auto_repair_attempt": 2,
+  "manual_retry_version": 0,
   "chat_command_version": 4,
-  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "Correos",
-    "revision": 0,
-    "explanation": "TT#11 Correos es tendencia porque el voto por correo para las generales del 29-N podrá solicitarse del 6 de octubre al 19 de noviembre, en oficinas o por vía telemática.",
-    "closer_text": "",
+    "revision": 1,
+    "explanation": "TT#2 Correos es tendencia porque Feijóo dice que confía en los carteros pero no en sus directivos y el PP pedirá a la JEC garantías adicionales para el voto postal del 29-N. Correos responde que el sistema es «absolutamente seguro».\n🌶️ El sobre ya está en precampaña.",
+    "closer_text": "🌶️ El sobre ya está en precampaña.",
     "trend_names": [
       "Correos"
     ],
-    "group_title": "Voto por correo para las elecciones generales del 29-N",
-    "rank_at_explanation": 11,
-    "explained_at": "2026-10-05T15:18:30+02:00",
+    "group_title": "Polémica política por el voto por correo del 29-N",
+    "rank_at_explanation": 2,
+    "explained_at": "2026-10-07T15:49:30+02:00",
     "verification_sources": [
       {
-        "source": "laSexta · 5/10/2026",
-        "url": "https://www.lasexta.com/elecciones/generales/cuando-puede-pedir-voto-correo-elecciones-generales-29-noviembre_202610056ac359e5f7f8f566d14d6f17.html"
+        "source": "El País · 7/10/2026",
+        "url": "https://elpais.com/espana/elecciones-generales/2026-10-07/feijoo-abona-a-las-dudas-del-pp-sobre-el-voto-por-correo-y-pedira-mas-controles-a-la-junta-electoral.html"
       },
       {
-        "source": "EFE · 5/10/2026",
-        "url": "https://efe.com/espana/2026-10-05/calendario-elecciones-generales-29-noviembre/"
+        "source": "RTVE/RNE · 7/10/2026",
+        "url": "https://www.rtve.es/play/audios/las-mananas-de-rne/correos-voto-correo-absolutamente-seguro/17256452/"
       }
     ],
-    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.",
+    "image_style_name": "poster_grafico",
+    "image_style_index": 2
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "pc_upload_secret_hash": "ab7334a8bf682a5b9fbc84113c6e451ea8cfcbda667559e18cc73946609bb9da",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-05T13:23:04.624Z",
-  "bridge_version": null,
-  "target_handoff_id": "5466EEFD4A5947C4FC21A114D620CB21",
-  "target_handoff_at": "2026-10-05T13:23:12.712Z",
-  "pc_launched_at": "2026-10-05T13:23:15.205Z",
-  "upload_received_at": "2026-10-05T13:28:04.649Z",
-  "upload_sha256": "aa95e13317e7fbc1e6416b1bf22b784234b9412719b61e93074991cc1f0cf466",
-  "upload_bytes": 2735288,
-  "finished_at": "2026-10-05T13:28:11.639Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
