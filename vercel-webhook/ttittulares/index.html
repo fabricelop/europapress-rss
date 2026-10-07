@@ -119,7 +119,7 @@ const RUN_API="/api/ttittulares-run";
 const RUN_STATUS_API="/api/ttittulares-run-status";
 const IMAGE_RUN_STATUS=RUN_STATUS_API+"?view=image-job&id=";
 const $=id=>document.getElementById(id);
-const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards",TREMENDING_OPEN_KEY="ttittulares-open-tremending",TREMENDING_DELETED_KEY="ttittulares-deleted-tremending",IMAGE_SELECTED_KEY="ttittulares-image-selected-v1";
+const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards",TREMENDING_OPEN_KEY="ttittulares-open-tremending",TREMENDING_DELETED_KEY="ttittulares-deleted-tremending",IMAGE_SELECTED_KEY="ttittulares-image-selected-v1",CLOSED_TOMBSTONE_KEY="ttittulares-closed-tombstones-v1";
 const DATA_CACHE_KEY="ttittulares-last-model",RUN_CACHE_KEY="ttittulares-last-run-status";
 const GITHUB_RATE_KEY="github-rate-state-v1";
 function updateGithubRate(rate){
@@ -139,6 +139,17 @@ function loadUiSet(key){try{return new Set((JSON.parse(sessionStorage.getItem(ke
 function selectedImageKeys(){try{return new Set((JSON.parse(localStorage.getItem(IMAGE_SELECTED_KEY)||"[]")||[]).map(String))}catch(_){return new Set()}}
 function saveSelectedImageKeys(set){try{localStorage.setItem(IMAGE_SELECTED_KEY,JSON.stringify([...set].slice(-300)))}catch(_){}}
 function imageSelectionKey(item){return String(item?.event_id||"")+":r"+String(Number(item?.revision||1))}
+function loadClosedTombstones(){
+ try{
+  const raw=JSON.parse(localStorage.getItem(CLOSED_TOMBSTONE_KEY)||"{}")||{},now=Date.now(),out={};
+  for(const [id,ts] of Object.entries(raw)){const n=Number(ts||0);if(id&&n&&now-n<24*60*60*1000)out[id]=n}
+  localStorage.setItem(CLOSED_TOMBSTONE_KEY,JSON.stringify(out));return out
+ }catch(_){return {}}
+}
+function saveClosedTombstones(map){try{localStorage.setItem(CLOSED_TOMBSTONE_KEY,JSON.stringify(map||{}))}catch(_){}}
+function markClosedTombstone(id){id=String(id||"");if(!id)return;const m=loadClosedTombstones();m[id]=Date.now();saveClosedTombstones(m)}
+function clearClosedTombstone(id){id=String(id||"");if(!id)return;const m=loadClosedTombstones();delete m[id];saveClosedTombstones(m)}
+function hasClosedTombstone(id){id=String(id||"");if(!id)return false;return Boolean(loadClosedTombstones()[id])}
 function persistUiState(){try{sessionStorage.setItem(PENDING_KEY,JSON.stringify([...pendingClosed]));sessionStorage.setItem(OPEN_KEY,JSON.stringify([...openCards]));sessionStorage.setItem(TREMENDING_OPEN_KEY,JSON.stringify([...tremendingOpen]));sessionStorage.setItem(TREMENDING_DELETED_KEY,JSON.stringify([...tremendingDeleted]))}catch(_){}}
 const REQUESTED_VIEW=new URLSearchParams(location.search).get("view");
 const NORMALIZED_REQUESTED_VIEW=REQUESTED_VIEW==="problematic"?"review":REQUESTED_VIEW;
@@ -1091,7 +1102,7 @@ function renderReady(list,preservedImages=new Map()){
     card.querySelector(".copyTweet").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado")).catch(e=>toast(e.message));
     vh.appendChild(box)
   }
-  async function close(action,question){if(!confirm(question))return;const id=String(item.event_id||""),old=[...model.prepared];const sel=selectedImageKeys();sel.delete(imageSelectionKey(item));saveSelectedImageKeys(sel);pendingClosed.add(id);openCards.delete(id);persistUiState();model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();try{await api(action,{event_id:item.event_id});toast(action==="published"?(imageInFlight?"Publicada; imagen pendiente cancelada":"Marcada como publicada"):"Noticia desestimada");await load(true)}catch(e){pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message)}}
+  async function close(action,question){if(!confirm(question))return;const id=String(item.event_id||""),old=[...model.prepared];const sel=selectedImageKeys();sel.delete(imageSelectionKey(item));saveSelectedImageKeys(sel);pendingClosed.add(id);openCards.delete(id);persistUiState();model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();try{await api(action,{event_id:item.event_id});markClosedTombstone(id);toast(action==="published"?(imageInFlight?"Publicada; imagen pendiente cancelada":"Marcada como publicada"):"Noticia desestimada");await load(true)}catch(e){clearClosedTombstone(id);pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message)}}
   const generateAi=card.querySelector(".generateAi");generateAi.hidden=true;
   card.querySelector(".published").onclick=()=>close("published","¿Confirmas que ya has publicado esta noticia?");
   card.querySelector(".quickDismiss").onclick=()=>close("dismiss","¿Desestimar esta noticia?");
@@ -1283,14 +1294,10 @@ async function load(silent=false,passive=false){
    // que desaparezca del estado autoritativo. Un refresco atrasado no debe
    // resucitar una noticia publicada/desestimada. Si la acción falla, el catch
    // de la propia acción retira pendingClosed y restaura la tarjeta.
-   let pendingChanged=false;
-   for(const id of [...pendingClosed]){
-     if(!present.has(id)){pendingClosed.delete(id);pendingChanged=true}
-   }
-  if(pendingChanged)persistUiState();
-  const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),processing_outcomes:processingOutcomesRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),problematic_items:problematicRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),trend_candidates:[],trend_candidates_count:0,three_source_items:growingRaw.filter(x=>!pendingClosed.has(String(x.event_id||"")))};
+   const locallyClosed=id=>pendingClosed.has(String(id||""))||hasClosedTombstone(id);
+   const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!locallyClosed(x.event_id)),processing_outcomes:processingOutcomesRaw.filter(x=>!locallyClosed(x.event_id)),problematic_items:problematicRaw.filter(x=>!locallyClosed(x.event_id)),trend_candidates:[],trend_candidates_count:0,three_source_items:growingRaw.filter(x=>!locallyClosed(x.event_id))};
   status.processing_count=status.processing_items.length;status.processing_outcomes_count=status.processing_outcomes.length;status.problematic_count=status.problematic_items.length;status.three_source_count=status.three_source_items.length;
-  model={prepared:preparedRaw.filter(x=>!pendingClosed.has(String(x.event_id||""))),status,config:d.config||{},tremending:d.tremending||{items:[]}};
+  model={prepared:preparedRaw.filter(x=>!locallyClosed(x.event_id)),status,config:d.config||{},tremending:d.tremending||{items:[]}};
   hasGoodState=true;
   if(LINKED_EVENT_ID&&model.prepared.some(x=>String(x.event_id)===LINKED_EVENT_ID)){view="ready";openCards.add(LINKED_EVENT_ID);persistUiState()}
   // Pintar primero: una caché local llena nunca debe dejar la app en "Cargando" con contadores a 0.
