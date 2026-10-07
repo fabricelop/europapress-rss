@@ -6,6 +6,8 @@ on:
     branches: [main]
     paths:
       - "ttittulares/prepared.json"
+      - "trends/explained-copy-state.json"
+      - "shared/cross_account_story.py"
       - ".github/workflows/send-ttittulares-ready-telegram.yml"
   schedule:
     - cron: "*/30 * * * *"
@@ -32,6 +34,8 @@ jobs:
             /ttittulares/decisions.json
             /ttittulares/archive-images/
             /telegram/ttittulares-deliveries.json
+            /trends/explained-copy-state.json
+            /shared/cross_account_story.py
 
       - name: Sincronizar estado autoritativo
         run: |
@@ -40,6 +44,9 @@ jobs:
 
       - name: Instalar cliente HTTP
         run: python3 -m pip install --quiet requests
+
+      - name: Validar cita cruzada
+        run: python3 shared/cross_account_story.py selftest
 
       - name: Enviar o reparar paquete READY
         env:
@@ -52,10 +59,17 @@ jobs:
           import hashlib, json, os, pathlib, urllib.parse
           from datetime import datetime, timezone, timedelta
           import requests
+          from shared.cross_account_story import (
+              build_ttittulares_quote_copy,
+              find_published_trend_match,
+              x_account_search_url,
+          )
 
           ROOT=pathlib.Path(".")
           prepared=json.loads((ROOT/"ttittulares/prepared.json").read_text(encoding="utf-8"))
           decisions=json.loads((ROOT/"ttittulares/decisions.json").read_text(encoding="utf-8"))
+          trend_copy_state_path=ROOT/"trends/explained-copy-state.json"
+          trend_copy_state=json.loads(trend_copy_state_path.read_text(encoding="utf-8")) if trend_copy_state_path.exists() else {"items":[]}
           deliveries_path=ROOT/"telegram/ttittulares-deliveries.json"
           deliveries=json.loads(deliveries_path.read_text(encoding="utf-8")) if deliveries_path.exists() else {"version":3,"items":[]}
           deliveries["version"]=max(3,int(deliveries.get("version") or 1))
@@ -234,6 +248,57 @@ jobs:
               ])
               return {"inline_keyboard":rows}
 
+          def cross_quote_keyboard(eid,text,search_url,timeout_fallback=False):
+              if len(text)<=256:
+                  copy_button={"text":"📋 Copiar tuit","copy_text":{"text":text}}
+              else:
+                  copy_button={"text":"📋 Copiar tuit","url":"https://tt-control.fabricelop.workers.dev/copy-text?"+urllib.parse.urlencode({"text":text})}
+              return {"inline_keyboard":[
+                  [
+                      copy_button,
+                      {"text":"✍️ Abrir en X","url":"https://tt-control.fabricelop.workers.dev/x-compose?"+urllib.parse.urlencode({"text":text})}
+                  ],
+                  [{"text":"🔎 Buscar en @ttendenciasesp","url":search_url}],
+                  *([[{"text":"🔄 Reenviar a Listas","callback_data":"tt:r:"+eid}]] if timeout_fallback else []),
+                  [
+                      {"text":"🗑 Desestimar","callback_data":"tt:d:"+eid},
+                      {"text":"✅ Publicado","callback_data":"tt:p:"+eid}
+                  ]
+              ]}
+
+          def cross_quote_for_item(item,tweet):
+              news_text=" ".join(
+                  str(x or "").strip()
+                  for x in (item.get("title"),item.get("factual_summary"),tweet)
+                  if str(x or "").strip()
+              )
+              match=find_published_trend_match(
+                  news_text,
+                  trend_copy_state,
+                  hours=48,
+                  threshold=0.55,
+              )
+              if not match:
+                  return None
+              quote_text=build_ttittulares_quote_copy(tweet,match.get("subject") or "")
+              if not quote_text:
+                  print(f"TTITTULARES_CROSS_QUOTE_SKIP_LONG event={item.get('event_id')}")
+                  return None
+              search_url=x_account_search_url(
+                  "ttendenciasesp",
+                  match.get("text") or "",
+                  news_text,
+                  match.get("subject") or "",
+              )
+              return {
+                  "text":quote_text,
+                  "search_url":search_url,
+                  "score":float(match.get("score") or 0),
+                  "source_trend_id":str(match.get("id") or ""),
+                  "source_published_at":str(match.get("published_at") or ""),
+                  "subject":str(match.get("subject") or ""),
+              }
+
           changed=False
           touched=0
 
@@ -289,17 +354,34 @@ jobs:
                           print(f"TTITTULARES_TIMEOUT_ARCHIVE_WARNING event={eid} error={e}")
                           archive_raw=None
                   keyboard=keyboard_for(eid,tweet,"",item,archive_copy_url,timeout_fallback=True)
+                  cross=cross_quote_for_item(item,tweet)
+                  cross_mid=0
+                  if cross:
+                      ckb=cross_quote_keyboard(eid,cross["text"],cross["search_url"],timeout_fallback=True)
+                      cmsg=send_text(
+                          "🔁 CITA CRUZADA · citar @ttendenciasesp\n\n"
+                          +cross["text"]+f"\n\n{len(cross['text'])}/280",
+                          ckb
+                      )
+                      cross_mid=int(cmsg.get("message_id") or 0)
+                      print(f"TTITTULARES_CROSS_QUOTE_SENT event={eid} message_id={cross_mid} score={cross['score']}")
                   note="\n\n⏳ Más de 90 min sin imagen IA."
-                  if archive_raw:
-                      msg=send_photo(archive_raw,tweet+note,keyboard)
-                  else:
-                      msg=send_text(tweet+note,keyboard)
+                  try:
+                      if archive_raw:
+                          msg=send_photo(archive_raw,tweet+note,keyboard)
+                      else:
+                          msg=send_text(tweet+note,keyboard)
+                  except Exception:
+                      if cross_mid:
+                          delete_message(cross_mid)
+                      raise
                   message_id=int(msg.get("message_id") or 0)
                   row={
                       "delivery_key":delivery_key,
                       "event_id":eid,
                       "revision":rev,
                       "title":str(item.get("title") or ""),
+                      "tweet_text":tweet,
                       "telegram_message_id":message_id,
                       "delivered_at":nowz(),
                       "status":"sent",
@@ -308,6 +390,16 @@ jobs:
                       "timeout_retry_version":retry_version,
                       "timeout_wait_from":wait_from.isoformat().replace("+00:00","Z")
                   }
+                  if cross_mid:
+                      row.update({
+                          "cross_quote_message_id":cross_mid,
+                          "cross_quote_source":"@ttendenciasesp",
+                          "cross_quote_text":cross["text"],
+                          "cross_quote_search_url":cross["search_url"],
+                          "cross_quote_score":cross["score"],
+                          "cross_quote_source_trend_id":cross["source_trend_id"],
+                          "cross_quote_source_published_at":cross["source_published_at"]
+                      })
                   if archive_url:
                       row.update({
                           "archive_image_url":archive_url,
@@ -410,15 +502,35 @@ jobs:
               got=hashlib.sha256(raw).hexdigest()
               if got.lower()!=image_sha:
                   raise SystemExit(f"{eid}: SHA256 IA no coincide")
+              cross=None
+              cross_mid=0
+              if not int((timeout_archive or {}).get("cross_quote_message_id") or 0):
+                  cross=cross_quote_for_item(item,tweet)
+              if cross:
+                  ckb=cross_quote_keyboard(eid,cross["text"],cross["search_url"])
+                  cmsg=send_text(
+                      "🔁 CITA CRUZADA · citar @ttendenciasesp\n\n"
+                      +cross["text"]+f"\n\n{len(cross['text'])}/280",
+                      ckb
+                  )
+                  cross_mid=int(cmsg.get("message_id") or 0)
+                  print(f"TTITTULARES_CROSS_QUOTE_SENT event={eid} message_id={cross_mid} score={cross['score']}")
+
               caption=tweet+f"\n\n{len(tweet)}/256"
 
-              msg=send_photo(raw,caption,keyboard)
+              try:
+                  msg=send_photo(raw,caption,keyboard)
+              except Exception:
+                  if cross_mid:
+                      delete_message(cross_mid)
+                  raise
               message_id=int(msg.get("message_id") or 0)
               row={
                   "delivery_key":delivery_key,
                   "event_id":eid,
                   "revision":rev,
                   "title":str(item.get("title") or ""),
+                  "tweet_text":tweet,
                   "image_sha256":got,
                   "image_url":image_url,
                   "telegram_message_id":message_id,
@@ -426,6 +538,16 @@ jobs:
                   "status":"sent",
                   "buttons_version":5
               }
+              if cross_mid:
+                  row.update({
+                      "cross_quote_message_id":cross_mid,
+                      "cross_quote_source":"@ttendenciasesp",
+                      "cross_quote_text":cross["text"],
+                      "cross_quote_search_url":cross["search_url"],
+                      "cross_quote_score":cross["score"],
+                      "cross_quote_source_trend_id":cross["source_trend_id"],
+                      "cross_quote_source_published_at":cross["source_published_at"]
+                  })
               if archive_mid:
                   row.update({
                       "archive_telegram_message_id":archive_mid,
