@@ -1158,11 +1158,12 @@ function updateSourceSkill(){
     const forecasts=[];
     for(const horizon of [15,30,60,90,120]){
       const targetMs=now+horizon*60_000;
-      for(const [source,prediction] of [
+      const predictions=[
         ['rainviewer',radarPredictionAt(targetMs)],
-        ['opera',operaPredictionAt(targetMs)],
-        ['models',modelPredictionAt(targetMs)]
-      ]){
+        ['opera',operaPredictionAt(targetMs)]
+      ];
+      if(!state.data?.degradedForecast)predictions.push(['models',modelPredictionAt(targetMs)]);
+      for(const [source,prediction] of predictions){
         if(prediction)forecasts.push({source,horizon,targetMs,...prediction});
       }
     }
