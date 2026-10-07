@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear} from '../rain/radar-core.js';
+import {decodeHarmoniePrecipRgba,parseTarEntries} from '../lib/rain-harmonie.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
 
@@ -143,4 +144,29 @@ test('several local flows stabilize the motion field',()=>{
   assert.ok(combined);
   assert.equal(combined.historySamples,2);
   assert.ok(combined.confidence>0);
+});
+
+
+test('AEMET HARMONIE precipitation palette decodes official bins',()=>{
+  const dry=decodeHarmoniePrecipRgba(19,49,52,0);
+  assert.equal(dry.low,0);assert.equal(dry.high,.5);assert.equal(dry.estimate,0);
+  const light=decodeHarmoniePrecipRgba(176,224,230,255);
+  assert.equal(light.low,.5);assert.equal(light.high,1);assert.equal(light.estimate,.75);
+  const moderate=decodeHarmoniePrecipRgba(0,204,128,255);
+  assert.equal(moderate.low,2);assert.equal(moderate.high,5);assert.equal(moderate.estimate,3.5);
+});
+
+test('AEMET HARMONIE TAR parser locates file payloads safely',()=>{
+  const tar=Buffer.alloc(2048);
+  const name='down_2026-10-07T18:00:00+00:00_61_1HH.tif';
+  tar.write(name,0,'utf8');
+  const payload=Buffer.from('abcde');
+  const sizeOct=payload.length.toString(8).padStart(11,'0')+'\0';
+  tar.write(sizeOct,124,'ascii');
+  payload.copy(tar,512);
+  const entries=parseTarEntries(tar);
+  assert.equal(entries.length,1);
+  assert.equal(entries[0].name,name);
+  assert.equal(entries[0].size,5);
+  assert.equal(tar.subarray(entries[0].start,entries[0].end).toString(),'abcde');
 });
