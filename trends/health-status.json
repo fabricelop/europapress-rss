@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-07T00:15:54.877880+00:00",
+  "checked_at": "2026-10-07T06:05:17.795488+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -41,7 +41,7 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 7,
+      "non_stale_sources": 6,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -55,7 +55,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 1.3,
-      "run_id": 37550921239,
+      "run_id": 37579497112,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,22 +75,27 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 3,
-      "overdue_count": 0,
-      "oldest_age_minutes": 14.0,
+      "ok": false,
+      "pending_count": 1,
+      "overdue_count": 1,
+      "oldest_age_minutes": 43.4,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "6cc256e84877",
+          "name": "#FelizMiércoles",
+          "status": "preparing",
+          "age_minutes": 43.4
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "aa0c8d12686d",
-        "2cfd7934b6eb",
-        "3028fe69be06"
+        "6cc256e84877"
       ],
       "contradictory_success": false
     }
@@ -98,9 +103,10 @@
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola con 47 estado(s) inválido(s)"
+    "cola con 47 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 43.4 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 47 estado(s) inválido(s) | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola con 47 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 43.4 min | config TTendencias incompatible con el modo activo"
 }
