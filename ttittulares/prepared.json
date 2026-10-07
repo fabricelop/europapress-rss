@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-07T16:12:56.151Z",
+  "updated_at": "2026-10-07T16:14:20.752Z",
   "items": [
     {
       "event_id": "ec0a6e969123",
@@ -234,8 +234,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -251,12 +251,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-07T16:02:18.284939Z",
       "image": {
-        "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/09/28/6aba60eaa78cc5-00067891.jpeg",
-        "source": "www.20minutos.es",
-        "source_url": "https://www.20minutos.es/nacional/lider-un-clan-narcos-dice-uco-que-un-juez-ligado-las-cloacas-psoe-pidio-eliminar-jueza-caso-david-sanchez_7046119_0.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "La líder de un clan de narcos dice a la UCO que un juez ligado a las cloacas del PSOE pidió \"eliminar\" a la jueza del caso David Sánchez"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/9cd42bd31936-r1-ai1-791388978498.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "c3c9b50689a8344939857741bdf903c137399f28ce887439b0b7405145cb1adb",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 813615,
+        "context_guard": {
+          "version": 3,
+          "event_id": "9cd42bd31936",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-9cd42bd31936-r1-a1-1791388978498"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/9cd42bd31936-r1-ai1-791388978498.jpg",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/09/28/6aba60eaa78cc5-00067891.jpeg",
@@ -265,7 +279,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "La líder de un clan de narcos dice a la UCO que un juez ligado a las cloacas del PSOE pidió \"eliminar\" a la jueza del caso David Sánchez"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/9cd42bd31936-r1-ai1-791388978498.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "c3c9b50689a8344939857741bdf903c137399f28ce887439b0b7405145cb1adb",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 813615,
+        "context_guard": {
+          "version": 3,
+          "event_id": "9cd42bd31936",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-9cd42bd31936-r1-a1-1791388978498"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/9cd42bd31936-r1-ai1-791388978498.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-07T16:14:20.752Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T16:14:20.752Z"
     }
   ],
   "count": 12
