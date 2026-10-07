@@ -1,4 +1,4 @@
-# RainETA v0.17.13
+# RainETA v0.17.14
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,14 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Calibración local por origen v0.17.14
+- La confianza de corto plazo deja de usar indiscriminadamente el historial de RainViewer: cada tipo de evento se calibra con su **propia fuente**.
+- Los eventos RainViewer conservan la autoevaluación radar histórica existente.
+- Los eventos OPERA usan únicamente el historial local de OPERA; los eventos de modelos usan únicamente el historial local de Modelos.
+- La fusión RainViewer+OPERA solo usa aprendizaje local cuando ambas fuentes tienen muestra suficiente.
+- OPERA y Modelos aplican una regla deliberadamente conservadora: un historial local pobre puede **limitar** la confianza, pero un historial bueno no la eleva artificialmente por encima de la confianza meteorológica calculada.
+- Esta corrección evita que un radar con buen/mal rendimiento local contamine la confianza mostrada para una ETA que en realidad procede de modelos.
 
 ## Coherencia interna de familias v0.17.13
 - El acuerdo ya no se mide solo entre las medias de familias meteorológicas: RainETA compara también, cuando existen ambos, el **determinista y el ensemble de una misma familia**.
