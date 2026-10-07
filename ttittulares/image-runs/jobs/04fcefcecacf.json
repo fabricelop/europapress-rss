@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-auto-04fcefcecacf-r1-a15-1791368661371",
   "requested_at": "2026-10-07T10:24:21.370350Z",
-  "updated_at": "2026-10-07T10:24:50.691Z",
-  "status": "RUNNING",
-  "phase": "pc_pickup",
+  "updated_at": "2026-10-07T10:33:14.379Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -47,8 +47,13 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "PC ha recogido la solicitud de imagen.",
-  "pc_upload_secret_hash": "e11bdf97ca5553dcf167adf2e0d39cdb155da709efe3eb7625805ef57dd7b1ec",
-  "pc_worker_id": "ttittulares-dedicated-v52",
-  "pc_picked_up_at": "2026-10-07T10:24:50.691Z"
+  "message": "Reencolado tras bridge local desaparecido antes de launch; mismo command_id.",
+  "pc_upload_secret_hash": null,
+  "pc_worker_id": null,
+  "pc_picked_up_at": null,
+  "finished_at": null,
+  "pc_launched_at": null,
+  "upload_received_at": null,
+  "upload_sha256": null,
+  "error": null
 }
