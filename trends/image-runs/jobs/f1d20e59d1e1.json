@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-f1d20e59d1e1-r0-a3-1791339477951",
-  "requested_at": "2026-10-07T02:17:57.949416Z",
-  "updated_at": "2026-10-07T02:25:31.503Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-auto-f1d20e59d1e1-r0-a4-1791344897998",
+  "requested_at": "2026-10-07T03:48:17.996156Z",
+  "updated_at": "2026-10-07T03:48:17.996156Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,9 +14,9 @@
   "trend_id": "f1d20e59d1e1",
   "target_name": "Nico Paz",
   "revision": 0,
-  "attempt": 3,
+  "attempt": 4,
   "auto_repair": true,
-  "auto_repair_attempt": 3,
+  "auto_repair_attempt": 4,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
@@ -35,9 +35,9 @@
       "https://www.theguardian.com/football/live/2026/oct/06/lionel-messi-farewell-match-live-updates-analysis-argentina-benin",
       "https://www.infobae.com/deportes/2026/10/04/dibu-martinez-sorprendio-al-revelar-donde-le-gustaria-jugar-su-candidato-a-quedarse-con-el-n-10-de-messi-en-la-seleccion/"
     ],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona.",
-    "image_style_name": "cartoon_3d",
-    "image_style_index": 8
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
@@ -46,13 +46,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":true,\"submitted\":false,\"userTurns\":0,\"turns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisable",
-  "pc_upload_secret_hash": "937803b4a882e5ee46337e051484006f5741464b167091a6bde007c5e3067c4a",
-  "pc_worker_id": "ttendencias-image-bridge-v34-handoff-capture",
-  "pc_picked_up_at": "2026-10-07T02:23:33.424Z",
-  "bridge_version": null,
-  "target_handoff_id": "91EDCB5670CAF11AA9264EA4E995CFC0",
-  "target_handoff_at": "2026-10-07T02:23:40.502Z",
-  "pc_launched_at": "2026-10-07T02:23:41.597Z",
-  "finished_at": "2026-10-07T02:25:31.503Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
