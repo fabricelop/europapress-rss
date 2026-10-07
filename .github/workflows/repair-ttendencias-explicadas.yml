@@ -192,6 +192,9 @@ jobs:
               revision=int(row.get("revision") or 0)
               job_path=CTRL/f"trends/image-runs/jobs/{tid}.json"
               old=load(job_path)
+              manual_retry_version=int(row.get("ai_image_regenerate_request_version") or 0)
+              consumed_retry_version=int(old.get("manual_retry_version") or 0)
+              force_retry=manual_retry_version>consumed_retry_version
               old_status=str(old.get("status") or "").upper()
               old_updated=parse_dt(old.get("updated_at") or old.get("requested_at"))
               old_age=(now-old_updated).total_seconds() if old_updated else None
@@ -200,7 +203,7 @@ jobs:
               # RUNNING/GENERATING/PERSISTING no puede quedar vivo más de 12 min sin señal.
               active_ttl=2700 if old_status=="REQUESTED" else 720
               same_revision=int(old.get("revision") or revision)==revision
-              if same_revision and old_status in ACTIVE and old_age is not None and old_age < active_ttl:
+              if (not force_retry) and same_revision and old_status in ACTIVE and old_age is not None and old_age < active_ttl:
                   continue
 
               auto_attempt=int(old.get("auto_repair_attempt") or 0)
@@ -211,7 +214,7 @@ jobs:
               # instante, sin quedar bloqueado una hora por el contador previo.
               old_message=str(old.get("message") or "")
               cooldown=0 if "not_pending_explained" in old_message else (300 if auto_attempt<3 else 3600)
-              if old and last and (now-last).total_seconds()<cooldown:
+              if (not force_retry) and old and last and (now-last).total_seconds()<cooldown:
                   continue
 
               auto_attempt+=1
@@ -253,6 +256,7 @@ jobs:
                   "attempt":attempt,
                   "auto_repair":True,
                   "auto_repair_attempt":auto_attempt,
+                  "manual_retry_version":manual_retry_version,
                   "chat_command_version":4,
                   "instruction_profile":"ttendencias_gag_v5_varied_style_single_gag",
                   "context_snapshot":context,
@@ -263,7 +267,7 @@ jobs:
                       "prohibitions":"No infografía, interfaz, diagrama, collage ni screenshot.",
                       "lifecycle":"Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
                   },
-                  "message":"Reparación automática de imagen IA para tendencia Explicada."
+                  "message":"Reintento manual de imagen IA desde Telegram." if force_retry else "Reparación automática de imagen IA para tendencia Explicada."
               }
               job_path.parent.mkdir(parents=True,exist_ok=True)
               job_path.write_text(json.dumps(job,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
