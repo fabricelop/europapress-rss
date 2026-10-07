@@ -1,6 +1,6 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
-# watchdog-restart-refresh-v6-no-kernel-mutex
+# watchdog-restart-refresh-v7-strong-queue-health
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
 $BaseDir="C:\TTiTTulares"
@@ -136,13 +136,14 @@ function CheckImageQueueHealth([string]$Project,[string]$Branch,[string]$Prefix,
     }else{
       "https://europapress-rss.vercel.app/api/ttendencias-run-status"
     }
-    $idx=Read-RawJson ($api+"?view=image-index")
+    $snap=Read-RawJson ($api+"?view=listener-snapshot&strong=1")
+    $idx=if($snap -and $snap.image_index){$snap.image_index}else{$null}
     if(-not $idx -or -not $idx.jobs){return}
     $jobRef=@($idx.jobs)|Select-Object -Last 1
     if(-not $jobRef){return}
     $targetId=[string]$jobRef.target_id
     if(-not $targetId){return}
-    $job=Read-RawJson ($api+"?view=image-job&id="+[uri]::EscapeDataString($targetId))
+    $job=Read-RawJson ($api+"?view=image-job&strong=1&id="+[uri]::EscapeDataString($targetId))
     if(-not $job){return}
     $st=([string]$job.status).ToUpperInvariant()
     if($st -ne "REQUESTED"){return}
