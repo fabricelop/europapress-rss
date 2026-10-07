@@ -20,66 +20,100 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Aplicar lote editorial
+
+      - name: Aplicar y guardar lote sobre main fresco
         env:
           COMMENT_BODY: ${{ github.event.comment.body }}
+        shell: bash
         run: |
-          python3 - <<'PY'
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+
+            python3 - <<'PY'
           import json, os
           from pathlib import Path
+
           body=os.environ['COMMENT_BODY']
           payload=json.loads(body.split('\n',1)[1])
           explained_at=payload['explained_at']
           items=payload.get('items',[])
-          bykey={(x['id'],int(x.get('revision',0))):x for x in items}
+          bykey={(str(x['id']),int(x.get('revision',0))):x for x in items}
 
-          rp=Path('trends/requests.json'); req=json.loads(rp.read_text(encoding='utf-8'))
+          rp=Path('trends/requests.json')
+          req=json.loads(rp.read_text(encoding='utf-8'))
+          applied=set()
           for r in req.get('requests',[]):
               k=(str(r.get('id')),int(r.get('revision',0)))
-              if k not in bykey: continue
+              if k not in bykey:
+                  continue
               x=bykey[k]
+              # Barrera idempotente: nunca rebajar una revisión posterior.
+              if int(r.get('revision',0)) != int(x.get('revision',0)):
+                  continue
               r.update(status='explained',explained_at=explained_at,last_attempt_at=explained_at,
                        explanation=x['explanation'],closer_text=x.get('closer_text',''),rank_at_explanation=x['rank'],
                        category=x.get('category','Otros'),
                        source='editorial_chat_direct',verification_sources=x.get('verification_sources',[]),
                        news_disposition='ignored',news_note=x.get('news_note',''),
-                       group_id='grp-'+x['id'],explanation_group_id='grp-'+x['id'],group_title=x['name'],
+                       group_id='grp-'+str(x['id']),explanation_group_id='grp-'+str(x['id']),group_title=x['name'],
                        group_leader_id=x['id'],trend_names=[x['name']],
                        grouped_member_revisions=[{'id':x['id'],'name':x['name'],'revision':x['revision']}],
                        disable_ai_image=False,image_strategy='ai_plus_fallback',ai_image_status='not_requested',
                        fallback_image_status='none',image_choice=None,image_status='none',image_pending=False)
-          req['updated_at']=explained_at; req['count']=len(req.get('requests',[]))
+              applied.add(k)
+          req['updated_at']=explained_at
+          req['count']=len(req.get('requests',[]))
           rp.write_text(json.dumps(req,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
-          ep=Path('trends/telegram-manual-explained.json'); exp=json.loads(ep.read_text(encoding='utf-8'))
+          ep=Path('trends/telegram-manual-explained.json')
+          exp=json.loads(ep.read_text(encoding='utf-8'))
           arr=exp.setdefault('items',[])
-          for x in items:
-              arr[:]=[e for e in arr if not (str(e.get('id'))==x['id'] and int(e.get('revision',0))==x['revision'])]
+          for k in applied:
+              x=bykey[k]
+              arr[:]=[e for e in arr if not (str(e.get('id'))==str(x['id']) and int(e.get('revision',0))==int(x['revision']))]
               arr.append({'id':x['id'],'name':x['name'],'revision':x['revision'],'status':'explained',
                           'explained_at':explained_at,'explanation':x['explanation'],'closer_text':x.get('closer_text',''),
-                          'rank':x['rank'],'category':x.get('category','Otros'),
+                          'rank':x['rank'],'rank_at_explanation':x['rank'],'category':x.get('category','Otros'),
                           'source':'editorial_chat_direct','verification_sources':x.get('verification_sources',[]),
-                          'group_id':'grp-'+x['id'],'explanation_group_id':'grp-'+x['id'],'trend_names':[x['name']]})
+                          'group_id':'grp-'+str(x['id']),'explanation_group_id':'grp-'+str(x['id']),
+                          'group_title':x['name'],'group_leader_id':x['id'],'trend_names':[x['name']],
+                          'grouped_member_revisions':[{'id':x['id'],'name':x['name'],'revision':x['revision']}]})
           exp['updated_at']=explained_at
           exp['count']=len(arr)
           ep.write_text(json.dumps(exp,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
-          qp=Path('trends/editorial-queue.json'); q=json.loads(qp.read_text(encoding='utf-8'))
-          q['items']=[e for e in q.get('items',[]) if (str(e.get('id')),int(e.get('revision',0))) not in bykey]
-          q['count']=len(q['items']); q['updated_at']=explained_at
+          qp=Path('trends/editorial-queue.json')
+          q=json.loads(qp.read_text(encoding='utf-8'))
+          q['items']=[e for e in q.get('items',[]) if (str(e.get('id')),int(e.get('revision',0))) not in applied]
+          q['count']=len(q['items'])
+          q['updated_at']=explained_at
           qp.write_text(json.dumps(q,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print("TTENDENCIAS_CHAT_APPLIED", sorted(applied))
           PY
-      - name: Guardar cambios
-        run: |
-          set -e
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add trends/requests.json trends/telegram-manual-explained.json trends/editorial-queue.json
-          git diff --cached --quiet && exit 0
-          git commit -m "Aplicar pasada editorial TTendencias desde chat"
-          git pull --rebase origin main
-          git push origin HEAD:main
 
+            git add trends/requests.json trends/telegram-manual-explained.json trends/editorial-queue.json
+            if git diff --cached --quiet; then
+              echo "Sin cambios: lote ya aplicado o revisión obsoleta."
+              exit 0
+            fi
+
+            git commit -m "Aplicar pasada editorial TTendencias desde chat"
+            if git push origin HEAD:main; then
+              echo "TTENDENCIAS_CHAT_PERSISTED attempt=$attempt"
+              exit 0
+            fi
+
+            echo "Main avanzó; reaplicando lote sobre estado fresco (intento $attempt/5)."
+            sleep $((attempt * 2))
+          done
+
+          echo "No se pudo persistir el lote TTendencias tras 5 intentos" >&2
+          exit 1
 
       - name: Lanzar reparación visual TTendencias
         if: success()
