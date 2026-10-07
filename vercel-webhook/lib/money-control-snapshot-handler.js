@@ -151,6 +151,13 @@ async function confirmMoneyWizBackup(pathname){
     uploadedAt:meta.uploadedAt||null
   };
   const previous=idx>0?backups[0]:null;
+  console.warn("moneywiz-confirm-state",{
+    requestedPathname:pathname,
+    backupCount:backups.length,
+    currentFilename:current?.filename||null,
+    previousFilename:previous?.filename||null,
+    processedPath:moneyWizProcessedPath(current?.filename||"")
+  });
 
   if(!previous){
     return {status:200,payload:{
@@ -337,7 +344,7 @@ export default async function handler(req,res){
       }
 
       const action=String(body.action||"prepare").trim().toLowerCase();
-      console.log("moneywiz-shortcut-request",{
+      console.warn("moneywiz-shortcut-request",{
         method:req.method,
         action,
         filenameType:typeof body.filename,
