@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "enabled": false,
   "mode": "observe_only",
   "lookback_hours": 48,
@@ -17,6 +17,31 @@
       "capture_x_post_url": false,
       "prepare_second_account_text": true,
       "prepare_source_account_search": true
+    },
+    "quote_copy_policy": {
+      "objective": "cross_promote_without_repeating_and_keep_quote_self_contained",
+      "second_account_must_not_publish_usual_copy_verbatim": true,
+      "self_contained": true,
+      "mention_source_account": true,
+      "preserve_all_essential_facts": true,
+      "add_second_account_angle": true,
+      "closer_only_if_space_allows": true,
+      "priority_order": [
+        "essential_facts",
+        "cross_promotion",
+        "second_account_angle",
+        "closer"
+      ],
+      "when_ttendencias_quotes_ttittulares": {
+        "source_account": "@ttittulares",
+        "goal": "keep the full factual news and add why the subject is trending",
+        "avoid": "repeating the normal TTendencias explanation as if it were an independent post"
+      },
+      "when_ttittulares_quotes_ttendencias": {
+        "source_account": "@ttendenciasesp",
+        "goal": "keep the full factual news and frame it as the concrete news behind the trend",
+        "avoid": "repeating the normal TTiTTulares tweet as if no cross-account post existed"
+      }
     }
   },
   "integration": {
