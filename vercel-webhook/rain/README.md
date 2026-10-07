@@ -109,6 +109,7 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Radar RainViewer y OPERA se refrescan independientemente; si siguen vivos pueden mantener autoridad en el corto plazo aunque los modelos estén en fallback.
 - Una guía de 15 min guardada no vuelve a contarse como viva si su refresco falla. Solo se recupera su estado saludable cuando responde de nuevo.
 - El fallback no cruza versiones de RainETA: después de cambiar el motor se exige al menos una previsión fresca de esa versión antes de poder reutilizarla.
+- Durante MODO DEGRADADO no se crean nuevas muestras de acierto para **Modelos** a partir del forecast reciclado; RainViewer/OPERA sí pueden seguir aprendiendo si sus datos en vivo están disponibles.
 
 ## Elección adaptativa entre radares v0.17.8
 - Cuando RainViewer y OPERA discrepan más de 30 min en la ETA, RainETA ya no depende solo de la confianza instantánea si existe suficiente historial local de verificación.
