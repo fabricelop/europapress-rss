@@ -43,7 +43,6 @@
       "shared/*.ts",
       "generate_feed.py",
       "requirements.txt",
-      "vercel.json",
       ".github/workflows/update.yml",
       ".github/scripts/*ttittulares*",
       ".github/scripts/*ttendencias*",
@@ -107,5 +106,9 @@
     "never_delete_files": true,
     "state_files_take_precedence_over_include_rules": true
   },
-  "full_reference_ref": "BackupMecanismosTT20261007-1827"
+  "full_reference_ref": "BackupMecanismosTT20261007-1827",
+  "notes": [
+    "Global routing/deployment files shared with other projects are intentionally excluded.",
+    "Mechanism-only restore is for TTiTTulares/TTendencias code paths; live operational state is never restored."
+  ]
 }
