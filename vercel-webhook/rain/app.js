@@ -51,8 +51,8 @@ const LIGHTNING_WMS_LAYER='mtg_fd:li_afa';
 const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.31';
-const FORECAST_CACHE_SCHEMA='consensus-v20';
+const APP_VERSION='0.17.32';
+const FORECAST_CACHE_SCHEMA='consensus-v21';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
 const $=id=>document.getElementById(id);
