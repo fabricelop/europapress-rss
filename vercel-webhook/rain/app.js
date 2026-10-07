@@ -1,4 +1,4 @@
-import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,classifyRainHour,bestDryWindow} from './core.js';
+import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
 
 const DET_MODELS=[
@@ -317,7 +317,7 @@ async function fetchEns(model){
   const d=await fetchJson('https://ensemble-api.open-meteo.com/v1/ensemble?'+p,10500);
   const a=aggregateEnsembleModel(normalizeHourly(d.hourly||{}));
   if(!a)throw new Error('sin miembros');
-  return {...model,memberCount:a.memberCount,rows:a.rows};
+  return {...model,memberCount:a.memberCount,rows:a.rows,onset:a.onset};
 }
 async function fetchQuarterHour(){
   const p=new URLSearchParams({
@@ -500,6 +500,55 @@ function modelPropagationState(detSettled,ensSettled,detFreshness,ensFreshness){
     propagatingShare,unknownShare,propagationPenalty,metadataPenalty,confidencePenalty
   };
 }
+function ensembleArrivalGuidance(ensembles=[],nowMs=Date.now()){
+  const usable=(ensembles||[]).filter(model=>{
+    const onset=model?.onset,medianMs=Date.parse(onset?.median||'');
+    return onset&&Number(onset.fraction)>=.20&&Number.isFinite(medianMs)&&medianMs>=nowMs-60*60_000&&medianMs<=nowMs+18*60*60_000;
+  });
+  if(!usable.length)return null;
+  const byFamily=new Map();
+  for(const model of usable){
+    const family=model.family||model.id||model.label;
+    const arr=byFamily.get(family)||[];
+    arr.push(model);byFamily.set(family,arr);
+  }
+  const families=[];
+  for(const [family,models] of byFamily){
+    const medians=models.map(m=>Date.parse(m.onset?.median||'')).filter(Number.isFinite);
+    const p20s=models.map(m=>Date.parse(m.onset?.p20||'')).filter(Number.isFinite);
+    const p80s=models.map(m=>Date.parse(m.onset?.p80||'')).filter(Number.isFinite);
+    const fractions=models.map(m=>Number(m.onset?.fraction)).filter(Number.isFinite);
+    if(!medians.length)continue;
+    families.push({
+      family,
+      median:median(medians),
+      p20:median(p20s.length?p20s:medians),
+      p80:median(p80s.length?p80s:medians),
+      support:fractions.length?fractions.reduce((a,b)=>a+b,0)/fractions.length:0
+    });
+  }
+  if(!families.length)return null;
+  const starts=families.map(x=>x.median),medianStart=median(starts);
+  const between=Math.max(0,(percentile(starts,.80)-percentile(starts,.20))/60_000);
+  const internal=families.map(x=>Math.max(0,(x.p80-x.p20)/60_000)).filter(Number.isFinite);
+  const internalSpread=internal.length?median(internal):60;
+  const spreadMinutes=Math.max(30,Math.round(Math.max(between,internalSpread)));
+  const support=families.reduce((sum,x)=>sum+x.support,0)/families.length;
+  const familyFactor=Math.min(1,families.length/5);
+  const sharpness=Math.max(0,Math.min(1,1-(spreadMinutes-30)/210));
+  const confidence=Math.max(.18,Math.min(.92,.34*support+.34*familyFactor+.32*sharpness));
+  return{
+    median:new Date(medianStart).toISOString(),
+    earliest:new Date(medianStart-spreadMinutes*60_000/2).toISOString(),
+    latest:new Date(medianStart+spreadMinutes*60_000/2).toISOString(),
+    spreadMinutes,
+    support,
+    confidence,
+    families:families.length,
+    familyDetails:families.map(x=>({family:x.family,support:Number(x.support.toFixed(3)),median:new Date(x.median).toISOString()}))
+  };
+}
+
 async function loadForecast(force=false){
   const k=cacheKey(),cached=readForecastCache();
   const cacheTtl=cached?.data?.sources?.propagation?.propagatingFamilies?FORECAST_PROPAGATION_TTL:FORECAST_TTL;
@@ -548,6 +597,7 @@ async function loadForecast(force=false){
     }),
     events,
     nextEvent:chooseNextEvent(events,now),
+    arrivalGuidance:ensembleArrivalGuidance(ensembles,now),
     quarterHour,
     radar:radarMeta,
     opera:operaMeta,
@@ -1856,8 +1906,16 @@ function chooseModelEvent(now,dry){
     const endBias=0;
     if(endBias>0&&e.quarterHourRefined!==true)end=Math.max(start+15*60_000,end-endBias*60_000);
     if(start>=end)continue;
+    const guidance=state.data?.arrivalGuidance;
+    const guidanceMs=Date.parse(guidance?.median||'');
+    const guidanceCompatible=Number.isFinite(guidanceMs)&&Math.abs(guidanceMs-start)<=3*60*60_000&&Number(guidance?.confidence)>=.30;
+    if(guidanceCompatible&&!radarDelayed){
+      const eventWeight=.58,guidanceWeight=.42;
+      start=start*eventWeight+guidanceMs*guidanceWeight;
+    }
     const active=start<=now&&end>now&&currentTruth()!==false;
-    const confidence=radarDelayed?Math.min(Number(e.timingConfidence)||0,.68):Number(e.timingConfidence)||0;
+    let confidence=radarDelayed?Math.min(Number(e.timingConfidence)||0,.68):Number(e.timingConfidence)||0;
+    if(guidanceCompatible)confidence=Math.min(.94,.72*confidence+.28*Number(guidance.confidence));
     return{
       kind:e.quarterHourRefined?'model15':'model',
       active,
@@ -1866,7 +1924,8 @@ function chooseModelEvent(now,dry){
       confidence,
       event:e,
       radarDelayed,
-      dryWindow:dry
+      dryWindow:dry,
+      ensembleArrival:guidanceCompatible?guidance:null
     };
   }
   return null;
@@ -2131,7 +2190,8 @@ function render(){
       if(ev.radarDelayed&&ev.dryWindow){
         $('summary').textContent='Radar sin precipitación proyectada sobre el punto hasta ~'+fmtTime(ev.dryWindow.end)+(ev.dryWindow.operaDry?' · OPERA también está seco ahora':'')+'. Después, el consenso multimodelo mantiene riesgo de lluvia.';
       }else{
-        $('summary').textContent='Consenso multimodelo'+(w?.earliest?' · ventana de inicio '+fmtTime(w.earliest)+'–'+fmtTime(w.latest):'')+'.';
+        const g=ev.ensembleArrival;
+        $('summary').textContent='Consenso multimodelo'+(g?' · ensembles: inicio central '+fmtTime(g.median)+' · ventana ~'+fmtTime(g.earliest)+'–'+fmtTime(g.latest)+' ('+g.families+' familias)':w?.earliest?' · ventana de inicio '+fmtTime(w.earliest)+'–'+fmtTime(w.latest):'')+'.';
       }
     }
     const sequence=pulseSequenceText(ev);
