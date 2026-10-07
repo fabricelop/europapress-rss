@@ -881,7 +881,8 @@ function decisionBasisInfo(decision){
   const ev=decision?.event,now=decision?.now||Date.now(),reliable=nowcastReliableHorizon();
   const lead=ev?.start?Math.max(0,(Date.parse(ev.start)-now)/60_000):0;
   if(ev?.kind==='observed'||decision?.mode==='episode_pause'||decision?.mode==='episode_ended_early')return{label:'Tu observación + RainETA',key:'radar'};
-  if(decision?.dry?.reliableHorizonMinutes)return{label:'Basado en radar',key:'radar'};
+  if(decision?.mode==='stable_now')return{label:'Radar + modelos',key:'mixed'};
+  if(decision?.dry?.reliableHorizonMinutes&&!decision?.dry?.horizonLimited)return{label:'Basado en radar',key:'radar'};
   const radarDriven=['radar','opera','radarFusion'].includes(ev?.kind);
   if(decision?.mode==='rain_now'||decision?.mode==='possible_now'||radarDriven&&lead<=reliable){
     return{label:'Basado en radar',key:'radar'};
@@ -935,7 +936,7 @@ function renderImportantPhenomenon(){
 }
 
 function intensityLabel(rate){
-  if(rate<=0.05)return'Seco';
+  if(rate<=0.05)return'Sin precipitación';
   if(rate<0.5)return'Llovizna';
   if(rate<2.5)return'Lluvia débil';
   if(rate<7.5)return'Lluvia moderada';
@@ -1163,7 +1164,7 @@ function renderShortNowcast(){
         ? fmtTime(ev.start)+(ev.end?'–'+fmtTime(ev.end):'')+(['radar','opera','aemet','radarFusion'].includes(ev.kind)?' · '+uncertaintyText(ev):'')
         : dry
           ? (dry.horizonLimited
-            ? 'Seco confirmado por radar · '+fmtTime(dry.start)+'–'+fmtTime(dry.end)+' · después sin ETA de lluvia'
+            ? 'Radar sin señal de llegada · '+fmtTime(dry.start)+'–'+fmtTime(dry.end)+' · después mandan modelos/consenso'
             : 'Ventana seca radar · '+fmtTime(dry.start)+'–'+fmtTime(dry.end))
           : 'Ventana corta estable';
   const leadMinutes=near?Math.max(0,(Date.parse(ev.start)-now)/60_000):dry?Math.max(0,(Date.parse(dry.end)-now)/60_000):SHORT_HORIZON_MINUTES;
@@ -2321,7 +2322,7 @@ function render(){
     $('metricStartLabel').textContent=correction?.resumeAt?'Puede reanudarse':'Reevaluación';
     $('metricEndLabel').textContent='Fin previsto del tramo';
     $('metricConfLabel').textContent='Confianza';
-    $('metricDurLabel').textContent='Seco observado';
+    $('metricDurLabel').textContent='Estable observado';
     $('start').textContent=correction?.resumeAt?fmtDateTime(correction.resumeAt):'sin nuevo pulso detectado';
     $('end').textContent=episode?.end?fmtDateTime(episode.end):'—';
     $('conf').textContent=pct(decision.confidence)+'%';
