@@ -2,6 +2,7 @@ import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourE
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
 
 const DET_MODELS=[
+  {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
   {id:'ecmwf_ifs',label:'ECMWF IFS 9 km',family:'ECMWF',weight:1.32,metaDomains:['ecmwf_ifs025']},
   {id:'ecmwf_aifs025',label:'ECMWF AIFS',family:'ECMWF',weight:1.05,metaDomains:['ecmwf_aifs025']},
   {id:'icon_seamless',label:'DWD ICON',family:'DWD',weight:1.10,metaDomains:['dwd_icon_eu','dwd_icon']},
@@ -44,9 +45,9 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.21';
-const FORECAST_CACHE_SCHEMA='consensus-v13';
-const FORECAST_CACHE_COMPATIBLE_VERSIONS=['0.17.13','0.17.14','0.17.15','0.17.16','0.17.17','0.17.19','0.17.20'];
+const APP_VERSION='0.17.22';
+const FORECAST_CACHE_SCHEMA='consensus-v14';
+const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -247,6 +248,15 @@ function evaluateModelMeta(domain,meta,nowSeconds=Date.now()/1000){
   };
 }
 async function fetchModelFreshness(model){
+  if(model.provider==='rain-harmonie'){
+    return{
+      status:'fresh',
+      domain:'aemet_harmonie_pb',
+      availableAt:new Date().toISOString(),
+      updateIntervalMinutes:360,
+      reason:'última pasada oficial AEMET obtenida en vivo'
+    };
+  }
   const domains=Array.isArray(model.metaDomains)?model.metaDomains.filter(Boolean):[];
   if(!domains.length)return{status:'unknown',reason:'sin metadata exacta para este producto'};
   const results=await Promise.allSettled(domains.map(async domain=>{
@@ -269,6 +279,26 @@ async function fetchModelFreshness(model){
   return{status:'unknown',reason:'metadata parcial/no disponible',checkedDomains:domains.length};
 }
 async function fetchDet(model){
+  if(model.provider==='rain-harmonie'){
+    const point=forecastCoords(),p=new URLSearchParams({
+      lat:String(point.lat),lon:String(point.lon),hours:'48'
+    });
+    const d=await fetchJson('/api/rain-harmonie?'+p,35_000);
+    if(!d?.ok||!Array.isArray(d.rows)||!d.rows.length)throw new Error(d?.error||'AEMET HARMONIE sin datos');
+    return{
+      ...model,
+      rows:d.rows
+        .filter(row=>row?.time)
+        .map(row=>({time:row.time,precipitation:Math.max(0,Number(row.precipitation)||0)})),
+      sourceMeta:{
+        resolutionKm:Number(d.resolutionKm)||2.5,
+        temporalResolutionMinutes:Number(d.temporalResolutionMinutes)||60,
+        sourceGeneratedAt:d.sourceGeneratedAt||null,
+        fetchedAt:d.fetchedAt||null
+      },
+      spatialRows:d.rows
+    };
+  }
   const p=new URLSearchParams({
     latitude:String(forecastCoords().lat),longitude:String(forecastCoords().lon),hourly:'precipitation',
     forecast_hours:'73',timeformat:'unixtime',timezone:'GMT',models:model.id
