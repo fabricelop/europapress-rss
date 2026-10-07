@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v51"
+$WorkerId = "ttittulares-dedicated-v52"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -397,6 +397,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       $localOk =
         $localTxt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and
         $localTxt.Contains('BRIDGE_FEATURES="v28-reject-nonconversation-image-targets"') -and
+        $localTxt.Contains('await cdp.call("Input.insertText",{text:message});') -and
         $localTxt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')
       if($localOk){
         $old=$ErrorActionPreference
@@ -429,6 +430,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     foreach ($needle in @(
       'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
       'BRIDGE_FEATURES="v28-reject-nonconversation-image-targets"',
+      'await cdp.call("Input.insertText",{text:message});',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'imagesAfterMarker'
     )) {
@@ -832,6 +834,18 @@ function Refresh-ActiveImages($State,$Index) {
       }
     } catch {}
     if(-not $liveBridge){
+      $orphanGrace=$false
+      try{
+        $remoteAtText=if($statusDoc.updated_at){[string]$statusDoc.updated_at}else{[string]$statusDoc.requested_at}
+        $remoteAt=[DateTimeOffset]::Parse($remoteAtText)
+        $remoteAgeSeconds=([DateTimeOffset]::UtcNow-$remoteAt).TotalSeconds
+        $orphanGrace=(([string]$statusDoc.status).ToUpperInvariant() -eq "RUNNING" -and $remoteAgeSeconds -lt 240)
+      }catch{}
+      if($orphanGrace){
+        Write-Log "IMAGE ACTIVE ORPHAN GRACE command=$cmd target=$($job.target_id) bridge_pid=$bridgePid remote_status=$($statusDoc.status)"
+        $active += [string]$cmd
+        continue
+      }
       Write-Log "IMAGE ACTIVE ORPHAN CLEARED command=$cmd target=$($job.target_id) bridge_pid=$bridgePid remote_status=$($statusDoc.status)"
       continue
     }
