@@ -7,7 +7,7 @@ Este directorio separa **mecanismos** de **estado vivo** para TTiTTulares y TTen
 - Backup: `BackupMecanismosTT20261007-1827`
 - Commit base: `a3d1d3c619cc44c50fb65fb1ad9ec429703360ff`
 
-La rama de backup conserva el repositorio completo como referencia histórica, pero la restauración normal **no restaura el repositorio completo**. `restore_mechanisms.py` selecciona exclusivamente los archivos permitidos por `mechanism-backup-policy.json`.
+Se conserva un backup completo como referencia histórica y, además, un snapshot que contiene físicamente solo los 157 archivos de mecanismos. La restauración normal **no restaura el repositorio completo**. `restore_mechanisms.py` selecciona exclusivamente los archivos permitidos por `mechanism-backup-policy.json`.
 
 ## Qué se protege
 
