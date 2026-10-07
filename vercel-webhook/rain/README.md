@@ -1,4 +1,4 @@
-# RainETA v0.17.22
+# RainETA v0.17.24
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
