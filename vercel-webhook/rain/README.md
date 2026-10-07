@@ -1,6 +1,13 @@
-# RainETA v0.17.32
+# RainETA v0.17.33
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
+
+## Transparencia radar y rayos operativos v0.17.33
+- La proyección local ya no reutiliza el bitmap completo del radar: antes de mover celdas, RainETA elimina todos los píxeles que no correspondan a reflectividad de precipitación reconocida. Esto evita el rectángulo negro opaco visto al pasar de AHORA a +1 min.
+- Si más del 75% del bitmap resultara clasificado como precipitación, la proyección se rechaza por seguridad en lugar de pintar un fondo defectuoso.
+- La capa de rayos usa el WMS público de DWD para el producto MTG Lightning Imager Accumulated Flash Area de EUMETSAT, en acumulaciones de 5 min.
+- El estado de rayos queda explícito en pantalla: desactivado, activo cerca de AHORA u oculto fuera de contexto. Si la capa está activa y no aparecen trazas, la interfaz indica que no hay actividad visible en esa zona.
+
 
 ## Estabilización espacial del flujo local v0.17.32
 - Al combinar varios barridos, los vectores locales se agrupan por su coordenada real de rejilla. Si una zona desaparece por baja confianza en un barrido, ya no se empareja accidentalmente con la siguiente zona de la lista.
