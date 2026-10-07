@@ -34274,7 +34274,7 @@
       ],
       "news_note": "Hashtag de un programa de actualidad; no se abre salida hacia TTiTTulares.",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "ready",
       "fallback_image": {
@@ -34285,21 +34285,60 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image": {
-        "url": "https://album.mediaset.es/eimg/2026/09/23/en-boca-de-todos-cambia-de-horario-a-partir-del-lunes-nos-vemos-a-las-10-00-horas-16-9-aspect-ratio_da39-3.jpg",
-        "source": "Cuatro",
-        "source_url": "https://www.cuatro.com/television/20260923/cambia-horario-partir-lunes-diez-horas_18_020250055.html",
-        "alt": "Imagen de archivo de En boca de todos",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/10aaa9a5458f-r3-ai1-791371762746.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "7f7dcd6296a4a1f00c40548848454cdb397dcfb8731ab4a7a0cdc527db9e14f4",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2755222,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "10aaa9a5458f",
+          "revision": 3,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-10aaa9a5458f-r3-a1-1791371762746"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/10aaa9a5458f-r3-ai1-791371762746.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "image_status": "ready",
-      "image_pending": true,
+      "image_pending": false,
       "last_attempt_at": "2026-10-02T16:30:00+02:00",
       "rewrite_pending": false,
       "explained_at": "2026-10-07T13:14:10+02:00",
-      "category": "TV"
+      "category": "TV",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/10aaa9a5458f-r3-ai1-791371762746.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "7f7dcd6296a4a1f00c40548848454cdb397dcfb8731ab4a7a0cdc527db9e14f4",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2755222,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "10aaa9a5458f",
+          "revision": 3,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-10aaa9a5458f-r3-a1-1791371762746"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/10aaa9a5458f-r3-ai1-791371762746.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T11:18:58.037Z"
     },
     {
       "id": "0f5bf1e8b366",
@@ -34387,6 +34426,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-07T11:18:42.142603Z",
+  "updated_at": "2026-10-07T11:18:58.037Z",
   "count": 622
 }
