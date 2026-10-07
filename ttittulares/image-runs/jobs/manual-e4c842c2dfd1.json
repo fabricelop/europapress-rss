@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-auto-manual-e4c842c2dfd1-r1-a14-1791362305615",
   "requested_at": "2026-10-07T08:38:25.615358Z",
-  "updated_at": "2026-10-07T08:52:09.172Z",
-  "status": "RUNNING",
-  "phase": "pc_pickup",
+  "updated_at": "2026-10-07T08:54:26.989Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -47,8 +47,15 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "PC ha recogido la solicitud de imagen.",
-  "pc_upload_secret_hash": "47fb352b985995f5089c850ef69f148d1a67012154d46aa5df90fc373d5beff9",
-  "pc_worker_id": "ttittulares-dedicated-v48",
-  "pc_picked_up_at": "2026-10-07T08:52:09.172Z"
+  "message": "Reintento automático del mismo PNV tras reinicio del listener v48.",
+  "pc_upload_secret_hash": null,
+  "pc_worker_id": null,
+  "pc_picked_up_at": null,
+  "pc_launched_at": null,
+  "target_handoff_id": null,
+  "target_handoff_at": null,
+  "upload_received_at": null,
+  "upload_sha256": null,
+  "finished_at": null,
+  "error": null
 }
