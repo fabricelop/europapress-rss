@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-07T16:17:33.062Z",
+  "updated_at": "2026-10-07T16:26:55.355Z",
   "items": [
     {
       "event_id": "ec0a6e969123",
@@ -41,8 +41,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -58,12 +58,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-07T15:54:53.319628Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261007145657_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/deportes/futbol-00162/noticia-david-silva-vuelve-futbol-40-anos-supreme-sha-tin-hong-kong-20261007145657.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "David Silva vuelve al fútbol a los 40 años con el Supreme Sha Tin de Hong Kong"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/ec0a6e969123-r1-ai1-791390203520.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "52a410f1e4c415a5f996bef8fb83e84d93fab65269880b0d0ae0666b78143829",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2428110,
+        "context_guard": {
+          "version": 3,
+          "event_id": "ec0a6e969123",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-ec0a6e969123-r1-a2-1791390203520"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/ec0a6e969123-r1-ai1-791390203520.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261007145657_1200.jpg",
@@ -72,7 +86,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "David Silva vuelve al fútbol a los 40 años con el Supreme Sha Tin de Hong Kong"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/ec0a6e969123-r1-ai1-791390203520.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "52a410f1e4c415a5f996bef8fb83e84d93fab65269880b0d0ae0666b78143829",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2428110,
+        "context_guard": {
+          "version": 3,
+          "event_id": "ec0a6e969123",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-ec0a6e969123-r1-a2-1791390203520"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/ec0a6e969123-r1-ai1-791390203520.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-07T16:26:55.355Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T16:26:55.355Z"
     }
   ],
   "count": 12
