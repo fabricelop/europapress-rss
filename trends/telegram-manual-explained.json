@@ -34658,9 +34658,9 @@
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_pending": false,
       "rewrite_pending": false,
       "fallback_image_strategy": "existing_web_image",
@@ -34674,13 +34674,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://imagenes.elpais.com/resizer/v2/STNBNTWBVRLUFNFV3UOEZF3BO4.jpg?auth=e7903646369d280a76e4c415c6136c75247da303b310b7857735b897799094b6&width=1200",
-        "source": "El País · 7/10/2026",
-        "source_url": "https://elpais.com/deportes/futbol/2026-10-07/pedro-rodriguez-anuncia-su-retirada-del-futbol.html",
-        "alt": "Imagen de archivo relacionada con Pedro Rodríguez",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/d00ef2d5dc62-r0-ai1-791379737404.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "33e62f5ec5adff66bdcfe191af93c3ed312d0ca455e071d2eb86da889cba88d4",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2219535,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "d00ef2d5dc62",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-d00ef2d5dc62-r0-a1-1791379737404"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/d00ef2d5dc62-r0-ai1-791379737404.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/d00ef2d5dc62-r0-ai1-791379737404.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "33e62f5ec5adff66bdcfe191af93c3ed312d0ca455e071d2eb86da889cba88d4",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2219535,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "d00ef2d5dc62",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-d00ef2d5dc62-r0-a1-1791379737404"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/d00ef2d5dc62-r0-ai1-791379737404.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T13:31:56.640Z"
     },
     {
       "id": "22c1b9fcb392",
@@ -34767,6 +34806,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-07T15:30:40+02:00",
+  "updated_at": "2026-10-07T13:31:56.640Z",
   "count": 627
 }
