@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-59e7d31e6d57-r0-a2-1791346617848",
-  "requested_at": "2026-10-07T04:16:57.844225Z",
-  "updated_at": "2026-10-07T04:36:14.172Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-auto-59e7d31e6d57-r0-a3-1791348481306",
+  "requested_at": "2026-10-07T04:48:01.305200Z",
+  "updated_at": "2026-10-07T04:48:01.305200Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,9 +14,9 @@
   "trend_id": "59e7d31e6d57",
   "target_name": "Enzo",
   "revision": 0,
-  "attempt": 2,
+  "attempt": 3,
   "auto_repair": true,
-  "auto_repair_attempt": 2,
+  "auto_repair_attempt": 3,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
@@ -35,9 +35,9 @@
       "https://tn.com.ar/deportes/futbol/2026/10/06/video-el-llanto-desconsolado-de-enzo-fernandez-mientras-messi-daba-su-discurso-de-despedida-de-la-seleccion-argentina/",
       "https://diarioelnorte.com.ar/es-momento-de-soltar-y-decir-gracias-el-emotivo-mensaje-de-enzo-fernandez-para-despedir-a-messi/"
     ],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona.",
-    "image_style_name": "cartoon_3d",
-    "image_style_index": 8
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.",
+    "image_style_name": "poster_grafico",
+    "image_style_index": 2
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
@@ -46,13 +46,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":true,\"submitted\":false,\"userTurns\":0,\"turns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisable",
-  "pc_upload_secret_hash": "daf844351fa3e78ccdab4b8b7ebbaa589aee48eedd6b54a49a0e07d246787760",
-  "pc_worker_id": "ttendencias-image-bridge-v34-handoff-capture",
-  "pc_picked_up_at": "2026-10-07T04:34:11.570Z",
-  "bridge_version": null,
-  "target_handoff_id": "B6382F858478410196B3197F68CC8AF8",
-  "target_handoff_at": "2026-10-07T04:34:22.313Z",
-  "pc_launched_at": "2026-10-07T04:34:23.432Z",
-  "finished_at": "2026-10-07T04:36:14.172Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
