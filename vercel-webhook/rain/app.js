@@ -37,7 +37,7 @@ const OPERA_SURFACE_STALE_MINUTES=20;
 const MODEL_META_GRACE_SECONDS=20*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.9';
+const APP_VERSION='0.17.10';
 
 const $=id=>document.getElementById(id);
 function readLocal(key,fallback){
@@ -1198,6 +1198,51 @@ function etaRadarHistoryKey(){return 'raineta.radarEtaHistory.'+locationKey(stat
 function readRadarEtaHistory(){return readLocal(etaRadarHistoryKey(),[])}
 function writeRadarEtaHistory(rows){
   try{localStorage.setItem(etaRadarHistoryKey(),JSON.stringify(rows.slice(-12)))}catch{}
+}
+function radarMotionHistoryKey(){return 'raineta.radarMotion.'+locationKey(state.loc)}
+function readRadarMotionHistory(){return readLocal(radarMotionHistoryKey(),[])}
+function writeRadarMotionHistory(rows){
+  try{localStorage.setItem(radarMotionHistoryKey(),JSON.stringify(rows.slice(-12)))}catch{}
+}
+function signedBearingDelta(from,to){
+  return ((Number(to)-Number(from)+540)%360)-180;
+}
+function recordRadarMotionObservation(){
+  const n=state.nowcast,m=n?.motion,radarMs=Date.parse(n?.radarTime||'');
+  const speed=Number(m?.speedKmh),bearing=Number(m?.bearingDegrees),confidence=Number(n?.confidence)||0;
+  if(n?.status!=='ok'||!Number.isFinite(radarMs)||!Number.isFinite(speed)||!Number.isFinite(bearing)||speed<2||speed>220||confidence<.30)return;
+  let rows=readRadarMotionHistory().filter(x=>radarMs-Number(x.radarMs)<75*60_000);
+  if(rows.some(x=>Number(x.radarMs)===radarMs))return;
+  rows.push({radarMs,speed,bearing:(bearing%360+360)%360,confidence});
+  rows.sort((a,b)=>a.radarMs-b.radarMs);
+  writeRadarMotionHistory(rows);
+}
+function radarTurnTrend(){
+  const nowMs=Date.parse(state.nowcast?.radarTime||'');
+  if(!Number.isFinite(nowMs))return null;
+  const rows=readRadarMotionHistory()
+    .filter(x=>nowMs-Number(x.radarMs)<=40*60_000&&nowMs-Number(x.radarMs)>=0&&Number(x.confidence)>=.38)
+    .slice(-5);
+  if(rows.length<3)return null;
+  const spanMinutes=(Number(rows.at(-1).radarMs)-Number(rows[0].radarMs))/60_000;
+  if(spanMinutes<10||spanMinutes>40)return null;
+  const rates=[];
+  for(let i=1;i<rows.length;i++){
+    const dt=(Number(rows[i].radarMs)-Number(rows[i-1].radarMs))/60_000;
+    if(dt<3||dt>15)continue;
+    const delta=signedBearingDelta(rows[i-1].bearing,rows[i].bearing);
+    if(Math.abs(delta)>22)continue;
+    rates.push(delta/dt);
+  }
+  if(rates.length<2)return null;
+  const rate=medianNumber(rates);
+  if(!Number.isFinite(rate)||Math.abs(rate)<.04||Math.abs(rate)>.8)return null;
+  const sameSign=rates.filter(x=>Math.sign(x)===Math.sign(rate)).length/rates.length;
+  if(sameSign<.75)return null;
+  const avgConfidence=rows.reduce((sum,x)=>sum+(Number(x.confidence)||0),0)/rows.length;
+  const confidence=Math.max(0,Math.min(1,avgConfidence*sameSign));
+  if(confidence<.50)return null;
+  return{rateDegPerMinute:rate,confidence,samples:rows.length,spanMinutes};
 }
 function recordRadarEtaObservation(){
   const n=state.nowcast;
@@ -2395,14 +2440,22 @@ function clearRadarVisual(){
 function projectionCoordinates(minutes){
   const motion=state.nowcast?.motion;
   const lat=Number(state.loc.lat),lon=Number(state.loc.lon);
-  const globalSpeed=Math.max(0,Number(motion?.speedKmh)||0),globalBearing=(Number(motion?.bearingDegrees)||0)*Math.PI/180;
-  const localSpeed=Number(motion?.localSpeedKmh),localBearing=Number(motion?.localBearingDegrees)*Math.PI/180;
-  const localQuality=Math.max(0,Math.min(1,(Number(motion?.localFlowConfidence)||0)*.7+(Number(motion?.localFlowCoverage)||0)*.3));
+  const globalSpeed=Math.max(0,Number(motion?.speedKmh)||0);
+  const localSpeed=Number(motion?.localSpeedKmh);
+  const baseGlobalBearing=Number(motion?.bearingDegrees)||0,baseLocalBearing=Number(motion?.localBearingDegrees);
   const reliable=Math.max(0,Number(state.nowcast?.reliableHorizonMinutes)||0);
+  const requested=Math.max(0,Number(minutes)||0);
+  const turn=radarTurnTrend();
+  const turnMinutes=Math.min(requested,reliable,60);
+  const turnAdjustment=turn
+    ? Math.max(-8,Math.min(8,.5*Number(turn.rateDegPerMinute)*turnMinutes*Number(turn.confidence)))
+    : 0;
+  const globalBearing=(baseGlobalBearing+turnAdjustment)*Math.PI/180;
+  const localBearing=Number.isFinite(baseLocalBearing)?(baseLocalBearing+turnAdjustment)*Math.PI/180:NaN;
+  const localQuality=Math.max(0,Math.min(1,(Number(motion?.localFlowConfidence)||0)*.7+(Number(motion?.localFlowCoverage)||0)*.3));
   const evolution=Math.max(0,Math.min(1,Number(state.nowcast?.evolution?.score)||0));
   const confidence=Math.max(0,Math.min(1,Number(state.nowcast?.confidence)||0));
   const quality=.55*confidence+.45*evolution;
-  const requested=Math.max(0,Number(minutes)||0);
   const extra=Math.max(0,requested-reliable);
   const maxExtra=18+22*quality;
   const effectiveMinutes=requested<=reliable
@@ -2485,7 +2538,9 @@ function showProjectedRadar(minutes){
     if(within){
       const evolution=Number(state.nowcast?.evolution?.score)||0;
       const shape=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
-      $('radarMotion').textContent='Proyección continua del radar observado · evolución '+shape+' · horizonte radar útil ~'+reliable+' min.';
+      const turn=radarTurnTrend();
+      const curve=turn?' · rumbo reciente '+(turn.rateDegPerMinute>0?'girando a la derecha':'girando a la izquierda')+' (ajuste limitado)':'';
+      $('radarMotion').textContent='Proyección continua del radar observado · evolución '+shape+curve+' · horizonte radar útil ~'+reliable+' min.';
     }else{
       $('radarMotion').textContent='Fuera del horizonte fiable (~'+reliable+' min), el movimiento se frena y se difumina progresivamente: es solo referencia visual; la ETA y la decisión pasan a modelos/consenso.';
     }
@@ -2661,6 +2716,7 @@ async function refreshRadar(renderAfter=true){
       ? await computeNowcast(radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}))
       : state.nowcast;
     if(state.playMode==='arrival')stopRadarPlayback();
+    recordRadarMotionObservation();
     recordRadarEtaObservation();
     updateRadarValidation();
     state.lastRadarRefresh=Date.now();
@@ -2684,6 +2740,7 @@ async function load(force=false){
       state.nowcast=await computeNowcast(state.data.radar).catch(e=>({status:'radar_analysis_failed',confidence:0,event:null,error:String(e?.message||e)}));
       state.lastRadarRefresh=Date.now();
     }
+    recordRadarMotionObservation();
     recordRadarEtaObservation();
     updateRadarValidation();
     state.lastCompletedAt=new Date().toISOString();

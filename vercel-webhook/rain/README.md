@@ -1,4 +1,4 @@
-# RainETA v0.17.9
+# RainETA v0.17.10
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,14 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Curvatura radar limitada por tendencia v0.17.10
+- RainETA guarda localmente una serie corta del **rumbo y velocidad** derivados de los barridos radar recientes para detectar si la advección está girando de forma persistente.
+- La curvatura visual solo se activa con al menos **3 observaciones**, ≥10 min de historial, confianza suficiente y giro con signo consistente; cambios bruscos o incoherentes se descartan como ruido.
+- El giro extrapolado queda limitado a una tasa razonable y a un ajuste medio máximo de **±8°**. No modifica la ETA ni el algoritmo meteorológico: únicamente evita que la imagen proyectada avance siempre en una recta perfecta cuando el propio radar muestra un cambio de rumbo sostenido.
+- El ajuste deja de crecer al alcanzar el horizonte radar fiable (y como máximo tras 60 min). A partir de ahí se mantiene el rumbo limitado mientras siguen actuando la desaceleración, dispersión y pérdida de opacidad existentes.
+- Sin evidencia suficiente de giro, la proyección permanece exactamente en el modo lineal amortiguado de v0.17.3.
+- El texto del radar indica cuando se está aplicando una tendencia reciente de giro, siempre como **ajuste limitado**.
 
 ## Fallback explícito de previsión v0.17.9
 - Si caduca la caché normal y **ninguna fuente nueva de previsión responde**, RainETA puede reutilizar durante un máximo de **90 min** la última previsión válida de la misma versión y ubicación.
