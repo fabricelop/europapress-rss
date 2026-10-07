@@ -1,4 +1,4 @@
-# RainETA v0.17.3
+# RainETA v0.17.4
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,12 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Frescura y desacuerdo de radares v0.17.4
+- El radar europeo OPERA deja de contar como fuente sana si el composite supera **30 min**; para confirmar lluvia superficial se mantiene un límite más estricto de **20 min**.
+- El panel de Fuentes muestra la **edad real** de RainViewer y OPERA y marca explícitamente cuándo un radar está desactualizado y queda excluido de ETA/consenso.
+- Cuando RainViewer y OPERA difieren más de 30 min en la llegada, RainETA mantiene la fuente mejor respaldada pero **penaliza la confianza** y ensancha la incertidumbre proporcionalmente al desacuerdo.
+- AEMET OpenData sigue evaluado como siguiente fuente española: ofrece radar regional y composición nacional, pero requiere API key y no se expondrá una clave privada en la PWA.
 
 ## Reproducción y realismo radar v0.17.3
 - El histórico observado deja de pasar a toda velocidad: el botón ▶ recorre los **barridos reales** con una pausa visible (~600 ms por frame) y conserva la velocidad fluida de 1 min por paso en el futuro.
