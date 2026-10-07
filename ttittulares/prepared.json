@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-07T10:21:00Z",
+  "updated_at": "2026-10-07T10:22:57.364Z",
   "items": [
     {
       "event_id": "7503755f8b55",
@@ -1316,7 +1316,7 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "image_choice": "fallback",
       "selection_mode": "MANUAL_VALIDATED_PROBLEMATIC",
       "image_status": "ready",
@@ -1340,7 +1340,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "La OMS considera muy bajo el riesgo para Europa por el posible caso de peste en Rusia"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-07T10:22:57.364Z",
+      "ai_image_failure_reason": "Fallback no pudo escribir el prompt completo len=0 expected>=500"
     },
     {
       "event_id": "d1fe56a66832",
