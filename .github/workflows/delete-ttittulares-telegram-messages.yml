@@ -13,7 +13,7 @@ permissions:
 
 concurrency:
   group: ttittulares-telegram-delete
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   delete:
@@ -21,7 +21,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /telegram/delete-message-queue.json
       - name: Borrar mensajes pendientes
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
