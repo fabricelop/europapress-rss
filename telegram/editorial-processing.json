@@ -17707,7 +17707,7 @@
       "percentage": 25,
       "first_seen": "2026-10-07T14:44:23.542072Z",
       "last_seen": "2026-10-07T16:43:14.924075Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -17765,7 +17765,10 @@
         }
       ],
       "drafted_source_count": 4,
-      "verified_source_count": 4
+      "verified_source_count": 4,
+      "reconciled_from_event_id": "a4635df88baa",
+      "reconciliation_reason": "Mismo hecho ya publicado: Trabajo convoco la comision asesora del SMI 2027 con el objetivo de dejar la subida aprobada antes de las elecciones; no hay novedad material.",
+      "reconciled_at": "2026-10-07T17:05:25.913430Z"
     },
     {
       "id": "46462d0f2d39",
@@ -17897,5 +17900,5 @@
       "delivery_confirmation": "prepared_web"
     }
   ],
-  "updated_at": "2026-10-07T16:52:35.308Z"
+  "updated_at": "2026-10-07T17:05:25.913430Z"
 }
