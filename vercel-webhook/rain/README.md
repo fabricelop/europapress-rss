@@ -1,6 +1,14 @@
-# RainETA v0.17.27
+# RainETA v0.17.28
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
+
+## ETA radar exige precipitación medible v0.17.28
+- RainViewer, OPERA y AEMET ya no pueden generar una «próxima lluvia» solo por movimiento/ocupación del eco: el episodio debe contener precipitación medible alrededor de la llegada.
+- Un candidato radar ordinario requiere al menos dos pasos consecutivos con tasa >= 0,05 mm/h y fracción húmeda >= 0,10, o una señal fuerte con pico >= 0,30 mm/h.
+- Las señales marginales (<0,12 mm/h de pico) se descartan si los modelos tampoco apoyan precipitación y la confianza radar no es alta.
+- La capa de decisión vuelve a validar los eventos fusionados antes de convertirlos en ETA. Un evento sin evidencia cuantificable se elimina y deja paso al estado estable/modelos.
+- Esto evita situaciones incoherentes como «empieza a las 20:00» mientras la propia banda muestra 0,0 mm/h y el gráfico de 24 h permanece vacío.
+
 
 ## Estado estable separado del horizonte radar v0.17.27
 - El final del horizonte fiable del radar deja de convertirse en un falso «hasta HH:MM». Ese límite queda únicamente como dato técnico de nowcast.
