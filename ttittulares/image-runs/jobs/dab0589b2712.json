@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-dab0589b2712-r1-a1-1791333524919",
+  "requested_at": "2026-10-07T00:38:44.917758Z",
+  "updated_at": "2026-10-07T00:38:44.917758Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "dab0589b2712",
+  "event_id": "dab0589b2712",
+  "target_name": "Eva Marie Saint, ganadora del Oscar por 'La ley del silencio', muere a los 102 años",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Eva Marie Saint, ganadora del Oscar por 'La ley del silencio', muere a los 102 años",
+    "revision": 1,
+    "factual_summary": "Eva Marie Saint murió el martes a los 102 años por causas naturales, según confirmó su representante. Ganó el Oscar a la mejor actriz de reparto por 'La ley del silencio' y protagonizó 'Con la muerte en los talones', de Alfred Hitchcock.",
+    "tweet_text": "Eva Marie Saint ha muerto a los 102 años por causas naturales. Ganó el Oscar por 'La ley del silencio' y protagonizó 'Con la muerte en los talones' de Hitchcock.\n\n🌶️ Hollywood despide a una estrella que convirtió 102 años en un largometraje.",
+    "remate": "🌶️ Hollywood despide a una estrella que convirtió 102 años en un largometraje.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.",
+    "image_style_name": "grabado_moderno",
+    "image_style_index": 6,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEva Marie Saint ha muerto a los 102 años por causas naturales. Ganó el Oscar por 'La ley del silencio' y protagonizó 'Con la muerte en los talones' de Hitchcock.\n\n🌶️ Hollywood despide a una estrella que convirtió 102 años en un largometraje.\n\nREMATE EXACTO:\n🌶️ Hollywood despide a una estrella que convirtió 102 años en un largometraje.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEva Marie Saint murió el martes a los 102 años por causas naturales, según confirmó su representante. Ganó el Oscar a la mejor actriz de reparto por 'La ley del silencio' y protagonizó 'Con la muerte en los talones', de Alfred Hitchcock.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.elmundo.es/cultura/2026/10/07/6ac56e21fdddff1b488b456e.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/cultura/cine-00128/noticia-fallece-102-anos-eva-marie-saint-actriz-ganadora-oscar-ley-silencio-20261007002945.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/us/entretenimiento/2026-10-06/muere-eva-marie-saint-centenaria-actriz-de-hollywood-una-de-las-ultimas-musas-de-alfred-hitchcock.html"
+      },
+      {
+        "source": "RTVE",
+        "url": "https://www.rtve.es/noticias/20261007/muere-eva-marie-saint-ganadora-oscar/17256343.shtml"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
