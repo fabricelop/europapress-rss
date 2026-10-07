@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-aa0c8d12686d-r1-a3-1791334048075",
-  "requested_at": "2026-10-07T00:47:28.074806Z",
-  "updated_at": "2026-10-07T00:49:24.272Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-auto-aa0c8d12686d-r1-a4-1791337777161",
+  "requested_at": "2026-10-07T01:49:37.160175Z",
+  "updated_at": "2026-10-07T01:49:37.160175Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -14,9 +14,9 @@
   "trend_id": "aa0c8d12686d",
   "target_name": "Messi",
   "revision": 1,
-  "attempt": 3,
+  "attempt": 4,
   "auto_repair": true,
-  "auto_repair_attempt": 3,
+  "auto_repair_attempt": 4,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
@@ -34,9 +34,9 @@
       "https://www.reuters.com/sports/soccer/teammates-fans-bid-emotional-farewell-messi-ahead-argentina-finale-2026-10-06/",
       "https://www.fifa.com/en/tournaments/mens/worldcup/articles/lionel-messi-argentina-farewell"
     ],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.",
-    "image_style_name": "poster_grafico",
-    "image_style_index": 2
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
@@ -45,13 +45,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":true,\"submitted\":false,\"userTurns\":0,\"turns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisable",
-  "pc_upload_secret_hash": "397a5b196b68441d0305dca39dce8b89f29bb56fddb733b1f1518a59a96f9bfc",
-  "pc_worker_id": "ttendencias-image-bridge-v33-rehydrate-submit",
-  "pc_picked_up_at": "2026-10-07T00:48:27.774Z",
-  "bridge_version": null,
-  "target_handoff_id": "6170424E05FF0C6AC125A8ACF4BDC3D5",
-  "target_handoff_at": "2026-10-07T00:48:39.287Z",
-  "pc_launched_at": "2026-10-07T00:48:40.395Z",
-  "finished_at": "2026-10-07T00:49:24.272Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
