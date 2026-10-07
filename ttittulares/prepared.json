@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-07T13:17:26.609Z",
+  "updated_at": "2026-10-07T13:19:09.351Z",
   "items": [
     {
       "event_id": "4bb14da255c1",
@@ -632,8 +632,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "failed",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -649,12 +649,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-07T11:21:09.731456Z",
       "image": {
-        "url": "https://static.eldiario.es/clip/c5928f3f-bf50-47e7-8825-307b95fa3c00_facebook-aspect-ratio-1200-675_default_0_x556y592.jpg",
-        "source": "www.eldiario.es",
-        "source_url": "https://www.eldiario.es/canariasahora/sociedad/ocho-familias-vilo-palmas-sareb-pide-ahora-juzgado-paralizacion-desahucio-mediacion-derecho-techo_1_13568098.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Suspendido el desahucio de ocho familias en Las Palmas y abierta una negociación con la Sareb"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/a56df861eba4-r1-ai1-791377157450.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d632659f63d2cd6f5bbc002d192f3d79adbc30ba0554d4ba8bb51106c5a77ac3",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2218011,
+        "context_guard": {
+          "version": 3,
+          "event_id": "a56df861eba4",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-a56df861eba4-r1-a3-1791377157450"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/a56df861eba4-r1-ai1-791377157450.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://static.eldiario.es/clip/c5928f3f-bf50-47e7-8825-307b95fa3c00_facebook-aspect-ratio-1200-675_default_0_x556y592.jpg",
@@ -664,9 +678,32 @@
         "generated": false,
         "alt": "Suspendido el desahucio de ocho familias en Las Palmas y abierta una negociación con la Sareb"
       },
-      "ai_image_last_attempt_status": "failed",
-      "ai_image_last_attempt_at": "2026-10-07T12:39:10.654Z",
-      "ai_image_failure_reason": "No apareció un raster ImageGen capturable en 3 minutos; {\"marker\":false,\"commandScoped\":false,\"turns\":0,\"generating\":true,\"imagesAfterMarker\":0,\"candidates\":0,\"canvases\":0,\"top\":[]}"
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T13:19:09.351Z",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/a56df861eba4-r1-ai1-791377157450.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "d632659f63d2cd6f5bbc002d192f3d79adbc30ba0554d4ba8bb51106c5a77ac3",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2218011,
+        "context_guard": {
+          "version": 3,
+          "event_id": "a56df861eba4",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-a56df861eba4-r1-a3-1791377157450"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/a56df861eba4-r1-ai1-791377157450.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-07T13:19:09.351Z"
     },
     {
       "event_id": "c546f77c8790",
