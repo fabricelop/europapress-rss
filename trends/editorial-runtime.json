@@ -1,12 +1,14 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T01:49:00+02:00",
-  "last_completed_at": "2026-10-07T01:51:30+02:00",
-  "updated_at": "2026-10-07T01:51:30+02:00",
+  "last_started_at": "2026-10-07T02:15:00+02:00",
+  "last_completed_at": "2026-10-07T02:32:10+02:00",
+  "updated_at": "2026-10-07T02:32:10+02:00",
   "status": "success",
   "processed_ids": [
-    "9086ee48d4e5"
+    "aa0c8d12686d",
+    "2cfd7934b6eb",
+    "3028fe69be06"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -16,96 +18,195 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "run_id": "tr-20261006T231500-chat",
+    "run_id": "tr-20261007T0215-chat",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-07T01:49:00+02:00",
-    "updated_at": "2026-10-07T01:51:30+02:00",
-    "finished_at": "2026-10-07T01:51:30+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-07T02:15:00+02:00",
+    "updated_at": "2026-10-07T02:32:10+02:00",
+    "finished_at": "2026-10-07T02:32:10+02:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
-    "incident_count": 0,
-    "incidents": [],
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-07T02:23:05+02:00",
+        "phase": "persisting",
+        "trend_id": "aa0c8d12686d",
+        "title": "Messi",
+        "reason": "Dos intentos del aplicador antiguo chocaron con cambios concurrentes de editorial-queue.json; se corrigió el aplicador para reaplicar idempotentemente sobre main fresco y Messi quedó verificado."
+      }
+    ],
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
-      "grouped_members_total": 0,
+      "trends_processed": 3,
+      "trends_explained": 3,
+      "explanation_groups": 2,
+      "new_cards": 1,
+      "revisions_updated": 1,
+      "grouped_into_existing_card": 1,
+      "grouped_members_total": 1,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
-      "visual_jobs_queued": 0,
+      "visual_jobs_queued": 2,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_reused": 0,
+      "explanations_verified_under_280": 3,
+      "remates_selected": 2,
+      "remates_reused": 1,
       "remates_omitted": 0,
       "pending_repair_triggered": 1,
-      "visual_repair_triggered": 1,
-      "jit_skipped": 1,
-      "concurrent_completed": 1
+      "visual_repair_triggered": 4,
+      "jit_skipped": 0,
+      "concurrent_completed": 0
     },
-    "message": "Pasada cerrada 0/0 · #AlCieloConElla fue cerrada y verificada por la ejecución concurrente tr-20261007T0145-chat antes de esta barrera JIT",
+    "message": "Pasada cerrada 3/3 · Messi reexplicado, Mikel Merino enlazado al grupo Merino existente y Torres explicado · cola 0. Incidencia de concurrencia recuperada y aplicador endurecido.",
     "activity": [
       {
-        "at": "2026-10-07T01:49:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada directa iniciada · cola editorial 1"
+        "at": "2026-10-07T02:26:20+02:00",
+        "phase": "investigating",
+        "trend_id": "2cfd7934b6eb",
+        "title": "Mikel Merino",
+        "message": "Contrastando fuente 1/2 · Reuters"
       },
       {
-        "at": "2026-10-07T01:49:00+02:00",
+        "at": "2026-10-07T02:26:30+02:00",
+        "phase": "investigating",
+        "trend_id": "2cfd7934b6eb",
+        "title": "Mikel Merino",
+        "message": "Contrastando fuente 2/2 · UEFA"
+      },
+      {
+        "at": "2026-10-07T02:26:40+02:00",
+        "phase": "investigating",
+        "trend_id": "2cfd7934b6eb",
+        "title": "Mikel Merino",
+        "message": "Hecho esencial verificado · mismo doblete de Merino ya explicado"
+      },
+      {
+        "at": "2026-10-07T02:26:50+02:00",
+        "phase": "drafting",
+        "trend_id": "2cfd7934b6eb",
+        "title": "Mikel Merino",
+        "message": "Mismo acontecimiento · se reutiliza la tarjeta existente sin duplicarla"
+      },
+      {
+        "at": "2026-10-07T02:27:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "2cfd7934b6eb",
+        "title": "Mikel Merino",
+        "message": "Remate existente conservado · misma explicación verificada"
+      },
+      {
+        "at": "2026-10-07T02:27:10+02:00",
+        "phase": "persisting",
+        "trend_id": "2cfd7934b6eb",
+        "title": "Mikel Merino",
+        "message": "Enlazando revisión al grupo existente Merino"
+      },
+      {
+        "at": "2026-10-07T02:29:10+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual de Pendientes solicitado"
+        "trend_id": "2cfd7934b6eb",
+        "title": "Mikel Merino",
+        "message": "Verificando grupo y revisión persistidos"
       },
       {
-        "at": "2026-10-07T01:49:10+02:00",
+        "at": "2026-10-07T02:29:20+02:00",
         "phase": "verifying",
-        "trend_id": "9086ee48d4e5",
-        "title": "#AlCieloConElla",
-        "message": "Releyendo estado autoritativo de #AlCieloConElla"
+        "trend_id": "2cfd7934b6eb",
+        "title": "Mikel Merino",
+        "message": "Tendencia cerrada y verificada sin tarjeta duplicada"
       },
       {
-        "at": "2026-10-07T01:49:15+02:00",
+        "at": "2026-10-07T02:29:30+02:00",
         "phase": "verifying",
-        "trend_id": "9086ee48d4e5",
-        "title": "#AlCieloConElla",
-        "message": "Barrera JIT · la revisión 0 ya no está activa en main"
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "message": "Releyendo estado autoritativo de Torres"
       },
       {
-        "at": "2026-10-07T01:51:10+02:00",
+        "at": "2026-10-07T02:29:40+02:00",
+        "phase": "investigating",
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-07T02:30:00+02:00",
+        "phase": "investigating",
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "message": "Contrastando fuente 1/2 · EFE"
+      },
+      {
+        "at": "2026-10-07T02:30:10+02:00",
+        "phase": "investigating",
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "message": "Contrastando fuente 2/2 · EFE actualización"
+      },
+      {
+        "at": "2026-10-07T02:30:20+02:00",
+        "phase": "investigating",
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "message": "Hecho esencial verificado · anuncio y posterior rectificación sobre Carvajal"
+      },
+      {
+        "at": "2026-10-07T02:30:30+02:00",
+        "phase": "drafting",
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-07T02:30:35+02:00",
+        "phase": "drafting",
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "message": "Comprobando límite de X · 257 caracteres"
+      },
+      {
+        "at": "2026-10-07T02:30:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-07T02:30:45+02:00",
+        "phase": "remate_selection",
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-07T02:30:50+02:00",
+        "phase": "persisting",
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-07T02:31:20+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Concurrencia confirmada · otra pasada cerró #AlCieloConElla 1/1"
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "message": "Verificando id+revision y texto persistido · cola 0"
       },
       {
-        "at": "2026-10-07T01:51:20+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola 0 y sin preparing/update/rewrite_pending"
-      },
-      {
-        "at": "2026-10-07T01:51:30+02:00",
+        "at": "2026-10-07T02:32:10+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 0/0 · trabajo cubierto por ejecución concurrente"
+        "message": "Pasada cerrada 3/3 · cola 0 · reparación visual encolada para Messi y Torres"
       }
     ],
     "queue_complete": true,
@@ -118,12 +219,57 @@
       "total_ratings": 154,
       "recent_considered": 20
     },
-    "remate_selections": []
+    "remate_selections": [
+      {
+        "trend_id": "aa0c8d12686d",
+        "title": "Messi",
+        "revision": 1,
+        "selected": "🌶️ El 10 se despide y hasta el Monumental parece pedir tiempo añadido."
+      },
+      {
+        "trend_id": "2cfd7934b6eb",
+        "title": "Mikel Merino",
+        "revision": 0,
+        "selected": "🌶️ El banquillo tenía reservado un doblete.",
+        "reused_from": "e24a929a9107:r1"
+      },
+      {
+        "trend_id": "3028fe69be06",
+        "title": "Torres",
+        "revision": 0,
+        "selected": "🌶️ El mercado pasó del parte médico al «era broma» en una hora."
+      }
+    ]
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
     "status": "triggered",
-    "direct_imagegen": false
+    "direct_imagegen": false,
+    "workflow_runs": [
+      {
+        "id": 37551030050,
+        "reason": "execution-start",
+        "status": "success"
+      },
+      {
+        "id": 37551886061,
+        "reason": "Messi",
+        "status": "success",
+        "jobs_queued": 1
+      },
+      {
+        "id": 37552195156,
+        "reason": "Mikel Merino group link",
+        "status": "success",
+        "jobs_queued": 0
+      },
+      {
+        "id": 37552396045,
+        "reason": "Torres",
+        "status": "success",
+        "jobs_queued": 1
+      }
+    ]
   }
 }
