@@ -1,6 +1,13 @@
-# RainETA v0.17.33
+# RainETA v0.17.34
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
+
+## Proyección radar sintética y rayos DWD v0.17.34
+- La proyección futura deja de usar por completo el PNG de RainViewer como textura. Se reconstruye desde la matriz interna de precipitación (mask + rateGrid) que RainETA ya decodifica para el nowcast; los píxeles no húmedos nacen transparentes y no pueden formar un rectángulo de fondo.
+- La paleta futura se regenera desde la intensidad mm/h estimada y luego se deforma con el flujo óptico local. El observado sigue usando RainViewer original; solo el futuro se sintetiza.
+- La capa eléctrica usa dos fuentes DWD simultáneas: `dwd:Accumulated_Flash_Geometry` (geometría acumulada 5 min del MTG Lightning Imager) y `dwd:NCEW_EU` (NowCastELEC, polígonos alrededor de rayos detectados y pronosticados).
+- La UI ya no afirma que la capa funciona solo por haber pulsado ON: escucha eventos de carga/error de MapLibre y muestra `cargando`, `activos` o `error cargando DWD`.
+
 
 ## Transparencia radar y rayos operativos v0.17.33
 - La proyección local ya no reutiliza el bitmap completo del radar: antes de mover celdas, RainETA elimina todos los píxeles que no correspondan a reflectividad de precipitación reconocida. Esto evita el rectángulo negro opaco visto al pasar de AHORA a +1 min.
