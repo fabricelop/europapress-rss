@@ -1,7 +1,7 @@
 {
-  "version": 1,
+  "version": 2,
   "name": "TTiTTulares + TTendencias mechanism-only restore policy",
-  "backup_ref": "BackupMecanismosTT20261007-1827",
+  "backup_ref": "BackupMecanismosSoloTT20261007-1827",
   "backup_commit": "a3d1d3c619cc44c50fb65fb1ad9ec429703360ff",
   "rules": {
     "include": [
@@ -14,41 +14,41 @@
       "ttittulares/*prompt*.md",
       "ttittulares/work-*.md",
       "ttittulares/config.json",
-
       "trends/*.py",
       "trends/*.md",
       "trends/editorial-config.json",
-
       "telegram/*.py",
       "telegram/editorial-policy.md",
-
       "windows/*TTiTTulares*.*",
       "windows/*TTendencias*.*",
       "windows/Install-ImageBridge*.ps1",
       "windows/Restart-TT-Image-Listeners-Stable.ps1",
       "windows/Restore-ImageBridge-Stable-v28.ps1",
       "windows/TT-LocalWatchdog.ps1",
-
       ".github/workflows/*ttittulares*.yml",
       ".github/workflows/*ttendencias*.yml",
       ".github/workflows/validate-image-bridges.yml",
-
       "api/*ttittulares*.js",
       "api/*ttendencias*.js",
-
       "vercel-webhook/ttittulares/**",
       "vercel-webhook/ttendencias/**",
       "vercel-webhook/api/*ttittulares*",
       "vercel-webhook/api/*ttendencias*",
-
       "tt-control/src/**",
       "tt-control/schema.sql",
       "tt-control/wrangler.jsonc",
       "tt-control/README.md",
-
       "shared/*.py",
       "shared/*.js",
-      "shared/*.ts"
+      "shared/*.ts",
+      "generate_feed.py",
+      "requirements.txt",
+      "vercel.json",
+      ".github/workflows/update.yml",
+      ".github/scripts/*ttittulares*",
+      ".github/scripts/*ttendencias*",
+      ".github/scripts/diagnose-publisher-feeds.py",
+      ".github/scripts/deploy-joint-remate-ratings.mjs"
     ],
     "exclude": [
       "ttittulares/generated-images/**",
@@ -69,7 +69,6 @@
       "ttittulares/status.json",
       "ttittulares/trend-candidates.json",
       "ttittulares/*trigger*.txt",
-
       "trends/generated-images/**",
       "trends/archive-images/**",
       "trends/image-cache/**",
@@ -94,11 +93,9 @@
       "trends/*heartbeat*",
       "trends/*trigger*",
       "trends/deploy-marker.txt",
-
       "telegram/archive/**",
       "telegram/*.json",
       "telegram/*trigger*.txt",
-
       "shared/*.json",
       "vercel-webhook/.deploy-*",
       "vercel-webhook/deploy-*.txt"
@@ -109,5 +106,6 @@
     "never_reset_branch": true,
     "never_delete_files": true,
     "state_files_take_precedence_over_include_rules": true
-  }
+  },
+  "full_reference_ref": "BackupMecanismosTT20261007-1827"
 }
