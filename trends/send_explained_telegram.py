@@ -222,9 +222,9 @@ def reexplain_url(tid,rev):
     })
 
 
-def keyboard(tid,rev,text,ai_url="",archive_url="",search_term="",timeout_fallback=False):
+def keyboard(tid,rev,text,ai_url="",archive_url="",search_term="",timeout_fallback=False,archive_only=False):
     rows=[]
-    if timeout_fallback:
+    if timeout_fallback or archive_only:
         if archive_url:
             rows.append([{"text":"🗂️ Copiar imagen archivo","url":q(WORKER+"/copy-image",{"src":archive_url})}])
     else:
@@ -390,19 +390,22 @@ def run_send(patch_path):
         if exact and str(exact.get("status") or "").lower() in TERMINAL:
             continue
 
-        # Si el aviso provisional de 90 min seguía visible, reutilizamos ese
-        # mismo mensaje cuando tenía foto de archivo: cambiamos el media a la IA
-        # y conservamos message_id + paquete. Si era texto puro, usamos fallback
-        # de borrar y enviar el paquete normal más abajo.
-        timeout_reuse=None
+        # Si el aviso provisional de 90 min sigue visible, se conserva como
+        # mensaje de ARCHIVO. La IA llegará como un segundo mensaje independiente.
+        timeout_archive=None
         if event_sent and event_sent.get("timeout_fallback"):
-            timeout_reuse=event_sent
+            timeout_archive=event_sent
 
         archive=image_source(row)
         archive_src=str(archive.get("url") or "").strip()
-        archive_mid=int((exact or {}).get("archive_telegram_message_id") or 0)
-        archive_copy_url=str((exact or {}).get("archive_materialized_url") or "")
-        archive_sha=str((exact or {}).get("archive_sha256") or "")
+        if timeout_archive:
+            archive_mid=int(timeout_archive.get("telegram_message_id") or 0)
+            archive_copy_url=str(timeout_archive.get("archive_materialized_url") or "")
+            archive_sha=str(timeout_archive.get("archive_sha256") or "")
+        else:
+            archive_mid=int((exact or {}).get("archive_telegram_message_id") or 0)
+            archive_copy_url=str((exact or {}).get("archive_materialized_url") or "")
+            archive_sha=str((exact or {}).get("archive_sha256") or "")
 
         if archive_src and not archive_copy_url:
             try:
@@ -423,6 +426,17 @@ def run_send(patch_path):
                 print("TTENDENCIAS_ARCHIVE_WARNING",tid,str(e),flush=True)
 
         kb=keyboard(tid,rev,text,ai_url,archive_copy_url,trend_search_term(row))
+
+        if timeout_archive:
+            try:
+                archive_kb=keyboard(tid,rev,text,"",archive_copy_url,trend_search_term(row),archive_only=True)
+                edit_keyboard(token,chat,int(timeout_archive.get("telegram_message_id") or 0),archive_kb)
+                timeout_archive["buttons_version"]=BUTTONS_VERSION
+                timeout_archive["buttons_updated_at"]=nowz()
+                timeout_archive["ai_companion_pending"]=False
+                changed.add(str(timeout_archive.get("delivery_key") or ""))
+            except Exception as e:
+                print("TTENDENCIAS_TIMEOUT_ARCHIVE_KEYBOARD_WARNING",tid,str(e),flush=True)
 
         if exact and str(exact.get("status") or "").lower()=="sent":
             edit_keyboard(token,chat,int(exact.get("telegram_message_id") or 0),kb)
@@ -453,40 +467,6 @@ def run_send(patch_path):
         if got.lower()!=ai_sha:
             raise RuntimeError(f"{tid}: SHA256 IA no coincide")
 
-        if timeout_reuse:
-            old_mid=int(timeout_reuse.get("telegram_message_id") or 0)
-            can_edit=bool(old_mid and str(timeout_reuse.get("archive_image_url") or "").strip())
-            if can_edit:
-                try:
-                    edit_photo_media(token,chat,old_mid,raw,text+f"\n\n{len(text)}/280",kb)
-                    old_key=str(timeout_reuse.get("delivery_key") or "")
-                    timeout_reuse.update({
-                        "delivery_key":key,
-                        "image_sha256":got,
-                        "image_url":ai_url,
-                        "status":"sent",
-                        "buttons_version":BUTTONS_VERSION,
-                        "timeout_fallback":False,
-                        "upgraded_from_timeout":True,
-                        "upgraded_at":nowz(),
-                    })
-                    timeout_reuse.pop("timeout_retry_version",None)
-                    timeout_reuse.pop("timeout_wait_from",None)
-                    changed.add(old_key); changed.add(key)
-                    touched+=1
-                    print("TTENDENCIAS_TIMEOUT_UPGRADED_IN_PLACE",tid,old_mid,flush=True)
-                    continue
-                except Exception as e:
-                    print("TTENDENCIAS_TIMEOUT_EDIT_WARNING",tid,str(e),flush=True)
-            try:
-                if old_mid:
-                    telegram_api(token,"deleteMessage",{"chat_id":str(chat),"message_id":old_mid})
-            except Exception as e:
-                print("TTENDENCIAS_TIMEOUT_DELETE_WARNING",tid,str(e),flush=True)
-            timeout_reuse["status"]="superseded"
-            timeout_reuse["superseded_at"]=nowz()
-            changed.add(str(timeout_reuse.get("delivery_key") or ""))
-
         caption=text+f"\n\n{len(text)}/280"
         msg=send_photo(token,chat,raw,caption,kb)
         mid=int(msg.get("message_id") or 0)
@@ -508,7 +488,7 @@ def run_send(patch_path):
                 "archive_image_url":archive_src,
                 "archive_materialized_url":archive_copy_url,
                 "archive_sha256":archive_sha,
-                "archive_delivered_at":nowz(),
+                "archive_delivered_at":(timeout_archive or {}).get("delivered_at") or nowz(),
             })
         deliveries["items"].append(delivery)
         changed.add(key)
