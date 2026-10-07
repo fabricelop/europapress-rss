@@ -78,6 +78,39 @@ async function hintedTarget(){
   return t
 }
 
+async function waitForHandoffConversation(job,timeoutMs=65000){
+  const deadline=Date.now()+Math.max(5000,Number(timeoutMs)||65000);
+  let lastId="";
+  while(Date.now()<deadline){
+    const t=await hintedTarget();
+    if(t){
+      lastId=String(t.id||lastId);
+      const c=new CDP(t.webSocketDebuggerUrl);
+      try{
+        await c.open();
+        try{await c.call("Page.enable",{},5000)}catch{}
+        try{await c.call("Page.bringToFront",{},5000)}catch{}
+        const verifyDeadline=Date.now()+18000;
+        while(Date.now()<verifyDeadline){
+          let st=null;try{st=await inspectChat(c,job)}catch{}
+          if(st&&(st.bodyMarker||st.hasMarker||(!st.composerMarker&&st.targetMarker&&Number(st.turns||0)>0))){
+            c.acceptInitialRaster=true;
+            console.log("BRIDGE HANDOFF ATTACHED target="+String(t.id)+" url="+String(st.url||t.url||"")+" turns="+Number(st.turns||0)+" generating="+Boolean(st.generating));
+            return c
+          }
+          await sleep(500)
+        }
+      }catch(e){
+        console.log("BRIDGE HANDOFF ATTACH WARNING target="+String(t.id||"")+" :: "+String(e&&e.message||e))
+      }
+      try{c.close()}catch{}
+    }
+    await sleep(500)
+  }
+  console.log("BRIDGE HANDOFF TIMEOUT last_target="+lastId);
+  return null
+}
+
 async function targets(){
   const r=await fetch(BASE_CDP+"/json/list",{cache:"no-store"});
   if(!r.ok)throw Error("CDP /json/list "+r.status);
@@ -263,7 +296,7 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttendencias-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
 const BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback";
-const BRIDGE_PATCH="v33-rehydrate-lost-prompt";
+const BRIDGE_PATCH="v34-handoff-capture-authority";
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
@@ -670,12 +703,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttendencias-image-bridge-v33-rehydrate-submit",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttendencias-image-bridge-v34-handoff-capture",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v33-rehydrate-submit",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v34-handoff-capture",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -695,35 +728,48 @@ async function uploadImage(image){
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
-    cdp=await openFreshDedicatedConversation();
-    console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     let image=null;
-    for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
-      if(generationAttempt>1){
-        try{cdp&&cdp.close()}catch{}
-        await progress("image_retry","Primer envío no produjo generación real; reintentando en conversación nueva de la misma pestaña.");
-        cdp=await openFreshDedicatedConversation();
-        console.log("BRIDGE INTERNAL RETRY conversation="+generationAttempt);
-      }
-      cdp=await injectPromptIntoChat(cdp,job);
-      cdp=await ensureSubmitted(cdp,job);
+
+    // Camino principal v34: el listener ya creó el chat que dispara ImageGen.
+    // El bridge no vuelve a escribir ni enviar nada: se conecta al target exacto
+    // publicado en targetHintFile y captura el raster de ESA conversación.
+    cdp=await waitForHandoffConversation(job,65000);
+    if(cdp){
+      await progress("target_handoff_attached","Bridge conectado al chat exacto lanzado por el listener; esperando ImageGen.");
       cdp.acceptInitialRaster=true;
-      console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
-      if(generationAttempt===1){
-        await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v33-rehydrate-submit"});
-        if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
-      }
-      await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
-      try{
-        image=await capture(cdp,job);
-        break
-      }catch(e){
-        if(generationAttempt>=2)throw e;
-        console.log("BRIDGE GENERATION RETRY :: "+String(e&&e.message||e));
+      await progress("capture_wait","Esperando raster ImageGen en el target exacto del handoff.");
+      image=await capture(cdp,job);
+    }else{
+      // Respaldo: si Ejecutar.js no creó/identificó ningún target, conservar el
+      // autoenvío antiguo en una conversación dedicada para no perder el job.
+      cdp=await openFreshDedicatedConversation();
+      console.log("BRIDGE HANDOFF FALLBACK SELF-SUBMIT mode="+BRIDGE_MODE);
+      for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
+        if(generationAttempt>1){
+          try{cdp&&cdp.close()}catch{}
+          await progress("image_retry","Handoff ausente y primer autoenvío sin raster; reintentando en conversación nueva.");
+          cdp=await openFreshDedicatedConversation();
+        }
+        cdp=await injectPromptIntoChat(cdp,job);
+        cdp=await ensureSubmitted(cdp,job);
+        cdp.acceptInitialRaster=true;
+        console.log("BRIDGE FALLBACK PROMPT VERIFIED attempt="+generationAttempt);
+        if(generationAttempt===1){
+          await progress("prompt_sent","Fallback: prompt GAG IA enviado y verificado.");
+          const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v34-handoff-capture"});
+          if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
+        }
+        await progress("capture_wait","Fallback: esperando raster ImageGen. Intento "+generationAttempt+"/2.");
+        try{
+          image=await capture(cdp,job);
+          break
+        }catch(e){
+          if(generationAttempt>=2)throw e;
+          console.log("BRIDGE FALLBACK GENERATION RETRY :: "+String(e&&e.message||e));
+        }
       }
     }
-    if(!image)throw Error("ImageGen no produjo raster tras reintento interno");
+    if(!image)throw Error("ImageGen no produjo raster ni por handoff ni por fallback");
     await progress("raster_captured","Raster ImageGen capturado; validando y materializando.");
     if(image.width<1024||image.height<576)throw Error("Raster capturado inferior a 1024x576");
     if(!/^(original-fetch-img|canvas-from-img-)/.test(String(image.capture||"")))throw Error("Método de captura no permitido: "+String(image.capture||""));
@@ -738,7 +784,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttendencias-image-bridge-v33-rehydrate-submit",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttendencias-image-bridge-v34-handoff-capture",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
