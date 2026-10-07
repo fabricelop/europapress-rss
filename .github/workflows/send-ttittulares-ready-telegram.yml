@@ -133,6 +133,22 @@ jobs:
                   raise RuntimeError("Telegram sendMessage: "+json.dumps(out,ensure_ascii=False)[:800])
               return out.get("result") or {}
 
+          def edit_photo_media(message_id,raw,caption,reply_markup=None):
+              ext,mime=ext_mime(raw)
+              media={"type":"photo","media":"attach://photo","caption":caption}
+              data={
+                  "chat_id":chat,
+                  "message_id":int(message_id),
+                  "media":json.dumps(media,ensure_ascii=False,separators=(",",":"))
+              }
+              if reply_markup is not None:
+                  data["reply_markup"]=json.dumps(reply_markup,ensure_ascii=False,separators=(",",":"))
+              resp=requests.post(api+"/editMessageMedia",data=data,files={"photo":("ttittulares"+ext,raw,mime)},timeout=45)
+              out=resp.json()
+              if not resp.ok or not out.get("ok"):
+                  raise RuntimeError("Telegram editMessageMedia: "+json.dumps(out,ensure_ascii=False)[:800])
+              return out.get("result") or {}
+
           def delete_message(message_id):
               if not message_id:
                   return
@@ -317,15 +333,9 @@ jobs:
                       current=row
                       break
 
+              timeout_reuse=None
               if event_delivery and event_delivery.get("timeout_fallback"):
-                  try:
-                      delete_message(int(event_delivery.get("telegram_message_id") or 0))
-                  except Exception as e:
-                      print(f"TTITTULARES_TIMEOUT_DELETE_WARNING event={eid} error={e}")
-                  event_delivery["status"]="superseded"
-                  event_delivery["superseded_at"]=nowz()
-                  changed=True
-                  event_delivery=None
+                  timeout_reuse=event_delivery
 
               archive=archive_obj(item)
               archive_url=str(archive.get("url") or "").strip()
@@ -385,6 +395,41 @@ jobs:
               if got.lower()!=image_sha:
                   raise SystemExit(f"{eid}: SHA256 IA no coincide")
               caption=tweet+f"\n\n{len(tweet)}/256"
+
+              if timeout_reuse:
+                  old_mid=int(timeout_reuse.get("telegram_message_id") or 0)
+                  can_edit=bool(old_mid and str(timeout_reuse.get("archive_image_url") or "").strip())
+                  if can_edit:
+                      try:
+                          edit_photo_media(old_mid,raw,caption,keyboard)
+                          old_key=str(timeout_reuse.get("delivery_key") or "")
+                          timeout_reuse.update({
+                              "delivery_key":delivery_key,
+                              "image_sha256":got,
+                              "image_url":image_url,
+                              "status":"sent",
+                              "buttons_version":5,
+                              "timeout_fallback":False,
+                              "upgraded_from_timeout":True,
+                              "upgraded_at":nowz()
+                          })
+                          timeout_reuse.pop("timeout_retry_version",None)
+                          timeout_reuse.pop("timeout_wait_from",None)
+                          changed=True
+                          touched+=1
+                          print(f"TTITTULARES_TIMEOUT_UPGRADED_IN_PLACE event={eid} message_id={old_mid}")
+                          continue
+                      except Exception as e:
+                          print(f"TTITTULARES_TIMEOUT_EDIT_WARNING event={eid} error={e}")
+                  try:
+                      if old_mid:
+                          delete_message(old_mid)
+                  except Exception as e:
+                      print(f"TTITTULARES_TIMEOUT_DELETE_WARNING event={eid} error={e}")
+                  timeout_reuse["status"]="superseded"
+                  timeout_reuse["superseded_at"]=nowz()
+                  changed=True
+
               msg=send_photo(raw,caption,keyboard)
               message_id=int(msg.get("message_id") or 0)
               row={
