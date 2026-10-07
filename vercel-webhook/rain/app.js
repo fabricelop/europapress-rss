@@ -46,13 +46,13 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
 const HARMONIE_STALE_GRACE_MINUTES=180;
-const LIGHTNING_WMS_URL='https://view.eumetsat.int/geoserver/wms';
-const LIGHTNING_WMS_LAYER='mtg_fd:li_afa';
+const LIGHTNING_WMS_URL='https://maps.dwd.de/geoserver/ows';
+const LIGHTNING_WMS_LAYER='dwd:Accumulated_Flash_Area';
 const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.32';
-const FORECAST_CACHE_SCHEMA='consensus-v21';
+const APP_VERSION='0.17.33';
+const FORECAST_CACHE_SCHEMA='consensus-v22';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
 const $=id=>document.getElementById(id);
@@ -3052,7 +3052,7 @@ function ensureLightningLayer(){
       type:'raster',
       tiles:[tile],
       tileSize:256,
-      attribution:'EUMETSAT Meteosat-12 Lightning Imager'
+      attribution:'DWD · EUMETSAT Meteosat-12 Lightning Imager'
     });
     const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
     state.map.addLayer({
@@ -3080,8 +3080,8 @@ function updateLightningVisibility(){
     button.classList.toggle('contextOff',Boolean(state.lightningEnabled&&!context));
     button.textContent=state.lightningEnabled?'⚡ RAYOS ON':'⚡ RAYOS';
     button.title=state.lightningEnabled
-      ? (context?'Actividad eléctrica observada EUMETSAT · acumulación 5 min':'Los rayos observados solo se muestran cerca de AHORA (últimos 5 min)')
-      : 'Mostrar actividad eléctrica observada EUMETSAT · acumulación 5 min';
+      ? (context?'Actividad eléctrica MTG LI vía DWD · acumulación 5 min. Si no aparecen trazas, no hay actividad visible en la zona mostrada.':'Los rayos observados solo se muestran cerca de AHORA (últimos 5 min)')
+      : 'Mostrar actividad eléctrica MTG Lightning Imager · acumulación 5 min';
   }
   if(!state.map||!state.mapLoaded)return;
   const shouldShow=Boolean(state.lightningEnabled&&context);
@@ -3251,14 +3251,35 @@ async function radarProjectionBitmap(meta,frame,zoom=RADAR_ZOOM){
     const response=await timeoutFetch(radarDisplayImageUrl(meta,frame,512,zoom),8500,{mode:'cors',cache:'no-store'});
     if(!response.ok)throw new Error('radar projection '+response.status);
     const blob=await response.blob();
-    let bitmap;
-    if('createImageBitmap'in window)bitmap=await createImageBitmap(blob);
-    else bitmap=await new Promise((resolve,reject)=>{
+    let raw;
+    if('createImageBitmap'in window)raw=await createImageBitmap(blob);
+    else raw=await new Promise((resolve,reject)=>{
       const image=new Image(),url=URL.createObjectURL(blob);
       image.onload=()=>{URL.revokeObjectURL(url);resolve(image)};
       image.onerror=error=>{URL.revokeObjectURL(url);reject(error)};
       image.src=url;
     });
+    const clean=document.createElement('canvas');
+    clean.width=512;clean.height=512;
+    const ctx=clean.getContext('2d',{alpha:true,willReadFrequently:true});
+    ctx.clearRect(0,0,512,512);
+    ctx.drawImage(raw,0,0,512,512);
+    if(raw?.close)try{raw.close()}catch{}
+    const image=ctx.getImageData(0,0,512,512),d=image.data;
+    let kept=0;
+    for(let p=0;p<d.length;p+=4){
+      const dbz=radarDbzFromRgba(d[p],d[p+1],d[p+2],d[p+3]);
+      if(!Number.isFinite(dbz)||dbz<10){
+        d[p]=0;d[p+1]=0;d[p+2]=0;d[p+3]=0;
+      }else{
+        kept++;
+        d[p+3]=Math.max(80,d[p+3]);
+      }
+    }
+    ctx.clearRect(0,0,512,512);
+    ctx.putImageData(image,0,0);
+    if(kept>512*512*.75)throw new Error('radar projection background not transparent');
+    const bitmap='createImageBitmap'in window?await createImageBitmap(clean):clean;
     if(state.radarProjectionBitmap?.close)try{state.radarProjectionBitmap.close()}catch{}
     state.radarProjectionBitmap=bitmap;
     return bitmap;
