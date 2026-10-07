@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
@@ -217,4 +218,13 @@ test('lightning overlay never reports active before source verification',()=>{
   assert.equal(evaluateOverlaySourceState({enabled:true,context:true,verified:false,loaded:2,errors:0}),'unverified');
   assert.equal(evaluateOverlaySourceState({enabled:true,context:true,verified:false,loaded:0,errors:1}),'error');
   assert.equal(evaluateOverlaySourceState({enabled:true,context:true,verified:true,loaded:1,errors:0}),'active');
+});
+
+
+test('RainETA CSP allows DWD lightning capabilities and WMS images',()=>{
+  const config=JSON.parse(readFileSync(new URL('../vercel.json',import.meta.url),'utf8'));
+  const rain=config.headers.find(row=>row.source==='/rain/(.*)');
+  const csp=rain?.headers?.find(row=>row.key==='Content-Security-Policy')?.value||'';
+  assert.match(csp,/connect-src[^;]*https:\/\/maps\.dwd\.de/);
+  assert.match(csp,/img-src[^;]*https:\/\/maps\.dwd\.de/);
 });
