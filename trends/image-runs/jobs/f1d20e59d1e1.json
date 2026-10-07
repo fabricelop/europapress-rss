@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-auto-f1d20e59d1e1-r0-a2-1791337691199",
   "requested_at": "2026-10-07T01:48:11.198182Z",
-  "updated_at": "2026-10-07T01:52:05.287Z",
-  "status": "RUNNING",
-  "phase": "composer_ready",
+  "updated_at": "2026-10-07T01:52:54.659Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -46,12 +46,13 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "ChatGPT cargado en la pestaña fija; compositor disponible.",
+  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"turns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":true,\"send\":false,\"sendDisable",
   "pc_upload_secret_hash": "49ded652ba555293221baadcd4e751e742bfe052d378090692160061ce467e44",
   "pc_worker_id": "ttendencias-image-bridge-v34-handoff-capture",
   "pc_picked_up_at": "2026-10-07T01:50:54.790Z",
   "bridge_version": null,
   "target_handoff_id": "83E2DCAFB8A0E38C7559BCFA482B42C8",
   "target_handoff_at": "2026-10-07T01:51:02.612Z",
-  "pc_launched_at": "2026-10-07T01:51:04.350Z"
+  "pc_launched_at": "2026-10-07T01:51:04.350Z",
+  "finished_at": "2026-10-07T01:52:54.659Z"
 }
