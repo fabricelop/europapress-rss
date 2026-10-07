@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 from shared.cross_account_story_matcher import classify_story_pair
+from shared.cross_account_x_search import build_x_account_search_url
 
 
 class CrossAccountStoryMatcherTests(unittest.TestCase):
@@ -47,6 +48,24 @@ class CrossAccountStoryMatcherTests(unittest.TestCase):
         trend = "Can Xue lidera algunas apuestas para el Nobel de Literatura."
         result = classify_story_pair(news, trend)
         self.assertEqual(result.classification, "independent")
+
+
+    def test_x_search_is_restricted_to_ttittulares(self):
+        url = build_x_account_search_url(
+            "@ttittulares",
+            "David Silva vuelve al fútbol con el Supreme Sha Tin",
+        )
+        self.assertIn("from%3Attittulares", url)
+        self.assertIn("David", url)
+        self.assertIn("Silva", url)
+
+    def test_x_search_is_restricted_to_ttendenciasesp(self):
+        url = build_x_account_search_url(
+            "@ttendenciasesp",
+            "La UCO Beatriz Biedma",
+        )
+        self.assertIn("from%3Attendenciasesp", url)
+        self.assertIn("UCO", url)
 
 
 if __name__ == "__main__":
