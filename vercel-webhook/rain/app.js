@@ -46,10 +46,13 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
 const HARMONIE_STALE_GRACE_MINUTES=180;
+const LIGHTNING_WMS_URL='https://view.eumetsat.int/geoserver/wms';
+const LIGHTNING_WMS_LAYER='mtg_fd:li_afa';
+const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.30';
-const FORECAST_CACHE_SCHEMA='consensus-v19';
+const APP_VERSION='0.17.31';
+const FORECAST_CACHE_SCHEMA='consensus-v20';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
 const $=id=>document.getElementById(id);
@@ -62,7 +65,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -3023,6 +3026,7 @@ function initMap(){
       }
     });
     showRadarOffset(state.radarOffset);
+    updateLightningVisibility();
   });
   state.map.on('zoomend',()=>{
     if(state.mapLoaded&&Number(state.radarOffset)>0)showProjectedRadar(state.radarOffset);
@@ -3037,6 +3041,72 @@ function updateMapLocation(){
 function centerRadarMap(){
   if(!state.map||!state.mapLoaded)return;
   state.map.easeTo({center:[state.loc.lon,state.loc.lat],duration:450});
+}
+function ensureLightningLayer(){
+  if(!state.map||!state.mapLoaded)return false;
+  if(!state.map.getSource('raineta-lightning')){
+    const tile=LIGHTNING_WMS_URL+
+      '?service=WMS&version=1.1.1&request=GetMap&layers='+encodeURIComponent(LIGHTNING_WMS_LAYER)+
+      '&styles=&format=image%2Fpng&transparent=true&srs=EPSG%3A3857&bbox={bbox-epsg-3857}&width=256&height=256';
+    state.map.addSource('raineta-lightning',{
+      type:'raster',
+      tiles:[tile],
+      tileSize:256,
+      attribution:'EUMETSAT Meteosat-12 Lightning Imager'
+    });
+    const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
+    state.map.addLayer({
+      id:'raineta-lightning',
+      type:'raster',
+      source:'raineta-lightning',
+      paint:{
+        'raster-opacity':.82,
+        'raster-fade-duration':0,
+        'raster-saturation':.18,
+        'raster-contrast':.12
+      }
+    },before);
+  }
+  return true;
+}
+function lightningContextVisible(){
+  const offset=Number(state.radarOffset)||0;
+  return offset<=0&&offset>=-LIGHTNING_CONTEXT_MINUTES;
+}
+function updateLightningVisibility(){
+  const button=$('radarLightning'),context=lightningContextVisible();
+  if(button){
+    button.classList.toggle('active',Boolean(state.lightningEnabled));
+    button.classList.toggle('contextOff',Boolean(state.lightningEnabled&&!context));
+    button.textContent=state.lightningEnabled?'⚡ RAYOS ON':'⚡ RAYOS';
+    button.title=state.lightningEnabled
+      ? (context?'Actividad eléctrica observada EUMETSAT · acumulación 5 min':'Los rayos observados solo se muestran cerca de AHORA (últimos 5 min)')
+      : 'Mostrar actividad eléctrica observada EUMETSAT · acumulación 5 min';
+  }
+  if(!state.map||!state.mapLoaded)return;
+  const shouldShow=Boolean(state.lightningEnabled&&context);
+  if(shouldShow){
+    try{
+      ensureLightningLayer();
+      if(state.map.getLayer('raineta-lightning')){
+        state.map.setLayoutProperty('raineta-lightning','visibility','visible');
+        if(state.map.getLayer('raineta-location'))state.map.moveLayer('raineta-lightning','raineta-location');
+      }
+    }catch(error){
+      if(button){
+        button.classList.remove('active');
+        button.classList.add('contextOff');
+        button.title='Capa EUMETSAT no disponible temporalmente';
+      }
+    }
+  }else if(state.map.getLayer('raineta-lightning')){
+    state.map.setLayoutProperty('raineta-lightning','visibility','none');
+  }
+}
+function toggleLightning(){
+  state.lightningEnabled=!state.lightningEnabled;
+  try{localStorage.setItem('raineta.lightning',JSON.stringify(state.lightningEnabled))}catch{}
+  updateLightningVisibility();
 }
 function removeRadarLayer(id){
   if(!state.map||!state.mapLoaded)return;
@@ -3388,6 +3458,7 @@ function showRadarOffset(offset=state.radarOffset){
   if(state.radarOffset<=0)showObservedRadar(state.radarOffset);
   else showProjectedRadar(state.radarOffset);
   updateRadarStepButtons();
+  updateLightningVisibility();
 }
 function radarArrivalSource(ev){
   if(ev?.kind==='radarFusion')return'radar + radar europeo';
@@ -3845,6 +3916,7 @@ $('radarNow').onclick=function(){
 };
 $('radarArrival').onclick=playRadarUntilRain;
 $('radarCenter').onclick=centerRadarMap;
+$('radarLightning').onclick=toggleLightning;
 $('radarPrev').onclick=stepRadarBackward;
 $('radarNext').onclick=stepRadarForward;
 function observedOffsets(){
