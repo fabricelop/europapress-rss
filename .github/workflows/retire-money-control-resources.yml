@@ -12,19 +12,16 @@ permissions:
 jobs:
   retire:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     env:
       VERCEL_ORG_ID: team_H8xHbBIbIKnsaLeITszidyOK
       VERCEL_PROJECT_ID: prj_X1UxNqQasd8Ouf7jUpxNccbQdASf
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      MONEYWIZ_STORE_ID: store_lUkOIpD97OzOjLef
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
 
       - name: Delete old TT backup branches
         shell: bash
@@ -47,28 +44,39 @@ jobs:
             code="$(curl -sS -o "$out" -w '%{http_code}' -X DELETE \
               -H "Authorization: Bearer $VERCEL_TOKEN" \
               "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID/env/$id?teamId=$VERCEL_ORG_ID")"
-            if [ "$code" = "200" ] || [ "$code" = "204" ] || [ "$code" = "404" ]; then
-              echo "Environment variable $id removed/already absent (HTTP $code)"
-            else
-              echo "Failed to delete env $id (HTTP $code)" >&2
-              cat "$out" >&2
-              exit 1
-            fi
+            case "$code" in
+              200|204|404) echo "Environment variable $id removed/already absent (HTTP $code)" ;;
+              *) echo "Failed to delete env $id (HTTP $code)" >&2; cat "$out" >&2; exit 1 ;;
+            esac
             rm -f "$out"
           }
           delete_env 6yufApLbsC2xqerB
           delete_env vIynN8hNhna6nZ7K
 
-      - name: Install Vercel CLI
+      - name: Disconnect dedicated MoneyWiz Blob store
         shell: bash
         run: |
           set -euo pipefail
-          npm install -g vercel@latest
+          out="$(mktemp)"
+          code="$(curl -sS -o "$out" -w '%{http_code}' -X DELETE \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v1/storage/stores/$MONEYWIZ_STORE_ID/connections?teamId=$VERCEL_ORG_ID")"
+          case "$code" in
+            200|204|404) echo "MoneyWiz Blob connections removed/already absent (HTTP $code)" ;;
+            *) echo "Failed to disconnect MoneyWiz Blob store (HTTP $code)" >&2; cat "$out" >&2; exit 1 ;;
+          esac
+          rm -f "$out"
 
       - name: Delete dedicated MoneyWiz Blob store
         shell: bash
         run: |
           set -euo pipefail
-          # The store is dedicated to Money Control/MoneyWiz (1 object, ~59 MB)
-          # and is connected only to europapress-rss.
-          printf 'y\n' | script -qefc "vercel blob delete-store store_lUkOIpD97OzOjLef --token='$VERCEL_TOKEN'" /dev/null
+          out="$(mktemp)"
+          code="$(curl -sS -o "$out" -w '%{http_code}' -X DELETE \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v1/storage/stores/blob/$MONEYWIZ_STORE_ID?teamId=$VERCEL_ORG_ID")"
+          case "$code" in
+            200|204|404) echo "MoneyWiz Blob store deleted/already absent (HTTP $code)" ;;
+            *) echo "Failed to delete MoneyWiz Blob store (HTTP $code)" >&2; cat "$out" >&2; exit 1 ;;
+          esac
+          rm -f "$out"
