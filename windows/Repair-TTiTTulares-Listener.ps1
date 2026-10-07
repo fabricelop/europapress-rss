@@ -49,11 +49,11 @@ Get-GitHubFile "windows/TTiTTularesImageBridge.js" $ttBridge "js"
 Get-GitHubFile "windows/TTendenciasImageBridge.js" $trBridge "js"
 
 $listenerText=Get-Content -LiteralPath $listener -Raw -Encoding UTF8
-if($listenerText -notmatch 'ttittulares-dedicated-v46'){throw "Se descargó un listener TTiTTulares anterior; se esperaba v46"}
+if($listenerText -notmatch 'ttittulares-dedicated-v47'){throw "Se descargó un listener TTiTTulares anterior; se esperaba v47"}
 $trendListenerText=Get-Content -LiteralPath $trendListener -Raw -Encoding UTF8
 if($trendListenerText -notmatch 'ttendencias-dedicated-v16'){throw "Se descargó un listener TTendencias anterior; se esperaba v16"}
 $bridgeText=Get-Content -LiteralPath $ttBridge -Raw -Encoding UTF8
-if($bridgeText -notmatch 'ttittulares-image-bridge-v34-handoff-capture'){throw "Se descargó un bridge TTiTTulares anterior; se esperaba v32"}
+if($bridgeText -notmatch 'ttittulares-image-bridge-v34-handoff-capture'){throw "Se descargó un bridge TTiTTulares anterior; se esperaba v34"}
 $trendBridgeText=Get-Content -LiteralPath $trBridge -Raw -Encoding UTF8
 if($trendBridgeText -notmatch 'ttendencias-image-bridge-v34-handoff-capture'){throw "Se descargó un bridge TTendencias anterior; se esperaba v34"}
 $watchdogText=Get-Content -LiteralPath $watchdog -Raw -Encoding UTF8
@@ -153,7 +153,7 @@ $tcount=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Ob
   ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like "*TTendenciasDedicatedListener.ps1*"
 }).Count
 
-Write-Host "TT automation reparada: TTiTTulares v46 + TTendencias v16 + bridges v34 + watchdog + updater" -ForegroundColor Green
+Write-Host "TT automation reparada: TTiTTulares v47 + TTendencias v16 + bridges v34 + watchdog + updater" -ForegroundColor Green
 Write-Host ("TTiTTulares listeners activos: "+$count)
 Write-Host ("TTendencias listeners activos: "+$tcount)
 Write-Host ("PID TTiTTulares: "+$l.Id)
