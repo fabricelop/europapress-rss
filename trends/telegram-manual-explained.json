@@ -36498,14 +36498,31 @@
       "news_disposition": "ignored",
       "news_note": "Tendencia de televisión por la emisión del día.",
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.programacion-tv-hoy.es/images/social-programacion-tv-hoy.jpg",
+        "source": "Programación TV · 7/10/2026",
+        "source_url": "https://www.programacion-tv-hoy.es/programacion-tv/2026-10-07",
+        "alt": "Imagen de archivo relacionada con #FirstDates7O",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.programacion-tv-hoy.es/images/social-programacion-tv-hoy.jpg",
+        "source": "Programación TV · 7/10/2026",
+        "source_url": "https://www.programacion-tv-hoy.es/programacion-tv/2026-10-07",
+        "alt": "Imagen de archivo relacionada con #FirstDates7O",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-07T21:57:43.055114Z",
+  "updated_at": "2026-10-07T21:58:56.673548Z",
   "count": 638
 }
