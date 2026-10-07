@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-0f5bf1e8b366-r0-a1-1791197556459",
-  "requested_at": "2026-10-05T10:52:36.458564Z",
-  "updated_at": "2026-10-05T10:57:42.691Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tr-img-auto-0f5bf1e8b366-r1-a2-1791371924766",
+  "requested_at": "2026-10-07T11:18:44.765683Z",
+  "updated_at": "2026-10-07T11:18:44.765683Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -13,52 +13,43 @@
   "target_id": "0f5bf1e8b366",
   "trend_id": "0f5bf1e8b366",
   "target_name": "Adamuz",
-  "revision": 0,
-  "attempt": 1,
+  "revision": 1,
+  "attempt": 2,
   "auto_repair": true,
-  "auto_repair_attempt": 1,
+  "auto_repair_attempt": 2,
   "chat_command_version": 4,
-  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "Adamuz",
-    "revision": 0,
-    "explanation": "TT#8 Adamuz es tendencia porque el consejero delegado de Iryo, Fabrizio Favara, comparece hoy en el Senado ante la comisión que investiga la red ferroviaria y los accidentes de Adamuz y Gelida.",
+    "revision": 1,
+    "explanation": "TT#9 Adamuz es tendencia porque el PP andaluz ha vuelto a citar el accidente ferroviario al criticar al Gobierno en el arranque de la precampaña del 29-N y reclamar responsabilidades.",
     "closer_text": "",
     "trend_names": [
       "Adamuz"
     ],
-    "group_title": "Comparecencia de Iryo sobre Adamuz y Gelida",
-    "rank_at_explanation": 8,
-    "explained_at": "2026-10-05T12:49:30+02:00",
+    "group_title": "Adamuz en la precampaña del 29-N",
+    "rank_at_explanation": 9,
+    "explained_at": "2026-10-07T13:16:40+02:00",
     "verification_sources": [
       {
-        "source": "Senado de España · agenda · 5/10/2026",
-        "url": "https://www.senado.es/web/actividadparlamentaria/actualidad/agenda/index.html?d=05102026"
+        "source": "Diario de Almería · 6/10/2026",
+        "url": "https://www.diariodealmeria.es/andalucia/pp-confia-andalucia-no-olvide_0_2008164507.html"
       },
       {
-        "source": "Europa Press · 5/10/2026",
-        "url": "https://fotos.europapress.es/temasactualidad/f7821901"
+        "source": "Senado de España · agenda · 5/10/2026",
+        "url": "https://www.senado.es/web/actividadparlamentaria/actualidad/agenda/index.html?d=10092026"
       }
     ],
-    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia.",
+    "image_style_name": "retro_60s",
+    "image_style_index": 5
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "pc_upload_secret_hash": "c3622500c9db586ab346398e06316b01180afb0a7263af72e454e05d59a2313a",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-05T10:56:15.042Z",
-  "bridge_version": null,
-  "target_handoff_id": "5466EEFD4A5947C4FC21A114D620CB21",
-  "target_handoff_at": "2026-10-05T10:56:22.324Z",
-  "pc_launched_at": "2026-10-05T10:56:24.282Z",
-  "upload_received_at": "2026-10-05T10:57:37.414Z",
-  "upload_sha256": "d0b1e9406fda8c818b1deac4aa59477a48f16133b4daa13b23c06f225ecd0168",
-  "upload_bytes": 2653334,
-  "finished_at": "2026-10-05T10:57:42.691Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
