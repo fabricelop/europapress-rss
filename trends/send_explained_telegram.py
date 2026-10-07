@@ -172,6 +172,19 @@ def send_text(token,chat,text,keyboard=None):
     return telegram_api(token,"sendMessage",payload)
 
 
+def edit_photo_media(token,chat,message_id,raw,caption,keyboard=None):
+    ext,mime=ext_and_mime(raw)
+    media={"type":"photo","media":"attach://photo","caption":caption}
+    data={
+        "chat_id":str(chat),
+        "message_id":int(message_id),
+        "media":json.dumps(media,ensure_ascii=False,separators=(",",":")),
+    }
+    if keyboard:
+        data["reply_markup"]=json.dumps(keyboard,ensure_ascii=False,separators=(",",":"))
+    return telegram_api(token,"editMessageMedia",data,{"photo":("ttendencias"+ext,raw,mime)})
+
+
 def edit_keyboard(token,chat,message_id,keyboard):
     try:
         return telegram_api(token,"editMessageReplyMarkup",{
@@ -377,15 +390,13 @@ def run_send(patch_path):
         if exact and str(exact.get("status") or "").lower() in TERMINAL:
             continue
 
-        # Si el aviso provisional de 90 min seguía visible, la IA real lo sustituye.
+        # Si el aviso provisional de 90 min seguía visible, reutilizamos ese
+        # mismo mensaje cuando tenía foto de archivo: cambiamos el media a la IA
+        # y conservamos message_id + paquete. Si era texto puro, usamos fallback
+        # de borrar y enviar el paquete normal más abajo.
+        timeout_reuse=None
         if event_sent and event_sent.get("timeout_fallback"):
-            try:
-                telegram_api(token,"deleteMessage",{"chat_id":str(chat),"message_id":int(event_sent.get("telegram_message_id") or 0)})
-            except Exception as e:
-                print("TTENDENCIAS_TIMEOUT_DELETE_WARNING",tid,str(e),flush=True)
-            event_sent["status"]="superseded"
-            event_sent["superseded_at"]=nowz()
-            changed.add(str(event_sent.get("delivery_key") or ""))
+            timeout_reuse=event_sent
 
         archive=image_source(row)
         archive_src=str(archive.get("url") or "").strip()
@@ -441,6 +452,41 @@ def run_send(patch_path):
         got=hashlib.sha256(raw).hexdigest()
         if got.lower()!=ai_sha:
             raise RuntimeError(f"{tid}: SHA256 IA no coincide")
+
+        if timeout_reuse:
+            old_mid=int(timeout_reuse.get("telegram_message_id") or 0)
+            can_edit=bool(old_mid and str(timeout_reuse.get("archive_image_url") or "").strip())
+            if can_edit:
+                try:
+                    edit_photo_media(token,chat,old_mid,raw,text+f"\n\n{len(text)}/280",kb)
+                    old_key=str(timeout_reuse.get("delivery_key") or "")
+                    timeout_reuse.update({
+                        "delivery_key":key,
+                        "image_sha256":got,
+                        "image_url":ai_url,
+                        "status":"sent",
+                        "buttons_version":BUTTONS_VERSION,
+                        "timeout_fallback":False,
+                        "upgraded_from_timeout":True,
+                        "upgraded_at":nowz(),
+                    })
+                    timeout_reuse.pop("timeout_retry_version",None)
+                    timeout_reuse.pop("timeout_wait_from",None)
+                    changed.add(old_key); changed.add(key)
+                    touched+=1
+                    print("TTENDENCIAS_TIMEOUT_UPGRADED_IN_PLACE",tid,old_mid,flush=True)
+                    continue
+                except Exception as e:
+                    print("TTENDENCIAS_TIMEOUT_EDIT_WARNING",tid,str(e),flush=True)
+            try:
+                if old_mid:
+                    telegram_api(token,"deleteMessage",{"chat_id":str(chat),"message_id":old_mid})
+            except Exception as e:
+                print("TTENDENCIAS_TIMEOUT_DELETE_WARNING",tid,str(e),flush=True)
+            timeout_reuse["status"]="superseded"
+            timeout_reuse["superseded_at"]=nowz()
+            changed.add(str(timeout_reuse.get("delivery_key") or ""))
+
         caption=text+f"\n\n{len(text)}/280"
         msg=send_photo(token,chat,raw,caption,kb)
         mid=int(msg.get("message_id") or 0)
