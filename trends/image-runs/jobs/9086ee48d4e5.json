@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-auto-9086ee48d4e5-r0-a2-1791331555226",
   "requested_at": "2026-10-07T00:05:55.224165Z",
-  "updated_at": "2026-10-07T00:09:32.376Z",
-  "status": "RUNNING",
-  "phase": "pc_launch",
+  "updated_at": "2026-10-07T00:10:15.160Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -45,12 +45,13 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "PC ha abierto el chat de imagen; esperando inicio de generación.",
+  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":true,\"submitted\":false,\"userTurns\":0,\"turns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisable",
   "pc_upload_secret_hash": "3ca1be2bc56ac6f31629895c0e4320678b5e7c4a27c49527254922356ff3a193",
-  "pc_worker_id": "ttendencias-dedicated-v16",
+  "pc_worker_id": "ttendencias-image-bridge-v33-rehydrate-submit",
   "pc_picked_up_at": "2026-10-07T00:09:16.879Z",
   "bridge_version": null,
   "target_handoff_id": "5F998DC91CB641CCD60E0F1E2D4DAEF7",
   "target_handoff_at": "2026-10-07T00:09:30.937Z",
-  "pc_launched_at": "2026-10-07T00:09:32.376Z"
+  "pc_launched_at": "2026-10-07T00:09:32.376Z",
+  "finished_at": "2026-10-07T00:10:15.160Z"
 }
