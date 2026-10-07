@@ -409,7 +409,7 @@ const BRIDGE_MODE="capture-only-v28-dead-submit-retry";
 const FIXED_TAB_STATE="C:\\TTiTTulares\\ttittulares-image-tab.json";
 const CHAT_ROOT="https://chatgpt.com/";
 const BRIDGE_FEATURES="v29-visible-composer-trusted-click-dom-fallback";
-const BRIDGE_PATCH="v38-command-scan-first";
+const BRIDGE_PATCH="v39-authoritative-self-submit";
 // compatibility validator for installed listeners: ttittulares-image-bridge-v1
 // compatibility: BRIDGE SUBMIT VERIFY WARNING
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
@@ -835,12 +835,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v38-command-first",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v39-self-submit",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v38-command-first",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v39-self-submit",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -862,44 +862,44 @@ async function uploadImage(image){
     const job=await fetchJob();
     let image=null;
 
-    // Camino principal v34: el listener ya creó el chat que dispara ImageGen.
-    // El bridge no vuelve a escribir ni enviar nada: se conecta al target exacto
-    // publicado en targetHintFile y captura el raster de ESA conversación.
-    cdp=await waitForHandoffConversation(job,65000);
-    if(cdp){
-      await progress("target_handoff_attached","Bridge conectado al chat exacto lanzado por el listener; esperando ImageGen.");
-      cdp.acceptInitialRaster=true;
-      await progress("capture_wait","Esperando raster ImageGen en el target exacto del handoff.");
-      image=await capture(cdp,job);
-    }else{
-      // Respaldo: si Ejecutar.js no creó/identificó ningún target, conservar el
-      // autoenvío antiguo en una conversación dedicada para no perder el job.
-      cdp=await openFreshDedicatedConversation();
-      console.log("BRIDGE HANDOFF FALLBACK SELF-SUBMIT mode="+BRIDGE_MODE);
-      for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
-        if(generationAttempt>1){
-          try{cdp&&cdp.close()}catch{}
-          await progress("image_retry","Handoff ausente y primer autoenvío sin raster; reintentando en conversación nueva.");
-          cdp=await openFreshDedicatedConversation();
-        }
-        cdp=await injectPromptIntoChat(cdp,job);
+    // v39: el bridge es la autoridad de la generación. Evita depender de que
+    // Ejecutar.js y el bridge vean exactamente el mismo target CDP.
+    // 1) Si ya existe una conversación con este command_id, continuar allí.
+    // 2) Si no, usar una conversación ChatGPT válida del perfil automatizado,
+    //    inyectar el prompt y enviar desde el propio bridge.
+    let found=await reacquireCommandChat(job);
+    if(found&&found.cdp){
+      cdp=found.cdp;
+      const st=found.state||{};
+      if(st.composerMarker){
         cdp=await ensureSubmitted(cdp,job);
+      }else{
         cdp.acceptInitialRaster=true;
-        console.log("BRIDGE FALLBACK PROMPT VERIFIED attempt="+generationAttempt);
-        if(generationAttempt===1){
-          await progress("prompt_sent","Fallback: prompt GAG IA enviado y verificado.");
-          const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v38-command-first"});
-          if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
-        }
-        await progress("capture_wait","Fallback: esperando raster ImageGen. Intento "+generationAttempt+"/2.");
-        try{
-          image=await capture(cdp,job);
-          break
-        }catch(e){
-          if(generationAttempt>=2)throw e;
-          console.log("BRIDGE FALLBACK GENERATION RETRY :: "+String(e&&e.message||e));
-        }
+        console.log("BRIDGE SELF-SUBMIT EXISTING COMMAND url="+String(st.url||"")+" generating="+Boolean(st.generating));
       }
+    }else{
+      cdp=await findChat(job);
+      await progress("composer_ready","ChatGPT disponible para generación autoritativa del bridge.");
+      cdp=await injectPromptIntoChat(cdp,job);
+      cdp=await ensureSubmitted(cdp,job);
+    }
+    cdp.acceptInitialRaster=true;
+    await progress("prompt_sent","Prompt GAG IA enviado/verificado por el bridge autoritativo.");
+    {
+      const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v39-self-submit"});
+      if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
+    }
+    await progress("capture_wait","Esperando raster ImageGen en la conversación controlada por el bridge.");
+    try{
+      image=await capture(cdp,job);
+    }catch(firstError){
+      console.log("BRIDGE SELF-SUBMIT CAPTURE RETRY :: "+String(firstError&&firstError.message||firstError));
+      try{cdp&&cdp.close()}catch{}
+      const again=await reacquireCommandChat(job);
+      if(!again||!again.cdp)throw firstError;
+      cdp=again.cdp;
+      cdp.acceptInitialRaster=true;
+      image=await capture(cdp,job);
     }
     if(!image)throw Error("ImageGen no produjo raster ni por handoff ni por fallback");
     await progress("raster_captured","Raster ImageGen capturado; validando y materializando.");
@@ -916,7 +916,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v38-command-first",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v39-self-submit",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
