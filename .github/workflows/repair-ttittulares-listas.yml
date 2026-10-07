@@ -296,6 +296,10 @@ jobs:
                   "no se encontro ninguna conversacion",
                   "pestaña dedicada no mostró compositor",
                   "pestana dedicada no mostro compositor",
+                  "upload 500",
+                  "does not match",
+                  "shared/image-raster-registry.json",
+                  "ttittulares/prepared.json",
               ))
               cooldown=60 if transient_bridge_failure else (300 if attempt<3 else 3600)
               if old and old_status not in active and age<cooldown:
