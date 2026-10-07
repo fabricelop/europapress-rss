@@ -578,7 +578,7 @@ function render(){
  }
  const q=nrm($("filter").value);
  const visible=q?allItems.filter(x=>nrm(displayName(x)).includes(q)||nrm((x.trend_names||[]).join(" ")).includes(q)||nrm(x.explanation).includes(q)):allItems;
- const pendingAll=allItems.filter(x=>!archivingKeys.has(pendingKey(x))),pending=visible.filter(x=>!archivingKeys.has(pendingKey(x)));
+ const pendingAll=allItems.filter(x=>!x.copied&&!archivingKeys.has(pendingKey(x))),pending=visible.filter(x=>!x.copied&&!archivingKeys.has(pendingKey(x)));
  $("pendingCount").textContent=String(pendingAll.length);updateUnreadBadge();updateImageControl();
  if(openPendingKey&&!pending.some(x=>pendingKey(x)===openPendingKey))openPendingKey=null;
  pendingList.innerHTML="";
